@@ -96,6 +96,7 @@
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "ViewProviderExtern.h"
 #include "ViewProviderFeature.h"
@@ -678,8 +679,9 @@ void Application::slotNewDocument(const App::Document& Doc)
     pDoc->signalChangedObject.connect(boost::bind(&Gui::Application::slotChangedObject, this, _1, _2));
     pDoc->signalRelabelObject.connect(boost::bind(&Gui::Application::slotRelabelObject, this, _1));
     pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, _1));
-
-
+    pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, _1));
+    pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
+ 
     signalNewDocument(*pDoc);
     pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
@@ -779,6 +781,16 @@ void Application::slotRelabelObject(const ViewProvider& vp)
 void Application::slotActivatedObject(const ViewProvider& vp)
 {
     this->signalActivatedObject(vp);
+}
+
+void Application::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
+{
+    this->signalInEdit(vp);
+}
+
+void Application::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
+{
+    this->signalResetEdit(vp);
 }
 
 void Application::onLastWindowClosed(Gui::Document* pcDoc)

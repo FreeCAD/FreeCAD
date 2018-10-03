@@ -1446,6 +1446,13 @@ class DocumentObserverCases(unittest.TestCase):
       self.parameter.append(obj)
       self.parameter2.append(prop)
       
+    def slotInEdit(self, obj):
+      self.signal.append('ObjInEdit');
+      self.parameter.append(obj)  
+    
+    def slotResetEdit(self, obj):
+      self.signal.append('ObjResetEdit');
+      self.parameter.append(obj) 
       
   def setUp(self):
     self.Obs = self.Observer();
@@ -1631,7 +1638,10 @@ class DocumentObserverCases(unittest.TestCase):
     self.Obs.parameter2 = []
     
   def testGuiObserver(self):
-    
+  
+    if not FreeCAD.GuiUp:
+      return
+  
     self.GuiObs = self.GuiObserver()
     FreeCAD.Gui.addDocumentObserver(self.GuiObs)
     self.Doc1 = FreeCAD.newDocument("Observer1");   
@@ -1682,7 +1692,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.GuiObs.signal.pop(0) == 'ObjChanged')
     self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
     self.failUnless(self.GuiObs.parameter2.pop(0) == "Visibility")
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
     
     obj.ViewObject.addProperty("App::PropertyLength","Prop","Group","test property")
     self.failUnless(self.Obs.signal.pop() == 'ObjAddDynProp')
@@ -1705,6 +1715,18 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
 
+    self.GuiDoc1.setEdit('obj', 0)
+    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.failUnless(self.GuiObs.signal.pop(0) == 'ObjInEdit')
+    self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
+    self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
+
+    self.GuiDoc1.resetEdit()
+    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    self.failUnless(self.GuiObs.signal.pop(0) == 'ObjResetEdit')
+    self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
+    self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
+    
     vo = obj.ViewObject
     FreeCAD.ActiveDocument.removeObject(obj.Name)
     self.failUnless(self.Obs.signal.pop() == 'ObjDeleted')
@@ -1721,6 +1743,8 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.GuiObs.signal.pop() == 'DocDeleted')
     self.failUnless(self.GuiObs.parameter.pop() is self.GuiDoc1)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
+
+    FreeCAD.Gui.removeDocumentObserver(self.GuiObs)
 
   def tearDown(self):
     #closing doc

@@ -66,6 +66,10 @@ private:
     void slotDeletedObject(const Gui::ViewProvider& Obj);
     /** The property of an observed object has changed */
     void slotChangedObject(const Gui::ViewProvider& Obj, const App::Property& Prop);
+    /** The object was set into edit mode */
+    void slotInEdit(const Gui::ViewProviderDocumentObject& Obj);
+    /** The has left edit mode */
+    void slotResetEdit(const Gui::ViewProviderDocumentObject& Obj);
 
 private:
     Py::Object inst;
@@ -80,6 +84,8 @@ private:
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;
+    Connection connectDocumentObjectInEdit;
+    Connection connectDocumentObjectResetEdit;
 };
 
 } //namespace Gui
