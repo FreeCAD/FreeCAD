@@ -514,13 +514,18 @@ def formatObject(target,origin=None):
                                 val = getattr(matchrep,p).Value
                             else:
                                 val = getattr(matchrep,p)
-                            setattr(obrep,p,val)
+                            try:
+                                setattr(obrep,p,val)
+                            except Exception:
+                                pass
             if matchrep.DisplayMode in obrep.listDisplayModes():
                 obrep.DisplayMode = matchrep.DisplayMode
             if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
                 if matchrep.DiffuseColor:
                     FreeCAD.ActiveDocument.recompute()
                 obrep.DiffuseColor = matchrep.DiffuseColor
+            else:
+                obrep.mapShapeColors()
 
 def getSelection():
     "getSelection(): returns the current FreeCAD selection"
@@ -6371,18 +6376,29 @@ class _Clone(_DraftObject):
         obj.Scale = Vector(1,1,1)
 
     def join(self,obj,shapes):
-        if len(shapes) < 2:
+        fuse = getattr(obj,'Fuse',False)
+        if fuse:
+            tmps = []
+            for s in shapes:
+                tmps += s.Solids
+            if not tmps:
+                for s in shapes:
+                    tmps += s.Faces
+                if not tmps:
+                    for s in shapes:
+                        tmps += s.Edges
+            shapes = tmps
+        if len(shapes) == 1:
             return shapes[0]
         import Part
-        if hasattr(obj,"Fuse"):
-            if obj.Fuse:
-                try:
-                    sh = shapes[0].multiFuse(shapes[1:])
-                    sh = sh.removeSplitter()
-                except:
-                    pass
-                else:
-                    return sh
+        if fuse:
+            try:
+                sh = shapes[0].multiFuse(shapes[1:])
+                sh = sh.removeSplitter()
+            except:
+                pass
+            else:
+                return sh
         return Part.makeCompound(shapes)
 
     def execute(self,obj):
@@ -6392,44 +6408,29 @@ class _Clone(_DraftObject):
         if obj.isDerivedFrom("Part::Part2DObject"):
             # if our clone is 2D, make sure all its linked geometry is 2D too
             for o in obj.Objects:
-                if not o.isDerivedFrom("Part::Part2DObject"):
+                if not o.getLinkedObject(True).isDerivedFrom("Part::Part2DObject"):
                     FreeCAD.Console.PrintWarning("Warning 2D Clone "+obj.Name+" contains 3D geometry")
                     return
-        objs = getGroupContents(obj.Objects)
-        for o in objs:
-            sh = None
-            if o.isDerivedFrom("Part::Feature"):
-                if not o.Shape.isNull():
-                    sh = o.Shape.copy()
-            elif o.hasExtension("App::GeoFeatureGroupExtension"):
-                shps = []
-                for so in o.Group:
-                    if so.isDerivedFrom("Part::Feature"):
-                        if not so.Shape.isNull():
-                            shps.append(so.Shape)
-                if shps:
-                    sh = self.join(obj,shps)
-            if sh:
-                m = FreeCAD.Matrix()
-                if hasattr(obj,"Scale") and not sh.isNull():
-                    sx,sy,sz = obj.Scale
-                    if not DraftVecUtils.equals(obj.Scale,Vector(1,1,1)):
-                        op = sh.Placement
-                        sh.Placement = FreeCAD.Placement()
-                        m.scale(obj.Scale)
-                        if sx == sy == sz:
-                            sh.transformShape(m)
-                        else:
-                            sh = sh.transformGeometry(m)
-                        sh.Placement = op
-                if not sh.isNull():
-                    shapes.append(sh)
+        for o in obj.Objects:
+            sh = Part.getShape(o)
+            if not sh.isNull():
+                shapes.append(sh)
         if shapes:
-            if len(shapes) == 1:
-                obj.Shape = shapes[0]
-                obj.Placement = shapes[0].Placement
-            else:
-                obj.Shape = self.join(obj,shapes)
+            sh = self.join(obj,shapes)
+            m = FreeCAD.Matrix()
+            if hasattr(obj,"Scale") and not sh.isNull():
+                sx,sy,sz = obj.Scale
+                if not DraftVecUtils.equals(obj.Scale,Vector(1,1,1)):
+                    op = sh.Placement
+                    sh.Placement = FreeCAD.Placement()
+                    m.scale(obj.Scale)
+                    if sx == sy == sz:
+                        sh.transformShape(m)
+                    else:
+                        sh = sh.transformGeometry(m)
+                    sh.Placement = op
+            obj.Shape = sh
+
         obj.Placement = pl
         if hasattr(obj,"positionBySupport"):
             obj.positionBySupport()
@@ -6505,27 +6506,28 @@ class _ViewProviderDraftArray(_ViewProviderDraft):
         return ":/icons/Draft_PathArray.svg"
 
     def resetColors(self, vobj):
-        colors = []
-        if vobj.Object.Base:
-            if vobj.Object.Base.isDerivedFrom("Part::Feature"):
-                if len(vobj.Object.Base.ViewObject.DiffuseColor) > 1:
-                    colors = vobj.Object.Base.ViewObject.DiffuseColor
-                else:
-                    c = vobj.Object.Base.ViewObject.ShapeColor
-                    c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
-                    for f in vobj.Object.Base.Shape.Faces:
-                        colors.append(c)
-        if colors:
-            n = 1
-            if hasattr(vobj.Object,"ArrayType"):
-                if vobj.Object.ArrayType == "ortho":
-                    n = vobj.Object.NumberX * vobj.Object.NumberY * vobj.Object.NumberZ
-                else:
-                    n = vobj.Object.NumberPolar
-            elif hasattr(vobj.Object,"Count"):
-                n = vobj.Object.Count
-            colors = colors * n
-            vobj.DiffuseColor = colors
+        vobj.mapShapeColors()
+        #  colors = []
+        #  if vobj.Object.Base:
+        #      if vobj.Object.Base.isDerivedFrom("Part::Feature"):
+        #          if len(vobj.Object.Base.ViewObject.DiffuseColor) > 1:
+        #              colors = vobj.Object.Base.ViewObject.DiffuseColor
+        #          else:
+        #              c = vobj.Object.Base.ViewObject.ShapeColor
+        #              c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
+        #              for f in vobj.Object.Base.Shape.Faces:
+        #                  colors.append(c)
+        #  if colors:
+        #      n = 1
+        #      if hasattr(vobj.Object,"ArrayType"):
+        #          if vobj.Object.ArrayType == "ortho":
+        #              n = vobj.Object.NumberX * vobj.Object.NumberY * vobj.Object.NumberZ
+        #          else:
+        #              n = vobj.Object.NumberPolar
+        #      elif hasattr(vobj.Object,"Count"):
+        #          n = vobj.Object.Count
+        #      colors = colors * n
+        #      vobj.DiffuseColor = colors
 
 class _ShapeString(_DraftObject):
     "The ShapeString object"
