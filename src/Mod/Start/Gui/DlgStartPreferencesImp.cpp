@@ -97,6 +97,7 @@ void DlgStartPreferencesImp::saveSettings()
     checkBox_3->onSave();
     checkBox_4->onSave();
     checkBox_5->onSave();
+    checkBox_6->onSave();
     lineEdit->onSave();
     spinBox->onSave();
 }
@@ -126,6 +127,7 @@ void DlgStartPreferencesImp::loadSettings()
     checkBox_3->onRestore();
     checkBox_4->onRestore();
     checkBox_5->onRestore();
+    checkBox_6->onRestore();
     lineEdit->onRestore();
     spinBox->onRestore();
 }

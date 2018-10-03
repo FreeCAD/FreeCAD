@@ -333,7 +333,7 @@ class _Stairs(ArchComponent.Component):
         # TODO - To be combined into Width when PropertyLengthList is available
         if not "WidthOfLanding" in pl:
             obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (Second edge and after - First edge follows Width property"))
-
+    
         # steps properties
         if not "NumberOfSteps" in pl:
             obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",QT_TRANSLATE_NOOP("App::Property","The number of risers in these stairs"))

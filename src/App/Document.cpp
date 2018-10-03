@@ -525,8 +525,13 @@ void Document::exportGraphviz(std::ostream& out) const
             setGraphLabel(sub, cs);
 
             for(auto obj : cs->getOutList()) {
-                if(obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
-                    recursiveCSSubgraphs(obj, cs);
+                if (obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+                    // in case of dependencies loops check if obj is already part of the
+                    // map to avoid infinite recursions
+                    auto it = GraphList.find(obj);
+                    if (it == GraphList.end())
+                        recursiveCSSubgraphs(obj, cs);
+                }
             }
 
             //setup the origin if available
@@ -2227,22 +2232,25 @@ int Document::recompute()
 
     for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
         // ask the object if it should be recomputed
-        if ((*objIt)->isTouched() || (*objIt)->mustExecute() == 1){
+        bool doRecompute = false;
+        if ((*objIt)->mustRecompute()) {
+            doRecompute = true;
             objectCount++;
             if (_recomputeFeature(*objIt)) {
                 // if something happened break execution of recompute
                 return -1;
             }
-            else{
-                (*objIt)->purgeTouched();
-                // set all dependent object touched to force recompute
-                for (auto inObjIt : (*objIt)->getInList())
-                    inObjIt->touch();
-            }
+        }
+
+        if ((*objIt)->isTouched() || doRecompute) {
+            (*objIt)->purgeTouched();
+            // force recompute of all dependent objects
+            for (auto inObjIt : (*objIt)->getInList())
+                inObjIt->enforceRecompute();
         }
     }
 #ifdef FC_DEBUG
-    // check if all objects are recalculated which were thouched
+    // check if all objects are recalculated which were touched
     for (auto objectIt : d->objectArray) {
         if (objectIt->isTouched())
             cerr << "Document::recompute(): " << objectIt->getNameInDocument() << " still touched after recompute" << endl;

@@ -106,7 +106,11 @@ def getInfo(filename):
 
         # get additional info from fcstd files
         if filename.lower().endswith(".fcstd"):
-            zfile=zipfile.ZipFile(filename)
+            try:
+                zfile=zipfile.ZipFile(filename)
+            except:
+                print("Cannot read file: ",filename)
+                return None
             files=zfile.namelist()
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
@@ -304,7 +308,10 @@ def handle():
         SECTION_RECENTFILES += "<ul>"
         SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+TranslationTexts.T_CREATENEW+'">'
         SECTION_RECENTFILES += '<li class="icon">'
-        SECTION_RECENTFILES += '<img src="images/new_file_thumbnail.svg">'
+        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
+            SECTION_RECENTFILES += '<img src="'+iconbank["createimg"]+'">'
+        else:
+            SECTION_RECENTFILES += '<img src="images/new_file_thumbnail.svg">'
         SECTION_RECENTFILES += '<div class="caption">'
         SECTION_RECENTFILES += '<h4>'+TranslationTexts.T_CREATENEW+'</h4>'
         SECTION_RECENTFILES += '</div>'

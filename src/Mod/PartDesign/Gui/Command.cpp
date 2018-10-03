@@ -709,12 +709,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
     if (updateDocument)
         cmd->updateActive();
 
-    // #0001721: use '0' as edit value to avoid switching off selection in
-    // ViewProviderGeometryObject::setEditViewer
-    cmd->doCommand(cmd->Gui,"Gui.activeDocument().setEdit('%s', 0)", FeatName.c_str());
-    cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
-    //cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
-
+    // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
     if (pcActiveBody) {
         cmd->copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
@@ -722,6 +717,12 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         cmd->copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
         cmd->copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
     }
+
+    // #0001721: use '0' as edit value to avoid switching off selection in
+    // ViewProviderGeometryObject::setEditViewer
+    cmd->doCommand(cmd->Gui,"Gui.activeDocument().setEdit('%s', 0)", FeatName.c_str());
+    cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
+    //cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 }
 
 //===========================================================================
@@ -2122,10 +2123,19 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         openCommand("Convert to MultiTransform feature");
         doCommand(Gui, "FreeCADGui.runCommand('PartDesign_MoveTip')");
 
+        // We cannot remove the Transform feature from the body as otherwise
+        // we will have a PartDesign feature without a body which is not allowed
+        // and causes to pop up the migration dialog later when adding new features
+        // to the body.
+        // Additionally it creates the error message: "Links go out of the allowed scope"
+        // #0003509
+#if 0
         // Remove the Transformed feature from the Body
-        if(pcActiveBody)
+        if (pcActiveBody) {
             doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                       pcActiveBody->getNameInDocument(), trFeat->getNameInDocument());
+        }
+#endif
 
         // Create a MultiTransform feature and move the Transformed feature inside it
         std::string FeatName = getUniqueObjectName("MultiTransform");

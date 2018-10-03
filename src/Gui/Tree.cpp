@@ -348,7 +348,7 @@ void TreeWidget::onMarkRecompute()
         App::Document* doc = docitem->document()->getDocument();
         std::vector<App::DocumentObject*> obj = doc->getObjects();
         for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
-            (*it)->touch();
+            (*it)->enforceRecompute();
     }
     // mark all selected objects
     else {
@@ -357,7 +357,7 @@ void TreeWidget::onMarkRecompute()
             if ((*it)->type() == ObjectType) {
                 DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
                 App::DocumentObject* obj = objitem->object()->getObject();
-                obj->touch();
+                obj->enforceRecompute();
             }
         }
     }
@@ -1574,9 +1574,9 @@ void DocumentObjectItem::testStatus()
 
     // if status has changed then continue
     int currentStatus =
-        ((pObject->isError()          ? 1 : 0) << 2) |
-        ((pObject->mustExecute() == 1 ? 1 : 0) << 1) |
-        (viewObject->isShow()         ? 1 : 0);
+        ((pObject->isError()            ? 1 : 0) << 2) |
+        ((pObject->mustRecompute() == 1 ? 1 : 0) << 1) |
+        (viewObject->isShow()           ? 1 : 0);
     if (previousStatus == currentStatus)
         return;
     previousStatus = currentStatus;

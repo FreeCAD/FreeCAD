@@ -331,6 +331,12 @@ def fill_femresult_mechanical(results, result_set, span):
             results.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
             results.Time = step_time
 
+    return results
+
+
+def fill_femresult_stats(results):
+    ''' fills a FreeCAD FEM mechanical result object with stats data
+    '''
     # result stats, set stats values to 0, they may not exist
     x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
     a_max = a_min = a_avg = s_max = s_min = s_avg = 0
@@ -339,9 +345,10 @@ def fill_femresult_mechanical(results, result_set, span):
     temp_min = temp_avg = temp_max = mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
 
     if results.DisplacementVectors:
-        x_max, y_max, z_max = map(max, zip(*displacement))
-        x_min, y_min, z_min = map(min, zip(*displacement))
-        sum_list = map(sum, zip(*displacement))
+        no_of_values = len(results.DisplacementVectors)
+        x_max, y_max, z_max = map(max, zip(*results.DisplacementVectors))
+        x_min, y_min, z_min = map(min, zip(*results.DisplacementVectors))
+        sum_list = map(sum, zip(*results.DisplacementVectors))
         x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
         a_min = min(results.DisplacementLengths)
         a_avg = sum(results.DisplacementLengths) / no_of_values
@@ -375,6 +382,7 @@ def fill_femresult_mechanical(results, result_set, span):
         temp_avg = sum(results.Temperature) / no_of_values
         temp_max = max(results.Temperature)
     if results.MassFlowRate:
+        no_of_values = len(results.MassFlowRate)  # DisplacementVectors is empty, no_of_values needs to be set
         mflow_min = min(results.MassFlowRate)
         mflow_avg = sum(results.MassFlowRate) / no_of_values
         mflow_max = max(results.MassFlowRate)
@@ -401,10 +409,9 @@ def fill_femresult_mechanical(results, result_set, span):
     # do not forget to adapt the def get_stats in the following code:
     # - module femresult/resulttools.py
     # - module femtest/testccxtools.py
-    # - C++ App/FemVTKTools.cpp
-    # - module feminout/importVTKResults.py  (workaround fix in importVtkFCResult for broken function in App/FemVTKTools.cpp)
     # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
 
+    print('Recalculated Stats.\n')
     return results
 
 

@@ -103,6 +103,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
             results.Mesh = result_mesh_object
             results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
+            results = importToolsFem.fill_femresult_stats(results)
             if analysis:
                 analysis_object.addObject(results)
 

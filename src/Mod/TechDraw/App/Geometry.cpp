@@ -33,12 +33,15 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <Precision.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
+#include <gp_Lin.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Vec.hxx>
 #include <gp_Ax2.hxx>
+#include <GeomAdaptor_Curve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Geom_Circle.hxx>
@@ -512,7 +515,6 @@ BSpline::BSpline(const TopoDS_Edge &e)
          endAngle += 2.0 * M_PI;
     }
 
-
     Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
     Standard_Integer maxDegree = 3, maxSegment = 100;
     Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
@@ -566,9 +568,27 @@ bool BSpline::isLine()
 {
     bool result = false;
     BRepAdaptor_Curve c(occEdge);
+
     Handle(Geom_BSplineCurve) spline = c.BSpline();
-    if (spline->NbPoles() == 2) {
-        result = true;
+    if (spline->Degree() == 1) {
+        //TODO: this test is a bit sketchy
+        //      proper test would be to test each pole for collinearity.
+        
+        double splineLength = GCPnts_AbscissaPoint::Length (c);
+        double f = c.FirstParameter();
+        double l = c.LastParameter();
+        gp_Pnt s = c.Value(f);
+        gp_Pnt e = c.Value(l);
+        
+        bool samePnt = s.IsEqual(e,FLT_EPSILON);
+        if (!samePnt) {
+            Base::Vector3d startPnt(s.X(), s.Y(), 0.0);
+            Base::Vector3d endPnt(e.X(), e.Y(), 0.0);
+            double endLength = (startPnt - endPnt).Length();
+            if (DrawUtil::fpCompare(splineLength,endLength)) {
+                result = true;
+            }
+        }
     }
     return result;
 }

@@ -31,6 +31,7 @@ import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
+import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
@@ -64,6 +65,13 @@ def _OpenCloseResourceEditor(obj, vobj, edit):
             job.ViewObject.Proxy.editObject(obj)
         else:
             job.ViewObject.Proxy.uneditObject(obj)
+    else:
+        missing = 'Job'
+        if job:
+            missing = 'ViewObject'
+            if job.ViewObject:
+                missing = 'Proxy'
+        PathLog.warning("Cannot edit %s - no %s" % (obj.Label, missing))
 
 @contextmanager
 def selectionEx():
@@ -133,8 +141,10 @@ class ViewProvider:
     def deleteObjectsOnReject(self):
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
-    def setEdit(self, vobj, mode=0):
-        self.openTaskPanel()
+    def setEdit(self, vobj=None, mode=0):
+        PathLog.track(mode)
+        if 0 == mode:
+            self.openTaskPanel()
         return True
 
     def openTaskPanel(self, activate=None):
@@ -162,7 +172,7 @@ class ViewProvider:
             PathLog.info("Expected a specific object to edit - %s not recognized" % obj.Label)
         return self.openTaskPanel()
 
-    def uneditObject(self):
+    def uneditObject(self, obj = None):
         self.unsetEdit(None, None)
 
     def getIcon(self):
@@ -227,6 +237,14 @@ class ViewProvider:
             self.forgetBaseVisibility(obj, base)
         if obj.Stock and obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
+
+    def setupContextMenu(self, vobj, menu):
+        PathLog.track()
+        for action in menu.actions():
+            menu.removeAction(action)
+        action = QtGui.QAction(translate('Path', 'Edit'), menu)
+        action.triggered.connect(self.setEdit)
+        menu.addAction(action)
 
 class StockEdit(object):
     Index = -1
@@ -1146,7 +1164,7 @@ class TaskPanel:
         self.updateSelection()
 
         # set active page
-        if activate in ['General', 'Base']:
+        if activate in ['General', 'Model']:
             self.form.setCurrentIndex(0)
         if activate in ['Output', 'Post Processor']:
             self.form.setCurrentIndex(1)
@@ -1193,4 +1211,7 @@ def Create(base, template=None):
         PathLog.error(exc)
         traceback.print_exc(exc)
         FreeCAD.ActiveDocument.abortTransaction()
+
+# make sure the UI has been initialized
+PathGuiInit.Startup()
 

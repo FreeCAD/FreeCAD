@@ -4111,18 +4111,26 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     SbVec3f *verts = edit->CurvesCoordinate->point.startEditing();
     int32_t *index = edit->CurveSet->numVertices.startEditing();
     SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
+    
+    float dMg = 100;
 
     int i=0; // setting up the line set
-    for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++)
+    for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++) {
+        dMg = dMg>std::abs(it->x)?dMg:std::abs(it->x);
+        dMg = dMg>std::abs(it->y)?dMg:std::abs(it->y);
         verts[i].setValue(it->x,it->y,zLowLines);
+    }
     
     i=0; // setting up the indexes of the line set
     for (std::vector<unsigned int>::const_iterator it = Index.begin(); it != Index.end(); ++it,i++)
         index[i] = *it;
 
     i=0; // setting up the point set
-    for (std::vector<Base::Vector3d>::const_iterator it = Points.begin(); it != Points.end(); ++it,i++)
+    for (std::vector<Base::Vector3d>::const_iterator it = Points.begin(); it != Points.end(); ++it,i++){
+        dMg = dMg>std::abs(it->x)?dMg:std::abs(it->x);
+        dMg = dMg>std::abs(it->y)?dMg:std::abs(it->y);
         pverts[i].setValue(it->x,it->y,zLowPoints);
+    }
 
     edit->CurvesCoordinate->point.finishEditing();
     edit->CurveSet->numVertices.finishEditing();
@@ -4132,26 +4140,35 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     edit->RootCrossSet->numVertices.set1Value(0,2);
     edit->RootCrossSet->numVertices.set1Value(1,2);
 
+    // This code relies on Part2D, which is generally not updated in no update mode.
+    // Additionally it does not relate to the actual sketcher geometry.
+    
+    /*
+    Base::Console().Log("MinX:%d,MaxX:%d,MinY:%d,MaxY:%d\n",MinX,MaxX,MinY,MaxY);
     // make sure that nine of the numbers are exactly zero because log(0)
     // is not defined
     float xMin = std::abs(MinX) < FLT_EPSILON ? 0.01f : MinX;
     float xMax = std::abs(MaxX) < FLT_EPSILON ? 0.01f : MaxX;
     float yMin = std::abs(MinY) < FLT_EPSILON ? 0.01f : MinY;
     float yMax = std::abs(MaxY) < FLT_EPSILON ? 0.01f : MaxY;
-
-    float MiX = -exp(ceil(log(std::abs(xMin))));
-    MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*xMax)))));
-    float MaX = exp(ceil(log(std::abs(xMax))));
-    MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*xMin)))));
-    float MiY = -exp(ceil(log(std::abs(yMin))));
-    MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*yMax)))));
-    float MaY = exp(ceil(log(std::abs(yMax))));
-    MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*yMin)))));
-
-    edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(MiX, 0.0f, zCross));
-    edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(MaX, 0.0f, zCross));
-    edit->RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, MiY, zCross));
-    edit->RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, MaY, zCross));
+    */
+       
+    float dMagF = -exp(ceil(log(std::abs(dMg))));
+    
+    MinX = -dMagF;
+    MaxX = dMagF;
+    MinY = -dMagF;
+    MaxY = dMagF;
+    
+    if (ShowGrid.getValue())
+        createGrid();
+    else
+        GridRoot->removeAllChildren();
+    
+    edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(-dMagF, 0.0f, zCross));
+    edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(dMagF, 0.0f, zCross));
+    edit->RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -dMagF, zCross));
+    edit->RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, dMagF, zCross));
 
     // Render Constraints ===================================================
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();

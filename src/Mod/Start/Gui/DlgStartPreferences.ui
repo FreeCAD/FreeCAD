@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>476</width>
-    <height>743</height>
+    <width>482</width>
+    <height>769</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -532,6 +532,29 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="12" column="0">
+       <widget class="QLabel" name="label_18">
+        <property name="text">
+         <string>Use gradient for New File icon</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox_6">
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NewFileGradient</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

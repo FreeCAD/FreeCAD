@@ -74,6 +74,7 @@ const char* DrawViewDimension::TypeEnums[]= {"Distance",
                                                 "Radius",
                                                 "Diameter",
                                                 "Angle",
+                                                "Angle3Pt",
                                                 NULL};
 
 const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
@@ -85,7 +86,8 @@ enum RefType{
         oneEdge,
         twoEdge,
         twoVertex,
-        vertexEdge
+        vertexEdge,
+        threeVertex
     };
 
 DrawViewDimension::DrawViewDimension(void)
@@ -96,12 +98,14 @@ DrawViewDimension::DrawViewDimension(void)
     References3D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec().c_str()) ,
                   "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
-    ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value specified by user");
+    ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value overridden by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
     ADD_PROPERTY(Type,((long)0));
     MeasureType.setEnums(MeasureTypeEnums);
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
+    ADD_PROPERTY_TYPE(OverTolerance ,(0.0),"",App::Prop_None,"+ Tolerance value");
+    ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"",App::Prop_None,"- Tolerance value");
 
 
     //hide the properties the user can't edit in the property editor
@@ -170,9 +174,13 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             }
         }
 
-    DrawView::onChanged(prop);
     }
 
+    if (prop == &Type) {
+        FormatSpec.setValue(getDefaultFormatSpec().c_str());             //restore a FormatSpec for this type(dim,rad,etc)
+    }
+
+    DrawView::onChanged(prop);
 }
 
 void DrawViewDimension::onDocumentRestored()
@@ -400,6 +408,32 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         pts.vertex = apex;
         m_anglePoints = pts;
         m_hasGeometry = true;
+    } else if(Type.isValue("Angle3Pt")){
+        if (getRefType() != threeVertex) {
+             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+             return App::DocumentObject::StdReturn;
+        }
+        int idx0 = DrawUtil::getIndexFromName(subElements[0]);
+        int idx1 = DrawUtil::getIndexFromName(subElements[1]);
+        int idx2 = DrawUtil::getIndexFromName(subElements[2]);
+                               
+        TechDrawGeometry::Vertex* vert0 = getViewPart()->getProjVertexByIndex(idx0);
+        TechDrawGeometry::Vertex* vert1 = getViewPart()->getProjVertexByIndex(idx1);
+        TechDrawGeometry::Vertex* vert2 = getViewPart()->getProjVertexByIndex(idx2);
+        if (!vert0 || !vert1 || !vert2) {
+             Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
+             return App::DocumentObject::StdReturn;
+        }
+
+        anglePoints pts;
+        Base::Vector3d apex =  vert1->getAs3D();
+        Base::Vector3d extPoint0 = vert0->getAs3D();
+        Base::Vector3d extPoint2 = vert2->getAs3D();
+        pts.ends.first  = extPoint0;
+        pts.ends.second = extPoint2;
+        pts.vertex = apex;
+        m_anglePoints = pts;
+        m_hasGeometry = true;
     }
 
     //TODO: if MeasureType = Projected and the Projected shape changes, the Dimension may become invalid (see tilted Cube example)
@@ -446,8 +480,6 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
     }
 
-    std::string prefixSym = getPrefix();                                  //get Radius/Diameter/... symbol
-
     //find the %x.y tag in FormatSpec
     QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
     QString match;
@@ -478,7 +510,6 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         }
     }
 
-    repl = Base::Tools::fromStdString(getPrefix()) + repl;
     specStr.replace(match,repl);
     //this next bit is so inelegant!!!
     QChar dp = QChar::fromLatin1('.');
@@ -550,6 +581,14 @@ double DrawViewDimension::getDimValue()
             result = (pts.radius  * 2.0) / getViewPart()->getScale();   //Projected BaseGeom is scaled for drawing
 
         } else if(Type.isValue("Angle")){
+            anglePoints pts = m_anglePoints;
+            Base::Vector3d vertex = pts.vertex;
+            Base::Vector3d leg0 = pts.ends.first - vertex;
+            Base::Vector3d leg1 = pts.ends.second - vertex;
+            double legAngle =  leg0.GetAngle(leg1) * 180.0 / M_PI;
+            result = legAngle;
+
+        } else if(Type.isValue("Angle3Pt")){    //same as case "Angle"?
             anglePoints pts = m_anglePoints;
             Base::Vector3d vertex = pts.vertex;
             Base::Vector3d leg0 = pts.ends.first - vertex;
@@ -659,6 +698,8 @@ int DrawViewDimension::getRefType() const
         refType = getRefType1(subElements[0]);
     } else if (subElements.size() == 2) {
         refType = getRefType2(subElements[0],subElements[1]);
+    } else if (subElements.size() == 3) {
+        refType = getRefType3(subElements[0],subElements[1],subElements[2]);
     }
     return refType;
 }
@@ -693,6 +734,21 @@ int DrawViewDimension::getRefType2(const std::string g1, const std::string g2)
 
     return refType;
 }
+
+int DrawViewDimension::getRefType3(const std::string g1,
+                                   const std::string g2,
+                                   const std::string g3)
+{
+    int refType = invalidRef;
+    if ((DrawUtil::getGeomTypeFromName(g1) == "Vertex") &&
+        (DrawUtil::getGeomTypeFromName(g2) == "Vertex") && 
+        (DrawUtil::getGeomTypeFromName(g3) == "Vertex") ) {
+        refType = threeVertex;
+    }
+
+    return refType;
+}
+
 
 //! validate 2D references - only checks if they exist, not if they are the right type
 bool DrawViewDimension::checkReferences2D() const
@@ -847,6 +903,18 @@ bool DrawViewDimension::has3DReferences(void) const
     return (References3D.getSize() > 0);
 }
 
+bool DrawViewDimension::hasTolerance(void) const
+{
+    bool result = true;
+    double overTol = OverTolerance.getValue();
+    double underTol = UnderTolerance.getValue();
+    if (DrawUtil::fpCompare(overTol,0.0) &&
+        DrawUtil::fpCompare(underTol,0.0) ) {
+        result = false;
+    }
+    return result;
+}
+
 bool DrawViewDimension::showUnits() const
 {
     bool result = false;
@@ -902,7 +970,14 @@ std::string DrawViewDimension::getDefaultFormatSpec() const
         precision = hGrp->GetInt("AltDecimals", 2);
     }
     QString formatPrecision = QString::number(precision);
-    QString formatSpec = format1 + formatPrecision + format2;
+    
+    std::string prefix = getPrefix();
+    QString qPrefix;
+    if (!prefix.empty()) {
+        qPrefix = QString::fromUtf8(prefix.data(),prefix.size());
+    }
+
+    QString formatSpec = qPrefix + format1 + formatPrecision + format2;
     return Base::Tools::toStdString(formatSpec);
 }
 

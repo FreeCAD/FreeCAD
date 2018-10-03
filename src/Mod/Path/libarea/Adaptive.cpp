@@ -44,15 +44,15 @@ using namespace std;
 
 inline double DistanceSqrd(const IntPoint &pt1, const IntPoint &pt2)
 {
-	double Dx = ((double)pt1.X - pt2.X);
-	double dy = ((double)pt1.Y - pt2.Y);
+	double Dx = double(pt1.X - pt2.X);
+	double dy = double(pt1.Y - pt2.Y);
 	return (Dx * Dx + dy * dy);
 }
 
 inline bool SetSegmentLength(const IntPoint &pt1, IntPoint &pt2, double new_length)
 {
-	double Dx = ((double)pt2.X - pt1.X);
-	double dy = ((double)pt2.Y - pt1.Y);
+	double Dx = double(pt2.X - pt1.X);
+	double dy = double(pt2.Y - pt1.Y);
 	double l = sqrt(Dx * Dx + dy * dy);
 	if (l > 0.0)
 	{
@@ -119,8 +119,8 @@ inline double Angle3Points(const DoublePoint &p1, const DoublePoint &p2, const D
 
 inline DoublePoint DirectionV(const IntPoint &pt1, const IntPoint &pt2)
 {
-	double DX = pt2.X - pt1.X;
-	double DY = pt2.Y - pt1.Y;
+	double DX = double(pt2.X - pt1.X);
+	double DY = double(pt2.Y - pt1.Y);
 	double l = sqrt(DX * DX + DY * DY);
 	if (l < NTOL)
 		return DoublePoint(0, 0);
@@ -315,6 +315,25 @@ double DistancePointToLineSegSquared(const IntPoint &p1, const IntPoint &p2, con
 	double DY = double(pt.Y - closestPoint.Y);
 	return DX * DX + DY * DY; // return distance squared
 }
+
+void ScaleUpPaths(Paths &paths,long scaleFactor) {
+	for(auto &pth:paths) {
+		for(auto &pt:pth) {
+			pt.X*=scaleFactor;
+			pt.Y*=scaleFactor;
+		}
+	}
+}
+
+void ScaleDownPaths(Paths &paths,long scaleFactor) {
+	for(auto &pth:paths) {
+		for(auto &pt:pth) {
+			pt.X/=scaleFactor;
+			pt.Y/=scaleFactor;
+		}
+	}
+}
+
 
 // joins collinear segments (within the tolerance)
 void CleanPath(const Path &inp, Path &outp, double tolerance)
@@ -560,48 +579,52 @@ bool IntersectionPoint(const Paths &paths, const IntPoint &p1, const IntPoint &p
 	return false;
 }
 
-void SmoothPaths(Paths &paths, double stepSize, int pointCount)
+void SmoothPaths(Paths &paths, double stepSize, long pointCount, long iterations)
 {
 	Paths output;
-	output.clear();
 	output.resize(paths.size());
+	const long scale=1000;
+	const double stepScaled = stepSize*scale;
 
+	ScaleUpPaths(paths,scale);
 	vector<pair<size_t /*path index*/, IntPoint>> points;
 	for (size_t i = 0; i < paths.size(); i++)
 	{
-		for (auto &pt : paths[i])
+		for (const auto &pt : paths[i])
 		{
 			if (points.empty())
 			{
 				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
 				continue;
 			}
-			IntPoint lastPt = points.back().second;
-			size_t lastPathIndex = points.back().first;
+			const auto &back=points.back();
+			const IntPoint & lastPt = back.second;
 
-			double dsqr = DistanceSqrd(lastPt, pt);
-			if (dsqr < SAME_POINT_TOL_SQRD_SCALED)
+
+			const double l = sqrt(DistanceSqrd(lastPt, pt));
+
+			if (l < 0.5*stepScaled)
 			{
 				points.pop_back();
 				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
 				continue;
 			}
-
-			double l = sqrt(dsqr);
-
-			if (l < stepSize)
-			{
-				points.pop_back();
-				points.push_back(pair<size_t /*path index*/, IntPoint>(i, pt));
-				continue;
-			}
-
-			long steps = long(l / stepSize) + 1;
+			size_t lastPathIndex = back.first;
+			const long steps = long(l / stepScaled)+1; // +1 is important!
+			const long left=pointCount*2;
+			const long right =steps-pointCount*2;
 			for (long idx = 0; idx <= steps; idx++)
 			{
-				double p = double(idx) / steps;
-				IntPoint ptx(long(lastPt.X + double(pt.X - lastPt.X) * p),
+				if(idx>left && idx<right) {
+					idx=right;
+					continue;
+				}
+				const double p = double(idx) / steps;
+				const IntPoint ptx(long(lastPt.X + double(pt.X - lastPt.X) * p),
 							 long(lastPt.Y + double(pt.Y - lastPt.Y) * p));
+
+				if(idx==0 && DistanceSqrd(back.second,ptx)<scale) points.pop_back();
+
 				if (p < 0.5)
 					points.push_back(pair<size_t /*path index*/, IntPoint>(lastPathIndex, ptx));
 				else
@@ -611,40 +634,49 @@ void SmoothPaths(Paths &paths, double stepSize, int pointCount)
 	}
 	if (points.empty())
 		return;
-	for (long i = 0; i < (long)points.size(); i++)
-	{
-		IntPoint avgPoint(points[i].second);
-		IntPoint pp = avgPoint;
-		long cnt = 1;
-
-		long ptsToAverage = pointCount;
-		if (i < ptsToAverage)
-			ptsToAverage = i;
-		while (i + ptsToAverage >= long(points.size()))
-			ptsToAverage--;
-
-		long lowLimit = i - ptsToAverage;
-		long highLimit = i + ptsToAverage;
-
-		for (long j = lowLimit; j < highLimit; j++)
+	const long size=long(points.size());
+	double rangeSqrd = stepScaled * 2 * pointCount; rangeSqrd*=rangeSqrd;
+	for(long iter=0;iter<iterations; iter++) {
+		for (long i = 0; i < size; i++)
 		{
-			if (j != i)
+			IntPoint &cp = points[i].second;
+			IntPoint avgPoint(cp);
+			long cnt = 1;
+
+			long ptsToAverage = pointCount;
+			if (i < ptsToAverage)
+			 	ptsToAverage = max(i-1,0L);
+			else if(i + ptsToAverage >= size-1)
+			 	ptsToAverage = size-1-i;
+
+			for (long j = i-ptsToAverage; j <= i+ptsToAverage; j++)
 			{
-				IntPoint &p = points.at(j).second;
-				avgPoint.X += p.X;
-				avgPoint.Y += p.Y;
-				pp = p;
-				cnt++;
+				if (j == i) continue;
+				long index=j;
+				if(index<0)	index=0;
+				if(index>=size) index=size-1;
+				IntPoint &p = points[index].second;
+				if(DistanceSqrd(cp,p)<rangeSqrd) {
+					avgPoint.X += p.X;
+					avgPoint.Y += p.Y;
+					cnt++;
+				}
 			}
+			cp.X=avgPoint.X/cnt;
+			cp.Y=avgPoint.Y/cnt;
 		}
-		avgPoint.X /= cnt;
-		avgPoint.Y /= cnt;
-		output.at(points[i].first).push_back(avgPoint);
 	}
+
+	for (const auto &pr:points)
+	{
+		output[pr.first].push_back(pr.second);
+	}
+
 	for (size_t i = 0; i < paths.size(); i++)
 	{
-		CleanPath(output[i], paths[i], 4);
+		CleanPath(output[i], paths[i], 1.407*scale);
 	}
+	ScaleDownPaths(paths,scale);
 }
 
 bool PopPathWithClosestPoint(Paths &paths /*closest path is removed from collection and shifted to start with closest point */
@@ -1630,12 +1662,17 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 	if (scaleFactor > 250)
 		scaleFactor = 250;
 
+	cout << "Tool Diam: " << toolDiameter << endl;
+	cout << "Accuracy: " << 1000.0/scaleFactor << " um" << endl;
+
 	toolRadiusScaled = long(toolDiameter * scaleFactor / 2);
 	stepOverScaled = toolRadiusScaled * stepOverFactor;
 	progressCallback = &progressCallbackFn;
 	lastProgressTime = clock();
 	stopProcessing = false;
 
+	if(helixRampDiameter<NTOL)
+		helixRampDiameter=0.75*toolDiameter;
 	if (helixRampDiameter > toolDiameter)
 		helixRampDiameter = toolDiameter;
 	if (helixRampDiameter < toolDiameter / 8)
@@ -2397,7 +2434,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 				linkPath.push_back(leadInPath.front());
 			}
 
-			/* paths smoothhing*/
+			/* paths smoothing*/
 			Paths linkPaths;
 			linkPaths.push_back(leadOutPath);
 			linkPaths.push_back(linkPath);
@@ -2405,7 +2442,7 @@ void Adaptive2d::AppendToolPath(TPaths &progressPaths, AdaptiveOutput &output,
 
 			if (linkType == MotionType::mtLinkClear)
 			{
-				SmoothPaths(linkPaths, 0.05 * stepOverScaled, 16);
+				SmoothPaths(linkPaths, 0.05*stepOverScaled,4,2);
 			}
 
 			leadOutPath = linkPaths[0];

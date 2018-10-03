@@ -48,6 +48,7 @@ public:
     App::PropertyLength   Fontsize;
     App::PropertyFloat    LineWidth;
     App::PropertyColor    Color;
+    App::PropertyBool     FlipArrowheads;
 
 
     virtual void attach(App::DocumentObject *);

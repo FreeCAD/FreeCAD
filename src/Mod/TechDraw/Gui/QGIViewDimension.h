@@ -26,9 +26,10 @@
 #include <QObject>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
-#include <QGraphicsPathItem>
-#include <QGraphicsRectItem>
+#include <QGraphicsItem>
+#include <QGraphicsObject>
 #include <QColor>
+#include <QFont>
 #include <Base/Vector3D.h>
 #include "QGIView.h"
 #include "QGCustomText.h"
@@ -46,22 +47,41 @@ namespace TechDrawGui
 {
 class QGIArrow;
 class QGIDimLines;
+class QGIViewDimension;
 
-class QGIDatumLabel : public QGCustomText
+class QGIDatumLabel : public QGraphicsObject
 {
 Q_OBJECT
 
 public:
-    explicit QGIDatumLabel();
-    ~QGIDatumLabel() {}
+    QGIDatumLabel();
+    virtual ~QGIDatumLabel() = default;
 
     enum {Type = QGraphicsItem::UserType + 107};
     int type() const { return Type;}
 
+    virtual QRectF boundingRect() const override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void paint( QPainter *painter,
+                        const QStyleOptionGraphicsItem *option,
+                        QWidget *widget = nullptr ) override;
     void setLabelCenter();
     void setPosFromCenter(const double &xCenter, const double &yCenter);
     double X() const { return posX; }
-    double Y() const { return posY; }
+    double Y() const { return posY; }              //minus posY?
+    
+    void setFont(QFont f);
+    QFont getFont(void) { return m_dimText->font(); }
+    void setDimString(QString t);
+    void setTolString();
+    void setPrettySel(void);
+    void setPrettyPre(void);
+    void setPrettyNormal(void);
+    
+    QGCustomText* getDimText(void) { return m_dimText; }
+    void setDimText(QGCustomText* newText) { m_dimText = newText; }
+    QGCustomText* getTolText(void) { return m_tolText; }
+    void setTolText(QGCustomText* newTol) { m_tolText = newTol; }
 
 Q_SIGNALS:
     void dragging();
@@ -70,18 +90,25 @@ Q_SIGNALS:
     void dragFinished();
 
 protected:
-    // Preselection events:
-    void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    // Selection detection
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+//    virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
+
+    QGCustomText* m_dimText;
+    QGCustomText* m_tolText;
+    int getPrecision(void);
+    double getTolAdjust(void);
 
     double posX;
     double posY;
 
 private:
 };
+
+//*******************************************************************
 
 class TechDrawGuiExport QGIViewDimension : public QObject, public QGIView
 {
@@ -102,6 +129,7 @@ public:
                         const QStyleOptionGraphicsItem * option,
                         QWidget * widget = 0 ) override;
     virtual QColor getNormalColor(void) override;
+    QString getLabelText(void);
 
 public Q_SLOTS:
     void datumLabelDragged(void);
@@ -118,6 +146,7 @@ protected:
     virtual void setPens(void);
     Base::Vector3d findIsoDir(Base::Vector3d ortho);
     Base::Vector3d findIsoExt(Base::Vector3d isoDir);
+    QString getPrecision(void);
 
 protected:
     bool hasHover;
