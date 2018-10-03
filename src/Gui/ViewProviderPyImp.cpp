@@ -702,3 +702,7 @@ Py::Boolean ViewProviderPy::getLinkVisibility() const {
 void ViewProviderPy::setLinkVisibility(Py::Boolean arg) {
     getViewProviderPtr()->setLinkVisible(arg);
 }
+
+Py::String ViewProviderPy::getDropPrefix() const {
+    return Py::String(getViewProviderPtr()->getDropPrefix());
+}

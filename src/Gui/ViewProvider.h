@@ -273,6 +273,9 @@ public:
     virtual bool canDropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner, 
             const char *subname, const std::vector<std::string> &elements) const;
 
+    /// return a subname referencing the sub-object holding the dropped objects
+    virtual std::string getDropPrefix() const { return std::string(); }
+
     /** Add an object with full quanlified name to the view provider by drag and drop
      *
      * @param obj: the object being dropped

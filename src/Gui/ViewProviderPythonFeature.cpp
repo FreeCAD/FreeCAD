@@ -1445,6 +1445,31 @@ ViewProviderPythonFeatureImp::canRemoveChildrenFromRoot() const {
     return Rejected;
 }
 
+bool ViewProviderPythonFeatureImp::getDropPrefix(std::string &prefix) const {
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            const char *attr = "getDropPrefix";
+            if (vp.hasAttr(attr)) {
+                Py::Callable method(vp.getAttr(attr));
+                Py::Tuple args;
+                Py::Object ret(method.apply(args));
+                if(ret.isNone())
+                    return false;
+                prefix = ret.as_string();
+                return true;
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return false;
+}
+
 // ---------------------------------------------------------
 
 namespace Gui {

@@ -116,6 +116,8 @@ public:
 
     bool canAddToSceneGraph() const;
 
+    bool getDropPrefix(std::string &prefix) const;
+
 private:
     ViewProviderDocumentObject* object;
 };
@@ -517,6 +519,13 @@ protected:
     virtual void unsetEditViewer(View3DInventorViewer *viewer) {
         if(!imp->unsetEditViewer(viewer))
             ViewProviderT::unsetEditViewer(viewer);
+    }
+
+    virtual std::string getDropPrefix() const {
+        std::string prefix;
+        if(!imp->getDropPrefix(prefix))
+            return ViewProviderT::getDropPrefix();
+        return prefix;
     }
 
 public:

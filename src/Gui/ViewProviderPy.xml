@@ -233,5 +233,11 @@ getBoundingBox(subname=None, transform=True, view=None): obtain the bounding box
       </Documentation>
       <Parameter Name="LinkVisibility" Type="Boolean" />
     </Attribute>
+    <Attribute Name="DropPrefix" ReadOnly="true" >
+      <Documentation>
+          <UserDocu>Subname referecing the sub-object for holding dropped object</UserDocu>
+      </Documentation>
+      <Parameter Name="DropPrefix" Type="String" />
+    </Attribute>
   </PythonExport>
 </GenerateModel>
