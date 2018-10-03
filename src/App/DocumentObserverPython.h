@@ -77,19 +77,19 @@ private:
     void slotRedoDocument(const App::Document& Doc);
     /** Called when a given object is recomputed */
     void slotRecomputedObject(const App::DocumentObject& Obj);
-    /** Called when a observed document is recomputed */
+    /** Called when an observed document is recomputed */
     void slotRecomputedDocument(const App::Document& Doc);
-    /** Called when a observed document opens a transaction */
+    /** Called when an observed document opens a transaction */
     void slotOpenTransaction(const App::Document& Doc, std::string str);
-    /** Called when a observed document commits a transaction */
+    /** Called when an observed document commits a transaction */
     void slotCommitTransaction(const App::Document& Doc);
-    /** Called when a observed document aborts a transaction */
+    /** Called when an observed document aborts a transaction */
     void slotAbortTransaction(const App::Document& Doc);
-    /** Called when a object get a new dynamic property added*/
+    /** Called when an object gets a new dynamic property added*/
     void slotAppendDynamicProperty(const App::Property& Prop);
-    /** Called when a object get a dynamic property removed*/
+    /** Called when an object gets a dynamic property removed*/
     void slotRemoveDynamicProperty(const App::Property& Prop);
-    /** Called when a object property get a new editor relevant status like hidden or read only*/
+    /** Called when an object property gets a new editor relevant status like hidden or read only*/
     void slotChangePropertyEditor(const App::Property& Prop);
 
 private:
