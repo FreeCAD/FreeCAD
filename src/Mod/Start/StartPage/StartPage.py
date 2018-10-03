@@ -35,7 +35,6 @@ iconprovider = QtGui.QFileIconProvider()
 iconbank = {} # to store already created icons so we don't overpollute the temp dir
 tempfolder = None # store icons inside a subfolder in temp dir
 
-
 def gethexcolor(color):
 
     "returns a color hex value #000000"
@@ -471,10 +470,9 @@ def handle():
 
     # encode if necessary
 
-    if sys.version_info.major < 3:
-        if isinstance(HTML,unicode):
-            HTML = HTML.encode("utf8")
-
+    if not isinstance(HTML, bytes):
+        HTML = HTML.encode("utf8")
+    
     return HTML
 
 
