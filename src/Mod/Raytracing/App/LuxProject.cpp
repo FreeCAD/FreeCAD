@@ -60,7 +60,7 @@ void LuxProject::onDocumentRestored()
             fi.setFile(PageResult.getValue());
         std::string path = App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName();
         // try to find the template in user dir/Templates first
-        Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+        Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "data/Mod/Raytracing/Templates/" + fi.fileName());
         if (tempfi.exists())
             path = tempfi.filePath();
         Template.setValue(path);
