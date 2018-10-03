@@ -2408,7 +2408,8 @@ std::vector<App::DocumentObject*> DocumentP::topologicalSort(const std::vector<A
 
         for (auto outListIt : out) {
             auto outListMapIt = countMap.find(outListIt);
-            outListMapIt->second = outListMapIt->second - 1;
+            if (outListMapIt != countMap.end())
+                outListMapIt->second = outListMapIt->second - 1;
         }
         ret.push_back(rootObjeIt->first);
 
