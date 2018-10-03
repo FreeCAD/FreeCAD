@@ -251,6 +251,9 @@ public:
 
     static PyObject* sCreateViewer             (PyObject *self,PyObject *args);
     static PyObject* sGetMarkerIndex           (PyObject *self,PyObject *args);
+    
+    static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
+    static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
 
     static PyMethodDef    Methods[]; 
 

@@ -455,7 +455,7 @@ void DocumentObserverPython::slotAppendDynamicProperty(const App::Property& Prop
             auto container = Prop.getContainer();
             Py::Callable method(this->inst.getAttr(std::string("slotAppendDynamicProperty")));
             Py::Tuple args(2);
-            args.setItem(0, Py::Object(static_cast<App::DocumentObject*>(container)->getPyObject(), true));
+            args.setItem(0, Py::Object(container->getPyObject(), true));
             // If a property is touched but not part of a document object then its name is null.
             // In this case the slot function must not be called.
             const char* prop_name = container->getPropertyName(&Prop);
@@ -479,7 +479,7 @@ void DocumentObserverPython::slotRemoveDynamicProperty(const App::Property& Prop
             auto container = Prop.getContainer();
             Py::Callable method(this->inst.getAttr(std::string("slotRemoveDynamicProperty")));
             Py::Tuple args(2);
-            args.setItem(0, Py::Object(static_cast<App::DocumentObject*>(container)->getPyObject(), true));
+            args.setItem(0, Py::Object(container->getPyObject(), true));
             // If a property is touched but not part of a document object then its name is null.
             // In this case the slot function must not be called.
             const char* prop_name = container->getPropertyName(&Prop);
@@ -503,7 +503,7 @@ void DocumentObserverPython::slotChangePropertyEditor(const App::Property& Prop)
             auto container = Prop.getContainer();
             Py::Callable method(this->inst.getAttr(std::string("slotChangePropertyEditor")));
             Py::Tuple args(2);
-            args.setItem(0, Py::Object(static_cast<App::DocumentObject*>(container)->getPyObject(), true));
+            args.setItem(0, Py::Object(container->getPyObject(), true));
             // If a property is touched but not part of a document object then its name is null.
             // In this case the slot function must not be called.
             const char* prop_name = container->getPropertyName(&Prop);
