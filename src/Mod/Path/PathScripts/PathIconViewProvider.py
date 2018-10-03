@@ -42,6 +42,7 @@ class ViewProvider(object):
 
     def __init__(self, vobj, icon):
         self.icon = icon
+        self.attach(vobj)
         vobj.Proxy = self
 
     def attach(self, vobj):
@@ -88,12 +89,12 @@ def Attach(vobj, name):
     '''Attach(vobj, name) ... attach the appropriate view provider to the view object.
     If no view provider was registered for the given name a default IconViewProvider is created.'''
 
-    PathLog.track(name)
+    PathLog.track(vobj.Object.Label, name)
     global _factory
     for key,value in PathUtil.keyValueIter(_factory):
         if key == name:
             return value(vobj, name)
-    PathLog.track(name, 'PathIconViewProvider')
+    PathLog.track(vobj.Object.Label, name, 'PathIconViewProvider')
     return ViewProvider(vobj, name)
 
 def RegisterViewProvider(name, provider):
