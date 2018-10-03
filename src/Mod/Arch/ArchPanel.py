@@ -939,6 +939,8 @@ class PanelCut(Draft._DraftObject):
         if not "AllowedAngles" in pl:
             obj.addProperty("App::PropertyFloatList","AllowedAngles","PanelCut",QT_TRANSLATE_NOOP("App::Property","The allowed angles this object can be rotated to when placed on sheets"))
         self.Type = "PanelCut"
+        if not "CutOffset" in pl:
+            obj.addProperty("App::PropertyDistance","CutOffset","PanelCut",QT_TRANSLATE_NOOP("App::Property","An offset value to move the cut plane from the center point"))
 
     def onDocumentRestored(self,obj):
 
@@ -968,6 +970,11 @@ class PanelCut(Draft._DraftObject):
                                 n = baseobj.Dir
                             if not n:
                                 n = Vector(0,0,1)
+                            if hasattr(obj,"CutOffset") and obj.CutOffset.Value:
+                                l = obj.CutOffset.Value
+                                d = Vector(n)
+                                d.multiply(l)
+                                center = center.add(d)
                             plane = Part.makePlane(diag,diag,center,n)
                             plane.translate(center.sub(plane.BoundBox.Center))
                             wires = []
