@@ -690,6 +690,24 @@ void InterpreterSingleton::addVariable(const char * key, Py::Object value) {
         throw PyException();
 }
 
+bool InterpreterSingleton::getVariable(const char * key, Py::Object &pyobj) {
+    PyObject *module, *dict;
+    PyGILStateLocker locker;
+    module = PP_Load_Module("__main__");
+    if (module == NULL)
+        throw PyException();
+    dict = PyModule_GetDict(module);
+    if (dict == NULL)
+        throw PyException();
+
+    PyObject *value = PyDict_GetItemString(dict,key);
+    if(!value)
+        return false;
+    pyobj = Py::Object(value);
+    return true;
+}
+
+
 void InterpreterSingleton::removeVariable(const char *key) {
     PyObject *module, *dict;
     PyGILStateLocker locker;

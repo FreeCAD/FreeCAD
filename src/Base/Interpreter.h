@@ -256,6 +256,8 @@ public:
     //@}
 
     PyObject *getValue(const char *key, const char *result_var);
+
+    bool getVariable(const char *key, Py::Object &pyobj);
     void addVariable(const char *key, Py::Object value);
     void removeVariable(const char *key);
     void removeVariables(const std::vector<std::string> &keys);
