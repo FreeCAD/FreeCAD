@@ -392,7 +392,11 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
     addTemplates(path);
 
     path = App::Application::getUserAppDataDir();
-    path += "data/Mod/Raytracing/Templates/";
+    path += "Mod/Raytracing/Templates/";
+    addTemplates(path);
+
+    path = App::Application::getUserAppDataDir();
+    path += "Templates/";
     addTemplates(path);
 
     _pcAction = pcAction;
