@@ -797,3 +797,19 @@ Py::List DocumentObjectPy::getParents() const {
         ret.append(Py::TupleN(Py::Object(v.first->getPyObject(),true),Py::String(v.second)));
     return ret;
 }
+
+PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
+    PyObject *pyobj;
+    PyObject *recursive = Py_True;
+    if (!PyArg_ParseTuple(args, "O!|O",&DocumentObjectPy::Type,&pyobj,&recursive))
+        return NULL;
+    PY_TRY {
+        auto obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+        auto inList = obj->getInListEx(true);
+        inList.insert(obj);
+        std::set<App::DocumentObject *> visited;
+        return Py::new_reference_to(Py::Boolean(
+                    getDocumentObjectPtr()->adjustRelativeLinks(inList,
+                        PyObject_IsTrue(recursive)?&visited:nullptr)));
+    }PY_CATCH
+}

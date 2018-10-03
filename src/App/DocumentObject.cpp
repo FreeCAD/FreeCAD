@@ -29,6 +29,7 @@
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 #include "Application.h"
 #include "Document.h"
@@ -1015,6 +1016,36 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
         linkSub = linkSub.substr(linkPos);
     }
     return ret;
+}
+
+bool DocumentObject::adjustRelativeLinks(
+        const std::set<App::DocumentObject *> &inList,
+        std::set<App::DocumentObject *> *visited)
+{
+    if(inList.count(this)) 
+        FC_THROWM(Base::RuntimeError, "Cyclic reference to " << getExportName(true));
+
+    if(visited)
+        visited->insert(this);
+
+    bool touched = false;
+    std::vector<Property*> props;
+    getPropertyList(props);
+    for(auto prop : props) {
+        auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
+        if(linkProp && linkProp->adjustLink(inList))
+            touched = true;
+    }
+    if(!touched)
+        return false;
+
+    if(visited) {
+        for(auto obj : getOutList()) {
+            if(!visited->count(obj)) 
+                obj->adjustRelativeLinks(inList,visited);
+        }
+    }
+    return true;
 }
 
 std::string DocumentObject::getElementMapVersion(const App::Property *_prop, bool restored) const {

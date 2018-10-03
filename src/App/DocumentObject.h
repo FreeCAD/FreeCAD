@@ -449,6 +449,23 @@ public:
     App::DocumentObject *resolveRelativeLink(std::string &subname, 
             App::DocumentObject *&link, std::string &linkSub) const;
 
+    /** Called to adjust link properties to avoid cyclic links
+     *
+     * @param inList: the recursive in-list of the future parent object,
+     * including the parent itself.
+     * @param visited: optional set holding the visited objects. If null then
+     * only this object is adjusted, or else all object inside the out-list of
+     * this object will be checked.
+     *
+     * @return Return whether the object has been modified
+     *
+     * This function tries to adjust any relative link properties (i.e. link
+     * properties that can hold subnames) to avoid cyclic when added to the
+     * future parent.
+     */
+    virtual bool adjustRelativeLinks(const std::set<App::DocumentObject*> &inList,
+            std::set<App::DocumentObject*> *visited=0);
+
     /** allow partial loading of dependent objects
      *
      * @return Returns 0 means do not support partial loading. 1 means allow

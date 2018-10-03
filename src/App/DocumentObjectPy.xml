@@ -175,6 +175,11 @@ Return tuple(obj,newElementName,oldElementName)
                 </UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="adjustRelativeLinks">
+            <Documentation>
+                <UserDocu>adjustRelativeLinks(parent,recursive=True) -- auto correct potential cyclic dependencies</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getElementMapVersion" Const="true">
             <Documentation>
                 <UserDocu>

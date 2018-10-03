@@ -1072,19 +1072,19 @@ void TreeWidget::dropEvent(QDropEvent *event)
             }
         }
 
-        std::ostringstream selSubname;
-        App::DocumentObject *selObj = 0;
-        targetItemObj->getSubName(selSubname,selObj);
+        std::ostringstream targetSubname;
+        App::DocumentObject *targetParent = 0;
+        targetItemObj->getSubName(targetSubname,targetParent);
         Selection().selStackPush();
         Selection().clearCompleteSelection();
-        if(selObj) {
-            selSubname << vp->getObject()->getNameInDocument() << '.';
-            Selection().addSelection(selObj->getDocument()->getName(),
-                    selObj->getNameInDocument(), selSubname.str().c_str());
+        if(targetParent) {
+            targetSubname << vp->getObject()->getNameInDocument() << '.';
+            Selection().addSelection(targetParent->getDocument()->getName(),
+                    targetParent->getNameInDocument(), targetSubname.str().c_str());
         } else {
-            selObj = targetItemObj->object()->getObject();
-            Selection().addSelection(selObj->getDocument()->getName(),
-                    selObj->getNameInDocument());
+            targetParent = targetItemObj->object()->getObject();
+            Selection().addSelection(targetParent->getDocument()->getName(),
+                    targetParent->getNameInDocument());
         }
 
         bool syncPlacement = FC_TREEPARAM(SyncPlacement) && targetItemObj->isGroup();
@@ -1222,6 +1222,19 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
+                // Construct the subname pointing to the future dropped location
+                auto parentObj = targetObj;
+                std::string dropName = vp->getDropPrefix();
+                if(dropName.size()) 
+                    parentObj = targetObj->getSubObject(dropName.c_str());
+
+                if(parentObj) {
+                    // Try to adjust relative links to avoid cyclic dependency, may
+                    // throw exception if failed
+                    FCMD_OBJ_CMD(obj,"adjustRelativeLinks(" << Command::getObjectCmd(parentObj) << ")");
+                }
+
+                ss.str("");
                 ss << Command::getObjectCmd(vp->getObject())
                     << ".ViewObject.dropObject(" << Command::getObjectCmd(obj);
                 if(owner) {
@@ -1233,19 +1246,30 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     ss << "'" << sub << "',";
                 ss << "])";
                 auto lines = manager->getLines();
-                std::string droppedName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
+                dropName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
                 if(manager->getLines() == lines)
                     manager->addLine(MacroManager::Gui,ss.str().c_str());
+
+                // Construct the subname pointing to the dropped object
+                auto pos = targetSubname.tellp();
+                if(dropName.size())
+                    targetSubname << dropName << std::ends;
+                else 
+                    targetSubname << obj->getNameInDocument() << '.';
+                dropName = targetSubname.str();
+                targetSubname.seekp(pos);
+
+                Base::Matrix4D newMat;
+                auto sobj = targetParent->getSubObject(dropName.c_str(),0,&newMat);
+                if(!sobj) {
+                    FC_WARN("failed to find dropped object " 
+                            << targetParent->getExportName(true) << '.' << dropName);
+                    continue;
+                }
+
                 if(propPlacement) {
-                    auto pos = selSubname.tellp();
-                    if(droppedName.size())
-                        selSubname << droppedName << std::ends;
-                    else 
-                        selSubname << obj->getNameInDocument() << '.';
-                    Base::Matrix4D newMat;
-                    auto sobj = selObj->getSubObject(selSubname.str().c_str(),0,&newMat);
-                    selSubname.seekp(pos);
-                    if((dragged && sobj==obj) || (!dragged && sobj && sobj->getLinkedObject(false)==obj)) {
+                    // try to adjust placement
+                    if((dragged && sobj==obj) || (!dragged && sobj->getLinkedObject(false)==obj)) {
                         if(!dragged)
                             propPlacement = dynamic_cast<App::PropertyPlacement*>(
                                     sobj->getPropertyByName("Placement"));

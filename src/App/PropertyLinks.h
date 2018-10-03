@@ -166,6 +166,17 @@ public:
      */
     virtual void breakLink(App::DocumentObject *obj, bool clear) = 0;
 
+    /** Called to adjust the link to avoid potential cyclic dependency
+     *
+     * @param inList: recursive in-list of the would-be parent
+     *
+     * @return Return whether the link has been adjusted
+     *
+     * This function tries to correct the link to avoid any (sub)object inside
+     * in-list. If the adjustment is impossible, exception will be raised
+     */
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) = 0;
+
     /// Helper function to return all linked objects of this property
     std::vector<App::DocumentObject *> linkedObjects(bool all=false) const {
         std::vector<App::DocumentObject*> ret;
@@ -270,6 +281,8 @@ public:
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+
 protected:
     App::DocumentObject *_pcLink;
 };
@@ -355,6 +368,8 @@ public:
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
     DocumentObject *find(const char *, int *pindex=0) const;
 
@@ -473,6 +488,8 @@ public:
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
 protected:
     App::DocumentObject*     _pcLinkSub;
@@ -599,6 +616,9 @@ public:
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+
 private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
@@ -689,6 +709,8 @@ public:
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
 protected:
     void unlink();
