@@ -1459,11 +1459,12 @@ class DocumentObserverCases(unittest.TestCase):
     FreeCAD.addDocumentObserver(self.Obs);
 
   def testDocument(self):
-
+    
     # testing document level signals
     self.Doc1 = FreeCAD.newDocument("Observer1");  
-    self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
+    if FreeCAD.GuiUp:
+      self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
+      self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
     self.failUnless(self.Obs.signal.pop(0) == 'DocCreated')
     self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
     self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
@@ -1477,8 +1478,9 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     self.Doc2 = FreeCAD.newDocument("Observer2");
-    self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
-    self.failUnless(self.Obs.parameter.pop(0) is self.Doc2)
+    if FreeCAD.GuiUp:
+      self.failUnless(self.Obs.signal.pop(0) == 'DocActivated')
+      self.failUnless(self.Obs.parameter.pop(0) is self.Doc2)
     self.failUnless(self.Obs.signal.pop(0) == 'DocCreated')
     self.failUnless(self.Obs.parameter.pop(0) is self.Doc2)
     self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
@@ -1496,6 +1498,10 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter.pop() is self.Doc1)
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
+    #undo/redo is not enabled in cmd line mode by default
+    if not FreeCAD.GuiUp:
+      self.Doc2.UndoMode = 1
+    
     self.Doc2.openTransaction('test')
     self.failUnless(self.Obs.signal.pop() == 'DocOpenTransaction')
     self.failUnless(self.Obs.parameter.pop() is self.Doc2)
