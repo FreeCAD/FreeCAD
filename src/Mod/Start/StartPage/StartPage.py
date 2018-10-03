@@ -106,7 +106,11 @@ def getInfo(filename):
 
         # get additional info from fcstd files
         if filename.lower().endswith(".fcstd"):
-            zfile=zipfile.ZipFile(filename)
+            try:
+                zfile=zipfile.ZipFile(filename)
+            except:
+                print("Cannot read file: ",filename)
+                return None
             files=zfile.namelist()
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
