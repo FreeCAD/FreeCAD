@@ -119,6 +119,8 @@ void ViewProviderDimension::updateData(const App::Property* p)
             sPixmap = "TechDraw_Dimension_Diameter";
         } else if (getViewObject()->Type.isValue("Angle")) {
             sPixmap = "TechDraw_Dimension_Angle";
+        } else if (getViewObject()->Type.isValue("Angle3Pt")) {
+            sPixmap = "TechDraw_Dimension_Angle3Pt";
         }
     }
     ViewProviderDrawingView::updateData(p);
