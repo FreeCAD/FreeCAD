@@ -79,6 +79,12 @@
 
 #endif
 
+#define FC_THROWM(_exception,_msg) do {\
+    std::stringstream ss;\
+    ss << _msg;\
+    THROWM(_exception,ss.str().c_str());\
+}while(0)
+
 namespace Base
 {
 
