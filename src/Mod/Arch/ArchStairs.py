@@ -332,8 +332,8 @@ class _Stairs(ArchComponent.Component):
 
         # TODO - To be combined into Width when PropertyLengthList is available
         if not "WidthOfLanding" in pl:
-            obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (2nd edge and after - 1st edge follow Width property"))
-
+            obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (Second edge and after - First edge follows Width property"))
+    
         # steps properties
         if not "NumberOfSteps" in pl:
             obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",QT_TRANSLATE_NOOP("App::Property","The number of risers in these stairs"))
@@ -691,7 +691,7 @@ class _Stairs(ArchComponent.Component):
     def vbaseFollowLastSement(obj, vBase):
         if obj.LastSegment:
             lastSegmentAbsTop = obj.LastSegment.AbsTop
-            vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate 
+            vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate
         return vBase
 
 
@@ -910,7 +910,7 @@ class _Stairs(ArchComponent.Component):
                 lastSegmentAbsTop = obj.LastSegment.AbsTop
                 print("lastSegmentAbsTop is: ")
                 print(lastSegmentAbsTop)
-                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)		# use Last Segment top's z-coordinate 
+                vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)		# use Last Segment top's z-coordinate
             obj.AbsTop = vBase.add(Vector(0,0,h))
 
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
@@ -1059,7 +1059,7 @@ class _Stairs(ArchComponent.Component):
             hstep = h/obj.NumberOfSteps
             obj.RiserHeight = hstep
         else:
-            h = obj.RiserHeightEnforce.Value * (obj.NumberOfSteps) 
+            h = obj.RiserHeightEnforce.Value * (obj.NumberOfSteps)
             hstep = obj.RiserHeightEnforce.Value
             obj.RiserHeight = hstep
         if obj.Landings == "At center":
@@ -1069,7 +1069,7 @@ class _Stairs(ArchComponent.Component):
 
         if obj.LastSegment:
             lastSegmentAbsTop = obj.LastSegment.AbsTop
-            p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)				# use Last Segment top's z-coordinate 
+            p1 = Vector(p1.x, p1.y,lastSegmentAbsTop.z)				# use Last Segment top's z-coordinate
 
         obj.AbsTop = p1.add(Vector(0,0,h))
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
@@ -1079,7 +1079,7 @@ class _Stairs(ArchComponent.Component):
                 p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
             else:
                 p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
-   
+
             if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
                 if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
                     p3r = p2
