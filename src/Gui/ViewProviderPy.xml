@@ -65,21 +65,6 @@
 				<UserDocu>Return a string representation of the Inventor node</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="startEditing">
-			<Documentation>
-				<UserDocu>Start the editing mode (default=0)</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="finishEditing">
-			<Documentation>
-				<UserDocu>Finish editing mode</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="isEditing">
-			<Documentation>
-				<UserDocu>Returns True if the view provider is in editing mode, False otherwise</UserDocu>
-			</Documentation>
-		</Methode>
 		<Methode Name="setTransformation">
 			<Documentation>
 				<UserDocu>Set a transformation on the Inventor node</UserDocu>
