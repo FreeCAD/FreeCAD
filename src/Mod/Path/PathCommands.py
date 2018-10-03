@@ -107,15 +107,18 @@ class _CommandSelectLoop:
                         FreeCADGui.Selection.addSelection(obj, "Edge"+str(elist.index(e)+1))
 
     def formsPartOfALoop(self, obj, sub, names):
-        if names[0][0:4] != 'Edge':
-            if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
+        try: 
+            if names[0][0:4] != 'Edge':
+                if names[0][0:4] == 'Face' and horizontalFaceLoop(obj, sub, names):
+                    return True
+                return False
+            if len(names) == 1 and horizontalEdgeLoop(obj, sub):
                 return True
-            return False
-        if len(names) == 1 and horizontalEdgeLoop(obj, sub):
+            if len(names) == 1 or names[1][0:4] != 'Edge':
+                return False
             return True
-        if len(names) == 1 or names[1][0:4] != 'Edge':
+        except Exception:
             return False
-        return True
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_SelectLoop', _CommandSelectLoop())
