@@ -29,6 +29,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 #include "DocumentObserverPython.h"
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
@@ -77,6 +78,11 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     this->connectDocumentChangedObject = Gui::Application::Instance->signalChangedObject.connect(boost::bind
         (&DocumentObserverPython::slotChangedObject, this, _1, _2));
     
+    this->connectDocumentObjectInEdit = Gui::Application::Instance->signalInEdit.connect(boost::bind
+        (&DocumentObserverPython::slotInEdit, this, _1));
+    this->connectDocumentObjectResetEdit = Gui::Application::Instance->signalResetEdit.connect(boost::bind
+        (&DocumentObserverPython::slotResetEdit, this, _1));
+    
 }
 
 DocumentObserverPython::~DocumentObserverPython()
@@ -90,6 +96,9 @@ DocumentObserverPython::~DocumentObserverPython()
     this->connectDocumentCreatedObject.disconnect();
     this->connectDocumentDeletedObject.disconnect();
     this->connectDocumentChangedObject.disconnect();
+    
+    this->connectDocumentObjectInEdit.disconnect();
+    this->connectDocumentObjectResetEdit.disconnect();
 }
 
 void DocumentObserverPython::slotCreatedDocument(const Gui::Document& Doc)
@@ -227,6 +236,40 @@ void DocumentObserverPython::slotChangedObject(const Gui::ViewProvider& Obj,
                 args.setItem(1, Py::String(prop_name));
                 method.apply(args);
             }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotInEdit(const Gui::ViewProviderDocumentObject& Obj)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotInEdit"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotInEdit")));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(const_cast<Gui::ViewProviderDocumentObject&>(Obj).getPyObject(), true));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotResetEdit(const Gui::ViewProviderDocumentObject& Obj)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotResetEdit"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotResetEdit")));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(const_cast<Gui::ViewProviderDocumentObject&>(Obj).getPyObject(), true));
+            method.apply(args);
         }
     }
     catch (Py::Exception&) {
