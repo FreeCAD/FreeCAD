@@ -26,6 +26,7 @@
 
 #include <QTreeWidget>
 #include <QTime>
+#include <QStyledItemDelegate>
 
 #include <Base/Parameter.h>
 #include <App/Document.h>
@@ -370,6 +371,24 @@ public:
 private:
     QTreeWidget* treeWidget;
 };
+
+
+/**
+ * TreeWidget item delegate for editing
+ */
+class TreeWidgetEditDelegate: public QStyledItemDelegate {
+    Q_OBJECT
+public:
+    TreeWidgetEditDelegate(QObject* parent=0);
+    virtual QWidget* createEditor(QWidget *parent, 
+            const QStyleOptionViewItem &, const QModelIndex &index) const;
+protected Q_SLOTS:
+    void editorClosed(QWidget *);
+
+private:
+    mutable int activeTransactionID;
+};
+
 
 /// Helper class to read/write tree view options
 class GuiExport TreeParams : public ParameterGrp::ObserverType {

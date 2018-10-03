@@ -60,6 +60,7 @@
 #include "View3DInventorViewer.h"
 #include "Macro.h"
 #include "Workbench.h"
+#include "Widgets.h"
 
 FC_LOG_LEVEL_INIT("Tree",false,true,true);
 
@@ -251,6 +252,50 @@ public:
 
 // ---------------------------------------------------------------------------
 
+TreeWidgetEditDelegate::TreeWidgetEditDelegate(QObject* parent)
+    : QStyledItemDelegate(parent),activeTransactionID(0)
+{
+    connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), 
+            this, SLOT(editorClosed(QWidget*)));
+}
+
+QWidget* TreeWidgetEditDelegate::createEditor(
+        QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const 
+{
+    auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
+    if(ti->type()!=TreeWidget::ObjectType || index.column()>1)
+        return 0;
+    DocumentObjectItem *item = static_cast<DocumentObjectItem*>(ti);
+    App::DocumentObject *obj = item->object()->getObject();
+    auto &prop = index.column()?obj->Label2:obj->Label;
+
+    std::ostringstream str;
+    str << "Change " << obj->getNameInDocument() << '.' << prop.getName();
+    activeTransactionID = App::GetApplication().setActiveTransaction(str.str().c_str());
+    FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
+
+    ExpLineEdit *le = new ExpLineEdit(parent);
+    le->setFrame(false);
+    le->setReadOnly(prop.isReadOnly());
+    le->bind(App::ObjectIdentifier(prop));
+    le->setAutoApply(true);
+    return le;
+}
+
+void TreeWidgetEditDelegate::editorClosed(QWidget *editor) {
+    int id = 0;
+    const char *name = App::GetApplication().getActiveTransaction(&id);
+    if(id && id==activeTransactionID) {
+        FC_LOG("editor close transaction " << name);
+        App::GetApplication().closeActiveTransaction();
+    }else
+        FC_LOG("editor closed");
+    activeTransactionID = 0;
+    editor->close();
+}
+
+// ---------------------------------------------------------------------------
+
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(false,0), contextItem(0)
     , editingItem(0), currentDocItem(0),fromOutside(false)
@@ -261,6 +306,7 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->setDropIndicatorShown(false);
     this->setRootIsDecorated(false);
     this->setColumnCount(2);
+    this->setItemDelegate(new TreeWidgetEditDelegate(this));
 
     this->showHiddenAction = new QAction(this);
     this->showHiddenAction->setCheckable(true);
@@ -3224,19 +3270,19 @@ void DocumentObjectItem::setExpandedStatus(bool on)
 void DocumentObjectItem::setData (int column, int role, const QVariant & value)
 {
     QVariant myValue(value);
-    if (role == Qt::EditRole) {
-        QString label = value.toString();
-        std::ostringstream ss;
-        ss << "Change " << getName() << ".Label";
-        if(column == 1)
-            ss << 2;
-        App::GetApplication().setActiveTransaction(ss.str().c_str());
-        if(column == 0)
-            object()->getObject()->Label.setValue((const char*)label.toUtf8());
-        else
-            object()->getObject()->Label2.setValue((const char*)label.toUtf8());
-        App::GetApplication().closeActiveTransaction();
-        myValue = QString::fromUtf8(object()->getObject()->Label.getValue());
+    if (role == Qt::EditRole && column<=1) {
+        auto transacting = App::GetApplication().getActiveTransaction();
+        auto obj = object()->getObject();
+        auto &label = column?obj->Label2:obj->Label;
+        if(!transacting) {
+            std::ostringstream ss;
+            ss << "Change " << getName() << '.' << label.getName();
+            App::GetApplication().setActiveTransaction(ss.str().c_str());
+        }
+        label.setValue((const char *)value.toString().toUtf8());
+        if(!transacting)
+            App::GetApplication().closeActiveTransaction();
+        myValue = QString::fromUtf8(label.getValue());
     }
     QTreeWidgetItem::setData(column, role, myValue);
 }
