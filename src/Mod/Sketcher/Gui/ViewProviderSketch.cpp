@@ -4142,7 +4142,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
 
     // This code relies on Part2D, which is generally not updated in no update mode.
     // Additionally it does not relate to the actual sketcher geometry.
-    
+
     /*
     Base::Console().Log("MinX:%d,MaxX:%d,MinY:%d,MaxY:%d\n",MinX,MaxX,MinY,MaxY);
     // make sure that nine of the numbers are exactly zero because log(0)
@@ -4152,19 +4152,19 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     float yMin = std::abs(MinY) < FLT_EPSILON ? 0.01f : MinY;
     float yMax = std::abs(MaxY) < FLT_EPSILON ? 0.01f : MaxY;
     */
-       
-    float dMagF = -exp(ceil(log(std::abs(dMg))));
-    
+
+    float dMagF = exp(ceil(log(std::abs(dMg))));
+
     MinX = -dMagF;
     MaxX = dMagF;
     MinY = -dMagF;
     MaxY = dMagF;
-    
+
     if (ShowGrid.getValue())
         createGrid();
     else
         GridRoot->removeAllChildren();
-    
+
     edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(-dMagF, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(dMagF, 0.0f, zCross));
     edit->RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -dMagF, zCross));

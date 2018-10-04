@@ -24,5 +24,11 @@
 			</Documentation>
 			<Parameter Name="Object" Type="Object" />
 		</Attribute>
+		<Attribute Name="Document" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the document the view provider is part of</UserDocu>
+			</Documentation>
+			<Parameter Name="Document" Type="Object" />
+		</Attribute>
 	</PythonExport>
 </GenerateModel>

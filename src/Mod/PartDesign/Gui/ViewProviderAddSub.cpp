@@ -77,35 +77,34 @@ ViewProviderAddSub::~ViewProviderAddSub()
 }
 
 void ViewProviderAddSub::attach(App::DocumentObject* obj) {
-     
+
     ViewProvider::attach(obj);
-    
+
     auto* bind = new SoMaterialBinding();
     bind->value = SoMaterialBinding::OVERALL;
     auto* material = new SoMaterial();
-    if(static_cast<PartDesign::FeatureAddSub*>(obj)->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (static_cast<PartDesign::FeatureAddSub*>(obj)->getAddSubType() == PartDesign::FeatureAddSub::Additive)
         material->diffuseColor = SbColor(1,1,0);
     else
         material->diffuseColor = SbColor(1,0,0);
-    
+
     material->transparency = 0.7f;
     auto* pick = new SoPickStyle();
     pick->style = SoPickStyle::UNPICKABLE;
-    
+
     previewShape->addChild(pick);
     previewShape->addChild(bind);
     previewShape->addChild(material);
     previewShape->addChild(previewCoords);
     previewShape->addChild(previewNorm);
     previewShape->addChild(previewFaceSet);
-    
+
     addDisplayMaskMode(previewShape, "Shape preview");
     updateAddSubShapeIndicator();
 }
 
 void ViewProviderAddSub::updateAddSubShapeIndicator() {
 
-    
     TopoDS_Shape cShape(static_cast<PartDesign::FeatureAddSub*>(getObject())->AddSubShape.getValue());
     if (cShape.IsNull()) {
         previewCoords  ->point      .setNum(0);
@@ -266,7 +265,7 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
 }
 
 void ViewProviderAddSub::updateData(const App::Property* p) {
-    
+
     if(strcmp(p->getName(), "AddSubShape")==0)
         updateAddSubShapeIndicator();
     
