@@ -360,7 +360,8 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -440,7 +441,8 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -525,8 +527,9 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     #endif
     
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         return;
@@ -685,8 +688,9 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     #endif
     
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         return;
