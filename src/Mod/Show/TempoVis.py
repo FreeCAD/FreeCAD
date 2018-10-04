@@ -44,6 +44,7 @@ class TempoVis(FrozenClass):
         self.data = {} # dict. key = ("Object","Property"), value = original value of the property
         self.data_pickstyle = {} # dict. key = "Object", value = original value of pickstyle
         self.data_clipplane = {} # dict. key = "Object", value = original state of plane-clipping
+        self.clippingDoc = None
 
         self.sketch_clipplane_on = False #True if some clipping planes are active
         
@@ -387,6 +388,7 @@ class TempoVis(FrozenClass):
                     self.data_clipplane[doc_obj.Name] = False
 
     def restoreClipPlanes(self):
+        self.sketchClipPlane(None,False)
         for obj_name in self.data_clipplane:
             try:
                 self._enableClipPlane(self.document.getObject(obj_name), self.data_clipplane[obj_name])
@@ -418,7 +420,21 @@ class TempoVis(FrozenClass):
         """sketchClipPlane(sketch, enable = None): Clips all objects by plane of sketch. 
         If enable argument is omitted, calling the routine repeatedly will toggle clipping plane."""
         
+        editDoc = self.clippingDoc
+        if not editDoc:
+            editDoc = Gui.editDocument()
+        if editDoc:
+            self.clippingDoc = editDoc
+            toggle = 1 if enable else -1 if enable is None else 0
+            editDoc.ActiveView.toggleClippingPlane(
+                    toggle, pla=App.Placement(editDoc.EditingTransform))
+            return
+        elif not sketch:
+            return
+
         if enable is None:
             enable = not self.sketch_clipplane_on
             self.sketch_clipplane_on = enable
         self.clipPlane(self.allVisibleObjects(sketch), enable, sketch.getGlobalPlacement(), 0.02)
+
+
