@@ -97,6 +97,7 @@
 # include <Precision.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <ShapeConstruct_Curve.hxx>
+# include <LProp_NotDefined.hxx>
 #endif
 
 #include <Base/VectorPy.h>
@@ -436,8 +437,11 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
             return true;
         }
     }
+    catch (const LProp_NotDefined&) {
+        dir.Set(0,0,0);
+        return false;
+    }
     catch (Standard_Failure& e) {
-
         throw Base::RuntimeError(e.GetMessageString());
     }
 
