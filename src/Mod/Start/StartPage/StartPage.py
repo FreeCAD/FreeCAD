@@ -487,7 +487,7 @@ def exportTestFile():
 
     "Allow to check if everything is Ok"
 
-    f = open(os.path.expanduser("~")+os.sep+"freecad-startpage.html","wb")
+    f = open(os.path.expanduser("~")+os.sep+"freecad-startpage.html","w")
     f.write(handle())
     f.close()
 
