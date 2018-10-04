@@ -378,7 +378,9 @@ protected:
         App::ObjectIdentifier path = item->sketch->Constraints.createPath(item->ConstraintNbr);
         App::PropertyExpressionEngine::ExpressionInfo expr_info = item->sketch->getExpression(path);
 
-        if (item->sketch->Constraints[item->ConstraintNbr]->isDriving && expr_info.expression) {
+        // in case the constraint property is invalidated it returns a null pointer
+        const Sketcher::Constraint* constraint = item->sketch->Constraints[item->ConstraintNbr];
+        if (constraint && constraint->isDriving && expr_info.expression) {
             // Paint pixmap
             int s = 2 * options.rect.height() / 4;
             int margin = s;
