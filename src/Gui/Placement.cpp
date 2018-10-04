@@ -397,7 +397,7 @@ void Placement::on_selectedVertex_clicked()
         v1.Normalize();
         v2.Normalize();
         double targetAngle = Base::toDegrees(v2.GetAngle(v1));
-        Base::Console().Message("Target angle: %.8f degrees, complementary: %.8d degrees\n",targetAngle, 90.0-targetAngle);
+        Base::Console().Message("Target angle: %.8f degrees, complementary: %.8f degrees\n",targetAngle, 90.0-targetAngle);
         rot.setValue(norm, angle);
         plm.setRotation(rot);
         setPlacementData(plm); //creates custom axis, if needed
