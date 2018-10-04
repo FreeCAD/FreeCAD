@@ -502,6 +502,8 @@ void View3DInventorViewer::init()
     pcGroupOnTopPreSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopPreSel);
 
+    pcClipPlane = 0;
+
     pcEditingRoot = new SoSeparator;
     pcEditingRoot->ref();
     pcEditingTransform = new SoTransform;
@@ -618,6 +620,9 @@ View3DInventorViewer::~View3DInventorViewer()
 
     this->pcEditingRoot->unref();
     this->pcEditingTransform->unref();
+
+    if(this->pcClipPlane)
+        this->pcClipPlane->unref();
 
     delete this->navigation;
 
@@ -2472,36 +2477,48 @@ SbVec3f View3DInventorViewer::projectOnFarPlane(const SbVec2f& pt) const
     return pt2;
 }
 
-void View3DInventorViewer::toggleClippingPlane()
+void View3DInventorViewer::toggleClippingPlane(int toggle, bool beforeEditing,
+        bool noManip, const Base::Placement &pla)
 {
-    if (pcViewProviderRoot->getNumChildren() > 0 &&
-        pcViewProviderRoot->getChild(0)->getTypeId() ==
-        SoClipPlaneManip::getClassTypeId()) {
-        pcViewProviderRoot->removeChild(0);
-    }
-    else {
+    if(pcClipPlane) {
+        if(toggle<=0) {
+            pcViewProviderRoot->removeChild(pcClipPlane);
+            pcClipPlane->unref();
+            pcClipPlane = 0;
+        }
+        return;
+    }else if(toggle==0)
+        return;
+
+    Base::Vector3d dir;
+    pla.getRotation().multVec(Base::Vector3d(0,0,-1),dir);
+    Base::Vector3d base = pla.getPosition();
+
+    if(!noManip) {
         SoClipPlaneManip* clip = new SoClipPlaneManip;
+        pcClipPlane = clip;
         SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
         action.apply(this->getSoRenderManager()->getSceneGraph());
         SbBox3f box = action.getBoundingBox();
 
         if (!box.isEmpty()) {
             // adjust to overall bounding box of the scene
-            clip->setValue(box, SbVec3f(0.0f,0.0f,1.0f), 1.0f);
+            clip->setValue(box, SbVec3f(dir.x,dir.y,dir.z), 1.0f);
         }
-
-        pcViewProviderRoot->insertChild(clip,0);
-    }
+    }else
+        pcClipPlane = new SoClipPlane;
+    pcClipPlane->plane.setValue(
+            SbPlane(SbVec3f(dir.x,dir.y,dir.z),SbVec3f(base.x,base.y,base.z)));
+    pcClipPlane->ref();
+    if(beforeEditing)
+        pcViewProviderRoot->insertChild(pcClipPlane,0);
+    else 
+        pcViewProviderRoot->insertChild(pcClipPlane,pcViewProviderRoot->findChild(pcEditingRoot)+1);
 }
 
 bool View3DInventorViewer::hasClippingPlane() const
 {
-    if (pcViewProviderRoot && pcViewProviderRoot->getNumChildren() > 0) {
-        return (pcViewProviderRoot->getChild(0)->getTypeId()
-                == SoClipPlaneManip::getClassTypeId());
-    }
-
-    return false;
+    return !!pcClipPlane;
 }
 
 /**

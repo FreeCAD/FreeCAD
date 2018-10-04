@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <Base/Type.h>
+#include <Base/Placement.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/SbRotation.h>
@@ -56,6 +57,7 @@ class QImage;
 class SoGroup;
 class SoPickStyle;
 class NaviCube;
+class SoClipPlane;
 
 namespace Gui {
 
@@ -289,7 +291,8 @@ public:
     /** Returns the far plane represented by its normal and base point. */
     void getFarPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
     /** Adds or remove a manipulator to/from the scenegraph. */
-    void toggleClippingPlane();
+    void toggleClippingPlane(int toggle=-1, bool beforeEditing=false, 
+            bool noManip=false, const Base::Placement &pla = Base::Placement());
     /** Checks whether a clipping plane is set or not. */
     bool hasClippingPlane() const;
     /** Project the given normalized 2d point onto the near plane */
@@ -438,6 +441,8 @@ private:
     SoEventCallback* pEventCallback;
     NavigationStyle* navigation;
     SoFCUnifiedSelection* selectionRoot;
+
+    SoClipPlane *pcClipPlane;
 
     RenderType renderType;
     QtGLFramebufferObject* framebuffer;

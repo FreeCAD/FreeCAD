@@ -180,6 +180,13 @@ void View3DInventorPy::init_type()
     add_varargs_method("getViewProvidersOfType", &View3DInventorPy::getViewProvidersOfType, "getViewProvidersOfType(name)\nreturns a list of view providers for the given type");
     add_varargs_method("redraw", &View3DInventorPy::redraw, "redraw(): renders the scene on screen (useful for animations)");
 
+    add_keyword_method("toggleClippingPlane", &View3DInventorPy::toggleClippingPlane,
+        "toggleClippingPlane(toggle=-1, beforeEditing=False, noManip=True, pla=App.Placement()\n"
+        "Toggle a golbal clipping plane\n\n"
+        "toggle: -1 toggle, 1 show, 0 hide\n"
+        "beforeEditing: whether insert the clipping node before or after editing root node\n"
+        "noManip: wether to create a manipulator\n"
+        "pla: clipping plane placement");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -2291,3 +2298,23 @@ Py::Object View3DInventorPy::redraw(const Py::Tuple& args)
     _view->getViewer()->redraw();
     return Py::None();
 }
+
+Py::Object View3DInventorPy::toggleClippingPlane(const Py::Tuple& args, const Py::Dict& kwds)
+{
+    static char* keywords[] = {"toggle", "beforeEditing", "noManip", "pla", NULL};
+    int toggle = -1;
+    PyObject *beforeEditing = Py_False;
+    PyObject *noManip = Py_True;
+    PyObject *pyPla = Py_None;
+    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "|iOOO!", keywords,
+                    &toggle, &beforeEditing, &noManip, &Base::PlacementPy::Type,&pyPla))
+        throw Py::Exception();
+
+    Base::Placement pla;
+    if(pyPla!=Py_None)
+        pla = *static_cast<Base::PlacementPy*>(pyPla)->getPlacementPtr();
+    _view->getViewer()->toggleClippingPlane(toggle,PyObject_IsTrue(beforeEditing),
+            PyObject_IsTrue(noManip),pla);
+    return Py::None();
+}
+
