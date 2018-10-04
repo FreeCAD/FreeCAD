@@ -137,7 +137,10 @@ class Container(object):
 
     def isChildVisible(self,obj):
         container = self.Object
-        vis = container.isElementVisible(obj.Name)
+        isElementVisible = getattr(container,'isElementVisible',None)
+        if not isElementVisible:
+            return obj.Visibility
+        vis = isElementVisible(obj.Name)
         if vis < 0:
             return obj.Visibility
         return vis>0
