@@ -6599,7 +6599,6 @@ public:
                     Base::Console().Error("Failed to add external geometry: %s\n", e.what());
                     Gui::Selection().clearSelection(); //prevent crash (issue #3544)
                     Gui::Command::abortCommand();
-
                 }
                 return true;
             }
