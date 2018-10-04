@@ -6597,6 +6597,7 @@ public:
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("Failed to add external geometry: %s\n", e.what());
+                    Gui::Selection().clearSelection();
                     Gui::Command::abortCommand();
                 }
                 return true;
