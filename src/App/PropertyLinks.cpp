@@ -213,7 +213,7 @@ void PropertyLink::resetLink() {
 void PropertyLink::setValue(App::DocumentObject * lValue)
 {
     auto parent = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(parent && lValue && parent->getDocument()!=lValue->getDocument())
+    if(!_allowExternal && parent && lValue && parent->getDocument()!=lValue->getDocument())
         throw Base::ValueError("PropertyLink does not support external object");
 
     aboutToSetValue();
@@ -458,7 +458,7 @@ void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue) {
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
             throw Base::ValueError("PropertyLinkList: invalid document object");
-        if(parent && parent->getDocument()!=obj->getDocument())
+        if(!_allowExternal && parent && parent->getDocument()!=obj->getDocument())
             throw Base::ValueError("PropertyLinkList does not support external object");
     }
     _nameMap.clear();
@@ -681,7 +681,7 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
     if(lValue) {
         if(!lValue->getNameInDocument())
             throw Base::ValueError("PropertyLinkSub: invalid document object");
-        if(parent && parent->getDocument()!=lValue->getDocument())
+        if(!_allowExternal && parent && parent->getDocument()!=lValue->getDocument())
             throw Base::ValueError("PropertyLinkSub does not support external object");
     }
     aboutToSetValue();
@@ -1137,7 +1137,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
     if(lValue) {
         if(!lValue->getNameInDocument())
             throw Base::ValueError("PropertyLinkSubList: invalid document object");
-        if(parent && parent->getDocument()!=lValue->getDocument())
+        if(!_allowExternal && parent && parent->getDocument()!=lValue->getDocument())
             throw Base::ValueError("PropertyLinkSubList does not support external object");
     }
 #ifndef USE_OLD_DAG
@@ -1176,7 +1176,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue, 
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
             throw Base::ValueError("PropertyLinkSubList: invalid document object");
-        if(parent && parent->getDocument()!=obj->getDocument())
+        if(!_allowExternal && parent && parent->getDocument()!=obj->getDocument())
             throw Base::ValueError("PropertyLinkSubList does not support external object");
     }
     if (lValue.size() != lSubNames.size())
@@ -1221,7 +1221,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
     for(auto obj : lValue) {
         if(!obj || !obj->getNameInDocument())
             throw Base::ValueError("PropertyLinkSubList: invalid document object");
-        if(parent && parent->getDocument()!=obj->getDocument())
+        if(!_allowExternal && parent && parent->getDocument()!=obj->getDocument())
             throw Base::ValueError("PropertyLinkSubList does not support external object");
     }
     if (lValue.size() != lSubNames.size())
@@ -1262,7 +1262,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
     if(lValue) {
         if(!lValue->getNameInDocument())
             throw Base::ValueError("PropertyLinkSubList: invalid document object");
-        if(parent && parent->getDocument()!=lValue->getDocument())
+        if(!_allowExternal && parent && parent->getDocument()!=lValue->getDocument())
             throw Base::ValueError("PropertyLinkSubList does not support external object");
     }
 #ifndef USE_OLD_DAG   

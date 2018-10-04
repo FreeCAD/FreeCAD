@@ -81,13 +81,15 @@ Sheet::Sheet()
 {
     ADD_PROPERTY_TYPE(docDeps, (0), "Spreadsheet", (PropertyType)(Prop_Transient|Prop_ReadOnly|Prop_Hidden), "Dependencies");
     ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Cell contents");
-    ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Column widths");
-    ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Row heights");
+    ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Column widths");
+    ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
 
     docDeps.setSize(0);
+    docDeps.allowExternalLink(true);
 
     onRenamedDocumentConnection = GetApplication().signalRenameDocument.connect(boost::bind(&Spreadsheet::Sheet::onRenamedDocument, this, _1));
     onRelabledDocumentConnection = GetApplication().signalRelabelDocument.connect(boost::bind(&Spreadsheet::Sheet::onRelabledDocument, this, _1));
+
 }
 
 /**

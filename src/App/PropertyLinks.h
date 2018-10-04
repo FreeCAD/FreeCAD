@@ -213,6 +213,11 @@ public:
         getLinkedElements(ret,newStyle,all);
         return ret;
     }
+
+    void allowExternalLink(bool allow) { _allowExternal = allow; }
+
+protected:
+    bool _allowExternal = false;
 };
 
 /** The general Link Property
@@ -496,7 +501,6 @@ protected:
     std::vector<std::string> _cSubList;
     std::vector<std::pair<std::string,std::string> > _ShadowSubList;
     std::vector<int> _mapped;
-    bool _hidden;
 };
 
 /** The general Link Property with Child scope
