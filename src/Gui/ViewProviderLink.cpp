@@ -511,11 +511,12 @@ public:
             // Object found under geo group, remember this subname
             subname = nextsub;
 
-            sobj = sobj->getSubObject(objname.c_str());
-            if(!sobj) {
+            auto ssobj = sobj->getSubObject(objname.c_str());
+            if(!ssobj) {
                 FC_ERR("invalid sub name " << nextsub << " of object " << sobj->getNameInDocument());
                 return false;
             }
+            sobj = ssobj;
             auto vp = Application::Instance->getViewProvider(sobj);
             if(!vp) {
                 FC_ERR("cannot find view provider of " << sobj->getNameInDocument());
