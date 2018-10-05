@@ -88,7 +88,6 @@ before_install:
                                libboost-filesystem1.55-dev      \
                                libboost-program-options1.55-dev \
                                libboost-python1.55-dev          \
-                               libboost-regex1.55-dev           \
                                libboost-signals1.55-dev         \
                                libboost-system1.55-dev          \
                                libboost-thread1.55-dev          \
