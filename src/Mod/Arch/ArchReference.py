@@ -383,7 +383,7 @@ class ArchReferenceCommand:
         FreeCADGui.doCommand("obj = Arch.makeReference()")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.doCommand("obj.ViewObject.startEditing()")
+        FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Reference', ArchReferenceCommand())
