@@ -172,6 +172,9 @@ class JobCreate:
 
         for i in range(self.itemsJob.childCount()):
             if self.itemsJob.child(i).checkState(0) == QtCore.Qt.CheckState.Checked:
+                # Note that we do want to use the models (resource clones) of the
+                # source job as base objects for the new job in order to get the
+                # identical placement, and anything else that's been customized.
                 models.extend(self.itemsJob.child(i).data(0, self.DataObject).Model.Group)
 
         return models
