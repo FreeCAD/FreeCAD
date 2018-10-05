@@ -805,7 +805,8 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
                 return 0;
             Handle(Geom_Curve) curve2 = Handle(Geom_Curve)::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
             GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
-            if (intersector.LowerDistance() > Precision::Confusion()) {
+            if (intersector.NbExtrema() == 0 ||
+                intersector.LowerDistance() > Precision::Confusion()) {
                 // No intersection
                 return Py::new_reference_to(Py::List());
             }
@@ -816,7 +817,7 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
                     continue;
                 gp_Pnt p1, p2;
                 intersector.Points(i, p1, p2);
-                points.append(Py::Object(new PointPy(new GeomPoint(Base::Vector3d(p1.X(), p1.Y(), p1.Z())))));
+                points.append(Py::asObject(new PointPy(new GeomPoint(Base::Vector3d(p1.X(), p1.Y(), p1.Z())))));
             }
 
             return Py::new_reference_to(points);
