@@ -121,7 +121,7 @@ class _CommandArchMaterial:
         for obj in sel:
             if hasattr(obj,"Material"):
                 FreeCADGui.doCommand("FreeCAD.ActiveDocument.getObject(\""+obj.Name+"\").Material = mat")
-        FreeCADGui.doCommandGui("mat.ViewObject.startEditing()")
+        FreeCADGui.doCommandGui("mat.ViewObject.Document.setEdit(mat.ViewObject, 0)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -156,7 +156,7 @@ class _CommandArchMultiMaterial:
             if hasattr(obj,"Material"):
                 if not obj.isDerivedFrom("App::MaterialObject"):
                     FreeCADGui.doCommand("FreeCAD.ActiveDocument."+obj.Name+".Material = mat")
-        FreeCADGui.doCommandGui("mat.ViewObject.startEditing()")
+        FreeCADGui.doCommandGui("mat.ViewObject.Document.setEdit(mat.ViewObject, 0)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

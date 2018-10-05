@@ -652,7 +652,7 @@ class _CommandFemResultShow(CommandManager):
         self.is_active = 'with_selresult'
 
     def Activated(self):
-        self.selobj.ViewObject.startEditing()
+        self.selobj.ViewObject.Document.setEdit(self.selobj.ViewObject, 0)
 
 
 class _CommandFemResultsPurge(CommandManager):
