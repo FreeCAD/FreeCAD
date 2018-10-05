@@ -33,7 +33,7 @@
 #include "ProjectionAlgos.h"
 #include <Base/Console.h>
 #include <Base/VectorPy.h>
-#include <boost/regex.hpp>
+#include <regex>
 
 #include <Mod/Part/App/OCCError.h>
 
@@ -296,26 +296,26 @@ private:
         std::string endline = "--endOfLine--";
         std::string linebreak = "\\n";
         // removing linebreaks for regex to work
-        boost::regex e1 ("\\n");
-        svg = boost::regex_replace(svg, e1, endline);
+        std::regex e1 ("\\n");
+        svg = std::regex_replace(svg, e1, endline);
         // removing starting xml definition
-        boost::regex e2 ("<\\?xml.*?\\?>");
-        svg = boost::regex_replace(svg, e2, empty);
+        std::regex e2 ("<\\?xml.*?\\?>");
+        svg = std::regex_replace(svg, e2, empty);
         // removing starting svg tag
-        boost::regex e3 ("<svg.*?>");
-        svg = boost::regex_replace(svg, e3, empty);
+        std::regex e3 ("<svg.*?>");
+        svg = std::regex_replace(svg, e3, empty);
         // removing sodipodi tags -- DANGEROUS, some sodipodi tags are single, better leave it
-        //boost::regex e4 ("<sodipodi.*?>");
-        //svg = boost::regex_replace(svg, e4, empty);
+        //std::regex e4 ("<sodipodi.*?>");
+        //svg = std::regex_replace(svg, e4, empty);
         // removing metadata tags
-        boost::regex e5 ("<metadata.*?</metadata>");
-        svg = boost::regex_replace(svg, e5, empty);
+        std::regex e5 ("<metadata.*?</metadata>");
+        svg = std::regex_replace(svg, e5, empty);
         // removing closing svg tags
-        boost::regex e6 ("</svg>");
-        svg = boost::regex_replace(svg, e6, empty);
+        std::regex e6 ("</svg>");
+        svg = std::regex_replace(svg, e6, empty);
         // restoring linebreaks
-        boost::regex e7 ("--endOfLine--");
-        svg = boost::regex_replace(svg, e7, linebreak);
+        std::regex e7 ("--endOfLine--");
+        svg = std::regex_replace(svg, e7, linebreak);
         Py::String result(svg);
         return result;
     }

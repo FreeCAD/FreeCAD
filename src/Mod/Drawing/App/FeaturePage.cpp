@@ -32,9 +32,9 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <App/Application.h>
-#include <boost/regex.hpp>
 #include <iostream>
 #include <iterator>
+#include <regex>
 
 #include "FeaturePage.h"
 #include "FeatureView.h"
@@ -203,21 +203,21 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
     string outfragment(ofile.str());
     const std::vector<std::string>& editText = EditableTexts.getValues();
     if (!editText.empty()) {
-        boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+        std::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator begin, end;
         begin = outfragment.begin();
         end = outfragment.end();
-        boost::match_results<std::string::const_iterator> what;
+        std::match_results<std::string::const_iterator> what;
         std::size_t count = 0;
         std::string newfragment;
         newfragment.reserve(outfragment.size());
 
-        while (boost::regex_search(begin, end, what, e1)) {
+        while (std::regex_search(begin, end, what, e1)) {
             if (count < editText.size()) {
                 // change values of editable texts
-                boost::regex e2 ("(<text.*?freecad:editable=\""+what[1].str()+"\".*?<tspan.*?)>(.*?)(</tspan>)");
+                std::regex e2 ("(<text.*?freecad:editable=\""+what[1].str()+"\".*?<tspan.*?)>(.*?)(</tspan>)");
                 std::back_insert_iterator<std::string> out(newfragment);
-                boost::regex_replace(out, begin, what[0].second, e2, "$1>"+editText[count]+"$3");
+                std::regex_replace(out, begin, what[0].second, e2, "$1>"+editText[count]+"$3");
             }
             count++;
             begin = what[0].second;
@@ -229,9 +229,9 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
     }
 
     // restoring linebreaks and saving the file
-    boost::regex e3 ("--endOfLine--");
+    std::regex e3 ("--endOfLine--");
     string fmt = "\\n";
-    outfragment = boost::regex_replace(outfragment, e3, fmt);
+    outfragment = std::regex_replace(outfragment, e3, fmt);
     ofstream outfinal(tempName.c_str());
     outfinal << outfragment;
     outfinal.close();
@@ -265,12 +265,12 @@ std::vector<std::string> FeaturePage::getEditableTextsFromTemplate(void) const {
             tfrag += "--endOfLine--";
         }
         tfile.close();
-        boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+        std::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator tbegin, tend;
         tbegin = tfrag.begin();
         tend = tfrag.end();
-        boost::match_results<std::string::const_iterator> twhat;
-        while (boost::regex_search(tbegin, tend, twhat, e)) {
+        std::match_results<std::string::const_iterator> twhat;
+        while (std::regex_search(tbegin, tend, twhat, e)) {
             eds.push_back(twhat[2]);
             tbegin = twhat[0].second;
         }
