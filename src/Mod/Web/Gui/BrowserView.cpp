@@ -119,10 +119,14 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
 {
     char* HtmlCode;
     char* BaseUrl;
-    if (! PyArg_ParseTuple(args.ptr(), "ss",&HtmlCode,&BaseUrl))
+    if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&HtmlCode,&BaseUrl))
         throw Py::Exception();
+
+    std::string EncodedHtml = std::string(HtmlCode);
+    PyMem_Free(HtmlCode);
+
     if (myWebView)
-        myWebView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
+        myWebView->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromLatin1(BaseUrl)));
     return Py::None();
 }
 }

@@ -3,6 +3,7 @@ add_subdirectory(App)
 
 set(Web_Scripts
     Init.py
+    TestWebGui.py
 )
 
 if(BUILD_GUI)
