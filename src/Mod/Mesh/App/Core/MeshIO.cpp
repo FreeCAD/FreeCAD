@@ -46,7 +46,7 @@
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
-#include <boost/regex.hpp>
+#include <regex>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -281,28 +281,28 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 /** Loads an OBJ file. */
 bool MeshInput::LoadOBJ (std::istream &rstrIn)
 {
-    boost::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
-    boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
+    std::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_c("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_c("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
-    boost::regex rx_t("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_t("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_f3("^f\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+    std::regex rx_f3("^f\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
                          "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
                          "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*\\s*$");
-    boost::regex rx_f4("^f\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+    std::regex rx_f4("^f\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
                          "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
                          "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
                          "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*\\s*$");
-    boost::cmatch what;
+    std::cmatch what;
 
     unsigned long segment=0;
     MeshPointArray meshPoints;
@@ -330,13 +330,13 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             for (std::string::iterator it = line.begin(); it != line.end(); ++it)
                 *it = tolower(*it);
         }
-        if (boost::regex_match(line.c_str(), what, rx_p)) {
+        if (std::regex_match(line.c_str(), what, rx_p)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
         }
-        else if (boost::regex_match(line.c_str(), what, rx_c)) {
+        else if (std::regex_match(line.c_str(), what, rx_c)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
@@ -350,7 +350,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             meshPoints.back().SetProperty(prop);
             rgb_value = MeshIO::PER_VERTEX;
         }
-        else if (boost::regex_match(line.c_str(), what, rx_t)) {
+        else if (std::regex_match(line.c_str(), what, rx_t)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
@@ -364,11 +364,11 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             meshPoints.back().SetProperty(prop);
             rgb_value = MeshIO::PER_VERTEX;
         }
-        else if (boost::regex_match(line.c_str(), what, rx_g)) {
+        else if (std::regex_match(line.c_str(), what, rx_g)) {
             new_segment = true;
             groupName = Base::Tools::escapedUnicodeToUtf8(what[1].first);
         }
-        else if (boost::regex_match(line.c_str(), what, rx_f3)) {
+        else if (std::regex_match(line.c_str(), what, rx_f3)) {
             // starts a new segment
             if (new_segment) {
                 if (!groupName.empty()) {
@@ -390,7 +390,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
             item.SetProperty(segment);
             meshFacets.push_back(item);
         }
-        else if (boost::regex_match(line.c_str(), what, rx_f4)) {
+        else if (std::regex_match(line.c_str(), what, rx_f4)) {
             // starts a new segment
             if (new_segment) {
                 if (!groupName.empty()) {
@@ -452,13 +452,13 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
 /** Loads an SMF file. */
 bool MeshInput::LoadSMF (std::istream &rstrIn)
 {
-    boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                         "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_f3("^f\\s+([-+]?[0-9]+)"
+    std::regex rx_f3("^f\\s+([-+]?[0-9]+)"
                          "\\s+([-+]?[0-9]+)"
                          "\\s+([-+]?[0-9]+)\\s*$");
-    boost::cmatch what;
+    std::cmatch what;
 
     unsigned long segment=0;
     MeshPointArray meshPoints;
@@ -477,13 +477,13 @@ bool MeshInput::LoadSMF (std::istream &rstrIn)
         return false;
 
     while (std::getline(rstrIn, line)) {
-        if (boost::regex_match(line.c_str(), what, rx_p)) {
+        if (std::regex_match(line.c_str(), what, rx_p)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
         }
-        else if (boost::regex_match(line.c_str(), what, rx_f3)) {
+        else if (std::regex_match(line.c_str(), what, rx_f3)) {
             // 3-vertex face
             i1 = std::atoi(what[1].first);
             i1 = i1 > 0 ? i1-1 : i1+static_cast<int>(meshPoints.size());
@@ -512,18 +512,18 @@ bool MeshInput::LoadSMF (std::istream &rstrIn)
 bool MeshInput::LoadOFF (std::istream &rstrIn)
 {
     // http://edutechwiki.unige.ch/en/3D_file_format
-    boost::regex rx_n("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-    boost::regex rx_p("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_n("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    std::regex rx_p("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_c("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_c("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
-    boost::regex rx_f3("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-    boost::regex rx_f4("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    std::regex rx_f3("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    std::regex rx_f4("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
 
-    boost::cmatch what;
+    std::cmatch what;
 
     bool colorPerVertex = false;
     MeshPointArray meshPoints;
@@ -557,7 +557,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     int numPoints=0, numFaces=0;
     std::getline(rstrIn, line);
     boost::algorithm::to_lower(line);
-    if (boost::regex_match(line.c_str(), what, rx_n)) {
+    if (std::regex_match(line.c_str(), what, rx_n)) {
         numPoints = std::atoi(what[1].first);
         numFaces = std::atoi(what[2].first);
     }
@@ -578,7 +578,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
         if (!std::getline(rstrIn, line))
             break;
         if (colorPerVertex) {
-            if (boost::regex_match(line.c_str(), what, rx_c)) {
+            if (std::regex_match(line.c_str(), what, rx_c)) {
                 fX = static_cast<float>(std::atof(what[1].first));
                 fY = static_cast<float>(std::atof(what[4].first));
                 fZ = static_cast<float>(std::atof(what[7].first));
@@ -599,7 +599,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
             }
         }
         else {
-            if (boost::regex_match(line.c_str(), what, rx_p)) {
+            if (std::regex_match(line.c_str(), what, rx_p)) {
                 fX = static_cast<float>(std::atof(what[1].first));
                 fY = static_cast<float>(std::atof(what[4].first));
                 fZ = static_cast<float>(std::atof(what[7].first));
@@ -613,7 +613,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
     while (cntFaces < numFaces) {
         if (!std::getline(rstrIn, line))
             break;
-        if (boost::regex_match(line.c_str(), what, rx_f3)) {
+        if (std::regex_match(line.c_str(), what, rx_f3)) {
             // 3-vertex face
             if (std::atoi(what[1].first) == 3) {
                 i1 = std::atoi(what[2].first);
@@ -624,7 +624,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
                 cntFaces++;
             }
         }
-        else if (boost::regex_match(line.c_str(), what, rx_f4)) {
+        else if (std::regex_match(line.c_str(), what, rx_f4)) {
             // 4-vertex face
             if (std::atoi(what[1].first) == 4) {
                 i1 = std::atoi(what[2].first);
@@ -910,11 +910,11 @@ bool MeshInput::LoadPLY (std::istream &inp)
     }
 
     if (format == ascii) {
-        boost::regex rx_d("(([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?))\\s*");
-        boost::regex rx_s("\\b([-+]?[0-9]+)\\s*");
-        boost::regex rx_u("\\b([0-9]+)\\s*");
-        boost::regex rx_f("^\\s*3\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
-        boost::smatch what;
+        std::regex rx_d("(([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?))\\s*");
+        std::regex rx_s("\\b([-+]?[0-9]+)\\s*");
+        std::regex rx_u("\\b([0-9]+)\\s*");
+        std::regex rx_f("^\\s*3\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
+        std::smatch what;
 
         for (std::size_t i = 0; i < v_count && std::getline(inp, line); i++) {
             // go through the vertex properties
@@ -925,7 +925,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 case int16:
                 case int32:
                     {
-                        if (boost::regex_search(line, what, rx_s)) {
+                        if (std::regex_search(line, what, rx_s)) {
                             int v;
                             v = boost::lexical_cast<int>(what[1]);
                             prop_values[it->first] = static_cast<float>(v);
@@ -939,7 +939,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 case uint16:
                 case uint32:
                     {
-                        if (boost::regex_search(line, what, rx_u)) {
+                        if (std::regex_search(line, what, rx_u)) {
                             int v;
                             v = boost::lexical_cast<int>(what[1]);
                             prop_values[it->first] = static_cast<float>(v);
@@ -952,7 +952,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
                 case float32:
                 case float64:
                     {
-                        if (boost::regex_search(line, what, rx_d)) {
+                        if (std::regex_search(line, what, rx_d)) {
                             double v;
                             v = boost::lexical_cast<double>(what[1]);
                             prop_values[it->first] = static_cast<float>(v);
@@ -983,7 +983,7 @@ bool MeshInput::LoadPLY (std::istream &inp)
 
         int f1, f2, f3;
         for (std::size_t i = 0; i < f_count && std::getline(inp, line); i++) {
-            if (boost::regex_search(line, what, rx_f)) {
+            if (std::regex_search(line, what, rx_f)) {
                 f1 = boost::lexical_cast<int>(what[1]);
                 f2 = boost::lexical_cast<int>(what[2]);
                 f3 = boost::lexical_cast<int>(what[3]);
@@ -1134,12 +1134,12 @@ bool MeshInput::LoadPLY (std::istream &inp)
 
 bool MeshInput::LoadMeshNode (std::istream &rstrIn)
 {
-    boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_f("^f\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
-    boost::regex rx_e("\\s*]\\s*");
-    boost::cmatch what;
+    std::regex rx_f("^f\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
+    std::regex rx_e("\\s*]\\s*");
+    std::cmatch what;
 
     MeshPointArray meshPoints;
     MeshFacetArray meshFacets;
@@ -1159,19 +1159,19 @@ bool MeshInput::LoadMeshNode (std::istream &rstrIn)
     while (std::getline(rstrIn, line)) {
         for (std::string::iterator it = line.begin(); it != line.end(); ++it)
             *it = tolower(*it);
-        if (boost::regex_match(line.c_str(), what, rx_p)) {
+        if (std::regex_match(line.c_str(), what, rx_p)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
         }
-        else if (boost::regex_match(line.c_str(), what, rx_f)) {
+        else if (std::regex_match(line.c_str(), what, rx_f)) {
             i1 = std::atoi(what[1].first);
             i2 = std::atoi(what[2].first);
             i3 = std::atoi(what[3].first);
             meshFacets.push_back(MeshFacet(i1-1,i2-1,i3-1));
         }
-        else if (boost::regex_match(line.c_str(), what, rx_e)) {
+        else if (std::regex_match(line.c_str(), what, rx_e)) {
             break;
         }
     }
@@ -1190,13 +1190,13 @@ bool MeshInput::LoadMeshNode (std::istream &rstrIn)
 /** Loads an ASCII STL file. */
 bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
 {
-    boost::regex rx_p("^\\s*VERTEX\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_p("^\\s*VERTEX\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::regex rx_f("^\\s*FACET\\s+NORMAL\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_f("^\\s*FACET\\s+NORMAL\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    boost::cmatch what;
+    std::cmatch what;
 
     std::string line;
     float fX, fY, fZ;
@@ -1239,13 +1239,13 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
     while (std::getline(rstrIn, line)) {
         for (std::string::iterator it = line.begin(); it != line.end(); ++it)
             *it = toupper(*it);
-        if (boost::regex_match(line.c_str(), what, rx_f)) {
+        if (std::regex_match(line.c_str(), what, rx_f)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
             clFacet.SetNormal(Base::Vector3f(fX, fY, fZ));
         }
-        else if (boost::regex_match(line.c_str(), what, rx_p)) {
+        else if (std::regex_match(line.c_str(), what, rx_p)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
             fZ = (float)std::atof(what[7].first);
@@ -1366,14 +1366,14 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
     if (!rstrIn || rstrIn.bad() == true)
         return false;
 
-    boost::regex rx_p("\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx_p("\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s*[\\,\\]]\\s*");
-    boost::regex rx_f("\\s*([0-9]+)\\s*\\,\\s*"
+    std::regex rx_f("\\s*([0-9]+)\\s*\\,\\s*"
                       "\\s+([0-9]+)\\s*\\,\\s*"
                       "\\s+([0-9]+)\\s*\\,\\s*");
-    boost::cmatch what;
+    std::cmatch what;
 
     // get file size and estimate the number of lines
     std::streamoff ulSize = 0;
@@ -1418,7 +1418,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
             if (pos != std::string::npos)
                 line = line.substr(pos+8); // 8 = length of 'VECTOR ['
             do {
-                if (boost::regex_match(line.c_str(), what, rx_p)) {
+                if (std::regex_match(line.c_str(), what, rx_p)) {
                     fX = (float)std::atof(what[1].first);
                     fY = (float)std::atof(what[4].first);
                     fZ = (float)std::atof(what[7].first);
@@ -1445,7 +1445,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
             if (pos != std::string::npos)
                 line = line.substr(pos+7); // 7 = length of 'POINT ['
             do {
-                if (boost::regex_match(line.c_str(), what, rx_p)) {
+                if (std::regex_match(line.c_str(), what, rx_p)) {
                     clPoint.x = (float)std::atof(what[1].first);
                     clPoint.y = (float)std::atof(what[4].first);
                     clPoint.z = (float)std::atof(what[7].first);
@@ -1480,7 +1480,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
                     pos = line.find_first_of(",]", pos);
                     line = line.substr(pos+1);
                     pos = line.find("-1");
-                    if (boost::regex_match(part.c_str(), what, rx_f)) {
+                    if (std::regex_match(part.c_str(), what, rx_f)) {
                         flag = true;
                         ulPoints[0] = std::atol(what[1].first);
                         ulPoints[1] = std::atol(what[2].first);
@@ -1513,15 +1513,15 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
     if ((!rstrIn) || (rstrIn.bad() == true))
         return false;
 
-    boost::regex rx_p("\\s*GRID\\s+([0-9]+)"
+    std::regex rx_p("\\s*GRID\\s+([0-9]+)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*");
-    boost::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
+    std::regex rx_t("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
-    boost::regex rx_q("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
+    std::regex rx_q("\\s*CTRIA3\\s+([0-9]+)\\s+([0-9]+)"
                       "\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*");
-    boost::cmatch what;
+    std::cmatch what;
 
     std::string line;
     MeshFacet clMeshFacet;
@@ -1543,7 +1543,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
         }
         // insert the read-in vertex into a map to preserve the order
         else if (line.find("GRID") == 0) {
-            if (boost::regex_match(line.c_str(), what, rx_p)) {
+            if (std::regex_match(line.c_str(), what, rx_p)) {
                 index = std::atol(what[1].first)-1;
                 mNode[index].x = (float)std::atof(what[2].first);
                 mNode[index].y = (float)std::atof(what[5].first);
@@ -1552,7 +1552,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
         }
         // insert the read-in triangle into a map to preserve the order
         else if (line.find("CTRIA3 ") == 0) {
-            if (boost::regex_match(line.c_str(), what, rx_t)) {
+            if (std::regex_match(line.c_str(), what, rx_t)) {
                 index = std::atol(what[1].first)-1;
                 mTria[index].iV[0] = std::atol(what[3].first)-1;
                 mTria[index].iV[1] = std::atol(what[4].first)-1;
@@ -1561,7 +1561,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
         }
         // insert the read-in quadrangle into a map to preserve the order
         else if (line.find("CQUAD4") == 0) {
-            if (boost::regex_match(line.c_str(), what, rx_q)) {
+            if (std::regex_match(line.c_str(), what, rx_q)) {
                 index = std::atol(what[1].first)-1;
                 mQuad[index].iV[0] = std::atol(what[3].first)-1;
                 mQuad[index].iV[1] = std::atol(what[4].first)-1;
