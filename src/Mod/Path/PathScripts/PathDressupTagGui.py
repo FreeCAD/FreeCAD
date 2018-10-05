@@ -495,7 +495,7 @@ def Create(baseObject, name='DressupTag'):
     obj = PathDressupTag.Create(baseObject, name)
     vp = PathDressupTagViewProvider(obj.ViewObject)
     FreeCAD.ActiveDocument.commitTransaction()
-    obj.ViewObject.startEditing()
+    obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
     return obj
 
 
