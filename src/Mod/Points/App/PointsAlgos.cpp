@@ -29,6 +29,7 @@
 # include <sstream>
 #endif
 
+#include <regex>
 
 #include "PointsAlgos.h"
 #include "Points.h"
@@ -40,7 +41,6 @@
 #include <Base/Stream.h>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/math/special_functions/fpclassify.hpp>
@@ -63,12 +63,12 @@ void PointsAlgos::Load(PointKernel &points, const char *FileName)
 
 void PointsAlgos::LoadAscii(PointKernel &points, const char *FileName)
 {
-    boost::regex rx("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+    std::regex rx("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
-    //boost::regex rx("(\\b[0-9]+\\.([0-9]+\\b)?|\\.[0-9]+\\b)");
-    //boost::regex rx("^\\s*(-?[0-9]*)\\.([0-9]+)\\s+(-?[0-9]*)\\.([0-9]+)\\s+(-?[0-9]*)\\.([0-9]+)\\s*$");
-    boost::cmatch what;
+    //std::regex rx("(\\b[0-9]+\\.([0-9]+\\b)?|\\.[0-9]+\\b)");
+    //std::regex rx("^\\s*(-?[0-9]*)\\.([0-9]+)\\s+(-?[0-9]*)\\.([0-9]+)\\s+(-?[0-9]*)\\.([0-9]+)\\s*$");
+    std::cmatch what;
 
     Base::Vector3d pt;
     int LineCnt=0;
@@ -93,7 +93,7 @@ void PointsAlgos::LoadAscii(PointKernel &points, const char *FileName)
     try {
         // read file
         while (std::getline(file, line)) {
-            if (boost::regex_match(line.c_str(), what, rx)) {
+            if (std::regex_match(line.c_str(), what, rx)) {
                 pt.x = std::atof(what[1].first);
                 pt.y = std::atof(what[4].first);
                 pt.z = std::atof(what[7].first);
