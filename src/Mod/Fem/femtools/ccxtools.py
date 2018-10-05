@@ -37,7 +37,7 @@ if FreeCAD.GuiUp:
 
 class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
-    known_analysis_types = ["static", "frequency", "thermomech"]
+    known_analysis_types = ["static", "frequency", "thermomech", "check"]
     finished = QtCore.Signal(int)
 
     ## The constructor
@@ -685,14 +685,17 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             self.finished.emit(ret_code)
             progress_bar.stop()
             if ret_code or self.ccx_stderr:
-                FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
-                FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
-                FreeCAD.Console.PrintMessage(self.ccx_stderr)
-                FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
-                FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
-                FreeCAD.Console.PrintMessage(self.ccx_stdout)
-                self.has_for_nonpositive_jacobians()
-                FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
+                if ret_code == 201 and self.solver.AnalysisType == 'check':
+                    FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
+                else:
+                    FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
+                    FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
+                    FreeCAD.Console.PrintMessage(self.ccx_stderr)
+                    FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
+                    FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
+                    FreeCAD.Console.PrintMessage(self.ccx_stdout)
+                    self.has_for_nonpositive_jacobians()
+                    FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
             else:
                 FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
         else:
@@ -750,7 +753,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.results_present = True
                     break
             else:
-                FreeCAD.Console.PrintError('FEM: No result object in active Analysis.\n')
+                if self.solver.AnalysisType == 'check':
+                    for m in self.analysis.Group:
+                        if m.isDerivedFrom("Fem::FemMeshObjectPython"):
+                            # we have no result object but a mesh object, this happens in NOANALYSIS mode
+                            break
+                else:
+                    FreeCAD.Console.PrintError('FEM: No result object in active Analysis.\n')
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
 
