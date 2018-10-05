@@ -317,6 +317,14 @@ void Placement::on_selectedVertex_clicked()
         }
         picked.insert(picked.begin(),points.begin(),points.end());
     }
+    //we have to clear selection and reselect original object(s)
+    //else later on the rotation is applied twice because there will
+    //be 2 (vertex) objects in the selection, and even if both are subobjects
+    //of the same object the rotation still gets applied twice
+    Gui::Selection().clearSelection();
+    //reselect original object that was selected when placement dlg first opened
+    for (auto it : selectionObjects)
+        Gui::Selection().addSelection(it);
 
     if (picked.size() == 1) {
         ui->xCnt->setValue(picked[0].x);
@@ -421,15 +429,6 @@ information is provided in the report view, which can be useful when aligning ob
         ui->yCnt->setValue(0);
         ui->zCnt->setValue(0);
         return;
-    } else {
-        //we have to clear selection and reselect original object(s)
-        //else later on the rotation is applied twice because there will
-        //be 2 (vertex) objects in the selection, and even if both are subobjects
-        //of the same object the rotation still gets applied twice
-        Gui::Selection().clearSelection();
-        //reselect original object that was selected when placement dlg first opened
-        for (auto it : selectionObjects)
-            Gui::Selection().addSelection(it);
     }
 }
 
