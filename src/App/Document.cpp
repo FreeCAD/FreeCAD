@@ -59,6 +59,8 @@ recompute path. Also enables more complicated dependencies beyond trees.
 # include <random>
 #endif
 
+#include <regex>
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
@@ -71,7 +73,6 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #endif //USE_OLD_DAG
 
 #include <boost/bind.hpp>
-#include <boost/regex.hpp>
 #include <unordered_set>
 #include <unordered_map>
 
@@ -3145,12 +3146,12 @@ std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Typ
 
 std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname) const
 {
-    boost::regex rx(objname);
-    boost::cmatch what;
+    std::regex rx(objname);
+    std::cmatch what;
     std::vector<DocumentObject*> Objects;
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(typeId)) {
-            if (boost::regex_match((*it)->getNameInDocument(), what, rx))
+            if (std::regex_match((*it)->getNameInDocument(), what, rx))
                 Objects.push_back(*it);
         }
     }

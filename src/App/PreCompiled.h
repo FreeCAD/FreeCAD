@@ -73,11 +73,11 @@
 #include <bitset>
 #include <exception>
 #include <random>
+#include <regex>
 
 // Boost
 #include <boost/signals.hpp>
 #include <boost/bind.hpp>
-#include <boost/regex.hpp>
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/utility.hpp>

@@ -24,9 +24,9 @@
 #include "Range.h"
 #include <Base/Exception.h>
 #include <assert.h>
+#include <regex>
 #include <string.h>
 #include <sstream>
-#include <boost/regex.hpp>
 
 using namespace App;
 
@@ -203,14 +203,14 @@ int App::validColumn(const std::string &colstr)
 
 App::CellAddress App::stringToAddress(const char * strAddress)
 {
-    static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
-    boost::cmatch cm;
+    static const std::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
+    std::cmatch cm;
 
     assert(strAddress != 0);
 
-    if (boost::regex_match(strAddress, cm, e)) {
-        const boost::sub_match<const char *> colstr = cm[1];
-        const boost::sub_match<const char *> rowstr = cm[2];
+    if (std::regex_match(strAddress, cm, e)) {
+        const std::sub_match<const char *> colstr = cm[1];
+        const std::sub_match<const char *> rowstr = cm[2];
 
         return CellAddress(decodeRow(rowstr.str()), decodeColumn(colstr.str()));
     }
