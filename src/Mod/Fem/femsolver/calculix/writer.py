@@ -135,7 +135,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_constraints_displacement(inpfile)
 
         # constraints depend on step and depending on analysis type
-        if self.analysis_type == "frequency":
+        if self.analysis_type == "frequency" or self.analysis_type == "check":
             pass
         elif self.analysis_type == "static":
             if self.selfweight_objects:
@@ -282,7 +282,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_constraints_displacement(inpfileMain)
 
         # constraints depend on step and depending on analysis type
-        if self.analysis_type == "frequency":
+        if self.analysis_type == "frequency" or self.analysis_type == "check":
             pass
         elif self.analysis_type == "static":
             if self.selfweight_objects:
@@ -733,6 +733,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             analysis_type = '*FREQUENCY'
         elif self.analysis_type == 'thermomech':
             analysis_type = '*COUPLED TEMPERATURE-DISPLACEMENT'
+        elif self.analysis_type == 'check':
+            analysis_type = '*NO ANALYSIS'
         # analysis line --> solver type
         if self.solver_obj.MatrixSolverType == "default":
             pass
@@ -760,7 +762,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 pass  # not supported for static and frequency!
         # ANALYSIS parameter line
         analysis_parameter = ''
-        if self.analysis_type == 'static':
+        if self.analysis_type == 'static' or self.analysis_type == 'check':
             if self.solver_obj.IterationsUserDefinedIncrementations is True or self.solver_obj.IterationsUserDefinedTimeStepLength is True:
                 analysis_parameter = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)
         elif self.analysis_type == 'frequency':

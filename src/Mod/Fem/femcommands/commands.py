@@ -766,6 +766,11 @@ class _CommandFemSolverRun(CommandManager):
         def load_results(ret_code):
             if ret_code == 0:
                 self.fea.load_results()
+            elif ret_code == 201:
+                if self.fea.solver.AnalysisType == 'check':
+                    print('We run into the NOANALYSIS problem!')
+                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=31303&start=10#p260743
+                    self.fea.load_results()
             else:
                 print("CalculiX failed ccx finished with error {}".format(ret_code))
 
