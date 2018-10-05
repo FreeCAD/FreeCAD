@@ -29,7 +29,6 @@
 
 #include <iomanip>
 #include <iterator>
-#include <boost/regex.hpp>
 
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>

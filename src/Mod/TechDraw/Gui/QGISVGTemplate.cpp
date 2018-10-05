@@ -28,7 +28,7 @@
 #include <QPen>
 #include <QSvgRenderer>
 #include <QGraphicsSvgItem>
-#include <boost/regex.hpp>
+#include <regex>
 #endif // #ifndef _PreComp_
 
 #include <App/Application.h>
@@ -168,19 +168,19 @@ void QGISVGTemplate::createClickHandles(void)
 
     // Find text tags with freecad:editable attribute and their matching tspans
     // keep tagRegex in sync with App/DrawSVGTemplate.cpp
-    boost::regex tagRegex("<text([^>]*freecad:editable=[^>]*)>[^<]*<tspan[^>]*>([^<]*)</tspan>");
+    std::regex tagRegex("<text([^>]*freecad:editable=[^>]*)>[^<]*<tspan[^>]*>([^<]*)</tspan>");
 
     // Smaller regexes for parsing matches to tagRegex
-    boost::regex editableNameRegex("freecad:editable=\"(.*?)\"");
-    boost::regex xRegex("x=\"([\\d.-]+)\"");
-    boost::regex yRegex("y=\"([\\d.-]+)\"");
+    std::regex editableNameRegex("freecad:editable=\"(.*?)\"");
+    std::regex xRegex("x=\"([\\d.-]+)\"");
+    std::regex yRegex("y=\"([\\d.-]+)\"");
     //Note: some templates have fancy Transform clauses and don't use absolute x,y to position editableFields.
     //      editableFields will be in the wrong place in this case.
 
     std::string::const_iterator begin, end;
     begin = outfragment.begin();
     end = outfragment.end();
-    boost::match_results<std::string::const_iterator> tagMatch, nameMatch, xMatch, yMatch;
+    std::match_results<std::string::const_iterator> tagMatch, nameMatch, xMatch, yMatch;
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
@@ -188,10 +188,10 @@ void QGISVGTemplate::createClickHandles(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     double dotSize = hGrp->GetFloat("TemplateDotSize", 3.0);
 
-    while (boost::regex_search(begin, end, tagMatch, tagRegex)) {
-        if ( boost::regex_search(tagMatch[1].first, tagMatch[1].second, nameMatch, editableNameRegex) &&
-             boost::regex_search(tagMatch[1].first, tagMatch[1].second, xMatch, xRegex) &&
-             boost::regex_search(tagMatch[1].first, tagMatch[1].second, yMatch, yRegex) ) {
+    while (std::regex_search(begin, end, tagMatch, tagRegex)) {
+        if ( std::regex_search(tagMatch[1].first, tagMatch[1].second, nameMatch, editableNameRegex) &&
+             std::regex_search(tagMatch[1].first, tagMatch[1].second, xMatch, xRegex) &&
+             std::regex_search(tagMatch[1].first, tagMatch[1].second, yMatch, yRegex) ) {
 
             QString xStr = QString::fromStdString(xMatch[1].str());
             QString yStr = QString::fromStdString(yMatch[1].str());

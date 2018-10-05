@@ -26,14 +26,12 @@
 # include <sstream>
 # include <cstring>
 # include <cstdlib>
-#include <cmath>
+# include <cmath>
 # include <exception>
-# include <boost/regex.hpp>
 # include <QString>
-# include <QStringList>
-# include <QRegExp>
 #include <QChar>
 
+# include <regex>
 
 #include <BRep_Tool.hxx>
 #include <gp_Ax3.hxx>
@@ -74,16 +72,16 @@ using namespace TechDraw;
 
 /*static*/ int DrawUtil::getIndexFromName(std::string geomName)
 {
-   boost::regex re("\\d+$"); // one of more digits at end of string
-   boost::match_results<std::string::const_iterator> what;
-   boost::match_flag_type flags = boost::match_default;
+   std::regex re("\\d+$"); // one of more digits at end of string
+   std::match_results<std::string::const_iterator> what;
+   std::regex_constants::match_flag_type flags = std::regex_constants::match_default;
    char* endChar;
    std::string::const_iterator begin = geomName.begin();
    std::string::const_iterator end = geomName.end();
    std::stringstream ErrorMsg;
 
    if (!geomName.empty()) {
-      if (boost::regex_search(begin, end, what, re, flags)) {
+      if (std::regex_search(begin, end, what, re, flags)) {
          return int (std::strtol(what.str().c_str(), &endChar, 10));         //TODO: use std::stoi() in c++11
       } else {
          ErrorMsg << "getIndexFromName: malformed geometry name - " << geomName;
@@ -96,15 +94,15 @@ using namespace TechDraw;
 
 std::string DrawUtil::getGeomTypeFromName(std::string geomName)
 {
-   boost::regex re("^[a-zA-Z]*");                                           //one or more letters at start of string
-   boost::match_results<std::string::const_iterator> what;
-   boost::match_flag_type flags = boost::match_default;
+   std::regex re("^[a-zA-Z]*");                                           //one or more letters at start of string
+   std::match_results<std::string::const_iterator> what;
+   std::regex_constants::match_flag_type flags = std::regex_constants::match_default;
    std::string::const_iterator begin = geomName.begin();
    std::string::const_iterator end = geomName.end();
    std::stringstream ErrorMsg;
 
    if (!geomName.empty()) {
-      if (boost::regex_search(begin, end, what, re, flags)) {
+      if (std::regex_search(begin, end, what, re, flags)) {
          return what.str();         //TODO: use std::stoi() in c++11
       } else {
          ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;

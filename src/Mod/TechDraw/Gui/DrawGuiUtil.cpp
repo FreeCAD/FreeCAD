@@ -27,10 +27,8 @@
 # include <cstring>
 # include <cstdlib>
 # include <exception>
-# include <boost/regex.hpp>
 # include <QString>
 # include <QStringList>
-# include <QRegExp>
 # include <QMessageBox>
 #include <QRectF>
 

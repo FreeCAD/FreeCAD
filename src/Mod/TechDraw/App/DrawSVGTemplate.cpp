@@ -38,10 +38,10 @@
 
 #include <App/Application.h>
 
-#include <boost/regex.hpp>
 #include <boost/graph/graph_concepts.hpp>
 #include <iostream>
 #include <iterator>
+#include <regex>
 
 #include <QDebug>
 
@@ -183,19 +183,19 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
     std::map<std::string, std::string> subs = EditableTexts.getValues();
 
     if (subs.size() > 0) {
-        boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+        std::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator begin, end;
         begin = outfragment.begin();
         end = outfragment.end();
-        boost::match_results<std::string::const_iterator> what;
+        std::match_results<std::string::const_iterator> what;
 
         // Find editable texts
-        while (boost::regex_search(begin, end, what, e1)) {            //search in outfragment
+        while (std::regex_search(begin, end, what, e1)) {            //search in outfragment
             // if we have a replacement value for the text we've found
             if (subs.count(what[1].str())) {
                  // change it to specified value
-                 boost::regex e2 ("(<text.*?freecad:editable=\"" + what[1].str() + "\".*?<tspan.*?)>(.*?)(</tspan>)");
-                 newfragment = boost::regex_replace(newfragment, e2, "$1>" + subs[what[1].str()] + "$3");   //replace in newfragment
+                 std::regex e2 ("(<text.*?freecad:editable=\"" + what[1].str() + "\".*?<tspan.*?)>(.*?)(</tspan>)");
+                 newfragment = std::regex_replace(newfragment, e2, "$1>" + subs[what[1].str()] + "$3");   //replace in newfragment
             }
             begin = what[0].second;
         }
@@ -203,9 +203,9 @@ App::DocumentObjectExecReturn * DrawSVGTemplate::execute(void)
 
 
     // restoring linebreaks and saving the file
-    boost::regex e3 ("--endOfLine--");
+    std::regex e3 ("--endOfLine--");
     string fmt = "\\n";
-    outfragment = boost::regex_replace(newfragment, e3, fmt);
+    outfragment = std::regex_replace(newfragment, e3, fmt);
 
     const QString qsOut = QString::fromStdString(outfragment);
     QDomDocument doc(QString::fromLatin1("mydocument"));
@@ -295,19 +295,19 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         tfile.close();
         //this catches all the tags: <text ... </tspan></text>
         //keep tagRegex in sync with Gui/QGISVGTemplate.cpp
-        boost::regex tagRegex ("<text([^>]*freecad:editable=[^>]*)>[^<]*<tspan[^>]*>([^<]*)</tspan>");
-        boost::regex nameRegex("freecad:editable=\"(.*?)\"");
-        boost::regex valueRegex("<tspan.*?>(.*?)</tspan>");
+        std::regex tagRegex ("<text([^>]*freecad:editable=[^>]*)>[^<]*<tspan[^>]*>([^<]*)</tspan>");
+        std::regex nameRegex("freecad:editable=\"(.*?)\"");
+        std::regex valueRegex("<tspan.*?>(.*?)</tspan>");
 
         string::const_iterator tbegin, tend;
         tbegin = tfrag.begin();
         tend = tfrag.end();
-        boost::match_results<std::string::const_iterator> tagMatch;
-        boost::match_results<std::string::const_iterator> nameMatch;
-        boost::match_results<std::string::const_iterator> valueMatch;
-        while (boost::regex_search(tbegin, tend, tagMatch, tagRegex)) {
-            if ( boost::regex_search(tagMatch[0].first, tagMatch[0].second, nameMatch, nameRegex) &&
-                 boost::regex_search(tagMatch[0].first, tagMatch[0].second, valueMatch, valueRegex)) {
+        std::match_results<std::string::const_iterator> tagMatch;
+        std::match_results<std::string::const_iterator> nameMatch;
+        std::match_results<std::string::const_iterator> valueMatch;
+        while (std::regex_search(tbegin, tend, tagMatch, tagRegex)) {
+            if ( std::regex_search(tagMatch[0].first, tagMatch[0].second, nameMatch, nameRegex) &&
+                 std::regex_search(tagMatch[0].first, tagMatch[0].second, valueMatch, valueRegex)) {
                 //found valid name/value pair
                 string name = nameMatch[1];
                 string value = valueMatch[1];

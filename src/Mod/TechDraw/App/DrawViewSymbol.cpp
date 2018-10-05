@@ -29,7 +29,7 @@
 
 #include <iomanip>
 #include <iterator>
-#include <boost/regex.hpp>
+#include <regex>
 
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
@@ -73,12 +73,12 @@ void DrawViewSymbol::onChanged(const App::Property* prop)
             std::vector<string> eds;
             std::string svg = Symbol.getValue();
             if (!svg.empty()) {
-                boost::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+                std::regex e ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
                 std::string::const_iterator tbegin, tend;
                 tbegin = svg.begin();
                 tend = svg.end();
-                boost::match_results<std::string::const_iterator> twhat;
-                while (boost::regex_search(tbegin, tend, twhat, e)) {
+                std::match_results<std::string::const_iterator> twhat;
+                while (std::regex_search(tbegin, tend, twhat, e)) {
                     eds.push_back(twhat[2]);
                     tbegin = twhat[0].second;
                 }
@@ -102,17 +102,17 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
     //this pushes the editabletexts into the svg
     std::string newsvg = svg;
     if (!editText.empty()) {
-        boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
+        std::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator begin, end;
         begin = svg.begin();
         end = svg.end();
-        boost::match_results<std::string::const_iterator> what;
+        std::match_results<std::string::const_iterator> what;
         std::size_t count = 0;
 
-        while (boost::regex_search(begin, end, what, e1)) {
+        while (std::regex_search(begin, end, what, e1)) {
             if (count < editText.size()) {
-                boost::regex e2 ("(<text.*?freecad:editable=\"" + what[1].str() + "\".*?<tspan.*?)>(.*?)(</tspan>)");
-                newsvg = boost::regex_replace(newsvg, e2, "$1>" + editText[count] + "$3");
+                std::regex e2 ("(<text.*?freecad:editable=\"" + what[1].str() + "\".*?<tspan.*?)>(.*?)(</tspan>)");
+                newsvg = std::regex_replace(newsvg, e2, "$1>" + editText[count] + "$3");
             }
             count++;
             begin = what[0].second;
@@ -133,17 +133,17 @@ QRectF DrawViewSymbol::getRect() const
 //        string::const_iterator begin, end;
 //        begin = svg.begin();
 //        end = svg.end();
-//        boost::match_results<std::string::const_iterator> what;
+//        std::match_results<std::string::const_iterator> what;
 
-//        boost::regex e1 ("width=\"([0-9.]*?)[a-zA-Z]*?\"");
-//        if (boost::regex_search(begin, end, what, e1)) {
+//        std::regex e1 ("width=\"([0-9.]*?)[a-zA-Z]*?\"");
+//        if (std::regex_search(begin, end, what, e1)) {
 //            //std::string wText = what[0].str();             //this is the whole match 'width="100"'
 //            std::string wNum  = what[1].str();               //this is just the number 100
 //            w = std::stod(wNum);
 //        }
 //        
-//        boost::regex e2 ("height=\"([0-9.]*?)[a-zA-Z]*?\"");
-//        if (boost::regex_search(begin, end, what, e2)) {
+//        std::regex e2 ("height=\"([0-9.]*?)[a-zA-Z]*?\"");
+//        if (std::regex_search(begin, end, what, e2)) {
 //            //std::string hText = what[0].str();
 //            std::string hNum  = what[1].str();
 //            h = std::stod(hNum);
