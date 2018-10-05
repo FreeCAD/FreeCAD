@@ -63,6 +63,7 @@
 #include <queue>
 #include <memory>
 #include <bitset>
+#include <regex>
 
 //streams
 #include <iostream>
@@ -102,7 +103,6 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
-#include <boost/regex.hpp>
 
 // QtCore
 #include <QBuffer>

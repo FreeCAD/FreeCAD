@@ -27,7 +27,7 @@
 
 #ifndef _PreComp_
 #   include <sstream>
-#   include <boost/regex.hpp>
+#   include <regex>
 #endif
 
 #include "Console.h"
@@ -745,15 +745,15 @@ int getSWIGVersionFromModule(const std::string& module)
             // file can have the extension .py or .pyc
             filename = filename.substr(0, filename.rfind("."));
             filename += ".py";
-            boost::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
-            boost::cmatch what;
+            std::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
+            std::cmatch what;
 
             std::string line;
             Base::FileInfo fi(filename);
 
             Base::ifstream str(fi, std::ios::in);
             while (str && std::getline(str, line)) {
-                if (boost::regex_match(line.c_str(), what, rx)) {
+                if (std::regex_match(line.c_str(), what, rx)) {
                     int major = std::atoi(what[1].first);
                     int minor = std::atoi(what[2].first);
                     int micro = std::atoi(what[3].first);

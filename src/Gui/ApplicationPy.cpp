@@ -36,7 +36,7 @@
 
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/TranscodingException.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 
 #include "Application.h"
 #include "BitmapFactory.h"
@@ -1036,9 +1036,9 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
         module = fi.fileNamePure();
 
         // for the group name get the directory name after 'Mod'
-        boost::regex rx("/Mod/(\\w+)/");
-        boost::smatch what;
-        if (boost::regex_search(file, what, rx)) {
+        std::regex rx("/Mod/(\\w+)/");
+        std::smatch what;
+        if (std::regex_search(file, what, rx)) {
             group = what[1];
         }
         else {
