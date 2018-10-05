@@ -49,7 +49,6 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
-#include <boost/regex.hpp>
 #include <boost/bind.hpp>
 #include <deque>
 

@@ -23,13 +23,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <regex>
 #endif
 
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/algorithm/copy.hpp>
 #include <boost/assign.hpp>
 #include <boost/bind.hpp>
-#include <boost/regex.hpp>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Property.h>
@@ -142,8 +142,8 @@ const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
 
 bool PropertySheet::isValidAlias(const std::string &candidate)
 {
-    static const boost::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
-    boost::cmatch cm;
+    static const std::regex gen("^[A-Za-z][_A-Za-z0-9]*$");
+    std::cmatch cm;
 
     /* Check if it is used before */
     if (getValueFromAlias(candidate) != 0)
@@ -154,12 +154,12 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
         return false;
 
     /* Check to make sure it doesn't match a cell reference */
-    if (boost::regex_match(candidate.c_str(), cm, gen)) {
-        static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
+    if (std::regex_match(candidate.c_str(), cm, gen)) {
+        static const std::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
 
-        if (boost::regex_match(candidate.c_str(), cm, e)) {
-            const boost::sub_match<const char *> colstr = cm[1];
-            const boost::sub_match<const char *> rowstr = cm[2];
+        if (std::regex_match(candidate.c_str(), cm, e)) {
+            const std::sub_match<const char *> colstr = cm[1];
+            const std::sub_match<const char *> rowstr = cm[2];
 
             // A valid cell address?
             if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()) >= 0)
@@ -619,13 +619,13 @@ public:
 
 
         if (varExpr) {
-            static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
-            boost::cmatch cm;
+            static const std::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
+            std::cmatch cm;
             std::string s = varExpr->name();
 
-            if (boost::regex_match(s.c_str(), cm, e)) {
-                const boost::sub_match<const char *> colstr = cm[1];
-                const boost::sub_match<const char *> rowstr = cm[2];
+            if (std::regex_match(s.c_str(), cm, e)) {
+                const std::sub_match<const char *> colstr = cm[1];
+                const std::sub_match<const char *> rowstr = cm[2];
                 int thisRow, thisCol;
 
                 try {
