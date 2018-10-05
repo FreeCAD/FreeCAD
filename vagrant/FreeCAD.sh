@@ -56,7 +56,6 @@ then
                                libboost-filesystem1.58-dev      \
                                libboost-program-options1.58-dev \
                                libboost-python1.58-dev          \
-                               libboost-regex1.58-dev           \
                                libboost-signals1.58-dev         \
                                libboost-system1.58-dev          \
                                libboost-thread1.58-dev          \
@@ -89,7 +88,6 @@ then
                                libboost-filesystem1.55-dev      \
                                libboost-program-options1.55-dev \
                                libboost-python1.55-dev          \
-                               libboost-regex1.55-dev           \
                                libboost-signals1.55-dev         \
                                libboost-system1.55-dev          \
                                libboost-thread1.55-dev          \
