@@ -965,7 +965,7 @@ def Create(res):
         vobj = ViewProvider(obj.ViewObject, res)
 
         FreeCAD.ActiveDocument.commitTransaction()
-        obj.ViewObject.startEditing()
+        obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
         return obj
     FreeCAD.ActiveDocument.abortTransaction()
     return None
