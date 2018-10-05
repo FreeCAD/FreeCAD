@@ -26,8 +26,6 @@
 #ifndef _PreComp_
 #endif
 
-#include <boost/regex.hpp>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Exception.h>

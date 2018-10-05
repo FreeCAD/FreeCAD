@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 #endif
 
-#include <boost/regex.hpp>
+//#include <regex>
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -166,8 +166,8 @@ void Toolpath::setFromGCode(const std::string instr)
     clear();
     
     // remove comments
-    //boost::regex e("\\(.*?\\)");
-    //std::string str = boost::regex_replace(instr, e, "");
+    //std::regex e("\\(.*?\\)");
+    //std::string str = std::regex_replace(instr, e, "");
     std::string str(instr);
     
     // split input string by () or G or M commands
