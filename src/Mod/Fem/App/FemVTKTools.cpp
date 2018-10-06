@@ -795,13 +795,13 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             data->SetName(it->c_str());
 
             vtkIdType i=0;
-            for (std::vector<Base::Vector3d>::const_iterator it=vel.begin(); it!=vel.end(); ++it) {
-                double tuple[] = {it->x, it->y, it->z};
+            for (std::vector<Base::Vector3d>::const_iterator jt=vel.begin(); jt!=vel.end(); ++jt) {
+                double tuple[] = {jt->x, jt->y, jt->z};
                 data->SetTuple(i, tuple);
                 ++i;
             }
             grid->GetPointData()->AddArray(data);
-            Base::Console().Message("    A PropertyVectorList was exported: %s\n", it->c_str(), it->c_str());
+            Base::Console().Message("    A PropertyVectorList was exported: %s\n", it->c_str());
         }
         else
             Base::Console().Message("    PropertyVectorList NOT exported to vtk: %s size is: %i\n", it->c_str(), field->getSize());
