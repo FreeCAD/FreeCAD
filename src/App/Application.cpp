@@ -1622,6 +1622,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
 {
     std::list<std::string> processed;
     Base::Console().Log("Init: Processing command line files\n");
+    bool hasFCStdFiles=false;
     for (std::list<std::string>::const_iterator it = files.begin(); it != files.end(); ++it) {
         Base::FileInfo file(*it);
 
@@ -1630,6 +1631,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
         try {
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
                 // try to open
+                hasFCStdFiles=true;
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
                 processed.push_back(*it);
             }
@@ -1675,7 +1677,9 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
-
+    //do not create new document on startup if one or more docs were loaded via command line
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+    hGrp->SetBool("FilesLoadedViaCommandLine", hasFCStdFiles);
     return processed; // successfully processed files
 }
 

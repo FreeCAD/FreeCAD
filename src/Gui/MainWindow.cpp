@@ -1071,7 +1071,9 @@ void MainWindow::delayedStartup()
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
-        App::GetApplication().newDocument();
+        if (! hGrp->GetBool("FilesLoadedViaCommandLine", false)){
+            App::GetApplication().newDocument();
+        }
     }
 
     if (hGrp->GetBool("RecoveryEnabled", true)) {
