@@ -141,9 +141,6 @@ before_install:
        ./autogen.sh && ./configure CC=gcc && sudo make install
        cd ${TRAVIS_BUILD_DIR}
 
-       #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
-       sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
-       sudo find /usr/lib -name libpq.so -exec ln -s {} /usr/lib/libpq.so ';'
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 
