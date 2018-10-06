@@ -1074,7 +1074,6 @@ void MainWindow::delayedStartup()
         if (App::GetApplication().getDocuments().size()==0){
             App::GetApplication().newDocument();
         }
-
     }
 
     if (hGrp->GetBool("RecoveryEnabled", true)) {
