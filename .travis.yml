@@ -136,8 +136,11 @@ before_install:
        curl -L http://security.ubuntu.com/ubuntu/pool/universe/e/eigen3/libeigen3-dev_3.3.4-4_all.deb -o libeigen3.deb \
             && sudo dpkg -i libeigen3.deb
 
-       #Install ccache to reduce successive build times (use 3.2.5+ to avoid spurious warnings)
-       curl -L "https://codeload.github.com/ccache/ccache/tar.gz/v3.2.5" | tar xvz && cd ccache-*
+       # Install ccache to reduce successive build times (use newer version to minimize issues)
+       # XXX: ccache <=3.4.3 always builds manuals, requiring asciidoc/xsltproc
+       # XXX: 3.4.4 might have --disable-man (at least its present in their git)
+       sudo apt install -y xsltproc
+       curl -L "https://codeload.github.com/ccache/ccache/tar.gz/v3.4.3" | tar xvz && cd ccache-*
        ./autogen.sh && ./configure CC=gcc && sudo make install
        cd ${TRAVIS_BUILD_DIR}
 
