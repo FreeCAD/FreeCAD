@@ -83,7 +83,8 @@ before_install:
 
    "linux")
        sudo apt-get update -qq
-       sudo apt-get install -y doxygen                          \
+       sudo apt-get install -y --no-install-recommends          \
+                               doxygen                          \
                                libboost1.55-dev                 \
                                libboost-filesystem1.55-dev      \
                                libboost-program-options1.55-dev \
