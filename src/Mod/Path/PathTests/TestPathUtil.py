@@ -108,6 +108,7 @@ class TestPathUtil(PathTestBase):
 
         # create a valid base object
         box = self.doc.addObject("Part::Box","Box")
+        self.doc.recompute()
         self.assertTrue(PathUtil.isValidBaseObject(box))
 
         # a part with at least one valid object is valid
