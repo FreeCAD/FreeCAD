@@ -29,6 +29,7 @@ import FreeCAD
 import FreeCADGui
 import Part
 import Path
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtils as PathUtils
 #from bisect import bisect_left
@@ -40,7 +41,7 @@ from PySide import QtCore, QtGui
 
 LOG_MODULE = PathLog.thisModule()
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
     PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 else:
@@ -59,11 +60,14 @@ class ObjectDressup:
 
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupAxisMap", "The base path to modify"))
-        obj.addProperty("App::PropertyFile", "probefile", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "The point file from the surface probing."))
+        obj.addProperty("App::PropertyFile", "probefile", "ProbeData", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "The point file from the surface probing."))
         obj.Proxy = self
         obj.addProperty("Part::PropertyPartShape", "interpSurface", "Path")
         obj.setEditorMode('interpSurface', 2)  # hide
-
+        obj.addProperty("App::PropertyDistance", "ArcInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrect", "Deflection distance for arc interpolation"))
+        obj.addProperty("App::PropertyDistance", "SegInterpolate", "Interpolate", QtCore.QT_TRANSLATE_NOOP("Path_DressupZCorrectp", "break segments into smaller segments of this length."))
+        obj.ArcInterpolate = 0.1
+        obj.SegInterpolate = 1.0
     def __getstate__(self):
         return None
 
@@ -76,14 +80,12 @@ class ObjectDressup:
 
     def _bilinearInterpolate(self, surface, x, y):
 
-        print ('xval:{}, yval:{}'.format(x, y))
         p1 = FreeCAD.Vector(x, y, 100.0)
         p2 = FreeCAD.Vector(x, y, -100.0)
 
         vertical_line = Part.Line(p1, p2)
         points, curves = vertical_line.intersectCS(surface)
         return points[0].Z
-
 
     def _loadFile(self, obj, filename):
         if filename == "":
@@ -100,9 +102,12 @@ class ObjectDressup:
                 zval = round(float(w[2]), 2)
 
                 pointlist.append([xval, yval,zval])
+            PathLog.debug(pointlist)
 
             cols = list(zip(*pointlist))
+            PathLog.debug("cols: {}".format(cols))
             yindex = list(sorted(set(cols[1])))
+            PathLog.debug("yindex: {}".format(yindex))
 
             array = []
             for y in yindex:
@@ -121,6 +126,10 @@ class ObjectDressup:
 
 
     def execute(self, obj):
+
+        sampleD = obj.SegInterpolate.Value
+        curveD = obj.ArcInterpolate.Value
+
         if obj.interpSurface.isNull(): #No valid probe data.  return unchanged path
             obj.Path = obj.Base.Path
             return
@@ -131,28 +140,36 @@ class ObjectDressup:
             if obj.Base.isDerivedFrom("Path::Feature"):
                 if obj.Base.Path:
                     if obj.Base.Path.Commands:
-                        pp = obj.Base.Path.Commands
-			# process the path
+                        pathlist = obj.Base.Path.Commands
 
-                        pathlist = pp
                         newcommandlist = []
                         currLocation = {'X':0,'Y':0,'Z':0, 'F': 0}
 
                         for c in pathlist: #obj.Base.Path.Commands:
+                            PathLog.debug(c)
+                            PathLog.debug("     curLoc:{}".format(currLocation))
                             newparams = dict(c.Parameters)
-                            zval = newparams.pop("Z", currLocation['Z'])
-                            currLocation.update(newparams)
+                            zval = newparams.get("Z", currLocation['Z'])
                             if c.Name in movecommands:
-                                remapvar = currLocation['Z']
-                                offset = self._bilinearInterpolate(surface, currLocation['X'], currLocation['Y'])
-                                newparams["Z"] = remapvar + offset
-                                newcommand = Path.Command(c.Name, newparams)
-                                newcommandlist.append(newcommand)
-                                currLocation.update(newparams)
-                                currLocation['Z'] = zval
-                            else:
-                                newcommandlist.append(c)
+                                curVec = FreeCAD.Vector(currLocation['X'], currLocation['Y'], currLocation['Z'])
+                                arcwire = PathGeom.edgeForCmd(c, curVec)
+                                if arcwire is None:
+                                    continue
+                                if c.Name in arccommands:
+                                    pointlist =  arcwire.discretize(Deflection=curveD)
+                                else:
+                                    pointlist = arcwire.discretize(Number=int(arcwire.Length / sampleD))
+                                for point in pointlist:
+                                    offset = self._bilinearInterpolate(surface, point.x, point.y)
+                                    newcommand = Path.Command("G1", {'X':point.x, 'Y':point.y, 'Z':point.z + offset})
+                                    newcommandlist.append(newcommand)
+                                    currLocation.update(newcommand.Parameters)
+                                    currLocation['Z'] = zval
 
+                            else:
+                                # Non Feed Command
+                                newcommandlist.append(c)
+                                currLocation.update(c.Parameters)
                         path = Path.Path(newcommandlist)
                         obj.Path = path
 
@@ -162,7 +179,7 @@ class TaskPanel:
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ZCorrectEdit.ui")
         FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupZCorrect", "Edit Z Correction Dress-up"))
-        self.interpshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "InterpolationSurface") 
+        self.interpshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "InterpolationSurface")
         self.interpshape.Shape = obj.interpSurface
         self.interpshape.ViewObject.Transparency = 60
         self.interpshape.ViewObject.ShapeColor = (1.00000,1.00000,0.01961)

@@ -51,6 +51,7 @@ def Startup():
         from PathScripts import PathDressupPathBoundaryGui
         from PathScripts import PathDressupTagGui
         from PathScripts import PathDressupLeadInOut
+        from PathScripts import PathDressupZCorrect
         from PathScripts import PathDrillingGui
         from PathScripts import PathEngraveGui
         from PathScripts import PathFixture
@@ -61,6 +62,7 @@ def Startup():
         from PathScripts import PathPocketGui
         from PathScripts import PathPocketShapeGui
         from PathScripts import PathPost
+        from PathScripts import PathProbeGui
         from PathScripts import PathProfileContourGui
         from PathScripts import PathProfileEdgesGui
         from PathScripts import PathProfileFacesGui
