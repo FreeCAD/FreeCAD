@@ -50,6 +50,7 @@ public Q_SLOTS:
     void editorClosed(QWidget *);
 
 private:
+    mutable QWidget *expressionEditor;
     mutable bool pressed;
     mutable int activeTransactionID;
     bool changed;

@@ -36,6 +36,7 @@
 #include <App/DocumentObject.h>
 #include "PropertyItemDelegate.h"
 #include "PropertyItem.h"
+#include "PropertyEditor.h"
 
 FC_LOG_LEVEL_INIT("PropertyItem",true,true);
 
@@ -43,7 +44,8 @@ using namespace Gui::PropertyEditor;
 
 
 PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
-    : QItemDelegate(parent), pressed(false), activeTransactionID(0),changed(false)
+    : QItemDelegate(parent), expressionEditor(0)
+    , pressed(false), activeTransactionID(0),changed(false)
 {
 
     connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), 
@@ -132,7 +134,8 @@ void PropertyItemDelegate::editorClosed(QWidget *editor) {
         activeTransactionID = 0;
     }else
         FC_LOG("editor close");
-    editor->close();
+    if(editor)
+        editor->close();
 }
 
 QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOptionViewItem & /*option*/, 
@@ -144,7 +147,14 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
     if (!childItem)
         return 0;
-    QWidget* editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
+
+    PropertyEditor *parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+    QWidget* editor;
+    expressionEditor = 0;
+    if(parentEditor && parentEditor->isBinding())
+        expressionEditor = editor = childItem->createExpressionEditor(parent, this, SLOT(valueChanged()));
+    else
+        editor = childItem->createEditor(parent, this, SLOT(valueChanged()));
     if (editor) // Make sure the editor background is painted so the cell content doesn't show through
         editor->setAutoFillBackground(true);
     if (editor && childItem->isReadOnly())
@@ -153,7 +163,7 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
     else if(editor) {
         // We changed the way editor is activated in PropertyEditor (in response
         // of signal activated and clicked), so now we should grab focus
-        // regardless of "preseed" or not (e.g. when activated by keyboard
+        // regardless of "pressed" or not (e.g. when activated by keyboard
         // enter)
         editor->setFocus();
     }
@@ -200,6 +210,7 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
             }
         }
     }
+
     return editor;
 }
 
@@ -219,7 +230,10 @@ void PropertyItemDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
     QVariant data = index.data(Qt::EditRole);
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
     editor->blockSignals(true);
-    childItem->setEditorData(editor, data);
+    if(expressionEditor == editor)
+        childItem->setExpressionEditorData(editor, data);
+    else
+        childItem->setEditorData(editor, data);
     editor->blockSignals(false);
     return;
 }
@@ -229,7 +243,11 @@ void PropertyItemDelegate::setModelData(QWidget* editor, QAbstractItemModel* mod
     if (!index.isValid() || !changed)
         return;
     PropertyItem *childItem = static_cast<PropertyItem*>(index.internalPointer());
-    QVariant data = childItem->editorData(editor);
+    QVariant data;
+    if(expressionEditor == editor)
+        data = childItem->expressionEditorData(editor);
+    else
+        data = childItem->editorData(editor);
     model->setData(index, data, Qt::EditRole);
 }
 

@@ -125,6 +125,10 @@ public:
     virtual QVariant editorData(QWidget *editor) const;
     virtual bool isSeparator() const { return false; }
 
+    QWidget* createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    void setExpressionEditorData(QWidget *editor, const QVariant& data) const;
+    QVariant expressionEditorData(QWidget *editor) const;
+
     /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by 
        childs which like to be informed of a binding*/
     virtual void bind(const App::Property& prop);

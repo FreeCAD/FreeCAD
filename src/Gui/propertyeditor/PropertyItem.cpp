@@ -85,6 +85,7 @@ PropertyItem* PropertyItemFactory::createPropertyItem (const char* sName) const
 }
 
 // ----------------------------------------------------
+Q_DECLARE_METATYPE(Py::Object)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
 
@@ -302,7 +303,47 @@ QVariant PropertyItem::decoration(const QVariant&) const
 
 QVariant PropertyItem::toString(const QVariant& prop) const
 {
-    return prop;
+    if(prop != QVariant() || propertyItems.size()!=1)
+        return prop;
+    Base::PyGILStateLocker lock;
+    Py::Object pyobj(propertyItems[0]->getPyObject(),true);
+    std::ostringstream ss;
+    if(pyobj.isNone()) 
+        ss << "<None>";
+    else if(pyobj.isSequence()) {
+        ss << '[';
+        Py::Sequence seq(pyobj);
+        bool first = true;
+        size_t i=0;
+        for(i=0;i<2 && i<seq.size(); ++i) {
+            if(first)
+                first = false;
+            else
+                ss << ", ";
+            ss << Py::Object(seq[i]).as_string();
+        }
+        if(i<seq.size())
+            ss << "...";
+        ss << ']';
+    }else if(pyobj.isMapping()) {
+        ss << '{';
+        Py::Mapping map(pyobj);
+        bool first = true;
+        auto it = map.begin();
+        for(;it!=map.end(); ++it) {
+            if(first)
+                first = false;
+            else
+                ss << ", ";
+            const auto &v = *it;
+            ss << Py::Object(v.first).as_string() << ':' << Py::Object(v.second).as_string();
+        }
+        if(it!=map.end())
+            ss << "...";
+        ss << '}';
+    }else
+        ss << pyobj.as_string();
+    return QVariant(QString::fromUtf8(ss.str().c_str()));
 }
 
 QVariant PropertyItem::value(const App::Property* /*prop*/) const
@@ -357,6 +398,34 @@ void PropertyItem::setEditorData(QWidget * /*editor*/, const QVariant& /*data*/)
 
 QVariant PropertyItem::editorData(QWidget * /*editor*/) const
 {
+    return QVariant();
+}
+
+QWidget* PropertyItem::createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const
+{
+    if(!isBound())
+        return 0;
+    ExpLineEdit *le = new ExpLineEdit(parent,true);
+    le->setFrame(false);
+    le->setReadOnly(true);
+    QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
+    le->bind(getPath());
+    le->setAutoApply(autoApply());
+    return le;
+}
+
+void PropertyItem::setExpressionEditorData(QWidget *editor, const QVariant& data) const
+{
+    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
+    if(le)
+        le->setText(data.toString());
+}
+
+QVariant PropertyItem::expressionEditorData(QWidget *editor) const
+{
+    QLineEdit *le = qobject_cast<QLineEdit*>(editor);
+    if(le)
+        return QVariant(le->text());
     return QVariant();
 }
 
@@ -455,7 +524,11 @@ QVariant PropertyItem::data(int column, int role) const
             return toString(value(propertyItems[0]));
         else if (role == Qt::ToolTipRole)
             return toolTip(propertyItems[0]);
-        else
+        else if( role == Qt::TextColorRole) {
+            if(hasExpression())
+                return QVariant::fromValue(QColor(0,0,255.0));
+            return QVariant();
+        } else
             return QVariant();
     }
 }

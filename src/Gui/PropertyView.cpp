@@ -55,6 +55,14 @@ using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace Gui::PropertyEditor;
 
+static ParameterGrp::handle _GetParam() {
+    static ParameterGrp::handle hGrp;
+    if(!hGrp)
+        hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/PropertyView");
+    return hGrp;
+}
+
 /* TRANSLATOR Gui::PropertyView */
 
 /*! Property Editor Widget
@@ -89,14 +97,11 @@ PropertyView::PropertyView(QWidget *parent)
     propertyEditorData->setAutomaticDocumentUpdate(true);
     tabs->addTab(propertyEditorData, tr("Data"));
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("PropertyView");
-    if ( hGrp ) {
-        int preferredTab = hGrp->GetInt("LastTabIndex", 1);
+    _GetParam()->Attach(this);
+    int preferredTab = _GetParam()->GetInt("LastTabIndex", 1);
 
-        if ( preferredTab > 0 && preferredTab < tabs->count() )
-            tabs->setCurrentIndex(preferredTab);
-    }
+    if ( preferredTab > 0 && preferredTab < tabs->count() )
+        tabs->setCurrentIndex(preferredTab);
 
     // connect after adding all tabs, so adding doesn't thrash the parameter
     connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
@@ -126,6 +131,7 @@ PropertyView::PropertyView(QWidget *parent)
 
 PropertyView::~PropertyView()
 {
+    _GetParam()->Detach(this);
     this->connectPropData.disconnect();
     this->connectPropView.disconnect();
     this->connectPropAppend.disconnect();
@@ -133,6 +139,19 @@ PropertyView::~PropertyView()
     this->connectPropChange.disconnect();
     this->connectUndoDocument.disconnect();
     this->connectRedoDocument.disconnect();
+}
+
+void PropertyView::OnChange(Base::Subject<const char*> &, const char* sReason) {
+    if(strcmp(sReason,"ShowAll")==0)
+        onTimer();
+}
+
+bool PropertyView::showAll() {
+    return _GetParam()->GetBool("ShowAll",false);
+}
+
+void PropertyView::setShowAll(bool enable) {
+    _GetParam()->SetBool("ShowAll",enable);
 }
 
 void PropertyView::hideEvent(QHideEvent *ev) {
@@ -181,10 +200,15 @@ void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::P
     propertyEditorView->updateProperty(prop);
 }
 
+static inline bool isPropertyHidden(const App::Property *prop) {
+    return !PropertyView::showAll() &&
+        ((prop->getType() & App::Prop_Hidden) || prop->testStatus(App::Property::Hidden));
+}
+
 void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if (parent->isHidden(&prop) || prop.testStatus(App::Property::Hidden)) 
+    if (isPropertyHidden(&prop)) 
         return;
 
     if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
@@ -251,6 +275,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
 }
 
 void PropertyView::onTimer() {
+    timer->stop();
     std::set<App::DocumentObject *> objSet;
 
     // group the properties by <name,id>
@@ -313,7 +338,7 @@ void PropertyView::onTimer() {
         std::vector<App::Property*>::iterator pt;
         if (ob) {
             for (pt = dataList.begin(); pt != dataList.end(); ++pt) {
-                if (ob->isHidden(*pt) || (*pt)->testStatus(App::Property::Hidden)) 
+                if (isPropertyHidden(*pt))
                     continue;
 
                 PropInfo nameType;
@@ -334,7 +359,7 @@ void PropertyView::onTimer() {
         if (vp) {
             std::map<std::string, App::Property*>::iterator pt;
             for (pt = viewList.begin(); pt != viewList.end(); ++pt) {
-                if (vp->isHidden(pt->second) || pt->second->testStatus(App::Property::Hidden))
+                if (isPropertyHidden(pt->second))
                     continue;
 
                 PropInfo nameType;
@@ -371,7 +396,7 @@ void PropertyView::onTimer() {
             obj->getPropertyMap(propMap);
             linked->getPropertyList(dataList);
             for(auto prop : dataList) {
-                if(linked->isHidden(prop) || prop->testStatus(App::Property::Hidden))
+                if(isPropertyHidden(prop))
                     continue;
                 std::string name(linked->getPropertyName(prop));
                 auto it = propMap.find(name);
@@ -389,7 +414,7 @@ void PropertyView::onTimer() {
                 dataList.clear();
                 vpLinked->getPropertyList(dataList);
                 for(auto prop : dataList) {
-                    if(vpLinked->isHidden(prop) || prop->testStatus(App::Property::Hidden))
+                    if(isPropertyHidden(prop))
                         continue;
                     std::string name(vpLinked->getPropertyName(prop));
                     auto it = propMap.find(name);
@@ -421,11 +446,7 @@ void PropertyView::onTimer() {
 
 void PropertyView::tabChanged(int index)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("PropertyView");
-    if (hGrp) {
-        hGrp->SetInt("LastTabIndex", index);
-    }
+    _GetParam()->SetInt("LastTabIndex",index);
 }
 
 void PropertyView::changeEvent(QEvent *e)

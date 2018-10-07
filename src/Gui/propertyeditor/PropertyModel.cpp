@@ -29,6 +29,7 @@
 
 #include "PropertyModel.h"
 #include "PropertyItem.h"
+#include "PropertyView.h"
 
 using namespace Gui::PropertyEditor;
 
@@ -237,11 +238,13 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         std::vector<std::vector<App::Property*> >::const_iterator it;
         for (it = kt->second.begin(); it != kt->second.end(); ++it) {
             App::Property* prop = it->front();
-            QString editor = QString::fromLatin1(prop->getEditorName());
-            if (!editor.isEmpty()) {
-                PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(prop->getEditorName());
+            std::string editor(prop->getEditorName());
+            if(editor.empty() && PropertyView::showAll())
+                editor = "Gui::PropertyEditor::PropertyItem";
+            if (!editor.empty()) {
+                PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(editor.c_str());
                 if (!item) {
-                    qWarning("No property item for type %s found\n", prop->getEditorName());
+                    qWarning("No property item for type %s found\n", editor.c_str());
                     continue;
                 }
                 else {
@@ -279,11 +282,13 @@ void PropertyModel::updateProperty(const App::Property& prop)
 
 void PropertyModel::appendProperty(const App::Property& prop)
 {
-    QString editor = QString::fromLatin1(prop.getEditorName());
-    if (!editor.isEmpty()) {
-        PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(prop.getEditorName());
+    std::string editor(prop.getEditorName());
+    if(editor.empty() && PropertyView::showAll())
+        editor = "Gui::PropertyEditor::PropertyItem";
+    if (!editor.empty()) {
+        PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(editor.c_str());
         if (!item) {
-            qWarning("No property item for type %s found\n", prop.getEditorName());
+            qWarning("No property item for type %s found\n", editor.c_str());
             return;
         }
 

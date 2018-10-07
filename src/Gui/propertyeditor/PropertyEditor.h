@@ -30,6 +30,7 @@
 
 #include <QTreeView>
 
+#include <App/DocumentObserver.h>
 #include "PropertyItem.h"
 #include "PropertyModel.h"
 
@@ -40,6 +41,7 @@ class Property;
 namespace Gui {
 namespace PropertyEditor {
 
+class PropertyItemDelegate;
 class PropertyModel;
 /*!
  Put this into the .qss file after Gui--PropertyEditor--PropertyEditor
@@ -81,8 +83,11 @@ public:
     QColor groupTextColor() const;
     void setGroupTextColor(const QColor& c);
 
-public Q_SLOTS:
+    bool isBinding() const { return binding; }
+
+protected Q_SLOTS:
     void onItemActivated(const QModelIndex &index);
+    void onMenuAction(QAction *);
 
 protected:
     virtual void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint);
@@ -92,12 +97,14 @@ protected:
     virtual void rowsInserted (const QModelIndex & parent, int start, int end);
     virtual void drawBranches(QPainter *painter, const QRect &rect, const QModelIndex &index) const;
     virtual QStyleOptionViewItem viewOptions() const;
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 
 private:
     void setEditorMode(const QModelIndex & parent, int start, int end);
     void updateItemEditor(bool enable, int column, const QModelIndex& parent);
 
 private:
+    PropertyItemDelegate *delegate;
     PropertyModel* propertyModel;
     QStringList selectedProperty;
     PropertyModel::PropertyList propList;
@@ -106,6 +113,10 @@ private:
     bool delaybuild;
     QColor groupColor;
     QBrush background;
+
+    App::DocumentObjectT context;
+    QModelIndex contextIndex;
+    bool binding;
 };
 
 } //namespace PropertyEditor

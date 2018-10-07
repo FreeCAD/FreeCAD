@@ -54,7 +54,7 @@ class ViewProvider;
 
 /** The property view class.
  */
-class PropertyView : public QWidget, public Gui::SelectionObserver
+class PropertyView : public QWidget, public Gui::SelectionObserver, public ParameterGrp::ObserverType
 {
     Q_OBJECT
 
@@ -62,9 +62,13 @@ public:
     PropertyView(QWidget *parent=0);
     virtual ~PropertyView();
 
+    void OnChange(Base::Subject<const char*> &, const char* sReason);
+
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;
     Gui::PropertyEditor::PropertyEditor* propertyEditorData;
     void clearPropertyItemSelection();
+    static bool showAll();
+    static void setShowAll(bool);
 
 public Q_SLOTS:
     /// Stores a preference for the last tab selected

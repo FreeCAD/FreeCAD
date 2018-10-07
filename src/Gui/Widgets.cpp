@@ -1403,7 +1403,9 @@ void LabelEditor::setInputType(InputType t)
 
 // --------------------------------------------------------------------
 
-ExpLineEdit::ExpLineEdit(QWidget* parent) : QLineEdit(parent) {
+ExpLineEdit::ExpLineEdit(QWidget* parent, bool expressionOnly) 
+    : QLineEdit(parent), autoClose(expressionOnly) 
+{
     defaultPalette = palette();
 
     /* Icon for f(x) */
@@ -1419,6 +1421,8 @@ ExpLineEdit::ExpLineEdit(QWidget* parent) : QLineEdit(parent) {
     setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px } ").arg(iconHeight+frameWidth));
 
     QObject::connect(iconLabel, SIGNAL(clicked()), this, SLOT(openFormulaDialog()));
+    if(expressionOnly) 
+        QMetaObject::invokeMethod(this, "openFormulaDialog", Qt::QueuedConnection, QGenericReturnArgument());
 }
 
 bool ExpLineEdit::apply(const std::string& propName) {
@@ -1493,18 +1497,13 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
 
     try {
         if (isBound() && getExpression()) {
-            std::unique_ptr<Expression> result(getExpression()->eval());
-            NumberExpression * value = freecad_dynamic_cast<NumberExpression>(result.get());
+            setReadOnly(true);
+            QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
+            iconLabel->setPixmap(pixmap);
 
-            if (value) {
-                setReadOnly(true);
-                QPixmap pixmap = getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight));
-                iconLabel->setPixmap(pixmap);
-
-                QPalette p(palette());
-                p.setColor(QPalette::Text, Qt::lightGray);
-                setPalette(p);
-            }
+            QPalette p(palette());
+            p.setColor(QPalette::Text, Qt::lightGray);
+            setPalette(p);
             setToolTip(Base::Tools::fromStdString(getExpression()->toString()));
         }
         else {
@@ -1526,7 +1525,6 @@ void ExpLineEdit::resizeEvent(QResizeEvent * event)
         setPalette(p);
         iconLabel->setToolTip(QString::fromLatin1(e.what()));
     }
-
 }
 
 void ExpLineEdit::openFormulaDialog()
@@ -1557,6 +1555,9 @@ void ExpLineEdit::finishFormulaDialog()
         setExpression(boost::shared_ptr<Expression>());
 
     box->deleteLater();
+
+    if(autoClose) 
+        this->deleteLater();
 }
 
 void ExpLineEdit::keyPressEvent(QKeyEvent *event)

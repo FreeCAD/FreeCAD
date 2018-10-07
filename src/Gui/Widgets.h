@@ -34,6 +34,7 @@
 #include <QBasicTimer>
 #include <QTime>
 #include <QToolButton>
+#include <QModelIndex>
 #include "ExpressionBinding.h"
 
 namespace Gui {
@@ -457,7 +458,7 @@ class GuiExport ExpLineEdit : public QLineEdit, public ExpressionBinding
     Q_OBJECT
 
 public:
-    ExpLineEdit ( QWidget * parent=0 );
+    ExpLineEdit ( QWidget * parent=0, bool expressionOnly=false );
 
     void setExpression(boost::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
@@ -470,6 +471,9 @@ private Q_SLOTS:
     void finishFormulaDialog();
     void openFormulaDialog();
     virtual void onChange();
+
+private:
+    bool autoClose;
 };
 
 } // namespace Gui
