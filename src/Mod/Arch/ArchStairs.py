@@ -89,7 +89,6 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
     if baseobj:
         lenSelection = len(baseobj)
         if lenSelection > 1:
-            print (len(baseobj))
             stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
             stair.Label = translate("Arch",name)
             _Stairs(stair)
@@ -129,6 +128,7 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         obj.Label = translate("Arch",name)
         _Stairs(obj)
         setProperty(obj,length,width,height,steps,name)
+        stairs.append(obj)
 
     if FreeCAD.GuiUp:
         if baseobj:
@@ -164,7 +164,6 @@ def makeRailing(stairs):
                 stairs0OutlineWireLR = "OutlineWireRight"
                 stairOutlineWireLR = "OutlineWireRight"
             if outlineLR or OutlineLRAll:
-
                 lrRail = ArchPipe.makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Rail")
 
                 if OutlineLRAll:
@@ -601,7 +600,6 @@ class _Stairs(ArchComponent.Component):
 
             # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
             netWidthI = 0
-            print (i)
             if i > 0:
                 try:
                     if obj.WidthOfLanding[i-1] > 0:
@@ -1079,7 +1077,6 @@ class _Stairs(ArchComponent.Component):
                 p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.LandingDepth.Value))
             else:
                 p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
-
             if obj.Flight in ["HalfTurnLeft", "HalfTurnRight"]:
                 if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
                     p3r = p2
