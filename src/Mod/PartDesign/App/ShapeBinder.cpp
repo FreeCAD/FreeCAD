@@ -30,6 +30,7 @@
 
 #include "ShapeBinder.h"
 #include <App/Document.h>
+#include <App/GroupExtension.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #ifndef M_PI
@@ -78,12 +79,6 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
             Shape.setValue(shape);
 
             if (TraceSupport.getValue()) {
-                chain.clear();
-                std::vector<App::DocumentObject*> list = getInListRecursive();
-                chain.insert(chain.end(), list.begin(), list.end());
-                list = obj->getInListRecursive();
-                chain.insert(chain.end(), list.begin(), list.end());
-
                 // this is the inverted global placement of the parent group ...
                 placement = this->globalPlacement() * Placement.getValue().inverse();
                 // multiplied with the global placement of the support shape
@@ -189,14 +184,37 @@ void ShapeBinder::onSettingDocument()
 
 void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
+    App::Document* doc = getDocument();
+    if (!doc || doc->testStatus(App::Document::Restoring))
+        return;
     if (this == &Obj)
         return;
     if (!TraceSupport.getValue())
         return;
     if (!Prop.getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId()))
         return;
-    auto it = std::find(chain.begin(), chain.end(), &Obj);
-    if (it != chain.end()) {
-        touch();
+
+    Part::Feature* obj = nullptr;
+    std::vector<std::string> subs;
+    ShapeBinder::getFilteredReferences(&Support, obj, subs);
+    if (obj) {
+        if (obj == &Obj) {
+            // the directly referenced object has changed
+            enforceRecompute();
+        }
+        else if (Obj.hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+            // check if the changed property belongs to a group-like object
+            // like Body or Part
+            std::vector<App::DocumentObject*> chain;
+            std::vector<App::DocumentObject*> list = getInListRecursive();
+            chain.insert(chain.end(), list.begin(), list.end());
+            list = obj->getInListRecursive();
+            chain.insert(chain.end(), list.begin(), list.end());
+
+            auto it = std::find(chain.begin(), chain.end(), &Obj);
+            if (it != chain.end()) {
+                enforceRecompute();
+            }
+        }
     }
 }
