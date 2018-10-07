@@ -67,7 +67,6 @@ private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
     virtual void onSettingDocument();
 
-    std::vector<App::DocumentObject*> chain;
     typedef boost::signals::connection Connection;
     Connection connectDocumentChangedObject;
 };
