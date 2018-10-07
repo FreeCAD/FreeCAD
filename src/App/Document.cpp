@@ -2249,13 +2249,14 @@ int Document::recompute()
                 inObjIt->enforceRecompute();
         }
     }
-#ifdef FC_DEBUG
+
     // check if all objects are recalculated which were touched
     for (auto objectIt : d->objectArray) {
-        if (objectIt->isTouched())
-            cerr << "Document::recompute(): " << objectIt->getNameInDocument() << " still touched after recompute" << endl;
+        if (objectIt->isTouched()) {
+            Base::Console().Warning("Document::recompute(): %s still touched after recompute\n",
+                                    objectIt->getNameInDocument());
+        }
     }
-#endif
 
     signalRecomputed(*this);
 
