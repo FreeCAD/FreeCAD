@@ -79,13 +79,17 @@ public:
     /*! Constructor */
     DocumentObjectT();
     /*! Constructor */
-    DocumentObjectT(DocumentObject*);
+    DocumentObjectT(const DocumentObject*);
+    /*! Constructor */
+    DocumentObjectT(const Property*);
     /*! Destructor */
     ~DocumentObjectT();
     /*! Assignment operator */
     void operator=(const DocumentObjectT&);
     /*! Assignment operator */
     void operator=(const DocumentObject*);
+    /*! Assignment operator */
+    void operator=(const Property*);
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
@@ -95,23 +99,35 @@ public:
     std::string getDocumentPython() const;
     /*! Get a pointer to the document object or 0 if it doesn't exist any more. */
     DocumentObject* getObject() const;
+    /*! Get a pointer to the property or 0 if it doesn't exist any more. */
+    Property* getProperty() const;
     /*! Get the name of the document object. */
     std::string getObjectName() const;
     /*! Get the label of the document object. */
     std::string getObjectLabel() const;
+    /*! Get the name of the property. */
+    std::string getPropertyName() const;
     /*! Get the document object as Python command. */
     std::string getObjectPython() const;
+    /*! Get the property as Python command. */
+    std::string getPropertyPython() const;
     /*! Get a pointer to the document or 0 if it doesn't exist any more or the type doesn't match. */
     template<typename T>
     inline T* getObjectAs() const
     {
         return Base::freecad_dynamic_cast<T>(getObject());
     }
+    template<typename T>
+    inline T* getPropertyAs() const
+    {
+        return Base::freecad_dynamic_cast<T>(getProperty());
+    }
 
 private:
     std::string document;
     std::string object;
     std::string label;
+    std::string property;
 };
 
 /**
