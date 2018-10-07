@@ -153,14 +153,15 @@ template<typename Status, class Object>
 class ObjectStatusLocker
 {
 public:
-    ObjectStatusLocker(Status s, Object* o, bool st = true) : status(s), obj(o), state(st)
-    { obj->setStatus(status, state); }
+    ObjectStatusLocker(Status s, Object* o, bool v = true) : status(s), obj(o), new_value(v)
+    { old_value = obj->testStatus(status); obj->setStatus(status, new_value); }
     ~ObjectStatusLocker()
-    { obj->setStatus(status, !state); }
+    { obj->setStatus(status, old_value); }
 private:
     Status status;
     Object* obj;
-    bool state;
+    bool old_value;
+    bool new_value;
 };
 
 // ----------------------------------------------------------------------------
@@ -168,13 +169,14 @@ private:
 class StateLocker
 {
 public:
-    StateLocker(bool& flag, bool st = true) : lock(flag), state(st)
-    { lock = state; }
+    StateLocker(bool& flag, bool value = true) : lock(flag), new_value(value)
+    { old_value = lock; lock = value; }
     ~StateLocker()
-    { lock = !state; }
+    { lock = old_value; }
 private:
     bool& lock;
-    bool state;
+    bool old_value;
+    bool new_value;
 };
 
 // ----------------------------------------------------------------------------
