@@ -604,7 +604,7 @@ class _Stairs(ArchComponent.Component):
 
     #@staticmethod
     def returnOutlines(self, obj, edges, align="left", railStartRiser=zeroMM, offsetHLeft=zeroMM, offsetHRight=zeroMM, offsetVLeft=zeroMM, offsetVRight=zeroMM):
-    # better omit 'obj' latter?- currently only for vbaseFollowLastSement()?
+    # better omit 'obj' latter?- currently only for vbaseFollowLastSegment()?
 
         import DraftGeomUtils
 
@@ -633,7 +633,7 @@ class _Stairs(ArchComponent.Component):
             vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidthI))
 
             vBase.append(edges[i].Vertexes[0].Point)
-            vBase[i] = self.vbaseFollowLastSement(obj, vBase[i])
+            vBase[i] = self.vbaseFollowLastSegment(obj, vBase[i])
 
             vBase[i] = vBase[i].add(Vector(0,0,offsetVLeft.Value))
             vBase[i] = vBase[i].add(Vector(0,0,railStartRiser.Value))
@@ -708,7 +708,7 @@ class _Stairs(ArchComponent.Component):
 
 
     @staticmethod
-    def vbaseFollowLastSement(obj, vBase):
+    def vbaseFollowLastSegment(obj, vBase):
         if obj.LastSegment:
             lastSegmentAbsTop = obj.LastSegment.AbsTop
             vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate
@@ -730,7 +730,7 @@ class _Stairs(ArchComponent.Component):
 
         # if not call by makeStraightStairsWithLanding() - not 're-base' in function there, then 're-base' here
         if not callByMakeStraightStairsWithLanding:
-            vBase = self.vbaseFollowLastSement(obj, vBase)
+            vBase = self.vbaseFollowLastSegment(obj, vBase)
             obj.AbsTop = vBase
 
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
