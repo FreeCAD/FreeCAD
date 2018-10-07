@@ -182,6 +182,25 @@ def makeRailing(stairs):
                     railList = stair.Additions
                     railList.append(lrRail)
                     stair.Additions = railList
+
+    if stairs == None:
+        sel = FreeCADGui.Selection.getSelection()
+        sel0 = sel[0]
+        stairs = []
+        if Draft.getType(sel[0]) == "Stairs":					# TODO currently consider 1st selected object, then would tackle multiple objects ?
+            stairs.append(sel0)
+            if Draft.getType(sel0.Base) == "Stairs":
+                stairs.append(sel0.Base)
+                additions = sel0.Additions
+                for additionsI in additions:
+                    if Draft.getType(additionsI) == "Stairs":
+                        stairs.append(additionsI)
+            else:
+                stairs.append(sel[0])
+        else:
+            print("No Stairs object selected")
+            return
+
     makeRailingLorR(stairs,"L")
     makeRailingLorR(stairs,"R")
 
