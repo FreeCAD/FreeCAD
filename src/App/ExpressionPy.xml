@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PyObjectBase" 
+    Name="ExpressionPy" 
+    TwinPointer="Expression" 
+    Twin="Expression" 
+    Include="App/Expression.h" 
+    Namespace="App" 
+    FatherInclude="Base/PyObjectBase.h" 
+    FatherNamespace="Base"
+    Initialization="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+      <UserDocu>Python class for an expression</UserDocu>
+    </Documentation>
+    <Methode Name="__call__" Const="true" Keyword="true">
+      <Documentation>
+        <UserDocu>Evaluate the expression</UserDocu>
+      </Documentation>
+    </Methode>
+	<ClassDeclarations>private:
+    PyObjectBase *pyOwner;
+	</ClassDeclarations>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

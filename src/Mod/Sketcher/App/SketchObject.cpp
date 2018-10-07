@@ -6145,17 +6145,17 @@ std::string SketchObject::validateExpression(const App::ObjectIdentifier &path, 
             return "Reference constraints cannot be set!";
     }
 
-    std::set<App::ObjectIdentifier> deps;
-    expr->getDeps(deps);
+    auto deps = expr->getDeps();
+    auto it = deps.find(this);
+    if(it!=deps.end()) {
+        auto it2 = it->second.find("Constraints");
+        if(it2 != it->second.end()) {
+            for(auto &oid : it2->second) {
+                const Constraint * constraint = Constraints.getConstraint(oid);
 
-    for (std::set<App::ObjectIdentifier>::const_iterator i = deps.begin(); i != deps.end(); ++i) {
-        const App::Property * prop = (*i).getProperty();
-
-        if (prop == &Constraints) {
-            const Constraint * constraint = Constraints.getConstraint(*i);
-
-            if (!constraint->isDriving)
-                return "Reference constraint from this sketch cannot be used in this expression.";
+                if (!constraint->isDriving)
+                    return "Reference constraint from this sketch cannot be used in this expression.";
+            }
         }
     }
     return "";

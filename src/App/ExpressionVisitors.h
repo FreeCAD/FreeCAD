@@ -70,10 +70,8 @@ private:
 template<class P> class RelabelDocumentObjectExpressionVisitor : public ExpressionModifier<P> {
 public:
 
-    RelabelDocumentObjectExpressionVisitor(P & _prop, const std::string & _oldName, const std::string & _newName)
-        : ExpressionModifier<P>(_prop)
-        , oldName(_oldName)
-        , newName(_newName)
+    RelabelDocumentObjectExpressionVisitor(P & _prop, const App::DocumentObject *obj)
+        : ExpressionModifier<P>(_prop),obj(obj)
     {
     }
 
@@ -86,17 +84,12 @@ public:
      */
 
     void visit(Expression * node) {
-        VariableExpression *expr = Base::freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr && expr->validDocumentObjectRename(oldName, newName)) {
-            ExpressionModifier<P>::setExpressionChanged();
-            expr->renameDocumentObject(oldName, newName);
-        }
+        if(node)
+            this->renameDocumentObject(*node,obj);
     }
 
 private:
-    std::string oldName; /**< Document object name to replace  */
-    std::string newName; /**< New document object name */
+    const App::DocumentObject *obj;
 };
 
 template<class P> class RelabelDocumentExpressionVisitor : public ExpressionModifier<P> {
@@ -110,12 +103,8 @@ public:
     }
 
     void visit(Expression * node) {
-        VariableExpression *expr = Base::freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr && expr->validDocumentRename(oldName, newName)) {
-            ExpressionModifier<P>::setExpressionChanged();
-            expr->renameDocument(oldName, newName);
-        }
+        if(node)
+            this->renameDocument(*node,oldName,newName);
     }
 
 private:

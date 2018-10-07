@@ -1036,7 +1036,7 @@ bool DocumentObject::adjustRelativeLinks(
         if(linkProp && linkProp->adjustLink(inList))
             touched = true;
     }
-    if(!touched)
+    if(!ExpressionEngine.adjustLinks(inList) && !touched)
         return false;
 
     if(visited) {

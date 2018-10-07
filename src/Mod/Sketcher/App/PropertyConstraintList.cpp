@@ -73,7 +73,7 @@ App::ObjectIdentifier PropertyConstraintList::makeArrayPath(int idx)
 
 App::ObjectIdentifier PropertyConstraintList::makeSimplePath(const Constraint * c)
 {
-    return App::ObjectIdentifier(*this) << App::ObjectIdentifier::Component::SimpleComponent(
+    return App::ObjectIdentifier(*this) << App::ObjectIdentifier::SimpleComponent(
             App::ObjectIdentifier::String(c->Name, !ExpressionParser::isTokenAnIndentifier(c->Name)));
 }
 
@@ -425,7 +425,10 @@ int PropertyConstraintList::getIndexFromConstraintName(const string &name)
 
 void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const boost::any &value)
 {
-    const ObjectIdentifier::Component & c0 = path.getPropertyComponent(0);
+    if(path.numSubComponents()!=2 || path.getPropertyComponent(0).getName()!=getName())
+        FC_THROWM(Base::ValueError,"invalid constraint path " << path.toString());
+
+    const ObjectIdentifier::Component & c1 = path.getPropertyComponent(1);
     double dvalue;
 
     if (value.type() == typeid(double))
@@ -435,11 +438,8 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
     else
         throw std::bad_cast();
 
-    if (c0.isArray() && path.numSubComponents() == 1) {
-        int index = c0.getIndex();
-
-        if (c0.getIndex() >= _lValueList.size())
-            throw Base::Exception("Array out of bounds");
+    if (c1.isArray()) {
+        size_t index = c1.getIndex(_lValueList.size());
         switch (_lValueList[index]->Type) {
         case Angle:
             dvalue = Base::toRadians<double>(dvalue);
@@ -452,9 +452,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
         hasSetValue();
         return;
     }
-    else if (c0.isSimple() && path.numSubComponents() == 2) {
-        ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
-
+    else if (c1.isSimple()) {
         for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             int index = it - _lValueList.begin();
 
@@ -473,20 +471,20 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
             }
         }
     }
-    throw Base::Exception("Invalid constraint");
+    FC_THROWM(Base::ValueError,"invalid constraint path " << path.toString());
 }
 
 const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier &path) const
 {
-    const ObjectIdentifier::Component & c0 = path.getPropertyComponent(0);
+    if(path.numSubComponents()!=2 || path.getPropertyComponent(0).getName()!=getName())
+        FC_THROWM(Base::ValueError,"invalid constraint path " << path.toString());
 
-    if (c0.isArray() && path.numSubComponents() == 1) {
-        if (c0.getIndex() >= _lValueList.size())
-            throw Base::Exception("Array out of bounds");
+    const ObjectIdentifier::Component & c1 = path.getPropertyComponent(1);
 
-        return _lValueList[c0.getIndex()];
+    if (c1.isArray()) {
+        return _lValueList[c1.getIndex(_lValueList.size())];
     }
-    else if (c0.isSimple() && path.numSubComponents() == 2) {
+    else if (c1.isSimple()) {
         ObjectIdentifier::Component c1 = path.getPropertyComponent(1);
 
         for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
@@ -494,7 +492,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
                 return *it;
         }
     }
-    throw Base::Exception("Invalid constraint");
+    FC_THROWM(Base::ValueError,"invalid constraint path " << path.toString());
 }
 
 const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier &path) const
@@ -504,27 +502,28 @@ const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier &pa
 
 const ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p) const
 {
-    const ObjectIdentifier::Component & c0 = p.getPropertyComponent(0);
+    if(p.numSubComponents()!=2 || p.getPropertyComponent(0).getName()!=getName())
+        FC_THROWM(Base::ValueError,"invalid constraint path " << p.toString());
 
-    if (c0.isArray() && p.numSubComponents() == 1) {
-        if (c0.getIndex() < _lValueList.size() && _lValueList[c0.getIndex()]->Name.size() > 0)
-            return ObjectIdentifier(*this) << ObjectIdentifier::Component::SimpleComponent(_lValueList[c0.getIndex()]->Name);
+    const ObjectIdentifier::Component & c1 = p.getPropertyComponent(1);
+
+    if (c1.isArray()) {
+        size_t idx = c1.getIndex(_lValueList.size());
+        if (_lValueList[idx]->Name.size() > 0)
+            return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(_lValueList[idx]->Name);
         return p;
     }
-    else if (c0.isSimple() && p.numSubComponents() == 2) {
-        ObjectIdentifier::Component c1 = p.getPropertyComponent(1);
-
-        if (c1.isSimple())
-            return p;
+    else if (c1.isSimple()) {
+        return p;
     }
-    throw Base::Exception("Invalid constraint");
+    FC_THROWM(Base::ValueError,"invalid constraint path " << p.toString());
 }
 
 void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
     for (std::vector<Constraint *>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         if ((*it)->Name.size() > 0)
-            paths.push_back(ObjectIdentifier(*this) << ObjectIdentifier::Component::SimpleComponent((*it)->Name));
+            paths.push_back(ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent((*it)->Name));
     }
 }
 

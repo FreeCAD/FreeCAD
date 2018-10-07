@@ -186,12 +186,18 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         switch (role) {
         case Qt::ToolTipRole:
             return QVariant::fromValue(Base::Tools::fromStdString(cell->getException()));
-        case Qt::DisplayRole:
+        case Qt::DisplayRole: {
 #ifdef DEBUG_DEPS
             return QVariant::fromValue(QString::fromUtf8("#ERR: %1").arg(Tools::fromStdString(cell->getException())));
 #else
+            std::string str;
+            if(cell->getStringContent(str))
+                return QVariant::fromValue(QString::fromUtf8(str.c_str()));
             return QVariant::fromValue(QString::fromUtf8("#ERR"));
 #endif
+        }
+        case Qt::TextColorRole:
+            return QVariant::fromValue(QColor(255.0, 0, 0));
         case Qt::TextAlignmentRole:
             return QVariant(Qt::AlignVCenter | Qt::AlignLeft);
         default:
@@ -468,6 +474,7 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
                 cell->getStringContent(content);
 
             if ( content != Base::Tools::toStdString(str)) {
+                str.replace(QString::fromUtf8("\\"), QString::fromUtf8("\\\\"));
                 str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
                 Gui::Command::openCommand("Edit cell");
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.set('%s', '%s')", sheet->getNameInDocument(),

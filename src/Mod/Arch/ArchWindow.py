@@ -354,7 +354,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
                 s.renameConstraint(58,'Frame8')
                 s.renameConstraint(59,'Frame9')
                 s.renameConstraint(60,'F10')
-                s.setExpression('Constraints.F10','-Constraints.Frame5')
+                s.setExpression('.Constraints.F10','-.Constraints.Frame5')
             fw = str(w2)
             if w2 == w1:
                 fw = "0.00+V"

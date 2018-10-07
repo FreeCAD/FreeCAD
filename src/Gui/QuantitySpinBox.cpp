@@ -336,7 +336,7 @@ void QuantitySpinBox::setBoundToByName(const QString &name)
         path.setDocumentObjectName(std::string(obj->getNameInDocument()), true);
 
         for (QStringList::iterator it = list.begin(); it != list.end(); ++it) {
-            path << App::ObjectIdentifier::Component::SimpleComponent(it->toLatin1().constData());
+            path << App::ObjectIdentifier::SimpleComponent(it->toLatin1().constData());
         }
 
         if (path.getProperty())

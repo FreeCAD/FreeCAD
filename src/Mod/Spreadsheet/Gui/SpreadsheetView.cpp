@@ -215,7 +215,7 @@ void SheetView::columnResizeFinished()
         return;
 
     blockSignals(true);
-    Gui::Command::openCommand("Resize column");
+    // Gui::Command::openCommand("Resize column");
 
     QMap<int, int>::const_iterator i = newColumnSizes.begin();
     while (i != newColumnSizes.end()) {
@@ -223,8 +223,8 @@ void SheetView::columnResizeFinished()
                                 columnName(i.key()).c_str(), i.value());
         ++i;
     }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    // Gui::Command::commitCommand();
+    // Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     blockSignals(false);
     newColumnSizes.clear();
 }
@@ -235,7 +235,7 @@ void SheetView::rowResizeFinished()
         return;
 
     blockSignals(true);
-    Gui::Command::openCommand("Resize row");
+    // Gui::Command::openCommand("Resize row");
 
     QMap<int, int>::const_iterator i = newRowSizes.begin();
     while (i != newRowSizes.end()) {
@@ -243,8 +243,8 @@ void SheetView::rowResizeFinished()
                                 rowName(i.key()).c_str(), i.value());
         ++i;
     }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    // Gui::Command::commitCommand();
+    // Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     blockSignals(false);
     newRowSizes.clear();
 }

@@ -206,7 +206,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & path ) const
 
         if (p.getProperty()) {
             for (int i = 0; i < p.numComponents(); ++i)
-                l << Base::Tools::fromStdString(p.getPropertyComponent(i).toString());
+                l << Base::Tools::fromStdString(p.getPropertyComponent(i).getName());
             return l;
         }
         else {

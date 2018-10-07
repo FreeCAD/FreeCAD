@@ -46,41 +46,6 @@ using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
-namespace Spreadsheet {
-
-class BuildDocDepsExpressionVisitor : public ExpressionModifier<PropertySheet> {
-public:
-
-    BuildDocDepsExpressionVisitor(PropertySheet & prop, std::set<App::DocumentObject*> & _docDeps)
-        : ExpressionModifier(prop)
-        , docDeps(_docDeps)
-    {
-
-    }
-
-    void visit(Expression * node) {
-        std::set<ObjectIdentifier> ids;
-        node->getDeps(ids);
-        for(auto &id : ids) {
-            try {
-                App::DocumentObject * docObj = id.getDocumentObject();
-                if (!docObj || docObj == prop.getContainer())
-                    continue;
-                setExpressionChanged();
-                docDeps.insert(docObj);
-            }
-            catch (const Base::Exception &) {
-                // Ignore this type of exception; it means that the property was not found, which is ok here
-            }
-        }
-    }
-
-private:
-    std::set<App::DocumentObject*> & docDeps;
-};
-
-}
-
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::Property);
 
 void PropertySheet::clear()
@@ -489,7 +454,10 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
     if (oldAlias.size() > 0 && alias.size() > 0) {
         std::map<App::ObjectIdentifier, App::ObjectIdentifier> m;
 
-        m[App::ObjectIdentifier(owner, oldAlias)] = App::ObjectIdentifier(owner, alias);
+        App::ObjectIdentifier key(owner, oldAlias);
+        App::ObjectIdentifier value(owner, alias);
+
+        m[key] = value;
 
         owner->getDocument()->renameObjectIdentifiers(m);
     }
@@ -949,59 +917,42 @@ void PropertySheet::addDependencies(CellAddress key)
     if (expression == 0)
         return;
 
-    std::set<ObjectIdentifier> expressionDeps;
+    for(auto &dep : expression->getDeps()) {
 
-    // Get dependencies from expression
-    expression->getDeps(expressionDeps);
+        App::DocumentObject *docObj = dep.first;
+        App::Document *doc = docObj->getDocument();
 
-    std::set<ObjectIdentifier>::const_iterator i = expressionDeps.begin();
-    while (i != expressionDeps.end()) {
-        ObjectIdentifier::PseudoPropertyType ptype;
-        const Property * prop = i->getProperty(&ptype);
-        const App::DocumentObject * docObj = i->getDocumentObject();
-        App::Document * doc = i->getDocument();
+        std::string docName = doc->Label.getValue();
+        std::string docObjName = docName + "#" + docObj->getNameInDocument();
 
-        std::string docName = doc ? doc->Label.getValue() : i->getDocumentName().getString();
-        std::string docObjName = docName + "#" + (docObj ? docObj->getNameInDocument() : i->getDocumentObjectName().getString());
-        std::string propName = docObjName + ".";
+        documentObjectName[docObj] = docObj->Label.getValue();
+        documentName[doc] = docName;
 
-        if (!prop) {
-            cell->setResolveException("Unresolved dependency");
-            if(docObj == owner)
-                propName += i->getPropertyName();
-        } else {
-            if(ptype==App::ObjectIdentifier::PseudoNone && prop->getContainer()==docObj)
-                propName += i->getPropertyName();
-
-            documentObjectName[docObj] = docObj->Label.getValue();
-            documentName[docObj->getDocument()] = docObj->getDocument()->Label.getValue();
-        }
-
-        // Observe document to trach changes to the property
-        if (doc)
-            owner->observeDocument(doc);
-
-        // Insert into maps
-        propertyNameToCellMap[propName].insert(key);
-        cellToPropertyNameMap[key].insert(propName);
-
-        // Also an alias?
-        if (docObj == owner) {
-            std::map<std::string, CellAddress>::const_iterator j = revAliasProp.find(i->getPropertyName());
-
-            if (j != revAliasProp.end()) {
-                propName = docObjName + "." + j->second.toString();
-
-                // Insert into maps
-                propertyNameToCellMap[propName].insert(key);
-                cellToPropertyNameMap[key].insert(propName);
-            }
-        }
+        owner->observeDocument(doc);
 
         documentObjectToCellMap[docObjName].insert(key);
         cellToDocumentObjectMap[key].insert(docObjName);
 
-        ++i;
+        for(auto &props : dep.second) {
+            std::string propName = docObjName + "." + props.first;
+
+            // Insert into maps
+            propertyNameToCellMap[propName].insert(key);
+            cellToPropertyNameMap[key].insert(propName);
+
+            // Also an alias?
+            if (docObj==owner && props.first.size()) {
+                std::map<std::string, CellAddress>::const_iterator j = revAliasProp.find(props.first);
+
+                if (j != revAliasProp.end()) {
+                    propName = docObjName + "." + j->second.toString();
+
+                    // Insert into maps
+                    propertyNameToCellMap[propName].insert(key);
+                    cellToPropertyNameMap[key].insert(propName);
+                }
+            }
+        }
     }
 }
 
@@ -1130,18 +1081,15 @@ void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
     if (documentObjectName.find(docObj) == documentObjectName.end())
         return;
 
-    // Touch to force recompute
-    touch();
-
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
-    AtomicPropertyChange signaller(*this);
-    RelabelDocumentObjectExpressionVisitor<PropertySheet> v(*this, documentObjectName[docObj], docObj->Label.getValue());
-
     while (i != data.end()) {
+        RelabelDocumentObjectExpressionVisitor<PropertySheet> v(*this, docObj);
         i->second->visit(v);
-        recomputeDependencies(i->first);
-        setDirty(i->first);
+        if(v.getChanged()) {
+            recomputeDependencies(i->first);
+            setDirty(i->first);
+        }
         ++i;
     }
 }
@@ -1150,19 +1098,16 @@ void PropertySheet::renamedDocument(const App::Document * doc)
 {
     if (documentName.find(doc) == documentName.end())
         return;
-    // Touch to force recompute
-    touch();
 
     std::map<CellAddress, Cell* >::iterator i = data.begin();
 
-    /* Resolve all cells */
-    AtomicPropertyChange signaller(*this);
-    RelabelDocumentExpressionVisitor<PropertySheet> v(*this, documentName[doc], doc->Label.getValue());
-
     while (i != data.end()) {
+        RelabelDocumentExpressionVisitor<PropertySheet> v(*this, documentName[doc], doc->Label.getValue());
         i->second->visit(v);
-        recomputeDependencies(i->first);
-        setDirty(i->first);
+        if(v.getChanged()) {
+            recomputeDependencies(i->first);
+            setDirty(i->first);
+        }
         ++i;
     }
 }
@@ -1221,14 +1166,9 @@ void PropertySheet::rebuildDocDepList()
     AtomicPropertyChange signaller(*this);
 
     docDeps.clear();
-    BuildDocDepsExpressionVisitor v(*this, docDeps);
-
-    std::map<CellAddress, Cell* >::iterator i = data.begin();
-
-    /* Resolve all cells */
-    while (i != data.end()) {
-        i->second->visit(v);
-        ++i;
+    for(auto &v : data) {
+        if(v.second->getExpression())
+            v.second->getExpression()->getDepObjects(docDeps);
     }
 }
 

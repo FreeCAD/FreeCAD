@@ -1588,12 +1588,16 @@ void Application::initTypes(void)
     App ::ConstantExpression        ::init();
     App ::OperatorExpression        ::init();
     App ::VariableExpression        ::init();
+    App ::CallableExpression        ::init();
     App ::ConditionalExpression     ::init();
     App ::StringExpression          ::init();
     App ::FunctionExpression        ::init();
     App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
     App ::PyObjectExpression        ::init();
+    App ::ListExpression            ::init();
+    App ::TupleExpression           ::init();
+    App ::DictExpression            ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>

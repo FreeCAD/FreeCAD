@@ -700,8 +700,11 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.setAlias('B1', 'alias1')
         box = self.doc.addObject('Part::Box', 'Box')
         box.setExpression('Length', 'Spreadsheet.alias1')
+        box2 = self.doc.addObject('Part::Box', 'Box')
+        box2.setExpression('Length', '<<Spreadsheet>>.alias1')
         sheet.Label = "Params"
-        self.assertEqual(box.ExpressionEngine[0][1], "Params.alias1");
+        self.assertEqual(box.ExpressionEngine[0][1], "Spreadsheet.alias1");
+        self.assertEqual(box2.ExpressionEngine[0][1], "<<Params>>.alias1");
 
     def testAlias(self):
         """ Playing with aliases """
@@ -787,11 +790,11 @@ class SpreadsheetCases(unittest.TestCase):
         index=sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
         sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0)) 
         self.doc.recompute()
-        sketch.setExpression('Constraints[0]', u'Spreadsheet.Length')
+        sketch.setExpression('Constraints[0]', u'<<Spreadsheet>>.Length')
         self.doc.recompute()
         sheet.Label="Calc"
         self.doc.recompute()
-        self.assertEqual(sketch.ExpressionEngine[0][1],'Calc.Length')
+        self.assertEqual(sketch.ExpressionEngine[0][1],'<<Calc>>.Length')
         self.assertIn('Up-to-date',sketch.State)
 
     def testCrossDocumentLinks(self):

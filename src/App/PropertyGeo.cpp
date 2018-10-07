@@ -196,11 +196,11 @@ void PropertyVector::Paste(const Property &from)
 void PropertyVector::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
 //**************************************************************************
@@ -592,29 +592,29 @@ const Base::Placement & PropertyPlacement::getValue(void)const
 void PropertyPlacement::getPaths(std::vector<ObjectIdentifier> &paths) const
 {
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Angle")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Angle")));
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
     paths.push_back(ObjectIdentifier(*this)
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
-                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
 void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)

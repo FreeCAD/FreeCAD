@@ -395,7 +395,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 while (i != expressions.end()) {
                     std::set<ObjectIdentifier> deps;
 
-                    i->second.expression->getDeps(deps);
+                    i->second.expression->getIdentifiers(deps);
 
                     std::set<ObjectIdentifier>::const_iterator j = deps.begin();
                     while (j != deps.end()) {
@@ -504,7 +504,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
                 // Get dependencies
                 std::set<ObjectIdentifier> deps;
-                i->second.expression->getDeps(deps);
+                i->second.expression->getIdentifiers(deps);
 
                 // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
                 std::set<ObjectIdentifier>::const_iterator j = deps.begin();
@@ -640,7 +640,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
                 while (i != expressions.end()) {
                     std::set<ObjectIdentifier> deps;
-                    i->second.expression->getDeps(deps);
+                    i->second.expression->getIdentifiers(deps);
 
                     // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
                     std::set<ObjectIdentifier>::const_iterator k = deps.begin();

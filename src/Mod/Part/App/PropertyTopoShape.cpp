@@ -219,15 +219,15 @@ unsigned int PropertyPartShape::getMemSize (void) const
 void PropertyPartShape::getPaths(std::vector<App::ObjectIdentifier> &paths) const
 {
     paths.push_back(App::ObjectIdentifier(*this)
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("ShapeType")));
+                    << App::ObjectIdentifier::SimpleComponent(App::ObjectIdentifier::String("ShapeType")));
     paths.push_back(App::ObjectIdentifier(*this)
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Orientation")));
+                    << App::ObjectIdentifier::SimpleComponent(App::ObjectIdentifier::String("Orientation")));
     paths.push_back(App::ObjectIdentifier(*this)
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Length")));
-    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::Component::SimpleComponent(getName())
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Area")));
+                    << App::ObjectIdentifier::SimpleComponent(App::ObjectIdentifier::String("Length")));
+    paths.push_back(App::ObjectIdentifier(getContainer()) << App::ObjectIdentifier::SimpleComponent(getName())
+                    << App::ObjectIdentifier::SimpleComponent(App::ObjectIdentifier::String("Area")));
     paths.push_back(App::ObjectIdentifier(*this)
-                    << App::ObjectIdentifier::Component::SimpleComponent(App::ObjectIdentifier::String("Volume")));
+                    << App::ObjectIdentifier::SimpleComponent(App::ObjectIdentifier::String("Volume")));
 }
 
 void PropertyPartShape::Save (Base::Writer &writer) const

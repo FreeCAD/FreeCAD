@@ -140,6 +140,8 @@ public:
     PyObject *getPyObject(void);
     void setPyObject(PyObject *);
 
+    bool adjustLinks(const std::set<App::DocumentObject*> &inList);
+
 private:
 
     typedef boost::adjacency_list< boost::listS, boost::vecS, boost::directedS > DiGraph;

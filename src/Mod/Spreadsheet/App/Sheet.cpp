@@ -635,40 +635,41 @@ void Sheet::updateProperty(CellAddress key)
     Cell * cell = getCell(key);
 
     if (cell != 0) {
-        Expression * output;
+        std::unique_ptr<Expression> output;
         const Expression * input = cell->getExpression();
 
         if (input) {
-            output = input->eval();
+            output.reset(input->eval());
         }
         else {
             std::string s;
 
             if (cell->getStringContent(s))
-                output = new StringExpression(this, s);
+                output.reset(new StringExpression(this, s));
             else
-                output = new StringExpression(this, "");
+                output.reset(new StringExpression(this, ""));
         }
 
         /* Eval returns either NumberExpression or StringExpression, or
          * PyObjectExpression objects */
-        if (freecad_dynamic_cast<NumberExpression>(output)) {
-            NumberExpression * number = static_cast<NumberExpression*>(output);
+        auto number = freecad_dynamic_cast<NumberExpression>(output.get());
+        if(number) {
             if (number->getUnit().isEmpty())
                 setFloatProperty(key, number->getValue());
             else
                 setQuantityProperty(key, number->getValue(), number->getUnit());
+        }else{
+            auto str_expr = freecad_dynamic_cast<StringExpression>(output.get());
+            if(str_expr) 
+                setStringProperty(key, str_expr->getText().c_str());
+            else {
+                auto py_expr = freecad_dynamic_cast<PyObjectExpression>(output.get());
+                if(py_expr) 
+                    setObjectProperty(key, py_expr->getPyObject());
+                else
+                    assert(0);
+            }
         }
-        else if(freecad_dynamic_cast<StringExpression>(output)) {
-            auto expr = static_cast<StringExpression*>(output);
-            setStringProperty(key, expr->getText().c_str());
-        }else if(freecad_dynamic_cast<PyObjectExpression>(output)) {
-            auto expr = static_cast<PyObjectExpression*>(output);
-            setObjectProperty(key, expr->getPyObject());
-        }else
-            assert(0);
-
-        delete output;
     }
     else
         clear(key);
@@ -1235,6 +1236,8 @@ void Sheet::setSpans(CellAddress address, int rows, int columns)
 
 void Sheet::renamedDocumentObject(const DocumentObject * docObj)
 {
+    if(docObj->getOldLabel() == docObj->Label.getStrValue())
+        return;
     cells.renamedDocumentObject(docObj);
     cells.touch();
 }

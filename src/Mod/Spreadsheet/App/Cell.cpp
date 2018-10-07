@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/algorithm/string/replace.hpp>
 #include "Cell.h"
 #include "Utils.h"
 #include <boost/tokenizer.hpp>
@@ -187,14 +188,18 @@ const App::Expression *Cell::getExpression() const
 bool Cell::getStringContent(std::string & s) const
 {
     if (expression) {
-        if (freecad_dynamic_cast<App::StringExpression>(expression)) {
-            s = static_cast<App::StringExpression*>(expression)->getText();
-            char * end;
-            errno = 0;
-            double d = strtod(s.c_str(), &end);
-            (void)d; // fix gcc warning
-            if (!*end && errno == 0)
-                s = "'" + s;
+        auto sexpr = freecad_dynamic_cast<App::StringExpression>(expression);
+        if(sexpr) {
+            if(sexpr->rLiteral())
+                s = sexpr->toString();
+            else{
+                const auto &txt = sexpr->getText();
+                if(txt.size() && txt[0]!='=') {
+                    s = "'";
+                    s += txt;
+                }else
+                    s = txt;
+            }
         }
         else if (freecad_dynamic_cast<App::ConstantExpression>(expression))
             s = "=" + expression->toString();
@@ -242,7 +247,7 @@ void Cell::setContent(const char * value)
                         delete expr->eval();
                 }
                 catch (Base::Exception &) {
-                    expr = new App::StringExpression(owner->sheet(), value);
+                    expr = new App::StringExpression(owner->sheet(), std::string("=")+value);
                 }
             }
         }

@@ -12,7 +12,6 @@
 #define strdup _strdup
 #endif
 
-extern std::stack<FunctionExpression::Function> functions;                /**< Function identifier */
 extern int last_column;
 extern int column;
 
@@ -144,9 +143,10 @@ EXPO     [eE][-+]?[0-9]+
 [ \t]+     COUNTCHARS;
 [\n]       column = 0;
 
+r\<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext,true); return RSTRING;
 \<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext); return STRING;
 
-[+()=/*^,\.\{\}\[\]:;@\?#]   COUNTCHARS; return *yytext;
+[%+()=/*^,\.\{\}\[\]:;@\?#]   COUNTCHARS; return *yytext;
 
 "=="                         COUNTCHARS; return EQ;
 "!="                         COUNTCHARS; return NEQ;
@@ -154,6 +154,10 @@ EXPO     [eE][-+]?[0-9]+
 "<"                          COUNTCHARS; return LT;
 ">="                         COUNTCHARS; return GTE;
 "<="                         COUNTCHARS; return LTE;
+"&&"                         COUNTCHARS; return AND_OP;
+"and"                        COUNTCHARS; return AND_OP2;
+"||"                         COUNTCHARS; return OR_OP;
+"or"                         COUNTCHARS; return OR_OP2;
 
 "-"                          COUNTCHARS; return MINUSSIGN;
 "\xe2\x88\x92"               COUNTCHARS; return MINUSSIGN;
@@ -259,24 +263,10 @@ EXPO     [eE][-+]?[0-9]+
 
 "pi"                         COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 "e"                          COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
+"None"                       COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "None"; return CONSTANT; // constant None
 
 $[A-Za-z]{1,2}+${DIGIT}+     COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 [A-Za-z]{1,2}${DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 $[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
-
-({L}{M}*)({L}{M}*|{N}|_)*[\20\t]*\( {
-                            COUNTCHARS;
-                            std::string s = yytext;
-                            size_t i = s.size() - 2;
-                            while (isspace(s[i]))
-                              --i;
-                            s.erase(i + 1);
-                            std::map<std::string, FunctionExpression::Function>::const_iterator j = registered_functions.find(s);
-                            if (j != registered_functions.end())
-                              yylval.func = *j;
-                            else
-                              yylval.func = std::make_pair(s,FunctionExpression::NONE);
-                            return FUNC;
-                        }
 
 ({L}{M}*|_)({L}{M}*|{N}|_)*   COUNTCHARS; yylval.string = yytext; return IDENTIFIER;

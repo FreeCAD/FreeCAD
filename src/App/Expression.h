@@ -41,10 +41,22 @@ class DocumentObject;
 class Expression;
 class Document;
 
+typedef std::map<App::DocumentObject*, std::map<std::string, std::vector<ObjectIdentifier> > > ExpressionDeps;
+
 class AppExport ExpressionVisitor {
 public:
     virtual ~ExpressionVisitor() {}
     virtual void visit(Expression * e) = 0;
+    virtual void setExpressionChanged() {}
+    virtual bool getChanged() const { return false;}
+
+protected:
+    void getIdentifiers(Expression &e, std::set<App::ObjectIdentifier> &); 
+    void getDeps(Expression &e, ExpressionDeps &); 
+    void getDepObjects(Expression &e, std::set<App::DocumentObject*> &); 
+    bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
+    bool renameDocumentObject(Expression &e, const App::DocumentObject *);
+    bool renameDocument(Expression &e, const std::string &oldName, const std::string &newName);
 };
 
 template<class P> class ExpressionModifier : public ExpressionVisitor {
@@ -54,12 +66,12 @@ public:
 
     virtual ~ExpressionModifier() { }
 
-    void setExpressionChanged() {
+    virtual void setExpressionChanged() override{
         if (!signaller)
             signaller = boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange>(AtomicPropertyChangeInterface<P>::getAtomicPropertyChange(prop));
     }
 
-    bool getChanged() const { return signaller != 0; }
+    virtual bool getChanged() const override { return signaller != 0; }
 
 protected:
     P & prop;
@@ -77,24 +89,35 @@ class AppExport Expression : public Base::BaseClass {
 public:
 
     Expression(const App::DocumentObject * _owner);
-
     virtual ~Expression();
+
+    Expression(const Expression&) = delete;
+    void operator=(const Expression &)=delete;
 
     virtual bool isTouched() const { return false; }
 
-    virtual Expression * eval() const = 0;
+    Expression * eval() const;
 
-    virtual std::string toString() const = 0;
+    std::string toString() const;
+
+    Expression *copy() const;
 
     static Expression * parse(const App::DocumentObject * owner, const std::string& buffer);
 
-    virtual Expression * copy() const = 0;
-
     virtual int priority() const { return 0; }
 
-    virtual void getDeps(std::set<ObjectIdentifier> &/*props*/) const { }
+    void getIdentifiers(std::set<App::ObjectIdentifier> &) const;
+    std::set<App::ObjectIdentifier> getIdentifiers() const;
 
-    virtual Expression * simplify() const = 0;
+    void getDeps(ExpressionDeps &deps) const;
+    ExpressionDeps getDeps() const;
+
+    std::set<App::DocumentObject*> getDepObjects() const;
+    void getDepObjects(std::set<App::DocumentObject*> &) const;
+
+    bool adjustLinks(const std::set<App::DocumentObject*> &inList);
+
+    virtual Expression *simplify() const { return copy(); }
 
     virtual void visit(ExpressionVisitor & v) { v.visit(this); }
 
@@ -103,12 +126,35 @@ public:
         Exception(const char *sMessage) : Base::Exception(sMessage) { }
     };
 
-    const App::DocumentObject *  getOwner() const { return owner; }
+    App::DocumentObject *  getOwner() const { return owner; }
 
-    virtual boost::any getValueAsAny() const { static boost::any empty; return empty; }
+    boost::any getValueAsAny() const;
+
+    void addComponent(const ObjectIdentifier::Component &component) {
+        components.push_back(component);
+    }
 
 protected:
-    const App::DocumentObject * owner; /**< The document object used to access unqualified variables (i.e local scope) */
+    virtual bool _isIndexable() const {return false;}
+    virtual Expression *_copy() const = 0;
+    virtual void _toString(std::ostringstream &ss) const = 0;
+    virtual void _getDeps(ExpressionDeps &) const  {}
+    virtual void _getDepObjects(std::set<App::DocumentObject*> &) const  {}
+    virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const  {}
+    virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) {return false;}
+    virtual bool _renameDocumentObject(const App::DocumentObject *, ExpressionVisitor &) {return false;}
+    virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
+    virtual boost::any _getValueAsAny() const = 0;
+    virtual Expression *_eval() const {return 0;}
+
+    Expression *fromAny(boost::any) const;
+
+    friend ExpressionVisitor;
+
+protected:
+    App::DocumentObject * owner; /**< The document object used to access unqualified variables (i.e local scope) */
+
+    std::vector<ObjectIdentifier::Component> components;
 };
 
 /**
@@ -121,13 +167,7 @@ class  AppExport UnitExpression : public Expression {
 public:
     UnitExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
 
-    virtual Expression * eval() const;
-
     virtual Expression * simplify() const;
-
-    virtual std::string toString() const;
-
-    virtual Expression * copy() const;
 
     virtual int priority() const;
 
@@ -143,7 +183,13 @@ public:
 
     double getScaler() const { return quantity.getValue(); }
 
-    boost::any getValueAsAny() const { return quantity.getUnit().isEmpty() ? boost::any(quantity.getValue()) : boost::any(quantity); }
+protected:
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+    virtual boost::any _getValueAsAny() const { 
+        return quantity.getUnit().isEmpty() ? boost::any(quantity.getValue()) : boost::any(quantity); 
+    }
 
 protected:
     Base::Quantity quantity;
@@ -159,19 +205,13 @@ class AppExport NumberExpression : public UnitExpression {
 public:
     NumberExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & quantity = Base::Quantity());
 
-    virtual Expression * eval() const;
-
-    virtual Expression * simplify() const;
-
-    virtual Expression * copy() const;
-
     virtual int priority() const;
 
     void negate();
 
-    virtual std::string toString() const;
-
 protected:
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual Expression *_copy() const;
 };
 
 class AppExport ConstantExpression : public NumberExpression {
@@ -179,15 +219,18 @@ class AppExport ConstantExpression : public NumberExpression {
 public:
     ConstantExpression(const App::DocumentObject *_owner = 0, std::string _name = "", const Base::Quantity &_quantity = Base::Quantity());
 
-    virtual std::string toString() const;
-
-    virtual Expression * copy() const;
-
     virtual int priority() const;
 
     std::string getName() const { return name; }
 
+    virtual Expression *simplify() const;
+
 protected:
+    virtual Expression *_eval() const;
+    virtual boost::any _getValueAsAny() const;
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual Expression *_copy() const;
+
     std::string name; /**< Constant's name */
 };
 
@@ -196,8 +239,8 @@ class AppExport BooleanExpression : public NumberExpression {
 public:
     BooleanExpression(const App::DocumentObject *_owner = 0, bool _value = false);
 
-    virtual Expression * copy() const;
-
+protected:
+    virtual Expression *_copy() const;
 };
 
 
@@ -215,6 +258,7 @@ public:
         SUB,
         MUL,
         DIV,
+        MOD,
         POW,
         EQ,
         NEQ,
@@ -224,7 +268,11 @@ public:
         GTE,
         UNIT,
         NEG,
-        POS
+        POS,
+        AND_OP,
+        AND_OP2,
+        OR_OP,
+        OR_OP2,
     };
     OperatorExpression(const App::DocumentObject *_owner = 0, Expression * _left = 0, Operator _op = NONE, Expression * _right = 0);
 
@@ -232,17 +280,9 @@ public:
 
     virtual bool isTouched() const;
 
-    virtual Expression * eval() const;
-
     virtual Expression * simplify() const;
 
-    virtual std::string toString() const;
-
-    virtual Expression * copy() const;
-
     virtual int priority() const;
-
-    virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
     virtual void visit(ExpressionVisitor & v);
 
@@ -253,6 +293,14 @@ public:
     Expression * getRight() const { return right; }
 
 protected:
+    boost::any _calc(boost::any l, boost::any r) const;
+    Expression *_calc(Expression *l, Expression *r) const;
+    Expression *_calc(Expression *l) const;
+
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+    virtual boost::any _getValueAsAny() const;
 
     virtual bool isCommutative() const;
 
@@ -274,21 +322,17 @@ public:
 
     virtual bool isTouched() const;
 
-    virtual Expression * eval() const;
-
-    virtual Expression * simplify() const;
-
-    virtual std::string toString() const;
-
-    virtual Expression * copy() const;
+    virtual Expression *simplify() const;
 
     virtual int priority() const;
-
-    virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
     virtual void visit(ExpressionVisitor & v);
 
 protected:
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+    virtual boost::any _getValueAsAny() const;
 
     Expression * condition;  /**< Condition */
     Expression * trueExpr;  /**< Expression if abs(condition) is > 0.5 */
@@ -303,72 +347,27 @@ protected:
 class AppExport FunctionExpression : public UnitExpression {
     TYPESYSTEM_HEADER();
 public:
-    enum Function {
-        NONE,
-
-        // Normal functions taking one or two arguments
-        ACOS,
-        ASIN,
-        ATAN,
-        ABS,
-        EXP,
-        LOG,
-        LOG10,
-        SIN,
-        SINH,
-        TAN,
-        TANH,
-        SQRT,
-        COS,
-        COSH,
-        ATAN2,
-        MOD,
-        POW,
-        ROUND,
-        TRUNC,
-        CEIL,
-        FLOOR,
-        HYPOT,
-        CATH,
-
-        // Aggregates
-        AGGREGATES,
-
-        SUM,
-        AVERAGE,
-        STDDEV,
-        COUNT,
-        MIN,
-        MAX,
-
-        // Last one
-        LAST,
-    };
-
-    FunctionExpression(const App::DocumentObject *_owner = 0, Function _f = NONE, std::vector<Expression *> _args = std::vector<Expression*>());
+    FunctionExpression(const App::DocumentObject *_owner=0, int f=0,
+            const std::vector<Expression *> &_args = {});
 
     virtual ~FunctionExpression();
 
     virtual bool isTouched() const;
 
-    virtual Expression * eval() const;
-
     virtual Expression * simplify() const;
 
-    virtual std::string toString() const;
-
-    virtual Expression * copy() const;
-
     virtual int priority() const;
-
-    virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
     virtual void visit(ExpressionVisitor & v);
 
 protected:
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+    virtual boost::any _getValueAsAny() const;
     Expression *evalAggregate() const;
 
-    Function f;        /**< Function to execute */
+    int f;        /**< Function to execute */
     std::vector<Expression *> args; /** Arguments to function*/
 };
 
@@ -380,7 +379,7 @@ protected:
   *
   */
 
-class AppExport VariableExpression : public UnitExpression {
+class AppExport VariableExpression : public Expression {
     TYPESYSTEM_HEADER();
 public:
     VariableExpression(const App::DocumentObject *_owner = 0, ObjectIdentifier _var = ObjectIdentifier());
@@ -389,37 +388,25 @@ public:
 
     virtual bool isTouched() const;
 
-    virtual Expression * eval() const;
-
-    virtual Expression * simplify() const;
-
-    virtual std::string toString() const { return var.toString(); }
-
-    virtual Expression * copy() const;
-
     virtual int priority() const;
-
-    virtual void getDeps(std::set<ObjectIdentifier> &props) const;
 
     std::string name() const { return var.getPropertyName(); }
 
-    ObjectIdentifier getPath() const { return var; }
+    const ObjectIdentifier &getPath() const { return var; }
 
     void setPath(const ObjectIdentifier & path);
 
-    bool validDocumentObjectRename(const std::string & oldName, const std::string & newName);
-
-    bool renameDocumentObject(const std::string & oldName, const std::string & newName);
-
-    bool validDocumentRename(const std::string &oldName, const std::string &newName);
-
-    bool renameDocument(const std::string &oldName, const std::string &newName);
-
-    const App::Property *getProperty() const;
-
-    App::DocumentObject *getDocumentObject() const;
-
-    virtual boost::any getValueAsAny() const { return var.getValue(); }
+protected:
+    virtual bool _isIndexable() const;
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual Expression *_copy() const;
+    virtual void _getDeps(ExpressionDeps &) const;
+    virtual void _getDepObjects(std::set<App::DocumentObject*> &) const;
+    virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const;
+    virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &);
+    virtual bool _renameDocumentObject(const App::DocumentObject *, ExpressionVisitor &);
+    virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &);
+    virtual boost::any _getValueAsAny() const;
 
 protected:
 
@@ -427,31 +414,70 @@ protected:
 };
 
 /**
+  * Class implementing a callable expression with named arguments and optional trailing accessor
+  */
+
+class AppExport CallableExpression : public Expression {
+    TYPESYSTEM_HEADER();
+public:
+    CallableExpression(const App::DocumentObject *_owner = 0, Expression *expr=0, 
+            const std::vector<std::pair<std::string,Expression *> > &_args = {});
+
+    static Expression *create(const App::DocumentObject *owner, const ObjectIdentifier &path,
+            const std::vector<std::pair<std::string,Expression *> > &args);
+
+    static Py::Object evaluate(const App::DocumentObject *owner, 
+            const std::string &expr, PyObject *tuple, PyObject *kwds);
+
+    virtual ~CallableExpression();
+
+    virtual bool isTouched() const;
+
+    virtual void visit(ExpressionVisitor & v);
+
+protected:
+    virtual bool _isIndexable() const { return true; }
+    virtual Expression *_eval() const;
+    virtual boost::any _getValueAsAny() const;
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual Expression *_copy() const;
+
+protected:
+    Expression *expr;
+    std::string name;
+    int ftype;
+    std::vector<std::pair<std::string,Expression *> > args;
+};
+
+/**
   * Class implementing a string. Used to signal either a genuine string or
   * a failed evaluation of an expression.
   */
-
 class AppExport StringExpression : public Expression {
     TYPESYSTEM_HEADER();
 public:
-    StringExpression(const App::DocumentObject *_owner = 0, const std::string & _text = std::string());
+    StringExpression(const App::DocumentObject *_owner = 0, 
+            const std::string & _text = std::string(), bool r_literal=false);
 
-    virtual Expression * eval() const;
-
-    virtual Expression * simplify() const;
-
-    virtual std::string toString() const;
-
-    virtual std::string getText() const { return text; }
+    virtual const std::string &getText() const { return text; }
 
     virtual int priority() const;
 
-    virtual Expression * copy() const;
+    bool rLiteral() const {return r_literal;}
+
+protected:
+    virtual bool _isIndexable() const { return true; }
+    virtual Expression * _copy() const;
+    virtual void _toString(std::ostringstream &ss) const;
+    virtual boost::any _getValueAsAny() const;
 
 protected:
 
     std::string text; /**< Text string */
+    bool r_literal;
 };
+
+//////////////////////////////////////////////////////////////////////
 
 class AppExport RangeExpression : public App::Expression {
     TYPESYSTEM_HEADER();
@@ -462,54 +488,109 @@ public:
 
     virtual bool isTouched() const;
 
-    virtual Expression * eval() const;
-
-    virtual std::string toString() const;
-
-    virtual Expression * copy() const;
-
     virtual int priority() const;
-
-    virtual void getDeps(std::set<App::ObjectIdentifier> &props) const;
-
-    virtual App::Expression * simplify() const;
 
     Range getRange() const { return range; }
 
     void setRange(const Range & r);
 
 protected:
+    virtual void _toString(std::ostringstream &) const;
+    virtual Expression *_copy() const;
+    virtual void _getDeps(ExpressionDeps &) const;
+    virtual void _getDepObjects(std::set<App::DocumentObject*> &) const;
+    virtual boost::any _getValueAsAny() const;
+
+protected:
     Range range;
 };
+
+//////////////////////////////////////////////////////////////////////
 
 class AppExport PyObjectExpression : public Expression {
     TYPESYSTEM_HEADER();
 
 public:
-
     PyObjectExpression(const App::DocumentObject * _owner=0, Py::Object obj=Py::Object());
-
-    virtual Expression * eval() const;
-
-    virtual std::string toString() const;
-
-    virtual Expression * copy() const;
 
     virtual int priority() const;
 
-    virtual Expression * simplify() const;
+    Py::Object getPyObject() const { return pyObj; }
 
-    virtual boost::any getValueAsAny() const { return boost::any(pyObj); }
+    void setPyObject(Py::Object pyobj) {pyObj = pyobj;}
 
-    Py::Object getPyObject() const {
-        return pyObj;
-    }
+protected:
+    virtual boost::any _getValueAsAny() const;
+    virtual void _toString(std::ostringstream &) const;
+    virtual Expression *_copy() const;
 
 protected:
     Py::Object pyObj;
 };
 
+//////////////////////////////////////////////////////////////////////
 
+class AppExport ListExpression : public Expression {
+    TYPESYSTEM_HEADER();
+
+public:
+    ListExpression(const App::DocumentObject * _owner=0, const std::vector<Expression *> &items={});
+    virtual ~ListExpression();
+
+    virtual int priority() const;
+
+    void addItem(Expression *item);
+
+protected:
+    virtual bool _isIndexable() const {return true;}
+    virtual boost::any _getValueAsAny() const;
+    virtual void _toString(std::ostringstream &) const;
+    virtual Expression *_copy() const;
+
+protected:
+    std::vector<Expression*> items;
+};
+
+//////////////////////////////////////////////////////////////////////
+
+class AppExport TupleExpression : public ListExpression {
+    TYPESYSTEM_HEADER();
+
+public:
+    TupleExpression(const App::DocumentObject * _owner=0, Expression *item=0);
+    TupleExpression(const App::DocumentObject * _owner, const std::vector<Expression *> &);
+
+protected:
+    virtual boost::any _getValueAsAny() const;
+    virtual Expression *_copy() const;
+    virtual void _toString(std::ostringstream &) const;
+};
+
+//////////////////////////////////////////////////////////////////////
+
+class AppExport DictExpression : public Expression {
+    TYPESYSTEM_HEADER();
+
+public:
+    DictExpression(const App::DocumentObject * _owner=0, Expression *key=0, Expression *value=0);
+    virtual ~DictExpression();
+
+    virtual int priority() const;
+
+    void addItem(Expression *key, Expression *value);
+
+protected:
+    virtual bool _isIndexable() const {return true;}
+    virtual boost::any _getValueAsAny() const;
+    virtual void _toString(std::ostringstream &) const;
+    virtual Expression *_copy() const;
+
+protected:
+    std::vector<std::pair<Expression*,Expression*> > items;
+};
+
+//////////////////////////////////////////////////////////////////////
+//
 namespace ExpressionParser {
 AppExport Expression * parse(const App::DocumentObject *owner, const char *buffer);
 AppExport UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);
@@ -531,6 +612,7 @@ public:
   Expression * expr;
   ObjectIdentifier path;
   std::deque<ObjectIdentifier::Component> components;
+  ObjectIdentifier::Component component;
   long long int ivalue;
   double fvalue;
   struct {
@@ -538,11 +620,11 @@ public:
     double fvalue;
   } constant;
   std::vector<Expression*> arguments;
-  std::vector<Expression*> list;
+  std::vector<std::pair<std::string,Expression*> > named_arguments;
+  std::pair<std::string,Expression*> named_argument;
   std::string string;
-  std::pair<std::string,FunctionExpression::Function> func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() : expr(0), ivalue(0), fvalue(0), func("",FunctionExpression::NONE) {}
+  semantic_type() : expr(0), ivalue(0), fvalue(0) {}
 };
 
 }
