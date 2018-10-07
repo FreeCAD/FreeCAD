@@ -189,12 +189,14 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
         int navigation = comboNavigationStyle->currentIndex();
         int orbit = comboOrbitStyle->currentIndex();
         int aliasing = comboAliasing->currentIndex();
+        int corner = naviCubeCorner->currentIndex();
         retranslateUi(this);
         retranslate();
         comboNavigationStyle->setCurrentIndex(navigation);
         comboOrbitStyle->setCurrentIndex(orbit);
         comboAliasing->setCurrentIndex(aliasing);
         comboAliasing->blockSignals(false);
+        naviCubeCorner->setCurrentIndex(corner);
     }
     else {
         QWidget::changeEvent(e);
