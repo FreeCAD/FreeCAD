@@ -1110,6 +1110,7 @@ SET(FreeCADGui_CPP_SRCS
     DocumentModel.cpp
     DocumentPyImp.cpp
     DocumentObserver.cpp
+    DocumentObserverPython.cpp
     ExpressionBinding.cpp
     GraphicsViewZoom.cpp
     ExpressionCompleter.cpp
@@ -1136,6 +1137,7 @@ SET(FreeCADGui_SRCS
     Document.h
     DocumentModel.h
     DocumentObserver.h
+    DocumentObserverPython.h
     ExpressionBinding.cpp
     ExpressionCompleter.h
     FreeCADGuiInit.py

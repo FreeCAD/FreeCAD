@@ -128,17 +128,33 @@ public:
      * the signal of a special document connect to the document itself
      */
     //@{
+    /// signal before change of doc property
+    boost::signal<void (const App::Document&, const App::Property&)> signalBeforeChangeDoc;
+    /// signal on changed doc proeprty
+    boost::signal<void (const App::Document&, const App::Property&)> signalChangedDoc;
     /// signal on new Object
     boost::signal<void (const App::DocumentObject&)> signalNewObject;
     //boost::signal<void (const App::DocumentObject&)>     m_sig;
     /// signal on deleted Object
     boost::signal<void (const App::DocumentObject&)> signalDeletedObject;
     /// signal on changed Object
+    boost::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChangeObject;
+    /// signal on changed Object
     boost::signal<void (const App::DocumentObject&, const App::Property&)> signalChangedObject;
     /// signal on relabeled Object
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on recomputed document
+    boost::signal<void (const App::Document&)> signalRecomputed;
+    /// signal on recomputed document object
+    boost::signal<void (const App::DocumentObject&)> signalObjectRecomputed;
+    // signal on opened transaction
+    boost::signal<void (const App::Document&, std::string)> signalOpenTransaction;
+    // signal a commited transaction
+    boost::signal<void (const App::Document&)> signalCommitTransaction;
+    // signal an aborted transaction
+    boost::signal<void (const App::Document&)> signalAbortTransaction;
     //@}
 
     /** @name Signals of property changes
@@ -264,13 +280,21 @@ protected:
      * This slot get connected to all App::Documents created
      */
     //@{
+    void slotBeforeChangeDoc(const App::Document&, const App::Property&);
+    void slotChangedDoc(const App::Document&, const App::Property&);
     void slotNewObject(const App::DocumentObject&);
     void slotDeletedObject(const App::DocumentObject&);
+    void slotBeforeChangeObject(const App::DocumentObject&, const App::Property& Prop);
     void slotChangedObject(const App::DocumentObject&, const App::Property& Prop);
     void slotRelabelObject(const App::DocumentObject&);
     void slotActivatedObject(const App::DocumentObject&);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+    void slotRecomputedObject(const App::DocumentObject&);
+    void slotRecomputed(const App::Document&);
+    void slotOpenTransaction(const App::Document&, std::string);
+    void slotCommitTransaction(const App::Document&);
+    void slotAbortTransaction(const App::Document&);
     //@}
 
 private:

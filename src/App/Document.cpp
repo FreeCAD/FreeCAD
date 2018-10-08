@@ -961,6 +961,8 @@ void Document::openTransaction(const char* name)
             d->activeUndoTransaction->Name = name;
         else
             d->activeUndoTransaction->Name = "<empty>";
+        
+        signalOpenTransaction(*this, d->activeUndoTransaction->Name);
     }
 }
 
@@ -1000,6 +1002,7 @@ void Document::commitTransaction()
             delete mUndoTransactions.front();
             mUndoTransactions.pop_front();
         }
+        signalCommitTransaction(*this);
     }
 }
 
@@ -1014,6 +1017,7 @@ void Document::abortTransaction()
         // destroy the undo
         delete d->activeUndoTransaction;
         d->activeUndoTransaction = 0;
+        signalAbortTransaction(*this);
     }
 }
 
@@ -1094,8 +1098,15 @@ unsigned int Document::getMaxUndoStackSize(void)const
     return d->UndoMaxStackSize;
 }
 
+void Document::onBeforeChange(const Property* prop) {
+ 
+    signalBeforeChange(*this, *prop);
+}
+
 void Document::onChanged(const Property* prop)
 {
+    signalChanged(*this, *prop);
+    
     // the Name property is a label for display purposes
     if (prop == &Label) {
         App::GetApplication().signalRelabelDocument(*this);
@@ -1136,6 +1147,9 @@ void Document::onChanged(const Property* prop)
 
 void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Property *What)
 {
+    if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+        signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
+    
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
 }
@@ -2178,6 +2192,7 @@ int Document::recompute()
                 d->vertexMap.clear();
                 return -1;
             }
+            signalRecomputedObject(*Cur);
             ++objectCount;
         }
     }
@@ -2244,6 +2259,7 @@ int Document::recompute()
 
         if ((*objIt)->isTouched() || doRecompute) {
             (*objIt)->purgeTouched();
+            signalRecomputedObject(*(*objIt));
             // force recompute of all dependent objects
             for (auto inObjIt : (*objIt)->getInList())
                 inObjIt->enforceRecompute();
@@ -2513,8 +2529,10 @@ void Document::recomputeFeature(DocumentObject* Feat)
     _RecomputeLog.clear();
 
     // verify that the feature is (active) part of the document
-    if (Feat->getNameInDocument())
+    if (Feat->getNameInDocument()) {
         _recomputeFeature(Feat);
+        signalRecomputedObject(*Feat);
+    }
 }
 
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)

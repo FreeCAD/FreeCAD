@@ -416,13 +416,21 @@ Document* Application::newDocument(const char * Name, const char * UserName)
 
 
     // connect the signals to the application for the new document
+    _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDoc, this, _1, _2));
+    _pActiveDoc->signalChanged.connect(boost::bind(&App::Application::slotChangedDoc, this, _1, _2));
     _pActiveDoc->signalNewObject.connect(boost::bind(&App::Application::slotNewObject, this, _1));
     _pActiveDoc->signalDeletedObject.connect(boost::bind(&App::Application::slotDeletedObject, this, _1));
+    _pActiveDoc->signalBeforeChangeObject.connect(boost::bind(&App::Application::slotBeforeChangeObject, this, _1, _2));
     _pActiveDoc->signalChangedObject.connect(boost::bind(&App::Application::slotChangedObject, this, _1, _2));
     _pActiveDoc->signalRelabelObject.connect(boost::bind(&App::Application::slotRelabelObject, this, _1));
     _pActiveDoc->signalActivatedObject.connect(boost::bind(&App::Application::slotActivatedObject, this, _1));
     _pActiveDoc->signalUndo.connect(boost::bind(&App::Application::slotUndoDocument, this, _1));
     _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
+    _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, _1));
+    _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, _1));
+    _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, _1, _2));
+    _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, _1));
+    _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -972,6 +980,16 @@ std::map<std::string, std::string> Application::getExportFilters(void) const
 
 //**************************************************************************
 // signaling
+void Application::slotBeforeChangeDoc(const App::Document& doc, const Property& prop)
+{
+    this->signalBeforeChangeDoc(doc, prop);
+}
+
+void Application::slotChangedDoc(const App::Document& doc, const Property& prop)
+{
+    this->signalChangedDoc(doc, prop);
+}
+
 void Application::slotNewObject(const App::DocumentObject&O)
 {
     this->signalNewObject(O);
@@ -980,6 +998,11 @@ void Application::slotNewObject(const App::DocumentObject&O)
 void Application::slotDeletedObject(const App::DocumentObject&O)
 {
     this->signalDeletedObject(O);
+}
+
+void Application::slotBeforeChangeObject(const DocumentObject& O, const Property& Prop)
+{
+    this->signalBeforeChangeObject(O, Prop);
 }
 
 void Application::slotChangedObject(const App::DocumentObject&O, const App::Property& P)
@@ -1005,6 +1028,30 @@ void Application::slotUndoDocument(const App::Document& d)
 void Application::slotRedoDocument(const App::Document& d)
 {
     this->signalRedoDocument(d);
+}
+void Application::slotRecomputedObject(const DocumentObject& obj)
+{
+    this->signalObjectRecomputed(obj);
+}
+
+void Application::slotRecomputed(const Document& doc)
+{
+    this->signalRecomputed(doc);
+}
+
+void Application::slotOpenTransaction(const Document& d, string s)
+{
+    this->signalOpenTransaction(d, s);
+}
+
+void Application::slotCommitTransaction(const Document& d)
+{
+    this->signalCommitTransaction(d);
+}
+
+void Application::slotAbortTransaction(const Document& d)
+{
+    this->signalAbortTransaction(d);
 }
 
 //**************************************************************************

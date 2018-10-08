@@ -43,6 +43,7 @@ class MDIView;
 class MainWindow;
 class MenuItem;
 class ViewProvider;
+class ViewProviderDocumentObject;
 
 /** The Application main class
  * This is the central class of the GUI 
@@ -115,6 +116,10 @@ public:
     boost::signal<void (const char*)> signalRemoveWorkbench;
     /// signal on activating view
     boost::signal<void (const Gui::MDIView*)> signalActivateView;
+    /// signal on entering in edit mode
+    boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
+    /// signal on leaving edit mode
+    boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     //@}
 
     /** @name methods for Document handling */
@@ -131,6 +136,8 @@ protected:
     void slotChangedObject(const ViewProvider&, const App::Property& Prop);
     void slotRelabelObject(const ViewProvider&);
     void slotActivatedObject(const ViewProvider&);
+    void slotInEdit(const Gui::ViewProviderDocumentObject&);
+    void slotResetEdit(const Gui::ViewProviderDocumentObject&);
 
 public:
     /// message when a GuiDocument is about to vanish
@@ -251,6 +258,9 @@ public:
 
     static PyObject* sCreateViewer             (PyObject *self,PyObject *args);
     static PyObject* sGetMarkerIndex           (PyObject *self,PyObject *args);
+    
+    static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
+    static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
 
     static PyMethodDef    Methods[]; 
 

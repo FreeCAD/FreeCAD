@@ -57,6 +57,7 @@
 #include "Language/Translator.h"
 #include "DownloadManager.h"
 #include "DlgPreferencesImp.h"
+#include "DocumentObserverPython.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
@@ -188,6 +189,13 @@ PyMethodDef Application::Methods[] = {
 
   {"getMarkerIndex", (PyCFunction) Application::sGetMarkerIndex, METH_VARARGS,
    "Get marker index according to marker size setting"},
+   
+    {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver, METH_VARARGS,
+     "addDocumentObserver() -> None\n\n"
+     "Add an observer to get notified about changes on documents."},
+    {"removeDocumentObserver",  (PyCFunction) Application::sRemoveDocObserver, METH_VARARGS,
+     "removeDocumentObserver() -> None\n\n"
+     "Remove an added document observer."},
 
   {NULL, NULL, 0, NULL}		/* Sentinel */
 };
@@ -1267,4 +1275,27 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         else
             return Py_BuildValue("i", Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", hGrp->GetInt("MarkerSize", defSize)));
     }PY_CATCH;
+}
+
+
+PyObject* Application::sAddDocObserver(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O",&o))
+        return NULL;
+    PY_TRY {
+        DocumentObserverPython::addObserver(Py::Object(o));
+        Py_Return;
+    } PY_CATCH;
+}
+
+PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O",&o))
+        return NULL;
+    PY_TRY {
+        DocumentObserverPython::removeObserver(Py::Object(o));
+        Py_Return;
+    } PY_CATCH;
 }

@@ -151,6 +151,10 @@ private:
     virtual void slotDeletedObject(const App::DocumentObject& Obj);
     /** The property of an observed object has changed */
     virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    /** Called when a given object is recomputed */
+    virtual void slotRecomputedObject(const App::DocumentObject& Obj);
+    /** Called when a observed document is recomputed */
+    virtual void slotRecomputedDocument(const App::Document& Doc);
 
 protected:
     Document* getDocument() const;
@@ -163,6 +167,8 @@ private:
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;
+    Connection connectDocumentRecomputedObject;
+    Connection connectDocumentRecomputed;
 };
 
 /**
