@@ -187,6 +187,10 @@ public:
     /// Find the start of an element name in a subname
     static const char *findElementName(const char *subname);
 
+    static inline const char *hasMappedElementName(const char *subname) {
+        return isMappedElement(findElementName(subname));
+    }
+
     /** Get element name
      *
      * @param name: the input name
