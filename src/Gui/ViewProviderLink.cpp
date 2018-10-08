@@ -457,7 +457,7 @@ public:
                 appendPath(path,pcSnapshots[type]);
             // this is possible in case of editing, where the switch node
             // of the linked view object is temparaly removed from its root
-            return false;
+            return true;
         }
         int len = 0;
         if(path) {
