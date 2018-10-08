@@ -59,6 +59,10 @@ public:
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
     void deleteSelection();
+    void copySelection();
+    void cutSelection();
+    void pasteClipboard();
+
 protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(App::CellAddress address);
