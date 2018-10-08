@@ -1661,6 +1661,8 @@ bool Document::save (void)
 
 bool Document::saveToFile(const char* filename) const
 {
+    signalStartSave(*this, filename);
+
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     int compression = hGrp->GetInt("CompressionLevel",3);
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
@@ -1757,6 +1759,8 @@ bool Document::saveToFile(const char* filename) const
     if (tmp.renameFile(filename) == false)
         Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
         fn.c_str(), filename);
+
+    signalFinishSave(*this, filename);
 
     return true;
 }

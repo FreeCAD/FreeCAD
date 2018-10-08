@@ -1406,7 +1406,17 @@ class DocumentObserverCases(unittest.TestCase):
       self.signal.append('ObjChangePropEdit');
       self.parameter.append(obj)
       self.parameter2.append(prop)
-      
+
+    def slotStartSaveDocument(self, obj, name):
+      self.signal.append('DocStartSave')
+      self.parameter.append(obj)
+      self.parameter2.append(name)
+
+    def slotFinishSaveDocument(self, obj, name):
+      self.signal.append('DocFinishSave')
+      self.parameter.append(obj)
+      self.parameter2.append(name)
+
   class GuiObserver():
     
     signal = []
@@ -1457,6 +1467,16 @@ class DocumentObserverCases(unittest.TestCase):
   def setUp(self):
     self.Obs = self.Observer();
     FreeCAD.addDocumentObserver(self.Obs);
+
+  def testSave(self):
+    TempPath = tempfile.gettempdir()
+    SaveName = TempPath + os.sep + "SaveRestoreTests.FCStd"
+    self.Doc1 = FreeCAD.newDocument("Observer1");
+    self.Doc1.saveAs(SaveName)
+    self.assertEqual(self.Obs.signal.pop(), 'DocFinishSave')
+    self.assertEqual(self.Obs.parameter2.pop(), self.Doc1.FileName)
+    self.assertEqual(self.Obs.signal.pop(), 'DocStartSave')
+    self.assertEqual(self.Obs.parameter2.pop(), self.Doc1.FileName)
 
   def testDocument(self):
     
@@ -1577,13 +1597,13 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter2.pop(0) == "Label")
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
-    obj.touch()
+    obj.enforceRecompute()
     obj.recompute()
     self.failUnless(self.Obs.signal.pop(0) == 'ObjRecomputed')
     self.failUnless(self.Obs.parameter.pop(0) is obj)
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
-    obj.touch()
+    obj.enforceRecompute()
     self.Doc1.recompute()
     self.failUnless(self.Obs.signal.pop(0) == 'ObjRecomputed')
     self.failUnless(self.Obs.parameter.pop(0) is obj)

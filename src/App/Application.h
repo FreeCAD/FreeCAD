@@ -116,6 +116,10 @@ public:
     boost::signal<void (const Document&)> signalStartRestoreDocument;
     /// signal on restoring Document
     boost::signal<void (const Document&)> signalFinishRestoreDocument;
+    /// signal on starting to save Document
+    boost::signal<void (const Document&, const std::string&)> signalStartSaveDocument;
+    /// signal on saved Document
+    boost::signal<void (const Document&, const std::string&)> signalFinishSaveDocument;
     /// signal on undo in document
     boost::signal<void (const Document&)> signalUndoDocument;
     /// signal on redo in document
@@ -295,6 +299,8 @@ protected:
     void slotOpenTransaction(const App::Document&, std::string);
     void slotCommitTransaction(const App::Document&);
     void slotAbortTransaction(const App::Document&);
+    void slotStartSaveDocument(const App::Document&, const std::string&);
+    void slotFinishSaveDocument(const App::Document&, const std::string&);
     //@}
 
 private:
