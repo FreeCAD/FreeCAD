@@ -72,9 +72,9 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     this->connectApplicationRedoDocument = App::GetApplication().signalRedoDocument.connect(boost::bind
         (&DocumentObserverPython::slotRedoDocument, this, _1));
 
-    this->connectDocumentBeforeChange = App::GetApplication().signalBeforeChangeDoc.connect(boost::bind
+    this->connectDocumentBeforeChange = App::GetApplication().signalBeforeChangeDocument.connect(boost::bind
         (&DocumentObserverPython::slotBeforeChangeDocument, this, _1, _2));
-    this->connectDocumentChanged = App::GetApplication().signalChangedDoc.connect(boost::bind
+    this->connectDocumentChanged = App::GetApplication().signalChangedDocument.connect(boost::bind
         (&DocumentObserverPython::slotChangedDocument, this, _1, _2));
     this->connectDocumentCreatedObject = App::GetApplication().signalNewObject.connect(boost::bind
         (&DocumentObserverPython::slotCreatedObject, this, _1));
@@ -84,19 +84,19 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
         (&DocumentObserverPython::slotBeforeChangeObject, this, _1, _2));
     this->connectDocumentChangedObject = App::GetApplication().signalChangedObject.connect(boost::bind
         (&DocumentObserverPython::slotChangedObject, this, _1, _2));
-    
+
     this->connectDocumentObjectRecomputed = App::GetApplication().signalObjectRecomputed.connect(boost::bind
         (&DocumentObserverPython::slotRecomputedObject, this, _1));
     this->connectDocumentRecomputed = App::GetApplication().signalRecomputed.connect(boost::bind
         (&DocumentObserverPython::slotRecomputedDocument, this, _1));
-    
+
     this->connectDocumentOpenTransaction = App::GetApplication().signalOpenTransaction.connect(boost::bind
         (&DocumentObserverPython::slotOpenTransaction, this, _1, _2));
     this->connectDocumentCommitTransaction = App::GetApplication().signalCommitTransaction.connect(boost::bind
         (&DocumentObserverPython::slotCommitTransaction, this, _1));
     this->connectDocumentAbortTransaction = App::GetApplication().signalAbortTransaction.connect(boost::bind
         (&DocumentObserverPython::slotAbortTransaction, this, _1));
-    
+
     this->connectObjectAppendDynamicProperty = App::GetApplication().signalAppendDynamicProperty.connect(boost::bind
         (&DocumentObserverPython::slotAppendDynamicProperty, this, _1));
     this->connectObjectRemoveDynamicProperty = App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
