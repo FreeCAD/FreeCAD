@@ -25,6 +25,7 @@
 #include <QSignalMapper>
 #include <QDockWidget>
 #include <QMessageBox>
+#include <QClipboard>
 
 #include "Placement.h"
 #include "ui_Placement.h"
@@ -358,6 +359,12 @@ void Placement::on_selectedVertex_clicked()
         }
         double length = axis.Length();
         Base::Console().Message("Distance: %.8f\n",length);
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier){ //copy to clipboard on Shift+click
+            QLocale loc;
+            QApplication::clipboard()->setText(loc.toString(length,'g',8));
+        }else {
+            Base::Console().Message("(Shift + click Selected points button to copy distance to clipboard)\n");
+        }
         axis.Normalize();
         rot.setValue(axis, angle);
         plm.setRotation(rot);
@@ -406,6 +413,13 @@ void Placement::on_selectedVertex_clicked()
         v2.Normalize();
         double targetAngle = Base::toDegrees(v2.GetAngle(v1));
         Base::Console().Message("Target angle: %.8f degrees, complementary: %.8f degrees\n",targetAngle, 90.0-targetAngle);
+        if (QApplication::keyboardModifiers() == Qt::ShiftModifier){ //copy to clipboard on Shift+click
+            QLocale loc;
+            QApplication::clipboard()->setText(loc.toString(targetAngle,'g',8));
+            Base::Console().Message("(Angle copied to clipboard, but you might need to use a negative (-) angle sometimes.)\n");
+        } else {
+            Base::Console().Message("(Shift + click Selected points button to copy angle to clipboard)\n");
+        }
         rot.setValue(norm, angle);
         plm.setRotation(rot);
         setPlacementData(plm); //creates custom axis, if needed
@@ -423,7 +437,8 @@ face or edge.  If 1 point is selected it will be used as the center of rotation.
 selected the midpoint between them will be the center of rotation and a new custom axis will be \
 created, if needed.  If 3 points are selected the first point becomes the center of rotation and \
 lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle \
-information is provided in the report view, which can be useful when aligning objects."));
+information is provided in the report view, which can be useful when aligning objects.  For your \
+convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard."));
         msgBox.exec();
         ui->xCnt->setValue(0);
         ui->yCnt->setValue(0);
