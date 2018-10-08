@@ -24,6 +24,8 @@
 #ifndef _PreComp_
 # include <QKeyEvent>
 # include <QAction>
+# include <QApplication>
+# include <QClipboard>
 #endif
 
 #include <Gui/Command.h>
@@ -332,6 +334,18 @@ bool SheetTableView::event(QEvent *event)
             deleteSelection();
             return true;
         }
+        else if (kevent->matches(QKeySequence::Cut)) {
+            cutSelection();
+            return true;
+        }
+        else if (kevent->matches(QKeySequence::Copy)) {
+            copySelection();
+            return true;
+        }
+        else if (kevent->matches(QKeySequence::Paste)) {
+            pasteClipboard();
+            return true;
+        }
     }
     else if (event->type() == QEvent::ShortcutOverride) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
@@ -359,6 +373,16 @@ bool SheetTableView::event(QEvent *event)
                 kevent->accept();
             }
         }
+
+        if (kevent->matches(QKeySequence::Cut)) {
+            kevent->accept();
+        }
+        else if (kevent->matches(QKeySequence::Copy)) {
+            kevent->accept();
+        }
+        else if (kevent->matches(QKeySequence::Paste)) {
+            kevent->accept();
+        }
     }
     return QTableView::event(event);
 }
@@ -378,6 +402,63 @@ void SheetTableView::deleteSelection()
         }
         Gui::Command::commitCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
+}
+
+void SheetTableView::copySelection()
+{
+    QModelIndexList selection = selectionModel()->selectedIndexes();
+    int minRow = INT_MAX;
+    int maxRow = 0;
+    int minCol = INT_MAX;
+    int maxCol = 0;
+
+    for (auto it : selection) {
+        int row = it.row();
+        int col = it.column();
+        minRow = std::min(minRow, row);
+        maxRow = std::max(maxRow, row);
+        minCol = std::min(minCol, col);
+        maxCol = std::max(maxCol, col);
+    }
+
+    QString selectedText;
+    for (int i=minRow; i<=maxRow; i++) {
+        for (int j=minCol; j<=maxCol; j++) {
+            QModelIndex index = model()->index(i,j);
+            QString cell = index.data(Qt::EditRole).toString();
+            if (j < maxCol)
+                cell.append(QChar::fromLatin1('\t'));
+            selectedText += cell;
+        }
+        if (i < maxRow)
+            selectedText.append(QChar::fromLatin1('\n'));
+    }
+    QApplication::clipboard()->setText(selectedText);
+}
+
+void SheetTableView::cutSelection()
+{
+    copySelection();
+    deleteSelection();
+}
+
+void SheetTableView::pasteClipboard()
+{
+    QString text = QApplication::clipboard()->text();
+    QStringList rows = text.split(QLatin1Char('\n'));
+
+    QModelIndex current = currentIndex();
+    int i=0;
+    for (auto it : rows) {
+        QStringList cols = it.split(QLatin1Char('\t'));
+        int j=0;
+        for (auto jt : cols) {
+            QModelIndex index = model()->index(current.row()+i, current.column()+j);
+            model()->setData(index, jt);
+            j++;
+        }
+        i++;
     }
 }
 
