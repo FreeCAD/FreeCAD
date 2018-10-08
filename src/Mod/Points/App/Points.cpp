@@ -85,17 +85,25 @@ Data::Segment* PointKernel::getSubElement(const char* /*Type*/, unsigned long /*
 void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 {
     std::vector<value_type>& kernel = getBasicPoints();
+#ifdef _WIN32
+    // Win32-only at the moment since ppl.h is a Microsoft library. Points is not using Qt so we cannot use QtConcurrent
+    // We could also rewrite Points to leverage SIMD instructions
+    // Other option: openMP. But with VC2013 results in high CPU usage even after computation (busy-waits for >100ms)
+    Concurrency::parallel_for_each(kernel.begin(), kernel.end(), [rclMat](value_type& value) {
+        value = rclMat * value;
+    });
+#else
     QtConcurrent::blockingMap(kernel, [rclMat](value_type& value) {
         rclMat.multVec(value, value);
     });
+#endif
 }
 
 Base::BoundBox3d PointKernel::getBoundBox(void)const
 {
     Base::BoundBox3d bnd;
 
-    //FIXME: VS 2015 or later causes a linker error
-#if defined _WIN32 
+#ifdef _WIN32
     // Thread-local bounding boxes
     Concurrency::combinable<Base::BoundBox3d> bbs;
     // Cannot use a const_point_iterator here as it is *not* a proper iterator (fails the for_each template)
