@@ -131,6 +131,13 @@ bool PropertyLinkBase::_updateElementReference(
                 << shadow.first << " -> " << elementName.first);
         shadow.swap(elementName);
     }
+    if(reverse) {
+        if(shadow.first.size() && Data::ComplexGeoData::hasMappedElementName(sub.c_str()))
+            sub = shadow.first;
+        else
+            sub = shadow.second;
+        return true;
+    }
     auto pos2 = shadow.first.rfind('.');
     if(pos2 == std::string::npos)
         return true;
