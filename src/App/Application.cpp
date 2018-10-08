@@ -416,8 +416,8 @@ Document* Application::newDocument(const char * Name, const char * UserName)
 
 
     // connect the signals to the application for the new document
-    _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDoc, this, _1, _2));
-    _pActiveDoc->signalChanged.connect(boost::bind(&App::Application::slotChangedDoc, this, _1, _2));
+    _pActiveDoc->signalBeforeChange.connect(boost::bind(&App::Application::slotBeforeChangeDocument, this, _1, _2));
+    _pActiveDoc->signalChanged.connect(boost::bind(&App::Application::slotChangedDocument, this, _1, _2));
     _pActiveDoc->signalNewObject.connect(boost::bind(&App::Application::slotNewObject, this, _1));
     _pActiveDoc->signalDeletedObject.connect(boost::bind(&App::Application::slotDeletedObject, this, _1));
     _pActiveDoc->signalBeforeChangeObject.connect(boost::bind(&App::Application::slotBeforeChangeObject, this, _1, _2));
@@ -980,14 +980,14 @@ std::map<std::string, std::string> Application::getExportFilters(void) const
 
 //**************************************************************************
 // signaling
-void Application::slotBeforeChangeDoc(const App::Document& doc, const Property& prop)
+void Application::slotBeforeChangeDocument(const App::Document& doc, const Property& prop)
 {
-    this->signalBeforeChangeDoc(doc, prop);
+    this->signalBeforeChangeDocument(doc, prop);
 }
 
-void Application::slotChangedDoc(const App::Document& doc, const Property& prop)
+void Application::slotChangedDocument(const App::Document& doc, const Property& prop)
 {
-    this->signalChangedDoc(doc, prop);
+    this->signalChangedDocument(doc, prop);
 }
 
 void Application::slotNewObject(const App::DocumentObject&O)
@@ -1029,6 +1029,7 @@ void Application::slotRedoDocument(const App::Document& d)
 {
     this->signalRedoDocument(d);
 }
+
 void Application::slotRecomputedObject(const DocumentObject& obj)
 {
     this->signalObjectRecomputed(obj);

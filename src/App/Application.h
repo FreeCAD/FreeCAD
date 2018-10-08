@@ -129,9 +129,9 @@ public:
      */
     //@{
     /// signal before change of doc property
-    boost::signal<void (const App::Document&, const App::Property&)> signalBeforeChangeDoc;
+    boost::signal<void (const App::Document&, const App::Property&)> signalBeforeChangeDocument;
     /// signal on changed doc proeprty
-    boost::signal<void (const App::Document&, const App::Property&)> signalChangedDoc;
+    boost::signal<void (const App::Document&, const App::Property&)> signalChangedDocument;
     /// signal on new Object
     boost::signal<void (const App::DocumentObject&)> signalNewObject;
     //boost::signal<void (const App::DocumentObject&)>     m_sig;
@@ -280,8 +280,8 @@ protected:
      * This slot get connected to all App::Documents created
      */
     //@{
-    void slotBeforeChangeDoc(const App::Document&, const App::Property&);
-    void slotChangedDoc(const App::Document&, const App::Property&);
+    void slotBeforeChangeDocument(const App::Document&, const App::Property&);
+    void slotChangedDocument(const App::Document&, const App::Property&);
     void slotNewObject(const App::DocumentObject&);
     void slotDeletedObject(const App::DocumentObject&);
     void slotBeforeChangeObject(const App::DocumentObject&, const App::Property& Prop);

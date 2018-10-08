@@ -1098,8 +1098,8 @@ unsigned int Document::getMaxUndoStackSize(void)const
     return d->UndoMaxStackSize;
 }
 
-void Document::onBeforeChange(const Property* prop) {
- 
+void Document::onBeforeChange(const Property* prop)
+{
     signalBeforeChange(*this, *prop);
 }
 
@@ -2255,11 +2255,12 @@ int Document::recompute()
                 // if something happened break execution of recompute
                 return -1;
             }
+
+            signalRecomputedObject(*(*objIt));
         }
 
         if ((*objIt)->isTouched() || doRecompute) {
             (*objIt)->purgeTouched();
-            signalRecomputedObject(*(*objIt));
             // force recompute of all dependent objects
             for (auto inObjIt : (*objIt)->getInList())
                 inObjIt->enforceRecompute();
