@@ -97,6 +97,11 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
     this->connectDocumentAbortTransaction = App::GetApplication().signalAbortTransaction.connect(boost::bind
         (&DocumentObserverPython::slotAbortTransaction, this, _1));
 
+    this->connectDocumentStartSave = App::GetApplication().signalStartSaveDocument.connect(boost::bind
+        (&DocumentObserverPython::slotStartSaveDocument, this, _1, _2));
+    this->connectDocumentFinishSave = App::GetApplication().signalFinishSaveDocument.connect(boost::bind
+        (&DocumentObserverPython::slotFinishSaveDocument, this, _1, _2));
+
     this->connectObjectAppendDynamicProperty = App::GetApplication().signalAppendDynamicProperty.connect(boost::bind
         (&DocumentObserverPython::slotAppendDynamicProperty, this, _1));
     this->connectObjectRemoveDynamicProperty = App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
@@ -125,7 +130,9 @@ DocumentObserverPython::~DocumentObserverPython()
     this->connectDocumentOpenTransaction.disconnect();
     this->connectDocumentCommitTransaction.disconnect();
     this->connectDocumentAbortTransaction.disconnect();
-    
+    this->connectDocumentStartSave.disconnect();
+    this->connectDocumentFinishSave.disconnect();
+
     this->connectObjectAppendDynamicProperty.disconnect();
     this->connectObjectRemoveDynamicProperty.disconnect();
     this->connectObjectChangePropertyEditor.disconnect();
@@ -511,6 +518,42 @@ void DocumentObserverPython::slotChangePropertyEditor(const App::Property& Prop)
                 args.setItem(1, Py::String(prop_name));
                 method.apply(args);
             }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotStartSaveDocument(const App::Document& doc, const std::string& file)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotStartSaveDocument"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotStartSaveDocument")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
+            args.setItem(1, Py::String(file));
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void DocumentObserverPython::slotFinishSaveDocument(const App::Document& doc, const std::string& file)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->inst.hasAttr(std::string("slotFinishSaveDocument"))) {
+            Py::Callable method(this->inst.getAttr(std::string("slotFinishSaveDocument")));
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
+            args.setItem(1, Py::String(file));
+            method.apply(args);
         }
     }
     catch (Py::Exception&) {

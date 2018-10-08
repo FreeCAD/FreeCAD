@@ -91,6 +91,10 @@ private:
     void slotRemoveDynamicProperty(const App::Property& Prop);
     /** Called when an object property gets a new editor relevant status like hidden or read only*/
     void slotChangePropertyEditor(const App::Property& Prop);
+    /** Called when a document is about to be saved*/
+    void slotStartSaveDocument(const App::Document&, const std::string&);
+    /** Called when an document has been saved*/
+    void slotFinishSaveDocument(const App::Document&, const std::string&);
 
 private:
     Py::Object inst;
@@ -114,6 +118,8 @@ private:
     Connection connectDocumentOpenTransaction;
     Connection connectDocumentCommitTransaction;
     Connection connectDocumentAbortTransaction;
+    Connection connectDocumentStartSave;
+    Connection connectDocumentFinishSave;
     Connection connectObjectAppendDynamicProperty;
     Connection connectObjectRemoveDynamicProperty;
     Connection connectObjectChangePropertyEditor;

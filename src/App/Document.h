@@ -152,6 +152,10 @@ public:
                         Base::XMLReader&)> signalImportObjects;
     boost::signal<void (const std::vector<App::DocumentObject*>&, Base::Reader&,
                         const std::map<std::string, std::string>&)> signalImportViewObjects;
+    //signal starting a save action to a file
+    boost::signal<void (const App::Document&, const std::string&)> signalStartSave;
+    //signal finishing a save action to a file
+    boost::signal<void (const App::Document&, const std::string&)> signalFinishSave;
     boost::signal<void (const App::Document&)> signalRecomputed;
     boost::signal<void (const App::DocumentObject&)> signalRecomputedObject;
     //signal a new opened transaction

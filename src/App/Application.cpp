@@ -431,6 +431,8 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, _1, _2));
     _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, _1));
     _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
+    _pActiveDoc->signalStartSave.connect(boost::bind(&App::Application::slotStartSaveDocument, this, _1, _2));
+    _pActiveDoc->signalFinishSave.connect(boost::bind(&App::Application::slotFinishSaveDocument, this, _1, _2));
 
     // make sure that the active document is set in case no GUI is up
     {
@@ -1053,6 +1055,16 @@ void Application::slotCommitTransaction(const Document& d)
 void Application::slotAbortTransaction(const Document& d)
 {
     this->signalAbortTransaction(d);
+}
+
+void Application::slotStartSaveDocument(const App::Document& doc, const std::string& filename)
+{
+    this->signalStartSaveDocument(doc, filename);
+}
+
+void Application::slotFinishSaveDocument(const App::Document& doc, const std::string& filename)
+{
+    this->signalFinishSaveDocument(doc, filename);
 }
 
 //**************************************************************************
