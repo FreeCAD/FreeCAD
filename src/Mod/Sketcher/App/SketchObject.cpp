@@ -1137,8 +1137,17 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
 
-            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
+            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular){
                 constNew->Type = Sketcher::Coincident;
+            }
+            // with respect to angle constraints, if it is a DeepSOIC style angle constraint (segment+segment+point), then no problem arises
+            // as the segments are PosId=none. In this case there is not call to this function.
+            //
+            // However, other angle constraints are problematic because they are created on segments, but internally operate on vertices, PosId=start
+            // such constraint may not be succesfully transfered on deletion of the segments.
+            else if(vals[i]->Type == Sketcher::Angle) {
+                continue;
+            }
 
             newVals[i] = constNew;
             changed.push_back(constNew);
@@ -1153,8 +1162,12 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             // Nothing guarantees that a tangent can be freely transferred to another coincident point, as
             // the transfer destination edge most likely won't be intended to be tangent. However, if it is
             // an end to end point tangency, the user expects it to be substituted by a coincidence constraint.
-            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular)
+            if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular) {
                 constNew->Type = Sketcher::Coincident;
+            }
+            else if(vals[i]->Type == Sketcher::Angle) {
+                continue;
+            }
 
             newVals[i] = constNew;
             changed.push_back(constNew);
