@@ -382,9 +382,11 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 detailPath->truncate(0);
                 delete detail;
             }
-        }
-        else if (selaction->SelChange.Type == SelectionChanges::ClrSelection ||
-                 selaction->SelChange.Type == SelectionChanges::SetSelection) {
+        }else if (selaction->SelChange.Type == SelectionChanges::ClrSelection) {
+            SoSelectionElementAction action(SoSelectionElementAction::None);
+            for(int i=0;i<this->getNumChildren();++i)
+                action.apply(this->getChild(i));
+        }else if(selaction->SelChange.Type == SelectionChanges::SetSelection) {
             std::vector<ViewProvider*> vps;
             if (this->pcDocument)
                 vps = this->pcDocument->getViewProvidersOfType(ViewProviderDocumentObject::getClassTypeId());
