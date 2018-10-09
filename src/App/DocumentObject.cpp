@@ -603,7 +603,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         ret = const_cast<DocumentObject*>(this);
     }else if(subname[0]=='$') {
         name = std::string(subname+1,dot);
-        for(auto obj : getOutList(OutListNoExpression)) {
+        for(auto obj : getOutList()) {
             if(name == obj->Label.getValue()) {
                 ret = obj;
                 break;
@@ -611,11 +611,10 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         }
     }else{
         name = std::string(subname,dot);
-        if(!_outListCached)
-            getOutList(OutListNoExpression);
-        if(_outList.size()!=_outListMap.size()) {
+        const auto &outList = getOutList();
+        if(outList.size()!=_outListMap.size()) {
             _outListMap.clear();
-            for(auto obj : _outList)
+            for(auto obj : outList)
                 _outListMap[obj->getNameInDocument()] = obj;
         }
         auto it = _outListMap.find(name.c_str());
