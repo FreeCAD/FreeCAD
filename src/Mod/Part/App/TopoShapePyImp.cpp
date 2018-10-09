@@ -352,7 +352,7 @@ PyObject*  TopoShapePy::read(PyObject *args)
     PyMem_Free(Name);
 
     getTopoShapePtr()->read(EncodedName.c_str());
-    Py_Return;
+    return IncRef();
 }
 
 PyObject* TopoShapePy::writeInventor(PyObject * args)
@@ -798,7 +798,7 @@ PyObject*  TopoShapePy::check(PyObject *args)
         }
     }
 
-    Py_Return; 
+    return IncRef();
 }
 
 static PyObject *makeShape(const char *op,const TopoShape &shape, PyObject *args) {
@@ -1327,7 +1327,7 @@ PyObject*  TopoShapePy::sewShape(PyObject *args)
 
     try {
         getTopoShapePtr()->sewShape();
-        Py_Return;
+        return IncRef();
     }
     catch (Standard_Failure& e) {
 
@@ -1585,7 +1585,7 @@ PyObject*  TopoShapePy::transformShape(PyObject *args)
     try {
         this->getTopoShapePtr()->transformShape(mat, PyObject_IsTrue(copy) ? true : false, 
                 PyObject_IsTrue(checkScale));
-        Py_Return;
+        return IncRef();
     }
     catch (Standard_Failure& e) {
 
@@ -1635,7 +1635,7 @@ PyObject*  TopoShapePy::translate(PyObject *args)
     TopoDS_Shape shape = getTopoShapePtr()->getShape();
     shape.Move(loc);
     getTopoShapePtr()->setShape(shape,false);
-    Py_Return;
+    return IncRef();
 }
 
 PyObject*  TopoShapePy::rotate(PyObject *args)
@@ -1663,7 +1663,7 @@ PyObject*  TopoShapePy::rotate(PyObject *args)
         TopoDS_Shape shape = getTopoShapePtr()->getShape();
         shape.Move(loc);
         getTopoShapePtr()->setShape(shape,false);
-        Py_Return;
+        return IncRef();
     }
     catch (const Py::Exception&) {
         return NULL;
@@ -1701,7 +1701,7 @@ PyObject*  TopoShapePy::scale(PyObject *args)
 #else
         getTopoShapePtr()->setShape(BRepScale.Shape());
 #endif
-        Py_Return;
+        return IncRef();
     }
     catch (Standard_Failure& e) {
 
@@ -1996,7 +1996,7 @@ PyObject*  TopoShapePy::reverse(PyObject *args)
     TopoDS_Shape shape = getTopoShapePtr()->getShape();
     shape.Reverse();
     getTopoShapePtr()->setShape(shape,false);
-    Py_Return;
+    return IncRef();
 }
 
 PyObject*  TopoShapePy::complement(PyObject *args)
@@ -2007,7 +2007,7 @@ PyObject*  TopoShapePy::complement(PyObject *args)
     TopoDS_Shape shape = getTopoShapePtr()->getShape();
     shape.Complement();
     getTopoShapePtr()->setShape(shape,false);
-    Py_Return;
+    return IncRef();
 }
 
 PyObject*  TopoShapePy::nullify(PyObject *args)
@@ -2018,7 +2018,7 @@ PyObject*  TopoShapePy::nullify(PyObject *args)
     TopoDS_Shape shape = getTopoShapePtr()->getShape();
     shape.Nullify();
     getTopoShapePtr()->setShape(shape);
-    Py_Return;
+    return IncRef();
 }
 
 PyObject*  TopoShapePy::isNull(PyObject *args)
@@ -2970,7 +2970,7 @@ PyObject *TopoShapePy::clearCache(PyObject *args) {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     getTopoShapePtr()->initCache(1);
-    Py_Return;
+    return IncRef();
 }
 
 PyObject* TopoShapePy::defeaturing(PyObject *args)
@@ -3275,7 +3275,7 @@ PyObject *TopoShapePy::mapSubElement(PyObject *args) {
         return 0;
     PY_TRY {
         getTopoShapePtr()->mapSubElement(getPyShapes(sh),op);
-        Py_Return;
+        return IncRef();
     }PY_CATCH_OCC
 }
 
