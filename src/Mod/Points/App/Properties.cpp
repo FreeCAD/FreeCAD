@@ -40,6 +40,9 @@
 #include "PointsPy.h"
 
 #include <QtConcurrentMap>
+#ifdef _WIN32
+# include <ppl.h>
+#endif
 
 using namespace Points;
 using namespace std;
@@ -389,9 +392,15 @@ void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
     aboutToSetValue();
 
     // Rotate the normal vectors
+#ifdef _WIN32
+    Concurrency::parallel_for_each(_lValueList.begin(), _lValueList.end(), [rot](Base::Vector3f& value) {
+        value = rot * value;
+    });
+#else
     QtConcurrent::blockingMap(_lValueList, [rot](Base::Vector3f& value) {
         rot.multVec(value, value);
     });
+#endif
 
     hasSetValue();
 }
