@@ -156,6 +156,7 @@ protected:
     QGIArrow* aHead2;
     //QGICMark* centerMark
     double m_lineWidth;
+    bool m_obtuse;
 };
 
 } // namespace MDIViewPageGui

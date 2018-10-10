@@ -225,8 +225,7 @@ void QGIDatumLabel::setTolString()
 
     QString html = QString::fromUtf8("<div>%1 <br/>%2 </div>");
     html = html.arg(overFormat).arg(underFormat);
-    m_tolText->setHtml(html);                           //<<< sometimes seg fault here in FT_Outline_Decompose ()
-                                                      //<<< only angle measures with degree symbol shown??
+    m_tolText->setHtml(html);
 
     return;
 } 
@@ -277,7 +276,8 @@ void QGIDatumLabel::setPrettyNormal(void)
 //**************************************************************
 QGIViewDimension::QGIViewDimension() :
     hasHover(false),
-    m_lineWidth(0.0)
+    m_lineWidth(0.0),
+    m_obtuse(false)
 {
     setHandlesChildEvents(false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -369,7 +369,6 @@ void QGIViewDimension::updateView(bool update)
         return;
     }
 
-    // Identify what changed to prevent complete redraw
     if (update||
         dim->X.isTouched() ||
         dim->Y.isTouched()) {
@@ -397,6 +396,7 @@ void QGIViewDimension::updateView(bool update)
 
 void QGIViewDimension::updateDim(bool obtuse)
 {
+    (void) obtuse;
     const auto dim( dynamic_cast<TechDraw::DrawViewDimension *>(getViewObject()) );
     if( dim == nullptr ) {
         return;
@@ -406,7 +406,7 @@ void QGIViewDimension::updateDim(bool obtuse)
         return;
     }
  
-    QString labelText = QString::fromUtf8(dim->getFormatedValue(obtuse).c_str());
+    QString labelText = QString::fromUtf8(dim->getFormatedValue(m_obtuse).c_str());
     
     QFont font = datumLabel->getFont();
     font.setPointSizeF(Rez::guiX(vp->Fontsize.getValue()));
@@ -484,7 +484,6 @@ void QGIViewDimension::draw()
     m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
     float margin = Rez::guiX(5.f);
 
-//    QString labelText = datumLabel->toPlainText();
     QString labelText = getLabelText();
     Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(), 0);    //already Qt gui coords
 
@@ -1166,7 +1165,6 @@ void QGIViewDimension::draw()
 //        }
     } else if( (strcmp(dimType, "Angle") == 0) ||
                (strcmp(dimType, "Angel3Pt")) ) {
-        // Only use two straight line edeges for angle
         anglePoints pts = dim->getAnglePoints();
         Base::Vector3d X(1.0,0.0,0.0);
         Base::Vector3d vertex = Rez::guiX(pts.vertex);
@@ -1205,11 +1203,6 @@ void QGIViewDimension::draw()
         double offsetFudge = 2.0;
         double textOffset = textHeight/2.0 + offsetFudge;
         double radius = labelVec.Length() - textOffset;
-
-        double labelangle = atan2(-labelVec.y, labelVec.x);    //angle with +X axis on [-PI,+PI] (iso)
-        if (labelangle < 0) {                                  //map to [0,2PI)                  (asme angle = 0.0)
-            labelangle += 2.0 * M_PI;
-        }
 
         QRectF arcRect(vertex.x - radius, vertex.y - radius, 2. * radius, 2. * radius);
         Base::Vector3d ar0Pos = vertex + d0 * radius;
@@ -1264,15 +1257,15 @@ void QGIViewDimension::draw()
 
         path.arcMoveTo(arcRect, startangle * 180 / M_PI);
         double actualSweep = 0.0;
+        m_obtuse = false;
         if(isOutside) {
-            updateDim(true);
+            m_obtuse = true;
             if (ccwInner) {              //inner is ccw so outer is cw and sweep is -ve
                 actualSweep = -outsideAngle;
             } else {                     //inner is cw so outer is ccw and sweep is +ve
                 actualSweep = outsideAngle;
             }
         } else {
-            updateDim(false);
             if (ccwInner) {           //inner is ccw and sweep is +ve
                 actualSweep = insideAngle;
             } else {             //inner is cw and sweep is -ve

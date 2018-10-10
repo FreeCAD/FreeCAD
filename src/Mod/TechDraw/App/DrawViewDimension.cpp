@@ -364,7 +364,6 @@ App::DocumentObjectExecReturn *DrawViewDimension::execute(void)
         m_arcPoints = pts;
         m_hasGeometry = true;
     } else if(Type.isValue("Angle")){
-        //TODO: do we need to distinguish inner vs outer angle? -wf
         if (getRefType() != twoEdge) {
              Base::Console().Log("Error: DVD - %s - 2D references are corrupt\n",getNameInDocument());
              return App::DocumentObject::StdReturn;
@@ -449,12 +448,23 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         return FormatSpec.getStrValue();
     }
 
+    //units api: get schema to figure out if this is multi-value schema(Imperial1, ImperialBuilding)
+    //if it is multi-unit schema, don't even try to use Alt Decimals or format per format spec
+    bool multiValueUnits = false;
+    Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
+    if ( (uniSys == Base::UnitSystem::Imperial1) ||
+         (uniSys == Base::UnitSystem::ImperialBuilding) ) {
+        multiValueUnits = true;
+    }
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = std::abs(getDimValue());    //internal units!
     
+    bool angularMeasure = false;
     Base::Quantity qVal;
     qVal.setValue(val);
-    if (Type.isValue("Angle")) {
+    if ( (Type.isValue("Angle")) ||
+         (Type.isValue("Angle3Pt")) ) {
+        angularMeasure = true;
         qVal.setUnit(Base::Unit::Angle);
         if (obtuse) {
             qVal.setValue(fabs(360.0 - val));
@@ -463,58 +473,66 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         qVal.setUnit(Base::Unit::Length);
     }
 
-    QString userStr = qVal.getUserString();                           //this handles mm to inch/km/parsec etc and decimal positions
-                                                                      //but won't give more than Global_Decimals precision
-                                                                      //really should be able to ask units for value in appropriate UoM!!
-    QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
+    QString userStr = qVal.getUserString();                           // this handles mm to inch/km/parsec etc
+                                                                      // and decimal positions but won't give more than
+                                                                      // Global_Decimals precision
+                                                                      // really should be able to ask units for value
+                                                                      // in appropriate UoM!!
 
-    QString userVal = userStr;
-    userVal.remove(rxUnits);                                           //getUserString(defaultDecimals) without units
-
-    QLocale loc;
-    double userValNum = loc.toDouble(userVal);
-
-    QString userUnits;
-    int pos = 0;
-    if ((pos = rxUnits.indexIn(userStr, 0)) != -1)  {
-        userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
-    }
-
-    //find the %x.y tag in FormatSpec
-    QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
-    QString match;
-    QString specVal = userVal;                                             //sensible default
-    pos = 0;
-    if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
-        match = rxFormat.cap(0);                                          //entire capture of rx
-#if QT_VERSION >= 0x050000
-        specVal = QString::asprintf(Base::Tools::toStdString(match).c_str(),userValNum);
-#else
-        QString qs2;
-        specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),userValNum);
-#endif
-    }
-
-    QString repl = userVal;
-    if (useDecimals()) {
-        if (showUnits()) {
-            repl = userStr;
-        } else {
-            repl = userVal;
-        }
+    if (multiValueUnits  &&
+        !angularMeasure) {
+        specStr = userStr;
     } else {
-        if (showUnits()) {
-            repl = specVal + userUnits;
-        } else {
-            repl = specVal;
-        }
-    }
+        //should be able to handle angular Measures even in ft-in systems
+        QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
 
-    specStr.replace(match,repl);
-    //this next bit is so inelegant!!!
-    QChar dp = QChar::fromLatin1('.');
-    if (loc.decimalPoint() != dp) {
-        specStr.replace(dp,loc.decimalPoint());
+        QString userVal = userStr;
+        userVal.remove(rxUnits);                                          //getUserString(defaultDecimals) without units
+
+        QLocale loc;
+        double userValNum = loc.toDouble(userVal);
+
+        QString userUnits;
+        int pos = 0;
+        if ((pos = rxUnits.indexIn(userStr, 0)) != -1)  {
+            userUnits = rxUnits.cap(0);                                       //entire capture - non numerics at end of userString
+        }
+
+        //find the %x.y tag in FormatSpec
+        QRegExp rxFormat(QString::fromUtf8("%[0-9]*\\.*[0-9]*[aefgAEFG]"));     //printf double format spec 
+        QString match;
+        QString specVal = userVal;                                             //sensible default
+        pos = 0;
+        if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
+            match = rxFormat.cap(0);                                          //entire capture of rx
+    #if QT_VERSION >= 0x050000
+            specVal = QString::asprintf(Base::Tools::toStdString(match).c_str(),userValNum);
+    #else
+            QString qs2;
+            specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),userValNum);
+    #endif
+        }
+        QString repl = userVal;
+        if (useDecimals()) {
+            if (showUnits()) {
+                repl = userStr;
+            } else {
+                repl = userVal;
+            }
+        } else {
+            if (showUnits()) {
+                repl = specVal + userUnits;
+            } else {
+                repl = specVal;
+            }
+        }
+        repl = Base::Tools::fromStdString(getPrefix()) + repl;
+        specStr.replace(match,repl);
+        //this next bit is so inelegant!!!
+        QChar dp = QChar::fromLatin1('.');
+        if (loc.decimalPoint() != dp) {
+            specStr.replace(dp,loc.decimalPoint());
+        }
     }
 
     return specStr.toUtf8().constData();
