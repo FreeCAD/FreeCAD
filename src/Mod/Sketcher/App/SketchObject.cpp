@@ -1151,11 +1151,12 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             if(vals[i]->Type == Sketcher::Tangent || vals[i]->Type == Sketcher::Perpendicular){
                 constNew->Type = Sketcher::Coincident;
             }
-            // with respect to angle constraints, if it is a DeepSOIC style angle constraint (segment+segment+point), then no problem arises
-            // as the segments are PosId=none. In this case there is not call to this function.
+            // With respect to angle constraints, if it is a DeepSOIC style angle constraint (segment+segment+point),
+            // then no problem arises as the segments are PosId=none. In this case there is no call to this function.
             //
-            // However, other angle constraints are problematic because they are created on segments, but internally operate on vertices, PosId=start
-            // such constraint may not be succesfully transfered on deletion of the segments.
+            // However, other angle constraints are problematic because they are created on segments, but internally
+            // operate on vertices, PosId=start
+            // Such constraint may not be successfully transferred on deletion of the segments.
             else if(vals[i]->Type == Sketcher::Angle) {
                 continue;
             }
