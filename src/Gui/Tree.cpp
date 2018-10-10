@@ -1203,7 +1203,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 auto manager = Application::Instance->macroManager();
                 bool dragged =false;
                 std::ostringstream ss;
-                if(!dropOnly && vpp && vp->canDragAndDropObject(obj)) {
+                if(!vpp)
+                    dragged = true;
+                else if(!dropOnly && vp->canDragAndDropObject(obj)) {
                     dragged = true;
                     auto lines = manager->getLines();
                     ss << Command::getObjectCmd(vpp->getObject())
@@ -1222,16 +1224,18 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
-                // Construct the subname pointing to the future dropped location
-                auto parentObj = targetObj;
-                std::string dropName = vp->getDropPrefix();
-                if(dropName.size()) 
-                    parentObj = targetObj->getSubObject(dropName.c_str());
+                if(dragged) {
+                    // Construct the subname pointing to the future dropped location
+                    auto parentObj = targetObj;
+                    std::string dropName = vp->getDropPrefix();
+                    if(dropName.size()) 
+                        parentObj = targetObj->getSubObject(dropName.c_str());
 
-                if(parentObj) {
-                    // Try to adjust relative links to avoid cyclic dependency, may
-                    // throw exception if failed
-                    FCMD_OBJ_CMD(obj,"adjustRelativeLinks(" << Command::getObjectCmd(parentObj) << ")");
+                    if(parentObj) {
+                        // Try to adjust relative links to avoid cyclic dependency, may
+                        // throw exception if failed
+                        FCMD_OBJ_CMD(obj,"adjustRelativeLinks(" << Command::getObjectCmd(parentObj) << ")");
+                    }
                 }
 
                 ss.str("");
@@ -1246,7 +1250,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     ss << "'" << sub << "',";
                 ss << "])";
                 auto lines = manager->getLines();
-                dropName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
+                std::string dropName = vp->dropObjectEx(obj,owner,subname.c_str(),info.subs);
                 if(manager->getLines() == lines)
                     manager->addLine(MacroManager::Gui,ss.str().c_str());
 
@@ -1262,7 +1266,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 Base::Matrix4D newMat;
                 auto sobj = targetParent->getSubObject(dropName.c_str(),0,&newMat);
                 if(!sobj) {
-                    FC_WARN("failed to find dropped object " 
+                    FC_LOG("failed to find dropped object " 
                             << targetParent->getFullName() << '.' << dropName);
                     continue;
                 }
