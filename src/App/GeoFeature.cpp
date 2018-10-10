@@ -167,7 +167,17 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     if(!append) 
         elementName = geo->getElementName(element,type);
     else{
-        const auto &names = geo->getElementName(element,type);
+        auto names = geo->getElementName(element,type);
+        if(names.second[0] == '?' && 
+           geo->_elementMapVersion.size() && 
+           geo->getPropertyOfGeometry() &&
+           geo->_elementMapVersion!=geo->getPropertyOfGeometry()->getElementMapVersion())
+        {
+            // We ignore missing element in case of element map version
+            // mismatch, which is possible when opening an older file in newer
+            // version of FreeCAD
+            names.second = std::string(names.second.c_str()+1);
+        }
         std::string prefix(subname,element-subname);
         if(names.first.size())
             elementName.first = prefix + names.first;
