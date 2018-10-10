@@ -152,7 +152,16 @@ const char* DocumentObject::getStatusString(void) const
         return "Valid";
 }
 
-const char *DocumentObject::getNameInDocument(void) const
+std::string DocumentObject::getFullName() const {
+    if(!getDocument() || !pcNameInDocument)
+        return "?";
+    std::string name(getDocument()->getName());
+    name += '#';
+    name += *pcNameInDocument;
+    return name;
+}
+
+const char *DocumentObject::getNameInDocument() const
 {
     // Note: It can happen that we query the internal name of an object even if it is not
     // part of a document (anymore). This is the case e.g. if we have a reference in Python
@@ -1022,7 +1031,7 @@ bool DocumentObject::adjustRelativeLinks(
         std::set<App::DocumentObject *> *visited)
 {
     if(inList.count(this)) 
-        FC_THROWM(Base::RuntimeError, "Cyclic reference to " << getExportName(true));
+        FC_THROWM(Base::RuntimeError, "Cyclic reference to " << getFullName());
 
     if(visited)
         visited->insert(this);

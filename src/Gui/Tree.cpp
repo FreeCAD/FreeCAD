@@ -1263,7 +1263,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 auto sobj = targetParent->getSubObject(dropName.c_str(),0,&newMat);
                 if(!sobj) {
                     FC_WARN("failed to find dropped object " 
-                            << targetParent->getExportName(true) << '.' << dropName);
+                            << targetParent->getFullName() << '.' << dropName);
                     continue;
                 }
 
@@ -1312,7 +1312,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 // dropping document tree.
                 parentItem = 0;
             }else if(!parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
-                TREE_ERR("'" << obj->getExportName(true) << "' cannot be dragged out of '" << 
+                TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << 
                     parentItem->object()->getObject()->getNameInDocument() << "'");
                 return;
             }
@@ -2170,7 +2170,7 @@ void TreeWidget::slotDeleteObject(const Gui::ViewProviderDocumentObject& view, D
         return;
     }
 
-    TREE_LOG("delete object " << obj->getExportName());
+    TREE_LOG("delete object " << obj->getFullName());
 
     for(auto data : itEntry->second) {
         DocumentItem *docItem = data->docItem;
@@ -2575,7 +2575,7 @@ void DocumentItem::slotRecomputed(const App::Document &, const std::vector<App::
             if(itDoc!=getTree()->DocumentMap.end()) {
                 it = itDoc->second->ObjectMap.find(obj);
                 if(it == ObjectMap.end() || it->second->items.empty()) {
-                    FC_ERR("Cannot find recompute failure object " << obj->getExportName());
+                    FC_ERR("Cannot find recompute failure object " << obj->getFullName());
                     continue;
                 }
             }

@@ -1343,7 +1343,7 @@ bool ObjectIdentifier::adjustLinks(const std::set<App::DocumentObject *> &inList
     if(!result.resolvedSubObject) {
         if(inList.count(result.resolvedDocumentObject)) {
             std::ostringstream ss;
-            ss << "cyclic reference to " << result.resolvedDocumentObject->getExportName(true);
+            ss << "cyclic reference to " << result.resolvedDocumentObject->getFullName();
             THROWM(Base::RuntimeError,ss.str().c_str());
         }
     }else{

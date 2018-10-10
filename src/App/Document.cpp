@@ -3094,9 +3094,9 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         returnCode->Which = Feat;
         _RecomputeLog.push_back(returnCode);
 #ifdef FC_DEBUG
-        FC_ERR("Failed to recompute " << Feat->getExportName(true) << ": " << returnCode->Why);
+        FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << returnCode->Why);
 #else
-        FC_LOG("Failed to recompute " << Feat->getExportName(true) << ": " << returnCode->Why);
+        FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << returnCode->Why);
 #endif
         Feat->setError();
         return true;
