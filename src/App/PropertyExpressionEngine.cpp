@@ -399,7 +399,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
     ExpressionMap::iterator it = expressions.find(usePath);
     if(it != expressions.end() && expr == it->second.expression)
         return;
-    
+
     if (expr) {
         std::string error = validateExpression(usePath, expr);
 
@@ -565,7 +565,7 @@ std::vector<App::ObjectIdentifier> PropertyExpressionEngine::computeEvaluationOr
 }
 
 /**
- * @brief Compute and update values of all registered experssions.
+ * @brief Compute and update values of all registered expressions.
  * @return StdReturn on success.
  */
 
@@ -864,9 +864,9 @@ void PropertyExpressionEngine::renameExpressions(const std::map<ObjectIdentifier
 
     aboutToSetValue();
     expressions = newExpressions;
-    for (ExpressionMap::const_iterator i = expressions.begin(); i != expressions.end(); ++i) 
+    for (ExpressionMap::const_iterator i = expressions.begin(); i != expressions.end(); ++i)
         expressionChanged(i->first);
-    
+
     hasSetValue();
 }
 

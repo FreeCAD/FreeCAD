@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Precast concrete module"
+__title__= "FreeCAD Precast concrete module"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
@@ -1380,7 +1380,7 @@ class _DentsTaskPanel:
 
 def makePrecast(precasttype=None,length=0,width=0,height=0,slabtype="",chamfer=0,dentlength=0,dentwidth=0,dentheight=0,dents=[],base=0,holenumber=0,holemajor=0,holeminor=0,holespacing=0,groovenumber=0,groovedepth=0,grooveheight=0,groovespacing=0,risernumber=0,downlength=0,riser=0,tread=0):
 
-    "creates one of the precast objects in the current document"
+    "Creates one of the precast objects in the current document"
 
     if precasttype == "Beam":
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Beam")
@@ -1449,4 +1449,3 @@ def makePrecast(precasttype=None,length=0,width=0,height=0,slabtype="",chamfer=0
     if FreeCAD.GuiUp:
         _ViewProviderPrecast(obj.ViewObject)
     return obj
-

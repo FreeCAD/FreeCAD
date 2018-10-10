@@ -68,7 +68,7 @@ class _PropertyEditor(object):
         pass
 
 class _PropertyEnumEditor(_PropertyEditor):
-    '''Editor for enumation values - uses a combo box.'''
+    '''Editor for enumeration values - uses a combo box.'''
 
     def widget(self, parent):
         PathLog.track(self.prop.name, self.prop.getEnumValues())
@@ -194,4 +194,3 @@ def Editor(prop):
     if factory:
         return factory(prop)
     return None
-

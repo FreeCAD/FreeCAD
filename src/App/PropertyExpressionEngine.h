@@ -51,7 +51,7 @@ class AppExport PropertyExpressionEngine : public App::Property, private App::At
 public:
 
     typedef boost::function<std::string (const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr)> ValidatorFunc;
-    
+
     /**
      * @brief The ExpressionInfo struct encapsulates an expression and a comment.
      */
@@ -123,9 +123,9 @@ public:
     void slotObjectRenamed(const App::DocumentObject & obj);
 
     void slotObjectDeleted(const DocumentObject &obj);
-    
-    ///signal called when a expression was changed 
-    boost::signal<void (const App::ObjectIdentifier &)> expressionChanged; 
+
+    ///signal called when an expression was changed 
+    boost::signal<void (const App::ObjectIdentifier &)> expressionChanged;
 
     void onDocumentRestored();
 
