@@ -47,6 +47,8 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 GeoFeature::GeoFeature(void)
 {
     ADD_PROPERTY(Placement,(Base::Placement()));
+    ADD_PROPERTY_TYPE(_ElementMapVersion,(""),"Base",
+            (App::PropertyType)(Prop_Output|Prop_Hidden|Prop_Transient),"");
 }
 
 GeoFeature::~GeoFeature(void)
@@ -169,9 +171,9 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     else{
         auto names = geo->getElementName(element,type);
         if(names.second[0] == '?' && 
-           geo->_elementMapVersion.size() && 
+           geo->_ElementMapVersion.getStrValue().size() && 
            geo->getPropertyOfGeometry() &&
-           geo->_elementMapVersion!=geo->getPropertyOfGeometry()->getElementMapVersion())
+           geo->_ElementMapVersion.getStrValue()!=geo->getPropertyOfGeometry()->getElementMapVersion())
         {
             // We ignore missing element in case of element map version
             // mismatch, which is possible when opening an older file in newer
@@ -203,11 +205,11 @@ void GeoFeature::updateElementReference() {
     auto elementMap = geo->getElementMap();
     bool reset = false;
     auto version = getElementMapVersion(prop);
-    if(_elementMapVersion.empty()) 
-        _elementMapVersion.swap(version);
-    else if(_elementMapVersion!=version) {
+    if(_ElementMapVersion.getStrValue().empty()) 
+        _ElementMapVersion.setValue(version);
+    else if(_ElementMapVersion.getStrValue()!=version) {
         reset = true;
-        _elementMapVersion.swap(version);
+        _ElementMapVersion.setValue(version);
     }
     if(reset || _elementMapCache!=elementMap) {
         _elementMapCache.swap(elementMap);
@@ -223,7 +225,7 @@ void GeoFeature::onChanged(const Property *prop) {
 
 void GeoFeature::onDocumentRestored() {
     if(!getDocument()->testStatus(Document::Status::Importing)) {
-        _elementMapVersion = getElementMapVersion(getPropertyOfGeometry(),true);
+        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(),true));
         updateElementReference();
     }
     DocumentObject::onDocumentRestored();

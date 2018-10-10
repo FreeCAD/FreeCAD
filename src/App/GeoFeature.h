@@ -41,6 +41,7 @@ class AppExport GeoFeature : public App::DocumentObject
 
 public:
     PropertyPlacement Placement;
+    PropertyString _ElementMapVersion;
 
     /// Constructor
     GeoFeature(void);
