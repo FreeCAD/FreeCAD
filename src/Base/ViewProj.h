@@ -60,39 +60,20 @@ protected:
 class BaseExport ViewProjMatrix : public ViewProjMethod
 {
 public:
-    ViewProjMatrix (const Matrix4D &rclMtx) : _clMtx(rclMtx) {  _clMtxInv = _clMtx; _clMtxInv.inverse(); }
-    virtual ~ViewProjMatrix(){}
+    ViewProjMatrix (const Matrix4D &rclMtx);
+    virtual ~ViewProjMatrix();
 
-    inline Vector3f operator()(const Vector3f &rclPt) const;
-    inline Vector3d operator()(const Vector3d &rclPt) const;
-    inline Vector3f inverse (const Vector3f &rclPt) const;
-    inline Vector3d inverse (const Vector3d &rclPt) const;
+    Vector3f operator()(const Vector3f &rclPt) const;
+    Vector3d operator()(const Vector3d &rclPt) const;
+    Vector3f inverse (const Vector3f &rclPt) const;
+    Vector3d inverse (const Vector3d &rclPt) const;
 
     Matrix4D getProjectionMatrix (void) const { return _clMtx; }
 
 protected:
+    bool isOrthographic;
     Matrix4D _clMtx, _clMtxInv;
 };
-
-inline Vector3f ViewProjMatrix::operator()(const Vector3f &rclPt) const
-{
-    return Vector3f(_clMtx * rclPt);
-}
-
-inline Vector3d ViewProjMatrix::operator()(const Vector3d &rclPt) const
-{
-    return Vector3d(_clMtx * rclPt);
-}
-
-inline Vector3f ViewProjMatrix::inverse (const Vector3f &rclPt) const
-{
-    return Vector3f(_clMtxInv * rclPt);
-}
-
-inline Vector3d ViewProjMatrix::inverse (const Vector3d &rclPt) const
-{
-    return Vector3d(_clMtxInv * rclPt);
-}
 
 } // namespace Base
 
