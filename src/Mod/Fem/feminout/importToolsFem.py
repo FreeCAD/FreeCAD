@@ -211,8 +211,6 @@ def make_femmesh(mesh_data):
 def fill_femresult_mechanical(results, result_set, span):
     ''' fills a FreeCAD FEM mechanical result object with result data
     '''
-    no_of_values = None
-
     if 'number' in result_set:
         eigenmode_number = result_set['number']
     else:
@@ -223,7 +221,6 @@ def fill_femresult_mechanical(results, result_set, span):
 
     if 'disp' in result_set:
         disp = result_set['disp']
-        no_of_values = len(disp)
         displacement = []
         for k, v in disp.items():
             displacement.append(v)
@@ -315,14 +312,13 @@ def fill_femresult_mechanical(results, result_set, span):
                 results.Temperature = list(map((lambda x: x), Temperature.values()))
             results.Time = step_time
 
-    # read MassFlow, disp does not exist, no_of_values and results.NodeNumbers needs to be set
+    # read MassFlow
     if 'mflow' in result_set:
         MassFlow = result_set['mflow']
         if len(MassFlow) > 0:
             results.MassFlowRate = list(map((lambda x: x), MassFlow.values()))
             results.Time = step_time
-            no_of_values = len(MassFlow)
-            results.NodeNumbers = list(MassFlow.keys())
+            results.NodeNumbers = list(MassFlow.keys())  # disp does not exist, results.NodeNumbers needs to be set
 
     # read NetworkPressure, disp does not exist, see MassFlow
     if 'npressure' in result_set:
