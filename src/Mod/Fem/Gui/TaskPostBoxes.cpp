@@ -330,8 +330,9 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
         list.push_back(QString::fromStdString(*it));
     }
 
-    int index = prop.getValue();  
-    // be aware the QComboxBox might be connected to the Property, thus clear the box wil set back the proberty enumeration index too.
+    int index = prop.getValue();
+    // be aware the QComboxBox might be connected to the Property,
+    // thus clearing the box will set back the property enumeration index too.
     // https://forum.freecadweb.org/viewtopic.php?f=10&t=30944
     box->clear();
     box->insertItems(0, list);
@@ -396,7 +397,7 @@ void TaskPostDisplay::applyPythonCode() {
 }
 
 //############################################################################################
-// ? 
+// ?
 // the icon fem-post-geo-plane might be wrong but I do not know any better since the plane is one of the implicit functions
 TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent) {
 
@@ -1119,14 +1120,14 @@ void TaskPostWarpVector::on_Max_valueChanged(double) {
     ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
 
-    /* 
+    /*
      * problem, if warp_factor is 2000 one would like to input 4000 as max, one starts to input 4
      * immediately the warp_factor is changed to 4 because 4 < 2000, but one has just input one character of his 4000
-     * I do not know how to solve this, but the code to set slider and spinbox is fine thus I leave it ... 
-     * 
+     * I do not know how to solve this, but the code to set slider and spinbox is fine thus I leave it ...
+     *
      * mhh it works if "apply changes to pipeline directly" button is deactivated, still it really confuses if
      * the button is active. More investigation is needed.
-     * 
+     *
     // set warp factor to max, if warp factor > max
     if (ui->Value->value() > ui->Max->value()) {
         double warp_factor = ui->Max->value();
@@ -1150,7 +1151,7 @@ void TaskPostWarpVector::on_Max_valueChanged(double) {
 void TaskPostWarpVector::on_Min_valueChanged(double) {
 
     // TODO min should be smaller than max
-    // TODO if warp factor is smaller than min, warp factor should be min, don't forget to sync 
+    // TODO if warp factor is smaller than min, warp factor should be min, don't forget to sync
     ui->Slider->blockSignals(true);
     ui->Slider->setValue((ui->Value->value() - ui->Min->value()) / (ui->Max->value() - ui->Min->value()) * 100.);
     ui->Slider->blockSignals(false);
