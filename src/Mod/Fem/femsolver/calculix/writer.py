@@ -32,6 +32,7 @@ import FreeCAD
 import os
 import sys
 import time
+import codecs
 import femmesh.meshtools as FemMeshTools
 from .. import writerbase as FemInputWriter
 import six
@@ -81,7 +82,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.femmesh.writeABAQUS(self.file_name, 1, False)
 
         # reopen file with "append" and add the analysis definition
-        inpfile = open(self.file_name, 'a')
+        inpfile = codecs.open(self.file_name, 'a', encoding="utf-8")
         inpfile.write('\n\n')
 
         # Check to see if fluid sections are in analysis and use D network element type
