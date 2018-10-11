@@ -76,7 +76,8 @@ class _FemSolverCalculix():
         ehl = ccx_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
         obj.EigenmodeHighLimit = (ehl, 0.0, 1000000.0, 10000.0)
 
-        obj.addProperty("App::PropertyIntegerConstraint", "IterationsThermoMechMaximum", "Fem", "Maximum Number of thermo mechanical iterations in each time step before stopping jobs")
+        stringIterationsThermoMechMaximum = "Maximum Number of thermo mechanical iterations in each time step before stopping jobs"
+        obj.addProperty("App::PropertyIntegerConstraint", "IterationsThermoMechMaximum", "Fem", stringIterationsThermoMechMaximum)
         niter = ccx_prefs.GetInt("AnalysisMaxIterations", 200)
         obj.IterationsThermoMechMaximum = niter
 
@@ -129,10 +130,12 @@ class _FemSolverCalculix():
         obj.addProperty("App::PropertyString", "IterationsControlParameterCutb", "Fem", "User defined time incrementation cutbacks control parameter")
         obj.IterationsControlParameterCutb = p_cutb
 
-        obj.addProperty("App::PropertyBool", "IterationsUserDefinedIncrementations", "Fem", "Set to True to switch off the ccx automatic incrementation completely (ccx parameter DIRECT). Use with care. Analysis may not converge!")
+        stringIterationsUserDefinedIncrementations = "Set to True to switch off the ccx automatic incrementation completely (ccx parameter DIRECT). Use with care. Analysis may not converge!"
+        obj.addProperty("App::PropertyBool", "IterationsUserDefinedIncrementations", "Fem", stringIterationsUserDefinedIncrementations)
         obj.IterationsUserDefinedIncrementations = False
 
-        obj.addProperty("App::PropertyBool", "IterationsUserDefinedTimeStepLength", "Fem", "Set to True to use the user defined time steps. The time steps are set with TimeInitialStep and TimeEnd")
+        infoIterationsUserDefinedTimeStepLength = "Set to True to use the user defined time steps. The time steps are set with TimeInitialStep and TimeEnd"
+        obj.addProperty("App::PropertyBool", "IterationsUserDefinedTimeStepLength", "Fem", infoIterationsUserDefinedTimeStepLength)
         obj.IterationsUserDefinedTimeStepLength = False
 
         known_ccx_solver_types = ["default", "spooles", "iterativescaling", "iterativecholesky"]

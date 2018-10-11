@@ -33,7 +33,10 @@ class _FemElementFluid1D:
     "The FemElementFluid1D object"
 
     known_fluid_types = ['Liquid', 'Gas', 'Open Channel']
-    known_liquid_types = ['PIPE MANNING', 'PIPE ENLARGEMENT', 'PIPE CONTRACTION', 'PIPE INLET', 'PIPE OUTLET', 'PIPE ENTRANCE', 'PIPE DIAPHRAGM', 'PIPE BEND', 'PIPE GATE VALVE', 'LIQUID PUMP', 'PIPE WHITE-COLEBROOK']
+    known_liquid_types = [
+        'PIPE MANNING', 'PIPE ENLARGEMENT', 'PIPE CONTRACTION', 'PIPE INLET', 'PIPE OUTLET', 'PIPE ENTRANCE',
+        'PIPE DIAPHRAGM', 'PIPE BEND', 'PIPE GATE VALVE', 'LIQUID PUMP', 'PIPE WHITE-COLEBROOK'
+    ]
     known_gas_types = ['NONE']
     known_channel_types = ['NONE']
 
