@@ -146,10 +146,12 @@ class Proxy(solverbase.Proxy):
         obj.addProperty("App::PropertyString", "IterationsControlParameterCutb", "Fem", "User defined time incrementation cutbacks control parameter")
         obj.IterationsControlParameterCutb = p_cutb
 
-        obj.addProperty("App::PropertyBool", "IterationsUserDefinedIncrementations", "Fem", "Set to True to switch off the ccx automatic incrementation completely (ccx parameter DIRECT). Use with care. Analysis may not converge!")
+        stringIterationsUserDefinedIncrementations = "Set to True to switch off the ccx automatic incrementation completely (ccx parameter DIRECT). Use with care. Analysis may not converge!"
+        obj.addProperty("App::PropertyBool", "IterationsUserDefinedIncrementations", "Fem", stringIterationsUserDefinedIncrementations)
         obj.IterationsUserDefinedIncrementations = False
 
-        obj.addProperty("App::PropertyBool", "IterationsUserDefinedTimeStepLength", "Fem", "Set to True to use the user defined time steps. The time steps are set with TimeInitialStep and TimeEnd")
+        stringIterationsUserDefinedTimeStepLength = "Set to True to use the user defined time steps. The time steps are set with TimeInitialStep and TimeEnd"
+        obj.addProperty("App::PropertyBool", "IterationsUserDefinedTimeStepLength", "Fem", stringIterationsUserDefinedTimeStepLength)
         obj.IterationsUserDefinedTimeStepLength = False
 
         known_ccx_solver_types = ["default", "spooles", "iterativescaling", "iterativecholesky"]
