@@ -1175,13 +1175,13 @@ void MeshAlgorithm::CheckFacets(const Base::ViewProjMethod* pclProj, const Base:
     Base::Vector3f pt2d;
     // Use a bounding box to reduce number of call to Polygon::Contains
     Base::BoundBox2d bb = rclPoly.CalcBoundBox();
-    // Precompute the screen projection matrix as COIN's projection function is expensive 
-    Base::Matrix4D pmat = pclProj->getProjectionMatrix();
+    // Precompute the screen projection matrix as COIN's projection function is expensive
+    Base::ViewProjMatrix fixedProj(pclProj->getProjectionMatrix());
 
     unsigned long index=0;
     for (MeshFacetArray::_TConstIterator it = f.begin(); it != f.end(); ++it,++index) {
         for (int i = 0; i < 3; i++) {
-            pt2d = pmat * p[it->_aulPoints[i]];
+            pt2d = fixedProj(p[it->_aulPoints[i]]);
 
             // First check whether the point is in the bounding box of the polygon
             if ((bb.Contains(Base::Vector2d(pt2d.x, pt2d.y)) &&

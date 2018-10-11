@@ -274,6 +274,7 @@ SET(FreeCADBase_CPP_SRCS
     Uuid.cpp
     Vector3D.cpp
     VectorPyImp.cpp
+    ViewProj.cpp
     Writer.cpp
     XMLTools.cpp
 )
