@@ -153,7 +153,8 @@ class _TaskPanelFemMaterial:
         self.card_path = self.get_material_card(self.material)
         print('card_path: ' + self.card_path)
         if not self.card_path:
-            # we have not found our material in self.materials dict :-(, we gone add a user defined temporary material, a document material
+            # we have not found our material in self.materials dict :-(
+            # we're going to add a user-defined temporary material: a document material
             FreeCAD.Console.PrintMessage("Previously used material card cannot be found in material directories. Add document material.\n")
             self.card_path = '_document_material'
             self.materials[self.card_path] = self.material
@@ -228,7 +229,7 @@ class _TaskPanelFemMaterial:
 
     def set_transient_material(self):
         self.card_path = '_transient_material'
-        self.materials[self.card_path] = self.material  # = the crurrent input fields data
+        self.materials[self.card_path] = self.material  # = the current input fields data
         index = self.parameterWidget.cb_materials.findData(self.card_path)
         self.choose_material(index)
 
