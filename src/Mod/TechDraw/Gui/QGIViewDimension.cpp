@@ -144,6 +144,7 @@ void QGIDatumLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView *view = dynamic_cast<QGIView *> (parentItem());
     assert(view != 0);
+    Q_UNUSED(view);
 
     Q_EMIT hover(false);
     if (!isSelected()) {
