@@ -96,8 +96,7 @@ DrawViewDimension::DrawViewDimension(void)
     References2D.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(References3D,(0,0),"",(App::PropertyType)(App::Prop_None),"3D Geometry References");
     References3D.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(FormatSpec,(getDefaultFormatSpec().c_str()) ,
-                  "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
+    ADD_PROPERTY_TYPE(FormatSpec,("") , "Format",(App::PropertyType)(App::Prop_None),"Dimension Format");
     ADD_PROPERTY_TYPE(Arbitrary,(false) ,"Format",(App::PropertyType)(App::Prop_None),"Value overridden by user");
 
     Type.setEnums(TypeEnums);                                          //dimension type: length, radius etc
@@ -106,7 +105,6 @@ DrawViewDimension::DrawViewDimension(void)
     ADD_PROPERTY(MeasureType, ((long)1));                             //Projected (or True) measurement
     ADD_PROPERTY_TYPE(OverTolerance ,(0.0),"",App::Prop_None,"+ Tolerance value");
     ADD_PROPERTY_TYPE(UnderTolerance ,(0.0),"",App::Prop_None,"- Tolerance value");
-
 
     //hide the properties the user can't edit in the property editor
     References2D.setStatus(App::Property::Hidden,true);
@@ -168,16 +166,9 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 }
             }
         }
-        if (prop == &Arbitrary) {
-            if (!Arbitrary.getValue()) {
-                FormatSpec.setValue(getDefaultFormatSpec().c_str());             //restore a usable FormatSpec
-            }
+        if (prop == &Type) {
+            FormatSpec.setValue(getDefaultFormatSpec().c_str());
         }
-
-    }
-
-    if (prop == &Type) {
-        FormatSpec.setValue(getDefaultFormatSpec().c_str());             //restore a FormatSpec for this type(dim,rad,etc)
     }
 
     DrawView::onChanged(prop);
@@ -505,6 +496,7 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         pos = 0;
         if ((pos = rxFormat.indexIn(specStr, 0)) != -1)  {
             match = rxFormat.cap(0);                                          //entire capture of rx
+
     #if QT_VERSION >= 0x050000
             specVal = QString::asprintf(Base::Tools::toStdString(match).c_str(),userValNum);
     #else
@@ -512,6 +504,7 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
             specVal = qs2.sprintf(Base::Tools::toStdString(match).c_str(),userValNum);
     #endif
         }
+
         QString repl = userVal;
         if (useDecimals()) {
             if (showUnits()) {
@@ -526,7 +519,7 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
                 repl = specVal;
             }
         }
-        repl = Base::Tools::fromStdString(getPrefix()) + repl;
+
         specStr.replace(match,repl);
         //this next bit is so inelegant!!!
         QChar dp = QChar::fromLatin1('.');
