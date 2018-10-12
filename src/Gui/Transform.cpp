@@ -284,7 +284,6 @@ Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
 {
     ui = new Ui_TransformComp(this);
     ui->resetButton->hide();
-    ui->applyPlacementChange->hide();
     ui->applyIncrementalPlacement->hide();
 
     ui->closeButton->setText(tr("Cancel"));

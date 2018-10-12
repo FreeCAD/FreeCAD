@@ -87,7 +87,6 @@ Placement::Placement(QWidget* parent, Qt::WindowFlags fl)
 
     propertyName = "Placement"; // default name
     ui = new Ui_PlacementComp(this);
-    ui->applyPlacementChange->hide();
 
     ui->xPos->setUnit(Base::Unit::Length);
     ui->yPos->setUnit(Base::Unit::Length);
