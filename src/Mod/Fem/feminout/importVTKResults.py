@@ -133,7 +133,7 @@ def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=No
     # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
     if not result_obj.DisplacementLengths:
         result_obj.DisplacementLengths = importToolsFem.calculate_disp_abs(result_obj.DisplacementVectors)
-        FreeCAD.Console.Message('Recalculated DisplacementLengths.\n')
+        FreeCAD.Console.PrintMessage('Recalculated DisplacementLengths.\n')
 
     ''' seems unused at the moment
     filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk
