@@ -154,6 +154,9 @@ rm -rf build && mkdir build && cd build
        -DMEDFILE_INCLUDE_DIRS=%{_includedir}/med/ \
        ../
 
+sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' src/Build/Version.h
+sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git master\",' src/Build/Version.h
+
 make %{?_smp_mflags}
 
 %install
