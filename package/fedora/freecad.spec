@@ -58,7 +58,11 @@ BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  pyside-tools
 BuildRequires:  python
+%if 0%{?fedora} > 28
+BuildRequires:  python3-matplotlib
+%else
 BuildRequires:  python-matplotlib
+%endif
 BuildRequires:  python-pivy
 BuildRequires:  python-pyside
 BuildRequires:  python-pyside-devel
