@@ -313,8 +313,8 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
                             << ", " << _Ver << " -> " << ver);
                     owner->getDocument()->addRecomputeObject(owner);
                 }
-            }else
-                _Shape.Restore(reader);
+            }
+            _Shape.Restore(reader);
         }
     } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
         static int buildElementMap = -1;
