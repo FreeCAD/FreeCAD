@@ -29,6 +29,7 @@
 #include <vector>
 #include <string>
 #include <set>
+#include <map>
 #include <bitset>
 #ifndef BOOST_105400
 #include <boost/any.hpp>
@@ -201,7 +202,9 @@ public:
 
     int numSubComponents() const;
 
-    virtual const std::string &toString() const;
+    const std::string &toString() const;
+
+    std::string toPersistentString() const;
 
     std::string toEscapedString() const;
 
@@ -227,11 +230,15 @@ public:
 
     String getDocumentObjectName() const;
 
-    bool renameDocumentObject(const App::DocumentObject *obj, ExpressionVisitor *v);
+    const std::string &getSubObjectName(bool newStyle=false) const;
+
+    void importSubNames(const std::map<std::string,std::string> &subNameMap);
+
+    bool updateLabelReference(App::DocumentObject *, const std::string &, const char *);
 
     bool renameDocument(const std::string &oldName, const std::string &newName, ExpressionVisitor *v);
 
-    std::pair<App::DocumentObject*,std::string> getDep() const;
+    std::pair<App::DocumentObject*,std::string> getDep(std::vector<std::string> *labels=0) const;
 
     App::Document *getDocument(String name = String()) const;
 
@@ -269,6 +276,8 @@ public:
     std::string resolveErrorString() const;
 
     bool adjustLinks(const std::set<App::DocumentObject *> &inList, ExpressionVisitor *v);
+
+    bool updateElementReference(App::DocumentObject *feature=0, bool reverse=false, ExpressionVisitor *v=0);
 
     void resolveAmbiguity();
 
@@ -314,6 +323,7 @@ protected:
     String  documentName;
     String  documentObjectName;
     String  subObjectName;
+    std::pair<std::string,std::string> shadowSub;
     std::vector<Component> components;
     bool documentNameSet;
     bool documentObjectNameSet;

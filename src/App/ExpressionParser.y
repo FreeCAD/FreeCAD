@@ -238,6 +238,10 @@ identifier: path                                { /* Path to property of the cur
                                                 }
           | '.' subname '.' subpath             { /* Path to property of a sub-object of the current object*/
                                                   $$ = ObjectIdentifier(DocumentObject);
+                                                  if(_Reader) {
+                                                    $2 = ObjectIdentifier::String(
+                                                        PropertyLinkBase::importSubName(*_Reader,$2.getString().c_str()),true);
+                                                  }
                                                   $$.setDocumentObjectName(DocumentObject,false,$2);
                                                   $$.addComponents($4);
                                                 }
@@ -248,12 +252,20 @@ identifier: path                                { /* Path to property of the cur
                                                 }
           | object '.' subname '.' subpath      { /* Path to property of a sub-object */
                                                   $$ = ObjectIdentifier(DocumentObject);
+                                                  if(_Reader) {
+                                                    $3 = ObjectIdentifier::String(
+                                                        PropertyLinkBase::importSubName(*_Reader,$3.getString().c_str()),true);
+                                                    if(!$1.isRealString())
+                                                        $1 = ObjectIdentifier::String(_Reader->getName($1.getString().c_str()));
+                                                  }
                                                   $$.setDocumentObjectName($1, true, $3);
                                                   $$.addComponents($5);
                                                   $$.resolveAmbiguity();
                                                 }
           | object '.' subpath                  { /* Path to property of a given document object */
                                                   $$ = ObjectIdentifier(DocumentObject);
+                                                  if(_Reader && !$1.isRealString())
+                                                      $1 = ObjectIdentifier::String(_Reader->getName($1.getString().c_str()));
                                                   $$ << ObjectIdentifier::SimpleComponent($1);
                                                   $$.addComponents($3);
                                                   $$.resolveAmbiguity();

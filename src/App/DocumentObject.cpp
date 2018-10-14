@@ -233,15 +233,9 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
     if (!prop || prop->getContainer() != this)
         return ret;
 
-    if (prop == &ExpressionEngine) {
-        // Get document objects that this document object relies on
-        ExpressionEngine.getDocumentObjectDeps(ret);
-    }else{
-        auto link = dynamic_cast<PropertyLinkBase*>(prop);
-        if(link)
-            link->getLinks(ret);
-    }
-
+    auto link = dynamic_cast<PropertyLinkBase*>(prop);
+    if(link)
+        link->getLinks(ret);
     return ret;
 }
 
@@ -567,12 +561,13 @@ void DocumentObject::onChanged(const Property* prop)
     // if (_pDoc)
     //     _pDoc->onChangedProperty(this,prop);
 
-    if(prop == &ExpressionEngine || 
-       prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
+    if(prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
         _outList.clear();
         _outListMap.clear();
         _outListCached = false;
-    }else if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
+    }
+    
+    if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
         _pDoc->signalRelabelObject(*this);
 
     // set object touched if it is an input property
@@ -737,7 +732,6 @@ void DocumentObject::Save (Base::Writer &writer) const
 void DocumentObject::setExpression(const ObjectIdentifier &path, boost::shared_ptr<Expression> expr, const char * comment)
 {
     ExpressionEngine.setValue(path, expr, comment);
-    connectRelabelSignals();
 }
 
 /**
@@ -766,49 +760,6 @@ const PropertyExpressionEngine::ExpressionInfo DocumentObject::getExpression(con
 void DocumentObject::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
 {
     ExpressionEngine.renameObjectIdentifiers(paths);
-}
-
-/**
- * @brief Helper function that sets up a signal to track document object renames.
- */
-
-void DocumentObject::connectRelabelSignals()
-{
-    // Only keep signal if the ExpressionEngine has at least one expression
-    if (ExpressionEngine.numExpressions() > 0) {
-
-        // Not already connected?
-        if (!onRelabledObjectConnection.connected()) {
-            onRelabledObjectConnection = getDocument()->signalRelabelObject
-                    .connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed,
-                                         &ExpressionEngine, _1));
-        }
-
-        // Is below still necessary since we now have PropertyExpressionEngine::breakDependency()?
-#if 0
-        // Connect to signalDeletedObject, to properly track deletion of other objects
-        // that might be referenced in an expression
-        if (!onDeletedObjectConnection.connected()) {
-            onDeletedObjectConnection = getDocument()->signalDeletedObject
-                    .connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted,
-                                         &ExpressionEngine, _1));
-        }
-#endif
-
-        try {
-            // Crude method to resolve all expression dependencies
-            ExpressionEngine.execute();
-        }
-        catch (...) {
-            // Ignore any error
-        }
-    }
-    else {
-        // Disconnect signals; nothing to track now
-        onRelabledObjectConnection.disconnect();
-        onRelabledDocumentConnection.disconnect();
-        onDeletedObjectConnection.disconnect();
-    }
 }
 
 void DocumentObject::onDocumentRestored()
@@ -1044,7 +995,7 @@ bool DocumentObject::adjustRelativeLinks(
         if(linkProp && linkProp->adjustLink(inList))
             touched = true;
     }
-    if(!ExpressionEngine.adjustLinks(inList) && !touched)
+    if(!touched)
         return false;
 
     if(visited) {

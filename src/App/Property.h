@@ -180,9 +180,9 @@ protected:
 
 protected:
     /// Gets called by all setValue() methods after the value has changed
-    void hasSetValue(void);
+    virtual void hasSetValue(void);
     /// Gets called by all setValue() methods before the value has changed
-    void aboutToSetValue(void);
+    virtual void aboutToSetValue(void);
 
     /// Verify a path for the current property
     virtual void verifyPath(const App::ObjectIdentifier & p) const;
@@ -377,19 +377,20 @@ public:
     class AtomicPropertyChange {
     public:
         AtomicPropertyChange(P & prop) : mProp(prop) {
-            // Signal counter == 0? Then we need to invoke the aboutToSetValue in the property.
-            if (mProp.signalCounter == 0)
-                mProp.aboutToSetValue();
-
             mProp.signalCounter++;
+            // Signal counter == 1? Then we are the first one, so invoke the aboutToSetValue in the property.
+            if (mProp.signalCounter == 1)
+                mProp.aboutToSetValue();
         }
 
         ~AtomicPropertyChange() {
+            // Signal counter == 1? meaning we are the last one. Invoke
+            // hasSetValue() before decrease counter to prevent recursive call
+            // triggered by another AtomicPropertyChange created inside
+            // hasSetValue(), as it has now been changed to a virtual function.
+            if (mProp.signalCounter == 1)
+                mProp.hasSetValue();
             mProp.signalCounter--;
-
-            // Signal counter == 0? Then we need to invoke the hasSetValue in the property.
-            if (mProp.signalCounter == 0)
-                   mProp.hasSetValue();
         }
 
     private:

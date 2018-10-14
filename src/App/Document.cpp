@@ -85,6 +85,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Application.h"
 #include "DocumentObject.h"
 #include "MergeDocuments.h"
+#include "Expression.h"
 #include <App/DocumentPy.h>
 
 #include <Base/Console.h>
@@ -1972,6 +1973,8 @@ Document::importObjects(Base::XMLReader& reader)
     Base::FlagToggler<> flag(_IsRestoring);
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
+    ExpressionImporter expImporter(reader);
+
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");
     reader.DocumentSchema = scheme;
@@ -2288,19 +2291,17 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         objs = d->partialTopologicalSort(objArray.empty()?d->objectArray:objArray);
         std::reverse(objs.begin(),objs.end());
     }
+
     for (auto obj : objs) {
         if(objSet.find(obj)==objSet.end())
             continue;
-        obj->connectRelabelSignals();
         try {
+            obj->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteTransient);
             obj->onDocumentRestored();
-            obj->ExpressionEngine.onDocumentRestored();
         }
         catch (const Base::Exception& e) {
-            FC_ERR("'" << getName() << "' failed to restore object '" 
-                    << obj->getNameInDocument() << "': " << e.what());
+            FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
         }
-
         if(checkXLink && !d->touchedObjs.count(obj)) {
             for(auto prop : propMap[obj]) {
                 auto link = dynamic_cast<PropertyXLink*>(prop);
@@ -3066,11 +3067,11 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 
     DocumentObjectExecReturn  *returnCode = 0;
     try {
-        returnCode = Feat->ExpressionEngine.execute(0);
+        returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
         if (returnCode == DocumentObject::StdReturn) {
             returnCode = Feat->recompute();
             if(returnCode == DocumentObject::StdReturn)
-                returnCode = Feat->ExpressionEngine.execute(1);
+                returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteOutput);
         }
     }
     catch(Base::AbortException &e){
@@ -3586,7 +3587,6 @@ void Document::_removeObject(DocumentObject* pcObject)
 void Document::breakDependency(DocumentObject* pcObject, bool clear)
 {
     // Nullify all dependent objects
-    pcObject->ExpressionEngine.breakDependency(d->objectArray);
     PropertyLinkBase::breakLinks(pcObject,d->objectArray,clear);
 }
 
@@ -3676,18 +3676,12 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
         propList.clear();
         obj->getPropertyList(propList);
         for(auto prop : propList) {
-#define CHECK_LINK(_type)  \
-            {\
-                auto link = dynamic_cast<App::_type *>(prop);\
-                if(link && !link->testStatus(Property::Immutable) && !obj->isReadOnly(prop)) {\
-                    auto copy = link->CopyOnImportExternal(nameMap);\
-                    if(copy) propMap[prop].reset(copy);\
-                    continue;\
-                }\
+            auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
+            if(linkProp && !prop->testStatus(Property::Immutable) && !obj->isReadOnly(prop)) {
+                auto copy = linkProp->CopyOnImportExternal(nameMap);
+                if(copy)
+                    propMap[linkProp].reset(copy);
             }
-            CHECK_LINK(PropertyLinkSub)
-            CHECK_LINK(PropertyLinkSubList)
-            CHECK_LINK(PropertyXLink)
         }
     }
 

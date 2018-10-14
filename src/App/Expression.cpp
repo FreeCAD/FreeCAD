@@ -163,8 +163,10 @@ void ExpressionVisitor::getDeps(Expression &e, ExpressionDeps &deps) {
     e._getDeps(deps);
 }
 
-void ExpressionVisitor::getDepObjects(Expression &e, std::set<App::DocumentObject*> &deps) {
-    e._getDepObjects(deps);
+void ExpressionVisitor::getDepObjects(Expression &e, 
+        std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels) 
+{
+    e._getDepObjects(deps,labels);
 }
 
 void ExpressionVisitor::getIdentifiers(Expression &e, std::set<App::ObjectIdentifier> &ids) {
@@ -175,9 +177,18 @@ bool ExpressionVisitor::adjustLinks(Expression &e, const std::set<App::DocumentO
     return e._adjustLinks(inList,*this);
 }
 
-bool ExpressionVisitor::renameDocumentObject(Expression &e, const App::DocumentObject *obj) 
+void ExpressionVisitor::importSubNames(Expression &e, const std::map<std::string,std::string> &subNameMap) {
+    e._importSubNames(subNameMap);
+}
+
+void ExpressionVisitor::updateLabelReference(Expression &e, 
+        DocumentObject *obj, const std::string &ref, const char *newLabel) 
 {
-    return e._renameDocumentObject(obj,*this);
+    e._updateLabelReference(obj,ref,newLabel);
+}
+
+bool ExpressionVisitor::updateElementReference(Expression &e, App::DocumentObject *feature, bool reverse) {
+    return e._updateElementReference(feature,reverse,*this);
 }
 
 bool ExpressionVisitor::renameDocument(
@@ -232,25 +243,26 @@ ExpressionDeps Expression::getDeps()  const {
 
 class GetDepObjsExpressionVisitor : public ExpressionVisitor {
 public:
-    GetDepObjsExpressionVisitor(std::set<App::DocumentObject*> &deps)
-        :deps(deps)
+    GetDepObjsExpressionVisitor(std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)
+        :deps(deps),labels(labels)
     {}
 
     virtual void visit(Expression * e) {
-        if(e) this->getDepObjects(*e,deps);
+        if(e) this->getDepObjects(*e,deps,labels);
     }
 
     std::set<App::DocumentObject*> &deps;
+    std::vector<std::string> *labels;
 };
 
-void Expression::getDepObjects(std::set<App::DocumentObject*> &deps)  const {
-    GetDepObjsExpressionVisitor v(deps);
+void Expression::getDepObjects(std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels)  const {
+    GetDepObjsExpressionVisitor v(deps,labels);
     const_cast<Expression*>(this)->visit(v);
 }
 
-std::set<App::DocumentObject*> Expression::getDepObjects()  const {
+std::set<App::DocumentObject*> Expression::getDepObjects(std::vector<std::string> *labels)  const {
     std::set<App::DocumentObject*> deps;
-    getDepObjects(deps);
+    getDepObjects(deps,labels);
     return deps;
 }
 
@@ -297,6 +309,74 @@ bool Expression::adjustLinks(const std::set<App::DocumentObject*> &inList) {
     AdjustLinksExpressionVisitor v(inList);
     visit(v);
     return v.res;
+}
+
+class ImportSubNamesExpressionVisitor : public ExpressionVisitor {
+public:
+    ImportSubNamesExpressionVisitor(const std::map<std::string,std::string> &subNameMap)
+        :subNameMap(subNameMap)
+    {}
+
+    virtual void visit(Expression * e) {
+        if(e) 
+            this->importSubNames(*e,subNameMap);
+    }
+
+    const std::map<std::string,std::string> &subNameMap;
+};
+
+Expression *Expression::importSubNames(const std::map<std::string,std::string> &nameMap) const {
+    std::map<std::string,std::string> subNameMap;
+    for(auto &dep : getDeps()) {
+        for(auto &info : dep.second) {
+            for(auto &path : info.second) {
+                auto obj = path.getDocumentObject();
+                if(!obj)
+                    continue;
+                std::string sub = path.getSubObjectName(true);
+                if(sub.empty() || subNameMap.count(sub))
+                    continue;
+                std::string imported = PropertyLinkBase::tryImportSubName(nameMap,obj,sub.c_str());
+                if(imported.size())
+                    subNameMap.emplace(sub,imported);
+            }
+        }
+    }
+    if(subNameMap.empty())
+        return 0;
+    ImportSubNamesExpressionVisitor v(subNameMap);
+    std::unique_ptr<Expression> expr(copy());
+    expr->visit(v);
+    return expr.release();
+}
+
+class UpdateLabelExpressionVisitor : public ExpressionVisitor {
+public:
+    UpdateLabelExpressionVisitor(App::DocumentObject *obj, const std::string &ref, const char *newLabel)
+        :obj(obj),ref(ref),newLabel(newLabel)
+    {}
+
+    virtual void visit(Expression * e) {
+        if(e) 
+            this->updateLabelReference(*e,obj,ref,newLabel);
+    }
+
+    App::DocumentObject *obj;
+    const std::string &ref;
+    const char *newLabel;
+};
+
+Expression *Expression::updateLabelReference(
+        App::DocumentObject *obj, const std::string &ref, const char *newLabel) const 
+{
+    std::vector<std::string> labels;
+    getDepObjects(&labels);
+    if(std::find(labels.begin(),labels.end(),ref) == labels.end())
+        return 0;
+    UpdateLabelExpressionVisitor v(obj,ref,newLabel);
+    std::unique_ptr<Expression> expr(copy());
+    expr->visit(v);
+    return expr.release();
 }
 
 /* The following definitions are from The art of computer programming by Knuth
@@ -443,18 +523,18 @@ Expression *Expression::fromAny(boost::any value) const {
         EXPR_THROW("Failed to evaluate");
 }
 
-std::string Expression::toString() const {
+std::string Expression::toString(bool persistent) const {
     std::ostringstream ss;
     if(components.empty()) {
-        _toString(ss);
+        _toString(ss,persistent);
         return ss.str();
     }
     if(!_isIndexable()) {
         ss << '(';
-        _toString(ss);
+        _toString(ss,persistent);
         ss << ')';
     }else
-        _toString(ss);
+        _toString(ss,persistent);
     for(auto &c : components) {
         if(c.isSimple())
             ss << '.';
@@ -526,7 +606,7 @@ Expression *UnitExpression::simplify() const
   * Return a string representation of the expression.
   */
 
-void UnitExpression::_toString(std::ostringstream &ss) const
+void UnitExpression::_toString(std::ostringstream &ss, bool) const
 {
     ss << unitStr;
 }
@@ -579,7 +659,7 @@ void NumberExpression::negate()
     quantity.setValue(-quantity.getValue());
 }
 
-void NumberExpression::_toString(std::ostringstream &ss) const
+void NumberExpression::_toString(std::ostringstream &ss, bool) const
 {
     ss << std::setprecision(std::numeric_limits<double>::digits10 + 2) << quantity.getValue();
 
@@ -855,7 +935,7 @@ Expression *OperatorExpression::simplify() const
   * @returns A string representing the expression.
   */
 
-void OperatorExpression::_toString(std::ostringstream &s) const
+void OperatorExpression::_toString(std::ostringstream &s, bool persistent) const
 {
     bool needsParens;
     Operator leftOperator(NONE), rightOperator(NONE);
@@ -874,19 +954,19 @@ void OperatorExpression::_toString(std::ostringstream &s) const
 
     switch (op) {
     case NEG:
-        s << "-" << (needsParens ? "(" : "") << left->toString() << (needsParens ? ")" : "");
+        s << "-" << (needsParens ? "(" : "") << left->toString(persistent) << (needsParens ? ")" : "");
         return;
     case POS:
-        s << "+" << (needsParens ? "(" : "") << left->toString() << (needsParens ? ")" : "");
+        s << "+" << (needsParens ? "(" : "") << left->toString(persistent) << (needsParens ? ")" : "");
         return;
     default:
         break;
     }
 
     if (needsParens)
-        s << "(" << left->toString() << ")";
+        s << "(" << left->toString(persistent) << ")";
     else
-        s << left->toString();
+        s << left->toString(persistent);
 
     switch (op) {
     case AND_OP:
@@ -960,9 +1040,9 @@ void OperatorExpression::_toString(std::ostringstream &s) const
     }
 
     if (needsParens)
-        s << "(" << right->toString() << ")";
+        s << "(" << right->toString(persistent) << ")";
     else
-        s << right->toString();
+        s << right->toString(persistent);
 }
 
 /**
@@ -1755,14 +1835,14 @@ Expression *FunctionExpression::simplify() const
   * @returns A string representing the expression.
   */
 
-void FunctionExpression::_toString(std::ostringstream &ss) const
+void FunctionExpression::_toString(std::ostringstream &ss, bool persistent) const
 {
     init_functions();
     auto it = registered_function_names.find(f);
     assert(it!=registered_function_names.end());
     ss << it->second << '(';
     for (size_t i = 0; i < args.size(); ++i) {
-        ss << args[i]->toString();
+        ss << args[i]->toString(persistent);
         if (i != args.size() - 1)
             ss << "; ";
     }
@@ -1853,8 +1933,11 @@ bool VariableExpression::_isIndexable() const {
     return true;
 }
 
-void VariableExpression::_toString(std::ostringstream &ss) const {
-    ss << var.toString();
+void VariableExpression::_toString(std::ostringstream &ss, bool persistent) const {
+    if(persistent)
+        ss << var.toPersistentString();
+    else
+        ss << var.toString();
 }
 
 void VariableExpression::_getDeps(ExpressionDeps &deps) const
@@ -1864,9 +1947,10 @@ void VariableExpression::_getDeps(ExpressionDeps &deps) const
         deps[dep.first][dep.second].push_back(var);
 }
 
-void VariableExpression::_getDepObjects(std::set<App::DocumentObject*> &deps) const
+void VariableExpression::_getDepObjects(
+        std::set<App::DocumentObject*> &deps, std::vector<std::string> *labels) const
 {
-    auto dep = var.getDep();
+    auto dep = var.getDep(labels);
     if(dep.first)
         deps.insert(dep.first);
 }
@@ -1881,11 +1965,6 @@ void VariableExpression::setPath(const ObjectIdentifier &path)
      var = path;
 }
 
-bool VariableExpression::_renameDocumentObject(const App::DocumentObject *obj, ExpressionVisitor &v)
-{
-    return var.renameDocumentObject(obj, &v);
-}
-
 bool VariableExpression::_renameDocument(const std::string &oldName,
         const std::string &newName, ExpressionVisitor &v)
 {
@@ -1895,6 +1974,23 @@ bool VariableExpression::_renameDocument(const std::string &oldName,
 bool VariableExpression::_adjustLinks(const std::set<App::DocumentObject *> &inList, ExpressionVisitor &v) 
 {
     return var.adjustLinks(inList,&v);
+}
+
+void VariableExpression::_importSubNames(const std::map<std::string,std::string> &subNameMap) 
+{
+    var.importSubNames(subNameMap);
+}
+
+void VariableExpression::_updateLabelReference(
+        App::DocumentObject *obj, const std::string &ref, const char *newLabel)
+{
+    var.updateLabelReference(obj,ref,newLabel);
+}
+
+bool VariableExpression::_updateElementReference(
+        App::DocumentObject *feature, bool reverse, ExpressionVisitor &v) 
+{
+    return var.updateElementReference(feature,reverse,&v);
 }
 
 //
@@ -1954,8 +2050,8 @@ Expression *CallableExpression::create(const DocumentObject *owner,
     return new FunctionExpression(owner,it->second,a);
 }
 
-void CallableExpression::_toString(std::ostringstream &ss) const {
-    ss << (expr?expr->toString():name) << '(';
+void CallableExpression::_toString(std::ostringstream &ss, bool persistent) const {
+    ss << (expr?expr->toString(persistent):name) << '(';
 
     bool first = true;
     for(auto &v : args) {
@@ -1965,7 +2061,7 @@ void CallableExpression::_toString(std::ostringstream &ss) const {
             ss << ", ";
         if(v.first.size())
             ss << v.first << '=';
-        ss << v.second->toString();
+        ss << v.second->toString(persistent);
     }
     ss << ')';
 }
@@ -2238,7 +2334,7 @@ PyObjectExpression::PyObjectExpression(const DocumentObject *_owner, Py::Object 
 {
 }
 
-void PyObjectExpression::_toString(std::ostringstream &ss) const
+void PyObjectExpression::_toString(std::ostringstream &ss, bool) const
 {
     Base::PyGILStateLocker lock;
     ss << pyObj.as_string();
@@ -2269,7 +2365,7 @@ StringExpression::StringExpression(const DocumentObject *_owner, const std::stri
 {
 }
 
-void StringExpression::_toString(std::ostringstream &ss) const
+void StringExpression::_toString(std::ostringstream &ss, bool) const
 {
     if(r_literal)
         ss << "r<<" << text << ">>";
@@ -2352,19 +2448,19 @@ Expression *ConditionalExpression::simplify() const
     }
 }
 
-void ConditionalExpression::_toString(std::ostringstream &ss) const
+void ConditionalExpression::_toString(std::ostringstream &ss, bool persistent) const
 {
-    ss << condition->toString() << " ? ";
+    ss << condition->toString(persistent) << " ? ";
 
     if (trueExpr->priority() <= priority())
-        ss << '(' << trueExpr->toString() << ')';
+        ss << '(' << trueExpr->toString(persistent) << ')';
     else
-        ss << trueExpr->toString();
+        ss << trueExpr->toString(persistent);
 
     if (falseExpr->priority() <= priority())
-        ss << " : (" << falseExpr->toString() << ')';
+        ss << " : (" << falseExpr->toString(persistent) << ')';
     else
-        ss << " : " << falseExpr->toString();
+        ss << " : " << falseExpr->toString(persistent);
 }
 
 Expression *ConditionalExpression::_copy() const
@@ -2393,7 +2489,7 @@ ConstantExpression::ConstantExpression(const DocumentObject *_owner, std::string
 {
 }
 
-void ConstantExpression::_toString(std::ostringstream &ss) const
+void ConstantExpression::_toString(std::ostringstream &ss, bool) const
 {
     ss << name;
 }
@@ -2460,7 +2556,7 @@ bool RangeExpression::isTouched() const
     return false;
 }
 
-void RangeExpression::_toString(std::ostringstream &ss) const
+void RangeExpression::_toString(std::ostringstream &ss, bool) const
 {
     ss << range.rangeString();
 }
@@ -2486,12 +2582,6 @@ void RangeExpression::_getDeps(ExpressionDeps &deps) const
         std::string address = i.address();
         dep[address].push_back(ObjectIdentifier(owner,address));
     } while (i.next());
-}
-
-void RangeExpression::_getDepObjects(std::set<App::DocumentObject*> &) const
-{
-    // assert(owner);
-    // deps.insert(owner);
 }
 
 boost::any RangeExpression::_getValueAsAny() const {
@@ -2534,10 +2624,10 @@ void ListExpression::addItem(Expression *item) {
     items.push_back(item);
 }
 
-void ListExpression::_toString(std::ostringstream &ss) const {
+void ListExpression::_toString(std::ostringstream &ss, bool persistent) const {
     ss << '[';
     for(auto item : items) 
-        ss << item->toString() << ", ";
+        ss << item->toString(persistent) << ", ";
     ss << ']';
 }
 
@@ -2579,13 +2669,13 @@ TupleExpression::TupleExpression(const DocumentObject *_owner, const std::vector
 }
 
 
-void TupleExpression::_toString(std::ostringstream &ss) const {
+void TupleExpression::_toString(std::ostringstream &ss, bool persistent) const {
     ss << '(';
     if(items.empty())
         ss << ", ";
     else {
         for(auto item : items) 
-            ss << item->toString() << ", ";
+            ss << item->toString(persistent) << ", ";
     }
     ss << ')';
 }
@@ -2631,10 +2721,10 @@ void DictExpression::addItem(Expression *key, Expression *value) {
     items.emplace_back(key,value);
 }
 
-void DictExpression::_toString(std::ostringstream &ss) const {
+void DictExpression::_toString(std::ostringstream &ss, bool persistent) const {
     ss << '{';
     for(auto &v : items) 
-        ss << v.first->toString() << ':' << v.second->toString() << ", ";
+        ss << v.first->toString(persistent) << ':' << v.second->toString(persistent) << ", ";
     ss << '}';
 }
 
@@ -2694,6 +2784,7 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     return ret_val;
 }
 
+static Base::XMLReader *_Reader = 0;
 static Expression * ScanResult = 0;                    /**< The resulting expression after a successful parsing */
 static const App::DocumentObject * DocumentObject = 0; /**< The DocumentObject that will own the expression */
 static bool unitExpression = false;                    /**< True if the parsed string is a unit only */
@@ -2701,6 +2792,20 @@ static bool valueExpression = false;                   /**< True if the parsed s
 static std::stack<std::string> labels;                /**< Label string primitive */
 static int last_column;
 static int column;
+
+} //namespace ExpressionParser
+
+ExpressionImporter::ExpressionImporter(Base::XMLReader &reader) {
+    assert(!ExpressionParser::_Reader);
+    ExpressionParser::_Reader = &reader;
+}
+
+ExpressionImporter::~ExpressionImporter() {
+    assert(ExpressionParser::_Reader);
+    ExpressionParser::_Reader = 0;
+}
+
+namespace ExpressionParser {
 
 // show the parser the lexer method
 #define yylex ExpressionParserlex

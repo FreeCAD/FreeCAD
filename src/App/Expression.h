@@ -27,13 +27,17 @@
 #include <boost/tuple/tuple.hpp>
 #include <Base/Exception.h>
 #include <Base/Unit.h>
-#include <App/Property.h>
+#include <App/PropertyLinks.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/BaseClass.h>
 #include <Base/Quantity.h>
 #include <set>
 #include <deque>
 #include <App/Range.h>
+
+namespace Base {
+class XMLReader;
+}
 
 namespace App  {
 
@@ -48,34 +52,46 @@ public:
     virtual ~ExpressionVisitor() {}
     virtual void visit(Expression * e) = 0;
     virtual void setExpressionChanged() {}
-    virtual bool getChanged() const { return false;}
+    virtual int getChanged() const { return 0;}
+    virtual App::PropertyLinkBase* getPropertyLink() {return 0;}
 
 protected:
     void getIdentifiers(Expression &e, std::set<App::ObjectIdentifier> &); 
     void getDeps(Expression &e, ExpressionDeps &); 
-    void getDepObjects(Expression &e, std::set<App::DocumentObject*> &); 
+    void getDepObjects(Expression &e, std::set<App::DocumentObject*> &, std::vector<std::string> *); 
     bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
-    bool renameDocumentObject(Expression &e, const App::DocumentObject *);
     bool renameDocument(Expression &e, const std::string &oldName, const std::string &newName);
+    bool updateElementReference(Expression &e, App::DocumentObject *feature,bool reverse);
+    void importSubNames(Expression &e, const std::map<std::string,std::string> &subNameMap);
+    void updateLabelReference(Expression &e, App::DocumentObject *obj, 
+            const std::string &ref, const char *newLabel);
 };
 
 template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
     ExpressionModifier(P & _prop)
-        : prop(_prop) { }
+        : prop(_prop),changed(0) 
+    { 
+        propLink = dynamic_cast<App::PropertyLinkBase*>(&prop);
+    }
 
     virtual ~ExpressionModifier() { }
 
     virtual void setExpressionChanged() override{
+        ++changed;
         if (!signaller)
             signaller = boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange>(AtomicPropertyChangeInterface<P>::getAtomicPropertyChange(prop));
     }
 
-    virtual bool getChanged() const override { return signaller != 0; }
+    virtual int getChanged() const override { return changed; }
+
+    virtual App::PropertyLinkBase* getPropertyLink() override {return propLink;}
 
 protected:
     P & prop;
+    App::PropertyLinkBase *propLink;
     boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange> signaller;
+    int changed;
 };
 
 /**
@@ -98,7 +114,7 @@ public:
 
     Expression * eval() const;
 
-    std::string toString() const;
+    std::string toString(bool persistent=false) const;
 
     Expression *copy() const;
 
@@ -112,8 +128,13 @@ public:
     void getDeps(ExpressionDeps &deps) const;
     ExpressionDeps getDeps() const;
 
-    std::set<App::DocumentObject*> getDepObjects() const;
-    void getDepObjects(std::set<App::DocumentObject*> &) const;
+    std::set<App::DocumentObject*> getDepObjects(std::vector<std::string> *labels=0) const;
+    void getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *labels=0) const;
+
+    Expression *importSubNames(const std::map<std::string,std::string> &nameMap) const;
+
+    Expression *updateLabelReference(App::DocumentObject *obj, 
+            const std::string &ref, const char *newLabel) const;
 
     bool adjustLinks(const std::set<App::DocumentObject*> &inList);
 
@@ -137,13 +158,15 @@ public:
 protected:
     virtual bool _isIndexable() const {return false;}
     virtual Expression *_copy() const = 0;
-    virtual void _toString(std::ostringstream &ss) const = 0;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const = 0;
     virtual void _getDeps(ExpressionDeps &) const  {}
-    virtual void _getDepObjects(std::set<App::DocumentObject*> &) const  {}
+    virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const  {}
     virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const  {}
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) {return false;}
-    virtual bool _renameDocumentObject(const App::DocumentObject *, ExpressionVisitor &) {return false;}
+    virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) {return false;}
     virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
+    virtual void _importSubNames(const std::map<std::string,std::string> &) {}
+    virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) {}
     virtual boost::any _getValueAsAny() const = 0;
     virtual Expression *_eval() const {return 0;}
 
@@ -184,7 +207,7 @@ public:
     double getScaler() const { return quantity.getValue(); }
 
 protected:
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const { 
@@ -210,7 +233,7 @@ public:
     void negate();
 
 protected:
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
 };
 
@@ -228,7 +251,7 @@ public:
 protected:
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
 
     std::string name; /**< Constant's name */
@@ -297,7 +320,7 @@ protected:
     Expression *_calc(Expression *l, Expression *r) const;
     Expression *_calc(Expression *l) const;
 
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
@@ -329,7 +352,7 @@ public:
     virtual void visit(ExpressionVisitor & v);
 
 protected:
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
@@ -361,7 +384,7 @@ public:
     virtual void visit(ExpressionVisitor & v);
 
 protected:
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
@@ -398,13 +421,15 @@ public:
 
 protected:
     virtual bool _isIndexable() const;
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
     virtual void _getDeps(ExpressionDeps &) const;
-    virtual void _getDepObjects(std::set<App::DocumentObject*> &) const;
+    virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const;
     virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const;
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &);
-    virtual bool _renameDocumentObject(const App::DocumentObject *, ExpressionVisitor &);
+    virtual void _importSubNames(const std::map<std::string,std::string> &);
+    virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *);
+    virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &);
     virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &);
     virtual boost::any _getValueAsAny() const;
 
@@ -439,7 +464,7 @@ protected:
     virtual bool _isIndexable() const { return true; }
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
 
 protected:
@@ -468,7 +493,7 @@ public:
 protected:
     virtual bool _isIndexable() const { return true; }
     virtual Expression * _copy() const;
-    virtual void _toString(std::ostringstream &ss) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual boost::any _getValueAsAny() const;
 
 protected:
@@ -495,10 +520,9 @@ public:
     void setRange(const Range & r);
 
 protected:
-    virtual void _toString(std::ostringstream &) const;
+    virtual void _toString(std::ostringstream &, bool) const;
     virtual Expression *_copy() const;
     virtual void _getDeps(ExpressionDeps &) const;
-    virtual void _getDepObjects(std::set<App::DocumentObject*> &) const;
     virtual boost::any _getValueAsAny() const;
 
 protected:
@@ -521,7 +545,7 @@ public:
 
 protected:
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &) const;
+    virtual void _toString(std::ostringstream &,bool) const;
     virtual Expression *_copy() const;
 
 protected:
@@ -544,7 +568,7 @@ public:
 protected:
     virtual bool _isIndexable() const {return true;}
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &) const;
+    virtual void _toString(std::ostringstream &, bool) const;
     virtual Expression *_copy() const;
 
 protected:
@@ -563,7 +587,7 @@ public:
 protected:
     virtual boost::any _getValueAsAny() const;
     virtual Expression *_copy() const;
-    virtual void _toString(std::ostringstream &) const;
+    virtual void _toString(std::ostringstream &, bool) const;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -582,7 +606,7 @@ public:
 protected:
     virtual bool _isIndexable() const {return true;}
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &) const;
+    virtual void _toString(std::ostringstream &, bool) const;
     virtual Expression *_copy() const;
 
 protected:
@@ -629,5 +653,12 @@ public:
 
 }
 
+/// Convenient class to mark begin of importing
+class AppExport ExpressionImporter {
+public:
+    ExpressionImporter(Base::XMLReader &reader);
+    ~ExpressionImporter();
+};
 }
+
 #endif // EXPRESSION_H

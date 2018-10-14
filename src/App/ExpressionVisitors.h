@@ -63,33 +63,22 @@ private:
    const ObjectIdentifier owner;                              /**< Owner of expression */
 };
 
-/**
- * @brief The RelabelDocumentObjectExpressionVisitor class is a functor class used to rename variables in an expression.
- */
-
-template<class P> class RelabelDocumentObjectExpressionVisitor : public ExpressionModifier<P> {
+template<class P> class UpdateElementReferenceExpressionVisitor : public ExpressionModifier<P> {
 public:
 
-    RelabelDocumentObjectExpressionVisitor(P & _prop, const App::DocumentObject *obj)
-        : ExpressionModifier<P>(_prop),obj(obj)
+    UpdateElementReferenceExpressionVisitor(P & _prop, App::DocumentObject *feature=0, bool reverse=false)
+        : ExpressionModifier<P>(_prop),feature(feature),reverse(reverse)
     {
     }
 
-    ~RelabelDocumentObjectExpressionVisitor() {
-    }
-
-    /**
-     * @brief Visit each node in the expression, and if it is a VariableExpression object, incoke renameDocumentObject in it.
-     * @param node Node to visit
-     */
-
     void visit(Expression * node) {
         if(node)
-            this->renameDocumentObject(*node,obj);
+            this->updateElementReference(*node,feature,reverse);
     }
 
 private:
-    const App::DocumentObject *obj;
+    App::DocumentObject *feature;
+    bool reverse;
 };
 
 template<class P> class RelabelDocumentExpressionVisitor : public ExpressionModifier<P> {

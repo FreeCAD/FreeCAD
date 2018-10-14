@@ -28,7 +28,7 @@
 #include <boost/signals.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
-#include <App/Property.h>
+#include <App/PropertyLinks.h>
 #include <App/Expression.h>
 #include <set>
 
@@ -45,10 +45,21 @@ class ObjectIdentifier;
 class Expression;
 
 
-class AppExport PropertyExpressionEngine : public App::Property, private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
+class AppExport PropertyExpressionEngine : public App::PropertyLinkBase, 
+                                           private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
 {
     TYPESYSTEM_HEADER();
 public:
+
+    virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) override;
+    virtual bool referenceChanged() const override;
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+                        const std::string &ref, const char *newLabel) const override;
 
     typedef boost::function<std::string (const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr)> ValidatorFunc;
     
@@ -97,16 +108,24 @@ public:
 
     const boost::any getPathValue(const App::ObjectIdentifier & path) const;
 
+    /// Execute options
+    enum ExecuteOption {
+        /// Execute all expression
+        ExecuteAll,
+        /// Execute only output property bindings
+        ExecuteOutput,
+        /// Execute only non-output property bindings
+        ExecuteNonOutput,
+        /// Execute all expression if there are trasient property binding
+        ExecuteTransient,
+    };
     /** Evaluate the expressions
      * 
-     * @param output: 0 indicates to compute all non-output property bindings.
-     * 1 indicates to compute only output properties. -1 means compute all.
+     * @param option: execution option, see ExecuteOption.
      */
-    DocumentObjectExecReturn * execute(int output=-1);
+    DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll);
 
     void getDocumentObjectDeps(std::vector<DocumentObject*> & docObjs) const;
-
-    void breakDependency(const std::vector<DocumentObject*> &);
 
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 
@@ -127,20 +146,17 @@ public:
 
     size_t numExpressions() const;
 
-    void slotObjectRenamed(const App::DocumentObject & obj);
-
-    void slotObjectDeleted(const DocumentObject &obj);
-    
     ///signal called when a expression was changed 
     boost::signal<void (const App::ObjectIdentifier &)> expressionChanged; 
 
-    void onDocumentRestored();
+    virtual void afterRestore() override;
 
     /* Python interface */
     PyObject *getPyObject(void);
     void setPyObject(PyObject *);
 
-    bool adjustLinks(const std::set<App::DocumentObject*> &inList);
+protected:
+    virtual void hasSetValue() override;
 
 private:
 
@@ -148,14 +164,15 @@ private:
     typedef std::pair<int, int> Edge;
     typedef boost::unordered_map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
 
-    std::vector<App::ObjectIdentifier> computeEvaluationOrder(int output);
+    std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
 
     void buildGraphStructures(const App::ObjectIdentifier &path,
                               const boost::shared_ptr<Expression> expression, boost::unordered_map<App::ObjectIdentifier, int> &nodes,
                               boost::unordered_map<int, App::ObjectIdentifier> &revNodes, std::vector<Edge> &edges) const;
 
     void buildGraph(const ExpressionMap &exprs,
-                boost::unordered_map<int, App::ObjectIdentifier> &revNodes, DiGraph &g, int output=-1) const;
+                boost::unordered_map<int, App::ObjectIdentifier> &revNodes, 
+                DiGraph &g, ExecuteOption option=ExecuteAll) const;
 
     bool running; /**< Boolean used to avoid loops */
 
@@ -163,10 +180,17 @@ private:
 
     ValidatorFunc validator; /**< Valdiator functor */
 
-    ExpressionMap restoredExpressions; /**< Expressions are read from file to this map first before they are validated and inserted into the actual map */
+    struct RestoredExpression {
+        std::string path;
+        std::string expr;
+        std::string comment;
+    };
+    /**< Expressions are read from file to this map first before they are validated and inserted into the actual map */
+    std::unique_ptr<std::vector<RestoredExpression> > restoredExpressions;
 
     friend class AtomicPropertyChange;
 
+    std::set<App::DocumentObject*> depObjs;
 };
 
 }

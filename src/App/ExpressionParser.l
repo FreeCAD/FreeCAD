@@ -269,4 +269,4 @@ $[A-Za-z]{1,2}+${DIGIT}+     COUNTCHARS; yylval.string = yytext; return CELLADDR
 [A-Za-z]{1,2}${DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 $[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 
-({L}{M}*|_)({L}{M}*|{N}|_)*   COUNTCHARS; yylval.string = yytext; return IDENTIFIER;
+({L}{M}*|_)({L}{M}*|{N}|_|@)*   COUNTCHARS; yylval.string = yytext; return IDENTIFIER;

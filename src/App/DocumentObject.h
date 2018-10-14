@@ -381,8 +381,6 @@ public:
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
-    virtual void connectRelabelSignals();
-
     const std::string & getOldLabel() const { return oldLabel; }
 
     const char *getViewProviderNameStored() const {
@@ -554,11 +552,6 @@ protected: // attributes
     Py::Object PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
-
-    // Connections to track relabeling of document and document objects
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledDocumentConnection;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledObjectConnection;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onDeletedObjectConnection;
 
     /// Old label; used for renaming expressions
     std::string oldLabel;

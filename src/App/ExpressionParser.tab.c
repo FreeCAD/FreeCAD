@@ -456,9 +456,9 @@ static const yytype_uint16 yyrline[] =
      178,   179,   182,   183,   184,   185,   188,   189,   192,   193,
      194,   197,   198,   201,   202,   203,   206,   207,   208,   209,
      210,   211,   214,   215,   218,   219,   220,   221,   224,   227,
-     228,   229,   230,   231,   232,   235,   239,   244,   249,   255,
-     261,   270,   271,   274,   275,   278,   279,   280,   283,   284,
-     285,   286,   287,   288,   291,   292,   295,   296,   299
+     228,   229,   230,   231,   232,   235,   239,   248,   253,   265,
+     273,   282,   283,   286,   287,   290,   291,   292,   295,   296,
+     297,   298,   299,   300,   303,   304,   307,   308,   311
 };
 #endif
 
@@ -2179,46 +2179,58 @@ yyreduce:
 #line 239 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property of a sub-object of the current object*/
                                                   (yyval.path) = ObjectIdentifier(DocumentObject);
+                                                  if(_Reader) {
+                                                    (yyvsp[-2].string_or_identifier) = ObjectIdentifier::String(
+                                                        PropertyLinkBase::importSubName(*_Reader,(yyvsp[-2].string_or_identifier).getString().c_str()),true);
+                                                  }
                                                   (yyval.path).setDocumentObjectName(DocumentObject,false,(yyvsp[-2].string_or_identifier));
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                 }
-#line 2186 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 2190 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 244 "ExpressionParser.y" /* yacc.c:1646  */
+#line 248 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property of the current document object */
                                                   (yyval.path) = ObjectIdentifier(DocumentObject);
                                                   (yyval.path).setDocumentObjectName(DocumentObject);
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                 }
-#line 2196 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 2200 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 249 "ExpressionParser.y" /* yacc.c:1646  */
+#line 253 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property of a sub-object */
                                                   (yyval.path) = ObjectIdentifier(DocumentObject);
+                                                  if(_Reader) {
+                                                    (yyvsp[-2].string_or_identifier) = ObjectIdentifier::String(
+                                                        PropertyLinkBase::importSubName(*_Reader,(yyvsp[-2].string_or_identifier).getString().c_str()),true);
+                                                    if(!(yyvsp[-4].string_or_identifier).isRealString())
+                                                        (yyvsp[-4].string_or_identifier) = ObjectIdentifier::String(_Reader->getName((yyvsp[-4].string_or_identifier).getString().c_str()));
+                                                  }
                                                   (yyval.path).setDocumentObjectName((yyvsp[-4].string_or_identifier), true, (yyvsp[-2].string_or_identifier));
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                   (yyval.path).resolveAmbiguity();
                                                 }
-#line 2207 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 2217 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 255 "ExpressionParser.y" /* yacc.c:1646  */
+#line 265 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property of a given document object */
                                                   (yyval.path) = ObjectIdentifier(DocumentObject);
+                                                  if(_Reader && !(yyvsp[-2].string_or_identifier).isRealString())
+                                                      (yyvsp[-2].string_or_identifier) = ObjectIdentifier::String(_Reader->getName((yyvsp[-2].string_or_identifier).getString().c_str()));
                                                   (yyval.path) << ObjectIdentifier::SimpleComponent((yyvsp[-2].string_or_identifier));
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                   (yyval.path).resolveAmbiguity();
                                                 }
-#line 2218 "ExpressionParser.tab.c" /* yacc.c:1646  */
+#line 2230 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 261 "ExpressionParser.y" /* yacc.c:1646  */
+#line 273 "ExpressionParser.y" /* yacc.c:1646  */
     { /* Path to property from an external document, within a named document object */
                                                   (yyval.path) = ObjectIdentifier(DocumentObject);
                                                   (yyval.path).setDocumentName((yyvsp[-4].string_or_identifier), true);
@@ -2226,119 +2238,119 @@ yyreduce:
                                                   (yyval.path).addComponents((yyvsp[0].components));
                                                   (yyval.path).resolveAmbiguity();
                                                 }
-#line 2230 "ExpressionParser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 101:
-#line 270 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.ivalue) = (yyvsp[0].ivalue); }
-#line 2236 "ExpressionParser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 102:
-#line 271 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.ivalue) = (yyvsp[0].fvalue); }
 #line 2242 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 103:
-#line 274 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.components).push_back(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));}
+  case 101:
+#line 282 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.ivalue) = (yyvsp[0].ivalue); }
 #line 2248 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 104:
-#line 275 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[-1].components).push_back((yyvsp[0].component)); (yyval.components).swap((yyvsp[-1].components));}
+  case 102:
+#line 283 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.ivalue) = (yyvsp[0].fvalue); }
 #line 2254 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 105:
-#line 278 "ExpressionParser.y" /* yacc.c:1646  */
+  case 103:
+#line 286 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.components).push_back(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));}
 #line 2260 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 106:
-#line 279 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[-2].components).push_back(ObjectIdentifier::SimpleComponent((yyvsp[0].string))); (yyval.components).swap((yyvsp[-2].components)); }
+  case 104:
+#line 287 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[-1].components).push_back((yyvsp[0].component)); (yyval.components).swap((yyvsp[-1].components));}
 #line 2266 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 107:
-#line 280 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyvsp[-1].components).push_back((yyvsp[0].component)); (yyval.components).swap((yyvsp[-1].components));}
+  case 105:
+#line 290 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.components).push_back(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));}
 #line 2272 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 108:
-#line 283 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.component) = ObjectIdentifier::ArrayComponent((yyvsp[-1].ivalue));   }
+  case 106:
+#line 291 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[-2].components).push_back(ObjectIdentifier::SimpleComponent((yyvsp[0].string))); (yyval.components).swap((yyvsp[-2].components)); }
 #line 2278 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 109:
-#line 284 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.component) = ObjectIdentifier::RangeComponent((yyvsp[-2].ivalue)); }
+  case 107:
+#line 292 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyvsp[-1].components).push_back((yyvsp[0].component)); (yyval.components).swap((yyvsp[-1].components));}
 #line 2284 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 110:
-#line 285 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.component) = ObjectIdentifier::RangeComponent(0,(yyvsp[-1].ivalue)); }
+  case 108:
+#line 295 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.component) = ObjectIdentifier::ArrayComponent((yyvsp[-1].ivalue));   }
 #line 2290 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 111:
-#line 286 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.component) = ObjectIdentifier::RangeComponent((yyvsp[-3].ivalue),(yyvsp[-1].ivalue));}
+  case 109:
+#line 296 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.component) = ObjectIdentifier::RangeComponent((yyvsp[-2].ivalue)); }
 #line 2296 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 112:
-#line 287 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.component) = ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-1].string), true));}
+  case 110:
+#line 297 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.component) = ObjectIdentifier::RangeComponent(0,(yyvsp[-1].ivalue)); }
 #line 2302 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 113:
-#line 288 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.component) = ObjectIdentifier::MapComponent((yyvsp[-1].string));}
+  case 111:
+#line 298 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.component) = ObjectIdentifier::RangeComponent((yyvsp[-3].ivalue),(yyvsp[-1].ivalue));}
 #line 2308 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 114:
-#line 291 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
+  case 112:
+#line 299 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.component) = ObjectIdentifier::MapComponent(ObjectIdentifier::String((yyvsp[-1].string), true));}
 #line 2314 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 115:
-#line 292 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string));       }
+  case 113:
+#line 300 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.component) = ObjectIdentifier::MapComponent((yyvsp[-1].string));}
 #line 2320 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 116:
-#line 295 "ExpressionParser.y" /* yacc.c:1646  */
+  case 114:
+#line 303 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
 #line 2326 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 117:
-#line 296 "ExpressionParser.y" /* yacc.c:1646  */
+  case 115:
+#line 304 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string));       }
 #line 2332 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 118:
-#line 299 "ExpressionParser.y" /* yacc.c:1646  */
+  case 116:
+#line 307 "ExpressionParser.y" /* yacc.c:1646  */
     { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
 #line 2338 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
+  case 117:
+#line 308 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string));       }
+#line 2344 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    break;
 
-#line 2342 "ExpressionParser.tab.c" /* yacc.c:1646  */
+  case 118:
+#line 311 "ExpressionParser.y" /* yacc.c:1646  */
+    { (yyval.string_or_identifier) = ObjectIdentifier::String((yyvsp[0].string), true); }
+#line 2350 "ExpressionParser.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 2354 "ExpressionParser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2566,5 +2578,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 302 "ExpressionParser.y" /* yacc.c:1906  */
+#line 314 "ExpressionParser.y" /* yacc.c:1906  */
 
