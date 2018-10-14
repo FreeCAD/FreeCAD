@@ -97,38 +97,39 @@ class AppExport PropertyLinkBase : public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 public:
+    PropertyLinkBase();
+    virtual ~PropertyLinkBase();
 
-    /// Update all element references in all link properties of \a feature
-    static void updateElementReferences(DocumentObject *feature, bool reverse=false);
+    virtual void afterRestore() override;
 
-
-    /** Helper function for update individual element reference
-     *
-     * @param owner: the top parent object of the geometry feature object
-     * @param feature: if given, than only update element reference belonging
-     *                 to this feature. If not, then update geometry element
-     *                 references.
-     * @param sub: the subname reference to be updated.
-     * @param shadow: a pair of new and old style element references to be updated.
-     * @param reverse: if true, then use the old style, i.e. non-mapped element
-     *                 reference to query for the new style, i.e. mapped
-     *                 element reference when update. If false, then the other
-     *                 way around.
-     *
-     * This helper function is to be called by each link property in the event of
-     * geometry element reference change due to geometry model changes.
+    /** Link type property interface APIs
+     * These APIs are moved here so that any type of property can have the
+     * property link behavior, e.g. the PropertyExpressionEngine
      */
-    static bool _updateElementReference(DocumentObject *owner, DocumentObject *feature,
-        App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow, bool reverse);
+    //@{
 
     /** Called to update the element reference of this link property
      *
      * @sa _updateElementReference()
      */
-    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) {
+    virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) {
         (void)feature;
         (void)reverse;
     }
+
+    /// Clear internal element reference registration
+    void unregisterElementReference();
+
+    /** Register label reference for future object relabel update
+     *
+     *  @param subs: subname reference to check for label references
+     *  @param reset: if ture, then calls unregisterLabelReference() before
+     *  registering new references
+     */
+    void registerLabelReferences(const std::vector<std::string> &subs, bool reset=true);
+
+    /// Clear internal label references registration
+    void unregisterLabelReferences();
 
     /// Test if the element reference has changed after restore
     virtual bool referenceChanged() const {
@@ -146,16 +147,6 @@ public:
      */
     virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
             bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const = 0;
-    
-    /** Helper function for breaking link properties
-     *
-     * @param link: reset link property if it is linked to this object
-     * @param objs: the objects to check for the link properties
-     * @param clear: if ture, then also reset property if the owner of the link property is \a link
-     *
-     * App::Document::breakDependency() calls this function to break the link property
-     */
-    static void breakLinks(App::DocumentObject *link, const std::vector<App::DocumentObject*> &objs, bool clear);
 
     /** Called to reset this link property
      *
@@ -176,6 +167,38 @@ public:
      * in-list. If the adjustment is impossible, exception will be raised
      */
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) = 0;
+
+    /** Return a copy of the property if any changes caused by importing external linked object 
+     *
+     * @param nameMap: a map from the original external object name to the
+     * imported new object name
+     *
+     * @return Returns a copy of the property with the updated link reference if
+     * affected. The copy will later be assgiend to this property by calling its
+     * Paste().
+     */
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const {
+        (void)nameMap;
+        return 0;
+    }
+
+    /** Update object label reference in this property
+     *
+     * @param obj: the object owner of the changing label
+     * @param ref: subname reference to old label
+     * @param newLabel: the future new label
+     *
+     * @return Returns a copy of the property if its link reference is affected.
+     * The copy will later be assgiend to this property by calling its Paste().
+     */
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+                        const std::string &ref, const char *newLabel) const
+    {
+        (void)obj;
+        (void)ref;
+        (void)newLabel;
+        return 0;
+    }
 
     /// Helper function to return all linked objects of this property
     std::vector<App::DocumentObject *> linkedObjects(bool all=false) const {
@@ -213,11 +236,64 @@ public:
         getLinkedElements(ret,newStyle,all);
         return ret;
     }
+    //@}
 
     void allowExternalLink(bool allow) { _allowExternal = allow; }
+    //@{
+
+    /// Update all element references in all link properties of \a feature
+    static void updateElementReferences(DocumentObject *feature, bool reverse=false);
+
+
+    /** Helper function for update individual element reference
+     *
+     * @param owner: the owner property of the subname referece
+     * @param feature: if given, than only update element reference belonging
+     *                 to this feature. If not, then update geometry element
+     *                 references.
+     * @param sub: the subname reference to be updated.
+     * @param shadow: a pair of new and old style element references to be updated.
+     * @param reverse: if true, then use the old style, i.e. non-mapped element
+     *                 reference to query for the new style, i.e. mapped
+     *                 element reference when update. If false, then the other
+     *                 way around.
+     *
+     * This helper function is to be called by each link property in the event of
+     * geometry element reference change due to geometry model changes.
+     */
+    static bool _updateElementReference(PropertyLinkBase *owner, App::DocumentObject *feature,
+        App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow, bool reverse);
+
+    /** Helper function for breaking link properties
+     *
+     * @param link: reset link property if it is linked to this object
+     * @param objs: the objects to check for the link properties
+     * @param clear: if ture, then also reset property if the owner of the link property is \a link
+     *
+     * App::Document::breakDependency() calls this function to break the link property
+     */
+    static void breakLinks(App::DocumentObject *link, const std::vector<App::DocumentObject*> &objs, bool clear);
+
+    static std::string tryImportSubName(const std::map<std::string,std::string> &nameMap, 
+                                        const App::DocumentObject *obj, const char *sub);
+    static std::string exportSubName(const App::DocumentObject *obj, const char *sub);
+    static std::string importSubName(Base::XMLReader &reader, const char *sub);
+
+    static void getLabelReferences(std::vector<std::string> &labels, const char *subname);
+
+    static std::vector<std::pair<Property*, std::unique_ptr<Property> > > updateLabelReferences(
+            App::DocumentObject *obj, const char *newLabel);
+
+    static std::string updateLabelReference(App::DocumentObject *obj, const std::string &ref, 
+            const char *newLabel, App::DocumentObject *parent, const char *subname);
+    //@}
 
 protected:
     bool _allowExternal = false;
+
+private:
+    std::set<std::string> _LabelRefs;
+    std::set<App::DocumentObject*> _ElementRefs;
 };
 
 /** The general Link Property
@@ -479,7 +555,10 @@ public:
     virtual void Paste(const Property &from);
 
     /// Return a copy of the property if any changes caused by importing external object 
-    Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const;
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+            const std::string &ref, const char *newLabel) const override;
 
     virtual unsigned int getMemSize (void) const{
         return sizeof(App::DocumentObject *);
@@ -608,7 +687,10 @@ public:
     virtual void Paste(const Property &from);
 
     /// Return a copy of the property if any changes caused by importing external object 
-    Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const;
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+            const std::string &ref, const char *newLabel) const override;
 
     virtual unsigned int getMemSize (void) const;
 
@@ -669,9 +751,6 @@ public:
 
     virtual ~PropertyXLink();
 
-    static std::vector<std::pair<PropertyXLink*,std::string> > updateLabel(
-            App::DocumentObject *obj, const char *newLabel);
-
     void setValue(App::DocumentObject *) override;
     void setValue(App::DocumentObject *, const char *subname, bool relative, 
             const std::pair<std::string,std::string> *shadow=0);
@@ -694,7 +773,10 @@ public:
     virtual void Paste(const Property &from);
 
     /// Return a copy of the property if any changes caused by importing external object 
-    Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const;
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+            const std::string &ref, const char *newLabel) const override;
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);

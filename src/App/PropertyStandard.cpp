@@ -1360,7 +1360,7 @@ void PropertyString::setValue(const char* newLabel)
 
     std::string _newLabel;
 
-    std::vector<std::pair<PropertyXLink*,std::string> > linkChange;
+    std::vector<std::pair<Property*,std::unique_ptr<Property> > > propChanges;
     std::string label;
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     bool commit = false;
@@ -1433,27 +1433,23 @@ void PropertyString::setValue(const char* newLabel)
             // TODO: Here can only mean that we are importing. We don't support
             // linked lable auto correction on import yet. Is this ever going to
             // be possible?
-            linkChange = PropertyXLink::updateLabel(obj,newLabel);
+            propChanges = PropertyLinkBase::updateLabelReferences(obj,newLabel);
         }
 
-        if(linkChange.size() && 
-           !obj->getDocument()->hasPendingTransaction() &&
-           !GetApplication().getActiveTransaction()) 
-        {
+        if(propChanges.size() && !GetApplication().getActiveTransaction()) {
             commit = true;
             std::ostringstream str;
             str << "Change " << obj->getNameInDocument() << ".Label";
             GetApplication().setActiveTransaction(str.str().c_str());
         }
-
     }
 
     aboutToSetValue();
     _cValue = newLabel;
     hasSetValue();
 
-    for(auto change : linkChange)
-        change.first->setSubName(change.second.c_str());
+    for(auto &change : propChanges)
+        change.first->Paste(*change.second.get());
 
     if(commit)
         GetApplication().closeActiveTransaction();

@@ -138,7 +138,8 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
 
 DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subname, 
         std::pair<std::string,std::string> &elementName, bool append, 
-        ElementNameType type, const DocumentObject *filter, const char **_element)
+        ElementNameType type, const DocumentObject *filter, 
+        const char **_element, GeoFeature **geoFeature)
 {
     if(!obj || !obj->getNameInDocument())
         return 0;
@@ -150,6 +151,9 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     if(!sobj)
         return 0;
     obj = sobj->getLinkedObject(true);
+    auto geo = dynamic_cast<GeoFeature*>(obj);
+    if(geoFeature) 
+        *geoFeature = geo;
     if(!obj || (filter && obj!=filter))
         return 0;
     if(!element || !element[0]) {
@@ -158,7 +162,6 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         return sobj;
     }
 
-    auto geo = dynamic_cast<GeoFeature*>(obj);
     if(!geo) {
         if(!append) 
             elementName.second = element;
@@ -169,17 +172,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
     if(!append) 
         elementName = geo->getElementName(element,type);
     else{
-        auto names = geo->getElementName(element,type);
-        if(names.second[0] == '?' && 
-           geo->_ElementMapVersion.getStrValue().size() && 
-           geo->getPropertyOfGeometry() &&
-           geo->_ElementMapVersion.getStrValue()!=geo->getPropertyOfGeometry()->getElementMapVersion())
-        {
-            // We ignore missing element in case of element map version
-            // mismatch, which is possible when opening an older file in newer
-            // version of FreeCAD
-            names.second = std::string(names.second.c_str()+1);
-        }
+        const auto &names = geo->getElementName(element,type);
         std::string prefix(subname,element-subname);
         if(names.first.size())
             elementName.first = prefix + names.first;
@@ -224,9 +217,7 @@ void GeoFeature::onChanged(const Property *prop) {
 }
 
 void GeoFeature::onDocumentRestored() {
-    if(!getDocument()->testStatus(Document::Status::Importing)) {
+    if(!getDocument()->testStatus(Document::Status::Importing))
         _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(),true));
-        updateElementReference();
-    }
     DocumentObject::onDocumentRestored();
 }

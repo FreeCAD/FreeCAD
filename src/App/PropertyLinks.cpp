@@ -63,6 +63,119 @@ using namespace std;
 
 TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLinkBase , App::Property)
 
+static std::map<std::string, std::set<PropertyLinkBase*> > _LabelMap;
+
+static std::map<App::DocumentObject *, std::set<PropertyLinkBase*> > _ElementRefMap;
+
+PropertyLinkBase::PropertyLinkBase()
+{}
+
+PropertyLinkBase::~PropertyLinkBase() {
+    unregisterLabelReferences();
+    unregisterElementReference();
+}
+
+void PropertyLinkBase::afterRestore() {
+    updateElementReference(0);
+}
+
+void PropertyLinkBase::unregisterElementReference() {
+    for(auto obj : _ElementRefs) {
+        auto it = _ElementRefMap.find(obj);
+        if(it != _ElementRefMap.end()) {
+            it->second.erase(this);
+            if(it->second.empty())
+                _ElementRefMap.erase(it);
+        }
+    }
+    _ElementRefs.clear();
+}
+
+void PropertyLinkBase::unregisterLabelReferences() 
+{
+    for(auto &label : _LabelRefs) {
+        auto it = _LabelMap.find(label);
+        if(it!=_LabelMap.end()) {
+            it->second.erase(this);
+            if(it->second.empty())
+                _LabelMap.erase(it);
+        }
+    }
+    _LabelRefs.clear();
+}
+
+void PropertyLinkBase::getLabelReferences(std::vector<std::string> &subs,const char *subname) {
+    const char *dot;
+    for(;(subname=strchr(subname,'$'))!=0; subname=dot+1) {
+        ++subname;
+        dot = strchr(subname,'.');
+        if(!dot) break;
+        subs.emplace_back(subname,dot-subname);
+    }
+}
+
+void PropertyLinkBase::registerLabelReferences(const std::vector<std::string> &subs, bool reset) {
+    if(reset)
+        unregisterLabelReferences();
+    std::vector<std::string> labels;
+    for(auto &sub : subs) {
+        labels.clear();
+        getLabelReferences(labels,sub.c_str());
+        for(auto &label : labels) {
+            if(_LabelRefs.insert(label).second)
+                _LabelMap[label].insert(this);
+        }
+    }
+}
+
+std::string PropertyLinkBase::updateLabelReference(App::DocumentObject *obj, 
+        const std::string &ref, const char *newLabel, App::DocumentObject *parent, const char *subname)
+{
+    if(!obj || !obj->getNameInDocument() || !parent || !parent->getNameInDocument())
+        return std::string();
+
+    // Because the label is allowed to be the same across different
+    // hierarchy, we have to search for all occurance, and make sure the
+    // referenced sub-object at the found hierarchy is actually the given
+    // object.
+    std::string sub;
+    for(const char *pos=subname; ((pos=strstr(pos,ref.c_str()))!=0); pos+=ref.size()) {
+        auto sub = std::string(subname,pos+ref.size()-subname);
+        auto sobj = parent->getSubObject(sub.c_str());
+        if(sobj == obj) {
+            sub = subname;
+            sub.replace(pos+1-subname,ref.size()-2,newLabel);
+            break;
+        }
+    }
+    return sub;
+}
+
+std::vector<std::pair<Property*, std::unique_ptr<Property> > > 
+PropertyLinkBase::updateLabelReferences(App::DocumentObject *obj, const char *newLabel) 
+{
+    std::vector<std::pair<Property*,std::unique_ptr<Property> > >  ret;
+    if(!obj || !obj->getNameInDocument())
+        return ret;
+    auto it = _LabelMap.find(obj->Label.getStrValue());
+    if(it == _LabelMap.end())
+        return ret;
+    std::string ref("$");
+    ref += obj->Label.getValue();
+    ref += '.';
+    std::vector<PropertyLinkBase*> props;
+    props.reserve(it->second.size());
+    props.insert(props.end(),it->second.begin(),it->second.end());
+    for(auto prop : props) {
+        if(!prop->getContainer())
+            continue;
+        std::unique_ptr<Property> copy(prop->CopyOnLabelChange(obj,ref,newLabel));
+        if(copy)
+            ret.emplace_back(prop,std::move(copy));
+    }
+    return ret;
+}
+
 void PropertyLinkBase::breakLinks(App::DocumentObject *link, 
         const std::vector<App::DocumentObject*> &objs, bool clear) 
 {
@@ -72,61 +185,94 @@ void PropertyLinkBase::breakLinks(App::DocumentObject *link,
         obj->getPropertyList(props);
         for(auto prop : props) {
             auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
-            if(linkProp) 
+            if(linkProp)
                 linkProp->breakLink(link,clear);
         }
     }
 }
 
 void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {
-    assert(feature);
-    std::vector<Property*> props;
-    for(auto doc : GetApplication().getDocuments()) {
-        for(auto obj : doc->getObjects()) {
-            props.clear();
-            obj->getPropertyList(props);
-            for(auto prop : props) {
-                auto link = dynamic_cast<PropertyLinkBase*>(prop);
-                if(link) {
-                    // We don't use inList so that we can update even the
-                    // hidden links that don't register their dependencies
-                    // updateElementReference below will only update reference
-                    // if it is pointing to the given 'feature'
-                    link->updateElementReference(feature,reverse);
-                }
-            }
-        }
+    if(!feature || !feature->getNameInDocument())
+        return;
+    auto it = _ElementRefMap.find(feature);
+    if(it == _ElementRefMap.end())
+        return;
+    std::vector<PropertyLinkBase*> props;
+    props.reserve(it->second.size());
+    props.insert(props.end(),it->second.begin(),it->second.end());
+    for(auto prop : props) {
+        if(prop->getContainer())
+            prop->updateElementReference(feature,reverse);
     }
 }
 
+static std::string propertyName(Property *prop) {
+    if(!prop)
+        return std::string();
+    auto obj = dynamic_cast<DocumentObject*>(prop->getContainer());
+    std::string name;
+    if(obj) 
+        name = obj->getFullName() + ".";
+    if(prop->getContainer())
+        name += prop->getName();
+    return name;
+}
+
 bool PropertyLinkBase::_updateElementReference(
-        DocumentObject *owner, DocumentObject *feature,
+        PropertyLinkBase *prop, DocumentObject *feature,
         App::DocumentObject *obj, std::string &sub,
         std::pair<std::string,std::string> &shadow, bool reverse)
 {
     if(!obj || !obj->getNameInDocument()) return false;
     std::pair<std::string,std::string> elementName;
-    const char *subname = reverse?shadow.second.c_str():shadow.first.c_str();
-    if(!subname[0])
+    const char *subname;
+    if(shadow.first.size())
+        subname = shadow.first.c_str();
+    else if(shadow.second.size())
+        subname = shadow.second.c_str();
+    else
         subname = sub.c_str();
+    GeoFeature *geo = 0;
+    const char *element=0;
     auto ret = GeoFeature::resolveElement(obj,subname, elementName,true,
-                GeoFeature::ElementNameType::Export,feature);
-    if(!ret)
+                GeoFeature::ElementNameType::Export,feature,&element,&geo);
+    if(!geo || !element || !element[0]) {
+        if(elementName.second.size())
+            shadow.second.swap(elementName.second);
         return false;
-    if(elementName.first.empty()) {
+    }
+
+    if(prop && prop->_ElementRefs.insert(geo).second)
+        _ElementRefMap[geo].insert(prop);
+
+    if(!reverse && elementName.first.empty()) {
         shadow.second.swap(elementName.second);
         return false;
     }
     if(shadow==elementName)
         return false;
-    bool missing = GeoFeature::hasMissingElement(elementName.second.c_str());
-    if(missing) {
-        FC_ERR((owner?owner->getNameInDocument():"") 
+
+    if(GeoFeature::hasMissingElement(elementName.second.c_str())) {
+        if(reverse && shadow.first.size()) {
+            // reverse means we are trying to either generate the element name for
+            // the first time, or upgrade to a new map version. In case of
+            // upgrading, we still consult the old names in first try. Here means
+            // the first try failed. 
+            std::pair<std::string, std::string> shadowCopy;
+            shadowCopy.second = shadow.second;
+            bool res = _updateElementReference(prop,feature,obj,sub,shadowCopy,reverse);
+            if(shadowCopy.first.size()) 
+                shadow.swap(shadowCopy);
+            else
+                shadow.second.swap(shadowCopy.second);
+            return res;
+        }
+        FC_ERR(propertyName(prop) 
                 << " missing element reference " << ret->getNameInDocument() << " "
                 << (elementName.first.size()?elementName.first:elementName.second));
         shadow.second.swap(elementName.second);
     }else{
-        FC_LOG((owner?owner->getNameInDocument():"") 
+        FC_LOG(propertyName(prop) 
                 << " element reference shadow update " << ret->getNameInDocument() << " "
                 << shadow.first << " -> " << elementName.first);
         shadow.swap(elementName);
@@ -705,11 +851,12 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
     }
 #endif
     _pcLinkSub=lValue;
-    _cSubList = SubList;
+    _cSubList=SubList;
     if(ShadowSubList && ShadowSubList->size()==_cSubList.size())
         _ShadowSubList = *ShadowSubList;
     else
         updateElementReference(0);
+    registerLabelReferences(_cSubList);
     hasSetValue();
 }
 
@@ -821,6 +968,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
 }
 
 void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool reverse) {
+    unregisterElementReference();
     if(!feature) _ShadowSubList.clear();
     _ShadowSubList.resize(_cSubList.size());
     if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
@@ -829,7 +977,7 @@ void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool rever
     bool touched = false;
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
     for(auto &sub : _cSubList) {
-        if(_updateElementReference(owner,feature,_pcLinkSub,sub,_ShadowSubList[i++],reverse))
+        if(_updateElementReference(this,feature,_pcLinkSub,sub,_ShadowSubList[i++],reverse))
             touched = true;
     }
     if(!touched)
@@ -847,7 +995,7 @@ bool PropertyLinkSub::referenceChanged() const {
     return !_mapped.empty();
 }
 
-static std::string importSubName(Base::XMLReader &reader, const char *sub) {
+std::string PropertyLinkBase::importSubName(Base::XMLReader &reader, const char *sub) {
     std::ostringstream str;
     for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) 
         str << reader.getName(std::string(sub,dot-sub).c_str()) << '.';
@@ -855,8 +1003,10 @@ static std::string importSubName(Base::XMLReader &reader, const char *sub) {
     return str.str();
 }
 
-static std::string exportSubName(const App::DocumentObject *obj, const char *sub) 
+std::string PropertyLinkBase::exportSubName(const App::DocumentObject *obj, const char *sub) 
 {
+    if(!obj)
+        return std::string();
     std::ostringstream str;
     for(const char *dot=strchr(sub,'.');dot;sub=dot+1,dot=strchr(sub,'.')) {
         // name with trailing '.'
@@ -875,8 +1025,8 @@ static std::string exportSubName(const App::DocumentObject *obj, const char *sub
     return str.str();
 }
 
-static std::string tryImportSubName(const std::map<std::string,std::string> &nameMap, 
-        const App::DocumentObject *obj, const char *sub)
+std::string PropertyLinkBase::tryImportSubName(const std::map<std::string,std::string> &nameMap, 
+                                               const App::DocumentObject *obj, const char *sub)
 {
     if(!obj || !obj->getNameInDocument()) 
         return std::string();
@@ -1004,13 +1154,46 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
 Property *PropertyLinkSub::CopyOnImportExternal(
         const std::map<std::string,std::string> &nameMap) const
 {
+    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
+    if(!owner || !owner->getDocument())
+        return 0;
     if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
         return 0;
 
     bool touched = false;
     std::vector<std::string> ret;
+    ret.reserve(_cSubList.size());
     for(const auto &sub : _cSubList) {
         auto new_sub = tryImportSubName(nameMap,_pcLinkSub,sub.c_str());
+        if(new_sub.size()) {
+            touched = true;
+            ret.push_back(new_sub);
+        }else
+            ret.push_back(sub);
+    }
+    if(!touched) 
+        return 0;
+
+    PropertyLinkSub *p= new PropertyLinkSub();
+    p->_pcLinkSub = _pcLinkSub;
+    p->_cSubList.swap(ret);
+    return p;
+}
+
+Property *PropertyLinkSub::CopyOnLabelChange(App::DocumentObject *obj, 
+        const std::string &ref, const char *newLabel) const 
+{
+    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
+    if(!owner || !owner->getDocument())
+        return 0;
+    if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
+        return 0;
+
+    bool touched = false;
+    std::vector<std::string> ret;
+    ret.reserve(_cSubList.size());
+    for(const auto &sub : _cSubList) {
+        auto new_sub = updateLabelReference(obj,ref,newLabel,_pcLinkSub,sub.c_str());
         if(new_sub.size()) {
             touched = true;
             ret.push_back(new_sub);
@@ -1174,6 +1357,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
         _lSubList.clear();
     }
     updateElementReference(0);
+    registerLabelReferences(_lSubList);
     hasSetValue();
 }
 
@@ -1217,6 +1401,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue, 
             _lSubList[i] = *it;
     }
     updateElementReference(0);
+    registerLabelReferences(_lSubList);
     hasSetValue();
 }
 
@@ -1255,11 +1440,12 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,
 
     aboutToSetValue();
     _lValueList = lValue;
-    _lSubList   = lSubNames;
+    _lSubList = lSubNames;
     if(ShadowSubList && ShadowSubList->size()==_lSubList.size())
         _ShadowSubList = *ShadowSubList;
     else
         updateElementReference(0);
+    registerLabelReferences(_lSubList);
     hasSetValue();
 }
 
@@ -1306,6 +1492,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
         this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
     }
     updateElementReference(0);
+    registerLabelReferences(_lSubList);
     hasSetValue();
 }
 
@@ -1518,6 +1705,7 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
 }
 
 void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool reverse) {
+    unregisterElementReference();
     if(!feature) _ShadowSubList.clear();
     _ShadowSubList.resize(_lSubList.size());
     int i=0;
@@ -1525,7 +1713,7 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool r
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
     for(auto &sub : _lSubList) {
         auto obj = _lValueList[i];
-        if(_updateElementReference(owner,feature,obj,sub,_ShadowSubList[i++],reverse))
+        if(_updateElementReference(this,feature,obj,sub,_ShadowSubList[i++],reverse))
             touched = true;
     }
     if(!touched) 
@@ -1644,6 +1832,9 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
 Property *PropertyLinkSubList::CopyOnImportExternal(
         const std::map<std::string,std::string> &nameMap) const
 {
+    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
+    if(!owner || !owner->getDocument())
+        return 0;
     std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
     p->_lValueList.reserve(_lValueList.size());
     p->_lSubList.reserve(_lSubList.size());
@@ -1653,6 +1844,32 @@ Property *PropertyLinkSubList::CopyOnImportExternal(
             continue;
         p->_lValueList.push_back(_lValueList[i]);
         auto new_sub = tryImportSubName(nameMap,_lValueList[i],_lSubList[i].c_str());
+        if(new_sub.size()) {
+            touched = true;
+            p->_lSubList.push_back(new_sub);
+        }else
+            p->_lSubList.push_back(_lSubList[i]);
+    }
+    if(!touched) 
+        return 0;
+    return p.release();
+}
+
+Property *PropertyLinkSubList::CopyOnLabelChange(App::DocumentObject *obj, 
+        const std::string &ref, const char *newLabel) const 
+{
+    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
+    if(!owner || !owner->getDocument())
+        return 0;
+    std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
+    p->_lValueList.reserve(_lValueList.size());
+    p->_lSubList.reserve(_lSubList.size());
+    bool touched = false;
+    for(size_t i=0;i<_lValueList.size();++i) {
+        if(!_lValueList[i] || !_lValueList[i]->getNameInDocument())
+            continue;
+        p->_lValueList.push_back(_lValueList[i]);
+        auto new_sub = updateLabelReference(obj,ref,newLabel,_lValueList[i],_lSubList[i].c_str());
         if(new_sub.size()) {
             touched = true;
             p->_lSubList.push_back(new_sub);
@@ -2089,77 +2306,8 @@ PropertyXLink::PropertyXLink():relativePath(true)
 
 }
 
-static std::map<std::string, std::set<PropertyXLink*> > _LabelMap;
-static std::map<PropertyXLink*, std::set<std::string> > _LinkMap;
-
-static void unregisterXLinkLabel(PropertyXLink *link) {
-    auto it = _LinkMap.find(link);
-    if(it == _LinkMap.end())
-        return;
-    for(auto &label : it->second) {
-        auto itLabel = _LabelMap.find(label);
-        if(itLabel!=_LabelMap.end())
-            itLabel->second.erase(link);
-    }
-}
-
-static void registerXLinkLabel(PropertyXLink *link) {
-    unregisterXLinkLabel(link);
-    const char *dot;
-    for(const char *subname=link->getSubName();
-        (subname=strchr(subname,'$'))!=0;
-        subname=dot+1)
-    {
-        ++subname;
-        dot = strchr(subname,'.');
-        if(!dot) break;
-        std::string label(subname,dot-subname);
-        _LabelMap[label].insert(link);
-        _LinkMap[link].insert(label);
-    }
-}
-
 PropertyXLink::~PropertyXLink() {
     unlink();
-    unregisterXLinkLabel(this);
-}
-
-std::vector<std::pair<PropertyXLink*,std::string> > 
-PropertyXLink::updateLabel(App::DocumentObject *obj, const char *newLabel) {
-    std::vector<std::pair<PropertyXLink*,std::string> >  ret;
-    auto it = _LabelMap.find(obj->Label.getValue());
-    if(it == _LabelMap.end())
-        return ret;
-    std::string label("$");
-    label += obj->Label.getValue();
-    label += '.';
-    for(auto link : it->second) {
-        DocumentObject* parent = dynamic_cast<DocumentObject*>(link->getContainer());
-        if(!parent || !parent->getNameInDocument() ||
-           !link->_pcLink || !link->_pcLink->getNameInDocument())
-            continue;
-
-        // Because the label is allowed to be the same across different
-        // hierarchy, we have to search for all occurance, and make sure the
-        // referenced sub-object at the found hierarchy is actually the given
-        // object.
-        for(const char *pos = link->subName.c_str();
-            ((pos=strstr(pos,label.c_str()))!=0);
-            pos += label.size())
-        {
-            const char *subname = link->subName.c_str();
-            auto sub = link->subName.substr(0,pos+label.size()-subname);
-            auto sobj = link->_pcLink->getSubObject(sub.c_str());
-            if(sobj == obj) {
-                ret.push_back(std::make_pair(link,std::string()));
-                auto &change = ret.back();
-                change.second = subname;
-                change.second.replace(pos+1-subname,label.size()-2,newLabel);
-                break;
-            }
-        }
-    }
-    return ret;
 }
 
 void PropertyXLink::unlink() {
@@ -2189,11 +2337,11 @@ void PropertyXLink::setSubName(const char *subname, bool transaction,
         subName = subname;
     else
         subName.clear();
-    registerXLinkLabel(this);
-    if(shadow)
+    if(shadow) 
         shadowSub = *shadow;
     else
         updateElementReference(0);
+    registerLabelReferences({subName});
     if(transaction)
         hasSetValue();
 }
@@ -2320,12 +2468,13 @@ bool PropertyXLink::isRestored() const {
 }
 
 void PropertyXLink::updateElementReference(DocumentObject *feature,bool reverse) {
+    unregisterElementReference();
     if(!feature) {
         shadowSub.first.clear();
         shadowSub.second.clear();
     }
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
-    if(!_updateElementReference(owner,feature,_pcLink,subName,shadowSub,reverse))
+    if(!_updateElementReference(this,feature,_pcLink,subName,shadowSub,reverse))
         return;
     if(_mapped && shadowSub.first.size())
         subName = shadowSub.first;
@@ -2460,7 +2609,7 @@ Property *PropertyXLink::CopyOnImportExternal(
         const std::map<std::string,std::string> &nameMap) const
 {
     auto owner = dynamic_cast<const DocumentObject*>(getContainer());
-    if(!owner || !_pcLink)
+    if(!owner || !owner->getDocument() || !_pcLink)
         return 0;
     auto linked = _pcLink;
     auto export_name = linked->getExportName(true);
@@ -2481,6 +2630,20 @@ Property *PropertyXLink::CopyOnImportExternal(
     p->_pcLink = linked;
     p->subName = sub;
     return p;
+}
+
+Property *PropertyXLink::CopyOnLabelChange(App::DocumentObject *obj, 
+        const std::string &ref, const char *newLabel) const 
+{
+    auto owner = dynamic_cast<const DocumentObject*>(getContainer());
+    if(!owner || !owner->getDocument() || !_pcLink || !_pcLink->getNameInDocument())
+        return 0;
+    std::string newSub = updateLabelReference(obj,ref,newLabel,_pcLink,subName.c_str());
+    if(newSub.empty())
+        return 0;
+    auto copy = static_cast<PropertyXLink*>(Copy());
+    copy->subName = newSub;
+    return copy;
 }
 
 Property *PropertyXLink::Copy(void) const
@@ -2661,3 +2824,4 @@ bool PropertyXLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
     adjustLinkError(true,this,link,sub.c_str());
     return true;
 }
+

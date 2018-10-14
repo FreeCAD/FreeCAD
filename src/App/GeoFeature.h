@@ -117,7 +117,7 @@ public:
     static DocumentObject *resolveElement(App::DocumentObject *obj, 
             const char *subname, std::pair<std::string,std::string> &elementName, 
             bool append=false, ElementNameType type=Normal,
-            const DocumentObject *filter=0,const char **element=0);
+            const DocumentObject *filter=0,const char **element=0, GeoFeature **geo=0);
 
     static bool hasMissingElement(const char *subname);
 
