@@ -2259,6 +2259,26 @@ void Document::afterRestore(bool checkXLink) {
 }
 
 void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkXLink) {
+    // some link type property cannot restore link information until other
+    // objects has been restored. For example, PropertyExpressionEngine and
+    // PropertySheet with expression containing label reference. So we add the
+    // Property::afterRestore() interface to let them sort it out. Note, this
+    // API is not called in object dedpenency order, because the order
+    // information is not ready yet.
+    std::map<DocumentObject*, std::vector<App::Property*> > propMap;
+    for(auto obj : objArray) {
+        auto &props = propMap[obj];
+        obj->getPropertyList(props);
+        for(auto prop : props) {
+            try {
+                prop->afterRestore();
+            } catch (const Base::Exception& e) {
+                FC_ERR("Failed to restore " << obj->getFullName() 
+                        << '.' << getPropertyName(prop) << ": " << e.what());
+            }
+        }
+    }
+
     std::set<DocumentObject*> objSet(objArray.begin(),objArray.end());
     std::vector<DocumentObject *> objs;
     try {
@@ -2282,9 +2302,7 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         }
 
         if(checkXLink && !d->touchedObjs.count(obj)) {
-            std::vector<Property*> props;
-            obj->getPropertyList(props);
-            for(auto prop : props) {
+            for(auto prop : propMap[obj]) {
                 auto link = dynamic_cast<PropertyXLink*>(prop);
                 if(link && !link->isRestored()) {
                     d->touchedObjs.insert(obj);

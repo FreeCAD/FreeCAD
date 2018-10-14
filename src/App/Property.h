@@ -123,6 +123,8 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
+    virtual void afterRestore() {}
+
     /** Property status handling
      */
     //@{
