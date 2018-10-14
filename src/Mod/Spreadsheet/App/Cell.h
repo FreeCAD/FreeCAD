@@ -61,7 +61,7 @@ public:
 
     const App::Expression * getExpression() const;
 
-    bool getStringContent(std::string & s) const;
+    bool getStringContent(std::string & s, bool persistent=false) const;
 
     void setContent(const char * value);
 
@@ -106,6 +106,8 @@ public:
     void moveAbsolute(App::CellAddress newAddress);
 
     void restore(Base::XMLReader &reader);
+
+    void afterRestore();
 
     void save(Base::Writer &writer) const;
 
@@ -190,6 +192,8 @@ private:
     int colSpan;
     std::string exceptionStr;
     App::CellAddress anchor;
+
+    friend class PropertySheet;
 };
 
 }

@@ -492,10 +492,17 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('A52', '=+(-1 + -1)')
 
         self.doc.addObject("Part::Cylinder", "Cylinder")
-        self.doc.addObject("Part::Thickness", "Pipe")
+        # We cannot use Thickness, as this feature requires a source shape,
+        # otherwise it will cause recomputation failure. The new logic of
+        # App::Document will not continue recompute any dependent objects
+
+        #  self.doc.addObject("Part::Thickness", "Pipe")
+        self.doc.addObject("Part::Box", "Box")
+        self.doc.Box.Length = 1
+
         sheet.set('B1', '101')
         sheet.set('A53', '=-(-(B1-1)/2)')
-        sheet.set('A54', '=-(Cylinder.Radius + Pipe.Value - 1"/2)')
+        sheet.set('A54', '=-(Cylinder.Radius + Box.Length - 1"/2)')
 
         self.doc.recompute()
         self.assertEqual(sheet.getContents("A1"), "=1 < 2 ? 3 : 4")

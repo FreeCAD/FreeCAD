@@ -46,7 +46,7 @@ using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::Property);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyLinkBase);
 
 void PropertySheet::clear()
 {
@@ -66,7 +66,15 @@ void PropertySheet::clear()
 
     propertyNameToCellMap.clear();
     documentObjectToCellMap.clear();
+
+    if(getContainer()==owner && owner && owner->getNameInDocument()) {  
+        for(auto obj : docDeps) {
+            if(obj && obj->getNameInDocument())
+                obj->_removeBackLink(owner);
+        }
+    }
     docDeps.clear();
+
     aliasProp.clear();
     revAliasProp.clear();
 }
@@ -167,16 +175,13 @@ Cell * PropertySheet::createCell(CellAddress address)
 }
 
 PropertySheet::PropertySheet(Sheet *_owner)
-    : Property()
-    , AtomicPropertyChangeInterface()
-    , owner(_owner)
+    : owner(_owner)
+    , updateCount(0)
 {
 }
 
 PropertySheet::PropertySheet(const PropertySheet &other)
-    : Property()
-    , AtomicPropertyChangeInterface()
-    , dirty(other.dirty)
+    : dirty(other.dirty)
     , mergedCells(other.mergedCells)
     , owner(other.owner)
     , propertyNameToCellMap(other.propertyNameToCellMap)
@@ -184,10 +189,10 @@ PropertySheet::PropertySheet(const PropertySheet &other)
     , documentObjectToCellMap(other.documentObjectToCellMap)
     , cellToDocumentObjectMap(other.cellToDocumentObjectMap)
     , docDeps(other.docDeps)
-    , documentObjectName(other.documentObjectName)
     , documentName(other.documentName)
     , aliasProp(other.aliasProp)
     , revAliasProp(other.revAliasProp)
+    , updateCount(other.updateCount)
 {
     std::map<CellAddress, Cell* >::const_iterator i = other.data.begin();
 
@@ -504,8 +509,6 @@ void PropertySheet::clear(CellAddress address)
 
     // Erase from internal struct
     data.erase(i);
-
-    rebuildDocDepList();
 }
 
 void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> & renames)
@@ -549,8 +552,6 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
         setDirty(newPos);
 
         renames[ObjectIdentifier(owner, currPos.toString())] = ObjectIdentifier(owner, newPos.toString());
-
-        rebuildDocDepList();
     }
 }
 
@@ -925,13 +926,13 @@ void PropertySheet::addDependencies(CellAddress key)
         std::string docName = doc->Label.getValue();
         std::string docObjName = docName + "#" + docObj->getNameInDocument();
 
-        documentObjectName[docObj] = docObj->Label.getValue();
         documentName[doc] = docName;
 
         owner->observeDocument(doc);
 
         documentObjectToCellMap[docObjName].insert(key);
         cellToDocumentObjectMap[key].insert(docObjName);
+        ++updateCount;
 
         for(auto &props : dep.second) {
             std::string propName = docObjName + "." + props.first;
@@ -1006,6 +1007,7 @@ void PropertySheet::removeDependencies(CellAddress key)
         }
 
         cellToDocumentObjectMap.erase(i2);
+        ++updateCount;
     }
 }
 
@@ -1078,6 +1080,9 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
 
 void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
 {
+#if 1
+    (void)docObj;
+#else
     if (documentObjectName.find(docObj) == documentObjectName.end())
         return;
 
@@ -1092,6 +1097,7 @@ void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
         }
         ++i;
     }
+#endif
 }
 
 void PropertySheet::renamedDocument(const App::Document * doc)
@@ -1158,18 +1164,52 @@ void PropertySheet::recomputeDependencies(CellAddress key)
 
     removeDependencies(key);
     addDependencies(key);
-    rebuildDocDepList();
 }
 
-void PropertySheet::rebuildDocDepList()
+void PropertySheet::hasSetValue()
 {
-    AtomicPropertyChange signaller(*this);
-
-    docDeps.clear();
-    for(auto &v : data) {
-        if(v.second->getExpression())
-            v.second->getExpression()->getDepObjects(docDeps);
+    if(!updateCount || 
+       !owner || !owner->getNameInDocument() || owner->isRestoring() ||
+       this!=&owner->cells) 
+    {
+        PropertyLinkBase::hasSetValue();
+        return;
     }
+    updateCount = 0;
+
+    std::set<App::DocumentObject*> deps;
+    std::vector<std::string> labels;
+    unregisterElementReference();
+    UpdateElementReferenceExpressionVisitor<PropertySheet> v(*this);
+    for(auto &d : data) {
+        auto expr = d.second->expression;
+        if(expr) {
+            expr->getDepObjects(deps,&labels);
+            expr->visit(v);
+        }
+    }
+    registerLabelReferences(labels);
+
+    deps.erase(owner);
+
+#ifndef USE_OLD_DAG
+    for(auto obj : deps) {
+        if(obj && obj->getNameInDocument()) {
+            auto it = docDeps.find(obj);
+            if(it == docDeps.end())
+                obj->_addBackLink(owner);
+            else
+                docDeps.erase(it);
+        }
+    }
+    for(auto obj : docDeps) {
+        if(obj && obj->getNameInDocument())
+            obj->_removeBackLink(owner);
+    }
+#endif
+    docDeps.swap(deps);
+
+    PropertyLinkBase::hasSetValue();
 }
 
 PyObject *PropertySheet::getPyObject()
@@ -1181,16 +1221,110 @@ PyObject *PropertySheet::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
-void PropertySheet::resolveAll()
+void PropertySheet::afterRestore()
 {
-    std::map<CellAddress, Cell* >::iterator i = data.begin();
-
-    /* Resolve all cells */
     AtomicPropertyChange signaller(*this);
-    while (i != data.end()) {
-        recomputeDependencies(i->first);
-        setDirty(i->first);
-        ++i;
+    for(auto &d : data)
+        d.second->afterRestore();
+}
+
+void PropertySheet::breakLink(App::DocumentObject *obj, bool) {
+    invalidateDependants(obj);
+    deletedDocumentObject(obj);
+}
+
+bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
+    std::unique_ptr<AtomicPropertyChange> signaler;
+
+    for(auto &d : data) {
+        auto expr = d.second->expression;
+        if(!expr)
+            continue;
+        try {
+            bool need_adjust = false;
+            for(auto docObj : expr->getDepObjects()) {
+                if (docObj && docObj != owner && inList.count(docObj)) {
+                    need_adjust = true;
+                    break;
+                }
+            }
+            if(!need_adjust)
+                continue;
+            if(!signaler)
+                signaler.reset(new AtomicPropertyChange(*this));
+
+            removeDependencies(d.first);
+            expr->adjustLinks(inList);
+            addDependencies(d.first);
+
+        }catch(Base::Exception &e) {
+            addDependencies(d.first);
+            std::ostringstream ss;
+            ss << "Failed to adjust link for " << owner->getFullName() << " in expression "
+                << expr->toString() << ": " << e.what();
+            throw Base::RuntimeError(ss.str());
+        }
     }
-    touch();
+    return !!signaler;
+}
+
+void PropertySheet::updateElementReference(DocumentObject *feature,bool reverse) {
+    unregisterElementReference();
+    UpdateElementReferenceExpressionVisitor<PropertySheet> visitor(*this,feature,reverse);
+    for(auto &d : data) {
+        auto expr = d.second->expression;
+        if(!expr)
+            continue;
+        expr->visit(visitor);
+    }
+}
+
+bool PropertySheet::referenceChanged() const {
+    return false;
+}
+
+void PropertySheet::getLinks(std::vector<App::DocumentObject *> &objs, 
+        bool, std::vector<std::string> * /*subs*/, bool /*newStyle*/) const
+{
+    objs.insert(objs.end(),docDeps.begin(),docDeps.end());
+}
+
+Property *PropertySheet::CopyOnImportExternal(
+        const std::map<std::string,std::string> &nameMap) const 
+{
+    std::map<CellAddress,std::unique_ptr<Expression> > changed;
+    for(auto &d : data) {
+        auto expr = d.second->expression;
+        if(expr)
+            expr = expr->importSubNames(nameMap);
+        if(!expr)
+            continue;
+        changed[d.first].reset(expr);
+    }
+    if(changed.empty())
+        return 0;
+    std::unique_ptr<PropertySheet> copy(new PropertySheet(*this));
+    for(auto &change : changed) 
+        copy->data[change.first]->setExpression(change.second.release());
+    return copy.release();
+}
+
+Property *PropertySheet::CopyOnLabelChange(App::DocumentObject *obj, 
+        const std::string &ref, const char *newLabel) const
+{
+    std::map<CellAddress,std::unique_ptr<Expression> > changed;
+    for(auto &d : data) {
+        auto expr = d.second->expression;
+        if(expr)
+            expr = expr->updateLabelReference(obj,ref,newLabel);
+        if(!expr)
+            continue;
+        changed[d.first].reset(expr);
+    }
+    if(changed.empty())
+        return 0;
+    std::unique_ptr<PropertySheet> copy(new PropertySheet(*this));
+    for(auto &change : changed) 
+        copy->data[change.first]->setExpression(change.second.release());
+    return copy.release();
 }

@@ -166,8 +166,6 @@ void Cell::setExpression(App::Expression *expr)
 
     /* Update dependencies */
     owner->addDependencies(address);
-
-    owner->rebuildDocDepList();
 }
 
 /**
@@ -185,7 +183,7 @@ const App::Expression *Cell::getExpression() const
   *
   */
 
-bool Cell::getStringContent(std::string & s) const
+bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
         auto sexpr = freecad_dynamic_cast<App::StringExpression>(expression);
@@ -206,7 +204,7 @@ bool Cell::getStringContent(std::string & s) const
         else if (freecad_dynamic_cast<App::NumberExpression>(expression))
             s = expression->toString();
         else
-            s = "=" + expression->toString();
+            s = "=" + expression->toString(persistent);
 
         return true;
     }
@@ -216,6 +214,12 @@ bool Cell::getStringContent(std::string & s) const
     }
 }
 
+void Cell::afterRestore() {
+    auto expr = dynamic_cast<StringExpression*>(expression);
+    if(expr) 
+        setContent(expr->getText().c_str());
+}
+
 void Cell::setContent(const char * value)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
@@ -223,6 +227,11 @@ void Cell::setContent(const char * value)
 
     setUsed(PARSE_EXCEPTION_SET, false);
     if (value != 0) {
+        if(owner->sheet()->isRestoring()) {
+            expression = new StringExpression(owner->sheet(),value);
+            setUsed(EXPRESSION_SET, true);
+            return;
+        }
         if (*value == '=') {
             try {
                 expr = App::ExpressionParser::parse(owner->sheet(), value + 1);

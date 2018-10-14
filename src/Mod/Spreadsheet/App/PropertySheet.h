@@ -26,7 +26,7 @@
 #include <map>
 #include <App/DocumentObserver.h>
 #include <App/DocumentObject.h>
-#include <App/Property.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyLinks.h>
 #include "Cell.h"
 
@@ -37,13 +37,25 @@ class Sheet;
 class PropertySheet;
 class SheetObserver;
 
-class PropertySheet : public App::Property, private App::AtomicPropertyChangeInterface<PropertySheet> {
+class PropertySheet : public App::PropertyLinkBase, private App::AtomicPropertyChangeInterface<PropertySheet> {
     TYPESYSTEM_HEADER();
 public:
 
     PropertySheet(Sheet * _owner = 0);
 
     ~PropertySheet();
+
+    virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) override;
+    virtual bool referenceChanged() const override;
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+                        const std::string &ref, const char *newLabel) const override;
+
+    virtual void afterRestore() override;
 
     virtual Property *Copy(void) const;
 
@@ -133,8 +145,6 @@ public:
 
     PyObject *getPyObject(void);
 
-    void resolveAll();
-
     void invalidateDependants(const App::DocumentObject *docObj);
 
     void renamedDocumentObject(const App::DocumentObject *docObj);
@@ -146,6 +156,9 @@ public:
     void deletedDocumentObject(const App::DocumentObject *docObj);
 
     void documentSet();
+
+protected:
+    virtual void hasSetValue() override;
 
 private:
 
@@ -193,8 +206,6 @@ private:
 
     void recomputeDependants(const App::DocumentObject *obj, const App::Property * prop);
 
-    void rebuildDocDepList();
-
     /*! Cell dependencies, i.e when a change occurs to property given in key,
       the set of addresses needs to be recomputed.
       */
@@ -214,9 +225,6 @@ private:
     /*! Other document objects the sheet depends on */
     std::set<App::DocumentObject*> docDeps;
 
-    /*! Name of document objects, used for renaming */
-    std::map<const App::DocumentObject*, std::string> documentObjectName;
-
     /*! Name of documents, used for renaming */
     std::map<const App::Document*, std::string> documentName;
 
@@ -228,6 +236,8 @@ private:
 
     /*! The associated python object */
     Py::Object PythonObject;
+
+    int updateCount;
 };
 
 }

@@ -260,8 +260,6 @@ protected:
 
     App::Property *setQuantityProperty(App::CellAddress key, double value, const Base::Unit &unit);
 
-    void renamedDocumentObject(const App::DocumentObject * docObj);
-
     void aliasRemoved(App::CellAddress address, const std::string &alias);
 
     void removeAliases();
@@ -290,9 +288,6 @@ protected:
 
     /* Row heights */
     PropertyRowHeights rowHeights;
-
-    /* Dependencies to other documents */
-    App::PropertyLinkList docDeps;
 
     /* Document observers to track changes to external properties */
     typedef std::map<std::string, SheetObserver* > ObserverMap;

@@ -79,13 +79,9 @@ Sheet::Sheet()
     , props(this)
     , cells(this)
 {
-    ADD_PROPERTY_TYPE(docDeps, (0), "Spreadsheet", (PropertyType)(Prop_Transient|Prop_ReadOnly|Prop_Hidden), "Dependencies");
     ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Cell contents");
     ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Column widths");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
-
-    docDeps.setSize(0);
-    docDeps.allowExternalLink(true);
 
     onRenamedDocumentConnection = GetApplication().signalRenameDocument.connect(boost::bind(&Spreadsheet::Sheet::onRenamedDocument, this, _1));
     onRelabledDocumentConnection = GetApplication().signalRelabelDocument.connect(boost::bind(&Spreadsheet::Sheet::onRelabledDocument, this, _1));
@@ -122,7 +118,6 @@ void Sheet::clearAll()
     columnWidths.clear();
     rowHeights.clear();
     removedAliases.clear();
-    docDeps.setValues(std::vector<DocumentObject*>());
 
     for (ObserverMap::iterator i = observers.begin(); i != observers.end(); ++i)
         delete i->second;
@@ -859,14 +854,6 @@ DocumentObjectExecReturn *Sheet::execute(void)
     rowHeights.clearDirty();
     columnWidths.clearDirty();
 
-    std::set<DocumentObject*> ds(cells.getDocDeps());
-
-    // Make sure we don't reference ourselves
-    ds.erase(this);
-
-    std::vector<DocumentObject*> dv(ds.begin(), ds.end());
-    docDeps.setValues(dv);
-
     purgeTouched();
 
     if (cellErrors.size() == 0)
@@ -884,10 +871,8 @@ short Sheet::mustExecute(void) const
 {
     if (cellErrors.size() > 0 || cells.isTouched() || columnWidths.isTouched() || rowHeights.isTouched())
         return 1;
-    else if (cells.getDocDeps().size() == 0)
-        return 0;
     else
-        return -1;
+        return 0;
 }
 
 
@@ -914,15 +899,6 @@ void Sheet::clear(CellAddress address, bool /*all*/)
         this->removeDynamicProperty(aliasStr.c_str());
 
     cells.clear(address);
-
-    // Update dependencies
-    std::set<DocumentObject*> ds(cells.getDocDeps());
-
-    // Make sure we don't reference ourselves
-    ds.erase(this);
-
-    std::vector<DocumentObject*> dv(ds.begin(), ds.end());
-    docDeps.setValues(dv);
 
     propAddress.erase(prop);
     this->removeDynamicProperty(addr.c_str());
@@ -1230,19 +1206,6 @@ void Sheet::setSpans(CellAddress address, int rows, int columns)
 }
 
 /**
- * @brief Called when a document object is renamed.
- * @param docObj Renamed document object.
- */
-
-void Sheet::renamedDocumentObject(const DocumentObject * docObj)
-{
-    if(docObj->getOldLabel() == docObj->Label.getStrValue())
-        return;
-    cells.renamedDocumentObject(docObj);
-    cells.touch();
-}
-
-/**
  * @brief Called when alias \a alias at \a address is removed.
  * @param address Address of alias.
  * @param alias Removed alias.
@@ -1297,7 +1260,6 @@ void Sheet::providesTo(CellAddress address, std::set<CellAddress> & result) cons
 
 void Sheet::onDocumentRestored()
 {
-    cells.resolveAll();
     execute();
 }
 
@@ -1328,6 +1290,11 @@ void Sheet::onRenamedDocument(const Document & /*document*/)
 
 void Sheet::observeDocument(Document * document)
 {
+    // observer is no longer required as PropertySheet is now derived from
+    // PropertyLinkBase and will handle all the link related behavior
+#if 1
+    (void)document;
+#else
     ObserverMap::const_iterator it = observers.find(document->getName());
 
     if (it != observers.end()) {
@@ -1340,6 +1307,7 @@ void Sheet::observeDocument(Document * document)
 
         observers[document->getName()] = observer;
     }
+#endif
 }
 
 void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier> &paths)
