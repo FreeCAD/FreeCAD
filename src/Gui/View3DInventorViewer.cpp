@@ -2207,6 +2207,8 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
 
     SbSphere sphere;
     sphere.circumscribe(box);
+    if (sphere.getRadius() == 0)
+        return;
 
     SbVec3f direction, pos;
     camrot.multVec(SbVec3f(0, 0, -1), direction);
@@ -2279,6 +2281,19 @@ void View3DInventorViewer::boxZoom(const SbBox2s& box)
 
 void View3DInventorViewer::viewAll()
 {
+    SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    SoGetBoundingBoxAction action(vp);
+    action.apply(this->getSoRenderManager()->getSceneGraph());
+    SbBox3f box = action.getBoundingBox();
+
+    if (box.isEmpty())
+        return;
+
+    SbSphere sphere;
+    sphere.circumscribe(box);
+    if (sphere.getRadius() == 0)
+        return;
+
     // in the scene graph we may have objects which we want to exclude
     // when doing a fit all. Such objects must be part of the group
     // SoSkipBoundingGroup.
