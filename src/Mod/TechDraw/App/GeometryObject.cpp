@@ -192,6 +192,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     double diffOut = chrono::duration <double, milli> (diff).count();
     Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_Algo & co\n",m_parentName.c_str(),diffOut);
 
+    start = chrono::high_resolution_clock::now();
+
     try {
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
 
@@ -221,6 +223,11 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
     }
+    end   = chrono::high_resolution_clock::now();
+    diff  = end - start;
+    diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in hlrToShape and BuildCurves\n",m_parentName.c_str(),diffOut);
+
 }
 
 //!set up a hidden line remover and project a shape with it
