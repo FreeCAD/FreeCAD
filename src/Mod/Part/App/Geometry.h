@@ -171,6 +171,9 @@ public:
     double curvatureAt(double u) const;
     double length(double u, double v) const;
     bool normalAt(double u, Base::Vector3d& dir) const;
+    bool intersect(GeomCurve * c, 
+                   std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+                   double tol = Precision::Confusion()) const;
     
     void reverse(void);
 };
@@ -366,6 +369,10 @@ public:
     virtual PyObject *getPyObject(void) = 0;
 
     const Handle(Geom_Geometry)& handle() const = 0;
+    
+    bool intersectBasisCurves(  const GeomArcOfConic * c, 
+                                std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+                                double tol = Precision::Confusion()) const;
 };
 
 class PartExport GeomCircle : public GeomConic

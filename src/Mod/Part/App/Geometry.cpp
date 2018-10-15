@@ -96,6 +96,7 @@
 # include <GCPnts_AbscissaPoint.hxx>
 # include <Precision.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <GeomAPI_ExtremaCurveCurve.hxx>
 # include <ShapeConstruct_Curve.hxx>
 # include <LProp_NotDefined.hxx>
 #endif
@@ -446,6 +447,41 @@ bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
     }
 
     return false;
+}
+
+bool GeomCurve::intersect(  GeomCurve * c, 
+                            std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+                            double tol) const
+{
+    Handle(Geom_Curve) curve1 = Handle(Geom_Curve)::DownCast(handle());
+    Handle(Geom_Curve) curve2 = Handle(Geom_Curve)::DownCast(c->handle());
+    
+    try {
+    
+        if(!curve1.IsNull() && !curve2.IsNull()) {        
+        
+            GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
+            
+            if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
+                // No intersection
+                return false;
+            }
+
+            for (int i = 1; i <= intersector.NbExtrema(); i++) {
+                if (intersector.Distance(i) > tol)
+                    continue;
+                
+                gp_Pnt p1, p2;
+                intersector.Points(i, p1, p2);
+                points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
+            }
+
+            return points.size()>0?true:false;
+        }
+    }
+    catch (Standard_Failure& e) {
+        return false;
+    }
 }
 
 bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
@@ -1595,6 +1631,44 @@ void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
 
         throw Base::RuntimeError(e.GetMessageString());
     }
+}
+
+bool GeomArcOfConic::intersectBasisCurves(  const GeomArcOfConic * c, 
+                                std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+                                double tol) const
+{
+    Handle(Geom_TrimmedCurve) curve1 =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_TrimmedCurve) curve2 =  Handle(Geom_TrimmedCurve)::DownCast(c->handle());
+        
+    Handle(Geom_Conic) bcurve1 = Handle(Geom_Conic)::DownCast( curve1->BasisCurve() );
+    Handle(Geom_Conic) bcurve2 = Handle(Geom_Conic)::DownCast( curve2->BasisCurve() );
+    
+    try {
+    
+        if(!bcurve1.IsNull() && !bcurve2.IsNull()) {
+        
+            GeomAPI_ExtremaCurveCurve intersector(bcurve1, bcurve2);
+            
+            if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
+                // No intersection
+                return false;
+            }
+
+            for (int i = 1; i <= intersector.NbExtrema(); i++) {
+                if (intersector.Distance(i) > tol)
+                    continue;
+                
+                gp_Pnt p1, p2;
+                intersector.Points(i, p1, p2);
+                points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
+            }
+
+            return points.size()>0?true:false;
+        }
+    }
+    catch (Standard_Failure& e) {
+        return false;
+    }    
 }
 
 // -------------------------------------------------
