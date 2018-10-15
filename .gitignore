@@ -8,6 +8,8 @@
 *.exp
 *.dep
 *.manifest
+*.o
+*.orig
 qrc_*.cpp
 BuildLog.htm
 cmake_install.cmake
