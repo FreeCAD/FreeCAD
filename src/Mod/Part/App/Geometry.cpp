@@ -478,10 +478,13 @@ bool GeomCurve::intersect(  GeomCurve * c,
 
             return points.size()>0?true:false;
         }
+        else
+            return false;
     }
     catch (Standard_Failure& e) {
         return false;
     }
+    
 }
 
 bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
@@ -495,13 +498,19 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
             return true;
         }
     }
-    catch (StdFail_NotDone&) { // projection does not exist on trimmer curve, let's try basis curve
-        closestParameterToBasicCurve(point,u);
+    catch (StdFail_NotDone& e) {
+        
+        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))){
+            Base::Vector3d firstpoint = this->pointAtParameter(c->FirstParameter());
+            Base::Vector3d lastpoint = this->pointAtParameter(c->LastParameter());
 
-        if(std::abs(u-c->FirstParameter()) < std::abs(u-c->LastParameter()))
-            u = c->FirstParameter();
+            if((firstpoint-point).Length() < (lastpoint-point).Length())
+                u = c->FirstParameter();
+            else
+                u = c->LastParameter();
+        }
         else
-            u = c->LastParameter();
+            throw Base::RuntimeError(e.GetMessageString());
 
         return true;
     }
@@ -551,7 +560,6 @@ double GeomCurve::getFirstParameter() const
 
         throw Base::RuntimeError(e.GetMessageString());
     }
-
 }
 
 double GeomCurve::getLastParameter() const
@@ -565,7 +573,7 @@ double GeomCurve::getLastParameter() const
     catch (Standard_Failure& e) {
 
         throw Base::RuntimeError(e.GetMessageString());
-    }
+    }        
 }
 
 double GeomCurve::curvatureAt(double u) const
@@ -1665,6 +1673,7 @@ bool GeomArcOfConic::intersectBasisCurves(  const GeomArcOfConic * c,
 
             return points.size()>0?true:false;
         }
+        return false;
     }
     catch (Standard_Failure& e) {
         return false;
