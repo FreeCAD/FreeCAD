@@ -27,10 +27,11 @@ from __future__ import print_function
 
 import FreeCAD
 import FreeCADGui
+import Path
 import PathScripts.PathJob as PathJob
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathToolController as PathToolController
+#import PathScripts.PathToolController as PathToolController
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import os
@@ -244,16 +245,41 @@ class CommandPathPost:
 
         # Build up an ordered list of operations and tool changes.
         # Then post-the ordered list
+        if hasattr(job, "Fixtures"):
+            wcslist = job.Fixtures
+        else:
+            wcslist = ['G54']
+        PathLog.debug("processing fixtures: {}".format(wcslist))
+
+        if hasattr(job, "OrderOutputBy"):
+            orderby = job.OrderOutputBy
+        else:
+            orderby = "Operation"
+        PathLog.debug("Order Output by: {}".format(orderby))
+
+        if hasattr(job, "SplitOutput"):
+            split = job.SplitOutput
+        else:
+            split = False
+        PathLog.debug("Splitting Output: {}".format(split))
+
         postlist = []
-        currTool = None
-        for obj in job.Operations.Group:
-            PathLog.debug("obj: {}".format(obj.Name))
-            tc = PathUtil.toolControllerForOp(obj)
-            if tc is not None:
-                if tc.ToolNumber != currTool:
-                    postlist.append(tc)
-                    currTool = tc.ToolNumber
-            postlist.append(obj)
+
+        if orderby == 'Fixture':
+            for f in wcslist:
+                c1 = Path.Command(f)
+                c2 = Path.Command("G0 Z" + str(job.Stock.Shape.BoundBox.ZMax))
+                postlist.append(Path.Path([c1, c2]))
+
+                currTool = None
+                for obj in job.Operations.Group:
+                    PathLog.debug("obj: {}".format(obj.Name))
+                    tc = PathUtil.toolControllerForOp(obj)
+                    if tc is not None:
+                        if tc.ToolNumber != currTool:
+                            postlist.append(tc)
+                            currTool = tc.ToolNumber
+                    postlist.append(obj)
 
         fail = True
         rc = ''
