@@ -31,8 +31,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>458</width>
-         <height>1186</height>
+         <width>456</width>
+         <height>1203</height>
         </rect>
        </property>
        <attribute name="label">
@@ -112,8 +112,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>96</width>
+         <height>26</height>
         </rect>
        </property>
        <attribute name="label">
@@ -144,6 +144,26 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QLineEdit" name="postProcessorArguments">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>747</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
     <item row="0" column="2">
      <widget class="QToolButton" name="postProcessorSetOutputFile">
       <property name="text">
@@ -168,25 +188,186 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1" colspan="2">
-     <widget class="QLineEdit" name="postProcessorArguments">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <item row="3" column="1">
+     <widget class="QCheckBox" name="checkBox">
+      <property name="text">
+       <string>Split Output</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+    <item row="4" column="0" colspan="3">
+     <widget class="QGroupBox" name="groupBox_7">
+      <property name="title">
+       <string>Work Coordinate Systems</string>
       </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>747</height>
-       </size>
-      </property>
-     </spacer>
+      <layout class="QFormLayout" name="formLayout_4">
+       <item row="2" column="1">
+        <widget class="QComboBox" name="orderBy">
+         <item>
+          <property name="text">
+           <string>Operation</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Work Coordinate System</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Tool</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Systems</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Order By</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QListWidget" name="wcslist">
+         <item>
+          <property name="text">
+           <string>G53</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G54</string>
+          </property>
+          <property name="checkState">
+           <enum>Checked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G55</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G56</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G57</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G58</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.1</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.2</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.3</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.4</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.5</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.6</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.7</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.8</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>G59.9</string>
+          </property>
+          <property name="checkState">
+           <enum>Unchecked</enum>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -205,8 +386,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>458</width>
-         <height>1186</height>
+         <width>356</width>
+         <height>893</height>
         </rect>
        </property>
        <attribute name="label">
@@ -760,8 +941,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>458</width>
-         <height>1186</height>
+         <width>244</width>
+         <height>256</height>
         </rect>
        </property>
        <attribute name="label">
@@ -924,8 +1105,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>458</width>
-         <height>1186</height>
+         <width>325</width>
+         <height>180</height>
         </rect>
        </property>
        <attribute name="label">
@@ -962,8 +1143,7 @@
               </property>
               <property name="icon">
                <iconset theme="object-flip-horizontal">
-                <normaloff/>
-               </iconset>
+                <normaloff>../../../../../../../../.designer/backup</normaloff>../../../../../../../../.designer/backup</iconset>
               </property>
              </column>
              <column>
@@ -972,8 +1152,7 @@
               </property>
               <property name="icon">
                <iconset theme="object-flip-vertical">
-                <normaloff/>
-               </iconset>
+                <normaloff>../../../../../../../../.designer/backup</normaloff>../../../../../../../../.designer/backup</iconset>
               </property>
              </column>
              <column>
@@ -1026,8 +1205,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>244</width>
-         <height>145</height>
+         <width>168</width>
+         <height>112</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1253,8 +1432,8 @@
   </customwidget>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>gui_quantityspinbox.h</header>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
