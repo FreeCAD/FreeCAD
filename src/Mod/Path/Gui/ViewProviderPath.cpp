@@ -43,6 +43,8 @@
 # include <QFile>
 #endif
 
+#include <boost/algorithm/string/replace.hpp>
+
 #include "ViewProviderPath.h"
 
 #include <Mod/Path/App/FeaturePath.h>
@@ -249,7 +251,7 @@ std::string ViewProviderPath::getElement(const SoDetail* detail) const
                 pt0Index = line_detail->getPoint0()->getCoordinateIndex();
                 if(pt0Index<0 || pt0Index>=pcLineCoords->point.getNum())
                     pt0Index = -1;
-                return str.str();
+                return boost::replace_all_copy(str.str(),".",",");
             }
         }
     }
