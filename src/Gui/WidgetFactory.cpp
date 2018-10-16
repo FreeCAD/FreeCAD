@@ -114,81 +114,6 @@ PyTypeObject** SbkPySide2_QtWidgetsTypes=NULL;
 
 using namespace Gui;
 
-#if defined (HAVE_SHIBOKEN)
-
-PyObject* toPythonFuncQuantityTyped(Base::Quantity cpx) {
-    return new Base::QuantityPy(new Base::Quantity(cpx));
-}
-
-PyObject* toPythonFuncQuantity(const void* cpp)
-{
-    return toPythonFuncQuantityTyped(*reinterpret_cast<const Base::Quantity*>(cpp));
-}
-
-void toCppPointerConvFuncQuantity(PyObject* pyobj,void* cpp)
-{
-   *((Base::Quantity*)cpp) = *static_cast<Base::QuantityPy*>(pyobj)->getQuantityPtr();
-}
-
-PythonToCppFunc toCppPointerCheckFuncQuantity(PyObject* obj)
-{
-    if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type)))
-        return toCppPointerConvFuncQuantity;
-    else
-        return 0;
-}
-
-void BaseQuantity_PythonToCpp_QVariant(PyObject* pyIn, void* cppOut)
-{
-    Base::Quantity* q = static_cast<Base::QuantityPy*>(pyIn)->getQuantityPtr();
-    *((QVariant*)cppOut) = QVariant::fromValue<Base::Quantity>(*q);
-}
-
-PythonToCppFunc isBaseQuantity_PythonToCpp_QVariantConvertible(PyObject* obj)
-{
-    if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type)))
-        return BaseQuantity_PythonToCpp_QVariant;
-    return 0;
-}
-
-#if QT_VERSION >= 0x050200
-Base::Quantity convertWrapperToQuantity(const PySide::PyObjectWrapper &w)
-{
-    PyObject* pyIn = static_cast<PyObject*>(w);
-    if (PyObject_TypeCheck(pyIn, &(Base::QuantityPy::Type))) {
-        return *static_cast<Base::QuantityPy*>(pyIn)->getQuantityPtr();
-    }
-
-    return Base::Quantity(std::numeric_limits<double>::quiet_NaN());
-}
-#endif
-
-void registerTypes()
-{
-    SbkConverter* convert = Shiboken::Conversions::createConverter(&Base::QuantityPy::Type,
-                                                                   toPythonFuncQuantity);
-    Shiboken::Conversions::setPythonToCppPointerFunctions(convert,
-                                                          toCppPointerConvFuncQuantity,
-                                                          toCppPointerCheckFuncQuantity);
-    Shiboken::Conversions::registerConverterName(convert, "Base::Quantity");
-
-    SbkConverter* qvariant_conv = Shiboken::Conversions::getConverter("QVariant");
-    if (qvariant_conv) {
-        // The type QVariant already has a converter from PyBaseObject_Type which will
-        // come before our own converter.
-        Shiboken::Conversions::addPythonToCppValueConversion(qvariant_conv,
-                                                             BaseQuantity_PythonToCpp_QVariant,
-                                                             isBaseQuantity_PythonToCpp_QVariantConvertible);
-    }
-
-#if QT_VERSION >= 0x050200
-    QMetaType::registerConverter<PySide::PyObjectWrapper, Base::Quantity>(&convertWrapperToQuantity);
-#endif
-}
-#endif
-
-// --------------------------------------------------------
-
 namespace Gui {
 template<typename qttype>
 Py::Object qt_wrapInstance(qttype object, const char* className,
@@ -248,13 +173,6 @@ void* qt_getCppPointer(const Py::Object& pyobject, const char* shiboken, const c
 
 PythonWrapper::PythonWrapper()
 {
-#if defined (HAVE_SHIBOKEN)
-    static bool init = false;
-    if (!init) {
-        init = true;
-        registerTypes();
-    }
-#endif
 }
 
 bool PythonWrapper::toCString(const Py::Object& pyobject, std::string& str)
