@@ -340,6 +340,10 @@ void CmdPartDesignClone::activated(int iMsg)
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.setEditorMode('Placement',0)");
         doCommand(Command::Doc,"App.ActiveDocument.%s.Group = [App.ActiveDocument.%s]",
                   BodyName.c_str(), FeatName.c_str());
+
+        // Set the tip of the body
+        doCommand(Command::Doc,"App.ActiveDocument.%s.Tip = App.ActiveDocument.%s",
+                                BodyName.c_str(), FeatName.c_str());
         updateActive();
         doCommand(Command::Doc,"App.ActiveDocument.ActiveObject.ViewObject.DiffuseColor = App.ActiveDocument.%s.ViewObject.DiffuseColor",
                   objs.front()->getNameInDocument());
