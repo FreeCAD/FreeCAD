@@ -43,7 +43,6 @@
 class SoTranslation;
 class SoTransform;
 class SoText2;
-namespace Quarter = SIM::Coin3D::Quarter;
 
 class SoSeparator;
 class SoShapeHints;
@@ -56,6 +55,8 @@ class SoVectorizeAction;
 class QImage;
 class SoGroup;
 class NaviCube;
+
+namespace Quarter = SIM::Coin3D::Quarter;
 
 namespace Gui {
 
