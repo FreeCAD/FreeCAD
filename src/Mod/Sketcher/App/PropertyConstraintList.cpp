@@ -342,9 +342,8 @@ void PropertyConstraintList::acceptGeometry(const std::vector<Part::Geometry *> 
     aboutToSetValue();
     validGeometryKeys.clear();
     validGeometryKeys.reserve(GeoList.size());
-    for (std::vector< Part::Geometry * >::const_iterator it=GeoList.begin();
-         it != GeoList.end(); ++it)
-        validGeometryKeys.push_back((*it)->getTypeId().getKey());
+    for (const auto& it : GeoList)
+        validGeometryKeys.push_back((it)->getTypeId().getKey());
     invalidGeometry = false;
     hasSetValue();
 }
