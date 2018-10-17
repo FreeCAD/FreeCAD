@@ -55,6 +55,8 @@ SheetTableView::SheetTableView(QWidget *parent)
 
     setHorizontalHeader(new SheetViewHeader(Qt::Horizontal));
     setVerticalHeader(new SheetViewHeader(Qt::Vertical));
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     horizontalHeader()->addAction(insertColumns);
     horizontalHeader()->addAction(removeColumns);
@@ -334,7 +336,7 @@ bool SheetTableView::event(QEvent *event)
 
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
-    SpreadsheetGui::LineEdit * le = qobject_cast<SpreadsheetGui::LineEdit*>(editor);
+    SpreadsheetGui::TextEdit * le = qobject_cast<SpreadsheetGui::TextEdit*>(editor);
 
     currentEditIndex = QModelIndex();
     QTableView::closeEditor(editor, hint);

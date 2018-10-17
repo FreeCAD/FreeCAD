@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QCompleter>
 #include <QLineEdit>
+#include <QPlainTextEdit>
 #include <set>
 
 class QStandardItem;
@@ -55,6 +56,23 @@ Q_SIGNALS:
     void textChanged2(QString text);
 public Q_SLOTS:
     void slotTextChanged(const QString & text);
+    void slotCompleteText(const QString & completionPrefix);
+private:
+    ExpressionCompleter * completer;
+    bool block;
+};
+
+class GuiExport ExpressionTextEdit : public QPlainTextEdit {
+    Q_OBJECT
+public:
+    ExpressionTextEdit(QWidget *parent = 0);
+    void setDocumentObject(const App::DocumentObject *currentDocObj);
+    bool completerActive() const;
+    void hideCompleter();
+Q_SIGNALS:
+    void textChanged2(QString text);
+public Q_SLOTS:
+    void slotTextChanged();
     void slotCompleteText(const QString & completionPrefix);
 private:
     ExpressionCompleter * completer;

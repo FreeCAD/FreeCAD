@@ -5,6 +5,7 @@
 #include <QStandardItemModel>
 #include <QLineEdit>
 #include <QAbstractItemView>
+#include <QTextBlock>
 #endif
 
 #include <Base/Tools.h>
@@ -338,4 +339,63 @@ void ExpressionLineEdit::slotCompleteText(const QString & completionPrefix)
     block = false;
 }
 
+///////////////////////////////////////////////////////////////////////
+
+ExpressionTextEdit::ExpressionTextEdit(QWidget *parent)
+    : QPlainTextEdit(parent)
+    , completer(0)
+    , block(false)
+{
+    connect(this, SIGNAL(textChanged()), this, SLOT(slotTextChanged()));
+}
+
+void ExpressionTextEdit::setDocumentObject(const App::DocumentObject * currentDocObj)
+{
+    if (completer) {
+        delete completer;
+        completer = 0;
+    }
+
+    if (currentDocObj != 0) {
+        completer = new ExpressionCompleter(currentDocObj->getDocument(), currentDocObj, this);
+        completer->setWidget(this);
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        connect(completer, SIGNAL(activated(QString)), this, SLOT(slotCompleteText(QString)));
+        connect(completer, SIGNAL(highlighted(QString)), this, SLOT(slotCompleteText(QString)));
+        connect(this, SIGNAL(textChanged2(QString)), completer, SLOT(slotUpdate(QString)));
+    }
+}
+
+bool ExpressionTextEdit::completerActive() const
+{
+    return completer && completer->popup() && completer->popup()->isVisible();
+}
+
+void ExpressionTextEdit::hideCompleter()
+{
+    if (completer && completer->popup())
+        completer->popup()->setVisible(false);
+}
+
+void ExpressionTextEdit::slotTextChanged()
+{
+    if (!block) {
+        QTextCursor cursor = textCursor();
+        Q_EMIT textChanged2(cursor.block().text().left(cursor.positionInBlock()));
+    }
+}
+
+void ExpressionTextEdit::slotCompleteText(const QString & completionPrefix)
+{
+    QTextCursor cursor = textCursor();
+    int start = completer->getPrefixStart();
+    int pos = cursor.positionInBlock();
+    if(pos>=start) {
+        block = true;
+        if(pos>start)
+            cursor.movePosition(QTextCursor::PreviousCharacter,QTextCursor::KeepAnchor,pos-start);
+        cursor.insertText(completionPrefix);
+        block = false;
+    }
+}
 #include "moc_ExpressionCompleter.cpp"

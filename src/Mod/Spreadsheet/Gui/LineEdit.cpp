@@ -26,6 +26,7 @@
 # include <QKeyEvent>
 #endif
 
+#include <Base/Console.h>
 #include "LineEdit.h"
 
 using namespace SpreadsheetGui;
@@ -83,6 +84,75 @@ void LineEdit::setIndex(QModelIndex _current)
 }
 
 QModelIndex LineEdit::next() const
+{
+    const QAbstractItemModel * m = current.model();
+
+    return m->index(qMin(qMax(0, current.row() + deltaRow), m->rowCount() - 1 ),
+                    qMin(qMax(0, current.column() + deltaCol), m->columnCount() - 1 ) );
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+TextEdit::TextEdit(QWidget *parent)
+    : Gui::ExpressionTextEdit(parent)
+    , current()
+    , deltaCol(0)
+    , deltaRow(0)
+{
+}
+
+bool TextEdit::event(QEvent *event)
+{
+    if (event && event->type() == QEvent::KeyPress) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+
+        if (kevent->key() == Qt::Key_Tab) {
+            if (kevent->modifiers() == 0) {
+                deltaCol = 1;
+                deltaRow = 0;
+                Q_EMIT returnPressed();
+                return true;
+            }
+        }
+        else if (kevent->key() == Qt::Key_Backtab) {
+            if (kevent->modifiers() == Qt::ShiftModifier) {
+                deltaCol = -1;
+                deltaRow = 0;
+                Q_EMIT returnPressed();
+                return true;
+            }else if(kevent->modifiers() == Qt::ControlModifier) {
+                textCursor().insertText(QString::fromLatin1("\t"));
+                return true;
+            }
+        }
+        else if (kevent->key() == Qt::Key_Enter || kevent->key() == Qt::Key_Return) {
+            if (kevent->modifiers() == 0) {
+                deltaCol = 0;
+                deltaRow = 1;
+                Q_EMIT returnPressed();
+                return true;
+            }
+            else if (kevent->modifiers() == Qt::ShiftModifier) {
+                deltaCol = 0;
+                deltaRow = -1;
+                Q_EMIT returnPressed();
+                return true;
+            }
+            else if (kevent->modifiers() == Qt::ControlModifier) {
+                textCursor().insertText(QString::fromLatin1("\n"));
+                return true;
+            }
+        }
+    }
+    return Gui::ExpressionTextEdit::event(event);
+}
+
+void TextEdit::setIndex(QModelIndex _current)
+{
+    current = _current;
+}
+
+QModelIndex TextEdit::next() const
 {
     const QAbstractItemModel * m = current.model();
 

@@ -46,7 +46,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
 {
-    SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
+    SpreadsheetGui::TextEdit *editor = new SpreadsheetGui::TextEdit(parent);
     editor->setIndex(index);
 
     editor->setDocumentObject(sheet);
@@ -56,7 +56,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
 
 void SpreadsheetDelegate::commitAndCloseEditor()
 {
-    Gui::ExpressionLineEdit *editor = qobject_cast<Gui::ExpressionLineEdit *>(sender());
+    Gui::ExpressionTextEdit *editor = qobject_cast<Gui::ExpressionTextEdit *>(sender());
     if (editor->completerActive()) {
         editor->hideCompleter();
         return;
@@ -69,9 +69,9 @@ void SpreadsheetDelegate::commitAndCloseEditor()
 void SpreadsheetDelegate::setEditorData(QWidget *editor,
     const QModelIndex &index) const
 {
-    QLineEdit *edit = qobject_cast<QLineEdit*>(editor);
+    TextEdit *edit = qobject_cast<TextEdit*>(editor);
     if (edit) {
-        edit->setText(index.model()->data(index, Qt::EditRole).toString());
+        edit->setPlainText(index.model()->data(index, Qt::EditRole).toString());
         return;
     }
 }
@@ -79,9 +79,9 @@ void SpreadsheetDelegate::setEditorData(QWidget *editor,
 void SpreadsheetDelegate::setModelData(QWidget *editor,
     QAbstractItemModel *model, const QModelIndex &index) const
 {
-    QLineEdit *edit = qobject_cast<QLineEdit *>(editor);
+    TextEdit *edit = qobject_cast<TextEdit *>(editor);
     if (edit) {
-        model->setData(index, edit->text());
+        model->setData(index, edit->toPlainText());
         return;
     }
 }
