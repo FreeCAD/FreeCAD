@@ -147,48 +147,10 @@ Sheet *ViewProviderSheet::getSpreadsheetObject() const
 
 bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
 {
-    // If view is closed, delete the object
-    if (view.isNull() || !getObject())
-        return true;
-    bool canDelete = true;
-    for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
-        if(focus == view) {
-            canDelete = false;
-            break;
-        }
-    }
-    if(canDelete) {
-        if(view==Gui::getMainWindow()->activeWindow())
-            getDocument()->setActiveView(0,Gui::View3DInventor::getClassTypeId());
-        Gui::getMainWindow()->removeWindow(view);
-        return true;
-    }
-
-    // View is not closed, delete cell contents instead if it is active
-    if (Gui::Application::Instance->activeDocument()) {
-        Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        SpreadsheetGui::SheetView * sheetView = freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
-
-        if (sheetView) {
-            Sheet * sheet = sheetView->getSheet();
-            QModelIndexList selection = sheetView->selectedIndexes();
-
-            if (selection.size() > 0) {
-                Gui::Command::openCommand("Clear cell(s)");
-                std::vector<Range> ranges = sheetView->selectedRanges();
-                std::vector<Range>::const_iterator i = ranges.begin();
-
-                for (; i != ranges.end(); ++i) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
-                                            i->rangeString().c_str());
-                }
-                Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-            }
-        }
-    }
-
-    return false;
+    if(view==Gui::getMainWindow()->activeWindow())
+        getDocument()->setActiveView(0,Gui::View3DInventor::getClassTypeId());
+    Gui::getMainWindow()->removeWindow(view);
+    return true;
 }
 
 SheetView *ViewProviderSheet::showSpreadsheetView()

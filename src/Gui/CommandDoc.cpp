@@ -1112,6 +1112,20 @@ void StdCmdDelete::activated(int iMsg)
     std::set<App::Document*> docs;
     try {
         App::GetApplication().setActiveTransaction("Delete");
+        auto activeView = getMainWindow()->activeWindow();
+        if(activeView) {
+            bool found = false;
+            for(auto focus=qApp->focusWidget();focus;focus=focus->parentWidget()) {
+                if(focus == activeView) {
+                    found = true;
+                    break;
+                }
+            }
+            if(found && activeView->onMsg(getName(),0)) {
+                App::GetApplication().closeActiveTransaction();
+                return;
+            }
+        }
         Gui::getMainWindow()->setUpdatesEnabled(false);
         auto editDoc = Application::Instance->editDocument();
         ViewProviderDocumentObject *vpedit = 0;

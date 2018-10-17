@@ -148,8 +148,22 @@ bool SheetView::onMsg(const char *pMsg, const char **)
         getGuiDocument()->saveAs();
         return true;
     }
-    else
-        return false;
+    else if(strcmp("Std_Delete",pMsg) == 0) {
+        QModelIndexList selection = selectedIndexes();
+        if (selection.size() > 0) {
+            Gui::Command::openCommand("Clear cell(s)");
+            std::vector<Range> ranges = selectedRanges();
+            std::vector<Range>::const_iterator i = ranges.begin();
+            for (; i != ranges.end(); ++i) {
+                FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");
+            }
+            Gui::Command::commitCommand();
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
+        return true;
+    }
+
+    return false;
 }
 
 bool SheetView::onHasMsg(const char *pMsg) const
