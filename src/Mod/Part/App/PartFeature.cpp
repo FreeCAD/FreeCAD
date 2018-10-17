@@ -406,6 +406,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             subname = _subname.c_str();
         }
     }
+    Base::PyGILStateLocker lock;
     auto owner = obj->getSubObject(subname,&pyobj,&mat,transform);
     if(!owner)
         return shape;

@@ -2450,6 +2450,7 @@ static std::vector<std::string> getBoxSelection(
                 ret.emplace_back("");
             return ret;
         }
+        Base::PyGILStateLocker lock;
         PyObject *pyobj = 0;
         Base::Matrix4D matCopy(mat);
         obj->getSubObject(0,&pyobj,&matCopy,transform,depth);
