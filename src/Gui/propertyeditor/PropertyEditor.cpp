@@ -47,6 +47,9 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     propertyModel = new PropertyModel(this);
     setModel(propertyModel);
 
+    setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+
     delegate = new PropertyItemDelegate(this);
     delegate->setItemEditorFactory(new PropertyItemEditorFactory);
     setItemDelegate(delegate);
