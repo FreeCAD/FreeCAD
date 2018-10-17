@@ -49,6 +49,7 @@ public:
 private Q_SLOTS:
     void on_mouseButton_clicked();
     void onAliasingChanged(int);
+    void onNewDocViewChanged(int);
 
 protected:
     void changeEvent(QEvent *e);

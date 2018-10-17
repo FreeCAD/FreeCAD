@@ -39,6 +39,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Gui/Command.h>
 
 using namespace Gui::Dialog;
 
@@ -80,11 +81,16 @@ void DlgSettings3DViewImp::saveSettings()
     index = this->comboAliasing->currentIndex();
     hGrp->SetInt("AntiAliasing", index);
 
+    index = this->comboNewDocView->currentIndex();
+    hGrp->SetASCII("NewDocumentCameraOrientation",comboNewDocView->currentText().toStdString().c_str());
+
     index = this->naviCubeCorner->currentIndex();
     hGrp->SetInt("CornerNaviCube", index);
 
     QVariant const &vBoxMarkerSize = this->boxMarkerSize->itemData(this->boxMarkerSize->currentIndex());
     hGrp->SetInt("MarkerSize", vBoxMarkerSize.toInt());
+
+
 
     checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
@@ -151,6 +157,109 @@ void DlgSettings3DViewImp::loadSettings()
     index = this->boxMarkerSize->findData(QVariant(current));
     if (index < 0) index = 2;
     this->boxMarkerSize->setCurrentIndex(index);
+
+    this->comboNewDocView->addItem(tr("Axonometric"));
+    this->comboNewDocView->addItem(tr("Isometric"));
+    this->comboNewDocView->addItem(tr("Dimetric"));
+    this->comboNewDocView->addItem(tr("Trimetric"));
+    this->comboNewDocView->addItem(tr("Top"));
+    this->comboNewDocView->addItem(tr("Front"));
+    this->comboNewDocView->addItem(tr("Left"));
+    this->comboNewDocView->addItem(tr("Right"));
+    this->comboNewDocView->addItem(tr("Rear"));
+    this->comboNewDocView->addItem(tr("Bottom"));
+    this->comboNewDocView->addItem(tr("Use current"));
+    this->comboNewDocView->addItem(tr("Custom"));
+    //parameter setting will always be in English even if the items in the combobox have been translated
+    std::string newDocView = hGrp->GetASCII("NewDocumentCameraOrientation","Axonometric");
+    if (newDocView.find("Rotation")==0 || newDocView.find("V")==0){
+        this->comboNewDocView->addItem(QString::fromStdString(newDocView));
+    }
+    index = this->comboNewDocView->findText(QString::fromStdString(newDocView));
+    if (index != -1){
+        this->comboNewDocView->setCurrentIndex(comboNewDocView->findText(QString::fromStdString(newDocView)));
+    }
+    connect(comboNewDocView, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onNewDocViewChanged(int)));
+}
+
+void DlgSettings3DViewImp::onNewDocViewChanged(int index){
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+
+    //convert current selection back to English, if necessary for processing
+    std::vector<std::string> items = std::vector<std::string>{"Axonometric", "Isometric", "Dimetric",
+                                                              "Trimetric", "Top", "Front", "Left",
+                                                              "Right","Rear","Bottom","Use current",
+                                                              "Custom"};
+    std::string newDocView;
+    if ((std::string::size_type) index < items.size()){
+        newDocView = items[index];
+    } else { //must be a custom rotation added dynamically to the combobox
+        newDocView = this->comboNewDocView->currentText().toStdString();
+    }
+    if (newDocView == "Use current"){ //get current orientation and set parameter with it from python
+        QString cmdString = QString::fromLatin1("if App.ActiveDocument:\n");
+        cmdString += QString::fromLatin1("    FreeCAD.ParamGet(\"User parameter:BaseApp/Preferences/View\")");
+        cmdString += QString::fromLatin1(".SetString(\"NewDocumentCameraOrientation\",str(Gui.activeView().getCameraOrientation()))\n");
+        Gui::Command::doCommand(Gui::Command::Doc,cmdString.toStdString().c_str());
+    } else if (newDocView == "Custom"){ //get custom orientation from user and set the parameter via python
+        QString cmdString = QString::fromLatin1("from PySide import QtGui\n");
+        cmdString += QString::fromLatin1("_s,_ok = QtGui.QInputDialog.getText(Gui.getMainWindow(),");
+        cmdString += tr("\"Custom New Document Camera Orientation\","); //dlg title
+        cmdString += QString::fromLatin1("\"Enter V() values in the form V(x,y,z) where V() is a camera aiming vector, but reversed\\n\\n");//dlg msg
+        cmdString += QString::fromLatin1("Alternatively, use form Rotation(q0,q1,q2,q3) or R(q0,q1,q2,q3) using quaternions\\n");
+        cmdString += QString::fromLatin1("where q0 = x, q1 = y, q2 = z and q3 = w, the quaternion is specified by q=w+xi+yj+zk.\\n\\n");
+        cmdString += QString::fromLatin1("Examples:\\n\\nV(0,0,1) = Top, V(1,0,0) = Right, V(-1,0,0) = Left\\n");
+        cmdString += QString::fromLatin1("V(1,-1,.5) = Diametric, V(.5,-1,.5) = Trimetric\\n");
+        cmdString += QString::fromLatin1("Rotation(44,18,34,82) ~= Isometric, R(53,13,20,82) ~= Trimetric\\n\\n");
+        cmdString += QString::fromLatin1("\""); //end dlg msg
+        cmdString += QString::fromLatin1(",text=\'V(1,-2,1)\')\n"); //default text
+        cmdString += QString::fromLatin1("if _ok:\n");
+        cmdString += QString::fromLatin1("    if not \'Right\' in _s and not \'Rear\' in _s and not \'Rotation\' in _s and _s.startswith(\'R\'):\n");
+        cmdString += QString::fromLatin1("        _s = _s.replace(\'R\',\'Rotation\')\n"); //allow R() alias for Rotation()
+        cmdString += QString::fromLatin1("    FreeCAD.ParamGet(\"User parameter:BaseApp/Preferences/View\")");
+        cmdString += QString::fromLatin1(".SetString(\"NewDocumentCameraOrientation\",_s)\n");
+        Gui::Command::doCommand(Gui::Command::Doc,cmdString.toStdString().c_str());
+        newDocView = hGrp->GetASCII("NewDocumentCameraOrientation","Axonometric");
+        if (newDocView == "Custom"){ //user canceled, so make it default Axonometric
+            newDocView = "Axonometric";
+        }
+        //update combobox in case user clicked apply instead of ok
+        this->comboNewDocView->addItem(QString::fromStdString(newDocView));
+        index = this->comboNewDocView->findText(QString::fromStdString(newDocView));
+        if (index != -1){
+            this->comboNewDocView->setCurrentIndex(comboNewDocView->findText(QString::fromStdString(newDocView)));
+        }
+    } else { //not Custom or Use current
+        hGrp->SetASCII("NewDocumentCameraOrientation",newDocView.c_str());
+    }
+        // make this the current camera orientation if we have an active document unless it was Use current
+    if (App::GetApplication().getDocuments().size() > 0 && newDocView != "Use current"){
+        if (newDocView.find("Rotation")==0) { //user wants a custom rotation
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    std::string("Gui.activeView().setCameraOrientation(App."+newDocView+")").c_str());
+        } else if (newDocView.find("V")==0) { //user wants a custom rotation using for example: V(3,2,1)
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    std::string("V=App.Vector\nGui.activeView().setCameraOrientation(App.Rotation(V(),V(0,0,1),"+newDocView+",\"ZYX\"))").c_str());
+        } else if (newDocView == "Isometric"){
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    std::string("Gui.activeView().setCameraOrientation(App.Rotation (0.4247081321999479, 0.1759200437218226, 0.339851090706265, 0.8204732639190053))").c_str());
+        } else if (newDocView == "Dimetric"){
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    std::string("Gui.activeView().setCameraOrientation(App.Rotation (0.5334020967542208, 0.22094238278685738, 0.31245971396736344, 0.7543444795410782))").c_str());
+        } else if (newDocView == "Trimetric"){
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    std::string("Gui.activeView().setCameraOrientation(App.Rotation (0.5293936757472739, 0.12497288799917983, 0.19279050929146058, 0.8166737003669666))").c_str());
+        } else if (newDocView == "Top" || newDocView == "Bottom" || newDocView == "Right" || newDocView == "Left"
+                   || newDocView == "Rear" || newDocView == "Axonometric" || newDocView == "Front"){
+            Gui::Command::doCommand(Gui::Command::Doc,std::string("Gui.activeView().view"+newDocView+"()").c_str());
+        } else {
+            Base::Console().Warning(std::string("Invalid initial view: "+newDocView+"\nUsing Axonometric instead\n").c_str());
+            Gui::Command::doCommand(Gui::Command::Doc,std::string("Gui.activeView().viewAxonometric()").c_str());
+        }
+    }
+
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()

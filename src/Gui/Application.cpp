@@ -689,6 +689,35 @@ void Application::slotNewDocument(const App::Document& Doc)
 #if QT_VERSION < 0x050000
     qApp->processEvents(); // make sure to show the window stuff on the right place
 #endif
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    std::string newDocView = hGrp->GetASCII("NewDocumentCameraOrientation","Axonometric");
+    if (newDocView == "Use current"){
+        newDocView = "Axonometric"; //failed to set via python, likely had no open document at the time
+    }
+    hGrp->SetASCII("NewDocumentCameraOrientation",newDocView.c_str()); //create initial parameter if not exist
+    if (newDocView.find("Rotation")==0) { //user wants a custom rotation
+        Gui::Command::doCommand(Gui::Command::Doc,
+            std::string("Gui.activeView().setCameraOrientation(App."+newDocView+")").c_str());
+    } else if (newDocView.find("V")==0) { //user wants a custom rotation using for example: V(3,2,1)
+            Gui::Command::doCommand(Gui::Command::Doc,
+                std::string("V=App.Vector\nGui.activeView().setCameraOrientation(App.Rotation(V(),V(0,0,1),"+newDocView+",\"ZYX\"))").c_str());
+    } else if (newDocView == "Isometric"){
+        Gui::Command::doCommand(Gui::Command::Doc,
+            std::string("Gui.activeView().setCameraOrientation(App.Rotation (0.4247081321999479, 0.1759200437218226, 0.339851090706265, 0.8204732639190053))").c_str());
+    } else if (newDocView == "Dimetric"){
+        Gui::Command::doCommand(Gui::Command::Doc,
+            std::string("Gui.activeView().setCameraOrientation(App.Rotation (0.5334020967542208, 0.22094238278685738, 0.31245971396736344, 0.7543444795410782))").c_str());
+    } else if (newDocView == "Trimetric"){
+        Gui::Command::doCommand(Gui::Command::Doc,
+            std::string("from FreeCAD import Base\nGui.activeView().setCameraOrientation(App.Rotation (0.5293936757472739, 0.12497288799917983, 0.19279050929146058, 0.8166737003669666))").c_str());
+    } else if (newDocView == "Top" || newDocView == "Bottom" || newDocView == "Right" || newDocView == "Left"
+               || newDocView == "Rear" || newDocView == "Axonometric" || newDocView == "Front"){
+        Gui::Command::doCommand(Gui::Command::Doc,std::string("Gui.activeView().view"+newDocView+"()").c_str());
+    } else {
+        Base::Console().Warning(std::string("Invalid initial view: "+newDocView+"\nUsing Axonometric instead\n").c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,std::string("Gui.activeView().viewAxonometric()").c_str());
+    }
 }
 
 void Application::slotDeleteDocument(const App::Document& Doc)
