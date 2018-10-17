@@ -28,6 +28,7 @@
 # include <QMessageBox>
 #endif
 
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include "SheetModel.h"
 #include <Mod/Spreadsheet/App/Utils.h>
@@ -206,7 +207,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     }
 
     // Get edit value by querying the sheet
-    if (role == Qt::EditRole || role == Qt::StatusTipRole) {
+    if (role == Qt::EditRole) {
         std::string str;
 
         if (cell->getStringContent(str))
@@ -465,23 +466,22 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
         CellAddress address(index.row(), index.column());
 
         try {
-            std::string strAddress = address.toString();
             QString str = value.toString();
-            std::string content;
-            Cell * cell = sheet->getCell(address);
-
-            if (cell)
-                cell->getStringContent(content);
-
-            if ( content != Base::Tools::toStdString(str)) {
-                str.replace(QString::fromUtf8("\\"), QString::fromUtf8("\\\\"));
-                str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
-                Gui::Command::openCommand("Edit cell");
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.set('%s', '%s')", sheet->getNameInDocument(),
-                                        strAddress.c_str(), str.toUtf8().constData());
-                Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-            }
+            Gui::Command::openCommand("Edit cell");
+            // Because of possible complication of recursively escaped
+            // characters, let's take a shortcut and bypass the command
+            // interface for now.
+#if 0
+            std::string strAddress = address.toString();
+            str.replace(QString::fromUtf8("\\"), QString::fromUtf8("\\\\"));
+            str.replace(QString::fromUtf8("'"), QString::fromUtf8("\\'"));
+            FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" << 
+                    str.toUtf8().constData() << "')");
+#else
+            sheet->setCell(address, str.toUtf8().constData());
+#endif
+            Gui::Command::commitCommand();
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         catch (const Base::Exception& e) {
             e.ReportException();
