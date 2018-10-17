@@ -58,7 +58,11 @@ BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  pyside-tools
 BuildRequires:  python
+%if 0%{?fedora} > 28
+BuildRequires:  python3-matplotlib
+%else
 BuildRequires:  python-matplotlib
+%endif
 BuildRequires:  python-pivy
 BuildRequires:  python-pyside
 BuildRequires:  python-pyside-devel
@@ -153,6 +157,9 @@ rm -rf build && mkdir build && cd build
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
        -DMEDFILE_INCLUDE_DIRS=%{_includedir}/med/ \
        ../
+
+sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' src/Build/Version.h
+sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git master\",' src/Build/Version.h
 
 make %{?_smp_mflags}
 
