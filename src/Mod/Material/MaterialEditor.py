@@ -129,7 +129,7 @@ class MaterialEditor:
         self.outputResources()
 
     def outputResources(self):
-        print('locations we gone look for material cards:')
+        print('locations to look for material cards:')
         for path in self.resources:
             print('  ' + path)
         print('\n')
@@ -160,7 +160,7 @@ class MaterialEditor:
     def updateContents(self, data):
         '''updates the contents of the editor with the given data, can be:
            - the name of a card, if material is changed in editors combo box
-           - a dictionary, if the editor was called  with data'''
+           - a dictionary, if the editor was called with data'''
         # print type(data)
         if isinstance(data, dict):
             self.clearEditor()
@@ -287,7 +287,7 @@ class MaterialEditor:
             w = self.widget.Editor.topLevelItem(i1)
             for i2 in range(w.childCount()):
                 c = w.child(i2)
-                # TODO the following should be translated back to english,since text(0) could be translated
+                # TODO the following should be translated back to english, since text(0) could be translated
                 matkey = self.collapseKey(str(c.text(0)))
                 matvalue = unicode(c.text(1))
                 if matvalue or (matkey == 'Name'):

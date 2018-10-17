@@ -37,7 +37,7 @@ if FreeCAD.GuiUp:
 
 class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
-    known_analysis_types = ["static", "frequency", "thermomech"]
+    known_analysis_types = ["static", "frequency", "thermomech", "check"]
     finished = QtCore.Signal(int)
 
     ## The constructor
@@ -324,8 +324,12 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             ref_shty = get_refshape_type(m['Object'])
             if not mat_ref_shty:
                 mat_ref_shty = ref_shty
-            if mat_ref_shty and ref_shty and ref_shty != mat_ref_shty:  # mat_ref_shty could be empty in one material, only the not empty ones should have the same shape type
-                message += 'Some material objects do not have the same reference shape type (all material objects must have the same reference shape type, at the moment).\n'
+            if mat_ref_shty and ref_shty and ref_shty != mat_ref_shty:
+                # mat_ref_shty could be empty in one material, only the not empty ones should have the same shape type
+                message += (
+                    'Some material objects do not have the same reference shape type '
+                    '(all material objects must have the same reference shape type, at the moment).\n'
+                )
         for m in self.materials_linear:
             mat_map = m['Object'].Material
             mat_obj = m['Object']
@@ -358,9 +362,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     if has_nonlinear_material is False:
                         has_nonlinear_material = True
                     else:
-                        message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed.\n"
+                        message += (
+                            "At least two nonlinear materials use the same linear base material. "
+                            "Only one nonlinear material for each linear material allowed.\n"
+                        )
         # which analysis needs which constraints
-        # no check in the regard of loads existence (constraint force, pressure, self weight) is done because an analysis without loads at all is an valid analysis too
+        # no check in the regard of loads existence (constraint force, pressure, self weight) is done
+        # because an analysis without loads at all is an valid analysis too
         if self.solver.AnalysisType == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
                 message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
@@ -575,7 +583,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     else:
                         ccx_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
-                    error_message = "FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences tab CalculiX.\n"
+                    error_message = (
+                        "FEM: CalculiX binary ccx not found in standard system binary path. "
+                        "Please install ccx or set path to binary in FEM preferences tab CalculiX.\n"
+                    )
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, error_title, error_message)
                     raise Exception(error_message)
@@ -586,7 +597,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
                 if not ccx_binary:
                     FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetBool("UseStandardCcxLocation", True)
-                    error_message = "FEM: CalculiX binary ccx path not set at all. The use of standard path was activated in FEM preferences tab CalculiX. Please try again!\n"
+                    error_message = (
+                        "FEM: CalculiX binary ccx path not set at all. "
+                        "The use of standard path was activated in FEM preferences tab CalculiX. Please try again!\n"
+                    )
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, error_title, error_message)
                     raise Exception(error_message)
@@ -608,18 +622,27 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             if ccx_binary_sig in str(ccx_stdout):
                 self.ccx_binary_present = True
             else:
-                raise Exception("FEM: wrong ccx binary")  # since we raise an exception the try will fail and the exception later with the error popup will be raised
-                # TODO: I'm still able to break it. If user doesn't give a file but a path without a file or a file which is not a binary no exception at all is raised.
+                raise Exception("FEM: wrong ccx binary")
+                # since we raise an exception the try will fail and the exception later with the error popup will be raised
+                # TODO: I'm still able to break it. If user doesn't give a file but a path without a file or
+                # a file which is not a binary no exception at all is raised.
         except OSError as e:
             FreeCAD.Console.PrintError(str(e))
             if e.errno == 2:
-                error_message = "FEM: CalculiX binary ccx \'{}\' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n".format(ccx_binary)
+                error_message = (
+                    "FEM: CalculiX binary ccx \'{}\' not found. "
+                    "Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n".format(ccx_binary)
+                )
                 if FreeCAD.GuiUp:
                     QtGui.QMessageBox.critical(None, error_title, error_message)
                 raise Exception(error_message)
         except Exception as e:
             FreeCAD.Console.PrintError(str(e))
-            error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
+            error_message = (
+                "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. "
+                'There are some problems when running the ccx binary. '
+                'Check if ccx runs standalone without FreeCAD.\n'.format(ccx_binary, ccx_stdout, ccx_binary_sig)
+            )
             if FreeCAD.GuiUp:
                 QtGui.QMessageBox.critical(None, error_title, error_message)
             raise Exception(error_message)
@@ -685,14 +708,17 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             self.finished.emit(ret_code)
             progress_bar.stop()
             if ret_code or self.ccx_stderr:
-                FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
-                FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
-                FreeCAD.Console.PrintMessage(self.ccx_stderr)
-                FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
-                FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
-                FreeCAD.Console.PrintMessage(self.ccx_stdout)
-                self.has_for_nonpositive_jacobians()
-                FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
+                if ret_code == 201 and self.solver.AnalysisType == 'check':
+                    FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
+                else:
+                    FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
+                    FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
+                    FreeCAD.Console.PrintMessage(self.ccx_stderr)
+                    FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
+                    FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
+                    FreeCAD.Console.PrintMessage(self.ccx_stdout)
+                    self.has_for_nonpositive_jacobians()
+                    FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
             else:
                 FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
         else:
@@ -750,7 +776,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.results_present = True
                     break
             else:
-                FreeCAD.Console.PrintError('FEM: No result object in active Analysis.\n')
+                if self.solver.AnalysisType == 'check':
+                    for m in self.analysis.Group:
+                        if m.isDerivedFrom("Fem::FemMeshObjectPython"):
+                            # we have no result object but a mesh object, this happens in NOANALYSIS mode
+                            break
+                else:
+                    FreeCAD.Console.PrintError('FEM: No result object in active Analysis.\n')
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
 

@@ -106,7 +106,8 @@ def isDerivedFrom(obj, t):
 def getBoundBoxOfAllDocumentShapes(doc):
     overalboundbox = None
     for o in doc.Objects:
-        if hasattr(o, 'Shape') and hasattr(o.Shape, 'BoundBox'):  # netgen mesh obj has an attribute Shape which is a Document obj, which has no BB
+        # netgen mesh obj has an attribute Shape which is an Document obj, which has no BB
+        if hasattr(o, 'Shape') and hasattr(o.Shape, 'BoundBox'):
             try:
                 bb = o.Shape.BoundBox
             except:
@@ -122,7 +123,7 @@ def getSelectedFace(selectionex):
     aFace = None
     # print(selectionex)
     if len(selectionex) != 1:
-        FreeCAD.Console.PrintMessage('no or more than one object selected')
+        FreeCAD.Console.PrintMessage('none OR more than one object selected')
     else:
         sel = selectionex[0]
         if len(sel.SubObjects) != 1:

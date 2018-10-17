@@ -1338,7 +1338,11 @@ def find_element_in_shape(aShape, anElement):
                 return ele
         FreeCAD.Console.PrintError('Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n')
         if ele_st == 'Solid' and aShape.ShapeType == 'Solid':
-            print('We have been searching for a Solid in a Solid and we have not found it. In most cases this should be searching for a Solid inside a CompSolid. Check the ShapeType of your Part to mesh.')
+            messagePart = (
+                'We have been searching for a Solid in a Solid and we have not found it. '
+                'In most cases this should be searching for a Solid inside a CompSolid. Check the ShapeType of your Part to mesh.'
+            )
+            print(messagePart)
         # Part.show(anElement)
         # Part.show(aShape)
     elif ele_st == 'Face' or ele_st == 'Shell':
