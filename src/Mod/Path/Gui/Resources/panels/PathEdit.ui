@@ -189,7 +189,7 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QCheckBox" name="checkBox">
+     <widget class="QCheckBox" name="splitOutput">
       <property name="text">
        <string>Split Output</string>
       </property>
@@ -205,17 +205,17 @@
         <widget class="QComboBox" name="orderBy">
          <item>
           <property name="text">
-           <string>Operation</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Work Coordinate System</string>
+           <string>Fixture</string>
           </property>
          </item>
          <item>
           <property name="text">
            <string>Tool</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Operation</string>
           </property>
          </item>
         </widget>
