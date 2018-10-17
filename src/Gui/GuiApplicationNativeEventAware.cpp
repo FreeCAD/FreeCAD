@@ -31,11 +31,10 @@
 #include "SpaceballEvent.h"
 #include "Application.h"
 #if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
-  #include <QX11Info>
   #include <spnav.h>
 
   #if QT_VERSION >= 0x050000
-    #include <X11/Xlib.h>
+    #include <QTimer>
     #undef Bool
     #undef CursorShape
     #undef Expose
@@ -98,23 +97,16 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
     mainWindow = window;
 
 #if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
-    if (spnav_x11_open(QX11Info::display(), window->winId()) == -1) {
+    if (spnav_open() == -1) {
         Base::Console().Log("Couldn't connect to spacenav daemon\n");
     } else {
         Base::Console().Log("Connected to spacenav daemon\n");
         spaceballPresent = true;
 
     #if QT_VERSION >= 0x050000
-        static auto evFilter( [](void *msg, long *result){
-                Q_UNUSED(result);
-                auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware *>(QApplication::instance()));
-                if (inst) {
-                    return inst->xcbEventFilter(static_cast<const xcb_client_message_event_t *>(msg));
-                } else {
-                    return false;
-                }
-            } );
-        qApp->installNativeEventFilter(new Gui::RawInputEventFilter(evFilter));
+        QTimer* SpacenavPollTimer = new QTimer(this);
+		connect(SpacenavPollTimer, &QTimer::timeout, this, &GUIApplicationNativeEventAware::pollSpacenav);
+		SpacenavPollTimer->start(20);
     #endif // #if QT_VERSION >= 0x050000
     }
 
@@ -179,6 +171,7 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 
 bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object, QEvent *event)
 {
+	std::cout << "Gui::GUIApplicationNativeEventAware::processSpaceballEvent" << std::endl;
     if (!activeWindow()) {
         qDebug("No active window\n");
         return true;
@@ -389,233 +382,5 @@ void Gui::GUIApplicationNativeEventAware::importSettings()
         }
     }
 }
-
-#if defined(Q_OS_LINUX)
-
-#if QT_VERSION >= 0x050000
-
-bool Gui::GUIApplicationNativeEventAware::xcbEventFilter(const xcb_client_message_event_t *xcb_ev)
-{
-#if defined(SPNAV_FOUND)
-    spnav_event navEvent;
-
-    // Qt4 used XEvents in native event filters, but Qt5 changed to XCB.  The
-    // SpaceNavigator API only works with XEvent, so we need to construct a
-    // temporary XEvent with just enough information for spnav_x11_event()
-    if ((xcb_ev->response_type & 0x7F) == XCB_CLIENT_MESSAGE) {
-        XClientMessageEvent xev;
-
-        xev.type = ClientMessage;
-        xev.message_type = xcb_ev->type;
-        memcpy(xev.data.b, xcb_ev->data.data8, sizeof(xev.data.b));
-        xev.serial = 0; // These are just to squash warnings...
-        xev.send_event = 0;
-        xev.display = 0;
-        xev.window = 0;
-        xev.format = 0;
-
-        if (!spnav_x11_event(reinterpret_cast<XEvent *>(&xev), &navEvent)) {
-            return false;
-        }
-    } else {
-        return false;
-    }
-    // navEvent is now initialised
-
-    auto currentWidget(focusWidget());
-    if (!currentWidget) {
-        currentWidget = mainWindow;
-    }
-
-    switch (navEvent.type) {
-        case SPNAV_EVENT_MOTION:
-        {
-            motionDataArray[0] = navEvent.motion.x;
-            motionDataArray[1] = navEvent.motion.y;
-            motionDataArray[2] = navEvent.motion.z;
-            motionDataArray[3] = navEvent.motion.rx;
-            motionDataArray[4] = navEvent.motion.ry;
-            motionDataArray[5] = navEvent.motion.rz;
-
-            setOSIndependentMotionData();
-
-            importSettings();
-
-            auto motionEvent(new Spaceball::MotionEvent());
-
-            motionEvent->setTranslations( motionDataArray[0],
-                                          motionDataArray[1],
-                                          motionDataArray[2] );
-            motionEvent->setRotations( motionDataArray[3],
-                                       motionDataArray[4],
-                                       motionDataArray[5] );
-
-            postEvent(currentWidget, motionEvent);
-            return true;
-        }
-
-        case SPNAV_EVENT_BUTTON:
-        {
-            auto buttonEvent(new Spaceball::ButtonEvent());
-            buttonEvent->setButtonNumber(navEvent.button.bnum);
-            if (navEvent.button.press) {
-                buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
-            } else {
-                buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
-            }
-
-            postEvent(currentWidget, buttonEvent);
-            return true;
-        }
-
-        default:
-            Base::Console().Log("Unknown spaceball event\n");
-            return true;
-    } // end switch (navEvent.type) {
-
-#else
-    Q_UNUSED(xcb_ev);
-    return false;
-#endif // if/else defined(SPNAV_FOUND)
-}
-
-#else  // if QT_VERSION >= 0x050000
-
-bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
-{
-#ifdef SPNAV_FOUND
-    /*
-    First we check if we have a motion flush event:
-    - If there are unprocessed motion events we are in a flooding situation.
-      In that case we wait with generating a Spaceball event.
-    - A motion event counter of 0 indicates that FreeCAD is ready to process
-      the event. A Spaceball event, using the saved motion data, is posted.
-    */
-    static Display* display = QX11Info::display();
-    static Atom motion_flush_event = XInternAtom(display, "FCMotionFlushEvent", false);
-    static int nMotionEvents = 0;
-
-    QWidget *currentWidget = this->focusWidget();
-    if (!currentWidget)
-        currentWidget = mainWindow;
-
-    if (event->type == ClientMessage)
-    {
-        Atom message_type = event->xclient.message_type;
-        
-        if (message_type == motion_flush_event)
-        {
-            nMotionEvents--;
-            if (nMotionEvents == 0)
-            {
-                importSettings();
-                
-                Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
-                
-                motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
-                motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
-
-                this->postEvent(currentWidget, motionEvent);
-            }
-            
-            return true;
-        } // XEvent: motion_flush_event
-    } // XEvent: ClientMessage
-
-    /*
-    From here on we deal with spacenav events only:
-    - motion: The event data is saved and a self addressed flush event
-              is sent through the window system (XEvent). 
-              In the case of an event flooding, the motion data is added up.
-    - button: A Spaceball event is posted (QInputEvent).
-    */
-    spnav_event navEvent;
-    if (!spnav_x11_event(event, &navEvent))
-        return false;
-
-    if (navEvent.type == SPNAV_EVENT_MOTION)
-    {
-        /*
-        If the motion data of the preceding event has not been processed
-        through posting an Spaceball event (flooding situation), 
-        the motion data provided by the incoming event is added to the saved data. 
-        */
-    	int dx, dy, dz, drx, dry, drz;
-
-        if (nMotionEvents == 0)
-        {
-            dx = 0;
-            dy = 0;
-            dz = 0;
-            drx = 0;
-            dry = 0;
-            drz = 0;
-        }
-        else
-        {
-            dx = motionDataArray[0];
-            dy = motionDataArray[1];
-            dz = motionDataArray[2];
-            drx = motionDataArray[3];
-            dry = motionDataArray[4];
-            drz = motionDataArray[5];
-        }
-        
-        motionDataArray[0] = navEvent.motion.x;
-        motionDataArray[1] = navEvent.motion.y;
-        motionDataArray[2] = navEvent.motion.z;
-        motionDataArray[3] = navEvent.motion.rx;
-        motionDataArray[4] = navEvent.motion.ry;
-        motionDataArray[5] = navEvent.motion.rz;
-
-        if (!setOSIndependentMotionData()) return false;
-        
-        motionDataArray[0] += dx;
-        motionDataArray[1] += dy;
-        motionDataArray[2] += dz;
-        motionDataArray[3] += drx;
-        motionDataArray[4] += dry;
-        motionDataArray[5] += drz;
-        
-        /*
-        Send a self addressed flush event through the window system. This will
-        trigger a Spaceball event if FreeCAD is ready to do so.
-        */
-        nMotionEvents++;
-        XClientMessageEvent flushEvent;
-        
-        flushEvent.display = display;
-        flushEvent.window = event->xclient.window;
-        flushEvent.type = ClientMessage;
-        flushEvent.format = 8;    
-        flushEvent.message_type = motion_flush_event;
-        
-        XSendEvent (display, flushEvent.window, False, 0, (XEvent*)&flushEvent); // siehe spnavd, False, 0
-        
-        return true;
-    }
-
-    if (navEvent.type == SPNAV_EVENT_BUTTON)
-    {
-        Spaceball::ButtonEvent *buttonEvent = new Spaceball::ButtonEvent();
-        buttonEvent->setButtonNumber(navEvent.button.bnum);
-        if (navEvent.button.press)
-            buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
-        else
-            buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
-        this->postEvent(currentWidget, buttonEvent);
-        return true;
-    }
-
-    Base::Console().Log("Unknown spaceball event\n");
-    return true;
-#else
-    Q_UNUSED(event);
-    return false;
-#endif // SPNAV_FOUND
-}
-#endif  // if/else QT_VERSION >= 0x050000
-
-#endif // Q_OS_LINUX
 
 #include "moc_GuiApplicationNativeEventAware.cpp"
