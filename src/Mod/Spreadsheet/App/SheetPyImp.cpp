@@ -25,6 +25,7 @@
 
 #include <boost/tokenizer.hpp>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <App/PropertyStandard.h>
 #include "Utils.h"
@@ -91,10 +92,33 @@ PyObject* SheetPy::set(PyObject *args)
 
 PyObject* SheetPy::get(PyObject *args)
 {
-    char *address;
+    const char *address;
+    const char *address2=0;
 
-    if (!PyArg_ParseTuple(args, "s:get", &address))
+    if (!PyArg_ParseTuple(args, "s|s:get", &address, &address2))
         return 0;
+
+    if(address2) {
+        auto a1 = getSheetPtr()->getAddressFromAlias(address);
+        if(a1.empty())
+            a1 = address;
+        auto a2 = getSheetPtr()->getAddressFromAlias(address2);
+        if(a2.empty())
+            a2 = address2;
+        Range range(a1.c_str(),a2.c_str());
+        Py::Tuple tuple(range.size());
+        int i=0;
+        do {
+            App::Property *prop = getSheetPtr()->getPropertyByName(range.address().c_str());
+            if(!prop) {
+                std::ostringstream ss;
+                ss << "Invalid address '" << range.address() << "' in range " << address << ':' << address2;
+                PyErr_SetString(PyExc_ValueError, ss.str().c_str());
+            }
+            tuple.setItem(i++,Py::Object(prop->getPyObject(),true));
+        }while(range.next());
+        return Py::new_reference_to(tuple);
+    }
 
     App::Property * prop = this->getSheetPtr()->getPropertyByName(address);
 
@@ -962,6 +986,36 @@ PyObject* SheetPy::getRowHeight(PyObject *args)
         return 0;
     }
 }
+
+PyObject* SheetPy::eval(PyObject *args, PyObject *kwds)
+{
+    std::vector<std::pair<std::string,App::Expression*> > arguments;
+    auto owner = getSheetPtr();
+    if(!args) {
+        PyErr_SetString(PyExc_ValueError, "No command specified");
+        return 0;
+    }
+    Base::PythonVariables vars;
+    Py::Tuple tuple(args);
+    std::ostringstream ss;
+    ss << "eval(" << Py::Object(tuple[0]).as_string();
+    for(size_t i=1;i<tuple.size();++i)
+        ss << ", getvar(<<" << vars.add(Py::Object(tuple[i].ptr())) << ">>)";
+    if(kwds) {
+        Py::Mapping map(kwds);
+        for(auto it=map.begin();it!=map.end();++it) {
+            const auto &item(*it);
+            ss << ", " << item.first.as_string() << "=getvar(<<" << 
+                vars.add(item.second) << ">>)";
+        }
+    }
+    ss << ')';
+    PY_TRY {
+        std::unique_ptr<App::Expression> expr(App::Expression::parse(owner,ss.str()));
+        return Py::new_reference_to(App::pyObjectFromAny(expr->getValueAsAny()));
+    }PY_CATCH;
+}
+
 
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 

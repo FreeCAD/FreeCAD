@@ -165,5 +165,14 @@
         <UserDocu>Get given spreadsheet row height</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="eval" Keyword="true">
+      <Documentation>
+          <UserDocu>
+eval(cmd, ...)
+
+Evaluate a command using this spreadsheet
+         </UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
