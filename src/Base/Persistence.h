@@ -148,6 +148,12 @@ public:
     virtual void RestoreDocFile(Reader &/*reader*/);
     /// Encodes an attribute upon saving.
     static std::string encodeAttribute(const std::string&);
+    
+    //dump the persistence data into a python byte array data structure
+    PyObject* dumpToPython(int compression);
+    
+    //restore the persistence data from a python data structure that supports the buffer protocol
+    PyObject* restoreFromPython(PyObject*);
 };
 
 } //namespace Base
