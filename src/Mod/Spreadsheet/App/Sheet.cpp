@@ -611,8 +611,10 @@ void Sheet::updateAlias(CellAddress key)
             }
         }
 
-        if (!aliasProp)
+        if (!aliasProp) {
             aliasProp = props.addDynamicProperty(prop->getTypeId().getName(), alias.c_str(), 0, 0, Prop_ReadOnly | Prop_Transient);
+            aliasProp->setStatus(App::Property::Hidden,true);
+        }
 
         aliasProp->Paste(*prop);
     }
