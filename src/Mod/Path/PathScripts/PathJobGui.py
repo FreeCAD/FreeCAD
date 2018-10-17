@@ -599,6 +599,17 @@ class TaskPanel:
             self.obj.Label = str(self.form.jobLabel.text())
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [self.form.operationsList.item(i).data(self.DataObject) for i in range(self.form.operationsList.count())]
+            try:
+                self.obj.SplitOutput = self.form.splitOutput.isChecked()
+                self.obj.OrderOutputBy = str(self.form.orderBy.currentText())
+
+                flist = []
+                for i in range(self.form.wcslist.count()):
+                    if self.form.wcslist.item(i).checkState() == QtCore.Qt.CheckState.Checked:
+                        flist.append(self.form.wcslist.item(i).text())
+                self.obj.Fixtures = flist
+            except:
+                FreeCAD.Console.PrintWarning("The Job was created without fixture support.  Please delete and recreate the job\r\n") 
 
             self.updateTooltips()
             self.stockEdit.getFields(self.obj)
@@ -679,6 +690,17 @@ class TaskPanel:
 
         self.form.jobLabel.setText(self.obj.Label)
         self.form.jobDescription.setPlainText(self.obj.Description)
+
+        if hasattr(self.obj, "SplitOutput"):
+            self.form.splitOutput.setChecked(self.obj.SplitOutput)
+        if hasattr(self.obj, "OrderOutputBy"):
+            self.selectComboBoxText(self.form.orderBy, self.obj.OrderOutputBy)
+
+        if hasattr(self.obj, "Fixtures"):
+            for f in self.obj.Fixtures:
+                item = self.form.wcslist.findItems(f, QtCore.Qt.MatchExactly)[0]
+                item.setCheckState(QtCore.Qt.Checked)
+
 
         self.form.postProcessorOutputFile.setText(self.obj.PostProcessorOutputFile)
         self.selectComboBoxText(self.form.postProcessor, self.obj.PostProcessor)
