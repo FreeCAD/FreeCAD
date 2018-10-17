@@ -7323,17 +7323,17 @@ class ViewProviderDraftText:
 
     def onChanged(self,vobj,prop):
         if prop == "TextColor":
-            if hasattr(vobj,"TextColor"):
+            if "TextColor" in vobj.PropertiesList:
                 l = vobj.TextColor
                 self.mattext.diffuseColor.setValue([l[0],l[1],l[2]])
         elif (prop == "FontName"):
-            if hasattr(vobj,"FontName"):
+            if "FontName" in vobj.PropertiesList:
                 self.font.name = vobj.FontName.encode("utf8")
         elif prop  == "FontSize":
-            if hasattr(vobj,"FontSize"):
+            if "FontSize" in vobj.PropertiesList:
                 self.font.size = vobj.FontSize.Value
         elif prop == "Justification":
-            if hasattr(vobj,"Justification"):
+            if "Justification" in vobj.PropertiesList:
                 from pivy import coin
                 if vobj.Justification == "Left":
                     self.text2d.justification = coin.SoText2.LEFT
@@ -7345,7 +7345,7 @@ class ViewProviderDraftText:
                     self.text2d.justification = coin.SoText2.CENTER
                     self.text3d.justification = coin.SoAsciiText.CENTER
         elif prop == "LineSpacing":
-            if hasattr(vobj,"LineSpacing"):
+            if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing
                 self.text3d.spacing = vobj.LineSpacing
 
