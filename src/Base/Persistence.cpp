@@ -26,6 +26,9 @@
 #include "Reader.h"
 #include "PyObjectBase.h"
 
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
+
 #ifndef _PreComp_
 #endif
 
@@ -171,8 +174,8 @@ PyObject* Persistence::restoreFromPython(PyObject *buffer) {
     
     try {
         
-        //TODO: this mkes a stupid copy, we should make a stream directly from the buffer
-        std::stringstream stream(std::string((char*)buf.buf, buf.len), std::stringstream::in | std::stringstream::binary);
+        typedef boost::iostreams::basic_array_source<char> Device;
+        boost::iostreams::stream<Device> stream((char*)buf.buf, buf.len);
         
         zipios::ZipInputStream zipstream(stream);
         Base::XMLReader reader("", zipstream);
