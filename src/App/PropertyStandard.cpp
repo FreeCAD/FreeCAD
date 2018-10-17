@@ -1570,8 +1570,10 @@ void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any
         setValue(boost::any_cast<Quantity>(value).getUserString().toUtf8().constData());
     else if (value.type() == typeid(std::string))
         setValue(boost::any_cast<std::string>(value));
-    else if (value.type() == typeid(Py::Object))
-        setValue(boost::any_cast<Py::Object>(value).as_string());
+    else {
+        Base::PyGILStateLocker lock;
+        setValue(pyObjectFromAny(value).as_string());
+    }
 }
 
 const boost::any PropertyString::getPathValue(const ObjectIdentifier &path) const

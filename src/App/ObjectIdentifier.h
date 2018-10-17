@@ -196,6 +196,8 @@ public:
 
     const Component & getPropertyComponent(int i) const;
 
+    std::vector<Component> getComponents(bool propertyOnly=true) const;
+
     std::string getSubPathStr(bool toPython=false) const;
 
     int numComponents() const;
@@ -226,7 +228,7 @@ public:
     void setDocumentObjectName(const App::DocumentObject *obj, bool force = false, 
             const String &subname = String());
 
-    bool hasDocumentObjectName() const;
+    bool hasDocumentObjectName(bool forced=false) const;
 
     String getDocumentObjectName() const;
 
@@ -261,8 +263,6 @@ public:
     // Getter
 
     boost::any getValue(bool pathValue=false) const;
-
-    static boost::any pyObjectToAny(Py::Object pyobj);
 
     // Setter; is const because it does not alter the object state,
     // but does have a aide effect.
@@ -334,6 +334,16 @@ private:
 };
 
 std::size_t AppExport hash_value(const App::ObjectIdentifier & path);
+
+/** Helper function to convert Python object to/from boost::any
+*
+* WARNING! Must hold Python global interpreter lock before calling these
+* functions
+*/
+//@{
+boost::any AppExport pyObjectToAny(Py::Object pyobj, bool check=true);
+Py::Object AppExport pyObjectFromAny(const boost::any &value);
+//@}
 
 }
 

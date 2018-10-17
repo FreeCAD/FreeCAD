@@ -25,13 +25,13 @@
      %token RSTRING STRING MINUSSIGN PROPERTY_REF
      %token DOCUMENT OBJECT
      %token EXPONENT
-     %type <arguments> items items2
-     %type <named_argument> arg
-     %type <named_arguments> args
+     %token EXPAND
+     %type <named_argument> item arg
+     %type <named_arguments> items items2 args
      %type <expr> primary_exp unary_exp multiply_exp additive_exp relational_exp
      %type <expr> equality_exp logical_or_exp logical_and_exp conditional_exp power_exp
      %type <expr> input exp unit_exp indexable num range callable
-     %type <expr> list tuple dict dict1
+     %type <expr> list tuple dict dict1 idict idict1
      %type <quantity> UNIT
      %type <string> id_or_cell RSTRING STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
@@ -54,9 +54,10 @@
      %left EXPONENT
      %left NEG     /* negation--unary minus */
      %left POS     /* unary plus */
+     %left EXPAND
 
 %destructor { delete $$; } <expr>
-%destructor { for(auto expr : $$) {delete expr;} } <arguments>
+/* %destructor { for(auto expr : $$) {delete expr;} } <arguments> */
 %destructor { for(auto &v : $$) {delete v.second;} } <named_arguments>
 %destructor { delete $$.second; } <named_argument>
 
@@ -73,7 +74,7 @@ primary_exp
         | num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
         | STRING                                { $$ = new StringExpression(DocumentObject, $1); }
         | RSTRING                               { $$ = new StringExpression(DocumentObject, $1, true); }
-        | identifier                            { $$ = new VariableExpression(DocumentObject, $1);                                }
+        | identifier                            { $$ = VariableExpression::create(DocumentObject, $1); }
         | indexable                             { $$ = $1; }
         | callable                              { $$ = $1; }
         ;
@@ -82,11 +83,17 @@ indexable : '(' exp ')'     			{ $$ = $2; }
           | tuple                               { $$ = $1; }
           | list                                { $$ = $1; }
           | dict                                { $$ = $1; }
+          | idict                               { $$ = $1; }
           | indexable indexer                   { $1->addComponent($2); $$ = $1; }
           | indexable '.' id_or_cell            { $1->addComponent(ObjectIdentifier::SimpleComponent($3)); $$ = $1; }
           ;
 
-callable: identifier '(' ')'                    { $$ = new CallableExpression(DocumentObject, new VariableExpression(DocumentObject,$1)); }
+callable: identifier '(' ')'                    { 
+                                                    $$ = CallableExpression::create(DocumentObject,$1);
+                                                    if(!$$) { 
+                                                        YYABORT;
+                                                    } 
+                                                }
         | identifier '(' args ')'               { 
                                                     $$ = CallableExpression::create(DocumentObject, $1, $3); 
                                                     if(!$$) { 
@@ -175,18 +182,24 @@ id_or_cell : IDENTIFIER                         { $$ = $1; }
 
 sep : ',' | ';' ;
 
-items2 : exp sep exp                            { $$.push_back($1); $$.push_back($3); }
-       | items2 sep exp                         { $1.push_back($3); $$.swap($1); }
+item  : exp                                     { $$.first.clear(); $$.second = $1; }
+      | range                                   { $$.first.clear(); $$.second = $1; }
+      | '*' exp                                 { $$.first = "*"; $$.second = $2; }
+      | '*' range                               { $$.first = "*"; $$.second = $2; }
+      ;
+
+items2 : item sep item                          { $$.push_back($1); $$.push_back($3); }
+       | items2 sep item                        { $1.push_back($3); $$.swap($1); }
        ;
 
 tuple : '(' sep ')'                             { $$ = new TupleExpression(DocumentObject); }
-      | '(' exp sep ')'                         { $$ = new TupleExpression(DocumentObject, $2); }
+      | '(' item sep ')'                        { $$ = new TupleExpression(DocumentObject, $2); }
       | '(' items2 ')'                          { $$ = new TupleExpression(DocumentObject, $2); }
       | '(' items2 sep ')'                      { $$ = new TupleExpression(DocumentObject, $2); }
       ;
 
-items : exp                                     { $$.push_back($1); }
-      | items sep exp                           { $1.push_back($3); $$.swap($1); }
+items : item                                    { $$.push_back($1); }
+      | items sep item                          { $1.push_back($3); $$.swap($1); }
       ;
 
 list : '[' ']'                                  { $$ = new ListExpression(DocumentObject); }
@@ -194,8 +207,12 @@ list : '[' ']'                                  { $$ = new ListExpression(Docume
      | '[' items sep ']'                        { $$ = new ListExpression(DocumentObject, $2); }
      ;
 
+dict_expand : '*' | EXPAND
+
 dict1 : '{' exp ':' exp                         { $$ = new DictExpression(DocumentObject, $2, $4); }
+      | '{' dict_expand exp                     { $$ = new DictExpression(DocumentObject, 0, $3); }
       | dict1 sep exp ':' exp                   { static_cast<DictExpression*>($1)->addItem($3,$5); $$ = $1; }
+      | dict1 sep dict_expand exp               { static_cast<DictExpression*>($1)->addItem(0,$4); $$ = $1; }
       ;
 
 dict : '{' '}'                                  { $$ = new DictExpression(DocumentObject); }
@@ -203,12 +220,22 @@ dict : '{' '}'                                  { $$ = new DictExpression(Docume
      | dict1 sep '}'                            { $$ = $1; }
      ;
 
+idict1 : '{' id_or_cell '=' exp                 { $$ = new IDictExpression(DocumentObject, $2, $4); }
+       | '{' dict_expand '=' exp                { $$ = new IDictExpression(DocumentObject, "**", $4); }
+       | idict1 sep id_or_cell '=' exp          { static_cast<IDictExpression*>($1)->addItem($3,$5); $$ = $1; }
+       | idict1 sep dict_expand '=' exp         { static_cast<IDictExpression*>($1)->addItem("**",$5); $$ = $1; }
+       ;
+
+idict : idict1 '}'                              { $$ = $1; }
+      | idict1 sep '}'                          { $$ = $1; }
+      ;
+
 arg: exp                                        { $$.first.clear(); $$.second = $1; }
-   | id_or_cell '='  exp                        { $$.first = $1; $$.second = $3; }
+   | id_or_cell '=' exp                         { $$.first = $1; $$.second = $3; }
    | '*' exp                                    { $$.first = "*"; $$.second = $2; }
    | range                                      { $$.first.clear(); $$.second = $1; }
    | '*' range                                  { $$.first = '*'; $$.second = $2; }
-   | '*' '*' exp                                { $$.first = "**"; $$.second = $3; }
+   | EXPAND exp                                 { $$.first = "**"; $$.second = $2; }
    ;
 
 args: arg                                       { $$.push_back($1); }
@@ -221,7 +248,7 @@ num:       ONE                                  { $$ = new NumberExpression(Docu
          | CONSTANT                             { $$ = new ConstantExpression(DocumentObject, $1.name, Quantity($1.fvalue));      }
          ;
 
-range: id_or_cell ':' id_or_cell              { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
+range: id_or_cell ':' id_or_cell                { $$ = new RangeExpression(DocumentObject, $1, $3);                               }
      ;
 
 unit_exp: UNIT                                  { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }

@@ -107,7 +107,7 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.C4, 4)
         self.assertEqual(sheet.C5, 6)
 
-        self.assertEqual(sheet.D1, u'ERR: Invalid number of entries: at least two required.')
+        self.assertTrue(sheet.D1.startswith(u'ERR: Invalid number of entries: at least two required.'))
         self.assertEqual(sheet.D2, 0.7071067811865476)
         self.assertEqual(sheet.D3, 1.0)
         self.assertEqual(sheet.D4, 1.2909944487358056)
@@ -132,12 +132,12 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.G5, Units.Quantity('1 mm'))
         self.assertEqual(sheet.G6, Units.Quantity('15 mm'))
 
-        self.assertEqual(sheet.H1, u'ERR: Quantity::operator +=(): Unit mismatch in plus operation')
-        self.assertEqual(sheet.H2, u'ERR: Quantity::operator <(): quantities need to have same unit to compare')
-        self.assertEqual(sheet.H3, u'ERR: Quantity::operator >(): quantities need to have same unit to compare')
+        self.assertTrue(sheet.H1.startswith(u'ERR: Quantity::operator +=(): Unit mismatch in plus operation'))
+        self.assertTrue(sheet.H2.startswith(u'ERR: Quantity::operator <(): quantities need to have same unit to compare'))
+        self.assertTrue(sheet.H3.startswith(u'ERR: Quantity::operator >(): quantities need to have same unit to compare'))
         self.assertEqual(sheet.H4, 4)
-        self.assertEqual(sheet.H5, u'ERR: Quantity::operator +(): Unit mismatch in minus operation')
-        self.assertEqual(sheet.H6, u'ERR: Quantity::operator +=(): Unit mismatch in plus operation')
+        self.assertTrue(sheet.H5.startswith(u'ERR: Quantity::operator +(): Unit mismatch in minus operation'))
+        self.assertTrue(sheet.H6.startswith(u'ERR: Quantity::operator +=(): Unit mismatch in plus operation'))
 
     def assertMostlyEqual(self, a, b):
         if type(a) is Units.Quantity:
@@ -263,13 +263,13 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.C4,  Units.Quantity('3 mm'))
         self.assertMostlyEqual(sheet.A5,  math.exp(3))  # Exp
         self.assertMostlyEqual(sheet.B5,  math.exp(-3))
-        self.assertEqual(sheet.C5,  u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.C5.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A6,  math.log(3))    # Log
         self.assertTrue(math.isnan(sheet.B6))
-        self.assertEqual(sheet.C6,  u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.C6.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A7,  math.log10(10))  # Log10
         self.assertTrue(math.isnan(sheet.B7))
-        self.assertEqual(sheet.C7,  u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.C7.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A8,  3) # Round
         self.assertMostlyEqual(sheet.B8,  4)
         self.assertMostlyEqual(sheet.C8,  -3)
@@ -303,17 +303,17 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertMostlyEqual(sheet.G11, Units.Quantity('-4 mm'))
         self.assertMostlyEqual(sheet.H11, Units.Quantity('-4 mm'))
         self.assertMostlyEqual(sheet.A12, Units.Quantity('30 deg')) # Asin
-        self.assertEqual(sheet.B12, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B12.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A13, Units.Quantity('60 deg')) # Acos
-        self.assertEqual(sheet.B13, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B13.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A14, Units.Quantity('60 deg')) # Atan
-        self.assertEqual(sheet.B14, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B14.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A15, math.sinh(0.5)) # Sinh
-        self.assertEqual(sheet.B15, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B15.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A16, math.cosh(0.5)) # Cosh
-        self.assertEqual(sheet.B16, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B16.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A17, math.tanh(0.5)) # Tanh
-        self.assertEqual(sheet.B17, u'ERR: Unit must be empty.')
+        self.assertTrue(sheet.B17.startswith(u'ERR: Unit must be empty.'))
         self.assertMostlyEqual(sheet.A18, 2)   # Sqrt
         self.assertMostlyEqual(sheet.B18, Units.Quantity('2 mm'))
         self.assertMostlyEqual(sheet.A19, 3) # Mod
@@ -322,32 +322,32 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.D19, 3)
         self.assertMostlyEqual(sheet.A20, Units.Quantity('45 deg'))       # Atan2
         self.assertMostlyEqual(sheet.B20, Units.Quantity('-45 deg'))
-        self.assertEqual(sheet.C20, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C20.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D20, Units.Quantity('45 deg'))
         self.assertMostlyEqual(sheet.A21, 2401) # Pow
         self.assertMostlyEqual(sheet.B21, 2401)
         self.assertMostlyEqual(sheet.C21, Units.Quantity('2401mm^4'))
-        self.assertEqual(sheet.D21, u'ERR: Exponent is not allowed to have a unit.')
+        self.assertTrue(sheet.D21.startswith(u'ERR: Exponent is not allowed to have a unit.'))
         self.assertMostlyEqual(sheet.A23, 5) # Hypot
         self.assertMostlyEqual(sheet.B23, 5)
-        self.assertEqual(sheet.C23, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C23.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D23, Units.Quantity('5mm'))
 
         l = math.sqrt(3*3 + 4*4 + 5*5)
         self.assertMostlyEqual(sheet.A24, l) # Hypot
         self.assertMostlyEqual(sheet.B24, l)
-        self.assertEqual(sheet.C24, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C24.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D24, Units.Quantity("7.07106781186548 mm"))
         self.assertMostlyEqual(sheet.A26, 4) # Cath
         self.assertMostlyEqual(sheet.B26, 4)
-        self.assertEqual(sheet.C26, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C26.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D26, Units.Quantity('4mm'))
 
         l = math.sqrt(5 * 5 + 4*4 + 3*3)
         l = math.sqrt(l * l - 5*5 - 4*4)
         self.assertMostlyEqual(sheet.A27, l) # Cath
         self.assertMostlyEqual(sheet.B27, l)
-        self.assertEqual(sheet.C27, u'ERR: Units must be equal')
+        self.assertTrue(sheet.C27.startswith(u'ERR: Units must be equal'))
         self.assertMostlyEqual(sheet.D27, Units.Quantity("3 mm"))
         FreeCAD.closeDocument(doc.Name)
         

@@ -251,6 +251,7 @@ r\<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext,true); 
 
 {DIGIT}*"."{DIGIT}+{EXPO}?   COUNTCHARS; yylval.fvalue = num_change(yytext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}*","{DIGIT}+{EXPO}?   COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
+{DIGIT}+"."{DIGIT}*{EXPO}?   COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}+{EXPO}               COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}+                     { COUNTCHARS;
                                yylval.ivalue = strtoll( yytext, NULL, 0 );
@@ -264,9 +265,17 @@ r\<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext,true); 
 "pi"                         COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 "e"                          COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
 "None"                       COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "None"; return CONSTANT; // constant None
+"True"                       COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return CONSTANT; // constant None
+"true"                       COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return CONSTANT; // constant None
+"False"                      COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "False"; return CONSTANT; // constant None
+"false"                      COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "False"; return CONSTANT; // constant None
 
 $[A-Za-z]{1,2}+${DIGIT}+     COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 [A-Za-z]{1,2}${DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 $[A-Za-z]{1,2}{DIGIT}+       COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 
 ({L}{M}*|_)({L}{M}*|{N}|_|@)*   COUNTCHARS; yylval.string = yytext; return IDENTIFIER;
+
+"# "[^\n]*                     { /* eat up comment */ }
+
+"**"                         COUNTCHARS; return EXPAND;

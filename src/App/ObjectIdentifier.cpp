@@ -192,6 +192,17 @@ const App::ObjectIdentifier::Component &App::ObjectIdentifier::getPropertyCompon
     return components[result.propertyIndex + i];
 }
 
+std::vector<ObjectIdentifier::Component> ObjectIdentifier::getComponents(bool propertyOnly) const {
+    if(!propertyOnly || components.size()<=1 || documentObjectName.getString().empty())
+        return components;
+    ResolveResults result(*this);
+    if(result.propertyIndex==0)
+        return components;
+    std::vector<ObjectIdentifier::Component> res;
+    res.insert(res.end(),components.begin()+result.propertyIndex,components.end());
+    return res;
+}
+
 /**
  * @brief Compare object identifier with \a other.
  * @param other Other object identifier.
@@ -1030,15 +1041,15 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         return 0;
 
     static std::map<std::string,int> _props = {
-        {"shape",PseudoShape}, 
-        {"placement",PseudoPlacement},
-        {"matrix",PseudoMatrix},
-        {"placement_",PseudoLinkPlacement},
-        {"matrix_",PseudoLinkMatrix},
-        {"self",PseudoSelf},
-        {"app",PseudoApp},
-        {"part",PseudoPart},
-        {"re",PseudoRegex},
+        {"_shape",PseudoShape}, 
+        {"_placement",PseudoPlacement},
+        {"_matrix",PseudoMatrix},
+        {"_placement_",PseudoLinkPlacement},
+        {"_matrix_",PseudoLinkMatrix},
+        {"_self",PseudoSelf},
+        {"_app",PseudoApp},
+        {"_part",PseudoPart},
+        {"_re",PseudoRegex},
     };
     auto it = _props.find(propertyName);
     if(it == _props.end())
@@ -1186,8 +1197,8 @@ ObjectIdentifier::String ObjectIdentifier::getDocumentObjectName() const
     return result.resolvedDocumentObjectName;
 }
 
-bool ObjectIdentifier::hasDocumentObjectName() const {
-    return !documentObjectName.getString().empty();
+bool ObjectIdentifier::hasDocumentObjectName(bool forced) const {
+    return !documentObjectName.getString().empty() && (!forced || documentObjectNameSet);
 }
 
 /**
@@ -1323,13 +1334,92 @@ boost::any ObjectIdentifier::getValue(bool pathValue) const
     return pyObjectToAny(Py::Object(pyvalue,true));
 }
 
-boost::any ObjectIdentifier::pyObjectToAny(Py::Object value) {
-    Base::PyGILStateLocker lock;
+// This class is intended to be contained inside boost::any (via a shared_ptr)
+// without holding Python global lock
+class PyObjectWrapper {
+public:
+    typedef std::shared_ptr<PyObjectWrapper> Pointer;
+
+    PyObjectWrapper(PyObject *obj):pyobj(obj) {
+        Py::_XINCREF(pyobj);
+    }
+    ~PyObjectWrapper() {
+        if(pyobj) {
+            Base::PyGILStateLocker lock;
+            Py::_XDECREF(pyobj);
+        }
+    }
+    PyObjectWrapper(const PyObjectWrapper &) = delete;
+    PyObjectWrapper &operator=(const PyObjectWrapper &) = delete;
+
+    Py::Object get() {
+        if(!pyobj)
+            return Py::Object();
+        return Py::Object(pyobj);
+    }
+
+private:
+    PyObject *pyobj;
+};
+
+static inline PyObjectWrapper::Pointer pyObjectWrap(PyObject *obj) {
+    return std::make_shared<PyObjectWrapper>(obj);
+}
+
+static bool essentiallyEqual(double a, double b, double epsilon)
+{
+    return fabs(a - b) <= ( (fabs(a) > fabs(b) ? fabs(b) : fabs(a)) * epsilon);
+}
+
+namespace App {
+Py::Object pyObjectFromAny(const boost::any &value) {
+    if(value.empty())
+        return Py::Object();
+    else if (value.type() == typeid(PyObjectWrapper::Pointer))
+        return boost::any_cast<PyObjectWrapper::Pointer>(value)->get();
+    else if (value.type() == typeid(Quantity))
+        return Py::Object(new QuantityPy(new Quantity(boost::any_cast<Quantity>(value))));
+    else if (value.type() == typeid(double)) {
+        double v = boost::any_cast<double>(value);
+        double rv = std::round(v);
+        const double epsilon = std::numeric_limits<double>::epsilon();
+        if(essentiallyEqual(v,rv,epsilon)) {
+            long l = (long)rv;
+            if(std::abs(l)<INT_MAX)
+                return Py::Int(l);
+            return Py::Long((long)rv);
+        }
+        return Py::Float(v);
+    } else if (value.type() == typeid(float)) {
+        float v = boost::any_cast<float>(value);
+        float rv = std::round(v);
+        const float epsilon = std::numeric_limits<float>::epsilon();
+        if(essentiallyEqual(v,rv,epsilon))
+            return Py::Int((int)rv);
+        return Py::Float(v);
+    } else if (value.type() == typeid(int)) 
+        return Py::Int(boost::any_cast<int>(value));
+    else if (value.type() == typeid(long))
+        return Py::Long(boost::any_cast<long>(value));
+    else if (value.type() == typeid(bool))
+        return Py::Boolean(boost::any_cast<bool>(value));
+    else if (value.type() == typeid(std::string))
+        return Py::String(boost::any_cast<string>(value));
+    else if (value.type() == typeid(const char*))
+        return Py::String(boost::any_cast<const char*>(value));
+
+    throw TypeError("Unknown type");
+}
+
+boost::any pyObjectToAny(Py::Object value, bool check) {
 
     if(value.isNone())
         return boost::any();
 
     PyObject *pyvalue = value.ptr();
+
+    if(!check)
+        return boost::any(pyObjectWrap(pyvalue));
 
 #if PY_MAJOR_VERSION < 3
     if (PyInt_Check(pyvalue))
@@ -1362,9 +1452,12 @@ boost::any ObjectIdentifier::pyObjectToAny(Py::Object value) {
         return boost::any(*q);
     }
     else {
-        return boost::any(value);
+        return boost::any(pyObjectWrap(pyvalue));
     }
 }
+
+} // namespace App
+
 
 /**
  * @brief Set value of a property or field pointed to by this object identifier.
@@ -1386,8 +1479,8 @@ void ObjectIdentifier::setValue(const boost::any &value) const
     PythonVariables vars;
     ss << getPythonAccessor(rs,vars) + " = ";
 
-    if (value.type() == typeid(Py::Object)) {
-        ss <<  vars.add(boost::any_cast<Py::Object>(value));
+    if (value.type() == typeid(PyObjectWrapper::Pointer)) {
+        ss <<  vars.add(boost::any_cast<PyObjectWrapper::Pointer>(value)->get());
     }else if (value.type() == typeid(Base::Quantity))
         ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<Base::Quantity>(value).getValue();
     else if (value.type() == typeid(double))

@@ -555,86 +555,6 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
     }
 }
 
-/**
- * @brief The RewriteExpressionVisitor class
- *
- * A class that visits each node of an expressions, and possibly
- * rewrites variables. This is a helper class to rewrite expressions
- * when rows or columns are either inserted or removed, to make
- * sure that formulas referencing cells being moved to a new locations
- * will still be valid, i.e rewritten.
- *
- */
-
-class RewriteExpressionVisitor : public ExpressionVisitor {
-public:
-    RewriteExpressionVisitor(CellAddress address, int rowCount, int colCount)
-        : mRow(address.row())
-        , mCol(address.col())
-        , mRowCount(rowCount)
-        , mColCount(colCount)
-        , mChanged(false) { }
-    ~RewriteExpressionVisitor() { }
-
-    void reset() { mChanged = false; }
-
-    bool changed() const { return mChanged; }
-
-    void visit(Expression * node) {
-        VariableExpression *varExpr = freecad_dynamic_cast<VariableExpression>(node);
-        RangeExpression *rangeExpr = freecad_dynamic_cast<RangeExpression>(node);
-
-
-        if (varExpr) {
-            static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
-            boost::cmatch cm;
-            std::string s = varExpr->name();
-
-            if (boost::regex_match(s.c_str(), cm, e)) {
-                const boost::sub_match<const char *> colstr = cm[1];
-                const boost::sub_match<const char *> rowstr = cm[2];
-                int thisRow, thisCol;
-
-                try {
-                    thisCol = decodeColumn(colstr.str());
-                    thisRow = decodeRow(rowstr.str());
-
-                    if (thisRow >= mRow || thisCol >= mCol) {
-                        thisRow += mRowCount;
-                        thisCol += mColCount;
-                        varExpr->setPath(ObjectIdentifier(varExpr->getOwner(), columnName(thisCol) + rowName(thisRow)));
-                        mChanged = true;
-                    }
-                }
-                catch (const Base::IndexError &) {
-                    /* Ignore this error here */
-                }
-            }
-        }
-        else if (rangeExpr) {
-            Range r = rangeExpr->getRange();
-            CellAddress from(r.from());
-            CellAddress to(r.to());
-
-            if (from.row() >= mRow || from.col() >= mCol) {
-                from = CellAddress(std::max(0, from.row() + mRowCount), std::max(0, from.col() + mColCount));
-                mChanged = true;
-            }
-            if (to.row() >= mRow || to.col() >= mCol) {
-                to = CellAddress(std::max(0, to.row() + mRowCount), std::max(0, to.col() + mColCount));
-                mChanged = true;
-            }
-            rangeExpr->setRange(Range(from, to));
-        }
-    }
-private:
-    int mRow;
-    int mCol;
-    int mRowCount;
-    int mColCount;
-    bool mChanged;
-};
-
 void PropertySheet::insertRows(int row, int count)
 {
     std::vector<CellAddress> keys;
@@ -646,7 +566,8 @@ void PropertySheet::insertRows(int row, int count)
     /* Sort them */
     std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, _1, _2));
 
-    RewriteExpressionVisitor visitor(CellAddress(row, CellAddress::MAX_COLUMNS), count, 0);
+    MoveCellsExpressionVisitor<PropertySheet> visitor(*this, 
+            CellAddress(row, CellAddress::MAX_COLUMNS), count, 0);
 
     AtomicPropertyChange signaller(*this);
     for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
@@ -695,7 +616,8 @@ void PropertySheet::removeRows(int row, int count)
     /* Sort them */
     std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::rowSortFunc, this, _1, _2));
 
-    RewriteExpressionVisitor visitor(CellAddress(row + count - 1, CellAddress::MAX_COLUMNS), -count, 0);
+    MoveCellsExpressionVisitor<PropertySheet> visitor(*this, 
+            CellAddress(row + count - 1, CellAddress::MAX_COLUMNS), -count, 0);
 
     AtomicPropertyChange signaller(*this);
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
@@ -734,7 +656,8 @@ void PropertySheet::insertColumns(int col, int count)
     /* Sort them */
     std::sort(keys.begin(), keys.end());
 
-    RewriteExpressionVisitor visitor(CellAddress(CellAddress::MAX_ROWS, col), 0, count);
+    MoveCellsExpressionVisitor<PropertySheet> visitor(*this, 
+            CellAddress(CellAddress::MAX_ROWS, col), 0, count);
 
     AtomicPropertyChange signaller(*this);
     for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
@@ -783,7 +706,8 @@ void PropertySheet::removeColumns(int col, int count)
     /* Sort them */
     std::sort(keys.begin(), keys.end(), boost::bind(&PropertySheet::colSortFunc, this, _1, _2));
 
-    RewriteExpressionVisitor visitor(CellAddress(CellAddress::MAX_ROWS, col + count - 1), 0, -count);
+    MoveCellsExpressionVisitor<PropertySheet> visitor(*this, 
+            CellAddress(CellAddress::MAX_ROWS, col + count - 1), 0, -count);
 
     AtomicPropertyChange signaller(*this);
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
@@ -1091,7 +1015,8 @@ void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)
     while (i != data.end()) {
         RelabelDocumentObjectExpressionVisitor<PropertySheet> v(*this, docObj);
         i->second->visit(v);
-        if(v.getChanged()) {
+        if(v.changed()) {
+            v.reset();
             recomputeDependencies(i->first);
             setDirty(i->first);
         }
@@ -1110,7 +1035,8 @@ void PropertySheet::renamedDocument(const App::Document * doc)
     while (i != data.end()) {
         RelabelDocumentExpressionVisitor<PropertySheet> v(*this, documentName[doc], doc->Label.getValue());
         i->second->visit(v);
-        if(v.getChanged()) {
+        if(v.changed()) {
+            v.reset();
             recomputeDependencies(i->first);
             setDirty(i->first);
         }

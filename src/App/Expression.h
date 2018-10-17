@@ -52,7 +52,8 @@ public:
     virtual ~ExpressionVisitor() {}
     virtual void visit(Expression * e) = 0;
     virtual void setExpressionChanged() {}
-    virtual int getChanged() const { return 0;}
+    virtual int changed() const { return 0;}
+    virtual void reset() {}
     virtual App::PropertyLinkBase* getPropertyLink() {return 0;}
 
 protected:
@@ -61,16 +62,19 @@ protected:
     void getDepObjects(Expression &e, std::set<App::DocumentObject*> &, std::vector<std::string> *); 
     bool adjustLinks(Expression &e, const std::set<App::DocumentObject*> &inList);
     bool renameDocument(Expression &e, const std::string &oldName, const std::string &newName);
+    bool renameObjectIdentifier(Expression &e,const std::map<ObjectIdentifier,ObjectIdentifier> &paths,
+            const ObjectIdentifier &path);
     bool updateElementReference(Expression &e, App::DocumentObject *feature,bool reverse);
     void importSubNames(Expression &e, const std::map<std::string,std::string> &subNameMap);
     void updateLabelReference(Expression &e, App::DocumentObject *obj, 
             const std::string &ref, const char *newLabel);
+    void moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount);
 };
 
 template<class P> class ExpressionModifier : public ExpressionVisitor {
 public:
     ExpressionModifier(P & _prop)
-        : prop(_prop),changed(0) 
+        : prop(_prop),_changed(0) 
     { 
         propLink = dynamic_cast<App::PropertyLinkBase*>(&prop);
     }
@@ -78,12 +82,14 @@ public:
     virtual ~ExpressionModifier() { }
 
     virtual void setExpressionChanged() override{
-        ++changed;
+        ++_changed;
         if (!signaller)
             signaller = boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange>(AtomicPropertyChangeInterface<P>::getAtomicPropertyChange(prop));
     }
 
-    virtual int getChanged() const override { return changed; }
+    virtual int changed() const override { return _changed; }
+
+    virtual void reset() override {_changed = 0;}
 
     virtual App::PropertyLinkBase* getPropertyLink() override {return propLink;}
 
@@ -91,7 +97,7 @@ protected:
     P & prop;
     App::PropertyLinkBase *propLink;
     boost::shared_ptr<typename AtomicPropertyChangeInterface<P>::AtomicPropertyChange> signaller;
-    int changed;
+    int _changed;
 };
 
 /**
@@ -114,7 +120,7 @@ public:
 
     Expression * eval() const;
 
-    std::string toString(bool persistent=false) const;
+    std::string toString(bool persistent=false, bool checkPriority=false) const;
 
     Expression *copy() const;
 
@@ -155,6 +161,12 @@ public:
         components.push_back(component);
     }
 
+    void addComponents(const std::vector<ObjectIdentifier::Component> &c) {
+        components.insert(components.end(),c.begin(),c.end());
+    }
+
+    static void finalize();
+
 protected:
     virtual bool _isIndexable() const {return false;}
     virtual Expression *_copy() const = 0;
@@ -167,6 +179,9 @@ protected:
     virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
     virtual void _importSubNames(const std::map<std::string,std::string> &) {}
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) {}
+    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
+                                         const ObjectIdentifier &, ExpressionVisitor &) {return false;}
+    virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) {}
     virtual boost::any _getValueAsAny() const = 0;
     virtual Expression *_eval() const {return 0;}
 
@@ -210,9 +225,7 @@ protected:
     virtual void _toString(std::ostringstream &ss, bool persistent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
-    virtual boost::any _getValueAsAny() const { 
-        return quantity.getUnit().isEmpty() ? boost::any(quantity.getValue()) : boost::any(quantity); 
-    }
+    virtual boost::any _getValueAsAny() const;
 
 protected:
     Base::Quantity quantity;
@@ -409,6 +422,8 @@ public:
 
     ~VariableExpression();
 
+    static Expression *create(const App::DocumentObject *owner, ObjectIdentifier var);
+
     virtual bool isTouched() const;
 
     virtual int priority() const;
@@ -431,6 +446,9 @@ protected:
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *);
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &);
     virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &);
+    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
+                                         const ObjectIdentifier &, ExpressionVisitor &);
+    virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
     virtual boost::any _getValueAsAny() const;
 
 protected:
@@ -449,7 +467,7 @@ public:
             const std::vector<std::pair<std::string,Expression *> > &_args = {});
 
     static Expression *create(const App::DocumentObject *owner, const ObjectIdentifier &path,
-            const std::vector<std::pair<std::string,Expression *> > &args);
+            const std::vector<std::pair<std::string,Expression *> > &args = {});
 
     static Py::Object evaluate(const App::DocumentObject *owner, 
             const std::string &expr, PyObject *tuple, PyObject *kwds);
@@ -515,18 +533,20 @@ public:
 
     virtual int priority() const;
 
-    Range getRange() const { return range; }
-
-    void setRange(const Range & r);
+    Range getRange() const;
 
 protected:
     virtual void _toString(std::ostringstream &, bool) const;
     virtual Expression *_copy() const;
     virtual void _getDeps(ExpressionDeps &) const;
+    virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
+                                         const ObjectIdentifier &, ExpressionVisitor &);
+    virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
     virtual boost::any _getValueAsAny() const;
 
 protected:
-    Range range;
+    std::string begin;
+    std::string end;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -535,13 +555,14 @@ class AppExport PyObjectExpression : public Expression {
     TYPESYSTEM_HEADER();
 
 public:
-    PyObjectExpression(const App::DocumentObject * _owner=0, Py::Object obj=Py::Object());
+    PyObjectExpression(const App::DocumentObject * _owner=0, PyObject *pyobj=0);
+    ~PyObjectExpression();
 
     virtual int priority() const;
 
-    Py::Object getPyObject() const { return pyObj; }
+    Py::Object getPyObject() const;
 
-    void setPyObject(Py::Object pyobj) {pyObj = pyobj;}
+    void setPyObject(Py::Object pyobj);
 
 protected:
     virtual boost::any _getValueAsAny() const;
@@ -549,7 +570,7 @@ protected:
     virtual Expression *_copy() const;
 
 protected:
-    Py::Object pyObj;
+    PyObject *pyObj;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -558,12 +579,13 @@ class AppExport ListExpression : public Expression {
     TYPESYSTEM_HEADER();
 
 public:
-    ListExpression(const App::DocumentObject * _owner=0, const std::vector<Expression *> &items={});
+    ListExpression(const App::DocumentObject * _owner=0, 
+            const std::vector<std::pair<std::string, Expression*> > &items={});
     virtual ~ListExpression();
 
     virtual int priority() const;
 
-    void addItem(Expression *item);
+    void addItem(const std::pair<std::string,Expression *> &item);
 
 protected:
     virtual bool _isIndexable() const {return true;}
@@ -572,7 +594,7 @@ protected:
     virtual Expression *_copy() const;
 
 protected:
-    std::vector<Expression*> items;
+    std::vector<std::pair<bool,Expression*> > items;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -581,8 +603,9 @@ class AppExport TupleExpression : public ListExpression {
     TYPESYSTEM_HEADER();
 
 public:
-    TupleExpression(const App::DocumentObject * _owner=0, Expression *item=0);
-    TupleExpression(const App::DocumentObject * _owner, const std::vector<Expression *> &);
+    TupleExpression(const App::DocumentObject * _owner, const std::pair<std::string,Expression *> &tem);
+    TupleExpression(const App::DocumentObject * _owner=0, 
+            const std::vector<std::pair<std::string, Expression*> > &items={});
 
 protected:
     virtual boost::any _getValueAsAny() const;
@@ -614,7 +637,33 @@ protected:
 };
 
 //////////////////////////////////////////////////////////////////////
-//
+
+class AppExport IDictExpression : public Expression {
+    TYPESYSTEM_HEADER();
+
+public:
+    IDictExpression(const App::DocumentObject * _owner=0, 
+            const std::string &key=std::string(), Expression *value=0);
+
+    virtual ~IDictExpression();
+
+    virtual int priority() const;
+
+    void addItem(const std::string &key, Expression *value);
+
+protected:
+    virtual bool _isIndexable() const {return true;}
+    virtual boost::any _getValueAsAny() const;
+    virtual void _toString(std::ostringstream &, bool) const;
+    virtual Expression *_copy() const;
+
+protected:
+    std::vector<std::pair<std::string,Expression*> > items;
+};
+
+
+//////////////////////////////////////////////////////////////////////
+
 namespace ExpressionParser {
 AppExport Expression * parse(const App::DocumentObject *owner, const char *buffer);
 AppExport UnitExpression * parseUnit(const App::DocumentObject *owner, const char *buffer);

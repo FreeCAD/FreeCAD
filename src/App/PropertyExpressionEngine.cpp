@@ -530,6 +530,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         std::unique_ptr<Expression> e(expressions[*it].expression->eval());
 
         /* Set value of property */
+        Base::PyGILStateLocker lock;
         prop->setPathValue(*it, e->getValueAsAny());
 
         ++it;
@@ -782,12 +783,11 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inLis
 void PropertyExpressionEngine::updateElementReference(DocumentObject *feature, bool reverse) {
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this,feature,reverse);
-    int changed = 0;
     for(auto &e : expressions) {
         e.second.expression->visit(v);
-        if(changed!=v.getChanged()) {
+        if(v.changed()) {
             expressionChanged(e.first);
-            changed = v.getChanged();
+            v.reset();
         }
     }
 }

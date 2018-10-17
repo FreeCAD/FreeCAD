@@ -41,6 +41,7 @@
 #include <stdio.h>
 #include <stack>
 #include <deque>
+#include <cctype>
 #include <algorithm>
 #include <climits>
 #include "Expression.h"
@@ -73,15 +74,12 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 #pragma warning(disable : 4065)
 #endif
 
-#define __EXPR_THROW(_msg,_fmt,_e) do {\
-    if(_e)\
-        FC_LOG(_msg << _fmt << " -- " << _e->toString());\
-    else\
-        FC_LOG(_msg << _fmt);\
-    throw ExpressionError(_msg);\
+#define _EXPR_THROW(_msg,_e) do {\
+    std::ostringstream ss;\
+    ss << _msg  << std::endl << "In expression: " << _e->toString();\
+    throw ExpressionError(ss.str().c_str());\
 }while(0)
 
-#define _EXPR_THROW(_msg,_e) __EXPR_THROW(_msg,"",_e)
 #define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
 
 using namespace Base;
@@ -195,6 +193,16 @@ bool ExpressionVisitor::renameDocument(
         Expression &e, const std::string &oldName, const std::string &newName) 
 {
     return e._renameDocument(oldName,newName,*this);
+}
+
+bool ExpressionVisitor::renameObjectIdentifier(Expression &e,
+        const std::map<ObjectIdentifier,ObjectIdentifier> &paths, const ObjectIdentifier &path)
+{
+    return e._renameObjectIdentifier(paths,path,*this);
+}
+
+void ExpressionVisitor::moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount) {
+    return e._moveCells(address,rowCount,colCount,*this);
 }
 
 //
@@ -405,63 +413,26 @@ static bool definitelyLessThan(double a, double b, double epsilon)
     return (b - a) > ( (fabs(a) < fabs(b) ? fabs(b) : fabs(a)) * epsilon);
 }
 
-static Py::Object pyObjectFromAny(boost::any value, const Expression *expr=0) {
-    Base::PyGILStateLocker lock;
-    if(value.empty())
-        return Py::Object();
-    else if (value.type() == typeid(Py::Object))
-        return boost::any_cast<Py::Object>(value);
-    else if (value.type() == typeid(Quantity))
-        return Py::Object(new QuantityPy(new Quantity(boost::any_cast<Quantity>(value))));
-    else if (value.type() == typeid(double)) {
-        double v = boost::any_cast<double>(value);
-        double rv = std::round(v);
-        const double epsilon = std::numeric_limits<double>::epsilon();
-        if(essentiallyEqual(v,rv,epsilon)) {
-            long l = (long)rv;
-            if(std::abs(l)<INT_MAX)
-                return Py::Int(l);
-            return Py::Long((long)rv);
-        }
-        return Py::Float(v);
-    } else if (value.type() == typeid(float)) {
-        float v = boost::any_cast<float>(value);
-        float rv = std::round(v);
-        const float epsilon = std::numeric_limits<float>::epsilon();
-        if(essentiallyEqual(v,rv,epsilon))
-            return Py::Int((int)rv);
-        return Py::Float(v);
-    } else if (value.type() == typeid(int)) 
-        return Py::Int(boost::any_cast<int>(value));
-    else if (value.type() == typeid(long))
-        return Py::Long(boost::any_cast<long>(value));
-    else if (value.type() == typeid(bool))
-        return Py::Boolean(boost::any_cast<bool>(value));
-    else if (value.type() == typeid(std::string))
-        return Py::String(boost::any_cast<string>(value));
-    else if (value.type() == typeid(const char*))
-        return Py::String(boost::any_cast<const char*>(value));
-
-    try {
-        return boost::any_cast<Py::Object>(value);
-    }catch(...) {
-        _EXPR_THROW("Unknown type",expr);
-    }
-}
-
 static boost::any getValueByPython(const char *name, const char *cmd, const Expression *expr) {
-    Base::PyGILStateLocker lock;
     PyObject * pyvalue = Base::Interpreter().getValue(cmd, name);
     if (!pyvalue)
-        _EXPR_THROW("Failed to get value by python",expr);
-    return ObjectIdentifier::pyObjectToAny(Py::Object(pyvalue,true));
+        _EXPR_THROW("Failed to get value by python.",expr);
+    return pyObjectToAny(Py::Object(pyvalue,true));
+}
+
+static inline Py::Object _pyObjectFromAny(const boost::any &value, const Expression *e) {
+    try {
+        return pyObjectFromAny(value);
+    }catch(Base::Exception &) {
+        _EXPR_THROW("Unknown type", e);
+    }
 }
 
 boost::any Expression::getValueAsAny() const {
     if(components.empty())
         return _getValueAsAny();
     PythonVariables vars;
-    std::string name = vars.add(pyObjectFromAny(_getValueAsAny(),this));
+    std::string name = vars.add(_pyObjectFromAny(_getValueAsAny(),this));
     std::ostringstream ss;
     ss << name << '=' << name;
     for(auto &c : components) {
@@ -498,12 +469,10 @@ static Expression *checkRLiteral(App::DocumentObject *owner, const std::string &
 }
 
 Expression *Expression::fromAny(boost::any value) const {
-    Base::PyGILStateLocker lock;
-    if (value.empty())
+    if (value.empty()) {
+        Base::PyGILStateLocker lock;
         return new PyObjectExpression(owner);
-    else if (value.type() == typeid(Py::Object))
-        return new PyObjectExpression(owner,boost::any_cast<Py::Object>(value));
-    else if (value.type() == typeid(std::string))
+    } else if (value.type() == typeid(std::string))
         return checkRLiteral(owner,boost::any_cast<std::string>(value));
     else if (value.type() == typeid(Quantity))
         return new NumberExpression(owner,boost::any_cast<Quantity>(value));
@@ -519,14 +488,26 @@ Expression *Expression::fromAny(boost::any value) const {
         return new NumberExpression(owner,Quantity(boost::any_cast<double>(value)));
     else if (value.type() == typeid(const char*)) 
         return checkRLiteral(owner,boost::any_cast<const char *>(value));
-    else
-        EXPR_THROW("Failed to evaluate");
+    else {
+        Base::PyGILStateLocker lock;
+        Py::Object pyobj = _pyObjectFromAny(value,this);
+        if(pyobj.ptr() == Py::_True())
+            return new ConstantExpression(owner,"True",Quantity(1));
+        else if(pyobj.ptr() == Py::_False())
+            return new ConstantExpression(owner,"False",Quantity(1));
+        return new PyObjectExpression(owner,pyobj.ptr());
+    }
 }
 
-std::string Expression::toString(bool persistent) const {
+std::string Expression::toString(bool persistent, bool checkPriority) const {
     std::ostringstream ss;
     if(components.empty()) {
+        bool needsParens = checkPriority && priority()<20;
+        if(needsParens)
+            ss << '(';
         _toString(ss,persistent);
+        if(needsParens)
+            ss << ')';
         return ss.str();
     }
     if(!_isIndexable()) {
@@ -625,6 +606,10 @@ int UnitExpression::priority() const
     return 20;
 }
 
+boost::any UnitExpression::_getValueAsAny() const {
+    return quantity.getUnit().isEmpty() ? boost::any(quantity.getValue()) : boost::any(quantity); 
+}
+
 //
 // NumberExpression class
 //
@@ -713,6 +698,7 @@ Expression * OperatorExpression::_eval() const
     output = _calc(e1.get(),e2.get());
     if(output)
         return output;
+    Base::PyGILStateLocker lock;
     return fromAny(_calc(e1->getValueAsAny(),e2->getValueAsAny()));
 }
 
@@ -723,7 +709,7 @@ Expression *OperatorExpression::_calc(Expression *e1) const {
     case AND_OP: {
         auto v1 = freecad_dynamic_cast<NumberExpression>(e1);
         if((v1 && essentiallyEqual(v1->getValue(), 0.0, epsilon)) ||
-           (!v1 && !pyObjectFromAny(v1->getValueAsAny()).isTrue()))
+           (!v1 && !_pyObjectFromAny(v1->getValueAsAny(),e1).isTrue()))
             return new BooleanExpression(owner, false);
         break;
     }
@@ -731,7 +717,7 @@ Expression *OperatorExpression::_calc(Expression *e1) const {
     case OR_OP: {
         auto v1 = freecad_dynamic_cast<NumberExpression>(e1);
         if((v1 && !essentiallyEqual(v1->getValue(), 0.0, epsilon)) ||
-           (!v1 && pyObjectFromAny(v1->getValueAsAny()).isTrue()))
+           (!v1 && _pyObjectFromAny(v1->getValueAsAny(),e1).isTrue()))
             return new BooleanExpression(owner, true);
         break;
     }
@@ -766,12 +752,12 @@ Expression *OperatorExpression::_calc(Expression *e1, Expression *e2) const {
     switch (op) {
     case ADD:
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Incompatible units for + operator");
+            EXPR_THROW("Incompatible units for + operator.");
         output = new NumberExpression(owner, v1->getQuantity() + v2->getQuantity());
         break;
     case SUB:
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Incompatible units for - operator");
+            EXPR_THROW("Incompatible units for - operator.");
         output = new NumberExpression(owner, v1->getQuantity()- v2->getQuantity());
         break;
     case MOD:
@@ -790,33 +776,33 @@ Expression *OperatorExpression::_calc(Expression *e1, Expression *e2) const {
         break;
     case EQ:
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Incompatible units for the = operator");
+            EXPR_THROW("Incompatible units for the = operator.");
         output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case NEQ:
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Incompatible units for the != operator");
+            EXPR_THROW("Incompatible units for the != operator.");
         output = new BooleanExpression(owner, !essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case LT:
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Incompatible units for the < operator");
+            EXPR_THROW("Incompatible units for the < operator.");
         output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case GT:
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Incompatible units for the > operator");
+            EXPR_THROW("Incompatible units for the > operator.");
         output = new BooleanExpression(owner, definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon) );
         break;
     case LTE:
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Incompatible units for the <= operator");
+            EXPR_THROW("Incompatible units for the <= operator.");
         output = new BooleanExpression(owner, definitelyLessThan(v1->getValue(), v2->getValue(), epsilon) ||
                                        essentiallyEqual(v1->getValue(), v2->getValue(), epsilon));
         break;
     case GTE:
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Incompatible units for the >= operator");
+            EXPR_THROW("Incompatible units for the >= operator.");
         output = new BooleanExpression(owner, essentiallyEqual(v1->getValue(), v2->getValue(), epsilon) ||
                                        definitelyGreaterThan(v1->getValue(), v2->getValue(), epsilon));
         break;
@@ -847,13 +833,13 @@ boost::any OperatorExpression::_calc(boost::any l, boost::any r) const {
     case AND_OP2:
     case OR_OP:
     case OR_OP2:
-        return boost::any(pyObjectFromAny(r).isTrue());
+        return boost::any(_pyObjectFromAny(r,right).isTrue());
     default:
         break;
     }
     PythonVariables vars;
-    std::string var1 = vars.add(pyObjectFromAny(l,left));
-    std::string var2 = vars.add(pyObjectFromAny(r,right));
+    std::string var1 = vars.add(_pyObjectFromAny(l,left));
+    std::string var2 = vars.add(_pyObjectFromAny(r,right));
     std::ostringstream ss;
     ss << var1 << "=";
     switch (op) {
@@ -1138,6 +1124,64 @@ bool OperatorExpression::isRightAssociative() const
     }
 }
 
+
+//
+// Internal class to manager user defined import modules
+//
+class ImportModules: public ParameterGrp::ObserverType {
+public:
+    ImportModules() {
+        handle = GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Expression/PyModules");
+        handle->Attach(this);
+        for(auto &m : handle->GetBoolMap()) {
+            if(m.second)
+                modules.insert(m.first);
+        }
+    }
+
+    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+        if(!sReason)
+            return;
+        if(!handle->GetBool(sReason,false))
+            modules.erase(sReason);
+        else
+            modules.insert(sReason);
+    }
+
+    Py::Object getModule(const char *name, const Expression *e) {
+        auto it = modules.find(name);
+        if(it == modules.end())
+            _EXPR_THROW("Python module '" << name << "' not enabled.", e);
+        PyObject *pyobj = PyImport_ImportModule(name);
+        if(!pyobj) 
+            Base::PyException::ThrowException();
+        return Py::Object(pyobj,true);
+    }
+
+    static ImportModules *instance() {
+        static ImportModules *inst;
+        if(!inst)
+            inst = new ImportModules;
+        return inst;
+    }
+
+    ParameterGrp::handle getHandle() {
+        return handle;
+    }
+
+private:
+    std::set<std::string> modules;
+    ParameterGrp::handle handle;
+};
+
+class ImportParamLock: public ParameterLock {
+public:
+    ImportParamLock()
+        :ParameterLock(ImportModules::instance()->getHandle())
+    {}
+};
+
 //
 // FunctionExpression class. This class handles functions with one or two parameters.
 //
@@ -1175,8 +1219,10 @@ enum ExpressionFunctionType {
     EVAL,
     FUNC,
     FOR_EACH,
+    IMPORT_PY,
 
     PY_START,
+
     PY_ALL,
     PY_EACH,
     PY_BIN,
@@ -1206,6 +1252,7 @@ enum ExpressionFunctionType {
     PY_SORTED,
     PY_TUPLE,
     PY_ZIP,
+
     PY_END,
 
     // Aggregates
@@ -1259,6 +1306,7 @@ void init_functions() {
     registered_functions["getvar"] = GET_VAR;
     registered_functions["hasvar"] = HAS_VAR;
     registered_functions["foreach"] = FOR_EACH;
+    registered_functions["import"] = IMPORT_PY;
 
     // Python functions
     registered_functions["all"] = PY_ALL;
@@ -1505,7 +1553,7 @@ Expression * FunctionExpression::evalAggregate() const
                 else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
                     c->collect(Quantity(fp->getValue()));
                 else
-                    EXPR_THROW("Invalid property type for aggregate");
+                    EXPR_THROW("Invalid property type for aggregate.");
             } while (range.next());
         }
         else {
@@ -1530,7 +1578,7 @@ Expression * FunctionExpression::evalAggregate() const
 Expression * FunctionExpression::_eval() const
 {
     if(args.empty())
-        EXPR_THROW("Function requires at least one argument");
+        EXPR_THROW("Function requires at least one argument.");
 
     // Handle aggregate functions
     if (f > AGGREGATES)
@@ -1628,7 +1676,7 @@ Expression * FunctionExpression::_eval() const
             EXPR_THROW("Invalid second argument.");
 
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Units must be equal");
+            EXPR_THROW("Units must be equal.");
         unit = Unit::Angle;
         scaler = 180.0 / M_PI;
         break;
@@ -1650,7 +1698,7 @@ Expression * FunctionExpression::_eval() const
             if (exponent - boost::math::round(exponent) < 1e-9)
                 unit = v1->getUnit().pow(exponent);
             else
-                EXPR_THROW("Exponent must be an integer when used with a unit");
+                EXPR_THROW("Exponent must be an integer when used with a unit.");
         }
         break;
     }
@@ -1659,13 +1707,13 @@ Expression * FunctionExpression::_eval() const
         if (v2 == 0)
             EXPR_THROW("Invalid second argument.");
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Units must be equal");
+            EXPR_THROW("Units must be equal.");
 
         if (args.size() > 2) {
             if (v3 == 0)
                 EXPR_THROW("Invalid second argument.");
             if (v2->getUnit() != v3->getUnit())
-                EXPR_THROW("Units must be equal");
+                EXPR_THROW("Units must be equal.");
         }
         unit = v1->getUnit();
         break;
@@ -1759,18 +1807,17 @@ Expression * FunctionExpression::_eval() const
 
 boost::any FunctionExpression::_getValueAsAny() const {
     if(args.empty())
-        EXPR_THROW("Function requires at least one argument");
+        EXPR_THROW("Function requires at least one argument.");
 
     switch(f) {
     case GET_VAR: 
         if(args.size()>2)
-            EXPR_THROW("Function expects 2 or 3 arguments");
+            EXPR_THROW("Function expects 2 or 3 arguments.");
         // fall through
     case HAS_VAR: {
-        Base::PyGILStateLocker lock;
         boost::any value = args[0]->getValueAsAny();
         if(value.type()!=typeid(std::string))
-            EXPR_THROW("Expects the first argument evaluating to a string");
+            EXPR_THROW("Expects the first argument evaluating to a string.");
         Py::Object pyobj;
         bool found = Base::Interpreter().getVariable(
                 boost::any_cast<std::string>(value).c_str(),pyobj);
@@ -1779,14 +1826,14 @@ boost::any FunctionExpression::_getValueAsAny() const {
         if(!found) {
             if(args.size()==2)
                 return args[1]->getValueAsAny();
-            EXPR_THROW("Variable not found");
+            EXPR_THROW("Variable not found.");
         }
-        return ObjectIdentifier::pyObjectToAny(pyobj);
+        return pyObjectToAny(pyobj);
     } case FUNC: {
         std::unique_ptr<Expression> e(args[0]->eval());
         if(!e->isDerivedFrom(StringExpression::getClassTypeId()))
-            EXPR_THROW("Expects the first argument evaluating to a string");
-        return boost::any(Py::Object(new ExpressionPy(e.release())));
+            EXPR_THROW("Expects the first argument evaluating to a string.");
+        return pyObjectToAny(Py::Object(new ExpressionPy(e.release())),false);
     } default:
         break;
     } 
@@ -1883,6 +1930,36 @@ void FunctionExpression::visit(ExpressionVisitor &v)
     v.visit(this);
 }
 
+// Entry of Variable lookup tables for EVAL function
+struct EvalVar {
+    std::unique_ptr<Expression> expr;
+    std::unique_ptr<Expression> evalExpr;
+    EvalVar(Expression *e)
+        :expr(e)
+    {}
+    
+    Expression *eval() {
+        if(!evalExpr)
+            evalExpr.reset(expr->eval());
+        return evalExpr->copy();
+    }
+};
+
+typedef std::map<std::string,EvalVar> EvalVarTable;
+static EvalVarTable *_EvalVarTable;
+
+struct EvalVars {
+    EvalVars(EvalVarTable *table) {
+        assert(!_EvalVarTable);
+        if(table->size())
+            _EvalVarTable = table;
+
+    }
+    ~EvalVars() {
+        _EvalVarTable = 0;
+    }
+};
+
 //
 // VariableExpression class
 //
@@ -1897,6 +1974,35 @@ VariableExpression::VariableExpression(const DocumentObject *_owner, ObjectIdent
 
 VariableExpression::~VariableExpression()
 {
+}
+
+Expression *VariableExpression::create(const DocumentObject *owner, ObjectIdentifier var) {
+    if(_EvalVarTable) {
+        std::string txt = var.toString();
+        auto pos = txt.find('.');
+        if(pos!=std::string::npos)
+            txt.resize(pos);
+        auto it = _EvalVarTable->find(txt);
+        if(it!=_EvalVarTable->end()) {
+            Expression *expr;
+            try {
+                expr = it->second.eval();
+            }catch(Base::Exception &e) {
+                FC_ERR("Failed to evaluate argument with expression " <<it->second.expr->toString());
+                FC_THROWM(ExpressionError,"Failed to evaludate argument '" << it->first << "'");
+            }
+            const auto &components = var.getComponents(false);
+            if(components.size()) {
+                size_t i = 0;
+                if(!var.hasDocumentObjectName(true) && components[0].getName()==txt)
+                    i = 1;
+                for(;i<components.size();++i)
+                    expr->addComponent(components[i]);
+            }
+            return expr;
+        }
+    }
+    return new VariableExpression(owner,var);
 }
 
 /**
@@ -1993,6 +2099,37 @@ bool VariableExpression::_updateElementReference(
     return var.updateElementReference(feature,reverse,&v);
 }
 
+bool VariableExpression::_renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 
+        const ObjectIdentifier &path, ExpressionVisitor &v)
+{
+    const auto &oldPath = var.canonicalPath();
+    auto it = paths.find(oldPath);
+    if (it != paths.end()) {
+        v.setExpressionChanged();
+        setPath(it->second.relativeTo(path));
+        return true;
+    }
+    return false;
+}
+
+void VariableExpression::_moveCells(const CellAddress &address, 
+        int rowCount, int colCount, ExpressionVisitor &v) 
+{
+    std::string name = var.getPropertyName();
+    CellAddress addr = stringToAddress(name.c_str(),true);
+    if(!addr.isValid())
+        return;
+
+    int thisRow = addr.row();
+    int thisCol = addr.col();
+    if (thisRow >= address.row() || thisCol >= address.col()) {
+        thisRow += rowCount;
+        thisCol += colCount;
+        v.setExpressionChanged();
+        var = ObjectIdentifier(owner,CellAddress(thisRow,thisCol).toString());
+    }
+}
+
 //
 // CallableExpression class
 //
@@ -2018,9 +2155,9 @@ Expression *CallableExpression::create(const DocumentObject *owner,
         const std::vector<std::pair<std::string,Expression*> > &args)
 {
     if(path.numComponents()!=1 || path.hasDocumentObjectName()) 
-        return new CallableExpression(owner, new VariableExpression(owner,path),args);
+        return new CallableExpression(owner, VariableExpression::create(owner,path),args);
 
-    const std::string &name = path.getPropertyComponent(0).getName();
+    std::string name = path.getComponents()[0].getName();
     auto it = registered_functions.find(name);
     if(it == registered_functions.end()) {
         std::string msg("Unknown function ");
@@ -2028,7 +2165,7 @@ Expression *CallableExpression::create(const DocumentObject *owner,
         ExpressionParser::ExpressionParser_yyerror(msg.c_str());
         return 0;
     }
-    if(it->second == FOR_EACH || it->second == EVAL || 
+    if(it->second == FOR_EACH || it->second == EVAL || it->second == IMPORT_PY ||
        (it->second > PY_START && it->second < PY_END))
     {
         auto expr = new CallableExpression(owner,0,args);
@@ -2059,8 +2196,11 @@ void CallableExpression::_toString(std::ostringstream &ss, bool persistent) cons
             first = false;
         else
             ss << ", ";
-        if(v.first.size())
-            ss << v.first << '=';
+        if(v.first.size()) {
+            ss << v.first;
+            if(v.first != "*" && v.first!="**")
+                ss << '=';
+        }
         ss << v.second->toString(persistent);
     }
     ss << ')';
@@ -2087,65 +2227,64 @@ void CallableExpression::visit(ExpressionVisitor &v) {
 
 Py::Object CallableExpression::evaluate(const DocumentObject *owner, 
         const std::string &expr, PyObject *args, PyObject *kwds) {
-    Base::PyGILStateLocker lock;
     std::unique_ptr<CallableExpression> callable(new CallableExpression(owner));
     callable->ftype = EVAL;
     callable->args.emplace_back("",new StringExpression(owner,expr));
+
+    Base::PyGILStateLocker lock;
     if(args) {
         Py::Sequence seq(args);
         for(size_t i=0;i<seq.size();++i)
-            callable->args.emplace_back("",new PyObjectExpression(owner,Py::Object(seq[i])));
+            callable->args.emplace_back("",new PyObjectExpression(owner,seq[i].ptr()));
     }
     if(kwds) {
         Py::Dict dict(kwds);
         for(auto it=dict.begin();it!=dict.end();++it){
             const auto &value = (*it);
             callable->args.emplace_back(value.first.as_string(),
-                    new PyObjectExpression(owner,Py::Object(value.second))); 
+                    new PyObjectExpression(owner,value.second.ptr())); 
         }
     }
-    return pyObjectFromAny(callable->getValueAsAny(),callable.get());
+    return _pyObjectFromAny(callable->getValueAsAny(),callable.get());
 }
 
-static void argumentSetup(PythonVariables &vars, std::string &cmd, 
+static void argumentSetup(EvalVarTable &namedArgs,
+        PythonVariables &vars, std::string &cmd, 
         int &idx, const std::string &name, Expression *arg) 
 {
     if(name == "*") {
-        Py::Object pyobj(pyObjectFromAny(arg->getValueAsAny(),arg));
+        Py::Object pyobj(_pyObjectFromAny(arg->getValueAsAny(),arg));
         if(!pyobj.isSequence())
-            _EXPR_THROW("Expects a Python sequence from", arg);
+            _EXPR_THROW("Expects return of a Python sequence.", arg);
         Py::Sequence seq(pyobj);
         for(size_t i=0;i<seq.size();++i) {
             std::unique_ptr<Expression> expr(new PyObjectExpression(
-                        arg->getOwner(), Py::Object(seq[i])));
-            argumentSetup(vars,cmd,idx,"",expr.get());
+                        arg->getOwner(), seq[i].ptr()));
+            argumentSetup(namedArgs,vars,cmd,idx,"",expr.get());
         }
         return;
     }
     if(name == "**") {
-        Py::Object pyobj(pyObjectFromAny(arg->getValueAsAny(),arg));
+        Py::Object pyobj(_pyObjectFromAny(arg->getValueAsAny(),arg));
         if(!pyobj.isMapping())
-            _EXPR_THROW("Expects a Python mapping from", arg);
+            _EXPR_THROW("Expects return of a Python mapping.", arg);
         Py::Mapping mapping(pyobj);
         for(auto it=mapping.begin();it!=mapping.end();++it) {
             const auto &value = *it;
             if(!value.first.isString())
-                _EXPR_THROW("Only accepts string as key", arg);
-            std::unique_ptr<Expression> expr(new PyObjectExpression(
-                        arg->getOwner(), Py::Object(value.second)));
-            argumentSetup(vars,cmd,idx,value.first.as_string(),expr.get());
+                _EXPR_THROW("Only accepts string as key.", arg);
+            namedArgs.emplace(value.first.as_string(), EvalVar(new PyObjectExpression(
+                        arg->getOwner(), value.second.ptr())));
         }
+        return;
+    } else if(name.size() && (name[0]=='_' || std::isalpha(name[0]))) {
+        namedArgs.emplace(name,EvalVar(arg->copy()));
+        return;
     }
 
     std::ostringstream ss;
-    ss << '$';
-    if(name.empty())
-        ss << idx++;
-    else
-        ss << name;
-    ss << '$';
+    ss << '$' << idx++ << name << '$';
     std::string key = ss.str();
-
     if(cmd.find(key) == std::string::npos)
         return;
     std::unique_ptr<Expression> expr(arg->eval());
@@ -2166,60 +2305,75 @@ Expression *CallableExpression::_eval() const {
     boost::any value(args[0].second->getValueAsAny());
     if(value.type() == typeid(std::string))
         cmds.push_back(value);
-    else if(value.type()!=typeid(Py::Object) || !boost::any_cast<Py::Object>(value).isSequence())
-        EXPR_THROW("Expects the first argument to be a string or sequance of strings");
     else {
-        Py::Sequence seq(boost::any_cast<Py::Object>(value));
+        Py::Object pyobj(_pyObjectFromAny(value,args[0].second));
+        if(!pyobj.isSequence())
+            EXPR_THROW("Expects the first argument to be a string or sequance of strings.");
+        Py::Sequence seq(pyobj);
         if(!seq.size())
             return new PyObjectExpression(owner);
         cmds.reserve(seq.size());
         for(size_t i=0;i<seq.size();++i)
-            cmds.push_back(ObjectIdentifier::pyObjectToAny(Py::Object(seq[i])));
+            cmds.push_back(pyObjectToAny(Py::Object(seq[i])));
     }
     std::vector<std::pair<std::string,Py::Object> > results;
     results.reserve(cmds.size()-1);
     for(size_t i=0;i<cmds.size();++i) {
         if(cmds[i].type()!=typeid(std::string)) 
-            __EXPR_THROW("None string expression[", i << ']', this);
+            EXPR_THROW("Non string command: " << '['<< i << ']');
         std::string cmd(boost::any_cast<std::string>(cmds[i]));
         int idx=1;
+        EvalVarTable namedArgs;
         for(size_t j=1;j<args.size();++j)
-            argumentSetup(vars,cmd,idx,args[j].first,args[j].second);
+            argumentSetup(namedArgs,vars,cmd,idx,args[j].first,args[j].second);
         idx = -(int)results.size();
         for(auto &v : results) {
             std::unique_ptr<PyObjectExpression> expr(
-                    new PyObjectExpression(owner,v.second));
-            argumentSetup(vars,cmd,idx,std::to_string(idx++),expr.get());
+                    new PyObjectExpression(owner,v.second.ptr()));
+            argumentSetup(namedArgs,vars,cmd,idx,std::string(),expr.get());
         }
-        std::unique_ptr<Expression> result(parse(owner,cmd.c_str()));
+        std::unique_ptr<Expression> result;
+        try {
+            EvalVars namedVars(&namedArgs);
+            result.reset(parse(owner,cmd.c_str()));
+        } catch (Base::Exception &e) {
+            FC_THROWM(ExpressionError, e.what() << std::endl << "in " << cmd);
+        }
         if(i == cmds.size()-1) 
             return result->eval();
-        Py::Object res(pyObjectFromAny(result->getValueAsAny()));
+        Py::Object res(_pyObjectFromAny(result->getValueAsAny(),result.get()));
         results.emplace_back(vars.add(res),res);
     }
     return new PyObjectExpression(owner);
 }
 
 boost::any CallableExpression::_getValueAsAny() const {
-    Base::PyGILStateLocker lock;
     if(!expr) {
         switch(ftype) {
         case EVAL: {
             std::unique_ptr<Expression> e(_eval());
             return e->getValueAsAny();
+        } case IMPORT_PY: {
+            boost::any value(args[0].second->getValueAsAny());
+            if(value.type() != typeid(std::string))
+                EXPR_THROW("Function expecpts the first argument to be a string.");
+            Base::PyGILStateLocker lock;
+            return pyObjectToAny(ImportModules::instance()->getModule(
+                        boost::any_cast<std::string>(value).c_str(),this),false);
         } case FOR_EACH: {
             if(args.size()<2)
-                EXPR_THROW("Function expects at least two arguments");
-            Py::Object pyobj(pyObjectFromAny(args[0].second->getValueAsAny(),args[0].second));
+                EXPR_THROW("Function expects at least two arguments.");
+            Base::PyGILStateLocker lock;
+            Py::Object pyobj(_pyObjectFromAny(args[0].second->getValueAsAny(),args[0].second));
             if(!pyobj.isSequence())
-                EXPR_THROW("Function expecpts the first argument to be a Python sequence");
+                EXPR_THROW("Function expecpts the first argument to be a Python sequence.");
             boost::any value(args[1].second->getValueAsAny());
             if(value.type()!=typeid(std::string))
-                EXPR_THROW("Function expecpts the second argument to be a string");
+                EXPR_THROW("Function expecpts the second argument to be a string.");
             Py::List list;
             Py::Sequence seq(pyobj);
             if(!seq.size())
-                return boost::any(Py::Object(list));
+                return pyObjectToAny(list,false);
 
             std::unique_ptr<CallableExpression> callable(new CallableExpression(owner));
             callable->ftype = EVAL;
@@ -2234,9 +2388,9 @@ boost::any CallableExpression::_getValueAsAny() const {
             for(size_t i=0;i<seq.size();++i) {
                 arg1->setUnit(Quantity((double)i));
                 arg2->setPyObject(Py::Object(seq[i].ptr()));
-                list.append(pyObjectFromAny(callable->getValueAsAny(),callable.get()));
+                list.append(_pyObjectFromAny(callable->getValueAsAny(),callable.get()));
             }
-            return boost::any(Py::Object(list));
+            return pyObjectToAny(list,false);
         } default: {
             assert(name.size());
             PythonVariables vars;
@@ -2254,18 +2408,16 @@ boost::any CallableExpression::_getValueAsAny() const {
                     if(v.first[0] != '*')
                         ss << '=';
                 }
-                ss << vars.add(pyObjectFromAny(v.second->getValueAsAny(),v.second));
+                ss << vars.add(_pyObjectFromAny(v.second->getValueAsAny(),v.second));
             }
             ss << ')';
             return getValueByPython(res.c_str(), ss.str().c_str(), this);
         }}
     }
-    boost::any value = expr->getValueAsAny();
-    Py::Object pyobj;
-    if(value.type()==typeid(Py::Object))
-        pyobj = boost::any_cast<Py::Object>(value);
+    Base::PyGILStateLocker lock;
+    Py::Object pyobj = _pyObjectFromAny(expr->getValueAsAny(),expr);
     if(!pyobj.isCallable())
-        EXPR_THROW("Expects Python callable");
+        EXPR_THROW("Expects Python callable.");
 
     int count=0;
     std::vector<Py::Sequence> seqs;
@@ -2273,9 +2425,9 @@ boost::any CallableExpression::_getValueAsAny() const {
         if(v.first.empty())
             ++count;
         else if(v.first == "*") {
-            Py::Object pyobj = pyObjectFromAny(v.second->getValueAsAny(),v.second);
+            Py::Object pyobj = _pyObjectFromAny(v.second->getValueAsAny(),v.second);
             if(!pyobj.isSequence()) 
-                EXPR_THROW("Expects Python sequence");
+                EXPR_THROW("Expects Python sequence.");
             seqs.push_back(pyobj);
             count += (int)seqs.back().size();
         }
@@ -2286,27 +2438,28 @@ boost::any CallableExpression::_getValueAsAny() const {
     auto it = seqs.begin();
     for(auto &v : args) {
         if(v.first.empty())
-            tuple.setItem(i++,pyObjectFromAny(v.second->getValueAsAny(),v.second));
+            tuple.setItem(i++,_pyObjectFromAny(v.second->getValueAsAny(),v.second));
         else if(v.first == "*") {
             Py::Sequence seq = *it++;
             for(size_t j=0;j<seq.size();++j)
                 tuple.setItem(i++,Py::Object(seq[j].ptr()));
         }else if(v.first == "**") {
-            Py::Object pyobj(pyObjectFromAny(v.second->getValueAsAny(),v.second));
+            Py::Object pyobj(_pyObjectFromAny(v.second->getValueAsAny(),v.second));
             if(!pyobj.isMapping()) 
-                EXPR_THROW("Expects Python mapping");
+                EXPR_THROW("Expects Python mapping.");
             Py::Mapping map(pyobj);
             for(auto it=map.begin();it!=map.end();++it) {
                 const auto &value = *it;
                 if(!value.first.isString())
-                    EXPR_THROW("Expects only string key");
+                    EXPR_THROW("Expects only string key.");
                 dict.setItem(value.first, value.second);
             }
         }else
-            dict.setItem(v.first, pyObjectFromAny(v.second->getValueAsAny(),v.second));
+            dict.setItem(v.first, _pyObjectFromAny(v.second->getValueAsAny(),v.second));
     }
     try {
-        return ObjectIdentifier::pyObjectToAny(Py::Callable(pyobj).apply(tuple,dict));
+        ImportParamLock lock;
+        return pyObjectToAny(Py::Callable(pyobj).apply(tuple,dict));
     }catch (Py::Exception&) {
         Base::PyException::ThrowException();
         return boost::any();
@@ -2328,16 +2481,34 @@ Expression *CallableExpression::_copy() const {
 
 TYPESYSTEM_SOURCE(App::PyObjectExpression, App::Expression);
 
-PyObjectExpression::PyObjectExpression(const DocumentObject *_owner, Py::Object obj)
+PyObjectExpression::PyObjectExpression(const DocumentObject *_owner, PyObject *obj)
     : Expression(_owner)
     , pyObj(obj)
 {
+    Py::_XINCREF(pyObj);
+}
+
+PyObjectExpression::~PyObjectExpression() {
+    Base::PyGILStateLocker lock;
+    Py::_XDECREF(pyObj);
+}
+
+Py::Object PyObjectExpression::getPyObject() const {
+    if(!pyObj)
+        return Py::Object();
+    return Py::Object(pyObj);
+}
+
+void PyObjectExpression::setPyObject(Py::Object obj) {
+    Py_DECREF(pyObj);
+    pyObj = obj.ptr();
+    Py_INCREF(pyObj);
 }
 
 void PyObjectExpression::_toString(std::ostringstream &ss, bool) const
 {
     Base::PyGILStateLocker lock;
-    ss << pyObj.as_string();
+    ss << getPyObject().as_string();
 }
 
 int PyObjectExpression::priority() const
@@ -2347,11 +2518,15 @@ int PyObjectExpression::priority() const
 
 Expression *PyObjectExpression::_copy() const
 {
+    Base::PyGILStateLocker lock;
     return new PyObjectExpression(owner, pyObj);
 }
 
 boost::any PyObjectExpression::_getValueAsAny() const {
-    return ObjectIdentifier::pyObjectToAny(pyObj);
+    if(!pyObj)
+        return boost::any();
+    Base::PyGILStateLocker lock;
+    return pyObjectToAny(Py::Object(pyObj));
 }
 
 //
@@ -2413,7 +2588,7 @@ static bool evalCondition(Expression *condition) {
     std::unique_ptr<Expression> e(condition->eval());
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
     if (v == 0) 
-        return pyObjectFromAny(e->getValueAsAny()).isTrue();
+        return _pyObjectFromAny(e->getValueAsAny(),condition).isTrue();
     else
         return fabs(v->getValue()) > 0.5;
 }
@@ -2505,20 +2680,32 @@ int ConstantExpression::priority() const
 }
 
 Expression *ConstantExpression::simplify() const {
-    if(name == "None")
-        return eval();
     return copy();
 }
 
 Expression *ConstantExpression::_eval() const {
-    if(name == "None")
+    if(name == "None") {
+        Base::PyGILStateLocker lock;
         return new PyObjectExpression(owner);
+    }
+    if(name == "True") {
+        Base::PyGILStateLocker lock;
+        return new PyObjectExpression(owner,Py_True);
+    }
+    if(name == "False") {
+        Base::PyGILStateLocker lock;
+        return new PyObjectExpression(owner,Py_False);
+    }
     return 0;
 }
 
 boost::any ConstantExpression::_getValueAsAny() const {
     if(name == "None")
         return boost::any();
+    if(name == "True")
+        return boost::any(true);
+    if(name == "False")
+        return boost::any(false);
     return NumberExpression::_getValueAsAny();
 }
 
@@ -2537,14 +2724,13 @@ Expression *BooleanExpression::_copy() const
 TYPESYSTEM_SOURCE(App::RangeExpression, App::Expression);
 
 RangeExpression::RangeExpression(const DocumentObject *_owner, const std::string &begin, const std::string &end)
-    : Expression(_owner)
-    , range((begin + ":" + end).c_str())
+    : Expression(_owner), begin(begin), end(end)
 {
 }
 
 bool RangeExpression::isTouched() const
 {
-    Range i(range);
+    Range i(getRange());
 
     do {
         Property * prop = owner->getPropertyByName(i.address().c_str());
@@ -2558,12 +2744,12 @@ bool RangeExpression::isTouched() const
 
 void RangeExpression::_toString(std::ostringstream &ss, bool) const
 {
-    ss << range.rangeString();
+    ss << begin << ':' << end;
 }
 
 Expression *RangeExpression::_copy() const
 {
-    return new RangeExpression(owner, range.fromCellString(), range.toCellString());
+    return new RangeExpression(owner, begin, end);
 }
 
 int RangeExpression::priority() const
@@ -2575,7 +2761,7 @@ void RangeExpression::_getDeps(ExpressionDeps &deps) const
 {
     assert(owner);
 
-    Range i(range);
+    Range i(getRange());
 
     auto &dep = deps[owner];
     do {
@@ -2585,49 +2771,145 @@ void RangeExpression::_getDeps(ExpressionDeps &deps) const
 }
 
 boost::any RangeExpression::_getValueAsAny() const {
-    Py::Tuple value(range.size());
-    Range i(range);
+    Range i(getRange());
+    Py::Tuple tuple(i.size());
     int j=0;
     do {
         try {
             ObjectIdentifier var(owner,i.address());
-            value.setItem(j++,pyObjectFromAny(var.getValue()));
+            tuple.setItem(j++,pyObjectFromAny(var.getValue()));
         }catch(Base::Exception &e) {
-            __EXPR_THROW("Failed to obtian cell ", i.address() << ": " << e.what(), this);
+            EXPR_THROW("Failed to obtian cell " << i.address() << ": " << e.what());
         }
     }while(i.next());
-    return boost::any(Py::Object(value));
+    return pyObjectToAny(tuple,false);
 }
 
-void RangeExpression::setRange(const Range &r)
+Range RangeExpression::getRange() const
 {
-    range = r;
+    auto c1 = stringToAddress(begin.c_str(),true);
+    auto c2 = stringToAddress(end.c_str(),true);
+    if(c1.isValid() && c1.isValid())
+        return Range(c1,c2);
+
+    Base::PyGILStateLocker lock;
+    static const std::string attr("getCellFromAlias");
+    Py::Object pyobj(owner->getPyObject(),true);
+    if(!pyobj.hasAttr(attr)) 
+        EXPR_THROW("Invalid cell range " << begin << ':' << end);
+    Py::Callable callable(pyobj.getAttr(attr));
+    if(!c1.isValid()) {
+        try {
+            Py::Tuple arg(1);
+            arg.setItem(0,Py::String(begin));
+            c1 = CellAddress(callable.apply(arg).as_string().c_str());
+        } catch(Py::Exception &) {
+            Base::PyException e;
+            EXPR_THROW("Invalid cell address " << begin << ": " << e.what());
+        } catch(Base::Exception &e) {
+            EXPR_THROW("Invalid cell address " << begin << ": " << e.what());
+        }
+    }
+    if(!c2.isValid()) {
+        try {
+            Py::Tuple arg(1);
+            arg.setItem(0,Py::String(end));
+            c2 = CellAddress(callable.apply(arg).as_string().c_str());
+        } catch(Py::Exception &) {
+            Base::PyException e;
+            EXPR_THROW("Invalid cell address " << end << ": " << e.what());
+        } catch(Base::Exception &e) {
+            EXPR_THROW("Invalid cell address " << end << ": " << e.what());
+        }
+    }
+    return Range(c1,c2);
 }
+
+bool RangeExpression::_renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 
+        const ObjectIdentifier &path, ExpressionVisitor &v)
+{
+    bool touched =false;
+    auto it = paths.find(ObjectIdentifier(owner,begin));
+    if (it != paths.end()) {
+        v.setExpressionChanged();
+        begin = it->second.relativeTo(path).getPropertyName();
+        touched = true;
+    }
+    it = paths.find(ObjectIdentifier(owner,end));
+    if (it != paths.end()) {
+        v.setExpressionChanged();
+        end = it->second.relativeTo(path).getPropertyName();
+        touched = true;
+    }
+    return touched;
+}
+
+void RangeExpression::_moveCells(const CellAddress &address,
+        int rowCount, int colCount, ExpressionVisitor &v) 
+{
+    CellAddress addr = stringToAddress(begin.c_str(),true);
+    if(addr.isValid()) {
+        int thisRow = addr.row();
+        int thisCol = addr.col();
+        if (thisRow >= address.row() || thisCol >= address.col()) {
+            thisRow += rowCount;
+            thisCol += colCount;
+            v.setExpressionChanged();
+            begin = CellAddress(thisRow,thisCol).toString();
+        }
+    }
+    addr = stringToAddress(end.c_str(),true);
+    if(addr.isValid()) {
+        int thisRow = addr.row();
+        int thisCol = addr.col();
+        if (thisRow >= address.row() || thisCol >= address.col()) {
+            thisRow += rowCount;
+            thisCol += colCount;
+            v.setExpressionChanged();
+            end = CellAddress(thisRow,thisCol).toString();
+        }
+    }
+}
+
 
 // ListExpression class
 //
 
 TYPESYSTEM_SOURCE(App::ListExpression, App::Expression);
 
-ListExpression::ListExpression(const DocumentObject *_owner, const std::vector<Expression *> &_items)
-    : Expression(_owner), items(_items)
+ListExpression::ListExpression(const DocumentObject *_owner, 
+        const std::vector<std::pair<std::string,Expression*> > &_items)
+    : Expression(_owner)
 {
+    items.reserve(_items.size());
+    for(auto &item : _items) {
+        assert(item.second);
+        items.emplace_back(item.first=="*",item.second);
+    }
 }
 
 ListExpression::~ListExpression() {
-    for(auto item : items)
-        delete item;
+    for(auto &item : items)
+        delete item.second;
 }
 
-void ListExpression::addItem(Expression *item) {
-    assert(item);
-    items.push_back(item);
+void ListExpression::addItem(const std::pair<std::string,Expression *> &item) {
+    assert(item.second);
+    items.emplace_back(item.first=="*",item.second);
 }
 
 void ListExpression::_toString(std::ostringstream &ss, bool persistent) const {
     ss << '[';
-    for(auto item : items) 
-        ss << item->toString(persistent) << ", ";
+    bool first = true;
+    for(auto &item : items) {
+        if(first)
+            first = false;
+        else
+            ss << ", ";
+        if(item.first)
+            ss << '*';
+        ss << item.second->toString(persistent,item.first);
+    }
     ss << ']';
 }
 
@@ -2638,17 +2920,28 @@ int ListExpression::priority() const
 
 Expression *ListExpression::_copy() const
 {
-    auto ret = new ListExpression(owner,items);
-    for(auto &item : ret->items)
-        item = item->copy();
+    auto ret = new ListExpression(owner);
+    ret->items.reserve(items.size());
+    for(auto &item : items)
+        ret->items.emplace_back(item.first,item.second->copy());
     return ret;
 }
 
 boost::any ListExpression::_getValueAsAny() const {
     Py::List list;
-    for(auto item : items)
-        list.append(pyObjectFromAny(item->getValueAsAny(),item));
-    return boost::any(Py::Object(list));
+    for(auto &item : items) {
+        Py::Object pyvalue = _pyObjectFromAny(item.second->getValueAsAny(),item.second);
+        if(!item.first) {
+            list.append(pyvalue);
+            continue;
+        }
+        if(!pyvalue.isSequence()) 
+            _EXPR_THROW("Cannot expand non sequence object.",item.second);
+        Py::Sequence seq(pyvalue);
+        for(size_t i=0;i<seq.size();++i)
+            list.append(Py::Object(seq[i]));
+    }
+    return pyObjectToAny(list,false);
 }
 
 // TupleExpression class
@@ -2656,44 +2949,51 @@ boost::any ListExpression::_getValueAsAny() const {
 
 TYPESYSTEM_SOURCE(App::TupleExpression, App::ListExpression);
 
-TupleExpression::TupleExpression(const DocumentObject *_owner, Expression *item)
+TupleExpression::TupleExpression(const DocumentObject *_owner, const std::pair<std::string,Expression *> &item)
     : ListExpression(_owner)
 {
-    if(item)
+    if(item.second)
         addItem(item);
 }
 
-TupleExpression::TupleExpression(const DocumentObject *_owner, const std::vector<Expression *> &items)
-    : ListExpression(_owner,items)
+TupleExpression::TupleExpression(const DocumentObject *_owner,
+        const std::vector<std::pair<std::string,Expression*> > &_items)
+    : ListExpression(_owner,_items)
 {
 }
-
 
 void TupleExpression::_toString(std::ostringstream &ss, bool persistent) const {
     ss << '(';
     if(items.empty())
         ss << ", ";
     else {
-        for(auto item : items) 
-            ss << item->toString(persistent) << ", ";
+        bool first = true;
+        for(auto &item : items) {
+            if(first)
+                first = false;
+            else
+                ss << ", ";
+            if(item.first)
+                ss << '*';
+            ss << item.second->toString(persistent,item.first);
+        }
     }
     ss << ')';
 }
 
 Expression *TupleExpression::_copy() const
 {
-    auto ret = new TupleExpression(owner,items);
-    for(auto &item : ret->items)
-        item = item->copy();
+    auto ret = new TupleExpression(owner);
+    ret->items.reserve(items.size());
+    for(auto &item : items)
+        ret->items.emplace_back(item.first,item.second->copy());
     return ret;
 }
 
 boost::any TupleExpression::_getValueAsAny() const {
-    Py::Tuple tuple(items.size());
-    int i=0;
-    for(auto item : items)
-        tuple.setItem(i++,pyObjectFromAny(item->getValueAsAny(),item));
-    return boost::any(Py::Object(tuple));
+    Base::PyGILStateLocker lock;
+    Py::List list(_pyObjectFromAny(ListExpression::_getValueAsAny(),this));
+    return pyObjectToAny(list,false);
 }
 
 
@@ -2717,14 +3017,24 @@ DictExpression::~DictExpression() {
 }
 
 void DictExpression::addItem(Expression *key, Expression *value) {
-    assert(key && value);
+    assert(value);
     items.emplace_back(key,value);
 }
 
 void DictExpression::_toString(std::ostringstream &ss, bool persistent) const {
     ss << '{';
-    for(auto &v : items) 
-        ss << v.first->toString(persistent) << ':' << v.second->toString(persistent) << ", ";
+    bool first = true;
+    for(auto &v : items) {
+        if(first)
+            first = false;
+        else
+            ss << ", ";
+        if(v.first)
+            ss << v.first->toString(persistent,true) << ':';
+        else
+            ss << "**";
+        ss << v.second->toString(persistent,true);
+    }
     ss << '}';
 }
 
@@ -2738,16 +3048,98 @@ Expression *DictExpression::_copy() const
     auto ret = new DictExpression(owner);
     ret->items.reserve(items.size());
     for(auto &v : items)
-        ret->items.emplace_back(v.first->copy(),v.second->copy());
+        ret->items.emplace_back(v.first?v.first->copy():nullptr,v.second->copy());
     return ret;
 }
 
 boost::any DictExpression::_getValueAsAny() const {
     Py::Dict dict;
+    for(auto &v : items) {
+        Py::Object pyvalue = _pyObjectFromAny(v.second->getValueAsAny(),v.second);
+        if(v.first) {
+            dict.setItem(_pyObjectFromAny(v.first->getValueAsAny(),v.first),pyvalue);
+            continue;
+        }
+        if(!pyvalue.isMapping()) 
+            _EXPR_THROW("Cannot expand non mapping object.",v.second);
+        Py::Mapping map(pyvalue);
+        for(auto it=map.begin();it!=map.end();++it) {
+            const auto &value = (*it);
+            dict.setItem(value.first,value.second);
+        }
+    }
+    return pyObjectToAny(dict,false);
+}
+
+
+// IDictExpression class
+//
+
+TYPESYSTEM_SOURCE(App::IDictExpression, App::Expression);
+
+IDictExpression::IDictExpression(const DocumentObject *_owner, const std::string &key, Expression *value)
+    : Expression(_owner)
+{
+    if(key.size()) {
+        assert(value);
+        addItem(key,value);
+    }
+}
+
+IDictExpression::~IDictExpression() {
+    for(auto &v : items) 
+        delete v.second;
+}
+
+void IDictExpression::addItem(const std::string &key, Expression *value) {
+    assert(value);
+    items.emplace_back(key,value);
+}
+
+void IDictExpression::_toString(std::ostringstream &ss, bool persistent) const {
+    ss << '{';
+    bool first = true;
+    for(auto &v : items) {
+        if(first)
+            first = false;
+        else
+            ss << ", ";
+        ss << v.first << '=' << v.second->toString(persistent,true);
+    }
+    ss << '}';
+}
+
+int IDictExpression::priority() const
+{
+    return 20;
+}
+
+Expression *IDictExpression::_copy() const
+{
+    auto ret = new IDictExpression(owner);
+    ret->items.reserve(items.size());
     for(auto &v : items)
-        dict.setItem(pyObjectFromAny(v.first->getValueAsAny(),v.first),
-                pyObjectFromAny(v.second->getValueAsAny(),v.second));
-    return boost::any(Py::Object(dict));
+        ret->items.emplace_back(v.first,v.second->copy());
+    return ret;
+}
+
+boost::any IDictExpression::_getValueAsAny() const {
+    Py::Dict dict;
+    for(auto &v : items) {
+        Py::Object pyvalue = _pyObjectFromAny(v.second->getValueAsAny(),v.second);
+        if(v.first != "**") {
+            dict.setItem(v.first,pyvalue);
+            continue;
+        }
+        if(!pyvalue.isMapping()) 
+            _EXPR_THROW("Cannot expand non mapping object.",v.second);
+        Py::Mapping map(pyvalue);
+        for(auto it=map.begin();it!=map.end();++it) {
+            const auto &value = (*it);
+            dict.setItem(value.first,value.second);
+        }
+    }
+    return pyObjectToAny(dict,false);
 }
 
 
@@ -2813,6 +3205,7 @@ int ExpressionParserlex(void);
 
 // Parser, defined in ExpressionParser.y
 # define YYTOKENTYPE
+# define YYERROR_VERBOSE
 #include "ExpressionParser.tab.c"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

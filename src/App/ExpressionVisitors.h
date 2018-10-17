@@ -44,17 +44,8 @@ public:
     }
 
     void visit(Expression *node) {
-        VariableExpression *expr = Base::freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr) {
-            const App::ObjectIdentifier & oldPath = expr->getPath().canonicalPath();
-            const std::map<ObjectIdentifier, ObjectIdentifier>::const_iterator it = paths.find(oldPath);
-
-            if (it != paths.end()) {
-                ExpressionModifier<P>::setExpressionChanged();
-                expr->setPath(it->second.relativeTo(owner));
-            }
-        }
+        if(node)
+            this->renameObjectIdentifier(*node,paths,owner);
     }
 
 
@@ -99,6 +90,23 @@ public:
 private:
     std::string oldName;
     std::string newName;
+};
+
+template<class P> class MoveCellsExpressionVisitor : public ExpressionModifier<P> {
+public:
+    MoveCellsExpressionVisitor(P &prop, const CellAddress &address, int rowCount, int colCount)
+        : ExpressionModifier<P>(prop),address(address),rowCount(rowCount),colCount(colCount)
+    {}
+
+    void visit(Expression * node) {
+        if(node)
+            this->moveCells(*node,address,rowCount,colCount);
+    }
+
+private:
+    CellAddress address;
+    int rowCount;
+    int colCount;
 };
 
 }

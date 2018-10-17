@@ -69,9 +69,10 @@ extern int yydebug;
     DOCUMENT = 279,
     OBJECT = 280,
     EXPONENT = 281,
-    NUM_AND_UNIT = 282,
-    NEG = 283,
-    POS = 284
+    EXPAND = 282,
+    NUM_AND_UNIT = 283,
+    NEG = 284,
+    POS = 285
   };
 #endif
 
