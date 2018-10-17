@@ -341,6 +341,22 @@ private:
 
 };
 
+/// Lock parameter as read only
+class BaseExport ParameterLock {
+public:
+    /** Constructor
+     * @param handle: the parameter group handle
+     * @param names: the parameter name list. If empty, then lock the entire
+     * group
+     */
+    ParameterLock(ParameterGrp::handle handle, const std::vector<std::string> &names = {});
+    virtual ~ParameterLock();
+private:
+    ParameterGrp::handle handle;
+    std::vector<std::string> names;
+
+};
+
 /** python wrapper function
 */
 BaseExport PyObject* GetPyObject( const Base::Reference<ParameterGrp> &hcParamGrp);

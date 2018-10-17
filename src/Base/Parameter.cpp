@@ -183,6 +183,36 @@ inline bool DOMTreeErrorReporter::getSawErrors() const
     return fSawErrors;
 }
 
+//**************************************************************************
+//**************************************************************************
+// ParameterLock
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+static std::map<const ParameterGrp*,std::map<std::string,int> > _ParamLock;
+
+ParameterLock::ParameterLock(ParameterGrp::handle _handle, const std::vector<std::string> &_names)
+    :handle(_handle),names(_names)
+{
+    if(names.empty())
+        names.push_back("*");
+    auto &pnames = _ParamLock[handle];
+    for(auto &name : names)
+        ++pnames[name];
+}
+
+ParameterLock::~ParameterLock() {
+    auto it = _ParamLock.find(handle);
+    if(it!=_ParamLock.end()) {
+        auto &pnames = it->second;
+        for(auto &name : names) {
+            auto itName = pnames.find(name);
+            if(itName!=pnames.end() && --itName->second==0)
+                pnames.erase(itName);
+        }
+        if(pnames.empty())
+            _ParamLock.erase(it);
+    }
+}
 
 //**************************************************************************
 //**************************************************************************
@@ -915,6 +945,12 @@ XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindNextElement(XERCES_
 
 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ParameterGrp::FindOrCreateElement(XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *Start, const char* Type, const char* Name) const
 {
+    auto it = _ParamLock.find(this);
+    if(it!=_ParamLock.end()) {
+        if(it->second.count("*") || it->second.count(Name))
+            FC_THROWM(Base::RuntimeError, "Parameter group " << _cName << " is locked");
+    }
+
     // first try to find it
     DOMElement *pcElem = FindElement(Start,Type,Name);
 
