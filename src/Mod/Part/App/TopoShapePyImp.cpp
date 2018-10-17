@@ -1594,7 +1594,7 @@ PyObject*  TopoShapePy::transformShape(PyObject *args)
     }
 }
 
-PyObject* TopoShapePy::makeTransform(PyObject *args, PyObject *keywds)
+PyObject* TopoShapePy::transformed(PyObject *args, PyObject *keywds)
 {
     static char *kwlist[] = {"matrix", "copy", "checkScale", "op", NULL};
     PyObject* pymat;
@@ -1708,6 +1708,21 @@ PyObject*  TopoShapePy::scale(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return NULL;
     }
+}
+
+PyObject*  TopoShapePy::translated(PyObject *args) {
+    Py::Object pyobj(shape2pyshape(*getTopoShapePtr()));
+    return static_cast<TopoShapePy*>(pyobj.ptr())->translate(args);
+}
+
+PyObject*  TopoShapePy::rotated(PyObject *args) {
+    Py::Object pyobj(shape2pyshape(*getTopoShapePtr()));
+    return static_cast<TopoShapePy*>(pyobj.ptr())->rotate(args);
+}
+
+PyObject*  TopoShapePy::scaled(PyObject *args) {
+    Py::Object pyobj(shape2pyshape(*getTopoShapePtr()));
+    return static_cast<TopoShapePy*>(pyobj.ptr())->scale(args);
 }
 
 PyObject* TopoShapePy::makeFillet(PyObject *args)

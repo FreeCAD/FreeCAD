@@ -341,10 +341,10 @@ If checkScale is True, it will use transformGeometry if non-uniform
 scaling is detected.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="makeTransform" Const="true"  Keyword="true">
+    <Methode Name="transformed" Const="true"  Keyword="true">
       <Documentation>
           <UserDocu>
-makeTransform(Matrix,copy=False,checkScale=False,op=None) -> shape
+transformed(Matrix,copy=False,checkScale=False,op=None) -> shape
 
 Create a new transformed shape
         </UserDocu>
@@ -355,17 +355,44 @@ Create a new transformed shape
         <UserDocu>Apply the translation to the current location of this shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="translated">
+      <Documentation>
+          <UserDocu>
+translated(vector) -> shape
+
+Create a new shape with translation
+         </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="rotate">
       <Documentation>
         <UserDocu>
-          Apply the rotation (degree) to the current location of this shape
-          Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
+Apply the rotation (base,dir,degree) to the current location of this shape
+Shp.rotate(Vector(0,0,0),Vector(0,0,1),180) - rotate the shape around the Z Axis 180 degrees.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="rotated">
+      <Documentation>
+        <UserDocu>
+rotated(base,dir,degree) -> shape
+
+Create a new shape with rotation.
         </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="scale">
       <Documentation>
         <UserDocu>Apply scaling with point and factor to this shape.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="scaled">
+      <Documentation>
+          <UserDocu>
+scaled(factor,base=Vector(0,0,0)) -> shape
+
+Create a new shape with scale.
+          </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeFillet" Const="true">

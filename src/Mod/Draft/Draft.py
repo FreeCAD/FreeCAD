@@ -5973,7 +5973,7 @@ class _DraftLink(_DraftObject):
                     if len(vis)>i and not vis[i]:
                         continue;
                     # 'I' is a prefix for disambiguation when mapping element names
-                    base.append(shape.makeTransform(pla.toMatrix(),op='I{}'.format(i)))
+                    base.append(shape.transformed(pla.toMatrix(),op='I{}'.format(i)))
                 if getattr(obj,'Fuse',False) and len(base) > 1:
                     obj.Shape = base[0].multiFuse(base[1:]).removeSplitter()
                 else:
