@@ -231,7 +231,7 @@ PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwd
  
     int compression = 3;
     char* property;
-    static char* kwds_def[] = {"Compression",NULL};
+    static char* kwds_def[] = {"Property", "Compression",NULL};
     PyErr_Clear();
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression)) {
         return NULL;
