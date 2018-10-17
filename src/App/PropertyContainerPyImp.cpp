@@ -226,6 +226,42 @@ Py::List PropertyContainerPy::getPropertiesList(void) const
     return ret;
 }
 
+
+PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwds) {
+ 
+    int compression = 3;
+    char* property;
+    static char* kwds_def[] = {"Compression",NULL};
+    PyErr_Clear();
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression)) {
+        return NULL;
+    }
+    
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(property);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", property);
+        return 0;
+    }
+    
+    return prop->dumpToPython(compression);
+}
+
+PyObject* PropertyContainerPy::restorePropertyContent(PyObject *args) {
+
+    PyObject* buffer;
+    char* property;
+    if( !PyArg_ParseTuple(args, "sO", &property, &buffer) )
+        return NULL;
+    
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(property);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", property);
+        return 0;
+    }
+    
+    return prop->restoreFromPython(buffer);
+}
+
 PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
 {
     // search in PropertyList
