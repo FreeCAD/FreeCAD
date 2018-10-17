@@ -26,17 +26,10 @@
 #define GUIAPPLICATIONNATIVEEVENTAWARE_H
 
 #include <QApplication>
-#if QT_VERSION >= 0x050000
-#include <QAbstractNativeEventFilter>
-#endif
 
 class QMainWindow;
 
-#if defined(Q_OS_LINUX) && QT_VERSION >= 0x050000
-  #include <xcb/xcb.h>
-  #include <xcb/xproto.h>
-
-#elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
+#if defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
 #include "3Dconnexion/MouseParameters.h"
 
 #include <vector>
@@ -44,6 +37,7 @@ class QMainWindow;
 
 //#define _WIN32_WINNT 0x0501  //target at least windows XP
 #include <Windows.h>
+#include <QAbstractNativeEventFilter>
 
 #elif defined(Q_OS_MACX) && defined(_USE_3DCONNEXION_SDK)
 
@@ -63,25 +57,6 @@ extern void CleanupConnexionHandlers(void) __attribute__((weak_import));
 
 namespace Gui
 {
-#if QT_VERSION >= 0x050000
-    class RawInputEventFilter : public QAbstractNativeEventFilter
-    {
-    public:
-        typedef bool (*EventFilter)(void *message, long *result);
-        RawInputEventFilter(EventFilter filter) : eventFilter(filter) {
-        }
-        virtual ~RawInputEventFilter() {
-        }
-
-        virtual bool nativeEventFilter(const QByteArray & /*eventType*/, void *message, long *result) {
-            return eventFilter(message, result);
-        }
-
-    private:
-        EventFilter eventFilter;
-    };
-#endif // if QT_VERSION >= 0x050000
-
     class GUIApplicationNativeEventAware : public QApplication
     {
         Q_OBJECT
@@ -99,19 +74,31 @@ namespace Gui
         void importSettings();
         float convertPrefToSensitivity(int value);
 
-// For X11
 #ifdef Q_OS_LINUX
     public:
-  #if QT_VERSION >= 0x050000
-        bool xcbEventFilter(const xcb_client_message_event_t *message);
-  #else
-        bool x11EventFilter(XEvent *event);
-  #endif // if/else QT_VERSION >= 0x050000
+        void pollSpacenav();
 #endif // Q_OS_LINUX
 
 #ifdef _USE_3DCONNEXION_SDK
 // For Windows
 #ifdef Q_OS_WIN
+    class RawInputEventFilter : public QAbstractNativeEventFilter
+    {
+    public:
+        typedef bool (*EventFilter)(void *message, long *result);
+        RawInputEventFilter(EventFilter filter) : eventFilter(filter) {
+        }
+        virtual ~RawInputEventFilter() {
+        }
+
+        virtual bool nativeEventFilter(const QByteArray & /*eventType*/, void *message, long *result) {
+            return eventFilter(message, result);
+        }
+
+    private:
+        EventFilter eventFilter;
+    };
+
     public:
         static bool Is3dmouseAttached();
 
