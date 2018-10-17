@@ -1327,11 +1327,6 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 
 void Document::Save (Base::Writer &writer) const
 {
-    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
-    << "<!--" << endl
-    << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
-    << "-->" << endl;
-
     writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
@@ -1696,6 +1691,10 @@ bool Document::saveToFile(const char* filename) const
         if (hGrp->GetBool("SaveBinaryBrep", false))
             writer.setMode("BinaryBrep");
 
+        writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
+                        << "<!--" << endl
+                        << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
+                        << "-->" << endl;
         Document::Save(writer);
 
         // Special handling for Gui document.
