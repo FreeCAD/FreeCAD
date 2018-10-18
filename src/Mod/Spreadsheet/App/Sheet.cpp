@@ -143,14 +143,12 @@ void Sheet::clearAll()
 bool Sheet::importFromFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar)
 {
     Base::FileInfo fi(filename);
-    Base::ifstream file(fi);
+    Base::ifstream file(fi, std::ios::in);
     int row = 0;
 
     PropertySheet::AtomicPropertyChange signaller(cells);
 
     clearAll();
-
-    file.open(filename.c_str(), std::ios::in);
 
     if (file.is_open()) {
         std::string line;
