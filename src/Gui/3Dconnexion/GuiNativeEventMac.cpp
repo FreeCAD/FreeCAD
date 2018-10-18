@@ -104,6 +104,61 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
 	break;
       }
   }
+  
+Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
+: QObject(app)
+{
+	spaceballPresent = false;
+	mainApp = app;
+}
+
+Gui::GuiNativeEvent::~GuiNativeEvent()
+{
+    // if 3Dconnexion library was loaded at runtime
+    if (InstallConnexionHandlers) {
+        // Close our connection with the 3dx driver
+        if (tdxClientID)
+            UnregisterConnexionClient(tdxClientID);
+        CleanupConnexionHandlers();
+        Base::Console().Log("Disconnected from 3Dconnexion driver\n");
+    }
+}
+
+void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
+{
+	Q_UNUSED(window)
+    OSStatus err;
+    /* make sure the framework is installed */
+    if (InstallConnexionHandlers == NULL)
+    {
+        Base::Console().Log("3Dconnexion framework not found!\n");
+        return;
+    }
+    /* install 3dx message handler in order to receive driver events */
+    err = InstallConnexionHandlers(tdx_drv_handler, 0L, 0L);
+    assert(err == 0);
+    if (err)
+    {
+        Base::Console().Log("Error installing 3Dconnexion handler\n");
+        return;
+    }
+    /* register our app with the driver */
+    // Pascal string Application name required to register driver for application
+    UInt8  tdxAppName[] = {7,'F','r','e','e','C','A','D'};
+    // 32bit appID to register driver for application
+    UInt32 tdxAppID = 'FCAd';
+    tdxClientID = RegisterConnexionClient( tdxAppID, tdxAppName,
+                                           kConnexionClientModeTakeOver,
+                                           kConnexionMaskAll );
+    if (tdxClientID == 0)
+    {
+        Base::Console().Log("Couldn't connect to 3Dconnexion driver\n");
+        return;
+    }
+    
+    Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
+    spaceballPresent = true;
+}
 
 /*!
 	Called with the processed motion data when a 3D mouse event is received

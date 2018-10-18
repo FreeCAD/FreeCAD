@@ -16,6 +16,8 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 
 #include "PreCompiled.h"
 
+#include "GuiNativeEventLinux.h"
+
 #include <QGlobalStatic>
 #include <QMainWindow>
 #include <QWidget>
@@ -24,8 +26,10 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
 
+Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
+
+
 // Windows dependencies, enumerators and global variables
-#ifdef _USE_3DCONNEXION_SDK
 
 #include <QApplication>
 #include <windows.h>
@@ -151,6 +155,42 @@ static const struct tag_VirtualKeys _3dmouseVirtualKeys[]=
    , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessReceiverKeys)
 };
 
+Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
+{
+	spaceballPresent = false;
+	mainApp = app;
+}
+
+Gui::GuiNativeEvent::~GuiNativeEvent()
+{
+    if (gMouseInput == this) {
+        gMouseInput = 0;
+        Base::Console().Log("3Dconnexion device detached.\n");
+    }
+}
+
+void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
+{
+    spaceballPresent = Is3dmouseAttached();
+
+    if (spaceballPresent) {
+        fLast3dmouseInputTime = 0;
+
+        if (InitializeRawInput((HWND)mainWindow->winId())){
+            gMouseInput = this;
+#if QT_VERSION >= 0x050000
+            qApp->installNativeEventFilter(new Gui::RawInputEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter));
+#else
+            qApp->setEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter);
+#endif
+            Base::Console().Log("3Dconnexion device initialized.\n");
+        } else {
+            Base::Console().Log("3Dconnexion device is attached, but not initialized.\n");
+        }
+    } else {
+        Base::Console().Log("3Dconnexion device not attached.\n");
+    }
+}
 
 // Methods for windows events
 
@@ -934,4 +974,3 @@ Error:
     return processed;
 }
 
-#endif // _USE_3DCONNEXION_SDK
