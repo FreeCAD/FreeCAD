@@ -9,6 +9,9 @@ add_subdirectory(Doc)
 
 if(BUILD_GUI)
     add_subdirectory(Gui)
+    if(UNIX AND NOT APPLE)
+        add_subdirectory(XDGData)
+    endif()
 endif(BUILD_GUI)
 
 if(BUILD_TEMPLATE)

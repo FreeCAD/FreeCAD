@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=FreeCAD
+Name[de]=FreeCAD
+Name[pl]=FreeCAD
+Comment=Feature based Parametric Modeler
+Comment[de]=Feature-basierter parametrischer Modellierer
+GenericName=CAD Application
+GenericName[de]=CAD-Anwendung
+GenericName[pl]=Aplikacja CAD
+Exec=FreeCAD %F
+Terminal=false
+Type=Application
+Icon=org.freecadweb.FreeCAD
+Categories=Graphics;Science;Education;Engineering;
+StartupNotify=true
+MimeType=application/x-extension-fcstd;
