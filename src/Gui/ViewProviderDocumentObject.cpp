@@ -197,10 +197,10 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     const char* defmode = this->getDefaultDisplayMode();
     if (defmode)
         DisplayMode.setValue(defmode);
-    
+
     //attach the extensions
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector)
         ext->extensionAttach(pcObj);
 }
 

@@ -59,7 +59,7 @@ void GeoFeature::transformPlacement(const Base::Placement &transform)
 Base::Placement GeoFeature::globalPlacement() const
 {
     auto* group = GeoFeatureGroupExtension::getGroupOfObject(this);
-    if(group) {
+    if (group) {
         auto ext = group->getExtensionByType<GeoFeatureGroupExtension>();
         return ext->globalGroupPlacement() * Placement.getValue();
     }
