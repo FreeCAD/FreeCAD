@@ -184,21 +184,21 @@ SET(FreeCADGui_SDK_SRCS
     3Dconnexion/I3dMouseParams.h
     3Dconnexion/MouseParameters.cpp
     3Dconnexion/MouseParameters.h
-    3Dconnexion/GuiApplicationNativeEventAwareWin32.cpp
+    3Dconnexion/GuiNativeEventWin32.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
 endif(FREECAD_USE_3DCONNEXION AND MSVC)
 
 if(FREECAD_USE_3DCONNEXION AND APPLE)
 SET(FreeCADGui_SDK_SRCS
-    3Dconnexion/GuiApplicationNativeEventAwareMac.cpp
+    3Dconnexion/GuiNativeEventMac.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
 if(UNIX AND NOT APPLE)
 SET(FreeCADGui_SDK_SRCS
-    3Dconnexion/GuiApplicationNativeEventAwareLinux.cpp
+    3Dconnexion/GuiNativeEventLinux.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
 endif(UNIX AND NOT APPLE)
