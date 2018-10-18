@@ -30,11 +30,9 @@
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
 #include "Application.h"
-#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
-  #include <spnav.h>
+#if defined(Q_OS_LINUX)
 
   #if QT_VERSION >= 0x050000
-    #include <QTimer>
     #undef Bool
     #undef CursorShape
     #undef Expose
@@ -51,127 +49,28 @@
     #undef Complex
   #endif // #if QT_VERSION >= 0x050000
 
-#endif // if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
+#endif // if defined(Q_OS_LINUX)
 
-#ifdef _USE_3DCONNEXION_SDK
-//windows
-#ifdef Q_OS_WIN
-Gui::GUIApplicationNativeEventAware* Gui::GUIApplicationNativeEventAware::gMouseInput = 0;
-#endif
-#endif //_USE_3DCONNEXION_SDK
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
-        QApplication (argc, argv), spaceballPresent(false)
+        QApplication (argc, argv)
 {
-    mainWindow = 0;
+    nativeEvent = new Gui::GuiNativeEvent(this);
 }
 
 Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 {
-#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
-    if (spnav_close())
-        Base::Console().Log("Couldn't disconnect from spacenav daemon\n");
-    else
-        Base::Console().Log("Disconnected from spacenav daemon\n");
-
-#elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
-    if (gMouseInput == this) {
-        gMouseInput = 0;
-        Base::Console().Log("3Dconnexion device detached.\n");
-    }
-
-#elif defined(Q_OS_MACX) && defined(_USE_3DCONNEXION_SDK)
-    // if 3Dconnexion library was loaded at runtime
-    if (InstallConnexionHandlers) {
-        // Close our connection with the 3dx driver
-        if (tdxClientID)
-            UnregisterConnexionClient(tdxClientID);
-        CleanupConnexionHandlers();
-        Base::Console().Log("Disconnected from 3Dconnexion driver\n");
-    }
-#endif // Platform switch
 }
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
-    mainWindow = window;
-
-#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
-    if (spnav_open() == -1) {
-        Base::Console().Log("Couldn't connect to spacenav daemon\n");
-    } else {
-        Base::Console().Log("Connected to spacenav daemon\n");
-        spaceballPresent = true;
-
-    #if QT_VERSION >= 0x050000
-        QTimer* SpacenavPollTimer = new QTimer(this);
-		connect(SpacenavPollTimer, &QTimer::timeout, this, &GUIApplicationNativeEventAware::pollSpacenav);
-		SpacenavPollTimer->start(20);
-    #endif // #if QT_VERSION >= 0x050000
-    }
-
-#elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
-    spaceballPresent = Is3dmouseAttached();
-
-    if (spaceballPresent) {
-        fLast3dmouseInputTime = 0;
-
-        if (InitializeRawInput((HWND)mainWindow->winId())){
-            gMouseInput = this;
-#if QT_VERSION >= 0x050000
-            qApp->installNativeEventFilter(new Gui::RawInputEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter));
-#else
-            qApp->setEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter);
-#endif
-            Base::Console().Log("3Dconnexion device initialized.\n");
-        } else {
-            Base::Console().Log("3Dconnexion device is attached, but not initialized.\n");
-        }
-    } else {
-        Base::Console().Log("3Dconnexion device not attached.\n");
-    }
-
-#elif defined(Q_OS_MACX) && defined(_USE_3DCONNEXION_SDK)
-    OSStatus err;
-    /* make sure the framework is installed */
-    if (InstallConnexionHandlers == NULL)
-    {
-        Base::Console().Log("3Dconnexion framework not found!\n");
-        return;
-    }
-    /* install 3dx message handler in order to receive driver events */
-    err = InstallConnexionHandlers(tdx_drv_handler, 0L, 0L);
-    assert(err == 0);
-    if (err)
-    {
-        Base::Console().Log("Error installing 3Dconnexion handler\n");
-        return;
-    }
-    /* register our app with the driver */
-    // Pascal string Application name required to register driver for application
-    UInt8  tdxAppName[] = {7,'F','r','e','e','C','A','D'};
-    // 32bit appID to register driver for application
-    UInt32 tdxAppID = 'FCAd';
-    tdxClientID = RegisterConnexionClient( tdxAppID, tdxAppName,
-                                           kConnexionClientModeTakeOver,
-                                           kConnexionMaskAll );
-    if (tdxClientID == 0)
-    {
-        Base::Console().Log("Couldn't connect to 3Dconnexion driver\n");
-        return;
-    }
-    
-    Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
-    spaceballPresent = true;
-#endif // Platform switch
-
+	nativeEvent->initSpaceball(window);
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();
     Spaceball::ButtonEvent::ButtonEventType = QEvent::registerEventType();
 }
 
 bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object, QEvent *event)
 {
-	std::cout << "Gui::GUIApplicationNativeEventAware::processSpaceballEvent" << std::endl;
     if (!activeWindow()) {
         qDebug("No active window\n");
         return true;
