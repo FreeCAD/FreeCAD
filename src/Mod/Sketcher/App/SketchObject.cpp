@@ -1312,6 +1312,200 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         
         return 0;
     }
+    else if( geo1->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId()) &&
+             geo2->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
+                
+        const Part::GeomArcOfConic *curve1 = static_cast<const Part::GeomArcOfConic*>(geo1);
+        const Part::GeomArcOfConic *curve2 = static_cast<const Part::GeomArcOfConic*>(geo2);
+
+        double refparam1;
+        double refparam2;
+        
+        if(!curve1->closestParameter(refPnt1,refparam1))
+            return -1;
+        if(!curve2->closestParameter(refPnt2,refparam2))
+            return -1;
+        
+        //Base::Console().Log("Ref param: (%f);(%f)",refparam1,refparam2);
+        
+        // intersection of basic curves is specially relevant to determine curve enpoints to trim
+        std::pair<Base::Vector3d, Base::Vector3d> interpoints;
+        std::vector<std::pair<Base::Vector3d, Base::Vector3d>> points;
+            
+        if(!curve1->intersectBasisCurves(curve2,points))
+            return -1;
+            
+        if(points.size() == 0) {
+            return -1;
+        }
+        else {
+            
+            auto distance = [](Base::Vector3d ip1, Base::Vector3d ip2, Base::Vector3d ref1, Base::Vector3d ref2) {
+                return (ip1 - ref1).Length() + (ip2 - ref2).Length();
+            };
+            
+            double dist = distance(points[0].first, points[0].second, refPnt1, refPnt2);
+            int i = 0, si = 0;
+            
+            for( auto ipoints : points)
+            {
+                double d = distance(ipoints.first, ipoints.second, refPnt1, refPnt2);
+                
+                if (d<dist) {
+                    si = i;
+                    dist = d;
+                }
+                    
+                i++;
+            }
+            
+            interpoints = points[si];
+        }
+        
+        /*Base::Console().Log("Interpoints: (%f,%f,%f);(%f,%f,%f)",interpoints.first.x,interpoints.first.y,interpoints.first.z, \
+                                                               interpoints.second.x,interpoints.second.y,interpoints.second.z);
+        */
+        double intparam1;
+        double intparam2;
+        
+        if(!curve1->closestParameter(interpoints.first,intparam1))
+            return -1;
+        if(!curve2->closestParameter(interpoints.second,intparam2))
+            return -1;
+        
+        //Base::Console().Log("Interpoints param: (%f);(%f)",intparam1,intparam2);
+        
+        Base::Vector3d dir1;
+        Base::Vector3d dir2;
+        
+        if(!curve1->normalAt(refparam1, dir1))
+            return -1;
+        
+        if(!curve2->normalAt(refparam2, dir2))
+            return -1;
+        
+        double det = -dir1.x*dir2.y + dir2.x*dir1.y;
+        if(abs(det) < Precision::Confusion())
+            return -1; // no intersection of normals
+        
+        Base::Vector3d refp1 = curve1->pointAtParameter(refparam1);
+        Base::Vector3d refp2 = curve2->pointAtParameter(refparam2);
+        
+        //Base::Console().Log("refpoints: (%f,%f,%f);(%f,%f,%f)",refp1.x,refp1.y,refp1.z,refp2.x,refp2.y,refp2.z);
+        
+        double spc1 = curve1->getFirstParameter();
+        double spc2 = curve2->getFirstParameter(); 
+        
+        //Base::Console().Log("Start param: (%f);(%f)",spc1,spc2);
+        
+        Base::Vector3d filletCenter(
+            (-dir1.x*dir2.x*refp1.y + dir1.x*dir2.x*refp2.y - dir1.x*dir2.y*refp2.x + dir2.x*dir1.y*refp1.x)/det,
+            (-dir1.x*dir2.y*refp1.y + dir2.x*dir1.y*refp2.y + dir1.y*dir2.y*refp1.x - dir1.y*dir2.y*refp2.x)/det,0);
+        
+        
+        // create arc from known parameters and lines
+        double startAngle, endAngle, range;
+       
+        Base::Vector3d radDir1 = refp1 - filletCenter;
+        Base::Vector3d radDir2 = refp2 - filletCenter;
+        
+        startAngle = atan2(radDir1.y, radDir1.x);
+        
+        range = atan2(-radDir1.y*radDir2.x+radDir1.x*radDir2.y,
+                    radDir1.x*radDir2.x+radDir1.y*radDir2.y);
+        
+        endAngle = startAngle + range;
+
+        if (endAngle < startAngle)
+            std::swap(startAngle, endAngle);
+
+        if (endAngle > 2*M_PI )
+            endAngle -= 2*M_PI;
+
+        if (startAngle < 0 )
+            endAngle += 2*M_PI;
+
+        // Create Arc Segment
+        Part::GeomArcOfCircle *arc = new Part::GeomArcOfCircle();
+        arc->setRadius(radDir1.Length());
+        arc->setCenter(filletCenter);
+        arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
+        
+        // add arc to sketch geometry
+        int filletId;
+        if (arc) {
+            Part::Geometry *newgeo = arc;
+            filletId = addGeometry(newgeo);
+            if (filletId < 0) {
+                delete arc;
+                return -1;
+            }
+        }
+        else
+            return -1;
+
+        if (trim) {
+            
+            auto selectend = [](double intparam, double refparam, double startparam) {
+                if( (intparam>refparam && startparam >= refparam) ||
+                    (intparam<refparam && startparam <= refparam) ) {
+                        return start;
+                }
+                else {
+                        return end;
+                }
+            };
+            
+            PointPos PosId1 = selectend(intparam1,refparam1,spc1);
+            PointPos PosId2 = selectend(intparam2,refparam2,spc2);
+
+            delConstraintOnPoint(GeoId1, PosId1, false);
+            delConstraintOnPoint(GeoId2, PosId2, false);
+            
+            
+            Sketcher::Constraint *tangent1 = new Sketcher::Constraint();
+            Sketcher::Constraint *tangent2 = new Sketcher::Constraint();
+
+            tangent1->Type = Sketcher::Tangent;
+            tangent1->First = GeoId1;
+            tangent1->FirstPos = PosId1;
+            tangent1->Second = filletId;
+
+            tangent2->Type = Sketcher::Tangent;
+            tangent2->First = GeoId2;
+            tangent2->FirstPos = PosId2;
+            tangent2->Second = filletId;
+
+            double dist1 = (refp1 - arc->getStartPoint(true)).Length();
+            double dist2 = (refp1 - arc->getEndPoint(true)).Length();
+            
+            //Base::Console().Log("dists_refpoint_to_arc_sp_ep: (%f);(%f)",dist1,dist2);
+            
+            if (dist1 < dist2) {
+                tangent1->SecondPos = start;
+                tangent2->SecondPos = end;
+                movePoint(GeoId1, PosId1, arc->getStartPoint(true),false,true);
+                movePoint(GeoId2, PosId2, arc->getEndPoint(true),false,true);
+            }
+            else {
+                tangent1->SecondPos = end;
+                tangent2->SecondPos = start;
+                movePoint(GeoId1, PosId1, arc->getEndPoint(true),false,true);
+                movePoint(GeoId2, PosId2, arc->getStartPoint(true),false,true);
+            }
+            
+            addConstraint(tangent1);
+            addConstraint(tangent2);
+            delete tangent1;
+            delete tangent2;
+        }
+        delete arc;
+        
+        if(noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
+            solve();
+        
+        return 0;
+    }
     return -1;
 }
 
