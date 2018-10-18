@@ -337,10 +337,10 @@ std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 void ViewProvider::setDisplayMode(const char* ModeName)
 {
     _sCurrentMode = ModeName;
-    
+
     //infom the exteensions
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector)
         ext->extensionSetDisplayMode(ModeName);
 }
 
@@ -353,7 +353,7 @@ vector<std::string> ViewProvider::getDisplayModes(void) const {
 
     std::vector< std::string > modes;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
+    for (Gui::ViewProviderExtension* ext : vector) {
         auto extModes = ext->extensionGetDisplayModes();
         modes.insert( modes.end(), extModes.begin(), extModes.end() );
     }
@@ -371,17 +371,17 @@ void ViewProvider::hide(void)
 
     //tell extensions that we hide
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector)
         ext->extensionHide();
 }
 
 void ViewProvider::show(void)
 {
     setModeSwitch();
-    
+
     //tell extensions that we show
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector)
         ext->extensionShow();
 }
 
@@ -625,10 +625,11 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     return false;
 }
 
-bool ViewProvider::onDelete(const vector< string >& subNames) {
+bool ViewProvider::onDelete(const vector< string >& subNames)
+{
     bool del = true;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector)
         del &= ext->extensionOnDelete(subNames);
 
     return del;
@@ -639,33 +640,33 @@ bool ViewProvider::canDelete(App::DocumentObject*) const
     return false;
 }
 
-bool ViewProvider::canDragObject(App::DocumentObject* obj) const {
-
+bool ViewProvider::canDragObject(App::DocumentObject* obj) const
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionCanDragObject(obj))
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDragObject(obj))
             return true;
     }
 
     return false;
 }
 
-bool ViewProvider::canDragObjects() const {
-
+bool ViewProvider::canDragObjects() const
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionCanDragObjects())
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDragObjects())
             return true;
     }
 
     return false;
 }
 
-void ViewProvider::dragObject(App::DocumentObject* obj) {
-
+void ViewProvider::dragObject(App::DocumentObject* obj)
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionCanDragObject(obj)) {
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDragObject(obj)) {
             ext->extensionDragObject(obj);
             return;
         }
@@ -674,18 +675,17 @@ void ViewProvider::dragObject(App::DocumentObject* obj) {
     throw Base::RuntimeError("ViewProvider::dragObject: no extension for dragging given object available.");
 }
 
-
-bool ViewProvider::canDropObject(App::DocumentObject* obj) const {
-
+bool ViewProvider::canDropObject(App::DocumentObject* obj) const
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 #if FC_DEBUG
     Base::Console().Log("Check extensions for drop\n");
 #endif
-    for(Gui::ViewProviderExtension* ext : vector){
+    for (Gui::ViewProviderExtension* ext : vector){
 #if FC_DEBUG
         Base::Console().Log("Check extensions %s\n", ext->name().c_str());
 #endif
-        if(ext->extensionCanDropObject(obj))
+        if (ext->extensionCanDropObject(obj))
             return true;
     }
 
@@ -702,11 +702,11 @@ bool ViewProvider::canDropObjects() const {
     return false;
 }
 
-void ViewProvider::dropObject(App::DocumentObject* obj) {
-
+void ViewProvider::dropObject(App::DocumentObject* obj)
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
-        if(ext->extensionCanDropObject(obj)) {
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDropObject(obj)) {
             ext->extensionDropObject(obj);
             return;
         }
@@ -715,72 +715,72 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
-void ViewProvider::Restore(Base::XMLReader& reader) {
-    
+void ViewProvider::Restore(Base::XMLReader& reader)
+{
     setStatus(Gui::isRestoring, true);
     TransactionalObject::Restore(reader);
     setStatus(Gui::isRestoring, false);
 }
 
-void ViewProvider::updateData(const App::Property* prop) {
-
+void ViewProvider::updateData(const App::Property* prop)
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for (Gui::ViewProviderExtension* ext : vector)
         ext->extensionUpdateData(prop);
 }
 
-SoSeparator* ViewProvider::getBackRoot(void) const {
-
+SoSeparator* ViewProvider::getBackRoot(void) const
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
+    for (Gui::ViewProviderExtension* ext : vector) {
         auto* node = ext->extensionGetBackRoot();
-        if(node)
+        if (node)
             return node;
     }
     return nullptr;
 }
 
-SoGroup* ViewProvider::getChildRoot(void) const {
-
+SoGroup* ViewProvider::getChildRoot(void) const
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
+    for (Gui::ViewProviderExtension* ext : vector) {
         auto* node = ext->extensionGetChildRoot();
-        if(node)
+        if (node)
             return node;
     }
     return nullptr;
 }
 
-SoSeparator* ViewProvider::getFrontRoot(void) const {
-
+SoSeparator* ViewProvider::getFrontRoot(void) const
+{
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
+    for (Gui::ViewProviderExtension* ext : vector) {
         auto* node = ext->extensionGetFrontRoot();
-        if(node)
+        if (node)
             return node;
     }
     return nullptr;
 }
 
-std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const {
-
+std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const
+{
     std::vector< App::DocumentObject* > vec;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
+    for (Gui::ViewProviderExtension* ext : vector) {
         std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
-        if(!nvec.empty())
+        if (!nvec.empty())
             vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
     }
     return vec;
 }
 
-std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const {
-
+std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const
+{
     std::vector< App::DocumentObject* > vec;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector) {
+    for (Gui::ViewProviderExtension* ext : vector) {
         std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren3D();
-        if(!nvec.empty())
+        if (!nvec.empty())
             vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
     }
     return vec;
