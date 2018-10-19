@@ -72,7 +72,6 @@ public:
     
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
-    void onRelabel(Gui::Document *pDoc);
 
     void print();
     void print(QPrinter* printer);
@@ -98,6 +97,9 @@ public:
 
     void redrawAllViews(void);
     void redraw1View(TechDraw::DrawView* dv);
+    
+    void setTabText(std::string t);
+
 
 public Q_SLOTS:
     void setRenderer(QAction *action);
