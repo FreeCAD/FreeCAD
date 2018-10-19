@@ -272,7 +272,7 @@ public:
     void setClosable(bool);
     /// check whether the document can be closed
     bool isClosable() const;
-    /// Recompute all touched features and return the amount of recalculated features
+    /// Recompute all touched features and return the number of recalculated features
     int recompute();
     /// Recompute only one feature
     void recomputeFeature(DocumentObject* Feat);
