@@ -26,9 +26,6 @@
 #include "Reader.h"
 #include "PyObjectBase.h"
 
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
-
 #ifndef _PreComp_
 #endif
 
@@ -102,10 +99,7 @@ std::string Persistence::encodeAttribute(const std::string& str)
     return tmp;
 }
 
-PyObject* Persistence::dumpToPython(int compression) {
- 
-    //setup the stream. the in flag is needed to make "read" work^
-    std::stringstream stream(std::stringstream::out | std::stringstream::in | std::stringstream::binary);
+void Persistence::dumpToStream(std::ostream& stream, int compression) {
 
     //we need to close the zipstream to get a good result, the only way to do this is to delete the ZipWriter. 
     //Hence the scope...
@@ -113,7 +107,7 @@ PyObject* Persistence::dumpToPython(int compression) {
         //create the writer
         Base::ZipWriter writer(stream);
         writer.setLevel(compression);
-        writer.putNextEntry("Document.xml");
+        writer.putNextEntry("Persistence.xml");
         writer.setMode("BinaryBrep");    
         
         //save the content (we need to encapsulte it with xml tags to be able to read single element xmls like happen for properties)
@@ -122,81 +116,17 @@ PyObject* Persistence::dumpToPython(int compression) {
         writer.Stream() << "</Content>";
         writer.writeFiles();
     }
-     
-    //build the byte array with correct size
-    if(!stream.seekp(0, stream.end)) {
-        PyErr_SetString(PyExc_IOError, "Unable to find end of stream");
-        return NULL;
-    }        
-    std::stringstream::pos_type offset = stream.tellp();
-    if(!stream.seekg(0, stream.beg)) {
-        PyErr_SetString(PyExc_IOError, "Unable to find begin of stream");
-        return NULL;
-    }
-    
-    PyObject* ba = PyByteArray_FromStringAndSize(NULL, offset);
-    
-    //use the buffer protocol to access the underlying array and write into it
-    Py_buffer buf = Py_buffer();
-    PyObject_GetBuffer(ba, &buf, PyBUF_WRITABLE);
-    try {
-        if(!stream.read((char*)buf.buf, offset)) {
-            PyErr_SetString(PyExc_IOError, "Error copying data into byte array");
-            return NULL;
-        }
-        PyBuffer_Release(&buf);
-    }
-    catch(...) {
-        PyBuffer_Release(&buf);
-        PyErr_SetString(PyExc_IOError, "Error copying data into byte array");
-        return NULL;
-    }
-    
-    return ba;    
 }
 
-PyObject* Persistence::restoreFromPython(PyObject *buffer) {
+void Persistence::restoreFromStream(std::istream& stream) {
+        
+    zipios::ZipInputStream zipstream(stream);
+    Base::XMLReader reader("", zipstream);
 
-    //check if it really is a buffer
-    if( !PyObject_CheckBuffer(buffer) ) {
-        PyErr_SetString(PyExc_TypeError, "Must be a buffer object");
-        return NULL;
-    }
+    if (!reader.isValid())
+        throw Base::ValueError("Unable to construct reader");
     
-    Py_buffer buf;
-    if(PyObject_GetBuffer(buffer, &buf, PyBUF_SIMPLE) < 0)
-        return NULL;
-    
-    if(!PyBuffer_IsContiguous(&buf, 'C')) {
-        PyErr_SetString(PyExc_TypeError, "Buffer must be contiguous");
-        return NULL;
-    }
-    
-    try {
-        
-        typedef boost::iostreams::basic_array_source<char> Device;
-        boost::iostreams::stream<Device> stream((char*)buf.buf, buf.len);
-        
-        zipios::ZipInputStream zipstream(stream);
-        Base::XMLReader reader("", zipstream);
-
-        if (!reader.isValid()) {
-            PyErr_SetString(PyExc_IOError, "Unable to read file");
-            return NULL;
-        }
-        
-        reader.readElement("Content");
-        Restore(reader);
-        reader.readFiles(zipstream);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_IOError, e.what());
-        return NULL;
-    } 
-    catch (const std::exception& e) {
-        PyErr_SetString(PyExc_IOError, e.what());
-        return NULL;
-    }   
-    
-    return Py_None;
+    reader.readElement("Content");
+    Restore(reader);
+    reader.readFiles(zipstream);
 }
