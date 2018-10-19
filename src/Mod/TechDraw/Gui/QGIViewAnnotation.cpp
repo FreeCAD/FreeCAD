@@ -112,6 +112,7 @@ void QGIViewAnnotation::draw()
 
     drawAnnotation();
     QGIView::draw();
+    rotateView();
 
 }
 
