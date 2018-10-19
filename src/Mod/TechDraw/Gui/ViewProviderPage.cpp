@@ -154,8 +154,12 @@ void ViewProviderPage::updateData(const App::Property* prop)
             m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
+    } else if (prop == &(getDrawPage()->Label)) {
+       if(m_mdiView && 
+          !getDrawPage()->isUnsetting()) {
+           m_mdiView->setTabText(getDrawPage()->Label.getValue());
+       }
     }
-
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
@@ -214,7 +218,8 @@ bool ViewProviderPage::showMDIViewPage()
         Gui::Document* doc = Gui::Application::Instance->getDocument
             (pcObject->getDocument());
         m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
-        QString tabTitle = QString::fromUtf8(getDrawPage()->getNameInDocument());
+//        QString tabTitle = QString::fromUtf8(getDrawPage()->getNameInDocument());
+        QString tabTitle = QString::fromUtf8(getDrawPage()->Label.getValue());
 
         m_mdiView->setDocumentObject(getDrawPage()->getNameInDocument());
         m_mdiView->setDocumentName(pcObject->getDocument()->getName());

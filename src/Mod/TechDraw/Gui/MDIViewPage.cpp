@@ -559,13 +559,12 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
     return false;
 }
 
-
-void MDIViewPage::onRelabel(Gui::Document *pDoc)
+//called by ViewProvider when Page feature Label changes
+void MDIViewPage::setTabText(std::string t)
 {
-    if (!bIsPassive && pDoc) {
-        QString cap = QString::fromLatin1("%1 : %2[*]")
-            .arg(QString::fromUtf8(pDoc->getDocument()->Label.getValue()))
-            .arg(objectName());
+    if (!isPassive() && !t.empty()) {
+        QString cap = QString::fromLatin1("%1 [*]")
+            .arg(QString::fromUtf8(t.c_str()));
         setWindowTitle(cap);
     }
 }
