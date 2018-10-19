@@ -5622,7 +5622,8 @@ namespace SketcherGui {
                 int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 const Part::Geometry *geom = Sketch->getGeometry(GeoId);
-                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
+                    geom->getTypeId().isDerivedFrom(Part::GeomArcOfConic::getClassTypeId()))
                     return true;
             }
             if (element.substr(0,6) == "Vertex") {
@@ -5786,7 +5787,8 @@ public:
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
+                geom->getTypeId().isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
                 if (Mode==STATUS_SEEK_First) {
                     firstCurve = GeoId;
                     firstPos = onSketchPos;
@@ -5804,19 +5806,35 @@ public:
                 else if (Mode==STATUS_SEEK_Second) {
                     int secondCurve = GeoId;
                     Base::Vector2d secondPos = onSketchPos;
-
-                    // guess fillet radius
-                    const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
-                                                            (sketchgui->getSketchObject()->getGeometry(firstCurve));
-                    const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
-                                                            (sketchgui->getSketchObject()->getGeometry(secondCurve));
+                    
                     Base::Vector3d refPnt1(firstPos.x, firstPos.y, 0.f);
                     Base::Vector3d refPnt2(secondPos.x, secondPos.y, 0.f);
-                    double radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
-                    if (radius < 0)
-                        return false;
+
+                    double radius = 0;
                     
-                    construction=lineSeg1->Construction && lineSeg2->Construction;
+                    if(geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        // guess fillet radius
+                        const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
+                                                                (sketchgui->getSketchObject()->getGeometry(firstCurve));
+                        const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
+                                                                (sketchgui->getSketchObject()->getGeometry(secondCurve));
+
+                        double radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
+                        if (radius < 0)
+                            return false;
+                        
+                        construction=lineSeg1->Construction && lineSeg2->Construction;
+                    }
+                    else { // arcofConic
+                        const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
+                                                                (sketchgui->getSketchObject()->getGeometry(firstCurve));
+                        const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
+                                                                (sketchgui->getSketchObject()->getGeometry(secondCurve));
+                        
+                        construction=geo1->Construction && geo2->Construction;                       
+                    }
+                    
+                    
                     int currentgeoid= getHighestCurveIndex();
 
                     // create fillet between lines
