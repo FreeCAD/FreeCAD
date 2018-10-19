@@ -50,9 +50,9 @@ using namespace std;
 // PropertyLink
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLink , App::Property)
-TYPESYSTEM_SOURCE(App::PropertyLinkChild , App::PropertyLink)
-TYPESYSTEM_SOURCE(App::PropertyLinkGlobal , App::PropertyLink)
+TYPESYSTEM_SOURCE(App::PropertyLink, App::Property)
+TYPESYSTEM_SOURCE(App::PropertyLinkChild, App::PropertyLink)
+TYPESYSTEM_SOURCE(App::PropertyLinkGlobal, App::PropertyLink)
 
 //**************************************************************************
 // Construction/Destruction
@@ -191,7 +191,7 @@ Property *PropertyLink::Copy(void) const
 
 void PropertyLink::Paste(const Property &from)
 {
-    if(!from.isDerivedFrom(PropertyLink::getClassTypeId()))
+    if (!from.isDerivedFrom(PropertyLink::getClassTypeId()))
         throw Base::TypeError("Incompatible property to paste to");
 
     setValue(static_cast<const PropertyLink&>(from)._pcLink);
@@ -202,8 +202,8 @@ void PropertyLink::Paste(const Property &from)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLists)
-TYPESYSTEM_SOURCE(App::PropertyLinkListChild , App::PropertyLinkList)
-TYPESYSTEM_SOURCE(App::PropertyLinkListGlobal , App::PropertyLinkList)
+TYPESYSTEM_SOURCE(App::PropertyLinkListChild, App::PropertyLinkList)
+TYPESYSTEM_SOURCE(App::PropertyLinkListGlobal, App::PropertyLinkList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -388,7 +388,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
             values.push_back(child);
         else if (reader.isVerbose())
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
-            "an object was not loaded correctly\n", name.c_str());
+                                    "an object was not loaded correctly\n", name.c_str());
     }
 
     reader.readEndElement("LinkList");
@@ -418,9 +418,9 @@ unsigned int PropertyLinkList::getMemSize(void) const
 // PropertyLinkSub
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::Property)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubChild , App::PropertyLinkSub)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubGlobal , App::PropertyLinkSub)
+TYPESYSTEM_SOURCE(App::PropertyLinkSub, App::Property)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubChild, App::PropertyLinkSub)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubGlobal, App::PropertyLinkSub)
 
 //**************************************************************************
 // Construction/Destruction
@@ -524,7 +524,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
         Py::Sequence seq(value);
         if(seq.size() == 0)
             setValue(NULL);
-        else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))){
+        else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
             DocumentObjectPy  *pcObj = (DocumentObjectPy*)seq[0].ptr();
             if (seq[1].isString()) {
                 std::vector<std::string> vals;
@@ -628,9 +628,9 @@ void PropertyLinkSub::Paste(const Property &from)
 // PropertyLinkSubList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLists)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubListChild , App::PropertyLinkSubList)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubListGlobal , App::PropertyLinkSubList)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubList, App::PropertyLists)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListChild, App::PropertyLinkSubList)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListGlobal, App::PropertyLinkSubList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -771,7 +771,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
-#ifndef USE_OLD_DAG   
+#ifndef USE_OLD_DAG
     //maintain backlinks.
     if (getContainer() && getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         App::DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
@@ -938,7 +938,7 @@ PyObject *PropertyLinkSubList::getPyObject(void)
 #else
     Py::List sequence(count);
 #endif
-    for (unsigned int i = 0; i<count; i++){
+    for (unsigned int i = 0; i<count; i++) {
         Py::Tuple tup(2);
         tup[0] = Py::Object(_lValueList[i]->getPyObject());
         std::string subItem;
