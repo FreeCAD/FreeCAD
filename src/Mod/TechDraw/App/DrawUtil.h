@@ -30,6 +30,7 @@
 
 #include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -89,6 +90,8 @@ class TechDrawExport DrawUtil {
         //! find intersection in 2d for 2 lines in point+direction form
         static Base::Vector3d Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
                                    Base::Vector3d p2, Base::Vector3d d2);
+        static Base::Vector3d gpPnt2V3(const gp_Pnt gp) { return Base::Vector3d(gp.X(),gp.Y(),gp.Z()); }
+        static gp_Pnt         V32gpPnt(const Base::Vector3d v)  { return gp_Pnt(v.x,v.y,v.z); }
 
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);
