@@ -564,31 +564,39 @@ BSpline::BSpline(const TopoDS_Edge &e)
 
 
 //! Can this BSpline be represented by a straight line?
+// if len(first-last) == sum(len(pi - pi+1)) then it is a line
 bool BSpline::isLine()
 {
     bool result = false;
     BRepAdaptor_Curve c(occEdge);
 
     Handle(Geom_BSplineCurve) spline = c.BSpline();
-    if (spline->Degree() == 1) {
-        //TODO: this test is a bit sketchy
-        //      proper test would be to test each pole for collinearity.
-        
-        double splineLength = GCPnts_AbscissaPoint::Length (c);
         double f = c.FirstParameter();
         double l = c.LastParameter();
         gp_Pnt s = c.Value(f);
         gp_Pnt e = c.Value(l);
-        
+  
         bool samePnt = s.IsEqual(e,FLT_EPSILON);
         if (!samePnt) {
-            Base::Vector3d startPnt(s.X(), s.Y(), 0.0);
-            Base::Vector3d endPnt(e.X(), e.Y(), 0.0);
-            double endLength = (startPnt - endPnt).Length();
-            if (DrawUtil::fpCompare(splineLength,endLength)) {
+            Base::Vector3d vs = DrawUtil::gpPnt2V3(s);
+            Base::Vector3d ve = DrawUtil::gpPnt2V3(e);
+            double endLength = (vs - ve).Length();
+            int low = 0;
+            int high = spline->NbPoles() - 1;
+            TColgp_Array1OfPnt poles(low,high);
+            spline->Poles(poles);
+            double lenTotal = 0.0;
+            for (int i = 0; i < high; i++) {
+                gp_Pnt p1 = poles(i);
+                Base::Vector3d v1 = DrawUtil::gpPnt2V3(p1);
+                gp_Pnt p2 = poles(i+1);
+                Base::Vector3d v2 = DrawUtil::gpPnt2V3(p2);
+                lenTotal += (v2-v1).Length();
+            }
+
+            if (DrawUtil::fpCompare(lenTotal,endLength)) {
                 result = true;
             }
-        }
     }
     return result;
 }
