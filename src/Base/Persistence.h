@@ -149,11 +149,11 @@ public:
     /// Encodes an attribute upon saving.
     static std::string encodeAttribute(const std::string&);
     
-    //dump the persistence data into a python byte array data structure
-    PyObject* dumpToPython(int compression);
+    //dump the binary persistence data into into the stream
+    void dumpToStream(std::ostream& stream, int compression);
     
-    //restore the persistence data from a python data structure that supports the buffer protocol
-    PyObject* restoreFromPython(PyObject*);
+    //restore the binary persistence data from a stream. Must have the format used by dumpToStream
+    void restoreFromStream(std::istream& stream);
 };
 
 } //namespace Base
