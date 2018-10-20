@@ -46,25 +46,17 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
 	//printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);	 
 	if (msg->client == tdxClientID)
 	  {
-	    Gui::GUIApplicationNativeEventAware* qapp = static_cast<Gui::GUIApplicationNativeEventAware *>(Gui::GUIApplicationNativeEventAware::instance());
-	    if (!qapp) return;
 	    switch (msg->command)
 	      {
 	      case kConnexionCmdHandleAxis:
 		{
-		  //printf("TX: %d\n", msg->axis[0]);
-		  //printf("TY: %d\n", msg->axis[1]);
-		  //printf("TZ: %d\n", msg->axis[2]);
-		  //printf("RX: %d\n", msg->axis[3]);
-		  //printf("RY: %d\n", msg->axis[4]);
-		  //printf("RZ: %d\n", msg->axis[5]);
-		  qapp->motionDataArray[0] = msg->axis[0];                        
-		  qapp->motionDataArray[1] = msg->axis[1];                        
-		  qapp->motionDataArray[2] = msg->axis[2];                        
-		  qapp->motionDataArray[3] = msg->axis[3];                        
-		  qapp->motionDataArray[4] = msg->axis[4];                        
-		  qapp->motionDataArray[5] = msg->axis[5];
-		  qapp->Move3d();
+		  motionDataArray[0] = -msg->axis[0];                        
+		  motionDataArray[1] = msg->axis[1];                        
+		  motionDataArray[2] = msg->axis[2];                        
+		  motionDataArray[3] = -msg->axis[3];                        
+		  motionDataArray[4] = msg->axis[4];                        
+		  motionDataArray[5] = msg->axis[5];
+		  mainApp->postMotionEvent(&motionDataArray[0])
 		  break;
 		}
                         
@@ -78,13 +70,13 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
 		  for (uint8_t bt = 0; bt < 32; bt++)
 		    {
 		      if (pressedButtons & 1)
-			qapp->Button3d(true, bt);
+				mainApp->postButtonEvent(bt, 1);
 		      pressedButtons = pressedButtons>>1;
 		    }
 		  for (uint8_t bt = 0; bt < 32; bt++)
 		    {
 		      if (releasedButtons & 1)
-			qapp->Button3d(false, bt);
+				mainApp->postButtonEvent(bt, 0);
 		      releasedButtons = releasedButtons>>1;
 		    }
 		  lastButtons = msg->buttons;
@@ -158,55 +150,5 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
     
     Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
     spaceballPresent = true;
-}
-
-/*!
-	Called with the processed motion data when a 3D mouse event is received
-
-	The default implementation emits a Move3d signal with the motion data
-*/
-void Gui::GUIApplicationNativeEventAware::Move3d()
-{
-  QWidget *currentWidget = this->focusWidget();
-  if (!currentWidget)
-    return;
-    //currentWidget = mainWindow;
-
-  if (!setOSIndependentMotionData()) return;
-  importSettings();
-  
-  Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
-  
-  motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
-  motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
-  
-  this->postEvent(currentWidget, motionEvent);
-}
-
-/*!
-	Called when a 3D mouse key is pressed or released
-
-	The default implementation emits a On3dmouseKeyDown signal with the key code.
-*/
-void Gui::GUIApplicationNativeEventAware::Button3d(bool buttonDown, int buttonNumber)
-{
-    QWidget *currentWidget = this->focusWidget();
-    if (!currentWidget)
-      return;
-    // currentWidget = mainWindow;
-
-    Spaceball::ButtonEvent *buttonEvent = new Spaceball::ButtonEvent();
-    buttonEvent->setButtonNumber(buttonNumber);
-    if (buttonDown)
-      {
-	//printf("Button %d pressed\n", buttonNumber);
-	buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
-      }
-    else
-      {
-	//printf("Button %d released\n", buttonNumber);
-	buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
-      }
-    this->postEvent(currentWidget, buttonEvent);
 }
 

@@ -18,19 +18,7 @@ class GUIApplicationNativeEventAware;
 
 namespace Gui
 {
-	class GUIApplicationNativeEventAware;
-
-	class GuiNativeEvent : public QObject
-	{
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent();
-		void initSpaceball(QMainWindow *window);
-	private:
-		GuiNativeEvent();
-		GuiNativeEvent(GuiNativeEvent*);
-		GUIApplicationNativeEventAware *mainApp;
-
+#if QT_VERSION >= 0x050000
     class RawInputEventFilter : public QAbstractNativeEventFilter
     {
     public:
@@ -47,6 +35,19 @@ namespace Gui
     private:
         EventFilter eventFilter;
     };
+#endif // if QT_VERSION >= 0x050000
+	class GUIApplicationNativeEventAware;
+
+	class GuiNativeEvent : public QObject
+	{
+	public:
+		GuiNativeEvent(GUIApplicationNativeEventAware *app);
+		~GuiNativeEvent();
+		void initSpaceball(QMainWindow *window);
+	private:
+		GuiNativeEvent();
+		GuiNativeEvent(GuiNativeEvent*);
+		GUIApplicationNativeEventAware *mainApp;
 
     public:
         static bool Is3dmouseAttached();

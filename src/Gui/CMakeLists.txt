@@ -106,6 +106,29 @@ else()
 endif()
 
 IF(SPNAV_FOUND)
+	if(SPNAV_USE_X11)
+	  add_definitions(-DSPNAV_USE_X11)
+      if (BUILD_QT5 AND UNIX AND NOT APPLE)
+        find_package(Qt5X11Extras REQUIRED)
+        include_directories(${Qt5X11Extras_INCLUDE_DIRS})
+        list(APPEND FreeCADGui_LIBS ${Qt5X11Extras_LIBRARIES})
+      endif()
+      find_package(X11 QUIET)
+      if (X11_FOUND)
+        list(APPEND FreeCADGui_LIBS
+            ${X11_X11_LIB}
+        )
+      endif(X11_FOUND)
+      SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/GuiNativeEventLinuxX11.cpp
+        )
+    else(SPNAV_USE_X11)
+      SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/GuiNativeEventLinux.cpp
+      )
+	endif(SPNAV_USE_X11)
+    SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+	
     add_definitions(-DSPNAV_FOUND)
     include_directories(
         ${SPNAV_INCLUDE_DIR}
@@ -195,13 +218,6 @@ SET(FreeCADGui_SDK_SRCS
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
-
-if(UNIX AND NOT APPLE)
-SET(FreeCADGui_SDK_SRCS
-    3Dconnexion/GuiNativeEventLinux.cpp
-)
-SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-endif(UNIX AND NOT APPLE)
 
 set(Gui_MOC_HDRS
     Action.h

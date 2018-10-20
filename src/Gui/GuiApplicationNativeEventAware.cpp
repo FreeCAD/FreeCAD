@@ -30,32 +30,13 @@
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
 #include "Application.h"
-#if defined(Q_OS_LINUX)
-
-  #if QT_VERSION >= 0x050000
-    #undef Bool
-    #undef CursorShape
-    #undef Expose
-    #undef KeyPress
-    #undef KeyRelease
-    #undef FocusIn
-    #undef FocusOut
-    #undef FontChange
-    #undef None
-    #undef Status
-    #undef Unsorted
-    #undef False
-    #undef True
-    #undef Complex
-  #endif // #if QT_VERSION >= 0x050000
-
-#endif // if defined(Q_OS_LINUX)
-
 
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
         QApplication (argc, argv)
 {
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     nativeEvent = new Gui::GuiNativeEvent(this);
+#endif
 }
 
 Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
@@ -64,7 +45,9 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
 	nativeEvent->initSpaceball(window);
+#endif
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();
     Spaceball::ButtonEvent::ButtonEventType = QEvent::registerEventType();
 }
@@ -105,6 +88,39 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object,
     return true;
 }
 
+void Gui::GUIApplicationNativeEventAware::postMotionEvent(int *const motionDataArray)
+{
+	auto currentWidget(focusWidget());
+    if (!currentWidget) {
+        return;
+    }
+    importSettings(motionDataArray);
+
+	Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
+    motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
+    motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);  
+    this->postEvent(currentWidget, motionEvent);
+}
+
+void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int buttonPress)
+{
+	auto currentWidget(focusWidget());
+    if (!currentWidget) {
+        return;
+    }
+
+    Spaceball::ButtonEvent *buttonEvent = new Spaceball::ButtonEvent();
+    buttonEvent->setButtonNumber(buttonNumber);
+    if (buttonPress)
+    {
+	  buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
+    }
+    else
+    {
+	  buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
+    }
+    this->postEvent(currentWidget, buttonEvent);
+}
 
 float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
 {
@@ -129,7 +145,7 @@ float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
 // motionDataArray[5] - Spin mouse                  - rotate around "Zoom"      axis on screen
 
 
-bool Gui::GUIApplicationNativeEventAware::setOSIndependentMotionData()
+/*bool Gui::GUIApplicationNativeEventAware::setOSIndependentMotionData()
 {
 #ifdef SPNAV_FOUND
     int temp;
@@ -150,9 +166,9 @@ bool Gui::GUIApplicationNativeEventAware::setOSIndependentMotionData()
     return false;
 #endif
     return true;
-}
+}*/
 
-void Gui::GUIApplicationNativeEventAware::importSettings()
+void Gui::GUIApplicationNativeEventAware::importSettings(int *const motionDataArray)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Spaceball")->GetGroup("Motion");
 

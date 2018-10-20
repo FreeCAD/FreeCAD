@@ -29,13 +29,19 @@
 
 class QMainWindow;
 
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
 #if defined(Q_OS_LINUX)
-#include "3Dconnexion/GuiNativeEventLinux.h"
+  #if defined(SPNAV_USE_X11)
+    #include "3Dconnexion/GuiNativeEventLinuxX11.h"
+  #else
+    #include "3Dconnexion/GuiNativeEventLinux.h"
+  #endif
 #elif defined(Q_OS_WIN)
-#include "3Dconnexion/GuiNativeEventWin32.h"
+  #include "3Dconnexion/GuiNativeEventWin32.h"
 #elif defined(Q_OS_MACX)
-#include "3Dconnexion/GuiNativeEventMac.h"
+  #include "3Dconnexion/GuiNativeEventMac.h"
 #endif // Platform switch
+#endif // Spacemice
 
 namespace Gui
 {
@@ -49,13 +55,16 @@ namespace Gui
         bool isSpaceballPresent() const {return spaceballPresent;}
         void setSpaceballPresent(bool present) {spaceballPresent = present;} 
         bool processSpaceballEvent(QObject *object, QEvent *event);
+        void postMotionEvent(int *const motionDataArray);
+        void postButtonEvent(int buttonNumber, int buttonPress);
     private:
         bool spaceballPresent;
-        int  motionDataArray[6];
-        bool setOSIndependentMotionData();
-        void importSettings();
+        void importSettings(int *const motionDataArray);
         float convertPrefToSensitivity(int value);
+      #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
         GuiNativeEvent *nativeEvent;
+        friend void GuiNativeEvent::initSpaceball(QMainWindow *window);
+      #endif
     }; // end class GUIApplicationNativeEventAware
 } // end namespace Gui
 
