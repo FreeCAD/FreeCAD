@@ -25,24 +25,13 @@ namespace Gui
 
 	class GuiNativeEvent : public QObject
 	{
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent();
-		void initSpaceball(QMainWindow *window);
+	#include "GuiNativeEventCommon.h"
 	private:
-		GuiNativeEvent();
-		GuiNativeEvent(GuiNativeEvent*);
-		bool spaceballPresent;
-		GUIApplicationNativeEventAware *mainApp;
-
         static UInt16 tdxClientID; /* ID assigned by the driver */
         static uint32_t lastButtons;
-
         static void tdx_drv_handler( io_connect_t connection,
                                      natural_t messageType,
                                      void *messageArgument );
-        void Move3d();
-        void Button3d(bool buttonDown, int buttonNumber);
 	};
 }
 
