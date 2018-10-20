@@ -40,15 +40,7 @@ namespace Gui
 
 	class GuiNativeEvent : public QObject
 	{
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent();
-		void initSpaceball(QMainWindow *window);
-	private:
-		GuiNativeEvent();
-		GuiNativeEvent(GuiNativeEvent*);
-		GUIApplicationNativeEventAware *mainApp;
-
+#include "GuiNativeEventCommon.h"
     public:
         static bool Is3dmouseAttached();
 
@@ -92,7 +84,7 @@ namespace Gui
         MouseParameters f3dMouseParams;     // Rotate, Pan Zoom etc.
         // use to calculate distance traveled since last event
         DWORD fLast3dmouseInputTime;
-        static Gui::GUIApplicationNativeEventAware* gMouseInput;
+        static Gui::GuiNativeEvent* gMouseInput;
 	};
 }
 
