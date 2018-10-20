@@ -12,15 +12,9 @@ namespace Gui
 
 	class GuiNativeEvent : public QObject
 	{
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent();
-		void initSpaceball(QMainWindow *window);
+#include "GuiNativeEventCommon.h"
 	private:
-		GuiNativeEvent();
-		GuiNativeEvent(GuiNativeEvent*);
 		void pollSpacenav();
-		GUIApplicationNativeEventAware *mainApp;
 	};
 }
 

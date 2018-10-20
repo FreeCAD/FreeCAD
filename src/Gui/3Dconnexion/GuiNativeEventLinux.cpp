@@ -5,7 +5,6 @@ Implementation by Torsten Sadowski 2018
 #include "GuiNativeEventLinux.h"
 
 #include "GuiApplicationNativeEventAware.h"
-#include "SpaceballEvent.h"
 #include <FCConfig.h>
 #include <Base/Console.h>
 #include <QMainWindow>
@@ -46,34 +45,22 @@ void Gui::GuiNativeEvent::pollSpacenav()
 	spnav_event ev;
 	while(spnav_poll_event(&ev))
 	{
-		QWidget *currentWidget = mainApp->focusWidget();
-		if (!currentWidget)
-			return;
-		//if (!setOSIndependentMotionData()) return;
-		//importSettings();
 		switch (ev.type)
 		{
 			case SPNAV_EVENT_MOTION:
 			{
-				Spaceball::MotionEvent *motionEvent = new Spaceball::MotionEvent();
-				motionEvent->setTranslations(ev.motion.x, ev.motion.y, ev.motion.z);
-				motionEvent->setRotations(ev.motion.rx, ev.motion.ry, ev.motion.rz);
-				mainApp->postEvent(currentWidget, motionEvent);
+				motionDataArray[0] = -ev.motion.x;
+				motionDataArray[1] = -ev.motion.z;
+				motionDataArray[2] = -ev.motion.y;
+				motionDataArray[3] = -ev.motion.rx;
+				motionDataArray[4] = -ev.motion.rz;
+				motionDataArray[5] = -ev.motion.ry;
+				mainApp->postMotionEvent(&motionDataArray[0]);
 				break;
 			}
 			case SPNAV_EVENT_BUTTON:
 			{
-				Spaceball::ButtonEvent *buttonEvent = new Spaceball::ButtonEvent();
-				buttonEvent->setButtonNumber(ev.button.bnum);
-				if (ev.button.press)
-				{
-					buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
-				}
-				else
-				{
-					buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
-				}
-				mainApp->postEvent(currentWidget, buttonEvent);
+				mainApp->postButtonEvent(ev.button.bnum, ev.button.press);
 				break;
 			}
 		}
