@@ -477,6 +477,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomBezierCurve         ::init();
     Part::GeomBSplineCurve        ::init();
     Part::GeomConic               ::init();
+    Part::GeomTrimmedCurve        ::init();
     Part::GeomArcOfConic          ::init();
     Part::GeomCircle              ::init();
     Part::GeomArcOfCircle         ::init();
@@ -489,7 +490,6 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomLine                ::init();
     Part::GeomLineSegment         ::init();
     Part::GeomOffsetCurve         ::init();
-    Part::GeomTrimmedCurve        ::init();
     Part::GeomSurface             ::init();
     Part::GeomBezierSurface       ::init();
     Part::GeomBSplineSurface      ::init();
