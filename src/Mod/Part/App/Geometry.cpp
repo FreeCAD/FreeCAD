@@ -1441,7 +1441,89 @@ bool GeomConic::isReversed() const
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomArcOfConic,Part::GeomCurve)
+TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomCurve)
+
+GeomTrimmedCurve::GeomTrimmedCurve()
+{
+}
+
+GeomTrimmedCurve::GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)& c)
+{
+    setHandle(c);
+}
+
+GeomTrimmedCurve::~GeomTrimmedCurve()
+{
+}
+
+void GeomTrimmedCurve::setHandle(const Handle(Geom_TrimmedCurve)& c)
+{
+    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
+}
+
+const Handle(Geom_Geometry)& GeomTrimmedCurve::handle() const
+{
+    return myCurve;
+}
+
+Geometry *GeomTrimmedCurve::copy(void) const
+{
+    GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
+    newCurve->Construction = this->Construction;
+    return newCurve;
+}
+
+// Persistence implementer
+unsigned int GeomTrimmedCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
+void         GeomTrimmedCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
+void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+
+PyObject *GeomTrimmedCurve::getPyObject(void)
+{
+    return 0;
+}
+
+bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c, 
+                                std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+                                double tol) const
+{
+    Handle(Geom_TrimmedCurve) curve1 =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_TrimmedCurve) curve2 =  Handle(Geom_TrimmedCurve)::DownCast(c->handle());
+        
+    Handle(Geom_Conic) bcurve1 = Handle(Geom_Conic)::DownCast( curve1->BasisCurve() );
+    Handle(Geom_Conic) bcurve2 = Handle(Geom_Conic)::DownCast( curve2->BasisCurve() );
+    
+    try {
+    
+        if(!bcurve1.IsNull() && !bcurve2.IsNull()) {
+        
+            GeomAPI_ExtremaCurveCurve intersector(bcurve1, bcurve2);
+            
+            if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
+                // No intersection
+                return false;
+            }
+
+            for (int i = 1; i <= intersector.NbExtrema(); i++) {
+                if (intersector.Distance(i) > tol)
+                    continue;
+                
+                gp_Pnt p1, p2;
+                intersector.Points(i, p1, p2);
+                points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
+            }
+
+            return points.size()>0?true:false;
+        }
+        return false;
+    }
+    catch (Standard_Failure& e) {
+        return false;
+    }    
+}
+
+// -------------------------------------------------
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomArcOfConic,Part::GeomTrimmedCurve)
 
 GeomArcOfConic::GeomArcOfConic()
 {
@@ -1639,45 +1721,6 @@ void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
 
         throw Base::RuntimeError(e.GetMessageString());
     }
-}
-
-bool GeomArcOfConic::intersectBasisCurves(  const GeomArcOfConic * c, 
-                                std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
-                                double tol) const
-{
-    Handle(Geom_TrimmedCurve) curve1 =  Handle(Geom_TrimmedCurve)::DownCast(handle());
-    Handle(Geom_TrimmedCurve) curve2 =  Handle(Geom_TrimmedCurve)::DownCast(c->handle());
-        
-    Handle(Geom_Conic) bcurve1 = Handle(Geom_Conic)::DownCast( curve1->BasisCurve() );
-    Handle(Geom_Conic) bcurve2 = Handle(Geom_Conic)::DownCast( curve2->BasisCurve() );
-    
-    try {
-    
-        if(!bcurve1.IsNull() && !bcurve2.IsNull()) {
-        
-            GeomAPI_ExtremaCurveCurve intersector(bcurve1, bcurve2);
-            
-            if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
-                // No intersection
-                return false;
-            }
-
-            for (int i = 1; i <= intersector.NbExtrema(); i++) {
-                if (intersector.Distance(i) > tol)
-                    continue;
-                
-                gp_Pnt p1, p2;
-                intersector.Points(i, p1, p2);
-                points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
-            }
-
-            return points.size()>0?true:false;
-        }
-        return false;
-    }
-    catch (Standard_Failure& e) {
-        return false;
-    }    
 }
 
 // -------------------------------------------------
@@ -3673,6 +3716,10 @@ GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_Curve)& c, double offset, con
     this->myCurve = new Geom_OffsetCurve(c, offset, dir);
 }
 
+GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_Curve)& c, double offset, Base::Vector3d& dir):GeomOffsetCurve(c,offset,gp_Dir(dir.x,dir.y,dir.z))
+{
+}
+
 GeomOffsetCurve::GeomOffsetCurve(const Handle(Geom_OffsetCurve)& c)
 {
     setHandle(c);
@@ -3711,49 +3758,6 @@ PyObject *GeomOffsetCurve::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomCurve)
-
-GeomTrimmedCurve::GeomTrimmedCurve()
-{
-}
-
-GeomTrimmedCurve::GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)& c)
-{
-    setHandle(c);
-}
-
-GeomTrimmedCurve::~GeomTrimmedCurve()
-{
-}
-
-void GeomTrimmedCurve::setHandle(const Handle(Geom_TrimmedCurve)& c)
-{
-    this->myCurve = Handle(Geom_TrimmedCurve)::DownCast(c->Copy());
-}
-
-const Handle(Geom_Geometry)& GeomTrimmedCurve::handle() const
-{
-    return myCurve;
-}
-
-Geometry *GeomTrimmedCurve::copy(void) const
-{
-    GeomTrimmedCurve *newCurve =  new GeomTrimmedCurve(myCurve);
-    newCurve->Construction = this->Construction;
-    return newCurve;
-}
-
-// Persistence implementer
-unsigned int GeomTrimmedCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomTrimmedCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomTrimmedCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
-
-PyObject *GeomTrimmedCurve::getPyObject(void)
-{
-    return 0;
-}
-
-// -------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomSurface,Part::Geometry)
 
