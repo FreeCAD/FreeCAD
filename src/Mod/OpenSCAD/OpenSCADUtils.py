@@ -211,6 +211,7 @@ def fcsubmatrix(m):
 def multiplymat(l,r):
     """multiply matrices given as lists of row vectors"""
     rt=zip(*r) #transpose r
+    rt=list(rt)
     mat=[]
     for y in range(len(rt)):
         mline=[]
