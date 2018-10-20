@@ -328,7 +328,36 @@ public:
     const Handle(Geom_Geometry)& handle() const = 0;
 };
 
-class PartExport GeomArcOfConic : public GeomCurve
+class PartExport GeomTrimmedCurve : public GeomCurve
+{
+    TYPESYSTEM_HEADER();
+public:
+    GeomTrimmedCurve();
+    GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)&);
+    virtual ~GeomTrimmedCurve();
+    virtual Geometry *copy(void) const;
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+    // Base implementer ----------------------------
+    virtual PyObject *getPyObject(void);
+
+    void setHandle(const Handle(Geom_TrimmedCurve)&);
+    const Handle(Geom_Geometry)& handle() const;
+
+    bool intersectBasisCurves(  const GeomTrimmedCurve * c, 
+                            std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+                            double tol = Precision::Confusion()) const;
+    
+protected:
+    Handle(Geom_TrimmedCurve) myCurve;
+};
+
+
+
+class PartExport GeomArcOfConic : public GeomTrimmedCurve
 {
     TYPESYSTEM_HEADER();
 
@@ -369,10 +398,6 @@ public:
     virtual PyObject *getPyObject(void) = 0;
 
     const Handle(Geom_Geometry)& handle() const = 0;
-    
-    bool intersectBasisCurves(  const GeomArcOfConic * c, 
-                                std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
-                                double tol = Precision::Confusion()) const;
 };
 
 class PartExport GeomCircle : public GeomConic
@@ -430,8 +455,6 @@ public:
     void setHandle(const Handle(Geom_Circle)&);
     const Handle(Geom_Geometry)& handle() const;
 
-private:
-    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomEllipse : public GeomConic
@@ -495,9 +518,6 @@ public:
     void setHandle(const Handle(Geom_TrimmedCurve)&);
     void setHandle(const Handle(Geom_Ellipse)&);
     const Handle(Geom_Geometry)& handle() const;
-
-private:
-    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 
@@ -560,9 +580,6 @@ public:
     void setHandle(const Handle(Geom_TrimmedCurve)&);
     void setHandle(const Handle(Geom_Hyperbola)&);
     const Handle(Geom_Geometry)& handle() const;
-
-private:
-    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomParabola : public GeomConic
@@ -620,9 +637,6 @@ public:
     void setHandle(const Handle(Geom_TrimmedCurve)&);
     void setHandle(const Handle(Geom_Parabola)&);
     const Handle(Geom_Geometry)& handle() const;
-
-private:
-    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomLine : public GeomCurve
@@ -653,7 +667,7 @@ private:
     Handle(Geom_Line) myCurve;
 };
 
-class PartExport GeomLineSegment : public GeomCurve
+class PartExport GeomLineSegment : public GeomTrimmedCurve
 {
     TYPESYSTEM_HEADER();
 public:
@@ -679,8 +693,6 @@ public:
     void setHandle(const Handle(Geom_Line)&);
     const Handle(Geom_Geometry)& handle() const;
 
-private:
-    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomOffsetCurve : public GeomCurve
@@ -689,6 +701,7 @@ class PartExport GeomOffsetCurve : public GeomCurve
 public:
     GeomOffsetCurve();
     GeomOffsetCurve(const Handle(Geom_Curve)&, double, const gp_Dir&);
+    GeomOffsetCurve(const Handle(Geom_Curve)&, double, Base::Vector3d&);
     GeomOffsetCurve(const Handle(Geom_OffsetCurve)&);
     virtual ~GeomOffsetCurve();
     virtual Geometry *copy(void) const;
@@ -705,29 +718,6 @@ public:
 
 private:
     Handle(Geom_OffsetCurve) myCurve;
-};
-
-class PartExport GeomTrimmedCurve : public GeomCurve
-{
-    TYPESYSTEM_HEADER();
-public:
-    GeomTrimmedCurve();
-    GeomTrimmedCurve(const Handle(Geom_TrimmedCurve)&);
-    virtual ~GeomTrimmedCurve();
-    virtual Geometry *copy(void) const;
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
-    // Base implementer ----------------------------
-    virtual PyObject *getPyObject(void);
-
-    void setHandle(const Handle(Geom_TrimmedCurve)&);
-    const Handle(Geom_Geometry)& handle() const;
-
-private:
-    Handle(Geom_TrimmedCurve) myCurve;
 };
 
 class PartExport GeomSurface : public Geometry
