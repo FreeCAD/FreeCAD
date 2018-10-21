@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -10,7 +10,7 @@
  *   for detail see the LICENCE text file.                                 *
  *                                                                         *
  *   FreeCAD is distributed in the hope that it will be useful,            *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        * 
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU Library General Public License for more details.                  *
  *                                                                         *
@@ -34,9 +34,9 @@
 #include <Base/Observer.h>
 
 
-namespace Base 
+namespace Base
 {
-    class ConsoleObserverStd; 
+    class ConsoleObserverStd;
     class ConsoleObserverFile;
 }
 
@@ -71,7 +71,7 @@ public:
      * spaces and not starting with a number. This name gets also forced to be unique
      * in this Application. You can avoid the renaming by using getUniqueDocumentName()
      * to get a unique name before calling newDoucument().
-     * The second name is a UTF8 name of any kind. It's that name normally shown to 
+     * The second name is a UTF8 name of any kind. It's that name normally shown to
      * the user and stored in the App::Document::Name property.
      */
     App::Document* newDocument(const char * Name=0l, const char * UserName=0l);
@@ -128,13 +128,13 @@ public:
 
 
     /** @name Signals of the document
-     * This signals are an aggregation of all document. If you only 
+     * This signals are an aggregation of all document. If you only
      * the signal of a special document connect to the document itself
      */
     //@{
     /// signal before change of doc property
     boost::signal<void (const App::Document&, const App::Property&)> signalBeforeChangeDocument;
-    /// signal on changed doc proeprty
+    /// signal on changed doc property
     boost::signal<void (const App::Document&, const App::Property&)> signalChangedDocument;
     /// signal on new Object
     boost::signal<void (const App::DocumentObject&)> signalNewObject;
@@ -155,7 +155,7 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalObjectRecomputed;
     // signal on opened transaction
     boost::signal<void (const App::Document&, std::string)> signalOpenTransaction;
-    // signal a commited transaction
+    // signal a committed transaction
     boost::signal<void (const App::Document&)> signalCommitTransaction;
     // signal an aborted transaction
     boost::signal<void (const App::Document&)> signalAbortTransaction;
@@ -198,12 +198,12 @@ public:
     void RemoveParameterSet(const char* sName);
     //@}
 
-    /** @name methods for the open handler 
-     *  With this facility a Application module can register 
-     *  a ending (filetype) which he can handle to open. 
+    /** @name methods for the open handler
+     *  With this facility a Application module can register
+     *  a ending (filetype) which he can handle to open.
      *  The ending and the module name are stored and if the file
      *  type is opened the module get loaded and need to register a
-     *  OpenHandler class in the OpenHandlerFactorySingleton. 
+     *  OpenHandler class in the OpenHandlerFactorySingleton.
      *  After the module is loaded a OpenHandler of this type is created
      *  and the file get loaded.
      *  @see OpenHandler
@@ -280,7 +280,7 @@ protected:
     /// get called by the document when the name is changing
     void renameDocument(const char *OldName, const char *NewName);
 
-    /** @name I/O of the document 
+    /** @name I/O of the document
      * This slot get connected to all App::Documents created
      */
     //@{
@@ -353,7 +353,7 @@ private:
     static PyObject *sSetLogLevel       (PyObject *self,PyObject *args);
     static PyObject *sGetLogLevel       (PyObject *self,PyObject *args);
 
-    static PyMethodDef    Methods[]; 
+    static PyMethodDef    Methods[];
 
     friend class ApplicationObserver;
 
@@ -414,4 +414,3 @@ inline App::Application &GetApplication(void){
 
 
 #endif // APP_APPLICATION_H
-

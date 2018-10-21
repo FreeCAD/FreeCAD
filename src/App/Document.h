@@ -140,7 +140,7 @@ public:
     /** signal on load/save document
      * this signal is given when the document gets streamed.
      * you can use this hook to write additional information in
-     * the file (like the Gui::Document it does).
+     * the file (like the Gui::Document does).
      */
     boost::signal<void (Base::Writer   &)> signalSaveDocument;
     boost::signal<void (Base::XMLReader&)> signalRestoreDocument;
@@ -160,7 +160,7 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRecomputedObject;
     //signal a new opened transaction
     boost::signal<void (const App::Document&, std::string)> signalOpenTransaction;
-    // signal a commited transaction
+    // signal a committed transaction
     boost::signal<void (const App::Document&)> signalCommitTransaction;
     // signal an aborted transaction
     boost::signal<void (const App::Document&)> signalAbortTransaction;
@@ -219,7 +219,7 @@ public:
      * is raised.
      */
     void addObject(DocumentObject*, const char* pObjectName=0);
-    
+
 
     /** Copy an object from another document to this document
      * If \a recursive is true then all objects this object depends on

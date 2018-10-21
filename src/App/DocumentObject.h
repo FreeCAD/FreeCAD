@@ -139,7 +139,7 @@ public:
 
     /** DAG handling
         This part of the interface deals with viewing the document as
-        an DAG (directed acyclic graph). 
+        a DAG (directed acyclic graph).
     */
     //@{
     /// returns a list of objects this object is pointing to by Links
@@ -152,7 +152,7 @@ public:
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList(App::DocumentObject* to) const;
     /// get all objects link to this object
     std::vector<App::DocumentObject*> getInList(void) const;
-    /// get all objects link directly or indirectly to this object 
+    /// get all objects link directly or indirectly to this object
     std::vector<App::DocumentObject*> getInListRecursive(void) const;
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
@@ -191,8 +191,8 @@ public:
      *  We call this method to check if the object was modified to
      *  be invoked. If the object label or an argument is modified.
      *  If we must recompute the object - to call the method execute().
-     *  0: no recompution is needed
-     *  1: recompution needed
+     *  0: no recomputation is needed
+     *  1: recomputation needed
      *
      * @remark If an object is marked as 'touched' then this does not
      * necessarily mean that it will be recomputed. It only means that all
@@ -243,7 +243,7 @@ protected:
     /** get called by the document to recompute this feature
       * Normally this method get called in the processing of
       * Document::recompute().
-      * In execute() the outpupt properties get recomputed
+      * In execute() the output properties get recomputed
       * with the data from linked objects and objects own
       * properties.
       */
@@ -251,7 +251,7 @@ protected:
 
     /** Status bits of the document object
      * The first 8 bits are used for the base system the rest can be used in
-     * descendent classes to to mark special stati on the objects.
+     * descendent classes to mark special statuses on the objects.
      * The bits and their meaning are listed below:
      *  0 - object is marked as 'touched'
      *  1 - object is marked as 'erroneous'
@@ -284,7 +284,7 @@ protected:
     /// get called when object is going to be removed from the document
     virtual void unsetupObject();
 
-     /// python object of this class and all descendend
+     /// python object of this class and all descendent
 protected: // attributes
     Py::Object PythonObject;
     /// pointer to the document this object belongs to
@@ -300,7 +300,7 @@ protected: // attributes
 
     // pointer to the document name string (for performance)
     const std::string *pcNameInDocument;
-    
+
 private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling
