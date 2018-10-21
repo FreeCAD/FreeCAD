@@ -459,7 +459,30 @@ bool GeomCurve::intersect(  GeomCurve * c,
     try {
     
         if(!curve1.IsNull() && !curve2.IsNull()) {        
-        
+            // https://forum.freecadweb.org/viewtopic.php?f=10&t=31700
+            if (curve1->IsKind(STANDARD_TYPE(Geom_BoundedCurve)) &&
+                curve2->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
+                
+                Handle(Geom_BoundedCurve) bcurve1 = Handle(Geom_BoundedCurve)::DownCast(curve1);
+                Handle(Geom_BoundedCurve) bcurve2 = Handle(Geom_BoundedCurve)::DownCast(curve2);
+                
+                gp_Pnt c1s = bcurve1->StartPoint();
+                gp_Pnt c2s = bcurve2->StartPoint();
+                gp_Pnt c1e = bcurve1->EndPoint();
+                gp_Pnt c2e = bcurve2->EndPoint();
+            
+                auto checkendpoints = [&points,tol]( gp_Pnt p1, gp_Pnt p2) {
+                    if(p1.Distance(p2) < tol)
+                        points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
+                };
+                
+                checkendpoints(c1s,c2s);
+                checkendpoints(c1s,c2e);
+                checkendpoints(c1e,c2s);
+                checkendpoints(c1e,c2e);
+                
+            }
+            
             GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
             
             if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
@@ -1489,10 +1512,10 @@ bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
 {
     Handle(Geom_TrimmedCurve) curve1 =  Handle(Geom_TrimmedCurve)::DownCast(handle());
     Handle(Geom_TrimmedCurve) curve2 =  Handle(Geom_TrimmedCurve)::DownCast(c->handle());
-        
+    
     Handle(Geom_Conic) bcurve1 = Handle(Geom_Conic)::DownCast( curve1->BasisCurve() );
     Handle(Geom_Conic) bcurve2 = Handle(Geom_Conic)::DownCast( curve2->BasisCurve() );
-    
+
     try {
     
         if(!bcurve1.IsNull() && !bcurve2.IsNull()) {
