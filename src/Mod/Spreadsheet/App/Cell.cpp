@@ -256,8 +256,7 @@ void Cell::setContent(const char * value)
                         delete expr->eval();
                 }
                 catch (Base::Exception &e) {
-                    expr = new App::StringExpression(owner->sheet(), std::string("=")+value);
-                    setParseException(e.what());
+                    expr = new App::StringExpression(owner->sheet(), value);
                 }
             }
         }
