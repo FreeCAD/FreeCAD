@@ -605,7 +605,7 @@ void View3DInventorViewer::aboutToDestroyGLContext()
 
 void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
 {
-    // write the document the viewer belongs to to the selection node
+    // write the document the viewer belongs to the selection node
     guiDocument = pcDocument;
     selectionRoot->pcDocument = pcDocument;
 }
@@ -628,7 +628,7 @@ void View3DInventorViewer::initialize()
 void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                                     Gui::SelectionSingleton::MessageType Reason)
 {
-    Q_UNUSED(rCaller); 
+    Q_UNUSED(rCaller);
     if (Reason.Type == SelectionChanges::AddSelection ||
         Reason.Type == SelectionChanges::RmvSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
