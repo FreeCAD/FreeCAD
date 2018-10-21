@@ -22,25 +22,31 @@
      %token CONSTANT
      %token CELLADDRESS
      %token EQ NEQ LT GT GTE LTE AND_OP AND_OP2 OR_OP OR_OP2
+     %token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN
      %token RSTRING STRING MINUSSIGN PROPERTY_REF
      %token DOCUMENT OBJECT
      %token EXPONENT
      %token EXPAND
+     %token NEWLINE INDENT DEDENT
+     %token IF ELIF ELSE WHILE FOR BREAK CONTINUE RETURN IN
+     %type <string_list> id_list
      %type <named_argument> item arg
      %type <named_arguments> items items2 args
-     %type <expr> primary_exp unary_exp multiply_exp additive_exp relational_exp
-     %type <expr> equality_exp logical_or_exp logical_and_exp conditional_exp power_exp
+     %type <expr> primary_exp unary_exp multiply_exp additive_exp relational_exp assignment_exp
+     %type <expr> equality_exp logical_or_exp logical_and_exp power_exp assignment_exp2 assignment_exp1
      %type <expr> input exp unit_exp indexable num range callable
-     %type <expr> list tuple dict dict1 idict idict1
+     %type <expr> comprehension0 comprehension list tuple dict dict1 idict idict1
+     %type <expr> stmt statement if_stmt small_stmt simple_stmt while_stmt for_stmt compound_stmt suite
      %type <quantity> UNIT
      %type <string> id_or_cell RSTRING STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
      %type <string> PROPERTY_REF
+     %type <string> IF ELIF ELSE WHILE FOR BREAK CONTINUE RETURN IN
      %type <fvalue> ONE
      %type <fvalue> NUM
      %type <constant> CONSTANT
      %type <path> identifier
-     %type <components> path subpath
+     %type <components> subpath
      %type <component> indexer
      %type <string_or_identifier> document object subname
      %type <ivalue> integer
@@ -60,12 +66,13 @@
 /* %destructor { for(auto expr : $$) {delete expr;} } <arguments> */
 %destructor { for(auto &v : $$) {delete v.second;} } <named_arguments>
 %destructor { delete $$.second; } <named_argument>
+%destructor { delete $$.e1; delete $$.e2; } <component>
 
 %start input
 
 %%
 
-input:     exp                			{ ScanResult = $1; valueExpression = true; $$=0;                                       }
+input:     statement                            { ScanResult = $1; valueExpression = true; $$=0;                                       }
      |     unit_exp                             { ScanResult = $1; unitExpression = true; $$=0;                                        }
      ;
 
@@ -74,21 +81,24 @@ primary_exp
         | num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
         | STRING                                { $$ = new StringExpression(DocumentObject, $1); }
         | RSTRING                               { $$ = new StringExpression(DocumentObject, $1, true); }
-        | identifier                            { $$ = VariableExpression::create(DocumentObject, $1); }
+        | identifier                            { $$ = new VariableExpression(DocumentObject, $1); }
         | indexable                             { $$ = $1; }
         | callable                              { $$ = $1; }
+        | callable indexer                      { $1->addComponent($2); $$ = $1; }
+        | callable '.' IDENTIFIER               { $1->addComponent($3); $$ = $1; }
         ;
 
-indexable : '(' exp ')'     			{ $$ = $2; }
+indexable : '(' exp ')' 			{ $$ = $2; }
           | tuple                               { $$ = $1; }
           | list                                { $$ = $1; }
           | dict                                { $$ = $1; }
           | idict                               { $$ = $1; }
+          | identifier indexer                  { $$ = new VariableExpression(DocumentObject,$1); $$->addComponent($2); }
           | indexable indexer                   { $1->addComponent($2); $$ = $1; }
-          | indexable '.' id_or_cell            { $1->addComponent(ObjectIdentifier::SimpleComponent($3)); $$ = $1; }
+          | indexable '.' IDENTIFIER            { $1->addComponent($3); $$ = $1; }
           ;
 
-callable: identifier '(' ')'                    { 
+callable: identifier '(' ')'                 { 
                                                     $$ = CallableExpression::create(DocumentObject,$1);
                                                     if(!$$) { 
                                                         YYABORT;
@@ -113,8 +123,6 @@ callable: identifier '(' ')'                    {
         | indexable '(' args ')'                { $$ = new CallableExpression(DocumentObject, $1, $3); }
         | callable '(' ')'                      { $$ = new CallableExpression(DocumentObject, $1); }
         | callable '(' args ')'                 { $$ = new CallableExpression(DocumentObject, $1, $3); }
-        | callable indexer                      { $1->addComponent($2); $$ = $1; }
-        | callable '.' id_or_cell               { $1->addComponent(ObjectIdentifier::SimpleComponent($3)); $$ = $1; }
         ;
 
 unary_exp
@@ -168,19 +176,95 @@ logical_or_exp
 	| logical_or_exp OR_OP2 logical_and_exp { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::OR_OP2, $3);   }
 	;
 
-conditional_exp
+exp
     : logical_or_exp                             { $$ = $1; }
-    | logical_or_exp '?' exp ':' conditional_exp { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
+    | logical_or_exp '?' exp ':' exp             { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
     ;
 
-exp
-        : conditional_exp                       { $$ = $1; }
+id_list
+    : IDENTIFIER                                 { $$.push_back($1); }
+    | id_list ',' IDENTIFIER                     { $1.push_back($3); $$.swap($1); } 
+    ;
+
+assignment_exp1
+	: id_list '=' exp                        { $$ = new AssignmentExpression(DocumentObject,$1,$3); }
+	| assignment_exp1 ',' exp                { static_cast<AssignmentExpression*>($1)->add($3); $$ = $1; }
+	;
+
+assignment_exp2
+	: IDENTIFIER MUL_ASSIGN exp              { $$ = new AssignmentExpression(DocumentObject,$1,OperatorExpression::MUL,$3); }
+	| IDENTIFIER DIV_ASSIGN exp              { $$ = new AssignmentExpression(DocumentObject,$1,OperatorExpression::DIV,$3); }
+	| IDENTIFIER MOD_ASSIGN exp              { $$ = new AssignmentExpression(DocumentObject,$1,OperatorExpression::MOD,$3); }
+	| IDENTIFIER ADD_ASSIGN exp              { $$ = new AssignmentExpression(DocumentObject,$1,OperatorExpression::ADD,$3); }
+	| IDENTIFIER SUB_ASSIGN exp              { $$ = new AssignmentExpression(DocumentObject,$1,OperatorExpression::SUB,$3); }
+	;
+
+assignment_exp
+        : assignment_exp1                        { $$ = $1; }
+        | assignment_exp2                        { $$ = $1; }
+        ;
+
+small_stmt
+        : assignment_exp                         { $$ = $1; }
+        | exp                                    { $$ = $1; }
+        | RETURN exp                             { $$ = new JumpStatement(DocumentObject,JumpStatement::JUMP_RETURN,$2); }
+        | BREAK                                  { $$ = new JumpStatement(DocumentObject,JumpStatement::JUMP_BREAK); }
+        | CONTINUE                               { $$ = new JumpStatement(DocumentObject,JumpStatement::JUMP_CONTINUE); }
+        ;
+
+simple_stmt
+        : small_stmt                             { $$ = $1; }
+        | simple_stmt ';' small_stmt             { 
+                                                    SimpleStatement *stmt = dynamic_cast<SimpleStatement*>($1); 
+                                                    if(!stmt)
+                                                        stmt = new SimpleStatement(DocumentObject, $1);
+                                                    stmt->add($3); 
+                                                    $$ = stmt;
+                                                 }
+        | simple_stmt ';'                        { $$ = $1; }
+        ;
+
+compound_stmt
+        : if_stmt                                { $$ = $1; }
+        | if_stmt ELSE ':' suite                 { static_cast<IfStatement*>($1)->addElse($4); $$=$1; }
+        | while_stmt                             { $$ = $1; }
+        | for_stmt                               { $$ = $1; }
+        | for_stmt ELSE ':' suite                { static_cast<ForStatement*>($1)->addElse($4); $$=$1; }
+        ;
+
+stmt
+        : simple_stmt NEWLINE                    { $$ = new Statement(DocumentObject, $1); }
+        | compound_stmt                          { $$ = new Statement(DocumentObject, $1); }
+        | stmt simple_stmt NEWLINE               { static_cast<Statement*>($1)->add($2); $$ = $1; }
+        | stmt compound_stmt                     { static_cast<Statement*>($1)->add($2); $$ = $1; }
+        ;
+
+statement
+        : simple_stmt                            { $$ = $1; }
+        | stmt                                   { $$ = $1; }
+        ;
+suite
+        : simple_stmt NEWLINE                    { $$ = $1; }
+        | NEWLINE INDENT stmt DEDENT             { $$ = $3; }
+        ;
+
+if_stmt
+        : IF exp ':' suite                       { $$ = new IfStatement(DocumentObject,$2,$4); }
+        | if_stmt ELIF exp ':' suite             { static_cast<IfStatement*>($$)->addElseIf($3,$5); $$=$1; }
+        ;
+
+while_stmt
+        : WHILE exp ':' suite                    { $$ = new WhileStatement(DocumentObject,$2,$4); }
+
+for_stmt
+        : FOR id_list IN exp ':' suite           { $$ = new ForStatement(DocumentObject,$2,$4,$6); }
+        ;
 
 id_or_cell : IDENTIFIER                         { $$ = $1; }
            | CELLADDRESS                        { $$ = $1; }
            ;
 
-sep : ',' | ';' ;
+sep : ',' | ';' 
 
 item  : exp                                     { $$.first.clear(); $$.second = $1; }
       | range                                   { $$.first.clear(); $$.second = $1; }
@@ -205,9 +289,20 @@ items : item                                    { $$.push_back($1); }
 list : '[' ']'                                  { $$ = new ListExpression(DocumentObject); }
      | '[' items ']'                            { $$ = new ListExpression(DocumentObject, $2); }
      | '[' items sep ']'                        { $$ = new ListExpression(DocumentObject, $2); }
+     | '[' exp comprehension ']'                { static_cast<ComprehensionExpression*>($3)->setExpr($2); $$ = $3; }
      ;
 
-dict_expand : '*' | EXPAND
+comprehension0
+    : FOR id_list IN exp                        { $$ = new ComprehensionExpression(DocumentObject,$2,$4); }
+    | comprehension0 FOR id_list IN exp         { static_cast<ComprehensionExpression*>($1)->add($3,$5); $$ = $1; }
+    ;
+
+comprehension
+    : comprehension0                            { $$ = $1; }
+    | comprehension0 IF exp                     { static_cast<ComprehensionExpression*>($1)->setCondition($3); $$ = $1; } 
+    ;
+
+dict_expand : '*' | EXPAND 
 
 dict1 : '{' exp ':' exp                         { $$ = new DictExpression(DocumentObject, $2, $4); }
       | '{' dict_expand exp                     { $$ = new DictExpression(DocumentObject, 0, $3); }
@@ -218,11 +313,13 @@ dict1 : '{' exp ':' exp                         { $$ = new DictExpression(Docume
 dict : '{' '}'                                  { $$ = new DictExpression(DocumentObject); }
      | dict1 '}'                                { $$ = $1; }
      | dict1 sep '}'                            { $$ = $1; }
+     | '{' exp comprehension '}'                { static_cast<ComprehensionExpression*>($3)->setExpr($2,0,false); $$=$3; }
+     | '{' exp ':' exp comprehension '}'        { static_cast<ComprehensionExpression*>($5)->setExpr($2,$4,false); $$=$5; }
      ;
 
-idict1 : '{' id_or_cell '=' exp                 { $$ = new IDictExpression(DocumentObject, $2, $4); }
+idict1 : '{' IDENTIFIER '=' exp                 { $$ = new IDictExpression(DocumentObject, $2, $4); }
        | '{' dict_expand '=' exp                { $$ = new IDictExpression(DocumentObject, "**", $4); }
-       | idict1 sep id_or_cell '=' exp          { static_cast<IDictExpression*>($1)->addItem($3,$5); $$ = $1; }
+       | idict1 sep IDENTIFIER '=' exp          { static_cast<IDictExpression*>($1)->addItem($3,$5); $$ = $1; }
        | idict1 sep dict_expand '=' exp         { static_cast<IDictExpression*>($1)->addItem("**",$5); $$ = $1; }
        ;
 
@@ -231,7 +328,7 @@ idict : idict1 '}'                              { $$ = $1; }
       ;
 
 arg: exp                                        { $$.first.clear(); $$.second = $1; }
-   | id_or_cell '=' exp                         { $$.first = $1; $$.second = $3; }
+   | IDENTIFIER '=' exp                         { $$.first = $1; $$.second = $3; }
    | '*' exp                                    { $$.first = "*"; $$.second = $2; }
    | range                                      { $$.first.clear(); $$.second = $1; }
    | '*' range                                  { $$.first = '*'; $$.second = $2; }
@@ -252,6 +349,7 @@ range: id_or_cell ':' id_or_cell                { $$ = new RangeExpression(Docum
      ;
 
 unit_exp: UNIT                                  { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+        | IN                                    { $$ = new UnitExpression(DocumentObject, Quantity::Inch, $1);                }
         | unit_exp '/' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | unit_exp '*' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
         | unit_exp '^' integer                  { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity((double)$3)));   }
@@ -259,9 +357,8 @@ unit_exp: UNIT                                  { $$ = new UnitExpression(Docume
         | '(' unit_exp ')'                      { $$ = $2;                                                                        }
         ;
 
-identifier: path                                { /* Path to property of the current object */
-                                                  $$ = ObjectIdentifier(DocumentObject);
-                                                  $$.addComponents($1);
+identifier: id_or_cell                          { /* Path to property of the current object */
+                                                  $$ = ObjectIdentifier(DocumentObject) << ObjectIdentifier::SimpleComponent($1);
                                                 }
           | '.' subname '.' subpath             { /* Path to property of a sub-object of the current object*/
                                                   $$ = ObjectIdentifier(DocumentObject);
@@ -310,25 +407,18 @@ integer: INTEGER { $$ = $1; }
        | ONE { $$ = $1; }
        ;
 
-path: id_or_cell                                       { $$.push_back(ObjectIdentifier::SimpleComponent($1));}
-    | path indexer                                     { $1.push_back($2); $$.swap($1);}
-    ;
-
 subpath: id_or_cell                                    { $$.push_back(ObjectIdentifier::SimpleComponent($1));}
-       | subpath '.' id_or_cell                        { $1.push_back(ObjectIdentifier::SimpleComponent($3)); $$.swap($1); }
-       | subpath indexer                               { $1.push_back($2); $$.swap($1);}
+       | subpath '.' IDENTIFIER                        { $1.push_back(ObjectIdentifier::SimpleComponent($3)); $$.swap($1); }
        ;
 
-indexer: '[' integer ']'                               { $$ = ObjectIdentifier::ArrayComponent($2);   }
-       | '[' integer ':' ']'                           { $$ = ObjectIdentifier::RangeComponent($2); }
-       | '[' ':' integer ']'                           { $$ = ObjectIdentifier::RangeComponent(0,$3); }
-       | '[' integer ':' integer ']'                   { $$ = ObjectIdentifier::RangeComponent($2,$4);}
-       | '[' STRING ']'                                { $$ = ObjectIdentifier::MapComponent(ObjectIdentifier::String($2, true));}
-       | '[' id_or_cell ']'                            { $$ = ObjectIdentifier::MapComponent($2);}
+indexer: '[' exp ']'                                   { $$ = Expression::Component($2);   }
+       | '[' exp ':' ']'                               { $$ = Expression::Component($2,0,true); }
+       | '[' ':' exp ']'                               { $$ = Expression::Component(0,$3); }
+       | '[' exp ':' exp ']'                           { $$ = Expression::Component($2,$4);}
        ;
 
 document: STRING                                       { $$ = ObjectIdentifier::String($1, true); }
-        | id_or_cell                                   { $$ = ObjectIdentifier::String($1);       }
+        | IDENTIFIER                                   { $$ = ObjectIdentifier::String($1);       }
         ;
 
 object: STRING                                         { $$ = ObjectIdentifier::String($1, true); }

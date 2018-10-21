@@ -120,13 +120,15 @@ public:
 
     Expression * eval() const;
 
-    std::string toString(bool persistent=false, bool checkPriority=false) const;
+    std::string toString(bool persistent=false, bool checkPriority=false, int indent=0) const;
 
     Expression *copy() const;
 
     static Expression * parse(const App::DocumentObject * owner, const std::string& buffer);
 
-    virtual int priority() const { return 0; }
+    virtual int priority() const;
+
+    virtual int jump() const {return 0;}
 
     void getIdentifiers(std::set<App::ObjectIdentifier> &) const;
     std::set<App::ObjectIdentifier> getIdentifiers() const;
@@ -146,7 +148,7 @@ public:
 
     virtual Expression *simplify() const { return copy(); }
 
-    virtual void visit(ExpressionVisitor & v) { v.visit(this); }
+    void visit(ExpressionVisitor & v);
 
     class Exception : public Base::Exception {
     public:
@@ -157,20 +159,39 @@ public:
 
     boost::any getValueAsAny() const;
 
-    void addComponent(const ObjectIdentifier::Component &component) {
-        components.push_back(component);
-    }
+    struct AppExport Component {
+        ObjectIdentifier::Component comp;
+        Expression *e1;
+        Expression *e2;
 
-    void addComponents(const std::vector<ObjectIdentifier::Component> &c) {
-        components.insert(components.end(),c.begin(),c.end());
-    }
+        Component()
+            :e1(0),e2(0)
+        {}
+
+        Component(const std::string &n)
+            :comp(ObjectIdentifier::SimpleComponent(n)),e1(0),e2(0)
+        {}
+
+        Component(Expression *e1, Expression *e2=0, bool isRange=false)
+            :e1(e1),e2(e2)
+        {
+            if(isRange) 
+                comp = ObjectIdentifier::RangeComponent(0);
+        }
+
+        Component(const ObjectIdentifier::Component &comp, Expression *e1=0, Expression *e2=0)
+            :comp(comp),e1(e1),e2(e2)
+        {}
+    };
+
+    virtual void addComponent(const Component &component);
 
     static void finalize();
 
 protected:
     virtual bool _isIndexable() const {return false;}
     virtual Expression *_copy() const = 0;
-    virtual void _toString(std::ostringstream &ss, bool persistent) const = 0;
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const = 0;
     virtual void _getDeps(ExpressionDeps &) const  {}
     virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const  {}
     virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const  {}
@@ -184,6 +205,7 @@ protected:
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) {}
     virtual boost::any _getValueAsAny() const = 0;
     virtual Expression *_eval() const {return 0;}
+    virtual void _visit(ExpressionVisitor &) {}
 
     Expression *fromAny(boost::any) const;
 
@@ -192,7 +214,7 @@ protected:
 protected:
     App::DocumentObject * owner; /**< The document object used to access unqualified variables (i.e local scope) */
 
-    std::vector<ObjectIdentifier::Component> components;
+    std::vector<Component> components;
 };
 
 /**
@@ -207,8 +229,6 @@ public:
 
     virtual Expression * simplify() const;
 
-    virtual int priority() const;
-
     void setUnit(const Base::Quantity &_quantity);
 
     double getValue() const { return quantity.getValue(); }
@@ -222,7 +242,7 @@ public:
     double getScaler() const { return quantity.getValue(); }
 
 protected:
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
@@ -241,12 +261,10 @@ class AppExport NumberExpression : public UnitExpression {
 public:
     NumberExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & quantity = Base::Quantity());
 
-    virtual int priority() const;
-
     void negate();
 
 protected:
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual Expression *_copy() const;
 };
 
@@ -255,8 +273,6 @@ class AppExport ConstantExpression : public NumberExpression {
 public:
     ConstantExpression(const App::DocumentObject *_owner = 0, std::string _name = "", const Base::Quantity &_quantity = Base::Quantity());
 
-    virtual int priority() const;
-
     std::string getName() const { return name; }
 
     virtual Expression *simplify() const;
@@ -264,7 +280,7 @@ public:
 protected:
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual Expression *_copy() const;
 
     std::string name; /**< Constant's name */
@@ -320,8 +336,6 @@ public:
 
     virtual int priority() const;
 
-    virtual void visit(ExpressionVisitor & v);
-
     Operator getOperator() const { return op; }
 
     Expression * getLeft() const { return left; }
@@ -333,7 +347,8 @@ protected:
     Expression *_calc(Expression *l, Expression *r) const;
     Expression *_calc(Expression *l) const;
 
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
@@ -349,6 +364,34 @@ protected:
     Expression * right; /**< Right operand */
 };
 
+class AppExport AssignmentExpression : public Expression {
+    TYPESYSTEM_HEADER();
+
+public:
+    AssignmentExpression(const App::DocumentObject *_owner = 0, const std::string &name = std::string(),
+            OperatorExpression::Operator _op = OperatorExpression::NONE, Expression * _right = 0);
+    AssignmentExpression(const App::DocumentObject *_owner, const std::vector<std::string> &names,
+            Expression * _right);
+    virtual ~AssignmentExpression();
+
+    void add(Expression *right);
+
+    virtual bool isTouched() const;
+
+    boost::any apply(bool needReturn) const;
+
+protected:
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
+    virtual Expression *_copy() const;
+    virtual boost::any _getValueAsAny() const;
+
+protected:
+    OperatorExpression::Operator op;
+    std::vector<std::string> names;
+    std::vector<Expression*> exprs;
+};
+
 class AppExport ConditionalExpression : public Expression {
     TYPESYSTEM_HEADER();
 public:
@@ -362,10 +405,9 @@ public:
 
     virtual int priority() const;
 
-    virtual void visit(ExpressionVisitor & v);
-
 protected:
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
@@ -392,12 +434,11 @@ public:
 
     virtual Expression * simplify() const;
 
-    virtual int priority() const;
-
-    virtual void visit(ExpressionVisitor & v);
+    int type() const {return f;}
 
 protected:
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual Expression *_copy() const;
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
@@ -422,11 +463,7 @@ public:
 
     ~VariableExpression();
 
-    static Expression *create(const App::DocumentObject *owner, ObjectIdentifier var);
-
     virtual bool isTouched() const;
-
-    virtual int priority() const;
 
     std::string name() const { return var.getPropertyName(); }
 
@@ -434,9 +471,11 @@ public:
 
     void setPath(const ObjectIdentifier & path);
 
+    virtual void addComponent(const Component &component);
+
 protected:
     virtual bool _isIndexable() const;
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual Expression *_copy() const;
     virtual void _getDeps(ExpressionDeps &) const;
     virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const;
@@ -476,13 +515,12 @@ public:
 
     virtual bool isTouched() const;
 
-    virtual void visit(ExpressionVisitor & v);
-
 protected:
+    virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const { return true; }
     virtual Expression *_eval() const;
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual Expression *_copy() const;
 
 protected:
@@ -504,14 +542,12 @@ public:
 
     virtual const std::string &getText() const { return text; }
 
-    virtual int priority() const;
-
     bool rLiteral() const {return r_literal;}
 
 protected:
     virtual bool _isIndexable() const { return true; }
     virtual Expression * _copy() const;
-    virtual void _toString(std::ostringstream &ss, bool persistent) const;
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
     virtual boost::any _getValueAsAny() const;
 
 protected:
@@ -531,12 +567,10 @@ public:
 
     virtual bool isTouched() const;
 
-    virtual int priority() const;
-
     Range getRange() const;
 
 protected:
-    virtual void _toString(std::ostringstream &, bool) const;
+    virtual void _toString(std::ostringstream &, bool, int) const;
     virtual Expression *_copy() const;
     virtual void _getDeps(ExpressionDeps &) const;
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
@@ -558,19 +592,54 @@ public:
     PyObjectExpression(const App::DocumentObject * _owner=0, PyObject *pyobj=0);
     ~PyObjectExpression();
 
-    virtual int priority() const;
-
     Py::Object getPyObject() const;
 
     void setPyObject(Py::Object pyobj);
+    void setPyObject(PyObject *pyobj);
 
 protected:
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &,bool) const;
+    virtual void _toString(std::ostringstream &,bool, int) const;
     virtual Expression *_copy() const;
 
 protected:
     PyObject *pyObj;
+};
+
+//////////////////////////////////////////////////////////////////////
+
+class AppExport ComprehensionExpression : public Expression {
+    TYPESYSTEM_HEADER();
+
+public:
+    ComprehensionExpression(const App::DocumentObject * _owner=0, 
+            const std::vector<std::string> &names={}, Expression *expr=0);
+
+    virtual ~ComprehensionExpression();
+
+    virtual bool isTouched() const;
+
+    void setExpr(Expression *key, Expression *value=0, bool isList=true);
+
+    void add(const std::vector<std::string> &names, Expression *expr);
+
+    void setCondition(Expression *cond);
+
+protected:
+    virtual void _visit(ExpressionVisitor & v);
+    virtual bool _isIndexable() const {return true;}
+    virtual boost::any _getValueAsAny() const;
+    virtual void _toString(std::ostringstream &, bool, int) const;
+    virtual Expression *_copy() const;
+
+    void _calc(Py::Object &res, size_t index) const;
+
+protected:
+    Expression *key;
+    Expression *value;
+    std::vector<std::pair<std::vector<std::string>, Expression*> > comps;
+    Expression *condition;
+    bool list;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -583,14 +652,15 @@ public:
             const std::vector<std::pair<std::string, Expression*> > &items={});
     virtual ~ListExpression();
 
-    virtual int priority() const;
+    virtual bool isTouched() const;
 
     void addItem(const std::pair<std::string,Expression *> &item);
 
 protected:
+    virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &, bool) const;
+    virtual void _toString(std::ostringstream &, bool, int) const;
     virtual Expression *_copy() const;
 
 protected:
@@ -610,7 +680,7 @@ public:
 protected:
     virtual boost::any _getValueAsAny() const;
     virtual Expression *_copy() const;
-    virtual void _toString(std::ostringstream &, bool) const;
+    virtual void _toString(std::ostringstream &, bool, int) const;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -622,14 +692,15 @@ public:
     DictExpression(const App::DocumentObject * _owner=0, Expression *key=0, Expression *value=0);
     virtual ~DictExpression();
 
-    virtual int priority() const;
+    virtual bool isTouched() const;
 
     void addItem(Expression *key, Expression *value);
 
 protected:
+    virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &, bool) const;
+    virtual void _toString(std::ostringstream &, bool, int) const;
     virtual Expression *_copy() const;
 
 protected:
@@ -647,20 +718,169 @@ public:
 
     virtual ~IDictExpression();
 
-    virtual int priority() const;
+    virtual bool isTouched() const;
 
     void addItem(const std::string &key, Expression *value);
 
 protected:
+    virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
     virtual boost::any _getValueAsAny() const;
-    virtual void _toString(std::ostringstream &, bool) const;
+    virtual void _toString(std::ostringstream &, bool, int) const;
     virtual Expression *_copy() const;
 
 protected:
     std::vector<std::pair<std::string,Expression*> > items;
 };
 
+/////////////////////////////////////////////////////////////////
+
+class AppExport BaseStatement : public Expression {
+    TYPESYSTEM_HEADER();
+public:
+    enum JumpType {
+        JUMP_NONE,
+        JUMP_RETURN,
+        JUMP_BREAK,
+        JUMP_CONTINUE,
+    };
+    BaseStatement(const App::DocumentObject *owner);
+protected:
+    virtual boost::any _getValueAsAny() const;
+};
+
+/////////////////////////////////////////////////////////////////
+
+class AppExport JumpStatement : public BaseStatement {
+    TYPESYSTEM_HEADER();
+
+public:
+
+    JumpStatement(const App::DocumentObject *_owner = 0, JumpType type=JUMP_NONE, Expression *expr = 0);
+    virtual ~JumpStatement();
+
+    virtual bool isTouched() const;
+    virtual int jump() const;
+    virtual Expression *simplify() const;
+
+protected:
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+
+protected:
+    JumpType type;
+    Expression *expr;
+};
+
+/////////////////////////////////////////////////////////////////
+
+class AppExport IfStatement : public BaseStatement {
+    TYPESYSTEM_HEADER();
+
+public:
+    IfStatement(const App::DocumentObject *_owner=0, Expression *condition=0, Expression *statement=0);
+    virtual ~IfStatement();
+
+    void addElseIf(Expression *condition, Expression *statement);
+    void addElse(Expression *statement);
+
+    virtual bool isTouched() const;
+
+protected:
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const override;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+
+protected:
+    std::vector<std::pair<Expression *, Expression *> > exprs;
+};
+
+/////////////////////////////////////////////////////////////////
+
+class AppExport WhileStatement : public BaseStatement {
+    TYPESYSTEM_HEADER();
+
+public:
+    WhileStatement(const App::DocumentObject *_owner=0, Expression *condition=0, Expression *statement=0);
+    virtual ~WhileStatement();
+
+    virtual bool isTouched() const;
+
+protected:
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+
+protected:
+    Expression *condition;
+    Expression *statement;
+};
+
+/////////////////////////////////////////////////////////////////
+
+class AppExport ForStatement : public BaseStatement {
+    TYPESYSTEM_HEADER();
+
+public:
+    ForStatement(const App::DocumentObject *_owner = 0, const std::vector<std::string> &names = {},
+            Expression *value=0, Expression *statement=0);
+    virtual ~ForStatement();
+
+    void addElse(Expression *expr);
+
+    virtual bool isTouched() const;
+
+protected:
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+
+protected:
+    std::vector<std::string> names;
+    Expression *value;
+    Expression *statement;
+    Expression *else_expr;
+};
+
+/////////////////////////////////////////////////////////////////
+
+class AppExport SimpleStatement : public BaseStatement {
+    TYPESYSTEM_HEADER();
+
+public:
+    SimpleStatement(const App::DocumentObject *_owner = 0, Expression *expr=0);
+    virtual ~SimpleStatement();
+
+    virtual bool isTouched() const;
+    void add(Expression *expr);
+
+protected:
+    virtual void _visit(ExpressionVisitor & v);
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+
+protected:
+    std::vector<Expression*> exprs;
+};
+
+/////////////////////////////////////////////////////////////
+
+class AppExport Statement : public SimpleStatement {
+    TYPESYSTEM_HEADER();
+
+public:
+    Statement(const App::DocumentObject *_owner = 0, Expression *expr=0);
+    virtual ~Statement();
+
+protected:
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
+};
 
 //////////////////////////////////////////////////////////////////////
 
@@ -685,7 +905,7 @@ public:
   Expression * expr;
   ObjectIdentifier path;
   std::deque<ObjectIdentifier::Component> components;
-  ObjectIdentifier::Component component;
+  Expression::Component component;
   long long int ivalue;
   double fvalue;
   struct {
@@ -695,6 +915,7 @@ public:
   std::vector<Expression*> arguments;
   std::vector<std::pair<std::string,Expression*> > named_arguments;
   std::pair<std::string,Expression*> named_argument;
+  std::vector<std::string> string_list;
   std::string string;
   ObjectIdentifier::String string_or_identifier;
   semantic_type() : expr(0), ivalue(0), fvalue(0) {}
