@@ -904,6 +904,7 @@ enum PseudoPropertyType {
     PseudoApp,
     PseudoPart,
     PseudoRegex,
+    PseudoBuiltins,
 };
 
 std::pair<DocumentObject*,std::string> ObjectIdentifier::getDep(std::vector<std::string> *labels) const {
@@ -1050,6 +1051,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         {"_app",PseudoApp},
         {"_part",PseudoPart},
         {"_re",PseudoRegex},
+        {"_builtins", PseudoBuiltins},
     };
     auto it = _props.find(propertyName);
     if(it == _props.end())
@@ -1246,6 +1248,13 @@ std::string ObjectIdentifier::getPythonAccessor(const ResolveResults &result, Py
             Base::Interpreter().runString("import re");
         }
         ss << "re";
+    } else if(ptype == PseudoBuiltins) {
+        static bool imported = false;
+        if(!imported) {
+            imported = true;
+            Base::Interpreter().runString("import builtins");
+        }
+        ss << "builtins";
     } else if(ptype == PseudoShape) {
         static bool imported = false;
         if(!imported) {
