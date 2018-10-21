@@ -2592,6 +2592,39 @@ boost::any CallableExpression::_getValueAsAny() const {
     if(!pyobj.isCallable())
         EXPR_THROW("Expects Python callable.");
 
+    static std::set<std::intptr_t> blocked_ids;
+    if(blocked_ids.empty()) {
+#define BLOCK_VAR "__blockid"
+#define BLOCK_CMD(_name) BLOCK_VAR "=id(" #_name ")"
+        const char *cmds[] = {
+            BLOCK_CMD(eval),
+            BLOCK_CMD(execfile),
+            BLOCK_CMD(exec),
+            BLOCK_CMD(__import__),
+            BLOCK_CMD(file),
+            BLOCK_CMD(open),
+        };
+        for(auto cmd : cmds) {
+            try {
+                PyObject * pyvalue = Base::Interpreter().getValue(cmd, BLOCK_VAR);
+                if(!pyvalue) continue;
+                Py::Object pyobj(pyvalue, true);
+#if PY_MAJOR_VERSION < 3
+                if (PyInt_Check(pyvalue))
+                    blocked_ids.insert(PyInt_AsLong(pyvalue));
+                else
+#endif
+                if (PyLong_Check(pyvalue))
+                    blocked_ids.insert(PyLong_AsLong(pyvalue));
+            }catch(Base::Exception &e) {
+                FC_LOG("Exception on blocking " << cmd << ": " << e.what());
+            }
+        }
+    }
+
+    if(blocked_ids.find((std::intptr_t)pyobj.ptr()) != blocked_ids.end())
+        EXPR_THROW("Python callable blocked");
+
     int count=0;
     std::vector<Py::Sequence> seqs;
     for(auto &v : args) {
