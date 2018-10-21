@@ -999,16 +999,10 @@ PyObject* SheetPy::eval(PyObject *args, PyObject *kwds)
     Py::Tuple tuple(args);
     std::ostringstream ss;
     ss << "eval(" << Py::Object(tuple[0]).as_string();
-    for(size_t i=1;i<tuple.size();++i)
-        ss << ", getvar(<<" << vars.add(Py::Object(tuple[i].ptr())) << ">>)";
-    if(kwds) {
-        Py::Mapping map(kwds);
-        for(auto it=map.begin();it!=map.end();++it) {
-            const auto &item(*it);
-            ss << ", " << item.first.as_string() << "=getvar(<<" << 
-                vars.add(item.second) << ">>)";
-        }
-    }
+    if(tuple.size()>1)
+        ss << ", *getvar(<<" << vars.add(tuple.getSlice(1,tuple.size())) << ">>)";
+    if(kwds)
+        ss << ", **getvar(<<" << vars.add(Py::Object(kwds)) << ">>)";
     ss << ')';
     PY_TRY {
         std::unique_ptr<App::Expression> expr(App::Expression::parse(owner,ss.str()));
