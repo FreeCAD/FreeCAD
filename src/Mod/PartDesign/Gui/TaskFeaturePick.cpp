@@ -58,6 +58,7 @@
 using namespace PartDesignGui;
 using namespace Attacher;
 
+// ***WMAYER, this comment needs revising***
 // TODO Do ve should snap here to App:Part or GeoFeatureGroup/DocumentObjectGroup ? (2015-09-04, Fat-Zer)
 const QString TaskFeaturePick::getFeatureStatusString(const featureStatus st)
 {
@@ -295,7 +296,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
 }
 
 App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool independent) {
-    
+
     App::DocumentObject* copy = nullptr;
     // Check for null to avoid segfault
     if (!obj)
