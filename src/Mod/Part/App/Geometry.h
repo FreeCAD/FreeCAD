@@ -176,6 +176,11 @@ public:
                    double tol = Precision::Confusion()) const;
     
     void reverse(void);
+    
+protected:
+    bool intersect(const Handle(Geom_Curve) c, const Handle(Geom_Curve) c2, 
+                   std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+                   double tol = Precision::Confusion()) const;    
 };
 
 class PartExport GeomBoundedCurve : public GeomCurve

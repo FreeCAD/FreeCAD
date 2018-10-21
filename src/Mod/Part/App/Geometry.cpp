@@ -459,47 +459,7 @@ bool GeomCurve::intersect(  GeomCurve * c,
     try {
     
         if(!curve1.IsNull() && !curve2.IsNull()) {        
-            // https://forum.freecadweb.org/viewtopic.php?f=10&t=31700
-            if (curve1->IsKind(STANDARD_TYPE(Geom_BoundedCurve)) &&
-                curve2->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
-                
-                Handle(Geom_BoundedCurve) bcurve1 = Handle(Geom_BoundedCurve)::DownCast(curve1);
-                Handle(Geom_BoundedCurve) bcurve2 = Handle(Geom_BoundedCurve)::DownCast(curve2);
-                
-                gp_Pnt c1s = bcurve1->StartPoint();
-                gp_Pnt c2s = bcurve2->StartPoint();
-                gp_Pnt c1e = bcurve1->EndPoint();
-                gp_Pnt c2e = bcurve2->EndPoint();
-            
-                auto checkendpoints = [&points,tol]( gp_Pnt p1, gp_Pnt p2) {
-                    if(p1.Distance(p2) < tol)
-                        points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
-                };
-                
-                checkendpoints(c1s,c2s);
-                checkendpoints(c1s,c2e);
-                checkendpoints(c1e,c2s);
-                checkendpoints(c1e,c2e);
-                
-            }
-            
-            GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
-            
-            if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
-                // No intersection
-                return false;
-            }
-
-            for (int i = 1; i <= intersector.NbExtrema(); i++) {
-                if (intersector.Distance(i) > tol)
-                    continue;
-                
-                gp_Pnt p1, p2;
-                intersector.Points(i, p1, p2);
-                points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
-            }
-
-            return points.size()>0?true:false;
+            return intersect(curve1,curve2,points, tol);
         }
         else
             return false;
@@ -508,6 +468,64 @@ bool GeomCurve::intersect(  GeomCurve * c,
         throw Base::RuntimeError(e.GetMessageString());
     }
     
+}
+
+bool GeomCurve::intersect(const Handle(Geom_Curve) curve1, const Handle(Geom_Curve) curve2, 
+                std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points, 
+                double tol) const
+{
+    // https://forum.freecadweb.org/viewtopic.php?f=10&t=31700
+    if (curve1->IsKind(STANDARD_TYPE(Geom_BoundedCurve)) &&
+        curve2->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
+        
+        Handle(Geom_BoundedCurve) bcurve1 = Handle(Geom_BoundedCurve)::DownCast(curve1);
+        Handle(Geom_BoundedCurve) bcurve2 = Handle(Geom_BoundedCurve)::DownCast(curve2);
+        
+        gp_Pnt c1s = bcurve1->StartPoint();
+        gp_Pnt c2s = bcurve2->StartPoint();
+        gp_Pnt c1e = bcurve1->EndPoint();
+        gp_Pnt c2e = bcurve2->EndPoint();
+    
+        auto checkendpoints = [&points,tol]( gp_Pnt p1, gp_Pnt p2) {
+            if(p1.Distance(p2) < tol)
+                points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
+        };
+        
+        checkendpoints(c1s,c2s);
+        checkendpoints(c1s,c2e);
+        checkendpoints(c1e,c2s);
+        checkendpoints(c1e,c2e);
+        
+    }
+    
+    try {
+    
+        GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
+        
+        if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
+            // No intersection
+            return false;
+        }
+
+        for (int i = 1; i <= intersector.NbExtrema(); i++) {
+            if (intersector.Distance(i) > tol)
+                continue;
+            
+            gp_Pnt p1, p2;
+            intersector.Points(i, p1, p2);
+            points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
+        }
+    }
+    catch (Standard_Failure& e) {
+        // Yes Extrema finding failed, but if we got an intersection then go on with it
+        if(points.size()>0)
+            return points.size()>0?true:false;
+        else
+            throw Base::RuntimeError(e.GetMessageString());
+    }
+    
+
+    return points.size()>0?true:false;
 }
 
 bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
@@ -1513,30 +1531,14 @@ bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
     Handle(Geom_TrimmedCurve) curve1 =  Handle(Geom_TrimmedCurve)::DownCast(handle());
     Handle(Geom_TrimmedCurve) curve2 =  Handle(Geom_TrimmedCurve)::DownCast(c->handle());
     
-    Handle(Geom_Conic) bcurve1 = Handle(Geom_Conic)::DownCast( curve1->BasisCurve() );
-    Handle(Geom_Conic) bcurve2 = Handle(Geom_Conic)::DownCast( curve2->BasisCurve() );
+    Handle(Geom_Curve) bcurve1 = curve1->BasisCurve();
+    Handle(Geom_Curve) bcurve2 = curve2->BasisCurve();
 
     try {
     
         if(!bcurve1.IsNull() && !bcurve2.IsNull()) {
         
-            GeomAPI_ExtremaCurveCurve intersector(bcurve1, bcurve2);
-            
-            if (intersector.NbExtrema() == 0 || intersector.LowerDistance() > tol) {
-                // No intersection
-                return false;
-            }
-
-            for (int i = 1; i <= intersector.NbExtrema(); i++) {
-                if (intersector.Distance(i) > tol)
-                    continue;
-                
-                gp_Pnt p1, p2;
-                intersector.Points(i, p1, p2);
-                points.emplace_back(Base::Vector3d(p1.X(),p1.Y(),p1.Z()),Base::Vector3d(p2.X(),p2.Y(),p2.Z()));
-            }
-
-            return points.size()>0?true:false;
+            return intersect(bcurve1, bcurve2, points, tol);
         }
         return false;
     }
