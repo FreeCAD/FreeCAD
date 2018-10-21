@@ -2245,7 +2245,7 @@ void VariableExpression::addComponent(const Component &component) {
         if(component.e1) {
             auto n1 = dynamic_cast<NumberExpression*>(component.e1);
             if(!n1) {
-                if(component.e1 || component.e2)
+                if(component.e2 || component.e3)
                     break;
                 auto s = dynamic_cast<StringExpression*>(component.e1);
                 if(!s)
@@ -2612,10 +2612,10 @@ boost::any CallableExpression::_getValueAsAny() const {
     if(!pyobj.isCallable())
         EXPR_THROW("Expects Python callable.");
 
-    static std::set<std::intptr_t> blocked_ids;
+    static std::set<PyObject*> blocked_ids;
     if(blocked_ids.empty()) {
 #define BLOCK_VAR "__blockid"
-#define BLOCK_CMD(_name) BLOCK_VAR "=id(" #_name ")"
+#define BLOCK_CMD(_name) BLOCK_VAR "=" #_name
         const char *cmds[] = {
             BLOCK_CMD(eval),
             BLOCK_CMD(execfile),
@@ -2627,23 +2627,17 @@ boost::any CallableExpression::_getValueAsAny() const {
         for(auto cmd : cmds) {
             try {
                 PyObject * pyvalue = Base::Interpreter().getValue(cmd, BLOCK_VAR);
-                if(!pyvalue) continue;
-                Py::Object pyobj(pyvalue, true);
-#if PY_MAJOR_VERSION < 3
-                if (PyInt_Check(pyvalue))
-                    blocked_ids.insert(PyInt_AsLong(pyvalue));
-                else
-#endif
-                if (PyLong_Check(pyvalue))
-                    blocked_ids.insert(PyLong_AsLong(pyvalue));
+                blocked_ids.insert(pyvalue);
+                Py::_XDECREF(pyvalue);
             }catch(Base::Exception &e) {
                 FC_LOG("Exception on blocking " << cmd << ": " << e.what());
             }
         }
+        Base::Interpreter().removeVariable(BLOCK_VAR);
     }
 
-    if(blocked_ids.find((std::intptr_t)pyobj.ptr()) != blocked_ids.end())
-        EXPR_THROW("Python callable blocked");
+    if(blocked_ids.find(pyobj.ptr()) != blocked_ids.end())
+        EXPR_THROW("Python built-in blocked");
 
     int count=0;
     std::vector<Py::Sequence> seqs;
