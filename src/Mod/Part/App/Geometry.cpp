@@ -3564,7 +3564,7 @@ PyObject *GeomLine::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomLineSegment,Part::GeomCurve)
+TYPESYSTEM_SOURCE(Part::GeomLineSegment,Part::GeomTrimmedCurve)
 
 GeomLineSegment::GeomLineSegment()
 {
