@@ -83,6 +83,7 @@ ViewProviderPage::ViewProviderPage()
 
 ViewProviderPage::~ViewProviderPage()
 {
+    removeMDIView();                    //if the MDIViewPage is still in MainWindow, remove it.
 }
 
 void ViewProviderPage::attach(App::DocumentObject *pcFeat)
@@ -115,13 +116,18 @@ std::vector<std::string> ViewProviderPage::getDisplayModes(void) const
 
 void ViewProviderPage::show(void)
 {
+    Visibility.setValue(true);
     showMDIViewPage();
 }
 
-//this "hide" is only used for Visibility property toggle
-//not when Page tab is closed.
-//WF: is this right? same behaviour either way.
 void ViewProviderPage::hide(void)
+{
+    Visibility.setValue(false);
+    removeMDIView();
+    ViewProviderDocumentObject::hide();
+}
+
+void ViewProviderPage::removeMDIView(void)
 {
     if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
         // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614#p182614
@@ -136,7 +142,6 @@ void ViewProviderPage::hide(void)
             }
         }
     }
-    ViewProviderDocumentObject::hide();
 }
 
 void ViewProviderPage::updateData(const App::Property* prop)
@@ -166,9 +171,7 @@ void ViewProviderPage::updateData(const App::Property* prop)
 bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
 {
     bool rc = ViewProviderDocumentObject::onDelete(items);
-    if (!m_mdiView.isNull()) {
-        m_mdiView->deleteSelf();
-    }
+    removeMDIView();
     return rc;
 }
 
@@ -211,8 +214,11 @@ bool ViewProviderPage::doubleClicked(void)
 bool ViewProviderPage::showMDIViewPage()
 {
    if (isRestoring()) {
-        return true;
-    }
+       return true;
+   }
+   if (!Visibility.getValue())   {
+       return true;
+   }
 
     if (m_mdiView.isNull()){
         Gui::Document* doc = Gui::Application::Instance->getDocument
