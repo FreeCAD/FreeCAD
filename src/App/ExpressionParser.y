@@ -412,9 +412,13 @@ subpath: id_or_cell                                    { $$.push_back(ObjectIden
        ;
 
 indexer: '[' exp ']'                                   { $$ = Expression::Component($2);   }
-       | '[' exp ':' ']'                               { $$ = Expression::Component($2,0,true); }
+       | '[' exp ':' ']'                               { $$ = Expression::Component($2,0,0,true); }
        | '[' ':' exp ']'                               { $$ = Expression::Component(0,$3); }
+       | '[' ':' ':' exp ']'                           { $$ = Expression::Component(0,0,$4); }
        | '[' exp ':' exp ']'                           { $$ = Expression::Component($2,$4);}
+       | '[' exp ':' ':' exp ']'                       { $$ = Expression::Component($2,0,$5); }
+       | '[' ':' exp ':' exp ']'                       { $$ = Expression::Component(0,$3,$5); }
+       | '[' exp ':' exp ':' exp ']'                   { $$ = Expression::Component($2,$4,$6);}
        ;
 
 document: STRING                                       { $$ = ObjectIdentifier::String($1, true); }

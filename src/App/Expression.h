@@ -163,24 +163,26 @@ public:
         ObjectIdentifier::Component comp;
         Expression *e1;
         Expression *e2;
+        Expression *e3;
 
         Component()
-            :e1(0),e2(0)
+            :e1(0),e2(0),e3(0)
         {}
 
         Component(const std::string &n)
-            :comp(ObjectIdentifier::SimpleComponent(n)),e1(0),e2(0)
+            :comp(ObjectIdentifier::SimpleComponent(n)),e1(0),e2(0),e3(0)
         {}
 
-        Component(Expression *e1, Expression *e2=0, bool isRange=false)
-            :e1(e1),e2(e2)
+        Component(Expression *e1, Expression *e2=0, Expression *e3=0, bool isRange=false)
+            :e1(e1),e2(e2),e3(e3)
         {
-            if(isRange) 
+            if(isRange || e2 || e3) 
                 comp = ObjectIdentifier::RangeComponent(0);
         }
 
-        Component(const ObjectIdentifier::Component &comp, Expression *e1=0, Expression *e2=0)
-            :comp(comp),e1(e1),e2(e2)
+        Component(const ObjectIdentifier::Component &comp, 
+                Expression *e1=0, Expression *e2=0, Expression *e3=0)
+            :comp(comp),e1(e1),e2(e2),e3(e3)
         {}
     };
 

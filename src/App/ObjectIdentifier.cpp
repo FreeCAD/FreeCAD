@@ -513,11 +513,13 @@ std::string ObjectIdentifier::getSubPathStr(bool toPython) const {
  * @param _end ending of a Range, or INT_MAX for other type.
  */
 
-ObjectIdentifier::Component::Component(const String &_name, ObjectIdentifier::Component::typeEnum _type, int _begin, int _end)
+ObjectIdentifier::Component::Component(const String &_name, 
+        ObjectIdentifier::Component::typeEnum _type, int _begin, int _end, int _step)
     : name(_name)
     , type(_type)
     , begin(_begin)
     , end(_end)
+    , step(_step)
 {
 }
 
@@ -586,9 +588,9 @@ ObjectIdentifier::Component ObjectIdentifier::MapComponent(const String & _key)
  * @return A new Component object.
  */
 
-ObjectIdentifier::Component ObjectIdentifier::RangeComponent(int _begin, int _end)
+ObjectIdentifier::Component ObjectIdentifier::RangeComponent(int _begin, int _end, int _step)
 {
-    return Component(String(), Component::RANGE, _begin, _end);
+    return Component(String(), Component::RANGE, _begin, _end, _step);
 }
 
 /**
@@ -609,7 +611,7 @@ bool ObjectIdentifier::Component::operator ==(const ObjectIdentifier::Component 
     case ARRAY:
         return begin == other.begin;
     case RANGE:
-        return begin == other.begin && end == other.end;
+        return begin == other.begin && end == other.end && step==other.step;
     default:
         assert(0);
         return false;
@@ -643,6 +645,8 @@ void ObjectIdentifier::Component::toString(std::ostringstream &ss, bool toPython
         ss << ':';
         if(end!=INT_MAX)
             ss << end;
+        if(step!=1) 
+            ss << ':' << step;
         ss << ']';
         break;
     default:

@@ -219,6 +219,7 @@ Expression::~Expression()
     for(auto &c : components) {
         delete c.e1;
         delete c.e2;
+        delete c.e3;
     }
 }
 
@@ -453,7 +454,7 @@ boost::any Expression::getValueAsAny() const {
     std::ostringstream ss;
     ss << name << '=' << name;
     for(auto &c : components) {
-        if(!c.e1 && !c.e2) {
+        if(!c.e1 && !c.e2 && !c.e3) {
             if(c.comp.isSimple())
                 ss << '.';
             c.comp.toString(ss,true);
@@ -466,6 +467,9 @@ boost::any Expression::getValueAsAny() const {
             ss << ':';
         if(c.e2)
             ss << vars.add(_pyObjectFromAny(c.e2->getValueAsAny(),c.e2));
+        if(c.e3)
+            ss << ':' << vars.add(_pyObjectFromAny(c.e3->getValueAsAny(),c.e3));
+        ss << ']';
     }
     return getValueByPython(name.c_str(),ss.str().c_str(),this);
 }
@@ -477,6 +481,8 @@ void Expression::visit(ExpressionVisitor &v) {
             c.e1->visit(v);
         if(c.e2)
             c.e2->visit(v);
+        if(c.e3)
+            c.e3->visit(v);
     }
     v.visit(this);
 }
@@ -555,7 +561,7 @@ std::string Expression::toString(bool persistent, bool checkPriority, int indent
     }else
         _toString(ss,persistent,indent);
     for(auto &c : components) {
-        if(!c.e1 && !c.e2) {
+        if(!c.e1 && !c.e2 && !c.e3) {
             if(c.comp.isSimple())
                 ss << '.';
             c.comp.toString(ss,false);
@@ -565,9 +571,11 @@ std::string Expression::toString(bool persistent, bool checkPriority, int indent
         if(c.e1)
             ss << c.e1->toString(persistent);
         if(c.e2 || c.comp.isRange())
-            ss << " : ";
+            ss << ':';
         if(c.e2)
             ss << c.e2->toString(persistent);
+        if(c.e3)
+            ss << ':' << c.e3->toString(persistent);
         ss << ']';
     }
     return ss.str();
@@ -579,7 +587,8 @@ Expression *Expression::copy() const {
     if(expr->components.empty() && components.size()) {
         expr->components.reserve(components.size());
         for(auto &c : components)
-            expr->components.emplace_back(c.comp,c.e1?c.e1->copy():0,c.e2?c.e2->copy():0);
+            expr->components.emplace_back(c.comp,
+                    c.e1?c.e1->copy():0, c.e2?c.e2->copy():0, c.e3?c.e3->copy():0);
     }
     return expr;
 }
@@ -1280,6 +1289,8 @@ enum ExpressionFunctionType {
     PY_HEX,
     PY_ID,
     PY_INT,
+    PY_ISINSTANCE,
+    PY_ISSUBCLASS,
     PY_LEN,
     PY_LIST,
     PY_MAP,
@@ -1367,6 +1378,8 @@ void init_functions() {
     registered_functions["hex"] = PY_HEX;
     registered_functions["id"] = PY_ID;
     registered_functions["int"] = PY_INT;
+    registered_functions["isinstance"] = PY_ISINSTANCE;
+    registered_functions["issubclass"] = PY_ISSUBCLASS;
     registered_functions["len"] = PY_LEN;
     registered_functions["list"] = PY_LIST;
     registered_functions["map"] = PY_MAP;
@@ -2215,6 +2228,7 @@ boost::any VariableExpression::_getValueAsAny() const {
 void VariableExpression::addComponent(const Component &component) {
     std::unique_ptr<Expression> e1(component.e1);
     std::unique_ptr<Expression> e2(component.e2);
+    std::unique_ptr<Expression> e3(component.e3);
     do {
         if(components.size())
             break;
@@ -2222,37 +2236,43 @@ void VariableExpression::addComponent(const Component &component) {
             var << component.comp;
             return;
         }
-        long l1=0,l2;
-        auto n1 = dynamic_cast<NumberExpression*>(component.e1);
-        if(n1) {
-            if(!essentiallyInteger(n1->getValue(),l1))
+        long l1=0,l2=0,l3=1;
+        if(component.e3) {
+            auto n3 = dynamic_cast<NumberExpression*>(component.e3);
+            if(!n3 || !essentiallyEqual(n3->getValue(),l3))
                 break;
-            if(!component.e2) {
-                if(component.comp.isRange())
-                    var << ObjectIdentifier::RangeComponent(l1);
-                else
-                    var << ObjectIdentifier::ArrayComponent(l1);
+        }
+        if(component.e1) {
+            auto n1 = dynamic_cast<NumberExpression*>(component.e1);
+            if(!n1) {
+                if(component.e1 || component.e2)
+                    break;
+                auto s = dynamic_cast<StringExpression*>(component.e1);
+                if(!s)
+                    break;
+                var << ObjectIdentifier::MapComponent(ObjectIdentifier::String(s->getText(),true));
                 return;
             }
-        }else if(component.e2)
-            break;
-        else {
-            auto s = dynamic_cast<StringExpression*>(component.e1);
-            if(!s)
+            if(!essentiallyInteger(n1->getValue(),l1))
                 break;
-            var << ObjectIdentifier::MapComponent(ObjectIdentifier::String(s->getText(),true));
-            return;
+            if(!component.comp.isRange()) {
+                var << ObjectIdentifier::ArrayComponent(l1);
+                return;
+            } else if(!component.e2) {
+                var << ObjectIdentifier::RangeComponent(l1,l2,l3);
+                return;
+            }
         }
         auto n2 = dynamic_cast<NumberExpression*>(component.e2);
-        if(!n2 || !essentiallyInteger(n2->getValue(),l2))
-            break;
-        var << ObjectIdentifier::RangeComponent(l1,l2);
-        return;
-        
+        if(n2 && essentiallyInteger(n2->getValue(),l2)) {
+            var << ObjectIdentifier::RangeComponent(l1,l2,l3);
+            return;
+        }
     }while(0);
 
     e1.release();
     e2.release();
+    e3.release();
     Expression::addComponent(component);
 }
 

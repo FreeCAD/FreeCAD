@@ -123,7 +123,8 @@ public:
 
         // Constructors
 
-        Component(const String &_name = String(), typeEnum _type=SIMPLE, int begin=INT_MAX, int end=INT_MAX);
+        Component(const String &_name = String(), typeEnum _type=SIMPLE, 
+                int begin=INT_MAX, int end=INT_MAX, int step=1);
 
         // Type queries
 
@@ -158,6 +159,7 @@ public:
         typeEnum type;
         int begin;
         int end;
+        int step;
         friend class ObjectIdentifier;
 
     };
@@ -168,7 +170,7 @@ public:
 
     static Component ArrayComponent(int _index);
 
-    static Component RangeComponent(int _begin, int _end = INT_MAX);
+    static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1);
 
     static Component MapComponent(const String &_key);
 
