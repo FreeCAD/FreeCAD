@@ -482,7 +482,7 @@ bool GeomCurve::intersect(  GeomCurve * c,
             return false;
     }
     catch (Standard_Failure& e) {
-        return false;
+        throw Base::RuntimeError(e.GetMessageString());
     }
     
 }
@@ -1518,7 +1518,7 @@ bool GeomTrimmedCurve::intersectBasisCurves(  const GeomTrimmedCurve * c,
         return false;
     }
     catch (Standard_Failure& e) {
-        return false;
+        throw Base::RuntimeError(e.GetMessageString());
     }    
 }
 
