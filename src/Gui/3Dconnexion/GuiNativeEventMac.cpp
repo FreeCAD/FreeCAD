@@ -8,15 +8,17 @@ Implementation by Torsten Sadowski 2015
 with special thanks to marcxs for making the first steps
  */
 
+#include "GuiNativeEventMac.h"
+
 #include <unistd.h>
-#include "GUIApplicationNativeEventAware.h"
-#include "SpaceballEvent.h"
-#include <QWidget>
+#include "GuiApplicationNativeEventAware.h"
+#include <FCConfig.h>
+#include <Base/Console.h>
 
+int Gui::GuiNativeEvent::motionDataArray[6];
 
-
-UInt16 Gui::GUIApplicationNativeEventAware::tdxClientID = 0;
-uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
+UInt16 Gui::GuiNativeEvent::tdxClientID = 0;
+uint32_t Gui::GuiNativeEvent::lastButtons = 0;
 
   /* ----------------------------------------------------------------------------
      Handler for driver events. This function is able to handle the events in
@@ -25,7 +27,7 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
      usage by reader threads.
   */
   void 
-  Gui::GUIApplicationNativeEventAware::tdx_drv_handler(io_connect_t connection, 
+  Gui::GuiNativeEvent::tdx_drv_handler(io_connect_t connection, 
 		  natural_t messageType, 
 		  void *messageArgument)
   {
@@ -46,6 +48,9 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
 	//printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);	 
 	if (msg->client == tdxClientID)
 	  {
+            auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware *>(QApplication::instance()));
+            if (!inst)
+              return;
 	    switch (msg->command)
 	      {
 	      case kConnexionCmdHandleAxis:
@@ -56,7 +61,7 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
 		  motionDataArray[3] = -msg->axis[3];                        
 		  motionDataArray[4] = msg->axis[4];                        
 		  motionDataArray[5] = msg->axis[5];
-		  mainApp->postMotionEvent(&motionDataArray[0])
+		  inst->postMotionEvent(&motionDataArray[0]);
 		  break;
 		}
                         
@@ -70,13 +75,13 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
 		  for (uint8_t bt = 0; bt < 32; bt++)
 		    {
 		      if (pressedButtons & 1)
-				mainApp->postButtonEvent(bt, 1);
+				inst->postButtonEvent(bt, 1);
 		      pressedButtons = pressedButtons>>1;
 		    }
 		  for (uint8_t bt = 0; bt < 32; bt++)
 		    {
 		      if (releasedButtons & 1)
-				mainApp->postButtonEvent(bt, 0);
+				inst->postButtonEvent(bt, 0);
 		      releasedButtons = releasedButtons>>1;
 		    }
 		  lastButtons = msg->buttons;
@@ -100,7 +105,6 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 : QObject(app)
 {
-	spaceballPresent = false;
 	mainApp = app;
 }
 
@@ -149,6 +153,5 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
     }
     
     Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
-    spaceballPresent = true;
+    mainApp->setSpaceballPresent(true);
 }
-
