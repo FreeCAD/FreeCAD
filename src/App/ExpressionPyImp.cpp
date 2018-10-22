@@ -41,10 +41,7 @@ std::string ExpressionPy::representation(void) const
         PyErr_Format(PyExc_ReferenceError, "Owner document object expired");
         return NULL;
     }
-    auto sexpr = dynamic_cast<StringExpression*>(getExpressionPtr());
-    if(sexpr)
-        return std::string("=") + sexpr->getText();
-    return getExpressionPtr()->toString();
+    return std::string("=") + getExpressionPtr()->toString();
 }
 
 static PyObject *ExpressionPy_Call( PyObject *self, PyObject *args, PyObject *kw ) {
@@ -71,9 +68,9 @@ PyObject *ExpressionPy::__call__(PyObject *args, PyObject *kwds) {
         return NULL;
     }
     PY_TRY {
-        auto expr = dynamic_cast<StringExpression*>(getExpressionPtr());
+        auto expr = dynamic_cast<CallableExpression*>(getExpressionPtr());
         if(expr)
-            return Py::new_reference_to(CallableExpression::evaluate(expr->getOwner(),expr->getText(),args,kwds));
+            return Py::new_reference_to(expr->evaluate(args,kwds));
         Py_Return;
     }PY_CATCH
 }

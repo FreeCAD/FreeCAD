@@ -1263,10 +1263,10 @@ enum ExpressionFunctionType {
 
     GET_VAR,
     HAS_VAR,
-    FUNC,
 
     CALLABLE_START,
 
+    FUNC,
     EVAL,
     EVAL_L,
     IMPORT_PY,
@@ -1642,7 +1642,6 @@ Expression * FunctionExpression::_eval() const
     switch(f) {
     case GET_VAR:
     case HAS_VAR:
-    case FUNC:
         return 0;
     default:
         break;
@@ -1885,12 +1884,6 @@ boost::any FunctionExpression::_getValueAsAny() const {
             EXPR_THROW("Variable not found.");
         }
         return pyObjectToAny(pyobj);
-    } case FUNC: {
-        std::unique_ptr<Expression> e(args[0]->eval());
-        if(!e->isDerivedFrom(StringExpression::getClassTypeId()))
-            EXPR_THROW("Expects the first argument evaluating to a string.");
-        Base::PyGILStateLocker lock;
-        return pyObjectToAny(Py::Object(new ExpressionPy(e.release())),false);
     } default:
         break;
     } 
@@ -2465,54 +2458,13 @@ void CallableExpression::_visit(ExpressionVisitor &v) {
         expr->visit(v);
 }
 
-Py::Object CallableExpression::evaluate(const DocumentObject *owner, 
-        const std::string &expr, PyObject *args, PyObject *kwds) {
-    std::unique_ptr<CallableExpression> callable(new CallableExpression(owner));
-    callable->ftype = EVAL;
-    callable->args.emplace_back("",new StringExpression(owner,expr));
-
-    if(args) {
-        Py::Sequence seq(args);
-        for(size_t i=0;i<seq.size();++i)
-            callable->args.emplace_back("",new PyObjectExpression(owner,seq[i].ptr()));
-    }
-    if(kwds) {
-        Py::Dict dict(kwds);
-        for(auto it=dict.begin();it!=dict.end();++it){
-            const auto &value = (*it);
-            callable->args.emplace_back(value.first.as_string(),
-                    new PyObjectExpression(owner,value.second.ptr())); 
-        }
-    }
-    return _pyObjectFromAny(callable->getValueAsAny(),callable.get());
+static inline std::string varName(int index) {
+    return std::string("_") + std::to_string(index) + "_";
 }
 
-Expression *CallableExpression::_eval() const {
-    if(expr || (ftype != EVAL && ftype != EVAL_L))
-        return 0;
-
-    Base::PyGILStateLocker lock;
-    std::vector<std::string> cmds;
-    boost::any value(args[0].second->getValueAsAny());
-    if(value.type() == typeid(std::string))
-        cmds.emplace_back(boost::any_cast<std::string>(value));
-    else {
-        Py::Object pyobj(_pyObjectFromAny(value,args[0].second));
-        if(!pyobj.isSequence())
-            EXPR_THROW("Expects the first argument to be a string or sequance of strings.");
-        Py::Sequence seq(pyobj);
-        if(!seq.size())
-            return new PyObjectExpression(owner);
-        cmds.reserve(seq.size());
-        for(size_t i=0;i<seq.size();++i) {
-            Py::Object item(seq[i]);
-            if(!item.isString())
-                EXPR_THROW("Non string command in sequence");
-            cmds.emplace_back(item.as_string());
-        }
-    }
-
-    EvalFrame frame;
+static void prepareArguments(const Expression *owner, EvalFrame &frame, 
+        const std::vector<std::pair<std::string,Expression*> > &args)
+{
     int idx = 1;
     for(size_t j=1;j<args.size();++j) {
         auto &name = args[j].first;
@@ -2523,8 +2475,10 @@ Expression *CallableExpression::_eval() const {
                 _EXPR_THROW("Expects Python sequence.", arg);
             Py::Sequence seq(pyobj);
             for(size_t i=0;i<seq.size();++i) {
-                std::shared_ptr<Expression> expr(new PyObjectExpression(owner, seq[i].ptr()));
-                frame.vars.emplace(std::string("_")+std::to_string(idx++)+"_",expr);
+                auto &entry = frame.vars[varName(idx++)];
+                if(!entry)
+                    entry.reset(new PyObjectExpression(
+                            owner->getOwner(), seq[i].ptr()));
             }
         }else if(name == "**") {
             Py::Object pyobj(_pyObjectFromAny(arg->getValueAsAny(),arg));
@@ -2535,39 +2489,102 @@ Expression *CallableExpression::_eval() const {
                 const auto &value = *it;
                 if(!value.first.isString())
                     _EXPR_THROW("Only accepts string as key.", arg);
-                std::shared_ptr<Expression> expr(new PyObjectExpression(arg->getOwner(), value.second.ptr()));
-                frame.vars.emplace(value.first.as_string(), expr);
+                auto &entry = frame.vars[value.first.as_string()];
+                if(!entry)
+                    entry.reset(new PyObjectExpression(owner->getOwner(), value.second.ptr()));
             }
         } else if(name.size() && (name[0]=='_' || std::isalpha(name[0]))) {
-            std::shared_ptr<Expression> expr(arg->eval());
-            frame.vars.emplace(name,expr);
+            auto &entry = frame.vars[name];
+            if(!entry)
+                entry.reset(arg->eval());
         } else if(name.empty()) {
-            std::shared_ptr<Expression> expr(arg->eval());
-            frame.vars.emplace(std::string("_")+std::to_string(idx++)+"_",expr);
+            auto &entry = frame.vars[varName(idx++)];
+            if(!entry)
+                entry.reset(arg->eval());
         } else
-            EXPR_THROW("Invalid named argument '" << name << "'.");
+            _EXPR_THROW("Invalid named argument '" << name << "'.",owner);
     }
-    frame.push(ftype == EVAL_L);
+}
+
+static Expression *parseAndEval(const Expression *owner, Expression *arg0)
+{
+    std::vector<std::string> cmds;
+    boost::any value(arg0->getValueAsAny());
+    if(value.type() == typeid(std::string))
+        cmds.emplace_back(boost::any_cast<std::string>(value));
+    else {
+        Py::Object pyobj(_pyObjectFromAny(value,arg0));
+        if(!pyobj.isSequence())
+            _EXPR_THROW("Expects the first argument to be a string or sequance of strings.",owner);
+        Py::Sequence seq(pyobj);
+        if(!seq.size())
+            return new PyObjectExpression(owner->getOwner());
+        cmds.reserve(seq.size());
+        for(size_t i=0;i<seq.size();++i) {
+            Py::Object item(seq[i]);
+            if(!item.isString())
+                _EXPR_THROW("Non string command in sequence",owner);
+            cmds.emplace_back(item.as_string());
+        }
+    }
 
     std::unique_ptr<Expression> expr;
     for(auto &cmd : cmds) {
-        expr.reset(parse(owner,cmd.c_str())->eval());
+        expr.reset(Expression::parse(owner->getOwner(),cmd.c_str())->eval());
         switch(expr->jump()) {
         case JumpStatement::JUMP_RETURN:
             return expr->simplify();
         case JumpStatement::JUMP_NONE:
             continue;
         case JumpStatement::JUMP_BREAK:
-            FC_THROWM(ExpressionError,"Unmatched 'break' statement.");
+            throw ExpressionError("Unmatched 'break' statement.");
         case JumpStatement::JUMP_CONTINUE:
-            FC_THROWM(ExpressionError,"Unmatched 'continue' statement.");
+            throw ExpressionError("Unmatched 'continue' statement.");
         default:
-            FC_THROWM(ExpressionError,"Unexpected end of 'eval'.");
+            throw ExpressionError("Unexpected end of 'eval'.");
         }
     }
     if(expr)
         return expr.release();
-    return new PyObjectExpression(owner);
+    return new PyObjectExpression(owner->getOwner());
+}
+
+Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
+    if(ftype!=FUNC)
+        EXPR_THROW("Unexpected callable expression type: " << ftype);
+    if(args.size()<1)
+        EXPR_THROW("Expects at least one argument");
+
+    EvalFrame frame;
+    if(pyargs) {
+        Py::Sequence seq(pyargs);
+        for(size_t i=0;i<seq.size();++i) {
+            std::shared_ptr<Expression> expr(new PyObjectExpression(owner,seq[i].ptr()));
+            frame.vars.emplace(varName(i+1),expr);
+        }
+    }
+    if(pykwds) {
+        Py::Dict dict(pykwds);
+        for(auto it=dict.begin();it!=dict.end();++it){
+            const auto &value = (*it);
+            std::shared_ptr<Expression> expr(new PyObjectExpression(owner,value.second.ptr()));
+            frame.vars.emplace(value.first.as_string(),expr);
+        }
+    }
+    prepareArguments(this,frame,args);
+    frame.push(false);
+    return _pyObjectFromAny(parseAndEval(this,args[0].second)->getValueAsAny(),this);
+}
+
+Expression *CallableExpression::_eval() const {
+    if(expr || (ftype != EVAL && ftype != EVAL_L))
+        return 0;
+
+    Base::PyGILStateLocker lock;
+    EvalFrame frame;
+    prepareArguments(this,frame,args);
+    frame.push(ftype == EVAL_L);
+    return parseAndEval(this,args[0].second);
 }
 
 boost::any CallableExpression::_getValueAsAny() const {
@@ -2577,6 +2594,10 @@ boost::any CallableExpression::_getValueAsAny() const {
         case EVAL: {
             std::unique_ptr<Expression> e(_eval());
             return e->getValueAsAny();
+        } case FUNC: {
+            if(args.size()<1)
+                EXPR_THROW("Expects at least one argument");
+            return pyObjectToAny(Py::Object(new ExpressionPy(copy())),false);
         } case IMPORT_PY: {
             boost::any value(args[0].second->getValueAsAny());
             if(value.type() != typeid(std::string))
