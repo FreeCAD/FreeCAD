@@ -946,7 +946,7 @@ void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
     if (reader.getFileVersion() > 0) {
         for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
             Base::Vector3d pos;
-            float q0, q1, q2, q3;
+            double q0, q1, q2, q3;
             str >> pos.x >> pos.y >> pos.z >> q0 >> q1 >> q2 >> q3;
             Base::Rotation rot(q0,q1,q2,q3);
             it->setPosition(pos);
