@@ -84,7 +84,7 @@ class Macro(object):
                     number_of_required_fields -= 1
                 match = re.match(re_files, l)
                 if match:
-                    self.other_files = [f.strip() for f in match.group(2).split(',')]
+                    self.other_files = [of.strip() for of in match.group(2).split(',')]
                     number_of_required_fields -= 1
                 if number_of_required_fields <= 0:
                     break
