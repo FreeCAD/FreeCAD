@@ -2545,6 +2545,18 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         tbase = getProj(prx.tbase)
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
+    elif getType(obj) == "Label":
+        if gui:
+            if not obj.ViewObject:
+                print ("export of texts to SVG is only available in GUI mode")
+            else:
+                fontname = obj.ViewObject.TextFont
+                position = getProj(obj.Placement.Base)
+                rotation = obj.Placement.Rotation
+                justification = obj.ViewObject.TextAlignment
+                text = obj.Text
+                svg += getText(stroke, fontsize, fontname, rotation, position, text, linespacing, justification)
+
     elif getType(obj) in ["Annotation","DraftText"]:
         "returns an svg representation of a document annotation"
         if gui:
