@@ -32,6 +32,8 @@ Implementation by Torsten Sadowski 2018
   #undef Complex
 #endif // #if QT_VERSION >= 0x050000
 
+int Gui::GuiNativeEvent::motionDataArray[6];
+
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 : QObject(app)
 {

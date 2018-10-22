@@ -12,6 +12,8 @@ Implementation by Torsten Sadowski 2018
 
 #include <spnav.h>
 
+int Gui::GuiNativeEvent::motionDataArray[6];
+
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 : QObject(app)
 {
