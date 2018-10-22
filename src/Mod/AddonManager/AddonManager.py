@@ -44,7 +44,8 @@ import sys
 import tempfile
 
 from PySide import QtCore, QtGui
-import FreeCAD,FreeCADGui
+import FreeCAD
+import FreeCADGui
 if sys.version_info.major < 3:
     import urllib2
 else:
@@ -103,6 +104,92 @@ def update_macro_details(old_macro, new_macro):
     for attr in ['desc', 'url', 'code']:
         if not hasattr(old_macro, attr):
             setattr(old_macro, attr, getattr(new_macro, attr))
+
+
+def install_macro(macro, macro_repo_dir):
+    """Install a macro and all its related files
+
+    Returns True if the macro was installed correctly.
+
+    Parameters
+    ----------
+    - macro: a addonmanager_macro.Macro instance
+    """
+    if not macro.code:
+        return False
+    macro_dir = FreeCAD.getUserMacroDir()
+    if not os.path.isdir(macro_dir):
+        try:
+            os.makedirs(macro_dir)
+        except OSError:
+            return False
+    macro_path = os.path.join(macro_dir, macro.filename)
+    if sys.version_info.major < 3:
+        # In python2 the code is a bytes object.
+        mode = 'wb'
+    else:
+        mode = 'w'
+    try:
+        with open(macro_path, mode) as macrofile:
+            macrofile.write(macro.code)
+    except IOError:
+        return False
+    # Copy related files, which are supposed to be given relative to
+    # macro.src_filename.
+    base_dir = os.path.dirname(macro.src_filename)
+    for other_file in macro.other_files:
+        dst_dir = os.path.join(base_dir, os.path.dirname(other_file))
+        if not os.path.isdir(dst_dir):
+            try:
+                os.makedirs(dst_dir)
+            except OSError:
+                return False
+        src_file = os.path.join(base_dir, other_file)
+        dst_file = os.path.join(macro_dir, other_file)
+        try:
+            shutil.copy(src_file, dst_file)
+        except IOError:
+            return False
+    return True
+
+
+def remove_macro(macro):
+    """Remove a macro and all its related files
+
+    Returns True if the macro was removed correctly.
+
+    Parameters
+    ----------
+    - macro: a addonmanager_macro.Macro instance
+    """
+    if not macro.is_installed():
+        # Macro not installed, nothing to do.
+        return True
+    macro_dir = FreeCAD.getUserMacroDir()
+    macro_path = os.path.join(macro_dir, macro.filename)
+    macro_path_with_macro_prefix = os.path.join(macro_dir, 'Macro_' + macro.filename)
+    if os.path.exists(macro_path):
+        os.remove(macro_path)
+    elif os.path.exists(macro_path_with_macro_prefix):
+        os.remove(macro_path_with_macro_prefix)
+    # Remove related files, which are supposed to be given relative to
+    # macro.src_filename.
+    for other_file in macro.other_files:
+        dst_file = os.path.join(macro_dir, other_file)
+        remove_directory_if_empty(os.path.dirname(dst_file))
+        os.remove(dst_file)
+    return True
+
+
+def remove_directory_if_empty(dir):
+    """Remove the directory if it is empty
+
+    Directory FreeCAD.getUserMacroDir() will not be removed even if empty.
+    """
+    if dir == FreeCAD.getUserMacroDir():
+        return
+    if not os.listdir(dir):
+        os.rmdir(dir)
 
 
 class AddonsInstaller(QtGui.QDialog):
@@ -331,22 +418,11 @@ class AddonsInstaller(QtGui.QDialog):
                 self.install_worker.start()
         elif self.tabWidget.currentIndex() == 1:
             # Tab "Macros".
-            macro_dir = FreeCAD.getUserMacroDir()
-            if not os.path.isdir(macro_dir):
-                os.makedirs(macro_dir)
             macro = self.macros[self.listMacros.currentRow()]
-            if not macro.code:
-                self.labelDescription.setText(translate("AddonsInstaller", "Unable to install"))
-                return
-            macro_path = os.path.join(macro_dir, macro.filename)
-            if sys.version_info.major < 3:
-                # In python2 the code is a bytes object.
-                mode = 'wb'
+            if install_macro(macro, self.macro_repo_dir):
+                self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
             else:
-                mode = 'w'
-            with open(macro_path, mode) as macrofile:
-                macrofile.write(macro.code)
-            self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
+                self.labelDescription.setText(translate("AddonsInstaller", "Unable to install"))
         self.update_status()
 
     def show_progress_bar(self, state):
@@ -380,14 +456,13 @@ class AddonsInstaller(QtGui.QDialog):
             if not macro.is_installed():
                 # Macro not installed, nothing to do.
                 return
-            macro_path = os.path.join(get_macro_dir(), macro.filename)
+            macro_path = os.path.join(FreeCAD.getUserMacroDir(), macro.filename)
             if os.path.exists(macro_path):
                 macro_path = macro_path.replace("\\","/")
-#                FreeCAD.Console.PrintMessage(str(macro_path) + "\n")
 
                 FreeCADGui.open(str(macro_path))
                 self.hide()
-                Gui.SendMsgToActiveView("Run")
+                FreeCADGui.SendMsgToActiveView("Run")
         else:
             self.buttonExecute.setEnabled(False)
 
@@ -411,17 +486,10 @@ class AddonsInstaller(QtGui.QDialog):
         elif self.tabWidget.currentIndex() == 1:
             # Tab "Macros".
             macro = self.macros[self.listMacros.currentRow()]
-            if not macro.is_installed():
-                # Macro not installed, nothing to do.
-                return
-            macro_path = os.path.join(FreeCAD.getUserMacroDir(), macro.filename)
-            macro_path_with_macro_prefix = os.path.join(FreeCAD.getUserMacroDir(), 'Macro_' + macro.filename)
-            if os.path.exists(macro_path):
-                os.remove(macro_path)
-                self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully removed."))
-            elif os.path.exists(macro_path_with_macro_prefix):
-                os.remove(macro_path_with_macro_prefix)
-                self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully removed."))
+            if remove_macro(macro):
+                self.labelDescription.setText(translate('AddonsInstaller', 'Macro successfully removed.'))
+            else:
+                self.labelDescription.setText(translate('AddonsInstaller', 'Macro could not be removed.'))
         self.update_status()
 
     def update_status(self):
@@ -847,7 +915,7 @@ class InstallWorker(QtCore.QThread):
                         self.download(self.repos[idx][1],clonedir)
                     answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
             # symlink any macro contained in the module to the macros folder
-            macro_dir = get_macro_dir()
+            macro_dir = FreeCAD.getUserMacroDir()
             if not os.path.exists(macro_dir):
                 os.makedirs(macro_dir)
             for f in os.listdir(clonedir):
