@@ -174,7 +174,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["Dimension","Annotation"]:
+        elif Draft.getType(o) in ["Dimension","Annotation","Label"]:
             drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
