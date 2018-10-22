@@ -44,7 +44,8 @@ import sys
 import tempfile
 
 from PySide import QtCore, QtGui
-import FreeCAD,FreeCADGui
+import FreeCAD
+import FreeCADGui
 if sys.version_info.major < 3:
     import urllib2
 else:
@@ -383,7 +384,6 @@ class AddonsInstaller(QtGui.QDialog):
             macro_path = os.path.join(get_macro_dir(), macro.filename)
             if os.path.exists(macro_path):
                 macro_path = macro_path.replace("\\","/")
-#                FreeCAD.Console.PrintMessage(str(macro_path) + "\n")
 
                 FreeCADGui.open(str(macro_path))
                 self.hide()
