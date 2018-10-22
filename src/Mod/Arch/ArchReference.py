@@ -25,7 +25,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCAD,os,zipfile,re
+import FreeCAD,os,zipfile,re,sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -119,8 +119,8 @@ class ArchReference:
                 zdoc = zipfile.ZipFile(obj.File)
                 if zdoc:
                     if obj.Part in self.parts:
-                        if self.parts[obj.Part] in zdoc.namelist():
-                            f = zdoc.open(self.parts[obj.Part])
+                        if self.parts[obj.Part][1] in zdoc.namelist():
+                            f = zdoc.open(self.parts[obj.Part][1])
                             shapedata = f.read()
                             f.close()
                             import Part
@@ -144,11 +144,16 @@ class ArchReference:
             return parts
         zdoc = zipfile.ZipFile(filename)
         with zdoc.open("Document.xml") as docf:
+            name = None
             label = None
             part = None
             writemode = False
             for line in docf:
-                if "<Property name=\"Label\"" in line:
+                if "<Object name=" in line:
+                    n = re.findall('name=\"(.*?)\"',line)
+                    if n:
+                        name = n[0]
+                elif "<Property name=\"Label\"" in line:
                     writemode = True
                 elif writemode and "<String value=" in line:
                     n = re.findall('value=\"(.*?)\"',line)
@@ -162,12 +167,59 @@ class ArchReference:
                     if n:
                         part = n[0]
                         writemode = False
-                if label and part:
-                    parts[label] = part
+                if name and label and part:
+                    parts[name] = [label,part]
+                    name = None
                     label = None
                     part = None
         return parts
 
+    def getColors(self,obj):
+
+        filename = obj.File
+        if not filename:
+            return None
+        if not filename.lower().endswith(".fcstd"):
+            return None
+        if not os.path.exists(filename):
+            return None
+        part = obj.Part
+        if not obj.Part:
+            return None
+        zdoc = zipfile.ZipFile(filename)
+        if not "GuiDocument.xml" in zdoc.namelist():
+            return None
+        colorfile = None
+        with zdoc.open("GuiDocument.xml") as docf:
+            writemode1 = False
+            writemode2 = False
+            for line in docf:
+                if ("<ViewProvider name=" in line) and (part in line):
+                    writemode1 = True
+                elif writemode1 and ("<Property name=\"DiffuseColor\"" in line):
+                    writemode1 = False
+                    writemode2 = True
+                elif writemode2 and ("<ColorList file=" in line):
+                    n = re.findall('file=\"(.*?)\"',line)
+                    if n:
+                        colorfile = n[0]
+                        break
+        if not colorfile:
+            return None
+        if not colorfile in zdoc.namelist():
+            return None
+        colors = []
+        cf = zdoc.open(colorfile)
+        buf = cf.read()
+        cf.close()
+        for i in range(1,int(len(buf)/4)):
+            if sys.version_info.major >= 3:
+                colors.append((buf[i*4+3],buf[i*4+2],buf[i*4+1],buf[i*4]))
+            else:
+                colors.append((ord(buf[i*4+3])/255.0,ord(buf[i*4+2])/255.0,ord(buf[i*4+1])/255.0,ord(buf[i*4])/255.0))
+        if colors:
+            return colors
+        return None
 
 
 class ViewProviderArchReference:
@@ -186,6 +238,9 @@ class ViewProviderArchReference:
         if not "TimeStamp" in pl:
             vobj.addProperty("App::PropertyFloat","TimeStamp","Reference",QT_TRANSLATE_NOOP("App::Property","The latest time stamp of the linked file"))
             vobj.setEditorMode("TimeStamp",2)
+        if not "UpdateColors" in pl:
+            vobj.addProperty("App::PropertyBool","UpdateColors","Reference",QT_TRANSLATE_NOOP("App::Property","If true, the colors from the linked file will be kept updated"))
+            vobj.UpdateColors = True
 
     def getIcon(self):
 
@@ -224,6 +279,13 @@ class ViewProviderArchReference:
 
         return None
 
+    def updateData(self,obj,prop):
+        
+        if (prop == "Shape") and hasattr(obj.ViewObject,"UpdateColors") and obj.ViewObject.UpdateColors:
+            colors = obj.Proxy.getColors(obj)
+            if colors:
+                obj.ViewObject.DiffuseColor = colors
+
     def checkChanges(self):
 
         "checks if the linked file has changed"
@@ -244,6 +306,14 @@ class ViewProviderArchReference:
                             self.Object.Proxy.reload = True
                             self.Object.touch()
                     self.Object.ViewObject.TimeStamp = st_mtime
+
+    def onChanged(self,vobj,prop):
+
+        if prop == "ShapeColor":
+            # prevent ShapeColor to override DiffuseColor
+            if hasattr(vobj,"DiffuseColor") and hasattr(vobj,"UpdateColors"):
+                if vobj.DiffuseColor and vobj.UpdateColors:
+                    vobj.DiffuseColor = vobj.DiffuseColor
 
     def onDelete(self,obj,doc):
 
@@ -313,11 +383,11 @@ class ArchReferenceTaskPanel:
             parts = self.obj.Proxy.parts
         else:
             parts = self.obj.Proxy.getPartsList(self.obj)
-        keys = parts.keys()
-        self.partCombo.addItems(keys)
+        for k,v in parts.items():
+            self.partCombo.addItem(v[0],k)
         if self.obj.Part:
-            if self.obj.Part in keys:
-                self.partCombo.setCurrentIndex(keys.index(self.obj.Part))
+            if self.obj.Part in parts.keys():
+                self.partCombo.setCurrentIndex(parts.keys().index(self.obj.Part))
         QtCore.QObject.connect(self.fileButton, QtCore.SIGNAL("clicked()"), self.chooseFile)
         QtCore.QObject.connect(self.openButton, QtCore.SIGNAL("clicked()"), self.openFile)
 
@@ -332,17 +402,18 @@ class ArchReferenceTaskPanel:
             self.fileButton.setText(os.path.basename(self.filename))
             parts = self.obj.Proxy.getPartsList(self.obj,self.filename)
             if parts:
-                keys = parts.keys()
                 self.partCombo.clear()
-                self.partCombo.addItems(keys)
+                for k,v in parts.items():
+                    self.partCombo.addItem(v[0],k)
                 if self.obj.Part:
-                    if self.obj.Part in keys:
-                        self.partCombo.setCurrentIndex(keys.index(self.obj.Part))
+                    if self.obj.Part in parts.keys():
+                        self.partCombo.setCurrentIndex(parts.keys().index(self.obj.Part))
 
     def openFile(self):
         if self.obj.File:
             FreeCAD.openDocument(self.obj.File)
             FreeCADGui.Control.closeDialog()
+            FreeCADGui.ActiveDocument.resetEdit()
 
     def accept(self):
 
@@ -351,9 +422,11 @@ class ArchReferenceTaskPanel:
                 self.obj.File = self.filename
                 FreeCAD.ActiveDocument.recompute()
         if self.partCombo.currentText():
-            if self.partCombo.currentText() != self.obj.Part:
-                self.obj.Part = self.partCombo.currentText()
+            i = self.partCombo.currentIndex()
+            if self.partCombo.itemData(i) != self.obj.Part:
+                self.obj.Part = self.partCombo.itemData(i)
                 FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
         return True
 
 

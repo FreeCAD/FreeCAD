@@ -545,17 +545,34 @@ class ViewProviderBuildingPart:
             self.onChanged(obj.ViewObject,"OverrideUnit")
         elif prop == "Shape":
             # gather all the child shapes
-            cols = []
-            for o in obj.Group:
-                if o.isDerivedFrom("Part::Feature") and o.Shape and (not o.Shape.isNull()):
-                    if len(o.ViewObject.DiffuseColor) == len(o.Shape.Faces):
-                        cols.extend(o.ViewObject.DiffuseColor)
-                    else:
-                        c = o.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
-                        for i in range(len(o.Shape.Faces)):
-                            cols.append(c)
-            if hasattr(obj.ViewObject,"DiffuseColor"):
-                obj.ViewObject.DiffuseColor = cols
+            colors = self.getColors(obj)
+            if colors and hasattr(obj.ViewObject,"DiffuseColor"):
+                if len(colors) == len(obj.Shape.Faces):
+                    obj.ViewObject.DiffuseColor = colors
+
+    def getColors(self,obj):
+
+        "recursively get the colors of objects inside this BuildingPart"
+
+        colors = []
+        if obj.isDerivedFrom("Part::Feature") and obj.Shape and (not obj.Shape.isNull()):
+            if hasattr(obj.ViewObject,"DiffuseColor") and (len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
+                colors.extend(obj.ViewObject.DiffuseColor)
+            elif hasattr(obj.ViewObject,"ShapeColor"):
+                c = obj.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
+                for i in range(len(obj.Shape.Faces)):
+                    colors.append(c)
+        if hasattr(obj,"Group"):
+            for child in obj.Group:
+                colors.extend(self.getColors(child))
+        for i in obj.InList:
+            if hasattr(i,"Hosts"):
+                if obj in i.Hosts:
+                    colors.extend(self.getColors(i))
+            elif hasattr(i,"Host"):
+                if obj == i.Host:
+                    colors.extend(self.getColors(i))
+        return colors
 
     def onChanged(self,vobj,prop):
 
