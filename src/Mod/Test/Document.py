@@ -164,6 +164,16 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.removeObject(obj.Name)
     self.assertListEqual(grp.Group, [])
 
+  def testPlacementList(self):
+    obj = self.Doc.addObject("App::FeaturePython","Label")
+    obj.addProperty("App::PropertyPlacementList", "PlmList")
+    plm = FreeCAD.Placement()
+    plm.Base = (1,2,3)
+    plm.Rotation = (0,0,1,0)
+    obj.PlmList = [plm]
+    cpy = self.Doc.copyObject(obj)
+    self.assertListEqual(obj.PlmList, cpy.PlmList)
+
   def testAddRemove(self):
     L1 = self.Doc.addObject("App::FeatureTest","Label_1")
     # must delete object
