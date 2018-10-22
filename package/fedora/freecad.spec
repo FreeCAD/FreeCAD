@@ -8,20 +8,20 @@
 %define name freecad
 %define branch master
 
-Name:       	%{name}
+Name:           %{name}
 Epoch:          1
-Version:    	0.18_pre
+Version:        0.18_pre
 Release:        {{{ git_commits_no }}}
 Summary:        A general purpose 3D CAD modeler
 Group:          Applications/Engineering
 
 License:        GPLv2+
 URL:            http://sourceforge.net/apps/mediawiki/free-cad/
-Source0: 	https://github.com/FreeCAD/FreeCAD/archive/%{branch}.tar.gz
-Source101: 	https://raw.github.com/FreeCAD/FreeCAD/%{branch}/package/fedora/%{name}.desktop
-Source103:      https://raw.github.com/FreeCAD/FreeCAD/%{branch}/package/fedora/%{name}.appdata.xml
-Source104:      https://raw.github.com/FreeCAD/FreeCAD/%{branch}/package/fedora/%{name}.sharedmimeinfo
-
+Source0:        https://github.com/FreeCAD/FreeCAD/archive/%{branch}.tar.gz
+Source101:      https://raw.github.com/FreeCAD/FreeCAD/%{branch}/src/XDGData/org.freecadweb.FreeCAD.desktop
+Source102:      https://raw.github.com/FreeCAD/FreeCAD/%{branch}/src/XDGData/org.freecadweb.FreeCAD.svg
+Source103:      https://raw.github.com/FreeCAD/FreeCAD/%{branch}/src/XDGData/org.freecadweb.FreeCAD.xml
+Source104:      https://raw.github.com/FreeCAD/FreeCAD/%{branch}/src/XDGData/org.freecadweb.FreeCAD.appdata.xml
 
 # Utilities
 # Development Libraries
@@ -181,9 +181,8 @@ desktop-file-install                                   \
 sed -i 's,@lib@,%{_lib},g' %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 # Install desktop icon
-install -pD -m 0644 ../src/Gui/Icons/%{name}.svg \
+install -pm 0644 %{SOURCE102} \
     %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
-
 
 # Install MimeType file
 mkdir -p %{buildroot}%{_datadir}/mime/packages
