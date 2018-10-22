@@ -660,11 +660,12 @@ void Sheet::updateProperty(CellAddress key)
             if(str_expr) 
                 setStringProperty(key, str_expr->getText().c_str());
             else {
+                Base::PyGILStateLocker lock;
                 auto py_expr = freecad_dynamic_cast<PyObjectExpression>(output.get());
                 if(py_expr) 
                     setObjectProperty(key, py_expr->getPyObject());
                 else
-                    assert(0);
+                    setObjectProperty(key, Py::Object());
             }
         }
     }
