@@ -1,4 +1,25 @@
 # -*- coding: utf-8 -*-
+#***************************************************************************
+#*                                                                         *
+#*   Copyright (c) 2018 Gaël Écorchard <galou_breizh@yahoo.fr>             *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#*                                                                         *
+#***************************************************************************
 
 import os
 import re
@@ -21,6 +42,7 @@ class Macro(object):
         self.url = ''
         self.version = ''
         self.src_filename = ''
+        self.other_files = []
         self.parsed = False
 
     def __eq__(self, other):
@@ -40,10 +62,13 @@ class Macro(object):
 
     def fill_details_from_file(self, filename):
         with open(filename) as f:
-            number_of_required_fields = 3  # Fields __Comment__, __Web__, __Version__.
+            # Number of parsed fields of metadata. For now, __Comment__,
+            # __Web__, __Version__, __Files__.
+            number_of_required_fields = 4
             re_desc = re.compile(r"^__Comment__\s*=\s*(['\"])(.*)\1")
             re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1")
             re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1")
+            re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1")
             for l in f.readlines():
                 match = re.match(re_desc, l)
                 if match:
@@ -56,6 +81,10 @@ class Macro(object):
                 match = re.match(re_version, l)
                 if match:
                     self.version = match.group(2)
+                    number_of_required_fields -= 1
+                match = re.match(re_files, l)
+                if match:
+                    self.other_files = match.group(2).split(',')
                     number_of_required_fields -= 1
                 if number_of_required_fields <= 0:
                     break
