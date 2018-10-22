@@ -188,7 +188,7 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
     if (expression) {
         auto sexpr = freecad_dynamic_cast<App::StringExpression>(expression);
         if(sexpr) {
-            if(sexpr->rLiteral())
+            if(sexpr->getType())
                 s = sexpr->toString();
             else{
                 const auto &txt = sexpr->getText();

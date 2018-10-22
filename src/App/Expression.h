@@ -510,8 +510,7 @@ public:
     static Expression *create(const App::DocumentObject *owner, const ObjectIdentifier &path,
             const std::vector<std::pair<std::string,Expression *> > &args = {});
 
-    static Py::Object evaluate(const App::DocumentObject *owner, 
-            const std::string &expr, PyObject *tuple, PyObject *kwds);
+    Py::Object evaluate(PyObject *tuple, PyObject *kwds);
 
     virtual ~CallableExpression();
 
@@ -539,12 +538,21 @@ protected:
 class AppExport StringExpression : public Expression {
     TYPESYSTEM_HEADER();
 public:
+    enum StringType{
+        StringNormal = 0,
+        StringPython = 1,
+        StringRaw = 2,
+        StringPythonRaw = 3,
+    };
+
     StringExpression(const App::DocumentObject *_owner = 0, 
-            const std::string & _text = std::string(), bool r_literal=false);
+            const std::string & _text = std::string(), int type=0);
 
     virtual const std::string &getText() const { return text; }
 
-    bool rLiteral() const {return r_literal;}
+    bool append(const std::string &text, int type=0);
+
+    int getType() const {return type;}
 
 protected:
     virtual bool _isIndexable() const { return true; }
@@ -555,7 +563,7 @@ protected:
 protected:
 
     std::string text; /**< Text string */
-    bool r_literal;
+    int type;
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -749,6 +757,28 @@ public:
     BaseStatement(const App::DocumentObject *owner);
 protected:
     virtual boost::any _getValueAsAny() const;
+};
+
+/////////////////////////////////////////////////////////////////
+
+class AppExport PseudoStatement : public BaseStatement {
+    TYPESYSTEM_HEADER();
+
+public:
+
+    enum PseudoType {
+        PY_BEGIN,
+        PY_END,
+    };
+    PseudoStatement(const App::DocumentObject *_owner = 0, PseudoType type=PY_BEGIN);
+
+protected:
+    virtual void _toString(std::ostringstream &ss, bool persistent, int indent) const;
+    virtual Expression *_copy() const;
+    virtual Expression *_eval() const;
+
+protected:
+    PseudoType type;
 };
 
 /////////////////////////////////////////////////////////////////

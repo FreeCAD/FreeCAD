@@ -1601,6 +1601,7 @@ void Application::initTypes(void)
     App ::DictExpression            ::init();
     App ::AssignmentExpression      ::init();
     App ::BaseStatement             ::init();
+    App ::PseudoStatement           ::init();
     App ::JumpStatement             ::init();
     App ::IfStatement               ::init();
     App ::WhileStatement            ::init();

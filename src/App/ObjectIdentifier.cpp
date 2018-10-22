@@ -29,6 +29,8 @@
 #include <limits>
 #include <iomanip>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/GeometryPyCXX.h>
 #include <App/ComplexGeoData.h>
@@ -70,14 +72,14 @@ std::size_t App::hash_value(const App::ObjectIdentifier & path)
  * @return
  */
 
-std::string App::quote(const std::string &input)
+std::string App::quote(const std::string &input, bool toPython)
 {
     std::stringstream output;
 
     std::string::const_iterator cur = input.begin();
     std::string::const_iterator end = input.end();
 
-    output << "<<";
+    output << (toPython?"'":"<<");
     while (cur != end) {
         switch (*cur) {
         case '\t':
@@ -99,16 +101,94 @@ std::string App::quote(const std::string &input)
             output << "\\\"";
             break;
         case '>':
-            output << "\\>";
+            output << (toPython?">":"\\>");
             break;
         default:
             output << *cur;
         }
         ++cur;
     }
-    output << ">>";
+    output << (toPython?"'":">>");
 
     return output.str();
+}
+
+std::string App::unquote(const std::string & input, bool isRaw)
+{
+    std::string output;
+    if(input.empty())
+        return output;
+
+    std::string::const_iterator cur = input.begin();
+    std::string::const_iterator end = input.end();
+
+    if(boost::starts_with(input,"r'") || boost::starts_with(input,"r\"")) {
+        if(input.size() <= 3)
+            return output;
+        cur +=2;
+        end -= 1;
+        isRaw = true;
+    }else if(boost::starts_with(input,"r<<")) {
+        if(input.size() <= 5)
+            return output;
+        cur +=3;
+        end -= 2;
+        isRaw = true;
+    }else if(boost::starts_with(input,"'") || boost::starts_with(input,"\"")) {
+        if(input.size() <= 2)
+            return output;
+        cur +=1;
+        end -= 1;
+    } else if(boost::starts_with(input,"<<")) {
+        if(input.size() <= 4)
+            return output;
+        cur +=2;
+        end -= 2;
+    }
+
+    output.reserve(input.size());
+
+    bool escaped = false;
+    while (cur != end) {
+        if (escaped) {
+            switch (*cur) {
+            case '>':
+                output += '>';
+                break;
+            case 't':
+                output += '\t';
+                break;
+            case 'n':
+                output += '\n';
+                break;
+            case 'r':
+                output += '\r';
+                break;
+            case '\\':
+                output += '\\';
+                break;
+            case '\'':
+                output += '\'';
+                break;
+            case '"':
+                output += '"';
+                break;
+            default:
+                output += '\\';
+                output += *cur;
+            }
+            escaped = false;
+        }
+        else {
+            if(!isRaw && *cur == '\\')
+                escaped = true;
+            else
+                output += *cur;
+        }
+        ++cur;
+    }
+
+    return output;
 }
 
 /**
@@ -630,10 +710,7 @@ void ObjectIdentifier::Component::toString(std::ostringstream &ss, bool toPython
         ss << name.getString();
         break;
     case Component::MAP:
-        if(toPython)
-            ss << "['" << name.getString() << "']";
-        else
-            ss << "[" << name.toString() << "]";
+        ss << "[" << name.toString(toPython) << "]";
         break;
     case Component::ARRAY:
         ss << "[" << begin << "]";
@@ -909,6 +986,7 @@ enum PseudoPropertyType {
     PseudoPart,
     PseudoRegex,
     PseudoBuiltins,
+    PseudoMath,
 };
 
 std::pair<DocumentObject*,std::string> ObjectIdentifier::getDep(std::vector<std::string> *labels) const {
@@ -1056,6 +1134,7 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
         {"_part",PseudoPart},
         {"_re",PseudoRegex},
         {"_builtins", PseudoBuiltins},
+        {"_math", PseudoMath},
     };
     auto it = _props.find(propertyName);
     if(it == _props.end())
@@ -1212,10 +1291,10 @@ bool ObjectIdentifier::hasDocumentObjectName(bool forced) const {
  * @return String representation.
  */
 
-std::string ObjectIdentifier::String::toString() const
+std::string ObjectIdentifier::String::toString(bool toPython) const
 {
     if (isRealString())
-        return quote(str);
+        return quote(str,toPython);
     else
         return str;
 }
@@ -1259,6 +1338,13 @@ std::string ObjectIdentifier::getPythonAccessor(const ResolveResults &result, Py
             Base::Interpreter().runString("import builtins");
         }
         ss << "builtins";
+    } else if(ptype == PseudoMath) {
+        static bool imported = false;
+        if(!imported) {
+            imported = true;
+            Base::Interpreter().runString("import math");
+        }
+        ss << "math";
     } else if(ptype == PseudoShape) {
         static bool imported = false;
         if(!imported) {

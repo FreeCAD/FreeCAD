@@ -99,59 +99,6 @@ void ExpressionParser_yyerror(const char *errorinfo) {
 } // namespace ExpressionParser
 } // namespace App
 
-std::string unquote(const std::string & input, bool r_literal=false)
-{
-    assert(input.size() >= 4);
-
-    std::string output;
-    std::string::const_iterator cur = input.begin() + (r_literal?3:2);
-    std::string::const_iterator end = input.end() - 2;
-
-    output.reserve(input.size());
-
-    bool escaped = false;
-    while (cur != end) {
-        if (escaped) {
-            switch (*cur) {
-            case '>':
-                output += '>';
-                break;
-            case 't':
-                output += '\t';
-                break;
-            case 'n':
-                output += '\n';
-                break;
-            case 'r':
-                output += '\r';
-                break;
-            case '\\':
-                output += '\\';
-                break;
-            case '\'':
-                output += '\'';
-                break;
-            case '"':
-                output += '"';
-                break;
-            default:
-                output += '\\';
-                output += *cur;
-            }
-            escaped = false;
-        }
-        else {
-            if(!r_literal && *cur == '\\')
-                escaped = true;
-            else
-                output += *cur;
-        }
-        ++cur;
-    }
-
-    return output;
-}
-
 //
 // ExpressionVistor
 //
@@ -497,11 +444,11 @@ Expression *Expression::eval() const {
 }
 
 static Expression *checkRLiteral(App::DocumentObject *owner, const std::string &s) {
-    bool r_literal = false;
+    int type = 0;
     for(char c : s) {
         switch(c) {
         case '\\':
-            r_literal = true;
+            type = StringExpression::StringRaw;
             break;
         case '\n':
         case '\r':
@@ -509,7 +456,7 @@ static Expression *checkRLiteral(App::DocumentObject *owner, const std::string &
             return new StringExpression(owner,s);
         }
     }
-    return new StringExpression(owner,s,r_literal);
+    return new StringExpression(owner,s,type);
 }
 
 Expression *Expression::fromAny(boost::any value) const {
@@ -2781,22 +2728,38 @@ boost::any PyObjectExpression::_getValueAsAny() const {
 
 TYPESYSTEM_SOURCE(App::StringExpression, App::Expression);
 
-StringExpression::StringExpression(const DocumentObject *_owner, const std::string &_text, bool _r_literal)
-    : Expression(_owner) , text(_text), r_literal(_r_literal)
+StringExpression::StringExpression(const DocumentObject *_owner, const std::string &_text, int type)
+    : Expression(_owner) , text(_text), type(type)
 {
 }
 
 void StringExpression::_toString(std::ostringstream &ss, bool,int) const
 {
-    if(r_literal)
-        ss << "r<<" << text << ">>";
-    else
-        ss << quote(text);
+    if(type & StringRaw) {
+        if(type & StringPython)
+            ss << "r'" << text << "'";
+        else 
+            ss << "r<<" << text << ">>";
+    } else
+        ss << quote(text, (type&StringPython)?true:false);
+}
+
+bool StringExpression::append(const std::string &txt, int _type) {
+    const char *t = txt.c_str();
+    std::string _txt;
+    if((type & StringRaw)) {
+        if(!(_type & StringRaw)) {
+            _txt = quote(txt, (type&StringPython)?true:false);
+            t = _txt.c_str();
+        }
+    }
+    text += t;
+    return true;
 }
 
 Expression *StringExpression::_copy() const
 {
-    return new StringExpression(owner, text, r_literal);
+    return new StringExpression(owner, text, type);
 }
 
 boost::any StringExpression::_getValueAsAny() const {
@@ -3349,18 +3312,11 @@ TupleExpression::TupleExpression(const DocumentObject *_owner,
 
 void TupleExpression::_toString(std::ostringstream &ss, bool persistent,int) const {
     ss << '(';
-    if(items.empty())
-        ss << ", ";
-    else {
-        bool first = true;
+    if(items.size()) {
         for(auto &item : items) {
-            if(first)
-                first = false;
-            else
-                ss << ", ";
             if(item.first)
                 ss << '*';
-            ss << item.second->toString(persistent,item.first);
+            ss << item.second->toString(persistent,item.first) << ", ";
         }
     }
     ss << ')';
@@ -3561,6 +3517,33 @@ BaseStatement::BaseStatement(const App::DocumentObject *owner)
 boost::any BaseStatement::_getValueAsAny() const {
     FC_ERR("Invalid call to _getValueAsAny()");
     return boost::any();
+}
+
+/////////////////////////////////////////////////////////////
+
+TYPESYSTEM_SOURCE(App::PseudoStatement, App::BaseStatement);
+
+PseudoStatement::PseudoStatement(const App::DocumentObject *owner, PseudoType type)
+    :BaseStatement(owner), type(type)
+{}
+
+Expression *PseudoStatement::_copy() const {
+    return new PseudoStatement(owner,type);
+}
+
+void PseudoStatement::_toString(std::ostringstream &ss, bool, int) const {
+    switch(type) {
+    case PY_BEGIN:
+        ss << "##py_begin";
+        break;
+    case PY_END:
+        ss << "##py_end";
+        break;
+    }
+}
+
+Expression *PseudoStatement::_eval() const {
+    return copy();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -4038,7 +4021,9 @@ static const App::DocumentObject * DocumentObject = 0; /**< The DocumentObject t
 static bool unitExpression = false;                    /**< True if the parsed string is a unit only */
 static bool valueExpression = false;                   /**< True if the parsed string is a full expression */
 static std::stack<std::string> labels;                /**< Label string primitive */
-static int nl_count;
+
+// lexer state variables
+static int nl_count; // newline token count
 static int last_column;
 static int column;
 static int last_token;

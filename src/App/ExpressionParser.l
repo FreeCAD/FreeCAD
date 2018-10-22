@@ -33,6 +33,8 @@
 
 /*** Flex Declarations and Options ***/
 
+%s unit_mode py_mode
+
 /* change the name of the scanner class. */
 %option prefix="ExpressionParser"
 
@@ -234,8 +236,16 @@ EXPO     [eE][-+]?[0-9]+
 "while"                      COUNTCHARS; yylval.string = yytext; return last_token=WHILE;
 "in"                         COUNTCHARS; yylval.string = yytext; return last_token=IN;
 
+##py_begin                   COUNTCHARS; BEGIN(py_mode); return last_token=PY_BEGIN;
+##py_end                     COUNTCHARS; BEGIN(0); return last_token=PY_END;
+
 r\<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext,true); return last_token=RSTRING;
 \<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext); return last_token=STRING;
+
+<py_mode>r'(\\(.|\n)|[^\\'\n])*'    COUNTCHARS; yylval.string = unquote(yytext,true); return last_token=PRSTRING;
+<py_mode>r\"(\\(.|\n)|[^\\"\n])*\"  COUNTCHARS; yylval.string = unquote(yytext,true); return last_token=PRSTRING;
+<py_mode>'(\\(.|\n)|[^\\'\n])*'     COUNTCHARS; yylval.string = unquote(yytext); return last_token=PSTRING;
+<py_mode>\"(\\(.|\n)|[^\\"\n])*\"   COUNTCHARS; yylval.string = unquote(yytext); return last_token=PSTRING;
 
 [%+=/*^,\.:;@\?#]            COUNTCHARS; return last_token=*yytext;
 
@@ -253,91 +263,91 @@ r\<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext,true); 
 "-"                          COUNTCHARS; return last_token=MINUSSIGN;
 "\xe2\x88\x92"               COUNTCHARS; return last_token=MINUSSIGN;
 
-"nm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoMetre;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // nano meter
-"um"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // micro meter
-"\xC2\xB5m"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // micro meter    (greek micro in UTF8)
-"mm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMetre;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // milli meter    (internal standard length)
-"cm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::CentiMetre;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // centi meter
-"dm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::DeciMetre;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // deci meter
-"m"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // metre
-"km"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloMetre;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // kilo meter
+<INITIAL>"nm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoMetre;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // nano meter
+<INITIAL>"um"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // micro meter
+<INITIAL>"\xC2\xB5m"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // micro meter    (greek micro in UTF8)
+<INITIAL>"mm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMetre;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // milli meter    (internal standard length)
+<INITIAL>"cm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::CentiMetre;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // centi meter
+<INITIAL>"dm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::DeciMetre;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // deci meter
+<INITIAL>"m"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // metre
+<INITIAL>"km"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloMetre;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // kilo meter
 
-"l"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Liter;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // Liter      dm^3
+<INITIAL>"l"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Liter;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // Liter      dm^3
 
-"ug"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // micro gram
-"\xC2\xB5g"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // micro gram
-"mg"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliGram;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // milli gram
-"g"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Gram;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // gram
-"kg"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloGram;            yylval.quantity.unitStr = yytext; return last_token=UNIT; // kilo gram      (internal standard for mass)
-"t"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Ton;                 yylval.quantity.unitStr = yytext; return last_token=UNIT; // Metric Tonne
+<INITIAL>"ug"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // micro gram
+<INITIAL>"\xC2\xB5g"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // micro gram
+<INITIAL>"mg"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliGram;           yylval.quantity.unitStr = yytext; return last_token=UNIT; // milli gram
+<INITIAL>"g"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Gram;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // gram
+<INITIAL>"kg"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloGram;            yylval.quantity.unitStr = yytext; return last_token=UNIT; // kilo gram      (internal standard for mass)
+<INITIAL>"t"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Ton;                 yylval.quantity.unitStr = yytext; return last_token=UNIT; // Metric Tonne
 
-"s"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Second;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // second         (internal standard time)
-"min"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Minute;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // minute
-"h"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Hour;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // hour
+<INITIAL>"s"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Second;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // second         (internal standard time)
+"min"                                 COUNTCHARS; yylval.quantity.scaler  = Quantity::Minute;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // minute
+<INITIAL>"h"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Hour;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // hour
 
-"A"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // Ampere         (internal standard electric current)
-"mA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // milli Ampere
-"kA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // kilo Ampere
-"MA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Mega Ampere
+<INITIAL>"A"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // Ampere         (internal standard electric current)
+<INITIAL>"mA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // milli Ampere
+<INITIAL>"kA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // kilo Ampere
+<INITIAL>"MA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Mega Ampere
 
-"K"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Kelvin;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // Kelvin         (internal standard thermodynamic temperature)
-"mK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // Kelvin
-"\xC2\xB5K"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // Kelvin
-"uK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // Kelvin
+<INITIAL>"K"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Kelvin;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // Kelvin         (internal standard thermodynamic temperature)
+<INITIAL>"mK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // Kelvin
+<INITIAL>"\xC2\xB5K"                  COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // Kelvin
+<INITIAL>"uK"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // Kelvin
 
-"mol"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // Mole           (internal standard amount of substance)
+<INITIAL>"mol"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // Mole           (internal standard amount of substance)
 
-"cd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = yytext; return last_token=UNIT; // Candela        (internal standard luminous intensity)
+<INITIAL>"cd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = yytext; return last_token=UNIT; // Candela        (internal standard luminous intensity)
 
-"\""                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // inch
-"ft"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // foot
-"'"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // foot
-"thou"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // thou (in/1000)
-"mil"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // mil  (the thou in US)
-"yd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // yard
-"mi"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // mile
+<INITIAL>"\""      COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // inch
+<INITIAL>"ft"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // foot
+<INITIAL>"'"       COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // foot
+<INITIAL>"thou"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // thou (in/1000)
+<INITIAL>"mil"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // mil  (the thou in US)
+<INITIAL>"yd"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // yard
+<INITIAL>"mi"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // mile
 
 
 
-"lb"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // pound
-"lbm"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // pound
-"oz"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Ounce;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // ounce
-"st"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Stone;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // Stone
-"cwt"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Hundredweights;      yylval.quantity.unitStr = yytext; return last_token=UNIT; // hundredweights
+<INITIAL>"lb"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // pound
+<INITIAL>"lbm"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // pound
+<INITIAL>"oz"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Ounce;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // ounce
+<INITIAL>"st"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Stone;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // Stone
+<INITIAL>"cwt"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Hundredweights;      yylval.quantity.unitStr = yytext; return last_token=UNIT; // hundredweights
 
-"lbf"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::PoundForce;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // pound
+<INITIAL>"lbf"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::PoundForce;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // pound
 
-"N"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Newton;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // Newton (kg*m/s^2)a-za-za-z
-"kN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Newton
-"MN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Newton
-"mN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // Newton
+<INITIAL>"N"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Newton;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // Newton (kg*m/s^2)a-za-za-z
+<INITIAL>"kN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Newton
+<INITIAL>"MN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Newton
+<INITIAL>"mN"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // Newton
 
-"Pa"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // Pascal (kg/m*s^2 or N/m^2)
-"kPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Pascal
-"MPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Pascal
-"GPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Pascal
+<INITIAL>"Pa"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // Pascal (kg/m*s^2 or N/m^2)
+<INITIAL>"kPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Pascal
+<INITIAL>"MPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Pascal
+<INITIAL>"GPa"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // Pascal
 
-"Torr"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::Torr;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // portion of Pascal ( 101325/760 )
-"mTorr"                      COUNTCHARS; yylval.quantity.scaler  = Quantity::mTorr;               yylval.quantity.unitStr = yytext; return last_token=UNIT; //
-"uTorr"                      COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = yytext; return last_token=UNIT; //
-"\xC2\xB5Torr"               COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = yytext; return last_token=UNIT; //
+<INITIAL>"Torr"                       COUNTCHARS; yylval.quantity.scaler  = Quantity::Torr;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // portion of Pascal ( 101325/760 )
+<INITIAL>"mTorr"                      COUNTCHARS; yylval.quantity.scaler  = Quantity::mTorr;               yylval.quantity.unitStr = yytext; return last_token=UNIT; //
+<INITIAL>"uTorr"                      COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = yytext; return last_token=UNIT; //
+<INITIAL>"\xC2\xB5Torr"               COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = yytext; return last_token=UNIT; //
 
-"psi"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::PSI;                 yylval.quantity.unitStr = yytext; return last_token=UNIT; // pounds/in^2
-"ksi"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KSI;                 yylval.quantity.unitStr = yytext; return last_token=UNIT; // 1000 x pounds/in^2
+<INITIAL>"psi"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::PSI;                 yylval.quantity.unitStr = yytext; return last_token=UNIT; // pounds/in^2
+<INITIAL>"ksi"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::KSI;                 yylval.quantity.unitStr = yytext; return last_token=UNIT; // 1000 x pounds/in^2
 
-"W"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // Watt (kg*m^2/s^3)
-"VA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // VoltAmpere (kg*m^2/s^3)
+<INITIAL>"W"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = yytext; return last_token=UNIT; // Watt (kg*m^2/s^3)
+<INITIAL>"VA"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // VoltAmpere (kg*m^2/s^3)
 
-"J"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Joule;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // Joule (kg*m^2/s^2)
-"Nm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // N*m = Joule
-"VAs"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = yytext; return last_token=UNIT; // V*A*s = Joule
-"CV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return last_token=UNIT; //
-"Ws"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // W*s = Joule
+<INITIAL>"J"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Joule;               yylval.quantity.unitStr = yytext; return last_token=UNIT; // Joule (kg*m^2/s^2)
+<INITIAL>"Nm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = yytext; return last_token=UNIT; // N*m = Joule
+<INITIAL>"VAs"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = yytext; return last_token=UNIT; // V*A*s = Joule
+<INITIAL>"CV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return last_token=UNIT; //
+<INITIAL>"Ws"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return last_token=UNIT; // W*s = Joule
 
-"\xC2\xB0"                   COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // degree         (internal standard angle)
-"deg"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // degree         (internal standard angle)
-"rad"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // radian
-"gon"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = yytext; return last_token=UNIT; // gon
+<INITIAL>"\xC2\xB0"                   COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // degree         (internal standard angle)
+<INITIAL>"deg"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // degree         (internal standard angle)
+<INITIAL>"rad"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = yytext; return last_token=UNIT; // radian
+<INITIAL>"gon"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = yytext; return last_token=UNIT; // gon
 
 {DIGIT}*"."{DIGIT}+{EXPO}?   COUNTCHARS; yylval.fvalue = num_change(yytext,'.',',');       return last_token=yylval.fvalue == 1 ? ONE : NUM;
 {DIGIT}*","{DIGIT}+{EXPO}?   COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return last_token=yylval.fvalue == 1 ? ONE : NUM;
@@ -355,8 +365,8 @@ r\<\<(\\(.|\n)|[^\\>\n])*\>\> COUNTCHARS; yylval.string = unquote(yytext,true); 
                                if (yylval.ivalue == 1) { yylval.fvalue = 1; return last_token=ONE; } else return last_token=INTEGER;
                              }
 
-"pi"                         COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return last_token=CONSTANT; // constant pi
-"e"                          COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return last_token=CONSTANT; // constant e
+<INITIAL>"pi"                COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return last_token=CONSTANT; // constant pi
+<INITIAL>"e"                 COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return last_token=CONSTANT; // constant e
 "None"                       COUNTCHARS; yylval.constant.fvalue = 0; yylval.constant.name = "None"; return last_token=CONSTANT; // constant None
 "True"                       COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return last_token=CONSTANT; // constant None
 "true"                       COUNTCHARS; yylval.constant.fvalue = 1; yylval.constant.name = "True"; return last_token=CONSTANT; // constant None

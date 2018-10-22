@@ -23,22 +23,22 @@
      %token CELLADDRESS
      %token EQ NEQ LT GT GTE LTE AND_OP AND_OP2 OR_OP OR_OP2
      %token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN
-     %token RSTRING STRING MINUSSIGN PROPERTY_REF
+     %token PSTRING PRSTRING RSTRING STRING MINUSSIGN PROPERTY_REF
      %token DOCUMENT OBJECT
      %token EXPONENT
      %token EXPAND
      %token NEWLINE INDENT DEDENT
-     %token IF ELIF ELSE WHILE FOR BREAK CONTINUE RETURN IN
+     %token IF ELIF ELSE WHILE FOR BREAK CONTINUE RETURN IN PY_BEGIN PY_END
      %type <string_list> id_list
      %type <named_argument> item arg
      %type <named_arguments> items items2 args
      %type <expr> primary_exp unary_exp multiply_exp additive_exp relational_exp assignment_exp
      %type <expr> equality_exp logical_or_exp logical_and_exp power_exp assignment_exp2 assignment_exp1
      %type <expr> input exp unit_exp indexable num range callable
-     %type <expr> comprehension0 comprehension list tuple dict dict1 idict idict1
+     %type <expr> comprehension0 comprehension list tuple dict dict1 idict idict1 string
      %type <expr> stmt statement if_stmt small_stmt simple_stmt while_stmt for_stmt compound_stmt suite
      %type <quantity> UNIT
-     %type <string> id_or_cell RSTRING STRING IDENTIFIER CELLADDRESS
+     %type <string> id_or_cell PSTRING PRSTRING RSTRING STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
      %type <string> PROPERTY_REF
      %type <string> IF ELIF ELSE WHILE FOR BREAK CONTINUE RETURN IN
@@ -79,14 +79,24 @@ input:     statement                            { ScanResult = $1; valueExpressi
 primary_exp
         : num                			{ $$ = $1;                                                                        }
         | num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
-        | STRING                                { $$ = new StringExpression(DocumentObject, $1); }
-        | RSTRING                               { $$ = new StringExpression(DocumentObject, $1, true); }
+        | string                                { $$ = $1; }
         | identifier                            { $$ = new VariableExpression(DocumentObject, $1); }
         | indexable                             { $$ = $1; }
         | callable                              { $$ = $1; }
         | callable indexer                      { $1->addComponent($2); $$ = $1; }
         | callable '.' IDENTIFIER               { $1->addComponent($3); $$ = $1; }
         ;
+
+string
+    : STRING                                    { $$ = new StringExpression(DocumentObject, $1); }
+    | RSTRING                                   { $$ = new StringExpression(DocumentObject, $1, StringExpression::StringRaw); }
+    | PSTRING                                   { $$ = new StringExpression(DocumentObject, $1, StringExpression::StringPython); }
+    | PRSTRING                                  { $$ = new StringExpression(DocumentObject, $1, StringExpression::StringPythonRaw); }
+    | string STRING                             { $$ = $1; if(!static_cast<StringExpression*>($1)->append($2)) YYABORT; }
+    | string RSTRING                            { $$ = $1; if(!static_cast<StringExpression*>($1)->append($2,StringExpression::StringRaw)) YYABORT; }
+    | string PSTRING                            { $$ = $1; if(!static_cast<StringExpression*>($1)->append($2,StringExpression::StringPython)) YYABORT; }
+    | string PRSTRING                           { $$ = $1; if(!static_cast<StringExpression*>($1)->append($2,StringExpression::StringPythonRaw)) YYABORT; }
+    ;
 
 indexable : '(' exp ')' 			{ $$ = $2; }
           | tuple                               { $$ = $1; }
@@ -210,6 +220,8 @@ small_stmt
         | RETURN exp                             { $$ = new JumpStatement(DocumentObject,JumpStatement::JUMP_RETURN,$2); }
         | BREAK                                  { $$ = new JumpStatement(DocumentObject,JumpStatement::JUMP_BREAK); }
         | CONTINUE                               { $$ = new JumpStatement(DocumentObject,JumpStatement::JUMP_CONTINUE); }
+        | PY_BEGIN                               { $$ = new PseudoStatement(DocumentObject,PseudoStatement::PY_BEGIN); }
+        | PY_END                                 { $$ = new PseudoStatement(DocumentObject,PseudoStatement::PY_END); }
         ;
 
 simple_stmt
@@ -276,7 +288,7 @@ items2 : item sep item                          { $$.push_back($1); $$.push_back
        | items2 sep item                        { $1.push_back($3); $$.swap($1); }
        ;
 
-tuple : '(' sep ')'                             { $$ = new TupleExpression(DocumentObject); }
+tuple : '(' ')'                                 { $$ = new TupleExpression(DocumentObject); }
       | '(' item sep ')'                        { $$ = new TupleExpression(DocumentObject, $2); }
       | '(' items2 ')'                          { $$ = new TupleExpression(DocumentObject, $2); }
       | '(' items2 sep ')'                      { $$ = new TupleExpression(DocumentObject, $2); }

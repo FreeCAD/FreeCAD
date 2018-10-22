@@ -51,7 +51,8 @@ class PropertyContainer;
 class DocumentObject;
 class ExpressionVisitor;
 
-AppExport std::string quote(const std::string &input);
+AppExport std::string quote(const std::string &input, bool toPython=false);
+AppExport std::string unquote(const std::string &input, bool isRaw=false);
 
 class AppExport ObjectIdentifier {
 
@@ -76,7 +77,7 @@ public:
         bool isForceIdentifier() const { return forceIdentifier; }
 
         /** Returns a possibly quoted string */
-        std::string toString() const;
+        std::string toString(bool toPython=false) const;
 
         // Operators
 
