@@ -7,5 +7,5 @@
 		GuiNativeEvent(const GuiNativeEvent&);
 		GuiNativeEvent& operator=(const GuiNativeEvent&);
 		GUIApplicationNativeEventAware *mainApp;
-        int  motionDataArray[6];
+        static int  motionDataArray[6];
 
