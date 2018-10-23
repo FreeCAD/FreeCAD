@@ -4164,6 +4164,10 @@ class _Dimension(_DraftObject):
                         n2 = int(lsub2[0][6:])-1
                         obj.Start = lobj1.Shape.Vertexes[n1].Point
                         obj.End = lobj2.Shape.Vertexes[n2].Point
+        # set the distance property
+        total_len = (obj.Start.sub(obj.End)).Length
+        if round(obj.Distance.Value, precision()) != round(total_len, precision()):
+            obj.Distance = total_len
         if gui:
             if obj.ViewObject:
                 obj.ViewObject.update()
@@ -4420,9 +4424,6 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     self.string = obj.ViewObject.Override.replace("$dim",\
                             self.string)
             self.text.string = self.text3d.string = stringencodecoin(self.string)
-            # set the distance property
-            if round(obj.Distance.Value,precision()) != round(l,precision()):
-                obj.Distance = l
 
             # set the lines
             if m == "3D":
