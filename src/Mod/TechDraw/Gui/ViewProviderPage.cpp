@@ -304,11 +304,11 @@ MDIViewPage* ViewProviderPage::getMDIViewPage()
 
 void ViewProviderPage::onChanged(const App::Property *prop)
 {
-    if (prop == &(getDrawPage()->Template)) {
-       if(m_mdiView) {
-            m_mdiView->updateTemplate();
-        }
-    }
+//    if (prop == &(getDrawPage()->Template)) {
+//       if(m_mdiView) {
+//            m_mdiView->updateTemplate();
+//        }
+//    }
 
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
