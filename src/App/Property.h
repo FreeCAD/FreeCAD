@@ -62,6 +62,7 @@ public:
         Immutable = 1, // can't modify property
         ReadOnly = 2, // for property editor
         Hidden = 3, // for property editor
+        Single = 4, // for save/load of floating point numbers
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
         User3 = 30, // user-defined status
@@ -142,6 +143,15 @@ public:
     void setReadOnly(bool readOnly);
     inline bool isReadOnly() const {
         return testStatus(App::Property::ReadOnly);
+    }
+    /// Sets precision of properties using floating point
+    /// numners to single, the default is double.
+    void setSinglePrecision(bool single) {
+        setStatus(App::Property::Single, single);
+    }
+    /// Gets precision of properties using floating point numbers
+    inline bool isSinglePrecision() const {
+        return testStatus(App::Property::Single);
     }
     //@}
 

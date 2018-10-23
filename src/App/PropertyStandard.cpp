@@ -1380,7 +1380,7 @@ void PropertyFloatList::SaveDocFile (Base::Writer &writer) const
     Base::OutputStream str(writer.Stream());
     uint32_t uCt = (uint32_t)getSize();
     str << uCt;
-    if (writer.getFileVersion() > 0) {
+    if (!isSinglePrecision()) {
         for (std::vector<double>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
             str << *it;
         }
@@ -1399,7 +1399,7 @@ void PropertyFloatList::RestoreDocFile(Base::Reader &reader)
     uint32_t uCt=0;
     str >> uCt;
     std::vector<double> values(uCt);
-    if (reader.getFileVersion() > 0) {
+    if (!isSinglePrecision()) {
         for (std::vector<double>::iterator it = values.begin(); it != values.end(); ++it) {
             str >> *it;
         }
