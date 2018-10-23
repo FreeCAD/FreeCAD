@@ -102,9 +102,11 @@ public:
 
 
 public Q_SLOTS:
-    void setRenderer(QAction *action);
     void viewAll();
     void saveSVG(void);
+    void toggleFrame(void);
+    void toggleKeepUpdated(void);
+//    void testAction(void);
     void sceneSelectionChanged();
 
 protected:
@@ -132,11 +134,10 @@ protected:
 
 
 private:
-    QAction *m_nativeAction;
-    QAction *m_glAction;
+    QAction *m_toggleFrameAction;
+    QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
-    QAction *m_imageAction;
-    QAction *m_highQualityAntialiasingAction;
+//    QAction* m_testAction;
 
     std::string m_objectName;
     std::string m_documentName;
