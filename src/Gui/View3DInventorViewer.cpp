@@ -85,6 +85,8 @@
 # include <QMimeData>
 #endif
 
+#include <QVariantAnimation>
+
 #include <sstream>
 #include <Base/Console.h>
 #include <Base/Stream.h>
@@ -874,6 +876,11 @@ void View3DInventorViewer::setNaviCubeCorner(int c)
 {
     if (naviCube)
         naviCube->setCorner(static_cast<NaviCube::Corner>(c));
+}
+
+NaviCube* View3DInventorViewer::getNavigationCube() const
+{
+    return naviCube;
 }
 
 void View3DInventorViewer::setAxisCross(bool on)
@@ -2158,28 +2165,52 @@ void View3DInventorViewer::setCameraType(SoType t)
     }
 }
 
+namespace Gui {
+    class CameraAnimation : public QVariantAnimation
+    {
+        SoCamera* camera;
+        SbRotation startRot, endRot;
+        SbVec3f startPos, endPos;
+
+    public:
+        CameraAnimation(SoCamera* camera, const SbRotation& rot, const SbVec3f& pos)
+            : camera(camera), endRot(rot), endPos(pos)
+        {
+            startPos = camera->position.getValue();
+            startRot = camera->orientation.getValue();
+        }
+        virtual ~CameraAnimation()
+        {
+        }
+    protected:
+        void updateCurrentValue(const QVariant & value)
+        {
+            int steps = endValue().toInt();
+            int curr = value.toInt();
+
+            float s = static_cast<float>(curr)/static_cast<float>(steps);
+            SbVec3f curpos = startPos * (1.0f-s) + endPos * s;
+            SbRotation currot = SbRotation::slerp(startRot, endRot, s);
+            camera->orientation.setValue(currot);
+            camera->position.setValue(curpos);
+        }
+    };
+}
+
 void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
     if (cam == 0) return;
 
-    SbVec3f campos = cam->position.getValue();
-    SbRotation camrot = cam->orientation.getValue();
+    CameraAnimation anim(cam, rot, pos);
+    anim.setDuration(Base::clamp<int>(ms,0,5000));
+    anim.setStartValue(static_cast<int>(0));
+    anim.setEndValue(steps);
 
     QEventLoop loop;
-    QTimer timer;
-    timer.setSingleShot(true);
-    QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
-
-    for (int i=0; i<steps; i++) {
-        float s = float(i)/float(steps);
-        SbVec3f curpos = campos * (1.0f-s) + pos * s;
-        SbRotation currot = SbRotation::slerp(camrot, rot, s);
-        cam->orientation.setValue(currot);
-        cam->position.setValue(curpos);
-        timer.start(Base::clamp<int>(ms,0,5000));
-        loop.exec(QEventLoop::ExcludeUserInputEvents);
-    }
+    QObject::connect(&anim, SIGNAL(finished()), &loop, SLOT(quit()));
+    anim.start();
+    loop.exec(QEventLoop::ExcludeUserInputEvents);
 
     cam->orientation.setValue(rot);
     cam->position.setValue(pos);

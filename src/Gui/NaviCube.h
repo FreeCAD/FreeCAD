@@ -33,7 +33,7 @@ class View3DInventorViewer;
 
 class NaviCubeImplementation;
 
-class NaviCube {
+class GuiExport NaviCube {
 public:
 	enum Corner {
 		TopLeftCorner,
