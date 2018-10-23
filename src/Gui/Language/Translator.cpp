@@ -105,6 +105,7 @@ class TranslatorP
 public:
     std::string activatedLanguage; /**< Active language */
     std::map<std::string, std::string> mapLanguageTopLevelDomain;
+    TStringMap mapSupportedLocales;
     std::list<QTranslator*> translators; /**< A list of all created translators */
     QStringList paths;
 };
@@ -177,34 +178,30 @@ Translator::~Translator()
 
 TStringList Translator::supportedLanguages() const
 {
-    // List all .qm files
     TStringList languages;
-    QDir dir(QLatin1String(":/translations"));
-    for (std::map<std::string,std::string>::const_iterator it = d->mapLanguageTopLevelDomain.begin();
-        it != d->mapLanguageTopLevelDomain.end(); ++it) {
-        QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(it->second.c_str()));
-        QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
-        if (!fileNames.isEmpty())
-            languages.push_back(it->first);
-    }
+    TStringMap locales = supportedLocales();
+    for (auto it : locales)
+        languages.push_back(it.first);
 
     return languages;
 }
 
 TStringMap Translator::supportedLocales() const
 {
+    if (!d->mapSupportedLocales.empty())
+        return d->mapSupportedLocales;
+
     // List all .qm files
-    TStringMap languages;
     QDir dir(QLatin1String(":/translations"));
     for (std::map<std::string,std::string>::const_iterator it = d->mapLanguageTopLevelDomain.begin();
         it != d->mapLanguageTopLevelDomain.end(); ++it) {
         QString filter = QString::fromLatin1("*_%1.qm").arg(QLatin1String(it->second.c_str()));
         QStringList fileNames = dir.entryList(QStringList(filter), QDir::Files, QDir::Name);
         if (!fileNames.isEmpty())
-            languages[it->first] = it->second;
+            d->mapSupportedLocales[it->first] = it->second;
     }
 
-    return languages;
+    return d->mapSupportedLocales;
 }
 
 void Translator::activateLanguage (const char* lang)
