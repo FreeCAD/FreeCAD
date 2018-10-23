@@ -922,8 +922,11 @@ void MDIViewPage::clearSceneSelection()
   // Iterate through all views and unselect all
   for (std::vector<QGIView *>::iterator it = views.begin(); it != views.end(); ++it) {
       QGIView *item = *it;
-      item->setSelected(false);
-      item->updateView();
+      bool state = item->isSelected();
+      if (state) {
+          item->setSelected(false);
+          item->updateView();
+      }
   }
 
   blockSelection(false);
@@ -941,8 +944,11 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 
     blockSelection(true);
     if(view) {
-        view->setSelected(isSelected);
-        view->updateView();
+        bool state = view->isSelected();
+        if (state != isSelected) {
+            view->setSelected(isSelected);
+            view->updateView();
+        }
     }
     blockSelection(false);
 }
