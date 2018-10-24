@@ -21,7 +21,7 @@
     </Methode>
     <Methode Name="getAllDerivedFrom" Const="true">
       <Documentation>
-        <UserDocu>Returns all descendence</UserDocu>
+        <UserDocu>Returns all descendants</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="TypeId" ReadOnly="true">
