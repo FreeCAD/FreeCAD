@@ -1482,7 +1482,7 @@ bool GeomConic::isReversed() const
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomCurve)
+TYPESYSTEM_SOURCE(Part::GeomTrimmedCurve,Part::GeomBoundedCurve)
 
 GeomTrimmedCurve::GeomTrimmedCurve()
 {
