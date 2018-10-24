@@ -138,6 +138,10 @@ using namespace boost::program_options;
 #include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
+# if !defined(_DEBUG) && defined(HAVE_SEH)
+# define FC_SE_TRANSLATOR
+# endif
+
 # include <new.h>
 # include <eh.h> // VC exception handling
 #else // Ansi C/C++ new handler
@@ -1226,7 +1230,7 @@ void segmentation_fault_handler(int sig)
     }
 }
 
-void my_terminate_handler()
+void unhandled_exception_handler()
 {
     std::cerr << "Terminating..." << std::endl;
 }
@@ -1242,23 +1246,28 @@ void unexpection_error_handler()
 #endif
 }
 
-#ifdef _MSC_VER // Microsoft compiler
-
-void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
+#if defined(FC_SE_TRANSLATOR) // Microsoft compiler
+void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
 {
+    Q_UNUSED(pExp)
+    switch (code)
+    {
+    case EXCEPTION_ACCESS_VIOLATION:
+        throw Base::AccessViolation();
+        break;
+    case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+    case EXCEPTION_INT_DIVIDE_BY_ZERO:
+        throw Base::DivisionByZeroError("Division by zero!");
+        break;
+    }
 
-   //switch (code)
-   //{
-   //    case FLT_DIVIDE_BY_ZERO :
-   //       //throw CMyFunkyDivideByZeroException(code, pExp);
-   //       throw Base::DivisionByZeroError("Division by zero!");
-   //    break;
-   //}
-
-   // general C++ SEH exception for things we don't need to handle separately....
-   throw Base::RuntimeError("my_trans_func()");
+    std::stringstream str;
+    str << "SEH exception of type: " << code;
+    // general C++ SEH exception for things we don't need to handle separately....
+    throw Base::RuntimeError(str.str());
 }
 #endif
+
 void Application::init(int argc, char ** argv)
 {
     try {
@@ -1274,13 +1283,14 @@ void Application::init(int argc, char ** argv)
 #if defined (_MSC_VER) // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
-        std::set_terminate(my_terminate_handler);
+        std::set_terminate(unhandled_exception_handler);
         std::set_unexpected(unexpection_error_handler);
-//        _set_se_translator(my_trans_func);
 #elif defined(FC_OS_LINUX)
         std::signal(SIGSEGV,segmentation_fault_handler);
 #endif
-
+#if defined(FC_SE_TRANSLATOR)
+        _set_se_translator(my_se_translator_filter);
+#endif
         initTypes();
 
 #if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)

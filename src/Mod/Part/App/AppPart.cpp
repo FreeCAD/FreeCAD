@@ -237,7 +237,7 @@ PyMOD_INIT_FUNC(Part)
     // Python's cmath module.
     // For Linux use segmentation_fault_handler in Application.cpp
 #if !defined(_DEBUG) && !defined(FC_OS_LINUX)
-    OSD::SetSignal(Standard_False);
+    //OSD::SetSignal(Standard_False);
 #endif
 
     PyObject* partModule = Part::initModule();

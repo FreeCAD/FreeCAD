@@ -131,29 +131,59 @@ short FeatureTest::mustExecute(void) const
 
 DocumentObjectExecReturn *FeatureTest::execute(void)
 {
+    /*
+doc=App.newDocument()
+obj=doc.addObject("App::FeatureTest")
 
-  int *i=0,j;
-  float f;
-  void *s;
+obj.ExceptionType=0 # good
+doc.recompute()
 
-  // Code analyzers may complain about some errors. This can be ignored
-  // because this is done on purpose to test the error handling mechanism
-  switch(ExceptionType.getValue()) 
-  {
-    case 0: break;
-    case 1: throw "Test Exception";
-    case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
-    case 3: *i=0;printf("%i",*i);break; // seg-vault
-    case 4: j=0; printf("%i",1/j); break; // int division by zero
-    case 5: f=0.0; printf("%f",1/f); break; // float division by zero
-    case 6: s = malloc(3600000000ul); free(s); break; // out-of-memory
-  }
-  
-  ExecCount.setValue(ExecCount.getValue() + 1);
+obj.ExceptionType=1 # unknown exception
+doc.recompute()
 
-  ExecResult.setValue("Exec");
+obj.ExceptionType=2 # Runtime error
+doc.recompute()
 
-  return DocumentObject::StdReturn;
+obj.ExceptionType=3 # segfault
+doc.recompute()
+
+obj.ExceptionType=4 # segfault
+doc.recompute()
+
+obj.ExceptionType=5 # int division by zero
+doc.recompute()
+
+obj.ExceptionType=6 # float division by zero
+doc.recompute()
+     */
+    int *i=0,j;
+    float f;
+    void *s;
+    std::string t;
+
+    // Code analyzers may complain about some errors. This can be ignored
+    // because this is done on purpose to test the error handling mechanism
+    switch(ExceptionType.getValue())
+    {
+        case 0: break;
+        case 1: throw "Test Exception";
+        case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
+#if 0 // only allow these error types on purpose
+        case 3: *i=0;printf("%i",*i);break; // seg-fault
+        case 4: t = nullptr; break; // seg-fault
+        case 5: j=0; printf("%i",1/j); break; // int division by zero
+        case 6: f=0.0; printf("%f",1/f); break; // float division by zero
+        case 7: s = malloc(3600000000ul); free(s); break; // out-of-memory
+#else
+        default: (void)i; (void)j; (void)f; (void)s; (void)t; break;
+#endif
+    }
+
+    ExecCount.setValue(ExecCount.getValue() + 1);
+
+    ExecResult.setValue("Exec");
+
+    return DocumentObject::StdReturn;
 }
 
 
@@ -162,14 +192,13 @@ PROPERTY_SOURCE(App::FeatureTestException, App::FeatureTest)
 
 FeatureTestException::FeatureTestException()
 {
-  ADD_PROPERTY(ExceptionType,(Base::Exception::getClassTypeId().getKey())  );
+    ADD_PROPERTY(ExceptionType,(Base::Exception::getClassTypeId().getKey())  );
 }
 
 DocumentObjectExecReturn *FeatureTestException::execute(void)
 {
-  //ExceptionType;
+    //ExceptionType;
+    throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");
 
-  throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");
-
-  return 0;
+    return 0;
 }
