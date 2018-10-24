@@ -171,7 +171,8 @@ MESSAGE(STATUS "cmake: ${CMAKE_VERSION}")
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
 if(MSVC)
-    OPTION(FREECAD_RELEASE_PDB "Create PDB file for Release version." ON)
+    OPTION(FREECAD_RELEASE_PDB "Create PDB files for Release version." ON)
+    OPTION(FREECAD_RELEASE_SEH "Enable Structured Exception Handling for Release version." ON)
     OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." ON)
     OPTION(FREECAD_LIBPACK_USEPYSIDE "Use PySide in LibPack rather to PyQt and Swig." ON)
     set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
@@ -1098,8 +1099,8 @@ ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
 IF(MSVC)
 	# set default compiler settings
-	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa /Zm128")
-	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm128")
+	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zm150")
+	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm150")
 	# set default libs
 	SET (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
 	set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
@@ -1111,6 +1112,9 @@ IF(MSVC)
 		set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
 		set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
 	ENDIF(FREECAD_RELEASE_PDB)
+    IF(FREECAD_RELEASE_SEH)
+		SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
+    ENDIF(FREECAD_RELEASE_SEH)
 
 	# Mark 32 bit executables large address aware so they can use > 2GB address space
 	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'
