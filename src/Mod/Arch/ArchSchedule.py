@@ -210,7 +210,9 @@ class _ArchSchedule:
                     val = sumval
                     # get unit
                     if obj.Unit[i]:
-                        ustr = obj.Unit[i].encode("utf8")
+                        ustr = obj.Unit[i]
+                        if sys.version_info.major < 3:
+                            ustr = ustr.encode("utf8")
                         unit = ustr.replace("²","^2")
                         unit = unit.replace("³","^3")
                         if "2" in unit:
