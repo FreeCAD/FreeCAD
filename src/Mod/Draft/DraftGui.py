@@ -131,7 +131,7 @@ class todo:
             for f, arg in todo.itinerary:
                 try:
                     # print("debug: executing",f)
-                    if arg:
+                    if arg or (arg == False):
                         f(arg)
                     else:
                         f()
