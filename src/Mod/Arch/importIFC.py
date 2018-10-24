@@ -1484,8 +1484,10 @@ def export(exportList,filename):
             if obj.Shape:
                 if obj.Shape.Edges and (not obj.Shape.Faces):
                     annotations.append(obj)
+    # clean objects list of unwanted types
     objectslist = [obj for obj in objectslist if obj not in annotations]
     objectslist = Arch.pruneIncluded(objectslist)
+    objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Material","MaterialContainer"]]
     if FULL_PARAMETRIC:
         objectslist = Arch.getAllChildren(objectslist)
     products = {} # { Name: IfcEntity, ... }
