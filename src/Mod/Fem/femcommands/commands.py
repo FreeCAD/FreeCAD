@@ -435,8 +435,9 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
                     # we do not change attributes if we have more than one solver, since we do not know which one to take
                     solver_object = None
                     break
-        # check new frame work solver and old frame work solver
-        if solver_object and (hasattr(solver_object, "SolverType") and solver_object.SolverType == 'FemSolverCalculix' or (hasattr(solver_object, "Proxy") and solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix')):
+        # set solver attribute for nonlinearity for ccxtools CalculiX solver or new frame work CalculiX solver
+        if hasattr(solver_object, "Proxy") and (solver_object.Proxy.Type == 'Fem::FemSolverCalculixCcxTools' or solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix'):
+            print('Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for ' + solver_object.Label)
             solver_object.MaterialNonlinearity = "nonlinear"
             solver_object.GeometricalNonlinearity = "nonlinear"
         FreeCADGui.Selection.clearSelection()
