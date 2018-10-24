@@ -5622,8 +5622,7 @@ namespace SketcherGui {
                 int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 const Part::Geometry *geom = Sketch->getGeometry(GeoId);
-                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                    geom->getTypeId().isDerivedFrom(Part::GeomArcOfConic::getClassTypeId()))
+                if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId()))
                     return true;
             }
             if (element.substr(0,6) == "Vertex") {
@@ -5787,8 +5786,7 @@ public:
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-                geom->getTypeId().isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {
+            if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
                 if (Mode==STATUS_SEEK_First) {
                     firstCurve = GeoId;
                     firstPos = onSketchPos;
@@ -5809,23 +5807,26 @@ public:
                     
                     Base::Vector3d refPnt1(firstPos.x, firstPos.y, 0.f);
                     Base::Vector3d refPnt2(secondPos.x, secondPos.y, 0.f);
+                    
+                    const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(firstCurve);
 
                     double radius = 0;
                     
-                    if(geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    if( geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                        geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         // guess fillet radius
                         const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
                                                                 (sketchgui->getSketchObject()->getGeometry(firstCurve));
                         const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
                                                                 (sketchgui->getSketchObject()->getGeometry(secondCurve));
 
-                        double radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
+                        radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
                         if (radius < 0)
                             return false;
                         
                         construction=lineSeg1->Construction && lineSeg2->Construction;
                     }
-                    else { // arcofConic
+                    else { // other supported curves
                         const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
                                                                 (sketchgui->getSketchObject()->getGeometry(firstCurve));
                         const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
