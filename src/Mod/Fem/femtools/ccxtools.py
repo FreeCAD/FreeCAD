@@ -727,7 +727,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def has_for_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
-            FreeCAD.Console.PrintError('CalculiX returned an error due to nonpositive jacobian elements.\n')
             nonpositive_jacobian_elements = []
             nonpositive_jacobian_elenodes = []
             for line in self.ccx_stdout.splitlines():
@@ -745,14 +744,18 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             nonpositive_jacobian_elenodes = sorted(nonpositive_jacobian_elenodes)
             command_for_nonposjacnodes = 'nonpositive_jacobian_elenodes = ' + str(nonpositive_jacobian_elenodes)
             command_to_highlight = "Gui.ActiveDocument." + self.mesh.Name + ".HighlightedNodes = nonpositive_jacobian_elenodes"
+            # some output for the user
+            FreeCAD.Console.PrintError('\n\nCalculiX returned an error due to nonpositive jacobian elements.\n')
             FreeCAD.Console.PrintMessage('nonpositive_jacobian_elements = {}\n'.format(nonpositive_jacobian_elements))
             FreeCAD.Console.PrintMessage(command_for_nonposjacnodes + '\n')
-            FreeCAD.Console.PrintMessage(command_to_highlight + '\n')
-            FreeCAD.Console.PrintMessage('Gui.ActiveDocument.Extrude_Mesh.HighlightedNodes = []\n\n')  # command to reset the Highlighted Nodes
             if FreeCAD.GuiUp:
                 import FreeCADGui
-                FreeCADGui.doCommand(command_for_nonposjacnodes)
+                FreeCADGui.doCommand(command_for_nonposjacnodes)  # with this the list nonpositive_jacobian_elenodes will be available for further user interaction
+                FreeCAD.Console.PrintMessage('\n')
                 FreeCADGui.doCommand(command_to_highlight)
+            FreeCAD.Console.PrintMessage('\nFollowing some commands to copy which highlight the nonpositive jacobians or to reset the highlighted nodes:\n')
+            FreeCAD.Console.PrintMessage(command_to_highlight + '\n')
+            FreeCAD.Console.PrintMessage('Gui.ActiveDocument.' + self.mesh.Name + '.HighlightedNodes = []\n\n')  # command to reset the Highlighted Nodes
             return True
         else:
             return False
