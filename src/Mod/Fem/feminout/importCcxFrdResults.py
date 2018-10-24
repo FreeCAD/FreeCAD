@@ -108,7 +108,12 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 if analysis:
                     analysis_object.addObject(results)
         else:
-            FreeCAD.Console.PrintMessage('We have nodes but no results in frd file, which means we only have a mesh in frd file. Normaly this happens for analysis type "NOANALYSIS".\n')
+            error_message = (
+                "We have nodes but no results in frd file, which means we only have a mesh in frd file. "
+                "Usually this happens for analysis type 'NOANALYSIS' or if CalculiX returned no results because "
+                "of nonpositive jacobian determinant in at least one element.\n"
+            )
+            FreeCAD.Console.PrintMessage(error_message)
             if analysis:
                 analysis_object.addObject(result_mesh_object)
 
