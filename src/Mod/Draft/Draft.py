@@ -4107,6 +4107,7 @@ class _Dimension(_DraftObject):
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
+        obj.Normal = FreeCAD.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
         if hasattr(obj,"Distance"):
@@ -4632,6 +4633,7 @@ class _AngularDimension(_DraftObject):
         obj.LastAngle = 90
         obj.Dimline = FreeCAD.Vector(0,1,0)
         obj.Center = FreeCAD.Vector(0,0,0)
+        obj.Normal = FreeCAD.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
         if hasattr(obj,"Angle"):
