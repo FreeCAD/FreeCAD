@@ -333,7 +333,7 @@ public:
     const Handle(Geom_Geometry)& handle() const = 0;
 };
 
-class PartExport GeomTrimmedCurve : public GeomCurve
+class PartExport GeomTrimmedCurve : public GeomBoundedCurve
 {
     TYPESYSTEM_HEADER();
 public:
@@ -373,9 +373,11 @@ public:
     virtual ~GeomArcOfConic();
     virtual Geometry *copy(void) const = 0;
 
-    Base::Vector3d getStartPoint(bool emulateCCWXY=false) const;
-    Base::Vector3d getEndPoint(bool emulateCCWXY=false) const;
+    Base::Vector3d getStartPoint(bool emulateCCWXY) const;
+    Base::Vector3d getEndPoint(bool emulateCCWXY) const;
 
+    inline virtual Base::Vector3d getStartPoint() const {return getStartPoint(false);};
+    inline virtual Base::Vector3d getEndPoint() const {return getEndPoint(false);};
     /*!
      * \deprecated use getLocation
      * \brief getCenter
