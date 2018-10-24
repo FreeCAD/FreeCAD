@@ -1561,29 +1561,33 @@ void Application::initConfig(int argc, char ** argv)
     auto loglevelParam = _pcUserParamMngr->GetGroup("BaseApp/LogLevels");
     const auto &loglevels = loglevelParam->GetIntMap();
     bool hasDefault = false;
-    for(const auto &v : loglevels) {
-        if(v.first == "Default") {
+    for (const auto &v : loglevels) {
+        if (v.first == "Default") {
 #ifndef FC_DEBUG
-            if(v.second>=0) {
+            if (v.second>=0) {
                 hasDefault = true;
                 Base::Console().SetDefaultLogLevel(v.second);
             }
 #endif
-        }else if(v.first == "DebugDefault") {
+        }
+        else if (v.first == "DebugDefault") {
 #ifdef FC_DEBUG
-            if(v.second>=0) {
+            if (v.second>=0) {
                 hasDefault = true;
                 Base::Console().SetDefaultLogLevel(v.second);
             }
 #endif
-        }else
+        }
+        else {
             *Base::Console().GetLogLevel(v.first.c_str()) = v.second;
+        }
     }
-    if(!hasDefault) {
+
+    if (!hasDefault) {
 #ifdef FC_DEBUG
-        loglevelParam->SetInt("DebugDefault",Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("DebugDefault", Base::Console().LogLevel(-1));
 #else
-        loglevelParam->SetInt("Default",Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("Default", Base::Console().LogLevel(-1));
 #endif
     }
 
