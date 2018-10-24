@@ -2546,6 +2546,21 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
     elif getType(obj) == "Label":
+
+        def format_point (coords, letter='L'):
+            return "{letter}{x},{y}".format(x=coords.x, y=coords.y, letter=letter)
+
+        proj_points = list(map(getProj,obj.Points))
+        path_dir_list = [format_point(proj_points[0], letter='M')]
+        path_dir_list += map(format_point,proj_points[1:])
+        path_dir_str = " ".join(path_dir_list)
+        svg_path = '<path fill="none" stroke="{stroke}" stroke-width="{linewidth}" d="{directions}"/>'.format(
+            stroke=stroke,
+            linewidth=linewidth,
+            directions=path_dir_str
+        )
+        svg += svg_path
+
         if gui:
             if not obj.ViewObject:
                 print ("export of texts to SVG is only available in GUI mode")
@@ -6175,7 +6190,7 @@ class _PointArray(_DraftObject):
         	        i += 1
         	        base.append(nshape)
         obj.Count = i
-        if i > 0: 
+        if i > 0:
             obj.Shape = Part.makeCompound(base)
         else:
             FreeCAD.Console.PrintError(translate("draft","No point found\n"))
