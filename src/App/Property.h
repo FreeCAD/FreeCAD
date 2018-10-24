@@ -145,7 +145,7 @@ public:
         return testStatus(App::Property::ReadOnly);
     }
     /// Sets precision of properties using floating point
-    /// numners to single, the default is double.
+    /// numbers to single, the default is double.
     void setSinglePrecision(bool single) {
         setStatus(App::Property::Single, single);
     }
