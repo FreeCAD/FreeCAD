@@ -206,6 +206,7 @@ class ObjectDressup:
     def generateHelix(self):
         edges = self.wire.Edges
         minZ = self.findMinZ(edges)
+        PathLog.debug("Minimum Z in this path is {}".format(minZ))
         outedges = []
         i = 0
         while i < len(edges):
@@ -334,7 +335,7 @@ class ObjectDressup:
 
     def findMinZ(self, edges):
         minZ = 99999999999
-        for edge in edges:
+        for edge in edges[1:]:
             for v in edge.Vertexes:
                 if v.Point.z < minZ:
                     minZ = v.Point.z
