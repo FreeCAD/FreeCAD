@@ -281,7 +281,7 @@ class _CommandSite:
         siteobj = []
         warning = False
         for obj in sel :
-            if Draft.getType(obj) == "Building":
+            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcRole") and obj.IfcRole == "Building"):
                 siteobj.append(obj)
             else :
                 if link == True :
