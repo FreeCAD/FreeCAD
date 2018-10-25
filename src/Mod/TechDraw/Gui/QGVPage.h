@@ -126,6 +126,9 @@ private:
     QBrush* bkgBrush;
     QImage m_image;
     ViewProviderPage *m_vpPage;
+    
+    bool m_atCursor;
+    bool m_invertZoom;
 };
 
 } // namespace MDIViewPageGui
