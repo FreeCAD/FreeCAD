@@ -654,7 +654,11 @@ def download(url,force=False):
     '''download(url,force=False): downloads a file from the given URL and saves it in the
     macro path. Returns the path to the saved file. If force is True, the file will be
     downloaded again evn if it already exists.'''
-    import urllib2, os
+    try:
+        from urllib.request import urlopen
+    except ImportError:
+        from urllib2 import urlopen
+    import os
     name = url.split('/')[-1]
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
     macropath = p.GetString("MacroPath","")
@@ -665,7 +669,7 @@ def download(url,force=False):
         return filepath
     try:
         FreeCAD.Console.PrintMessage("downloading "+url+" ...\n")
-        response = urllib2.urlopen(url)
+        response = urlopen(url)
         s = response.read()
         f = open(filepath,'wb')
         f.write(s)
