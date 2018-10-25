@@ -530,7 +530,6 @@ class _ViewProviderSectionPlane:
         if not "CutMargin" in pl:
             vobj.addProperty("App::PropertyLength","CutMargin","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The distance between the cut plane and the actual view cut (keep this a very small value but not zero)"))
             vobj.CutMargin = 1
-        self.Object = vobj.Object
 
     def onDocumentRestored(self,vobj):
 
@@ -542,11 +541,14 @@ class _ViewProviderSectionPlane:
         return ":/icons/Arch_SectionPlane_Tree.svg"
 
     def claimChildren(self):
-
+        if hasattr(self,"Object") and hasattr(self.Object,"Objects"):
+            return self.Object.Objects
+        print("claiming children, but none!")
         return []
 
     def attach(self,vobj):
 
+        self.Object = vobj.Object
         self.clip = None
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
