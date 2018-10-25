@@ -291,6 +291,7 @@ short DrawViewPart::mustExecute() const
                     ScaleType.isTouched() ||
                     Perspective.isTouched() ||
                     Focus.isTouched() ||
+                    Rotation.isTouched() ||
                     SmoothVisible.isTouched() ||
                     SeamVisible.isTouched() ||
                     IsoVisible.isTouched() ||
