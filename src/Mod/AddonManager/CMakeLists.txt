@@ -3,6 +3,8 @@ SET(AddonManager_SRCS
     InitGui.py
     AddonManager.py
     AddonManagerGui.py
+    addonmanager_macro.py
+    addonmanager_utilities.py
 )
 
 SOURCE_GROUP("" FILES ${AddonManager_SRCS})
