@@ -58,7 +58,6 @@
 using namespace PartDesignGui;
 using namespace Attacher;
 
-// ***WMAYER, this comment needs revising***
 // TODO Do ve should snap here to App:Part or GeoFeatureGroup/DocumentObjectGroup ? (2015-09-04, Fat-Zer)
 const QString TaskFeaturePick::getFeatureStatusString(const featureStatus st)
 {
