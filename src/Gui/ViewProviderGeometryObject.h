@@ -94,7 +94,6 @@ protected:
     void setSelectable(bool Selectable=true);
 
     virtual unsigned long getBoundColor() const;
-    void applyBoundColor();
 
 protected:
     SoMaterial       * pcShapeMaterial;
