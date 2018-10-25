@@ -188,8 +188,8 @@ bool ViewProviderPage::setEdit(int ModNum)
 {
     bool rc = true;
     if (ModNum == _SHOWDRAWING) {
+        Visibility.setValue(true);
         showMDIViewPage();   // show the drawing
-        Gui::getMainWindow()->setActiveWindow(m_mdiView);
         rc = false;  //finished editing
     } else if (ModNum == _TOGGLEUPDATE) {
          auto page = getDrawPage();

@@ -41,6 +41,7 @@
 #include <App/Document.h>
 #include <App/Material.h>
 #include <Base/Console.h>
+#include <Base/Parameter.h>
 #include <Base/Stream.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
@@ -99,12 +100,22 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
 
     setScene(s);
 
+
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
-    //setTransformationAnchor(AnchorUnderMouse);
-    //setTransformationAnchor(NoAnchor);
-    setTransformationAnchor(AnchorViewCenter);
-    setResizeAnchor(AnchorViewCenter);
+ 
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
+    m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
+    m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
+
+    if (m_atCursor) {
+        setResizeAnchor(AnchorUnderMouse);
+        setTransformationAnchor(AnchorUnderMouse);
+    } else {
+        setResizeAnchor(AnchorViewCenter);
+        setTransformationAnchor(AnchorViewCenter);
+    }
     setAlignment(Qt::AlignCenter);
 
     setDragMode(ScrollHandDrag);
@@ -633,7 +644,10 @@ void QGVPage::wheelEvent(QWheelEvent *event)
 //                                                              1 click = -0.5 ==> factor = 1.2^-0.5 = 0.91
 //so to change wheel direction, multiply (event->delta() / 240.0) by +/-1
     double mouseBase = 1.2;        //magic numbers. change for different mice?
-    double mouseAdjust = 240.0;
+    double mouseAdjust = -240.0;
+    if (m_invertZoom) {
+        mouseAdjust = -mouseAdjust;
+    }
 
     QPointF center = mapToScene(viewport()->rect().center());
     qreal factor = std::pow(mouseBase, event->delta() / mouseAdjust);
