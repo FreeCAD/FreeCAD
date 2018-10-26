@@ -2546,36 +2546,38 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
     elif getType(obj) == "Label":
+        if getattr(obj.ViewObject, "Line", True):  # some Labels may have no Line property
+            def format_point(coords, action='L'):
+                return "{action}{x},{y}".format(
+                    x=coords.x, y=coords.y, action=action
+                )
 
-        def format_point(coords, action='L'):
-            return "{action}{x},{y}".format(
-                x=coords.x, y=coords.y, action=action
-            )
-
-        # Draw multisegment line
-        proj_points = list(map(getProj, obj.Points))
-        path_dir_list = [format_point(proj_points[0], action='M')]
-        path_dir_list += map(format_point, proj_points[1:])
-        path_dir_str = " ".join(path_dir_list)
-        svg_path = '<path fill="none" stroke="{stroke}" stroke-width="{linewidth}" d="{directions}"/>'.format(
-            stroke=stroke,
-            linewidth=linewidth,
-            directions=path_dir_str
-        )
-        svg += svg_path
-
-        # draw arrow
-        if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
-            last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
-            angle = -DraftVecUtils.angle(getProj(last_segment)) + math.pi
-            svg += getArrow(
-                arrowtype=obj.ViewObject.ArrowType,
-                point=proj_points[-1],
-                arrowsize=obj.ViewObject.ArrowSize.Value/pointratio,
-                color=stroke,
+            # Draw multisegment line
+            proj_points = list(map(getProj, obj.Points))
+            path_dir_list = [format_point(proj_points[0], action='M')]
+            path_dir_list += map(format_point, proj_points[1:])
+            path_dir_str = " ".join(path_dir_list)
+            svg_path = '<path fill="none" stroke="{stroke}" stroke-width="{linewidth}" d="{directions}"/>'.format(
+                stroke=stroke,
                 linewidth=linewidth,
-                angle=angle
+                directions=path_dir_str
             )
+            svg += svg_path
+
+            # Draw arrow.
+            # We are different here from 3D view
+            # if Line is set to 'off', no arrow is drawn
+            if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
+                last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
+                angle = -DraftVecUtils.angle(getProj(last_segment)) + math.pi
+                svg += getArrow(
+                    arrowtype=obj.ViewObject.ArrowType,
+                    point=proj_points[-1],
+                    arrowsize=obj.ViewObject.ArrowSize.Value/pointratio,
+                    color=stroke,
+                    linewidth=linewidth,
+                    angle=angle
+                )
 
         # print text
         if gui:
