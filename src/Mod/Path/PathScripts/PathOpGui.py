@@ -145,7 +145,12 @@ class ViewProvider(object):
 
     def getIcon(self):
         '''getIcon() ... the icon used in the object tree'''
-        return self.OpIcon
+        if self.Object.Active:
+            return self.OpIcon
+        else:
+            return ":/icons/Path-OpActive.svg"
+
+        #return self.OpIcon
 
     def getTaskPanelOpPage(self, obj):
         '''getTaskPanelOpPage(obj) ... use the stored information to instantiate the receiver op's page controller.'''

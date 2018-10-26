@@ -265,11 +265,11 @@ class ObjectOp(object):
     def onChanged(self, obj, prop):
         '''onChanged(obj, prop) ... base implementation of the FC notification framework.
         Do not overwrite, overwrite opOnChanged() instead.'''
-
         if not 'Restore' in obj.State and prop in ['Base', 'StartDepth', 'FinalDepth']:
             self.updateDepths(obj, True)
 
         self.opOnChanged(obj, prop)
+
 
     def applyExpression(self, obj, prop, expr):
         '''applyExpression(obj, prop, expr) ... set expression expr on obj.prop if expr is set'''
@@ -436,12 +436,14 @@ class ObjectOp(object):
         '''
         PathLog.track()
 
+        if obj.ViewObject:
+            obj.ViewObject.Visibility = obj.Active
+
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
-            if obj.ViewObject:
-                obj.ViewObject.Visibility = False
             return
+
 
         if not self._setBaseAndStock(obj):
             return
