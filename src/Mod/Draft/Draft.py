@@ -2547,12 +2547,15 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Label":
 
-        def format_point (coords, letter='L'):
-            return "{letter}{x},{y}".format(x=coords.x, y=coords.y, letter=letter)
+        def format_point(coords, action='L'):
+            return "{action}{x},{y}".format(
+                x=coords.x, y=coords.y, action=action
+            )
 
-        proj_points = list(map(getProj,obj.Points))
-        path_dir_list = [format_point(proj_points[0], letter='M')]
-        path_dir_list += map(format_point,proj_points[1:])
+        # Draw multisegment line
+        proj_points = list(map(getProj, obj.Points))
+        path_dir_list = [format_point(proj_points[0], action='M')]
+        path_dir_list += map(format_point, proj_points[1:])
         path_dir_str = " ".join(path_dir_list)
         svg_path = '<path fill="none" stroke="{stroke}" stroke-width="{linewidth}" d="{directions}"/>'.format(
             stroke=stroke,
@@ -2561,16 +2564,31 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         )
         svg += svg_path
 
+        # draw arrow
+        if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
+            last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
+            angle = -DraftVecUtils.angle(getProj(last_segment)) + math.pi
+            svg += getArrow(
+                arrowtype=obj.ViewObject.ArrowType,
+                point=proj_points[-1],
+                arrowsize=obj.ViewObject.ArrowSize.Value/pointratio,
+                color=stroke,
+                linewidth=linewidth,
+                angle=angle
+            )
+
+        # print text
         if gui:
             if not obj.ViewObject:
-                print ("export of texts to SVG is only available in GUI mode")
+                print("export of texts to SVG is only available in GUI mode")
             else:
                 fontname = obj.ViewObject.TextFont
                 position = getProj(obj.Placement.Base)
                 rotation = obj.Placement.Rotation
                 justification = obj.ViewObject.TextAlignment
                 text = obj.Text
-                svg += getText(stroke, fontsize, fontname, rotation, position, text, linespacing, justification)
+                svg += getText(stroke, fontsize, fontname, rotation, position,
+                               text, linespacing, justification)
 
     elif getType(obj) in ["Annotation","DraftText"]:
         "returns an svg representation of a document annotation"
