@@ -357,7 +357,7 @@ class DraftToolBar:
             mw = FreeCADGui.getMainWindow()
             mw.addToolBar(self.tray)
             self.tray.setParent(mw)
-            #self.tray.show()
+            self.tray.hide()
 
         else:
             # create the draft Toolbar                
