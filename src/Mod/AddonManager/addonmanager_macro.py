@@ -24,8 +24,7 @@
 import os
 import re
 import sys
-
-from freecad import app
+import FreeCAD
 
 from addonmanager_utilities import translate
 from addonmanager_utilities import urllib2
@@ -57,8 +56,8 @@ class Macro(object):
     def is_installed(self):
         if self.on_git and not self.src_filename:
             return False
-        return (os.path.exists(os.path.join(app.getUserMacroDir(), self.filename))
-                or os.path.exists(os.path.join(app.getUserMacroDir(), 'Macro_' + self.filename)))
+        return (os.path.exists(os.path.join(FreeCAD.getUserMacroDir(), self.filename))
+                or os.path.exists(os.path.join(FreeCAD.getUserMacroDir(), 'Macro_' + self.filename)))
 
     def fill_details_from_file(self, filename):
         with open(filename) as f:
@@ -135,7 +134,7 @@ class Macro(object):
                 code = sorted(code, key=len)[-1]
                 code = code.replace('--endl--', '\n')
             else:
-                app.Console.PrintWarning(translate("AddonsInstaller", "Unable to fetch the code of this macro."))
+                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to fetch the code of this macro."))
             # Clean HTML escape codes.
             try:
                 from HTMLParser import HTMLParser
@@ -154,7 +153,7 @@ class Macro(object):
         if desc:
             desc = desc[0]
         else:
-            app.Console.PrintWarning(translate("AddonsInstaller", "Unable to retrieve a description for this macro."))
+            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to retrieve a description for this macro."))
             desc = "No description available"
         self.desc = desc
         self.url = url
