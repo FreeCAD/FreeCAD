@@ -125,6 +125,8 @@ class ArchReference:
                             f.close()
                             import Part
                             shape = Part.Shape()
+                            if sys.version_info.major >= 3:
+                                shapedata = shapedata.decode("utf8")
                             shape.importBrepFromString(shapedata)
                             obj.Shape = shape
                         else:
@@ -149,6 +151,8 @@ class ArchReference:
             part = None
             writemode = False
             for line in docf:
+                if sys.version_info.major >= 3:
+                    line = line.decode("utf8")
                 if "<Object name=" in line:
                     n = re.findall('name=\"(.*?)\"',line)
                     if n:
@@ -194,6 +198,8 @@ class ArchReference:
             writemode1 = False
             writemode2 = False
             for line in docf:
+                if sys.version_info.major >= 3:
+                    line = line.decode("utf8")
                 if ("<ViewProvider name=" in line) and (part in line):
                     writemode1 = True
                 elif writemode1 and ("<Property name=\"DiffuseColor\"" in line):
@@ -214,7 +220,7 @@ class ArchReference:
         cf.close()
         for i in range(1,int(len(buf)/4)):
             if sys.version_info.major >= 3:
-                colors.append((buf[i*4+3],buf[i*4+2],buf[i*4+1],buf[i*4]))
+                colors.append((buf[i*4+3]/255.0,buf[i*4+2]/255.0,buf[i*4+1]/255.0,buf[i*4]/255.0))
             else:
                 colors.append((ord(buf[i*4+3])/255.0,ord(buf[i*4+2])/255.0,ord(buf[i*4+1])/255.0,ord(buf[i*4])/255.0))
         if colors:
@@ -256,6 +262,8 @@ class ViewProviderArchReference:
     def unsetEdit(self,vobj,mode):
 
         FreeCADGui.Control.closeDialog()
+        from DraftGui import todo
+        todo.delay(vobj.Proxy.recolorize,vobj)
         return
 
     def attach(self,vobj):
@@ -285,6 +293,11 @@ class ViewProviderArchReference:
             colors = obj.Proxy.getColors(obj)
             if colors:
                 obj.ViewObject.DiffuseColor = colors
+
+    def recolorize(self,vobj):
+        
+        if hasattr(vobj,"DiffuseColor") and hasattr(vobj,"UpdateColors") and vobj.UpdateColors:
+            vobj.DiffuseColor = vobj.DiffuseColor
 
     def checkChanges(self):
 
@@ -383,11 +396,11 @@ class ArchReferenceTaskPanel:
             parts = self.obj.Proxy.parts
         else:
             parts = self.obj.Proxy.getPartsList(self.obj)
-        for k,v in parts.items():
-            self.partCombo.addItem(v[0],k)
+        for k in sorted(parts.keys()):
+            self.partCombo.addItem(parts[k][0],k)
         if self.obj.Part:
             if self.obj.Part in parts.keys():
-                self.partCombo.setCurrentIndex(parts.keys().index(self.obj.Part))
+                self.partCombo.setCurrentIndex(sorted(parts.keys()).index(self.obj.Part))
         QtCore.QObject.connect(self.fileButton, QtCore.SIGNAL("clicked()"), self.chooseFile)
         QtCore.QObject.connect(self.openButton, QtCore.SIGNAL("clicked()"), self.openFile)
 
@@ -403,11 +416,11 @@ class ArchReferenceTaskPanel:
             parts = self.obj.Proxy.getPartsList(self.obj,self.filename)
             if parts:
                 self.partCombo.clear()
-                for k,v in parts.items():
-                    self.partCombo.addItem(v[0],k)
+                for k in sorted(parts.keys()):
+                    self.partCombo.addItem(parts[k][0],k)
                 if self.obj.Part:
                     if self.obj.Part in parts.keys():
-                        self.partCombo.setCurrentIndex(parts.keys().index(self.obj.Part))
+                        self.partCombo.setCurrentIndex(sorted(parts.keys()).index(self.obj.Part))
 
     def openFile(self):
         if self.obj.File:
