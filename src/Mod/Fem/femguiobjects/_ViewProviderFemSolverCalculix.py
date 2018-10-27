@@ -166,8 +166,10 @@ class _TaskPanelFemSolverCalculix:
         return
 
     def femConsoleMessage(self, message="", color="#000000"):
+        if sys.version_info.major < 3:
+            message = message.encode("utf-8", "replace")
         self.fem_console_message = self.fem_console_message + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
-            format(time.time() - self.Start, color, message.encode('utf-8', 'replace'))
+            format(time.time() - self.Start, color, message)
         self.form.textEdit_Output.setText(self.fem_console_message)
         self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
