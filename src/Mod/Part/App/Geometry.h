@@ -165,7 +165,7 @@ public:
     Base::Vector3d firstDerivativeAtParameter(double u) const;
     Base::Vector3d secondDerivativeAtParameter(double u) const;
     bool closestParameter(const Base::Vector3d& point, double &u) const;
-    bool closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const;
+    bool closestParameterToBasisCurve(const Base::Vector3d& point, double &u) const;
     double getFirstParameter() const;
     double getLastParameter() const;
     double curvatureAt(double u) const;
