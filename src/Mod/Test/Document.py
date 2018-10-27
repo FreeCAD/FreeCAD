@@ -454,33 +454,32 @@ class DocumentSaveRestoreCases(unittest.TestCase):
       self.failUnless(hasattr(Doc.Extension_2.ViewObject.ExtensionProxy, 'testFunction'))
 
     FreeCAD.closeDocument("SaveRestoreExtensions")
-    
+
   def testPersistenceContentDump(self):
-       
     #test smallest level... property
     self.Doc.Label_1.Vector = (1,2,3)
     dump = self.Doc.Label_1.dumpPropertyContent('Vector', Compression = 9)
     self.Doc.Label_2.restorePropertyContent('Vector', dump)
-    self.failUnless(self.Doc.Label_1.Vector == self.Doc.Label_2.Vector)
-    
+    self.assertEqual(self.Doc.Label_1.Vector, self.Doc.Label_2.Vector)
+
     #next higher: object
     self.Doc.Label_1.Distance = 12
     self.Doc.Label_1.String = 'test'
     dump = self.Doc.Label_1.dumpContent()
     self.Doc.Label_3.restoreContent(dump)
-    self.failUnless( self.Doc.Label_1.Distance == self.Doc.Label_3.Distance)   
-    self.failUnless( self.Doc.Label_1.String == self.Doc.Label_3.String)
-    
+    self.assertEqual(self.Doc.Label_1.Distance, self.Doc.Label_3.Distance)
+    self.assertEqual(self.Doc.Label_1.String, self.Doc.Label_3.String)
+
     #highest level: document
     dump = self.Doc.dumpContent(9)
     Doc = FreeCAD.newDocument("DumpTest")
     Doc.restoreContent(dump)
-    self.failUnless(len(self.Doc.Objects) == len(Doc.Objects))
-    self.failUnless( self.Doc.Label_1.Distance == Doc.Label_1.Distance)   
-    self.failUnless( self.Doc.Label_1.String == Doc.Label_1.String)
-    self.failUnless(self.Doc.Label_1.Vector == Doc.Label_1.Vector)
-    FreeCAD.closeDocument("DumpTest")   
-    
+    self.assertEqual(len(self.Doc.Objects), len(Doc.Objects))
+    self.assertEqual(self.Doc.Label_1.Distance, Doc.Label_1.Distance)
+    self.assertEqual(self.Doc.Label_1.String, Doc.Label_1.String)
+    self.assertEqual(self.Doc.Label_1.Vector, Doc.Label_1.Vector)
+    FreeCAD.closeDocument("DumpTest")
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("SaveRestoreTests")
