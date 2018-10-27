@@ -1293,6 +1293,7 @@ Document::~Document()
     // not to dec'ref the Python object any more.
     // But we must still invalidate the Python object because it doesn't need to be
     // destructed right now because the interpreter can own several references to it.
+    Base::PyGILStateLocker lock;
     Base::PyObjectBase* doc = (Base::PyObjectBase*)DocumentPythonObject.ptr();
     // Call before decrementing the reference counter, otherwise a heap error can occur
     doc->setInvalid();
