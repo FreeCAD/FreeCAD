@@ -876,9 +876,9 @@ PyObject* SketchObjectPy::fillet(PyObject *args)
 
         if (this->getSketchObjectPtr()->fillet(geoId1, geoId2, v1, v2, radius, trim?true:false)) {
             std::stringstream str;
-            str << "Not able to fillet lineSegments with ids : (" << geoId1 << ", " << geoId2 << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & "
+            str << "Not able to fillet curves with ids : (" << geoId1 << ", " << geoId2 << ") and points (" << v1.x << ", " << v1.y << ", " << v1.z << ") & "
             << "(" << v2.x << ", " << v2.y << ", " << v2.z << ")";
-            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            THROWM(Base::ValueError, str.str().c_str())
             return 0;
         }
         Py_Return;
