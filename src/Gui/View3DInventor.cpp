@@ -359,7 +359,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
-        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",true));
+        _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
     }
     else if (strcmp(Reason,"Gradient") == 0) {
         _viewer->setGradientBackground((rGrp.GetBool("Gradient",true)));
