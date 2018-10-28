@@ -109,7 +109,7 @@ class Adaptive2d
 	Paths inputPaths;
 	Paths stockInputPaths;
 	int polyTreeNestingLimit = 0;
-	double scaleFactor = 100;
+	long scaleFactor = 100;
 	double stepOverScaled = 1;
 	long toolRadiusScaled = 10;
 	long finishPassOffsetScaled = 0;
@@ -146,7 +146,7 @@ class Adaptive2d
 	void ApplyStockToLeave(Paths &inputPaths);
 
   private: // constants for fine tuning
-	const double RESOLUTION_FACTOR = 8.0;
+	const double RESOLUTION_FACTOR = 16.0;
 	const int MAX_ITERATIONS = 10;
 	const double AREA_ERROR_FACTOR = 0.05;	/* how precise to match the cut area to optimal, reasonable value: 0.05 = 5%*/
 	const size_t ANGLE_HISTORY_POINTS = 3;	// used for angle prediction
@@ -157,9 +157,8 @@ class Adaptive2d
 	const double ENGAGE_AREA_THR_FACTOR = 0.5;		// influences minimal engage area
 	const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2; // influences the engage scan/stepping distance
 
-	const double CLEAN_PATH_TOLERANCE = 2;
-	const double FINISHING_CLEAN_PATH_TOLERANCE = 1;
-
+	const double CLEAN_PATH_TOLERANCE = 1.41; // should be >1
+	const double FINISHING_CLEAN_PATH_TOLERANCE = 1.41; // should be >1
 
 	const long PASSES_LIMIT = __LONG_MAX__;			   // limit used while debugging
 	const long POINTS_PER_PASS_LIMIT = __LONG_MAX__;   // limit used while debugging
