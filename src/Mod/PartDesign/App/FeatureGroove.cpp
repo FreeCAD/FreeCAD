@@ -37,6 +37,7 @@
 #endif
 
 #include <Base/Axis.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -156,13 +157,14 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
-            int solidCount = countSolids(result);
+            solRes = refineShapeIfActive(solRes);
+            this->Shape.setValue(getSolid(solRes));
+
+            int solidCount = countSolids(solRes);
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
             }
-
-            solRes = refineShapeIfActive(solRes);
-            this->Shape.setValue(getSolid(solRes));
+            
         }
         else
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");
