@@ -336,40 +336,41 @@ void ScaleDownPaths(Paths &paths,long scaleFactor) {
 
 
 // joins collinear segments (within the tolerance)
-void CleanPath(const Path &inp, Path &outp, double tolerance)
+void CleanPath(const Path &inp, Path &outpt, double tolerance)
 {
-	outp.clear();
 	if (inp.size() < 3)
 	{
-		outp = inp;
+		outpt = inp;
 		return;
 	}
+	Path tmp;
+	CleanPolygon(inp, tmp, tolerance);
+	// restore starting point
 
-	double tolSqrd = tolerance * tolerance;
-
-	IntPoint p1 = inp.at(0);
-	IntPoint p2 = p1;
-	outp.push_back(p1);
-	for (size_t i = 1; i < inp.size(); i++)
+	Path::size_type size = tmp.size();
+	double minDistSq = __DBL_MAX__;
+	double distSq =  0;
+	size_t clpPointIndex=0;
+	// iterate through points
+	for (Path::size_type j = 0; j < size; j++)
 	{
-		IntPoint pt = inp.at(i);
-		IntPoint clp; // to hold closest point
-		double ptPar;
-		double distSqrd = DistancePointToLineSegSquared(p1, p2, pt, clp, ptPar, false);
-		if (distSqrd < tolSqrd) // collinear - extend same segment to end with pt
+		distSq = DistanceSqrd(tmp.at(j), inp.front());
+		if (distSq < minDistSq)
 		{
-			outp.pop_back();
-			outp.push_back(pt);
-			if (DistanceSqrd(p1, p2) < tolSqrd)
-				p2 = pt;
-		}
-		else // new segment - start with new p1,p2
-		{
-			p1 = outp.back();
-			p2 = pt;
-			outp.push_back(pt);
+			clpPointIndex = j;
+			minDistSq=distSq;
 		}
 	}
+
+	outpt.clear();
+	for (size_t i = 0; i < tmp.size(); i++)
+	{
+		long index = clpPointIndex + long(i);
+		if (index >= long(tmp.size()))
+			index -= long(tmp.size());
+		outpt.push_back(tmp.at(index));
+	}
+
 }
 
 double DistancePointToPathsSqrd(const Paths &paths, const IntPoint &pt, IntPoint &closestPointOnPath,
@@ -1654,10 +1655,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 	scaleFactor = RESOLUTION_FACTOR / tolerance;
 	if (stepOverFactor * toolDiameter < 1.0)
 		scaleFactor *= 1.0 / (stepOverFactor * toolDiameter);
-	if (scaleFactor > 250)
-		scaleFactor = 250;
+	if (scaleFactor > 1000)
+		scaleFactor = 1000;
 
-	scaleFactor = round(scaleFactor);
+	//scaleFactor = round(scaleFactor);
 
 	current_region=0;
 	cout << "Tool Diameter: " << toolDiameter << endl;
@@ -1716,12 +1717,14 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 			std::pair<double, double> pt = paths[i][j];
 			cpth.push_back(IntPoint(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
 		}
-		converted.push_back(cpth);
+		Path cpth2;
+		CleanPath(cpth,cpth2,FINISHING_CLEAN_PATH_TOLERANCE);
+		converted.push_back(cpth2);
 	}
 
 	DeduplicatePaths(converted, inputPaths);
 	ConnectPaths(inputPaths, inputPaths);
-	SimplifyPolygons(inputPaths);
+	SimplifyPolygons(inputPaths);	
 	ApplyStockToLeave(inputPaths);
 
 	//*************************
@@ -1736,10 +1739,12 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 			std::pair<double, double> pt = stockPaths[i][j];
 			cpth.push_back(IntPoint(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
 		}
+
 		stockInputPaths.push_back(cpth);
 	}
 
 	SimplifyPolygons(stockInputPaths);
+	//CleanPolygons(stockInputPaths,0.707);
 
 	//***************************************
 	//	Resolve hierarchy and run processing
@@ -3056,6 +3061,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 			}
 		}
 
+		// make sure it's closed
+		finCleaned.push_back(finCleaned.front());
 		AppendToolPath(progressPaths, output, finCleaned, cleared, cleared, toolBoundPaths);
 
 		cleared.ExpandCleared(finCleaned);
