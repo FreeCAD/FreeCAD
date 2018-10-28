@@ -121,6 +121,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
     Handle(Geom2d_Curve) primaryCurve;
     Handle(Geom_Geometry) geom = (geomlist[GeoId])->handle();
     Handle(Geom_Curve) curve3d = Handle(Geom_Curve)::DownCast(geom);
+    
     if (curve3d.IsNull())
         return false;
     else {
@@ -152,12 +153,36 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
             if (!curve3d.IsNull()) {
                 secondaryCurve = GeomAPI::To2d(curve3d, plane);
                 // perform the curves intersection
+                
+                std::vector<gp_Pnt2d> points;
+                
+                // #2463 Check for endpoints of secondarycurve on primary curve
+                // If the OCCT Intersector should detect endpoint tangency when triming, then
+                // this is just a work-around until that bug is fixed.
+                // https://www.freecadweb.org/tracker/view.php?id=2463
+                // https://tracker.dev.opencascade.org/view.php?id=30217
+                if( geomlist[id]->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
+                    
+                    Part::GeomBoundedCurve * bcurve = static_cast<Part::GeomBoundedCurve *>(geomlist[id]);
+                    
+                    points.push_back(gp_Pnt2d (bcurve->getStartPoint().x,bcurve->getStartPoint().y));
+                    points.push_back(gp_Pnt2d (bcurve->getEndPoint().x,bcurve->getEndPoint().y));
+                }
+                
                 Intersector.Init(primaryCurve, secondaryCurve, 1.0e-12);
-                for (int i=1; i <= Intersector.NbPoints(); i++) {
-                    gp_Pnt2d p = Intersector.Point(i);
+                
+                for(int i=1; i <= Intersector.NbPoints(); i++)
+                    points.push_back(Intersector.Point(i));
+                
+                for (auto p : points) {
                     // get the parameter of the intersection point on the primary curve
                     Projector.Init(p, primaryCurve);
+                    
+                    if(Projector.NbPoints()<1 || Projector.LowerDistance() > Precision::Confusion())
+                        continue;
+                    
                     double param = Projector.LowerDistanceParameter();
+                    
                     if (periodic) {
                         // transfer param into the interval (pickedParam-period pickedParam]
                         param = param - period * ceil((param-pickedParam) / period);
