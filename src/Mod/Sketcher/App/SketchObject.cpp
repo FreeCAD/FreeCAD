@@ -1371,10 +1371,23 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         double refparam1;
         double refparam2;
         
-        if(!curve1->closestParameter(refPnt1,refparam1))
-            return -1;
-        if(!curve2->closestParameter(refPnt2,refparam2))
-            return -1;
+        try {
+            if(!curve1->closestParameter(refPnt1,refparam1))
+                return -1;
+        }
+        catch (Base::CADKernelError e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError, "Unable to determine the parameter of the first selected curve at the reference point.")
+        }
+        
+        try {
+             if(!curve2->closestParameter(refPnt2,refparam2))
+                return -1;
+        }
+        catch (Base::CADKernelError e) {
+            e.ReportException();            
+            THROWM(Base::CADKernelError, "Unable to determine the parameter of the second selected curve at the reference point.")
+        }
         
         //Base::Console().Log("Ref param: (%f);(%f)",refparam1,refparam2);
         
@@ -1432,8 +1445,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
                 const Part::GeomTrimmedCurve *tcurve1 = static_cast<const Part::GeomTrimmedCurve*>(geo1);
                 const Part::GeomTrimmedCurve *tcurve2 = static_cast<const Part::GeomTrimmedCurve*>(geo2);
                 
-                if(!tcurve1->intersectBasisCurves(tcurve2,points))
-                    return -1;
+                try {
+                    if(!tcurve1->intersectBasisCurves(tcurve2,points))
+                        return -1;
+                }
+                catch (Base::CADKernelError e) {
+                    e.ReportException();
+                    THROWMT(Base::CADKernelError,QT_TRANSLATE_NOOP("Exceptions", "Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet."))
+                }                
 
                 int res = selectintersection(points,interpoints,refPnt1, refPnt2);
             
@@ -1448,11 +1467,24 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         // Now that we know where the curves intersect, get the parameters in the curves of those points
         double intparam1;
         double intparam2;
+
+        try {
+            if(!curve1->closestParameter(interpoints.first,intparam1))
+                return -1;
+        }
+        catch (Base::CADKernelError e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError,"Unable to determine the parameter of the first selected curve at the intersection of the curves.")
+        }
         
-        if(!curve1->closestParameter(interpoints.first,intparam1))
-            return -1;
-        if(!curve2->closestParameter(interpoints.second,intparam2))
-            return -1;
+        try {
+            if(!curve2->closestParameter(interpoints.second,intparam2))
+                return -1;
+        }
+        catch (Base::CADKernelError e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError,"Unable to determine the parameter of the second selected curve at the intersection of the curves.")
+        }
         
         // get a fillet radius if zero was given
         Base::Vector3d ref21 = refPnt2 - refPnt1;
@@ -1487,6 +1519,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         double sdir2 = tdir2.Cross(-ref21).Dot(vn);
         
         //Base::Console().Log("sign of offset: (%f,%f)\n",sdir1,sdir2);
+        //Base::Console().Log("radius: %f\n",radius);
         
         Part::GeomOffsetCurve * ocurve1 = new Part::GeomOffsetCurve(Handle(Geom_Curve)::DownCast(curve1->handle()), (sdir1<0)?radius:-radius, vn);
         
@@ -1497,14 +1530,28 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         
         //Base::Console().Log("start point offset curves: (%f,%f,%f);(%f,%f,%f)\n",oc1pf.x,oc1pf.y,oc1pf.z,oc2pf.x,oc2pf.y,oc2pf.z);        
         
+        /*auto printoffsetcurve = [](Part::GeomOffsetCurve *c) {
         
+            for(double param = c->getFirstParameter(); param < c->getLastParameter(); param = param + (c->getLastParameter()-c->getFirstParameter())/10)
+                Base::Console().Log("\n%f: (%f,%f,0)\n", param, c->pointAtParameter(param).x,c->pointAtParameter(param).y);
+        
+        };
+        
+        printoffsetcurve(ocurve1);
+        printoffsetcurve(ocurve2);*/
+            
         // Next we calculate the intersection of offset curves to get the center of the fillet
         std::pair<Base::Vector3d, Base::Vector3d> filletcenterpoint;
         std::vector<std::pair<Base::Vector3d, Base::Vector3d>> offsetintersectionpoints;
 
-        if(!ocurve1->intersect(ocurve2,offsetintersectionpoints))
-            return -1;
-        
+        try {
+            if(!ocurve1->intersect(ocurve2,offsetintersectionpoints))
+                return -1;
+        }
+        catch (Base::CADKernelError e) {
+            e.ReportException();          
+            THROWM(Base::CADKernelError,"Unable to find intersection between offset curves.")
+        }
         
         int res = selectintersection(offsetintersectionpoints,filletcenterpoint,refPnt1, refPnt2);
         
@@ -1514,10 +1561,23 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         double refoparam1;
         double refoparam2;
         
-        if(!curve1->closestParameter(filletcenterpoint.first,refoparam1))
-            return -1;
-        if(!curve2->closestParameter(filletcenterpoint.second,refoparam2))
-            return -1;
+        try {
+            if(!curve1->closestParameter(filletcenterpoint.first,refoparam1))
+                return -1;
+        }     
+        catch (Base::CADKernelError e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError,"Unable to determine the starting point of the arc.")
+        }
+        
+        try {
+            if(!curve2->closestParameter(filletcenterpoint.second,refoparam2))
+                return -1;
+        }
+        catch (Base::CADKernelError e) {
+            e.ReportException();
+            THROWM(Base::CADKernelError,"Unable to determine the end point of the arc.")
+        }
         
         // Next we calculate the closest points to the fillet center, so the points where tangency is to be applied
         Base::Vector3d refp1 = curve1->pointAtParameter(refoparam1);
