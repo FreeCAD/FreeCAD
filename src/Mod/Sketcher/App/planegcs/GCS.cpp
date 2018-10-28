@@ -3803,29 +3803,36 @@ int System::diagnose(Algorithm alg)
 #ifdef EIGEN_SPARSEQR_COMPATIBLE
     else if(qrAlgorithm==EigenSparseQR){
         if (SJ.rows() > 0) {
-            SqrJT.compute(SJ.topRows(jacobianconstraintcount).transpose());
-            // Do not ask for Q Matrix!!
-            // At Eigen 3.2 still has a bug that this only works for square matrices
-            // if enabled it will crash
-            #ifdef SPARSE_Q_MATRIX
-            Q = SqrJT.matrixQ();
-            //Q = QS;
-            #endif
-            
-            paramsNum = SqrJT.rows();
-            constrNum = SqrJT.cols();
-            SqrJT.setPivotThreshold(qrpivotThreshold);
-            rank = SqrJT.rank();
-            
-            if (constrNum >= paramsNum)
-                R = SqrJT.matrixR().triangularView<Eigen::Upper>();
-            else
-                R = SqrJT.matrixR().topRows(constrNum)
-                .triangularView<Eigen::Upper>();
-            
-            #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-            R2 = SqrJT.matrixR();
-            #endif
+            auto SJT = SJ.topRows(jacobianconstraintcount).transpose();
+            if (SJT.rows() > 0 && SJT.cols() > 0) {
+                SqrJT.compute(SJT);
+                // Do not ask for Q Matrix!!
+                // At Eigen 3.2 still has a bug that this only works for square matrices
+                // if enabled it will crash
+                #ifdef SPARSE_Q_MATRIX
+                Q = SqrJT.matrixQ();
+                //Q = QS;
+                #endif
+
+                paramsNum = SqrJT.rows();
+                constrNum = SqrJT.cols();
+                SqrJT.setPivotThreshold(qrpivotThreshold);
+                rank = SqrJT.rank();
+
+                if (constrNum >= paramsNum)
+                    R = SqrJT.matrixR().triangularView<Eigen::Upper>();
+                else
+                    R = SqrJT.matrixR().topRows(constrNum)
+                    .triangularView<Eigen::Upper>();
+
+                #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+                R2 = SqrJT.matrixR();
+                #endif
+            }
+            else {
+                paramsNum = SJT.rows();
+                constrNum = SJT.cols();
+            }
         }
     }
 #endif
