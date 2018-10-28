@@ -77,6 +77,7 @@
 #include <Base/RotationPy.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/Translate.h>
 #include <Base/UnitsApi.h>
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
@@ -330,6 +331,11 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pAppModule, "Base", pBaseModule);
     Py_INCREF(pConsoleModule);
     PyModule_AddObject(pAppModule, "Console", pConsoleModule);
+
+    // Translate module
+    PyObject* pTranslateModule = (new Base::Translate)->module().ptr();
+    Py_INCREF(pTranslateModule);
+    PyModule_AddObject(pAppModule, "Qt", pTranslateModule);
 
     //insert Units module
 #if PY_MAJOR_VERSION >= 3
