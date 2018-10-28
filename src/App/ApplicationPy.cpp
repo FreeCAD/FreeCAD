@@ -86,7 +86,10 @@ PyMethodDef Application::Methods[] = {
     {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataDir, METH_VARARGS,
      "Get the root directory of user settings"},
     {"getUserMacroDir", (PyCFunction) Application::sGetUserMacroDir, METH_VARARGS,
-     "Get the directory of the user's macro directory"},
+     "getUserMacroDir(bool=False) -> string"
+     "Get the directory of the user's macro directory\n"
+     "If parameter is False (the default) it returns the standard path in the"
+     "user's home directory, otherwise it returns the user-defined path."},
     {"getHelpDir", (PyCFunction) Application::sGetHelpDir, METH_VARARGS,
      "Get the directory of the documentation"},
     {"getHomePath",    (PyCFunction) Application::sGetHomePath, METH_VARARGS,
@@ -588,10 +591,18 @@ PyObject* Application::sGetUserAppDataDir(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetUserMacroDir(PyObject * /*self*/, PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                       // NULL triggers exception
+    PyObject *actual = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &actual))
+        return NULL;
 
-    Py::String user_macro_dir(Application::getUserMacroDir(),"utf-8");
+    std::string macroDir = Application::getUserMacroDir();
+    if (PyObject_IsTrue(actual)) {
+        macroDir = App::GetApplication().
+            GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+            ->GetASCII("MacroPath",macroDir.c_str());
+    }
+
+    Py::String user_macro_dir(macroDir,"utf-8");
     return Py::new_reference_to(user_macro_dir);
 }
 
