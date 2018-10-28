@@ -56,8 +56,8 @@ class Macro(object):
     def is_installed(self):
         if self.on_git and not self.src_filename:
             return False
-        return (os.path.exists(os.path.join(FreeCAD.getUserMacroDir(), self.filename))
-                or os.path.exists(os.path.join(FreeCAD.getUserMacroDir(), 'Macro_' + self.filename)))
+        return (os.path.exists(os.path.join(FreeCAD.getUserMacroDir(True), self.filename))
+                or os.path.exists(os.path.join(FreeCAD.getUserMacroDir(True), 'Macro_' + self.filename)))
 
     def fill_details_from_file(self, filename):
         with open(filename) as f:

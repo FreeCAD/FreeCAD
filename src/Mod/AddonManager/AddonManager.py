@@ -117,7 +117,7 @@ def install_macro(macro, macro_repo_dir):
     """
     if not macro.code:
         return False
-    macro_dir = FreeCAD.getUserMacroDir()
+    macro_dir = FreeCAD.getUserMacroDir(True)
     if not os.path.isdir(macro_dir):
         try:
             os.makedirs(macro_dir)
@@ -165,7 +165,7 @@ def remove_macro(macro):
     if not macro.is_installed():
         # Macro not installed, nothing to do.
         return True
-    macro_dir = FreeCAD.getUserMacroDir()
+    macro_dir = FreeCAD.getUserMacroDir(True)
     macro_path = os.path.join(macro_dir, macro.filename)
     macro_path_with_macro_prefix = os.path.join(macro_dir, 'Macro_' + macro.filename)
     if os.path.exists(macro_path):
@@ -184,9 +184,9 @@ def remove_macro(macro):
 def remove_directory_if_empty(dir):
     """Remove the directory if it is empty
 
-    Directory FreeCAD.getUserMacroDir() will not be removed even if empty.
+    Directory FreeCAD.getUserMacroDir(True) will not be removed even if empty.
     """
-    if dir == FreeCAD.getUserMacroDir():
+    if dir == FreeCAD.getUserMacroDir(True):
         return
     if not os.listdir(dir):
         os.rmdir(dir)
@@ -456,7 +456,7 @@ class AddonsInstaller(QtGui.QDialog):
             if not macro.is_installed():
                 # Macro not installed, nothing to do.
                 return
-            macro_path = os.path.join(FreeCAD.getUserMacroDir(), macro.filename)
+            macro_path = os.path.join(FreeCAD.getUserMacroDir(True), macro.filename)
             if os.path.exists(macro_path):
                 macro_path = macro_path.replace("\\","/")
 
@@ -915,7 +915,7 @@ class InstallWorker(QtCore.QThread):
                         self.download(self.repos[idx][1],clonedir)
                     answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
             # symlink any macro contained in the module to the macros folder
-            macro_dir = FreeCAD.getUserMacroDir()
+            macro_dir = FreeCAD.getUserMacroDir(True)
             if not os.path.exists(macro_dir):
                 os.makedirs(macro_dir)
             for f in os.listdir(clonedir):
