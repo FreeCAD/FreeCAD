@@ -35,11 +35,6 @@ from pivy import coin
 
 __doc__ = "Class and implementation of the Adaptive path operation."
 
-def discretize(edge, flipDirection=False):
-    pts=edge.discretize(Deflection=0.01)
-    if flipDirection: pts.reverse()
-    return pts
-
 def convertTo2d(pathArray):
     output = []
     for path in pathArray:
@@ -80,6 +75,11 @@ def sceneClean():
     for n in scenePathNodes:
         sceneGraph.removeChild(n)
     del scenePathNodes[:]
+
+def discretize(edge, flipDirection=False):
+    pts=edge.discretize(Deflection=0.0001)
+    if flipDirection: pts.reverse()
+    return pts
 
 def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     if len(adaptiveResults)==0 or len(adaptiveResults[0]["AdaptivePaths"])==0:
