@@ -95,6 +95,7 @@ ViewProvider::ViewProvider()
 ViewProvider::~ViewProvider()
 {
     if (pyViewObject) {
+        Base::PyGILStateLocker lock;
         pyViewObject->setInvalid();
         pyViewObject->DecRef();
     }
