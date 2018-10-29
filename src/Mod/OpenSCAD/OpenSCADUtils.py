@@ -41,10 +41,7 @@ except AttributeError:
         from PySide import QtGui
         return QtGui.QApplication.translate(context, text, None)
 
-try:
-    from io import open
-except ImportError:
-    from codecs import open
+import io
 
 try:
     import FreeCAD
@@ -180,7 +177,7 @@ def callopenscadstring(scadstr,outputext='csg'):
     import os,tempfile,time
     dir1=tempfile.gettempdir()
     inputfilename=os.path.join(dir1,'%s.scad' % next(tempfilenamegen))
-    inputfile = open(inputfilename,'w', encoding="utf8")
+    inputfile = io.open(inputfilename,'w', encoding="utf8")
     inputfile.write(scadstr)
     inputfile.close()
     outputfilename = callopenscad(inputfilename,outputext=outputext,\
