@@ -33,7 +33,7 @@ __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
 printverbose = False
 
-import FreeCAD, os, sys
+import FreeCAD, io, os, sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     gui = True
@@ -51,8 +51,6 @@ from OpenSCADUtils import *
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
-
-pythonopen = open
 
 # Get the token map from the lexer.  This is required.
 import tokrules
@@ -135,7 +133,7 @@ def processcsg(filename):
     if printverbose: print('Parser Loaded')
     # Give the lexer some input
     #f=open('test.scad', 'r')
-    f = pythonopen(filename, 'r', encoding="utf8")
+    f = io.open(filename, 'r', encoding="utf8")
     #lexer.input(f.read())
 
     if printverbose: print('Start Parser')
