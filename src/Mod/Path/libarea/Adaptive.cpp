@@ -335,43 +335,7 @@ void ScaleDownPaths(Paths &paths,long scaleFactor) {
 }
 
 
-// joins collinear segments (within the tolerance)
-void CleanPath(const Path &inp, Path &outpt, double tolerance)
-{
-	if (inp.size() < 3)
-	{
-		outpt = inp;
-		return;
-	}
-	Path tmp;
-	CleanPolygon(inp, tmp, tolerance);
-	// restore starting point
 
-	Path::size_type size = tmp.size();
-	double minDistSq = __DBL_MAX__;
-	double distSq =  0;
-	size_t clpPointIndex=0;
-	// iterate through points
-	for (Path::size_type j = 0; j < size; j++)
-	{
-		distSq = DistanceSqrd(tmp.at(j), inp.front());
-		if (distSq < minDistSq)
-		{
-			clpPointIndex = j;
-			minDistSq=distSq;
-		}
-	}
-
-	outpt.clear();
-	for (size_t i = 0; i < tmp.size(); i++)
-	{
-		long index = clpPointIndex + long(i);
-		if (index >= long(tmp.size()))
-			index -= long(tmp.size());
-		outpt.push_back(tmp.at(index));
-	}
-
-}
 
 double DistancePointToPathsSqrd(const Paths &paths, const IntPoint &pt, IntPoint &closestPointOnPath,
 								size_t &clpPathIndex,
@@ -401,6 +365,53 @@ double DistancePointToPathsSqrd(const Paths &paths, const IntPoint &pt, IntPoint
 		}
 	}
 	return minDistSq;
+}
+
+// joins collinear segments (within the tolerance)
+void CleanPath(const Path &inp, Path &outpt, double tolerance)
+{
+	if (inp.size() < 3)
+	{
+		outpt = inp;
+		return;
+	}
+	outpt.clear();
+	Path tmp;
+	CleanPolygon(inp, tmp, tolerance);
+	long size=long(tmp.size());
+
+	// CleanPolygon will have empty result if all points are collinear,
+	// 	need to add first and last point to the output
+	if(size<=2) {
+		outpt.push_back(inp.front());
+		outpt.push_back(inp.back());
+		return;
+	}
+
+	// restore starting point
+	double clpPar =  0;
+	size_t clpSegmentIndex=0;
+	size_t clpPathIndex=0;
+	Paths tmpPaths;
+	tmpPaths.push_back(tmp);
+	IntPoint clp;
+	// find point on cleaned poly that is closest to original starting point
+	DistancePointToPathsSqrd(tmpPaths,inp.front(),clp,clpPathIndex,clpSegmentIndex,clpPar);
+
+
+	// if closes point is not one of the polygon points, add it as separate first point
+	if(DistanceSqrd(clp,tmp.at(clpSegmentIndex)) > 0 &&
+		DistanceSqrd(clp,tmp.at(clpSegmentIndex>0 ? clpSegmentIndex-1 : size-1)) > 0) outpt.push_back(clp);
+
+	// add remaining points starting from closest
+	long index;
+	for (long i = 0; i < size; i++)
+	{
+		index = clpSegmentIndex + i;
+		if (index >= size) index -= size;
+		outpt.push_back(tmp.at(index));
+	}
+
 }
 
 bool Circle2CircleIntersect(const IntPoint &c1, const IntPoint &c2, double radius, pair<DoublePoint, DoublePoint> &intersections)
@@ -1724,7 +1735,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(const DPaths &stockPaths, const DP
 
 	DeduplicatePaths(converted, inputPaths);
 	ConnectPaths(inputPaths, inputPaths);
-	SimplifyPolygons(inputPaths);	
+	SimplifyPolygons(inputPaths);
 	ApplyStockToLeave(inputPaths);
 
 	//*************************
