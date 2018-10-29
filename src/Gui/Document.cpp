@@ -210,6 +210,7 @@ Document::~Document()
         delete it2->second;
 
     // remove the reference from the object
+    Base::PyGILStateLocker lock;
     _pcDocPy->setInvalid();
     _pcDocPy->DecRef();
     delete d;
