@@ -317,6 +317,16 @@ std::string DrawUtil::formatVector(const gp_Vec& v)
     return result;
 }
 
+std::string DrawUtil::formatVector(const gp_Pnt& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
+    builder << " (" << v.X()  << "," << v.Y() << "," << v.Z() << ") ";
+    result = builder.str();
+    return result;
+}
+
 
 //! compare 2 vectors for sorting - true if v1 < v2
 bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)  
