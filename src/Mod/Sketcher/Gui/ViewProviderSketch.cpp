@@ -1005,13 +1005,7 @@ void ViewProviderSketch::editDoubleClicked(void)
             Constraint *Constr = constrlist[*it];
 
             // if its the right constraint
-            if ((Constr->Type == Sketcher::Distance ||
-                Constr->Type == Sketcher::DistanceX || 
-                Constr->Type == Sketcher::DistanceY ||
-                Constr->Type == Sketcher::Radius ||
-                Constr->Type == Sketcher::Diameter ||
-                Constr->Type == Sketcher::Angle ||
-                Constr->Type == Sketcher::SnellsLaw)) {
+            if (Constr->isDimensional()) {
 
                 if(!Constr->isDriving) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",

@@ -92,13 +92,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
     Sketcher::Constraint* Constr = Constraints[ConstrNbr];
 
     // Return if constraint doesn't have editable value
-    if (Constr->Type == Sketcher::Distance ||
-        Constr->Type == Sketcher::DistanceX || 
-        Constr->Type == Sketcher::DistanceY ||
-        Constr->Type == Sketcher::Radius ||
-        Constr->Type == Sketcher::Diameter ||
-        Constr->Type == Sketcher::Angle ||
-        Constr->Type == Sketcher::SnellsLaw) {
+    if (Constr->isDimensional()) {
 
         QDialog dlg(Gui::getMainWindow());
         Ui::InsertDatum ui_ins_datum;

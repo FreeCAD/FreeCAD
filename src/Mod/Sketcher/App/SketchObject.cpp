@@ -298,15 +298,9 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
     ConstraintType type = vals[ConstrId]->Type;
-    if (type != Distance &&
-        type != DistanceX &&
-        type != DistanceY &&
-        type != Radius &&
-        type != Diameter &&
-        type != Angle &&
+    if (!vals[ConstrId]->isDimensional() &&
         type != Tangent && //for tangent, value==0 is autodecide, value==Pi/2 is external and value==-Pi/2 is internal
-        type != Perpendicular &&
-        type != SnellsLaw)
+        type != Perpendicular)
         return -1;
 
     if ((type == Distance || type == Radius || type == Diameter) && Datum <= 0)
@@ -334,16 +328,8 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
 
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
-
-    ConstraintType type = vals[ConstrId]->Type;
     
-    if (type != Distance &&
-        type != DistanceX &&
-        type != DistanceY &&
-        type != Radius &&
-        type != Diameter &&
-        type != Angle &&
-        type != SnellsLaw)
+    if (!vals[ConstrId]->isDimensional())
         return -2;
 
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving==true)
@@ -373,15 +359,7 @@ int SketchObject::getDriving(int ConstrId, bool &isdriving)
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
 
-    ConstraintType type = vals[ConstrId]->Type;
-
-    if (type != Distance &&
-        type != DistanceX &&
-        type != DistanceY &&
-        type != Radius &&
-        type != Diameter &&
-        type != Angle &&
-        type != SnellsLaw)
+    if (!vals[ConstrId]->isDimensional())
         return -1;
 
     isdriving=vals[ConstrId]->isDriving;
@@ -394,16 +372,8 @@ int SketchObject::toggleDriving(int ConstrId)
     
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
-
-    ConstraintType type = vals[ConstrId]->Type;
     
-    if (type != Distance &&
-        type != DistanceX &&
-        type != DistanceY &&
-        type != Radius &&
-        type != Diameter &&
-        type != Angle &&
-        type != SnellsLaw)
+    if (!vals[ConstrId]->isDimensional())
         return -2;
 
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && vals[ConstrId]->isDriving==false)
@@ -933,14 +903,7 @@ int SketchObject::addCopyOfConstraints(const SketchObject &orig)
     this->Constraints.setValues(newVals);
     
     for(std::size_t i = valssize, j = 0; i<newVals.size(); i++,j++){
-        if ( newVals[i]->isDriving && (
-            newVals[i]->Type == Sketcher::Distance ||
-            newVals[i]->Type == Sketcher::DistanceX ||
-            newVals[i]->Type == Sketcher::DistanceY ||
-            newVals[i]->Type == Sketcher::Radius ||
-            newVals[i]->Type == Sketcher::Diameter ||
-            newVals[i]->Type == Sketcher::Angle ||
-            newVals[i]->Type == Sketcher::SnellsLaw)) {
+        if ( newVals[i]->isDriving && newVals[i]->isDimensional()) {
 
             App::ObjectIdentifier spath = orig.Constraints.createPath(j);
 
