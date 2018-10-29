@@ -113,7 +113,7 @@ public:
     /// Copy the constraints instead of cloning them and copying the expressions if any
     int addCopyOfConstraints(const SketchObject &orig);
     /// add constraint
-    int addConstraint(const Constraint *constraint);
+    int addConstraint(const Constraint *constraint);    
     /// delete constraint
     int delConstraint(int ConstrId);
     int delConstraints(std::vector<int> ConstrIds, bool updategeometry=true);
@@ -179,6 +179,12 @@ public:
     int getDriving(int ConstrId, bool &isdriving);
     /// toggle the driving status of this constraint
     int toggleDriving(int ConstrId);
+    
+    /// Make all dimensionals Driving/non-Driving
+    int setDatumsDriving(bool isdriving);
+    /// Move Dimensional constraints at the end of the properties array
+    int moveDatumsToEnd(void);
+    
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
     /// get the driving status of this constraint
@@ -408,6 +414,11 @@ protected:
      \retval list - the supported geometry list
      */
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
+    
+    
+    // refactoring functions
+    // check whether constraint may be changed driving status
+    int testDrivingChange(int ConstrId, bool isdriving);
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
