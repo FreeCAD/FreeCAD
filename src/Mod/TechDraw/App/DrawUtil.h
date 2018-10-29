@@ -73,6 +73,7 @@ class TechDrawExport DrawUtil {
         static std::string formatVector(const Base::Vector2d& v);
         static std::string formatVector(const gp_Dir& v);
         static std::string formatVector(const gp_Vec& v);
+        static std::string formatVector(const gp_Pnt& v);
         static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
         static Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
         static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2, double tolerance = FLT_EPSILON);
