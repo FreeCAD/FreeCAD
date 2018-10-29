@@ -326,14 +326,10 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
 
-    if (ConstrId < 0 || ConstrId >= int(vals.size()))
-        return -1;
+    int ret = testDrivingChange(ConstrId, isdriving);
     
-    if (!vals[ConstrId]->isDimensional())
-        return -2;
-
-    if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving==true)
-        return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
+    if(ret < 0)
+        return ret;
 
     // copy the list
     std::vector<Constraint *> newVals(vals);
@@ -370,14 +366,10 @@ int SketchObject::toggleDriving(int ConstrId)
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     
-    if (ConstrId < 0 || ConstrId >= int(vals.size()))
-        return -1;
+    int ret = testDrivingChange(ConstrId,!vals[ConstrId]->isDriving);
     
-    if (!vals[ConstrId]->isDimensional())
-        return -2;
-
-    if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && vals[ConstrId]->isDriving==false)
-        return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
+    if(ret<0)
+        return ret;
     
     const Part::Geometry * geo1 = getGeometry(vals[ConstrId]->First);
     const Part::Geometry * geo2 = getGeometry(vals[ConstrId]->Second);
@@ -389,7 +381,7 @@ int SketchObject::toggleDriving(int ConstrId)
     
     if (extorconstructionpoint1 && extorconstructionpoint2 && extorconstructionpoint3 && vals[ConstrId]->isDriving==false)
         return -4;
-
+    
     // copy the list
     std::vector<Constraint *> newVals(vals);
     // clone the changed Constraint
@@ -405,6 +397,97 @@ int SketchObject::toggleDriving(int ConstrId)
         solve();
 
     return 0;
+}
+
+int SketchObject::testDrivingChange(int ConstrId, bool isdriving)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+    
+    if (!vals[ConstrId]->isDimensional())
+        return -2;
+
+    if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving==true)
+        return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
+
+    
+    return 0;
+}
+
+
+/// Make all dimensionals Driving/non-Driving
+int SketchObject::setDatumsDriving(bool isdriving)
+{
+     const std::vector<Constraint *> &vals = this->Constraints.getValues();
+     std::vector<Constraint *> newVals(vals);
+     
+     std::vector< Constraint * > tbd; // list of dynamically allocated memory that need to be deleted;
+     
+     for(size_t i=0; i<newVals.size(); i++) {
+        
+        if(!testDrivingChange(i, isdriving)) {        
+
+            Constraint *constNew = newVals[i]->clone();
+            constNew->isDriving = isdriving;
+            newVals[i] = constNew;
+            tbd.push_back(constNew);
+        }
+     }
+
+     
+    this->Constraints.setValues(newVals);
+    
+    
+    for(size_t i = 0; i < newVals.size(); i++) {
+        if (!isdriving && newVals[i]->isDimensional())
+            setExpression(Constraints.createPath(i), boost::shared_ptr<App::Expression>());
+    }
+    
+    for(auto &t : tbd)
+        delete t;
+    
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;
+}
+
+int SketchObject::moveDatumsToEnd(void)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+    
+    std::vector<Constraint *> copy(vals);
+    std::vector<Constraint *> newVals(vals.size());
+
+    int addindex= copy.size()-1;
+    
+    // add the dimensionals at the end
+    for(int i= copy.size()-1 ; i >= 0; i--) {
+            
+        if(copy[i]->isDimensional()) {
+            newVals[addindex] = copy[i];
+            addindex--;
+        }
+    }
+    
+    // add the non-dimensionals
+    for(int i = copy.size()-1; i >= 0; i--) {
+            
+        if(!copy[i]->isDimensional()) {
+            newVals[addindex] = copy[i];
+            addindex--;
+        }
+    }
+         
+    this->Constraints.setValues(newVals);
+
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+
+    return 0;    
 }
 
 int SketchObject::setVirtualSpace(int ConstrId, bool isinvirtualspace)
