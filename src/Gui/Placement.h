@@ -29,7 +29,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Base/Placement.h>
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 class QSignalMapper;
@@ -88,7 +88,7 @@ Q_SIGNALS:
 
 private:
     typedef Gui::LocationInterfaceComp<Ui_Placement> Ui_PlacementComp;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Ui_PlacementComp* ui;
     QSignalMapper* signalMapper;
     Connection connectAct;

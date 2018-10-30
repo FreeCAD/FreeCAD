@@ -23,7 +23,7 @@
 #ifndef WORKFLOWMANAGER_H_PB7A5GCM
 #define WORKFLOWMANAGER_H_PB7A5GCM
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <map>
 
 namespace App {
@@ -98,9 +98,9 @@ private:
 private:
     std::map<const App::Document*, Workflow> dwMap;
 
-    boost::signals::connection connectNewDocument;
-    boost::signals::connection connectFinishRestoreDocument;
-    boost::signals::connection connectDeleteDocument;
+    boost::signals2::connection connectNewDocument;
+    boost::signals2::connection connectFinishRestoreDocument;
+    boost::signals2::connection connectDeleteDocument;
 
     static WorkflowManager* _instance;
 };

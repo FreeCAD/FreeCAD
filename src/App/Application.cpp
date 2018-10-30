@@ -121,7 +121,6 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
 #include <QDir>

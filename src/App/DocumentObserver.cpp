@@ -27,7 +27,6 @@
 # include <sstream>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include "Application.h"

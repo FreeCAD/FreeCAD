@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <QListWidget>
 
 namespace App {
@@ -116,7 +116,7 @@ protected:
     void changeEvent(QEvent *e);
     void leaveEvent ( QEvent * event );
     ViewProviderSketch *sketchView;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectionElementsChanged;
 
 private:

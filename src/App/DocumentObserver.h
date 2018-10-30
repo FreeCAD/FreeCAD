@@ -25,7 +25,7 @@
 #define APP_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <set>
 
 namespace App
@@ -161,7 +161,7 @@ protected:
 
 private:
     App::Document* _document;
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;

@@ -75,7 +75,7 @@
 #include <random>
 
 // Boost
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
 

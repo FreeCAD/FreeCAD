@@ -30,7 +30,7 @@
 
 #include <gp_Ax2.hxx>
 #include <vector>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 #include <Mod/Drawing/App/FeatureViewPart.h>
 
@@ -148,8 +148,8 @@ private:
 
     bool    hidden, smooth;
     bool    autodims;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection connectDocumentDeletedObject;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection connectApplicationDeletedDocument;
+    boost::signals2::scoped_connection connectDocumentDeletedObject;
+    boost::signals2::scoped_connection connectApplicationDeletedDocument;
 };
 
 

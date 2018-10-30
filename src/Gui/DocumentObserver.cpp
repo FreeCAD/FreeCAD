@@ -27,7 +27,6 @@
 # include <sstream>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include "Application.h"
@@ -87,19 +86,6 @@ void DocumentObserver::detachDocument()
     this->connectDocumentUndo.disconnect();
     this->connectDocumentRedo.disconnect();
     this->connectDocumentDelete.disconnect();
-}
-
-void DocumentObserver::enableNotifications(DocumentObserver::Notifications value)
-{
-    this->connectDocumentCreatedObject.block(!(value & Create));
-    this->connectDocumentDeletedObject.block(!(value & Delete));
-    this->connectDocumentChangedObject.block(!(value & Change));
-    this->connectDocumentRelabelObject.block(!(value & Relabel));
-    this->connectDocumentActivateObject.block(!(value & Activate));
-    this->connectDocumentEditObject.block(!(value & Edit));
-    this->connectDocumentResetObject.block(!(value & Reset));
-    this->connectDocumentUndo.block(!(value & Undo));
-    this->connectDocumentRedo.block(!(value & Redo));
 }
 
 void DocumentObserver::slotUndoDocument(const Document& /*Doc*/)

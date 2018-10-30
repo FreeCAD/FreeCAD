@@ -32,9 +32,9 @@
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
 #include "TaskSketcherSolverAdvanced.h"
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 
 namespace SketcherGui {
 

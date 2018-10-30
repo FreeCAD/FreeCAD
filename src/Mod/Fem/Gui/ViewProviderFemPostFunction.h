@@ -28,28 +28,7 @@
 #include <Mod/Fem/App/FemPostFunction.h>
 #include <Inventor/SbMatrix.h>
 #include <QWidget>
-
-
-#if defined(signals) && defined(QOBJECTDEFS_H) && \
-  !defined(QT_MOC_CPP)
-#  undef signals
-#  define signals signals
-#endif
-
-#include <boost/signal.hpp>
-namespace boost
-{
-  namespace signalslib = signals;
-}
-
-#if defined(signals) && defined(QOBJECTDEFS_H) && \
-  !defined(QT_MOC_CPP)
-#  undef signals
-// Restore the macro definition of "signals", as it was
-// defined by Qt's <qobjectdefs.h>.
-#  define signals protected
-#endif
-
+#include <boost/signals2.hpp>
 
 class SoScale;
 class SoSurroundScale;
@@ -70,19 +49,19 @@ class FemGuiExport FunctionWidget : public QWidget {
 
     Q_OBJECT
 public:
-    FunctionWidget() {};
-    virtual ~FunctionWidget() {};
+    FunctionWidget() {}
+    virtual ~FunctionWidget() {}
 
     virtual void applyPythonCode() = 0;
     virtual void setViewProvider(ViewProviderFemPostFunction* view);
     void onObjectsChanged(const App::DocumentObject& obj, const App::Property&);
 
 protected:
-    ViewProviderFemPostFunction* getView()  {return m_view;};
-    Fem::FemPostFunction*        getObject(){return m_object;};
+    ViewProviderFemPostFunction* getView()  {return m_view;}
+    Fem::FemPostFunction*        getObject(){return m_object;}
 
-    bool blockObjectUpdates() {return m_block;};
-    void setBlockObjectUpdates(bool val) {m_block = val;};
+    bool blockObjectUpdates() {return m_block;}
+    void setBlockObjectUpdates(bool val) {m_block = val;}
 
     virtual void onChange(const App::Property& p) = 0;
 
@@ -90,7 +69,7 @@ private:
     bool                                        m_block;
     ViewProviderFemPostFunction*                m_view;
     Fem::FemPostFunction*                       m_object;
-    boost::signalslib::scoped_connection        m_connection;
+    boost::signals2::scoped_connection          m_connection;
 };
 
 class FemGuiExport ViewProviderFemPostFunctionProvider : public Gui::ViewProviderDocumentObject
