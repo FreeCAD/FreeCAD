@@ -87,8 +87,7 @@ namespace StdMeshers_ProjectionUtils
 {
   typedef StdMeshers_ShapeShapeBiDirectionMap                  TShapeShapeMap;
   typedef TopTools_IndexedDataMapOfShapeListOfShape            TAncestorMap;
-  typedef std::map<const SMDS_MeshNode*, const SMDS_MeshNode*,
-                   TIDCompare>                                 TNodeNodeMap;
+  typedef std::map<const SMDS_MeshNode*, const SMDS_MeshNode*> TNodeNodeMap;
 
 
   /*!
