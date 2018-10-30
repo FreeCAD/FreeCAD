@@ -623,8 +623,8 @@ bool BSpline::isCircle()
     Base::Vector3d center;
     bool isArc = false;
     getCircleParms(result,radius,center,isArc);
-    Base::Console().Message("TRACE - GEO::BS::isCircle - result: %d radius: %.3f center: %s isArc %d\n",
-                            result,radius,DrawUtil::formatVector(center).c_str(),isArc);
+//    Base::Console().Message("TRACE - GEO::BS::isCircle - result: %d radius: %.3f center: %s isArc %d\n",
+//                            result,radius,DrawUtil::formatVector(center).c_str(),isArc);
     
     return result;
 }
@@ -756,12 +756,14 @@ TopoDS_Edge BSpline::isCircle2(bool& arc)
     gp_Pnt center2 = circle2.Location();
     Base::Vector3d vc2 = DrawUtil::gpPnt2V3(center2);
 
-    // test circle creation and compare radii
+    // test circle creation and compare radii & centers
+    double allowError = 0.0008;          //trial and error 8/10,000mm printer resolution is 0.085mm
     double radius;
     Base::Vector3d center;
     if ( (gce_circ1.Status() == gce_Done) && 
          (gce_circ2.Status() == gce_Done) && 
-         (!DrawUtil::fpCompare(radius2,radius1)) ) {
+         (DrawUtil::fpCompare(radius2,radius1, allowError)) &&
+         (vc1.IsEqual(vc2,allowError))) {
         if (arc) {
             GC_MakeArcOfCircle makeArc(s,pcm,e);
             Handle(Geom_TrimmedCurve) tCurve = makeArc.Value();
