@@ -207,7 +207,7 @@ namespace PartGui {
         std::vector<int> edge_ids;
         TopTools_IndexedMapOfShape all_edges;
         TopTools_IndexedMapOfShape all_faces;
-        typedef boost::signals::connection Connection;
+        typedef boost::signals2::connection Connection;
         Connection connectApplicationDeletedObject;
         Connection connectApplicationDeletedDocument;
 

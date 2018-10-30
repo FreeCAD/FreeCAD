@@ -30,7 +30,6 @@
 # include <QFileInfo>
 # include <QMenu>
 # include <QPixmap>
-# include <boost/signals.hpp>
 # include <boost/bind.hpp>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoMaterial.h>

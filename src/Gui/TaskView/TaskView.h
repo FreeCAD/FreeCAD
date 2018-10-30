@@ -29,7 +29,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <QScrollArea>
 
 #if !defined (QSINT_ACTIONPANEL)
@@ -51,7 +51,7 @@ class CombiView;
 }
 namespace TaskView {
 
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 class TaskEditControl;
 class TaskDialog;
 

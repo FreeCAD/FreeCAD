@@ -437,8 +437,8 @@ private:
     std::vector<int> lastConflicting;
     std::vector<int> lastRedundant;
 
-    boost::signals::scoped_connection constraintsRenamedConn;
-    boost::signals::scoped_connection constraintsRemovedConn;
+    boost::signals2::scoped_connection constraintsRenamedConn;
+    boost::signals2::scoped_connection constraintsRemovedConn;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 

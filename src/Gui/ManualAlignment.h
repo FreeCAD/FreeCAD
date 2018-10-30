@@ -30,7 +30,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 class SbVec3f;
 class SoPickedPoint;
@@ -245,7 +245,7 @@ private:
 
     static ManualAlignment* _instance;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentDeletedObject;
 

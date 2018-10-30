@@ -121,7 +121,7 @@ private:
 
 private:
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection connectPropChanged;
 
     std::unique_ptr<Observer> observer;

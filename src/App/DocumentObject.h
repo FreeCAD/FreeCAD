@@ -33,7 +33,7 @@
 #include <CXX/Objects.hxx>
 
 #include <bitset>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 namespace App
 {
@@ -291,9 +291,9 @@ protected: // attributes
     App::Document* _pDoc;
 
     // Connections to track relabeling of document and document objects
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledDocumentConnection;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledObjectConnection;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onDeletedObjectConnection;
+    boost::signals2::scoped_connection onRelabledDocumentConnection;
+    boost::signals2::scoped_connection onRelabledObjectConnection;
+    boost::signals2::scoped_connection onDeletedObjectConnection;
 
     /// Old label; used for renaming expressions
     std::string oldLabel;

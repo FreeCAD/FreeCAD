@@ -641,11 +641,12 @@ void OrthoViews::del_view(int rel_x, int rel_y)             // remove a view fro
 
     if (num > 0)
     {
-        connectDocumentDeletedObject.block();
-        views[num]->deleteme();
-        delete views[num];
-        views.erase(views.begin() + num);
-        connectDocumentDeletedObject.unblock();
+        {
+            boost::signals2::shared_connection_block blocker(connectDocumentDeletedObject);
+            views[num]->deleteme();
+            delete views[num];
+            views.erase(views.begin() + num);
+        }
 
         min_r_x = max_r_x = 0;
         min_r_y = max_r_y = 0;
@@ -667,14 +668,13 @@ void OrthoViews::del_view(int rel_x, int rel_y)             // remove a view fro
 
 void OrthoViews::del_all()
 {
-    connectDocumentDeletedObject.block();
+    boost::signals2::shared_connection_block blocker(connectDocumentDeletedObject);
     for (int i = views.size() - 1; i >= 0; i--)          // count downwards to delete from back
     {
         views[i]->deleteme();
         delete views[i];
         views.pop_back();
     }
-    connectDocumentDeletedObject.unblock();
 }
 
 int OrthoViews::is_Ortho(int rel_x, int rel_y)              // is the view at r_x, r_y an ortho or axo one?

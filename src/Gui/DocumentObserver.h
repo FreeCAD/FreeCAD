@@ -25,8 +25,7 @@
 #define GUI_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
-#include <boost/signals.hpp>
-#include <QFlags>
+#include <boost/signals2.hpp>
 
 namespace App { class Property; }
 namespace Gui
@@ -45,21 +44,6 @@ class ViewProviderDocumentObject;
 class GuiExport DocumentObserver
 {
 public:
-    enum Notification {
-        None = 0x0000,
-        Create = 0x0001,
-        Delete = 0x0002,
-        Change = 0x0004,
-        Relabel = 0x0008,
-        Activate = 0x0010,
-        Edit = 0x0020,
-        Reset = 0x0040,
-        Undo = 0x0080,
-        Redo = 0x0100,
-        All = 0x01ff
-    };
-    Q_DECLARE_FLAGS(Notifications, Notification)
-
     /// Constructor
     DocumentObserver();
     virtual ~DocumentObserver();
@@ -72,9 +56,6 @@ public:
      * is not longer observed then.
      */
     void detachDocument();
-    /** Activates the connection depending on the given value.
-     */
-    void enableNotifications(Notifications value);
 
 private:
     /** Notifies when an object has been created. */
@@ -100,7 +81,7 @@ private:
     virtual void slotDeleteDocument(const Document& Doc);
 
 private:
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;

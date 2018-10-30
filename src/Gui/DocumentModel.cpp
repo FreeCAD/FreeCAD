@@ -26,7 +26,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <algorithm>
-# include <boost/signals.hpp>
+# include <boost/signals2.hpp>
 # include <boost/bind.hpp>
 #endif
 

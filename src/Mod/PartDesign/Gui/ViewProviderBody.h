@@ -96,8 +96,8 @@ protected:
 private:
     static const char* BodyModeEnum[];
 
-    boost::signals::connection connectChangedObjectApp;
-    boost::signals::connection connectChangedObjectGui;
+    boost::signals2::connection connectChangedObjectApp;
+    boost::signals2::connection connectChangedObjectGui;
 };
 
 

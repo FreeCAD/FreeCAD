@@ -131,7 +131,7 @@ private:
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectDelObject;
 };
 

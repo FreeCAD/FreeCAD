@@ -150,7 +150,7 @@ private:
     Qt::WindowStates wstate;
     // list of active objects of this view
     ActiveObjectList ActiveObjects;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectDelObject; //remove active object upon delete.
 };
 

@@ -51,7 +51,6 @@
 # include <QWhatsThis>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 // FreeCAD Base header
