@@ -33,9 +33,159 @@
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
 #include "DocumentObserver.h"
+#include <App/Document.h>
 
 using namespace Gui;
 
+
+DocumentT::DocumentT()
+{
+}
+
+DocumentT::DocumentT(Document* doc)
+{
+    document = doc->getDocument()->getName();
+}
+
+DocumentT::DocumentT(const std::string& name)
+{
+    document = name;
+}
+
+DocumentT::~DocumentT()
+{
+}
+
+void DocumentT::operator=(const DocumentT& doc)
+{
+    if (this == &doc)
+        return;
+    document = doc.document;
+}
+
+void DocumentT::operator=(const Document* doc)
+{
+    document = doc->getDocument()->getName();
+}
+
+void DocumentT::operator=(const std::string& name)
+{
+    document = name;
+}
+
+Document* DocumentT::getDocument() const
+{
+    return Application::Instance->getDocument(document.c_str());
+}
+
+std::string DocumentT::getDocumentName() const
+{
+    return document;
+}
+
+std::string DocumentT::getDocumentPython() const
+{
+    std::stringstream str;
+    Document* doc = Application::Instance->activeDocument();
+    if (doc && document == doc->getDocument()->getName()) {
+        str << "Gui.ActiveDocument";
+    }
+    else {
+        str << "Gui.getDocument(\""
+            << document
+            << "\")";
+    }
+    return str.str();
+}
+
+// -----------------------------------------------------------------------------
+
+ViewProviderT::ViewProviderT()
+{
+}
+
+ViewProviderT::ViewProviderT(ViewProviderDocumentObject* obj)
+{
+    object = obj->getObject()->getNameInDocument();
+    document = obj->getObject()->getDocument()->getName();
+}
+
+ViewProviderT::~ViewProviderT()
+{
+}
+
+void ViewProviderT::operator=(const ViewProviderT& obj)
+{
+    if (this == &obj)
+        return;
+    object = obj.object;
+    document = obj.document;
+}
+
+void ViewProviderT::operator=(const ViewProviderDocumentObject* obj)
+{
+    object = obj->getObject()->getNameInDocument();
+    document = obj->getObject()->getDocument()->getName();
+}
+
+Document* ViewProviderT::getDocument() const
+{
+    return Application::Instance->getDocument(document.c_str());
+}
+
+std::string ViewProviderT::getDocumentName() const
+{
+    return document;
+}
+
+std::string ViewProviderT::getDocumentPython() const
+{
+    std::stringstream str;
+    Document* doc = Application::Instance->activeDocument();
+    if (doc && document == doc->getDocument()->getName()) {
+        str << "Gui.ActiveDocument";
+    }
+    else {
+        str << "Gui.getDocument(\""
+            << document
+            << "\")";
+    }
+    return str.str();
+}
+
+ViewProviderDocumentObject* ViewProviderT::getViewProvider() const
+{
+    ViewProviderDocumentObject* obj = 0;
+    Document* doc = getDocument();
+    if (doc) {
+        obj = dynamic_cast<ViewProviderDocumentObject*>(doc->getViewProviderByName(object.c_str()));
+    }
+    return obj;
+}
+
+std::string ViewProviderT::getObjectName() const
+{
+    return object;
+}
+
+std::string ViewProviderT::getObjectPython() const
+{
+    std::stringstream str;
+    Document* doc = Application::Instance->activeDocument();
+    if (doc && document == doc->getDocument()->getName()) {
+        str << "Gui.ActiveDocument.";
+    }
+    else {
+        str << "Gui.getDocument(\""
+            << document
+            << "\").";
+    }
+
+    str << object;
+    return str.str();
+}
+
+// -----------------------------------------------------------------------------
 
 DocumentObserver::DocumentObserver()
 {

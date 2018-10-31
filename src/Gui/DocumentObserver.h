@@ -34,6 +34,87 @@ class Document;
 class ViewProviderDocumentObject;
 
 /**
+ * The DocumentT class is a helper class to store the name of a document.
+ * This can be useful when you cannot rely on that the document still exists when you have to
+ * access it.
+ *
+ * @author Werner Mayer
+ */
+class GuiExport DocumentT
+{
+public:
+    /*! Constructor */
+    DocumentT();
+    /*! Constructor */
+    DocumentT(Document*);
+    /*! Constructor */
+    DocumentT(const std::string&);
+    /*! Destructor */
+    ~DocumentT();
+    /*! Assignment operator */
+    void operator=(const DocumentT&);
+    /*! Assignment operator */
+    void operator=(const Document*);
+    /*! Assignment operator */
+    void operator=(const std::string&);
+
+    /*! Get a pointer to the document or 0 if it doesn't exist any more. */
+    Document* getDocument() const;
+    /*! Get the name of the document. */
+    std::string getDocumentName() const;
+    /*! Get the document as Python command. */
+    std::string getDocumentPython() const;
+
+private:
+    std::string document;
+};
+
+/**
+ * The ViewProviderT class is a helper class to store the names of a view provider and its document.
+ * This can be useful when you cannot rely on that the document or the object still exists when you have to
+ * access it.
+ *
+ * @author Werner Mayer
+ */
+class GuiExport ViewProviderT
+{
+public:
+    /*! Constructor */
+    ViewProviderT();
+    /*! Constructor */
+    ViewProviderT(ViewProviderDocumentObject*);
+    /*! Destructor */
+    ~ViewProviderT();
+    /*! Assignment operator */
+    void operator=(const ViewProviderT&);
+    /*! Assignment operator */
+    void operator=(const ViewProviderDocumentObject*);
+
+    /*! Get a pointer to the document or 0 if it doesn't exist any more. */
+    Document* getDocument() const;
+    /*! Get the name of the document. */
+    std::string getDocumentName() const;
+    /*! Get the document as Python command. */
+    std::string getDocumentPython() const;
+    /*! Get a pointer to the document object or 0 if it doesn't exist any more. */
+    ViewProviderDocumentObject* getViewProvider() const;
+    /*! Get the name of the document object. */
+    std::string getObjectName() const;
+    /*! Get the document object as Python command. */
+    std::string getObjectPython() const;
+    /*! Get a pointer to the document or 0 if it doesn't exist any more or the type doesn't match. */
+    template<typename T>
+    inline T* getObjectAs() const
+    {
+        return Base::freecad_dynamic_cast<T>(getViewProvider());
+    }
+
+private:
+    std::string document;
+    std::string object;
+};
+
+/**
  * The DocumentObserver class simplifies the step to write classes that listen
  * to what happens inside a document.
  * This is very useful for classes that needs to be notified when an observed
