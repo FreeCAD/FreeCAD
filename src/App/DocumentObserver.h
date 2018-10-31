@@ -48,12 +48,16 @@ public:
     DocumentT();
     /*! Constructor */
     DocumentT(Document*);
+    /*! Constructor */
+    DocumentT(const std::string&);
     /*! Destructor */
     ~DocumentT();
     /*! Assignment operator */
     void operator=(const DocumentT&);
     /*! Assignment operator */
     void operator=(const Document*);
+    /*! Assignment operator */
+    void operator=(const std::string&);
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
