@@ -62,8 +62,10 @@ public:
     Document* getDocument() const;
     /*! Get the name of the document. */
     std::string getDocumentName() const;
-    /*! Get the document as Python command. */
-    std::string getDocumentPython() const;
+    /*! Get the Gui::Document as Python command. */
+    std::string getGuiDocumentPython() const;
+    /*! Get the App::Document as Python command. */
+    std::string getAppDocumentPython() const;
 
 private:
     std::string document;
@@ -94,8 +96,10 @@ public:
     Document* getDocument() const;
     /*! Get the name of the document. */
     std::string getDocumentName() const;
-    /*! Get the document as Python command. */
-    std::string getDocumentPython() const;
+    /*! Get the Gui::Document as Python command. */
+    std::string getGuiDocumentPython() const;
+    /*! Get the App::Document as Python command. */
+    std::string getAppDocumentPython() const;
     /*! Get a pointer to the document object or 0 if it doesn't exist any more. */
     ViewProviderDocumentObject* getViewProvider() const;
     /*! Get the name of the document object. */
