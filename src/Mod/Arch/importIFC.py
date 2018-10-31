@@ -28,6 +28,7 @@ __author__ = "Yorik van Havre","Jonathan Wiedemann"
 __url__ =    "http://www.freecadweb.org"
 
 import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
+from DraftGeomUtils import vec
 
 ## @package importIFC
 #  \ingroup ARCH
@@ -2381,6 +2382,24 @@ def createCurve(ifcfile,wire):
         pol = ifcfile.createIfcCompositeCurve(segments,False)
     return pol
 
+def getEdgesAngle(edge1, edge2):
+    """ getEdgesAngle(edge1, edge2): returns a angle between two edges."""
+    vec1 = vec(edge1)
+    vec2 = vec(edge2)
+    angle = vec1.getAngle(vec2)
+    angle = math.degrees(angle)
+    return angle
+ 
+def checkRectangle(edges):
+    """ checkRectangle(edges=[]): This function checks whether the given form rectangle
+       or not. It will return True when edges form rectangular shape or return False
+       when edges not form a rectangular."""
+    angles = [round(getEdgesAngle(edges[0], edges[1])), round(getEdgesAngle(edges[0], edges[2])),
+            round(getEdgesAngle(edges[0], edges[3]))]
+    if angles.count(90) == 2 and (angles.count(180) == 1 or angles.count(0) == 1):
+        return True
+    else:
+        return False
 
 def getProfile(ifcfile,p):
 
@@ -2398,6 +2417,17 @@ def getProfile(ifcfile,p):
         elif isinstance(p.Edges[0].Curve,Part.Ellipse):
             # extruded ellipse
             profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
+
+    elif (checkRectangle(p.Edges)):
+    	pxvc = ifcbin.createIfcDirection((1.0,0.0))
+    	povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+    	pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
+	semiPerimeter = p.Length / 2;
+	diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
+	b = max(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
+	h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
+    	profile = ifcfile.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
+
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes
         f = p.Faces[0]
