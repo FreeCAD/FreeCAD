@@ -605,9 +605,12 @@ class Line(Creator):
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
                 FreeCADGui.addModule("Draft")
-                self.commit(translate("draft","Create DWire"),
-                            ['points='+pts,
-                             'line = Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')',
+                self.commit(translate("draft","Create Wire"),
+                            ['pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q = '+rot,
+                             'pl.Base = '+DraftVecUtils.toString(self.node[0]),
+                             'points = '+pts,
+                             'line = Draft.makeWire(points,placement=pl,closed='+str(closed)+',face='+fil+',support='+sup+')',
                              'Draft.autogroup(line)'])
         Creator.finish(self)
         if self.ui:
