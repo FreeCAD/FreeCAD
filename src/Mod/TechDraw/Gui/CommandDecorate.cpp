@@ -356,6 +356,7 @@ void CreateTechDrawCommandsDecorate(void)
 
 bool _checkSelectionHatch(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
+    Base::Console().Message("TRACE - CMDDEC::checkSelectionHatch - selection: %d\n",selection.size());
     if (selection.size() == 0) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
                              QObject::tr("Select a Face first"));

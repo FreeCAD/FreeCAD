@@ -516,6 +516,7 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     //set projection direction from selected Face
     //use first object with a face selected
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    Base::Console().Message("TRACE - CMDPROJGROUP - selection: %d\n",selection.size());
     Part::Feature* partFeat = 0;
     std::vector<std::string> SubNames;
     std::string faceName;

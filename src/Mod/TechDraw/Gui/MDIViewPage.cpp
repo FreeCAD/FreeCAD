@@ -226,6 +226,7 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
                 vp->hide();
         }
     }
+
     blockSelection(false);
 }
 
@@ -892,7 +893,6 @@ void MDIViewPage::clearSceneSelection()
           item->updateView();
       }
   }
-
   blockSelection(false);
 }
 
@@ -906,7 +906,6 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
     }
     QGIView *view = m_view->findQViewForDocObj(objCopy);
 
-    blockSelection(true);
     if(view) {
         bool state = view->isSelected();
         if (state != isSelected) {
@@ -914,13 +913,15 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
             view->updateView();
         }
     }
-    blockSelection(false);
 }
 
-//! invoked by selection change made in Tree via father MDIView
+//! invoked by selection change made in Tree via father MDIView/SelectionObserver
 //really "onTreeSelectionChanged"
 void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    if(isSelectionBlocked)  {
+        return;
+    }
     std::vector<Gui::SelectionSingleton::SelObj> selObjs = Gui::Selection().getSelection(msg.pDocName);
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         clearSceneSelection();
@@ -994,13 +995,12 @@ void MDIViewPage::sceneSelectionManager()
 //triggered by m_view->scene() signal
 void MDIViewPage::sceneSelectionChanged()
 {
-    sceneSelectionManager();
-
-    QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
- 
     if(isSelectionBlocked)  {
         return;
     }
+
+    sceneSelectionManager();
+//    QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
 
     std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
 //    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
@@ -1018,9 +1018,9 @@ void MDIViewPage::sceneSelectionChanged()
 //Note: no guarantee of selection order???
 void MDIViewPage::setTreeToSceneSelect(void)
 {
-    bool saveBlock = blockConnection(true); // block selectionChanged signal from Tree/Observer
+    blockConnection(true); // block selectionChanged signal from Tree/Observer
     blockSelection(true);
-    Gui::Selection().clearSelection();
+    Gui::Selection().clearSelection(); 
 //    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();   //"no particular order"!!!
     QList<QGraphicsItem*> sceneSel = m_sceneSelected;
     for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
@@ -1040,7 +1040,7 @@ void MDIViewPage::setTreeToSceneSelect(void)
 
                 std::stringstream ss;
                 ss << "Edge" << edge->getProjIndex();
-                //bool accepted =
+//                bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),
                                               ss.str().c_str()));
@@ -1128,7 +1128,6 @@ void MDIViewPage::setTreeToSceneSelect(void)
             if (viewObj && !viewObj->isRemoving()) {
                 std::string doc_name = viewObj->getDocument()->getName();
                 std::string obj_name = viewObj->getNameInDocument();
-
                 Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str());
                 showStatusMsg(doc_name.c_str(),
                               obj_name.c_str(),
@@ -1138,7 +1137,7 @@ void MDIViewPage::setTreeToSceneSelect(void)
     }
 
     blockSelection(false);
-    blockConnection(saveBlock);
+    blockConnection(false);
 }
 
 bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel)
