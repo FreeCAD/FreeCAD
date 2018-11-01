@@ -489,7 +489,7 @@ void ViewProviderSketch::snapToGrid(double &x, double &y)
 {
     if (GridSnap.getValue() != false) {
         // Snap Tolerance in pixels
-        const double snapTol = GridSize.getValue() / 5;
+        const double snapTol = GridSize.getValue() / 2;
 
         double tmpX = x, tmpY = y;
 
