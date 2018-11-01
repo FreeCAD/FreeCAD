@@ -1107,7 +1107,7 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
                         continue; // skip this constraint
                 }
             }
-            else if ((*it)->Type == Sketcher::Tangent) {
+            else if ((*it)->Type == Sketcher::Tangent || (*it)->Type == Sketcher::Perpendicular) {
                 if (((*it)->First == GeoId && (*it)->FirstPos == PosId) ||
                     ((*it)->Second == GeoId && (*it)->SecondPos == PosId)) {
                     // we could keep the tangency constraint by converting it
@@ -1404,8 +1404,9 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         const std::vector<Constraint *> &constraints = this->Constraints.getValues();
 
         for (std::vector<Constraint *>::const_iterator it=constraints.begin(); it != constraints.end(); ++it) {
-            if ((*it)->Type == Sketcher::Coincident) {
-                if ((*it)->First == GeoId1 && (*it)->Second == GeoId2) {
+            if ((*it)->Type == Sketcher::Coincident || (*it)->Type == Sketcher::Perpendicular || (*it)->Type == Sketcher::Tangent) {
+                if ((*it)->First == GeoId1 && (*it)->Second == GeoId2 && 
+                    (*it)->FirstPos != Sketcher::none && (*it)->SecondPos != Sketcher::none ) {
                     Base::Vector3d tmpp1 = getPoint((*it)->First,(*it)->FirstPos);
                     Base::Vector3d tmpp2 = getPoint((*it)->Second,(*it)->SecondPos);
                     double tmpdist = distancetorefpoints(tmpp1, 
@@ -1419,7 +1420,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
                         interpoints = std::make_pair(tmpp1,tmpp2);
                     }
                 }
-                else if ((*it)->First == GeoId2 && (*it)->Second == GeoId1) {
+                else if ((*it)->First == GeoId2 && (*it)->Second == GeoId1 && 
+                         (*it)->FirstPos != Sketcher::none && (*it)->SecondPos != Sketcher::none ) {
                     Base::Vector3d tmpp2 = getPoint((*it)->First,(*it)->FirstPos);
                     Base::Vector3d tmpp1 = getPoint((*it)->Second,(*it)->SecondPos);
                     double tmpdist = distancetorefpoints(tmpp1, 
