@@ -83,7 +83,7 @@ std::string DocumentT::getDocumentName() const
     return document;
 }
 
-std::string DocumentT::getDocumentPython() const
+std::string DocumentT::getGuiDocumentPython() const
 {
     std::stringstream str;
     Document* doc = Application::Instance->activeDocument();
@@ -92,6 +92,21 @@ std::string DocumentT::getDocumentPython() const
     }
     else {
         str << "Gui.getDocument(\""
+            << document
+            << "\")";
+    }
+    return str.str();
+}
+
+std::string DocumentT::getAppDocumentPython() const
+{
+    std::stringstream str;
+    Document* doc = Application::Instance->activeDocument();
+    if (doc && document == doc->getDocument()->getName()) {
+        str << "App.ActiveDocument";
+    }
+    else {
+        str << "App.getDocument(\""
             << document
             << "\")";
     }
@@ -138,19 +153,16 @@ std::string ViewProviderT::getDocumentName() const
     return document;
 }
 
-std::string ViewProviderT::getDocumentPython() const
+std::string ViewProviderT::getGuiDocumentPython() const
 {
-    std::stringstream str;
-    Document* doc = Application::Instance->activeDocument();
-    if (doc && document == doc->getDocument()->getName()) {
-        str << "Gui.ActiveDocument";
-    }
-    else {
-        str << "Gui.getDocument(\""
-            << document
-            << "\")";
-    }
-    return str.str();
+    DocumentT doct(document);
+    return doct.getGuiDocumentPython();
+}
+
+std::string ViewProviderT::getAppDocumentPython() const
+{
+    DocumentT doct(document);
+    return doct.getAppDocumentPython();
 }
 
 ViewProviderDocumentObject* ViewProviderT::getViewProvider() const

@@ -878,9 +878,12 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
         print("Invalid input points: ",pointslist)
     #print(pointslist)
     #print(closed)
-    if placement: typecheck([(placement,FreeCAD.Placement)], "makeWire")
+    if placement:
+        typecheck([(placement,FreeCAD.Placement)], "makeWire")
+        ipl = placement.inverse()
+        pointslist = [ipl.multVec(p) for p in pointslist]
     if len(pointslist) == 2: fname = "Line"
-    else: fname = "DWire"
+    else: fname = "Wire"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _Wire(obj)
     obj.Points = pointslist
