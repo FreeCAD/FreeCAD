@@ -1050,9 +1050,6 @@ bool TaskDlgAttacher::accept()
 
         Gui::Command::doCommand(Gui::Command::Doc,"%s.recompute()", appDocument.c_str());
 
-        if (!ViewProvider->getObject()->isValid())
-            throw Base::RuntimeError(ViewProvider->getObject()->getStatusString());
-
         Gui::Command::doCommand(Gui::Command::Gui, "%s.resetEdit()", guiDocument.c_str());
         document->commitCommand();
     }
