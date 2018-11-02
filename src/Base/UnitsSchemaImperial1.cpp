@@ -109,7 +109,7 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
         factor = 16387.064;
     }
     else if (unit == Unit::Mass) {
-        // TODO Cascade for the wights
+        // TODO Cascade for the weights
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("lb");
         factor = 0.45359237;
@@ -175,7 +175,7 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
         factor = 16387.064;
     }
     else if (unit == Unit::Mass) {
-        // TODO Cascade for the wights
+        // TODO Cascade for the weights
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("lb");
         factor = 0.45359237;
@@ -216,7 +216,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         double totalInches = std::abs(quant.getValue())/factor;
 
         // minimum denominator (8 for 1/8, 16 for 1/16, etc)
-        int       minden; 
+        int       minden;
 
         // Outputs
         int       feet;    // whole feet
@@ -283,11 +283,11 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
             // if there is to be trailing numbers, add space
             if( inches!=0 || num!=0 )
             {
-                output << " "; 
+                output << " ";
             }
         }
 
-        // Three cases: 
+        // Three cases:
         //   1. Whole inches, no fraction
         //   2. Whole inches, fraction
         //   3. Fraction only
@@ -303,7 +303,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         {
             output << num << "/" << den << "\"";
         }
-        
+
         // Done!
         return QString::fromLatin1(output.str().c_str());
     }
