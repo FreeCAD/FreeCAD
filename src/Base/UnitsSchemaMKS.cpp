@@ -87,7 +87,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         }
     }
     else if (unit == Unit::Mass) {
-        // TODO Cascade for the wights
+        // TODO Cascade for the weights
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
