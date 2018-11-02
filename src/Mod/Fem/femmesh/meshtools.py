@@ -1152,7 +1152,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
 
 def get_ref_shape_node_sum_geom_table(node_geom_table):
     # shape could be Edge or Face, geom could be length or area
-    # sum of legth or area for each node of the ref_shape
+    # sum of length or area for each node of the ref_shape
     node_sum_geom_table = {}
     for n, A in node_geom_table:
         # print(n, ' --> ', A)

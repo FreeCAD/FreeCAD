@@ -575,7 +575,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT BUILD_WITH_CONDA)
     if(FREECAD_USE_PCL)
         find_package(PCL REQUIRED COMPONENTS common kdtree features surface io filters segmentation sample_consensus)
     endif(FREECAD_USE_PCL)
-    
+
 # -------------------------------- PyBind11 -----------------------------
 # necessary for flat-mesh feature
 OPTION(FREECAD_USE_PYBIND11 "Use pybind11" OFF)
@@ -674,7 +674,7 @@ endif()
             endforeach()
         endif()
 
-        # don't check VERSION 6 as this would exlude VERSION 7
+        # don't check VERSION 6 as this would exclude VERSION 7
         if(AVAILABLE_VTK_COMPONENTS)
             message(STATUS "VTK components: ${AVAILABLE_VTK_COMPONENTS}")
             find_package(VTK COMPONENTS ${AVAILABLE_VTK_COMPONENTS} REQUIRED NO_MODULE)
@@ -992,14 +992,14 @@ endif()
 
 	if(APPLE)
 	    INSTALL(
-	        DIRECTORY	
+	        DIRECTORY
                     ${CMAKE_BINARY_DIR}/Ext/PySide
 		DESTINATION
                     MacOS
             )
 	else()
             INSTALL(
-	        DIRECTORY	
+	        DIRECTORY
                     ${CMAKE_BINARY_DIR}/Ext/PySide
                 DESTINATION
                     Ext
