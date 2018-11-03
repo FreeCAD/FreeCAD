@@ -457,7 +457,8 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        PathUtils.addToJob(arg1.Object.Base)
+        job = PathUtils.findParentJob(arg1.Object.Base)
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
         arg1.Object.Base = None
         return True
 
