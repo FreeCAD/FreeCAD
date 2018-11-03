@@ -37,7 +37,8 @@ def translate(context, text, disambig=None):
 class ObjectCustom:
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyStringList", "Gcode", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "The gcode to be inserted"))
+        obj.addProperty("App::PropertyStringList", "Gcode", "Path", QtCore.QT_TRANSLATE_NOOP("PathCustom", "The gcode to be inserted"))
+        obj.addProperty("App::PropertyLink", "ToolController", "Path", QtCore.QT_TRANSLATE_NOOP("PathCustom", "The tool controller that will be used to calculate the path"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -78,6 +79,7 @@ class CommandPathCustom:
         FreeCADGui.doCommand('PathScripts.PathCustom.ObjectCustom(obj)')
         FreeCADGui.doCommand('obj.ViewObject.Proxy = 0')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('obj.ToolController = PathScripts.PathUtils.findToolController(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
