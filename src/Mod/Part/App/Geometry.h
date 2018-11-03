@@ -161,6 +161,7 @@ public:
      */
     virtual GeomBSplineCurve* toNurbs(double first, double last) const;
     bool tangent(double u, gp_Dir&) const;
+    bool tangent(double u, Base::Vector3d& dir) const;
     Base::Vector3d pointAtParameter(double u) const;
     Base::Vector3d firstDerivativeAtParameter(double u) const;
     Base::Vector3d secondDerivativeAtParameter(double u) const;
