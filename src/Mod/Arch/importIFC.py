@@ -2418,14 +2418,14 @@ def getProfile(ifcfile,p):
             # extruded ellipse
             profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
     elif (checkRectangle(p.Edges)):
-    	pxvc = ifcbin.createIfcDirection((1.0,0.0))
-    	povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
-    	pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
-	semiPerimeter = p.Length / 2;
-	diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
-	b = max(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
-	h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
-    	profile = ifcfile.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
+        pxvc = ifcbin.createIfcDirection((1.0,0.0))
+        povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
+        pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
+        semiPerimeter = p.Length/2
+        diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
+        b = max(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
+        h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
+        profile = ifcfile.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes
         f = p.Faces[0]
