@@ -83,7 +83,8 @@
 #include <Mod/Sketcher/App/SketchObjectPy.h>
 
 
-#define DEBUG
+#undef DEBUG
+//#define DEBUG
 
 using namespace Sketcher;
 using namespace Base;
