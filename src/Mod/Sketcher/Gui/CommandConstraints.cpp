@@ -669,6 +669,11 @@ bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool &autoremove
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
     bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants",false);
 
+    // We need to make sure the solver has right redundancy information before trying to remove the redundants.
+    // for example if a non-driving constraint has been added.
+    if(autoRemoveRedundants && autoRecompute) 
+        obj->solve();
+        
     if(autoRemoveRedundants)
         obj->autoRemoveRedundants();
     
