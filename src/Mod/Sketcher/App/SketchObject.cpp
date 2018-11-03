@@ -82,6 +82,9 @@
 #include "Sketch.h"
 #include <Mod/Sketcher/App/SketchObjectPy.h>
 
+
+#define DEBUG
+
 using namespace Sketcher;
 using namespace Base;
 
@@ -1389,7 +1392,10 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             THROWM(Base::CADKernelError, "Unable to determine the parameter of the second selected curve at the reference point.")
         }
         
-        //Base::Console().Log("Ref param: (%f);(%f)",refparam1,refparam2);
+#ifdef DEBUG
+        Base::Console().Log("\n\nFILLET DEBUG\n\n");
+        Base::Console().Log("Ref param: (%f);(%f)",refparam1,refparam2);
+#endif
         
         std::pair<Base::Vector3d, Base::Vector3d> interpoints;
         std::vector<std::pair<Base::Vector3d, Base::Vector3d>> points;
@@ -1499,39 +1505,46 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         // get the starting parameters of each curve
         double spc1 = curve1->getFirstParameter();
         double spc2 = curve2->getFirstParameter(); 
+
+#ifdef DEBUG        
+        Base::Console().Log("Start param: (%f);(%f)\n",spc1,spc2);
         
-        //Base::Console().Log("Start param: (%f);(%f)\n",spc1,spc2);
+        Base::Vector3d c1pf = curve1->pointAtParameter(spc1);
+        Base::Vector3d c2pf = curve2->pointAtParameter(spc2);
         
-        //Base::Vector3d c1pf = curve1->pointAtParameter(spc1);
-        //Base::Vector3d c2pf = curve2->pointAtParameter(spc2);
+        Base::Console().Log("start point curves: (%f,%f,%f);(%f,%f,%f)\n",c1pf.x,c1pf.y,c1pf.z,c2pf.x,c2pf.y,c2pf.z);
         
-        //Base::Console().Log("start point curves: (%f,%f,%f);(%f,%f,%f)\n",c1pf.x,c1pf.y,c1pf.z,c2pf.x,c2pf.y,c2pf.z);
-        
+#endif        
         // We create Offset curves at the suggested radius, the direction of offset is estimated from the tangency vector
         Base::Vector3d tdir1 = curve1->firstDerivativeAtParameter(refparam1);
         Base::Vector3d tdir2 = curve2->firstDerivativeAtParameter(refparam2);
 
-        //Base::Console().Log("tangent vectors: (%f,%f,%f);(%f,%f,%f)\n",tdir1.x,tdir1.y,tdir1.z,tdir2.x,tdir2.y,tdir2.z);
+#ifdef DEBUG 
+        Base::Console().Log("tangent vectors: (%f,%f,%f);(%f,%f,%f)\n",tdir1.x,tdir1.y,tdir1.z,tdir2.x,tdir2.y,tdir2.z);
         
-        //Base::Console().Log("inter-ref vector: (%f,%f,%f)\n",ref21.x,ref21.y,ref21.z);
+        Base::Console().Log("inter-ref vector: (%f,%f,%f)\n",ref21.x,ref21.y,ref21.z);
+#endif
         
         Base::Vector3d vn(0,0,1);
         
         double sdir1 = tdir1.Cross(ref21).Dot(vn);
         double sdir2 = tdir2.Cross(-ref21).Dot(vn);
         
-        //Base::Console().Log("sign of offset: (%f,%f)\n",sdir1,sdir2);
-        //Base::Console().Log("radius: %f\n",radius);
+#ifdef DEBUG         
+        Base::Console().Log("sign of offset: (%f,%f)\n",sdir1,sdir2);
+        Base::Console().Log("radius: %f\n",radius);
+#endif
         
         Part::GeomOffsetCurve * ocurve1 = new Part::GeomOffsetCurve(Handle(Geom_Curve)::DownCast(curve1->handle()), (sdir1<0)?radius:-radius, vn);
         
         Part::GeomOffsetCurve * ocurve2 = new Part::GeomOffsetCurve(Handle(Geom_Curve)::DownCast(curve2->handle()), (sdir2<0)?radius:-radius, vn);
  
-        //Base::Vector3d oc1pf = ocurve1->pointAtParameter(ocurve1->getFirstParameter());
-        //Base::Vector3d oc2pf = ocurve2->pointAtParameter(ocurve2->getFirstParameter());
+#ifdef DEBUG        
+        Base::Vector3d oc1pf = ocurve1->pointAtParameter(ocurve1->getFirstParameter());
+        Base::Vector3d oc2pf = ocurve2->pointAtParameter(ocurve2->getFirstParameter());
         
-        //Base::Console().Log("start point offset curves: (%f,%f,%f);(%f,%f,%f)\n",oc1pf.x,oc1pf.y,oc1pf.z,oc2pf.x,oc2pf.y,oc2pf.z);        
-        
+        Base::Console().Log("start point offset curves: (%f,%f,%f);(%f,%f,%f)\n",oc1pf.x,oc1pf.y,oc1pf.z,oc2pf.x,oc2pf.y,oc2pf.z);        
+       
         /*auto printoffsetcurve = [](Part::GeomOffsetCurve *c) {
         
             for(double param = c->getFirstParameter(); param < c->getLastParameter(); param = param + (c->getLastParameter()-c->getFirstParameter())/10)
@@ -1541,14 +1554,20 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         
         printoffsetcurve(ocurve1);
         printoffsetcurve(ocurve2);*/
-            
+#endif 
+
         // Next we calculate the intersection of offset curves to get the center of the fillet
         std::pair<Base::Vector3d, Base::Vector3d> filletcenterpoint;
         std::vector<std::pair<Base::Vector3d, Base::Vector3d>> offsetintersectionpoints;
 
         try {
-            if(!ocurve1->intersect(ocurve2,offsetintersectionpoints))
+            if(!ocurve1->intersect(ocurve2,offsetintersectionpoints)) {
+#ifdef DEBUG                  
+                Base::Console().Log("No intersection between offset curves\n");
+#endif 
                 return -1;
+                
+            }
         }
         catch (Base::CADKernelError e) {
             e.ReportException();          
@@ -1584,10 +1603,10 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         // Next we calculate the closest points to the fillet center, so the points where tangency is to be applied
         Base::Vector3d refp1 = curve1->pointAtParameter(refoparam1);
         Base::Vector3d refp2 = curve2->pointAtParameter(refoparam2);
-        
-        //Base::Console().Log("refpoints: (%f,%f,%f);(%f,%f,%f)",refp1.x,refp1.y,refp1.z,refp2.x,refp2.y,refp2.z);
-        
-        
+
+#ifdef DEBUG         
+        Base::Console().Log("refpoints: (%f,%f,%f);(%f,%f,%f)",refp1.x,refp1.y,refp1.z,refp2.x,refp2.y,refp2.z);
+#endif        
         // Now we create arc for the fillet
         double startAngle, endAngle, range;
        
@@ -1695,6 +1714,10 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         delete arc;
         delete ocurve1;
         delete ocurve2;
+
+#ifdef DEBUG
+        Base::Console().Log("\n\nEND OF FILLET DEBUG\n\n");
+#endif
         
         if(noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
             solve();
