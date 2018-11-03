@@ -83,8 +83,8 @@
 #include <Mod/Sketcher/App/SketchObjectPy.h>
 
 
-#undef DEBUG
-//#define DEBUG
+//#undef DEBUG
+#define DEBUG
 
 using namespace Sketcher;
 using namespace Base;
@@ -1495,17 +1495,63 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             THROWM(Base::CADKernelError,"Unable to determine the parameter of the second selected curve at the intersection of the curves.")
         }
         
+        // get the starting parameters of each curve
+        double spc1 = curve1->getFirstParameter();
+        double spc2 = curve2->getFirstParameter(); 
+        
         // get a fillet radius if zero was given
         Base::Vector3d ref21 = refPnt2 - refPnt1;
                 
         if(radius == .0f) {
             // guess a radius
-            radius = ref21.Length();
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=31594&start=50#p266658
+            //
+            // We do not know the actual tangency points until we intersect the offset curves, but
+            // we do not have offset curves before with decide on a radius.
+            //
+            // This estimation guesses a radius as the average of the distances from the reference points
+            // with respect to the intersection of the normals at those reference points.
+            
+            try {
+                Base::Vector3d tdir1;
+                Base::Vector3d tdir2;
+                
+                // We want normals, but OCCT normals require curves to be 2 times derivable, and lines are not
+                // tangency calculation requires 1 time derivable.
+                
+                if(!curve1->tangent(refparam1, tdir1))
+                    return -1;
+                
+                if(!curve2->tangent(refparam2, tdir2))
+                    return -1;
+                
+                Base::Vector3d dir1(tdir1.y,-tdir1.x,0);
+                Base::Vector3d dir2(tdir2.y,-tdir2.x,0);
+                
+                
+                double det = -dir1.x*dir2.y + dir2.x*dir1.y;
+                
+                if(abs(det) < Precision::Confusion())
+                    throw Base::RuntimeError("No intersection of normals"); // no intersection of normals
+                
+                Base::Vector3d refp1 = curve1->pointAtParameter(refparam1);
+                Base::Vector3d refp2 = curve2->pointAtParameter(refparam2);
+                
+                //Base::Console().Log("refpoints: (%f,%f,%f);(%f,%f,%f)",refp1.x,refp1.y,refp1.z,refp2.x,refp2.y,refp2.z);
+                
+                Base::Vector3d normalintersect(
+                    (-dir1.x*dir2.x*refp1.y + dir1.x*dir2.x*refp2.y - dir1.x*dir2.y*refp2.x + dir2.x*dir1.y*refp1.x)/det,
+                    (-dir1.x*dir2.y*refp1.y + dir2.x*dir1.y*refp2.y + dir1.y*dir2.y*refp1.x - dir1.y*dir2.y*refp2.x)/det,0);
+                
+                radius = ((refp1 - normalintersect).Length() + (refp2 - normalintersect).Length())/2;
+            }
+            catch(Base::Exception e) {
+                
+                radius = ref21.Length(); // fall-back to simplest estimation.
+            }
         }
         
-        // get the starting parameters of each curve
-        double spc1 = curve1->getFirstParameter();
-        double spc2 = curve2->getFirstParameter(); 
+
 
 #ifdef DEBUG        
         Base::Console().Log("Start param: (%f);(%f)\n",spc1,spc2);
