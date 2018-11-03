@@ -8,7 +8,8 @@ Implementation by Torsten Sadowski 2018
 #include <FCConfig.h>
 #include <Base/Console.h>
 #include <QMainWindow>
-#include <QTimer>
+
+#include <QSocketNotifier>
 
 #include <spnav.h>
 
@@ -35,9 +36,8 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
         Base::Console().Log("Couldn't connect to spacenav daemon\n");
     } else {
         Base::Console().Log("Connected to spacenav daemon\n");
-        QTimer* SpacenavPollTimer = new QTimer(this);
-		connect(SpacenavPollTimer, &QTimer::timeout, this, &GuiNativeEvent::pollSpacenav);
-		SpacenavPollTimer->start(20);
+		QSocketNotifier* SpacenavNotifier = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
+		connect(SpacenavNotifier, &QSocketNotifier::activated, this, &GuiNativeEvent::pollSpacenav); 
 		mainApp->setSpaceballPresent(true);
     }
 }
