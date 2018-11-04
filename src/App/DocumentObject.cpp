@@ -38,7 +38,6 @@
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
-#include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
 
 using namespace App;
