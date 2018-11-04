@@ -585,7 +585,7 @@ class _ViewProviderAxis:
                 return str(num+1).zfill(3)
             elif vobj.NumberingStyle == "A,B,C":
                 result = ""
-                base = num/26
+                base = num//26
                 if base:
                     result += chars[base].upper()
                 remainder = num % 26
@@ -593,7 +593,7 @@ class _ViewProviderAxis:
                 return result
             elif vobj.NumberingStyle == "a,b,c":
                 result = ""
-                base = num/26
+                base = num//26
                 if base:
                     result += chars[base]
                 remainder = num % 26
