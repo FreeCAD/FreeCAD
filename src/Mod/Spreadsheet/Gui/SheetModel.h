@@ -24,7 +24,6 @@
 #define SHEETMODEL_H
 
 #include <QAbstractTableModel>
-#include <boost/signals/connection.hpp>
 #include <Mod/Spreadsheet/App/Utils.h>
 #include <App/Range.h>
 
