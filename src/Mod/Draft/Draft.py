@@ -2111,7 +2111,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     if round(c.Axis.getAngle(drawing_plane_normal),2) in [0,3.14]:
                         occversion = Part.OCC_VERSION.split(".")
                         done = False
-                        if (occversion[0] >= 7) and (occversion[1] >= 1):
+                        if (int(occversion[0]) >= 7) and (int(occversion[1]) >= 1):
                             # if using occ >= 7.1, use HLR algorithm
                             import Drawing
                             snip = Drawing.projectToSVG(e,drawing_plane_normal)
