@@ -147,7 +147,7 @@ private:
 private:
     typedef boost::signals2::connection Connection;
     Connection connectSelection;
-    boost::signals2::shared_connection_block blocker;
+    bool blockSelection;
 };
 
 /**
