@@ -2488,7 +2488,19 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     delConstraintOnPoint(GeoId, end, false);
                     Part::GeomArcOfEllipse *aoe1 = static_cast<Part::GeomArcOfEllipse*>(geomlist[GeoId]);
                     aoe1->setRange(startAngle, startAngle + theta1, /*emulateCCW=*/true);
- 
+
+                    Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+                    newConstr->Type = constrType;
+                    newConstr->First = GeoId;
+                    newConstr->FirstPos = end;
+                    newConstr->Second = GeoId1;
+
+                    if (constrType == Sketcher::Coincident)
+                        newConstr->SecondPos = secondPos;
+
+                    addConstraint(newConstr);
+                    delete newConstr;
+                    
                     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
                         solve();
                     return 0;
