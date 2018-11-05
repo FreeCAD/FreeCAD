@@ -890,11 +890,10 @@ class TaskPanel(object):
 
         if self.deleteOnReject and PathOp.FeatureBaseGeometry & self.obj.Proxy.opFeatures(self.obj):
             sel = FreeCADGui.Selection.getSelectionEx()
-            if len(sel) == 1 and sel[0].Object != self.obj:
-                for page in self.featurePages:
-                    if hasattr(page, 'addBase'):
-                        page.clearBase()
-                        page.addBaseGeometry(sel)
+            for page in self.featurePages:
+                if hasattr(page, 'addBase'):
+                    page.clearBase()
+                    page.addBaseGeometry(sel)
 
         self.panelSetFields()
         for page in self.featurePages:
