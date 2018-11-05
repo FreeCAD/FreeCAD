@@ -397,13 +397,13 @@ bool GeomCurve::tangent(double u, gp_Dir& dir) const
 bool GeomCurve::tangent(double u, Base::Vector3d& dir) const
 {
     gp_Dir gdir;
-    
-    if(tangent(u, gdir)) {
+
+    if (tangent(u, gdir)) {
         dir = Base::Vector3d(gdir.X(),gdir.Y(),gdir.Z());
-        
+
         return true;
     }
-    
+
     return false;
 }
 
@@ -440,7 +440,7 @@ Base::Vector3d GeomCurve::secondDerivativeAtParameter(double u) const
 bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
 {
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());
-    
+
     try {
         if (!c.IsNull()) {
             GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
