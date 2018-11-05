@@ -1512,6 +1512,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.assertEqual(self.Obs.parameter2.pop(), self.Doc1.FileName)
     self.assertEqual(self.Obs.signal.pop(), 'DocStartSave')
     self.assertEqual(self.Obs.parameter2.pop(), self.Doc1.FileName)
+    FreeCAD.closeDocument(self.Doc1.Name)
 
   def testDocument(self):
     
