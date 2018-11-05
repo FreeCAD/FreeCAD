@@ -317,10 +317,10 @@ public:
         }
         return false;
     }
-    
+
     bool isDimensional() const {
         assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
-        
+
         return (sketch->Constraints[ConstraintNbr])->isDimensional();
     }
 

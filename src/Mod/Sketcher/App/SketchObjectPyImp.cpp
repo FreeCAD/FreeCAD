@@ -730,7 +730,7 @@ PyObject* SketchObjectPy::setDriving(PyObject *args)
 PyObject* SketchObjectPy::setDatumsDriving(PyObject *args)
 {
     PyObject* driving;
-    
+
     if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &driving))
         return 0;
 
@@ -746,7 +746,6 @@ PyObject* SketchObjectPy::setDatumsDriving(PyObject *args)
 
 PyObject* SketchObjectPy::moveDatumsToEnd(PyObject *args)
 {
-    
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
