@@ -43,9 +43,8 @@ public:
     {
     }
 
-    void visit(Expression *node) {
-        if(node)
-            this->renameObjectIdentifier(*node,paths,owner);
+    void visit(Expression &node) {
+        this->renameObjectIdentifier(node,paths,owner);
     }
 
 
@@ -62,9 +61,8 @@ public:
     {
     }
 
-    void visit(Expression * node) {
-        if(node)
-            this->updateElementReference(*node,feature,reverse);
+    void visit(Expression &node) {
+        this->updateElementReference(node,feature,reverse);
     }
 
 private:
@@ -82,9 +80,8 @@ public:
     {
     }
 
-    void visit(Expression * node) {
-        if(node)
-            this->renameDocument(*node,oldName,newName);
+    void visit(Expression &node) {
+        this->renameDocument(node,oldName,newName);
     }
 
 private:
@@ -98,9 +95,8 @@ public:
         : ExpressionModifier<P>(prop),address(address),rowCount(rowCount),colCount(colCount)
     {}
 
-    void visit(Expression * node) {
-        if(node)
-            this->moveCells(*node,address,rowCount,colCount);
+    void visit(Expression &node) {
+        this->moveCells(node,address,rowCount,colCount);
     }
 
 private:

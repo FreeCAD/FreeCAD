@@ -42,34 +42,6 @@ using namespace App;
 using namespace Base;
 using namespace boost;
 
-class ObjectDeletedExpressionVisitor : public ExpressionVisitor {
-public:
-
-    ObjectDeletedExpressionVisitor(const App::DocumentObject * _obj)
-        : obj(_obj)
-        , found(false)
-    {
-    }
-
-    /**
-     * @brief Visit each node in the expression, and if it is a VariableExpression object check if it references obj
-     * @param node Node to visit
-     */
-
-    void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
-
-        if (expr && expr->getPath().getDocumentObject() == obj)
-            found = true;
-    }
-
-    bool isFound() const { return found; }
-
-private:
-    const App::DocumentObject * obj;
-    bool found;
-};
-
 TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyLinkBase);
 
 /**
@@ -304,7 +276,7 @@ void PropertyExpressionEngine::afterRestore()
         AtomicPropertyChange signaller(*this);
         for(auto &info : *restoredExpressions) {
             ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
-            boost::shared_ptr<Expression> expression(ExpressionParser::parse(docObj, info.expr.c_str()));
+            boost::shared_ptr<Expression> expression(Expression::parse(docObj, info.expr.c_str()));
             setValue(path, expression, info.comment.size()?info.comment.c_str():0);
         }
     }
@@ -526,12 +498,9 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
         if (parent != docObj)
             throw Base::RuntimeError("Invalid property owner.");
 
-        // Evaluate expression
-        std::unique_ptr<Expression> e(expressions[*it].expression->eval());
-
         /* Set value of property */
-        Base::PyGILStateLocker lock;
-        prop->setPathValue(*it, e->getValueAsAny());
+        auto value = expressions[*it].expression->getValueAsAny();
+        prop->setPathValue(*it, value);
 
         ++it;
     }

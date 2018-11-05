@@ -35,6 +35,7 @@
 #include <Base/Tools.h>
 #include <App/ObjectIdentifier.h>
 #include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
 
 #include "PropertyConstraintList.h"
 #include "ConstraintPy.h"
@@ -433,8 +434,14 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
 
     if (value.type() == typeid(double))
         dvalue = boost::any_cast<double>(value);
+    else if (value.type() == typeid(float))
+        dvalue = boost::any_cast<float>(value);
+    else if (value.type() == typeid(long))
+        dvalue = boost::any_cast<long>(value);
+    else if (value.type() == typeid(int))
+        dvalue = boost::any_cast<int>(value);
     else if (value.type() == typeid(Quantity))
-        dvalue = (boost::any_cast<Quantity>(value)).getValue();
+        dvalue = (boost::any_cast<const Quantity &>(value)).getValue();
     else
         throw std::bad_cast();
 

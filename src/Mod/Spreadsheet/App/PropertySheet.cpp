@@ -41,6 +41,7 @@
 #include "Utils.h"
 #include <PropertySheetPy.h>
 #include <App/ExpressionVisitors.h>
+#include <App/ExpressionParser.h>
 
 using namespace App;
 using namespace Base;
@@ -1108,7 +1109,7 @@ void PropertySheet::hasSetValue()
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertySheet> v(*this);
     for(auto &d : data) {
-        auto expr = d.second->expression;
+        auto expr = d.second->expression.get();
         if(expr) {
             expr->getDepObjects(deps,&labels);
             expr->visit(v);
@@ -1163,7 +1164,7 @@ bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
     std::unique_ptr<AtomicPropertyChange> signaler;
 
     for(auto &d : data) {
-        auto expr = d.second->expression;
+        auto expr = d.second->expression.get();
         if(!expr)
             continue;
         try {
@@ -1198,7 +1199,7 @@ void PropertySheet::updateElementReference(DocumentObject *feature,bool reverse)
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertySheet> visitor(*this,feature,reverse);
     for(auto &d : data) {
-        auto expr = d.second->expression;
+        auto expr = d.second->expression.get();
         if(!expr)
             continue;
         expr->visit(visitor);
@@ -1220,18 +1221,18 @@ Property *PropertySheet::CopyOnImportExternal(
 {
     std::map<CellAddress,std::unique_ptr<Expression> > changed;
     for(auto &d : data) {
-        auto expr = d.second->expression;
-        if(expr)
-            expr = expr->importSubNames(nameMap);
+        auto e = d.second->expression.get();
+        if(!e) continue;
+        auto expr = e->importSubNames(nameMap);
         if(!expr)
             continue;
-        changed[d.first].reset(expr);
+        changed[d.first] = std::move(expr);
     }
     if(changed.empty())
         return 0;
     std::unique_ptr<PropertySheet> copy(new PropertySheet(*this));
     for(auto &change : changed) 
-        copy->data[change.first]->setExpression(change.second.release());
+        copy->data[change.first]->setExpression(std::move(change.second));
     return copy.release();
 }
 
@@ -1240,17 +1241,17 @@ Property *PropertySheet::CopyOnLabelChange(App::DocumentObject *obj,
 {
     std::map<CellAddress,std::unique_ptr<Expression> > changed;
     for(auto &d : data) {
-        auto expr = d.second->expression;
-        if(expr)
-            expr = expr->updateLabelReference(obj,ref,newLabel);
+        auto e = d.second->expression.get();
+        if(!e) continue;
+        auto expr = e->updateLabelReference(obj,ref,newLabel);
         if(!expr)
             continue;
-        changed[d.first].reset(expr);
+        changed[d.first] = std::move(expr);
     }
     if(changed.empty())
         return 0;
     std::unique_ptr<PropertySheet> copy(new PropertySheet(*this));
     for(auto &change : changed) 
-        copy->data[change.first]->setExpression(change.second.release());
+        copy->data[change.first]->setExpression(std::move(change.second));
     return copy.release();
 }

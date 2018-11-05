@@ -32,7 +32,7 @@
 #include <Base/Reader.h>
 #include <Base/Quantity.h>
 #include <Base/Writer.h>
-#include <App/Expression.h>
+#include <App/ExpressionParser.h>
 #include "Sheet.h"
 #include <iomanip>
 
@@ -82,7 +82,6 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     : address(_address)
     , owner(_owner)
     , used(0)
-    , expression(0)
     , alignment(ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER)
     , style()
     , foregroundColor(0, 0, 0, 1)
@@ -101,7 +100,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     : address(other.address)
     , owner(_owner)
     , used(other.used)
-    , expression(other.expression ? other.expression->copy() : 0)
+    , expression(other.expression ? other.expression->copy() : nullptr)
     , alignment(other.alignment)
     , style(other.style)
     , foregroundColor(other.foregroundColor)
@@ -121,7 +120,7 @@ Cell &Cell::operator =(const Cell &rhs)
 
     address = rhs.address;
 
-    setExpression(rhs.expression ? rhs.expression->copy() : 0);
+    setExpression(rhs.expression ? rhs.expression->copy() : ExpressionPtr());
     setAlignment(rhs.alignment);
     setStyle(rhs.style);
     setBackground(rhs.backgroundColor);
@@ -143,8 +142,6 @@ Cell &Cell::operator =(const Cell &rhs)
 
 Cell::~Cell()
 {
-    if (expression)
-        delete expression;
 }
 
 /**
@@ -152,17 +149,15 @@ Cell::~Cell()
   *
   */
 
-void Cell::setExpression(App::Expression *expr)
+void Cell::setExpression(App::ExpressionPtr expr)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
     /* Remove dependencies */
     owner->removeDependencies(address);
 
-    if (expression)
-        delete expression;
-    expression = expr;
-    setUsed(EXPRESSION_SET, expression != 0);
+    expression = std::move(expr);
+    setUsed(EXPRESSION_SET, !!expression);
 
     /* Update dependencies */
     owner->addDependencies(address);
@@ -175,7 +170,7 @@ void Cell::setExpression(App::Expression *expr)
 
 const App::Expression *Cell::getExpression() const
 {
-    return expression;
+    return expression.get();
 }
 
 /**
@@ -186,22 +181,18 @@ const App::Expression *Cell::getExpression() const
 bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
-        auto sexpr = freecad_dynamic_cast<App::StringExpression>(expression);
+        auto sexpr = freecad_dynamic_cast<App::StringExpression>(expression.get());
         if(sexpr) {
-            if(sexpr->getType())
-                s = sexpr->toString();
-            else{
-                const auto &txt = sexpr->getText();
-                if(txt.size() && txt[0]!='=') {
-                    s = "'";
-                    s += txt;
-                }else
-                    s = txt;
-            }
+            const auto &txt = sexpr->getText();
+            if(txt.size() && txt[0]!='=') {
+                s = "'";
+                s += txt;
+            }else
+                s = txt;
         }
-        else if (freecad_dynamic_cast<App::ConstantExpression>(expression))
+        else if (freecad_dynamic_cast<App::ConstantExpression>(expression.get()))
             s = "=" + expression->toString();
-        else if (freecad_dynamic_cast<App::NumberExpression>(expression))
+        else if (freecad_dynamic_cast<App::NumberExpression>(expression.get()))
             s = expression->toString();
         else
             s = "=" + expression->toString(persistent);
@@ -215,7 +206,7 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
 }
 
 void Cell::afterRestore() {
-    auto expr = dynamic_cast<StringExpression*>(expression);
+    auto expr = dynamic_cast<StringExpression*>(expression.get());
     if(expr) 
         setContent(expr->getText().c_str());
 }
@@ -223,46 +214,45 @@ void Cell::afterRestore() {
 void Cell::setContent(const char * value)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
-    App::Expression * expr = 0;
+    App::ExpressionPtr expr;
 
     setUsed(PARSE_EXCEPTION_SET, false);
     if (value != 0) {
         if(owner->sheet()->isRestoring()) {
-            expression = new StringExpression(owner->sheet(),value);
+            expression = StringExpression::create(owner->sheet(),value);
             setUsed(EXPRESSION_SET, true);
             return;
         }
         if (*value == '=') {
             try {
-                expr = App::ExpressionParser::parse(owner->sheet(), value + 1);
+                expr = App::Expression::parse(owner->sheet(), value + 1, 0, true);
             }
             catch (Base::Exception & e) {
-                expr = new App::StringExpression(owner->sheet(), value);
+                expr = App::StringExpression::create(owner->sheet(), value);
                 setParseException(e.what());
             }
         }
         else if (*value == '\'')
-            expr = new App::StringExpression(owner->sheet(), value + 1);
+            expr = App::StringExpression::create(owner->sheet(), value + 1);
         else if (*value != '\0') {
             char * end;
             errno = 0;
             double float_value = strtod(value, &end);
             if (!*end && errno == 0)
-                expr = new App::NumberExpression(owner->sheet(), Quantity(float_value));
+                expr = App::NumberExpression::create(owner->sheet(), Quantity(float_value));
             else {
                 try {
-                    expr = ExpressionParser::parse(owner->sheet(), value);
-                    if (expr)
-                        delete expr->eval();
+                    expr = Expression::parse(owner->sheet(), value);
+                    expr->eval();
                 }
                 catch (Base::Exception &e) {
-                    expr = new App::StringExpression(owner->sheet(), value);
+                    expr = App::StringExpression::create(owner->sheet(), value);
                 }
             }
         }
     }
 
-    setExpression(expr);
+    setExpression(std::move(expr));
 }
 
 /**
@@ -382,11 +372,11 @@ void Cell::setDisplayUnit(const std::string &unit)
 {
     DisplayUnit newDisplayUnit;
     if (unit.size() > 0) {
-        boost::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
-
+        auto e = Expression::parseUnit(owner->sheet(), unit.c_str());
         if (!e)
             throw Base::Exception("Invalid unit");
-        newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
+        UnitExpression *expr = static_cast<UnitExpression*>(e.get());
+        newDisplayUnit = DisplayUnit(unit, expr->getUnit(), expr->getScaler());
     }
 
     if (newDisplayUnit != displayUnit) {

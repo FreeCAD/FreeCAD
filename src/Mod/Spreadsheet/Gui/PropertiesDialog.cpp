@@ -188,7 +188,8 @@ void PropertiesDialog::displayUnitChanged(const QString & text)
 
     QPalette palette = ui->displayUnit->palette();
     try {
-        std::unique_ptr<UnitExpression> e(App::ExpressionParser::parseUnit(sheet, text.toUtf8().constData()));
+        auto expr = App::Expression::parseUnit(sheet, text.toUtf8().constData());
+        auto e = static_cast<UnitExpression*>(expr.get());
 
         displayUnit = DisplayUnit(text.toUtf8().constData(), e->getUnit(), e->getScaler());
         palette.setColor(QPalette::Text, Qt::black);

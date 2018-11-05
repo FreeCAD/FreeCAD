@@ -162,7 +162,7 @@ public:
 
     App::DocumentObjectExecReturn *execute(void);
 
-    void getCellAddress(const App::Property *prop, App::CellAddress &address);
+    bool getCellAddress(const App::Property *prop, App::CellAddress &address);
 
     std::map<int, int> getColumnWidths() const;
 

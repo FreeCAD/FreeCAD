@@ -52,7 +52,14 @@ class DocumentObject;
 class ExpressionVisitor;
 
 AppExport std::string quote(const std::string &input, bool toPython=false);
-AppExport std::string unquote(const std::string &input, bool isRaw=false);
+
+// Unfortunately VS2013 does not support default move constructor, so we have
+// to implement them manually
+#define FC_DEFAULT_CTORS(_t) \
+    _t(const _t &) = default;\
+    _t &operator=(const _t &) = default;\
+    _t(_t &&other) { *this = std::move(other); }\
+    _t &operator=(_t &&other)
 
 class AppExport ObjectIdentifier {
 
@@ -64,7 +71,20 @@ public:
     public:
 
         // Constructor
-        String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false) : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier) { }
+        String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false)
+            : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier) 
+        { }
+
+        String(std::string &&s, bool _isRealString = false, bool _forceIdentifier = false) noexcept
+            : str(std::move(s)), isString(_isRealString), forceIdentifier(_forceIdentifier) 
+        { }
+
+        FC_DEFAULT_CTORS(String) {
+            str = std::move(other.str);
+            isString = other.isString;
+            forceIdentifier = other.forceIdentifier;
+            return *this;
+        }
 
         // Accessors
 
@@ -95,6 +115,8 @@ public:
 
         bool operator>(const String & other) const { return str > other.str; }
 
+        void checkImport(bool isSubname=false);
+
     private:
 
         std::string str;
@@ -123,9 +145,19 @@ public:
     public:
 
         // Constructors
+        FC_DEFAULT_CTORS(Component) {
+            name = std::move(other.name);
+            type = other.type;
+            begin = other.begin;
+            end = other.end;
+            step = other.step;
+            return *this;
+        }
 
         Component(const String &_name = String(), typeEnum _type=SIMPLE, 
                 int begin=INT_MAX, int end=INT_MAX, int step=1);
+        Component(String &&_name, typeEnum _type=SIMPLE, 
+                int begin=INT_MAX, int end=INT_MAX, int step=1) noexcept;
 
         // Type queries
 
@@ -139,7 +171,7 @@ public:
 
         // Accessors
 
-        void toString(std::ostringstream &ss, bool toPython=false) const;
+        void toString(std::ostream &ss, bool toPython=false) const;
 
         const std::string &getName() const { return name.getString(); }
 
@@ -148,11 +180,16 @@ public:
 
         int getBegin() const { return begin; }
         int getEnd() const { return end; }
+        int getStep() const { return step; }
 
         // Operators
 
         bool operator==(const Component & other) const;
         bool operator<(const Component & other) const;
+
+        Py::Object get(const Py::Object &pyobj) const;
+        void set(Py::Object &pyobj, const Py::Object &value) const;
+        void del(Py::Object &pyobj) const;
 
     private:
 
@@ -168,18 +205,37 @@ public:
     static Component SimpleComponent(const char * _component);
 
     static Component SimpleComponent(const String & _component);
+    static Component SimpleComponent(String &&_component) noexcept;
 
     static Component ArrayComponent(int _index);
 
     static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1);
 
     static Component MapComponent(const String &_key);
+    static Component MapComponent(String &&_key) noexcept;
 
 
     ObjectIdentifier(const App::PropertyContainer * _owner = 0, 
             const std::string & property = std::string(), int index=INT_MAX);
 
+    ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty);
+
     ObjectIdentifier(const App::Property & prop, int index=INT_MAX);
+
+    FC_DEFAULT_CTORS(ObjectIdentifier) {
+        owner = other.owner;
+        documentName = std::move(other.documentName);
+        documentObjectName = std::move(other.documentObjectName);
+        subObjectName = std::move(other.subObjectName);
+        shadowSub = std::move(other.shadowSub);
+        components = std::move(other.components);
+        documentNameSet = other.documentNameSet;
+        documentObjectNameSet = other.documentObjectNameSet;
+        localProperty = other.localProperty;
+        _cache = std::move(other._cache);
+        _hash = std::move(other._hash);
+        return *this;
+    }
 
     virtual ~ObjectIdentifier() {}
 
@@ -189,9 +245,9 @@ public:
         _cache.clear();
     }
 
-    template<typename C>
-    void addComponents(const C &cs) { 
-        components.insert(components.end(), cs.begin(), cs.end());
+    // Components
+    void addComponent(Component &&c) { 
+        components.push_back(std::move(c));
         _cache.clear();
     }
 
@@ -199,7 +255,8 @@ public:
 
     const Component & getPropertyComponent(int i) const;
 
-    std::vector<Component> getComponents(bool propertyOnly=true) const;
+    std::vector<Component> getPropertyComponents() const;
+    const std::vector<Component> &getComponents() const { return components; }
 
     std::string getSubPathStr(bool toPython=false) const;
 
@@ -221,17 +278,19 @@ public:
 
     // Document-centric functions
 
-    void setDocumentName(const String & name, bool force = false);
+    void setDocumentName(String &&name, bool force = false);
 
     String getDocumentName() const;
 
-    void setDocumentObjectName(const String & name, bool force = false, 
-            const String &subname = String());
+    void setDocumentObjectName(String &&name, bool force = false, 
+            String &&subname = String(), bool checkImport=false);
 
     void setDocumentObjectName(const App::DocumentObject *obj, bool force = false, 
-            const String &subname = String());
+            String &&subname = String(), bool checkImport=false);
 
     bool hasDocumentObjectName(bool forced=false) const;
+
+    bool isLocalProperty() const { return localProperty; }
 
     String getDocumentObjectName() const;
 
@@ -256,6 +315,7 @@ public:
     // Operators
 
     App::ObjectIdentifier & operator<<(const Component & value);
+    App::ObjectIdentifier & operator<<(Component &&value);
 
     bool operator==(const ObjectIdentifier & other) const;
 
@@ -313,9 +373,9 @@ protected:
     App::Property *resolveProperty(const App::DocumentObject *obj, 
         const char *propertyName, App::DocumentObject *&sobj,int &ptype) const;
 
-    void getSubPathStr(std::ostringstream &ss, const ResolveResults &result, bool toPython=false) const;
+    void getSubPathStr(std::ostream &ss, const ResolveResults &result, bool toPython=false) const;
 
-    std::string getPythonAccessor(const ResolveResults &rs, Base::PythonVariables &vars) const;
+    Py::Object access(const ResolveResults &rs, Py::Object *value=0) const;
 
     void resolve(ResolveResults & results) const;
     void resolveAmbiguity(ResolveResults &results);
@@ -330,6 +390,7 @@ protected:
     std::vector<Component> components;
     bool documentNameSet;
     bool documentObjectNameSet;
+    bool localProperty;
 
 private:
     mutable std::string _cache; // Cached string represstation of this identifier

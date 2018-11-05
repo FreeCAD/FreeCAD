@@ -27,6 +27,7 @@
 #include <set>
 #include <App/Material.h>
 #include <App/Range.h>
+#include <App/Expression.h>
 #include "DisplayUnit.h"
 #include "Utils.h"
 
@@ -34,11 +35,6 @@ namespace Base {
 class Unit;
 class XMLReader;
 class Writer;
-}
-
-namespace App {
-class Expression;
-class ExpressionVisitor;
 }
 
 namespace Spreadsheet {
@@ -150,7 +146,7 @@ private:
 
     //void setExpression(const Expression * expr);
 
-    void setExpression(App::Expression *expr);
+    void setExpression(App::ExpressionPtr expr);
 
     void setUsed(int mask, bool state = true);
 
@@ -180,7 +176,7 @@ private:
     PropertySheet * owner;
 
     int used;
-    App::Expression * expression;
+    App::ExpressionPtr expression;
     int alignment;
     std::set<std::string> style;
     App::Color foregroundColor;

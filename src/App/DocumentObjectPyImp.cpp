@@ -318,7 +318,7 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     else if (PyString_Check(expr)) {
         const char * exprStr = PyString_AsString(expr);
 #endif
-        boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr));
+        boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr));
 
         getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
     }
@@ -330,7 +330,7 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
         if (unicode) {
             std::string exprStr = PyString_AsString(unicode);
             Py_DECREF(unicode);
-            boost::shared_ptr<Expression> shared_expr(ExpressionParser::parse(getDocumentObjectPtr(), exprStr.c_str()));
+            boost::shared_ptr<Expression> shared_expr(Expression::parse(getDocumentObjectPtr(), exprStr.c_str()));
 
             getDocumentObjectPtr()->setExpression(p, shared_expr, comment);
         }

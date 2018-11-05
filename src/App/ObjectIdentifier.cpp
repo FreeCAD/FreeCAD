@@ -39,7 +39,7 @@
 #include "Document.h"
 #include "DocumentObject.h"
 #include "ObjectIdentifier.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
 #include <Base/QuantityPy.h>
@@ -113,83 +113,6 @@ std::string App::quote(const std::string &input, bool toPython)
     return output.str();
 }
 
-std::string App::unquote(const std::string & input, bool isRaw)
-{
-    std::string output;
-    if(input.empty())
-        return output;
-
-    std::string::const_iterator cur = input.begin();
-    std::string::const_iterator end = input.end();
-
-    if(boost::starts_with(input,"r'") || boost::starts_with(input,"r\"")) {
-        if(input.size() <= 3)
-            return output;
-        cur +=2;
-        end -= 1;
-        isRaw = true;
-    }else if(boost::starts_with(input,"r<<")) {
-        if(input.size() <= 5)
-            return output;
-        cur +=3;
-        end -= 2;
-        isRaw = true;
-    }else if(boost::starts_with(input,"'") || boost::starts_with(input,"\"")) {
-        if(input.size() <= 2)
-            return output;
-        cur +=1;
-        end -= 1;
-    } else if(boost::starts_with(input,"<<")) {
-        if(input.size() <= 4)
-            return output;
-        cur +=2;
-        end -= 2;
-    }
-
-    output.reserve(input.size());
-
-    bool escaped = false;
-    while (cur != end) {
-        if (escaped) {
-            switch (*cur) {
-            case '>':
-                output += '>';
-                break;
-            case 't':
-                output += '\t';
-                break;
-            case 'n':
-                output += '\n';
-                break;
-            case 'r':
-                output += '\r';
-                break;
-            case '\\':
-                output += '\\';
-                break;
-            case '\'':
-                output += '\'';
-                break;
-            case '"':
-                output += '"';
-                break;
-            default:
-                output += '\\';
-                output += *cur;
-            }
-            escaped = false;
-        }
-        else {
-            if(!isRaw && *cur == '\\')
-                escaped = true;
-            else
-                output += *cur;
-        }
-        ++cur;
-    }
-
-    return output;
-}
 
 /**
  * @brief Construct an ObjectIdentifier object, given an owner and a single-value property.
@@ -202,6 +125,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
     : owner(0)
     , documentNameSet(false)
     , documentObjectNameSet(false)
+    , localProperty(false)
 {
     if (_owner) {
         const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
@@ -209,13 +133,25 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
             throw Base::RuntimeError("Property must be owned by a document object.");
         owner = const_cast<DocumentObject*>(docObj);
 
-        if (property.size() > 0)
+        if (property.size() > 0) {
             setDocumentObjectName(docObj);
+        }
     }
     if (property.size() > 0) {
         addComponent(SimpleComponent(property));
         if(index!=INT_MAX)
             addComponent(ArrayComponent(index));
+    }
+}
+
+ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, bool localProperty)
+    :localProperty(localProperty)
+{
+    if (_owner) {
+        const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
+        if (!docObj)
+            throw Base::RuntimeError("Property must be owned by a document object.");
+        owner = const_cast<DocumentObject*>(docObj);
     }
 }
 
@@ -228,6 +164,7 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     : owner(0)
     , documentNameSet(false)
     , documentObjectNameSet(false)
+    , localProperty(false)
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
 
@@ -272,8 +209,8 @@ const App::ObjectIdentifier::Component &App::ObjectIdentifier::getPropertyCompon
     return components[result.propertyIndex + i];
 }
 
-std::vector<ObjectIdentifier::Component> ObjectIdentifier::getComponents(bool propertyOnly) const {
-    if(!propertyOnly || components.size()<=1 || documentObjectName.getString().empty())
+std::vector<ObjectIdentifier::Component> ObjectIdentifier::getPropertyComponents() const {
+    if(components.size()<=1 || documentObjectName.getString().empty())
         return components;
     ResolveResults result(*this);
     if(result.propertyIndex==0)
@@ -363,11 +300,12 @@ const std::string &ObjectIdentifier::toString() const
     if(result.propertyIndex >= (int)components.size())
         return _cache;
     
-    if(result.resolvedProperty && 
-       result.resolvedDocumentObject==owner && 
-       components.size()>1 && 
-       components[1].isSimple() &&
-       result.propertyIndex==0) 
+    if(localProperty ||
+       (result.resolvedProperty && 
+        result.resolvedDocumentObject==owner && 
+        components.size()>1 && 
+        components[1].isSimple() &&
+        result.propertyIndex==0))
     {
         s << '.';
     }else{
@@ -568,7 +506,7 @@ bool ObjectIdentifier::renameDocument(
  * @return String representation of path.
  */
 
-void ObjectIdentifier::getSubPathStr(std::ostringstream &s, const ResolveResults &result, bool toPython) const
+void ObjectIdentifier::getSubPathStr(std::ostream &s, const ResolveResults &result, bool toPython) const
 {
     std::vector<Component>::const_iterator i = components.begin() + result.propertyIndex + 1;
     while (i != components.end()) {
@@ -603,6 +541,17 @@ ObjectIdentifier::Component::Component(const String &_name,
 {
 }
 
+ObjectIdentifier::Component::Component(String &&_name, 
+        ObjectIdentifier::Component::typeEnum _type, int _begin, int _end, int _step) noexcept
+    : name(std::move(_name))
+    , type(_type)
+    , begin(_begin)
+    , end(_end)
+    , step(_step)
+{
+}
+
+
 size_t ObjectIdentifier::Component::getIndex(size_t count) const {
     if(begin>=0) {
         if(begin<(int)count)
@@ -613,6 +562,63 @@ size_t ObjectIdentifier::Component::getIndex(size_t count) const {
             return idx;
     }
     FC_THROWM(Base::RuntimeError, "Array out of bound: " << begin << ", " << count);
+}
+
+Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
+    if(isSimple()) 
+        return pyobj.getAttr(getName());
+    else if(isArray()) {
+        if(pyobj.isMapping())
+            return Py::Mapping(pyobj).getItem(Py::Int(begin));
+        else
+            return Py::Sequence(pyobj).getItem(begin);
+    }else if(isMap())
+        return Py::Mapping(pyobj).getItem(getName());
+    else {
+        assert(isRange());
+        Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
+                                    end!=INT_MAX?Py::Int(end).ptr():0,
+                                    step!=1?Py::Int(step).ptr():0));
+        return Py::Mapping(pyobj).getItem(slice);
+    }
+}
+
+void ObjectIdentifier::Component::set(Py::Object &pyobj, const Py::Object &value) const {
+    if(isSimple()) 
+        pyobj.setAttr(getName(),value);
+    else if(isArray()) {
+        if(pyobj.isMapping())
+            Py::Mapping(pyobj).setItem(Py::Int(begin),value);
+        else
+            Py::Sequence(pyobj).setItem(begin,value);
+    }else if(isMap())
+        Py::Mapping(pyobj).setItem(getName(),value);
+    else {
+        assert(isRange());
+        Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
+                                    end!=INT_MAX?Py::Int(end).ptr():0,
+                                    step!=1?Py::Int(step).ptr():0));
+        Py::Mapping(pyobj).setItem(slice,value);
+    }
+}
+
+void ObjectIdentifier::Component::del(Py::Object &pyobj) const {
+    if(isSimple())
+        pyobj.delAttr(getName());
+    else if(isArray()) {
+        if(pyobj.isMapping())
+            Py::Mapping(pyobj).delItem(Py::Int(begin));
+        else
+            PySequence_DelItem(pyobj.ptr(),begin);
+    } else if(isMap())
+        Py::Mapping(pyobj).delItem(getName());
+    else {
+        assert(isRange());
+        Py::Object slice(PySlice_New(Py::Int(begin).ptr(),
+                                    end!=INT_MAX?Py::Int(end).ptr():0,
+                                    step!=1?Py::Int(step).ptr():0));
+        Py::Mapping(pyobj).delItem(slice);
+    }
 }
 
 /**
@@ -635,6 +641,11 @@ ObjectIdentifier::Component ObjectIdentifier::SimpleComponent(const char *_compo
 ObjectIdentifier::Component ObjectIdentifier::SimpleComponent(const ObjectIdentifier::String &_component)
 {
     return Component(_component);
+}
+
+ObjectIdentifier::Component ObjectIdentifier::SimpleComponent(ObjectIdentifier::String &&_component) noexcept
+{
+    return Component(std::move(_component));
 }
 
 /**
@@ -660,6 +671,12 @@ ObjectIdentifier::Component ObjectIdentifier::MapComponent(const String & _key)
 {
     return Component(_key, Component::MAP);
 }
+
+ObjectIdentifier::Component ObjectIdentifier::MapComponent(String &&_key) noexcept
+{
+    return Component(std::move(_key), Component::MAP);
+}
+
 
 /**
  * @brief Create a range component with given begin and end.
@@ -703,7 +720,7 @@ bool ObjectIdentifier::Component::operator ==(const ObjectIdentifier::Component 
  * @return A string representing the component.
  */
 
-void ObjectIdentifier::Component::toString(std::ostringstream &ss, bool toPython) const
+void ObjectIdentifier::Component::toString(std::ostream &ss, bool toPython) const
 {
     switch (type) {
     case Component::SIMPLE:
@@ -987,6 +1004,7 @@ enum PseudoPropertyType {
     PseudoRegex,
     PseudoBuiltins,
     PseudoMath,
+    PseudoCollections,
 };
 
 std::pair<DocumentObject*,std::string> ObjectIdentifier::getDep(std::vector<std::string> *labels) const {
@@ -1049,9 +1067,10 @@ ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier &other) con
     ResolveResults otherresult(other);
 
     if (otherresult.resolvedDocument != thisresult.resolvedDocument)
-        result.setDocumentName(thisresult.resolvedDocumentName, true);
+        result.setDocumentName(std::move(thisresult.resolvedDocumentName), true);
     if (otherresult.resolvedDocumentObject != thisresult.resolvedDocumentObject)
-        result.setDocumentObjectName(thisresult.resolvedDocumentObjectName, true, subObjectName);
+        result.setDocumentObjectName(
+                std::move(thisresult.resolvedDocumentObjectName), true, String(subObjectName));
 
     for (std::size_t i = thisresult.propertyIndex; i < components.size(); ++i)
         result << components[i];
@@ -1100,6 +1119,14 @@ ObjectIdentifier &ObjectIdentifier::operator <<(const ObjectIdentifier::Componen
     return *this;
 }
 
+ObjectIdentifier &ObjectIdentifier::operator <<(ObjectIdentifier::Component &&value)
+{
+    components.push_back(std::move(value));
+    _cache.clear();
+    return *this;
+}
+
+
 /**
  * @brief Get pointer to property pointed to by this object identifier.
  * @return Point to property if it is uniquely defined, or 0 otherwise.
@@ -1125,16 +1152,17 @@ Property *ObjectIdentifier::resolveProperty(const App::DocumentObject *obj,
 
     static std::map<std::string,int> _props = {
         {"_shape",PseudoShape}, 
-        {"_placement",PseudoPlacement},
+        {"_pla",PseudoPlacement},
         {"_matrix",PseudoMatrix},
-        {"_placement_",PseudoLinkPlacement},
-        {"_matrix_",PseudoLinkMatrix},
+        {"__pla",PseudoLinkPlacement},
+        {"__matrix",PseudoLinkMatrix},
         {"_self",PseudoSelf},
         {"_app",PseudoApp},
         {"_part",PseudoPart},
         {"_re",PseudoRegex},
-        {"_builtins", PseudoBuiltins},
+        {"_py", PseudoBuiltins},
         {"_math", PseudoMath},
+        {"_coll", PseudoCollections},
     };
     auto it = _props.find(propertyName);
     if(it == _props.end())
@@ -1200,9 +1228,9 @@ ObjectIdentifier ObjectIdentifier::canonicalPath() const
  * @param force Force name to be set
  */
 
-void ObjectIdentifier::setDocumentName(const ObjectIdentifier::String &name, bool force)
+void ObjectIdentifier::setDocumentName(ObjectIdentifier::String &&name, bool force)
 {
-    documentName = name;
+    documentName = std::move(name);
     documentNameSet = force;
     _cache.clear();
 }
@@ -1230,12 +1258,17 @@ ObjectIdentifier::String ObjectIdentifier::getDocumentName() const
  * @param force Force name to be set.
  */
 
-void ObjectIdentifier::setDocumentObjectName(const ObjectIdentifier::String &name, bool force, 
-        const ObjectIdentifier::String &subname)
+void ObjectIdentifier::setDocumentObjectName(ObjectIdentifier::String &&name, bool force, 
+        ObjectIdentifier::String &&subname, bool checkImport)
 {
-    documentObjectName = name;
+    if(checkImport) {
+        name.checkImport();
+        subname.checkImport(true);
+    }
+
+    documentObjectName = std::move(name);
     documentObjectNameSet = force;
-    subObjectName = subname;
+    subObjectName = std::move(subname);
 
     if(subObjectName.str.size() && subObjectName.str.back()!='.')
         subObjectName.str += '.';
@@ -1246,10 +1279,14 @@ void ObjectIdentifier::setDocumentObjectName(const ObjectIdentifier::String &nam
 }
 
 void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, bool force,
-        const ObjectIdentifier::String &subname)
+        ObjectIdentifier::String &&subname, bool checkImport)
 {
     if(!owner || !obj || !obj->getNameInDocument() || !obj->getDocument())
         throw Base::RuntimeError("invalid object");
+
+    if(checkImport) 
+        subname.checkImport(true);
+
     if(obj == owner)
         force = false;
     if(obj->getDocument() == owner->getDocument())
@@ -1260,7 +1297,7 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, boo
     }
     documentObjectNameSet = force;
     documentObjectName = String(obj->getNameInDocument(),false,true);
-    subObjectName = subname;
+    subObjectName = std::move(subname);
     if(subObjectName.str.size() && subObjectName.str.back()!='.')
         subObjectName.str += '.';
 
@@ -1299,64 +1336,77 @@ std::string ObjectIdentifier::String::toString(bool toPython) const
         return str;
 }
 
-/**
- * @brief Return a string that can be used to access the property or field pointed to by
- *        this object identifier.
- * @return Python code as a string
- */
+void ObjectIdentifier::String::checkImport(bool isSubname) {
+    if(!isRealString() && ExpressionParser::ExpressionImporter::reader()) {
+        auto reader = ExpressionParser::ExpressionImporter::reader();
+        if(isSubname)
+            str = reader->getName(str.c_str());
+        else
+            str = PropertyLinkBase::importSubName(*reader,str.c_str());
+    }
+}
 
-std::string ObjectIdentifier::getPythonAccessor(const ResolveResults &result, PythonVariables &vars) const
+Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *value) const
 {
-    std::ostringstream ss;
     if(!result.resolvedDocumentObject || !result.resolvedProperty ||
        (subObjectName.getString().size() && !result.resolvedSubObject))
     {
         throw RuntimeError(result.resolveErrorString());
     }
 
+    Py::Object pyobj;
     int ptype = result.propertyType;
-    if(ptype == PseudoApp)
-        ss << "App";
-    else if(ptype == PseudoPart) {
-        static bool imported = false;
-        if(!imported) {
-            imported = true;
-            Base::Interpreter().runString("import Part");
+
+    // NOTE! We do not keep reference of the imported module, assuming once
+    // imported they'll live (because of sys.modules) till the application
+    // dies.
+#define GET_MODULE(_name) do {\
+        static PyObject *pymod;\
+        if(!pymod) {\
+           pymod = PyImport_ImportModule(#_name);\
+            if(!pymod)\
+                Base::PyException::ThrowException();\
+            else\
+                Py_DECREF(pymod);\
+        }\
+        pyobj = Py::Object(pymod);\
+    }while(0)
+
+    size_t idx = result.propertyIndex+1;
+    switch(ptype) {
+    case PseudoApp:
+        GET_MODULE(FreeCAD);
+        break;
+    case PseudoPart:
+        GET_MODULE(Part);
+        break;
+    case PseudoRegex:
+        GET_MODULE(re);
+        break;
+    case PseudoBuiltins:
+        GET_MODULE(builtins);
+        break;
+    case PseudoMath:
+        GET_MODULE(math);
+        break;
+    case PseudoCollections:
+        GET_MODULE(collections);
+        break;
+    case PseudoShape: {
+        GET_MODULE(Part);
+        Py::Callable func(pyobj.getAttr("getShape"));
+        Py::Tuple tuple(1);
+        tuple.setItem(0,Py::Object(result.resolvedDocumentObject->getPyObject(),true));
+        if(result.subObjectName.getString().empty())
+            pyobj = func.apply(tuple);
+        else{
+            Py::Dict dict;
+            dict.setItem("subname",Py::String(result.subObjectName.getString()));
+            dict.setItem("needSubElement",Py::True());
+            pyobj = func.apply(tuple,dict);
         }
-        ss << "Part";
-    } else if(ptype == PseudoRegex) {
-        static bool imported = false;
-        if(!imported) {
-            imported = true;
-            Base::Interpreter().runString("import re");
-        }
-        ss << "re";
-    } else if(ptype == PseudoBuiltins) {
-        static bool imported = false;
-        if(!imported) {
-            imported = true;
-            Base::Interpreter().runString("import builtins");
-        }
-        ss << "builtins";
-    } else if(ptype == PseudoMath) {
-        static bool imported = false;
-        if(!imported) {
-            imported = true;
-            Base::Interpreter().runString("import math");
-        }
-        ss << "math";
-    } else if(ptype == PseudoShape) {
-        static bool imported = false;
-        if(!imported) {
-            imported = true;
-            Base::Interpreter().runString("import Part");
-        }
-        ss << "Part.getShape(App.getDocument('" << result.resolvedDocument->getName()
-            << "').getObject("  << result.resolvedDocumentObject->getID() << ')';
-        if(result.subObjectName.getString().size())
-            ss << ",'" << result.subObjectName.getString() << "',needSubElement=True";
-        ss << ')';
-    }else{
+        break;
+    } default: { 
         Base::Matrix4D mat;
         auto obj = result.resolvedDocumentObject;
         switch(ptype) {
@@ -1373,34 +1423,67 @@ std::string ObjectIdentifier::getPythonAccessor(const ResolveResults &result, Py
             obj = result.resolvedSubObject;
         switch(ptype) {
         case PseudoPlacement:
-            ss << vars.add(Py::Placement(Base::Placement(mat)));
+            pyobj = Py::Placement(Base::Placement(mat));
             break;
         case PseudoMatrix:
-            ss << vars.add(Py::Matrix(mat));
+            pyobj = Py::Matrix(mat);
             break;
         case PseudoLinkPlacement:
         case PseudoLinkMatrix:
             obj->getLinkedObject(true,&mat,false);
             if(ptype == PseudoLinkPlacement)
-                ss << vars.add(Py::Placement(Base::Placement(mat)));
+                pyobj = Py::Placement(Base::Placement(mat));
             else
-                ss << vars.add(Py::Matrix(mat));
+                pyobj = Py::Matrix(mat);
             break;
         case PseudoSelf:
-            ss << vars.add(Py::Object(obj->getPyObject(),true));
+            pyobj = Py::Object(obj->getPyObject(),true);
             break;
         default: {
+            // NOTE! We cannot directly call Property::getPyObject(), but
+            // instead, must obtain the property's python object through
+            // DocumentObjectPy::getAttr(). Because, PyObjectBase has internal
+            // attribute tracking only if we obtain attribute through
+            // getAttr(). Without attribute tracking, we can't do things like
+            //
+            //      obj.Placement.Base.x = 10. 
+            //
+            // What happens is that the when Python interpreter calls
+            //
+            //      Base.setAttr('x', 10), 
+            //
+            // PyObjectBase will lookup Base's parent, i.e. Placement, and call
+            //
+            //      Placement.setAttr('Base', Base), 
+            //
+            // and in turn calls 
+            //
+            //      obj.setAttr('Placement',Placement)
+            //
+            // The tracking logic is implemented in PyObjectBase::__getattro/__setattro
+
             auto container = result.resolvedProperty->getContainer();
             if(container!=result.resolvedDocumentObject && container!=result.resolvedSubObject) {
                 obj = obj->getLinkedObject(true);
                 assert(obj);
             }
-            ss << vars.add(Py::Object(obj->getPyObject(),true)) << '.' << result.propertyName;
+            pyobj = Py::Object(obj->getPyObject(),true);
+            idx = result.propertyIndex;
             break;
-        }}
+        }}}
     }
-    getSubPathStr(ss,result,true);
-    return ss.str();
+    if(components.empty())
+        return pyobj;
+    size_t count = components.size();
+    if(value) --count;
+    assert(idx<=count);
+    for(;idx<count;++idx) 
+        pyobj = components[idx].get(pyobj);
+    if(value) {
+        components[idx].set(pyobj,*value);
+        return Py::Object();
+    }
+    return pyobj;
 }
 
 /**
@@ -1423,140 +1506,14 @@ boost::any ObjectIdentifier::getValue(bool pathValue) const
     if(rs.resolvedProperty && rs.propertyType==PseudoNone && pathValue)
         return rs.resolvedProperty->getPathValue(*this);
 
-    PythonVariables vars;
-    std::string name = vars.add(Py::Object());
-    std::ostringstream ss;
-    ss << name << '=' << getPythonAccessor(rs,vars);
-    PyObject * pyvalue = Base::Interpreter().getValue(ss.str().c_str(), name.c_str());
-    if (!pyvalue)
-        FC_THROWM(Base::RuntimeError,"Failed to get value from " << toString());
-    return pyObjectToAny(Py::Object(pyvalue,true));
+    Base::PyGILStateLocker lock;
+    try {
+        return pyObjectToAny(access(rs));
+    }catch(Py::Exception &) {
+        Base::PyException::ThrowException();
+    }
+    return boost::any();
 }
-
-// This class is intended to be contained inside boost::any (via a shared_ptr)
-// without holding Python global lock
-class PyObjectWrapper {
-public:
-    typedef std::shared_ptr<PyObjectWrapper> Pointer;
-
-    PyObjectWrapper(PyObject *obj):pyobj(obj) {
-        Py::_XINCREF(pyobj);
-    }
-    ~PyObjectWrapper() {
-        if(pyobj) {
-            Base::PyGILStateLocker lock;
-            Py::_XDECREF(pyobj);
-        }
-    }
-    PyObjectWrapper(const PyObjectWrapper &) = delete;
-    PyObjectWrapper &operator=(const PyObjectWrapper &) = delete;
-
-    Py::Object get() {
-        if(!pyobj)
-            return Py::Object();
-        return Py::Object(pyobj);
-    }
-
-private:
-    PyObject *pyobj;
-};
-
-static inline PyObjectWrapper::Pointer pyObjectWrap(PyObject *obj) {
-    return std::make_shared<PyObjectWrapper>(obj);
-}
-
-static bool essentiallyEqual(double a, double b, double epsilon)
-{
-    return fabs(a - b) <= ( (fabs(a) > fabs(b) ? fabs(b) : fabs(a)) * epsilon);
-}
-
-namespace App {
-Py::Object pyObjectFromAny(const boost::any &value) {
-    if(value.empty())
-        return Py::Object();
-    else if (value.type() == typeid(PyObjectWrapper::Pointer))
-        return boost::any_cast<PyObjectWrapper::Pointer>(value)->get();
-    else if (value.type() == typeid(Quantity))
-        return Py::Object(new QuantityPy(new Quantity(boost::any_cast<Quantity>(value))));
-    else if (value.type() == typeid(double)) {
-        double v = boost::any_cast<double>(value);
-        double rv = std::round(v);
-        const double epsilon = std::numeric_limits<double>::epsilon();
-        if(essentiallyEqual(v,rv,epsilon)) {
-            long l = (long)rv;
-            if(std::abs(l)<INT_MAX)
-                return Py::Int(l);
-            return Py::Long((long)rv);
-        }
-        return Py::Float(v);
-    } else if (value.type() == typeid(float)) {
-        float v = boost::any_cast<float>(value);
-        float rv = std::round(v);
-        const float epsilon = std::numeric_limits<float>::epsilon();
-        if(essentiallyEqual(v,rv,epsilon))
-            return Py::Int((int)rv);
-        return Py::Float(v);
-    } else if (value.type() == typeid(int)) 
-        return Py::Int(boost::any_cast<int>(value));
-    else if (value.type() == typeid(long))
-        return Py::Long(boost::any_cast<long>(value));
-    else if (value.type() == typeid(bool))
-        return Py::Boolean(boost::any_cast<bool>(value));
-    else if (value.type() == typeid(std::string))
-        return Py::String(boost::any_cast<string>(value));
-    else if (value.type() == typeid(const char*))
-        return Py::String(boost::any_cast<const char*>(value));
-
-    throw TypeError("Unknown type");
-}
-
-boost::any pyObjectToAny(Py::Object value, bool check) {
-
-    if(value.isNone())
-        return boost::any();
-
-    PyObject *pyvalue = value.ptr();
-
-    if(!check)
-        return boost::any(pyObjectWrap(pyvalue));
-
-#if PY_MAJOR_VERSION < 3
-    if (PyInt_Check(pyvalue))
-        return boost::any(PyInt_AsLong(pyvalue));
-#endif
-    if (PyLong_Check(pyvalue))
-        return boost::any(PyLong_AsLong(pyvalue));
-    else if (PyFloat_Check(pyvalue))
-        return boost::any(PyFloat_AsDouble(pyvalue));
-#if PY_MAJOR_VERSION < 3
-    else if (PyString_Check(pyvalue))
-        return boost::any(std::string(PyString_AsString(pyvalue)));
-#endif
-    else if (PyUnicode_Check(pyvalue)) {
-        PyObject * s = PyUnicode_AsUTF8String(pyvalue);
-        if(!s) 
-            FC_THROWM(Base::ValueError,"Invalid unicode string");
-        Py::Object o(s,true);
-
-#if PY_MAJOR_VERSION >= 3
-        return boost::any(std::string(PyUnicode_AsUTF8(s)));
-#else
-        return boost::any(std::string(PyString_AsString(s)));
-#endif
-    }
-    else if (PyObject_TypeCheck(pyvalue, &Base::QuantityPy::Type)) {
-        Base::QuantityPy * qp = static_cast<Base::QuantityPy*>(pyvalue);
-        Base::Quantity * q = qp->getQuantityPtr();
-
-        return boost::any(*q);
-    }
-    else {
-        return boost::any(pyObjectWrap(pyvalue));
-    }
-}
-
-} // namespace App
-
 
 /**
  * @brief Set value of a property or field pointed to by this object identifier.
@@ -1575,37 +1532,13 @@ void ObjectIdentifier::setValue(const boost::any &value) const
     if(rs.propertyType)
         FC_THROWM(Base::RuntimeError,"Cannot set pseudo property");
 
-    PythonVariables vars;
-    ss << getPythonAccessor(rs,vars) + " = ";
-
-    if (value.type() == typeid(PyObjectWrapper::Pointer)) {
-        ss <<  vars.add(boost::any_cast<PyObjectWrapper::Pointer>(value)->get());
-    }else if (value.type() == typeid(Base::Quantity))
-        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<Base::Quantity>(value).getValue();
-    else if (value.type() == typeid(double))
-        ss << std::setprecision(std::numeric_limits<double>::digits10 + 1) << boost::any_cast<double>(value);
-    else if (value.type() == typeid(char*))
-        ss << '\'' << Base::Tools::escapedUnicodeFromUtf8(boost::any_cast<char*>(value)) << '\'';
-    else if (value.type() == typeid(const char*))
-        ss << '\'' << Base::Tools::escapedUnicodeFromUtf8(boost::any_cast<const char*>(value)) << '\'';
-    else if (value.type() == typeid(std::string))
-        ss << '\'' << Base::Tools::escapedUnicodeFromUtf8(boost::any_cast<std::string>(value).c_str()) << '\'';
-    else if (value.type() == typeid(int))
-        ss << boost::any_cast<int>(value);
-    else if (value.type() == typeid(unsigned int))
-        ss << boost::any_cast<unsigned int >(value);
-    else if (value.type() == typeid(short))
-        ss << boost::any_cast<short>(value);
-    else if (value.type() == typeid(unsigned short))
-        ss << boost::any_cast<unsigned short>(value);
-    else if (value.type() == typeid(char))
-        ss << boost::any_cast<char>(value);
-    else if (value.type() == typeid(unsigned char))
-        ss << boost::any_cast<unsigned char>(value);
-    else
-        throw std::bad_cast();
-
-    Base::Interpreter().runString(ss.str().c_str());
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Object pyvalue = pyObjectFromAny(value);
+        access(rs,&pyvalue);
+    }catch(Py::Exception &) {
+        Base::PyException::ThrowException();
+    }
 }
 
 const std::string &ObjectIdentifier::getSubObjectName(bool newStyle) const {
@@ -1737,12 +1670,12 @@ void ObjectIdentifier::resolveAmbiguity(ResolveResults &result) {
 
     String subname = subObjectName;
     if(result.resolvedDocumentObject == owner) {
-        setDocumentObjectName(owner,false,subname);
+        setDocumentObjectName(owner,false,std::move(subname));
     }else if(result.flags.test(ResolveByIdentifier))
-        setDocumentObjectName(result.resolvedDocumentObject,true,subname);
+        setDocumentObjectName(std::move(result.resolvedDocumentObject),true,std::move(subname));
     else
         setDocumentObjectName(
-                String(result.resolvedDocumentObject->Label.getStrValue(),true,false),true,subname);
+                String(result.resolvedDocumentObject->Label.getStrValue(),true,false),true,std::move(subname));
 
     if(result.resolvedDocumentObject->getDocument() == owner->getDocument())
         setDocumentName(String());

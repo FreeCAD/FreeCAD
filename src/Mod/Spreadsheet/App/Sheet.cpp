@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/ExpressionParser.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
@@ -416,14 +417,15 @@ Property * Sheet::getProperty(const char * addr) const
   *
   */
 
-void Sheet::getCellAddress(const Property *prop, CellAddress & address)
+bool Sheet::getCellAddress(const Property *prop, CellAddress & address)
 {
     std::map<const Property*, CellAddress >::const_iterator i = propAddress.find(prop);
 
-    if (i != propAddress.end())
+    if (i != propAddress.end()) {
         address = i->second;
-    else
-        throw Base::Exception("Property is not a cell");
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -636,15 +638,15 @@ void Sheet::updateProperty(CellAddress key)
         const Expression * input = cell->getExpression();
 
         if (input) {
-            output.reset(input->eval());
+            output = input->eval();
         }
         else {
             std::string s;
 
             if (cell->getStringContent(s))
-                output.reset(new StringExpression(this, s));
+                output = StringExpression::create(this, std::move(s));
             else
-                output.reset(new StringExpression(this, ""));
+                output = StringExpression::create(this, "");
         }
 
         /* Eval returns either NumberExpression or StringExpression, or

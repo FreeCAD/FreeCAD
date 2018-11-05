@@ -987,30 +987,6 @@ PyObject* SheetPy::getRowHeight(PyObject *args)
     }
 }
 
-PyObject* SheetPy::eval(PyObject *args, PyObject *kwds)
-{
-    std::vector<std::pair<std::string,App::Expression*> > arguments;
-    auto owner = getSheetPtr();
-    if(!args) {
-        PyErr_SetString(PyExc_ValueError, "No command specified");
-        return 0;
-    }
-    Base::PythonVariables vars;
-    Py::Tuple tuple(args);
-    std::ostringstream ss;
-    ss << "eval(" << Py::Object(tuple[0]).as_string();
-    if(tuple.size()>1)
-        ss << ", *getvar(<<" << vars.add(tuple.getSlice(1,tuple.size())) << ">>)";
-    if(kwds)
-        ss << ", **getvar(<<" << vars.add(Py::Object(kwds)) << ">>)";
-    ss << ')';
-    PY_TRY {
-        std::unique_ptr<App::Expression> expr(App::Expression::parse(owner,ss.str()));
-        return Py::new_reference_to(App::pyObjectFromAny(expr->getValueAsAny()));
-    }PY_CATCH;
-}
-
-
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
 PyObject *SheetPy::getCustomAttributes(const char* attr) const

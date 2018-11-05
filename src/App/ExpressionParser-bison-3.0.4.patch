@@ -1,0 +1,306 @@
+--- data/variant.hh     2015-08-05 09:05:30.000000000 +0200
++++ ./variant.hh        2018-03-03 21:17:13.880113143 +0100
+@@ -100,11 +100,11 @@
+ 
+     /// Construct and fill.
+     template <typename T>
+-    variant (const T& t)]b4_parse_assert_if([
++    variant (T&& t)]b4_parse_assert_if([
+       : yytypeid_ (&typeid (T))])[
+     {
+-      YYASSERT (sizeof (T) <= S);
+-      new (yyas_<T> ()) T (t);
++      static_assert (sizeof (T) <= S, "variant size too small");
++      new (yyas_<T> ()) T (std::move (t));
+     }
+ 
+     /// Destruction, allowed only if empty.
+@@ -119,7 +119,7 @@
+     build ()
+     {]b4_parse_assert_if([
+       YYASSERT (!yytypeid_);
+-      YYASSERT (sizeof (T) <= S);
++      static_assert (sizeof (T) <= S, "variant size too small");
+       yytypeid_ = & typeid (T);])[
+       return *new (yyas_<T> ()) T;
+     }
+@@ -127,12 +127,12 @@
+     /// Instantiate a \a T in here from \a t.
+     template <typename T>
+     T&
+-    build (const T& t)
++    build (T &&t)
+     {]b4_parse_assert_if([
+       YYASSERT (!yytypeid_);
+-      YYASSERT (sizeof (T) <= S);
++      static_assert (sizeof (T) <= S, "variant size too small");
+       yytypeid_ = & typeid (T);])[
+-      return *new (yyas_<T> ()) T (t);
++      return *new (yyas_<T> ()) T (std::move (t));
+     }
+ 
+     /// Accessor to a built \a T.
+@@ -141,7 +141,7 @@
+     as ()
+     {]b4_parse_assert_if([
+       YYASSERT (*yytypeid_ == typeid (T));
+-      YYASSERT (sizeof (T) <= S);])[
++      static_assert (sizeof (T) <= S, "variant size too small");])[
+       return *yyas_<T> ();
+     }
+ 
+@@ -151,7 +151,7 @@
+     as () const
+     {]b4_parse_assert_if([
+       YYASSERT (*yytypeid_ == typeid (T));
+-      YYASSERT (sizeof (T) <= S);])[
++      static_assert (sizeof (T) <= S, "variant size too small");])[
+       return *yyas_<T> ();
+     }
+ 
+@@ -179,11 +179,14 @@
+     void
+     move (self_type& other)
+     {
+-      build<T> ();
+-      swap<T> (other);
++      build<T> ();]b4_parse_assert_if([
++      YYASSERT (yytypeid_);
++      YYASSERT (*yytypeid_ == *other.yytypeid_);])[
++      as<T> () = std::move (other.as<T> ());
+       other.destroy<T> ();
+     }
+ 
++#if 0
+     /// Copy the content of \a other to this.
+     template <typename T>
+     void
+@@ -191,6 +194,7 @@
+     {
+       build<T> (other.as<T> ());
+     }
++#endif
+ 
+     /// Destroy the stored \a T.
+     template <typename T>
+@@ -202,9 +206,12 @@
+     }
+ 
+   private:
+-    /// Prohibit blind copies.
++    /// Prohibit blind copies
++    /// Don't use the templated constructor (which would only fail at runtime with an assertion)!
+     self_type& operator=(const self_type&);
++    self_type& operator=(self_type&&);
+     variant (const self_type&);
++    variant (self_type&&);
+ 
+     /// Accessor to raw memory as \a T.
+     template <typename T>
+@@ -290,7 +297,7 @@
+     symbol_type
+     make_[]b4_symbol_([$1], [id]) (dnl
+ b4_join(b4_symbol_if([$1], [has_type],
+-                     [const b4_symbol([$1], [type])& v]),
++                     [b4_symbol([$1], [type])&& v]),
+         b4_locations_if([const location_type& l])));
+ 
+ ])])])
+@@ -314,11 +321,11 @@
+ [  b4_parser_class_name::symbol_type
+   b4_parser_class_name::make_[]b4_symbol_([$1], [id]) (dnl
+ b4_join(b4_symbol_if([$1], [has_type],
+-                     [const b4_symbol([$1], [type])& v]),
++                     [b4_symbol([$1], [type])&& v]),
+         b4_locations_if([const location_type& l])))
+   {
+     return symbol_type (b4_join([token::b4_symbol([$1], [id])],
+-                                b4_symbol_if([$1], [has_type], [v]),
++                                b4_symbol_if([$1], [has_type], [std::move (v)]),
+                                 b4_locations_if([l])));
+   }
+ 
+@@ -332,7 +339,7 @@
+ [[
+   basic_symbol (]b4_join(
+           [typename Base::kind_type t],
+-          b4_symbol_if([$1], [has_type], const b4_symbol([$1], [type])[ v]),
++          b4_symbol_if([$1], [has_type], b4_symbol([$1], [type])&&[ v]),
+           b4_locations_if([const location_type& l]))[);
+ ]])
+ 
+@@ -344,10 +351,10 @@
+   template <typename Base>
+   ]b4_parser_class_name[::basic_symbol<Base>::basic_symbol (]b4_join(
+           [typename Base::kind_type t],
+-          b4_symbol_if([$1], [has_type], const b4_symbol([$1], [type])[ v]),
++          b4_symbol_if([$1], [has_type], b4_symbol([$1], [type])&&[ v]),
+           b4_locations_if([const location_type& l]))[)
+     : Base (t)
+-    , value (]b4_symbol_if([$1], [has_type], [v])[)]b4_locations_if([
++    , value (]b4_symbol_if([$1], [has_type], [std::move (v)])[)]b4_locations_if([
+     , location (l)])[
+   {}
+ ]])
+--- orig/c++.m4 2015-08-05 09:05:30.000000000 +0200
++++ ./c++.m4    2018-03-03 21:08:36.253716197 +0100
+@@ -198,8 +198,9 @@
+       /// Default constructor.
+       basic_symbol ();
+ 
+-      /// Copy constructor.
+-      basic_symbol (const basic_symbol& other);
++      /// Move constructor and assignment.
++      basic_symbol (basic_symbol&& other);
++      basic_symbol& operator= (basic_symbol&& other);
+ ]b4_variant_if([[
+       /// Constructor for valueless symbols, and symbols from each type.
+ ]b4_type_foreach([b4_basic_symbol_constructor_declare])], [[
+@@ -209,7 +210,7 @@
+ 
+       /// Constructor for symbols with semantic value.
+       basic_symbol (typename Base::kind_type t,
+-                    const semantic_type& v]b4_locations_if([,
++                    semantic_type&& v]b4_locations_if([,
+                     const location_type& l])[);
+ 
+       /// Destroy the symbol.
+@@ -231,7 +232,8 @@
+       location_type location;])[
+ 
+     private:
+-      /// Assignment operator.
++      /// This class is not copyable.
++      basic_symbol (const basic_symbol& other);
+       basic_symbol& operator= (const basic_symbol& other);
+     };
+ 
+@@ -294,29 +296,35 @@
+ 
+   template <typename Base>
+   inline
+-  ]b4_parser_class_name[::basic_symbol<Base>::basic_symbol (const basic_symbol& other)
+-    : Base (other)
+-    , value ()]b4_locations_if([
+-    , location (other.location)])[
++  ]b4_parser_class_name[::basic_symbol<Base>::basic_symbol (basic_symbol&& other)
+   {
+-    ]b4_variant_if([b4_symbol_variant([other.type_get ()], [value], [copy],
+-                                      [other.value])],
+-                   [value = other.value;])[
++    *this = std::move (other);
+   }
+ 
++  template <typename Base>
++  inline
++  ]b4_parser_class_name[::basic_symbol<Base>& ]b4_parser_class_name[::basic_symbol<Base>::operator= (basic_symbol&& other)
++  {
++    static_cast<Base &> (*this) = other;]b4_locations_if([
++    location = std::move (other.location);])[
++    ]b4_variant_if([b4_symbol_variant([other.type_get ()], [value], [move],
++                                      [other.value])],
++                   [value = std::move (other.value);])[
++    return *this;
++  }
+ 
+   template <typename Base>
+   inline
+   ]b4_parser_class_name[::basic_symbol<Base>::basic_symbol (]b4_join(
+           [typename Base::kind_type t],
+-          [const semantic_type& v],
++          [semantic_type&& v],
+           b4_locations_if([const location_type& l]))[)
+     : Base (t)
+-    , value (]b4_variant_if([], [v])[)]b4_locations_if([
++    , value (]b4_variant_if([], [std::move (v)])[)]b4_locations_if([
+     , location (l)])[
+   {]b4_variant_if([[
+     (void) v;
+-    ]b4_symbol_variant([this->type_get ()], [value], [copy], [v])])[}
++    ]b4_symbol_variant([this->type_get ()], [value], [move], [v])])[}
+ 
+ ]b4_variant_if([[
+   // Implementation of basic_symbol constructor for each type.
+--- data/stack.hh	2018-10-29 12:51:51.009447676 +0800
++++ ./stack.hh	2018-10-29 13:05:30.270269257 +0800
+@@ -18,10 +18,15 @@
+ m4_pushdef([b4_copyright_years],
+            [2002-2015])
+ 
++b4_percent_define_default([[api.stack.container]], [[std::vector]])
+ # b4_stack_define
+ # ---------------
+ m4_define([b4_stack_define],
+-[[  template <class T, class S = std::vector<T> >
++[[  // reserve, can be overriden for other containers
++  template <class S> void stack_prepare (S &) { }
++  template <class T> void stack_prepare (std::vector <T> &s) { s.reserve (200); }
++
++  template <class T, class S = ]]b4_percent_define_get([[api.stack.container]])[[ >
+   class stack
+   {
+   public:
+@@ -32,7 +37,7 @@
+     stack ()
+       : seq_ ()
+     {
+-      seq_.reserve (200);
++      stack_prepare(seq_);
+     }
+ 
+     stack (unsigned int n)
+@@ -60,7 +65,7 @@
+     void
+     push (T& t)
+     {
+-      seq_.push_back (T());
++      seq_.emplace_back ();
+       operator[](0).move (t);
+     }
+ 
+--- lalr1.cc.orig	2015-01-23 14:52:50.000000000 +0800
++++ lalr1.cc	2018-11-05 20:18:45.958460451 +0800
+@@ -274,6 +274,7 @@
+     void yy_destroy_ (const char* yymsg, basic_symbol<Base>& yysym) const;
+ 
+   private:
++
+     /// Type access provider for state based symbols.
+     struct by_state
+     {
+@@ -316,8 +317,17 @@
+       stack_symbol_type ();
+       /// Steal the contents from \a sym to build this.
+       stack_symbol_type (state_type s, symbol_type& sym);
+-      /// Assignment, needed by push_back.
+-      stack_symbol_type& operator= (const stack_symbol_type& that);
++
++      /// Move constructor. Manual defined as MSVC2013 is not able to auto generate
++      stack_symbol_type(stack_symbol_type &&other)
++          :super_type(std::move(other))
++      {}
++
++      /// Move assignment. Manual defined as MSVC2013 is not able to auto generate
++      stack_symbol_type &operator=(stack_symbol_type &&other) {
++          super_type::operator=(std::move(other));
++          return *this;
++      }
+     };
+ 
+     /// Stack type.
+@@ -592,6 +602,7 @@
+     that.type = empty_symbol;
+   }
+ 
++#if 0
+   inline
+   ]b4_parser_class_name[::stack_symbol_type&
+   ]b4_parser_class_name[::stack_symbol_type::operator= (const stack_symbol_type& that)
+@@ -603,6 +614,7 @@
+     location = that.location;])[
+     return *this;
+   }
++#endif
+ 
+ 
+   template <typename Base>

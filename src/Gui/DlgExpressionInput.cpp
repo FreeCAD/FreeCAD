@@ -120,7 +120,7 @@ void DlgExpressionInput::textChanged(const QString &text)
             setMinimumWidth(ui->expression->minimumWidth());
 
         //now handle expression
-        boost::shared_ptr<Expression> expr(ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData()));
+        boost::shared_ptr<Expression> expr(Expression::parse(path.getDocumentObject(), text.toUtf8().constData()));
 
         if (expr) {
             std::string error = path.getDocumentObject()->ExpressionEngine.validateExpression(path, expr);

@@ -27,7 +27,7 @@
 #endif
 
 #include "Application.h"
-
+#include <App/ExpressionParser.h>
 #include <App/ExpressionPy.h>
 #include <App/ExpressionPy.cpp>
 #include <App/DocumentObject.h>
@@ -41,7 +41,7 @@ std::string ExpressionPy::representation(void) const
         PyErr_Format(PyExc_ReferenceError, "Owner document object expired");
         return NULL;
     }
-    return std::string("=") + getExpressionPtr()->toString();
+    return "<Expression Function>";
 }
 
 static PyObject *ExpressionPy_Call( PyObject *self, PyObject *args, PyObject *kw ) {

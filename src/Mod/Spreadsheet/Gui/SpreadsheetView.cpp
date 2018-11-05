@@ -325,7 +325,8 @@ void SheetView::updateCell(const App::Property *prop)
     try {
         CellAddress address;
 
-        sheet->getCellAddress(prop, address);
+        if(!sheet->getCellAddress(prop, address))
+            return;
 
         if (currentIndex().row() == address.row() && currentIndex().column() == address.col() )
             updateContentLine();

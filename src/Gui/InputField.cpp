@@ -238,7 +238,7 @@ void InputField::newInput(const QString & text)
         fixup(input);
 
         if (isBound()) {
-            boost::shared_ptr<Expression> e(ExpressionParser::parse(getPath().getDocumentObject(), input.toUtf8()));
+            boost::shared_ptr<Expression> e(Expression::parse(getPath().getDocumentObject(), input.toUtf8()));
 
             setExpression(e);
 

@@ -85,7 +85,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Application.h"
 #include "DocumentObject.h"
 #include "MergeDocuments.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include <App/DocumentPy.h>
 
 #include <Base/Console.h>
@@ -1973,7 +1973,7 @@ Document::importObjects(Base::XMLReader& reader)
     Base::FlagToggler<> flag(_IsRestoring);
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
-    ExpressionImporter expImporter(reader);
+    ExpressionParser::ExpressionImporter expImporter(reader);
 
     reader.readElement("Document");
     long scheme = reader.getAttributeAsInteger("SchemaVersion");

@@ -23,9 +23,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QtCore>
+# include <QtCore>
 # include <QApplication>
 # include <QMessageBox>
+# include <QTextDocument>
 #endif
 
 #include <App/Document.h>
@@ -176,7 +177,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         return QVariant(v);
     }
 #else
-    if (role == Qt::ToolTipRole) {
+    if (!cell->hasException() && role == Qt::ToolTipRole) {
         std::string alias;
         if (cell->getAlias(alias))
             return QVariant(Base::Tools::fromStdString(alias));
@@ -185,8 +186,14 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
     if (cell->hasException()) {
         switch (role) {
-        case Qt::ToolTipRole:
-            return QVariant::fromValue(Base::Tools::fromStdString(cell->getException()));
+        case Qt::ToolTipRole: {
+#if QT_VERSION >= 0x050000
+            QString txt(Base::Tools::fromStdString(cell->getException()).toHtmlEscaped());
+#else
+            QString txt(Qt::escape(Base::Tools::fromStdString(cell->getException())));
+#endif
+            return QVariant(QString::fromLatin1("<pre>%1</pre>").arg(txt));
+        }
         case Qt::DisplayRole: {
 #ifdef DEBUG_DEPS
             return QVariant::fromValue(QString::fromUtf8("#ERR: %1").arg(Tools::fromStdString(cell->getException())));

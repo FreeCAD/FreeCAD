@@ -108,7 +108,7 @@
 #include "Origin.h"
 #include "MaterialObject.h"
 #include "TextDocument.h"
-#include "Expression.h"
+#include "ExpressionParser.h"
 #include "Transactions.h"
 #include <App/MaterialPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -1399,7 +1399,7 @@ void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
    //{
    //    case FLT_DIVIDE_BY_ZERO :
    //       //throw CMyFunkyDivideByZeroException(code, pExp);
-   //       throw Base::DivisionByZeroError("Division by zero!");
+   //       throw Base::ZeroDivisionError("Division by zero!");
    //    break;
    //}
 
@@ -1608,6 +1608,13 @@ void Application::initTypes(void)
     App ::ForStatement              ::init();
     App ::SimpleStatement           ::init();
     App ::Statement                 ::init();
+    App ::LambdaExpression          ::init();
+    App ::FunctionStatement         ::init();
+    App ::DelStatement              ::init();
+    App ::ScopeStatement            ::init();
+    App ::TryStatement              ::init();
+    App ::ImportStatement           ::init();
+    App ::FromStatement             ::init();
 
     // register transaction type
     new App::TransactionProducer<TransactionDocumentObject>
@@ -1629,6 +1636,8 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::TypeError>;
     new ExceptionProducer<Base::ValueError>;
     new ExceptionProducer<Base::IndexError>;
+    new ExceptionProducer<Base::NameError>;
+    new ExceptionProducer<Base::ImportError>;
     new ExceptionProducer<Base::AttributeError>;
     new ExceptionProducer<Base::RuntimeError>;
     new ExceptionProducer<Base::NotImplementedError>;

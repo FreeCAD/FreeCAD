@@ -251,10 +251,13 @@ void ExpressionCompleter::slotUpdate(const QString & prefix)
     // Extract last tokens that can be rebuilt to a variable
     ssize_t i = static_cast<ssize_t>(tokens.size()) - 1;
     while (i >= 0) {
-        if (get<0>(tokens[i]) != ExpressionParser::IDENTIFIER &&
-            get<0>(tokens[i]) != ExpressionParser::STRING &&
-            get<0>(tokens[i]) != ExpressionParser::UNIT &&
-            get<0>(tokens[i]) != '.')
+        int token = get<0>(tokens[i]);
+        int tok = ExpressionParser::translateToken(token);
+
+        if (token != '.' &&
+            tok != ExpressionParser::FC_TOK_IDENTIFIER && 
+            tok != ExpressionParser::FC_TOK_STRING && 
+            tok != ExpressionParser::FC_TOK_UNIT)
             break;
         --i;
     }
