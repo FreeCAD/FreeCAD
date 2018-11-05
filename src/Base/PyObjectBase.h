@@ -446,6 +446,8 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
 /// see docu of PY_TRY 
 #  define PY_CATCH catch(Base::Exception &e)                        \
     {                                                               \
+        auto pye = e.getPyExceptionType();                          \
+        if(pye) Py_Error(pye,e.what());                             \
         std::string str;                                            \
         str += "FreeCAD exception thrown (";                        \
         str += e.what();                                            \
@@ -479,6 +481,8 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
 /// see docu of PY_TRY 
 #  define PY_CATCH catch(Base::Exception &e)                        \
     {                                                               \
+        auto pye = e.getPyExceptionType();                          \
+        if(pye) Py_Error(pye,e.what());                             \
         std::string str;                                            \
         str += "FreeCAD exception thrown (";                        \
         str += e.what();                                            \

@@ -182,6 +182,7 @@ extern char PP_last_error_trace[];    /* exception traceback text */
 
 extern PyObject *PP_PyDict_Object;    /* saved PyDict object */
 extern PyObject *PP_last_traceback;   /* saved exception traceback object */
+extern PyObject *PP_last_exception_type;   /* saved exception type */
 
 
 #ifdef __cplusplus

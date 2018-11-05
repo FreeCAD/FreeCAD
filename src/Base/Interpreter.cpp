@@ -51,6 +51,11 @@ using namespace Base;
 #error "Use Python2.5.x or higher"
 #endif
 
+PyException::PyException(const Py::Object &obj) {
+    _sErrMsg = obj.as_string();
+    _exceptionType = PyObject_Type(obj.ptr());
+    _errorType = obj.ptr()->ob_type->tp_name;
+}
 
 PyException::PyException(void)
 {
@@ -70,6 +75,8 @@ PyException::PyException(void)
     _sErrMsg = error;
     _errorType = prefix;
 
+    _exceptionType = PP_last_exception_type;
+    PP_last_exception_type = 0;
 
     _stackTrace = PP_last_error_trace;     /* exception traceback text */
 
@@ -82,6 +89,10 @@ PyException::PyException(void)
 
 PyException::~PyException() throw()
 {
+    if(_exceptionType) {
+        PyGILStateLocker locker;
+        Py_DECREF(_exceptionType);
+    }
 }
 
 void PyException::ThrowException(void)

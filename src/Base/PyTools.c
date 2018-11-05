@@ -219,6 +219,7 @@ char PP_last_error_trace[MAX];              /* exception traceback text */
 
 PyObject *PP_last_traceback = NULL;         /* saved exception traceback object */
 PyObject *PP_PyDict_Object = NULL;          /* saved exception dictionary object */
+PyObject *PP_last_exception_type = NULL;    /* saved exception python type */
 
 
 void PP_Fetch_Error_Text()
@@ -322,7 +323,12 @@ void PP_Fetch_Error_Text()
         strcpy(PP_last_error_trace, "<unknown exception traceback>"); 
     Py_XDECREF(pystring);
 
-
+    Py_XDECREF(PP_last_exception_type);
+    if(errobj) {
+        PP_last_exception_type = errobj;
+        Py_INCREF(errobj);
+    }else
+        PP_last_exception_type = 0;
     Py_XDECREF(errobj);
     Py_XDECREF(errdata);               /* this function owns all 3 objects */
     Py_XDECREF(PP_last_traceback);     /* they've been NULL'd out in Python */ 

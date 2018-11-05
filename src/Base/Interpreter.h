@@ -65,6 +65,7 @@ class BaseExport PyException : public Exception
 public:
     /// constructor does the whole job
     PyException(void);
+    PyException(const Py::Object &obj);
     ~PyException() throw();
     
     /// this method determines if the original exception
@@ -75,11 +76,13 @@ public:
     ///  this function returns the stack trace
     const std::string &getStackTrace(void) const {return _stackTrace;}
     const std::string &getErrorType(void) const {return _errorType;}
+    virtual PyObject *getPyExceptionType(void) const override {return _exceptionType;}
     void ReportException (void) const;
 
 protected:
     std::string _stackTrace;
     std::string _errorType;
+    PyObject *_exceptionType;
 };
 
 /**

@@ -518,6 +518,10 @@ TypeError::TypeError(const TypeError &inst)
 {
 }
 
+PyObject *TypeError::getPyExceptionType() const {
+    return PyExc_TypeError;
+}
+
 // ---------------------------------------------------------
 
 ValueError::ValueError()
@@ -538,6 +542,10 @@ ValueError::ValueError(const std::string& sMessage)
 ValueError::ValueError(const ValueError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *ValueError::getPyExceptionType() const {
+    return PyExc_ValueError;
 }
 
 // ---------------------------------------------------------
@@ -562,6 +570,62 @@ IndexError::IndexError(const IndexError &inst)
 {
 }
 
+PyObject *IndexError::getPyExceptionType() const {
+    return PyExc_IndexError;
+}
+
+// ---------------------------------------------------------
+
+NameError::NameError()
+  : Exception()
+{
+}
+
+NameError::NameError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+NameError::NameError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+NameError::NameError(const NameError &inst)
+ : Exception(inst)
+{
+}
+
+PyObject *NameError::getPyExceptionType() const {
+    return PyExc_NameError;
+}
+
+// ---------------------------------------------------------
+
+ImportError::ImportError()
+  : Exception()
+{
+}
+
+ImportError::ImportError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ImportError::ImportError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ImportError::ImportError(const ImportError &inst)
+ : Exception(inst)
+{
+}
+
+PyObject *ImportError::getPyExceptionType() const {
+    return PyExc_ImportError;
+}
+
 // ---------------------------------------------------------
 
 AttributeError::AttributeError()
@@ -582,6 +646,10 @@ AttributeError::AttributeError(const std::string& sMessage)
 AttributeError::AttributeError(const AttributeError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *AttributeError::getPyExceptionType() const {
+    return PyExc_AttributeError;
 }
 
 // ---------------------------------------------------------
@@ -606,6 +674,10 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 {
 }
 
+PyObject *RuntimeError::getPyExceptionType() const {
+    return PyExc_RuntimeError;
+}
+
 // ---------------------------------------------------------
 
 NotImplementedError::NotImplementedError()
@@ -626,6 +698,10 @@ NotImplementedError::NotImplementedError(const std::string& sMessage)
 NotImplementedError::NotImplementedError(const NotImplementedError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *NotImplementedError::getPyExceptionType() const {
+    return PyExc_NotImplementedError;
 }
 
 // ---------------------------------------------------------
@@ -650,6 +726,10 @@ DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
 {
 }
 
+PyObject *DivisionByZeroError::getPyExceptionType() const {
+    return PyExc_ZeroDivisionError;
+}
+
 // ---------------------------------------------------------
 
 ReferencesError::ReferencesError()
@@ -670,6 +750,10 @@ ReferencesError::ReferencesError(const std::string& sMessage)
 ReferencesError::ReferencesError(const ReferencesError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *ReferencesError::getPyExceptionType() const {
+    return PyExc_ReferenceError;
 }
 
 // ---------------------------------------------------------
@@ -738,6 +822,10 @@ UnicodeError::UnicodeError(const UnicodeError &inst)
 {
 }
 
+PyObject *UnicodeError::getPyExceptionType() const {
+    return PyExc_UnicodeError;
+}
+
 // ---------------------------------------------------------
 
 OverflowError::OverflowError()
@@ -758,6 +846,10 @@ OverflowError::OverflowError(const std::string& sMessage)
 OverflowError::OverflowError(const OverflowError &inst)
  : Exception(inst)
 {
+}
+
+PyObject *OverflowError::getPyExceptionType() const {
+    return PyExc_OverflowError;
 }
 
 // ---------------------------------------------------------
@@ -782,6 +874,10 @@ UnderflowError::UnderflowError(const UnderflowError &inst)
 {
 }
 
+PyObject *UnderflowError::getPyExceptionType() const {
+    return PyExc_ArithmeticError;
+}
+
 // ---------------------------------------------------------
 
 UnitsMismatchError::UnitsMismatchError()
@@ -802,6 +898,10 @@ UnitsMismatchError::UnitsMismatchError(const std::string& sMessage)
 UnitsMismatchError::UnitsMismatchError(const UnitsMismatchError &inst)
   : Exception(inst)
 {
+}
+
+PyObject *UnitsMismatchError::getPyExceptionType() const {
+    return PyExc_ArithmeticError;
 }
 
 // ---------------------------------------------------------
