@@ -122,9 +122,9 @@ public:
 
 
     const Constraint *getConstraint(const App::ObjectIdentifier &path) const;
-    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const;
-    virtual const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
+    virtual void setPathValue(const App::ObjectIdentifier & path, const App::any & value);
+    virtual App::any getPathValue(const App::ObjectIdentifier & path) const;
+    virtual App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
     typedef std::pair<int, const Constraint*> ConstraintInfo ;

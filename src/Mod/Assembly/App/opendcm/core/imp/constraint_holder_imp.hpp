@@ -304,7 +304,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
 
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
-Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::GenericEquations::GenericEquations(std::vector<boost::any>& v)
+Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::GenericEquations::GenericEquations(std::vector<App::any>& v)
     : vec(v) {
 
 };
@@ -318,7 +318,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::GenericEquation
 
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
-Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::GenericConstraints::GenericConstraints(std::vector<boost::any>& v)
+Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::GenericConstraints::GenericConstraints(std::vector<App::any>& v)
     : vec(v) {
 
 };
@@ -403,18 +403,18 @@ int Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::equationCount() 
 
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
-std::vector<boost::any>
+std::vector<App::any>
 Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::getGenericEquations() {
-    std::vector<boost::any> vec;
+    std::vector<App::any> vec;
     fusion::for_each(m_sets, GenericEquations(vec));
     return vec;
 };
 
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
-std::vector<boost::any>
+std::vector<App::any>
 Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::getGenericConstraints() {
-    std::vector<boost::any> vec;
+    std::vector<App::any> vec;
     fusion::for_each(m_objects, GenericConstraints(vec));
     return vec;
 };

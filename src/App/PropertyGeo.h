@@ -120,7 +120,7 @@ public:
      */
     virtual ~PropertyVectorDistance();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    App::any getPathValue(const ObjectIdentifier &path) const;
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyVectorDistanceItem";
@@ -144,7 +144,7 @@ public:
      */
     virtual ~PropertyPosition();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    App::any getPathValue(const ObjectIdentifier &path) const;
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPositionItem";
@@ -168,7 +168,7 @@ public:
      */
     virtual ~PropertyDirection();
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    App::any getPathValue(const ObjectIdentifier &path) const;
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyDirectionItem";
@@ -298,9 +298,9 @@ public:
     /// Get valid paths for this property; used by auto completer
     void getPaths(std::vector<ObjectIdentifier> &paths) const;
 
-    void setPathValue(const ObjectIdentifier &path, const boost::any &value);
+    void setPathValue(const ObjectIdentifier &path, const App::any &value);
 
-    const boost::any getPathValue(const ObjectIdentifier &path) const;
+    App::any getPathValue(const ObjectIdentifier &path) const;
 
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";

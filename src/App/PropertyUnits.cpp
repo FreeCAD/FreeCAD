@@ -138,17 +138,17 @@ void PropertyQuantity::setPyObject(PyObject *value)
     }
 }
 
-void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const boost::any &value)
+void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const App::any &value)
 {
     if (value.type() == typeid(double))
-        setValue(boost::any_cast<double>(value));
+        setValue(App::any_cast<double>(value));
     else if (value.type() == typeid(Base::Quantity))
-        setValue((boost::any_cast<Quantity>(value)).getValue());
+        setValue((App::any_cast<Quantity>(value)).getValue());
     else
         throw bad_cast();
 }
 
-const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*/) const
+App::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*/) const
 {
     return Quantity(_dValue, _Unit);
 }

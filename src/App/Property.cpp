@@ -84,12 +84,12 @@ void Property::setContainer(PropertyContainer *Father)
     father = Father;
 }
 
-void Property::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void Property::setPathValue(const ObjectIdentifier &path, const App::any &value)
 {
     path.setValue(value);
 }
 
-const boost::any Property::getPathValue(const ObjectIdentifier &path) const
+App::any Property::getPathValue(const ObjectIdentifier &path) const
 {
     return path.getValue();
 }
@@ -99,7 +99,7 @@ void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
     paths.push_back(App::ObjectIdentifier(*this));
 }
 
-const ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
+ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
 {
     return p;
 }

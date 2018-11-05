@@ -542,7 +542,7 @@ ObjectIdentifier::Component::Component(const String &_name,
 }
 
 ObjectIdentifier::Component::Component(String &&_name, 
-        ObjectIdentifier::Component::typeEnum _type, int _begin, int _end, int _step) noexcept
+        ObjectIdentifier::Component::typeEnum _type, int _begin, int _end, int _step)
     : name(std::move(_name))
     , type(_type)
     , begin(_begin)
@@ -643,7 +643,7 @@ ObjectIdentifier::Component ObjectIdentifier::SimpleComponent(const ObjectIdenti
     return Component(_component);
 }
 
-ObjectIdentifier::Component ObjectIdentifier::SimpleComponent(ObjectIdentifier::String &&_component) noexcept
+ObjectIdentifier::Component ObjectIdentifier::SimpleComponent(ObjectIdentifier::String &&_component)
 {
     return Component(std::move(_component));
 }
@@ -672,7 +672,7 @@ ObjectIdentifier::Component ObjectIdentifier::MapComponent(const String & _key)
     return Component(_key, Component::MAP);
 }
 
-ObjectIdentifier::Component ObjectIdentifier::MapComponent(String &&_key) noexcept
+ObjectIdentifier::Component ObjectIdentifier::MapComponent(String &&_key)
 {
     return Component(std::move(_key), Component::MAP);
 }
@@ -1491,7 +1491,7 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
  *
  * All type of objects are supported. Some types are casted to FC native
  * type, including: Int, Float, String, Unicode String, and Quantities. Others
- * are just kept as Python object wrapped by boost::any.
+ * are just kept as Python object wrapped by App::any.
  *
  * @param pathValue: if true, calls the property's getPathValue(), which is
  * necessary for Qunatities to work.
@@ -1499,7 +1499,7 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
  * @return The value of the property or field.
  */
 
-boost::any ObjectIdentifier::getValue(bool pathValue) const
+App::any ObjectIdentifier::getValue(bool pathValue) const
 {
     ResolveResults rs(*this);
 
@@ -1512,20 +1512,20 @@ boost::any ObjectIdentifier::getValue(bool pathValue) const
     }catch(Py::Exception &) {
         Base::PyException::ThrowException();
     }
-    return boost::any();
+    return App::any();
 }
 
 /**
  * @brief Set value of a property or field pointed to by this object identifier.
  *
  * This method uses Python to do the actual work. and a limited set of types that
- * can be in the boost::any variable is supported: Base::Quantity, double,
+ * can be in the App::any variable is supported: Base::Quantity, double,
  * char*, const char*, int, unsigned int, short, unsigned short, char, and unsigned char.
  *
  * @param value Value to set
  */
 
-void ObjectIdentifier::setValue(const boost::any &value) const
+void ObjectIdentifier::setValue(const App::any &value) const
 {
     std::stringstream ss;
     ResolveResults rs(*this);

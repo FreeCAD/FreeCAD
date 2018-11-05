@@ -229,7 +229,7 @@ public:
 
     App::DocumentObject *getOwner() const { return owner; }
 
-    boost::any getValueAsAny() const;
+    App::any getValueAsAny() const;
 
     struct Component;
     typedef std::unique_ptr<Component> ComponentPtr;
@@ -261,7 +261,7 @@ protected:
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &) {return false;}
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) {}
-    virtual boost::any _getValueAsAny() const = 0;
+    virtual App::any _getValueAsAny() const = 0;
     virtual ExpressionPtr _eval() const {return 0;}
     virtual void _visit(ExpressionVisitor &) {}
 
@@ -314,7 +314,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
     virtual ExpressionPtr _eval() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     Base::Quantity quantity;
@@ -357,7 +357,7 @@ protected:
     ConstantExpression(const App::DocumentObject *_owner):NumberExpression(_owner){}
 
     virtual ExpressionPtr _eval() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
 

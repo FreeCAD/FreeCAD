@@ -68,8 +68,8 @@ public:
     void setValue(double lValue) { PropertyFloat::setValue(lValue); }
     double getValue(void) const { return PropertyFloat::getValue(); }
 
-    virtual void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+    virtual void setPathValue(const App::ObjectIdentifier &path, const App::any &value);
+    virtual App::any getPathValue(const App::ObjectIdentifier &path) const;
 
 protected:
     Base::Quantity createQuantityFromPy(PyObject *value);

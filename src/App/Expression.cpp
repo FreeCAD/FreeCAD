@@ -218,7 +218,7 @@ static inline bool essentiallyInteger(double a, long &l) {
     return essentiallyEqual(a,l);
 }
 
-// This class is intended to be contained inside boost::any (via a shared_ptr)
+// This class is intended to be contained inside App::any (via a shared_ptr)
 // without holding Python global lock
 struct PyObjectWrapper {
 public:
@@ -250,24 +250,24 @@ static inline PyObjectWrapper::Pointer pyObjectWrap(PyObject *obj) {
     return std::allocate_shared<PyObjectWrapper>(ExpressionFastAlloc(PyObjectWrapper)(),obj);
 }
 
-static inline bool isAnyPyObject(const boost::any &value) {
+static inline bool isAnyPyObject(const App::any &value) {
     return value.type() == typeid(PyObjectWrapper::Pointer);
 }
 
-static inline Py::Object _pyObjectFromAny(const boost::any &value) {
-    return boost::any_cast<const PyObjectWrapper::Pointer&>(value)->get();
+static inline Py::Object _pyObjectFromAny(const App::any &value) {
+    return App::any_cast<const PyObjectWrapper::Pointer&>(value)->get();
 }
 
-static Py::Object _pyObjectFromAny(const boost::any &value, const Expression *e) {
+static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     if(value.empty())
         return Py::Object();
     else if (isAnyPyObject(value))
         return _pyObjectFromAny(value);
     const auto &type = value.type();
     if (type == typeid(Quantity))
-        return Py::Object(new QuantityPy(new Quantity(boost::any_cast<Quantity>(value))));
+        return Py::Object(new QuantityPy(new Quantity(App::any_cast<Quantity>(value))));
     else if (type == typeid(double)) {
-        double v = boost::any_cast<double>(value);
+        double v = App::any_cast<double>(value);
         double rv = std::round(v);
         if(essentiallyEqual(v,rv)) {
             long l = (long)rv;
@@ -277,24 +277,24 @@ static Py::Object _pyObjectFromAny(const boost::any &value, const Expression *e)
         }
         return Py::Float(v);
     } else if (type == typeid(float)) {
-        float v = boost::any_cast<float>(value);
+        float v = App::any_cast<float>(value);
         float rv = std::round(v);
         if(essentiallyEqual(v,rv))
             return Py::Int((int)rv);
         return Py::Float(v);
     } else if (type == typeid(int)) 
-        return Py::Int(boost::any_cast<int>(value));
+        return Py::Int(App::any_cast<int>(value));
     else if (type == typeid(long)) {
-        long l = boost::any_cast<long>(value);;
+        long l = App::any_cast<long>(value);;
         if(std::abs(l)<INT_MAX)
             return Py::Int(int(l));
-        return Py::Long(boost::any_cast<long>(value));
+        return Py::Long(App::any_cast<long>(value));
     } else if (type == typeid(bool))
-        return Py::Boolean(boost::any_cast<bool>(value));
+        return Py::Boolean(App::any_cast<bool>(value));
     else if (type == typeid(std::string))
-        return Py::String(boost::any_cast<string>(value));
+        return Py::String(App::any_cast<string>(value));
     else if (type == typeid(const char*))
-        return Py::String(boost::any_cast<const char*>(value));
+        return Py::String(App::any_cast<const char*>(value));
 
     if(e)
         _EXPR_THROW("Unknown type", e);
@@ -303,31 +303,31 @@ static Py::Object _pyObjectFromAny(const boost::any &value, const Expression *e)
 }
 
 namespace App {
-Py::Object pyObjectFromAny(const boost::any &value) {
+Py::Object pyObjectFromAny(const App::any &value) {
     return _pyObjectFromAny(value,0);
 }
 
-boost::any pyObjectToAny(Py::Object value, bool check) {
+App::any pyObjectToAny(Py::Object value, bool check) {
 
     if(value.isNone())
-        return boost::any();
+        return App::any();
 
     PyObject *pyvalue = value.ptr();
 
     if(!check)
-        return boost::any(pyObjectWrap(pyvalue));
+        return App::any(pyObjectWrap(pyvalue));
 
 #if PY_MAJOR_VERSION < 3
     if (PyInt_Check(pyvalue))
-        return boost::any(PyInt_AsLong(pyvalue));
+        return App::any(PyInt_AsLong(pyvalue));
 #endif
     if (PyLong_Check(pyvalue))
-        return boost::any(PyLong_AsLong(pyvalue));
+        return App::any(PyLong_AsLong(pyvalue));
     else if (PyFloat_Check(pyvalue))
-        return boost::any(PyFloat_AsDouble(pyvalue));
+        return App::any(PyFloat_AsDouble(pyvalue));
 #if PY_MAJOR_VERSION < 3
     else if (PyString_Check(pyvalue))
-        return boost::any(std::string(PyString_AsString(pyvalue)));
+        return App::any(std::string(PyString_AsString(pyvalue)));
 #endif
     else if (PyUnicode_Check(pyvalue)) {
         PyObject * s = PyUnicode_AsUTF8String(pyvalue);
@@ -336,42 +336,42 @@ boost::any pyObjectToAny(Py::Object value, bool check) {
         Py::Object o(s,true);
 
 #if PY_MAJOR_VERSION >= 3
-        return boost::any(std::string(PyUnicode_AsUTF8(s)));
+        return App::any(std::string(PyUnicode_AsUTF8(s)));
 #else
-        return boost::any(std::string(PyString_AsString(s)));
+        return App::any(std::string(PyString_AsString(s)));
 #endif
     }
     else if (PyObject_TypeCheck(pyvalue, &Base::QuantityPy::Type)) {
         Base::QuantityPy * qp = static_cast<Base::QuantityPy*>(pyvalue);
         Base::Quantity * q = qp->getQuantityPtr();
 
-        return boost::any(*q);
+        return App::any(*q);
     }
     else {
-        return boost::any(pyObjectWrap(pyvalue));
+        return App::any(pyObjectWrap(pyvalue));
     }
 }
 
-ExpressionPtr expressionFromAny(const DocumentObject *owner, boost::any &&value) {
+ExpressionPtr expressionFromAny(const DocumentObject *owner, App::any &&value) {
     if (value.empty())
         return PyObjectExpression::create(owner);
     const auto &type = value.type();
     if (type == typeid(std::string))
-        return StringExpression::create(owner,boost::any_cast<std::string&&>(std::move(value)));
+        return StringExpression::create(owner,App::any_cast<std::string&&>(std::move(value)));
     else if (type == typeid(Quantity))
-        return NumberExpression::create(owner,boost::any_cast<const Quantity &>(value));
+        return NumberExpression::create(owner,App::any_cast<const Quantity &>(value));
     else if (type == typeid(bool))
-        return BooleanExpression::create(owner,boost::any_cast<bool>(value));
+        return BooleanExpression::create(owner,App::any_cast<bool>(value));
     else if (type == typeid(int))
-        return NumberExpression::create(owner,Quantity(boost::any_cast<int>(value)));
+        return NumberExpression::create(owner,Quantity(App::any_cast<int>(value)));
     else if (type == typeid(long))
-        return NumberExpression::create(owner,Quantity(boost::any_cast<long>(value)));
+        return NumberExpression::create(owner,Quantity(App::any_cast<long>(value)));
     else if (type == typeid(float))
-        return NumberExpression::create(owner,Quantity(boost::any_cast<float>(value)));
+        return NumberExpression::create(owner,Quantity(App::any_cast<float>(value)));
     else if (type == typeid(double))
-        return NumberExpression::create(owner,Quantity(boost::any_cast<double>(value)));
+        return NumberExpression::create(owner,Quantity(App::any_cast<double>(value)));
     else if (type == typeid(const char*)) 
-        return StringExpression::create(owner,std::string(boost::any_cast<const char *>(value)));
+        return StringExpression::create(owner,std::string(App::any_cast<const char *>(value)));
     else if (isAnyPyObject(value)) {
         Base::PyGILStateLocker lock;
         return PyObjectExpression::create(owner,_pyObjectFromAny(value).ptr());
@@ -970,7 +970,7 @@ ExpressionPtr Expression::updateLabelReference(
     return expr;
 }
 
-boost::any Expression::getValueAsAny() const {
+App::any Expression::getValueAsAny() const {
     if(components.empty())
         return _getValueAsAny();
     Base::PyGILStateLocker lock;
@@ -1114,11 +1114,11 @@ ExpressionPtr UnitExpression::_copy() const
     return UnitExpression::create(owner, quantity, std::string(unitStr));
 }
 
-boost::any UnitExpression::_getValueAsAny() const {
+App::any UnitExpression::_getValueAsAny() const {
     if(quantity.getUnit().isEmpty())
-        return boost::any(quantity.getValue());
+        return App::any(quantity.getValue());
     else
-        return boost::any(quantity); 
+        return App::any(quantity); 
 }
 
 //
@@ -1292,7 +1292,7 @@ ExpressionPtr OperatorExpression::_calc(const Expression *e1) const {
     return 0;
 }
         
-boost::any OperatorExpression::_getValueAsAny() const {
+App::any OperatorExpression::_getValueAsAny() const {
     ExpressionPtr e1(left->eval());
     ExpressionPtr expr(_calc(e1.get()));
     if(expr)
@@ -1390,8 +1390,8 @@ ExpressionPtr OperatorExpression::_calc(const Expression *e1, const Expression *
     return output;
 }
 
-boost::any OperatorExpression::calc(const Expression *owner, int op,
-                    const boost::any &l, const boost::any &r, 
+App::any OperatorExpression::calc(const Expression *owner, int op,
+                    const App::any &l, const App::any &r, 
                     const Expression *left, const Expression *right, bool inplace) 
 {
     switch(op) {
@@ -1407,22 +1407,22 @@ boost::any OperatorExpression::calc(const Expression *owner, int op,
         break;
     case OP_AND:
     case OP_OR:
-        return boost::any(_pyObjectFromAny(r,right).isTrue());
+        return App::any(_pyObjectFromAny(r,right).isTrue());
     case OP_ADD:
         if(l.type()==typeid(std::string) && r.type()==typeid(std::string))
-            return std::string(boost::any_cast<const std::string&>(l) + 
-                    boost::any_cast<const std::string&>(r));
+            return std::string(App::any_cast<const std::string&>(l) + 
+                    App::any_cast<const std::string&>(r));
         break;
     case OP_MUL:
         if(l.type()==typeid(std::string)) {
             long n;
             if(r.type()==typeid(int))
-                n = boost::any_cast<int>(r);
+                n = App::any_cast<int>(r);
             else if(r.type()==typeid(long))
-                n = boost::any_cast<long>(r);
+                n = App::any_cast<long>(r);
             else
                 break;
-            const std::string &txt = boost::any_cast<const std::string&>(l);
+            const std::string &txt = App::any_cast<const std::string&>(l);
             std::ostringstream ss;
             for(long i=0;i<n;++i)
                 ss << txt;
@@ -1440,13 +1440,13 @@ boost::any OperatorExpression::calc(const Expression *owner, int op,
             PyException::ThrowException();
         if(op==OP_NOT_IN)
             res = !res;
-        return boost::any(!!res);
+        return App::any(!!res);
     }
 #define RICH_COMPARE(_op) \
     case OP_##_op: {\
         int res = PyObject_RichCompareBool(o1.ptr(),o2.ptr(),Py_##_op);\
         if(res<0) PyException::ThrowException();\
-        return boost::any(!!res);\
+        return App::any(!!res);\
     }
     RICH_COMPARE(LT)
     RICH_COMPARE(LE)
@@ -2371,7 +2371,7 @@ ExpressionPtr FunctionExpression::_eval() const
     return NumberExpression::create(owner, Quantity(scaler * output, unit));
 }
 
-boost::any FunctionExpression::_getValueAsAny() const {
+App::any FunctionExpression::_getValueAsAny() const {
     if(args.empty())
         EXPR_THROW("Function requires at least one argument.");
 
@@ -2381,15 +2381,15 @@ boost::any FunctionExpression::_getValueAsAny() const {
             EXPR_THROW("Function expects 2 or 3 arguments.");
         // fall through
     case HAS_VAR: {
-        boost::any value = args[0]->getValueAsAny();
+        App::any value = args[0]->getValueAsAny();
         if(value.type()!=typeid(std::string))
             EXPR_THROW("Expects the first argument evaluating to a string.");
         Base::PyGILStateLocker lock;
         Py::Object pyobj;
         bool found = Base::Interpreter().getVariable(
-                boost::any_cast<std::string>(value).c_str(),pyobj);
+                App::any_cast<std::string>(value).c_str(),pyobj);
         if(f == HAS_VAR)
-            return boost::any(found);
+            return App::any(found);
         if(!found) {
             if(args.size()==2)
                 return args[1]->getValueAsAny();
@@ -2612,7 +2612,7 @@ private:
     int i;
 };
 
-boost::any AssignmentExpression::apply(const Expression *owner, int _catchAll, 
+App::any AssignmentExpression::apply(const Expression *owner, int _catchAll, 
         const ExpressionList &left, const Expression *right, int op, bool needReturn)
 {
     CHECK_STACK(AssignmentExpression, owner);
@@ -2631,7 +2631,7 @@ boost::any AssignmentExpression::apply(const Expression *owner, int _catchAll,
         frame.setVar(owner,info);
         if(needReturn)
             return pyObjectToAny(info.rhs);
-        return boost::any();
+        return App::any();
     }
 
     PyIterable value(_pyObjectFromAny(right->getValueAsAny(),right),owner,true);
@@ -2675,10 +2675,10 @@ boost::any AssignmentExpression::apply(const Expression *owner, int _catchAll,
     }
     if(needReturn)
         return pyObjectToAny(value,false);
-    return boost::any();
+    return App::any();
 }
 
-boost::any AssignmentExpression::_getValueAsAny() const {
+App::any AssignmentExpression::_getValueAsAny() const {
     return apply(this,catchAll,left,right.get(),op,true);
 }
 
@@ -2725,7 +2725,7 @@ const ObjectIdentifier &VariableExpression::getPath() const {
     return var;
 }
 
-boost::any VariableExpression::_getValueAsAny() const {
+App::any VariableExpression::_getValueAsAny() const {
     if(_EvalStack.size() && !var.isLocalProperty() && !var.hasDocumentObjectName(true)) {
         auto &frame = *_EvalStack.back();
         const auto &comps = var.getComponents();
@@ -3060,9 +3060,9 @@ static inline std::string varName(int index) {
 
 static Expression::StringList prepareCommands(const Expression *owner, const Expression *arg0) {
     Expression::StringList cmds;
-    boost::any value(arg0->getValueAsAny());
+    App::any value(arg0->getValueAsAny());
     if(value.type() == typeid(std::string))
-        cmds.emplace_back(boost::any_cast<std::string>(value));
+        cmds.emplace_back(App::any_cast<std::string>(value));
     else {
         PyIterable pyobj(_pyObjectFromAny(value,arg0),owner,true);
         Py::Sequence seq(pyobj);
@@ -3266,7 +3266,7 @@ ExpressionPtr CallableExpression::_eval() const {
     return PyObjectExpression::create(owner);
 }
 
-boost::any CallableExpression::_getValueAsAny() const {
+App::any CallableExpression::_getValueAsAny() const {
     if(!expr) {
         switch(ftype) {
         case EVAL: {
@@ -3311,12 +3311,12 @@ boost::any CallableExpression::_getValueAsAny() const {
             return pyObjectToAny(Py::Object(new ExpressionPy(res.release())),false);
 
         } case IMPORT_PY: {
-            boost::any value(args[0]->getValueAsAny());
+            App::any value(args[0]->getValueAsAny());
             if(value.type() != typeid(std::string))
                 EXPR_THROW("Function expects the first argument to be a string.");
             Base::PyGILStateLocker lock;
             return pyObjectToAny(ImportModules::instance()->getModule(
-                        boost::any_cast<const std::string &>(value),this),false);
+                        App::any_cast<const std::string &>(value),this),false);
         } default: {
             EXPR_THROW("Unknonw function");
         }}
@@ -3398,7 +3398,7 @@ boost::any CallableExpression::_getValueAsAny() const {
         return pyObjectToAny(Py::Callable(pyobj).apply(tuple,dict));
     }catch (Py::Exception&) {
         Base::PyException::ThrowException();
-        return boost::any();
+        return App::any();
     }
 }
 
@@ -3467,9 +3467,9 @@ ExpressionPtr PyObjectExpression::_copy() const
     return PyObjectExpression::create(owner, pyObj);
 }
 
-boost::any PyObjectExpression::_getValueAsAny() const {
+App::any PyObjectExpression::_getValueAsAny() const {
     if(!pyObj)
-        return boost::any();
+        return App::any();
     Base::PyGILStateLocker lock;
     return pyObjectToAny(Py::Object(pyObj));
 }
@@ -3654,8 +3654,8 @@ ExpressionPtr StringExpression::_copy() const
     return StringExpression::create(owner, ExpressionString(str));
 }
 
-boost::any StringExpression::_getValueAsAny() const {
-    return boost::any(str.text);
+App::any StringExpression::_getValueAsAny() const {
+    return App::any(str.text);
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -3695,7 +3695,7 @@ ExpressionPtr ConditionalExpression::_eval() const
         return falseExpr->eval();
 }
 
-boost::any ConditionalExpression::_getValueAsAny() const {
+App::any ConditionalExpression::_getValueAsAny() const {
     if(evalCondition(*condition))
         return trueExpr->getValueAsAny();
     else
@@ -3808,13 +3808,13 @@ ExpressionPtr ConstantExpression::_eval() const {
     return 0;
 }
 
-boost::any ConstantExpression::_getValueAsAny() const {
+App::any ConstantExpression::_getValueAsAny() const {
     if(name == "None")
-        return boost::any();
+        return App::any();
     if(name == "True")
-        return boost::any(true);
+        return App::any(true);
     if(name == "False")
-        return boost::any(false);
+        return App::any(false);
     return NumberExpression::_getValueAsAny();
 }
 
@@ -3882,7 +3882,7 @@ void RangeExpression::_getDeps(ExpressionDeps &deps) const
     } while (i.next());
 }
 
-boost::any RangeExpression::_getValueAsAny() const {
+App::any RangeExpression::_getValueAsAny() const {
     Range i(getRange());
     Py::Tuple tuple(i.size());
     int j=0;
@@ -4107,9 +4107,9 @@ ExpressionPtr ComprehensionExpression::_copy() const
     return res;
 }
 
-boost::any ComprehensionExpression::_getValueAsAny() const {
+App::any ComprehensionExpression::_getValueAsAny() const {
     if(!key)
-        return boost::any();
+        return App::any();
     Base::PyGILStateLocker lock;
     EvalFrame frame;
     if(_EvalStack.empty())
@@ -4218,7 +4218,7 @@ ExpressionPtr ListExpression::_copy() const
     return res;
 }
 
-boost::any ListExpression::_getValueAsAny() const {
+App::any ListExpression::_getValueAsAny() const {
     Base::PyGILStateLocker lock;
     Py::List list;
     int i = 0;
@@ -4281,7 +4281,7 @@ ExpressionPtr TupleExpression::_copy() const
     return res;
 }
 
-boost::any TupleExpression::_getValueAsAny() const {
+App::any TupleExpression::_getValueAsAny() const {
     Base::PyGILStateLocker lock;
     Py::Sequence seq(_pyObjectFromAny(ListExpression::_getValueAsAny(),this));
     return pyObjectToAny(Py::Tuple(seq),false);
@@ -4372,7 +4372,7 @@ ExpressionPtr DictExpression::_copy() const
     return res;
 }
 
-boost::any DictExpression::_getValueAsAny() const {
+App::any DictExpression::_getValueAsAny() const {
     Base::PyGILStateLocker lock;
     Py::Dict dict;
     int i=0;
@@ -4466,7 +4466,7 @@ ExpressionPtr IDictExpression::_copy() const
     return res;
 }
 
-boost::any IDictExpression::_getValueAsAny() const {
+App::any IDictExpression::_getValueAsAny() const {
     Base::PyGILStateLocker lock;
     Py::Dict dict;
     int i = 0;
@@ -4491,9 +4491,9 @@ boost::any IDictExpression::_getValueAsAny() const {
 ////////////////////////////////////////////////////////////////////////////////////
 EXPR_TYPESYSTEM_SOURCE(App::BaseStatement, App::Expression);
 
-boost::any BaseStatement::_getValueAsAny() const {
+App::any BaseStatement::_getValueAsAny() const {
     FC_ERR("Invalid call to _getValueAsAny()");
-    return boost::any();
+    return App::any();
 }
 
 /////////////////////////////////////////////////////////////
@@ -4531,7 +4531,7 @@ void PseudoStatement::_toString(std::ostream &ss, bool, int) const {
     }
 }
 
-boost::any PseudoStatement::_getValueAsAny() const {
+App::any PseudoStatement::_getValueAsAny() const {
     switch(type) {
     case PY_BEGIN:
     case PY_END:
@@ -4539,7 +4539,7 @@ boost::any PseudoStatement::_getValueAsAny() const {
             _EvalStack.front()->pythonMode = type==PY_BEGIN;
         break;
     }
-    return boost::any();
+    return App::any();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -5132,7 +5132,7 @@ ExpressionPtr LambdaExpression::_copy() const {
     return res;
 }
 
-static boost::any makeFunc(const Expression *owner,
+static App::any makeFunc(const Expression *owner,
                            const Expression &body, 
                            const Expression::StringList &names, 
                            const Expression::ExpressionList &args, 
@@ -5161,7 +5161,7 @@ static boost::any makeFunc(const Expression *owner,
     return pyObjectToAny(pyobj,false);
 }
 
-boost::any LambdaExpression::_getValueAsAny() const {
+App::any LambdaExpression::_getValueAsAny() const {
     return makeFunc(this,*body,names,args);
 }
 
@@ -5219,7 +5219,7 @@ ExpressionPtr FunctionStatement::_copy() const {
     return res;
 }
 
-boost::any FunctionStatement::_getValueAsAny() const {
+App::any FunctionStatement::_getValueAsAny() const {
     return makeFunc(this,*body,names,args,name.c_str());
 }
 
@@ -5265,7 +5265,7 @@ ExpressionPtr DelStatement::_copy() const {
     return res;
 }
 
-boost::any DelStatement::_getValueAsAny() const {
+App::any DelStatement::_getValueAsAny() const {
     CHECK_STACK(DelStatement, this);
     auto &frame = *_EvalStack.back();
     for(auto &target : targets) {
@@ -5278,7 +5278,7 @@ boost::any DelStatement::_getValueAsAny() const {
         else
             info.component->del(this,info.rhs);
     }
-    return boost::any();
+    return App::any();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -5311,12 +5311,12 @@ ExpressionPtr ScopeStatement::_copy() const {
     return res;
 }
 
-boost::any ScopeStatement::_getValueAsAny() const {
+App::any ScopeStatement::_getValueAsAny() const {
     CHECK_STACK(ScopeStatement, this);
     auto &frame = *_EvalStack.back();
     for(auto &name : names) 
         frame.getVar(this,name,global?BindGlobal:BindNonLocal);
-    return boost::any();
+    return App::any();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -5509,7 +5509,7 @@ ExpressionPtr ImportStatement::_copy() const {
     return res;
 }
 
-boost::any ImportStatement::_getValueAsAny() const {
+App::any ImportStatement::_getValueAsAny() const {
     CHECK_STACK(ImportStatement, this);
     auto &frame = *_EvalStack.back();
     int i=0;
@@ -5527,7 +5527,7 @@ boost::any ImportStatement::_getValueAsAny() const {
                 *frame.getVar(this,module.substr(0,pos),BindLocalOnly) = pymod;
         }
     }
-    return boost::any();
+    return App::any();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -5571,7 +5571,7 @@ ExpressionPtr FromStatement::_copy() const {
     return res;
 }
 
-boost::any FromStatement::_getValueAsAny() const {
+App::any FromStatement::_getValueAsAny() const {
     CHECK_STACK(FromStatement, this);
     auto &frame = *_EvalStack.back();
     int i=0;
@@ -5597,7 +5597,7 @@ boost::any FromStatement::_getValueAsAny() const {
             *frame.getVar(this,name.size()?name:tail,BindLocalOnly) = pysubmod;
         }
     }
-    return boost::any();
+    return App::any();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////

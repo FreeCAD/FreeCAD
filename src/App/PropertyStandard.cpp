@@ -145,18 +145,18 @@ void PropertyInteger::Paste(const Property &from)
     hasSetValue();
 }
 
-void PropertyInteger::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyInteger::setPathValue(const ObjectIdentifier &path, const App::any &value)
 {
     verifyPath(path);
 
     if (value.type() == typeid(long))
-        setValue(boost::any_cast<long>(value));
+        setValue(App::any_cast<long>(value));
     else if (value.type() == typeid(double))
-        setValue(boost::math::round(boost::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity) && boost::any_cast<Quantity>(value).getUnit().isEmpty())
-        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
+        setValue(boost::math::round(App::any_cast<double>(value)));
+    else if (value.type() == typeid(Quantity) && App::any_cast<Quantity>(value).getUnit().isEmpty())
+        setValue(boost::math::round(App::any_cast<Quantity>(value).getValue()));
     else if (value.type() == typeid(int))
-        setValue(boost::any_cast<int>(value));
+        setValue(App::any_cast<int>(value));
     else
         throw bad_cast();
 }
@@ -573,22 +573,22 @@ void PropertyEnumeration::Paste(const Property &from)
     hasSetValue();
 }
 
-void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyEnumeration::setPathValue(const ObjectIdentifier &path, const App::any &value)
 {
     verifyPath(path);
 
     if (value.type() == typeid(int))
-        setValue(boost::any_cast<int>(value));
+        setValue(App::any_cast<int>(value));
     else if (value.type() == typeid(double))
-        setValue(boost::any_cast<double>(value));
+        setValue(App::any_cast<double>(value));
     else if (value.type() == typeid(short))
-        setValue(boost::any_cast<short>(value));
+        setValue(App::any_cast<short>(value));
     else if (value.type() == typeid(std::string))
-        setValue(boost::any_cast<std::string>(value).c_str());
+        setValue(App::any_cast<std::string>(value).c_str());
     else if (value.type() == typeid(char*))
-        setValue(boost::any_cast<char*>(value));
+        setValue(App::any_cast<char*>(value));
     else if (value.type() == typeid(const char*))
-        setValue(boost::any_cast<const char*>(value));
+        setValue(App::any_cast<const char*>(value));
     else
         throw bad_cast();
 }
@@ -1048,19 +1048,19 @@ void PropertyFloat::Paste(const Property &from)
     hasSetValue();
 }
 
-void PropertyFloat::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyFloat::setPathValue(const ObjectIdentifier &path, const App::any &value)
 {
     verifyPath(path);
 
     if (value.type() == typeid(double))
-        setValue(boost::any_cast<double>(value));
-    else if (value.type() == typeid(Quantity) && boost::any_cast<Quantity>(value).getUnit().isEmpty())
-        setValue((boost::any_cast<Quantity>(value)).getValue());
+        setValue(App::any_cast<double>(value));
+    else if (value.type() == typeid(Quantity) && App::any_cast<Quantity>(value).getUnit().isEmpty())
+        setValue((App::any_cast<Quantity>(value)).getValue());
     else
         throw bad_cast();
 }
 
-const boost::any PropertyFloat::getPathValue(const ObjectIdentifier &path) const
+App::any PropertyFloat::getPathValue(const ObjectIdentifier &path) const
 {
     verifyPath(path);
     return _dValue;
@@ -1557,26 +1557,26 @@ unsigned int PropertyString::getMemSize (void) const
     return static_cast<unsigned int>(_cValue.size());
 }
 
-void PropertyString::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyString::setPathValue(const ObjectIdentifier &path, const App::any &value)
 {
     verifyPath(path);
     if (value.type() == typeid(bool))
-        setValue(boost::any_cast<bool>(value)?"True":"False");
+        setValue(App::any_cast<bool>(value)?"True":"False");
     else if (value.type() == typeid(int))
-        setValue(std::to_string(boost::any_cast<int>(value)));
+        setValue(std::to_string(App::any_cast<int>(value)));
     else if (value.type() == typeid(double))
-        setValue(std::to_string(boost::math::round(boost::any_cast<double>(value))));
+        setValue(std::to_string(boost::math::round(App::any_cast<double>(value))));
     else if (value.type() == typeid(Quantity))
-        setValue(boost::any_cast<Quantity>(value).getUserString().toUtf8().constData());
+        setValue(App::any_cast<Quantity>(value).getUserString().toUtf8().constData());
     else if (value.type() == typeid(std::string))
-        setValue(boost::any_cast<std::string>(value));
+        setValue(App::any_cast<std::string>(value));
     else {
         Base::PyGILStateLocker lock;
         setValue(pyObjectFromAny(value).as_string());
     }
 }
 
-const boost::any PropertyString::getPathValue(const ObjectIdentifier &path) const
+App::any PropertyString::getPathValue(const ObjectIdentifier &path) const
 {
     verifyPath(path);
     return _cValue;
@@ -2122,23 +2122,23 @@ void PropertyBool::Paste(const Property &from)
     hasSetValue();
 }
 
-void PropertyBool::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyBool::setPathValue(const ObjectIdentifier &path, const App::any &value)
 {
     verifyPath(path);
 
     if (value.type() == typeid(bool))
-        setValue(boost::any_cast<bool>(value));
+        setValue(App::any_cast<bool>(value));
     else if (value.type() == typeid(int))
-        setValue(boost::any_cast<int>(value) != 0);
+        setValue(App::any_cast<int>(value) != 0);
     else if (value.type() == typeid(double))
-        setValue(boost::math::round(boost::any_cast<double>(value)));
-    else if (value.type() == typeid(Quantity) && boost::any_cast<Quantity>(value).getUnit().isEmpty())
-        setValue(boost::any_cast<Quantity>(value).getValue() != 0);
+        setValue(boost::math::round(App::any_cast<double>(value)));
+    else if (value.type() == typeid(Quantity) && App::any_cast<Quantity>(value).getUnit().isEmpty())
+        setValue(App::any_cast<Quantity>(value).getValue() != 0);
     else
         throw bad_cast();
 }
 
-const boost::any PropertyBool::getPathValue(const ObjectIdentifier &path) const
+App::any PropertyBool::getPathValue(const ObjectIdentifier &path) const
 {
     verifyPath(path);
 

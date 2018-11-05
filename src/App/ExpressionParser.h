@@ -39,7 +39,7 @@ namespace App {
 _ExpressionAllocDefine(_ExpressionFastAlloc,boost::fast_pool_allocator);
 #define ExpressionFastAlloc(_t) _ExpressionFastAlloc<_t> 
 
-ExpressionPtr expressionFromAny(const App::DocumentObject *owner, boost::any &&);
+ExpressionPtr expressionFromAny(const App::DocumentObject *owner, App::any &&);
 
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -130,7 +130,7 @@ protected:
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &);
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     ObjectIdentifier var; /**< Variable name  */
@@ -215,7 +215,7 @@ protected:
     virtual bool _isIndexable() const { return true; }
     virtual ExpressionPtr _copy() const;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     ExpressionString str;
@@ -238,7 +238,7 @@ public:
 protected:
     PyObjectExpression(const App::DocumentObject *_owner):Expression(_owner) {}
 
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     virtual void _toString(std::ostream &,bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -286,8 +286,8 @@ public:
 
     const Expression * getRight() const { return right.get(); }
 
-    static boost::any calc(const Expression *owner, int op,
-            const boost::any &l, const boost::any &r, 
+    static App::any calc(const Expression *owner, int op,
+            const App::any &l, const App::any &r, 
             const Expression *left=0, const Expression *right=0, bool inplace=false);
 
 protected:
@@ -295,13 +295,13 @@ protected:
 
     ExpressionPtr _calc(const Expression *l, const Expression *r) const;
     ExpressionPtr _calc(const Expression *l) const;
-    ExpressionPtr _calc(const boost::any &l) const;
+    ExpressionPtr _calc(const App::any &l) const;
 
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
     virtual ExpressionPtr _eval() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
     virtual bool isCommutative() const;
 
@@ -326,7 +326,7 @@ public:
 
     virtual bool isTouched() const;
 
-    static boost::any apply(const Expression *owner, int catchAll, const ExpressionList &left, 
+    static App::any apply(const Expression *owner, int catchAll, const ExpressionList &left, 
             const Expression *right, int op=0, bool needReturn=false);
 
 protected:
@@ -335,7 +335,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     ExpressionList left;
@@ -366,7 +366,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
     virtual ExpressionPtr _eval() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
     ExpressionPtr condition;  /**< Condition */
     ExpressionPtr trueExpr;  /**< Expression if abs(condition) is > 0.5 */
@@ -397,7 +397,7 @@ protected:
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
     virtual ExpressionPtr _eval() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     ExpressionPtr evalAggregate() const;
 
     int f;        /**< Function to execute */
@@ -431,7 +431,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const { return true; }
     virtual ExpressionPtr _eval() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
 
@@ -462,7 +462,7 @@ protected:
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &);
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     std::string begin;
@@ -491,7 +491,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -546,7 +546,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -571,7 +571,7 @@ public:
 protected:
     TupleExpression(const App::DocumentObject *_owner):ListExpression(_owner) {}
 
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     virtual ExpressionPtr _copy() const;
     virtual void _toString(std::ostream &, bool, int) const;
 };
@@ -599,7 +599,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -632,7 +632,7 @@ protected:
 
     virtual void _visit(ExpressionVisitor & v);
     virtual bool _isIndexable() const {return true;}
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
 
@@ -649,7 +649,7 @@ public:
 protected:
     BaseStatement(const App::DocumentObject *owner):Expression(owner){}
 
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 };
 
 /////////////////////////////////////////////////////////////////
@@ -667,7 +667,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     int type;
@@ -840,7 +840,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     StringList names;
@@ -864,7 +864,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     std::string name;
@@ -887,7 +887,7 @@ protected:
     virtual void _visit(ExpressionVisitor & v);
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     ExpressionList targets;
@@ -906,7 +906,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     StringList names;
@@ -960,7 +960,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     StringList modules;
@@ -983,7 +983,7 @@ protected:
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
     virtual ExpressionPtr _copy() const;
-    virtual boost::any _getValueAsAny() const;
+    virtual App::any _getValueAsAny() const;
 
 protected:
     std::string module;

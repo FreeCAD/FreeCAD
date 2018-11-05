@@ -106,7 +106,7 @@ public:
 
     void setValue(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment = 0);
 
-    const boost::any getPathValue(const App::ObjectIdentifier & path) const;
+    App::any getPathValue(const App::ObjectIdentifier & path) const;
 
     /// Execute options
     enum ExecuteOption {
@@ -142,7 +142,7 @@ public:
 
     void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
 
-    const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const;
+    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier &p) const;
 
     size_t numExpressions() const;
 

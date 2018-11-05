@@ -28,10 +28,14 @@
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
+#if 0
 #ifndef BOOST_105400
 #include <boost/any.hpp>
 #else
 #include <boost_any_1_55.hpp>
+#endif
+#else
+#include "stx/any.hpp"
 #endif
 #include <string>
 #include <bitset>
@@ -112,13 +116,13 @@ public:
     PropertyContainer *getContainer(void) const {return father;}
 
     /// Set value of property
-    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
+    virtual void setPathValue(const App::ObjectIdentifier & path, const App::any & value);
 
     /// Get value of property
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const;
+    virtual App::any getPathValue(const App::ObjectIdentifier & path) const;
 
     /// Convert p to a canonical representation of it
-    virtual const App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
+    virtual App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier & p) const;
 
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;

@@ -78,8 +78,8 @@ public:
 
     virtual unsigned int getMemSize (void) const{return sizeof(long);}
 
-    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _lValue; }
+    virtual void setPathValue(const App::ObjectIdentifier & path, const App::any & value);
+    virtual App::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _lValue; }
 
 protected:
     long _lValue;
@@ -203,8 +203,8 @@ public:
     virtual Property * Copy(void) const;
     virtual void Paste(const Property &from);
 
-    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value);
-    virtual const boost::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _enum; }
+    virtual void setPathValue(const App::ObjectIdentifier & path, const App::any & value);
+    virtual App::any getPathValue(const App::ObjectIdentifier & /*path*/) const { return _enum; }
 
 private:
     Enumeration _enum;
@@ -481,8 +481,8 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(double);}
     
-    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
-    const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+    void setPathValue(const App::ObjectIdentifier &path, const App::any &value);
+    App::any getPathValue(const App::ObjectIdentifier &path) const;
 
 protected:
     double _dValue;
@@ -665,8 +665,8 @@ public:
     virtual void Paste(const Property &from);
     virtual unsigned int getMemSize (void) const;
 
-    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
-    const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+    void setPathValue(const App::ObjectIdentifier &path, const App::any &value);
+    App::any getPathValue(const App::ObjectIdentifier &path) const;
 
 protected:
     std::string _cValue;
@@ -809,8 +809,8 @@ public:
     
     virtual unsigned int getMemSize (void) const{return sizeof(bool);}
     
-    void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
-    const boost::any getPathValue(const App::ObjectIdentifier &path) const;
+    void setPathValue(const App::ObjectIdentifier &path, const App::any &value);
+    App::any getPathValue(const App::ObjectIdentifier &path) const;
 
 private:
     bool _lValue;

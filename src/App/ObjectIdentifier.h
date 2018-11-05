@@ -31,10 +31,14 @@
 #include <set>
 #include <map>
 #include <bitset>
+#if 0
 #ifndef BOOST_105400
 #include <boost/any.hpp>
 #else
 #include <boost_any_1_55.hpp>
+#endif
+#else
+#include "stx/any.hpp"
 #endif
 #include <CXX/Objects.hxx>
 
@@ -75,7 +79,7 @@ public:
             : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier) 
         { }
 
-        String(std::string &&s, bool _isRealString = false, bool _forceIdentifier = false) noexcept
+        String(std::string &&s, bool _isRealString = false, bool _forceIdentifier = false)
             : str(std::move(s)), isString(_isRealString), forceIdentifier(_forceIdentifier) 
         { }
 
@@ -157,7 +161,7 @@ public:
         Component(const String &_name = String(), typeEnum _type=SIMPLE, 
                 int begin=INT_MAX, int end=INT_MAX, int step=1);
         Component(String &&_name, typeEnum _type=SIMPLE, 
-                int begin=INT_MAX, int end=INT_MAX, int step=1) noexcept;
+                int begin=INT_MAX, int end=INT_MAX, int step=1);
 
         // Type queries
 
@@ -205,14 +209,14 @@ public:
     static Component SimpleComponent(const char * _component);
 
     static Component SimpleComponent(const String & _component);
-    static Component SimpleComponent(String &&_component) noexcept;
+    static Component SimpleComponent(String &&_component);
 
     static Component ArrayComponent(int _index);
 
     static Component RangeComponent(int _begin, int _end = INT_MAX, int _step=1);
 
     static Component MapComponent(const String &_key);
-    static Component MapComponent(String &&_key) noexcept;
+    static Component MapComponent(String &&_key);
 
 
     ObjectIdentifier(const App::PropertyContainer * _owner = 0, 
@@ -325,12 +329,12 @@ public:
 
     // Getter
 
-    boost::any getValue(bool pathValue=false) const;
+    App::any getValue(bool pathValue=false) const;
 
     // Setter; is const because it does not alter the object state,
     // but does have a aide effect.
 
-    void setValue(const boost::any & value) const;
+    void setValue(const App::any & value) const;
 
     // Static functions
 
@@ -399,14 +403,14 @@ private:
 
 std::size_t AppExport hash_value(const App::ObjectIdentifier & path);
 
-/** Helper function to convert Python object to/from boost::any
+/** Helper function to convert Python object to/from App::any
 *
 * WARNING! Must hold Python global interpreter lock before calling these
 * functions
 */
 //@{
-boost::any AppExport pyObjectToAny(Py::Object pyobj, bool check=true);
-Py::Object AppExport pyObjectFromAny(const boost::any &value);
+App::any AppExport pyObjectToAny(Py::Object pyobj, bool check=true);
+Py::Object AppExport pyObjectFromAny(const App::any &value);
 //@}
 
 }

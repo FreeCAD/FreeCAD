@@ -424,7 +424,7 @@ int PropertyConstraintList::getIndexFromConstraintName(const string &name)
     return std::atoi(name.substr(10,4000).c_str()) - 1;
 }
 
-void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const App::any &value)
 {
     if(path.numSubComponents()!=2 || path.getPropertyComponent(0).getName()!=getName())
         FC_THROWM(Base::ValueError,"invalid constraint path " << path.toString());
@@ -433,15 +433,15 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const bo
     double dvalue;
 
     if (value.type() == typeid(double))
-        dvalue = boost::any_cast<double>(value);
+        dvalue = App::any_cast<double>(value);
     else if (value.type() == typeid(float))
-        dvalue = boost::any_cast<float>(value);
+        dvalue = App::any_cast<float>(value);
     else if (value.type() == typeid(long))
-        dvalue = boost::any_cast<long>(value);
+        dvalue = App::any_cast<long>(value);
     else if (value.type() == typeid(int))
-        dvalue = boost::any_cast<int>(value);
+        dvalue = App::any_cast<int>(value);
     else if (value.type() == typeid(Quantity))
-        dvalue = (boost::any_cast<const Quantity &>(value)).getValue();
+        dvalue = (App::any_cast<const Quantity &>(value)).getValue();
     else
         throw std::bad_cast();
 
@@ -502,12 +502,12 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
     FC_THROWM(Base::ValueError,"invalid constraint path " << path.toString());
 }
 
-const boost::any PropertyConstraintList::getPathValue(const ObjectIdentifier &path) const
+App::any PropertyConstraintList::getPathValue(const ObjectIdentifier &path) const
 {
-    return boost::any(getConstraint(path)->getPresentationValue());
+    return App::any(getConstraint(path)->getPresentationValue());
 }
 
-const ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p) const
+ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p) const
 {
     if(p.numSubComponents()!=2 || p.getPropertyComponent(0).getName()!=getName())
         FC_THROWM(Base::ValueError,"invalid constraint path " << p.toString());

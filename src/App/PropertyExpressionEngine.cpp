@@ -233,7 +233,7 @@ void PropertyExpressionEngine::buildGraphStructures(const ObjectIdentifier & pat
  * @return New ObjectIdentifier
  */
 
-const ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier &p) const
+ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier &p) const
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
 
@@ -286,10 +286,10 @@ void PropertyExpressionEngine::afterRestore()
 /**
  * @brief Get expression for \a path.
  * @param path ObjectIndentifier to query for.
- * @return Expression for \a path, or empty boost::any if not found.
+ * @return Expression for \a path, or empty App::any if not found.
  */
 
-const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentifier & path) const
+App::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentifier & path) const
 {
     // Get a canonical path
     ObjectIdentifier usePath(canonicalPath(path));
@@ -299,7 +299,7 @@ const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentif
     if (i != expressions.end())
         return i->second;
     else
-        return boost::any();
+        return App::any();
 }
 
 /**

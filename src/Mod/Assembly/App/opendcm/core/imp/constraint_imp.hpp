@@ -179,12 +179,12 @@ void Constraint<Sys, Dim>::collectPseudoPoints(Vec& vec1, Vec& vec2) {
 };
 
 template<typename Sys, int Dim>
-std::vector<boost::any> Constraint<Sys, Dim>::getGenericEquations() {
+std::vector<App::any> Constraint<Sys, Dim>::getGenericEquations() {
     return content->getGenericEquations();
 };
 
 template<typename Sys, int Dim>
-std::vector<boost::any> Constraint<Sys, Dim>::getGenericConstraints() {
+std::vector<App::any> Constraint<Sys, Dim>::getGenericConstraints() {
     return content->getGenericConstraints();
 };
 

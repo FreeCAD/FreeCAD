@@ -218,13 +218,13 @@ PropertyVectorDistance::PropertyVectorDistance()
 
 }
 
-const boost::any PropertyVectorDistance::getPathValue(const ObjectIdentifier &path) const
+App::any PropertyVectorDistance::getPathValue(const ObjectIdentifier &path) const
 {
     std::string p = path.getSubPathStr();
 
     if (p == ".x" || p == ".y" || p == ".z") {
         // Convert double to quantity
-        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+        return Base::Quantity(App::any_cast<double>(Property::getPathValue(path)), Unit::Length);
     }
     else
         return Property::getPathValue(path);
@@ -255,13 +255,13 @@ PropertyPosition::~PropertyPosition()
 
 }
 
-const boost::any PropertyPosition::getPathValue(const ObjectIdentifier &path) const
+App::any PropertyPosition::getPathValue(const ObjectIdentifier &path) const
 {
     std::string p = path.getSubPathStr();
 
     if (p == ".x" || p == ".y" || p == ".z") {
         // Convert double to quantity
-        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+        return Base::Quantity(App::any_cast<double>(Property::getPathValue(path)), Unit::Length);
     }
     else
         return Property::getPathValue(path);
@@ -287,13 +287,13 @@ PropertyDirection::~PropertyDirection()
 
 }
 
-const boost::any PropertyDirection::getPathValue(const ObjectIdentifier &path) const
+App::any PropertyDirection::getPathValue(const ObjectIdentifier &path) const
 {
     std::string p = path.getSubPathStr();
 
     if (p == ".x" || p == ".y" || p == ".z") {
         // Convert double to quantity
-        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+        return Base::Quantity(App::any_cast<double>(Property::getPathValue(path)), Unit::Length);
     }
     else
         return Property::getPathValue(path);
@@ -617,23 +617,23 @@ void PropertyPlacement::getPaths(std::vector<ObjectIdentifier> &paths) const
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
-void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const App::any &value)
 {
     if (path.getSubPathStr() == ".Rotation.Angle") {
         double avalue;
 
         if (value.type() == typeid(Base::Quantity))
-            avalue = boost::any_cast<Base::Quantity>(value).getValue();
+            avalue = App::any_cast<Base::Quantity>(value).getValue();
         else if (value.type() == typeid(double))
-            avalue = boost::any_cast<double>(value);
+            avalue = App::any_cast<double>(value);
         else if (value.type() == typeid(int))
-            avalue =  boost::any_cast<int>(value);
+            avalue =  App::any_cast<int>(value);
         else if (value.type() == typeid(unsigned int))
-            avalue =  boost::any_cast<unsigned int >(value);
+            avalue =  App::any_cast<unsigned int >(value);
         else if (value.type() == typeid(short))
-            avalue =  boost::any_cast<short>(value);
+            avalue =  App::any_cast<short>(value);
         else if (value.type() == typeid(unsigned short))
-            avalue =  boost::any_cast<unsigned short>(value);
+            avalue =  App::any_cast<unsigned short>(value);
         else
             throw std::bad_cast();
 
@@ -643,17 +643,17 @@ void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::
         Property::setPathValue(path, value);
 }
 
-const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) const
+App::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) const
 {
     std::string p = path.getSubPathStr();
 
     if (p == ".Rotation.Angle") {
         // Convert angle to degrees
-        return Base::Quantity(Base::toDegrees(boost::any_cast<double>(Property::getPathValue(path))), Unit::Angle);
+        return Base::Quantity(Base::toDegrees(App::any_cast<double>(Property::getPathValue(path))), Unit::Angle);
     }
     else if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
         // Convert double to quantity
-        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+        return Base::Quantity(App::any_cast<double>(Property::getPathValue(path)), Unit::Length);
     }
     else
         return Property::getPathValue(path);

@@ -88,8 +88,8 @@ public:
         content->disable();
     };
 
-    std::vector<boost::any> getGenericEquations();
-    std::vector<boost::any> getGenericConstraints();
+    std::vector<App::any> getGenericEquations();
+    std::vector<App::any> getGenericConstraints();
     std::vector<const std::type_info*> getEquationTypes();
     std::vector<const std::type_info*> getConstraintTypes();
 
@@ -150,8 +150,8 @@ protected:
         virtual placeholder* clone() = 0;
 
         //some runtime type infos are needed, as we can't access the contents with arbitrary functors
-        virtual std::vector<boost::any> getGenericEquations() = 0;
-        virtual std::vector<boost::any> getGenericConstraints() = 0;
+        virtual std::vector<App::any> getGenericEquations() = 0;
+        virtual std::vector<App::any> getGenericConstraints() = 0;
         virtual std::vector<const std::type_info*> getEquationTypes() = 0;
         virtual std::vector<const std::type_info*> getConstraintTypes() = 0;
     };
@@ -264,16 +264,16 @@ public:
         };
 
         struct GenericEquations {
-            std::vector<boost::any>& vec;
-            GenericEquations(std::vector<boost::any>& v);
+            std::vector<App::any>& vec;
+            GenericEquations(std::vector<App::any>& v);
 
             template<typename T>
             void operator()(T& val) const;
         };
 
         struct GenericConstraints {
-            std::vector<boost::any>& vec;
-            GenericConstraints(std::vector<boost::any>& v);
+            std::vector<App::any>& vec;
+            GenericConstraints(std::vector<App::any>& v);
 
             template<typename T>
             void operator()(T& val) const;
@@ -299,8 +299,8 @@ public:
         virtual int equationCount();
         virtual void disable();
 
-        virtual std::vector<boost::any> getGenericEquations();
-        virtual std::vector<boost::any> getGenericConstraints();
+        virtual std::vector<App::any> getGenericEquations();
+        virtual std::vector<App::any> getGenericConstraints();
         virtual std::vector<const std::type_info*> getEquationTypes();
         virtual std::vector<const std::type_info*> getConstraintTypes();
 

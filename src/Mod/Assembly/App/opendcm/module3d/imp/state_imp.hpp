@@ -107,30 +107,30 @@ template<typename C>
 string_vec getConstraints(boost::shared_ptr<C> con) {
 
     string_vec vec;
-    std::vector<boost::any> cvec = con->getGenericConstraints();
+    std::vector<App::any> cvec = con->getGenericConstraints();
 
-    boost::any al_o, d;
-    typename std::vector<boost::any>::iterator it;
+    App::any al_o, d;
+    typename std::vector<App::any>::iterator it;
 
     if(cvec.size()==1) {
         it = cvec.begin();
 
         if((*it).type() == typeid(dcm::Distance)) {
-            double v = fusion::at_key<double>(boost::any_cast<dcm::Distance>(*it).values).second;
-            SolutionSpace s = fusion::at_key<SolutionSpace>(boost::any_cast<dcm::Distance>(*it).values).second;
+            double v = fusion::at_key<double>(App::any_cast<dcm::Distance>(*it).values).second;
+            SolutionSpace s = fusion::at_key<SolutionSpace>(App::any_cast<dcm::Distance>(*it).values).second;
             std::vector<double> dvec;
             dvec.push_back(v);
             dvec.push_back(s);
             vec.push_back(fusion::make_vector(std::string("Distance"), dvec));
         }
         else if((*it).type() == typeid(dcm::Angle)) {
-            double v = fusion::at_key<double>(boost::any_cast<dcm::Angle>(*it).values).second;
+            double v = fusion::at_key<double>(App::any_cast<dcm::Angle>(*it).values).second;
             std::vector<double> value;
             value.push_back(v);
             vec.push_back(fusion::make_vector(std::string("Angle"), value));
         }
         else if((*it).type() == typeid(dcm::Orientation)) {
-            int v = fusion::at_key<dcm::Direction>(boost::any_cast<dcm::Orientation>(*it).values).second;
+            int v = fusion::at_key<dcm::Direction>(App::any_cast<dcm::Orientation>(*it).values).second;
             std::vector<double> value;
             value.push_back(v);
             vec.push_back(fusion::make_vector(std::string("Orientation"), value));
@@ -139,24 +139,24 @@ string_vec getConstraints(boost::shared_ptr<C> con) {
     else {
         for(it=cvec.begin(); it!=cvec.end(); it++) {
             if((*it).type() == typeid(dcm::details::ci_orientation)) {
-                int v = fusion::at_key<dcm::Direction>(boost::any_cast<dcm::details::ci_orientation>(*it).values).second;
+                int v = fusion::at_key<dcm::Direction>(App::any_cast<dcm::details::ci_orientation>(*it).values).second;
                 std::vector<double> value;
                 value.push_back(v);
                 vec.push_back(fusion::make_vector(std::string("Coincidence"), value));
             }
             else if((*it).type() == typeid(dcm::details::al_orientation)) {
-                int o = fusion::at_key<dcm::Direction>(boost::any_cast<dcm::details::al_orientation>(*it).values).second;
+                int o = fusion::at_key<dcm::Direction>(App::any_cast<dcm::details::al_orientation>(*it).values).second;
 
                 double v;
                 SolutionSpace s;
 
                 if(it==cvec.begin()) {
-                    v = fusion::at_key<double>(boost::any_cast<dcm::Distance>(cvec.back()).values).second;
-                    s = fusion::at_key<SolutionSpace>(boost::any_cast<dcm::Distance>(cvec.back()).values).second;
+                    v = fusion::at_key<double>(App::any_cast<dcm::Distance>(cvec.back()).values).second;
+                    s = fusion::at_key<SolutionSpace>(App::any_cast<dcm::Distance>(cvec.back()).values).second;
                 }
                 else {
-                    v = fusion::at_key<double>(boost::any_cast<dcm::Distance>(cvec.front()).values).second;
-                    s = fusion::at_key<SolutionSpace>(boost::any_cast<dcm::Distance>(cvec.front()).values).second;
+                    v = fusion::at_key<double>(App::any_cast<dcm::Distance>(cvec.front()).values).second;
+                    s = fusion::at_key<SolutionSpace>(App::any_cast<dcm::Distance>(cvec.front()).values).second;
                 }
 
                 std::vector<double> value;
