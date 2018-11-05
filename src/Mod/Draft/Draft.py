@@ -7368,8 +7368,12 @@ class ViewProviderDraftText:
     def updateData(self,obj,prop):
         if prop == "Text":
             if obj.Text:
-                self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                if sys.version_info.major >= 3:
+                    self.text2d.string.setValues([l for l in obj.Text if l])
+                    self.text3d.string.setValues([l for l in obj.Text if l])
+                else:
+                    self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                    self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
         elif prop == "Placement":
             self.trans.translation.setValue(obj.Placement.Base)
             self.trans.rotation.setValue(obj.Placement.Rotation.Q)
@@ -7388,15 +7392,18 @@ class ViewProviderDraftText:
         elif prop == "Justification":
             if "Justification" in vobj.PropertiesList:
                 from pivy import coin
-                if vobj.Justification == "Left":
-                    self.text2d.justification = coin.SoText2.LEFT
-                    self.text3d.justification = coin.SoAsciiText.LEFT
-                elif vobj.Justification == "Right":
-                    self.text2d.justification = coin.SoText2.RIGHT
-                    self.text3d.justification = coin.SoAsciiText.RIGHT
-                else:
-                    self.text2d.justification = coin.SoText2.CENTER
-                    self.text3d.justification = coin.SoAsciiText.CENTER
+                try:
+                    if vobj.Justification == "Left":
+                        self.text2d.justification = coin.SoText2.LEFT
+                        self.text3d.justification = coin.SoAsciiText.LEFT
+                    elif vobj.Justification == "Right":
+                        self.text2d.justification = coin.SoText2.RIGHT
+                        self.text3d.justification = coin.SoAsciiText.RIGHT
+                    else:
+                        self.text2d.justification = coin.SoText2.CENTER
+                        self.text3d.justification = coin.SoAsciiText.CENTER
+                except AssertionError:
+                    pass # Race condition - Justification enum has not been set yet
         elif prop == "LineSpacing":
             if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing
