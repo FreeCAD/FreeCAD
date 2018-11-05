@@ -76,7 +76,6 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoTransparencyType.h>
-# include <Inventor/SoEventManager.h>
 # include <QEventLoop>
 # include <QKeyEvent>
 # include <QWheelEvent>
@@ -86,6 +85,8 @@
 # include <QBitmap>
 # include <QMimeData>
 #endif
+
+#include <Inventor/SoEventManager.h>
 
 #include <sstream>
 #include <Base/Console.h>

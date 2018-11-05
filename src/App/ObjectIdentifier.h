@@ -372,7 +372,7 @@ protected:
         void getProperty(const ObjectIdentifier &oi);
     };
 
-    friend class ResolveResults;
+    friend struct ResolveResults;
 
     App::Property *resolveProperty(const App::DocumentObject *obj, 
         const char *propertyName, App::DocumentObject *&sobj,int &ptype) const;

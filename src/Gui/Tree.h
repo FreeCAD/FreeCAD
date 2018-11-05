@@ -160,7 +160,8 @@ private:
     void slotShowHidden(const Gui::Document &);
     void slotChangedViewObject(const Gui::ViewProvider &, const App::Property &);
     void slotFinishRestoreDocument(const App::Document&);
-    void slotDeleteObject(const Gui::ViewProviderDocumentObject&, DocumentItem *deletingDoc);
+    void _slotDeleteObject(const Gui::ViewProviderDocumentObject&, DocumentItem *deletingDoc);
+    void slotDeleteObject(const Gui::ViewProviderDocumentObject&);
     void slotChangeObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop, bool force);
 
     void changeEvent(QEvent *e);

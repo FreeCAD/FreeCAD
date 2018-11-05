@@ -1926,7 +1926,7 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     // Setup connections
     connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
     connectDelObject = doc->signalDeletedObject.connect(
-            boost::bind(&TreeWidget::slotDeleteObject, getTree(), _1, nullptr));
+            boost::bind(&TreeWidget::slotDeleteObject, getTree(), _1));
     if(!App::GetApplication().isRestoring())
         connectChgObject = doc->signalChangedObject.connect(
                 boost::bind(&TreeWidget::slotChangeObject, getTree(), _1, _2, false));
@@ -2125,7 +2125,7 @@ void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
                 item->myOwner = 0;
             auto obj = v.second->viewObject->getObject();
             if(obj->getDocument() == Doc.getDocument()) {
-                slotDeleteObject(*v.second->viewObject, docItem);
+                _slotDeleteObject(*v.second->viewObject, docItem);
                 continue;
             }
             auto it = ObjectTable.find(obj);
@@ -2162,7 +2162,11 @@ void TreeWidget::slotFinishRestoreDocument(const App::Document& Doc)
     item->setIcon(0, *documentPartialPixmap);
 }
 
-void TreeWidget::slotDeleteObject(const Gui::ViewProviderDocumentObject& view, DocumentItem *deletingDoc)
+void TreeWidget::slotDeleteObject(const Gui::ViewProviderDocumentObject& view) {
+    _slotDeleteObject(view, 0);
+}
+
+void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, DocumentItem *deletingDoc)
 {
     auto obj = view.getObject();
     auto itEntry = ObjectTable.find(obj);

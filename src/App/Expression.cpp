@@ -107,11 +107,12 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 #define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
 
-#define _EXPR_NEW(_t,...) \
-    ExpressionPtr(::new(ExpressionFastAlloc(_t)::allocate()) _t(__VA_ARGS__));
-
 #define EXPR_NEW(_t,...) \
-    std::unique_ptr<_t>(::new(ExpressionFastAlloc(_t)::allocate()) _t(__VA_ARGS__));
+    ExpressionPtr(::new(ExpressionFastAlloc(_t)::allocate()) _t(__VA_ARGS__))
+
+#define _EXPR_NEW(_v,_t,...) \
+    ExpressionPtr _##_v(::new(ExpressionFastAlloc(_t)::allocate()) _t(__VA_ARGS__));\
+    auto _v = static_cast<_t*>(_##_v.get())
 
 #define EXPR_TYPESYSTEM_SOURCE(_t,_p) \
     TYPESYSTEM_SOURCE_ABSTRACT(_t,_p);\
@@ -1042,19 +1043,19 @@ EXPR_TYPESYSTEM_SOURCE(App::UnitExpression, App::Expression);
 ExpressionPtr UnitExpression::create(const App::DocumentObject *owner, 
         const Base::Quantity &quantity, std::string &&unitStr)
 {
-    auto res = EXPR_NEW(UnitExpression,owner);
+    _EXPR_NEW(res,UnitExpression,owner);
     res->quantity = quantity;
     res->unitStr = std::move(unitStr);
-    return res;
+    return _res;
 }
 
 ExpressionPtr UnitExpression::create(const App::DocumentObject *owner, 
         const Base::Quantity &quantity, const char *unitStr)
 {
-    auto res = EXPR_NEW(UnitExpression,owner);
+    _EXPR_NEW(res,UnitExpression,owner);
     res->quantity = quantity;
     res->unitStr = unitStr;
-    return res;
+    return _res;
 }
 
 
@@ -1128,9 +1129,9 @@ App::any UnitExpression::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::NumberExpression, App::Expression);
 
 ExpressionPtr NumberExpression::create(const DocumentObject *owner, const Quantity &quantity) {
-    auto res = EXPR_NEW(NumberExpression,owner);
+    _EXPR_NEW(res,NumberExpression,owner);
     res->quantity = quantity;
-    return res;
+    return _res;
 }
 
 ExpressionPtr NumberExpression::create(const DocumentObject *owner, double fvalue) {
@@ -1204,11 +1205,11 @@ enum Operator {
 ExpressionPtr OperatorExpression::create(const App::DocumentObject *owner, 
         ExpressionPtr &&left, int op, ExpressionPtr &&right)
 {
-    auto res = EXPR_NEW(OperatorExpression,owner);
+    _EXPR_NEW(res,OperatorExpression,owner);
     res->op = op;
     res->left = std::move(left);
     res->right = std::move(right);
-    return res;
+    return _res;
 }
 
 /**
@@ -1917,10 +1918,10 @@ void init_functions() {
 EXPR_TYPESYSTEM_SOURCE(App::FunctionExpression, App::UnitExpression);
 
 ExpressionPtr FunctionExpression::create(const DocumentObject *owner, int f, ExpressionList &&args) {
-    auto res = EXPR_NEW(FunctionExpression,owner);
+    _EXPR_NEW(res,FunctionExpression,owner);
     res->args = std::move(args);
     res->f = f;
-    return res;
+    return _res;
 }
 
 /**
@@ -2460,10 +2461,10 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 
 ExpressionPtr FunctionExpression::_copy() const
 {
-    auto res = EXPR_NEW( FunctionExpression,owner);
+    _EXPR_NEW(res, FunctionExpression,owner);
     res->f = f;
     copy_vector(res->args,args);
-    return res;
+    return _res;
 }
 
 void FunctionExpression::_visit(ExpressionVisitor &v) {
@@ -2482,7 +2483,7 @@ ExpressionPtr AssignmentExpression::create(const App::DocumentObject *owner,
     if(op && catchAll>=0)
         PARSER_THROW("Invalid catch all target");
 
-    auto res = EXPR_NEW(AssignmentExpression,owner);
+    _EXPR_NEW(res,AssignmentExpression,owner);
     res->catchAll = catchAll;
     res->left = std::move(left);
     res->op = op;
@@ -2492,7 +2493,7 @@ ExpressionPtr AssignmentExpression::create(const App::DocumentObject *owner,
         res->right = TupleExpression::create(owner,std::move(rights));
         res->rightTuple = true;
     }
-    return res;
+    return _res;
 }
 
 ExpressionPtr AssignmentExpression::create(const App::DocumentObject *owner, 
@@ -2506,13 +2507,13 @@ ExpressionPtr AssignmentExpression::create(const App::DocumentObject *owner,
 }
 
 ExpressionPtr AssignmentExpression::_copy() const {
-    auto res = EXPR_NEW(AssignmentExpression,owner);
+    _EXPR_NEW(res,AssignmentExpression,owner);
     res->op = op;
     copy_vector(res->left,left);
     res->right = right->copy();
     res->rightTuple = rightTuple;
     res->catchAll = catchAll;
-    return res;
+    return _res;
 }
 
 void AssignmentExpression::_visit(ExpressionVisitor &v) {
@@ -2689,9 +2690,9 @@ App::any AssignmentExpression::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::VariableExpression, App::Expression);
 
 ExpressionPtr VariableExpression::create(const DocumentObject *owner, ObjectIdentifier &&var) {
-    auto res = EXPR_NEW(VariableExpression,owner);
+    _EXPR_NEW(res,VariableExpression,owner);
     res->var = std::move(var);
-    return res;
+    return _res;
 }
 
 /**
@@ -2712,9 +2713,9 @@ bool VariableExpression::isTouched() const
 
 ExpressionPtr VariableExpression::_copy() const
 {
-    auto res = EXPR_NEW( VariableExpression,owner);
+    _EXPR_NEW(res, VariableExpression,owner);
     res->var = var;
-    return res;
+    return _res;
 }
 
 std::string VariableExpression::name() const {
@@ -3003,13 +3004,13 @@ ExpressionPtr CallableExpression::create(const DocumentObject *owner, Expression
                 PARSER_THROW("None keyword arg '" << n << "' after keyword arg");
         }
     }
-    auto res = EXPR_NEW(CallableExpression,owner);
+    _EXPR_NEW(res,CallableExpression,owner);
     res->expr = std::move(expr);
     res->names = std::move(names);
     res->args = std::move(args);
     res->ftype = ftype;
     res->name = std::move(name);
-    return res;
+    return _res;
 }
 
 void CallableExpression::_toString(std::ostream &ss, bool persistent,int) const {
@@ -3287,7 +3288,7 @@ App::any CallableExpression::_getValueAsAny() const {
             for(auto &cmd : prepareCommands(this,args[0].get()))
                 static_cast<Statement&>(*statement).add(parse(owner,cmd,true));
 
-            auto res = EXPR_NEW(CallableExpression,owner);
+            _EXPR_NEW(res,CallableExpression,owner);
             res->ftype = FUNC_PARSED;
             res->names.reserve(args.size());
             res->args.reserve(args.size());
@@ -3308,7 +3309,7 @@ App::any CallableExpression::_getValueAsAny() const {
                     res->args.push_back(PyObjectExpression::create(owner,v.second->obj.ptr()));
                 }
             }
-            return pyObjectToAny(Py::Object(new ExpressionPy(res.release())),false);
+            return pyObjectToAny(Py::Object(new ExpressionPy(_res.release())),false);
 
         } case IMPORT_PY: {
             App::any value(args[0]->getValueAsAny());
@@ -3403,13 +3404,13 @@ App::any CallableExpression::_getValueAsAny() const {
 }
 
 ExpressionPtr CallableExpression::_copy() const {
-    auto res = EXPR_NEW(CallableExpression,owner);
+    _EXPR_NEW(res,CallableExpression,owner);
     if(expr) res->expr = expr->copy();
     res->names = names;
     copy_vector(res->args,args);
     res->name = name;
     res->ftype = ftype;
-    return res;
+    return _res;
 }
 
 //
@@ -3419,10 +3420,10 @@ ExpressionPtr CallableExpression::_copy() const {
 EXPR_TYPESYSTEM_SOURCE(App::PyObjectExpression, App::Expression);
 
 ExpressionPtr PyObjectExpression::create(const DocumentObject *owner, PyObject *obj) {
-    auto res = EXPR_NEW(PyObjectExpression,owner);
+    _EXPR_NEW(res,PyObjectExpression,owner);
     Py::_XINCREF(obj);
     res->pyObj = obj;
-    return res;
+    return _res;
 }
 
 PyObjectExpression::~PyObjectExpression() {
@@ -3481,9 +3482,9 @@ App::any PyObjectExpression::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::StringExpression, App::Expression);
 
 ExpressionPtr StringExpression::create(const DocumentObject *owner, ExpressionString &&str) {
-    auto res = EXPR_NEW(StringExpression,owner);
+    _EXPR_NEW(res,StringExpression,owner);
     res->str = std::move(str);
-    return res;
+    return _res;
 }
 
 void StringExpression::_toString(std::ostream &ss, bool,int) const
@@ -3665,12 +3666,12 @@ EXPR_TYPESYSTEM_SOURCE(App::ConditionalExpression, App::Expression);
 ExpressionPtr ConditionalExpression::create(const DocumentObject *owner, 
         ExpressionPtr &&condition, ExpressionPtr &&trueExpr, ExpressionPtr &&falseExpr, bool pythonForm)
 {
-    auto res = EXPR_NEW(ConditionalExpression,owner);
+    _EXPR_NEW(res,ConditionalExpression,owner);
     res->condition = std::move(condition);
     res->trueExpr = std::move(trueExpr);
     res->falseExpr = std::move(falseExpr);
     res->pythonForm = pythonForm;
-    return res;
+    return _res;
 }
 
 bool ConditionalExpression::isTouched() const
@@ -3763,19 +3764,19 @@ EXPR_TYPESYSTEM_SOURCE(App::ConstantExpression, App::NumberExpression);
 ExpressionPtr ConstantExpression::create(const DocumentObject *owner, 
         std::string &&name, const Quantity & quantity)
 {
-    auto res = EXPR_NEW( ConstantExpression,owner);
+    _EXPR_NEW(res, ConstantExpression,owner);
     res->name = std::move(name);
     res->quantity = quantity;
-    return res;
+    return _res;
 }
 
 ExpressionPtr ConstantExpression::create(const DocumentObject *owner, 
         const char *name, const Quantity & quantity)
 {
-    auto res = EXPR_NEW(ConstantExpression,owner);
+    _EXPR_NEW(res,ConstantExpression,owner);
     res->name = name;
     res->quantity = quantity;
-    return res;
+    return _res;
 }
 
 void ConstantExpression::_toString(std::ostream &ss, bool,int) const
@@ -3823,9 +3824,9 @@ App::any ConstantExpression::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::BooleanExpression, App::NumberExpression);
 
 ExpressionPtr BooleanExpression::create(const DocumentObject *owner, bool value) {
-    auto res = EXPR_NEW(BooleanExpression,owner);
+    _EXPR_NEW(res,BooleanExpression,owner);
     res->quantity = Quantity(value ? 1.0 : 0.0);
-    return res;
+    return _res;
 }
 
 ExpressionPtr BooleanExpression::_copy() const
@@ -3839,10 +3840,10 @@ EXPR_TYPESYSTEM_SOURCE(App::RangeExpression, App::Expression);
 
 ExpressionPtr RangeExpression::create(const DocumentObject *owner, std::string &&begin, std::string &&end) 
 {
-    auto res = EXPR_NEW(RangeExpression,owner);
+    _EXPR_NEW(res,RangeExpression,owner);
     res->begin = std::move(begin);
     res->end = std::move(end);
-    return res;
+    return _res;
 }
 
 bool RangeExpression::isTouched() const
@@ -3992,9 +3993,9 @@ EXPR_TYPESYSTEM_SOURCE(App::ComprehensionExpression, App::Expression);
 ExpressionPtr ComprehensionExpression::create(const DocumentObject *owner,
         int catchAll, ExpressionList &&targets, ExpressionPtr &&expr)
 {
-    auto res = EXPR_NEW(ComprehensionExpression,owner);
+    _EXPR_NEW(res,ComprehensionExpression,owner);
     res->add(catchAll, std::move(targets),std::move(expr));
-    return res;
+    return _res;
 }
 
 ComprehensionExpression::CompFor::CompFor(const CompFor &other) {
@@ -4093,7 +4094,7 @@ void ComprehensionExpression::_toString(std::ostream &ss, bool persistent,int) c
 
 ExpressionPtr ComprehensionExpression::_copy() const
 {
-    auto res = EXPR_NEW(ComprehensionExpression,owner);
+    _EXPR_NEW(res,ComprehensionExpression,owner);
     res->list = list;
     if(key) res->key = key->copy();
     if(value) res->value = value->copy();
@@ -4104,7 +4105,7 @@ ExpressionPtr ComprehensionExpression::_copy() const
         other.expr = comp.expr->copy();
         copy_vector(other.conds,comp.conds);
     }
-    return res;
+    return _res;
 }
 
 App::any ComprehensionExpression::_getValueAsAny() const {
@@ -4162,18 +4163,18 @@ void ComprehensionExpression::_calc(Py::Object &res, CompForList::const_iterator
 EXPR_TYPESYSTEM_SOURCE(App::ListExpression, App::Expression);
 
 ExpressionPtr ListExpression::create(const DocumentObject *owner) {
-    return _EXPR_NEW(ListExpression,owner);
+    return EXPR_NEW(ListExpression,owner);
 }
 
 ExpressionPtr ListExpression::create(const DocumentObject *owner,
         ExpressionList &&items, FlagList &&flags)
 {
-    auto res = EXPR_NEW(ListExpression,owner);
+    _EXPR_NEW(res,ListExpression,owner);
     res->flags = flags;
     res->items = std::move(items);
     if(flags.size() < items.size())
         flags.resize(items.size(),false);
-    return res;
+    return _res;
 }
 
 void ListExpression::_visit(ExpressionVisitor & v) {
@@ -4212,10 +4213,10 @@ void ListExpression::_toString(std::ostream &ss, bool persistent,int) const {
 
 ExpressionPtr ListExpression::_copy() const
 {
-    auto res = EXPR_NEW(ListExpression,owner);
+    _EXPR_NEW(res,ListExpression,owner);
     res->flags = flags;
     copy_vector(res->items,items);
-    return res;
+    return _res;
 }
 
 App::any ListExpression::_getValueAsAny() const {
@@ -4243,26 +4244,26 @@ App::any ListExpression::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::TupleExpression, App::ListExpression);
 
 ExpressionPtr TupleExpression::create(const DocumentObject *owner) {
-    return _EXPR_NEW(TupleExpression,owner);
+    return EXPR_NEW(TupleExpression,owner);
 }
 
 ExpressionPtr TupleExpression::create(const DocumentObject *owner, ExpressionPtr &&item, bool flag)
 {
-    auto res = EXPR_NEW(TupleExpression,owner);
+    _EXPR_NEW(res,TupleExpression,owner);
     res->flags.push_back(flag);
     res->items.push_back(std::move(item));
-    return res;
+    return _res;
 }
 
 ExpressionPtr TupleExpression::create(const DocumentObject *owner,
         ExpressionList &&items, FlagList &&flags)
 {
-    auto res = EXPR_NEW(TupleExpression,owner);
+    _EXPR_NEW(res,TupleExpression,owner);
     res->flags = flags;
     res->items = std::move(items);
     if(flags.size() < items.size())
         flags.resize(items.size(),false);
-    return res;
+    return _res;
 }
 
 void TupleExpression::_toString(std::ostream &ss, bool persistent,int) const {
@@ -4275,10 +4276,10 @@ void TupleExpression::_toString(std::ostream &ss, bool persistent,int) const {
 
 ExpressionPtr TupleExpression::_copy() const
 {
-    auto res = EXPR_NEW(TupleExpression,owner);
+    _EXPR_NEW(res,TupleExpression,owner);
     res->flags = flags;
     copy_vector(res->items,items);
-    return res;
+    return _res;
 }
 
 App::any TupleExpression::_getValueAsAny() const {
@@ -4294,21 +4295,21 @@ App::any TupleExpression::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::DictExpression, App::Expression);
 
 ExpressionPtr DictExpression::create(const DocumentObject *owner) {
-    return _EXPR_NEW(DictExpression,owner);
+    return EXPR_NEW(DictExpression,owner);
 }
 
 ExpressionPtr DictExpression::create(const DocumentObject *owner, ExpressionPtr &&key, ExpressionPtr &&value)
 {
-    auto res = EXPR_NEW(DictExpression,owner);
+    _EXPR_NEW(res,DictExpression,owner);
     res->addItem(std::move(key),std::move(value));
-    return res;
+    return _res;
 }
 
 ExpressionPtr DictExpression::create(const DocumentObject *owner, ExpressionPtr &&value)
 {
-    auto res = EXPR_NEW(DictExpression,owner);
+    _EXPR_NEW(res,DictExpression,owner);
     res->addItem(std::move(value));
-    return res;
+    return _res;
 }
 
 void DictExpression::_visit(ExpressionVisitor & v) {
@@ -4366,10 +4367,10 @@ void DictExpression::_toString(std::ostream &ss, bool persistent,int) const {
 
 ExpressionPtr DictExpression::_copy() const
 {
-    auto res = EXPR_NEW(DictExpression,owner);
+    _EXPR_NEW(res,DictExpression,owner);
     copy_vector(res->keys,keys);
     copy_vector(res->values,values);
-    return res;
+    return _res;
 }
 
 App::any DictExpression::_getValueAsAny() const {
@@ -4401,21 +4402,21 @@ App::any DictExpression::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::IDictExpression, App::Expression);
 
 ExpressionPtr IDictExpression::create(const DocumentObject *owner) {
-    return _EXPR_NEW(IDictExpression,owner);
+    return EXPR_NEW(IDictExpression,owner);
 }
 
 ExpressionPtr IDictExpression::create(const DocumentObject *owner, std::string &&key, ExpressionPtr &&value)
 {
-    auto res = EXPR_NEW(IDictExpression,owner);
+    _EXPR_NEW(res,IDictExpression,owner);
     res->addItem(std::move(key),std::move(value));
-    return res;
+    return _res;
 }
 
 ExpressionPtr IDictExpression::create(const DocumentObject *owner, const char *key, ExpressionPtr &&value)
 {
-    auto res = EXPR_NEW(IDictExpression,owner);
+    _EXPR_NEW(res,IDictExpression,owner);
     res->addItem(std::move(key),std::move(value));
-    return res;
+    return _res;
 }
 
 void IDictExpression::_visit(ExpressionVisitor & v) {
@@ -4460,10 +4461,10 @@ void IDictExpression::_toString(std::ostream &ss, bool persistent,int) const {
 
 ExpressionPtr IDictExpression::_copy() const
 {
-    auto res = EXPR_NEW(IDictExpression,owner);
+    _EXPR_NEW(res,IDictExpression,owner);
     res->keys = keys;
     copy_vector(res->values,values);
-    return res;
+    return _res;
 }
 
 App::any IDictExpression::_getValueAsAny() const {
@@ -4508,7 +4509,7 @@ enum PseudoType {
 };
 
 ExpressionPtr  PseudoStatement::create(const App::DocumentObject *owner, int type) {
-    return _EXPR_NEW(PseudoStatement,owner,type);
+    return EXPR_NEW(PseudoStatement,owner,type);
 }
 
 ExpressionPtr PseudoStatement::_copy() const {
@@ -4547,10 +4548,10 @@ App::any PseudoStatement::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::JumpStatement, App::BaseStatement);
 
 ExpressionPtr JumpStatement::create(const App::DocumentObject *owner, int type, ExpressionPtr &&expr) {
-    auto res = EXPR_NEW(JumpStatement,owner);
+    _EXPR_NEW(res,JumpStatement,owner);
     res->type = type;
     res->expr = std::move(expr);
-    return res;
+    return _res;
 }
 
 ExpressionPtr JumpStatement::_copy() const {
@@ -4631,9 +4632,9 @@ ExpressionPtr JumpStatement::simplify() const {
 EXPR_TYPESYSTEM_SOURCE(App::IfStatement, App::BaseStatement);
 
 ExpressionPtr IfStatement::create(const App::DocumentObject *owner, ExpressionPtr &&cond, ExpressionPtr &&stmt) {
-    auto res = EXPR_NEW(IfStatement,owner);
+    _EXPR_NEW(res,IfStatement,owner);
     res->add(std::move(cond),std::move(stmt));
-    return res;
+    return _res;
 }
 
 void IfStatement::addElse(ExpressionPtr &&stmt) {
@@ -4647,10 +4648,10 @@ void IfStatement::add(ExpressionPtr &&cond, ExpressionPtr &&stmt) {
 }
 
 ExpressionPtr IfStatement::_copy() const {
-    auto res = EXPR_NEW(IfStatement,owner);
+    _EXPR_NEW(res,IfStatement,owner);
     copy_vector(res->conditions,conditions);
     copy_vector(res->statements,statements);
-    return res;
+    return _res;
 }
 
 void IfStatement::_visit(ExpressionVisitor &v) {
@@ -4722,10 +4723,10 @@ ExpressionPtr IfStatement::_eval() const {
 EXPR_TYPESYSTEM_SOURCE(App::WhileStatement, App::BaseStatement);
 
 ExpressionPtr WhileStatement::create(const App::DocumentObject *owner, ExpressionPtr &&cond, ExpressionPtr &&stmt) {
-    auto res = EXPR_NEW(WhileStatement,owner);
+    _EXPR_NEW(res,WhileStatement,owner);
     res->condition = std::move(cond);
     res->statement = std::move(stmt);
-    return res;
+    return _res;
 }
 
 void WhileStatement::addElse(ExpressionPtr &&expr) {
@@ -4733,11 +4734,11 @@ void WhileStatement::addElse(ExpressionPtr &&expr) {
 }
 
 ExpressionPtr WhileStatement::_copy() const {
-    auto res = EXPR_NEW(WhileStatement,owner);
+    _EXPR_NEW(res,WhileStatement,owner);
     if(condition) res->condition = condition->copy();
     if(statement) res->statement = statement->copy();
     if(else_expr) res->else_expr = else_expr->copy();
-    return res;
+    return _res;
 }
 
 void WhileStatement::_visit(ExpressionVisitor &v) {
@@ -4816,7 +4817,7 @@ EXPR_TYPESYSTEM_SOURCE(App::ForStatement, App::BaseStatement);
 ExpressionPtr ForStatement::create(const App::DocumentObject *owner, 
         int catchAll, ExpressionList &&targets, ExpressionList &&exprs, ExpressionPtr &&stmt)
 {
-    auto res = EXPR_NEW(ForStatement,owner);
+    _EXPR_NEW(res,ForStatement,owner);
     res->catchAll = catchAll;
     res->targets = std::move(targets);
     if(exprs.size()==1)
@@ -4826,7 +4827,7 @@ ExpressionPtr ForStatement::create(const App::DocumentObject *owner,
         res->valueTuple = true;
     }
     res->statement = std::move(stmt);
-    return res;
+    return _res;
 }
 
 void ForStatement::addElse(ExpressionPtr &&expr) {
@@ -4834,12 +4835,12 @@ void ForStatement::addElse(ExpressionPtr &&expr) {
 }
 
 ExpressionPtr ForStatement::_copy() const {
-    auto res = EXPR_NEW(ForStatement,owner);
+    _EXPR_NEW(res,ForStatement,owner);
     copy_vector(res->targets,targets);
     res->value = value->copy();
     if(statement) res->statement = statement->copy();
     if(else_expr) res->else_expr = else_expr->copy();
-    return res;
+    return _res;
 }
 
 void ForStatement::_visit(ExpressionVisitor &v) {
@@ -4948,10 +4949,10 @@ ExpressionPtr ForStatement::_eval() const {
 EXPR_TYPESYSTEM_SOURCE(App::SimpleStatement, App::BaseStatement);
 
 ExpressionPtr SimpleStatement::create(const App::DocumentObject *owner, ExpressionPtr &&expr) {
-    auto res = EXPR_NEW(SimpleStatement,owner);
+    _EXPR_NEW(res,SimpleStatement,owner);
     if(expr)
         res->add(std::move(expr));
-    return res;
+    return _res;
 }
 
 void SimpleStatement::add(ExpressionPtr &&expr) {
@@ -4959,9 +4960,9 @@ void SimpleStatement::add(ExpressionPtr &&expr) {
 }
 
 ExpressionPtr SimpleStatement::_copy() const {
-    auto res = EXPR_NEW(SimpleStatement,owner);
+    _EXPR_NEW(res,SimpleStatement,owner);
     copy_vector(res->exprs,exprs);
-    return res;
+    return _res;
 }
 
 void SimpleStatement::_visit(ExpressionVisitor &v) {
@@ -5014,10 +5015,10 @@ ExpressionPtr SimpleStatement::_eval() const {
 EXPR_TYPESYSTEM_SOURCE(App::Statement, App::SimpleStatement);
 
 ExpressionPtr Statement::create(const App::DocumentObject *owner, ExpressionPtr &&expr) {
-    auto res = EXPR_NEW(Statement,owner);
+    _EXPR_NEW(res,Statement,owner);
     if(expr)
         res->add(std::move(expr));
-    return res;
+    return _res;
 }
 
 void Statement::_toString(std::ostream &ss, bool persistent, int indent) const {
@@ -5078,12 +5079,12 @@ ExpressionPtr LambdaExpression::create(const App::DocumentObject *owner,
         ExpressionPtr &&body, StringList &&names, ExpressionList &&args)
 {
     checkArgs(names,args);
-    auto res = EXPR_NEW(LambdaExpression,owner);
+    _EXPR_NEW(res,LambdaExpression,owner);
     assert(body);
     res->body = std::move(body);
     res->names = std::move(names);
     res->args = std::move(args);
-    return res;
+    return _res;
 }
 
 void LambdaExpression::_toString(std::ostream &ss, bool persistent, int) const {
@@ -5125,11 +5126,11 @@ void LambdaExpression::_visit(ExpressionVisitor &v) {
 }
 
 ExpressionPtr LambdaExpression::_copy() const {
-    auto res = EXPR_NEW(LambdaExpression,owner);
+    _EXPR_NEW(res,LambdaExpression,owner);
     res->names = names;
     copy_vector(res->args,args);
     res->body = body->copy();
-    return res;
+    return _res;
 }
 
 static App::any makeFunc(const Expression *owner,
@@ -5173,13 +5174,13 @@ ExpressionPtr FunctionStatement::create(const App::DocumentObject *owner,
         std::string &&name, ExpressionPtr &&body, StringList &&names, ExpressionList &&args)
 {
     checkArgs(names,args);
-    auto res = EXPR_NEW(FunctionStatement,owner);
+    _EXPR_NEW(res,FunctionStatement,owner);
     assert(body);
     res->body = std::move(body);
     res->names = std::move(names);
     res->args = std::move(args);
     res->name = std::move(name);
-    return res;
+    return _res;
 }
 
 void FunctionStatement::_toString(std::ostream &ss, bool persistent, int indent) const {
@@ -5211,12 +5212,12 @@ bool FunctionStatement::needLineEnd() const {
 }
 
 ExpressionPtr FunctionStatement::_copy() const {
-    auto res = EXPR_NEW(FunctionStatement,owner);
+    _EXPR_NEW(res,FunctionStatement,owner);
     res->names = names;
     copy_vector(res->args,args);
     res->body = body->copy();
     res->name = name;
-    return res;
+    return _res;
 }
 
 App::any FunctionStatement::_getValueAsAny() const {
@@ -5228,9 +5229,9 @@ App::any FunctionStatement::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::DelStatement, App::BaseStatement);
 
 ExpressionPtr DelStatement::create(const App::DocumentObject *owner, ExpressionList &&targets) {
-    auto res = EXPR_NEW(DelStatement,owner);
+    _EXPR_NEW(res,DelStatement,owner);
     res->targets = std::move(targets);
-    return res;
+    return _res;
 }
 
 void DelStatement::_toString(std::ostream &ss, bool persistent, int) const {
@@ -5260,9 +5261,9 @@ void DelStatement::_visit(ExpressionVisitor &v) {
 }
 
 ExpressionPtr DelStatement::_copy() const {
-    auto res = EXPR_NEW(DelStatement,owner);
+    _EXPR_NEW(res,DelStatement,owner);
     copy_vector(res->targets,targets);
-    return res;
+    return _res;
 }
 
 App::any DelStatement::_getValueAsAny() const {
@@ -5286,10 +5287,10 @@ App::any DelStatement::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::ScopeStatement, App::BaseStatement);
 
 ExpressionPtr ScopeStatement::create(const App::DocumentObject *owner, StringList &&names, bool global) {
-    auto res = EXPR_NEW(ScopeStatement,owner);
+    _EXPR_NEW(res,ScopeStatement,owner);
     res->names = std::move(names);
     res->global = global;
-    return res;
+    return _res;
 }
 
 void ScopeStatement::_toString(std::ostream &ss, bool, int) const {
@@ -5305,10 +5306,10 @@ void ScopeStatement::_toString(std::ostream &ss, bool, int) const {
 }
 
 ExpressionPtr ScopeStatement::_copy() const {
-    auto res = EXPR_NEW(ScopeStatement,owner);
+    _EXPR_NEW(res,ScopeStatement,owner);
     res->names = names;
     res->global = global;
-    return res;
+    return _res;
 }
 
 App::any ScopeStatement::_getValueAsAny() const {
@@ -5324,10 +5325,10 @@ App::any ScopeStatement::_getValueAsAny() const {
 EXPR_TYPESYSTEM_SOURCE(App::TryStatement, App::BaseStatement);
 
 ExpressionPtr TryStatement::create(const App::DocumentObject *owner, ExpressionPtr &&body) {
-    auto res = EXPR_NEW(TryStatement,owner);
+    _EXPR_NEW(res,TryStatement,owner);
     assert(body);
     res->body = std::move(body);
-    return res;
+    return _res;
 }
 
 void TryStatement::add(ExpressionPtr &&body, ExpressionPtr &&expr, std::string &&name) {
@@ -5405,7 +5406,7 @@ void TryStatement::check() {
 }
 
 ExpressionPtr TryStatement::_copy() const {
-    auto res = EXPR_NEW(TryStatement,owner);
+    _EXPR_NEW(res,TryStatement,owner);
     res->body = body->copy();
     res->bodies.reserve(bodies.size());
     res->names.reserve(bodies.size());
@@ -5419,7 +5420,7 @@ ExpressionPtr TryStatement::_copy() const {
         res->else_body = else_body->copy();
     if(final_body)
         res->final_body = final_body->copy();
-    return res;
+    return _res;
 }
 
 ExpressionPtr TryStatement::_eval() const {
@@ -5477,9 +5478,9 @@ EXPR_TYPESYSTEM_SOURCE(App::ImportStatement, App::BaseStatement);
 ExpressionPtr ImportStatement::create(const App::DocumentObject *owner, 
         std::string &&module, std::string &&name) 
 {
-    auto res = EXPR_NEW(ImportStatement,owner);
+    _EXPR_NEW(res,ImportStatement,owner);
     res->add(std::move(module),std::move(name));
-    return res;
+    return _res;
 }
 
 void ImportStatement::add(std::string &&module, std::string &&name) {
@@ -5503,10 +5504,10 @@ void ImportStatement::_toString(std::ostream &ss, bool, int) const {
 }
 
 ExpressionPtr ImportStatement::_copy() const {
-    auto res = EXPR_NEW(ImportStatement,owner);
+    _EXPR_NEW(res,ImportStatement,owner);
     res->names = names;
     res->modules = modules;
-    return res;
+    return _res;
 }
 
 App::any ImportStatement::_getValueAsAny() const {
@@ -5537,10 +5538,10 @@ EXPR_TYPESYSTEM_SOURCE(App::FromStatement, App::BaseStatement);
 ExpressionPtr FromStatement::create(const App::DocumentObject *owner, 
         std::string &&module, std::string &&tail, std::string &&name) 
 {
-    auto res = EXPR_NEW(FromStatement,owner);
+    _EXPR_NEW(res,FromStatement,owner);
     res->module = std::move(module);
     res->add(std::move(tail), std::move(name));
-    return res;
+    return _res;
 }
 
 void FromStatement::add(std::string &&tail, std::string &&name) {
@@ -5564,11 +5565,11 @@ void FromStatement::_toString(std::ostream &ss, bool, int) const {
 }
 
 ExpressionPtr FromStatement::_copy() const {
-    auto res = EXPR_NEW(FromStatement,owner);
+    _EXPR_NEW(res,FromStatement,owner);
     res->names = names;
     res->tails = tails;
     res->module = module;
-    return res;
+    return _res;
 }
 
 App::any FromStatement::_getValueAsAny() const {
@@ -5583,7 +5584,7 @@ App::any FromStatement::_getValueAsAny() const {
             if(pymod.hasAttr("__all__")) {
                 Py::Sequence seq(pymod.getAttr("__all__"));
                 for(size_t j=0;j<seq.size();++j) {
-                    std::string n(Py::String(seq[i]));
+                    std::string n(Py::Object(seq[i]).as_string());
                     *frame.getVar(this,n,BindLocalOnly) = pymod.getAttr(n);
                 }
             }
