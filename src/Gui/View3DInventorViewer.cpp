@@ -127,6 +127,7 @@
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
+#include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <QGesture>
@@ -1291,6 +1292,9 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
         }
         else if (fi.hasExtension("idtf")) {
             vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
+        }
+        else if (fi.hasExtension("ps") || fi.hasExtension("eps")) {
+            vo = std::unique_ptr<SoVectorizeAction>(new SoVectorizePSAction());
         }
         else {
             throw Base::ValueError("Not supported vector graphic");
