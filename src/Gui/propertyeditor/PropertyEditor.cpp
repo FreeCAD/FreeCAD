@@ -378,7 +378,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *event) {
                     _ACTION_SETUP(_name);\
                     if(type & App::Prop_##_name) {\
                         if(type & App::Prop_##_name) \
-                            action->setText(text + QString::fromAscii(" *"));\
+                            action->setText(text + QString::fromLatin1(" *"));\
                         action->setChecked(true);\
                     }\
                 }while(0)
