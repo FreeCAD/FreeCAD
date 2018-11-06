@@ -29,22 +29,11 @@
 
 class QMainWindow;
 
-#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
-#if defined(Q_OS_LINUX)
-  #if defined(SPNAV_USE_X11)
-    #include "3Dconnexion/GuiNativeEventLinuxX11.h"
-  #else
-    #include "3Dconnexion/GuiNativeEventLinux.h"
-  #endif
-#elif defined(Q_OS_WIN)
-  #include "3Dconnexion/GuiNativeEventWin32.h"
-#elif defined(Q_OS_MACX)
-  #include "3Dconnexion/GuiNativeEventMac.h"
-#endif // Platform switch
-#endif // Spacemice
-
 namespace Gui
 {
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+    class GuiNativeEvent;
+#endif // Spacemice
     class GUIApplicationNativeEventAware : public QApplication
     {
         Q_OBJECT
@@ -63,7 +52,7 @@ namespace Gui
         float convertPrefToSensitivity(int value);
       #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
         GuiNativeEvent *nativeEvent;
-        friend void GuiNativeEvent::initSpaceball(QMainWindow *window);
+//        friend void GuiNativeEvent::initSpaceball(QMainWindow *window);
       #endif
     }; // end class GUIApplicationNativeEventAware
 } // end namespace Gui

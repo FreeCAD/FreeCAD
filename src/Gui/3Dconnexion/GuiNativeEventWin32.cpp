@@ -949,3 +949,4 @@ Error:
     return processed;
 }
 
+#include "3Dconnexion/moc_GuiNativeEventWin32.cpp"

@@ -4,7 +4,6 @@
 #include <QObject>
 
 class QMainWindow;
-class GUIApplicationNativeEventAware;
 
 namespace Gui
 {
@@ -13,7 +12,7 @@ namespace Gui
 	class GuiNativeEvent : public QObject
 	{
 #include "GuiNativeEventCommon.h"
-	private:
+	private slots:
 		void pollSpacenav();
 	};
 }

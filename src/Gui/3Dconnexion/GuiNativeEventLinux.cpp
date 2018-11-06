@@ -37,7 +37,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
     } else {
         Base::Console().Log("Connected to spacenav daemon\n");
 		QSocketNotifier* SpacenavNotifier = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
-		connect(SpacenavNotifier, &QSocketNotifier::activated, this, &GuiNativeEvent::pollSpacenav); 
+		connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav())); 
 		mainApp->setSpaceballPresent(true);
     }
 }
@@ -68,3 +68,5 @@ void Gui::GuiNativeEvent::pollSpacenav()
 		}
 	}
 }
+
+#include "3Dconnexion/moc_GuiNativeEventLinux.cpp"
