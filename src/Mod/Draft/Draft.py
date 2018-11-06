@@ -7390,7 +7390,7 @@ class ViewProviderDraftText:
             if "FontSize" in vobj.PropertiesList:
                 self.font.size = vobj.FontSize.Value
         elif prop == "Justification":
-            if "Justification" in vobj.PropertiesList:
+            if getattr(vobj.PropertiesList, "Justification", None) is not None:
                 from pivy import coin
                 try:
                     if vobj.Justification == "Left":
