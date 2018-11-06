@@ -528,6 +528,26 @@ class _CommandFemMeshClear(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
+class _CommandFemMeshDisplayInfo(CommandManager):
+    "The FEM_MeshDisplayInfo command definition"
+    def __init__(self):
+        super(_CommandFemMeshDisplayInfo, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-print-info',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info"),
+                          # 'Accel': "Z, Z",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info")}
+        self.is_active = 'with_femmesh'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Display FEM mesh info")
+        FreeCADGui.doCommand("print(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
+        FreeCADGui.addModule("PySide")
+        FreeCADGui.doCommand("mesh_info = str(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
+        FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
+        FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
+
+
 class _CommandFemMeshGmshFromShape(CommandManager):
     "The FEM_MeshGmshFromShape command definition"
     def __init__(self):
@@ -601,26 +621,6 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)")
         FreeCADGui.Selection.clearSelection()
         # a recompute immediately starts meshing when task panel is opened, this is not intended
-
-
-class _CommandFemMeshDisplayInfo(CommandManager):
-    "The FEM_MeshDisplayInfo command definition"
-    def __init__(self):
-        super(_CommandFemMeshDisplayInfo, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-print-info',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info")}
-        self.is_active = 'with_femmesh'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Display FEM mesh info")
-        FreeCADGui.doCommand("print(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
-        FreeCADGui.addModule("PySide")
-        FreeCADGui.doCommand("mesh_info = str(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
-        FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
 
 
 class _CommandFemMeshRegion(CommandManager):
@@ -856,10 +856,10 @@ FreeCADGui.addCommand('FEM_MaterialSolid', _CommandFemMaterialSolid())
 FreeCADGui.addCommand('FEM_FEMMesh2Mesh', _CommandFemMesh2Mesh())
 FreeCADGui.addCommand('FEM_MeshBoundaryLayer', _CommandFemMeshBoundaryLayer())
 FreeCADGui.addCommand('FEM_MeshClear', _CommandFemMeshClear())
+FreeCADGui.addCommand('FEM_MeshDisplayInfo', _CommandFemMeshDisplayInfo())
 FreeCADGui.addCommand('FEM_MeshGmshFromShape', _CommandFemMeshGmshFromShape())
 FreeCADGui.addCommand('FEM_MeshGroup', _CommandFemMeshGroup())
 FreeCADGui.addCommand('FEM_MeshNetgenFromShape', _CommandFemMeshNetgenFromShape())
-FreeCADGui.addCommand('FEM_MeshDisplayInfo', _CommandFemMeshDisplayInfo())
 FreeCADGui.addCommand('FEM_MeshRegion', _CommandFemMeshRegion())
 FreeCADGui.addCommand('FEM_ResultShow', _CommandFemResultShow())
 FreeCADGui.addCommand('FEM_ResultsPurge', _CommandFemResultsPurge())
