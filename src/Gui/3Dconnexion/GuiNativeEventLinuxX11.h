@@ -1,6 +1,7 @@
 #ifndef GUINATIVEEVENT_H
 #define GUINATIVEEVENT_H
 
+#include <vector>
 #include <QObject>
 
 #if QT_VERSION >= 0x050000

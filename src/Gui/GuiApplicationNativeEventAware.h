@@ -26,6 +26,7 @@
 #define GUIAPPLICATIONNATIVEEVENTAWARE_H
 
 #include <QApplication>
+#include <vector>
 
 class QMainWindow;
 
@@ -44,11 +45,11 @@ namespace Gui
         bool isSpaceballPresent() const {return spaceballPresent;}
         void setSpaceballPresent(bool present) {spaceballPresent = present;} 
         bool processSpaceballEvent(QObject *object, QEvent *event);
-        void postMotionEvent(int *const motionDataArray);
+        void postMotionEvent(std::vector<int> motionDataArray);
         void postButtonEvent(int buttonNumber, int buttonPress);
     private:
         bool spaceballPresent;
-        void importSettings(int *const motionDataArray);
+        void importSettings(std::vector<int>& motionDataArray);
         float convertPrefToSensitivity(int value);
       #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
         GuiNativeEvent *nativeEvent;

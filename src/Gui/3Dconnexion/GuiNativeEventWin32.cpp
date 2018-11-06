@@ -28,6 +28,7 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
   #include "GuiRawInputEventFilter.h"
 #endif // #if QT_VERSION >= 0x050000
 
+std::vector<int> Gui::GuiNativeEvent::motionDataArray(6,0);
 Gui::GuiNativeEvent* Gui::GuiNativeEvent::gMouseInput = 0;
 
 

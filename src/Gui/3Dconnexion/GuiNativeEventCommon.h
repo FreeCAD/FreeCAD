@@ -8,5 +8,5 @@
 		GuiNativeEvent(const GuiNativeEvent&);
 		GuiNativeEvent& operator=(const GuiNativeEvent&);
 		GUIApplicationNativeEventAware *mainApp;
-        static int  motionDataArray[6];
+        static std::vector<int>motionDataArray;
 

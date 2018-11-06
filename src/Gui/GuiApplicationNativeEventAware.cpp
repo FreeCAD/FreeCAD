@@ -102,7 +102,7 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object,
     return true;
 }
 
-void Gui::GUIApplicationNativeEventAware::postMotionEvent(int *const motionDataArray)
+void Gui::GUIApplicationNativeEventAware::postMotionEvent(std::vector<int> motionDataArray)
 {
 	auto currentWidget(focusWidget());
     if (!currentWidget) {
@@ -148,7 +148,7 @@ float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
     }
 }
 
-void Gui::GUIApplicationNativeEventAware::importSettings(int *const motionDataArray)
+void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motionDataArray)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Spaceball")->GetGroup("Motion");
 

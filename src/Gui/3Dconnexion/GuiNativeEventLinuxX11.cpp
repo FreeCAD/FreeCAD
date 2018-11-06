@@ -32,7 +32,7 @@ Implementation by Torsten Sadowski 2018
   #undef Complex
 #endif // #if QT_VERSION >= 0x050000
 
-int Gui::GuiNativeEvent::motionDataArray[6];
+std::vector<int> Gui::GuiNativeEvent::motionDataArray(6,0);
 
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 : QObject(app)
@@ -117,7 +117,7 @@ bool Gui::GuiNativeEvent::xcbEventFilter(void *xcb_void, long* result)
             motionDataArray[4] = -navEvent.motion.rz;
             motionDataArray[5] = -navEvent.motion.ry;
 
-            inst->postMotionEvent(&motionDataArray[0]);
+            inst->postMotionEvent(motionDataArray);
             return true;
         }
 
@@ -163,7 +163,7 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
             nMotionEvents--;
             if (nMotionEvents == 0)
             {               
-            mainApp->postMotionEvent(&motionDataArray[0]);
+            mainApp->postMotionEvent(motionDataArray);
             }
             
             return true;
