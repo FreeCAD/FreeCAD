@@ -148,40 +148,6 @@ float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
     }
 }
 
-// This function modifies motionDataArray to be OS independent
-// on some OSes these axes are inverted, and some are switched - this method sets them up like this:
-
-// motionDataArray[0] - pan Left - Right with mouse - pan Left(Left) - Right(Left) on screen
-// motionDataArray[1] - pan Front - Back with mouse - pan Up(Front) - Down(Back)   on screen
-// motionDataArray[2] - pan Up - Down    with mouse - zoom In(Up) - Out(Down)      on screen
-// motionDataArray[3] - lean mouse Left-Right       - rotate around Vertical    axis on screen
-// motionDataArray[4] - lean mouse Front - Back     - rotate around Horizointal axis on screen on screen
-// motionDataArray[5] - Spin mouse                  - rotate around "Zoom"      axis on screen
-
-
-/*bool Gui::GUIApplicationNativeEventAware::setOSIndependentMotionData()
-{
-#ifdef SPNAV_FOUND
-    int temp;
-    motionDataArray[0] = -motionDataArray[0];
-    motionDataArray[3] = -motionDataArray[3];
-
-    temp = motionDataArray[1];
-    motionDataArray[1] = -motionDataArray[2];
-    motionDataArray[2] = -temp;
-
-    temp = motionDataArray[4];
-    motionDataArray[4] = -motionDataArray[5];
-    motionDataArray[5] = -temp;
-#elif defined(_USE_3DCONNEXION_SDK)
-    motionDataArray[0] = -motionDataArray[0];
-    motionDataArray[3] = -motionDataArray[3];
-#else
-    return false;
-#endif
-    return true;
-}*/
-
 void Gui::GUIApplicationNativeEventAware::importSettings(int *const motionDataArray)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Spaceball")->GetGroup("Motion");
@@ -311,5 +277,12 @@ void Gui::GUIApplicationNativeEventAware::importSettings(int *const motionDataAr
         }
     }
 }
+
+#if defined(SPNAV_FOUND) && defined(SPNAV_USE_X11) && QT_VERSION < 0x050000
+bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
+{
+  return nativeEvent->x11EventFilter(event);
+}
+#endif
 
 #include "moc_GuiApplicationNativeEventAware.cpp"
