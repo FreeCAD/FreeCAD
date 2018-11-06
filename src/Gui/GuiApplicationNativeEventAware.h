@@ -52,7 +52,9 @@ namespace Gui
         float convertPrefToSensitivity(int value);
       #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
         GuiNativeEvent *nativeEvent;
-//        friend void GuiNativeEvent::initSpaceball(QMainWindow *window);
+      #endif
+      #if defined(SPNAV_FOUND) && defined(SPNAV_USE_X11) && QT_VERSION < 0x050000
+        bool x11EventFilter(XEvent *event) override final;
       #endif
     }; // end class GUIApplicationNativeEventAware
 } // end namespace Gui
