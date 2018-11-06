@@ -21,7 +21,7 @@ namespace Gui
 #include "GuiNativeEventCommon.h"
     public:
   #if QT_VERSION >= 0x050000
-        bool xcbEventFilter(const xcb_client_message_event_t *message);
+        static bool xcbEventFilter(void *message, long* result);
   #else
         bool x11EventFilter(XEvent *event);
   #endif // if/else QT_VERSION >= 0x050000

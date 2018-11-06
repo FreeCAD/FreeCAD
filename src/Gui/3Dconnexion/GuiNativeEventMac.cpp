@@ -155,3 +155,5 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
     Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
     mainApp->setSpaceballPresent(true);
 }
+
+#include "3Dconnexion/moc_GuiNativeEventMac.cpp"

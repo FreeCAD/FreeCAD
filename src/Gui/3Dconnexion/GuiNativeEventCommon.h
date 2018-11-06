@@ -1,3 +1,4 @@
+	Q_OBJECT
 	public:
 		GuiNativeEvent(GUIApplicationNativeEventAware *app);
 		~GuiNativeEvent();

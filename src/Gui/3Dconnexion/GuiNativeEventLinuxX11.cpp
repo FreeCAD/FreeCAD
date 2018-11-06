@@ -2,19 +2,19 @@
 Implementation by Torsten Sadowski 2018
  */
 
+#include "SpaceballEvent.h"
+#include <QMainWindow>
+
 #include "GuiNativeEventLinuxX11.h"
 
 #include "GuiApplicationNativeEventAware.h"
-#include "SpaceballEvent.h"
 #include <FCConfig.h>
 #include <Base/Console.h>
-#include <QMainWindow>
 
 #include <QX11Info>
 #include <spnav.h>
 
 #if QT_VERSION >= 0x050000
-  #include <X11/Xlib.h>
   #include "GuiRawInputEventFilter.h"
   #undef Bool
   #undef CursorShape
@@ -57,26 +57,33 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 		mainApp->setSpaceballPresent(true);
 
     #if QT_VERSION >= 0x050000
-        static auto evFilter( [](void *msg, long *result){
-                Q_UNUSED(result);
-                auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware *>(QApplication::instance()));
-                if (inst) {
-                    return inst->nativeEvent->xcbEventFilter(static_cast<const xcb_client_message_event_t *>(msg));
-                } else {
-                    return false;
-                }
-            } );
-        mainApp->installNativeEventFilter(new Gui::RawInputEventFilter(evFilter));
+        //static auto evFilter( [](void *msg, long *result){
+        //        Q_UNUSED(result);
+        //        auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware *>(QApplication::instance()));
+        //        if (inst) {
+        //            return inst->nativeEvent->xcbEventFilter(static_cast<const xcb_client_message_event_t *>(msg));
+        //        } else {
+        //            return false;
+        //        }
+        //    } );
+        //mainApp->installNativeEventFilter(new Gui::RawInputEventFilter(evFilter));
+        mainApp->installNativeEventFilter(new Gui::RawInputEventFilter(&xcbEventFilter));
     #endif // #if QT_VERSION >= 0x050000
     }
 }
 
 #if QT_VERSION >= 0x050000
 
-bool Gui::GuiNativeEvent::xcbEventFilter(const xcb_client_message_event_t *xcb_ev)
+bool Gui::GuiNativeEvent::xcbEventFilter(void *xcb_void, long* result)
 {
-    spnav_event navEvent;
+    Q_UNUSED(result);
+    auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware *>(QApplication::instance()));
+    if (!inst)
+      return false;
 
+    spnav_event navEvent;
+    
+	const xcb_client_message_event_t* xcb_ev = static_cast<const xcb_client_message_event_t*>(xcb_void);
     // Qt4 used XEvents in native event filters, but Qt5 changed to XCB.  The
     // SpaceNavigator API only works with XEvent, so we need to construct a
     // temporary XEvent with just enough information for spnav_x11_event()
@@ -110,7 +117,7 @@ bool Gui::GuiNativeEvent::xcbEventFilter(const xcb_client_message_event_t *xcb_e
             motionDataArray[4] = -navEvent.motion.rz;
             motionDataArray[5] = -navEvent.motion.ry;
 
-            mainApp->postMotionEvent(&motionDataArray[0]);
+            inst->postMotionEvent(&motionDataArray[0]);
             return true;
         }
 
@@ -123,7 +130,7 @@ bool Gui::GuiNativeEvent::xcbEventFilter(const xcb_client_message_event_t *xcb_e
             } else {
                 buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
             }
-            mainApp->postButtonEvent(navEvent.button.bnum, navEvent.button.press);
+            inst->postButtonEvent(navEvent.button.bnum, navEvent.button.press);
             return true;
         }
         default:
@@ -156,7 +163,7 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
             nMotionEvents--;
             if (nMotionEvents == 0)
             {               
-            mainApp->postMotionEvent(&motionDataArray);
+            mainApp->postMotionEvent(&motionDataArray[0]);
             }
             
             return true;
@@ -236,7 +243,7 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
 
     if (navEvent.type == SPNAV_EVENT_BUTTON)
     {
-        this->postButtonEvent(navEvent.button.bnum, navEvent.button.press);
+        mainApp->postButtonEvent(navEvent.button.bnum, navEvent.button.press);
         return true;
     }
 
@@ -244,3 +251,5 @@ bool Gui::GuiNativeEvent::x11EventFilter(XEvent *event)
     return true;
 }
 #endif  // if/else QT_VERSION >= 0x050000
+
+#include "3Dconnexion/moc_GuiNativeEventLinuxX11.cpp"

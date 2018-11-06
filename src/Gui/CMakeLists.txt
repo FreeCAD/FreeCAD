@@ -122,9 +122,15 @@ IF(SPNAV_FOUND)
       SET(FreeCADGui_SDK_SRCS
         3Dconnexion/GuiNativeEventLinuxX11.cpp
         )
+      SET(FreeCADGui_SDK_MOC_HDRS
+        3Dconnexion/GuiNativeEventLinuxX11.h
+        )
     else(SPNAV_USE_X11)
       SET(FreeCADGui_SDK_SRCS
         3Dconnexion/GuiNativeEventLinux.cpp
+      )
+      SET(FreeCADGui_SDK_MOC_HDRS
+        3Dconnexion/GuiNativeEventLinux.h
       )
 	endif(SPNAV_USE_X11)
     SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
@@ -210,6 +216,9 @@ SET(FreeCADGui_SDK_SRCS
     3Dconnexion/GuiNativeEventWin32.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+SET(FreeCADGui_SDK_MOC_HDRS
+  3Dconnexion/GuiNativeEventWin32.h
+)
 endif(FREECAD_USE_3DCONNEXION AND MSVC)
 
 if(FREECAD_USE_3DCONNEXION AND APPLE)
@@ -217,6 +226,9 @@ SET(FreeCADGui_SDK_SRCS
     3Dconnexion/GuiNativeEventMac.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+SET(FreeCADGui_SDK_MOC_HDRS
+  3Dconnexion/GuiNativeEventMac.h
+)
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
 set(Gui_MOC_HDRS
@@ -327,6 +339,7 @@ set(Gui_MOC_HDRS
     TaskView/TaskView.h
     DAGView/DAGView.h
     DAGView/DAGModel.h
+    ${FreeCADGui_SDK_MOC_HDRS}
 )
 
 fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
@@ -1171,6 +1184,7 @@ SET(FreeCADGui_SRCS
     ManualAlignment.h
     TransactionObject.h
     WinNativeGestureRecognizers.h
+    ${FreeCADGui_SDK_MOC_HDRS}
 )
 
 SET(FreeCADGui_SRCS
