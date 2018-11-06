@@ -448,7 +448,7 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
             AREA_WARN("ccurve not closed");
             ccurve.append(ccurve.m_vertices.front());
         }
-        area.append(ccurve);
+        area.move(std::move(ccurve));
     }
 }
 
