@@ -15,7 +15,7 @@ with special thanks to marcxs for making the first steps
 #include <FCConfig.h>
 #include <Base/Console.h>
 
-int Gui::GuiNativeEvent::motionDataArray[6];
+std::vector<int> Gui::GuiNativeEvent::motionDataArray(6,0);
 
 UInt16 Gui::GuiNativeEvent::tdxClientID = 0;
 uint32_t Gui::GuiNativeEvent::lastButtons = 0;
@@ -61,7 +61,7 @@ uint32_t Gui::GuiNativeEvent::lastButtons = 0;
 		  motionDataArray[3] = -msg->axis[3];                        
 		  motionDataArray[4] = msg->axis[4];                        
 		  motionDataArray[5] = msg->axis[5];
-		  inst->postMotionEvent(&motionDataArray[0]);
+		  inst->postMotionEvent(motionDataArray);
 		  break;
 		}
                         
