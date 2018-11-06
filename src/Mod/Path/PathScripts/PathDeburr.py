@@ -29,6 +29,7 @@ import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
+import PathScripts.PathUtil as PathUtil
 import math
 
 from PySide import QtCore
@@ -62,7 +63,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
     '''Proxy class for Deburr operation.'''
 
     def opFeatures(self, obj):
-        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
+        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
 
     def initOperation(self, obj):
         PathLog.track(obj.Label)
@@ -106,8 +107,17 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 if wire:
                     wires.append(wire)
 
+        zValues = []
+        z = 0
+        if obj.StepDown.Value != 0:
+            while z + obj.StepDown.Value < depth:
+                z = z + obj.StepDown.Value
+                zValues.append(z)
+        zValues.append(depth)
+        PathLog.track(obj.Label, depth, zValues)
+
         self.wires = wires
-        self.buildpathocc(obj, wires, [depth], True)
+        self.buildpathocc(obj, wires, zValues, True)
 
     def opRejectAddBase(self, obj, base, sub):
         '''The chamfer op can only deal with features of the base model, all others are rejected.'''
@@ -118,6 +128,8 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.Width = '1 mm'
         obj.ExtraDepth = '0.1 mm'
         obj.Join = 'Round'
+        obj.setExpression('StepDown', '0 mm')
+        obj.StepDown = '0 mm'
 
 def SetupProperties():
     setup = []
