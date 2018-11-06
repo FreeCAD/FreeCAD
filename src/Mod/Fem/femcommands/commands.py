@@ -603,18 +603,18 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
 
-class _CommandFemMeshPrintInfo(CommandManager):
-    "The FEM_MeshPrintInfo command definition"
+class _CommandFemMeshDisplayInfo(CommandManager):
+    "The FEM_MeshDisplayInfo command definition"
     def __init__(self):
-        super(_CommandFemMeshPrintInfo, self).__init__()
+        super(_CommandFemMeshDisplayInfo, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-print-info',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info")}
         self.is_active = 'with_femmesh'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Print FEM mesh info")
+        FreeCAD.ActiveDocument.openTransaction("Display FEM mesh info")
         FreeCADGui.doCommand("print(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
         FreeCADGui.addModule("PySide")
         FreeCADGui.doCommand("mesh_info = str(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
@@ -859,7 +859,7 @@ FreeCADGui.addCommand('FEM_MeshClear', _CommandFemMeshClear())
 FreeCADGui.addCommand('FEM_MeshGmshFromShape', _CommandFemMeshGmshFromShape())
 FreeCADGui.addCommand('FEM_MeshGroup', _CommandFemMeshGroup())
 FreeCADGui.addCommand('FEM_MeshNetgenFromShape', _CommandFemMeshNetgenFromShape())
-FreeCADGui.addCommand('FEM_MeshPrintInfo', _CommandFemMeshPrintInfo())
+FreeCADGui.addCommand('FEM_MeshDisplayInfo', _CommandFemMeshDisplayInfo())
 FreeCADGui.addCommand('FEM_MeshRegion', _CommandFemMeshRegion())
 FreeCADGui.addCommand('FEM_ResultShow', _CommandFemResultShow())
 FreeCADGui.addCommand('FEM_ResultsPurge', _CommandFemResultsPurge())
