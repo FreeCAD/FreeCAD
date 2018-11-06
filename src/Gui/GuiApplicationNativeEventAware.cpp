@@ -31,6 +31,20 @@
 #include "SpaceballEvent.h"
 #include "Application.h"
 
+#if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
+#if defined(Q_OS_LINUX)
+  #if defined(SPNAV_USE_X11)
+    #include "3Dconnexion/GuiNativeEventLinuxX11.h"
+  #else
+    #include "3Dconnexion/GuiNativeEventLinux.h"
+  #endif
+#elif defined(Q_OS_WIN)
+  #include "3Dconnexion/GuiNativeEventWin32.h"
+#elif defined(Q_OS_MACX)
+  #include "3Dconnexion/GuiNativeEventMac.h"
+#endif // Platform switch
+#endif // Spacemice
+
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, char *argv[]) :
         QApplication (argc, argv)
 {
