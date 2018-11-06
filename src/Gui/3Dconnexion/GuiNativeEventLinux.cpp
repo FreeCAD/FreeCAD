@@ -13,7 +13,7 @@ Implementation by Torsten Sadowski 2018
 
 #include <spnav.h>
 
-int Gui::GuiNativeEvent::motionDataArray[6];
+std::vector<int> Gui::GuiNativeEvent::motionDataArray(6,0);
 
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 : QObject(app)
@@ -57,7 +57,7 @@ void Gui::GuiNativeEvent::pollSpacenav()
 				motionDataArray[3] = -ev.motion.rx;
 				motionDataArray[4] = -ev.motion.rz;
 				motionDataArray[5] = -ev.motion.ry;
-				mainApp->postMotionEvent(&motionDataArray[0]);
+				mainApp->postMotionEvent(motionDataArray);
 				break;
 			}
 			case SPNAV_EVENT_BUTTON:
