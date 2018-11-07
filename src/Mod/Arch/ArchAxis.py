@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,math,DraftVecUtils,ArchCommands,sys
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -575,7 +575,10 @@ class _ViewProviderAxis:
                ('C',100),('XC',90),('L',50),('XL',40),
                ('X',10),('IX',9),('V',5),('IV',4),('I',1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
-            return vobj.Object.CustomNumber.encode("utf8")
+            if sys.version_info.major < 3:
+                return vobj.Object.CustomNumber.encode("utf8")
+            else:
+                return vobj.Object.CustomNumber
         elif hasattr(vobj,"NumberingStyle"):
             if vobj.NumberingStyle == "1,2,3":
                 return str(num+1)
