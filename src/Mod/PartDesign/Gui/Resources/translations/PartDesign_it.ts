@@ -2168,7 +2168,7 @@ Selezionare prima una o più entità spigolo.</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Ausiliario</translation>
     </message>
     <message>

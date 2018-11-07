@@ -2167,7 +2167,7 @@ Please check one or more edge entities first.</translation>
       <translation>Angle fix</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Auxiliars</translation>
     </message>
     <message>

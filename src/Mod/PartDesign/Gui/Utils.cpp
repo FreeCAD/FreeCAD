@@ -421,7 +421,7 @@ bool isFeatureMovable(App::DocumentObject* const feat)
                 return false;
         }
 
-        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillarySpine"))) {
             App::DocumentObject* axis = prop->getValue();
             if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
                 return false;
@@ -470,7 +470,7 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
                     unique_objs.insert(axis);
                 }
             }
-            if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+            if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillarySpine"))) {
                 App::DocumentObject* axis = prop->getValue();
                 if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
                     unique_objs.insert(axis);

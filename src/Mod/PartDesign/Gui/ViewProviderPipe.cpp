@@ -67,7 +67,7 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
     if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
 
-    App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
+    App::DocumentObject* auxspine = pcPipe->AuxillarySpine.getValue();
     if (auxspine != NULL && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(auxspine);
 
@@ -130,7 +130,7 @@ void ViewProviderPipe::highlightReferences(const bool on, bool auxiliary)
     if(!auxiliary)
         base = static_cast<Part::Feature*>(pcPipe->Spine.getValue());
     else 
-        base = static_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue());
+        base = static_cast<Part::Feature*>(pcPipe->AuxillarySpine.getValue());
     
     if (base == NULL) return;
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
@@ -141,7 +141,7 @@ void ViewProviderPipe::highlightReferences(const bool on, bool auxiliary)
     if(!auxiliary)
         edges = pcPipe->Spine.getSubValuesStartsWith("Edge");
     else 
-        edges = pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge");
+        edges = pcPipe->AuxillarySpine.getSubValuesStartsWith("Edge");
 
     if (on) {        
          if (!edges.empty() && originalLineColors.empty()) {

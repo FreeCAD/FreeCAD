@@ -2167,7 +2167,7 @@ Selecione primeiro uma ou mais arestas.</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Auxiliar</translation>
     </message>
     <message>

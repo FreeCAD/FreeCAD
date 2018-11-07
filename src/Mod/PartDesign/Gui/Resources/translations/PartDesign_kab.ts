@@ -2167,8 +2167,8 @@ Please check one or more edge entities first.</translation>
       <translation type="unfinished">Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
-      <translation type="unfinished">Auxillery</translation>
+      <source>Auxillary</source>
+      <translation type="unfinished">Auxillary</translation>
     </message>
     <message>
       <location line="+10"/>

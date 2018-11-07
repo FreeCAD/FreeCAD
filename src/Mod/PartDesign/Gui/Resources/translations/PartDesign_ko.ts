@@ -2168,8 +2168,8 @@ Please check one or more edge entities first.</translation>
       <translation>프레네</translation>
     </message>
     <message>
-      <source>Auxillery</source>
-      <translation type="unfinished">Auxillery</translation>
+      <source>Auxillary</source>
+      <translation type="unfinished">Auxillary</translation>
     </message>
     <message>
       <location line="+10"/>

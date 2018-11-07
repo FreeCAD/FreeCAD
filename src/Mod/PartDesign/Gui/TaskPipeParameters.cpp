@@ -395,22 +395,22 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
     //make sure the user sees an important things: the base feature to select edges and the
     //spine/auxiliary spine he already selected
-    if(pipe->AuxillerySpine.getValue()) {
-        auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+    if(pipe->AuxillarySpine.getValue()) {
+        auto* svp = doc->getViewProvider(pipe->AuxillarySpine.getValue());
         auxSpineShow = svp->isShow();
         svp->show();
     }
 
     //add initial values
-    if (pipe->AuxillerySpine.getValue())
-        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->AuxillerySpine.getValue()->Label.getValue()));
+    if (pipe->AuxillarySpine.getValue())
+        ui->profileBaseEdit->setText(QString::fromUtf8(pipe->AuxillarySpine.getValue()->Label.getValue()));
 
-    std::vector<std::string> strings = pipe->AuxillerySpine.getSubValues();
+    std::vector<std::string> strings = pipe->AuxillarySpine.getSubValues();
     for (std::vector<std::string>::const_iterator it = strings.begin(); it != strings.end(); ++it)
         ui->listWidgetReferences->addItem(QString::fromStdString(*it));
 
     ui->comboBoxMode->setCurrentIndex(pipe->Mode.getValue());
-    ui->curvelinear->setChecked(pipe->AuxilleryCurvelinear.getValue());
+    ui->curvelinear->setChecked(pipe->AuxillaryCurvelinear.getValue());
 
     // should be called after panel has become visible
     QMetaObject::invokeMethod(this, "updateUI", Qt::QueuedConnection,
@@ -425,8 +425,8 @@ TaskPipeOrientation::~TaskPipeOrientation()
 
         //make sure the user sees al important things: the base feature to select edges and the
         //spine/auxiliary spine he already selected
-        if (pipe->AuxillerySpine.getValue()) {
-            auto* svp = doc->getViewProvider(pipe->AuxillerySpine.getValue());
+        if (pipe->AuxillarySpine.getValue()) {
+            auto* svp = doc->getViewProvider(pipe->AuxillarySpine.getValue());
             svp->setVisible(auxSpineShow);
             auxSpineShow = false;
         }
@@ -482,7 +482,7 @@ void TaskPipeOrientation::onBaseButton(bool checked)
 
 void TaskPipeOrientation::onCurvelinearChanged(bool checked)
 {
-    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxilleryCurvelinear.setValue(checked);
+    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillaryCurvelinear.setValue(checked);
     recomputeFeature();
 }
 
@@ -559,7 +559,7 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const {
 
         //change the references
         std::string subName(msg.pSubName);
-        std::vector<std::string> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.getSubValues();
+        std::vector<std::string> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillarySpine.getSubValues();
         std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
 
         if (selectionMode == refObjAdd) {
@@ -578,7 +578,7 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const {
                 return false;
         }
 
-        static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.setValue
+        static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillarySpine.setValue
                     (vp->getObject()->getDocument()->getObject(msg.pObjectName), refs);
         return true;
     }
@@ -819,8 +819,8 @@ bool TaskDlgPipeParameters::accept()
     bool ext = false;
     if(!pcActiveBody->hasObject(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue()))
         ext = true;
-    else if(pcPipe->AuxillerySpine.getValue() && !pcActiveBody->hasObject(pcPipe->AuxillerySpine.getValue()) && 
-            !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue()))
+    else if(pcPipe->AuxillarySpine.getValue() && !pcActiveBody->hasObject(pcPipe->AuxillarySpine.getValue()) && 
+            !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillarySpine.getValue()))
             ext = true;
     else {
         for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
@@ -844,10 +844,10 @@ bool TaskDlgPipeParameters::accept()
                                         pcPipe->Spine.getSubValues());
                 copies.push_back(pcPipe->Spine.getValue());
             }
-            else if(!pcActiveBody->hasObject(pcPipe->AuxillerySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue())){
-                pcPipe->AuxillerySpine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(pcPipe->AuxillerySpine.getValue(), "", dlg.radioIndependent->isChecked()),
-                                        pcPipe->AuxillerySpine.getSubValues());
-                copies.push_back(pcPipe->AuxillerySpine.getValue());
+            else if(!pcActiveBody->hasObject(pcPipe->AuxillarySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillarySpine.getValue())){
+                pcPipe->AuxillarySpine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(pcPipe->AuxillarySpine.getValue(), "", dlg.radioIndependent->isChecked()),
+                                        pcPipe->AuxillarySpine.getSubValues());
+                copies.push_back(pcPipe->AuxillarySpine.getValue());
             }
 
             std::vector<App::DocumentObject*> objs;

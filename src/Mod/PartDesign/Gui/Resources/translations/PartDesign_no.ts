@@ -2168,8 +2168,8 @@ Merk en eller flere kanter først.</translation>
       <translation type="unfinished">Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
-      <translation type="unfinished">Auxillery</translation>
+      <source>Auxillary</source>
+      <translation type="unfinished">Auxillary</translation>
     </message>
     <message>
       <location line="+10"/>

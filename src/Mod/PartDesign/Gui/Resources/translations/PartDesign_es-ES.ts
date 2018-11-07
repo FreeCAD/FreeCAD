@@ -2166,7 +2166,7 @@ Please check one or more edge entities first.</source>
       <translation>Ángulo fijo</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Auxiliar</translation>
     </message>
     <message>

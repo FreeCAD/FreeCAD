@@ -2168,7 +2168,7 @@ Please check one or more edge entities first.</translation>
       <translation>フレネ</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>補助</translation>
     </message>
     <message>

@@ -2168,7 +2168,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Hilfe</translation>
     </message>
     <message>

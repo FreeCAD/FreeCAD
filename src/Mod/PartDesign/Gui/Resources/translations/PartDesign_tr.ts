@@ -2168,7 +2168,7 @@ Please check one or more edge entities first.</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Yardımcı</translation>
     </message>
     <message>

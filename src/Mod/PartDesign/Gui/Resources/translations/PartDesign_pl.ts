@@ -2166,7 +2166,7 @@ Please check one or more edge entities first.</source>
       <translation>Wektor Freneta</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Pomocniczy</translation>
     </message>
     <message>

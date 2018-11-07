@@ -41,9 +41,9 @@ public:
     
     App::PropertyLinkSub     Spine;
     App::PropertyBool        SpineTangent;
-    App::PropertyLinkSub     AuxillerySpine;
-    App::PropertyBool        AuxillerySpineTangent;
-    App::PropertyBool        AuxilleryCurvelinear;
+    App::PropertyLinkSub     AuxillarySpine;
+    App::PropertyBool        AuxillarySpineTangent;
+    App::PropertyBool        AuxillaryCurvelinear;
     App::PropertyEnumeration Mode;
     App::PropertyVector      Binormal;
     App::PropertyEnumeration Transition;

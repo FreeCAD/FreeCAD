@@ -2168,7 +2168,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Laguntzailea</translation>
     </message>
     <message>

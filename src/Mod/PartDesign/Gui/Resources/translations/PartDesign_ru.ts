@@ -2167,7 +2167,7 @@ Please check one or more edge entities first.</source>
       <translation>Френе</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Вспомогательный</translation>
     </message>
     <message>

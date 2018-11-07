@@ -2167,7 +2167,7 @@ Please check one or more edge entities first.</source>
       <translation>Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Kiegészítő</translation>
     </message>
     <message>

@@ -2168,7 +2168,7 @@ Välj en eller fler kanter först.</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
+      <source>Auxillary</source>
       <translation>Hjälpare</translation>
     </message>
     <message>

@@ -2169,8 +2169,8 @@ Magpatuloy?</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <source>Auxillery</source>
-      <translation>Auxillery</translation>
+      <source>Auxillary</source>
+      <translation>Auxillary</translation>
     </message>
     <message>
       <location line="+10"/>
