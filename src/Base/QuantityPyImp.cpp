@@ -370,7 +370,6 @@ PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
     return 0;
 }
 
-#if PY_MAJOR_VERSION < 3
 PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -389,9 +388,16 @@ PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
         double b = PyFloat_AsDouble(other);
         return new QuantityPy(new Quantity(*a / b) );
     }
+#if PY_MAJOR_VERSION < 3
     else if (PyInt_Check(other)) {
         Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
         double b = (double)PyInt_AsLong(other);
+        return new QuantityPy(new Quantity(*a / b) );
+    }
+#endif
+    else if (PyLong_Check(other)) {
+        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+        double b = (double)PyLong_AsLong(other);
         return new QuantityPy(new Quantity(*a / b) );
     }
     else {
@@ -399,7 +405,6 @@ PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
         return 0;
     }
 }
-#endif
 
 PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other)
 {

@@ -24,6 +24,9 @@ if(COMMAND cmake_policy)
     if (POLICY CMP0045)
         cmake_policy(SET CMP0045 NEW)
     endif(POLICY CMP0045)
+    if (POLICY CMP0072)
+        cmake_policy(SET CMP0072 OLD)
+    endif(POLICY CMP0072)
 endif(COMMAND cmake_policy)
 
 find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
@@ -171,7 +174,8 @@ MESSAGE(STATUS "cmake: ${CMAKE_VERSION}")
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
 if(MSVC)
-    OPTION(FREECAD_RELEASE_PDB "Create PDB file for Release version." ON)
+    OPTION(FREECAD_RELEASE_PDB "Create PDB files for Release version." ON)
+    OPTION(FREECAD_RELEASE_SEH "Enable Structured Exception Handling for Release version." ON)
     OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." ON)
     OPTION(FREECAD_LIBPACK_USEPYSIDE "Use PySide in LibPack rather to PyQt and Swig." ON)
     set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
@@ -574,7 +578,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT BUILD_WITH_CONDA)
     if(FREECAD_USE_PCL)
         find_package(PCL REQUIRED COMPONENTS common kdtree features surface io filters segmentation sample_consensus)
     endif(FREECAD_USE_PCL)
-    
+
 # -------------------------------- PyBind11 -----------------------------
 # necessary for flat-mesh feature
 OPTION(FREECAD_USE_PYBIND11 "Use pybind11" OFF)
@@ -585,7 +589,7 @@ endif()
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
-    set (BOOST_COMPONENTS filesystem program_options regex signals system thread)
+    set (BOOST_COMPONENTS filesystem program_options regex system thread)
     find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
@@ -673,7 +677,7 @@ endif()
             endforeach()
         endif()
 
-        # don't check VERSION 6 as this would exlude VERSION 7
+        # don't check VERSION 6 as this would exclude VERSION 7
         if(AVAILABLE_VTK_COMPONENTS)
             message(STATUS "VTK components: ${AVAILABLE_VTK_COMPONENTS}")
             find_package(VTK COMPONENTS ${AVAILABLE_VTK_COMPONENTS} REQUIRED NO_MODULE)
@@ -947,8 +951,8 @@ endif()
             SET(PYTHON_CONFIG_SUFFIX -python2.7 CACHE STRING "Shiboken cmake file suffix. If left empty, system default will be used: <ShibokenConfigPYTHON_CONFIG_SUFFIX.cmake>")
             SET(PYTHON_BASENAME -python2.7 CACHE STRING "Same as PYTHON_SUFFIX but for PySide. If left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
         else()
-            SET(PYTHON_CONFIG_SUFFIX "" CACHE STRING "Shiboken cmake file suffix. If left empty, system default will be used: <ShibokenConfigPYTHON_CONFIG_SUFFIX.cmake>")
-            SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. If left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
+            #SET(PYTHON_CONFIG_SUFFIX "" CACHE STRING "Shiboken cmake file suffix. If left empty, system default will be used: <ShibokenConfigPYTHON_CONFIG_SUFFIX.cmake>")
+            #SET(PYTHON_BASENAME "" CACHE STRING "Same as PYTHON_SUFFIX but for PySide. If left empty, PYTHON_SUFFIX will be used: <PySideConfigPYTHON_BASENAME.cmake>")
         endif()
 
         if(DEFINED MACPORTS_PREFIX)
@@ -957,6 +961,25 @@ endif()
         endif(DEFINED MACPORTS_PREFIX)
 
         find_package(Shiboken2 QUIET)# REQUIRED
+        if (Shiboken2_FOUND)
+            # Shiboken2 config file was found but it may use the wrong Python version
+            # Try to get the matching config suffix and repeat finding the package
+            if (PYTHON_VERSION_MAJOR LESS 3)
+                set(SHIBOKEN_PATTERN -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
+            else()
+                set(SHIBOKEN_PATTERN .cpython-${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+            endif()
+
+            file(GLOB SHIBOKEN_CONFIG "${Shiboken2_DIR}/Shiboken2Config${SHIBOKEN_PATTERN}*.cmake")
+            if (SHIBOKEN_CONFIG)
+                get_filename_component(SHIBOKEN_CONFIG_SUFFIX ${SHIBOKEN_CONFIG} NAME)
+                string(SUBSTRING ${SHIBOKEN_CONFIG_SUFFIX} 15 -1 SHIBOKEN_CONFIG_SUFFIX)
+                string(REPLACE ".cmake" "" PYTHON_CONFIG_SUFFIX ${SHIBOKEN_CONFIG_SUFFIX})
+                MESSAGE(STATUS "PYTHON_CONFIG_SUFFIX: ${PYTHON_CONFIG_SUFFIX}")
+                find_package(Shiboken2 QUIET)
+            endif()
+        endif()
+
         if(NOT SHIBOKEN_INCLUDE_DIR)
             MESSAGE("====================\n"
                     "shiboken2 not found.\n"
@@ -989,16 +1012,16 @@ endif()
                                                             "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
 
-	if(APPLE)
+	if(APPLE AND NOT BUILD_WITH_CONDA)
 	    INSTALL(
-	        DIRECTORY	
+	        DIRECTORY
                     ${CMAKE_BINARY_DIR}/Ext/PySide
 		DESTINATION
                     MacOS
             )
 	else()
             INSTALL(
-	        DIRECTORY	
+	        DIRECTORY
                     ${CMAKE_BINARY_DIR}/Ext/PySide
                 DESTINATION
                     Ext
@@ -1098,8 +1121,8 @@ ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
 IF(MSVC)
 	# set default compiler settings
-	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa /Zm128")
-	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm128")
+	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zm150")
+    SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm150 /bigobj")
 	# set default libs
 	SET (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
 	set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
@@ -1111,6 +1134,9 @@ IF(MSVC)
 		set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
 		set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
 	ENDIF(FREECAD_RELEASE_PDB)
+    IF(FREECAD_RELEASE_SEH)
+		SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
+    ENDIF(FREECAD_RELEASE_SEH)
 
 	# Mark 32 bit executables large address aware so they can use > 2GB address space
 	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'

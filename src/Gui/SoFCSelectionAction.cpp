@@ -54,6 +54,7 @@
 
 #include "SoFCSelectionAction.h"
 #include "SoFCSelection.h"
+#include "SoFCUnifiedSelection.h"
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include "Selection.h"
@@ -1232,6 +1233,20 @@ SoBoxSelectionRenderAction::apply(SoNode * node)
                     }
                     PRIVATE(this)->selectsearch->reset();
                 }
+            }
+        }
+        PRIVATE(this)->searchaction->reset();
+
+        // Search for selections of SoFCUnifiedSelection
+        PRIVATE(this)->searchaction->setType(SoFCUnifiedSelection::getClassTypeId());
+        PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
+        PRIVATE(this)->searchaction->apply(node);
+        SoFullPath * path = static_cast<SoFullPath *>(PRIVATE(this)->searchaction->getPath());
+        if (path) {
+            SoFCUnifiedSelection * selection = static_cast<SoFCUnifiedSelection *>(path->getTail());
+            if (selection->getNumSelected()) {
+                PRIVATE(this)->basecolor->rgb.setValue(selection->colorSelection.getValue());
+                this->drawBoxes(path, selection->getList());
             }
         }
         PRIVATE(this)->searchaction->reset();

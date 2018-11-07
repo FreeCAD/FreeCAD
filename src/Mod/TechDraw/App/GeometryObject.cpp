@@ -32,6 +32,7 @@
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Circ.hxx>
@@ -192,6 +193,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     double diffOut = chrono::duration <double, milli> (diff).count();
     Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_Algo & co\n",m_parentName.c_str(),diffOut);
 
+    start = chrono::high_resolution_clock::now();
+
     try {
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
 
@@ -221,6 +224,11 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
     }
+    end   = chrono::high_resolution_clock::now();
+    diff  = end - start;
+    diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in hlrToShape and BuildCurves\n",m_parentName.c_str(),diffOut);
+
 }
 
 //!set up a hidden line remover and project a shape with it
@@ -229,13 +237,27 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
 {
     // Clear previous Geometry
     clear();
+    
+    //work around for Mantis issue #3332
+    //if 3332 gets fixed in OCC, this will produce shifted views and will need
+    //to be reverted.
+    TopoDS_Shape inCopy;
+    if (!m_isPersp) {
+        gp_Pnt gCenter = findCentroid(input,
+                                      viewAxis);
+        Base::Vector3d motion(-gCenter.X(),-gCenter.Y(),-gCenter.Z());
+        inCopy = moveShape(input,motion);
+    } else {
+        BRepBuilderAPI_Copy BuilderCopy(input);
+        inCopy = BuilderCopy.Shape();
+    }
 
     auto start = chrono::high_resolution_clock::now();
 
     Handle(HLRBRep_PolyAlgo) brep_hlrPoly = NULL;
 
     try {
-        TopExp_Explorer faces(input, TopAbs_FACE);
+        TopExp_Explorer faces(inCopy, TopAbs_FACE);
         for (int i = 1; faces.More(); faces.Next(), i++) {
             const TopoDS_Face& f = TopoDS::Face(faces.Current());
             if (!f.IsNull()) {
@@ -243,7 +265,8 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
             }
         }
         brep_hlrPoly = new HLRBRep_PolyAlgo();
-        brep_hlrPoly->Load(input);
+        brep_hlrPoly->Load(inCopy);
+
         if (m_isPersp) {
             double fLength = std::max(Precision::Confusion(), m_focus);
             HLRAlgo_Projector projector(viewAxis, fLength);
@@ -258,10 +281,6 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo  - error occurred while projecting shape");
     }
-    auto end = chrono::high_resolution_clock::now();
-    auto diff = end - start;
-    double diffOut = chrono::duration <double, milli>(diff).count();
-    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_PolyAlgo & co\n", m_parentName.c_str(), diffOut);
 
     try {
         HLRBRep_PolyHLRToShape polyhlrToShape;
@@ -289,6 +308,10 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShapeWithPolygonAlgo - error occurred while extracting edges");
     }
+    auto end = chrono::high_resolution_clock::now();
+    auto diff = end - start;
+    double diffOut = chrono::duration <double, milli>(diff).count();
+    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_PolyAlgo & co\n", m_parentName.c_str(), diffOut);
 }
 
 
@@ -367,7 +390,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         base = BaseGeom::baseFactory(edge);
         if (base == nullptr) {
             Base::Console().Message("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
-            throw Base::Exception("GeometryObject::addGeomFromCompound - baseFactory failed");
+            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
         base->classOfEdge = category;
         base->visible = visible;

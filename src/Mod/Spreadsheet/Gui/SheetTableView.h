@@ -26,7 +26,6 @@
 #include <QTableView>
 #include <QHeaderView>
 #include <QKeyEvent>
-#include <boost/signals/connection.hpp>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/Utils.h>
 
@@ -79,7 +78,7 @@ protected:
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
 
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellSpanChangedConnection;
+    boost::signals2::scoped_connection cellSpanChangedConnection;
 };
 
 }

@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +19,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "run"
+__title__ = "FreeCAD FEM solver run"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import os
 import os.path
@@ -257,7 +257,7 @@ class Machine(BaseTask):
 class Check(BaseTask):
 
     def checkMesh(self):
-        meshes = FemUtils.getMember(
+        meshes = FemUtils.get_member(
             self.analysis, "Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
@@ -272,7 +272,7 @@ class Check(BaseTask):
         return True
 
     def checkMaterial(self):
-        matObjs = FemUtils.getMember(
+        matObjs = FemUtils.get_member(
             self.analysis, "App::MaterialObjectPython")
         if len(matObjs) == 0:
             self.report.error(
@@ -284,10 +284,10 @@ class Check(BaseTask):
 
     def checkSupported(self, allSupported):
         for m in self.analysis.Group:
-            if FemUtils.isOfType(m, "Fem::Constraint"):
+            if FemUtils.is_of_type(m, "Fem::Constraint"):
                 supported = False
                 for sc in allSupported:
-                    if FemUtils.isOfType(m, *sc):
+                    if FemUtils.is_of_type(m, *sc):
                         supported = True
                 if not supported:
                     self.report.warning(
@@ -323,7 +323,7 @@ class _DocObserver(object):
 
     def __init__(self):
         self._saved = {}
-        for doc in App.listDocuments().itervalues():
+        for doc in iter(App.listDocuments().values()):
             for obj in doc.Objects:
                 if obj.isDerivedFrom("Fem::FemAnalysis"):
                     self._saved[obj] = obj.Group
@@ -368,19 +368,19 @@ class _DocObserver(object):
 
     def _checkEquation(self, obj):
         for o in obj.Document.Objects:
-            if (FemUtils.isDerivedFrom(o, "Fem::FemSolverObject") and
+            if (FemUtils.is_derived_from(o, "Fem::FemSolverObject") and
                     hasattr(o, "Group") and obj in o.Group):
                 if o in _machines:
                     _machines[o].reset()
 
     def _checkSolver(self, obj):
         analysis = FemUtils.findAnalysisOfMember(obj)
-        for m in _machines.itervalues():
+        for m in iter(_machines.values()):
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
 
     def _checkAnalysis(self, obj):
-        if FemUtils.isDerivedFrom(obj, "Fem::FemAnalysis"):
+        if FemUtils.is_derived_from(obj, "Fem::FemAnalysis"):
             deltaObjs = self._getAdded(obj)
             if deltaObjs:
                 reset = False
@@ -404,13 +404,13 @@ class _DocObserver(object):
         return delta
 
     def _resetAll(self, analysis):
-        for m in _machines.itervalues():
+        for m in iter(_machines.values()):
             if analysis == m.analysis:
                 m.reset()
 
     def _partOfModel(self, obj):
         for t in self._WHITELIST:
-            if FemUtils.isDerivedFrom(obj, t):
+            if FemUtils.is_derived_from(obj, t):
                 return True
         return False
 
@@ -421,3 +421,5 @@ class MustSaveError(Exception):
 
 class DirectoryDoesNotExist(Exception):
     pass
+
+##  @}

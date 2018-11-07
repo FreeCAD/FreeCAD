@@ -37,6 +37,7 @@
 #endif
 
 #include <Base/Axis.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
@@ -149,20 +150,21 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             BRepAlgoAPI_Cut mkCut(base, result);
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
-                throw Base::Exception("Cut out of base feature failed");
+                throw Base::CADKernelError("Cut out of base feature failed");
 
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(mkCut.Shape());
             if (solRes.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
-            int solidCount = countSolids(result);
+            solRes = refineShapeIfActive(solRes);
+            this->Shape.setValue(getSolid(solRes));
+
+            int solidCount = countSolids(solRes);
             if (solidCount > 1) {
                 return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
             }
-
-            solRes = refineShapeIfActive(solRes);
-            this->Shape.setValue(getSolid(solRes));
+            
         }
         else
             return new App::DocumentObjectExecReturn("Could not revolve the sketch!");

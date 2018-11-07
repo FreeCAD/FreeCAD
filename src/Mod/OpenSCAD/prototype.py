@@ -11,7 +11,7 @@ from OpenSCADFeatures import *
 from OpenSCAD2Dgeom import *
 from OpenSCADUtils import *
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open # to distinguish python built-in open function from the one declared here
 
 def openscadmesh(doc,scadstr,objname):

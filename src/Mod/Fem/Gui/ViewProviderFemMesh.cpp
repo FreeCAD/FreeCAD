@@ -415,7 +415,7 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
 
             str << "Elem" << (edx>>3) << "F"<< (edx&7)+1;
         }
-        // trigger on edges only if edge only mesh, otherwise you only hit edges an never faces....
+        // trigger on edges only if edge only mesh, otherwise you only hit edges and never faces....
         else if (onlyEdges && detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
             int edge = line_detail->getLineIndex() + 1;

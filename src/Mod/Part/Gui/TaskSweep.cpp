@@ -338,7 +338,8 @@ bool SweepWidget::accept()
             .arg(QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
-        if (!doc) throw Base::Exception("Document doesn't exist anymore");
+        if (!doc)
+            throw Base::RuntimeError("Document doesn't exist anymore");
         doc->openCommand("Sweep");
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
@@ -346,7 +347,7 @@ bool SweepWidget::accept()
         if (obj && !obj->isValid()) {
             std::string msg = obj->getStatusString();
             doc->abortCommand();
-            throw Base::Exception(msg);
+            throw Base::RuntimeError(msg);
         }
         doc->commitCommand();
     }

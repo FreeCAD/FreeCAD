@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2016 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2016 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,6 +19,12 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "FreeCAD FEM solver Elmer sifio"
+__author__ = "Markus Hovorka"
+__url__ = "http://www.freecadweb.org"
+
+## \addtogroup FEM
+#  @{
 
 import collections
 import six
@@ -257,7 +262,7 @@ class Section(object):
     def __iter__(self):
         return self._attrs.items()
 
-    def iterkeys(self):
+    def keys(self):
         return self._attrs.keys()
 
     def __contains__(self, item):
@@ -305,7 +310,7 @@ class _Writer(object):
         self._stream.write(_SECTION_DELIM)
 
     def _writeSectionBody(self, s):
-        for key in sorted(s.iterkeys()):  # def iterkeys() from class sifio.Section is called
+        for key in sorted(s.keys()):  # def keys() from class sifio.Section is called
             self._writeAttribute(key, s[key])
 
     def _writeAttribute(self, key, data):
@@ -435,3 +440,5 @@ class _IdManager(object):
         if section not in self._ids:
             self.setId(section)
         return self._ids[section]
+
+##  @}

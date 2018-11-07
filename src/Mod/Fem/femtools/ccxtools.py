@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 
 import sys
 import FreeCAD
+import femtools.femutils as femutils
 from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
@@ -37,7 +38,7 @@ if FreeCAD.GuiUp:
 
 class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
-    known_analysis_types = ["static", "frequency", "thermomech"]
+    known_analysis_types = ["static", "frequency", "thermomech", "check"]
     finished = QtCore.Signal(int)
 
     ## The constructor
@@ -106,6 +107,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     def reset_all(self):
         self.purge_results()
 
+    def _get_several_member(self, obj_type):
+        return femutils.get_several_member(self.analysis, obj_type)
+
     def update_objects(self):
         # [{'Object':materials_linear}, {}, ...]
         # [{'Object':materials_nonlinear}, {}, ...]
@@ -126,55 +130,55 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.mesh = None
         ## @var materials_linear
         #  list of linear materials from the analysis. Updated with update_objects
-        self.materials_linear = []
+        self.materials_linear = self._get_several_member('Fem::Material')
         ## @var materials_nonlinear
         #  list of nonlinear materials from the analysis. Updated with update_objects
-        self.materials_nonlinear = []
+        self.materials_nonlinear = self._get_several_member('Fem::MaterialMechanicalNonlinear')
         ## @var fixed_constraints
         #  list of fixed constraints from the analysis. Updated with update_objects
-        self.fixed_constraints = []
+        self.fixed_constraints = self._get_several_member('Fem::ConstraintFixed')
         ## @var selfweight_constraints
         #  list of selfweight constraints from the analysis. Updated with update_objects
-        self.selfweight_constraints = []
+        self.selfweight_constraints = self._get_several_member('Fem::ConstraintSelfWeight')
         ## @var force_constraints
         #  list of force constraints from the analysis. Updated with update_objects
-        self.force_constraints = []
+        self.force_constraints = self._get_several_member('Fem::ConstraintForce')
         ## @var pressure_constraints
         #  list of pressure constraints from the analysis. Updated with update_objects
-        self.pressure_constraints = []
+        self.pressure_constraints = self._get_several_member('Fem::ConstraintPressure')
         ## @var beam_sections
         # list of beam sections from the analysis. Updated with update_objects
-        self.beam_sections = []
+        self.beam_sections = self._get_several_member('Fem::FemElementGeometry1D')
         ## @var beam_rotations
         # list of beam rotations from the analysis. Updated with update_objects
-        self.beam_rotations = []
+        self.beam_rotations = self._get_several_member('Fem::FemElementRotation1D')
         ## @var fluid_sections
         # list of fluid sections from the analysis. Updated with update_objects
-        self.fluid_sections = []
+        self.fluid_sections = self._get_several_member('Fem::FemElementFluid1D')
         ## @var shell_thicknesses
         # list of shell thicknesses from the analysis. Updated with update_objects
-        self.shell_thicknesses = []
+        self.shell_thicknesses = self._get_several_member('Fem::FemElementGeometry2D')
         ## @var displacement_constraints
         # list of displacements for the analysis. Updated with update_objects
-        self.displacement_constraints = []
+        self.displacement_constraints = self._get_several_member('Fem::ConstraintDisplacement')
         ## @var temperature_constraints
         # list of temperatures for the analysis. Updated with update_objects
-        self.temperature_constraints = []
+        self.temperature_constraints = self._get_several_member('Fem::ConstraintTemperature')
         ## @var heatflux_constraints
         # list of heatflux constraints for the analysis. Updated with update_objects
-        self.heatflux_constraints = []
+        self.heatflux_constraints = self._get_several_member('Fem::ConstraintHeatflux')
         ## @var initialtemperature_constraints
         # list of initial temperatures for the analysis. Updated with update_objects
-        self.initialtemperature_constraints = []
+        self.initialtemperature_constraints = self._get_several_member('Fem::ConstraintInitialTemperature')
         ## @var planerotation_constraints
         #  list of plane rotation constraints from the analysis. Updated with update_objects
-        self.planerotation_constraints = []
+        self.planerotation_constraints = self._get_several_member('Fem::ConstraintPlaneRotation')
         ## @var contact_constraints
         #  list of contact constraints from the analysis. Updated with update_objects
-        self.contact_constraints = []
+        self.contact_constraints = self._get_several_member('Fem::ConstraintContact')
         ## @var transform_constraints
         #  list of transform constraints from the analysis. Updated with update_objects
-        self.transform_constraints = []
+        self.transform_constraints = self._get_several_member('Fem::ConstraintTransform')
 
         found_solver_for_use = False
         for m in self.analysis.Group:
@@ -200,75 +204,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
                     raise Exception(message + '\n')
-            elif m.isDerivedFrom("App::MaterialObjectPython"):
-                material_linear_dict = {}
-                material_linear_dict['Object'] = m
-                self.materials_linear.append(material_linear_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
-                material_nonlinear_dict = {}
-                material_nonlinear_dict['Object'] = m
-                self.materials_nonlinear.append(material_nonlinear_dict)
-            elif m.isDerivedFrom("Fem::ConstraintFixed"):
-                fixed_constraint_dict = {}
-                fixed_constraint_dict['Object'] = m
-                self.fixed_constraints.append(fixed_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::ConstraintSelfWeight":
-                selfweight_dict = {}
-                selfweight_dict['Object'] = m
-                self.selfweight_constraints.append(selfweight_dict)
-            elif m.isDerivedFrom("Fem::ConstraintForce"):
-                force_constraint_dict = {}
-                force_constraint_dict['Object'] = m
-                force_constraint_dict['RefShapeType'] = get_refshape_type(m)
-                self.force_constraints.append(force_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintPressure"):
-                PressureObjectDict = {}
-                PressureObjectDict['Object'] = m
-                self.pressure_constraints.append(PressureObjectDict)
-            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):
-                displacement_constraint_dict = {}
-                displacement_constraint_dict['Object'] = m
-                self.displacement_constraints.append(displacement_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintTemperature"):
-                temperature_constraint_dict = {}
-                temperature_constraint_dict['Object'] = m
-                self.temperature_constraints.append(temperature_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintHeatflux"):
-                heatflux_constraint_dict = {}
-                heatflux_constraint_dict['Object'] = m
-                self.heatflux_constraints.append(heatflux_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintInitialTemperature"):
-                initialtemperature_constraint_dict = {}
-                initialtemperature_constraint_dict['Object'] = m
-                self.initialtemperature_constraints.append(initialtemperature_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintPlaneRotation"):
-                planerotation_constraint_dict = {}
-                planerotation_constraint_dict['Object'] = m
-                self.planerotation_constraints.append(planerotation_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintContact"):
-                contact_constraint_dict = {}
-                contact_constraint_dict['Object'] = m
-                self.contact_constraints.append(contact_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintTransform"):
-                transform_constraint_dict = {}
-                transform_constraint_dict['Object'] = m
-                self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry1D":
-                beam_section_dict = {}
-                beam_section_dict['Object'] = m
-                self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementRotation1D":
-                beam_rotation_dict = {}
-                beam_rotation_dict['Object'] = m
-                self.beam_rotations.append(beam_rotation_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
-                fluid_section_dict = {}
-                fluid_section_dict['Object'] = m
-                self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry2D":
-                shell_thickness_dict = {}
-                shell_thickness_dict['Object'] = m
-                self.shell_thicknesses.append(shell_thickness_dict)
 
     def check_prerequisites(self):
         from FreeCAD import Units
@@ -321,11 +256,15 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 has_no_references = True
         mat_ref_shty = ''
         for m in self.materials_linear:
-            ref_shty = get_refshape_type(m['Object'])
+            ref_shty = femutils.get_refshape_type(m['Object'])
             if not mat_ref_shty:
                 mat_ref_shty = ref_shty
-            if mat_ref_shty and ref_shty and ref_shty != mat_ref_shty:  # mat_ref_shty could be empty in one material, only the not empty ones should have the same shape type
-                message += 'Some material objects do not have the same reference shape type (all material objects must have the same reference shape type, at the moment).\n'
+            if mat_ref_shty and ref_shty and ref_shty != mat_ref_shty:
+                # mat_ref_shty could be empty in one material, only the not empty ones should have the same shape type
+                message += (
+                    'Some material objects do not have the same reference shape type '
+                    '(all material objects must have the same reference shape type, at the moment).\n'
+                )
         for m in self.materials_linear:
             mat_map = m['Object'].Material
             mat_obj = m['Object']
@@ -358,9 +297,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     if has_nonlinear_material is False:
                         has_nonlinear_material = True
                     else:
-                        message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed.\n"
+                        message += (
+                            "At least two nonlinear materials use the same linear base material. "
+                            "Only one nonlinear material for each linear material allowed.\n"
+                        )
         # which analysis needs which constraints
-        # no check in the regard of loads existence (constraint force, pressure, self weight) is done because an analysis without loads at all is an valid analysis too
+        # no check in the regard of loads existence (constraint force, pressure, self weight) is done
+        # because an analysis without loads at all is an valid analysis too
         if self.solver.AnalysisType == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
                 message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
@@ -575,7 +518,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     else:
                         ccx_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
-                    error_message = "FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences tab CalculiX.\n"
+                    error_message = (
+                        "FEM: CalculiX binary ccx not found in standard system binary path. "
+                        "Please install ccx or set path to binary in FEM preferences tab CalculiX.\n"
+                    )
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, error_title, error_message)
                     raise Exception(error_message)
@@ -586,7 +532,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
                 if not ccx_binary:
                     FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetBool("UseStandardCcxLocation", True)
-                    error_message = "FEM: CalculiX binary ccx path not set at all. The use of standard path was activated in FEM preferences tab CalculiX. Please try again!\n"
+                    error_message = (
+                        "FEM: CalculiX binary ccx path not set at all. "
+                        "The use of standard path was activated in FEM preferences tab CalculiX. Please try again!\n"
+                    )
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, error_title, error_message)
                     raise Exception(error_message)
@@ -608,18 +557,27 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             if ccx_binary_sig in str(ccx_stdout):
                 self.ccx_binary_present = True
             else:
-                raise Exception("FEM: wrong ccx binary")  # since we raise an exception the try will fail and the exception later with the error popup will be raised
-                # TODO: I'm still able to break it. If user doesn't give a file but a path without a file or a file which is not a binary no exception at all is raised.
+                raise Exception("FEM: wrong ccx binary")
+                # since we raise an exception the try will fail and the exception later with the error popup will be raised
+                # TODO: I'm still able to break it. If user doesn't give a file but a path without a file or
+                # a file which is not a binary no exception at all is raised.
         except OSError as e:
             FreeCAD.Console.PrintError(str(e))
             if e.errno == 2:
-                error_message = "FEM: CalculiX binary ccx \'{}\' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n".format(ccx_binary)
+                error_message = (
+                    "FEM: CalculiX binary ccx \'{}\' not found. "
+                    "Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n".format(ccx_binary)
+                )
                 if FreeCAD.GuiUp:
                     QtGui.QMessageBox.critical(None, error_title, error_message)
                 raise Exception(error_message)
         except Exception as e:
             FreeCAD.Console.PrintError(str(e))
-            error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
+            error_message = (
+                "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. "
+                'There are some problems when running the ccx binary. '
+                'Check if ccx runs standalone without FreeCAD.\n'.format(ccx_binary, ccx_stdout, ccx_binary_sig)
+            )
             if FreeCAD.GuiUp:
                 QtGui.QMessageBox.critical(None, error_title, error_message)
             raise Exception(error_message)
@@ -685,14 +643,17 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             self.finished.emit(ret_code)
             progress_bar.stop()
             if ret_code or self.ccx_stderr:
-                FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
-                FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
-                FreeCAD.Console.PrintMessage(self.ccx_stderr)
-                FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
-                FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
-                FreeCAD.Console.PrintMessage(self.ccx_stdout)
-                self.has_for_nonpositive_jacobians()
-                FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
+                if ret_code == 201 and self.solver.AnalysisType == 'check':
+                    FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
+                else:
+                    FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
+                    FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
+                    FreeCAD.Console.PrintMessage(self.ccx_stderr)
+                    FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
+                    FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
+                    FreeCAD.Console.PrintMessage(self.ccx_stdout)
+                    self.has_for_nonpositive_jacobians()
+                    FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
             else:
                 FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
         else:
@@ -701,7 +662,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def has_for_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
-            FreeCAD.Console.PrintError('CalculiX returned an error due to nonpositive jacobian elements.\n')
             nonpositive_jacobian_elements = []
             nonpositive_jacobian_elenodes = []
             for line in self.ccx_stdout.splitlines():
@@ -719,14 +679,18 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             nonpositive_jacobian_elenodes = sorted(nonpositive_jacobian_elenodes)
             command_for_nonposjacnodes = 'nonpositive_jacobian_elenodes = ' + str(nonpositive_jacobian_elenodes)
             command_to_highlight = "Gui.ActiveDocument." + self.mesh.Name + ".HighlightedNodes = nonpositive_jacobian_elenodes"
+            # some output for the user
+            FreeCAD.Console.PrintError('\n\nCalculiX returned an error due to nonpositive jacobian elements.\n')
             FreeCAD.Console.PrintMessage('nonpositive_jacobian_elements = {}\n'.format(nonpositive_jacobian_elements))
             FreeCAD.Console.PrintMessage(command_for_nonposjacnodes + '\n')
-            FreeCAD.Console.PrintMessage(command_to_highlight + '\n')
-            FreeCAD.Console.PrintMessage('Gui.ActiveDocument.Extrude_Mesh.HighlightedNodes = []\n\n')  # command to reset the Highlighted Nodes
             if FreeCAD.GuiUp:
                 import FreeCADGui
-                FreeCADGui.doCommand(command_for_nonposjacnodes)
+                FreeCADGui.doCommand(command_for_nonposjacnodes)  # with this the list nonpositive_jacobian_elenodes will be available for further user interaction
+                FreeCAD.Console.PrintMessage('\n')
                 FreeCADGui.doCommand(command_to_highlight)
+            FreeCAD.Console.PrintMessage('\nFollowing some commands to copy which highlight the nonpositive jacobians or to reset the highlighted nodes:\n')
+            FreeCAD.Console.PrintMessage(command_to_highlight + '\n')
+            FreeCAD.Console.PrintMessage('Gui.ActiveDocument.' + self.mesh.Name + '.HighlightedNodes = []\n\n')  # command to reset the Highlighted Nodes
             return True
         else:
             return False
@@ -750,7 +714,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.results_present = True
                     break
             else:
-                FreeCAD.Console.PrintError('FEM: No result object in active Analysis.\n')
+                if self.solver.AnalysisType == 'check':
+                    for m in self.analysis.Group:
+                        if m.isDerivedFrom("Fem::FemMeshObjectPython"):
+                            # we have no result object but a mesh object, this happens in NOANALYSIS mode
+                            break
+                else:
+                    FreeCAD.Console.PrintError('FEM: No result object in active Analysis.\n')
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
 
@@ -771,26 +741,5 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
                             m.EigenmodeFrequency = mf['frequency']
-
-
-# helper
-def get_refshape_type(fem_doc_object):
-    # returns the reference shape type
-    # for force object:
-    # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
-    # for material object:
-    # in GUI defined material_obj could have no RefShape and RefShapes could be different type
-    # we're going to need the RefShapes to be the same type inside one fem_doc_object
-    # TODO: check if all RefShapes inside the object really have the same type
-    import femmesh.meshtools as FemMeshTools
-    if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
-        first_ref_obj = fem_doc_object.References[0]
-        first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
-        st = first_ref_shape.ShapeType
-        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has ' + st + ' reference shapes.\n')
-        return st
-    else:
-        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
-        return ''
 
 ##  @}

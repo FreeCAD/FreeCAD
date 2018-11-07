@@ -68,6 +68,18 @@ public:
     virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
 };
 
+/** The schema class for Civil Engineering in the imperial unit system
+ *  All measurements in ft, ft^2, ft^3, ft/sec.  
+ *  Pressure is in psi.
+ */
+class UnitsSchemaImperialCivil: public UnitsSchema
+{
+public:
+    //virtual void setSchemaUnits(void);
+    //virtual void resetSchemaUnits(void);
+    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+};
+
 
 } // namespace Base
 

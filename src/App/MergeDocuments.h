@@ -24,7 +24,7 @@
 #ifndef APP_MERGEDOCUMENTS_H
 #define APP_MERGEDOCUMENTS_H
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <Base/Persistence.h>
 
 namespace zipios {
@@ -57,7 +57,7 @@ private:
     App::Document* appdoc;
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectExport;
     Connection connectImport;
 };

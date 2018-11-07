@@ -672,7 +672,6 @@ int VectorPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 // In generation script allow to more precisely define which slots
 // of the number protocol should be supported instead of setting all.
 
-#if PY_MAJOR_VERSION < 3
 PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
 {
     if (PyObject_TypeCheck(self, &(VectorPy::Type)) &&
@@ -702,7 +701,6 @@ PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
                  Py_TYPE(self)->tp_name, Py_TYPE(other)->tp_name);
     return 0;
 }
-#endif
 
 PyObject * VectorPy::number_remainder_handler (PyObject* self, PyObject* other)
 {

@@ -390,7 +390,7 @@ void Workbench::addTaskWatcher(const std::vector<Gui::TaskView::TaskWatcher*> &W
 {
     Gui::TaskView::TaskView* taskView = Control().taskPanel();
     if (taskView)
-        taskView->addTaskWatcher(Watcher); 
+        taskView->addTaskWatcher(Watcher);
 }
 
 void Workbench::removeTaskWatcher(void)
@@ -492,8 +492,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     file->setCommand("&File");
     *file << "Std_New" << "Std_Open" << "Separator" << "Std_CloseActiveWindow"
           << "Std_CloseAllWindows" << "Separator" << "Std_Save" << "Std_SaveAs"
-          << "Std_SaveCopy" << "Std_Revert" << "Separator" << "Std_Import" 
-          << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo" 
+          << "Std_SaveCopy" << "Std_Revert" << "Separator" << "Std_Import"
+          << "Std_Export" << "Std_MergeProjects" << "Std_ProjectInfo"
           << "Separator" << "Std_Print" << "Std_PrintPreview" << "Std_PrintPdf"
           << "Separator" << "Std_RecentFiles" << "Separator" << "Std_Quit";
 
@@ -519,7 +519,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     MenuItem* view3d = new MenuItem;
     view3d->setCommand("&Stereo");
     *view3d << "Std_ViewIvStereoRedGreen" << "Std_ViewIvStereoQuadBuff" 
-            << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns" 
+            << "Std_ViewIvStereoInterleavedRows" << "Std_ViewIvStereoInterleavedColumns"
             << "Std_ViewIvStereoOff" << "Separator" << "Std_ViewIvIssueCamPos";
 
     // zoom
@@ -539,7 +539,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // View
     MenuItem* view = new MenuItem( menuBar );
     view->setCommand("&View");
-    *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Std_MainFullscreen" << "Separator" 
+    *view << "Std_ViewCreate" << "Std_OrthographicCamera" << "Std_PerspectiveCamera" << "Std_MainFullscreen" << "Separator"
           << stdviews << "Std_FreezeViews" << "Std_DrawStyle" << "Separator" << view3d << zoom
           << "Std_ViewDockUndockFullscreen" << "Std_TreeViewDocument" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" 
@@ -548,15 +548,15 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #endif 
           << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
-          << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
-          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
+          << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
+          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
           << "Std_ViewStatusBar";
 
     // Tools
     MenuItem* tool = new MenuItem( menuBar );
     tool->setCommand("&Tools");
     *tool << "Std_DlgParameter" << "Separator"
-          << "Std_ViewScreenShot" << "Std_SceneInspector" 
+          << "Std_ViewScreenShot" << "Std_SceneInspector"
           << "Std_ExportGraphviz" << "Std_ProjectUtil" << "Separator"
           << "Std_MeasureDistance" << "Separator" 
           << "Std_DemoMode" << "Std_UnitsCalculator" << "Separator" << "Std_DlgCustomize";
@@ -644,7 +644,7 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     // Special Ops
     ToolBarItem* macro = new ToolBarItem( root );
     macro->setCommand("Special Ops");
-    *macro << "Std_DlgParameter" << "Std_DlgPreferences" << "Std_DlgMacroRecord" << "Std_MacroStopRecord" 
+    *macro << "Std_DlgParameter" << "Std_DlgPreferences" << "Std_DlgMacroRecord" << "Std_MacroStopRecord"
            << "Std_DlgMacroExecute" << "Std_DlgCustomize";
 
     return root;
@@ -770,7 +770,7 @@ MenuItem* NoneWorkbench::setupMenuBar() const
     // Help
     MenuItem* help = new MenuItem( menuBar );
     help->setCommand("&Help");
-    *help << "Std_OnlineHelp" << "Std_About" << "Std_AboutQt";
+    *help << "Std_OnlineHelp" << "Std_About";
 
     return menuBar;
 }

@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +19,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Fluxsolver"
+__title__ = "FreeCAD FEM solver Elmer equation object Fluxsolver"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import femtools.femutils as FemUtils
 from ... import equationbase
@@ -75,3 +75,5 @@ class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
 
 class ViewProxy(linear.ViewProxy, equationbase.FluxsolverViewProxy):
     pass
+
+##  @}

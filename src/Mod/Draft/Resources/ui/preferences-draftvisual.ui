@@ -353,6 +353,46 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+          <property name="toolTip">
+           <string>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</string>
+          </property>
+          <property name="text">
+           <string>Preserve colors of faces during downgrade/upgrade</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>preserveFaceColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+          <property name="toolTip">
+           <string>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</string>
+          </property>
+          <property name="text">
+           <string>Preserve names of faces during downgrade/upgrade</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>preserveFaceNames</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>

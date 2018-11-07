@@ -232,7 +232,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",true));
+            (*it)->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
     }
     else if (strcmp(Reason,"Gradient") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)

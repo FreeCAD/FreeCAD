@@ -72,7 +72,6 @@ public:
     
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
-    void onRelabel(Gui::Document *pDoc);
 
     void print();
     void print(QPrinter* printer);
@@ -98,11 +97,16 @@ public:
 
     void redrawAllViews(void);
     void redraw1View(TechDraw::DrawView* dv);
+    
+    void setTabText(std::string t);
+
 
 public Q_SLOTS:
-    void setRenderer(QAction *action);
     void viewAll();
     void saveSVG(void);
+    void toggleFrame(void);
+    void toggleKeepUpdated(void);
+//    void testAction(void);
     void sceneSelectionChanged();
 
 protected:
@@ -121,7 +125,7 @@ protected:
     
     void onDeleteObject(const App::DocumentObject& obj);
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectDeletedObject;
 
     bool compareSelections(std::vector<Gui::SelectionObject> treeSel,QList<QGraphicsItem*> sceneSel);
@@ -130,11 +134,10 @@ protected:
 
 
 private:
-    QAction *m_nativeAction;
-    QAction *m_glAction;
+    QAction *m_toggleFrameAction;
+    QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
-    QAction *m_imageAction;
-    QAction *m_highQualityAntialiasingAction;
+//    QAction* m_testAction;
 
     std::string m_objectName;
     std::string m_documentName;

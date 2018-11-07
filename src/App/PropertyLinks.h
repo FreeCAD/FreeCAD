@@ -174,22 +174,22 @@ class AppExport PropertyLinkList : public PropertyLists, public ScopedLink
 
 public:
     /**
-    * A constructor.
-    * A more elaborate description of the constructor.
-    */
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
     PropertyLinkList();
 
     /**
-    * A destructor.
-    * A more elaborate description of the destructor.
-    */
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
     virtual ~PropertyLinkList();
 
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
 
     /** Sets the property
-    */
+     */
     void setValue(DocumentObject*);
     void setValues(const std::vector<DocumentObject*>&);
 
@@ -248,7 +248,7 @@ public:
  *  are stored as names, which can be resolved by the 
  *  ComplexGeoDataType interface to concrete sub objects.
  */
-class AppExport PropertyLinkSub: public Property, public ScopedLink
+class AppExport PropertyLinkSub : public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 
@@ -326,7 +326,7 @@ public:
     PropertyLinkSubGlobal() {_pcScope = LinkScope::Global;};
 };
 
-class AppExport PropertyLinkSubList: public PropertyLists, public ScopedLink
+class AppExport PropertyLinkSubList : public PropertyLists, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 

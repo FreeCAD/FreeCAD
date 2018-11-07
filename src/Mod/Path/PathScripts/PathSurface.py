@@ -76,6 +76,7 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.addProperty("App::PropertyPercent", "StepOver", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Step over percentage of the drop cutter path"))
         obj.addProperty("App::PropertyDistance", "DepthOffset", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Z-axis offset from the surface of the object"))
         obj.addProperty("App::PropertyFloatConstraint", "SampleInterval", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "The Sample Interval. Small values cause long wait times"))
+        obj.addProperty("App::PropertyBool", "Optimize", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable optimization which removes unnecessary points from G-Code output"))
         obj.BoundBox = ['Stock', 'BaseBoundBox']
         obj.DropCutterDir = ['X', 'Y']
         obj.Algorithm = ['OCL Dropcutter', 'OCL Waterline']
@@ -179,9 +180,22 @@ class ObjectSurface(PathOp.ObjectOp):
                 pp.append(Path.Command('G0', {"Z": obj.SafeHeight.Value, 'F': self.vertRapid}))
                 pp.append(Path.Command('G0', {'X': p.x, "Y": p.y, 'F': self.horizRapid}))
                 pp.append(Path.Command('G1', {"Z": p.z, 'F': self.vertFeed}))
-
-                for p in loop[1:]:
-                    pp.append(Path.Command('G1', {'X': p.x, "Y": p.y, "Z": p.z, 'F': self.horizFeed}))
+                prev = ocl.Point(float("inf"), float("inf"), float("inf"))
+                next = ocl.Point(float("inf"), float("inf"), float("inf"))
+                optimize = obj.Optimize
+                for i in range(1, len(loop)):
+                    p = loop[i]
+                    if i < len(loop) - 1:
+                        next.x = loop[i + 1].x
+                        next.y = loop[i + 1].y
+                        next.z = loop[i + 1].z
+                    else:
+                        optimize = False
+                    if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(next.x, next.y, next.z), FreeCAD.Vector(p.x, p.y, p.z)):
+                        pp.append(Path.Command('G1', {'X': p.x, "Y": p.y, "Z": p.z, 'F': self.horizFeed}))
+                    prev.x = p.x
+                    prev.y = p.y
+                    prev.z = p.z
                     # zheight = p.z
                 p = loop[0]
                 pp.append(Path.Command('G1', {'X': p.x, "Y": p.y, "Z": p.z, 'F': self.horizFeed}))
@@ -194,7 +208,7 @@ class ObjectSurface(PathOp.ObjectOp):
             return pp
 
         depthparams = PathUtils.depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value,
-                                   obj.StartDepth.Value, obj.StepDown, obj.FinishDepth.Value, obj.FinalDepth.Value)
+                                             obj.StartDepth.Value, obj.StepDown, 0.0, obj.FinalDepth.Value)
 
         t_before = time.time()
         zheights = [i for i in depthparams]
@@ -230,6 +244,24 @@ class ObjectSurface(PathOp.ObjectOp):
             n = n + 1
         print("(" + str(calctime) + ")")
         return output
+
+    def isPointOnLine(self, lineA, lineB, pointP):
+        tolerance = 1e-6
+        vectorAB = lineB - lineA
+        vectorAC = pointP - lineA
+        crossproduct = vectorAB.cross(vectorAC)
+        dotproduct = vectorAB.dot(vectorAC)
+
+        if crossproduct.Length > tolerance:
+            return False
+
+        if dotproduct < 0:
+            return False
+
+        if dotproduct > vectorAB.Length * vectorAB.Length:
+            return False
+
+        return True
 
     def _dropcutter(self, obj, s, bb):
         import ocl
@@ -301,10 +333,24 @@ class ObjectSurface(PathOp.ObjectOp):
         output.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
         output.append(Path.Command('G0', {'X': clp[0].x, "Y": clp[0].y, 'F': self.horizRapid}))
         output.append(Path.Command('G1', {'Z': clp[0].z, 'F': self.vertFeed}))
+        prev = ocl.Point(float("inf"), float("inf"), float("inf"))
+        next = ocl.Point(float("inf"), float("inf"), float("inf"))
+        optimize = obj.Optimize
+        for i in range(0, len(clp)):
+            c = clp[i]
+            if i < len(clp) - 1:
+                next.x = clp[i + 1].x
+                next.y = clp[i + 1].y
+                next.z = clp[i + 1].z
+            else:
+                optimize = False
 
-        for c in clp:
-            output.append(Path.Command('G1', {'X': c.x, "Y": c.y, "Z": c.z, 'F': self.horizFeed}))
-
+            if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(next.x, next.y, next.z), FreeCAD.Vector(c.x, c.y, c.z)):
+                output.append(Path.Command('G1', {'X': c.x, "Y": c.y, "Z": c.z, 'F': self.horizFeed}))
+            prev.x = c.x
+            prev.y = c.y
+            prev.z = c.z
+        print("points after optimization: " + str(len(output)))
         return output
 
     def pocketInvertExtraOffset(self):
@@ -315,12 +361,14 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # obj.ZigZagAngle = 45.0
         obj.StepOver = 50
+        obj.Optimize = True
         # need to overwrite the default depth calculations for facing
         job = PathUtils.findParentJob(obj)
         if job and job.Stock:
             d = PathUtils.guessDepths(job.Stock.Shape, None)
             obj.OpStartDepth = d.start_depth
             obj.OpFinalDepth = d.final_depth
+
 
 def SetupProperties():
     setup = []
@@ -331,7 +379,8 @@ def SetupProperties():
     setup.append("DepthOffset")
     return setup
 
-def Create(name, obj = None):
+
+def Create(name, obj=None):
     '''Create(name) ... Creates and returns a Surface operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)

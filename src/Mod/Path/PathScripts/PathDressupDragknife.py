@@ -457,7 +457,8 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        PathUtils.addToJob(arg1.Object.Base)
+        job = PathUtils.findParentJob(arg1.Object.Base)
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
         arg1.Object.Base = None
         return True
 
@@ -499,10 +500,12 @@ class CommandDressupDragknife:
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","DragknifeDressup")')
         FreeCADGui.doCommand('PathScripts.PathDressupDragknife.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
+        FreeCADGui.doCommand('obj.Base = base')
+        FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
         FreeCADGui.doCommand('PathScripts.PathDressupDragknife.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
+        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
         FreeCADGui.doCommand('obj.filterangle = 20')
         FreeCADGui.doCommand('obj.offset = 2')
         FreeCADGui.doCommand('obj.pivotheight = 4')

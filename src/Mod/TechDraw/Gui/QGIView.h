@@ -47,6 +47,7 @@ class QGCustomLabel;
 class QGCustomText;
 class QGICaption;
 class MDIViewPage;
+class QGIViewClip;
 
 class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
 {
@@ -88,6 +89,8 @@ public:
     void isInnerView(bool state) { m_innerView = state; }
     double getYInClip(double y);
     /** @} */
+    QGIViewClip* getClipGroup(void);
+
 
     void alignTo(QGraphicsItem*, const QString &alignment);
     void setLocked(bool /*state*/ = true) { locked = true; }

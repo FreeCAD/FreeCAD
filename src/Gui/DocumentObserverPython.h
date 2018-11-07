@@ -26,7 +26,7 @@
 
 #include <CXX/Objects.hxx>
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 namespace Gui
@@ -75,7 +75,7 @@ private:
     Py::Object inst;
     static std::vector<DocumentObserverPython*> _instances;
 
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
     Connection connectApplicationRelabelDocument;

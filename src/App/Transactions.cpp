@@ -110,6 +110,11 @@ void Transaction::Restore(Base::XMLReader &/*reader*/)
     assert(0);
 }
 
+bool Transaction::isEmpty() const
+{
+    return _Objects.empty();
+}
+
 int Transaction::getPos(void) const
 {
     return iPos;
@@ -353,12 +358,14 @@ void TransactionDocumentObject::applyDel(Document &Doc, TransactionalObject *pcO
     if (status == Del) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
 
+#ifndef USE_OLD_DAG
         //Make sure the backlinks of all linked objects are updated. As the links of the removed
         //object are never set to [] they also do not remove the backlink. But as they are 
         //not in the document anymore we need to remove them anyway to ensure a correct graph
         auto list = obj->getOutList();
         for (auto link : list)
             link->_removeBackLink(obj);
+#endif
 
         // simply filling in the saved object
         Doc._removeObject(obj);
@@ -370,11 +377,13 @@ void TransactionDocumentObject::applyNew(Document &Doc, TransactionalObject *pcO
     if (status == New) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
         Doc._addObject(obj, _NameInDocument.c_str());
-        
+
+#ifndef USE_OLD_DAG
         //make sure the backlinks of all linked objects are updated
         auto list = obj->getOutList();
         for (auto link : list)
             link->_addBackLink(obj);
+#endif
     }
 }
 

@@ -30,8 +30,46 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <QString>
+#include <QObject>
+
+#if (QT_VERSION < 0x050300)
+class QSignalBlocker
+{
+public:
+    QSignalBlocker(QObject *object)
+      : object(object)
+      , blocked(object && object->blockSignals(true))
+      , inhibited(false)
+    {
+    }
+    ~QSignalBlocker()
+    {
+        if (object && !inhibited)
+            object->blockSignals(blocked);
+    }
+    void reblock()
+    {
+        if (object)
+            object->blockSignals(true);
+        inhibited = false;
+    }
+    void unblock()
+    {
+        if (object)
+            object->blockSignals(blocked);
+        inhibited = true;
+    }
+
+private:
+    QObject *object;
+    bool blocked;
+    bool inhibited;
+};
+#endif
+
+// ----------------------------------------------------------------------------
 
 namespace Base
 {
@@ -153,15 +191,14 @@ template<typename Status, class Object>
 class ObjectStatusLocker
 {
 public:
-    ObjectStatusLocker(Status s, Object* o, bool v = true) : status(s), obj(o), new_value(v)
-    { old_value = obj->testStatus(status); obj->setStatus(status, new_value); }
+    ObjectStatusLocker(Status s, Object* o, bool value = true) : status(s), obj(o)
+    { old_value = obj->testStatus(status); obj->setStatus(status, value); }
     ~ObjectStatusLocker()
     { obj->setStatus(status, old_value); }
 private:
     Status status;
     Object* obj;
     bool old_value;
-    bool new_value;
 };
 
 // ----------------------------------------------------------------------------
@@ -169,30 +206,26 @@ private:
 class StateLocker
 {
 public:
-    StateLocker(bool& flag, bool value = true) : lock(flag), new_value(value)
+    StateLocker(bool& flag, bool value = true) : lock(flag)
     { old_value = lock; lock = value; }
     ~StateLocker()
     { lock = old_value; }
 private:
     bool& lock;
     bool old_value;
-    bool new_value;
 };
 
 // ----------------------------------------------------------------------------
 
 class ConnectionBlocker {
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
-    bool b;
-    Connection& c;
+    typedef boost::signals2::connection Connection;
+    typedef boost::signals2::shared_connection_block ConnectionBlock;
+    ConnectionBlock blocker;
 
 public:
-    ConnectionBlocker(Connection& c) : c(c) {
-        b = c.blocked();
-        c.block(true);
+    ConnectionBlocker(Connection& c) : blocker(c) {
     }
     ~ConnectionBlocker() {
-        c.block(b);
     }
 };
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>216</width>
+    <width>267</width>
     <height>327</height>
    </rect>
   </property>
@@ -16,6 +16,12 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QComboBox" name="comboBox_MaterialsInDir">
+     <property name="maximumSize">
+      <size>
+       <width>250</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string>Choose a preset card</string>
      </property>
@@ -28,6 +34,12 @@
    </item>
    <item>
     <widget class="QComboBox" name="comboBox_FromExisting">
+     <property name="maximumSize">
+      <size>
+       <width>250</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string>Copy values from an existing material in the document</string>
      </property>
@@ -235,6 +247,12 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboFather">
+       <property name="maximumSize">
+        <size>
+         <width>130</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="editable">
         <bool>true</bool>
        </property>

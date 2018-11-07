@@ -29,7 +29,7 @@
 #include <string>
 #include <bitset>
 #include <QIcon>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 #include <App/TransactionalObject.h>
 #include <Base/Vector3D.h>
@@ -195,16 +195,18 @@ public:
     virtual bool canDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
+    /** Replace an object to the view provider by drag and drop */
+    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
     //@}
 
     /** @name Signals of the view provider */
     //@{
     /// signal on icon change
-    boost::signal<void ()> signalChangeIcon;
+    boost::signals2::signal<void ()> signalChangeIcon;
     /// signal on tooltip change
-    boost::signal<void (const QString&)> signalChangeToolTip;
+    boost::signals2::signal<void (const QString&)> signalChangeToolTip;
     /// signal on status tip change
-    boost::signal<void (const QString&)> signalChangeStatusTip;
+    boost::signals2::signal<void (const QString&)> signalChangeStatusTip;
     //@}
 
     /** update the content of the ViewProvider

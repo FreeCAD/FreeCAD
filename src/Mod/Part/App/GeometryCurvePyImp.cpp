@@ -478,22 +478,19 @@ PyObject* GeometryCurvePy::centerOfCurvature(PyObject *args)
 
 PyObject* GeometryCurvePy::parameter(PyObject *args)
 {
-    Handle(Geom_Geometry) g = getGeometryPtr()->handle();
-    Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(g);
     try {
-        if (!c.IsNull()) {
-            PyObject *p;
-            if (!PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &p))
-                return 0;
-            Base::Vector3d v = Py::Vector(p, false).toVector();
-            gp_Pnt pnt(v.x,v.y,v.z);
-            GeomAPI_ProjectPointOnCurve ppc(pnt, c);
-            double val = ppc.LowerDistanceParameter();
-            return Py::new_reference_to(Py::Float(val));
-        }
+        PyObject *p;
+        if (!PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &p))
+            return 0;
+        Base::Vector3d v = Py::Vector(p, false).toVector();
+        
+        double u;
+        
+        if(static_cast<Part::GeomCurve *>(getGeometryPtr())->closestParameter(v,u))
+            return Py::new_reference_to(Py::Float(u));
     }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+    catch (Base::RuntimeError& e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
         return 0;
     }
 

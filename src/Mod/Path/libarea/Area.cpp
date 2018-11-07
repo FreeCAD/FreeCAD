@@ -47,6 +47,11 @@ void CArea::append(const CCurve& curve)
 	m_curves.push_back(curve);
 }
 
+void CArea::move(CCurve&& curve)
+{
+	m_curves.push_back(std::move(curve));
+}
+
 void CArea::FitArcs(){
 	for(std::list<CCurve>::iterator It = m_curves.begin(); It != m_curves.end(); It++)
 	{

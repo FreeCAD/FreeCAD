@@ -291,6 +291,7 @@ short DrawViewPart::mustExecute() const
                     ScaleType.isTouched() ||
                     Perspective.isTouched() ||
                     Focus.isTouched() ||
+                    Rotation.isTouched() ||
                     SmoothVisible.isTouched() ||
                     SeamVisible.isTouched() ||
                     IsoVisible.isTouched() ||
@@ -335,7 +336,9 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
         go->projectShape(shape,
             viewAxis);
     }
-    
+
+    auto start = chrono::high_resolution_clock::now();
+
     go->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                         true);
     go->extractGeometry(TechDrawGeometry::ecOUTLINE,
@@ -370,6 +373,11 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
         go->extractGeometry(TechDrawGeometry::ecUVISO,
                             false);
     }
+    auto end   = chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs in GO::extractGeometry\n",getNameInDocument(),diffOut);
+
     bbox = go->calcBoundingBox();
     return go;
 }

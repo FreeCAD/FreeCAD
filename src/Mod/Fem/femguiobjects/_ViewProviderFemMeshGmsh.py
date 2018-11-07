@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemMeshGmsh"
+__title__ = "FreeCAD FEM mesh gmsh ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ViewProviderFemMeshGmsh
 #  \ingroup FEM
+#  \brief FreeCAD FEM _ViewProviderFemMeshGmsh
 
 import FreeCAD
 import FreeCADGui
@@ -300,7 +301,11 @@ class _TaskPanelFemMeshGmsh:
         if self.mesh_obj.MeshRegionList:
             if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):  # other part obj might not have a Proxy, thus an exception would be raised
                 if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
-                    error_message = "The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. Gmsh could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                    error_message = (
+                        'The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. '
+                        'Gmsh could return unexpected meshes in such circumstances. '
+                        'It is strongly recommended to extract the shape to mesh from the Compound and use this one.'
+                    )
                     QtGui.QMessageBox.critical(None, "Shape to mesh is a BooleanFragmentsCompound and mesh regions are defined", error_message)
         self.Start = time.time()
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))

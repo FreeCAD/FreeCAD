@@ -1699,8 +1699,8 @@ MeshObject* MeshObject::meshFromSegment(const std::vector<unsigned long>& indice
     return new MeshObject(kernel, _Mtrx);
 }
 
-std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::GeometryType type,
-                                                     float dev, unsigned long minFacets) const
+std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type,
+                                                   float dev, unsigned long minFacets) const
 {
     std::vector<Segment> segm;
     if (this->_kernel.CountFacets() == 0)
@@ -1710,12 +1710,17 @@ std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::GeometryType ty
     std::unique_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
     switch (type) {
     case PLANE:
-        surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
-        break;
-    // todo!
+        //surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
+        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::PlaneSurfaceFit,
+                   this->_kernel, minFacets, dev));
+    break;
     case CYLINDER:
+        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::CylinderSurfaceFit,
+                   this->_kernel, minFacets, dev));
         break;
     case SPHERE:
+        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::SphereSurfaceFit,
+                   this->_kernel, minFacets, dev));
         break;
     default:
         break;

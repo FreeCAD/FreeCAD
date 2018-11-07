@@ -27,84 +27,68 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
-          <property name="text">
-           <string>Auto-join walls</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>autoJoinWalls</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+        <property name="text">
+         <string>Auto-join walls</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>autoJoinWalls</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
-          <property name="toolTip">
-           <string>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</string>
-          </property>
-          <property name="text">
-           <string>Join walls base sketches when possible</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>joinWallSketches</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_8">
+        <property name="toolTip">
+         <string>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</string>
+        </property>
+        <property name="text">
+         <string>Join walls base sketches when possible</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>joinWallSketches</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox">
-          <property name="toolTip">
-           <string>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</string>
-          </property>
-          <property name="text">
-           <string>Remove external geometry of base sketches when needed</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>archRemoveExternal</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</string>
+        </property>
+        <property name="text">
+         <string>Remove external geometry of base sketches when needed</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>archRemoveExternal</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_7">
-          <property name="toolTip">
-           <string>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</string>
-          </property>
-          <property name="text">
-           <string>Apply Draft construction style to subcomponents</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>applyconstructionStyle</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="checkBox_7">
+        <property name="toolTip">
+         <string>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</string>
+        </property>
+        <property name="text">
+         <string>Apply Draft construction style to subcomponents</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>applyconstructionStyle</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_14">
@@ -197,6 +181,22 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_4">
+        <property name="toolTip">
+         <string>By default, new objects will have their &quot;Move with host&quot; property set to False, which means they won't move when their host object is moved.</string>
+        </property>
+        <property name="text">
+         <string>Set &quot;Move with host&quot; property to True by default</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MoveWithHost</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

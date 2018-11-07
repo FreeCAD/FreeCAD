@@ -34,4 +34,4 @@ OpenSCAD_rc.py
 /\.idea/
 .tags
 tags
-.vscode/settings.json
+/\.vscode/

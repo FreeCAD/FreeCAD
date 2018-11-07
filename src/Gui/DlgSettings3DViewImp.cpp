@@ -94,6 +94,7 @@ void DlgSettings3DViewImp::saveSettings()
 
     checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
+    checkBoxDisableTilt->onSave();
     spinBoxZoomStep->onSave();
     checkBoxDragAtCursor->onSave();
     CheckBox_CornerCoordSystem->onSave();
@@ -113,6 +114,7 @@ void DlgSettings3DViewImp::loadSettings()
 {
     checkBoxZoomAtCursor->onRestore();
     checkBoxInvertZoom->onRestore();
+    checkBoxDisableTilt->onRestore();
     spinBoxZoomStep->onRestore();
     checkBoxDragAtCursor->onRestore();
     CheckBox_CornerCoordSystem->onRestore();

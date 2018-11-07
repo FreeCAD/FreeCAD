@@ -111,8 +111,8 @@ void CmdRaytracingWriteCamera::activated(int)
         SoDB::read(&in,rootNode);
 
         if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId()))
-            throw Base::Exception("CmdRaytracingWriteCamera::activated(): Could not read "
-                                  "camera information from ASCII stream....\n");
+            throw Base::FileException("CmdRaytracingWriteCamera::activated(): Could not read "
+                                      "camera information from ASCII stream....\n");
 
         // root-node returned from SoDB::readAll() has initial zero
         // ref-count, so reference it before we start using it to
@@ -396,7 +396,7 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
     addTemplates(path);
 
     path = App::Application::getUserAppDataDir();
-    path += "Mod/Raytracing/Templates/";
+    path += "data/Mod/Raytracing/Templates/";
     addTemplates(path);
 
     path = App::Application::getUserAppDataDir();

@@ -89,37 +89,37 @@ public:
     /** @name Signals of the Application */
     //@{
     /// signal on new Document
-    boost::signal<void (const Gui::Document&)> signalNewDocument;
+    boost::signals2::signal<void (const Gui::Document&)> signalNewDocument;
     /// signal on deleted Document
-    boost::signal<void (const Gui::Document&)> signalDeleteDocument;
+    boost::signals2::signal<void (const Gui::Document&)> signalDeleteDocument;
     /// signal on relabeling Document
-    boost::signal<void (const Gui::Document&)> signalRelabelDocument;
+    boost::signals2::signal<void (const Gui::Document&)> signalRelabelDocument;
     /// signal on renaming Document
-    boost::signal<void (const Gui::Document&)> signalRenameDocument;
+    boost::signals2::signal<void (const Gui::Document&)> signalRenameDocument;
     /// signal on activating Document
-    boost::signal<void (const Gui::Document&)> signalActiveDocument;
+    boost::signals2::signal<void (const Gui::Document&)> signalActiveDocument;
     /// signal on new Object
-    boost::signal<void (const Gui::ViewProvider&)> signalNewObject;
+    boost::signals2::signal<void (const Gui::ViewProvider&)> signalNewObject;
     /// signal on deleted Object
-    boost::signal<void (const Gui::ViewProvider&)> signalDeletedObject;
+    boost::signals2::signal<void (const Gui::ViewProvider&)> signalDeletedObject;
     /// signal on changed object property
-    boost::signal<void (const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
+    boost::signals2::signal<void (const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
     /// signal on renamed Object
-    boost::signal<void (const Gui::ViewProvider&)> signalRelabelObject;
+    boost::signals2::signal<void (const Gui::ViewProvider&)> signalRelabelObject;
     /// signal on activated Object
-    boost::signal<void (const Gui::ViewProvider&)> signalActivatedObject;
+    boost::signals2::signal<void (const Gui::ViewProvider&)> signalActivatedObject;
     /// signal on activated workbench
-    boost::signal<void (const char*)> signalActivateWorkbench;
+    boost::signals2::signal<void (const char*)> signalActivateWorkbench;
     /// signal on added workbench
-    boost::signal<void (const char*)> signalAddWorkbench;
+    boost::signals2::signal<void (const char*)> signalAddWorkbench;
     /// signal on removed workbench
-    boost::signal<void (const char*)> signalRemoveWorkbench;
+    boost::signals2::signal<void (const char*)> signalRemoveWorkbench;
     /// signal on activating view
-    boost::signal<void (const Gui::MDIView*)> signalActivateView;
+    boost::signals2::signal<void (const Gui::MDIView*)> signalActivateView;
     /// signal on entering in edit mode
-    boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
+    boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
-    boost::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
     //@}
 
     /** @name methods for Document handling */

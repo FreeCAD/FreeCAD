@@ -6,9 +6,10 @@
 # Some plugins go in the Mod folder instead of lib. Deal with those here:
 %global mod_plugins Mod/PartDesign
 %define name freecad
+%define github_name FreeCAD
 %define branch master
 
-Name:       	%{name}
+Name:           %{name}
 Epoch:          1
 Version:    	0.18_pre
 Release:        {{{ git_commits_no }}}
@@ -17,11 +18,7 @@ Group:          Applications/Engineering
 
 License:        GPLv2+
 URL:            http://sourceforge.net/apps/mediawiki/free-cad/
-Source0: 	https://github.com/FreeCAD/FreeCAD/archive/%{branch}.tar.gz
-Source101: 	https://raw.github.com/FreeCAD/FreeCAD/%{branch}/package/fedora/%{name}.desktop
-Source103:      https://raw.github.com/FreeCAD/FreeCAD/%{branch}/package/fedora/%{name}.appdata.xml
-Source104:      https://raw.github.com/FreeCAD/FreeCAD/%{branch}/package/fedora/%{name}.sharedmimeinfo
-
+Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.gz
 
 # Utilities
 # Development Libraries
@@ -54,11 +51,18 @@ BuildRequires:  libspnav
 BuildRequires:  libspnav-devel
 BuildRequires:  Inventor-devel
 BuildRequires:  mesa-libGLU-devel
+%if 0%{?fedora} > 28
+BuildRequires:  mesa-libEGL-devel
+%endif
 BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  pyside-tools
 BuildRequires:  python
+%if 0%{?fedora} > 28
+BuildRequires:  python3-matplotlib
+%else
 BuildRequires:  python-matplotlib
+%endif
 BuildRequires:  python-pivy
 BuildRequires:  python-pyside
 BuildRequires:  python-pyside-devel
@@ -154,6 +158,9 @@ rm -rf build && mkdir build && cd build
        -DMEDFILE_INCLUDE_DIRS=%{_includedir}/med/ \
        ../
 
+sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' src/Build/Version.h
+sed -i 's,FCRepositoryURL \"Unknown\",FCRepositoryURL \"git://github.com/FreeCAD/FreeCAD.git master\",' src/Build/Version.h
+
 make %{?_smp_mflags}
 
 %install
@@ -167,24 +174,24 @@ ln -s ../%{_lib}/%{name}/bin/FreeCAD .
 ln -s ../%{_lib}/%{name}/bin/FreeCADCmd .
 popd
 
-# Install desktop file
-desktop-file-install                                   \
-    --dir=%{buildroot}%{_datadir}/applications         \
-    %{SOURCE101}
-sed -i 's,@lib@,%{_lib},g' %{buildroot}%{_datadir}/applications/%{name}.desktop
+mkdir %{buildroot}%{_datadir}/appdata/
+mv %{buildroot}%{_libdir}/%{name}/share/metainfo/* %{buildroot}%{_datadir}/appdata/
 
-# Install desktop icon
-install -pD -m 0644 ../src/Gui/Icons/%{name}.svg \
-    %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
+mkdir %{buildroot}%{_datadir}/applications/
+mv %{buildroot}%{_libdir}/%{name}/share/applications/* %{buildroot}%{_datadir}/applications/
 
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/
+mv %{buildroot}%{_libdir}/%{name}/share/icons/hicolor/scalable/apps/* %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/
 
-# Install MimeType file
-mkdir -p %{buildroot}%{_datadir}/mime/packages
-install -pm 0644 %{SOURCE104} %{buildroot}%{_datadir}/mime/packages/%{name}.xml
+mkdir -p %{buildroot}%{_datadir}/mime/packages/
+mv %{buildroot}%{_libdir}/%{name}/share/mime/packages/* %{buildroot}%{_datadir}/mime/packages/
 
-# Install appdata file
-mkdir -p %{buildroot}%{_datadir}/appdata
-install -pm 0644 %{SOURCE103} %{buildroot}%{_datadir}/appdata/
+pushd %{buildroot}%{_libdir}/%{name}/share/
+rmdir metainfo/
+rmdir applications/
+rmdir -p mime/packages/
+rmdir -p icons/hicolor/scalable/apps/
+popd
 
 # Bug maintainers to keep %%{plugins} macro up to date.
 #
@@ -210,8 +217,6 @@ for p in %{plugins}; do
     fi
 done
 
-
-
 %check
 %{?fedora:appstream-util validate-relax --nonet \
     %{buildroot}/%{_datadir}/appdata/*.appdata.xml}
@@ -231,7 +236,7 @@ fi
 /usr/bin/update-mime-database %{_datadir}/mime &> /dev/null || :
 
 %posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor/scalable/apps &>/dev/null || :
 
 
 %files
@@ -240,15 +245,15 @@ fi
 %exclude %{_docdir}/%{name}/%{name}.*
 %exclude %{_docdir}/%{name}/ThirdPartyLibraries.html
 %{_bindir}/*
-%{_datadir}/appdata/*.appdata.xml
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
-%{_datadir}/mime/packages/%{name}.xml
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/bin/
 %{_libdir}/%{name}/lib/
 %{_libdir}/%{name}/Mod/
 %{_libdir}/%{name}/Ext/
+%{_datadir}/applications/*
+%{_datadir}/icons/hicolor/scalable/apps/*
+%{_datadir}/appdata/*
+%{_datadir}/mime/packages/*
 
 %files data
 %{_datadir}/%{name}/

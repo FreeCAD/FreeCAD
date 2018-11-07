@@ -34,7 +34,7 @@ import FreeCAD
 import os
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -59,7 +59,7 @@ def insert(filename, docname):
     importFrd(filename)
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def importFrd(filename, analysis=None, result_name_prefix=None):
     from . import importToolsFem
     import ObjectsFem
@@ -86,26 +86,35 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
         span = max(x_span, y_span, z_span)
 
         number_of_increments = len(m['Results'])
-        for result_set in m['Results']:
-            if 'number' in result_set:
-                eigenmode_number = result_set['number']
-            else:
-                eigenmode_number = 0
-            step_time = result_set['time']
-            step_time = round(step_time, 2)
-            if eigenmode_number > 0:
-                results_name = result_name_prefix + 'mode_' + str(eigenmode_number) + '_results'
-            elif number_of_increments > 1:
-                results_name = result_name_prefix + 'time_' + str(step_time) + '_results'
-            else:
-                results_name = result_name_prefix + 'results'
+        if len(m['Results']) > 0:
+            for result_set in m['Results']:
+                if 'number' in result_set:
+                    eigenmode_number = result_set['number']
+                else:
+                    eigenmode_number = 0
+                step_time = result_set['time']
+                step_time = round(step_time, 2)
+                if eigenmode_number > 0:
+                    results_name = result_name_prefix + 'mode_' + str(eigenmode_number) + '_results'
+                elif number_of_increments > 1:
+                    results_name = result_name_prefix + 'time_' + str(step_time) + '_results'
+                else:
+                    results_name = result_name_prefix + 'results'
 
-            results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
-            results.Mesh = result_mesh_object
-            results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
-            results = importToolsFem.fill_femresult_stats(results)
+                results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+                results.Mesh = result_mesh_object
+                results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
+                if analysis:
+                    analysis_object.addObject(results)
+        else:
+            error_message = (
+                "We have nodes but no results in frd file, which means we only have a mesh in frd file. "
+                "Usually this happens for analysis type 'NOANALYSIS' or if CalculiX returned no results because "
+                "of nonpositive jacobian determinant in at least one element.\n"
+            )
+            FreeCAD.Console.PrintMessage(error_message)
             if analysis:
-                analysis_object.addObject(results)
+                analysis_object.addObject(result_mesh_object)
 
         if FreeCAD.GuiUp:
             if analysis:

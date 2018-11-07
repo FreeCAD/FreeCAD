@@ -100,8 +100,8 @@ char* _edgeTypeToText(int e);
 //bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
 
 
-//NOTE: this is not shown in toolbar and doesn't always work right in the menu. 
-//      should be removed. 
+//NOTE: this is not shown in toolbar and doesn't always work right in the menu.
+//      should be removed.
 //===========================================================================
 // TechDraw_NewDimension
 //===========================================================================
@@ -211,7 +211,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -284,7 +284,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
     } else if (edgeType == isBSplineCircle) {
-        QMessageBox::StandardButton result = 
+        QMessageBox::StandardButton result =
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Warning"),
                                                    QObject::tr("Selected edge is a BSpline.  Radius will be approximate."),
                                                    QMessageBox::Ok | QMessageBox::Cancel,
@@ -310,7 +310,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewRadiusDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewRadiusDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -384,7 +384,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
     } else if (edgeType == isBSplineCircle) {
-        QMessageBox::StandardButton result = 
+        QMessageBox::StandardButton result =
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection Warning"),
                                                    QObject::tr("Selected edge is a BSpline.  Diameter will be approximate."),
                                                    QMessageBox::Ok | QMessageBox::Cancel,
@@ -402,7 +402,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
     }
-    
+
     openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
@@ -410,7 +410,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewDiameterDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewDiameterDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -507,7 +507,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vetexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for length Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for length Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -519,7 +519,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
                                                        , "Distance");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewLengthDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewLengthDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -530,7 +530,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y); 
+    dim->Y.setValue(-mid.y);
 
     //Horrible hack to force Tree update (claimChildren)
     double x = objFeat->X.getValue();
@@ -619,7 +619,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vetexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -632,7 +632,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewDistanceXDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewDistanceXDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -643,7 +643,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y); 
+    dim->Y.setValue(-mid.y);
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -732,7 +732,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Need 2 Vetexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
+        edgeMsg << "Need 2 Vertexes, 1 straight Edge, 1 Vertex/1 straight edge or 2 straight Edges for Horizontal Dimension (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -744,7 +744,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
                                                        ,"DistanceY");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewDistanceYDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewDistanceYDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -755,7 +755,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y); 
+    dim->Y.setValue(-mid.y);
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -836,7 +836,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewAngleDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewAngleDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -905,7 +905,7 @@ void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
     std::vector<App::DocumentObject *> objs;
     std::vector<std::string> subs;
 
-    if (_isValidVertexes(this, 3))  { 
+    if (_isValidVertexes(this, 3))  {
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         objs.push_back(objFeat);
@@ -925,7 +925,7 @@ void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewAngle3PtDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewAngle3PtDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -1142,7 +1142,7 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                 edgeType = isEllipse;
             } else if (geom->geomType == TechDrawGeometry::BSPLINE) {
                 TechDrawGeometry::BSpline* spline = static_cast<TechDrawGeometry::BSpline*>(geom);
-                if (spline->isCircle()) {           
+                if (spline->isCircle()) {
                     edgeType = isBSplineCircle;
                 } else {
                     edgeType = isBSpline;

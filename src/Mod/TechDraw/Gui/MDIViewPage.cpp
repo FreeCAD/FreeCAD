@@ -38,7 +38,7 @@
     #include <QPrinter>
     #include <QPrintDialog>
     #include <QPrintPreviewDialog>
-    #include <boost/signal.hpp>
+    #include <boost/signals2.hpp>
     #include <boost/bind.hpp>
 
 #endif  // #ifndef _PreComp_
@@ -52,6 +52,7 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
@@ -108,38 +109,16 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     m_scene = new QGraphicsScene(this);
     m_view = new QGVPage(pageVp,m_scene,this);
 
+    m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
+    connect(m_toggleKeepUpdatedAction, SIGNAL(triggered()), this, SLOT(toggleKeepUpdated()));
+
+    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
+    connect(m_toggleFrameAction, SIGNAL(triggered()), this, SLOT(toggleFrame()));
+
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
     connect(m_exportSVGAction, SIGNAL(triggered()), this, SLOT(saveSVG()));
 
-    m_nativeAction = new QAction(tr("&Native"), this);
-    m_nativeAction->setCheckable(true);
-    m_nativeAction->setChecked(false);
-#ifndef QT_NO_OPENGL
-    m_glAction = new QAction(tr("&OpenGL"), this);
-    m_glAction->setCheckable(true);
-#endif
-    m_imageAction = new QAction(tr("&Image"), this);
-    m_imageAction->setCheckable(true);
-
-#ifndef QT_NO_OPENGL
-    m_highQualityAntialiasingAction = new QAction(tr("&High Quality Antialiasing"), this);
-    m_highQualityAntialiasingAction->setEnabled(false);
-    m_highQualityAntialiasingAction->setCheckable(true);
-    m_highQualityAntialiasingAction->setChecked(false);
-    connect(m_highQualityAntialiasingAction, SIGNAL(toggled(bool)),
-            m_view, SLOT(setHighQualityAntialiasing(bool)));
-#endif
-
     isSelectionBlocked = false;
-
-    QActionGroup *rendererGroup = new QActionGroup(this);
-    rendererGroup->addAction(m_nativeAction);
-#ifndef QT_NO_OPENGL
-    rendererGroup->addAction(m_glAction);
-#endif
-    rendererGroup->addAction(m_imageAction);
-    connect(rendererGroup, SIGNAL(triggered(QAction *)),
-            this, SLOT(setRenderer(QAction *)));
 
     setWindowTitle(tr("dummy[*]"));      //Yuck. prevents "QWidget::setWindowModified: The window title does not contain a '[*]' placeholder"
     setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
@@ -249,21 +228,6 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
     }
     blockSelection(false);
 }
-
-
-void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
-{
-    QMenu menu;
-    menu.addAction(m_exportSVGAction);
-    QMenu* submenu = menu.addMenu(tr("&Renderer"));
-    submenu->addAction(m_nativeAction);
-    submenu->addAction(m_glAction);
-    submenu->addAction(m_imageAction);
-    submenu->addSeparator();
-    submenu->addAction(m_highQualityAntialiasingAction);
-    menu.exec(event->globalPos());
-}
-
 
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 {
@@ -559,13 +523,12 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
     return false;
 }
 
-
-void MDIViewPage::onRelabel(Gui::Document *pDoc)
+//called by ViewProvider when Page feature Label changes
+void MDIViewPage::setTabText(std::string t)
 {
-    if (!bIsPassive && pDoc) {
-        QString cap = QString::fromLatin1("%1 : %2[*]")
-            .arg(QString::fromUtf8(pDoc->getDocument()->Label.getValue()))
-            .arg(objectName());
+    if (!isPassive() && !t.empty()) {
+        QString cap = QString::fromLatin1("%1 [*]")
+            .arg(QString::fromUtf8(t.c_str()));
         setWindowTitle(cap);
     }
 }
@@ -789,32 +752,32 @@ PyObject* MDIViewPage::getPyObject()
     Py_Return;
 }
 
-void MDIViewPage::setRenderer(QAction *action)
+void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
 {
-#ifndef QT_NO_OPENGL
-    m_highQualityAntialiasingAction->setEnabled(false);
-#endif
-
-    if (action == m_nativeAction)
-        m_view->setRenderer(QGVPage::Native);
-#ifndef QT_NO_OPENGL
-    else if (action == m_glAction) {
-        m_highQualityAntialiasingAction->setEnabled(true);
-        m_view->setRenderer(QGVPage::OpenGL);
-    }
-#endif
-    else if (action == m_imageAction) {
-        m_view->setRenderer(QGVPage::Image);
-    }
+    QMenu menu;
+    menu.addAction(m_toggleFrameAction);
+    menu.addAction(m_toggleKeepUpdatedAction);
+    menu.addAction(m_exportSVGAction);
+    menu.exec(event->globalPos());
 }
 
+void MDIViewPage::toggleFrame(void)
+{
+    setFrameState(!getFrameState());
+}
+
+void MDIViewPage::toggleKeepUpdated(void)
+{
+    bool state = m_vpPage->getDrawPage()->KeepUpdated.getValue();
+    m_vpPage->getDrawPage()->KeepUpdated.setValue(!state);
+    App::GetApplication().signalChangePropertyEditor(m_vpPage->getDrawPage()->KeepUpdated);
+}
 
 void MDIViewPage::viewAll()
 {
     //m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
     m_view->fitInView(m_view->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
-
 
 void MDIViewPage::saveSVG()
 {
@@ -923,8 +886,11 @@ void MDIViewPage::clearSceneSelection()
   // Iterate through all views and unselect all
   for (std::vector<QGIView *>::iterator it = views.begin(); it != views.end(); ++it) {
       QGIView *item = *it;
-      item->setSelected(false);
-      item->updateView();
+      bool state = item->isSelected();
+      if (state) {
+          item->setSelected(false);
+          item->updateView();
+      }
   }
 
   blockSelection(false);
@@ -942,8 +908,11 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 
     blockSelection(true);
     if(view) {
-        view->setSelected(isSelected);
-        view->updateView();
+        bool state = view->isSelected();
+        if (state != isSelected) {
+            view->setSelected(isSelected);
+            view->updateView();
+        }
     }
     blockSelection(false);
 }
@@ -1095,7 +1064,6 @@ void MDIViewPage::setTreeToSceneSelect(void)
 
                 std::stringstream ss;
                 ss << "Vertex" << vert->getProjIndex();
-                                        ss.str().c_str();
                 //bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),

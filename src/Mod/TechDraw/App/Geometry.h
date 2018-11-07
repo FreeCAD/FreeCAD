@@ -192,6 +192,7 @@ class TechDrawExport BSpline: public BaseGeom
 
         bool isLine(void);
         bool isCircle(void);
+        TopoDS_Edge isCircle2(bool& isArc);
         void getCircleParms(bool& isCircle, double& radius, Base::Vector3d& center, bool& isArc);
         bool intersectsArc(Base::Vector3d p1,Base::Vector3d p2);
         std::vector<BezierSegment> segments;

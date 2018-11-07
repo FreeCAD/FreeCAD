@@ -290,7 +290,9 @@ class plane:
                     rot = FreeCADGui.ActiveDocument.ActiveView.getCameraNode().getField("orientation").getValue()
                     upvec = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
                     vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
-                    self.alignToPointAndAxis(Vector(0,0,0), vdir.negative(), 0, upvec)
+                    if (vdir.getAngle(self.axis) > 0.001) and (vdir.getAngle(self.axis) < 3.14159):
+                        # don't change the WP if it is already perpendicular to the current view
+                        self.alignToPointAndAxis(Vector(0,0,0), vdir.negative(), 0, upvec)
                 except:
                     pass
             self.weak = True

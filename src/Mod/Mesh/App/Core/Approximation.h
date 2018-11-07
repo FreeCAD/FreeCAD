@@ -342,7 +342,7 @@ public:
     /**
      * Destruction
      */
-    virtual ~SurfaceFit(){};
+    virtual ~SurfaceFit(){}
 
     bool GetCurvatureInfo(double x, double y, double z, double &rfCurv0, double &rfCurv1,
                           Base::Vector3f &rkDir0, Base::Vector3f &rkDir1, double &dDistance);
@@ -354,6 +354,96 @@ public:
 protected:
     double PolynomFit();
     double _fCoeff[ 10 ];  /**< Ziel der Koeffizienten aus dem Fit */
+};
+
+// -------------------------------------------------------------------------------
+
+/**
+ * Approximation of a cylinder into a given set of points.
+ */
+class MeshExport CylinderFit : public Approximation
+{
+public:
+    /**
+     * Construction
+     */
+    CylinderFit();
+    /**
+     * Destruction
+     */
+    virtual ~CylinderFit();
+    float GetRadius() const;
+    Base::Vector3f GetBase() const;
+    /**
+     * Returns the axis of the fitted cylinder. If Fit() has not been called the null vector is
+     * returned.
+     */
+    Base::Vector3f GetAxis() const;
+    /**
+     * Fit a cylinder into the given points. If the fit fails FLOAT_MAX is returned.
+     */
+    float Fit();
+    /**
+     * Returns the distance from the point \a rcPoint to the fitted cylinder. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetDistanceToCylinder(const Base::Vector3f &rcPoint) const;
+    /**
+     * Returns the standard deviation from the points to the fitted cylinder. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetStdDeviation() const;
+    /**
+     * Projects the points onto the fitted cylinder.
+     */
+    void ProjectToCylinder();
+
+protected:
+    Base::Vector3f _vBase; /**< Base vector of the cylinder. */
+    Base::Vector3f _vAxis; /**< Axis of the cylinder. */
+    float _fRadius; /**< Radius of the cylinder. */
+};
+
+// -------------------------------------------------------------------------------
+
+/**
+ * Approximation of a sphere into a given set of points.
+ */
+class MeshExport SphereFit : public Approximation
+{
+public:
+    /**
+     * Construction
+     */
+    SphereFit();
+    /**
+     * Destruction
+     */
+    virtual ~SphereFit();
+    float GetRadius() const;
+    Base::Vector3f GetCenter() const;
+    /**
+     * Fit a sphere into the given points. If the fit fails FLOAT_MAX is returned.
+     */
+    float Fit();
+    /**
+     * Returns the distance from the point \a rcPoint to the fitted sphere. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetDistanceToSphere(const Base::Vector3f &rcPoint) const;
+    /**
+     * Returns the standard deviation from the points to the fitted sphere. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetStdDeviation() const;
+    /**
+     * Projects the points onto the fitted sphere.
+     */
+    void ProjectToSphere();
+
+protected:
+    Base::Vector3f _vCenter; /**< Center of the sphere. */
+    float _fRadius; /**< Radius of the cylinder. */
 };
 
 // -------------------------------------------------------------------------------

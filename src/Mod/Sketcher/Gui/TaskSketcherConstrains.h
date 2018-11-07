@@ -26,7 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <QListWidget>
 
 namespace App {
@@ -92,7 +92,7 @@ public Q_SLOTS:
 protected:
     void changeEvent(QEvent *e);
     ViewProviderSketch *sketchView;
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectionConstraintsChanged;
 
 private:

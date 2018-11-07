@@ -28,19 +28,21 @@ from femtools import ccxtools
 import FreeCAD
 import ObjectsFem
 import unittest
-from . import testtools
-from .testtools import fcc_print
+from . import utilstest as testtools
+from .utilstest import fcc_print
 
 
-class FemCcxAnalysisTest(unittest.TestCase):
+class TestCcxTools(unittest.TestCase):
+    fcc_print('import TestCcxTools')
 
     def setUp(self):
+        self.doc_name = "TestCcxTools"
         try:
-            FreeCAD.setActiveDocument("FemTest")
+            FreeCAD.setActiveDocument(self.doc_name)
         except:
-            FreeCAD.newDocument("FemTest")
+            FreeCAD.newDocument(self.doc_name)
         finally:
-            FreeCAD.setActiveDocument("FemTest")
+            FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
         self.mesh_name = 'Mesh'
         self.temp_dir = testtools.get_fem_test_tmp_dir()
@@ -755,7 +757,7 @@ class FemCcxAnalysisTest(unittest.TestCase):
         fcc_print('--------------- End of FEM tests FLow 1D thermomech analysis ---------------')
 
     def tearDown(self):
-        FreeCAD.closeDocument("FemTest")
+        FreeCAD.closeDocument(self.doc_name)
         pass
 
 
@@ -774,7 +776,7 @@ def create_test_results():
     thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
     Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
 
-    # run unit test from tests classes from this module
+    # run all unit tests from this module
     import Test
     import sys
     current_module = sys.modules[__name__]

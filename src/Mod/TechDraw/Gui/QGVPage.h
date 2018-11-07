@@ -26,6 +26,8 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 
+class QTemporaryFile;
+
 namespace TechDraw {
 class DrawView;
 class DrawViewPart;
@@ -100,6 +102,7 @@ public:
 
     /// Renders the page to SVG with filename.
     void saveSvg(QString filename);
+    void postProcessXml(QTemporaryFile* tempFile, QString filename, QString pagename);
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -126,6 +129,9 @@ private:
     QBrush* bkgBrush;
     QImage m_image;
     ViewProviderPage *m_vpPage;
+    
+    bool m_atCursor;
+    bool m_invertZoom;
 };
 
 } // namespace MDIViewPageGui

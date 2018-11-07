@@ -179,7 +179,7 @@ QRectF DrawViewCollection::getRect() const
     for (auto& v:Views.getValues()) {
         TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(v);
         if (!view) {
-            throw Base::Exception("DrawViewCollection::getRect bad View\n");
+            throw Base::ValueError("DrawViewCollection::getRect bad View\n");
         }
 
         result = result.united(view->getRect().translated(view->X.getValue(),view->Y.getValue()));

@@ -68,7 +68,7 @@ public:
     Vector3f inverse (const Vector3f &rclPt) const;
     Vector3d inverse (const Vector3d &rclPt) const;
 
-    Matrix4D getProjectionMatrix (void) const { return _clMtx; }
+    Matrix4D getProjectionMatrix (void) const;
 
 protected:
     bool isOrthographic;

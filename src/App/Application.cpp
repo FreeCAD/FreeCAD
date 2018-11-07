@@ -77,6 +77,7 @@
 #include <Base/RotationPy.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/Translate.h>
 #include <Base/UnitsApi.h>
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
@@ -120,7 +121,6 @@
 
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
 #include <QDir>
@@ -138,6 +138,10 @@ using namespace boost::program_options;
 #include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
+# if !defined(_DEBUG) && defined(HAVE_SEH)
+# define FC_SE_TRANSLATOR
+# endif
+
 # include <new.h>
 # include <eh.h> // VC exception handling
 #else // Ansi C/C++ new handler
@@ -326,6 +330,11 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     PyModule_AddObject(pAppModule, "Base", pBaseModule);
     Py_INCREF(pConsoleModule);
     PyModule_AddObject(pAppModule, "Console", pConsoleModule);
+
+    // Translate module
+    PyObject* pTranslateModule = (new Base::Translate)->module().ptr();
+    Py_INCREF(pTranslateModule);
+    PyModule_AddObject(pAppModule, "Qt", pTranslateModule);
 
     //insert Units module
 #if PY_MAJOR_VERSION >= 3
@@ -1226,7 +1235,7 @@ void segmentation_fault_handler(int sig)
     }
 }
 
-void my_terminate_handler()
+void unhandled_exception_handler()
 {
     std::cerr << "Terminating..." << std::endl;
 }
@@ -1242,23 +1251,28 @@ void unexpection_error_handler()
 #endif
 }
 
-#ifdef _MSC_VER // Microsoft compiler
-
-void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
+#if defined(FC_SE_TRANSLATOR) // Microsoft compiler
+void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
 {
+    Q_UNUSED(pExp)
+    switch (code)
+    {
+    case EXCEPTION_ACCESS_VIOLATION:
+        throw Base::AccessViolation();
+        break;
+    case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+    case EXCEPTION_INT_DIVIDE_BY_ZERO:
+        throw Base::DivisionByZeroError("Division by zero!");
+        break;
+    }
 
-   //switch (code)
-   //{
-   //    case FLT_DIVIDE_BY_ZERO :
-   //       //throw CMyFunkyDivideByZeroException(code, pExp);
-   //       throw Base::DivisionByZeroError("Division by zero!");
-   //    break;
-   //}
-
-   // general C++ SEH exception for things we don't need to handle separately....
-   throw Base::RuntimeError("my_trans_func()");
+    std::stringstream str;
+    str << "SEH exception of type: " << code;
+    // general C++ SEH exception for things we don't need to handle separately....
+    throw Base::RuntimeError(str.str());
 }
 #endif
+
 void Application::init(int argc, char ** argv)
 {
     try {
@@ -1274,13 +1288,14 @@ void Application::init(int argc, char ** argv)
 #if defined (_MSC_VER) // Microsoft compiler
         std::signal(SIGSEGV,segmentation_fault_handler);
         std::signal(SIGABRT,segmentation_fault_handler);
-        std::set_terminate(my_terminate_handler);
+        std::set_terminate(unhandled_exception_handler);
         std::set_unexpected(unexpection_error_handler);
-//        _set_se_translator(my_trans_func);
 #elif defined(FC_OS_LINUX)
         std::signal(SIGSEGV,segmentation_fault_handler);
 #endif
-
+#if defined(FC_SE_TRANSLATOR)
+        _set_se_translator(my_se_translator_filter);
+#endif
         initTypes();
 
 #if (BOOST_VERSION < 104600) || (BOOST_FILESYSTEM_VERSION == 2)
@@ -1433,10 +1448,10 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::AbortException>;
     new ExceptionProducer<Base::XMLBaseException>;
     new ExceptionProducer<Base::XMLParseException>;
+    new ExceptionProducer<Base::XMLAttributeError>;
     new ExceptionProducer<Base::FileException>;
     new ExceptionProducer<Base::FileSystemError>;
     new ExceptionProducer<Base::BadFormatError>;
-    new ExceptionProducer<Base::MemoryException>;
     new ExceptionProducer<Base::MemoryException>;
     new ExceptionProducer<Base::AccessViolation>;
     new ExceptionProducer<Base::AbnormalProgramTermination>;
@@ -1447,6 +1462,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::IndexError>;
     new ExceptionProducer<Base::AttributeError>;
     new ExceptionProducer<Base::RuntimeError>;
+    new ExceptionProducer<Base::BadGraphError>;
     new ExceptionProducer<Base::NotImplementedError>;
     new ExceptionProducer<Base::DivisionByZeroError>;
     new ExceptionProducer<Base::ReferencesError>;
@@ -1457,6 +1473,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::UnderflowError>;
     new ExceptionProducer<Base::UnitsMismatchError>;
     new ExceptionProducer<Base::CADKernelError>;
+    new ExceptionProducer<Base::RestoreError>;
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1551,29 +1568,33 @@ void Application::initConfig(int argc, char ** argv)
     auto loglevelParam = _pcUserParamMngr->GetGroup("BaseApp/LogLevels");
     const auto &loglevels = loglevelParam->GetIntMap();
     bool hasDefault = false;
-    for(const auto &v : loglevels) {
-        if(v.first == "Default") {
+    for (const auto &v : loglevels) {
+        if (v.first == "Default") {
 #ifndef FC_DEBUG
-            if(v.second>=0) {
+            if (v.second>=0) {
                 hasDefault = true;
                 Base::Console().SetDefaultLogLevel(v.second);
             }
 #endif
-        }else if(v.first == "DebugDefault") {
+        }
+        else if (v.first == "DebugDefault") {
 #ifdef FC_DEBUG
-            if(v.second>=0) {
+            if (v.second>=0) {
                 hasDefault = true;
                 Base::Console().SetDefaultLogLevel(v.second);
             }
 #endif
-        }else
+        }
+        else {
             *Base::Console().GetLogLevel(v.first.c_str()) = v.second;
+        }
     }
-    if(!hasDefault) {
+
+    if (!hasDefault) {
 #ifdef FC_DEBUG
-        loglevelParam->SetInt("DebugDefault",Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("DebugDefault", Base::Console().LogLevel(-1));
 #else
-        loglevelParam->SetInt("Default",Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("Default", Base::Console().LogLevel(-1));
 #endif
     }
 

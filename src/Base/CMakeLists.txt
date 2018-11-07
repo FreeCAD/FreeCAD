@@ -270,6 +270,7 @@ SET(FreeCADBase_CPP_SRCS
     TimeInfo.cpp
     Tools.cpp
     Tools2D.cpp
+    Translate.cpp
     Type.cpp
     Uuid.cpp
     Vector3D.cpp
@@ -332,6 +333,7 @@ SET(FreeCADBase_HPP_SRCS
     TimeInfo.h
     Tools.h
     Tools2D.h
+    Translate.h
     Type.h
     Uuid.h
     Vector3D.h

@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Ofentse Kgoa <kgoaot@eskom.co.za>                *
-# *   Based on the FemElementGeometry1D by Bernd Hahnebach                        *
+# *   Copyright (c) 2016 Ofentse Kgoa <kgoaot@eskom.co.za>                  *
+# *   Based on the FemElementGeometry1D by Bernd Hahnebach                  *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,19 +21,23 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemElementFluid1D"
+__title__ = "FreeCAD FEM _element fluid 1D document object"
 __author__ = "Ofentse Kgoa"
 __url__ = "http://www.freecadweb.org"
 
 ## @package FemElementFluid1D
 #  \ingroup FEM
+#  \brief FreeCAD FEM _FemElementFluid1D
 
 
 class _FemElementFluid1D:
     "The FemElementFluid1D object"
 
     known_fluid_types = ['Liquid', 'Gas', 'Open Channel']
-    known_liquid_types = ['PIPE MANNING', 'PIPE ENLARGEMENT', 'PIPE CONTRACTION', 'PIPE INLET', 'PIPE OUTLET', 'PIPE ENTRANCE', 'PIPE DIAPHRAGM', 'PIPE BEND', 'PIPE GATE VALVE', 'LIQUID PUMP', 'PIPE WHITE-COLEBROOK']
+    known_liquid_types = [
+        'PIPE MANNING', 'PIPE ENLARGEMENT', 'PIPE CONTRACTION', 'PIPE INLET', 'PIPE OUTLET', 'PIPE ENTRANCE',
+        'PIPE DIAPHRAGM', 'PIPE BEND', 'PIPE GATE VALVE', 'LIQUID PUMP', 'PIPE WHITE-COLEBROOK'
+    ]
     known_gas_types = ['NONE']
     known_channel_types = ['NONE']
 

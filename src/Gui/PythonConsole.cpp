@@ -326,7 +326,7 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
             if (PyDict_Check(errdata)) {
                 PyObject* value = PyDict_GetItemString(errdata, "swhat");
                 if (value) {
-                    Base::Exception e;
+                    Base::RuntimeError e;
                     e.setPyObject(errdata);
                     Py_DECREF(errdata);
 

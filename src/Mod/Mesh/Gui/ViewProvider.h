@@ -181,8 +181,8 @@ protected:
     virtual void faceInfo(unsigned long facet);
     virtual void fillHole(unsigned long facet);
     virtual void selectArea(short, short, short, short, const SbViewportRegion&, SoCamera*);
-    void highlightSelection();
-    void unhighlightSelection();
+    virtual void highlightSelection();
+    virtual void unhighlightSelection();
     void highlightComponents();
     void setHighlightedComponents(bool);
     App::PropertyColorList* getColorProperty() const;

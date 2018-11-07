@@ -281,7 +281,7 @@ class _CommandSite:
         siteobj = []
         warning = False
         for obj in sel :
-            if Draft.getType(obj) == "Building":
+            if (Draft.getType(obj) == "Building") or (hasattr(obj,"IfcRole") and obj.IfcRole == "Building"):
                 siteobj.append(obj)
             else :
                 if link == True :
@@ -508,6 +508,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
     def __init__(self,vobj):
 
         ArchFloor._ViewProviderFloor.__init__(self,vobj)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         self.setProperties(vobj)
 
     def setProperties(self,vobj):

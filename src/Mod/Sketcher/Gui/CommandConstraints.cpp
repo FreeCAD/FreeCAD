@@ -92,13 +92,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
     Sketcher::Constraint* Constr = Constraints[ConstrNbr];
 
     // Return if constraint doesn't have editable value
-    if (Constr->Type == Sketcher::Distance ||
-        Constr->Type == Sketcher::DistanceX || 
-        Constr->Type == Sketcher::DistanceY ||
-        Constr->Type == Sketcher::Radius ||
-        Constr->Type == Sketcher::Diameter ||
-        Constr->Type == Sketcher::Angle ||
-        Constr->Type == Sketcher::SnellsLaw) {
+    if (Constr->isDimensional()) {
 
         QDialog dlg(Gui::getMainWindow());
         Ui::InsertDatum ui_ins_datum;
@@ -658,7 +652,7 @@ void SketcherGui::makeTangentToArcOfParabolaviaNewPoint(Sketcher::SketchObject* 
     tryAutoRecompute(Obj);
 }
 
-std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception e)
+std::string SketcherGui::getStrippedPythonExceptionString(const Base::Exception& e)
 {
     std::string msg = e.what();
     
@@ -675,6 +669,11 @@ bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool &autoremove
     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
     bool autoRemoveRedundants = hGrp->GetBool("AutoRemoveRedundants",false);
 
+    // We need to make sure the solver has right redundancy information before trying to remove the redundants.
+    // for example if a non-driving constraint has been added.
+    if(autoRemoveRedundants && autoRecompute) 
+        obj->solve();
+        
     if(autoRemoveRedundants)
         obj->autoRemoveRedundants();
     
@@ -7036,7 +7035,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
             strError = QObject::tr("Selected objects are not just geometry from one sketch.", dmbg);
-            throw(Base::Exception(""));
+            throw Base::ValueError("");
         }
 
         // get the needed lists and objects
@@ -7045,7 +7044,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
         if (SubNames.size() != 3) {
             strError = QObject::tr("Number of selected objects is not 3 (is %1).", dmbg).arg(SubNames.size());
-            throw(Base::Exception(""));
+            throw Base::ValueError("");
         }
 
         int GeoId1, GeoId2, GeoId3;
@@ -7067,14 +7066,14 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         //a bunch of validity checks       
         if (areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3) ) {
             strError = QObject::tr("Can not create constraint with external geometry only!!", dmbg);
-            throw(Base::Exception(""));
+            throw Base::ValueError("");
         }
 
         if (!(isVertex(GeoId1,PosId1) && !isSimpleVertex(Obj, GeoId1, PosId1) &&
               isVertex(GeoId2,PosId2) && !isSimpleVertex(Obj, GeoId2, PosId2) &&
               isEdge(GeoId3,PosId3)   )) {
             strError = QObject::tr("Incompatible geometry is selected!", dmbg);
-            throw(Base::Exception(""));
+            throw Base::ValueError("");
         };
         
         const Part::Geometry *geo = Obj->getGeometry(GeoId3);

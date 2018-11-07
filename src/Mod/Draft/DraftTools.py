@@ -338,6 +338,9 @@ class SelectPlane(DraftTool):
                 elif Draft.getType(sel.Object) in ["WorkingPlaneProxy","BuildingPart"]:
                     plane.setFromPlacement(sel.Object.Placement,rebase=True)
                     plane.weak = False
+                    if hasattr(sel.Object.ViewObject,"AutoWorkingPlane"):
+                        if sel.Object.ViewObject.AutoWorkingPlane:
+                            plane.weak = True
                     if hasattr(sel.Object.ViewObject,"RestoreView"):
                         if sel.Object.ViewObject.RestoreView:
                             if hasattr(sel.Object.ViewObject,"ViewData"):
@@ -376,6 +379,8 @@ class SelectPlane(DraftTool):
                                             if o.Visibility != (v == "True"):
                                                 FreeCADGui.doCommand("FreeCADGui.ActiveDocument.getObject(\""+k+"\").Visibility = "+v)
                     self.display(plane.axis)
+                    self.ui.wplabel.setText(sel.Object.Label)
+                    self.ui.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.ui.wplabel.text())
                     self.finish()
                     return
                 elif sel.HasSubObjects:
@@ -605,9 +610,12 @@ class Line(Creator):
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
                 FreeCADGui.addModule("Draft")
-                self.commit(translate("draft","Create DWire"),
-                            ['points='+pts,
-                             'line = Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')',
+                self.commit(translate("draft","Create Wire"),
+                            ['pl = FreeCAD.Placement()',
+                             'pl.Rotation.Q = '+rot,
+                             'pl.Base = '+DraftVecUtils.toString(self.node[0]),
+                             'points = '+pts,
+                             'line = Draft.makeWire(points,placement=pl,closed='+str(closed)+',face='+fil+',support='+sup+')',
                              'Draft.autogroup(line)'])
         Creator.finish(self)
         if self.ui:
@@ -1819,7 +1827,9 @@ class Text(Creator):
                 tx += ','
             if sys.version_info.major < 3:
                 l = unicode(l)
-            tx += '"'+str(l.encode("utf8"))+'"' #Python3 no more unicode
+                tx += '"'+str(l.encode("utf8"))+'"'
+            else:
+                tx += '"'+l+'"' #Python3 no more unicode
         tx += ']'
         FreeCADGui.addModule("Draft")
         self.commit(translate("draft","Create Text"),
@@ -2216,17 +2226,23 @@ class ShapeString(Creator):
         Creator.Activated(self,name)
         if self.ui:
             self.ui.sourceCmd = self
-            self.dialog = None
-            self.text = ''
-            self.ui.sourceCmd = self
-            self.ui.pointUi(name)
-            self.active = True
-            self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.ssBase = None
-            self.ui.xValue.setFocus()
-            self.ui.xValue.selectAll()
-            msg(translate("draft", "Pick ShapeString location point:")+"\n")
-            FreeCADGui.draftToolBar.show()
+            self.taskmode = Draft.getParam("UiMode",1)
+            if self.taskmode:
+                self.task = DraftGui.ShapeStringTaskPanel()
+                self.task.sourceCmd = self
+                DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
+            else:
+                self.dialog = None
+                self.text = ''
+                self.ui.sourceCmd = self
+                self.ui.pointUi(name)
+                self.active = True
+                self.call = self.view.addEventCallback("SoEvent",self.action)
+                self.ssBase = None
+                self.ui.xValue.setFocus()
+                self.ui.xValue.selectAll()
+                msg(translate("draft", "Pick ShapeString location point:")+"\n")
+                FreeCADGui.draftToolBar.show()
 
     def createObject(self):
         "creates object in the current doc"
@@ -2352,14 +2368,7 @@ class Move(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
-        # testing for special case: only Arch groups in selection
-        onlyarchgroups = True
-        for o in self.sel:
-            if not(Draft.getType(o) in ["Floor","Building","Site"]):
-                onlyarchgroups = False
-        if not onlyarchgroups:
-            # arch groups can be moved, no need to add their children
-            self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
+        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True,noarchchild=True)
         self.ui.pointUi(self.name)
         self.ui.modUi()
         if self.copymode:
@@ -2516,7 +2525,7 @@ class Rotate(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
-        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
+        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True,noarchchild=True)
         self.step = 0
         self.center = None
         self.ui.arcUi()
@@ -2888,8 +2897,24 @@ class Stretch(Modifier):
 
     def proceed(self):
         if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = FreeCADGui.Selection.getSelection()
+            self.view.removeEventCallback("SoEvent",self.call) 
+        supported = ["Rectangle","Wire","BSpline","BezCurve","Sketch"]
+        self.sel = []
+        for obj in FreeCADGui.Selection.getSelection():
+            if Draft.getType(obj) in supported:
+                self.sel.append(obj)
+            elif hasattr(obj,"Base"):
+                if obj.Base:
+                    if Draft.getType(obj.Base) in supported:
+                        self.sel.append(obj.Base)
+                    elif Draft.getType(obj.Base) == "Offset2D":
+                        if obj.Base.Source:
+                            if Draft.getType(obj.Base.Source) in supported:
+                                self.sel.append(obj.Base.Source)
+            elif Draft.getType(obj) == "Offset2D":
+                if obj.Source:
+                    if Draft.getType(obj.Source) in supported:
+                        self.sel.append(obj.Source)
         if self.ui and self.sel:
             self.step = 1
             self.refpoint = None
@@ -2966,6 +2991,18 @@ class Stretch(Modifier):
                             nodes.append(p)
                     if iso:
                         self.ops.append([o,np])
+                elif tp in ["Sketch"]:
+                    np = []
+                    iso = False
+                    for p in o.Shape.Vertexes:
+                        p = o.Placement.multVec(p.Point)
+                        isi = self.rectracker.isInside(p)
+                        np.append(isi)
+                        if isi:
+                            iso = True
+                            nodes.append(p)
+                    if iso:
+                        self.ops.append([o,np])
                 else:
                     if self.rectracker.isInside(o.Placement.Base):
                         self.ops.append([o])
@@ -2995,9 +3032,9 @@ class Stretch(Modifier):
         self.addPoint(point)
 
     def finish(self,closed=False):
-        if self.rectracker:
+        if hasattr(self,"rectracker") and self.rectracker:
             self.rectracker.finalize()
-        if self.nodetracker:
+        if hasattr(self,"nodetracker") and self.nodetracker:
             for n in self.nodetracker:
                 n.finalize()
         Modifier.finish(self)
@@ -3020,6 +3057,19 @@ class Stretch(Modifier):
                                 pts.append(ops[0].Points[i].add(localdisp))
                         pts = str(pts).replace("Vector","FreeCAD.Vector")
                         commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Points="+pts)
+                    elif tp in ["Sketch"]:
+                        for i in range(ops[0].GeometryCount):
+                            j = 0
+                            while True:
+                                try:
+                                    p = ops[0].getPoint(i,j)
+                                except ValueError:
+                                    break
+                                else:
+                                    p = ops[0].Placement.multVec(p)
+                                    if p in ops[1]:
+                                        commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".movePoint("+str(i)+","+str(j)+",FreeCAD."+str(localdisp)+",True)")
+                                    j += 1
                     elif tp in ["Rectangle"]:
                         p1 = Vector(0,0,0)
                         p2 = Vector(ops[0].Length.Value,0,0)
@@ -3035,7 +3085,7 @@ class Stretch(Modifier):
                             optype = 4
                         else:
                             optype = 0
-                        print("length:",ops[0].Length,"height:",ops[0].Height," - ",ops[1]," - ",self.displacement)
+                        #print("length:",ops[0].Length,"height:",ops[0].Height," - ",ops[1]," - ",self.displacement)
                         done = False
                         if optype > 0:
                             v1 = ops[0].Placement.multVec(p2).sub(ops[0].Placement.multVec(p1))
@@ -3121,6 +3171,9 @@ class Stretch(Modifier):
                             commitops.append("w = Draft.makeWire("+pts+",closed=True)")
                             commitops.append("Draft.formatObject(w,FreeCAD.ActiveDocument."+ops[0].Name+")")
                             commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".ViewObject.hide()")
+                            for par in ops[0].InList:
+                                if hasattr(par,"Base") and par.Base == ops[0]:
+                                    commitops.append("FreeCAD.ActiveDocument."+par.Name+".Base = w")
                     else:
                         commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Placement.Base=FreeCAD."+str(ops[0].Placement.Base.add(self.displacement)))
         if commitops:
@@ -4192,6 +4245,14 @@ class Edit(Modifier):
                             pts[changep] = self.obj.Proxy.modifysymmetricpole(\
                                     pts[knot],editPnt)
                             self.trackers[changep].set(pts[changep])
+                # check that the new point lies on the plane of the wire
+                import DraftGeomUtils
+                if self.obj.Closed:
+                    n = DraftGeomUtils.getNormal(self.obj.Shape)
+                    dv = editPnt.sub(pts[self.editing])
+                    rn = DraftVecUtils.project(dv,n)
+                    if dv.Length:
+                        editPnt = editPnt.add(rn.negative())
                 pts[self.editing] = editPnt
                 self.obj.Points = pts
                 self.trackers[self.editing].set(v)
@@ -4967,8 +5028,11 @@ class Draft_Clone(Modifier):
             l = len(FreeCADGui.Selection.getSelection())
             FreeCADGui.addModule("Draft")
             FreeCAD.ActiveDocument.openTransaction("Clone")
+            nonRepeatList = []
             for obj in FreeCADGui.Selection.getSelection():
-                FreeCADGui.doCommand("Draft.clone(FreeCAD.ActiveDocument."+obj.Name+")")
+                if obj not in nonRepeatList:
+                    FreeCADGui.doCommand("Draft.clone(FreeCAD.ActiveDocument."+obj.Name+")")
+                    nonRepeatList.append(obj)
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
             FreeCADGui.Selection.clearSelection()

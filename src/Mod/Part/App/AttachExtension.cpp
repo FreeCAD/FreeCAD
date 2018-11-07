@@ -37,7 +37,7 @@
 using namespace Part;
 using namespace Attacher;
 
-EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension);
+EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension)
 
 AttachExtension::AttachExtension()
    :  _attacher(0)
@@ -113,7 +113,7 @@ bool AttachExtension::changeAttacherType(const char* typeName)
     } else {
         std::stringstream errMsg;
         errMsg << "Object if this type is not derived from AttachEngine: " << typeName;
-        throw Base::Exception(errMsg.str());
+        throw AttachEngineException(errMsg.str());
     }
     assert(false);//exec shouldn't ever get here
     return false;
@@ -275,6 +275,28 @@ PyObject* AttachExtension::getExtensionPyObject(void) {
         ExtensionPythonObject = Py::Object(new AttachExtensionPy(this),true);
     }
     return Py::new_reference_to(ExtensionPythonObject);
+}
+
+// ------------------------------------------------
+
+AttachEngineException::AttachEngineException()
+  : Base::Exception()
+{
+}
+
+AttachEngineException::AttachEngineException(const char * sMessage)
+  : Base::Exception(sMessage)
+{
+}
+
+AttachEngineException::AttachEngineException(const std::string& sMessage)
+  : Base::Exception(sMessage)
+{
+}
+
+AttachEngineException::AttachEngineException(const AttachEngineException &inst)
+  : Base::Exception(inst)
+{
 }
 
 
