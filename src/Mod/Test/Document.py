@@ -1541,6 +1541,18 @@ class DocumentObserverCases(unittest.TestCase):
     self.Obs = self.Observer();
     FreeCAD.addDocumentObserver(self.Obs);
 
+  def testRemoveObserver(self):
+    FreeCAD.removeDocumentObserver(self.Obs)
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
+    self.Doc1 = FreeCAD.newDocument("Observer")
+    FreeCAD.closeDocument(self.Doc1.Name)
+    self.assertEqual(len(self.Obs.signal), 0)
+    self.assertEqual(len(self.Obs.parameter2), 0)
+    self.assertEqual(len(self.Obs.signal), 0)
+    FreeCAD.addDocumentObserver(self.Obs);
+
   def testSave(self):
     TempPath = tempfile.gettempdir()
     SaveName = TempPath + os.sep + "SaveRestoreTests.FCStd"
@@ -1553,7 +1565,11 @@ class DocumentObserverCases(unittest.TestCase):
     FreeCAD.closeDocument(self.Doc1.Name)
 
   def testDocument(self):
-    
+    # in case another document already exists then the tests cannot
+    # be done reliably
+    if FreeCAD.GuiUp and FreeCAD.activeDocument():
+      return
+
     # testing document level signals
     self.Doc1 = FreeCAD.newDocument("Observer1");  
     if FreeCAD.GuiUp:
@@ -1593,8 +1609,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
     #undo/redo is not enabled in cmd line mode by default
-    if not FreeCAD.GuiUp:
-      self.Doc2.UndoMode = 1
+    self.Doc2.UndoMode = 1
     
     self.Doc2.openTransaction('test')
     self.failUnless(self.Obs.signal.pop() == 'DocOpenTransaction')
@@ -1636,15 +1651,15 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
     self.failUnless(self.Obs.parameter2.pop(0) == 'Comment')
     
-    FreeCAD.closeDocument('Observer2')
+    FreeCAD.closeDocument(self.Doc2.Name)
     self.failUnless(self.Obs.signal.pop() == 'DocDeleted')
     self.failUnless(self.Obs.parameter.pop() is self.Doc2)
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-    
-    FreeCAD.closeDocument('Observer1')
-    self.failUnless(self.Obs.signal.pop() == 'DocDeleted')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc1)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+
+    FreeCAD.closeDocument(self.Doc1.Name)
+    self.assertEqual(self.Obs.signal.pop(), 'DocDeleted')
+    self.assertEqual(self.Obs.parameter.pop(), self.Doc1)
+    self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
        
   def testObject(self):
     #testing signal on object changes
@@ -1712,7 +1727,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.Obs.parameter2.pop() == 'Prop')
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
-    FreeCAD.closeDocument('Observer1')
+    FreeCAD.closeDocument(self.Doc1.Name)
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
@@ -1732,7 +1747,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.Doc1.redo()    
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
   
-    FreeCAD.closeDocument('Observer1')
+    FreeCAD.closeDocument(self.Doc1.Name)
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
@@ -1741,11 +1756,16 @@ class DocumentObserverCases(unittest.TestCase):
   
     if not FreeCAD.GuiUp:
       return
-  
+
+    # in case another document already exists then the tests cannot
+    # be done reliably
+    if FreeCAD.activeDocument():
+      return
+
     self.GuiObs = self.GuiObserver()
     FreeCAD.Gui.addDocumentObserver(self.GuiObs)
-    self.Doc1 = FreeCAD.newDocument("Observer1");   
-    self.GuiDoc1 = FreeCAD.Gui.getDocument("Observer1")
+    self.Doc1 = FreeCAD.newDocument("Observer1");
+    self.GuiDoc1 = FreeCAD.Gui.getDocument(self.Doc1.Name)
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
@@ -1768,7 +1788,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
     
-    FreeCAD.setActiveDocument('Observer1')
+    FreeCAD.setActiveDocument(self.Doc1.Name)
     self.failUnless(self.Obs.signal.pop() == 'DocActivated')
     self.failUnless(self.Obs.parameter.pop() is self.Doc1)
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
@@ -1836,7 +1856,7 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(self.GuiObs.parameter.pop() is vo)
     self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
 
-    FreeCAD.closeDocument('Observer1')
+    FreeCAD.closeDocument(self.Doc1.Name)
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
