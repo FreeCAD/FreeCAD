@@ -57,6 +57,44 @@ class DocumentBasicCases(unittest.TestCase):
     self.Doc.undo()
     self.Doc.undo()
 
+  def testNoRecompute(self):
+    L1 = self.Doc.addObject("App::FeatureTest","Label")
+    self.Doc.recompute()
+    L1.TypeNoRecompute = 2
+    execcount = L1.ExecCount
+    objectcount = self.Doc.recompute()
+    self.assertEqual(objectcount, 0)
+    self.assertEqual(L1.ExecCount, execcount)
+
+  def testNoRecomputeParent(self):
+    L1 = self.Doc.addObject("App::FeatureTest","Child")
+    L2 = self.Doc.addObject("App::FeatureTest","Parent")
+    L2.Source1 = L1
+    self.Doc.recompute()
+    L1.TypeNoRecompute = 2
+    countChild = L1.ExecCount
+    countParent = L2.ExecCount
+    objectcount = self.Doc.recompute()
+    self.assertEqual(objectcount, 1)
+    self.assertEqual(L1.ExecCount, countChild)
+    self.assertEqual(L2.ExecCount, countParent+1)
+
+    L1.touch()
+    countChild = L1.ExecCount
+    countParent = L2.ExecCount
+    objectcount = self.Doc.recompute()
+    self.assertEqual(objectcount, 1)
+    self.assertEqual(L1.ExecCount, countChild)
+    self.assertEqual(L2.ExecCount, countParent+1)
+
+    L1.enforceRecompute()
+    countChild = L1.ExecCount
+    countParent = L2.ExecCount
+    objectcount = self.Doc.recompute()
+    self.assertEqual(objectcount, 2)
+    self.assertEqual(L1.ExecCount, countChild+1)
+    self.assertEqual(L2.ExecCount, countParent+1)
+
   def testAbortTransaction(self):
     self.Doc.openTransaction("Add")
     obj=self.Doc.addObject("App::FeatureTest","Label")
@@ -542,23 +580,23 @@ class DocumentRecomputeCases(unittest.TestCase):
     self.failUnless((0, 0, 0, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
     self.failUnless(self.Doc.recompute()==4)
     self.failUnless((1, 1, 1, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L5.touch()
+    L5.enforceRecompute()
     self.failUnless((1, 1, 1, 0, 0, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
     self.failUnless(self.Doc.recompute()==4)
     self.failUnless((2, 2, 2, 0, 1, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L4.touch()
+    L4.enforceRecompute()
     self.failUnless(self.Doc.recompute()==3)
     self.failUnless((3, 3, 2, 1, 1, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L5.touch()
+    L5.enforceRecompute()
     self.failUnless(self.Doc.recompute()==4)
     self.failUnless((4, 4, 3, 1, 2, 0)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L6.touch()
+    L6.enforceRecompute()
     self.failUnless(self.Doc.recompute()==3)
     self.failUnless((5, 4, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L2.touch()
+    L2.enforceRecompute()
     self.failUnless(self.Doc.recompute()==2)
     self.failUnless((6, 5, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
-    L1.touch()
+    L1.enforceRecompute()
     self.failUnless(self.Doc.recompute()==1)
     self.failUnless((7, 5, 4, 1, 2, 1)==(L1.ExecCount,L2.ExecCount,L3.ExecCount,L4.ExecCount,L5.ExecCount,L6.ExecCount))
 
