@@ -29,7 +29,6 @@
 #include "ViewProviderConstraint.h"
 #include <opendcm/core.hpp>
 #include <Solver/Solver.h>
-#include <boost/signals.hpp>
 #include "ui_TaskAssemblyConstraints.h"
 
 namespace App {
