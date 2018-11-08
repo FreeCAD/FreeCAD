@@ -2345,7 +2345,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg = ""
             for i in range(len(text)):
                 t = text[i]
-                if not isinstance(t,unicode):
+                if sys.version_info.major < 3 and (not isinstance(t,unicode)):
                     t = t.decode("utf8")
                 # possible workaround if UTF8 is unsupported
                 #    import unicodedata

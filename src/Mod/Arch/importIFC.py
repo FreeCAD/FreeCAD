@@ -27,7 +27,7 @@ __title__ =  "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
 __author__ = "Yorik van Havre","Jonathan Wiedemann"
 __url__ =    "http://www.freecadweb.org"
 
-import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
+import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils,sys
 from DraftGeomUtils import vec
 
 ## @package importIFC
@@ -118,12 +118,11 @@ def decode(filename,utf=False):
 
     "turns unicodes into strings"
 
-    if isinstance(filename,unicode):
+    if (sys.version_info.major < 3) and isinstance(filename,unicode):
         # workaround since ifcopenshell currently can't handle unicode filenames
         if utf:
             encoding = "utf8"
         else:
-            import sys
             encoding = sys.getfilesystemencoding()
         filename = filename.encode(encoding)
     return filename
@@ -318,7 +317,7 @@ def explore(filename=None):
                                     t = "Entity #" + str(argvalue.id()) + ": " + str(argvalue.is_a())
                             elif isinstance(argvalue,list):
                                 t = ""
-                            elif isinstance(argvalue,str) or isinstance(argvalue,unicode):
+                            elif (sys.version_info.major < 3) and (isinstance(argvalue,str) or isinstance(argvalue,unicode)):
                                 t = argvalue.encode("latin1")
                             else:
                                 t = str(argvalue)
@@ -527,7 +526,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     from FreeCAD import Base
     progressbar = Base.ProgressIndicator()
     progressbar.start("Importing IFC objects...",len(products))
-    if DEBUG: print("Processing objects...")
+    if DEBUG: print("Processing",len(products),"objects...")
 
     if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
         overallboundbox = None
@@ -562,7 +561,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
         name = str(ptype[3:])
         if product.Name:
-            name = product.Name.encode("utf8")
+            name = product.Name
+            if sys.version_info.major < 3:
+                name = name.encode("utf8")
         if PREFIX_NUMBERS: name = "ID" + str(pid) + " " + name
         obj = None
         baseobj = None
@@ -792,8 +793,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if product.Description:
                             obj.Description = product.Description
                     if FreeCAD.GuiUp and baseobj:
-                        if hasattr(baseobj,"ViewObject"):
-                            baseobj.ViewObject.hide()
+                        try:
+                            if hasattr(baseobj,"ViewObject"):
+                                baseobj.ViewObject.hide()
+                        except ReferenceError:
+                            pass
                     if ptype == "IfcBuildingStorey":
                         if product.Elevation:
                             obj.Placement.Base.z = product.Elevation * 1000
@@ -893,11 +897,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         catname = o.Name
                         for p in properties[pid][c]:
                             l = ifcfile[p]
+                            lname = l.Name
                             if l.is_a("IfcPropertySingleValue"):
                                 if DEBUG:
                                     print("property name",l.Name,type(l.Name))
-                                ifc_spreadsheet.set(str('A'+str(n)), catname.encode("utf8"))
-                                ifc_spreadsheet.set(str('B'+str(n)), l.Name.encode("utf8"))
+                                if sys.version_info.major < 3:
+                                    catname = catname.encode("utf8")
+                                    lname = lname.encode("utf8")
+                                ifc_spreadsheet.set(str('A'+str(n)), catname)
+                                ifc_spreadsheet.set(str('B'+str(n)), lname)
                                 if l.NominalValue:
                                     if DEBUG:
                                         print("property NominalValue",l.NominalValue.is_a(),type(l.NominalValue.is_a()))
@@ -905,7 +913,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                         #print("l.NominalValue.Unit",l.NominalValue.Unit,type(l.NominalValue.Unit))
                                     ifc_spreadsheet.set(str('C'+str(n)), l.NominalValue.is_a())
                                     if l.NominalValue.is_a() in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                                        ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
+                                        if sys.version_info.major < 3:
+                                            ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue.encode("utf8")))
+                                        else:
+                                            ifc_spreadsheet.set(str('D'+str(n)), "'" + str(l.NominalValue.wrappedValue))
                                     else:
                                         ifc_spreadsheet.set(str('D'+str(n)), str(l.NominalValue.wrappedValue))
                                     if hasattr(l.NominalValue,'Unit'):
@@ -919,14 +930,20 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
                     d = obj.IfcProperties
                     for pset in properties[pid].keys():
-                        psetname = ifcfile[pset].Name.encode("utf8")
+                        psetname = ifcfile[pset].Name
+                        if sys.version_info.major < 3:
+                            psetname = psetname.encode("utf8")
                         for prop in properties[pid][pset]:
                             e = ifcfile[prop]
-                            pname = e.Name.encode("utf8")
+                            pname = e.Name
+                            if sys.version_info.major < 3:
+                                pname = pname.encode("utf8")
                             if e.is_a("IfcPropertySingleValue"):
                                 ptype = e.NominalValue.is_a()
                                 if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
-                                    pvalue = e.NominalValue.wrappedValue.encode("utf8")
+                                    pvalue = e.NominalValue.wrappedValue
+                                    if sys.version_info.major < 3:
+                                        pvalue = pvalue.encode("utf8")
                                 else:
                                     pvalue = str(e.NominalValue.wrappedValue)
                                 if hasattr(e.NominalValue,'Unit'):
@@ -945,7 +962,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         for p in properties[pid][c]:
                             l = ifcfile[p]
                             if l.is_a("IfcPropertySingleValue"):
-                                a[l.Name.encode("utf8")] = str(l.NominalValue)
+                                a[l.Name.encode("utf8")] = str(l.NominalValue) # no py3 support here
                     obj.IfcAttributes = a
 
             # color
@@ -1066,7 +1083,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
             else:
                 if DEBUG: print("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
-            grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name.encode("utf8"))
+                if sys.version_info.major < 3:
+                    grp_name = grp_name.encode("utf8")
+            grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name)
             grp.Label = grp_name
             objects[host] = grp
             for child in children:
@@ -1196,14 +1215,18 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if axes:
                 name = "Grid"
                 if annotation.Name:
-                    name = annotation.Name.encode("utf8")
+                    name = annotation.Name
+                    if sys.version_info.major < 3:
+                        name = name.encode("utf8")
                 if PREFIX_NUMBERS:
                     name = "ID" + str(aid) + " " + name
                 anno = Arch.makeAxisSystem(axes,name)
         else:
             name = "Annotation"
             if annotation.Name:
-                name = annotation.Name.encode("utf8")
+                name = annotation.Name
+                if sys.version_info.major < 3:
+                    name = name.encode("utf8")
             if "annotation" not in name.lower():
                 name = "Annotation " + name
             if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
@@ -1241,7 +1264,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
     for material in materials:
         name = "Material"
         if material.Name:
-            name = material.Name.encode("utf8")
+            name = material.Name
+            if sys.version_info.major < 3:
+                name = name.encode("utf8")
         if MERGE_MATERIALS and (name in fcmats.keys()):
             mat = fcmats[name]
         else:
@@ -1349,7 +1374,7 @@ class recycler:
             return c
 
     def createIfcPropertySingleValue(self,name,ptype,pvalue):
-        key = name + ptype + pvalue
+        key = str(name) + str(ptype) + str(pvalue)
         if self.compress and key in self.propertysinglevalues:
             self.spared += 1
             return self.propertysinglevalues[key]
@@ -1465,8 +1490,10 @@ def export(exportList,filename):
     if hasattr(ifcopenshell,"version"):
         template = template.replace("IfcOpenShell","IfcOpenShell "+ifcopenshell.version)
     templatefilehandle,templatefile = tempfile.mkstemp(suffix=".ifc")
-    of = pyopen(templatefile,"wb")
-    of.write(template.encode("utf8"))
+    of = pyopen(templatefile,"w")
+    if sys.version_info.major < 3:
+        template = template.encode("utf8")
+    of.write(template)
     of.close()
     os.close(templatefilehandle)
     global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs
@@ -1530,8 +1557,12 @@ def export(exportList,filename):
 
         # getting generic data
 
-        name = str(obj.Label.encode("utf8"))
-        description = str(obj.Description.encode("utf8")) if hasattr(obj,"Description") else ""
+        name = obj.Label
+        if sys.version_info.major < 3:
+            name = name.encode("utf8")
+        description = obj.Description if hasattr(obj,"Description") else ""
+        if sys.version_info.major < 3:
+            description = description.encode("utf8")
 
         # getting uid
 
@@ -1711,7 +1742,10 @@ def export(exportList,filename):
             for o in obj.Additions:
                 r2,p2,c2 = getRepresentation(ifcfile,context,o)
                 if DEBUG: print("      adding ",c2," : ",o.Label)
-                prod2 = ifcfile.createIfcBuildingElementProxy(ifcopenshell.guid.compress(uuid.uuid1().hex),history,o.Label.encode("utf8"),None,None,p2,r2,None,"ELEMENT")
+                l = o.Label
+                if sys.version_info.major < 3:
+                    l = l.encode("utf8")
+                prod2 = ifcfile.createIfcBuildingElementProxy(ifcopenshell.guid.compress(uuid.uuid1().hex),history,l,None,None,p2,r2,None,"ELEMENT")
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Addition','',product,[prod2])
 
@@ -1729,7 +1763,10 @@ def export(exportList,filename):
             for o in obj.Subtractions + guests:
                 r2,p2,c2 = getRepresentation(ifcfile,context,o,subtraction=True)
                 if DEBUG: print("      subtracting ",c2," : ",o.Label)
-                prod2 = ifcfile.createIfcOpeningElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,o.Label.encode("utf8"),None,None,p2,r2,None)
+                l = o.Label
+                if sys.version_info.major < 3:
+                    l = l.encode("utf8")
+                prod2 = ifcfile.createIfcOpeningElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,l,None,None,p2,r2,None)
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelVoidsElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Subtraction','',product,prod2)
 
@@ -1744,7 +1781,7 @@ def export(exportList,filename):
 
                 if isinstance(obj.IfcProperties,dict):
 
-                    # IfcProperties is a dictionary
+                    # IfcProperties is a dictionary (FreeCAD 0.18)
 
                     psets = {}
                     for key,value in obj.IfcProperties.items():
@@ -1766,7 +1803,8 @@ def export(exportList,filename):
 
                             #if DEBUG: print("      property ",key," : ",pvalue.encode("utf8"), " (", str(ptype), ") in ",pset)
                             if ptype in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
-                                pvalue = pvalue.encode("utf8")
+                                if sys.version_info.major < 3:
+                                    pvalue = pvalue.encode("utf8")
                             elif ptype == "IfcBoolean":
                                 if pvalue == ".T.":
                                     pvalue = True
@@ -1781,7 +1819,8 @@ def export(exportList,filename):
                                     try:
                                         pvalue = FreeCAD.Units.Quantity(pvalue).Value
                                     except:
-                                        pvalue = pvalue.encode("utf8")
+                                        if sys.version_info.major < 3:
+                                            pvalue = pvalue.encode("utf8")
                                         if DEBUG:print("      warning: unable to export property as numeric value:",key,pvalue)
                             p = ifcbin.createIfcPropertySingleValue(str(key),str(ptype),pvalue)
                             psets.setdefault(pset,[]).append(p)
@@ -1807,10 +1846,14 @@ def export(exportList,filename):
                                 val = sheet.get('D'+str(n))
                             else:
                                 val = ''
-                            if isinstance(key, unicode):
+                            if sys.version_info.major < 3 and isinstance(key, unicode):
                                 key = key.encode("utf8")
                             else:
                                 key = str(key)
+                            if sys.version_info.major < 3 and isinstance(tp, unicode):
+                                tp = tp.encode("utf8")
+                            else:
+                                tp = str(tp)
                             #tp = tp.encode("utf8")
                             if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
                                 val = val.encode("utf8")
@@ -1840,9 +1883,13 @@ def export(exportList,filename):
                                 print("key",prop["key"],type(prop["key"]))
                                 print("tp",prop["tp"],type(prop["tp"]))
                                 print("val",prop["val"],type(prop["val"]))
-                            props.append(ifcbin.createIfcPropertySingleValue(prop["key"],prop["tp"],prop["val"]))
-                        pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,cat,None,props)
-                        ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+                            if tp.lower().startswith("ifc"):
+                                props.append(ifcbin.createIfcPropertySingleValue(prop["key"],prop["tp"],prop["val"]))
+                            else:
+                                print("Unable to create a property of type:",tp)
+                        if props:
+                            pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,cat,None,props)
+                            ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
 
         if hasattr(obj,"IfcAttributes"):
 
@@ -1866,7 +1913,8 @@ def export(exportList,filename):
                             val = val.strip('"')
                             #if DEBUG: print("      property ",key," : ",val.encode("utf8"), " (", str(tp), ")")
                             if tp in ["IfcLabel","IfcText","IfcIdentifier",'IfcDescriptiveMeasure']:
-                                val = val.encode("utf8")
+                                if sys.version_info.major < 3:
+                                    val = val.encode("utf8")
                             elif tp == "IfcBoolean":
                                 if val == ".T.":
                                     val = True
@@ -2098,7 +2146,10 @@ def export(exportList,filename):
                             elif o.Name in subproducts:
                                 relobjs.append(subproducts[o.Name])
         if relobjs:
-            mat = ifcfile.createIfcMaterial(m.Label.encode("utf8"))
+            l = m.Label
+            if sys.version_info.major < 3:
+                l = l.encode("utf8")
+            mat = ifcfile.createIfcMaterial(l)
             materials[m.Label] = mat
             rgb = None
             for colorslot in ["Color","DiffuseColor","ViewColor"]:
@@ -2110,7 +2161,7 @@ def export(exportList,filename):
             if rgb:
                 col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
                 ssr = ifcbin.createIfcSurfaceStyleRendering(col)
-                iss = ifcfile.createIfcSurfaceStyle(m.Label.encode("utf8"),"BOTH",[ssr])
+                iss = ifcfile.createIfcSurfaceStyle(l,"BOTH",[ssr])
                 psa = ifcfile.createIfcPresentationStyleAssignment([iss])
                 isi = ifcfile.createIfcStyledItem(None,[psa],None)
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
@@ -2143,7 +2194,9 @@ def export(exportList,filename):
                 if o in products.keys():
                     children.append(products[o])
             if children:
-                name = str(FreeCAD.ActiveDocument.getObject(g[0]).Label.encode("utf8"))
+                name = FreeCAD.ActiveDocument.getObject(g[0]).Label
+                if sys.version_info.major < 3:
+                    name = name.encode("utf8")
                 grp = ifcfile.createIfcGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,name,'',None)
                 products[g[0]] = grp
                 spatialelements[g[0]] = grp
@@ -2186,7 +2239,10 @@ def export(exportList,filename):
                 l = anno.Position
                 pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
                 tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
-                txt = ifcfile.createIfcTextLiteral(";".join(anno.LabelText).encode("utf8"),tpl,"LEFT")
+                s = ";".join(anno.LabelText)
+                if sys.version_info.major < 3:
+                    s = s.encode("utf8")
+                txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
                 reps = [txt]
 
             for coldef in ["LineColor","TextColor","ShapeColor"]:
@@ -2206,7 +2262,10 @@ def export(exportList,filename):
 
             shp = ifcfile.createIfcShapeRepresentation(context,'Annotation','Annotation2D',reps)
             rep = ifcfile.createIfcProductDefinitionShape(None,None,[shp])
-            ann = ifcfile.createIfcAnnotation(ifcopenshell.guid.compress(uuid.uuid1().hex),history,anno.Label.encode('utf8'),'',None,gpl,rep)
+            l = anno.Label
+            if sys.version_info.major < 3:
+                l = l.encode("utf8")
+            ann = ifcfile.createIfcAnnotation(ifcopenshell.guid.compress(uuid.uuid1().hex),history,l,'',None,gpl,rep)
             annos.append(ann)
         if annos:
             if not defaulthost:
@@ -2238,11 +2297,22 @@ def export(exportList,filename):
 def buildAddress(obj,ifcfile):
 
 
-    a = obj.Address.encode("utf8") or None
-    p = obj.PostalCode.encode("utf8") or None
-    t = obj.City.encode("utf8") or None
-    r = obj.Region.encode("utf8") or None
-    c = obj.Country.encode("utf8") or None
+    a = obj.Address or None
+    p = obj.PostalCode or None
+    t = obj.City or None
+    r = obj.Region or None
+    c = obj.Country or None
+    if sys.version_info.major < 3:
+        if a:
+            a = a.encode("utf8")
+        if p:
+            p = p.encode("utf8")
+        if t:
+            t = t.encode("utf8")
+        if r:
+            r = r.encode("utf8")
+        if c:
+            c = c.encode("utf8")
     if a or p or t or r or c:
         addr = ifcfile.createIfcPostalAddress("SITE",'Site Address','',None,[a],None,t,r,p,c)
     else:
@@ -2762,7 +2832,9 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 if hasattr(obj,"Material"):
                     if obj.Material:
                         if obj.Material.isDerivedFrom("App::MaterialObject"):
-                            m = obj.Material.Label.encode("utf8")
+                            m = obj.Material.Label
+                            if sys.version_info.major < 3:
+                                m = m.encode("utf8")
                 col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
                 ssr = ifcbin.createIfcSurfaceStyleRendering(col)
                 iss = ifcfile.createIfcSurfaceStyle(m,"BOTH",[ssr])
