@@ -668,7 +668,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if DEBUG: print("clone ",end="")
                     else:
                         if GET_EXTRUSIONS:
-                            ex = Arch.getExtrusionData(shape) # is this an extrusion?
+                            if ptype in ["IfcWall","IfcWallStandardCase"]:
+                                sortmethod = "z"
+                            else:
+                                sortmethod = "area"
+                            ex = Arch.getExtrusionData(shape,sortmethod) # is this an extrusion?
                             if ex:
                                 # check for extrusion profile
                                 baseface = None
@@ -701,7 +705,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     if DraftGeomUtils.hasCurves(ex[0]) or len(ex[0].Wires) != 1:
                                         # curves or holes? We just make a Part face
                                         baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
-                                        # bug in ifcopenshell? Some faces of a shell may have non-null placement
+                                        # bug/feature in ifcopenshell? Some faces of a shell may have non-null placement
                                         # workaround to remove the bad placement: exporting/reimporting as step
                                         if not ex[0].Placement.isNull():
                                             import tempfile
@@ -2521,12 +2525,13 @@ def checkRectangle(edges):
     """ checkRectangle(edges=[]): This function checks whether the given form rectangle
        or not. It will return True when edges form rectangular shape or return False
        when edges not form a rectangular."""
+    if len(edges) != 4:
+        return False
     angles = [round(getEdgesAngle(edges[0], edges[1])), round(getEdgesAngle(edges[0], edges[2])),
             round(getEdgesAngle(edges[0], edges[3]))]
     if angles.count(90) == 2 and (angles.count(180) == 1 or angles.count(0) == 1):
         return True
-    else:
-        return False
+    return False
 
 def getProfile(ifcfile,p):
 
@@ -2545,13 +2550,18 @@ def getProfile(ifcfile,p):
             # extruded ellipse
             profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
     elif (checkRectangle(p.Edges)):
-        pxvc = ifcbin.createIfcDirection((1.0,0.0))
+        # arbitrarily use the first edge as the rectangle orientation
+        d = vec(p.Edges[0])
+        d.normalize()
+        pxvc = ifcbin.createIfcDirection(tuple(d))
         povc = ifcbin.createIfcCartesianPoint((0.0,0.0))
         pt = ifcbin.createIfcAxis2Placement2D(povc,pxvc)
-        semiPerimeter = p.Length/2
-        diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
-        b = max(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
-        h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
+        #semiPerimeter = p.Length/2
+        #diff = math.sqrt(semiPerimeter**2 - 4*p.Area)
+        #b = max(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
+        #h = min(abs((semiPerimeter + diff)/2),abs((semiPerimeter - diff)/2))
+        b = p.Edges[0].Length
+        h = p.Edges[1].Length
         profile = ifcfile.createIfcRectangleProfileDef("AREA",'rectangular',pt,b,h)
     elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
         # face with holes

@@ -1222,9 +1222,10 @@ def rebuildArchShape(objects=None):
     FreeCAD.ActiveDocument.recompute()
 
 
-def getExtrusionData(shape):
-    """getExtrusionData(shape): returns a base face and an extrusion vector
-    if this shape can be described as a perpendicular extrusion, or None if not."""
+def getExtrusionData(shape,sortmethod="area"):
+    """getExtrusionData(shape,sortmethod): returns a base face and an extrusion vector
+    if this shape can be described as a perpendicular extrusion, or None if not.
+    sortmethod can be "area" (default) or "z"."""
     if shape.isNull():
         return None
     if not shape.Solids:
@@ -1264,8 +1265,11 @@ def getExtrusionData(shape):
             else:
                 valids.append([faces[pair[1]][0],faces[pair[0]][0].CenterOfMass.sub(faces[pair[1]][0].CenterOfMass)])
     if valids:
-        # sort by smallest area
-        valids.sort(key=lambda v: v[0].Area)
+        if sortmethod == "z":
+            valids.sort(key=lambda v: v[0].CenterOfMass.z)
+        else:
+            # sort by smallest area
+            valids.sort(key=lambda v: v[0].Area)
         return valids[0]
     return None
 
