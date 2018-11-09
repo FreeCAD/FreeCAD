@@ -2139,6 +2139,27 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             delete geoNew;
             rebuildVertexIndex();
 
+            
+            auto handleinternalalignment = [this] (Constraint * constr, int GeoId, PointPos & secondPos) {
+                if( constr->Type == Sketcher::InternalAlignment && 
+                    ( constr->AlignmentType == Sketcher::EllipseMajorDiameter ||   
+                        constr->AlignmentType == Sketcher::EllipseMinorDiameter ) ) {
+                    
+                    Base::Vector3d sp = getPoint(constr->First,start);
+                    Base::Vector3d ep = getPoint(constr->First,end);
+                
+                    Base::Vector3d ee = getPoint(GeoId,start);
+                
+                    if( (ee-sp).Length() < (ee-ep).Length() ) {
+                        secondPos = Sketcher::start;
+                    }
+                    else {
+                        secondPos = Sketcher::end;
+                    }
+                }
+            };
+            
+            
             PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
             ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
             for (std::vector<Constraint *>::const_iterator it=constraints.begin();
@@ -2146,12 +2167,28 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 Constraint *constr = *(it);
                 if (secondPos1 == Sketcher::none && (constr->First == GeoId1  && constr->Second == GeoId)) {
                     constrType1= Sketcher::Coincident;
-                    secondPos1 = constr->FirstPos;
+                    if(constr->FirstPos == Sketcher::none){
+                        handleinternalalignment(constr, GeoId, secondPos1);
+                    }
+                    else {
+                        secondPos1 = constr->FirstPos;
+                    }
+                    
                 } else if(secondPos2 == Sketcher::none && (constr->First == GeoId2  && constr->Second == GeoId)) {
                     constrType2 = Sketcher::Coincident;
-                    secondPos2 = constr->FirstPos;
+                    
+                    if(constr->FirstPos == Sketcher::none){
+                        handleinternalalignment(constr, GeoId, secondPos2);
+                    }
+                    else {
+                        secondPos2 = constr->FirstPos;
+                    }
                 }
             }
+            
+            if( (constrType1 == Sketcher::Coincident && secondPos1 == Sketcher::none) || 
+                (constrType2 == Sketcher::Coincident && secondPos2 == Sketcher::none))
+                THROWM(ValueError,"Invalid position Sketcher::none when creating a Coincident constraint")
 
             // constrain the trimming points on the corresponding geometries
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
