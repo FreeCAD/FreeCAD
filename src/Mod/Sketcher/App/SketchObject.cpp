@@ -2159,6 +2159,17 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 }
             };
             
+            auto handlemultipleintersection = [this] (Constraint * constr, int GeoId, PointPos pos, PointPos & secondPos) {
+                
+                Base::Vector3d cp = getPoint(constr->First,constr->FirstPos);
+            
+                Base::Vector3d ee = getPoint(GeoId,pos);
+            
+                if( (ee-cp).Length() < Precision::Confusion() ) {
+                    secondPos = constr->FirstPos;
+                }
+            };
+            
             
             PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
             ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
@@ -2171,7 +2182,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                         handleinternalalignment(constr, GeoId, secondPos1);
                     }
                     else {
-                        secondPos1 = constr->FirstPos;
+                        handlemultipleintersection(constr, GeoId, start, secondPos1);
                     }
                     
                 } else if(secondPos2 == Sketcher::none && (constr->First == GeoId2  && constr->Second == GeoId)) {
@@ -2181,7 +2192,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                         handleinternalalignment(constr, GeoId, secondPos2);
                     }
                     else {
-                        secondPos2 = constr->FirstPos;
+                        handlemultipleintersection(constr, GeoId, end, secondPos2);
                     }
                 }
             }
