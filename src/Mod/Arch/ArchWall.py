@@ -787,7 +787,8 @@ class _Wall(ArchComponent.Component):
                         if len(obj.Base.Shape.Faces) >= obj.Face:
                             face = obj.Base.Shape.Faces[obj.Face-1]
                             # this wall is based on a specific face of its base object
-                            normal = face.normalAt(0,0)
+                            if obj.Normal != Vector(0,0,0):
+                                normal = face.normalAt(0,0)
                             if normal.getAngle(Vector(0,0,1)) > math.pi/4:
                                 normal.multiply(width)
                                 base = face.extrude(normal)
@@ -917,6 +918,8 @@ class _Wall(ArchComponent.Component):
             placement = FreeCAD.Placement()
         if base and placement:
             extrusion = normal.multiply(height)
+            if placement.Rotation.Angle > 0:
+                extrusion = placement.inverse().Rotation.multVec(extrusion)
             return (base,extrusion,placement)
         return None
 
