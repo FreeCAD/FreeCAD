@@ -1564,7 +1564,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
                 double det = -dir1.x*dir2.y + dir2.x*dir1.y;
 
-                if(abs(det) < Precision::Confusion())
+                if (std::abs(det) < Precision::Confusion())
                     throw Base::RuntimeError("No intersection of normals"); // no intersection of normals
 
                 Base::Vector3d refp1 = curve1->pointAtParameter(refparam1);
