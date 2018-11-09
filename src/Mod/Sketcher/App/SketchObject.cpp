@@ -1862,6 +1862,17 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         std::swap(GeoId1,GeoId2);
         std::swap(point1,point2);
     }
+    
+    auto handlemultipleintersection = [this] (Constraint * constr, int GeoId, PointPos pos, PointPos & secondPos) {
+        
+        Base::Vector3d cp = getPoint(constr->First,constr->FirstPos);
+    
+        Base::Vector3d ee = getPoint(GeoId,pos);
+    
+        if( (ee-cp).Length() < Precision::Confusion() ) {
+            secondPos = constr->FirstPos;
+        }
+    };
 
     Part::Geometry *geo = geomlist[GeoId];
     if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
@@ -2056,12 +2067,16 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 Constraint *constr = *(it);
                 if (secondPos1 == Sketcher::none && (constr->First == GeoId1  && constr->Second == GeoId)) {
                     constrType1= Sketcher::Coincident;
-                    secondPos1 = constr->FirstPos;
+                    handlemultipleintersection(constr, GeoId, start, secondPos1);
                 } else if(secondPos2 == Sketcher::none && (constr->First == GeoId2  && constr->Second == GeoId)) {
                     constrType2 = Sketcher::Coincident;
-                    secondPos2 = constr->FirstPos;
+                    handlemultipleintersection(constr, GeoId, end, secondPos2);
                 }
             }
+            
+            if( (constrType1 == Sketcher::Coincident && secondPos1 == Sketcher::none) || 
+                (constrType2 == Sketcher::Coincident && secondPos2 == Sketcher::none))
+                THROWM(ValueError,"Invalid position Sketcher::none when creating a Coincident constraint")
 
             // constrain the trimming points on the corresponding geometries
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
@@ -2157,19 +2172,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                         secondPos = Sketcher::end;
                     }
                 }
-            };
-            
-            auto handlemultipleintersection = [this] (Constraint * constr, int GeoId, PointPos pos, PointPos & secondPos) {
-                
-                Base::Vector3d cp = getPoint(constr->First,constr->FirstPos);
-            
-                Base::Vector3d ee = getPoint(GeoId,pos);
-            
-                if( (ee-cp).Length() < Precision::Confusion() ) {
-                    secondPos = constr->FirstPos;
-                }
-            };
-            
+            };            
             
             PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
             ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
