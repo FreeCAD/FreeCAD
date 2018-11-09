@@ -501,14 +501,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                         if it.Items[0].id() == r.id():
                                             colors[m.RepresentedMaterial.id()] = (c.Red,c.Green,c.Blue)
 
-    # move IfcGrids from products to annotations
+    # remove any leftover annotations from products
     tp = []
     for product in products:
         if product.is_a("IfcGrid") and not (product in annotations):
             annotations.append(product)
-        else:
+        elif not (product in annotations):
             tp.append(product)
-    products = tp
+    products = sorted(tp,key=lambda prod: prod.id())
 
     # only import a list of IDs and their children
     if only:
@@ -526,7 +526,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     from FreeCAD import Base
     progressbar = Base.ProgressIndicator()
     progressbar.start("Importing IFC objects...",len(products))
-    if DEBUG: print("Processing",len(products),"objects...")
+    if DEBUG: print("Processing",len(products),"BIM objects...")
 
     if FITVIEW_ONIMPORT and FreeCAD.GuiUp:
         overallboundbox = None
@@ -1076,6 +1076,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # processing remaining (normal) groups
 
     swallowed = []
+    remaining = {}
     for host,children in groups.items():
         if ifcfile[host].is_a("IfcGroup"):
             if ifcfile[host].Name:
@@ -1093,7 +1094,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     grp.addObject(objects[child])
                     swallowed.append(child)
                 else:
-                    if DEBUG: print("unable to add object: #", child, "  to group: #", ifcfile[host].id(), ", ", grp_name)
+                    remaining[child] = grp
 
     if MERGE_MODE_ARCH == 3:
 
@@ -1163,7 +1164,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         Arch.addComponents(cobs,objects[host])
                         if DEBUG: FreeCAD.ActiveDocument.recompute()
 
-        if DEBUG: print("done.")
+        if DEBUG and first: print("done.")
 
         FreeCAD.ActiveDocument.recompute()
 
@@ -1178,13 +1179,21 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     # 2D elements
 
-    if DEBUG and annotations:print("Creating 2D geometry...",end="")
+    if DEBUG and annotations:
+        print("Processing",len(annotations),"2D objects...")
+    prodcount = count
+    count = 0
 
     scaling = getScaling(ifcfile)
     #print "scaling factor =",scaling
     for annotation in annotations:
+
         anno = None
         aid = annotation.id()
+
+        count += 1
+        if DEBUG: print(count,"/",len(annotations),"object #"+str(aid),":",annotation.is_a(),end="")
+
         if aid in skip:
             continue # user given id skip list
         if annotation.is_a() in SKIP:
@@ -1221,6 +1230,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if PREFIX_NUMBERS:
                     name = "ID" + str(aid) + " " + name
                 anno = Arch.makeAxisSystem(axes,name)
+            print(" axis")
         else:
             name = "Annotation"
             if annotation.Name:
@@ -1233,27 +1243,34 @@ def insert(filename,docname,skip=[],only=[],root=None):
             shapes2d = []
             for rep in annotation.Representation.Representations:
                 if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
-                    shapes2d.extend(setRepresentation(rep,scaling))
+                    sh = setRepresentation(rep,scaling)
+                    if sh in FreeCAD.ActiveDocument.Objects: 
+                        # dirty hack: setRepresentation might return an object directly if non-shape based (texts for ex)
+                        anno = sh
+                    else:
+                        shapes2d.extend(sh)
             if shapes2d:
                 sh = Part.makeCompound(shapes2d)
-                pc = str(int((float(count)/(len(products)+len(annotations))*100)))+"% "
-                if DEBUG: print(pc,"creating object ",aid," : Annotation with shape: ",sh)
+                if DEBUG: print(" shape")
                 anno = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 anno.Shape = sh
                 p = getPlacement(annotation.ObjectPlacement,scaling)
                 if p: # and annotation.is_a("IfcAnnotation"):
                     anno.Placement = p
-        # placing in container if needed
-        if anno:
-            for host,children in additions.items():
-                if (aid in children) and (host in objects.keys()):
-                    Arch.addComponents(anno,objects[host])
+            else:
+                if DEBUG: print(" no shape")
 
-        count += 1
+        # placing in container if needed
+
+        if anno:
+            if aid in remaining.keys():
+                remaining[aid].addObject(anno)
+            else:
+                for host,children in additions.items():
+                    if (aid in children) and (host in objects.keys()):
+                        Arch.addComponents(anno,objects[host])
 
     FreeCAD.ActiveDocument.recompute()
-
-    if DEBUG and annotations: print("done.")
 
     # Materials
 
@@ -1385,7 +1402,15 @@ class recycler:
             return c
 
     def createIfcAxis2Placement3D(self,p1,p2,p3):
-        key = str(p1.Coordinates) + str(p2.DirectionRatios) + str(p3.DirectionRatios)
+        if p2:
+            tp2 = str(p2.DirectionRatios)
+        else:
+            tp2 = "None"
+        if p3:
+            tp3 = str(p3.DirectionRatios)
+        else:
+            tp3 = "None"
+        key = str(p1.Coordinates) + tp2 + tp3
         if self.compress and key in self.axis2placement3ds:
             self.spared += 1
             return self.axis2placement3ds[key]
@@ -1515,7 +1540,7 @@ def export(exportList,filename):
     # clean objects list of unwanted types
     objectslist = [obj for obj in objectslist if obj not in annotations]
     objectslist = Arch.pruneIncluded(objectslist)
-    objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Material","MaterialContainer"]]
+    objectslist = [obj for obj in objectslist if Draft.getType(obj) not in ["Material","MaterialContainer","WorkingPlaneProxy"]]
     if FULL_PARAMETRIC:
         objectslist = Arch.getAllChildren(objectslist)
     products = {} # { Name: IfcEntity, ... }
@@ -1934,7 +1959,7 @@ def export(exportList,filename):
             pass
 
         # Quantities
-        
+
         if hasattr(obj,"IfcAttributes"):
             quantities = []
             if ("ExportHeight" in obj.IfcAttributes) and obj.IfcAttributes["ExportHeight"] and hasattr(obj,"Height"):
@@ -2168,54 +2193,10 @@ def export(exportList,filename):
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
             ifcfile.createIfcRelAssociatesMaterial(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'MaterialLink','',relobjs,mat)
 
-    # groups
-
-    sortedgroups = []
-    while groups:
-        for g in groups.keys():
-            okay = True
-            for c in groups[g]:
-                if Draft.getType(FreeCAD.ActiveDocument.getObject(c)) in ["Group","VisGroup"]:
-                    okay = False
-                    for s in sortedgroups:
-                        if s[0] == c:
-                            okay = True
-            if okay:
-                sortedgroups.append([g,groups[g]])
-        for g in sortedgroups:
-            if g[0] in groups.keys():
-                del groups[g[0]]
-    #print "sorted groups:",sortedgroups
-    containers = {}
-    for g in sortedgroups:
-        if g[1]:
-            children = []
-            for o in g[1]:
-                if o in products.keys():
-                    children.append(products[o])
-            if children:
-                name = FreeCAD.ActiveDocument.getObject(g[0]).Label
-                if sys.version_info.major < 3:
-                    name = name.encode("utf8")
-                grp = ifcfile.createIfcGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,name,'',None)
-                products[g[0]] = grp
-                spatialelements[g[0]] = grp
-                ass = ifcfile.createIfcRelAssignsToGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupLink','',children,None,grp)
-    # stack groups inside containers
-    stack = {}
-    for g in sortedgroups:
-        go = FreeCAD.ActiveDocument.getObject(g[0])
-        for parent in go.InList:
-            if hasattr(parent,"Group") and (go in parent.Group):
-                if (parent.Name in spatialelements) and (g[0] in spatialelements):
-                    stack.setdefault(parent.Name,[]).append(spatialelements[g[0]])
-    for k,v in stack.items():
-        ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupStackLink','',spatialelements[k],v)
-
     # 2D objects
 
+    annos = {}
     if EXPORT_2D:
-        annos = []
         curvestyles = {}
         if annotations and DEBUG: print("exporting 2D objects...")
         for anno in annotations:
@@ -2228,15 +2209,21 @@ def export(exportList,filename):
                 sh = anno.Shape.copy()
                 sh.scale(0.001) # to meters
                 ehc = []
+                curves = []
                 for w in sh.Wires:
-                    reps.append(createCurve(ifcfile,w))
+                    curves.append(createCurve(ifcfile,w))
                     for e in w.Edges:
                         ehc.append(e.hashCode())
+                if curves:
+                    reps.append(ifcfile.createIfcGeometricCurveSet(curves))
+                curves = []
                 for e in sh.Edges:
                     if e.hashCode not in ehc:
-                        reps.append(createCurve(ifcfile,e))
+                        curves.append(createCurve(ifcfile,e))
+                if curves:
+                    reps.append(ifcfile.createIfcGeometricCurveSet(curves))
             elif anno.isDerivedFrom("App::Annotation"):
-                l = anno.Position
+                l = FreeCAD.Vector(anno.Position).multiply(0.001)
                 pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
                 tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
                 s = ";".join(anno.LabelText)
@@ -2244,6 +2231,18 @@ def export(exportList,filename):
                     s = s.encode("utf8")
                 txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
                 reps = [txt]
+            elif Draft.getType(anno) == "DraftText":
+                l = FreeCAD.Vector(anno.Placement.Base).multiply(0.001)
+                pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
+                tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
+                s = ";".join(anno.Text)
+                if sys.version_info.major < 3:
+                    s = s.encode("utf8")
+                txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
+                reps = [txt]
+            else:
+                print("Unable to handle object",anno.Label)
+                continue
 
             for coldef in ["LineColor","TextColor","ShapeColor"]:
                 if hasattr(obj.ViewObject,coldef):
@@ -2266,12 +2265,70 @@ def export(exportList,filename):
             if sys.version_info.major < 3:
                 l = l.encode("utf8")
             ann = ifcfile.createIfcAnnotation(ifcopenshell.guid.compress(uuid.uuid1().hex),history,l,'',None,gpl,rep)
-            annos.append(ann)
-        if annos:
+            annos[anno.Name] = ann
+
+    # groups
+
+    sortedgroups = []
+    swallowed = []
+    while groups:
+        for g in groups.keys():
+            okay = True
+            for c in groups[g]:
+                if Draft.getType(FreeCAD.ActiveDocument.getObject(c)) in ["Group","VisGroup"]:
+                    okay = False
+                    for s in sortedgroups:
+                        if s[0] == c:
+                            okay = True
+            if okay:
+                sortedgroups.append([g,groups[g]])
+        for g in sortedgroups:
+            if g[0] in groups.keys():
+                del groups[g[0]]
+    #print "sorted groups:",sortedgroups
+    containers = {}
+    for g in sortedgroups:
+        if g[1]:
+            children = []
+            for o in g[1]:
+                if o in products.keys():
+                    children.append(products[o])
+                elif o in annos.keys():
+                    children.append(annos[o])
+                    swallowed.append(annos[o])
+            if children:
+                name = FreeCAD.ActiveDocument.getObject(g[0]).Label
+                if sys.version_info.major < 3:
+                    name = name.encode("utf8")
+                grp = ifcfile.createIfcGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,name,'',None)
+                products[g[0]] = grp
+                spatialelements[g[0]] = grp
+                ass = ifcfile.createIfcRelAssignsToGroup(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupLink','',children,None,grp)
+
+    # stack groups inside containers
+
+    stack = {}
+    for g in sortedgroups:
+        go = FreeCAD.ActiveDocument.getObject(g[0])
+        for parent in go.InList:
+            if hasattr(parent,"Group") and (go in parent.Group):
+                if (parent.Name in spatialelements) and (g[0] in spatialelements):
+                    stack.setdefault(parent.Name,[]).append(spatialelements[g[0]])
+    for k,v in stack.items():
+        ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'GroupStackLink','',spatialelements[k],v)
+
+    # add remaining 2D objects to default host
+
+    if annos:
+        remaining = [anno for anno in annos.values() if not anno in swallowed]
+        if remaining:
             if not defaulthost:
                 defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'DefaultStoreyLink','',buildings[0],[defaulthost])
-            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'AnnotationsLink','',annos,defaulthost)
+            ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'AnnotationsLink','',remaining,defaulthost)
+
+
+
 
 
     if DEBUG: print("writing ",filename,"...")
@@ -2287,7 +2344,7 @@ def export(exportList,filename):
     os.remove(templatefile)
 
     if DEBUG and ifcbin.compress:
-        f = pyopen(filename,"rb")
+        f = pyopen(filename,"r")
         s = len(f.read().split("\n"))
         f.close()
         print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
@@ -2459,7 +2516,7 @@ def getEdgesAngle(edge1, edge2):
     angle = vec1.getAngle(vec2)
     angle = math.degrees(angle)
     return angle
- 
+
 def checkRectangle(edges):
     """ checkRectangle(edges=[]): This function checks whether the given form rectangle
        or not. It will return True when edges form rectangular shape or return False
@@ -2917,6 +2974,20 @@ def setRepresentation(representation,scaling=1000):
                     a = -DraftVecUtils.angle(v)
                     e.rotate(bc.Curve.Center,FreeCAD.Vector(0,0,1),math.degrees(a))
                     result.append(e)
+            elif el.is_a("IfcCompositeCurve"):
+                for base in el.Segments:
+                    if base.ParentCurve.is_a("IfcPolyline"):
+                        bc = getPolyline(base.ParentCurve)
+                        result.append(bc)
+                    elif base.ParentCurve.is_a("IfcCircle"):
+                        bc = getCircle(base.ParentCurve)
+                        e = Part.ArcOfCircle(bc.Curve,math.radians(t1),math.radians(t2)).toShape()
+                        d = base.Position.RefDirection.DirectionRatios
+                        v = FreeCAD.Vector(d[0],d[1],d[2] if len(d) > 2 else 0)
+                        a = -DraftVecUtils.angle(v)
+                        e.rotate(bc.Curve.Center,FreeCAD.Vector(0,0,1),math.degrees(a))
+                        result.append(e)
+
         return result
 
     result = []
@@ -2936,6 +3007,9 @@ def setRepresentation(representation,scaling=1000):
                         result.append(r)
                 else:
                     result = preresult
+            elif item.is_a("IfcTextLiteral"):
+                t = Draft.makeText([item.Literal],point=getPlacement(item.Placement,scaling).Base)
+                return t # dirty hack... Object creation should not be done here
     elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve"]:
         result = getCurveSet(representation)
     return result

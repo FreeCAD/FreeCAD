@@ -763,13 +763,12 @@ class ViewProviderComponent:
     def onChanged(self,vobj,prop):
 
         #print(vobj.Object.Name, " : changing ",prop)
-        if prop == "Visibility":
+        #if prop == "Visibility":
             #for obj in vobj.Object.Additions+vobj.Object.Subtractions:
             #    if (Draft.getType(obj) == "Window") or (Draft.isClone(obj,"Window",True)):
             #        obj.ViewObject.Visibility = vobj.Visibility
             # this would now hide all previous windows... Not the desired behaviour anymore.
-            pass
-        elif prop == "DiffuseColor":
+        if prop == "DiffuseColor":
             if hasattr(vobj.Object,"CloneOf"):
                 if vobj.Object.CloneOf:
                     if len(vobj.Object.CloneOf.ViewObject.DiffuseColor) > 1:

@@ -542,7 +542,7 @@ class _ViewProviderAxis:
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.LEFT
                                 t = vobj.Object.Labels[i]
-                                if isinstance(t,unicode):
+                                if sys.version_info.major < 3 and isinstance(t,unicode):
                                     t = t.encode("utf8")
                                 tx.string.setValue(t)
                                 if hasattr(vobj,"FontSize"):

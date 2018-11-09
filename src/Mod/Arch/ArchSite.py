@@ -508,6 +508,7 @@ class _ViewProviderSite(ArchFloor._ViewProviderFloor):
     def __init__(self,vobj):
 
         ArchFloor._ViewProviderFloor.__init__(self,vobj)
+        vobj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
         self.setProperties(vobj)
 
     def setProperties(self,vobj):
