@@ -548,7 +548,8 @@ class ViewProviderBuildingPart:
             colors = self.getColors(obj)
             if colors and hasattr(obj.ViewObject,"DiffuseColor"):
                 if len(colors) == len(obj.Shape.Faces):
-                    obj.ViewObject.DiffuseColor = colors
+                    if colors != obj.ViewObject.DiffuseColor:
+                        obj.ViewObject.DiffuseColor = colors
 
     def getColors(self,obj):
 
@@ -575,6 +576,8 @@ class ViewProviderBuildingPart:
         return colors
 
     def onChanged(self,vobj,prop):
+
+        #print(vobj.Object.Label," - ",prop)
 
         if prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):
