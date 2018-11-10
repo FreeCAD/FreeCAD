@@ -1546,7 +1546,23 @@ Document::readObjects(Base::XMLReader& reader)
         DocumentObject* pObj = getObject(name.c_str());
         if (pObj) { // check if this feature has been registered
             pObj->setStatus(ObjectStatus::Restore, true);
-            pObj->Restore(reader);
+            try {
+                pObj->Restore(reader);
+            }
+            // Try to continue only for certain exception types if not handled
+            // by the feature type. For all other exception types abort the process.
+            catch (const Base::UnicodeError &e) {
+                e.ReportException();
+            }
+            catch (const Base::ValueError &e) {
+                e.ReportException();
+            }
+            catch (const Base::IndexError &e) {
+                e.ReportException();
+            }
+            catch (const Base::RuntimeError &e) {
+                e.ReportException();
+            }
             pObj->setStatus(ObjectStatus::Restore, false);
         }
         reader.readEndElement("Object");
