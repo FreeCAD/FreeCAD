@@ -1029,6 +1029,15 @@ bool Document::hasPendingTransaction() const
         return false;
 }
 
+bool Document::isTransactionEmpty() const
+{
+    if (d->activeUndoTransaction) {
+        return d->activeUndoTransaction->isEmpty();
+    }
+
+    return true;
+}
+
 void Document::clearUndos()
 {
     if (d->activeUndoTransaction)

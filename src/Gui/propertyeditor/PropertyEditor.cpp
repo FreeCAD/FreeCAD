@@ -104,9 +104,12 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
     if (autoupdate) {
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (doc) {
-            if (doc->isTouched()) {
+            if (!doc->isTransactionEmpty()) {
                 doc->commitTransaction();
-                doc->recompute();
+                // Between opening and committing a transaction a recompute
+                // could already have been done
+                if (doc->isTouched())
+                    doc->recompute();
             }
             else {
                 doc->abortTransaction();
