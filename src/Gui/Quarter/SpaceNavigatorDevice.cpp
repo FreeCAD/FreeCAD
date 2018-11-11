@@ -47,6 +47,7 @@
 #include "NativeEvent.h"
 
 #ifdef HAVE_SPACENAV_LIB
+#include <QX11Info>
 #include <spnav.h>
 #endif //HAVE_SPACENAV_LIB
 
@@ -90,7 +91,7 @@ SpaceNavigatorDevice::SpaceNavigatorDevice()
 
 #ifdef HAVE_SPACENAV_LIB
   PRIVATE(this)->hasdevice =
-    spnav_open() == -1 ? false : true;
+    spnav_x11_open(QX11Info::display(), PRIVATE(this)->windowid) == -1 ? false : true;
 
   // FIXME: Use a debugmessage mechanism instead? (20101020 handegar)
   if (!PRIVATE(this)->hasdevice) {
@@ -107,7 +108,7 @@ SpaceNavigatorDevice::SpaceNavigatorDevice(QuarterWidget *quarter) :
 
 #ifdef HAVE_SPACENAV_LIB
     PRIVATE(this)->hasdevice =
-            spnav_open() == -1 ? false : true;
+            spnav_x11_open(QX11Info::display(), PRIVATE(this)->windowid) == -1 ? false : true;
 
     // FIXME: Use a debugmessage mechanism instead? (20101020 handegar)
     if (!PRIVATE(this)->hasdevice) {
@@ -135,7 +136,7 @@ SpaceNavigatorDevice::translateEvent(QEvent * event)
     XEvent * xev = ce->getEvent();
 
     spnav_event spev;
-    if(spnav_event(xev, &spev)) {
+    if(spnav_x11_event(xev, &spev)) {
       if(spev.type == SPNAV_EVENT_MOTION) {
         // Add rotation
         const float axislen = sqrt(spev.motion.rx*spev.motion.rx +
