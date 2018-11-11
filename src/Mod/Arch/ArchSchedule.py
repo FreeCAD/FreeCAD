@@ -22,6 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
+import sys
 import FreeCAD, time
 if FreeCAD.GuiUp:
     import FreeCADGui, Arch_rc, os
@@ -109,7 +110,11 @@ class _ArchSchedule:
                 # blank line
                 continue
             # write description
-            obj.Result.set("A"+str(i+2),obj.Description[i].encode("utf8"))
+            if sys.version_info.major >= 3:
+                # use unicode for python3
+                obj.Result.set("A"+str(i+2), obj.Description[i])
+            else:
+                obj.Result.set("A"+str(i+2), obj.Description[i].encode("utf8"))
             if verbose:
                 l= "OPERATION: "+obj.Description[i]
                 print (l)
@@ -205,7 +210,9 @@ class _ArchSchedule:
                     val = sumval
                     # get unit
                     if obj.Unit[i]:
-                        ustr = obj.Unit[i].encode("utf8")
+                        ustr = obj.Unit[i]
+                        if sys.version_info.major < 3:
+                            ustr = ustr.encode("utf8")
                         unit = ustr.replace("²","^2")
                         unit = unit.replace("³","^3")
                         if "2" in unit:

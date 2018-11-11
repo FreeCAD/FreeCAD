@@ -27,7 +27,6 @@
 # include <sstream>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include "Application.h"
@@ -47,6 +46,11 @@ DocumentT::DocumentT(Document* doc)
     document = doc->getName();
 }
 
+DocumentT::DocumentT(const std::string& name)
+{
+    document = name;
+}
+
 DocumentT::~DocumentT()
 {
 }
@@ -61,6 +65,11 @@ void DocumentT::operator=(const DocumentT& doc)
 void DocumentT::operator=(const Document* doc)
 {
     document = doc->getName();
+}
+
+void DocumentT::operator=(const std::string& name)
+{
+    document = name;
 }
 
 Document* DocumentT::getDocument() const
@@ -78,10 +87,10 @@ std::string DocumentT::getDocumentPython() const
     std::stringstream str;
     Document* doc = GetApplication().getActiveDocument();
     if (doc && document == doc->getName()) {
-        str << "FreeCAD.ActiveDocument";
+        str << "App.ActiveDocument";
     }
     else {
-        str << "FreeCAD.getDocument(\""
+        str << "App.getDocument(\""
             << document
             << "\")";
     }
@@ -136,10 +145,10 @@ std::string DocumentObjectT::getDocumentPython() const
     std::stringstream str;
     Document* doc = GetApplication().getActiveDocument();
     if (doc && document == doc->getName()) {
-        str << "FreeCAD.ActiveDocument";
+        str << "App.ActiveDocument";
     }
     else {
-        str << "FreeCAD.getDocument(\""
+        str << "App.getDocument(\""
             << document
             << "\")";
     }
@@ -171,10 +180,10 @@ std::string DocumentObjectT::getObjectPython() const
     std::stringstream str;
     Document* doc = GetApplication().getActiveDocument();
     if (doc && document == doc->getName()) {
-        str << "FreeCAD.ActiveDocument.";
+        str << "App.ActiveDocument.";
     }
     else {
-        str << "FreeCAD.getDocument(\""
+        str << "App.getDocument(\""
             << document
             << "\").";
     }

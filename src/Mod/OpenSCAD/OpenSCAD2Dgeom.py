@@ -28,6 +28,8 @@ __url__ = ["http://www.freecadweb.org"]
 This Script includes python functions to convert imported dxf geometry to Faces
 '''
 
+from functools import reduce
+
 class Overlappingfaces():
     '''combines overlapping faces together'''
     def __init__(self,facelist):

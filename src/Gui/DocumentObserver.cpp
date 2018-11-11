@@ -27,16 +27,177 @@
 # include <sstream>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include "Application.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
 #include "DocumentObserver.h"
+#include <App/Document.h>
 
 using namespace Gui;
 
+
+DocumentT::DocumentT()
+{
+}
+
+DocumentT::DocumentT(Document* doc)
+{
+    document = doc->getDocument()->getName();
+}
+
+DocumentT::DocumentT(const std::string& name)
+{
+    document = name;
+}
+
+DocumentT::~DocumentT()
+{
+}
+
+void DocumentT::operator=(const DocumentT& doc)
+{
+    if (this == &doc)
+        return;
+    document = doc.document;
+}
+
+void DocumentT::operator=(const Document* doc)
+{
+    document = doc->getDocument()->getName();
+}
+
+void DocumentT::operator=(const std::string& name)
+{
+    document = name;
+}
+
+Document* DocumentT::getDocument() const
+{
+    return Application::Instance->getDocument(document.c_str());
+}
+
+std::string DocumentT::getDocumentName() const
+{
+    return document;
+}
+
+std::string DocumentT::getGuiDocumentPython() const
+{
+    std::stringstream str;
+    Document* doc = Application::Instance->activeDocument();
+    if (doc && document == doc->getDocument()->getName()) {
+        str << "Gui.ActiveDocument";
+    }
+    else {
+        str << "Gui.getDocument(\""
+            << document
+            << "\")";
+    }
+    return str.str();
+}
+
+std::string DocumentT::getAppDocumentPython() const
+{
+    std::stringstream str;
+    Document* doc = Application::Instance->activeDocument();
+    if (doc && document == doc->getDocument()->getName()) {
+        str << "App.ActiveDocument";
+    }
+    else {
+        str << "App.getDocument(\""
+            << document
+            << "\")";
+    }
+    return str.str();
+}
+
+// -----------------------------------------------------------------------------
+
+ViewProviderT::ViewProviderT()
+{
+}
+
+ViewProviderT::ViewProviderT(ViewProviderDocumentObject* obj)
+{
+    object = obj->getObject()->getNameInDocument();
+    document = obj->getObject()->getDocument()->getName();
+}
+
+ViewProviderT::~ViewProviderT()
+{
+}
+
+void ViewProviderT::operator=(const ViewProviderT& obj)
+{
+    if (this == &obj)
+        return;
+    object = obj.object;
+    document = obj.document;
+}
+
+void ViewProviderT::operator=(const ViewProviderDocumentObject* obj)
+{
+    object = obj->getObject()->getNameInDocument();
+    document = obj->getObject()->getDocument()->getName();
+}
+
+Document* ViewProviderT::getDocument() const
+{
+    return Application::Instance->getDocument(document.c_str());
+}
+
+std::string ViewProviderT::getDocumentName() const
+{
+    return document;
+}
+
+std::string ViewProviderT::getGuiDocumentPython() const
+{
+    DocumentT doct(document);
+    return doct.getGuiDocumentPython();
+}
+
+std::string ViewProviderT::getAppDocumentPython() const
+{
+    DocumentT doct(document);
+    return doct.getAppDocumentPython();
+}
+
+ViewProviderDocumentObject* ViewProviderT::getViewProvider() const
+{
+    ViewProviderDocumentObject* obj = 0;
+    Document* doc = getDocument();
+    if (doc) {
+        obj = dynamic_cast<ViewProviderDocumentObject*>(doc->getViewProviderByName(object.c_str()));
+    }
+    return obj;
+}
+
+std::string ViewProviderT::getObjectName() const
+{
+    return object;
+}
+
+std::string ViewProviderT::getObjectPython() const
+{
+    std::stringstream str;
+    Document* doc = Application::Instance->activeDocument();
+    if (doc && document == doc->getDocument()->getName()) {
+        str << "Gui.ActiveDocument.";
+    }
+    else {
+        str << "Gui.getDocument(\""
+            << document
+            << "\").";
+    }
+
+    str << object;
+    return str.str();
+}
+
+// -----------------------------------------------------------------------------
 
 DocumentObserver::DocumentObserver()
 {
@@ -87,19 +248,6 @@ void DocumentObserver::detachDocument()
     this->connectDocumentUndo.disconnect();
     this->connectDocumentRedo.disconnect();
     this->connectDocumentDelete.disconnect();
-}
-
-void DocumentObserver::enableNotifications(DocumentObserver::Notifications value)
-{
-    this->connectDocumentCreatedObject.block(!(value & Create));
-    this->connectDocumentDeletedObject.block(!(value & Delete));
-    this->connectDocumentChangedObject.block(!(value & Change));
-    this->connectDocumentRelabelObject.block(!(value & Relabel));
-    this->connectDocumentActivateObject.block(!(value & Activate));
-    this->connectDocumentEditObject.block(!(value & Edit));
-    this->connectDocumentResetObject.block(!(value & Reset));
-    this->connectDocumentUndo.block(!(value & Undo));
-    this->connectDocumentRedo.block(!(value & Redo));
 }
 
 void DocumentObserver::slotUndoDocument(const Document& /*Doc*/)

@@ -93,6 +93,11 @@
                 <UserDocu>Return a list of face IDs which belong to a TopoFace</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="getEdgesByEdge" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of edge IDs which belong to a TopoEdge</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="getVolumesByFace" Const="true">
             <Documentation>
                 <UserDocu>Return a dict of volume IDs and face IDs which belong to a TopoFace</UserDocu>

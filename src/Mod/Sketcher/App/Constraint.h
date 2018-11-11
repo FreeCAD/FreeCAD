@@ -105,6 +105,11 @@ public:
         return Value;
     }
 
+    inline bool isDimensional() const {
+        return Type == Distance || Type == DistanceX || Type == DistanceY ||
+               Type == Radius || Type == Diameter || Type == Angle || Type == SnellsLaw;
+    }
+
     friend class PropertyConstraintList;
 
 private:

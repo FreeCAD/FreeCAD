@@ -633,6 +633,34 @@ std::list<int> FemMesh::getFacesByFace(const TopoDS_Face &face) const
     return result;
 }
 
+std::list<int> FemMesh::getEdgesByEdge(const TopoDS_Edge &edge) const
+{
+    std::list<int> result;
+    std::set<int> nodes_on_edge = getNodesByEdge(edge);
+
+    SMDS_EdgeIteratorPtr edge_iter = myMesh->GetMeshDS()->edgesIterator();
+    while (edge_iter->more()) {
+        const SMDS_MeshEdge* edge = static_cast<const SMDS_MeshEdge*>(edge_iter->next());
+        int numNodes = edge->NbNodes();
+
+        std::set<int> edge_nodes;
+        for (int i=0; i<numNodes; i++) {
+            edge_nodes.insert(edge->GetNode(i)->GetID());
+        }
+
+        std::vector<int> element_edge_nodes;
+        std::set_intersection(nodes_on_edge.begin(), nodes_on_edge.end(), edge_nodes.begin(), edge_nodes.end(),
+            std::back_insert_iterator<std::vector<int> >(element_edge_nodes));
+
+        if (element_edge_nodes.size() == static_cast<std::size_t>(numNodes)) {
+            result.push_back(edge->GetID());
+        }
+    }
+
+    result.sort();
+    return result;
+}
+
 /*! That function returns map containing volume ID and face number
  * as per CalculiX definition for tetrahedral elements. See CalculiX
  * documentation for the details.

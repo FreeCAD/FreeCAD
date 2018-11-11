@@ -41,6 +41,8 @@ except AttributeError:
         from PySide import QtGui
         return QtGui.QApplication.translate(context, text, None)
 
+import io
+
 try:
     import FreeCAD
     BaseError = FreeCAD.Base.FreeCADError
@@ -140,6 +142,8 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
         kwargs.update({'stdout':subprocess.PIPE,'stderr':subprocess.PIPE})
         p=subprocess.Popen(*args,**kwargs)
         stdoutd,stderrd = p.communicate()
+        stdoutd = stdoutd.decode("utf8")
+        stderrd = stderrd.decode("utf8")
         if p.returncode != 0:
             raise OpenSCADError('%s %s\n' % (stdoutd.strip(),stderrd.strip()))
             #raise Exception,'stdout %s\n stderr%s' %(stdoutd,stderrd)
@@ -173,7 +177,7 @@ def callopenscadstring(scadstr,outputext='csg'):
     import os,tempfile,time
     dir1=tempfile.gettempdir()
     inputfilename=os.path.join(dir1,'%s.scad' % next(tempfilenamegen))
-    inputfile = open(inputfilename,'w')
+    inputfile = io.open(inputfilename,'w', encoding="utf8")
     inputfile.write(scadstr)
     inputfile.close()
     outputfilename = callopenscad(inputfilename,outputext=outputext,\
@@ -194,7 +198,7 @@ def reverseimporttypes():
 
     importtypes={}
     import FreeCAD
-    for key,value in FreeCAD.getImportType().iteritems():
+    for key,value in FreeCAD.getImportType().items():
         if type(value) is str:
             getsetfromdict(importtypes,value).add(key)
         else:
@@ -211,6 +215,7 @@ def fcsubmatrix(m):
 def multiplymat(l,r):
     """multiply matrices given as lists of row vectors"""
     rt=zip(*r) #transpose r
+    rt=list(rt)
     mat=[]
     for y in range(len(rt)):
         mline=[]
@@ -221,7 +226,7 @@ def multiplymat(l,r):
 
 def isorthogonal(submatrix,precision=4):
     """checking if 3x3 Matrix is orthogonal (M*Transp(M)==I)"""
-    prod=multiplymat(submatrix,zip(*submatrix))
+    prod=multiplymat(submatrix,list(zip(*submatrix)))
     return [[round(f,precision) for f in line] \
         for line in prod]==[[1,0,0],[0,1,0],[0,0,1]]
 
@@ -561,8 +566,8 @@ def process_ObjectsViaOpenSCADShape(doc,children,name,maxmeshpoints=None):
         return process3D_ObjectsViaOpenSCADShape(children,name,maxmeshpoints)
     else:
         import FreeCAD
-        FreeCAD.Console.PrintError( unicode(translate('OpenSCAD',\
-            "Error all shapes must be either 2D or both must be 3D"))+u'\n')
+        FreeCAD.Console.PrintError( translate('OpenSCAD',\
+            "Error all shapes must be either 2D or both must be 3D")+u'\n')
 
 def process_ObjectsViaOpenSCAD(doc,children,name):
     if all((not obj.Shape.isNull() and obj.Shape.Volume == 0) \
@@ -573,8 +578,8 @@ def process_ObjectsViaOpenSCAD(doc,children,name):
         return process3D_ObjectsViaOpenSCAD(doc,children,name)
     else:
         import FreeCAD
-        FreeCAD.Console.PrintError( unicode(translate('OpenSCAD',\
-            "Error all shapes must be either 2D or both must be 3D"))+u'\n')
+        FreeCAD.Console.PrintError( translate('OpenSCAD',\
+            "Error all shapes must be either 2D or both must be 3D")+u'\n')
 
 def removesubtree(objs):
     def addsubobjs(obj,toremoveset):

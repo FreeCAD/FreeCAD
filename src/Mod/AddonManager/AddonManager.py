@@ -38,40 +38,26 @@ installed.
 '''
 import os
 import re
-import re
 import shutil
 import stat
 import sys
 import tempfile
 
 from PySide import QtCore, QtGui
-import FreeCAD,FreeCADGui
+import FreeCAD
+import FreeCADGui
 if sys.version_info.major < 3:
     import urllib2
 else:
     import urllib.request as urllib2
-ctx = None
-try:
-    import ssl
-except:
-    pass
-else:
-    if hasattr(ssl,"create_default_context"):
-        ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+
+from addonmanager_macro import Macro
+from addonmanager_utilities import translate
+from addonmanager_utilities import urlopen
 
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
-
-
-# Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
 
 if sys.version_info.major < 3:
     import StringIO as io
@@ -102,16 +88,6 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
-def get_macro_dir():
-    """Return the directory where macros are located"""
-    default_macro_dir = os.path.join(FreeCAD.ConfigGet('UserAppData'), 'Macro')
-    path = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Macro').GetString('MacroPath', default_macro_dir)
-    # For Py2 path is a utf-8 encoded unicode which we must decode again
-    if sys.version_info.major < 3:
-        path = path.decode("utf-8")
-    return path
-
-
 def update_macro_details(old_macro, new_macro):
     """Update a macro with information from another one
 
@@ -128,6 +104,92 @@ def update_macro_details(old_macro, new_macro):
     for attr in ['desc', 'url', 'code']:
         if not hasattr(old_macro, attr):
             setattr(old_macro, attr, getattr(new_macro, attr))
+
+
+def install_macro(macro, macro_repo_dir):
+    """Install a macro and all its related files
+
+    Returns True if the macro was installed correctly.
+
+    Parameters
+    ----------
+    - macro: a addonmanager_macro.Macro instance
+    """
+    if not macro.code:
+        return False
+    macro_dir = FreeCAD.getUserMacroDir(True)
+    if not os.path.isdir(macro_dir):
+        try:
+            os.makedirs(macro_dir)
+        except OSError:
+            return False
+    macro_path = os.path.join(macro_dir, macro.filename)
+    if sys.version_info.major < 3:
+        # In python2 the code is a bytes object.
+        mode = 'wb'
+    else:
+        mode = 'w'
+    try:
+        with open(macro_path, mode) as macrofile:
+            macrofile.write(macro.code)
+    except IOError:
+        return False
+    # Copy related files, which are supposed to be given relative to
+    # macro.src_filename.
+    base_dir = os.path.dirname(macro.src_filename)
+    for other_file in macro.other_files:
+        dst_dir = os.path.join(base_dir, os.path.dirname(other_file))
+        if not os.path.isdir(dst_dir):
+            try:
+                os.makedirs(dst_dir)
+            except OSError:
+                return False
+        src_file = os.path.join(base_dir, other_file)
+        dst_file = os.path.join(macro_dir, other_file)
+        try:
+            shutil.copy(src_file, dst_file)
+        except IOError:
+            return False
+    return True
+
+
+def remove_macro(macro):
+    """Remove a macro and all its related files
+
+    Returns True if the macro was removed correctly.
+
+    Parameters
+    ----------
+    - macro: a addonmanager_macro.Macro instance
+    """
+    if not macro.is_installed():
+        # Macro not installed, nothing to do.
+        return True
+    macro_dir = FreeCAD.getUserMacroDir(True)
+    macro_path = os.path.join(macro_dir, macro.filename)
+    macro_path_with_macro_prefix = os.path.join(macro_dir, 'Macro_' + macro.filename)
+    if os.path.exists(macro_path):
+        os.remove(macro_path)
+    elif os.path.exists(macro_path_with_macro_prefix):
+        os.remove(macro_path_with_macro_prefix)
+    # Remove related files, which are supposed to be given relative to
+    # macro.src_filename.
+    for other_file in macro.other_files:
+        dst_file = os.path.join(macro_dir, other_file)
+        remove_directory_if_empty(os.path.dirname(dst_file))
+        os.remove(dst_file)
+    return True
+
+
+def remove_directory_if_empty(dir):
+    """Remove the directory if it is empty
+
+    Directory FreeCAD.getUserMacroDir(True) will not be removed even if empty.
+    """
+    if dir == FreeCAD.getUserMacroDir(True):
+        return
+    if not os.listdir(dir):
+        os.rmdir(dir)
 
 
 class AddonsInstaller(QtGui.QDialog):
@@ -356,22 +418,11 @@ class AddonsInstaller(QtGui.QDialog):
                 self.install_worker.start()
         elif self.tabWidget.currentIndex() == 1:
             # Tab "Macros".
-            macro_dir = get_macro_dir()
-            if not os.path.isdir(macro_dir):
-                os.makedirs(macro_dir)
             macro = self.macros[self.listMacros.currentRow()]
-            if not macro.code:
-                self.labelDescription.setText(translate("AddonsInstaller", "Unable to install"))
-                return
-            macro_path = os.path.join(macro_dir, macro.filename)
-            if sys.version_info.major < 3:
-                # In python2 the code is a bytes object.
-                mode = 'wb'
+            if install_macro(macro, self.macro_repo_dir):
+                self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
             else:
-                mode = 'w'
-            with open(macro_path, mode) as macrofile:
-                macrofile.write(macro.code)
-            self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully installed. The macro is now available from the Macros dialog."))
+                self.labelDescription.setText(translate("AddonsInstaller", "Unable to install"))
         self.update_status()
 
     def show_progress_bar(self, state):
@@ -405,14 +456,13 @@ class AddonsInstaller(QtGui.QDialog):
             if not macro.is_installed():
                 # Macro not installed, nothing to do.
                 return
-            macro_path = os.path.join(get_macro_dir(), macro.filename)
+            macro_path = os.path.join(FreeCAD.getUserMacroDir(True), macro.filename)
             if os.path.exists(macro_path):
                 macro_path = macro_path.replace("\\","/")
-#                FreeCAD.Console.PrintMessage(str(macro_path) + "\n")
 
                 FreeCADGui.open(str(macro_path))
                 self.hide()
-                Gui.SendMsgToActiveView("Run")
+                FreeCADGui.SendMsgToActiveView("Run")
         else:
             self.buttonExecute.setEnabled(False)
 
@@ -436,17 +486,10 @@ class AddonsInstaller(QtGui.QDialog):
         elif self.tabWidget.currentIndex() == 1:
             # Tab "Macros".
             macro = self.macros[self.listMacros.currentRow()]
-            if not macro.is_installed():
-                # Macro not installed, nothing to do.
-                return
-            macro_path = os.path.join(get_macro_dir(), macro.filename)
-            macro_path_with_macro_prefix = os.path.join(get_macro_dir(), 'Macro_' + macro.filename)
-            if os.path.exists(macro_path):
-                os.remove(macro_path)
-                self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully removed."))
-            elif os.path.exists(macro_path_with_macro_prefix):
-                os.remove(macro_path_with_macro_prefix)
-                self.labelDescription.setText(translate("AddonsInstaller", "Macro successfully removed."))
+            if remove_macro(macro):
+                self.labelDescription.setText(translate('AddonsInstaller', 'Macro successfully removed.'))
+            else:
+                self.labelDescription.setText(translate('AddonsInstaller', 'Macro could not be removed.'))
         self.update_status()
 
     def update_status(self):
@@ -465,7 +508,6 @@ class AddonsInstaller(QtGui.QDialog):
                 self.listMacros.addItem(QtGui.QListWidgetItem(QtGui.QIcon.fromTheme('dialog-ok'), macro.name + str(' (Installed)')))
             else:
                 self.listMacros.addItem(macro.name)
-        self.listMacros.sortItems()
 
     def mark(self,repo):
         for i in range(self.listWorkbenches.count()):
@@ -488,10 +530,7 @@ class UpdateWorker(QtCore.QThread):
     def run(self):
         "populates the list of addons"
         self.progressbar_show.emit(True)
-        if ctx:
-            u = urllib2.urlopen("https://github.com/FreeCAD/FreeCAD-addons",context=ctx)
-        else:
-            u = urllib2.urlopen("https://github.com/FreeCAD/FreeCAD-addons")
+        u = urlopen("https://github.com/FreeCAD/FreeCAD-addons")
         p = u.read()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode("utf-8")
@@ -535,10 +574,7 @@ class InfoWorker(QtCore.QThread):
         i = 0
         for repo in self.repos:
             url = repo[1]
-            if ctx:
-                u = urllib2.urlopen(url,context=ctx)
-            else:
-                u = urllib2.urlopen(url)
+            u = urlopen(url)
             p = u.read()
             if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
@@ -611,134 +647,6 @@ class CheckWBWorker(QtCore.QThread):
         self.stop = True
 
 
-class Macro(object):
-    def __init__(self, name):
-        self.name = name
-        self.on_wiki = False
-        self.on_git = False
-        self.desc = ''
-        self.code = ''
-        self.url = ''
-        self.version = ''
-        self.src_filename = ''
-        self.parsed = False
-
-    def __eq__(self, other):
-        return self.filename == other.filename
-
-    @property
-    def filename(self):
-        if self.on_git:
-            return os.path.basename(self.src_filename)
-        return (self.name + '.FCMacro').replace(' ', '_')
-
-    def is_installed(self):
-        if self.on_git and not self.src_filename:
-            return False
-        return (os.path.exists(os.path.join(get_macro_dir(), self.filename))
-                or os.path.exists(os.path.join(get_macro_dir(), 'Macro_' + self.filename)))
-
-    def fill_details_from_file(self, filename):
-        with open(filename) as f:
-            number_of_required_fields = 3  # Fields __Comment__, __Web__, __Version__.
-            re_desc = re.compile(r"^__Comment__\s*=\s*(['\"])(.*)\1")
-            re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1")
-            re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1")
-            for l in f.readlines():
-                match = re.match(re_desc, l)
-                if match:
-                    self.desc = match.group(2)
-                    number_of_required_fields -= 1
-                match = re.match(re_url, l)
-                if match:
-                    self.url = match.group(2)
-                    number_of_required_fields -= 1
-                match = re.match(re_version, l)
-                if match:
-                    self.version = match.group(2)
-                    number_of_required_fields -= 1
-                if number_of_required_fields <= 0:
-                    break
-            f.seek(0)
-            self.code = f.read()
-            self.parsed = True
-
-    def fill_details_from_wiki(self, url):
-        code = ""
-        try:
-            if ctx:
-                u = urllib2.urlopen(url, context=ctx)
-            else:
-                u = urllib2.urlopen(url)
-        except urllib2.HTTPError:
-            return
-        p = u.read()
-        if sys.version_info.major >= 3 and isinstance(p, bytes):
-            p = p.decode('utf-8')
-        u.close()
-        # check if the macro page has its code hosted elsewhere, download if needed
-        if "rawcodeurl" in p:
-            rawcodeurl = re.findall("rawcodeurl.*?href=\"(http.*?)\">",p)
-            if rawcodeurl:
-                rawcodeurl = rawcodeurl[0]
-                try:
-                    if ctx:
-                        u2 = urllib2.urlopen(rawcodeurl, context=ctx)
-                    else:
-                        u2 = urllib2.urlopen(rawcodeurl)
-                except urllib2.HTTPError:
-                    return
-                # code = u2.read()
-                # github is slow to respond... We need to use this trick below
-                response = ""
-                block = 8192
-                #expected = int(u2.headers['content-length'])
-                while 1:
-                    #print("expected:",expected,"got:",len(response))
-                    data = u2.read(block)
-                    if not data:
-                        break
-                    response += data
-                if response:
-                    code = response
-                if sys.version_info.major >= 3 and isinstance(code, bytes):
-                    code = code.decode('utf-8')
-                u2.close()
-        if not code:
-            code = re.findall('<pre>(.*?)<\/pre>', p.replace('\n', '--endl--'))
-            if code:
-                # code = code[0]
-                # take the biggest code block
-                code = sorted(code, key=len)[-1]
-                code = code.replace('--endl--', '\n')
-            else:
-                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to fetch the code of this macro."))
-            # Clean HTML escape codes.
-            try:
-                from HTMLParser import HTMLParser
-            except ImportError:
-                from html.parser import HTMLParser
-            if sys.version_info.major < 3:
-                code = code.decode('utf8')
-            try:
-                code = HTMLParser().unescape(code)
-                code = code.replace(b'\xc2\xa0'.decode("utf-8"), ' ')
-            except:
-                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to clean macro code: ") + code + '\n')
-            if sys.version_info.major < 3:
-                code = code.encode('utf8')
-        desc = re.findall("<td class=\"ctEven left macro-description\">(.*?)<\/td>", p.replace('\n', ' '))
-        if desc:
-            desc = desc[0]
-        else:
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Unable to retrieve a description for this macro."))
-            desc = "No description available"
-        self.desc = desc
-        self.url = url
-        self.code = code
-        self.parsed = True
-
-
 class FillMacroListWorker(QtCore.QThread):
     """Populates the list of macros
     """
@@ -756,7 +664,8 @@ class FillMacroListWorker(QtCore.QThread):
         self.retrieve_macros_from_git()
         self.retrieve_macros_from_wiki()
         [self.add_macro_signal.emit(m) for m in sorted(self.macros, key=lambda m: m.name.lower())]
-        self.info_label_signal.emit(translate("AddonsInstaller", "List of macros successfully retrieved."))
+        if self.macros:
+            self.info_label_signal.emit(translate('AddonsInstaller', 'List of macros successfully retrieved.'))
         self.progressbar_show.emit(False)
         self.stop = True
 
@@ -770,9 +679,10 @@ class FillMacroListWorker(QtCore.QThread):
             import git
         except ImportError:
             self.info_label_signal.emit("GitPython not installed! Cannot retrieve macros from git")
+            FreeCAD.Console.PrintWarning('GitPython not installed! Cannot retrieve macros from git')
             return
 
-        self.info_label_signal.emit("Downloading list of macros for git...")
+        self.info_label_signal.emit('Downloading list of macros for git...')
         git.Repo.clone_from('https://github.com/FreeCAD/FreeCAD-macros.git', self.repo_dir)
         for dirpath, _, filenames in os.walk(self.repo_dir):
              if '.git' in dirpath:
@@ -784,7 +694,6 @@ class FillMacroListWorker(QtCore.QThread):
                     macro.src_filename = os.path.join(dirpath, filename)
                     self.macros.append(macro)
 
-
     def retrieve_macros_from_wiki(self):
         """Retrieve macros from the wiki
 
@@ -793,15 +702,12 @@ class FillMacroListWorker(QtCore.QThread):
         """
         self.info_label_signal.emit("Downloading list of macros...")
         self.progressbar_show.emit(True)
-        if ctx:
-            u = urllib2.urlopen("https://www.freecadweb.org/wiki/Macros_recipes",context=ctx)
-        else:
-            u = urllib2.urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
+        u = urlopen("https://www.freecadweb.org/wiki/Macros_recipes")
         p = u.read()
+        u.close()
         if sys.version_info.major >= 3 and isinstance(p, bytes):
             p = p.decode("utf-8")
-        u.close()
-        macros = re.findall("title=\"(Macro.*?)\"",p)
+        macros = re.findall('title="(Macro.*?)"', p)
         macros = [mac for mac in macros if ('translated' not in mac)]
         for mac in macros:
             macname = mac[6:]  # Remove "Macro ".
@@ -831,10 +737,7 @@ class ShowWorker(QtCore.QThread):
         else:
             url = self.repos[self.idx][1]
             self.info_label.emit(translate("AddonsInstaller", "Retrieving info from ") + str(url))
-            if ctx:
-                u = urllib2.urlopen(url,context=ctx)
-            else:
-                u = urllib2.urlopen(url)
+            u = urlopen(url)
             p = u.read()
             if sys.version_info.major >= 3 and isinstance(p, bytes):
                 p = p.decode("utf-8")
@@ -1012,7 +915,7 @@ class InstallWorker(QtCore.QThread):
                         self.download(self.repos[idx][1],clonedir)
                     answer = translate("AddonsInstaller", "Workbench successfully installed. Please restart FreeCAD to apply the changes.")
             # symlink any macro contained in the module to the macros folder
-            macro_dir = get_macro_dir()
+            macro_dir = FreeCAD.getUserMacroDir(True)
             if not os.path.exists(macro_dir):
                 os.makedirs(macro_dir)
             for f in os.listdir(clonedir):
@@ -1036,10 +939,7 @@ class InstallWorker(QtCore.QThread):
             depsurl += "/"
         depsurl += "master/metadata.txt"
         try:
-            if ctx:
-                mu = urllib2.urlopen(depsurl,context=ctx)
-            else:
-                mu = urllib2.urlopen(depsurl)
+            mu = urlopen(depsurl)
         except urllib2.HTTPError:
             # no metadata.txt, we just continue without deps checking
             pass
@@ -1047,13 +947,13 @@ class InstallWorker(QtCore.QThread):
             # metadata.txt found
             depsfile = mu.read()
             mu.close()
-            
+
             # urllib2 gives us a bytelike object instead of a string. Have to consider that
             try:
                 depsfile = depsfile.decode('utf-8')
             except AttributeError:
                 pass
-            
+
             deps = depsfile.split("\n")
             for l in deps:
                 if l.startswith("workbenches="):
@@ -1099,10 +999,7 @@ class InstallWorker(QtCore.QThread):
         zipurl = giturl+"/archive/master.zip"
         try:
             print("Downloading "+zipurl)
-            if ctx:
-                u = urllib2.urlopen(zipurl,context=ctx)
-            else:
-                u = urllib2.urlopen(zipurl)
+            u = urlopen(zipurl)
         except:
             return translate("AddonsInstaller", "Error: Unable to download") + " " + zipurl
         zfile = _stringio()

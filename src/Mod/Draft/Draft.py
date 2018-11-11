@@ -878,9 +878,12 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
         print("Invalid input points: ",pointslist)
     #print(pointslist)
     #print(closed)
-    if placement: typecheck([(placement,FreeCAD.Placement)], "makeWire")
+    if placement:
+        typecheck([(placement,FreeCAD.Placement)], "makeWire")
+        ipl = placement.inverse()
+        pointslist = [ipl.multVec(p) for p in pointslist]
     if len(pointslist) == 2: fname = "Line"
-    else: fname = "DWire"
+    else: fname = "Wire"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _Wire(obj)
     obj.Points = pointslist
@@ -2108,7 +2111,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     if round(c.Axis.getAngle(drawing_plane_normal),2) in [0,3.14]:
                         occversion = Part.OCC_VERSION.split(".")
                         done = False
-                        if (occversion[0] >= 7) and (occversion[1] >= 1):
+                        if (int(occversion[0]) >= 7) and (int(occversion[1]) >= 1):
                             # if using occ >= 7.1, use HLR algorithm
                             import Drawing
                             snip = Drawing.projectToSVG(e,drawing_plane_normal)
@@ -2342,7 +2345,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg = ""
             for i in range(len(text)):
                 t = text[i]
-                if not isinstance(t,unicode):
+                if sys.version_info.major < 3 and (not isinstance(t,unicode)):
                     t = t.decode("utf8")
                 # possible workaround if UTF8 is unsupported
                 #    import unicodedata
@@ -2544,6 +2547,53 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         tangle = 0
                         tbase = getProj(prx.tbase)
                     svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+
+    elif getType(obj) == "Label":
+        if getattr(obj.ViewObject, "Line", True):  # some Labels may have no Line property
+            def format_point(coords, action='L'):
+                return "{action}{x},{y}".format(
+                    x=coords.x, y=coords.y, action=action
+                )
+
+            # Draw multisegment line
+            proj_points = list(map(getProj, obj.Points))
+            path_dir_list = [format_point(proj_points[0], action='M')]
+            path_dir_list += map(format_point, proj_points[1:])
+            path_dir_str = " ".join(path_dir_list)
+            svg_path = '<path fill="none" stroke="{stroke}" stroke-width="{linewidth}" d="{directions}"/>'.format(
+                stroke=stroke,
+                linewidth=linewidth,
+                directions=path_dir_str
+            )
+            svg += svg_path
+
+            # Draw arrow.
+            # We are different here from 3D view
+            # if Line is set to 'off', no arrow is drawn
+            if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
+                last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
+                angle = -DraftVecUtils.angle(getProj(last_segment)) + math.pi
+                svg += getArrow(
+                    arrowtype=obj.ViewObject.ArrowType,
+                    point=proj_points[-1],
+                    arrowsize=obj.ViewObject.ArrowSize.Value/pointratio,
+                    color=stroke,
+                    linewidth=linewidth,
+                    angle=angle
+                )
+
+        # print text
+        if gui:
+            if not obj.ViewObject:
+                print("export of texts to SVG is only available in GUI mode")
+            else:
+                fontname = obj.ViewObject.TextFont
+                position = getProj(obj.Placement.Base)
+                rotation = obj.Placement.Rotation
+                justification = obj.ViewObject.TextAlignment
+                text = obj.Text
+                svg += getText(stroke, fontsize, fontname, rotation, position,
+                               text, linespacing, justification)
 
     elif getType(obj) in ["Annotation","DraftText"]:
         "returns an svg representation of a document annotation"
@@ -4107,6 +4157,7 @@ class _Dimension(_DraftObject):
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
+        obj.Normal = FreeCAD.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
         if hasattr(obj,"Distance"):
@@ -4164,6 +4215,10 @@ class _Dimension(_DraftObject):
                         n2 = int(lsub2[0][6:])-1
                         obj.Start = lobj1.Shape.Vertexes[n1].Point
                         obj.End = lobj2.Shape.Vertexes[n2].Point
+        # set the distance property
+        total_len = (obj.Start.sub(obj.End)).Length
+        if round(obj.Distance.Value, precision()) != round(total_len, precision()):
+            obj.Distance = total_len
         if gui:
             if obj.ViewObject:
                 obj.ViewObject.update()
@@ -4420,9 +4475,6 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     self.string = obj.ViewObject.Override.replace("$dim",\
                             self.string)
             self.text.string = self.text3d.string = stringencodecoin(self.string)
-            # set the distance property
-            if round(obj.Distance.Value,precision()) != round(l,precision()):
-                obj.Distance = l
 
             # set the lines
             if m == "3D":
@@ -4632,6 +4684,7 @@ class _AngularDimension(_DraftObject):
         obj.LastAngle = 90
         obj.Dimline = FreeCAD.Vector(0,1,0)
         obj.Center = FreeCAD.Vector(0,0,0)
+        obj.Normal = FreeCAD.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
         if hasattr(obj,"Angle"):
@@ -6160,7 +6213,7 @@ class _PointArray(_DraftObject):
         	        i += 1
         	        base.append(nshape)
         obj.Count = i
-        if i > 0: 
+        if i > 0:
             obj.Shape = Part.makeCompound(base)
         else:
             FreeCAD.Console.PrintError(translate("draft","No point found\n"))
@@ -7315,37 +7368,44 @@ class ViewProviderDraftText:
     def updateData(self,obj,prop):
         if prop == "Text":
             if obj.Text:
-                self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                if sys.version_info.major >= 3:
+                    self.text2d.string.setValues([l for l in obj.Text if l])
+                    self.text3d.string.setValues([l for l in obj.Text if l])
+                else:
+                    self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                    self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
         elif prop == "Placement":
             self.trans.translation.setValue(obj.Placement.Base)
             self.trans.rotation.setValue(obj.Placement.Rotation.Q)
 
     def onChanged(self,vobj,prop):
         if prop == "TextColor":
-            if hasattr(vobj,"TextColor"):
+            if "TextColor" in vobj.PropertiesList:
                 l = vobj.TextColor
                 self.mattext.diffuseColor.setValue([l[0],l[1],l[2]])
         elif (prop == "FontName"):
-            if hasattr(vobj,"FontName"):
+            if "FontName" in vobj.PropertiesList:
                 self.font.name = vobj.FontName.encode("utf8")
         elif prop  == "FontSize":
-            if hasattr(vobj,"FontSize"):
+            if "FontSize" in vobj.PropertiesList:
                 self.font.size = vobj.FontSize.Value
         elif prop == "Justification":
-            if hasattr(vobj,"Justification"):
+            if getattr(vobj.PropertiesList, "Justification", None) is not None:
                 from pivy import coin
-                if vobj.Justification == "Left":
-                    self.text2d.justification = coin.SoText2.LEFT
-                    self.text3d.justification = coin.SoAsciiText.LEFT
-                elif vobj.Justification == "Right":
-                    self.text2d.justification = coin.SoText2.RIGHT
-                    self.text3d.justification = coin.SoAsciiText.RIGHT
-                else:
-                    self.text2d.justification = coin.SoText2.CENTER
-                    self.text3d.justification = coin.SoAsciiText.CENTER
+                try:
+                    if vobj.Justification == "Left":
+                        self.text2d.justification = coin.SoText2.LEFT
+                        self.text3d.justification = coin.SoAsciiText.LEFT
+                    elif vobj.Justification == "Right":
+                        self.text2d.justification = coin.SoText2.RIGHT
+                        self.text3d.justification = coin.SoAsciiText.RIGHT
+                    else:
+                        self.text2d.justification = coin.SoText2.CENTER
+                        self.text3d.justification = coin.SoAsciiText.CENTER
+                except AssertionError:
+                    pass # Race condition - Justification enum has not been set yet
         elif prop == "LineSpacing":
-            if hasattr(vobj,"LineSpacing"):
+            if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing
                 self.text3d.spacing = vobj.LineSpacing
 

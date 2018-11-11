@@ -153,7 +153,8 @@ class _TaskPanelFemMaterial:
         self.card_path = self.get_material_card(self.material)
         print('card_path: ' + self.card_path)
         if not self.card_path:
-            # we have not found our material in self.materials dict :-(, we gone add a user defined temporary material, a document material
+            # we have not found our material in self.materials dict :-(
+            # we're going to add a user-defined temporary material: a document material
             FreeCAD.Console.PrintMessage("Previously used material card cannot be found in material directories. Add document material.\n")
             self.card_path = '_document_material'
             self.materials[self.card_path] = self.material
@@ -228,7 +229,7 @@ class _TaskPanelFemMaterial:
 
     def set_transient_material(self):
         self.card_path = '_transient_material'
-        self.materials[self.card_path] = self.material  # = the crurrent input fields data
+        self.materials[self.card_path] = self.material  # = the current input fields data
         index = self.parameterWidget.cb_materials.findData(self.card_path)
         self.choose_material(index)
 
@@ -313,7 +314,8 @@ class _TaskPanelFemMaterial:
                 print('KinematicViscosity not found in material data of: ' + self.material['Name'])
                 self.material['KinematicViscosity'] = '0 m^2/s'
             if 'VolumetricThermalExpansionCoefficient' in self.material:
-                if 'ThermalExpansionCoefficient' not in str(Units.Unit(self.material['VolumetricThermalExpansionCoefficient'])):  # unit type of VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
+                # unit type of VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
+                if 'ThermalExpansionCoefficient' not in str(Units.Unit(self.material['VolumetricThermalExpansionCoefficient'])):
                     print('VolumetricThermalExpansionCoefficient in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                     self.material['VolumetricThermalExpansionCoefficient'] = '0 m/m/K'
             else:

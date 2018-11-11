@@ -1152,7 +1152,7 @@ def get_ref_facenodes_areas(femnodes_mesh, face_table):
 
 def get_ref_shape_node_sum_geom_table(node_geom_table):
     # shape could be Edge or Face, geom could be length or area
-    # sum of legth or area for each node of the ref_shape
+    # sum of length or area for each node of the ref_shape
     node_sum_geom_table = {}
     for n, A in node_geom_table:
         # print(n, ' --> ', A)
@@ -1338,7 +1338,11 @@ def find_element_in_shape(aShape, anElement):
                 return ele
         FreeCAD.Console.PrintError('Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n')
         if ele_st == 'Solid' and aShape.ShapeType == 'Solid':
-            print('We have been searching for a Solid in a Solid and we have not found it. In most cases this should be searching for a Solid inside a CompSolid. Check the ShapeType of your Part to mesh.')
+            messagePart = (
+                'We have been searching for a Solid in a Solid and we have not found it. '
+                'In most cases this should be searching for a Solid inside a CompSolid. Check the ShapeType of your Part to mesh.'
+            )
+            print(messagePart)
         # Part.show(anElement)
         # Part.show(aShape)
     elif ele_st == 'Face' or ele_st == 'Shell':

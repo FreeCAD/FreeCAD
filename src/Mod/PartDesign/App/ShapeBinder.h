@@ -25,7 +25,7 @@
 #define PARTDESIGN_DATUMSHAPE_H
 
 #include <QString>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/DatumFeature.h>
 
@@ -67,7 +67,7 @@ private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
     virtual void onSettingDocument();
 
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectDocumentChangedObject;
 };
 

@@ -30,6 +30,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <boost/signals2.hpp>
 #include <CXX/Objects.hxx>
 
 #include <Base/Observer.h>
@@ -144,8 +145,9 @@ private:
     void _onSelectionChanged(const SelectionChanges& msg);
 
 private:
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectSelection;
+    bool blockSelection;
 };
 
 /**
@@ -293,7 +295,7 @@ public:
     };
 
     /// signal on new object
-    boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
+    boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
 
     /** Returns a vector of selection objects
      * If no document name is given the objects of the active are returned.

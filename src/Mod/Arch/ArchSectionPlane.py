@@ -174,7 +174,7 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
-        elif Draft.getType(o) in ["Dimension","Annotation"]:
+        elif Draft.getType(o) in ["Dimension","Annotation","Label"]:
             drafts.append(o)
         elif o.isDerivedFrom("Part::Part2DObject"):
             drafts.append(o)
@@ -530,7 +530,6 @@ class _ViewProviderSectionPlane:
         if not "CutMargin" in pl:
             vobj.addProperty("App::PropertyLength","CutMargin","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The distance between the cut plane and the actual view cut (keep this a very small value but not zero)"))
             vobj.CutMargin = 1
-        self.Object = vobj.Object
 
     def onDocumentRestored(self,vobj):
 
@@ -542,11 +541,14 @@ class _ViewProviderSectionPlane:
         return ":/icons/Arch_SectionPlane_Tree.svg"
 
     def claimChildren(self):
-
+        # buggy at the moment so it's disabled - it will for ex. swallow a building object directly at the root of the document...
+        #if hasattr(self,"Object") and hasattr(self.Object,"Objects"):
+        #    return self.Object.Objects
         return []
 
     def attach(self,vobj):
 
+        self.Object = vobj.Object
         self.clip = None
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()

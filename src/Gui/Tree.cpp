@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals.hpp>
 # include <boost/bind.hpp>
 # include <QAction>
 # include <QActionGroup>
@@ -1256,7 +1255,7 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
 void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 {
     // Do nothing here because the Label is set in slotChangeObject
-    Q_UNUSED(obj); 
+    Q_UNUSED(obj);
 }
 
 void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
@@ -1343,13 +1342,24 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
 
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
 {
+    // In the past it was checked if the parent item is collapsed and if yes nothing was done.
+    // Now with the auto-expand mechanism of active part containers or bodies it must be made
+    // sure to expand all parent items when expanding a child item.
+    // Example:
+    // When there are two nested part containers and if first the outer and then the inner is
+    // activated the outer will be collapsed and thus hides the inner item.
+    // Alternatively, this could be handled inside ActiveObjectList::setObject() but querying
+    // the parent-children relationship of the view providers is rather inefficient.
     FOREACH_ITEM(item,obj)
-        if (!item->parent() || // has no parent (see #0003025)
-            !item->parent()->isExpanded()) continue;
         switch (mode) {
-        case Gui::Expand:
+        case Gui::Expand: {
+            QTreeWidgetItem* parent = item->parent();
+            while (parent) {
+                parent->setExpanded(true);
+                parent = parent->parent();
+            }
             item->setExpanded(true);
-            break;
+        }   break;
         case Gui::Collapse:
             item->setExpanded(false);
             break;
@@ -1380,21 +1390,6 @@ const Gui::Document* DocumentItem::document() const
 {
     return this->pDocument;
 }
-
-//void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
-//{
-//    // never call without Object!
-//    assert(Obj);
-//
-//
-//    std::map<std::string,DocumentObjectItem*>::iterator pos;
-//    pos = ObjectMap.find(Obj->getNameInDocument());
-//    if (pos != ObjectMap.end()) {
-//        QFont f = pos->second->font(0);
-//        f.setUnderline(mark);
-//        pos->second->setFont(0,f);
-//    }
-//}
 
 //void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
 //{

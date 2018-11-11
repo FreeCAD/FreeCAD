@@ -111,8 +111,6 @@
 
 #if defined(HAVE_QT5_OPENGL)
 # include <QOpenGLTexture>
-#else
-# include <QGLFramebufferObject>
 #endif
 
 //#include <OpenGL/glu.h>
@@ -178,14 +176,15 @@ public:
 	NaviCubeImplementation(Gui::View3DInventorViewer*);
 	virtual ~ NaviCubeImplementation();
 	void drawNaviCube();
+	void createContextMenu(const std::vector<std::string>& cmd);
 
 	bool processSoEvent(const SoEvent* ev);
 private:
 	bool mousePressed(short x, short y);
 	bool mouseReleased(short x, short y);
 	bool mouseMoved(short x, short y);
-    int pickFace(short x, short y);
-    bool inDragZone(short x, short y);
+	int pickFace(short x, short y);
+	bool inDragZone(short x, short y);
 
 	void handleResize();
 	void handleMenu();
@@ -268,6 +267,8 @@ public:
 #if defined(HAVE_QT5_OPENGL)
 	vector<QOpenGLTexture *> m_glTextures;
 #endif
+	static vector<string> m_commands;
+	static vector<string> m_labels;
 	QMenu* m_Menu;
 };
 
@@ -284,9 +285,17 @@ void NaviCube::drawNaviCube() {
 	m_NaviCubeImplementation->drawNaviCube();
 }
 
+void NaviCube::createContextMenu(const std::vector<std::string>& cmd) {
+	m_NaviCubeImplementation->createContextMenu(cmd);
+}
+
 bool NaviCube::processSoEvent(const SoEvent* ev) {
 	return m_NaviCubeImplementation->processSoEvent(ev);
 }
+
+
+vector<string> NaviCubeImplementation::m_commands;
+vector<string> NaviCubeImplementation::m_labels;
 
 void NaviCube::setCorner(Corner c) {
 	m_NaviCubeImplementation->m_Corner = c;
@@ -351,7 +360,7 @@ char* NaviCubeImplementation::enum2str(int e) {
 }
 
 GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, float radius, const char* text) {
-	int texSize = m_CubeWidgetSize* m_OverSample;
+	int texSize = m_CubeWidgetSize * m_OverSample;
 	int gapi = texSize * gap;
 	int radiusi = texSize * radius;
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
@@ -378,6 +387,8 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, floa
     Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
+    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
 #endif
 }
@@ -480,12 +491,14 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
     Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
+    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
 #endif
 }
 
 GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
-	int texSize = m_CubeWidgetSize* m_OverSample;
+	int texSize = m_CubeWidgetSize * m_OverSample;
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(0, 0, 0, 0));
 	QPainter painter;
@@ -553,6 +566,8 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
     Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
+    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
 #endif
 }
@@ -656,15 +671,27 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gl, 0, 0.5f, NULL);
 	m_Textures[TEX_BACK_FACE] = createCubeFaceTex(gl, 0.02f, 0.3f, NULL);
 
+    vector<string> labels = NaviCubeImplementation::m_labels;
+
+    if (labels.size() != 6) {
+        labels.clear();
+        labels.push_back("Front");
+        labels.push_back("Rear");
+        labels.push_back("Top");
+        labels.push_back("Bottom");
+        labels.push_back("Right");
+        labels.push_back("Left");
+    }
+
 	float gap = 0.12f;
 	float radius = 0.12f;
 
-	m_Textures[TEX_FRONT] = createCubeFaceTex(gl, gap, radius, "Front");
-	m_Textures[TEX_REAR] = createCubeFaceTex(gl, gap, radius, "Rear");
-	m_Textures[TEX_TOP] = createCubeFaceTex(gl, gap, radius, "Top");
-	m_Textures[TEX_BOTTOM] = createCubeFaceTex(gl, gap, radius, "Bottom");
-	m_Textures[TEX_RIGHT] = createCubeFaceTex(gl, gap, radius, "Right");
-	m_Textures[TEX_LEFT] = createCubeFaceTex(gl, gap, radius, "Left");
+	m_Textures[TEX_FRONT] = createCubeFaceTex(gl, gap, radius, labels[0].c_str());
+	m_Textures[TEX_REAR] = createCubeFaceTex(gl, gap, radius, labels[1].c_str());
+	m_Textures[TEX_TOP] = createCubeFaceTex(gl, gap, radius, labels[2].c_str());
+	m_Textures[TEX_BOTTOM] = createCubeFaceTex(gl, gap, radius, labels[3].c_str());
+	m_Textures[TEX_RIGHT] = createCubeFaceTex(gl, gap, radius, labels[4].c_str());
+	m_Textures[TEX_LEFT] = createCubeFaceTex(gl, gap, radius, labels[5].c_str());
 
 	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex(gl, gap, radius, NULL);
 
@@ -744,6 +771,17 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 void NaviCubeImplementation::drawNaviCube() {
 	glViewport(m_CubeWidgetPosX-m_CubeWidgetSize/2, m_CubeWidgetPosY-m_CubeWidgetSize/2, m_CubeWidgetSize, m_CubeWidgetSize);
 	drawNaviCube(false);
+}
+
+void NaviCubeImplementation::createContextMenu(const std::vector<std::string>& cmd) {
+    CommandManager &rcCmdMgr = Application::Instance->commandManager();
+    m_Menu->clear();
+
+    for (vector<string>::const_iterator i=cmd.begin(); i!=cmd.end(); i++) {
+        Command* cmd = rcCmdMgr.getCommandByName(i->c_str());
+        if (cmd)
+            cmd->addTo(m_Menu);
+    }
 }
 
 void NaviCubeImplementation::handleResize() {
@@ -1054,8 +1092,8 @@ int NaviCubeImplementation::pickFace(short x, short y) {
 bool NaviCubeImplementation::mousePressed(short x, short y) {
 	m_MouseDown = true;
 	m_Dragging = false;
-	m_MightDrag = inDragZone(x,y);
-	int pick=pickFace(x,y);
+	m_MightDrag = inDragZone(x, y);
+	int pick = pickFace(x, y);
 	// cerr << enum2str(pick) << endl;
 	setHilite(pick);
 	return pick != 0;
@@ -1112,7 +1150,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	if (!m_Dragging) {
 		float rot = 45 ; //30;
 		float tilt = 90-54.7356f ; //30; // 90 + deg(asin(-sqrt(1.0/3.0)))
-		int pick = pickFace(x,y);
+		int pick = pickFace(x, y);
 		switch (pick) {
 		default:
 			return false;
@@ -1203,10 +1241,10 @@ bool NaviCubeImplementation::inDragZone(short x, short y) {
 
 
 bool NaviCubeImplementation::mouseMoved(short x, short y) {
-	setHilite(pickFace(x,y));
+	setHilite(pickFace(x, y));
 
 	if (m_MouseDown) {
-		if (m_MightDrag && !m_Dragging && !inDragZone(x,y))
+		if (m_MightDrag && !m_Dragging && !inDragZone(x, y))
 			m_Dragging = true;
 		if (m_Dragging) {
 			setHilite(0);
@@ -1220,8 +1258,8 @@ bool NaviCubeImplementation::mouseMoved(short x, short y) {
 }
 
 bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
-    short x,y;
-    ev->getPosition().getValue(x,y);
+    short x, y;
+    ev->getPosition().getValue(x, y);
     // FIXME find out why do we need to hack the cursor position to get
     y += 4;
     x -= 2;
@@ -1233,13 +1271,23 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
 			return mouseReleased(x, y);
 	}
 	if (ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId()))
-		return mouseMoved(x,y);
+		return mouseMoved(x, y);
 	return false;
 }
 
 
 QString NaviCubeImplementation::str(char* str) {
 	return QString::fromLatin1(str);
+}
+
+void NaviCube::setNaviCubeCommands(const std::vector<std::string>& cmd)
+{
+    NaviCubeImplementation::m_commands = cmd;
+}
+
+void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
+{
+    NaviCubeImplementation::m_labels = labels;
 }
 
 
@@ -1326,49 +1374,36 @@ void ViewZoomToFitCmd::activated(int iMsg)
 }
 
 
-DEF_3DV_CMD(ViewNormalToSketchPlaneCmd)
-ViewNormalToSketchPlaneCmd::ViewNormalToSketchPlaneCmd()
-: Command("ViewNormalToSketchPlaneCmd")
-{
-    sGroup        = QT_TR_NOOP("");
-    sMenuText     = QT_TR_NOOP("View normal to sketch");
-    sToolTipText  = QT_TR_NOOP("View normal to sketch plane");
-    sWhatsThis    = "";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "";
-    sAccel        = "";
-    eType         = Alter3DView;
-}
-
-void ViewNormalToSketchPlaneCmd::activated(int iMsg)
-{
-    //Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.Sketch.Placement.Rotation.Q);
-    doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.Sketch.Placement.Rotation.Q)");
-
-    Q_UNUSED(iMsg);
-}
-
-
 QMenu* NaviCubeImplementation::createNaviCubeMenu() {
-	QMenu* menu = new QMenu(getMainWindow());
-	menu->setObjectName(str("NaviCube_Menu"));
+    QMenu* menu = new QMenu(getMainWindow());
+    menu->setObjectName(str("NaviCube_Menu"));
 
-	CommandManager &rcCmdMgr = Application::Instance->commandManager();
-	vector<Command*> commands;
-	commands.push_back( new ViewOrthographicCmd());
-	commands.push_back( new ViewPerspectiveCmd());
-	commands.push_back( 0);
-	commands.push_back( new ViewZoomToFitCmd());
-    //commands.push_back( 0);
-    //commands.push_back( new ViewNormalToSketchPlaneCmd());
-	for (vector<Command*>::iterator i=commands.begin(); i!=commands.end(); i++) {
-		if (*i) {
-			rcCmdMgr.addCommand(*i);
-			(*i)->addTo(menu);
-		}
-		else
-			menu->addSeparator();
-	}
+    CommandManager &rcCmdMgr = Application::Instance->commandManager();
+    static bool init = true;
+    if (init) {
+        init = false;
+        rcCmdMgr.addCommand(new ViewOrthographicCmd);
+        rcCmdMgr.addCommand(new ViewPerspectiveCmd);
+        rcCmdMgr.addCommand(new ViewZoomToFitCmd);
+    }
 
-	return menu;
+    vector<string> commands = NaviCubeImplementation::m_commands;
+    if (commands.empty()) {
+        commands.push_back("ViewDimetric");
+        commands.push_back("ViewTrimetric");
+        commands.push_back("Separator");
+        commands.push_back("ViewZoomToFit");
+    }
+
+    for (vector<string>::iterator i=commands.begin(); i!=commands.end(); ++i) {
+        if (*i == "Separator") {
+            menu->addSeparator();
+        }
+        else {
+            Command* cmd = rcCmdMgr.getCommandByName(i->c_str());
+            if (cmd)
+                cmd->addTo(menu);
+        }
+    }
+    return menu;
 }

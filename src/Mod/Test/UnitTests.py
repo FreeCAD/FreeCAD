@@ -66,6 +66,11 @@ class UnitBasicCases(unittest.TestCase):
         qu = FreeCAD.Units.Quantity("237.000 W/mm/K")
         self.assertTrue(ts(qu), ts2(qu))
 
+    def testDivide(self):
+        qu1 = FreeCAD.Units.Quantity("1 m/s")
+        qu2 = FreeCAD.Units.Quantity("m/s")
+        self.assertTrue(qu1/qu2, 1)
+
     def testSchemes(self):
         schemes = FreeCAD.Units.listSchemas()
         num = len(schemes)

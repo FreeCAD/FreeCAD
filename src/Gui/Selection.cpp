@@ -26,7 +26,6 @@
 #ifndef _PreComp_
 # include <assert.h>
 # include <string>
-# include <boost/signals.hpp>
 # include <boost/bind.hpp>
 # include <QApplication>
 # include <QString>
@@ -54,7 +53,7 @@ FC_LOG_LEVEL_INIT("Selection",false,true,true)
 using namespace Gui;
 using namespace std;
 
-SelectionObserver::SelectionObserver()
+SelectionObserver::SelectionObserver() : blockSelection(false)
 {
     attachSelection();
 }
@@ -66,17 +65,17 @@ SelectionObserver::~SelectionObserver()
 
 bool SelectionObserver::blockConnection(bool block)
 {
-    bool ok = connectSelection.blocked();
+    bool ok = blockSelection;
     if (block)
-        connectSelection.block();
+        blockSelection = true;
     else
-        connectSelection.unblock();
+        blockSelection = false;
     return ok;
 }
 
 bool SelectionObserver::isConnectionBlocked() const
 {
-    return connectSelection.blocked();
+    return blockSelection;
 }
 
 void SelectionObserver::attachSelection()
@@ -88,7 +87,9 @@ void SelectionObserver::attachSelection()
 }
 
 void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
-    try { 
+    try {
+        if (blockSelection)
+            return;
         onSelectionChanged(msg);
     } catch (Base::Exception &e) {
         e.ReportException();

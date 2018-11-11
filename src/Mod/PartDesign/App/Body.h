@@ -27,7 +27,7 @@
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/BodyBase.h>
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 namespace App {
     class Origin;
@@ -145,7 +145,7 @@ protected:
     virtual void unsetupObject () override;
 
 private:
-    boost::signals::scoped_connection connection;
+    boost::signals2::scoped_connection connection;
 };
 
 } //namespace PartDesign

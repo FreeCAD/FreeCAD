@@ -33,7 +33,7 @@ __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
 printverbose = False
 
-import FreeCAD, os, sys
+import FreeCAD, io, os, sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     gui = True
@@ -51,9 +51,6 @@ from OpenSCADUtils import *
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 printverbose = params.GetBool('printVerbose',False)
-
-if open.__module__ == '__builtin__':
-    pythonopen = open # to distinguish python built-in open function from the one declared here
 
 # Get the token map from the lexer.  This is required.
 import tokrules
@@ -136,7 +133,7 @@ def processcsg(filename):
     if printverbose: print('Parser Loaded')
     # Give the lexer some input
     #f=open('test.scad', 'r')
-    f = pythonopen(filename, 'r')
+    f = io.open(filename, 'r', encoding="utf8")
     #lexer.input(f.read())
 
     if printverbose: print('Start Parser')
@@ -431,7 +428,7 @@ def p_not_supported(p):
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('usePlaceholderForUnsupported'):
         from PySide import QtGui
-        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
+        QtGui.QMessageBox.critical(None, translate('OpenSCAD',"Unsupported Function")+" : "+p[1],translate('OpenSCAD',"Press OK"))
     else:
         p[0] = [placeholder(p[1],p[6],p[3])]
 
@@ -1204,6 +1201,6 @@ def p_projection_action(p) :
         if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
                 GetBool('usePlaceholderForUnsupported'):
             from PySide import QtGui
-            QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
+            QtGui.QMessageBox.critical(None, translate('OpenSCAD',"Unsupported Function")+" : "+p[1],translate('OpenSCAD',"Press OK"))
         else:
             p[0] = [placeholder(p[1],p[6],p[3])]

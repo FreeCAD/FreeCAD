@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>277</width>
-    <height>474</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -361,30 +361,20 @@
     </widget>
    </item>
    <item row="2" column="0" colspan="2">
-    <widget class="QCheckBox" name="applyPlacementChange">
-     <property name="text">
-      <string>Apply placement changes immediately</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="QCheckBox" name="applyIncrementalPlacement">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>1</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>Apply incremental changes to object placement</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="applyIncrementalPlacement">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Apply incremental changes</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -399,13 +389,6 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="applyButton">
-       <property name="text">
-        <string>Apply</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="resetButton">
        <property name="text">
         <string>Reset</string>
@@ -414,7 +397,7 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="0" colspan="2">
+   <item row="3" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <spacer>
@@ -446,6 +429,13 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="applyButton">
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
@@ -461,7 +451,6 @@
  <tabstops>
   <tabstop>rotationInput</tabstop>
   <tabstop>direction</tabstop>
-  <tabstop>applyPlacementChange</tabstop>
   <tabstop>applyIncrementalPlacement</tabstop>
   <tabstop>oKButton</tabstop>
   <tabstop>applyButton</tabstop>

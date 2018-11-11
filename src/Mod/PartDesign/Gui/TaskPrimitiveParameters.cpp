@@ -183,7 +183,6 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 
     Gui::Document* doc = vp->getDocument();
     this->attachDocument(doc);
-    this->enableNotifications(DocumentObserver::Delete);
 
     //show the parts coordinate system axis for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf(vp->getObject());

@@ -431,16 +431,19 @@ void Command::openCommand(const char* sCmdName)
 
 void Command::commitCommand(void)
 {
+    assert(Gui::Application::Instance->activeDocument());
     Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
 void Command::abortCommand(void)
 {
+    assert(Gui::Application::Instance->activeDocument());
     Gui::Application::Instance->activeDocument()->abortCommand();
 }
 
 bool Command::hasPendingCommand(void)
 {
+    assert(Gui::Application::Instance->activeDocument());
     return Gui::Application::Instance->activeDocument()->hasPendingCommand();
 }
 

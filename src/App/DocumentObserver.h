@@ -25,7 +25,7 @@
 #define APP_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <set>
 
 namespace App
@@ -48,12 +48,16 @@ public:
     DocumentT();
     /*! Constructor */
     DocumentT(Document*);
+    /*! Constructor */
+    DocumentT(const std::string&);
     /*! Destructor */
     ~DocumentT();
     /*! Assignment operator */
     void operator=(const DocumentT&);
     /*! Assignment operator */
     void operator=(const Document*);
+    /*! Assignment operator */
+    void operator=(const std::string&);
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
@@ -161,7 +165,7 @@ protected:
 
 private:
     App::Document* _document;
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;

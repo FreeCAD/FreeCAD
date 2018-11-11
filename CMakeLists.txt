@@ -166,11 +166,13 @@ MESSAGE(STATUS "datadir: ${CMAKE_INSTALL_DATADIR}")
 MESSAGE(STATUS "docdir: ${CMAKE_INSTALL_DOCDIR}")
 MESSAGE(STATUS "includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
 MESSAGE(STATUS "libdir: ${CMAKE_INSTALL_LIBDIR}")
+MESSAGE(STATUS "cmake: ${CMAKE_VERSION}")
 
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========
 if(MSVC)
-    OPTION(FREECAD_RELEASE_PDB "Create PDB file for Release version." OFF)
+    OPTION(FREECAD_RELEASE_PDB "Create PDB files for Release version." ON)
+    OPTION(FREECAD_RELEASE_SEH "Enable Structured Exception Handling for Release version." ON)
     OPTION(FREECAD_LIBPACK_USE "Use the LibPack to Build FreeCAD (only Win32 so far)." ON)
     OPTION(FREECAD_LIBPACK_USEPYSIDE "Use PySide in LibPack rather to PyQt and Swig." ON)
     set(FREECAD_LIBPACK_DIR ${CMAKE_SOURCE_DIR} CACHE PATH  "Directory of the FreeCAD LibPack")
@@ -376,16 +378,6 @@ if(FREECAD_LIBPACK_USE)
     IF(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         set(FREECAD_LIBPACK_VERSION "CLbundler" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPackCLbundler.cmake)
-    ELSEIF(FREECAD_LIBPACK_CHECKFILE6X)
-        set(FREECAD_LIBPACK_VERSION "6.x" CACHE STRING "Displays if the libpack has been found" FORCE)
-        include(cMake/UseLibPack6x.cmake)
-    ELSEIF(FREECAD_LIBPACK_CHECKFILE7X)
-        set(FREECAD_LIBPACK_VERSION "7.x" CACHE STRING "Displays if the libpack has been found" FORCE)
-        include(cMake/UseLibPack7x.cmake)
-    ELSEIF(FREECAD_LIBPACK_CHECKFILE8X)
-        set(FREECAD_LIBPACK_VERSION "8.x" CACHE STRING "Displays if the libpack has been found" FORCE)
-        include(cMake/UseLibPack8x.cmake)
-        set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/tools/swigwin-1.3.40/swig.exe CACHE STRING "Swig" FORCE)
     ELSEIF(FREECAD_LIBPACK_CHECKFILE9X)
         set(FREECAD_LIBPACK_VERSION "9.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack9x.cmake)
@@ -583,7 +575,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT BUILD_WITH_CONDA)
     if(FREECAD_USE_PCL)
         find_package(PCL REQUIRED COMPONENTS common kdtree features surface io filters segmentation sample_consensus)
     endif(FREECAD_USE_PCL)
-    
+
 # -------------------------------- PyBind11 -----------------------------
 # necessary for flat-mesh feature
 OPTION(FREECAD_USE_PYBIND11 "Use pybind11" OFF)
@@ -594,7 +586,7 @@ endif()
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
-    set (BOOST_COMPONENTS filesystem program_options regex signals system thread)
+    set (BOOST_COMPONENTS filesystem program_options regex system thread)
     find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS ${BOOST_COMPONENTS} REQUIRED)
 
@@ -682,7 +674,7 @@ endif()
             endforeach()
         endif()
 
-        # don't check VERSION 6 as this would exlude VERSION 7
+        # don't check VERSION 6 as this would exclude VERSION 7
         if(AVAILABLE_VTK_COMPONENTS)
             message(STATUS "VTK components: ${AVAILABLE_VTK_COMPONENTS}")
             find_package(VTK COMPONENTS ${AVAILABLE_VTK_COMPONENTS} REQUIRED NO_MODULE)
@@ -1000,14 +992,14 @@ endif()
 
 	if(APPLE)
 	    INSTALL(
-	        DIRECTORY	
+	        DIRECTORY
                     ${CMAKE_BINARY_DIR}/Ext/PySide
 		DESTINATION
                     MacOS
             )
 	else()
             INSTALL(
-	        DIRECTORY	
+	        DIRECTORY
                     ${CMAKE_BINARY_DIR}/Ext/PySide
                 DESTINATION
                     Ext
@@ -1107,8 +1099,8 @@ ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
 IF(MSVC)
 	# set default compiler settings
-	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa /Zm128")
-	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm128")
+	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zm150")
+    SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm150 /bigobj")
 	# set default libs
 	SET (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
 	set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
@@ -1120,6 +1112,9 @@ IF(MSVC)
 		set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi")
 		set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} /DEBUG")
 	ENDIF(FREECAD_RELEASE_PDB)
+    IF(FREECAD_RELEASE_SEH)
+		SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
+    ENDIF(FREECAD_RELEASE_SEH)
 
 	# Mark 32 bit executables large address aware so they can use > 2GB address space
 	# NOTE: This setting only has an effect on machines with at least 3GB of RAM, although it sets the linker option it doesn't set the linker switch 'Enable Large Addresses'

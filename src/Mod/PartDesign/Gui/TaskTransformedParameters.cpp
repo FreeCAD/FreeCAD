@@ -76,7 +76,6 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
     if (TransformedView) {
         Gui::Document* doc = TransformedView->getDocument();
         this->attachDocument(doc);
-        this->enableNotifications(DocumentObserver::Delete);
     }
 }
 

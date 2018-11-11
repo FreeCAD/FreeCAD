@@ -58,7 +58,7 @@ public:
     virtual ~QGIDatumLabel() = default;
 
     enum {Type = QGraphicsItem::UserType + 107};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
     virtual QRectF boundingRect() const override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;

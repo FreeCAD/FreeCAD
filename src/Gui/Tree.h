@@ -185,7 +185,7 @@ private:
     const Gui::Document* pDocument;
     std::map<std::string,DocumentObjectItemsPtr> ObjectMap;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;
@@ -223,7 +223,7 @@ protected:
     void slotChangeStatusTip(const QString&);
 
 private:
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     int previousStatus;
     Gui::ViewProviderDocumentObject* viewObject;
     Connection connectIcon;

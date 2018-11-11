@@ -366,7 +366,7 @@ class Twist:
         #    self.createGeometry(fp)
 
     def createGeometry(self,fp):
-        import FreeCAD,Part,math
+        import FreeCAD,Part,math,sys
         #tangle = -twist #openscad uses degrees clockwise
         if fp.Base and fp.Angle and fp.Height and \
             fp.Base.Shape.isValid():
@@ -399,7 +399,10 @@ class Twist:
                     pipeshell.add(wire)
                     # Was before function change
                     # pipeshell.setAuxiliarySpine(auxspine,True,False)
-                    pipeshell.setAuxiliarySpine(auxspine,True,long(0))
+                    if sys.version_info.major < 3:
+                        pipeshell.setAuxiliarySpine(auxspine,True,long(0))
+                    else:
+                        pipeshell.setAuxiliarySpine(auxspine,True,0)
                     print(pipeshell.getStatus())
                     assert(pipeshell.isReady())
                     #fp.Shape=pipeshell.makeSolid()

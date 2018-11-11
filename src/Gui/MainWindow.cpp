@@ -51,7 +51,6 @@
 # include <QWhatsThis>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 // FreeCAD Base header
@@ -334,20 +333,34 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Tree view
     if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
-        TreeDockWidget* tree = new TreeDockWidget(0, this);
-        tree->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
-        tree->setMinimumWidth(210);
-        pDockMgr->registerDockWindow("Std_TreeView", tree);
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("TreeView");
+        bool enabled = group->GetBool("Enabled", false);
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        if (enabled) {
+            TreeDockWidget* tree = new TreeDockWidget(0, this);
+            tree->setObjectName
+                (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
+            tree->setMinimumWidth(210);
+            pDockMgr->registerDockWindow("Std_TreeView", tree);
+        }
     }
 
     // Property view
     if (hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
-        PropertyDockView* pcPropView = new PropertyDockView(0, this);
-        pcPropView->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
-        pcPropView->setMinimumWidth(210);
-        pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("PropertyView");
+        bool enabled = group->GetBool("Enabled", false);
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        if (enabled) {
+            PropertyDockView* pcPropView = new PropertyDockView(0, this);
+            pcPropView->setObjectName
+                (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
+            pcPropView->setMinimumWidth(210);
+            pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+        }
     }
 
     // Selection view

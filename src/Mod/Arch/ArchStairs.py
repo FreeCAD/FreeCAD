@@ -87,6 +87,8 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         obj.RailingHeightRight = 900
 
     if baseobj:
+        if not isinstance(baseobj,list):
+            baseobj = [baseobj]
         lenSelection = len(baseobj)
         if lenSelection > 1:
             stair = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Stairs")
@@ -141,7 +143,8 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="
         for stair in stairs:
             stair.recompute()
         makeRailing(stairs)
-        return stairs
+        # return stairs - all other functions expect one object as return value
+        return stairs[0]
     else:
         obj.recompute()
 

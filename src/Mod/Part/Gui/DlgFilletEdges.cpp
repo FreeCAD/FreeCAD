@@ -43,7 +43,6 @@
 # include <QItemSelection>
 # include <QItemSelectionModel>
 # include <QTimer>
-# include <boost/signal.hpp>
 # include <boost/bind.hpp>
 # include <Python.h>
 # include <Inventor/actions/SoSearchAction.h>
@@ -207,7 +206,7 @@ namespace PartGui {
         std::vector<int> edge_ids;
         TopTools_IndexedMapOfShape all_edges;
         TopTools_IndexedMapOfShape all_faces;
-        typedef boost::signals::connection Connection;
+        typedef boost::signals2::connection Connection;
         Connection connectApplicationDeletedObject;
         Connection connectApplicationDeletedDocument;
 

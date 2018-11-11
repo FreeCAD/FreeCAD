@@ -29,7 +29,7 @@
 #include <map>
 #include <set>
 #include <string>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 namespace App {
 class Document;
@@ -53,7 +53,7 @@ public:
 private:
     void slotNewObject(const App::DocumentObject&);
     void slotChangePropertyData(const App::Property&);
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection documentNew;
     Connection documentMod;
 };

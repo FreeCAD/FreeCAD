@@ -131,7 +131,7 @@ class todo:
             for f, arg in todo.itinerary:
                 try:
                     # print("debug: executing",f)
-                    if arg:
+                    if arg or (arg == False):
                         f(arg)
                     else:
                         f()
@@ -357,7 +357,7 @@ class DraftToolBar:
             mw = FreeCADGui.getMainWindow()
             mw.addToolBar(self.tray)
             self.tray.setParent(mw)
-            self.tray.show()
+            self.tray.hide()
 
         else:
             # create the draft Toolbar                

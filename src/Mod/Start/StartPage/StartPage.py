@@ -34,6 +34,7 @@ FreeCADGui.updateLocale()
 iconprovider = QtGui.QFileIconProvider()
 iconbank = {} # to store already created icons so we don't overpollute the temp dir
 tempfolder = None # store icons inside a subfolder in temp dir
+defaulticon = None # store a default icon for problematic file types
 
 def gethexcolor(color):
 
@@ -142,19 +143,43 @@ def getInfo(filename):
         if not image:
             i = QtCore.QFileInfo(filename)
             t = iconprovider.type(i)
+            if not t:
+                t = "Unknown"
             if t in iconbank:
                 image = iconbank[t]
             else:
                 icon = iconprovider.icon(i)
-                preferred = icon.actualSize(QtCore.QSize(128,128))
-                px = icon.pixmap(preferred)
-                image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
-                px.save(image)
+                if icon.availableSizes():
+                    preferred = icon.actualSize(QtCore.QSize(128,128))
+                    px = icon.pixmap(preferred)
+                    image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
+                    px.save(image)
+                else:
+                    image = getDefaultIcon()
                 iconbank[t] = image
 
         return [image,size,author,ctime,mtime,descr,company,lic]
 
     return None
+
+
+
+def getDefaultIcon():
+
+    "retrieves or creates a default file icon"
+
+    global defaulticon
+
+    if not defaulticon:
+        i = QtCore.QFileInfo("Unknown")
+        icon = iconprovider.icon(i)
+        preferred = icon.actualSize(QtCore.QSize(128,128))
+        px = icon.pixmap(preferred)
+        image = tempfile.mkstemp(dir=tempfolder,suffix='.png')[1]
+        px.save(image)
+        defaulticon = image
+
+    return defaulticon
 
 
 

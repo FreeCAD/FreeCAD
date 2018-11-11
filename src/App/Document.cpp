@@ -1029,6 +1029,15 @@ bool Document::hasPendingTransaction() const
         return false;
 }
 
+bool Document::isTransactionEmpty() const
+{
+    if (d->activeUndoTransaction) {
+        return d->activeUndoTransaction->isEmpty();
+    }
+
+    return true;
+}
+
 void Document::clearUndos()
 {
     if (d->activeUndoTransaction)
@@ -1293,6 +1302,7 @@ Document::~Document()
     // not to dec'ref the Python object any more.
     // But we must still invalidate the Python object because it doesn't need to be
     // destructed right now because the interpreter can own several references to it.
+    Base::PyGILStateLocker lock;
     Base::PyObjectBase* doc = (Base::PyObjectBase*)DocumentPythonObject.ptr();
     // Call before decrementing the reference counter, otherwise a heap error can occur
     doc->setInvalid();
@@ -1327,11 +1337,6 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 
 void Document::Save (Base::Writer &writer) const
 {
-    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
-    << "<!--" << endl
-    << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
-    << "-->" << endl;
-
     writer.Stream() << "<Document SchemaVersion=\"4\" ProgramVersion=\""
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
@@ -1550,7 +1555,23 @@ Document::readObjects(Base::XMLReader& reader)
         DocumentObject* pObj = getObject(name.c_str());
         if (pObj) { // check if this feature has been registered
             pObj->setStatus(ObjectStatus::Restore, true);
-            pObj->Restore(reader);
+            try {
+                pObj->Restore(reader);
+            }
+            // Try to continue only for certain exception types if not handled
+            // by the feature type. For all other exception types abort the process.
+            catch (const Base::UnicodeError &e) {
+                e.ReportException();
+            }
+            catch (const Base::ValueError &e) {
+                e.ReportException();
+            }
+            catch (const Base::IndexError &e) {
+                e.ReportException();
+            }
+            catch (const Base::RuntimeError &e) {
+                e.ReportException();
+            }
             pObj->setStatus(ObjectStatus::Restore, false);
         }
         reader.readEndElement("Object");
@@ -1667,18 +1688,27 @@ bool Document::saveToFile(const char* filename) const
     int compression = hGrp->GetInt("CompressionLevel",3);
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
+    bool policy = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetBool("BackupPolicy",true);
+
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
     // fails so that the data of the work up to now isn't lost.
     std::string uuid = Base::Uuid::createUuid();
     std::string fn = filename;
-    fn += "."; fn += uuid;
+    if (policy) {
+        fn += ".";
+        fn += uuid;
+    }
     Base::FileInfo tmp(fn);
 
     // open extra scope to close ZipWriter properly
     {
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
         Base::ZipWriter writer(file);
+        if (!file.is_open()) {
+            throw Base::FileException("Failed to open file", tmp);
+        }
 
         writer.setComment("FreeCAD Document");
         writer.setLevel(compression);
@@ -1687,6 +1717,10 @@ bool Document::saveToFile(const char* filename) const
         if (hGrp->GetBool("SaveBinaryBrep", false))
             writer.setMode("BinaryBrep");
 
+        writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << endl
+                        << "<!--" << endl
+                        << " FreeCAD Document, see http://www.freecadweb.org for more information..." << endl
+                        << "-->" << endl;
         Document::Save(writer);
 
         // Special handling for Gui document.
@@ -1702,63 +1736,66 @@ bool Document::saveToFile(const char* filename) const
         GetApplication().signalSaveDocument(*this);
     }
 
-    // if saving the project data succeeded rename to the actual file name
-    Base::FileInfo fi(filename);
-    if (fi.exists()) {
-        bool backup = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
-        int count_bak = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
-        if (backup) {
-            int nSuff = 0;
-            std::string fn = fi.fileName();
-            Base::FileInfo di(fi.dirPath());
-            std::vector<Base::FileInfo> backup;
-            std::vector<Base::FileInfo> files = di.getDirectoryContent();
-            for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
-                std::string file = it->fileName();
-                if (file.substr(0,fn.length()) == fn) {
-                    // starts with the same file name
-                    std::string suf(file.substr(fn.length()));
-                    if (suf.size() > 0) {
-                        std::string::size_type nPos = suf.find_first_not_of("0123456789");
-                        if (nPos==std::string::npos) {
-                            // store all backup files
-                            backup.push_back(*it);
-                            nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
+    if (policy) {
+        // if saving the project data succeeded rename to the actual file name
+        Base::FileInfo fi(filename);
+        if (fi.exists()) {
+            bool backup = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetBool("CreateBackupFiles",true);
+            int count_bak = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetInt("CountBackupFiles",1);
+            if (backup) {
+                int nSuff = 0;
+                std::string fn = fi.fileName();
+                Base::FileInfo di(fi.dirPath());
+                std::vector<Base::FileInfo> backup;
+                std::vector<Base::FileInfo> files = di.getDirectoryContent();
+                for (std::vector<Base::FileInfo>::iterator it = files.begin(); it != files.end(); ++it) {
+                    std::string file = it->fileName();
+                    if (file.substr(0,fn.length()) == fn) {
+                        // starts with the same file name
+                        std::string suf(file.substr(fn.length()));
+                        if (suf.size() > 0) {
+                            std::string::size_type nPos = suf.find_first_not_of("0123456789");
+                            if (nPos==std::string::npos) {
+                                // store all backup files
+                                backup.push_back(*it);
+                                nSuff = std::max<int>(nSuff, std::atol(suf.c_str()));
+                            }
                         }
                     }
                 }
-            }
 
-            if (!backup.empty() && (int)backup.size() >= count_bak) {
-                // delete the oldest backup file we found
-                Base::FileInfo del = backup.front();
-                for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
-                    if (it->lastModified() < del.lastModified())
-                        del = *it;
+                if (!backup.empty() && (int)backup.size() >= count_bak) {
+                    // delete the oldest backup file we found
+                    Base::FileInfo del = backup.front();
+                    for (std::vector<Base::FileInfo>::iterator it = backup.begin(); it != backup.end(); ++it) {
+                        if (it->lastModified() < del.lastModified())
+                            del = *it;
+                    }
+
+                    del.deleteFile();
+                    fn = del.filePath();
+                }
+                else {
+                    // create a new backup file
+                    std::stringstream str;
+                    str << fi.filePath() << (nSuff + 1);
+                    fn = str.str();
                 }
 
-                del.deleteFile();
-                fn = del.filePath();
+                if (fi.renameFile(fn.c_str()) == false)
+                    Base::Console().Warning("Cannot rename project file to backup file\n");
             }
             else {
-                // create a new backup file
-                std::stringstream str;
-                str << fi.filePath() << (nSuff + 1);
-                fn = str.str();
+                fi.deleteFile();
             }
-
-            if (fi.renameFile(fn.c_str()) == false)
-                Base::Console().Warning("Cannot rename project file to backup file\n");
         }
-        else {
-            fi.deleteFile();
+        if (tmp.renameFile(filename) == false) {
+            Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
+                                    fn.c_str(), filename);
         }
     }
-    if (tmp.renameFile(filename) == false)
-        Base::Console().Warning("Cannot rename file from '%s' to '%s'\n",
-        fn.c_str(), filename);
 
     signalFinishSave(*this, filename);
 
@@ -2100,7 +2137,7 @@ int Document::recompute()
     if (skip)
         return 0;
 
-    ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
+    Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
     // delete recompute log
     for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
@@ -2112,7 +2149,6 @@ int Document::recompute()
 
     std::list<Vertex> make_order;
     DependencyList::out_edge_iterator j, jend;
-
 
     try {
         // this sort gives the execute
@@ -2853,7 +2889,6 @@ void Document::_removeObject(DocumentObject* pcObject)
     _checkTransaction(pcObject);
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
-
 
     if (d->activeObject == pcObject)
         d->activeObject = 0;

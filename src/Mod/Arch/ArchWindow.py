@@ -685,8 +685,8 @@ class _CommandWindow:
         else:
             # preset
             FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
-            if obj and (self.baseFace != None):
-                FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
+            if self.baseFace != None:
+                FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + self.baseFace[0].Name + ".Shape.Faces[" + str(self.baseFace[1]) + "])")
             else:
                 FreeCADGui.doCommand("m = FreeCAD.Matrix()")
                 FreeCADGui.doCommand("m.rotateX(math.pi/2)")
@@ -696,10 +696,15 @@ class _CommandWindow:
             for p in self.wparams:
                 wp += p.lower() + "=" + str(getattr(self,p)) + ","
             FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
-            if obj and self.Include:
-                if Draft.getType(obj) in AllowedHosts:
-                    FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+obj.Name+"]")
-                    siblings = obj.Proxy.getSiblings(obj)
+            if self.Include:
+                host = None
+                if self.baseFace != None:
+                    host = self.baseFace[0]
+                elif obj:
+                    host = obj
+                if Draft.getType(host) in AllowedHosts:
+                    FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument."+host.Name+"]")
+                    siblings = host.Proxy.getSiblings(host)
                     for sibling in siblings:
                         FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
         FreeCAD.ActiveDocument.commitTransaction()
@@ -713,18 +718,20 @@ class _CommandWindow:
         delta = FreeCAD.Vector(self.Width/2,self.Thickness/2,self.Height/2)
         delta = delta.add(FreeCAD.Vector(0,0,self.Sill))
         rot = FreeCAD.Rotation()
-        #self.baseFace = None
         if info:
             if "Face" in info['Component']:
                 import WorkingPlane
                 o = FreeCAD.ActiveDocument.getObject(info['Object'])
-                self.baseFace = int(info['Component'][4:])-1
-                f = o.Shape.Faces[self.baseFace]
+                self.baseFace = [o,int(info['Component'][4:])-1]
+                #print("switching to ",o.Label," face ",self.baseFace[1])
+                f = o.Shape.Faces[self.baseFace[1]]
                 p = WorkingPlane.getPlacementFromFace(f,rotated=True)
                 if p:
                     rot = p.Rotation
-                    delta = rot.multVec(FreeCAD.Vector(delta.x,-delta.y,-delta.z))
                     self.tracker.setRotation(rot)
+        r = self.tracker.trans.rotation.getValue().getValue()
+        if r != (0,0,0,1):
+            delta = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(delta.x,-delta.y,-delta.z))
         self.tracker.pos(point.add(delta))
         #self.tracker.setRotation(rot)
 

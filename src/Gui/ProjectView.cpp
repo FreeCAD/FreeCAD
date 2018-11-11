@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals.hpp>
 # include <boost/bind.hpp>
 # include <QAction>
 # include <QActionGroup>

@@ -2003,7 +2003,12 @@ protected:
     {
         Gui::View3DInventor* view = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
         if (view) {
-            SoGroup* group = static_cast<SoGroup*>(view->getViewer()->getSceneGraph());
+            Gui::View3DInventorViewer* viewer = view->getViewer();
+            if (!viewer)
+                return false; // no active viewer
+            SoGroup* group = dynamic_cast<SoGroup*>(viewer->getSceneGraph());
+            if (!group)
+                return false; // empty scene graph
             bool hasaxis = group->findChild(axisGroup) != -1;
             if (_pcAction->isChecked() != hasaxis)
                 _pcAction->setChecked(hasaxis);

@@ -49,7 +49,6 @@
 # include <Inventor/sensors/SoNodeSensor.h>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include <App/Document.h>

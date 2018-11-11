@@ -103,8 +103,18 @@ void PropertyEditor::closeEditor (QWidget * editor, QAbstractItemDelegate::EndEd
 {
     if (autoupdate) {
         App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc && doc->isTouched())
-            doc->recompute();
+        if (doc) {
+            if (!doc->isTransactionEmpty()) {
+                doc->commitTransaction();
+                // Between opening and committing a transaction a recompute
+                // could already have been done
+                if (doc->isTouched())
+                    doc->recompute();
+            }
+            else {
+                doc->abortTransaction();
+            }
+        }
     }
     QTreeView::closeEditor(editor, hint);
 }
@@ -140,6 +150,13 @@ void PropertyEditor::currentChanged ( const QModelIndex & current, const QModelI
 
 void PropertyEditor::onItemActivated ( const QModelIndex & index )
 {
+    if (autoupdate) {
+        PropertyItem* property = static_cast<PropertyItem*>(index.internalPointer());
+        QString edit = tr("Edit %1").arg(property->propertyName());
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (doc)
+            doc->openTransaction(edit.toUtf8());
+    }
     openPersistentEditor(model()->buddy(index));
 }
 

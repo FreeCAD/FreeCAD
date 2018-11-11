@@ -45,7 +45,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 
 #include "ui_TaskFaceColors.h"
@@ -94,7 +94,7 @@ namespace PartGui {
 class FaceColors::Private
 {
 public:
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Ui_TaskFaceColors* ui;
     Gui::View3DInventorViewer* view;
     ViewProviderPartExt* vp;

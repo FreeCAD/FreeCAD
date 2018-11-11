@@ -167,7 +167,7 @@ class ViewProviderDressup:
         '''this makes sure that the base operation is added back to the project and visible'''
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         job = PathUtils.findParentJob(arg1.Object)
-        job.Proxy.addOperation(arg1.Object.Base)
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
         arg1.Object.Base = None
         return True
 
@@ -206,11 +206,13 @@ class CommandPathDressup:
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "AxisMapDressup")')
         FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
+        FreeCADGui.doCommand('obj.Base = base')
         FreeCADGui.doCommand('obj.Radius = 45')
+        FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
         FreeCADGui.doCommand('PathScripts.PathDressupAxisMap.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
+        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

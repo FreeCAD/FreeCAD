@@ -252,7 +252,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         self._helpTextLbl.setText(self.tr(
             "Click on \"Add\" and select geometric elements to add them to the list."
             " If no geometry is added to the list, all remaining ones are used."
-            " The following geometry elemets are allowed to select: ") + self.sel_elem_text)
+            " The following geometry elements are allowed to select: ") + self.sel_elem_text)
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -324,8 +324,8 @@ class GeometryElementsSelection(QtGui.QWidget):
                     FreeCADGui.Selection.clearSelection()
                     if ref[1].startswith('Solid') and (ref[0].Shape.ShapeType == 'Compound' or ref[0].Shape.ShapeType == 'CompSolid'):
                         # selection of Solids of Compounds or CompSolids is not possible, because a Solid is no Subelement
-                        # since only Subelements can be selected, we gone select all Faces of such an Solids
-                        solid = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
+                        # since only Subelements can be selected, we're going to select all Faces of said Solids
+                        solid = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) doesn't return Solid elements
                         if not solid:
                             return
                         faces = []
@@ -437,7 +437,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                 if solid_to_add:
                     selection = (selection[0], 'Solid' + solid_to_add)
                     ele_ShapeType = 'Solid'
-                    FreeCAD.Console.PrintMessage('selection variable adaped to hold the Solid: ' + selection[0].Shape.ShapeType + '  ' + selection[0].Name + '  ' + selection[1] + ' \n')
+                    FreeCAD.Console.PrintMessage('selection variable adapted to hold the Solid: ' + selection[0].Shape.ShapeType + '  ' + selection[0].Name + '  ' + selection[1] + ' \n')
                 else:
                     return
             if ele_ShapeType in self.sel_elem_types:

@@ -3,6 +3,10 @@ if(WIN32)
     add_definitions(-DBOOST_DYN_LINK)
 endif(WIN32)
 
+if(FREECAD_RELEASE_SEH)
+    add_definitions(-DHAVE_SEH)
+endif(FREECAD_RELEASE_SEH)
+
 # This causes some problems with the resource files to be found, especially with the StartPage
 IF(RESOURCEDIR)
     add_definitions(-DRESOURCEDIR="${RESOURCEDIR}")

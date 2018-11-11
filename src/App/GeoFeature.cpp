@@ -42,7 +42,7 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 
 GeoFeature::GeoFeature(void)
 {
-    ADD_PROPERTY(Placement,(Base::Placement()));
+    ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
 }
 
 GeoFeature::~GeoFeature(void)
@@ -59,7 +59,7 @@ void GeoFeature::transformPlacement(const Base::Placement &transform)
 Base::Placement GeoFeature::globalPlacement() const
 {
     auto* group = GeoFeatureGroupExtension::getGroupOfObject(this);
-    if(group) {
+    if (group) {
         auto ext = group->getExtensionByType<GeoFeatureGroupExtension>();
         return ext->globalGroupPlacement() * Placement.getValue();
     }

@@ -32,6 +32,9 @@
 #include "Property.h"
 #include "Application.h"
 
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
+
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include "PropertyContainerPy.h"
 #include "PropertyContainerPy.cpp"
@@ -79,6 +82,8 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
         ret.append(Py::String("ReadOnly"));
     if (Type & Prop_Output)
         ret.append(Py::String("Output"));
+    if (Type & Prop_NoRecompute)
+        ret.append(Py::String("NoRecompute"));
     if (Type & Prop_Transient)
         ret.append(Py::String("Transient"));
 
@@ -224,6 +229,108 @@ Py::List PropertyContainerPy::getPropertiesList(void) const
         ret.append(Py::String(It->first));
 
     return ret;
+}
+
+
+PyObject* PropertyContainerPy::dumpPropertyContent(PyObject *args, PyObject *kwds)
+{
+    int compression = 3;
+    char* property;
+    static char* kwds_def[] = {"Property", "Compression",NULL};
+    PyErr_Clear();
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "s|i", kwds_def, &property, &compression)) {
+        return NULL;
+    }
+
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(property);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", property);
+        return 0;
+    }
+
+    //setup the stream. the in flag is needed to make "read" work
+    std::stringstream stream(std::stringstream::out | std::stringstream::in | std::stringstream::binary);
+    try {
+        prop->dumpToStream(stream, compression);
+    }
+    catch (...) {
+       PyErr_SetString(PyExc_IOError, "Unable parse content into binary representation");
+       return NULL; 
+    }
+
+    //build the byte array with correct size
+    if (!stream.seekp(0, stream.end)) {
+        PyErr_SetString(PyExc_IOError, "Unable to find end of stream");
+        return NULL;
+    }
+
+    std::stringstream::pos_type offset = stream.tellp();
+    if (!stream.seekg(0, stream.beg)) {
+        PyErr_SetString(PyExc_IOError, "Unable to find begin of stream");
+        return NULL;
+    }
+
+    PyObject* ba = PyByteArray_FromStringAndSize(NULL, offset);
+
+    //use the buffer protocol to access the underlying array and write into it
+    Py_buffer buf = Py_buffer();
+    PyObject_GetBuffer(ba, &buf, PyBUF_WRITABLE);
+    try {
+        if(!stream.read((char*)buf.buf, offset)) {
+            PyErr_SetString(PyExc_IOError, "Error copying data into byte array");
+            return NULL;
+        }
+        PyBuffer_Release(&buf);
+    }
+    catch (...) {
+        PyBuffer_Release(&buf);
+        PyErr_SetString(PyExc_IOError, "Error copying data into byte array");
+        return NULL;
+    }
+
+    return ba;
+}
+
+PyObject* PropertyContainerPy::restorePropertyContent(PyObject *args)
+{
+    PyObject* buffer;
+    char* property;
+    if( !PyArg_ParseTuple(args, "sO", &property, &buffer) )
+        return NULL;
+
+    Property* prop = getPropertyContainerPtr()->getPropertyByName(property);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", property);
+        return 0;
+    }
+
+    //check if it really is a buffer
+    if( !PyObject_CheckBuffer(buffer) ) {
+        PyErr_SetString(PyExc_TypeError, "Must be a buffer object");
+        return NULL;
+    }
+
+    Py_buffer buf;
+    if(PyObject_GetBuffer(buffer, &buf, PyBUF_SIMPLE) < 0)
+        return NULL;
+
+    if(!PyBuffer_IsContiguous(&buf, 'C')) {
+        PyErr_SetString(PyExc_TypeError, "Buffer must be contiguous");
+        return NULL;
+    }
+
+    //check if it really is a buffer
+    try {
+        typedef boost::iostreams::basic_array_source<char> Device;
+        boost::iostreams::stream<Device> stream((char*)buf.buf, buf.len);
+        prop->restoreFromStream(stream);
+    }
+    catch(...) {
+        PyErr_SetString(PyExc_IOError, "Unable to restore content");
+        return NULL;
+    }
+
+    Py_Return;
 }
 
 PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const

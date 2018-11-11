@@ -38,7 +38,6 @@
 #include "DocumentObjectExtension.h"
 #include "GeoFeatureGroupExtension.h"
 #include <App/DocumentObjectPy.h>
-#include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
 
 using namespace App;
@@ -63,6 +62,7 @@ DocumentObject::DocumentObject(void)
 DocumentObject::~DocumentObject(void)
 {
     if (!PythonObject.is(Py::_None())){
+        Base::PyGILStateLocker lock;
         // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
         // Python object or not. In the constructor we forced the wrapper to own the object so we need
         // not to dec'ref the Python object any more.
@@ -527,9 +527,13 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->signalRelabelObject(*this);
 
     // set object touched if it is an input property
-    if (!(prop->getType() & Prop_Output))
+    if (!(prop->getType() & Prop_Output)) {
         StatusBits.set(ObjectStatus::Touch);
-    
+        // must execute on document recompute
+        if (!(prop->getType() & Prop_NoRecompute))
+            StatusBits.set(ObjectStatus::Enforce);
+    }
+
     //call the parent for appropriate handling
     TransactionalObject::onChanged(prop);
 }

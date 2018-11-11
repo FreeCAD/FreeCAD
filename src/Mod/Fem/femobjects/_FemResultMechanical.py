@@ -65,7 +65,7 @@ class _FemResultMechanical():
     # standard Feature methods
     def execute(self, obj):
         """"this method is executed on object creation and whenever the document is recomputed"
-        update Part or Mesh should NOT lead to recompution of the analysis automatically, time consuming
+        update Part or Mesh should NOT lead to recomputation of the analysis automatically, time consuming
         """
         return
 

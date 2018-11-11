@@ -206,6 +206,7 @@ class ObjectDressup:
     def generateHelix(self):
         edges = self.wire.Edges
         minZ = self.findMinZ(edges)
+        PathLog.debug("Minimum Z in this path is {}".format(minZ))
         outedges = []
         i = 0
         while i < len(edges):
@@ -334,7 +335,7 @@ class ObjectDressup:
 
     def findMinZ(self, edges):
         minZ = 99999999999
-        for edge in edges:
+        for edge in edges[1:]:
             for v in edge.Vertexes:
                 if v.Point.z < minZ:
                     minZ = v.Point.z
@@ -641,7 +642,7 @@ class ViewProviderDressup:
         '''this makes sure that the base operation is added back to the project and visible'''
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         job = PathUtils.findParentJob(self.obj)
-        job.Proxy.addOperation(arg1.Object.Base)
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
         arg1.Object.Base = None
         return True
 
@@ -686,10 +687,12 @@ class CommandPathDressupRampEntry:
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "RampEntryDressup")')
         FreeCADGui.doCommand('dbo = PathScripts.PathDressupRampEntry.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('job = PathScripts.PathUtils.findParentJob(base)')
+        FreeCADGui.doCommand('obj.Base = base')
+        FreeCADGui.doCommand('job.Proxy.addOperation(obj, base)')
         FreeCADGui.doCommand('PathScripts.PathDressupRampEntry.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
+        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(base.Name).Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

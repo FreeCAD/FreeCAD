@@ -23,7 +23,6 @@
 #ifndef SKETCHER_SKETCHOBJECT_H
 #define SKETCHER_SKETCHOBJECT_H
 
-#include <boost/signals/connection.hpp>
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
@@ -179,6 +178,12 @@ public:
     int getDriving(int ConstrId, bool &isdriving);
     /// toggle the driving status of this constraint
     int toggleDriving(int ConstrId);
+
+    /// Make all dimensionals Driving/non-Driving
+    int setDatumsDriving(bool isdriving);
+    /// Move Dimensional constraints at the end of the properties array
+    int moveDatumsToEnd(void);
+    
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
     /// get the driving status of this constraint
@@ -409,6 +414,11 @@ protected:
      */
     std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
+
+    // refactoring functions
+    // check whether constraint may be changed driving status
+    int testDrivingChange(int ConstrId, bool isdriving);
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;
@@ -437,8 +447,8 @@ private:
     std::vector<int> lastConflicting;
     std::vector<int> lastRedundant;
 
-    boost::signals::scoped_connection constraintsRenamedConn;
-    boost::signals::scoped_connection constraintsRemovedConn;
+    boost::signals2::scoped_connection constraintsRenamedConn;
+    boost::signals2::scoped_connection constraintsRemovedConn;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 

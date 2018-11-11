@@ -331,10 +331,17 @@ class ObjectJob:
     def execute(self, obj):
         obj.Path = obj.Operations.Path
 
-    def addOperation(self, op):
+    def addOperation(self, op, before = None):
         group = self.obj.Operations.Group
         if op not in group:
-            group.append(op)
+            if before:
+                try:
+                    group.insert(group.index(before), op)
+                except Exception as e:
+                    PathLog.error(e)
+                    group.append(op)
+            else:
+                group.append(op)
             self.obj.Operations.Group = group
             op.Path.Center = self.obj.Operations.Path.Center
 

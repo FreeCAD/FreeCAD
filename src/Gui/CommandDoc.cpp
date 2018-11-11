@@ -1100,8 +1100,9 @@ void StdCmdDelete::activated(int iMsg)
                         }
                         break;
                     }
-                } 
-            } else { 
+                }
+            }
+            else {
                 // check if we can delete the object - linked objects
                 std::set<QString> affectedLabels;
                 for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
