@@ -83,8 +83,8 @@
 #include <Mod/Sketcher/App/SketchObjectPy.h>
 
 
-//#undef DEBUG
-#define DEBUG
+#undef DEBUG
+//#define DEBUG
 
 using namespace Sketcher;
 using namespace Base;
@@ -1651,11 +1651,21 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             THROWM(Base::CADKernelError,"Unable to find intersection between offset curves.")
         }
 
+#ifdef DEBUG
+        for(auto inter:offsetintersectionpoints) {
+                Base::Console().Log("offset int(%f,%f,0)\n",inter.first.x,inter.first.y);
+        }
+#endif
+        
         int res = selectintersection(offsetintersectionpoints,filletcenterpoint,refPnt1, refPnt2);
 
         if(res != 0)
             return res;
 
+#ifdef DEBUG
+        Base::Console().Log("selected offset int(%f,%f,0)\n",filletcenterpoint.first.x,filletcenterpoint.first.y);
+#endif        
+        
         double refoparam1;
         double refoparam2;
 
