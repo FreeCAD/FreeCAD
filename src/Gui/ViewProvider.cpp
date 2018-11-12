@@ -378,6 +378,9 @@ std::string ViewProvider::getActiveDisplayMode(void) const
 
 void ViewProvider::hide(void)
 {
+    if(pcModeSwitch->whichChild.getValue() < 0)
+        return;
+
     pcModeSwitch->whichChild = -1;
 
     //tell extensions that we hide

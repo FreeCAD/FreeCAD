@@ -97,6 +97,8 @@ public:
 
     static void updateStatus(bool delay=false);
 
+    static bool isObjectShowable(App::DocumentObject *obj);
+
     DocumentItem *getDocumentItem(const Gui::Document *) const;
 
     void startDragging();
@@ -231,6 +233,8 @@ public:
 
     TreeWidget *getTree() const;
     const char *getTreeName() const;
+
+    bool isObjectShowable(App::DocumentObject *obj);
 
 protected:
     /** Adds a view provider to the document item.

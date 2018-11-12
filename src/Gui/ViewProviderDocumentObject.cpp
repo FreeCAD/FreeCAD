@@ -56,6 +56,7 @@
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
+#include "Tree.h"
 #include <Gui/ViewProviderDocumentObjectPy.h>
 
 
@@ -173,7 +174,15 @@ void ViewProviderDocumentObject::hide(void)
 
 void ViewProviderDocumentObject::show(void)
 {
-    ViewProvider::show();
+    if(TreeWidget::isObjectShowable(getObject()))
+        ViewProvider::show();
+    else {
+        Visibility.setValue(false);
+        if(getObject())
+            getObject()->Visibility.setValue(false);
+        return;
+    }
+
     // use this bit to check whether 'Visibility' must be adjusted
     if (Visibility.testStatus(App::Property::User2) == false) {
         Visibility.setStatus(App::Property::User2, true);

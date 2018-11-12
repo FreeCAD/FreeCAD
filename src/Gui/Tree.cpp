@@ -196,7 +196,7 @@ public:
         childSet = other->childSet;
     }
 
-    bool updateChildren() {
+    bool updateChildren(bool checkVisibility) {
         auto newChildren = viewObject->claimChildren();
         auto obj = viewObject->getObject();
         std::set<App::DocumentObject *> newSet;
@@ -226,6 +226,15 @@ public:
         updated = updated || children!=newChildren;
         children.swap(newChildren);
         childSet.swap(newSet);
+
+        if(updated && checkVisibility) {
+            for(auto child : children) {
+                if(!child || !child->getNameInDocument() || !child->Visibility.getValue())
+                    continue;
+                if(child->getDocument()==obj->getDocument() && !docItem->isObjectShowable(child))
+                    child->Visibility.setValue(false);
+            }
+        }
         return updated;
     }
 
@@ -428,6 +437,26 @@ TreeWidget::~TreeWidget()
 
 const char *TreeWidget::getTreeName() const {
     return myName.c_str();
+}
+
+bool TreeWidget::isObjectShowable(App::DocumentObject *obj) {
+    if(!obj || !obj->getNameInDocument())
+        return true;
+    Gui::Document *doc = Application::Instance->getDocument(obj->getDocument());
+    if(!doc)
+        return true;
+    static TreeWidget *tree;
+    if(!tree) {
+        auto trees = getMainWindow()->findChildren<TreeWidget*>();
+        if(trees.empty())
+            return true;
+        // NOTE! We are assuming a tree widget will never be destroies;
+        tree = trees.front();
+    }
+    auto it = tree->DocumentMap.find(doc);
+    if(it != tree->DocumentMap.end())
+        return it->second->isObjectShowable(obj);
+    return true;
 }
 
 void TreeWidget::updateStatus(bool delay) {
@@ -2054,7 +2083,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             if(entry.size())
                 pdata->updateChildren(*entry.begin());
             else
-                pdata->updateChildren();
+                pdata->updateChildren(true);
             entry.insert(pdata);
         }else if(pdata->rootItem && parent==NULL) {
             Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
@@ -2154,6 +2183,14 @@ void TreeWidget::slotFinishRestoreDocument(const App::Document& Doc)
     for(auto &v : docItem->ObjectMap)
         slotChangeObject(*v.second->viewObject,dummy,true);
 
+    for(auto &v : docItem->ObjectMap) {
+        if(v.second->viewObject->Visibility.getValue() &&
+           !docItem->isObjectShowable(v.second->viewObject->getObject()))
+        {
+           v.second->viewObject->hide();
+        }
+    }
+
     if(!Doc.testStatus(App::Document::PartialDoc))
         return;
     auto item = it->second;
@@ -2213,6 +2250,8 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
                 if(childItem->requiredAtRoot(false))
                     docItem->createNewItem(*childItem->object(),docItem,-1,childItem->myData);
             }
+            if(child->Visibility.getValue() && !docItem->isObjectShowable(child))
+                child->Visibility.setValue(false);
         }
         docItem->ObjectMap.erase(obj);
     }
@@ -2446,13 +2485,12 @@ void TreeWidget::slotChangeObject(
     for(auto data : itEntry->second) {
         if(!found) {
             found = data;
-            childrenChanged = found->updateChildren();
+            childrenChanged = found->updateChildren(force);
             if(!childrenChanged && found->removeChildrenFromRoot==removeChildrenFromRoot)
                 return;
-        }
-        data->removeChildrenFromRoot = removeChildrenFromRoot;
-        if(childrenChanged)
+        }else if(childrenChanged)
             data->updateChildren(found);
+        data->removeChildrenFromRoot = removeChildrenFromRoot;
         DocumentItem* docItem = data->docItem;
         for(auto item : data->items)
             docItem->populateItem(item,true);
@@ -2474,7 +2512,7 @@ void TreeWidget::slotChangeObject(
             for(auto data : it->second) {
                 if(!found) {
                     found = data;
-                    if(!found->updateChildren())
+                    if(!found->updateChildren(false))
                         break;
                 }
                 data->updateChildren(found);
@@ -3397,6 +3435,18 @@ int DocumentObjectItem::isGroup() const {
     if(vp && vp->getChildRoot())
         return PartGroup;
     return NotGroup;
+}
+
+bool DocumentItem::isObjectShowable(App::DocumentObject *obj) {
+    auto itParents = _ParentMap.find(obj);
+    if(itParents == _ParentMap.end() || itParents->second.empty())
+        return true;
+    for(auto parent : itParents->second) {  
+        if(!parent->hasChildElement() &&
+            parent->getLinkedObject(false)==parent)
+            return true;
+    }
+    return false;
 }
 
 int DocumentObjectItem::isParentGroup() const {
