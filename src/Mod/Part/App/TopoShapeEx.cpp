@@ -183,7 +183,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 
-#define TOPOP_VERSION 9
+#define TOPOP_VERSION 10
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -2024,12 +2024,10 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     }
                     auto &newInfo = *itMap->second;
                     std::vector<TopoDS_Shape> newShapes;
-                    NameKey *pkey;
+                    NameKey &namekey = newShape.ShapeType()==info.type?key2:key;
                     if(newInfo.type == newShape.ShapeType()) {
                         newShapes.push_back(newShape);
-                        pkey = &key2;
                     } else {
-                        pkey = &key;
                         // It is possible for the maker to report generating a
                         // higher level shape, such as shell or solid.
                         for(TopExp_Explorer xp(newShape,newInfo.type);xp.More();xp.Next())
@@ -2046,8 +2044,8 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         }
                         ss.str("");
                         ss << newInfo.shapetype << j;
-                        pkey->tag = other.Tag;
-                        auto &name_info = newNames[ss.str()][*pkey];
+                        namekey.tag = other.Tag;
+                        auto &name_info = newNames[ss.str()][namekey];
                         name_info.sids = sids;
                         name_info.index = -k;
                         name_info.shapetype = info.shapetype;
