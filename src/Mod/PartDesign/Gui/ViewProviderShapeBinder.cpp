@@ -246,7 +246,9 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, A
             subs.push_back(sub+element);
     }
 
-    self->setLinks(owner?owner:obj,subs,QApplication::keyboardModifiers()==Qt::ControlModifier);
+    std::map<App::DocumentObject *, std::vector<std::string> > values;
+    values[owner?owner:obj] = elements;
+    self->setLinks(std::move(values),QApplication::keyboardModifiers()==Qt::ControlModifier);
     if(self->Relative.getValue())
         updatePlacement(false);
     return std::string();
@@ -264,7 +266,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         return;
 
     Base::Matrix4D mat;
-    bool relative = self->Relative.getValue();
+    bool relative = self->Relative.getValue() && self->Support.getSize()==1;
     if(relative) {
         const auto &sel = Gui::Selection().getSelection("",0);
         if(sel.empty() || !sel[0].pObject) {

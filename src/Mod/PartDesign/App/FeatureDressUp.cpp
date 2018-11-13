@@ -183,7 +183,7 @@ void DressUp::onChanged(const App::Property* prop)
                 if(sub.size() && sub[0]!='?')
                     sub = std::string("?") + sub;
             }
-            Base.setValue (BaseFeature.getValue(),subs,subs.size()?&shadows:nullptr);
+            Base.setValue (BaseFeature.getValue(),std::move(subs),std::move(shadows));
         }
     } else if (prop == &Base) {
         // track the vice-versa changes

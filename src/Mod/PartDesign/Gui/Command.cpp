@@ -327,9 +327,8 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     PartDesign::SubShapeBinder *binder = 0;
     App::DocumentObject *binderParent = 0;
     std::string binderSub;
-    App::DocumentObject *obj = 0;
-    std::vector<std::string> subs;
-    for(auto &sel : Gui::Selection().getSelection("",0)) {
+    std::map<App::DocumentObject *, std::vector<std::string> > values;
+    for(auto &sel : Gui::Selection().getCompleteSelection(0)) {
         if(!sel.pObject) continue;
         if(!binder) {
             const char *dot = sel.SubName?strrchr(sel.SubName,'.'):0;
@@ -345,14 +344,9 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
                 }
             }
         }
-        if(!obj)
-            obj = sel.pObject;
-        else if(obj!=sel.pObject) {
-            QMessageBox::critical(Gui::getMainWindow(), QObject::tr("SubShapeBinder"),
-                    QObject::tr("Cannot link to more than on object"));
-            return;
-        }
-        subs.push_back(std::string(sel.SubName?sel.SubName:""));
+        auto &subs = values[sel.pObject];
+        if(sel.SubName && sel.SubName[0])
+            subs.emplace_back(sel.SubName);
     }
 
     PartDesign::Body *pcActiveBody = 0;
@@ -362,7 +356,9 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         FeatName = getUniqueObjectName("Binder",pcActiveBody);
     }
     Base::Matrix4D mat;
-    if(obj && binderParent && binderParent!=binder) {
+    if(values.size()==1 && binderParent && binderParent!=binder) {
+        App::DocumentObject *obj = values.begin()->first;
+        auto subs = values.begin()->second;
         App::DocumentObject *sobj = 0;
         App::DocumentObject *parent = 0;
         std::string parentSub = binderSub;
@@ -380,7 +376,10 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
                 return;
             }
         }
-        obj = sobj;
+        if(sobj) {
+            values.clear();
+            values[sobj] = std::move(subs);
+        }
         if(parent) {
             binderParent = parent;
             binderSub = parentSub;
@@ -404,7 +403,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             }
             if(!binder) return;
         }
-        binder->setLinks(obj,subs);
+        binder->setLinks(std::move(values));
         binder->updatePlacement(mat);
         updateActive();
         commitCommand();

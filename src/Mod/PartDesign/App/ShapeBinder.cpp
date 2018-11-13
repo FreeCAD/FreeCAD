@@ -33,11 +33,15 @@
 # include <Precision.hxx>
 #endif
 
+#include <Base/Console.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include "ShapeBinder.h"
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
+
+FC_LOG_LEVEL_INIT("PartDesign",true,true);
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -183,7 +187,8 @@ SubShapeBinder::SubShapeBinder()
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
     ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object linking");
     ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, "Binding mode");
-    ADD_PROPERTY_TYPE(PartialLoad, (true), "Base", App::Prop_None, "Enable partial loading");
+    ADD_PROPERTY_TYPE(PartialLoad, (false), "Base", App::Prop_None, "Enable partial loading");
+    PartialLoad.setStatus(App::Property::PartialTrigger,true);
     static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
     Placement.setStatus(App::Property::Immutable, true);
@@ -197,21 +202,24 @@ void SubShapeBinder::updatePlacement(const Base::Matrix4D &mat) {
 
 void SubShapeBinder::update() {
     Part::TopoShape result;
-    auto obj = Support.getValue();
-    if(!obj || !obj->getNameInDocument() || obj->testStatus(App::PartialObject))
-        return;
     std::vector<Part::TopoShape> shapes;
-    const auto &subvals = Support.getSubValues();
-    std::set<std::string> subs(subvals.begin(),subvals.end());
-    static std::string none("");
-    if(subs.empty())
-        subs.insert(none);
-    else if(subs.size()>1)
-        subs.erase(none);
-    for(const auto &sub : subs) {
-        const auto &shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
-        if(!shape.isNull())
-            shapes.push_back(shape);
+
+    for(auto &l : Support.getSubListValues()) {
+        auto obj = l.getValue();
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        const auto &subvals = l.getSubValues();
+        std::set<std::string> subs(subvals.begin(),subvals.end());
+        static std::string none("");
+        if(subs.empty())
+            subs.insert(none);
+        else if(subs.size()>1)
+            subs.erase(none);
+        for(const auto &sub : subs) {
+            const auto &shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
+            if(!shape.isNull())
+                shapes.push_back(shape);
+        }
     }
     if(shapes.empty())
         return;
@@ -259,13 +267,19 @@ void SubShapeBinder::update() {
 App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
     if(BindMode.getValue()==0)
         update();
-    return Part::Feature::execute();
+    return inherited::execute();
+}
+
+void SubShapeBinder::onDocumentRestored() {
+    if(Shape.testStatus(App::Property::Transient))
+        update();
+    inherited::onDocumentRestored();
 }
 
 void SubShapeBinder::onChanged(const App::Property *prop) {
     if(!isRestoring()) {
         if(prop == &Support) {
-            if(Support.getValue()) {
+            if(Support.getSubListValues().size()) {
                 update(); 
                 if(BindMode.getValue() == 2)
                     Support.setValue(0);
@@ -275,60 +289,49 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
                Support.setValue(0);
            else if(BindMode.getValue() == 0)
                update();
+           checkPropertyStatus();
+        }else if(prop == &PartialLoad) {
+           checkPropertyStatus();
         }
     }
-    Part::Feature::onChanged(prop);
+    inherited::onChanged(prop);
 }
 
-void SubShapeBinder::setLinks(App::DocumentObject *obj, 
-        const std::vector<std::string> &_subs, bool reset)
+void SubShapeBinder::checkPropertyStatus() {
+    Support.setAllowPartial(PartialLoad.getValue());
+    Shape.setStatus(App::Property::Transient, !PartialLoad.getValue() && BindMode.getValue()!=2);
+}
+
+void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::string> >&&values, bool reset)
 {
-    if(!obj) {
-        Support.setValue(0);
-        Shape.setValue(Part::TopoShape());
-        return;
-    }
-    if(!obj->getNameInDocument())
-        throw Base::RuntimeError("Invalid object link");
-    if(Support.getValue() && Support.getValue()!=obj)
-        reset = true;
-
-    std::set<std::string> subs(_subs.begin(),_subs.end());
-    if(!reset) {
-        if(subs.empty())
-            return;
-        const auto &oldSubs = Support.getSubValues();
-        subs.insert(oldSubs.begin(),oldSubs.end());
-    }
-    if(subs.empty())
-        subs.insert("");
-    else if(subs.size()>1)
-        subs.erase("");
-
-    if(Relative.getValue() && obj->getDocument()!=getDocument()) 
-        throw Base::RuntimeError("Direct external linking is not allowed");
-
-    std::vector<std::string> subvals;
-    if(Relative.getValue())
-        subvals.insert(subvals.end(),subs.begin(),subs.end());
-    else {
-        App::DocumentObject *sobj = obj;
-        for(auto &sub : subs) {
-            const char *element = 0;
-            auto subobj = obj->resolve(sub.c_str(),0,0,&element);
-            if(!subobj) 
-                throw Base::RuntimeError("Cannot find sub object");
-            if(!sobj)
-                sobj = subobj;
-            else if(sobj!=subobj)
-                throw Base::RuntimeError("Cannot link to different sub-object");
-            subvals.push_back(element);
+    if(values.empty()) {
+        if(reset) {
+            Support.setValue(0);
+            Shape.setValue(Part::TopoShape());
         }
-        obj = sobj;
+        return;
     }
     auto inSet = getInListEx(true);
     inSet.insert(this);
-    if(inSet.find(obj)!=inSet.end())
-        throw Base::RuntimeError("Cyclic dependency");
-    Support.setValue(obj,subvals);
+
+    for(auto &v : values) {
+        if(!v.first || !v.first->getNameInDocument())
+            FC_THROWM(Base::ValueError,"Invalid document object");
+        if(inSet.find(v.first)!=inSet.end())
+            FC_THROWM(Base::ValueError, "Cyclic referece to " << v.first->getFullName());
+    }
+
+    for(auto &v : values) 
+        Support.addValue(v.first,std::move(v.second),reset);
 }
+    
+void SubShapeBinder::handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
+{
+   if(prop == &Support) {
+       Support.upgrade(reader,TypeName);
+       return;
+   }
+   inherited::handleChangedPropertyType(reader,TypeName,prop);
+}
+
