@@ -29,6 +29,7 @@
 # include <QActionGroup>
 # include <QApplication>
 # include <qcursor.h>
+# include <QVBoxLayout>
 # include <qlayout.h>
 # include <qstatusbar.h>
 # include <QContextMenuEvent>
@@ -55,6 +56,7 @@
 #include "MainWindow.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "Widgets.h"
 
 using namespace Gui;
 
@@ -105,6 +107,12 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
     connect(this->markRecomputeAction, SIGNAL(triggered()),
             this, SLOT(onMarkRecompute()));
+
+    this->searchObjectsAction = new QAction(this);
+    this->searchObjectsAction->setText(tr("Search..."));
+    this->searchObjectsAction->setStatusTip(tr("Search for objects"));
+    connect(this->searchObjectsAction, SIGNAL(triggered()),
+            this, SLOT(onSearchObjects()));
 
     // Setup connections
     Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
@@ -183,6 +191,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         contextMenu.addAction(this->skipRecomputeAction);
         contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->createGroupAction);
+        contextMenu.addAction(this->searchObjectsAction);
     }
     else if (this->contextItem && this->contextItem->type() == ObjectType) {
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
@@ -360,6 +369,11 @@ void TreeWidget::onMarkRecompute()
             }
         }
     }
+}
+
+void TreeWidget::onSearchObjects()
+{
+    emitSearchObjects();
 }
 
 void TreeWidget::onActivateDocument(QAction* active)
@@ -912,7 +926,145 @@ void TreeWidget::setItemsSelected (const QList<QTreeWidgetItem *> items, bool se
 
 // ----------------------------------------------------------------------------
 
+/* TRANSLATOR Gui::TreePanel */
+
+TreePanel::TreePanel(QWidget* parent)
+  : QWidget(parent)
+{
+    this->treeWidget = new TreeWidget(this);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
+
+    QVBoxLayout* pLayout = new QVBoxLayout(this);
+    pLayout->setSpacing(0);
+    pLayout->setMargin (0);
+    pLayout->addWidget(this->treeWidget);
+    connect(this->treeWidget, SIGNAL(emitSearchObjects()),
+            this, SLOT(showEditor()));
+
+    this->searchBox = new Gui::ClearLineEdit(this);
+    pLayout->addWidget(this->searchBox);
+    this->searchBox->hide();
+    this->searchBox->installEventFilter(this);
+#if QT_VERSION >= 0x040700
+    this->searchBox->setPlaceholderText(tr("Search"));
+#endif
+    connect(this->searchBox, SIGNAL(returnPressed()),
+            this, SLOT(accept()));
+    connect(this->searchBox, SIGNAL(textEdited(QString)),
+            this, SLOT(findMatchingItems(QString)));
+}
+
+TreePanel::~TreePanel()
+{
+}
+
+void TreePanel::accept()
+{
+    QString text = this->searchBox->text();
+    if (!text.isEmpty()) {
+        for (int i=0; i<treeWidget->topLevelItemCount(); i++) {
+            selectTreeItem(treeWidget->topLevelItem(i), text);
+        }
+    }
+    hideEditor();
+}
+
+bool TreePanel::eventFilter(QObject *obj, QEvent *ev)
+{
+    if (obj != this->searchBox)
+        return false;
+
+    if (ev->type() == QEvent::KeyPress) {
+        bool consumed = false;
+        int key = static_cast<QKeyEvent*>(ev)->key();
+        switch (key) {
+        case Qt::Key_Escape:
+            hideEditor();
+            consumed = true;
+            break;
+
+        default:
+            break;
+        }
+
+        return consumed;
+    }
+
+    return false;
+}
+
+void TreePanel::showEditor()
+{
+    this->searchBox->show();
+    this->searchBox->setFocus();
+}
+
+void TreePanel::hideEditor()
+{
+    this->searchBox->clear();
+    this->searchBox->hide();
+    for (int i=0; i<treeWidget->topLevelItemCount(); i++) {
+        resetBackground(treeWidget->topLevelItem(i));
+    }
+}
+
+void TreePanel::findMatchingItems(const QString& text)
+{
+    if (text.isEmpty()) {
+        for (int i=0; i<treeWidget->topLevelItemCount(); i++) {
+            resetBackground(treeWidget->topLevelItem(i));
+        }
+    }
+    else {
+        for (int i=0; i<treeWidget->topLevelItemCount(); i++) {
+            searchTreeItem(treeWidget->topLevelItem(i), text);
+        }
+    }
+}
+
+void TreePanel::searchTreeItem(QTreeWidgetItem* item, const QString& text)
+{
+    for (int i=0; i<item->childCount(); i++) {
+        QTreeWidgetItem* child = item->child(i);
+        child->setBackground(0, QBrush());
+        child->setExpanded(false);
+        if (child->text(0).indexOf(text, 0, Qt::CaseInsensitive) >= 0) {
+            child->setBackground(0, QColor(255, 255, 0, 100));
+            QTreeWidgetItem* parent = child->parent();
+            while (parent) {
+                parent->setExpanded(true);
+                parent = parent->parent();
+            }
+        }
+        searchTreeItem(child, text);
+    }
+}
+
+void TreePanel::selectTreeItem(QTreeWidgetItem* item, const QString& text)
+{
+    for (int i=0; i<item->childCount(); i++) {
+        QTreeWidgetItem* child = item->child(i);
+        if (child->text(0).indexOf(text, 0, Qt::CaseInsensitive) >= 0) {
+            child->setSelected(true);
+        }
+        selectTreeItem(child, text);
+    }
+}
+
+void TreePanel::resetBackground(QTreeWidgetItem* item)
+{
+    for (int i=0; i<item->childCount(); i++) {
+        QTreeWidgetItem* child = item->child(i);
+        child->setBackground(0, QBrush());
+        resetBackground(child);
+    }
+}
+
+// ----------------------------------------------------------------------------
+
 /* TRANSLATOR Gui::TreeDockWidget */
+
 TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
   : DockWindow(pcDocument,parent)
 {

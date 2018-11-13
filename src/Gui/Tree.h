@@ -32,6 +32,7 @@
 #include <Gui/DockWindow.h>
 #include <Gui/Selection.h>
 
+class QLineEdit;
 
 namespace Gui {
 
@@ -106,6 +107,7 @@ protected Q_SLOTS:
     void onFinishEditing();
     void onSkipRecompute(bool on);
     void onMarkRecompute();
+    void onSearchObjects();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -113,6 +115,9 @@ private Q_SLOTS:
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
     void onTestStatus(void);
+
+Q_SIGNALS:
+    void emitSearchObjects();
 
 private:
     void slotNewDocument(const Gui::Document&);
@@ -129,6 +134,7 @@ private:
     QAction* finishEditingAction;
     QAction* skipRecomputeAction;
     QAction* markRecomputeAction;
+    QAction* searchObjectsAction;
     QTreeWidgetItem* contextItem;
 
     QTreeWidgetItem* rootItem;
@@ -235,6 +241,32 @@ private:
 
     friend class TreeWidget;
     friend class DocumentItem;
+};
+
+class TreePanel : public QWidget
+{
+    Q_OBJECT
+
+public:
+    TreePanel(QWidget* parent=nullptr);
+    virtual ~TreePanel();
+
+    bool eventFilter(QObject *obj, QEvent *ev);
+
+private Q_SLOTS:
+    void accept();
+    void showEditor();
+    void hideEditor();
+    void findMatchingItems(const QString&);
+
+private:
+    void searchTreeItem(QTreeWidgetItem* item, const QString& text);
+    void selectTreeItem(QTreeWidgetItem* item, const QString& text);
+    void resetBackground(QTreeWidgetItem* item);
+
+private:
+    QLineEdit* searchBox;
+    QTreeWidget* treeWidget;
 };
 
 /**
