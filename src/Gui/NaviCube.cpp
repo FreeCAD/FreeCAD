@@ -964,16 +964,16 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	else {
 		for (int pass = 0; pass < 3 ; pass++) {
 			for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++) {
-				if (pickMode) { // pick should not be drawn in tree passes
-					glColor3ub((*f)->m_PickId, 0, 0);
-					glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
-				} else {
+				//if (pickMode) { // pick should not be drawn in tree passes
+				//	glColor3ub((*f)->m_PickId, 0, 0);
+				//	glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
+				//} else {
 					if (pass != (*f)->m_RenderPass)
 						continue;
 					QColor& c = (m_HiliteId == (*f)->m_PickId) && (pass < 2) ? m_HiliteColor : (*f)->m_Color;
 					glColor4f(c.redF(), c.greenF(), c.blueF(),c.alphaF());
 					glBindTexture(GL_TEXTURE_2D, (*f)->m_TextureId);
-				}
+				//}
 				glDrawElements(GL_TRIANGLE_FAN, (*f)->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[(*f)->m_FirstVertex]);
 			}
 		}

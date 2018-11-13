@@ -610,9 +610,12 @@ PyObject* Application::sGetMainWindow(PyObject * /*self*/, PyObject *args)
         return NULL;
 
     PythonWrapper wrap;
-    wrap.loadCoreModule();
-    wrap.loadGuiModule();
-    wrap.loadWidgetsModule();
+    if (!wrap.loadCoreModule() ||
+        !wrap.loadGuiModule() ||
+        !wrap.loadWidgetsModule()) {
+        PyErr_SetString(PyExc_RuntimeError, "Failed to load Python wrapper for Qt");
+        return 0;
+    }
     try {
         return Py::new_reference_to(wrap.fromQWidget(Gui::getMainWindow(), "QMainWindow"));
     }
