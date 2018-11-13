@@ -155,6 +155,10 @@ class BoundBox
   public:
 	BoundBox()
 	{
+		minX = 0;
+		maxX = 0;
+		minY = 0;
+		maxY = 0;
 	}
 
 	// generic: first point
@@ -407,7 +411,7 @@ void CleanPath(const Path &inp, Path &outpt, double tolerance)
 	long index;
 	for (long i = 0; i < size; i++)
 	{
-		index = clpSegmentIndex + i;
+		index = static_cast<long>(clpSegmentIndex + i);
 		if (index >= size) index -= size;
 		outpt.push_back(tmp.at(index));
 	}
@@ -842,6 +846,7 @@ class PerfCounter
 		name = p_name;
 		count = 0;
 		running = false;
+		start_ticks = 0;
 		total_ticks = 0;
 	}
 	inline void Start()
