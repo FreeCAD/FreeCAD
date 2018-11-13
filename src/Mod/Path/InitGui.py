@@ -80,28 +80,26 @@ class PathWorkbench (Workbench):
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom"]
         twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix", "Path_Adaptive" ]
         threedopcmdlist = ["Path_Pocket_3D"]
-        engravecmdlist = ["Path_Engrave"]
+        engravecmdlist = ["Path_Engrave", "Path_Deburr"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 
+        engravecmdgroup = ['Path_EngraveTools']
+        FreeCADGui.addCommand('Path_EngraveTools', PathCommandGroup(engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", 'Engraving Operations')))
+
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
-
-            engravecmdlist = sorted(engravecmdlist + ['Path_Deburr'])
-            engravecmdgroup = ['Path_EngraveTools']
-            FreeCADGui.addCommand('Path_EngraveTools', PathCommandGroup(engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", 'Engraving Operations')))
 
             threedopcmdlist.append("Path_Surface")
             threedcmdgroup = ['Path_3dTools']
             FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'3D Operations')))
 
         else:
-            engravecmdgroup = engravecmdlist
             threedcmdgroup = threedopcmdlist
 
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
@@ -125,7 +123,7 @@ class PathWorkbench (Workbench):
 
         curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()
         if curveAccuracy:
-            Path.Area.setDefaultParams(curveAccuracy)
+            Path.Area.setDefaultParams(Accuracy = curveAccuracy)
 
         Log('Loading Path workbench... done\n')
 

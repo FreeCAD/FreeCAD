@@ -43,11 +43,12 @@ class Extension;
 
 enum PropertyType 
 {
-  Prop_None     = 0,
-  Prop_ReadOnly = 1,
-  Prop_Transient= 2,
-  Prop_Hidden   = 4,
-  Prop_Output   = 8
+  Prop_None        = 0, /*!< No special property type */
+  Prop_ReadOnly    = 1, /*!< Property is read-only in the editor */
+  Prop_Transient   = 2, /*!< Property won't be saved to file */
+  Prop_Hidden      = 4, /*!< Property won't appear in the editor */
+  Prop_Output      = 8, /*!< Modified property doesn't touch its parent container */
+  Prop_NoRecompute = 16 /*!< Modified property doesn't touch its container for recompute */
 };
 
 struct AppExport PropertyData
@@ -66,8 +67,8 @@ struct AppExport PropertyData
   //accepting void*
   struct OffsetBase
   {
-      OffsetBase(const App::PropertyContainer* container) : m_container(container) {};
-      OffsetBase(const App::Extension* container) : m_container(container) {};
+      OffsetBase(const App::PropertyContainer* container) : m_container(container) {}
+      OffsetBase(const App::Extension* container) : m_container(container) {}
       
       short int getOffsetTo(const App::Property* prop) const {
             auto *pt = (const char*)prop;
@@ -76,7 +77,7 @@ struct AppExport PropertyData
                 return -1;
             return (short) (pt-base);
       };
-      char* getOffset() const {return (char*) m_container;};
+      char* getOffset() const {return (char*) m_container;}
       
   private:
       const void* m_container;

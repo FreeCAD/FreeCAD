@@ -394,6 +394,19 @@ bool GeomCurve::tangent(double u, gp_Dir& dir) const
     return false;
 }
 
+bool GeomCurve::tangent(double u, Base::Vector3d& dir) const
+{
+    gp_Dir gdir;
+
+    if (tangent(u, gdir)) {
+        dir = Base::Vector3d(gdir.X(),gdir.Y(),gdir.Z());
+
+        return true;
+    }
+
+    return false;
+}
+
 Base::Vector3d GeomCurve::pointAtParameter(double u) const
 {
     Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(handle());

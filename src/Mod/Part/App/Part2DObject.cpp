@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
- 
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopoDS_Shape.hxx>
@@ -157,7 +157,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
                 std::vector<gp_Pnt2d> points;
 
                 // #2463 Check for endpoints of secondarycurve on primary curve
-                // If the OCCT Intersector should detect endpoint tangency when triming, then
+                // If the OCCT Intersector should detect endpoint tangency when trimming, then
                 // this is just a work-around until that bug is fixed.
                 // https://www.freecadweb.org/tracker/view.php?id=2463
                 // https://tracker.dev.opencascade.org/view.php?id=30217
@@ -287,4 +287,3 @@ namespace App {
 // explicit template instantiation
   template class PartExport FeaturePythonT<Part::Part2DObject>;
 }
-

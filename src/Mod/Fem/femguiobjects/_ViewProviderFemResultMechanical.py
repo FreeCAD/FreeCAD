@@ -44,7 +44,7 @@ import numpy as np
 
 
 class _ViewProviderFemResultMechanical:
-    "A View Provider for the FemResultObject Python dervied FemResult class"
+    "A View Provider for the FemResultObject Python derived FemResult class"
 
     def __init__(self, vobj):
         vobj.Proxy = self

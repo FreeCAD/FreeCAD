@@ -711,6 +711,40 @@ PyObject* FemMeshPy::getFacesByFace(PyObject *args)
     }
 }
 
+
+PyObject* FemMeshPy::getEdgesByEdge(PyObject *args)
+{
+    PyObject *pW;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeEdgePy::Type), &pW))
+         return 0;
+
+    try {
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeEdgePy*>(pW)->getTopoShapePtr()->getShape();
+        if (sh.IsNull()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Edge is empty");
+            return 0;
+        }
+
+        const TopoDS_Edge& fc = TopoDS::Edge(sh);
+
+        Py::List ret;
+        std::list<int> resultSet = getFemMeshPtr()->getEdgesByEdge(fc);
+        for (std::list<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it) {
+#if PY_MAJOR_VERSION >= 3
+            ret.append(Py::Long(*it));
+#else
+            ret.append(Py::Int(*it));
+#endif
+        }
+
+        return Py::new_reference_to(ret);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        return 0;
+    }
+}
+
 PyObject* FemMeshPy::getVolumesByFace(PyObject *args)
 {
     PyObject *pW;

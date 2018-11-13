@@ -46,6 +46,9 @@ static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
 
     static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_STATIC_CONF),NULL};
 
+    if(args && PySequence_Size(args)>0) 
+        PyErr_SetString(PyExc_ValueError,"Non-keyword argument is not supported");
+
     //Declare variables defined in the NAME field of the CONF parameter list
     PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_STATIC_CONF);
 

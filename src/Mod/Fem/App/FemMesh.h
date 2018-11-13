@@ -101,6 +101,8 @@ public:
     std::list<int> getElementNodes(int id) const;
     /// retrieving face IDs number by face
     std::list<int> getFacesByFace(const TopoDS_Face &face) const;
+    /// retrieving edge IDs number by edge
+    std::list<int> getEdgesByEdge(const TopoDS_Edge &edge) const;
     /// retrieving volume IDs and face IDs number by face
     std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and CalculiX face number by face

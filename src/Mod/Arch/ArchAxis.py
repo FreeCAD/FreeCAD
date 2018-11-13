@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,math,DraftVecUtils,ArchCommands,sys
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -542,7 +542,7 @@ class _ViewProviderAxis:
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.LEFT
                                 t = vobj.Object.Labels[i]
-                                if isinstance(t,unicode):
+                                if sys.version_info.major < 3 and isinstance(t,unicode):
                                     t = t.encode("utf8")
                                 tx.string.setValue(t)
                                 if hasattr(vobj,"FontSize"):
@@ -575,7 +575,10 @@ class _ViewProviderAxis:
                ('C',100),('XC',90),('L',50),('XL',40),
                ('X',10),('IX',9),('V',5),('IV',4),('I',1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
-            return vobj.Object.CustomNumber.encode("utf8")
+            if sys.version_info.major < 3:
+                return vobj.Object.CustomNumber.encode("utf8")
+            else:
+                return vobj.Object.CustomNumber
         elif hasattr(vobj,"NumberingStyle"):
             if vobj.NumberingStyle == "1,2,3":
                 return str(num+1)
@@ -585,7 +588,7 @@ class _ViewProviderAxis:
                 return str(num+1).zfill(3)
             elif vobj.NumberingStyle == "A,B,C":
                 result = ""
-                base = num/26
+                base = num//26
                 if base:
                     result += chars[base].upper()
                 remainder = num % 26
@@ -593,7 +596,7 @@ class _ViewProviderAxis:
                 return result
             elif vobj.NumberingStyle == "a,b,c":
                 result = ""
-                base = num/26
+                base = num//26
                 if base:
                     result += chars[base]
                 remainder = num % 26

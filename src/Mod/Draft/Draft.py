@@ -2111,7 +2111,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     if round(c.Axis.getAngle(drawing_plane_normal),2) in [0,3.14]:
                         occversion = Part.OCC_VERSION.split(".")
                         done = False
-                        if (occversion[0] >= 7) and (occversion[1] >= 1):
+                        if (int(occversion[0]) >= 7) and (int(occversion[1]) >= 1):
                             # if using occ >= 7.1, use HLR algorithm
                             import Drawing
                             snip = Drawing.projectToSVG(e,drawing_plane_normal)
@@ -2345,7 +2345,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg = ""
             for i in range(len(text)):
                 t = text[i]
-                if not isinstance(t,unicode):
+                if sys.version_info.major < 3 and (not isinstance(t,unicode)):
                     t = t.decode("utf8")
                 # possible workaround if UTF8 is unsupported
                 #    import unicodedata
@@ -7368,8 +7368,12 @@ class ViewProviderDraftText:
     def updateData(self,obj,prop):
         if prop == "Text":
             if obj.Text:
-                self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                if sys.version_info.major >= 3:
+                    self.text2d.string.setValues([l for l in obj.Text if l])
+                    self.text3d.string.setValues([l for l in obj.Text if l])
+                else:
+                    self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                    self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
         elif prop == "Placement":
             self.trans.translation.setValue(obj.Placement.Base)
             self.trans.rotation.setValue(obj.Placement.Rotation.Q)
@@ -7386,17 +7390,20 @@ class ViewProviderDraftText:
             if "FontSize" in vobj.PropertiesList:
                 self.font.size = vobj.FontSize.Value
         elif prop == "Justification":
-            if "Justification" in vobj.PropertiesList:
+            if getattr(vobj.PropertiesList, "Justification", None) is not None:
                 from pivy import coin
-                if vobj.Justification == "Left":
-                    self.text2d.justification = coin.SoText2.LEFT
-                    self.text3d.justification = coin.SoAsciiText.LEFT
-                elif vobj.Justification == "Right":
-                    self.text2d.justification = coin.SoText2.RIGHT
-                    self.text3d.justification = coin.SoAsciiText.RIGHT
-                else:
-                    self.text2d.justification = coin.SoText2.CENTER
-                    self.text3d.justification = coin.SoAsciiText.CENTER
+                try:
+                    if vobj.Justification == "Left":
+                        self.text2d.justification = coin.SoText2.LEFT
+                        self.text3d.justification = coin.SoAsciiText.LEFT
+                    elif vobj.Justification == "Right":
+                        self.text2d.justification = coin.SoText2.RIGHT
+                        self.text3d.justification = coin.SoAsciiText.RIGHT
+                    else:
+                        self.text2d.justification = coin.SoText2.CENTER
+                        self.text3d.justification = coin.SoAsciiText.CENTER
+                except AssertionError:
+                    pass # Race condition - Justification enum has not been set yet
         elif prop == "LineSpacing":
             if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing
