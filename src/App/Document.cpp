@@ -1283,7 +1283,11 @@ Document::~Document()
     Console().Log("-App::Document: %s %p\n",getName(), this);
 #endif
 
-    clearUndos();
+    try {
+        clearUndos();
+    }
+    catch (const boost::exception&) {
+    }
 
     std::map<std::string,DocumentObject*>::iterator it;
 
