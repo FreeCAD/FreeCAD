@@ -96,7 +96,7 @@ public:
     /// close all documents (without saving)
     void closeAllDocuments(void);
     /// Add pending document to open together with the current opening document
-    int addPendingDocument(const char *FileName, const char *objName);
+    int addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
     /// Indicate whether the application is opening (restoring) some document
     bool isRestoring() const;
     //@}
@@ -336,7 +336,7 @@ protected:
 
     /// open single document only
     App::Document* openDocumentPrivate(const char * FileName, 
-            bool isMainDoc, bool allowPartial, const std::set<std::string> &objNames);
+            bool isMainDoc, const std::set<std::string> &objNames);
 
 private:
     /// Constructor
@@ -455,8 +455,8 @@ private:
     std::deque<const char *> _pendingDocs;
     std::deque<const char *> _pendingDocsReopen;
     std::map<std::string,std::set<std::string> > _pendingDocMap;
-    bool _allowPending;
     bool _isRestoring;
+    bool _allowPartial;
 
     // for estimate max link depth
     int _objCount;

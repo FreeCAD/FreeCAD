@@ -981,9 +981,6 @@ bool DocumentObject::adjustRelativeLinks(
         const std::set<App::DocumentObject *> &inList,
         std::set<App::DocumentObject *> *visited)
 {
-    if(inList.count(this)) 
-        FC_THROWM(Base::RuntimeError, "Cyclic reference to " << getFullName());
-
     if(visited)
         visited->insert(this);
 

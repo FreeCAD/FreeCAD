@@ -28,6 +28,8 @@
 
 
 #include <vector>
+#include <map>
+#include <list>
 #include <string>
 #include <memory>
 #include <cinttypes>
@@ -97,10 +99,10 @@ class AppExport PropertyLinkBase : public Property, public ScopedLink
 {
     TYPESYSTEM_HEADER();
 public:
+    typedef std::pair<std::string,std::string> ShadowSub;
+
     PropertyLinkBase();
     virtual ~PropertyLinkBase();
-
-    virtual void afterRestore() override;
 
     /** Link type property interface APIs
      * These APIs are moved here so that any type of property can have the
@@ -238,7 +240,9 @@ public:
     }
     //@}
 
-    void allowExternalLink(bool allow) { _allowExternal = allow; }
+    void setAllowExternalLink(bool allow) { _allowExternal = allow; }
+    bool allowExternalLink() const {return _allowExternal;}
+
     //@{
 
     /// Update all element references in all link properties of \a feature
@@ -262,7 +266,20 @@ public:
      * geometry element reference change due to geometry model changes.
      */
     static bool _updateElementReference(PropertyLinkBase *owner, App::DocumentObject *feature,
-        App::DocumentObject *obj, std::string &sub, std::pair<std::string,std::string> &shadow, bool reverse);
+        App::DocumentObject *obj, std::string &sub, ShadowSub &shadow, bool reverse);
+
+    /** Helper function to register geometry element reference
+     * 
+     * @param owner: the link property to be registered
+     * @param obj: the linked object
+     * @param sub: the subname reference
+     * @param shadow: a pair of new and old style element references to be updated.
+     *
+     * Search for any geometry element reference inside the subname, and
+     * register for future update in case of geometry model update.
+     */
+    static void _registerElementReference(PropertyLinkBase *owner, 
+                    App::DocumentObject *obj, std::string &sub, ShadowSub &shadow);
 
     /** Helper function for breaking link properties
      *
@@ -488,6 +505,7 @@ public:
     PropertyLinkListHidden() {_pcScope = LinkScope::Hidden;};
 };
 
+class PropertyXLinkSub;
 
 /** the Link Property with sub elements
  *  This property links an object and a defined sequence of
@@ -512,10 +530,14 @@ public:
      */
     virtual ~PropertyLinkSub();
 
+    virtual void afterRestore() override;
+
     /** Sets the property
      */
-    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList=std::vector<std::string>(),
-            const std::vector<std::pair<std::string,std::string> > *ShadowSubList=0);
+    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList,
+                    std::vector<ShadowSub> &&ShadowSubList={});
+    void setValue(App::DocumentObject *,std::vector<std::string> &&SubList={},
+                    std::vector<ShadowSub> &&ShadowSubList={});
 
     /** This method returns the linked DocumentObject
      */
@@ -525,14 +547,14 @@ public:
     const std::vector<std::string>& getSubValues(void) const;
 
     /// return the list of sub elements with mapped names
-    const std::vector<std::pair<std::string,std::string> > &getShadowSubs() const {
+    const std::vector<ShadowSub> &getShadowSubs() const {
         return _ShadowSubList;
     }
 
     std::vector<std::string> getSubValues(bool newStyle) const;
 
     /// return the list of sub elements starts with a special string 
-    std::vector<std::string> getSubValuesStartsWith(const char*) const;
+    std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle=false) const;
 
     /** Returns the link type checked
      */
@@ -578,7 +600,7 @@ public:
 protected:
     App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
-    std::vector<std::pair<std::string,std::string> > _ShadowSubList;
+    std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
 };
 
@@ -627,8 +649,10 @@ public:
      */
     virtual ~PropertyLinkSubList();
 
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
+    virtual void afterRestore() override;
+
+    int getSize(void) const;
+    void setSize(int newSize);
 
     /** Sets the property.
      * setValue(0, whatever) clears the property
@@ -636,7 +660,9 @@ public:
     void setValue(DocumentObject*,const char*);
     void setValues(const std::vector<DocumentObject*>&,const std::vector<const char*>&);
     void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&,
-            const std::vector<std::pair<std::string,std::string> > *ShadowSubList=0);
+                    std::vector<ShadowSub> &&ShadowSubList={});
+    void setValues(std::vector<DocumentObject*>&&, std::vector<std::string> &&subs,
+                    std::vector<ShadowSub> &&ShadowSubList={});
 
     /**
      * @brief setValue: PropertyLinkSub-compatible overload
@@ -664,7 +690,7 @@ public:
 
     std::vector<std::string> getSubValues(bool newStyle) const;
 
-    const std::vector<std::pair<std::string,std::string> > &getShadowSubs() const {
+    const std::vector<ShadowSub> &getShadowSubs() const {
         return _ShadowSubList;
     }
 
@@ -709,7 +735,7 @@ private:
     //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
-    std::vector<std::pair<std::string,std::string> > _ShadowSubList;
+    std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
 };
 
@@ -740,6 +766,8 @@ public:
     PropertyLinkSubListHidden() {_pcScope = LinkScope::Hidden;};
 };
 
+class PropertyXLinkSubList;
+
 /** Link to an (sub)object in the same or different document
  */
 class AppExport PropertyXLink : public PropertyLinkGlobal
@@ -747,24 +775,26 @@ class AppExport PropertyXLink : public PropertyLinkGlobal
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyXLink();
+    PropertyXLink(bool allowPartial=false, Property *parent=0);
 
     virtual ~PropertyXLink();
 
+    virtual void afterRestore() override;
+
     void setValue(App::DocumentObject *) override;
-    void setValue(App::DocumentObject *, const char *subname, bool relative, 
-            const std::pair<std::string,std::string> *shadow=0);
-    void setValue(const char *filePath, const char *objectName, const char *subname, bool relative, 
-            const std::pair<std::string,std::string> *shadow=0);
+    void setValue(App::DocumentObject *, const char *subname);
+
     const char *getSubName(bool newStyle=true) const;
-    void setSubName(const char *subname, bool transaction=true, 
-            const std::pair<std::string,std::string> *shadow=0);
-    bool hasSubName() const {return !subName.empty();}
+    void setSubName(const char *subname);
+    
+    bool hasSubName() const {return !_SubList.empty();}
 
     App::Document *getDocument() const;
     const char *getDocumentPath() const;
     const char *getObjectName() const;
-    bool isRestored() const;
+
+    static int checkRestore(const App::Property *prop);
+    int checkRestore() const;
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
@@ -798,22 +828,179 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
+    // The following APIs are provided to be compatible with PropertyLinkSub.
+    // Note that although PropertyXLink is capable of holding multiple subnames,
+    // there no public APIs allowing user to set more that one subname. Multiple
+    // subname adding API is published in PropertyXLinkSub.
+
+    const std::vector<std::string>& getSubValues(void) const {
+        return _SubList;
+    }
+    const std::vector<ShadowSub > &getShadowSubs() const {
+        return _ShadowSubList;
+    }
+    std::vector<std::string> getSubValues(bool newStyle) const;
+    std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle=false) const;
+
+    void setAllowPartial(bool enable);
+    bool allowPartial() const { return _allowPartial; }
+
 protected:
     void unlink();
     void detach();
 
+    void restoreLink(App::DocumentObject *);
+
+    void _setSubValues(std::vector<std::string> &&SubList,
+            std::vector<ShadowSub> &&ShadowSubList = {});
+
+    void _setValue(std::string &&filePath, std::string &&objectName, std::vector<std::string> &&SubList,
+            std::vector<ShadowSub> &&ShadowSubList = {});
+
+    void _setValue(App::DocumentObject *,std::vector<std::string> &&SubList,
+            std::vector<ShadowSub> &&ShadowSubList = {});
+
+    virtual PropertyXLink *createInstance() const;
+
+    virtual bool upgrade(Base::XMLReader &reader, const char *typeName);
+
+    void copyTo(PropertyXLink &other) const;
+
+    virtual void aboutToSetValue() override;
+
+    virtual void hasSetValue() override;
+
+    friend class PropertyXLinkSubList;
+
 protected:
+    DocInfoPtr docInfo;
     std::string filePath;
     std::string objectName;
-    std::string subName;
-    std::pair<std::string,std::string> shadowSub;
     std::string stamp;
-    bool relativePath;
-    bool _mapped;
-
-    DocInfoPtr docInfo;
+    std::vector<std::string> _SubList;
+    std::vector<ShadowSub> _ShadowSubList;
+    std::vector<int> _mapped;
+    Property *parentProp;
+    bool _allowPartial;
 };
 
+
+class AppExport PropertyXLinkSub: public PropertyXLink {
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyXLinkSub(bool allowPartial=false, Property *parent=0);
+
+    virtual ~PropertyXLinkSub();
+
+    void setValue(App::DocumentObject *,const std::vector<std::string> &SubList, 
+            std::vector<ShadowSub > &&ShadowSubList={});
+
+    void setValue(App::DocumentObject *,std::vector<std::string> &&SubList={},
+            std::vector<ShadowSub > &&ShadowSubList={});
+
+    void setSubValues(std::vector<std::string> &&SubList,
+            std::vector<ShadowSub> &&ShadowSubList={});
+
+    virtual bool upgrade(Base::XMLReader &reader, const char *typeName) override;
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
+protected:
+    virtual PropertyXLink *createInstance() const;
+};
+
+
+class AppExport PropertyXLinkSubList: public PropertyLinkBase {
+    TYPESYSTEM_HEADER();
+
+public:
+    PropertyXLinkSubList();
+    virtual ~PropertyXLinkSubList();
+
+    virtual void afterRestore() override;
+
+    int getSize(void) const;
+
+    /** Sets the property.
+     * setValue(0, whatever) clears the property
+     */
+    void setValue(DocumentObject*,const char*);
+    void setValues(const std::vector<DocumentObject*>&,const std::vector<const char*>&);
+    void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&);
+    void setValues(std::map<App::DocumentObject*,std::vector<std::string> > &&);
+    void setValues(const std::map<App::DocumentObject*,std::vector<std::string> > &);
+
+    void addValue(App::DocumentObject *obj, const std::vector<std::string> &SubList={}, bool reset=false);
+    void addValue(App::DocumentObject *obj, std::vector<std::string> &&SubList={}, bool reset=false);
+
+    /**
+     * @brief setValue: PropertyLinkSub-compatible overload
+     * @param SubList
+     */
+    void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
+
+    std::vector<DocumentObject*> getValues(void);
+
+    const std::string getPyReprString() const;
+
+    DocumentObject* getValue() const;
+
+    const std::vector<std::string> &getSubValues(App::DocumentObject *obj) const;
+
+    std::vector<std::string> getSubValues(App::DocumentObject *obj, bool newStyle) const;
+
+    const std::vector<ShadowSub> &getShadowSubs(App::DocumentObject *obj) const;
+
+    /**
+     * @brief Removes all occurrences of \a lValue in the property
+     * together with its sub-elements and returns the number of entries removed.
+     */
+    int removeValue(App::DocumentObject *lValue);
+
+    void setSubListValues(const std::vector<PropertyLinkSubList::SubSet>&);
+
+    const std::list<PropertyXLinkSub> &getSubListValues() const {
+        return _Links;
+    }
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
+    virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
+
+    virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
+            const std::string &ref, const char *newLabel) const override;
+
+    virtual unsigned int getMemSize (void) const;
+
+    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) override;
+
+    virtual bool referenceChanged() const override;
+
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+
+    virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
+
+    bool upgrade(Base::XMLReader &reader, const char *typeName);
+    int checkRestore() const;
+
+    void setAllowPartial(bool enable);
+
+protected:
+    std::list<PropertyXLinkSub> _Links;
+    bool _allowPartial;
+};
 
 } // namespace App
 

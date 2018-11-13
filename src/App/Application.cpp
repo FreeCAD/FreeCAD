@@ -218,7 +218,7 @@ init_freecad_module(void)
 #endif
 
 Application::Application(std::map<std::string,std::string> &mConfig)
-  : _mConfig(mConfig), _pActiveDoc(0),_allowPending(false),_isRestoring(false),_objCount(-1)
+  : _mConfig(mConfig), _pActiveDoc(0), _isRestoring(false),_allowPartial(false),_objCount(-1)
 {
     //_hApp = new ApplicationOCC;
     mpcPramManager["System parameter"] = _pcSysParamMngr;
@@ -501,10 +501,12 @@ std::string Application::getUniqueDocumentName(const char *Name) const
     }
 }
 
-int Application::addPendingDocument(const char *FileName, const char *objName)
+int Application::addPendingDocument(const char *FileName, const char *objName, bool allowPartial)
 {
-    if(!_allowPending)
+    if(!_isRestoring)
         return 0;
+    if(allowPartial && _allowPartial)
+        return -1;
     assert(FileName && FileName[0]);
     assert(objName && objName[0]);
     auto ret =  _pendingDocMap.emplace(FileName,std::set<std::string>());
@@ -550,12 +552,11 @@ Document* Application::openDocument(const char * FileName)
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
-    _allowPending = true;
 
     signalStartOpenDocument();
 
     ParameterGrp::handle hGrp = GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
-    bool allowPartial = !hGrp->GetBool("NoPartialLoading",false);
+    _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
     _pendingDocs.push_back(FileName?FileName:"");
 
@@ -570,14 +571,14 @@ Document* Application::openDocument(const char * FileName)
         try {
             _objCount = -1;
             std::set<std::string> objNames;
-            if(allowPartial) {
+            if(_allowPartial) {
                 auto it = _pendingDocMap.find(name);
                 if(it!=_pendingDocMap.end())
                     objNames.swap(it->second);
             }
             FC_TIME_INIT(t1);
             DocTiming timing;
-            auto doc = openDocumentPrivate(name,isMainDoc,allowPartial,objNames);
+            auto doc = openDocumentPrivate(name,isMainDoc,objNames);
             FC_DURATION_PLUS(timing.d1,t1);
             if(doc)
                 newDocs.emplace_front(doc,timing);
@@ -587,7 +588,6 @@ Document* Application::openDocument(const char * FileName)
             if(newDocs.empty()) throw;
             Console().Error("Exception opening file: %s [%s]\n", name, e.what());
         }catch(...) {
-            _allowPending = false;
             _pendingDocs.clear();
             _pendingDocsReopen.clear();
             _pendingDocMap.clear();
@@ -596,11 +596,10 @@ Document* Application::openDocument(const char * FileName)
         if(_pendingDocs.empty()) {
             if(_pendingDocsReopen.empty())
                 break;
-            allowPartial = false;
+            _allowPartial = false;
             _pendingDocs.swap(_pendingDocsReopen);
         }
     }
-    _allowPending = false;
     _pendingDocs.clear();
     _pendingDocsReopen.clear();
     _pendingDocMap.clear();
@@ -623,7 +622,7 @@ Document* Application::openDocument(const char * FileName)
 }
 
 Document* Application::openDocumentPrivate(const char * FileName, 
-        bool isMainDoc, bool allowPartial, const std::set<std::string> &objNames)
+        bool isMainDoc, const std::set<std::string> &objNames)
 {
     FileInfo File(FileName);
 
@@ -651,7 +650,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                 break;
             }
 
-            if(allowPartial) {
+            if(_allowPartial) {
                 bool reopen = false;
                 for(auto &name : objNames) {
                     auto obj = it->second->getObject(name.c_str());
@@ -1496,7 +1495,6 @@ void Application::initTypes(void)
     App ::PropertyLinkBase          ::init();
     App ::PropertyLinkListBase      ::init();
     App ::PropertyLink              ::init();
-    App ::PropertyXLink             ::init();
     App ::PropertyLinkChild         ::init();
     App ::PropertyLinkGlobal        ::init();
     App ::PropertyLinkHidden        ::init();
@@ -1512,6 +1510,9 @@ void Application::initTypes(void)
     App ::PropertyLinkSubListChild  ::init();
     App ::PropertyLinkSubListGlobal ::init();
     App ::PropertyLinkSubListHidden ::init();
+    App ::PropertyXLink             ::init();
+    App ::PropertyXLinkSub          ::init();
+    App ::PropertyXLinkSubList      ::init();
     App ::PropertyMatrix            ::init();
     App ::PropertyVector            ::init();
     App ::PropertyVectorDistance    ::init();

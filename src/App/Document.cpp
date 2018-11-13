@@ -2304,12 +2304,12 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         }
         if(checkXLink && !d->touchedObjs.count(obj)) {
             for(auto prop : propMap[obj]) {
-                auto link = dynamic_cast<PropertyXLink*>(prop);
-                if(link && !link->isRestored()) {
+                int res = PropertyXLink::checkRestore(prop);
+                if(res) {
                     d->touchedObjs.insert(obj);
                     FC_WARN("'" << getName() << "' object '" << obj->getNameInDocument() 
                         << "' xlink property '" << obj->getPropertyName(prop) 
-                        << (link->getValue()?"' time stamp changed":"' not restored"));
+                        << (res==1?"' time stamp changed":"' not restored"));
                     break;
                 }
             }

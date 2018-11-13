@@ -998,7 +998,7 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
         subElementProp->setStatus(Property::User3, false);
     }
     if(xlink)
-        xlink->setValue(obj,subname,true);
+        xlink->setValue(obj,subname);
     else
         linkProp->setValue(obj);
 }
