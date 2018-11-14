@@ -527,9 +527,6 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
-        for base in self.obj.Model.Group:
-            self.form.jobModel.addItem(base.Label)
-
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
@@ -696,8 +693,11 @@ class TaskPanel:
             self.form.operationsList.addItem(item)
 
         self.form.jobModel.clear()
-        for base in self.obj.Model.Group:
-            self.form.jobModel.addItem(base.Label)
+        for name, count in PathUtil.keyValueIter(Counter([self.obj.Proxy.baseObject(self.obj, o).Label for o in self.obj.Model.Group])):
+            if count == 1:
+                self.form.jobModel.addItem(name)
+            else:
+                self.form.jobModel.addItem("%s (%d)" % (name, count))
 
         self.updateToolController()
         self.stockEdit.setFields(self.obj)
