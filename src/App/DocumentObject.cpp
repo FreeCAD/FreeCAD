@@ -415,8 +415,8 @@ bool DocumentObject::_isInInListRecursive(const DocumentObject* /*act*/,
     for (auto obj : _inList){
         // if the check object is in the recursive inList we have a cycle!
         if (obj == checkObj || depth <= 0){
-            std::cerr << "DocumentObject::getOutListRecursive(): cyclic dependency detected!" << std::endl;
-            throw Base::RuntimeError("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
+            std::cerr << "DocumentObject::isInInListRecursive(): cyclic dependency detected!" << std::endl;
+            throw Base::RuntimeError("DocumentObject::isInInListRecursive(): cyclic dependency detected!");
         }
 
         if (_isInInListRecursive(obj, test, checkObj, depth - 1))
