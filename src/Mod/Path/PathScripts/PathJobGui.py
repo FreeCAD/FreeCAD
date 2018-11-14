@@ -45,6 +45,7 @@ import sys
 import traceback
 
 from PySide import QtCore, QtGui
+from collections import Counter
 from contextlib import contextmanager
 from pivy import coin
 
@@ -1072,23 +1073,30 @@ class TaskPanel:
                 obj = self.obj
                 proxy = obj.Proxy
 
-                # first remove all retired base models
-                retired = [base for base in self.obj.Model.Group if not proxy.baseObject(obj, base) in models]
-                for base in retired:
-                    self.vproxy.forgetBaseVisibility(obj, base)
-                    self.obj.Proxy.removeBase(obj, base, True)
+                want = Counter(models)
+                have = Counter([proxy.baseObject(obj, o) for o in obj.Model.Group])
+
+                obsolete  = have - want
+                additions = want - have
+
+                # first remove all obsolete base models
+                for model, count in PathUtil.keyValueIter(obsolete):
+                    for i in range(count):
+                        # it seems natural to remove the last of all the base objects for a given model
+                        base = [b for b in obj.Model.Group if proxy.baseObject(obj, b) == model][-1]
+                        self.vproxy.forgetBaseVisibility(obj, base)
+                        self.obj.Proxy.removeBase(obj, base, True)
                 # do not access any of the retired objects after this point, they don't exist anymore
 
                 # then add all rookie base models
-                baseOrigNames = [proxy.baseObject(obj, base).Name for base in obj.Model.Group]
-                rookies = [base for base in models if not base.Name in baseOrigNames]
-                for orig in rookies:
-                    base = PathJob.createModelResourceClone(obj, orig)
-                    obj.Model.addObject(base)
-                    self.vproxy.rememberBaseVisibility(obj, base)
+                for model, count in PathUtil.keyValueIter(additions):
+                    for i in range(count):
+                        base = PathJob.createModelResourceClone(obj, model)
+                        obj.Model.addObject(base)
+                        self.vproxy.rememberBaseVisibility(obj, base)
 
                 # refresh the view
-                if retired or rookies:
+                if obsolete or additions:
                     self.setFields()
                 else:
                     PathLog.track('no changes to model')
