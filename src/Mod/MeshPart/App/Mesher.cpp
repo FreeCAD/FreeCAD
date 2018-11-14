@@ -317,7 +317,7 @@ Mesh::MeshObject* Mesher::createMesh() const
     }
 
 #ifndef HAVE_SMESH
-    throw Base::Exception("SMESH is not available on this platform");
+    throw Base::RuntimeError("SMESH is not available on this platform");
 #else
     std::list<SMESH_Hypothesis*> hypoth;
 
