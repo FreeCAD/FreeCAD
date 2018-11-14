@@ -392,9 +392,26 @@ public:
             // hasSetValue() before decrease counter to prevent recursive call
             // triggered by another AtomicPropertyChange created inside
             // hasSetValue(), as it has now been changed to a virtual function.
-            if (mProp.signalCounter == 1)
+            if (mProp.signalCounter == 1) {
+                // Must make sure to not throw in a destructor
+                try {
+                    mProp.hasSetValue();
+                }catch(Base::Exception &e) {
+                    e.ReportException();
+                }catch(...) {}
+            }
+            if(mProp.signalCounter>0)
+                mProp.signalCounter--;
+        }
+
+        // Destructor cannot throw. So we provide this function to allow error
+        // propagation.
+        void tryInvoke() {
+            if(mProp.signalCounter==1) {
                 mProp.hasSetValue();
-            mProp.signalCounter--;
+                if(mProp.signalCounter>0)
+                    --mProp.signalCounter;
+            }
         }
 
     private:

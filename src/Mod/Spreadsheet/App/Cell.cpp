@@ -132,6 +132,7 @@ Cell &Cell::operator =(const Cell &rhs)
 
     setUsed(MARK_SET, false);
 
+    signaller.tryInvoke();
     return *this;
 }
 
@@ -161,6 +162,8 @@ void Cell::setExpression(App::ExpressionPtr expr)
 
     /* Update dependencies */
     owner->addDependencies(address);
+
+    signaller.tryInvoke();
 }
 
 /**
@@ -221,6 +224,7 @@ void Cell::setContent(const char * value)
         if(owner->sheet()->isRestoring()) {
             expression = StringExpression::create(owner->sheet(),value);
             setUsed(EXPRESSION_SET, true);
+            signaller.tryInvoke();
             return;
         }
         if (*value == '=') {
@@ -252,7 +256,21 @@ void Cell::setContent(const char * value)
         }
     }
 
-    setExpression(std::move(expr));
+    try {
+        setExpression(std::move(expr));
+        signaller.tryInvoke();
+    } catch (Base::Exception &e) {
+        if(value) {
+            std::string _value;
+            if(*value != '=') {
+                _value = "=";
+                _value += value;
+                value = _value.c_str();
+            }
+            setExpression(App::StringExpression::create(owner->sheet(), value));
+            setParseException(e.what());
+        }
+    }
 }
 
 /**
@@ -269,6 +287,7 @@ void Cell::setAlignment(int _alignment)
 
         alignment = _alignment;
         setUsed(ALIGNMENT_SET, alignment != (ALIGNMENT_HIMPLIED | ALIGNMENT_LEFT | ALIGNMENT_VIMPLIED | ALIGNMENT_VCENTER));
+        signaller.tryInvoke();
     }
 }
 
@@ -295,6 +314,8 @@ void Cell::setStyle(const std::set<std::string> & _style)
 
         style = _style;
         setUsed(STYLE_SET, style.size() > 0);
+
+        signaller.tryInvoke();
     }
 }
 
@@ -321,6 +342,8 @@ void Cell::setForeground(const App::Color &color)
 
         foregroundColor = color;
         setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
+
+        signaller.tryInvoke();
     }
 }
 
@@ -347,6 +370,8 @@ void Cell::setBackground(const App::Color &color)
 
         backgroundColor = color;
         setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
+
+        signaller.tryInvoke();
     }
 }
 
@@ -384,6 +409,8 @@ void Cell::setDisplayUnit(const std::string &unit)
 
         displayUnit = newDisplayUnit;
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
+
+        signaller.tryInvoke();
     }
 }
 
@@ -419,6 +446,7 @@ void Cell::setAlias(const std::string &n)
 
         setUsed(ALIAS_SET, !alias.empty());
 
+        signaller.tryInvoke();
     }
 }
 
@@ -439,6 +467,8 @@ void Cell::setComputedUnit(const Base::Unit &unit)
 
     computedUnit = unit;
     setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
+
+    signaller.tryInvoke();
 }
 
 /**
@@ -469,6 +499,7 @@ void Cell::setSpans(int rows, int columns)
         colSpan = (columns == -1 ? 1 : columns);
         setUsed(SPANS_SET, (rowSpan != 1 || colSpan != 1) );
         setUsed(SPANS_UPDATED);
+        signaller.tryInvoke();
     }
 }
 

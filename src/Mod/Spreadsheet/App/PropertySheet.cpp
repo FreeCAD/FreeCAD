@@ -70,11 +70,13 @@ void PropertySheet::clear()
 
     if(getContainer()==owner && owner && owner->getNameInDocument()) {  
         for(auto obj : docDeps) {
-            if(obj && obj->getNameInDocument())
+            if(obj && obj->getNameInDocument() && 
+               obj->getDocument()==owner->getDocument())
                 obj->_removeBackLink(owner);
         }
     }
     docDeps.clear();
+    xlinks.clear();
 
     aliasProp.clear();
     revAliasProp.clear();
@@ -277,8 +279,13 @@ void PropertySheet::Save(Base::Writer &writer) const
         ++ci;
     }
 
-    writer.Stream() << writer.ind() << "<Cells Count=\"" << count << "\">" << std::endl;
+    writer.Stream() << writer.ind() << "<Cells Count=\"" << count;
+    if(xlinks.size()) 
+        writer.Stream() << "\" xcount=\"" << xlinks.size();
+    writer.Stream() <<"\">" << std::endl;
     writer.incInd();
+    for(auto &l : xlinks)
+        l.Save(writer);
     ci = data.begin();
     while (ci != data.end()) {
         ci->second->save(writer);
@@ -297,6 +304,15 @@ void PropertySheet::Restore(Base::XMLReader &reader)
 
     reader.readElement("Cells");
     Cnt = reader.getAttributeAsInteger("Count");
+
+    if(reader.hasAttribute("xcount")) {
+        int xcount = reader.getAttributeAsInteger("xcount");
+        for(int i=0;i<xcount;++i) {
+            xlinks.emplace_back(false,this);
+            xlinks.back().Restore(reader);
+        }
+    }
+
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Cell");
 
@@ -1055,7 +1071,17 @@ void PropertySheet::renameObjectIdentifiers(const std::map<App::ObjectIdentifier
 
 void PropertySheet::deletedDocumentObject(const App::DocumentObject *docObj)
 {
-    docDeps.erase(const_cast<App::DocumentObject*>(docObj));
+    if(docDeps.erase(const_cast<App::DocumentObject*>(docObj))) {
+        const App::DocumentObject * docObj = dynamic_cast<const App::DocumentObject*>(getContainer());
+        if(docObj && docObj->getDocument()!=docObj->getDocument()) {
+            for(auto it=xlinks.begin();it!=xlinks.end();++it) {
+                if(it->getValue() == docObj) {
+                    xlinks.erase(it);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void PropertySheet::documentSet()
@@ -1117,24 +1143,7 @@ void PropertySheet::hasSetValue()
     }
     registerLabelReferences(labels);
 
-    deps.erase(owner);
-
-#ifndef USE_OLD_DAG
-    for(auto obj : deps) {
-        if(obj && obj->getNameInDocument()) {
-            auto it = docDeps.find(obj);
-            if(it == docDeps.end())
-                obj->_addBackLink(owner);
-            else
-                docDeps.erase(it);
-        }
-    }
-    for(auto obj : docDeps) {
-        if(obj && obj->getNameInDocument())
-            obj->_removeBackLink(owner);
-    }
-#endif
-    docDeps.swap(deps);
+    owner->updateDeps(this,docDeps,std::move(deps),xlinks);
 
     PropertyLinkBase::hasSetValue();
 }

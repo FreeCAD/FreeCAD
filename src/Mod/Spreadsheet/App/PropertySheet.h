@@ -225,6 +225,8 @@ private:
     /*! Other document objects the sheet depends on */
     std::set<App::DocumentObject*> docDeps;
 
+    std::list<App::PropertyXLink> xlinks;
+
     /*! Name of documents, used for renaming */
     std::map<const App::Document*, std::string> documentName;
 
