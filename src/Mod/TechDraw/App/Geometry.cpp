@@ -483,7 +483,7 @@ Base::Vector2d Generic::apparentInter(Generic* g)
     // Line Intersetion (taken from ViewProviderSketch.cpp)
     double det = dir0.x*dir1.y - dir0.y*dir1.x;
     if ((det > 0 ? det : -det) < 1e-10)
-        throw Base::Exception("Invalid selection - Det = 0");
+        throw Base::ValueError("Invalid selection - Det = 0");
 
     double c0 = dir0.y*points.at(0).x - dir0.x*points.at(0).y;
     double c1 = dir1.y*g->points.at(1).x - dir1.x*g->points.at(1).y;
