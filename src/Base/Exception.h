@@ -117,7 +117,6 @@ public:
   virtual void setPyObject( PyObject * pydict);
 
 protected:
-public: // FIXME: Remove the public keyword
  /* sMessage may be:
   * - a UI compliant string susceptible to being translated and shown to the user in the UI
   * - a very technical message not intended to be translated or shown to the user in the UI
