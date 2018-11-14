@@ -1175,7 +1175,7 @@ void FemMesh::read(const char *FileName)
 
     // checking on the file
     if (!File.isReadable())
-        throw Base::Exception("File to load not existing or not readable");
+        throw Base::FileException("File to load not existing or not readable", File);
 
     if (File.hasExtension("unv") ) {
         // read UNV file
@@ -1206,7 +1206,7 @@ void FemMesh::read(const char *FileName)
     }
 #endif
     else{
-        throw Base::Exception("Unknown extension");
+        throw Base::FileException("Unknown extension");
     }
 }
 
@@ -1640,7 +1640,7 @@ void FemMesh::write(const char *FileName) const
     }
 #endif
     else{
-        throw Base::Exception("An unknown file extension was added!");
+        throw Base::FileException("An unknown file extension was added!");
     }
 }
 
