@@ -276,7 +276,7 @@ App::DocumentObject& DlgExtrusion::getShapeToExtrude() const
 {
     std::vector<App::DocumentObject*> objs = this->getShapesToExtrude();
     if (objs.size() == 0)
-        throw Base::Exception("No shapes selected");
+        throw Base::ValueError("No shapes selected");
     return *(objs[0]);
 }
 
@@ -584,13 +584,13 @@ std::vector<App::DocumentObject*> DlgExtrusion::getShapesToExtrude() const
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     App::Document* doc = App::GetApplication().getDocument(this->document.c_str());
     if (!doc)
-        throw Base::Exception("Document lost");
+        throw Base::RuntimeError("Document lost");
 
     std::vector<App::DocumentObject*> objects;
     for (int i = 0; i < items.size(); i++) {
         App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
-            throw Base::Exception("Object not found");
+            throw Base::RuntimeError("Object not found");
         objects.push_back(obj);
     }
     return objects;
