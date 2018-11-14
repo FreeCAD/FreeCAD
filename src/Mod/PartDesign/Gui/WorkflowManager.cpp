@@ -76,7 +76,7 @@ void WorkflowManager::init() {
     if (!_instance) {
         _instance = new WorkflowManager();
     } else {
-        //throw Base::Exception( "Trying to init the workflow manager second time." );
+        //throw Base::RuntimeError( "Trying to init the workflow manager second time." );
     }
 }
 

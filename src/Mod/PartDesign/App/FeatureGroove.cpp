@@ -150,7 +150,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             BRepAlgoAPI_Cut mkCut(base, result);
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
-                throw Base::Exception("Cut out of base feature failed");
+                throw Base::CADKernelError("Cut out of base feature failed");
 
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(mkCut.Shape());

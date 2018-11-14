@@ -102,7 +102,7 @@ bool TaskDlgFeatureParameters::accept() {
         // Make sure the feature is what we are expecting
         // Should be fine but you never know...
         if ( !feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {
-            throw Base::Exception("Bad object processed in the feature dialog.");
+            throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
         App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
@@ -115,7 +115,7 @@ bool TaskDlgFeatureParameters::accept() {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
 
         if (!feature->isValid()) {
-            throw Base::Exception(vp->getObject()->getStatusString());
+            throw Base::RuntimeError(vp->getObject()->getStatusString());
         }
 
         // detach the task panel from the selection to avoid to invoke
