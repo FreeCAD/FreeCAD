@@ -211,7 +211,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -310,7 +310,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewRadiusDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewRadiusDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -410,7 +410,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewDiameterDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewDiameterDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -519,7 +519,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
                                                        , "Distance");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewLengthDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewLengthDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -632,7 +632,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewDistanceXDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewDistanceXDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -744,7 +744,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
                                                        ,"DistanceY");
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewDistanceYDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewDistanceYDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -836,7 +836,7 @@ void CmdTechDrawNewAngleDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewAngleDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewAngleDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
@@ -925,7 +925,7 @@ void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
-        throw Base::Exception("CmdTechDrawNewAngle3PtDimension - dim not found\n");
+        throw Base::TypeError("CmdTechDrawNewAngle3PtDimension - dim not found\n");
     }
     dim->References2D.setValues(objs, subs);
 
