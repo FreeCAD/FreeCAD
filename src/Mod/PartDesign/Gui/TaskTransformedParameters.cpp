@@ -448,9 +448,9 @@ void ComboLinks::clear()
 App::PropertyLinkSub &ComboLinks::getLink(int index) const
 {
     if (index < 0 || index > (ssize_t) linksInList.size()-1)
-        throw Base::Exception("ComboLinks::getLink:Index out of range");
+        throw Base::IndexError("ComboLinks::getLink:Index out of range");
     if (linksInList[index]->getValue() && doc && !(doc->isIn(linksInList[index]->getValue())))
-        throw Base::Exception("Linked object is not in the document; it may have been deleted");
+        throw Base::ValueError("Linked object is not in the document; it may have been deleted");
     return *(linksInList[index]);
 }
 
