@@ -875,7 +875,7 @@ bool best_fit::RotMat(Base::Matrix4D &M, double degree, int axis)
         M[1][1]=cos(degree);
         break;
     default:
-        throw Base::Exception("second input value differs from 1,2,3 (x,y,z)");
+        throw Base::RuntimeError("second input value differs from 1,2,3 (x,y,z)");
     }
 
     return true;
@@ -897,7 +897,7 @@ bool best_fit::TransMat(Base::Matrix4D &M, double trans, int axis)
         M[2][3] = trans;
         break;
     default:
-        throw Base::Exception("second input value differs from 1,2,3 (x,y,z)");
+        throw Base::RuntimeError("second input value differs from 1,2,3 (x,y,z)");
     }
 
     return true;
@@ -1390,7 +1390,7 @@ bool best_fit::Tesselate_Face(const TopoDS_Face &aface, MeshCore::MeshKernel &me
     // if the triangulation of only one face is not possible to get
     else
     {
-        throw Base::Exception("Empty face triangulation\n");
+        throw Base::RuntimeError("Empty face triangulation\n");
     }
 
     // finish FreeCAD Mesh Builder and exit with new mesh
@@ -1484,7 +1484,7 @@ bool best_fit::Tesselate_Shape(const TopoDS_Shape &shape, MeshCore::MeshKernel &
         // if the triangulation of only one face is not possible to get
         else
         {
-            throw Base::Exception("Empty face triangulation\n");
+            throw Base::RuntimeError("Empty face triangulation\n");
         }
     }
     // finish FreeCAD Mesh Builder and exit with new mesh

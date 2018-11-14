@@ -192,7 +192,7 @@ double path_simulate::GetVelocity(double t)
         }
     }
     else
-        throw Base::Exception("time input not inside [t0, T]");
+        throw Base::RuntimeError("time input not inside [t0, T]");
 
     return vel;
 }
@@ -242,7 +242,7 @@ double path_simulate::GetDistance(double t)
     }
     else
     {
-        throw Base::Exception("time input not inside [t0,T]");
+        throw Base::RuntimeError("time input not inside [t0,T]");
     }
 
     return d;
@@ -3060,7 +3060,7 @@ bool path_simulate::WriteOutputSingle(ofstream &anOutputFile, int &c, bool brob,
     n = Out_val.size();
 
     if (n != Out_time.size())
-        throw Base::Exception("Outputlängen passen nicht zusammen");
+        throw Base::RuntimeError("Outputlängen passen nicht zusammen");
 
     if (n>1)
     {
