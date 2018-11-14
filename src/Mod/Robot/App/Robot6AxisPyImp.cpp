@@ -154,7 +154,7 @@ void Robot6AxisPy::setTcp(Py::Object value)
     }
     else if (PyObject_TypeCheck(*value, &(Base::PlacementPy::Type))) {
         if(! getRobot6AxisPtr()->setTo(*static_cast<Base::PlacementPy*>(*value)->getPlacementPtr()))
-			throw Base::Exception("Can not reach Point");
+			throw Base::RuntimeError("Can not reach Point");
     }
     else {
         std::string error = std::string("type must be 'Matrix' or 'Placement', not ");
