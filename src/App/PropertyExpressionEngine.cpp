@@ -109,28 +109,10 @@ void PropertyExpressionEngine::hasSetValue()
     }
     registerLabelReferences(labels);
 
-    deps.erase(owner);
-
-#ifndef USE_OLD_DAG
-    for(auto obj : deps) {
-        if(obj && obj->getNameInDocument()) {
-            auto it = depObjs.find(obj);
-            if(it == depObjs.end())
-                obj->_addBackLink(owner);
-            else
-                depObjs.erase(it);
-        }
-    }
-    for(auto obj : depObjs) {
-        if(obj && obj->getNameInDocument())
-            obj->_removeBackLink(owner);
-    }
-#endif
-    depObjs.swap(deps);
+    owner->updateDeps(this,depObjs,std::move(deps),xlinks);
 
     PropertyLinkBase::hasSetValue();
 }
-
 
 void PropertyExpressionEngine::Paste(const Property &from)
 {
@@ -149,8 +131,13 @@ void PropertyExpressionEngine::Paste(const Property &from)
 
 void PropertyExpressionEngine::Save(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" <<  expressions.size() <<"\">" << std::endl;
+    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" <<  expressions.size();
+    if(xlinks.size()) 
+        writer.Stream() << "\" xcount=\"" << xlinks.size();
+    writer.Stream() <<"\">" << std::endl;
     writer.incInd();
+    for(auto &l : xlinks)
+        l.Save(writer);
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
         writer.Stream() << writer.ind() << "<Expression path=\"" 
             << Property::encodeAttribute(it->first.toString()) <<"\" expression=\"" 
@@ -166,8 +153,15 @@ void PropertyExpressionEngine::Save(Base::Writer &writer) const
 void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
 {
     reader.readElement("ExpressionEngine");
-
     int count = reader.getAttributeAsFloat("count");
+
+    if(reader.hasAttribute("xcount")) {
+        int xcount = reader.getAttributeAsInteger("xcount");
+        for(int i=0;i<xcount;++i) {
+            xlinks.emplace_back(false,this);
+            xlinks.back().Restore(reader);
+        }
+    }
 
     restoredExpressions.reset(new std::vector<RestoredExpression>);
 

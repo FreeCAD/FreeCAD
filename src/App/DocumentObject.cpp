@@ -1029,3 +1029,59 @@ const char *DocumentObject::hasHiddenMarker(const char *subname) {
 bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, DocumentObject *) const {
     return false;
 }
+
+void DocumentObject::updateDeps(Property *prop,
+                                std::set<DocumentObject*> &deps, 
+                                std::set<DocumentObject*> &&newDeps,
+                                std::list<PropertyXLink> &xlinks) 
+{
+    newDeps.erase(this);
+
+    for(auto obj : newDeps) {
+        if(obj && obj->getNameInDocument()) {
+            auto it = deps.find(obj);
+            if(it == deps.end()) {
+                if(getDocument()!=obj->getDocument()) {
+                    xlinks.emplace_back(false,prop);
+                    xlinks.back().setValue(obj);
+                }
+#ifndef USE_OLD_DAG
+                else
+                    obj->_addBackLink(this);
+#endif
+            } else {
+                deps.erase(it);
+                for(auto iter=xlinks.begin();iter!=xlinks.end();++iter) {
+                    if(iter->getValue() == obj) {
+                        xlinks.erase(iter);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    for(auto it=deps.begin(),itNext=it;it!=deps.end();it=itNext) {
+        ++itNext;
+        auto obj = *it;
+        if(!obj || !obj->getNameInDocument())
+            deps.erase(it);
+        else if(obj->getDocument()==getDocument()) {
+#ifndef USE_OLD_DAG
+            obj->_removeBackLink(this);
+#endif
+            deps.erase(it);
+        }
+    }
+    if(deps.size()) {
+        for(auto it=xlinks.begin(),itNext=it;it!=xlinks.end();it=itNext) {
+            ++itNext;
+            if(deps.erase(it->getValue())) {
+                xlinks.erase(it);
+                if(deps.empty())
+                    break;
+            }
+        }
+    }
+    deps = std::move(newDeps);
+}
+

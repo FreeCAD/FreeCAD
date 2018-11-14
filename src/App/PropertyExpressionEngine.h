@@ -191,6 +191,8 @@ private:
     friend class AtomicPropertyChange;
 
     std::set<App::DocumentObject*> depObjs;
+
+    std::list<App::PropertyXLink> xlinks;
 };
 
 }

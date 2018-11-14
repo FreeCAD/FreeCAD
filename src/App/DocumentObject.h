@@ -500,6 +500,23 @@ public:
     /// Check if the subname reference ends with hidden marker.
     static const char *hasHiddenMarker(const char *subname);
 
+    /** Helper function to update object dependencies
+     *
+     * @param prop: the property that is holding the dependenecies
+     * @param deps: current depending objects
+     * @param newDeps: new depending objects
+     * @param xlinks: properties of holding current depending external objects
+     *
+     * On output, \c deps and \c xlinks will be holding the updated
+     * dependencies, \c newDeps will be invalidated.
+     *
+     * An example usage is in App::PropertyExpressionEngine.
+     */
+    void updateDeps(App::Property *prop,
+                    std::set<DocumentObject*> &deps,
+                    std::set<DocumentObject*> &&newDeps,
+                    std::list<PropertyXLink> &xlinks);
+
 protected:
     /// recompute only this object
     virtual App::DocumentObjectExecReturn *recompute(void);
