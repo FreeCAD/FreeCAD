@@ -371,7 +371,7 @@ void Cell::setDisplayUnit(const std::string &unit)
         boost::shared_ptr<App::UnitExpression> e(ExpressionParser::parseUnit(owner->sheet(), unit.c_str()));
 
         if (!e)
-            throw Base::Exception("Invalid unit");
+            throw Base::UnitsMismatchError("Invalid unit");
         newDisplayUnit = DisplayUnit(unit, e->getUnit(), e->getScaler());
     }
 
@@ -713,7 +713,7 @@ int Cell::decodeAlignment(const std::string & itemStr, int alignment)
     else if (itemStr == "bottom")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_BOTTOM;
     else
-        throw Base::Exception("Invalid alignment.");
+        throw Base::ValueError("Invalid alignment.");
 
     return alignment;
 }
