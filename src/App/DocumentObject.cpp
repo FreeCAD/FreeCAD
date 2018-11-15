@@ -297,7 +297,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 #endif // if USE_OLD_DAG
 
 
-void _getInListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
+void _getInListRecursive(std::set<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
 {
     for (const auto objIt : obj->getInList()) {
         // if the check object is in the recursive inList we have a cycle!
@@ -305,27 +305,25 @@ void _getInListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObj
             throw Base::RuntimeError("DocumentObject::getInListRecursive(): cyclic dependency detected!");
         }
 
-        objSet.push_back(objIt);
-        _getInListRecursive(objSet, objIt, checkObj,depth-1);
+        // if the element was already in the set then there is no need to process it again
+        auto pair = objSet.insert(objIt);
+        if (pair.second)
+            _getInListRecursive(objSet, objIt, checkObj, depth-1);
     }
 }
 
 std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
 {
     // number of objects in document is a good estimate in result size
-    int maxDepth = getDocument()->countObjects() +2;
-    std::vector<App::DocumentObject*> result;
-    result.reserve(maxDepth);
+    int maxDepth = getDocument()->countObjects() + 2;
+    std::set<App::DocumentObject*> result;
 
     // using a rcursie helper to collect all InLists
     _getInListRecursive(result, this, this, maxDepth);
 
-    // remove duplicate entries and resize the vector
-    std::sort(result.begin(), result.end());
-    auto newEnd = std::unique(result.begin(), result.end());
-    result.resize(std::distance(result.begin(), newEnd));
-
-    return result;
+    std::vector<App::DocumentObject*> array;
+    array.insert(array.begin(), result.begin(), result.end());
+    return array;
 }
 
 void _getOutListRecursive(std::set<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
