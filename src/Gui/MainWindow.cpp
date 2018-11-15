@@ -336,7 +336,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         //work through parameter.
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
               GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("TreeView");
-        bool enabled = group->GetBool("Enabled", false);
+        bool enabled = group->GetBool("Enabled", true);
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
             TreeDockWidget* tree = new TreeDockWidget(0, this);
@@ -352,7 +352,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         //work through parameter.
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
               GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("PropertyView");
-        bool enabled = group->GetBool("Enabled", false);
+        bool enabled = group->GetBool("Enabled", true);
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
             PropertyDockView* pcPropView = new PropertyDockView(0, this);
