@@ -185,9 +185,9 @@ private:
             pcFeature->FemMesh.setValuePtr(mesh.release());
             pcFeature->purgeTouched();
         }
-        catch(Base::Exception& e) {
+        catch (Base::Exception&) {
 #ifdef FC_USE_VTK
-            if( FemPostPipeline::canRead(file) ) {
+            if (FemPostPipeline::canRead(file)) {
 
                 FemPostPipeline *pcFeature = static_cast<FemPostPipeline *>
                     (pcDoc->addObject("Fem::FemPostPipeline", file.fileNamePure().c_str()));
@@ -197,10 +197,11 @@ private:
                 pcFeature->touch();
                 pcDoc->recomputeFeature(pcFeature);
             }
-            else
-                throw e;
+            else {
+                throw;
+            }
 #else
-            throw e;
+            throw;
 #endif
         }
 
