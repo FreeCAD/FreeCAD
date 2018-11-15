@@ -2132,7 +2132,8 @@ public:
             info = it->second;
             if(!info->pcDoc) {
                 QString fullpath(info->getFullPath());
-                if(App::GetApplication().addPendingDocument(
+                if(fullpath.size() &&  
+                   App::GetApplication().addPendingDocument(
                        fullpath.toUtf8().constData(),objName,l->allowPartial())==0) 
                 {
                     for(App::Document *doc : App::GetApplication().getDocuments()) {
