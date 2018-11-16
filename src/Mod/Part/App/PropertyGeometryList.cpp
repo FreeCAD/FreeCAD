@@ -168,6 +168,8 @@ void PropertyGeometryList::Save(Writer &writer) const
 
 void PropertyGeometryList::Restore(Base::XMLReader &reader)
 {
+    bool partialrestore = false;
+    
     // read my element
     reader.readElement("GeometryList");
     // get the value of my attribute
@@ -179,15 +181,41 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
-        newG->Restore(reader);
-        values.push_back(newG);
-        reader.readEndElement("Geometry");
+
+        try {
+            newG->Restore(reader);
+            values.push_back(newG);
+            reader.readEndElement("Geometry");
+        }
+        catch(Base::RestoreError e) {
+            
+            e.ReportException();
+            
+            if(isOrderRelevant) {
+                // Pushes the best try by the Geometry class
+                values.push_back(newG);
+            }
+            else {
+                delete newG;
+            }
+            
+            reader.readEndElement("Geometry");
+            
+            partialrestore = true;
+            
+            continue;
+        }
+        
+        
     }
 
     reader.readEndElement("GeometryList");
 
     // assignment
     setValues(values);
+    
+    /*if(partialrestore)
+        THROWMT(Base::RestoreError, QT_TRANSLATE_NOOP("Exceptions","There were errors during the restoring process. Some geometry objects may not correspond to the version that was saved or might have been deleted."));*/
 }
 
 App::Property *PropertyGeometryList::Copy(void) const
