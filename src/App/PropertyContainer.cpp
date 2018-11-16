@@ -260,6 +260,8 @@ void PropertyContainer::Save (Base::Writer &writer) const
 
 void PropertyContainer::Restore(Base::XMLReader &reader)
 {
+    bool partialrestore = false;
+    
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
 
@@ -275,7 +277,15 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         try {
             // name and type match
             if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-                prop->Restore(reader);
+                
+                try {
+                    prop->Restore(reader);
+                }
+                catch(RestoreError &e) {
+                    e.ReportException();
+                    Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName,TypeName);
+                    partialrestore = true;
+                }
             }
             // name matches but not the type
             else if (prop) {
@@ -308,6 +318,9 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         reader.readEndElement("Property");
     }
     reader.readEndElement("Properties");
+    
+    if(partialrestore)
+        THROW(Base::RestoreError);
 }
 
 void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)

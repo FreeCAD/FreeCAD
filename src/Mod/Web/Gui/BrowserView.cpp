@@ -325,6 +325,13 @@ void BrowserView::onLinkClicked (const QUrl & url)
                     // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
                     Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) fi.absoluteFilePath()	.toLocal8Bit());  
                 }
+                catch (const Base::RestoreError& e) {
+                    e.ReportException();
+                    if(e.getTranslatable()) {
+                        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Error loading file"),
+                                            QObject::tr(e.getMessage().c_str()));
+                    }
+                }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));
                 }
