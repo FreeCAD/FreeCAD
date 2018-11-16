@@ -204,8 +204,15 @@ class AppExport PropertyLists : public Property
     TYPESYSTEM_HEADER();
 
 public:
+    PropertyLists() : isOrderRelevant(false){};
+    
     virtual void setSize(int newSize)=0;
     virtual int getSize(void) const =0;
+    
+    // if the order of the elements in the list relevant?
+    // if yes, certain operations, like restoring must make sure that the
+    // order is kept despite errors.
+    bool isOrderRelevant;
 };
 
 /** A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties.
