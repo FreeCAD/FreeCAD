@@ -94,7 +94,7 @@ void Exception::ReportException (void) const
             str+= (_sErrMsg + " ");
 
         if (!_function.empty()) {
-            str+="In ";
+            str+="\nIn ";
             str+=_function;
             str+= " ";
         }
@@ -106,7 +106,7 @@ void Exception::ReportException (void) const
             std::size_t pos = _file.find("src");
 
             if (pos!=std::string::npos) {
-                str+="in ";
+                str+="\nin ";
                 str+= _file.substr(pos);
                 str+= ":";
                 str+=_linestr;
