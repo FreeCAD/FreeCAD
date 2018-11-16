@@ -187,7 +187,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
             values.push_back(newG);
             reader.readEndElement("Geometry");
         }
-        catch(Base::RestoreError e) {
+        catch(Base::RestoreError &e) {
             
             e.ReportException();
             
@@ -214,8 +214,8 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     // assignment
     setValues(values);
     
-    /*if(partialrestore)
-        THROWMT(Base::RestoreError, QT_TRANSLATE_NOOP("Exceptions","There were errors during the restoring process. Some geometry objects may not correspond to the version that was saved or might have been deleted."));*/
+    if(partialrestore)
+        THROW(Base::RestoreError);
 }
 
 App::Property *PropertyGeometryList::Copy(void) const

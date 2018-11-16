@@ -205,6 +205,9 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args)
         // return new document
         return (GetApplication().openDocument(EncodedName.c_str())->getPyObject());
     }
+    catch(const Base::RestoreError) {
+        throw; // propagate it to python/gui
+    }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_IOError, e.what());
         return 0L;
