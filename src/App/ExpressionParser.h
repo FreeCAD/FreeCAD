@@ -425,6 +425,8 @@ public:
 
     virtual bool isTouched() const;
 
+    std::string getDocString() const;
+
 protected:
     CallableExpression(const App::DocumentObject *_owner):Expression(_owner) {}
 
@@ -540,6 +542,13 @@ public:
     virtual bool isTouched() const;
 
     void printItems(std::ostream &ss, bool persistent) const;
+
+    std::size_t getSize() const {
+        return items.size();
+    }
+
+    void setItem(std::size_t index, ExpressionPtr &&expr);
+    void append(ExpressionPtr &&expr);
 
 protected:
     ListExpression(const App::DocumentObject *_owner):Expression(_owner) {}
@@ -796,6 +805,9 @@ public:
 
     virtual bool isTouched() const;
     void add(ExpressionPtr &&expr);
+
+    std::size_t getSize() const {return exprs.size();}
+    const Expression *getExpr(std::size_t idx) const;
 
 protected:
     SimpleStatement(const App::DocumentObject *_owner):BaseStatement(_owner) {}

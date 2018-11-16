@@ -19,6 +19,12 @@
         <UserDocu>Evaluate the expression</UserDocu>
       </Documentation>
     </Methode>
+    <Attribute Name="__doc__" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Docstring</UserDocu>
+      </Documentation>
+      <Parameter Name="__doc__" Type="String"/>
+    </Attribute>
 	<ClassDeclarations>private:
     PyObjectBase *pyOwner;
 	</ClassDeclarations>

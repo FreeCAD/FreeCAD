@@ -3037,6 +3037,20 @@ void CallableExpression::_toString(std::ostream &ss, bool persistent,int) const 
     ss << ')';
 }
 
+std::string CallableExpression::getDocString() const {
+    if(ftype==FUNC_PARSED && 
+       expr && expr->isDerivedFrom(SimpleStatement::getClassTypeId()))
+    {
+        auto e = static_cast<SimpleStatement*>(expr.get());
+        if(e->getSize()) {
+            auto estr = dynamic_cast<const StringExpression*>(e->getExpr(0));
+            if(estr)
+                return estr->getText();
+        }
+    }
+    return std::string();
+}
+
 bool CallableExpression::isTouched() const
 {
     if(expr && expr->isTouched())
@@ -4238,6 +4252,17 @@ App::any ListExpression::_getValueAsAny() const {
     return pyObjectToAny(list,false);
 }
 
+void ListExpression::setItem(std::size_t index, ExpressionPtr &&expr) {
+    if(index >= items.size())
+        __EXPR_THROW(IndexError,"Index out of bound",this);
+    items[index] = std::move(expr);
+}
+
+void ListExpression::append(ExpressionPtr &&expr) {
+    items.push_back(std::move(expr));
+}
+
+
 // TupleExpression class
 //
 
@@ -4978,6 +5003,12 @@ bool SimpleStatement::isTouched() const {
     return false;
 }
 
+const Expression *SimpleStatement::getExpr(std::size_t i) const {
+    if(i < exprs.size())
+        return exprs[i].get();
+    return 0;
+}
+
 void SimpleStatement::_toString(std::ostream &ss, bool persistent, int) const {
     bool first = true;
     for(auto &expr : exprs) {
@@ -5154,7 +5185,7 @@ static App::any makeFunc(const Expression *owner,
                                           Expression::StringList(names),
                                           std::move(eval_args),
                                           FUNC_PARSED,
-                                          std::string(name),
+                                          std::string(name?name:""),
                                           false);
     Py::Object pyobj(new ExpressionPy(res.release()),false);
     if(name && _EvalStack.size())
