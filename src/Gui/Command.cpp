@@ -511,7 +511,8 @@ void Command::setGroupName(const char* s)
 void Command::openCommand(const char* sCmdName)
 {
     // Using OpenCommand with no active document !
-    assert(Gui::Application::Instance->activeDocument());
+    if(!Gui::Application::Instance->activeDocument())
+        FC_THROWM(Base::RuntimeError,"No active document");
 
     if (sCmdName)
         Gui::Application::Instance->activeDocument()->openCommand(sCmdName);
