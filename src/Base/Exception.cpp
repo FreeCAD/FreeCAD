@@ -828,6 +828,30 @@ CADKernelError::CADKernelError(const CADKernelError &inst)
 
 
 // ---------------------------------------------------------
+// ---------------------------------------------------------
+
+RestoreError::RestoreError()
+  : Exception()
+{
+}
+
+RestoreError::RestoreError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+RestoreError::RestoreError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+RestoreError::RestoreError(const RestoreError &inst)
+  : Exception(inst)
+{
+}
+
+
+// ---------------------------------------------------------
 
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
 #include <stdexcept>

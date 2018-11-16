@@ -618,6 +618,27 @@ public:
     virtual ~CADKernelError() throw() {}
 };
 
+/* The RestoreError can be used to try to do a best recovery effort when an error during restoring
+ * occurs. The best recovery effort may be to ignore the element altogether or to insert a placeholder
+ * depending on where the actual element being restored is used.
+ * 
+ * For example, if it is part of an array (e.g. PropertyList) and the order in the array is relevant, it 
+ * is better to have a placeholder than to fail to restore the whole array.
+ */ 
+class BaseExport RestoreError : public Exception
+{
+public:
+    /// Construction
+    RestoreError();
+    RestoreError(const char * sMessage);
+    RestoreError(const std::string& sMessage);
+    /// Construction
+    RestoreError(const RestoreError &inst);
+    /// Destruction
+    virtual ~RestoreError() throw() {}
+};
+
+
 
 inline void Exception::setMessage(const char * sMessage)
 {
