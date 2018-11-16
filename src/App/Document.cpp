@@ -1355,7 +1355,7 @@ void Document::Save (Base::Writer &writer) const
 }
 
 void Document::Restore(Base::XMLReader &reader)
-{
+{   
     int i,Cnt;
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
 
@@ -1436,6 +1436,10 @@ void Document::Restore(Base::XMLReader &reader)
     }
 
     reader.readEndElement("Document");
+    
+    if(testStatus(Document::PartialRestore)) {
+        THROW(Base::RestoreError);
+    }
 }
 
 void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
@@ -1510,7 +1514,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
-{
+{   
     bool keepDigits = testStatus(Document::KeepTrailingDigits);
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
     std::vector<App::DocumentObject*> objs;
@@ -1576,6 +1580,13 @@ Document::readObjects(Base::XMLReader& reader)
             catch (const Base::RuntimeError &e) {
                 e.ReportException();
             }
+            catch(const Base::RestoreError &e) {
+                e.ReportException();
+                Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result geometry may have changed or be incomplete.",name.c_str());
+                
+                setStatus(Document::PartialRestore, true);
+            }
+
             pObj->setStatus(ObjectStatus::Restore, false);
         }
         reader.readEndElement("Object");
@@ -1809,6 +1820,7 @@ bool Document::saveToFile(const char* filename) const
 // Open the document
 void Document::restore (void)
 {
+    bool partialrestore;
     // clean up if the document is not empty
     // !TODO mind exceptions while restoring!
     clearUndos();
@@ -1847,6 +1859,10 @@ void Document::restore (void)
     try {
         Document::Restore(reader);
     }
+    catch(Base::RestoreError &e) {
+        e.ReportException();
+        partialrestore = true;
+    }
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
     }
@@ -1873,6 +1889,9 @@ void Document::restore (void)
 
     GetApplication().signalFinishRestoreDocument(*this);
     setStatus(Document::Restoring, false);
+    
+    if(partialrestore)
+        THROWMT(Base::RestoreError,QT_TRANSLATE_NOOP("Exceptions", "There were errors while loading the file. Geometry might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
 }
 
 bool Document::isSaved() const

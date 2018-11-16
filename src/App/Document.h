@@ -68,7 +68,8 @@ public:
         KeepTrailingDigits = 1,
         Closable = 2,
         Restoring = 3,
-        Recomputing = 4
+        Recomputing = 4,
+        PartialRestore = 5
     };
 
     /** @name Properties */
