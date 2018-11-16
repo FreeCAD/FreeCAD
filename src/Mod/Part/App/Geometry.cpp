@@ -3660,7 +3660,8 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
     try {
         // Create line out of two points
         if (p1.Distance(p2) < gp::Resolution())
-            Standard_Failure::Raise("Both points are equal");
+            THROWM(Base::ValueError,"Both points are equal");
+        
         GC_MakeSegment ms(p1, p2);
         if (!ms.IsDone()) {
             THROWM(Base::CADKernelError,gce_ErrorStatusText(ms.Status()))
@@ -3722,8 +3723,22 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
     EndY   = reader.getAttributeAsFloat("EndY");
     EndZ   = reader.getAttributeAsFloat("EndZ");
 
+    Base::Vector3d start(StartX,StartY,StartZ); 
+    Base::Vector3d end(EndX,EndY,EndZ);
     // set the read geometry
-    setPoints(Base::Vector3d(StartX,StartY,StartZ),Base::Vector3d(EndX,EndY,EndZ) );
+    try {
+        setPoints(start, end);
+    }
+    catch(Base::ValueError e) {
+        // for a line segment construction, the only possibility of a value error is that 
+        // the points are too close. The best try to restore is incrementing the distance.
+        // for other objects, the best effort may be just to leave default values.
+        end = start + Base::Vector3d(start.x*DBL_EPSILON,0,0);
+        
+        setPoints(start, end);
+        
+        THROWM(Base::RestoreError, e.getMessage());
+    }
 }
 
 PyObject *GeomLineSegment::getPyObject(void)
