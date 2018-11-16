@@ -66,13 +66,27 @@ protected Q_SLOTS:
     void insertColumns();
     void removeColumns();
     void cellProperties();
+    void editMode(QAction *);
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     bool event(QEvent *event);
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
 
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
+#if QT_VERSION >= 0x050000
+            , const QVector<int> &
+#endif
+            ) override;
+
+    void contextMenuEvent (QContextMenuEvent * e);
+
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
+
+    QMenu *contextMenu;
+    QAction *actionEditNormal;
+    QAction *actionEditButton;
+    QAction *actionEditCombo;
 
     boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellSpanChangedConnection;
 };

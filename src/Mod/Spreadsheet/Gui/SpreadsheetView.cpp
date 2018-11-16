@@ -149,10 +149,9 @@ bool SheetView::onMsg(const char *pMsg, const char **)
         return true;
     }
     else if(strcmp("Std_Delete",pMsg) == 0) {
-        QModelIndexList selection = selectedIndexes();
-        if (selection.size() > 0) {
+        std::vector<Range> ranges = selectedRanges();
+        if (sheet->hasCell(ranges)) {
             Gui::Command::openCommand("Clear cell(s)");
-            std::vector<Range> ranges = selectedRanges();
             std::vector<Range>::const_iterator i = ranges.begin();
             for (; i != ranges.end(); ++i) {
                 FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");

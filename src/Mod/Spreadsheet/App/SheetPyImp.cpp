@@ -651,8 +651,10 @@ PyObject* SheetPy::setAlignment(PyObject *args)
 #endif
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
-        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
-            alignment = Cell::decodeAlignment(*i, alignment);
+        for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i) {
+            if(i->size())
+                alignment = Cell::decodeAlignment(*i, alignment);
+        }
     }
     else {
         std::string error = std::string("style must be either set or string, not ") + value->ob_type->tp_name;
@@ -987,6 +989,85 @@ PyObject* SheetPy::getRowHeight(PyObject *args)
     }
 }
 
+PyObject* SheetPy::getEditMode(PyObject *args)
+{
+    char *strAddress;
+    CellAddress address;
+
+    if (!PyArg_ParseTuple(args, "s:getEditMode", &strAddress))
+        return 0;
+
+    try {        
+        address = stringToAddress(strAddress);
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+
+    std::string contents;
+    const Cell * cell = this->getSheetPtr()->getCell(address);
+
+    const char *mode;
+    if (cell) {
+        switch(cell->getEditMode()) {
+        case Cell::EditNormal:
+            mode = "normal";
+            break;
+        case Cell::EditButton:
+            mode = "button";
+            break;
+        case Cell::EditCombo:
+            mode = "combo";
+            break;
+        default:
+            PyErr_SetString(PyExc_ValueError, "unknown edit mode");
+            return 0;
+        }
+    }
+
+    return Py::new_reference_to( Py::String( mode ) );
+}
+
+PyObject* SheetPy::setEditMode(PyObject *args)
+{
+    char *mode;
+    char *strAddress;
+    CellAddress address;
+
+    if (!PyArg_ParseTuple(args, "ss:setEditMode", &strAddress,&mode))
+        return 0;
+
+    try {        
+        address = stringToAddress(strAddress);
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+
+    std::string contents;
+    Cell * cell = this->getSheetPtr()->getCell(address);
+
+    if (cell) {
+        Cell::EditMode m;
+        if(strcmp(mode,"normal")==0)
+            m = Cell::EditNormal;
+        else if(strcmp(mode,"button")==0)
+            m = Cell::EditButton;
+        else if(strcmp(mode,"combo")==0)
+            m = Cell::EditCombo;
+        else {
+            PyErr_SetString(PyExc_ValueError, "unknown edit mode");
+            return 0;
+        }
+        PY_TRY {
+            cell->setEditMode(m);
+        }PY_CATCH
+    }
+
+    Py_Return;
+}
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
 PyObject *SheetPy::getCustomAttributes(const char* attr) const

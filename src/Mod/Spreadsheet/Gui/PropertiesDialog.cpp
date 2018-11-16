@@ -25,6 +25,7 @@
 #include "PropertiesDialog.h"
 #include <Base/Tools.h>
 #include <App/Range.h>
+#include <App/Document.h>
 #include <Gui/Command.h>
 #include "ui_PropertiesDialog.h"
 
@@ -230,17 +231,17 @@ void PropertiesDialog::apply()
 
         for (; i != ranges.end(); ++i) {
             if (orgAlignment != alignment) {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlignment('%s', '%s')", sheet->getNameInDocument(),
+                FCMD_OBJ_CMD2("setAlignment('%s', '%s')", sheet,
                                         i->rangeString().c_str(), Cell::encodeAlignment(alignment).c_str());
                 changes = true;
             }
             if (orgStyle != style) {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setStyle('%s', '%s')", sheet->getNameInDocument(),
+                FCMD_OBJ_CMD2("setStyle('%s', '%s')", sheet,
                                         i->rangeString().c_str(), Cell::encodeStyle(style).c_str());
                 changes = true;
             }
             if (orgForegroundColor != foregroundColor) {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f,%f))", sheet->getNameInDocument(),
+                FCMD_OBJ_CMD2("setForeground('%s', (%f,%f,%f,%f))", sheet,
                                         i->rangeString().c_str(),
                                         foregroundColor.r,
                                         foregroundColor.g,
@@ -249,7 +250,7 @@ void PropertiesDialog::apply()
                 changes = true;
             }
             if (orgBackgroundColor != backgroundColor) {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f,%f))", sheet->getNameInDocument(),
+                FCMD_OBJ_CMD2("setBackground('%s', (%f,%f,%f,%f))", sheet,
                                         i->rangeString().c_str(),
                                         backgroundColor.r,
                                         backgroundColor.g,
@@ -259,12 +260,12 @@ void PropertiesDialog::apply()
             }
             if (orgDisplayUnit != displayUnit) {
                 std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(displayUnit.stringRep.c_str());
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDisplayUnit('%s', '%s')", sheet->getNameInDocument(),
+                FCMD_OBJ_CMD2("setDisplayUnit('%s', '%s')", sheet,
                                         i->rangeString().c_str(), escapedstr.c_str());
                 changes = true;               
             }
             if (ranges.size() == 1 && ranges[0].size() == 1 && orgAlias != alias) {
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setAlias('%s', '%s')", sheet->getNameInDocument(),
+                FCMD_OBJ_CMD2("setAlias('%s', '%s')", sheet,
                                         i->address().c_str(), alias.c_str());
                 changes = true;
             }

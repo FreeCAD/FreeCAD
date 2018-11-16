@@ -92,6 +92,7 @@ Cell::Cell(const CellAddress &_address, PropertySheet *_owner)
     , rowSpan(1)
     , colSpan(1)
     , anchor()
+    , editMode(EditNormal)
 {
     assert(address.isValid());
 }
@@ -110,6 +111,7 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , computedUnit(other.computedUnit)
     , rowSpan(other.rowSpan)
     , colSpan(other.colSpan)
+    , editMode(other.editMode)
 {
     setUsed(MARK_SET, false);
 }
@@ -129,6 +131,7 @@ Cell &Cell::operator =(const Cell &rhs)
     setComputedUnit(rhs.computedUnit);
     setAlias(rhs.alias);
     setSpans(rhs.rowSpan, rhs.colSpan);
+    editMode = rhs.editMode;
 
     setUsed(MARK_SET, false);
 
@@ -150,7 +153,7 @@ Cell::~Cell()
   *
   */
 
-void Cell::setExpression(App::ExpressionPtr expr)
+void Cell::setExpression(App::ExpressionPtr &&expr)
 {
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
@@ -576,6 +579,8 @@ void Cell::restore(Base::XMLReader &reader)
     const char* alias = reader.hasAttribute("alias") ? reader.getAttribute("alias") : 0;
     const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : 0;
     const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
+    int mode = reader.hasAttribute("editMode")?reader.getAttributeAsInteger("editMode"):(int)EditNormal;
+
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
     PropertySheet::AtomicPropertyChange signaller(*owner);
@@ -629,6 +634,8 @@ void Cell::restore(Base::XMLReader &reader)
 
         setSpans(rs, cs);
     }
+
+    editMode = (EditMode)mode;
 }
 
 /**
@@ -674,6 +681,9 @@ void Cell::save(Base::Writer &writer) const
         writer.Stream() << "rowSpan=\"" << rowSpan<< "\" ";
         writer.Stream() << "colSpan=\"" << colSpan << "\" ";
     }
+
+    if(editMode) 
+        writer.Stream() << "editMode=\"" << editMode << "\" ";
 
     writer.Stream() << "/>" << std::endl;
 }
@@ -866,4 +876,155 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
         return defaultColor;
 }
 
+Cell::EditMode Cell::getEditMode() const {
+    return editMode;
+}
 
+void Cell::setEditData(const char *data) {
+    if(hasException() && editMode!=EditNormal)
+        FC_THROWM(Base::ExpressionError,exceptionStr);
+
+    switch(editMode) {
+    case EditButton: {
+        if(!owner || !owner->getContainer()) 
+            FC_THROWM(Base::RuntimeError,"Invalid cell '" << address.toString() << "'");
+        auto prop = dynamic_cast<App::PropertyPythonObject*>(
+                owner->getContainer()->getPropertyByName(address.toString().c_str()));
+        if(prop) {
+            Base::PyGILStateLocker lock;
+            Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
+            if(obj.isCallable()) {
+                try {
+                    Py::Callable(obj).apply();
+                }catch(Py::Exception &) {
+                    Base::PyException::ThrowException();
+                }
+                return;
+            }
+        }
+        FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                "' evaluates to a Python callable");
+        break;
+    }
+    case EditCombo: {
+        if(!data || !data[0])
+            FC_THROWM(Base::ValueError,"invalid value");
+        auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
+        if(expr && expr->getSize()==2) {
+            App::ExpressionPtr e(expr->copy());
+            static_cast<App::ListExpression&>(*e).setItem(1,
+                    App::StringExpression::create(
+                        dynamic_cast<App::DocumentObject*>(owner->getContainer()),data));
+            setExpression(std::move(e));
+            return;
+        }
+        FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                "' contains a list expression of [mapping,obj]");
+        break;
+    }
+    default:
+        setContent(data);
+        break;
+    }
+}
+
+std::vector<std::string> Cell::getEditData(bool silent) const {
+    std::vector<std::string> res;
+    switch(editMode) {
+    case EditButton: {
+        if(!owner || !owner->getContainer()) {
+            if(silent) break;
+            FC_THROWM(Base::RuntimeError,"Invalid cell '" << address.toString() << "'");
+        }
+        auto prop = owner->getContainer()->getPropertyByName(address.toString().c_str());
+        if(prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
+            Base::PyGILStateLocker lock;
+            Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
+            std::string title;
+            if(obj.hasAttr("__doc__"))
+                title = obj.getAttr("__doc__").as_string();
+            if(title.size())
+                res.push_back(std::move(title));
+            else if(isUsed(ALIAS_SET))
+                res.push_back(alias);
+            else
+                res.push_back(address.toString());
+            return res;
+        }
+        if(!silent)
+            FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                    "' evaluates to a Python callable");
+        break;
+    }
+    case EditCombo: {
+        if(!owner || !owner->getContainer()) {
+            if(silent) break;
+            FC_THROWM(Base::RuntimeError,"Invalid cell '" << address.toString() << "'");
+        }
+        auto prop = owner->getContainer()->getPropertyByName(address.toString().c_str());
+        if(prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
+            Base::PyGILStateLocker lock;
+            Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
+            if(obj.isSequence()) {
+                Py::Sequence seq(obj);
+                if(seq.size()==2 && seq[0].isMapping()) {
+                    res.push_back(Py::Object(seq[1].ptr()).as_string());
+                    Py::Mapping map(seq[0].ptr());
+                    for(auto it=map.begin();it!=map.end();++it) {
+                        const auto &value = *it;
+                        res.push_back(value.first.as_string());
+                    }
+                    return res;
+                }
+            }
+        }
+        if(!silent)
+            FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                    "' contains a list expression of [mapping,obj]");
+        break;
+    }
+    default: {
+        std::string s;
+        if(getStringContent(s))
+            res.push_back(std::move(s));
+    }}
+    return res;
+}
+
+void Cell::setEditMode(EditMode mode) {
+    if(editMode == mode) 
+        return;
+
+    if(mode!=Cell::EditNormal) {
+        if(!owner || !owner->getContainer()) 
+            FC_THROWM(Base::RuntimeError,"Invalid cell '" << address.toString() << "'");
+        auto prop = owner->getContainer()->getPropertyByName(address.toString().c_str());
+        if(!prop || !prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId()))
+            FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                    "' evaluates to a Python object");
+
+        Base::PyGILStateLocker lock;
+        Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
+        if(mode == Cell::EditButton) {
+            if(!obj.isCallable()) {
+                FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                        "' evaluates to a Python callable");
+            }
+        }else if(mode == Cell::EditCombo){
+            bool valid = false;
+            auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
+            if(expr && expr->getSize()==2) {
+                Py::Sequence seq(obj);
+                valid = seq.size()==2 && seq[0].isMapping() && seq[1].isString();
+            }
+            if(!valid)
+                FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                        "' contains a list expression of [mapping,string]");
+        }else
+            FC_THROWM(Base::ValueError,"Unknown edit mode");
+    }
+
+    PropertySheet::AtomicPropertyChange signaler(*owner);
+    editMode = mode;
+    signaler.tryInvoke();
+}

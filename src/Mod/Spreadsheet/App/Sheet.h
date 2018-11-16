@@ -152,6 +152,10 @@ public:
 
     void providesTo(App::CellAddress address, std::set<std::string> & result) const;
 
+    void editCell(App::CellAddress address, const char *data);
+
+    bool hasCell(const std::vector<App::Range> &ranges) const;
+
     PyObject *getPyObject();
 
     App::Property *getPropertyByName(const char *name) const;

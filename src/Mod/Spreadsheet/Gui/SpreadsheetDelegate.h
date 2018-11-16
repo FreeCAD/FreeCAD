@@ -49,6 +49,7 @@ private Q_SLOTS:
     void commitAndCloseEditor();
 private:
     Spreadsheet::Sheet * sheet;
+    bool commiting = false;
 };
 
 }

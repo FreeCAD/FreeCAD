@@ -26,14 +26,19 @@
 #ifndef _PreComp_
 #include <QItemDelegate>
 #include <QLineEdit>
+#include <QPushButton>
+#include <QComboBox>
 #endif
 
+#include <Base/Tools.h>
+#include "../App/Cell.h"
 #include "SpreadsheetDelegate.h"
 #include "LineEdit.h"
 #include <App/DocumentObject.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Gui/ExpressionCompleter.h>
 
+using namespace Spreadsheet;
 using namespace SpreadsheetGui;
 
 SpreadsheetDelegate::SpreadsheetDelegate(Spreadsheet::Sheet * _sheet, QWidget *parent)
@@ -46,6 +51,24 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
 {
+    auto cell = sheet->getCell(App::CellAddress(index.row(),index.column()));
+    if(cell && !cell->hasException()) {
+        switch(cell->getEditMode()) {
+        case Cell::EditButton: {
+            auto button = new QPushButton(parent);
+            connect(button, SIGNAL(clicked()), this, SLOT(commitAndCloseEditor()));
+            return button;
+        } 
+        case Cell::EditCombo: {
+            auto combo = new QComboBox(parent);
+            connect(combo, SIGNAL(activated(const QString &)), this, SLOT(commitAndCloseEditor()));
+            return combo;
+        }
+        default:
+            break;
+        }
+    }
+
     SpreadsheetGui::TextEdit *editor = new SpreadsheetGui::TextEdit(parent);
     editor->setIndex(index);
 
@@ -56,23 +79,54 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
 
 void SpreadsheetDelegate::commitAndCloseEditor()
 {
+    Base::FlagToggler<> flag(commiting);
     Gui::ExpressionTextEdit *editor = qobject_cast<Gui::ExpressionTextEdit *>(sender());
-    if (editor->completerActive()) {
-        editor->hideCompleter();
+    if(editor) {
+        if (editor->completerActive()) {
+            editor->hideCompleter();
+            return;
+        }
+        Q_EMIT commitData(editor);
+        Q_EMIT closeEditor(editor);
         return;
     }
-
-    Q_EMIT commitData(editor);
-    Q_EMIT closeEditor(editor);
+    QPushButton *button = qobject_cast<QPushButton*>(sender());
+    if(button) {
+        Q_EMIT commitData(button);
+        return;
+    }
+    QComboBox *combo = qobject_cast<QComboBox*>(sender());
+    if(button) {
+        Q_EMIT commitData(combo);
+        Q_EMIT closeEditor(combo);
+        return;
+    }
 }
 
 void SpreadsheetDelegate::setEditorData(QWidget *editor,
     const QModelIndex &index) const
 {
+    QVariant data = index.model()->data(index, Qt::EditRole);
     TextEdit *edit = qobject_cast<TextEdit*>(editor);
     if (edit) {
-        edit->setPlainText(index.model()->data(index, Qt::EditRole).toString());
+        edit->setPlainText(data.toString());
         return;
+    }
+    QPushButton *button = qobject_cast<QPushButton*>(editor);
+    if(button) {
+        button->setText(data.toString());
+        return;
+    }
+    QComboBox *combo = qobject_cast<QComboBox*>(editor);
+    if(combo && (QMetaType::Type)data.type()==QMetaType::QStringList) {
+        QStringList list = data.toStringList();
+        QString txt = list.front();
+        list.pop_front();
+        combo->clear();
+        combo->addItems(list);
+        int index = combo->findText(txt);
+        if(index>=0)
+            combo->setCurrentIndex(index);
     }
 }
 
@@ -82,6 +136,19 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
     TextEdit *edit = qobject_cast<TextEdit *>(editor);
     if (edit) {
         model->setData(index, edit->toPlainText());
+        return;
+    }
+    QPushButton *button = qobject_cast<QPushButton*>(editor);
+    if(button) {
+        // For button widget, make sure we are triggered by user clicking not
+        // something else, like lost of focus.
+        if(commiting)
+            model->setData(index, QString());
+        return;
+    }
+    QComboBox *combo = qobject_cast<QComboBox*>(editor);
+    if(combo) {
+        model->setData(index, combo->currentText());
         return;
     }
 }

@@ -165,5 +165,19 @@
         <UserDocu>Get given spreadsheet row height</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getEditMode">
+      <Documentation>
+        <UserDocu>Get given spreadsheet cell edit mode</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setEditMode">
+      <Documentation>
+          <UserDocu>
+Set given spreadsheet cell edit mode.
+
+Supported modes are, 'normal', 'button', 'combo'.
+          </UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

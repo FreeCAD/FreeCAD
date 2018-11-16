@@ -119,6 +119,16 @@ public:
 
     App::CellAddress getAddress() const { return address; }
 
+    enum EditMode {
+        EditNormal,
+        EditButton,
+        EditCombo,
+    };
+    void setEditMode(EditMode mode);
+    EditMode getEditMode() const;
+    void setEditData(const char *data);
+    std::vector<std::string> getEditData(bool silent=false) const;
+
     /* Alignment */
     static const int ALIGNMENT_LEFT;
     static const int ALIGNMENT_HCENTER;
@@ -144,9 +154,7 @@ private:
 
     void setParseException(const std::string & e);
 
-    //void setExpression(const Expression * expr);
-
-    void setExpression(App::ExpressionPtr expr);
+    void setExpression(App::ExpressionPtr &&expr);
 
     void setUsed(int mask, bool state = true);
 
@@ -188,6 +196,8 @@ private:
     int colSpan;
     std::string exceptionStr;
     App::CellAddress anchor;
+
+    EditMode editMode;
 
     friend class PropertySheet;
 };

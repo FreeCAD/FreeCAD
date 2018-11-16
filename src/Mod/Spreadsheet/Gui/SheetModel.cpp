@@ -215,18 +215,22 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
     // Get edit value by querying the sheet
     if (role == Qt::EditRole) {
-        std::string str;
-
-        if (cell->getStringContent(str))
-            return QVariant(QString::fromUtf8(str.c_str()));
-        else
+        auto contents = cell->getEditData();
+        if(contents.empty())
             return QVariant();
+        else if(contents.size()==1)
+            return QVariant(QString::fromUtf8(contents[0].c_str()));
+        else {
+            QStringList list;
+            for(auto &content : contents)
+                list << QString::fromUtf8(content.c_str());
+            return QVariant(list);
+        }
     }
 
     // Get display value as computed property
     std::string address = CellAddress(row, col).toString();
     Property * prop = sheet->getPropertyByName(address.c_str());
-
     if (prop == 0)
         return QVariant();
 
@@ -427,6 +431,11 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant::fromValue(qtAlignment);
         }
         case Qt::DisplayRole: {
+            if(!cell->hasException() && cell->getEditMode()) {
+                auto res = cell->getEditData(true);
+                if(res.size())
+                    return QVariant(QString::fromUtf8(res.front().c_str()));
+            }
             Base::PyGILStateLocker lock;
             return QVariant(QString::fromUtf8(pyProp->getValue().as_string().c_str()));
         }
@@ -485,7 +494,7 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
             FCMD_OBJ_CMD(sheet,"set('" << strAddress << "','" << 
                     str.toUtf8().constData() << "')");
 #else
-            sheet->setCell(address, str.toUtf8().constData());
+            sheet->editCell(address, str.toUtf8().constData());
 #endif
             Gui::Command::commitCommand();
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");

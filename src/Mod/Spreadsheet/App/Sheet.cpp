@@ -40,6 +40,7 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include "Sheet.h"
 #include "SheetObserver.h"
 #include "Utils.h"
@@ -51,6 +52,8 @@
 #include <boost/regex.hpp>
 #include <boost/bind.hpp>
 #include <deque>
+
+FC_LOG_LEVEL_INIT("Spreadsheet",true,true);
 
 using namespace Base;
 using namespace App;
@@ -1321,6 +1324,33 @@ void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdent
 
     cells.renameObjectIdentifiers(paths);
 }
+
+void Sheet::editCell(App::CellAddress address, const char *data) {
+    auto cell = getCell(address);
+    if(!cell || cell->getEditMode()==Cell::EditNormal) {
+        setCell(address,data);
+        return;
+    }
+
+    if(cell->hasException()) {
+        FC_THROWM(Base::ExpressionError,cell->getException());
+        return;
+    }
+
+    cell->setEditData(data);
+}
+
+bool Sheet::hasCell(const std::vector<App::Range> &ranges) const {
+    for(auto range : ranges) {
+        do {
+            if(cells.getValue(*range))
+                return true;
+        }while(range.next());
+    }
+    return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertySpreadsheetQuantity, App::PropertyQuantity);
 

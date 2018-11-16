@@ -24,11 +24,15 @@
 #ifndef _PreComp_
 # include <QKeyEvent>
 # include <QAction>
+# include <QPushButton>
+# include <QMenu>
 #endif
 
+#include <App/Document.h>
 #include <Gui/Command.h>
 #include <boost/bind.hpp>
 #include "../App/Utils.h"
+#include "../App/Cell.h"
 #include <App/Range.h>
 #include "SheetTableView.h"
 #include "LineEdit.h"
@@ -71,13 +75,56 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(removeRows, SIGNAL(triggered()), this, SLOT(removeRows()));
     connect(removeColumns, SIGNAL(triggered()), this, SLOT(removeColumns()));
 
-    QAction * cellProperties = new QAction(tr("Properties..."), this);
-    addAction(cellProperties);
-
-    setContextMenuPolicy(Qt::ActionsContextMenu);
     setTabKeyNavigation(false);
 
+    contextMenu = new QMenu(this);
+
+    QAction * cellProperties = new QAction(tr("Properties..."), this);
+    contextMenu->addAction(cellProperties);
+
     connect(cellProperties, SIGNAL(triggered()), this, SLOT(cellProperties()));
+
+    QActionGroup *editGroup = new QActionGroup(this);
+    editGroup->setExclusive(true);
+    actionEditNormal = new QAction(tr("Normal"),this);
+    actionEditNormal->setCheckable(true);
+    actionEditNormal->setData(QVariant((int)Cell::EditNormal));
+    editGroup->addAction(actionEditNormal);
+    actionEditButton = new QAction(tr("Button"),this);
+    actionEditButton->setCheckable(true);
+    actionEditButton->setData(QVariant((int)Cell::EditButton));
+    editGroup->addAction(actionEditButton);
+    actionEditCombo = new QAction(tr("ComboBox"),this);
+    actionEditCombo->setCheckable(true);
+    actionEditCombo->setData(QVariant((int)Cell::EditCombo));
+    editGroup->addAction(actionEditCombo);
+
+    QMenu *subMenu = new QMenu(tr("Edit mode"),contextMenu);
+    contextMenu->addMenu(subMenu);
+    subMenu->addActions(editGroup->actions());
+    connect(editGroup, SIGNAL(triggered(QAction*)), this, SLOT(editMode(QAction*)));
+}
+
+void SheetTableView::editMode(QAction *action) {
+    int mode = action->data().toInt();
+
+    Gui::Command::openCommand("Set cell edit mode");
+    try {
+        for(auto &index : selectionModel()->selectedIndexes()) {
+            auto cell = sheet->getCell(CellAddress(index.row(), index.column()));
+            if(cell) {
+                cell->setEditMode((Cell::EditMode)mode);
+                if(mode == Cell::EditButton)
+                    openPersistentEditor(index);
+                else
+                    closePersistentEditor(index);
+            }
+        }
+    }catch(Base::Exception &e) {
+        e.ReportException();
+        Gui::Command::abortCommand();
+    }
+    Gui::Command::commitCommand();
 }
 
 void SheetTableView::cellProperties()
@@ -147,7 +194,7 @@ void SheetTableView::insertRows()
                 break;
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.insertRows('%s', %d)", sheet->getNameInDocument(),
+        FCMD_OBJ_CMD2("insertRows('%s', %d)", sheet,
                                 rowName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
@@ -169,7 +216,7 @@ void SheetTableView::removeRows()
     /* Remove rows */
     Gui::Command::openCommand("Remove rows");
     for (std::vector<int>::const_iterator it = sortedRows.begin(); it != sortedRows.end(); ++it) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.removeRows('%s', %d)", sheet->getNameInDocument(),
+        FCMD_OBJ_CMD2("removeRows('%s', %d)", sheet,
                                 rowName(*it).c_str(), 1);
     }
     Gui::Command::commitCommand();
@@ -207,7 +254,7 @@ void SheetTableView::insertColumns()
                 break;
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.insertColumns('%s', %d)", sheet->getNameInDocument(),
+        FCMD_OBJ_CMD2("insertColumns('%s', %d)", sheet,
                                 columnName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
@@ -229,7 +276,7 @@ void SheetTableView::removeColumns()
     /* Remove columns */
     Gui::Command::openCommand("Remove rows");
     for (std::vector<int>::const_iterator it = sortedColumns.begin(); it != sortedColumns.end(); ++it)
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.removeColumns('%s', %d)", sheet->getNameInDocument(),
+        FCMD_OBJ_CMD2("removeColumns('%s', %d)", sheet,
                                 columnName(*it).c_str(), 1);
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -260,6 +307,9 @@ void SheetTableView::setSheet(Sheet * _sheet)
 
     for (std::vector<std::string>::const_iterator i = usedCells.begin(); i != usedCells.end(); ++i) {
         CellAddress address(*i);
+        auto cell = sheet->getCell(address);
+        if(cell && cell->getEditMode()==Cell::EditButton)
+            openPersistentEditor(model()->index(address.row(),address.col()));
 
         if (sheet->isMergedCell(address))
             updateCellSpan(address);
@@ -337,16 +387,70 @@ bool SheetTableView::event(QEvent *event)
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
 {
     SpreadsheetGui::TextEdit * le = qobject_cast<SpreadsheetGui::TextEdit*>(editor);
-
-    currentEditIndex = QModelIndex();
-    QTableView::closeEditor(editor, hint);
-    setCurrentIndex(le->next());
+    if(le) {
+        currentEditIndex = QModelIndex();
+        QTableView::closeEditor(editor, hint);
+        setCurrentIndex(le->next());
+        return;
+    }
+    QPushButton *button = qobject_cast<QPushButton*>(editor);
+    if(!button)
+        QTableView::closeEditor(editor, hint);
 }
 
 void SheetTableView::edit ( const QModelIndex & index )
 {
     currentEditIndex = index;
     QTableView::edit(index);
+}
+
+void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
+    QAction *action = 0;
+    for(auto &range : selectedRanges()) {
+        do {
+            auto cell = sheet->getCell(range.address());
+            if(!cell) continue;
+            switch(cell->getEditMode()) {
+            case Cell::EditButton:
+                action = actionEditButton;
+                break;
+            case Cell::EditCombo:
+                action = actionEditCombo;
+                break;
+            default:
+                action = actionEditNormal;
+                break;
+            }
+            break;
+        } while (range.next());
+        if(action)
+            break;
+    }
+    if(!action)
+        action = actionEditNormal;
+    action->setChecked(true);
+    contextMenu->exec(QCursor::pos());
+}
+
+void SheetTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
+#if QT_VERSION >= 0x050000
+        , const QVector<int> &roles
+#endif
+        )
+{
+    App::Range range(topLeft.row(),topLeft.column(),bottomRight.row(),bottomRight.column());
+    do {
+        auto address = *range;
+        auto cell = sheet->getCell(address);
+        if(!cell)
+            closePersistentEditor(model()->index(address.row(),address.col()));
+    }while(range.next());
+
+#if QT_VERSION >= 0x050000
+    QTableView::dataChanged(topLeft,bottomRight,roles);
+#else
+    QTableView::dataChanged(topLeft,bottomRight);
+#endif
 }
 
 #include "moc_SheetTableView.cpp"
