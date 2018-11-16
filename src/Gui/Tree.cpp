@@ -604,10 +604,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
                 // To avoid a cylic dependency it must be made sure to not allow to
                 // drag'n'drop a tree item onto a child or grandchild item of it.
-                bool canDrop = !targetObj->isInInListRecursive(objDropped) && (
-                    !objDropped->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) ||
-                     targetObj->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())
-                );
+                bool canDrop = !targetObj->isInInListRecursive(objDropped);
 
                 // if the item is already a child of the target item there is nothing to do
                 canDrop = canDrop && vpTarget->canDropObjects() && !children.contains(objDropped);
@@ -622,9 +619,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                                 App::DocumentObject* objParentTarget = vpParent->getObject();
 
                                 if (!buildListChildren(parentTarget, vpParent).contains(objDropped) &&
-                                    !objParentTarget->isInInListRecursive(objDropped) && (
-                                    !objDropped->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) ||
-                                    objParentTarget->isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()))) {
+                                    !objParentTarget->isInInListRecursive(objDropped)) {
                                     if (da == Qt::CopyAction || da == Qt::MoveAction) {
                                         event->setDropAction(Qt::LinkAction);
                                         event->accept();
@@ -638,6 +633,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
                             }
                         }
                     }
+
                     event->ignore();
                     return;
                 }
@@ -756,6 +752,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
     }
     else if (targetItem->type() == TreeWidget::DocumentType) {
         // Open command
+        bool commit = false;
         App::Document* doc = static_cast<DocumentItem*>(targetItem)->document()->getDocument();
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Move object");
@@ -767,10 +764,17 @@ void TreeWidget::dropEvent(QDropEvent *event)
             QTreeWidgetItem* parent = (*it)->parent();
             if (parent && parent->type() == TreeWidget::ObjectType) {
                 Gui::ViewProvider* vpParent = static_cast<DocumentObjectItem *>(parent)->object();
-                vpParent->dragObject(objDropped);
+                if (vpParent->canDragObject(objDropped)) {
+                    vpParent->dragObject(objDropped);
+                    commit = true;
+                }
             }
         }
-        gui->commitCommand();
+
+        if (commit)
+            gui->commitCommand();
+        else
+            gui->abortCommand();
     }
 }
 
@@ -814,7 +818,7 @@ void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
 void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 {
     // do nothing here
-    Q_UNUSED(Doc); 
+    Q_UNUSED(Doc);
 }
 
 void TreeWidget::slotRelabelDocument(const Gui::Document& Doc)
@@ -885,7 +889,7 @@ void TreeWidget::onItemExpanded(QTreeWidgetItem * item)
         DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
         obj->setExpandedStatus(true);
         auto it = DocumentMap.find(obj->object()->getDocument());
-        if(it==DocumentMap.end()) 
+        if(it==DocumentMap.end())
             Base::Console().Warning("DocumentItem::onItemExpanded: cannot find object document\n");
         else
             it->second->populateItem(obj);
@@ -1270,7 +1274,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             QTreeWidgetItem *parent, int index, DocumentObjectItemsPtr ptrs)
 {
     const char *name;
-    if (!obj.showInTree() || !(name=obj.getObject()->getNameInDocument())) 
+    if (!obj.showInTree() || !(name=obj.getObject()->getNameInDocument()))
         return false;
 
     if (!ptrs) {
@@ -1396,8 +1400,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
     item->populated = true;
 
     int i=-1;
-    // iterate through the claimed children, and try to synchronize them with the 
-    // children tree item with the same order of appearance. 
+    // iterate through the claimed children, and try to synchronize them with the
+    // children tree item with the same order of appearance.
     for (auto child : children) {
         if (!canCreateItem(child,pDocument))
             continue;
@@ -1483,8 +1487,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             // parent(s) later expanded, this child item will be moved from
             // root to its parent.
             if (obj->myselves->size()==1) {
-                // We only make a difference for geofeaturegroups, 
-                // as otherwise it comes to confusing behavior to the user when things 
+                // We only make a difference for geofeaturegroups,
+                // as otherwise it comes to confusing behavior to the user when things
                 // get claimed within the group (e.g. pad/sketch, or group)
                 if (!grp || !grp->hasObject(obj->object()->getObject(), true)) {
                     this->addChild(childItem);
@@ -1505,7 +1509,7 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
         populateItem(item, true);
     END_FOREACH_ITEM
 
-    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children 
+    //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children
     //of the geofeaturegroup depends on what the childs claim
     auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(view.getObject());
     if (grp) {
@@ -1688,8 +1692,8 @@ void DocumentItem::setData (int column, int role, const QVariant & value)
 
 void DocumentItem::setObjectHighlighted(const char* name, bool select)
 {
-    Q_UNUSED(select); 
-    Q_UNUSED(name); 
+    Q_UNUSED(select);
+    Q_UNUSED(name);
     // FOREACH_ITEM_NAME(item,name);
         //pos->second->setData(0, Qt::TextColorRole, QVariant(Qt::red));
         //treeWidget()->setItemSelected(pos->second, select);
