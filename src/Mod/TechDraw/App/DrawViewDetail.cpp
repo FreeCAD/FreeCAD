@@ -84,6 +84,7 @@
 #include "DrawUtil.h"
 #include "DrawViewDetail.h"
 #include "DrawProjGroupItem.h"
+#include "DrawViewSection.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -172,7 +173,18 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         dpgi= static_cast<TechDraw::DrawProjGroupItem*>(dvp);
     }
 
-    TopoDS_Shape shape = dvp->getSourceShapeFused();
+    DrawViewSection* dvs = nullptr;
+    if (dvp->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
+        dvs= static_cast<TechDraw::DrawViewSection*>(dvp);
+    }
+
+    TopoDS_Shape shape;
+    if (dvs != nullptr) {
+        shape = dvs->getCutShape();
+    } else {
+        shape = dvp->getSourceShapeFused();
+    }
+
     if (shape.IsNull()) {
         return new App::DocumentObjectExecReturn("DVD - Linked shape object is invalid");
     }

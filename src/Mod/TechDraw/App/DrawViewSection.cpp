@@ -250,6 +250,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return DrawView::execute();
     }
 
+    m_cutShape = rawShape;
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(rawShape,
