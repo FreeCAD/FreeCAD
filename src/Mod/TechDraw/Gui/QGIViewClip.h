@@ -46,6 +46,8 @@ public:
     virtual void updateView(bool update = false) override;
 
     virtual void draw() override;
+    QGCustomRect* getFrame(void) {return m_frame;}
+    QGCustomClip* getClipArea(void) {return m_cliparea;}
 
 protected:
     void drawClip();

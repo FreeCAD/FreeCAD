@@ -778,14 +778,9 @@ void CmdTechDrawClipPlus::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    double newX = clip->Width.getValue() / 2.0;
-    double newY = clip->Height.getValue() / 2.0;
-
     openCommand("ClipPlus");
     doCommand(Doc,"App.activeDocument().%s.ViewObject.Visibility = False",ViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",ClipName.c_str(),ViewName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.X = %.3f",ViewName.c_str(),newX);
-    doCommand(Doc,"App.activeDocument().%s.Y = %.3f",ViewName.c_str(),newY);
     doCommand(Doc,"App.activeDocument().%s.ViewObject.Visibility = True",ViewName.c_str());
     updateActive();
     commitCommand();
