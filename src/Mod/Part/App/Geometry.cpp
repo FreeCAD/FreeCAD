@@ -3729,7 +3729,7 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
     try {
         setPoints(start, end);
     }
-    catch(Base::ValueError e) {
+    catch(Base::ValueError &e) {
         // for a line segment construction, the only possibility of a value error is that 
         // the points are too close. The best try to restore is incrementing the distance.
         // for other objects, the best effort may be just to leave default values.
