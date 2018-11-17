@@ -77,12 +77,12 @@ void ViewProviderViewClip::updateData(const App::Property* prop)
 void ViewProviderViewClip::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
-    ViewProviderDocumentObject::attach(pcFeat);
+    ViewProviderDrawingView::attach(pcFeat);
 }
 
 void ViewProviderViewClip::setDisplayMode(const char* ModeName)
 {
-    ViewProviderDocumentObject::setDisplayMode(ModeName);
+    ViewProviderDrawingView::setDisplayMode(ModeName);
 }
 
 std::vector<std::string> ViewProviderViewClip::getDisplayModes(void) const
