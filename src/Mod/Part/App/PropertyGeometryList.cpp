@@ -155,7 +155,7 @@ void PropertyGeometryList::Save(Writer &writer) const
     writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">" << endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
-        writer.Stream() << writer.ind() << "<Geometry  type=\"" 
+        writer.Stream() << writer.ind() << "<Geometry  type=\""
                         << _lValueList[i]->getTypeId().getName() << "\">" << endl;;
         writer.incInd();
         _lValueList[i]->Save(writer);
@@ -169,7 +169,7 @@ void PropertyGeometryList::Save(Writer &writer) const
 void PropertyGeometryList::Restore(Base::XMLReader &reader)
 {
     bool partialrestore = false;
-    
+
     // read my element
     reader.readElement("GeometryList");
     // get the value of my attribute
@@ -188,9 +188,9 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
             reader.readEndElement("Geometry");
         }
         catch(Base::RestoreError &e) {
-            
+
             e.ReportException();
-            
+
             if(isOrderRelevant()) {
                 // Pushes the best try by the Geometry class
                 values.push_back(newG);
@@ -198,22 +198,22 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
             else {
                 delete newG;
             }
-            
+
             reader.readEndElement("Geometry");
-            
+
             partialrestore = true;
-            
+
             continue;
         }
-        
-        
+
+
     }
 
     reader.readEndElement("GeometryList");
 
     // assignment
     setValues(values);
-    
+
     if(partialrestore)
         THROW(Base::RestoreError);
 }
