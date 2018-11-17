@@ -50,11 +50,6 @@ FreeCAD._importFromFreeCAD = removeFromPath
 
 
 def InitApplications():
-	try:
-		import sys,os,traceback,io
-	except ImportError:
-		FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
-		raise
 	# Checking on FreeCAD module path ++++++++++++++++++++++++++++++++++++++++++
 	ModDir = FreeCAD.getHomePath()+'Mod'
 	ModDir = os.path.realpath(ModDir)
@@ -219,6 +214,378 @@ App.__cmake__ = cmake;
 App.__unit_test__ = []
 
 Log ('Init: starting App::FreeCADInit.py\n')
+
+try:
+    import sys,os,traceback,io,inspect
+    from datetime import datetime
+except ImportError:
+    FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
+    raise
+
+class FCADLogger(object):
+    '''Convenient class for tagged logging.
+    
+       Example usage:
+           >>> logger = FreeCAD.Logger('MyModule')
+           >>> logger.info('log test {}',1)
+           24.36053 <MyModule> <input>(1): test log 1
+
+       The default output format is:
+           <timestamp> <tag> <source file>(line number): message
+
+       The message is formated using new style Python string formating, e.g.
+       'test {}'.format(1). It is strongly recommanded to not directly use
+       Python string formating, but pass additional argument indirectly through
+       various logger print function, because the logger can skip string
+       evaluation in case the logging level is disabled. For more options,
+       please consult the docstring of __init__(), catch() and report().
+
+       To set/get logger level:
+           >>> FreeCAD.setLogLevel('MyModule','Trace')
+           >>> FreeCAD.getLogLevel('MyModule')
+           4
+
+        There are five predefined logger level, each corresponding to an integer
+        value, as shown below together with the corresponding logger print
+        method,
+            0: Error, Logger.error()
+            1: Warning, Logger.warn()
+            2: Message, Logger.msg() or info()
+            3: Log, Logger.log() or debug()
+            4: Trace, Logger.trace()
+
+        FreeCAD.setLogLevel() supports both text and integer value, which allows
+        you to define your own levels. The level set is persisted to user
+        configuration file.
+
+        By defult any tag has a log level of 2 for release, and 3 for debug
+        build.
+    '''
+
+    _string_type = str if sys.version_info[0] >= 3 else basestring
+
+    _levels = { 'Error':0, 'error':0,
+                'Warning':1, 'warn':1,
+                'Message':2, 'msg':2, 'info':2,
+                'Log':3, 'log':3, 'debug':3,
+                'Trace':4, 'trace':4,}
+    _printer = [
+            FreeCAD.Console.PrintError,
+            FreeCAD.Console.PrintWarning,
+            FreeCAD.Console.PrintMessage,
+            FreeCAD.Console.PrintLog,
+            FreeCAD.Console.PrintLog ]
+
+    def __init__(self, tag, **kargs):
+        '''Construct a logger instance.
+
+        Supported arguments are their default values are,
+
+        * tag: a string tag for this logger. The log level of this logger can be
+               accessed using FreeCAD.getLogLevel(tag)/setLogLevel(tag,level).
+               All logger instance with the same tag shares the same level
+               setting.
+
+        * printTag (True): whether to print tag
+
+        * noUpdateUI (True): whether to update GUI when printing. This is useful
+                             to show log output on lengthy operations. Be
+                             careful though, this may allow unexpected user
+                             interaction when the application is busy, which may
+                             lead to crash
+
+        * timing (True): whether to print time stamp
+
+        * lineno (True): whether to print source file and line number
+
+        * parent (None): provide a parent logger, so that the log printting will
+                         check for parent's log level in addition of its own
+
+        * title ('FreeCAD'): message box title used by report()
+        '''
+        self.tag = tag
+        self.laststamp = datetime.now()
+        for key,default in (('printTag',True),('noUpdateUI',True),
+                ('timing',True),('lineno',True),('parent',None),
+                ('title','FreeCAD')) :
+            setattr(self,key,kargs.get(key,default))
+
+    def _isEnabledFor(self,level):
+        '''Internal function to check for an integer log level.
+
+            * level: integer log level
+        '''
+
+        if self.parent and not self.parent._isEnabledFor(level):
+            return False
+        return FreeCAD.getLogLevel(self.tag) >= level
+
+    def isEnabledFor(self,level):
+        '''To check for an integer or text log level.
+
+            * level: integer or text log level
+        '''
+        if not isinstance(level,int):
+            level = self.__class__._levels[level]
+        return self._isEnabledFor(level)
+
+    def error(self,msg,*args,**kargs):
+        '''"Error" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommanded to not directly use Python
+            string formating, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(0):
+            frame = kargs.get('frame',0)+1
+            self._log(0,msg,frame,args,kargs)
+
+    def warn(self,msg,*args,**kargs):
+        '''"Warning" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommanded to not directly use Python
+            string formating, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(1):
+            frame = kargs.get('frame',0)+1
+            self._log(1,msg,frame,args,kargs)
+
+    def msg(self,msg,*args,**kargs):
+        '''"Message" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommanded to not directly use Python
+            string formating, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(2):
+            frame = kargs.get('frame',0)+1
+            self._log(2,msg,frame,args,kargs)
+
+    info = msg
+
+    def log(self,msg,*args,**kargs):
+        '''"Log" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommanded to not directly use Python
+            string formating, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(3):
+            frame = kargs.get('frame',0)+1
+            self._log(3,msg,frame,args,kargs)
+
+    debug = log
+
+    def trace(self,msg,*args,**kargs):
+        '''"Trace" level log printer
+
+            * msg: message string. May contain new style Python string formatter.
+
+            This function accepts additional positional and keyword arguments,
+            which are forward to string.format() to generate the logging
+            message. It is strongly recommanded to not directly use Python
+            string formating, but pass additional arguments here, because the
+            printer can skip string evaluation in case the logging level is
+            disabled.
+        '''
+        if self._isEnabledFor(4):
+            frame = kargs.get('frame',0)+1
+            self._log(4,msg,frame,args,kargs)
+
+    def _log(self,level,msg,frame=0,args=(),kargs=None):
+        '''Internal log printing function.
+
+            * level: integer log level
+
+            * msg: message, may contain new style string format specifier
+
+            * frame (0): the calling frame for printing source file and line
+                         number.  For example, in case you have your own logging
+                         function, and you want to show the callers source
+                         location, then set frame to one.
+
+            * args: tuple for postiional arguments to be passed to
+                    string.format()
+
+            * kargs: dictionary for keyword arguments to be passed to
+                     string.format()
+        '''
+
+        if (args or kargs) and isinstance(msg,self.__class__._string_type):
+            if kargs is None:
+                msg = msg.format(*args)
+            else:
+                msg = msg.format(*args,**kargs)
+
+        prefix = ''
+
+        if self.timing:
+            now = datetime.now()
+            prefix += '{} '.format((now-self.laststamp).total_seconds())
+            self.laststamp = now
+
+        if self.printTag:
+            prefix += '<{}> '.format(self.tag)
+
+        if self.lineno:
+            try:
+                frame = sys._getframe(frame+1)
+                prefix += '{}({}): '.format(os.path.basename(
+                    frame.f_code.co_filename),frame.f_lineno)
+            except Exception:
+                frame = inspect.stack()[frame+1]
+                prefix += '{}({}): '.format(os.path.basename(frame[1]),frame[2])
+
+        self.__class__._printer[level]('{}{}\n'.format(prefix,msg))
+
+        if not self.noUpdateUI and FreeCAD.GuiUp:
+            import FreeCADGui
+            try:
+                FreeCADGui.updateGui()
+            except Exception:
+                pass
+
+    def _catch(self,level,msg,func,args=None,kargs=None):
+        '''Internal function to log exception of any callable.
+
+            * level: integer log level
+
+            * msg: message string. Unlike _log(), this argument must not contain
+                   any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        try:
+            if not args:
+                args = []
+            if not kargs:
+                kargs = {}
+            return func(*args,**kargs)
+        except Exception:
+            if self._isEnabledFor(level):
+                self._log(level,msg+'\n'+traceback.format_exc(),frame=2)
+
+    def catch(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Error".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(0,msg,func,args,kargs)
+
+    def catchWarn(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Warning".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(1,msg,func,args,kargs)
+
+    def catchMsg(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Message".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(2,msg,func,args,kargs)
+
+    catchInfo = catchMsg
+
+    def catchLog(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Log".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(3,msg,func,args,kargs)
+
+    catchDebug = catchLog
+
+    def catchTrace(self,msg,func,*args,**kargs):
+        '''Catch any exception from a function and print as "Trace".
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        return self._catch(4,msg,func,args,kargs)
+
+    def report(self,msg,func,*args,**kargs):
+        '''Catch any exception report it with a message box.
+
+            * msg: message string. Unlike log printer, this argument must not
+                   contain any string formatter.
+
+            * func: a callable object
+
+            * args: tuple of positional arguments to be passed to func.
+
+            * kargs: dictionary of keyword arguments to be passed to func.
+        '''
+        try:
+            return func(*args,**kargs)
+        except Exception as e:
+            self.error(msg+'\n'+traceback.format_exc(),frame=1)
+            if FreeCAD.GuiUp:
+                import FreeCADGui,PySide
+                PySide.QtGui.QMessageBox.critical(
+                        FreeCADGui.getMainWindow(),self.title,str(e))
+
+FreeCAD.Logger = FCADLogger
 
 # init every application by importing Init.py
 InitApplications()
