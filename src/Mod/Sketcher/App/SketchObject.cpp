@@ -104,7 +104,7 @@ SketchObject::SketchObject()
     ADD_PROPERTY_TYPE(Constraints,     (0)  ,"Sketch",(App::PropertyType)(App::Prop_None),"Sketch constraints");
     ADD_PROPERTY_TYPE(ExternalGeometry,(0,0),"Sketch",(App::PropertyType)(App::Prop_None),"Sketch external geometry");
 
-    Geometry.isOrderRelevant = true;
+    Geometry.setOrderRelevant(true);
     
     allowOtherBody = true;
     allowUnaligned = true;
