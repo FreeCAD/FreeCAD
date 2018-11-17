@@ -191,7 +191,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
             
             e.ReportException();
             
-            if(isOrderRelevant) {
+            if(isOrderRelevant()) {
                 // Pushes the best try by the Geometry class
                 values.push_back(newG);
             }
