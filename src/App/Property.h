@@ -63,6 +63,7 @@ public:
         ReadOnly = 2, // for property editor
         Hidden = 3, // for property editor
         Single = 4, // for save/load of floating point numbers
+        Ordered = 5, // for PropertyLists whether the order of the elements is relevant for the container using it
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
         User3 = 30, // user-defined status
@@ -204,7 +205,7 @@ class AppExport PropertyLists : public Property
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyLists() : isOrderRelevant(false){};
+    PropertyLists() {};
     
     virtual void setSize(int newSize)=0;
     virtual int getSize(void) const =0;
@@ -212,7 +213,8 @@ public:
     // if the order of the elements in the list relevant?
     // if yes, certain operations, like restoring must make sure that the
     // order is kept despite errors.
-    bool isOrderRelevant;
+    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
+    inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
 };
 
 /** A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties.
