@@ -205,9 +205,6 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args)
         // return new document
         return (GetApplication().openDocument(EncodedName.c_str())->getPyObject());
     }
-    catch(const Base::RestoreError) {
-        throw; // propagate it to python/gui
-    }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_IOError, e.what());
         return 0L;
@@ -708,7 +705,7 @@ PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args)
                         "Unknown Log Level (use 'Default', 'Error', 'Warning', 'Message', 'Log', 'Trace' or an integer)");
                 return NULL;
             }
-        }else 
+        }else
             l = PyLong_AsLong(pcObj);
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/LogLevels")->SetInt(tag,l);
         if(strcmp(tag,"Default") == 0) {
