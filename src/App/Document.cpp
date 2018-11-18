@@ -1855,10 +1855,6 @@ void Document::restore (void)
     try {
         Document::Restore(reader);
     }
-    catch(Base::RestoreError &e) {
-        e.ReportException();
-
-    }
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
     }
