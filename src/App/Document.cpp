@@ -961,7 +961,7 @@ void Document::openTransaction(const char* name)
             d->activeUndoTransaction->Name = name;
         else
             d->activeUndoTransaction->Name = "<empty>";
-        
+
         signalOpenTransaction(*this, d->activeUndoTransaction->Name);
     }
 }
@@ -1115,7 +1115,7 @@ void Document::onBeforeChange(const Property* prop)
 void Document::onChanged(const Property* prop)
 {
     signalChanged(*this, *prop);
-    
+
     // the Name property is a label for display purposes
     if (prop == &Label) {
         App::GetApplication().signalRelabelDocument(*this);
@@ -1158,7 +1158,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 {
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
-    
+
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
 }
@@ -1355,7 +1355,7 @@ void Document::Save (Base::Writer &writer) const
 }
 
 void Document::Restore(Base::XMLReader &reader)
-{   
+{
     int i,Cnt;
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
 
@@ -1436,10 +1436,6 @@ void Document::Restore(Base::XMLReader &reader)
     }
 
     reader.readEndElement("Document");
-    
-    if(testStatus(Document::PartialRestore)) {
-        THROW(Base::RestoreError);
-    }
 }
 
 void Document::exportObjects(const std::vector<App::DocumentObject*>& obj,
@@ -1514,7 +1510,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
-{   
+{
     bool keepDigits = testStatus(Document::KeepTrailingDigits);
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
     std::vector<App::DocumentObject*> objs;
@@ -1555,12 +1551,14 @@ Document::readObjects(Base::XMLReader& reader)
     setStatus(Document::KeepTrailingDigits, keepDigits);
 
     // read the features itself
+    reader.clearPartialRestoreDocumentObject();
     reader.readElement("ObjectData");
     Cnt = reader.getAttributeAsInteger("Count");
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
         std::string name = reader.getName(reader.getAttribute("name"));
         DocumentObject* pObj = getObject(name.c_str());
+
         if (pObj) { // check if this feature has been registered
             pObj->setStatus(ObjectStatus::Restore, true);
             try {
@@ -1580,14 +1578,13 @@ Document::readObjects(Base::XMLReader& reader)
             catch (const Base::RuntimeError &e) {
                 e.ReportException();
             }
-            catch(const Base::RestoreError &e) {
-                e.ReportException();
-                Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result geometry may have changed or be incomplete.",name.c_str());
-                
-                setStatus(Document::PartialRestore, true);
-            }
 
             pObj->setStatus(ObjectStatus::Restore, false);
+
+            if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
+                Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result geometry may have changed or be incomplete.\n",name.c_str());
+                reader.clearPartialRestoreDocumentObject();
+            }
         }
         reader.readEndElement("Object");
     }
@@ -1820,7 +1817,6 @@ bool Document::saveToFile(const char* filename) const
 // Open the document
 void Document::restore (void)
 {
-    bool partialrestore;
     // clean up if the document is not empty
     // !TODO mind exceptions while restoring!
     clearUndos();
@@ -1861,7 +1857,7 @@ void Document::restore (void)
     }
     catch(Base::RestoreError &e) {
         e.ReportException();
-        partialrestore = true;
+
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("Invalid Document.xml: %s\n", e.what());
@@ -1889,9 +1885,11 @@ void Document::restore (void)
 
     GetApplication().signalFinishRestoreDocument(*this);
     setStatus(Document::Restoring, false);
-    
-    if(partialrestore)
-        THROWMT(Base::RestoreError,QT_TRANSLATE_NOOP("Exceptions", "There were errors while loading the file. Geometry might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
+
+    if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
+        setStatus(Document::PartialRestore, true);
+        Base::Console().Error("There were errors while loading the file. Some data might have been modified or not recovered at all. Look above for more specific information about the objects involved.\n");
+    }
 }
 
 bool Document::isSaved() const

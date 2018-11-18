@@ -32,12 +32,14 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Console.h>
 
 #include "Geometry.h"
 #include "GeometryPy.h"
 
 #include "PropertyGeometryList.h"
 #include "Part2DObject.h"
+
 
 using namespace App;
 using namespace Base;
@@ -168,29 +170,21 @@ void PropertyGeometryList::Save(Writer &writer) const
 
 void PropertyGeometryList::Restore(Base::XMLReader &reader)
 {
-    bool partialrestore = false;
-
     // read my element
+    reader.clearPartialRestoreObject();
     reader.readElement("GeometryList");
     // get the value of my attribute
     int count = reader.getAttributeAsInteger("count");
-
     std::vector<Geometry*> values;
     values.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("Geometry");
         const char* TypeName = reader.getAttribute("type");
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
+        newG->Restore(reader);
 
-        try {
-            newG->Restore(reader);
-            values.push_back(newG);
-            reader.readEndElement("Geometry");
-        }
-        catch(Base::RestoreError &e) {
-
-            e.ReportException();
-
+        if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
+            Base::Console().Error("Geometry \"%s\" within a PropertyGeometryList was subject to a partial restore.\n",reader.localName());
             if(isOrderRelevant()) {
                 // Pushes the best try by the Geometry class
                 values.push_back(newG);
@@ -198,24 +192,19 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
             else {
                 delete newG;
             }
-
-            reader.readEndElement("Geometry");
-
-            partialrestore = true;
-
-            continue;
+            reader.clearPartialRestoreObject();
+        }
+        else {
+            values.push_back(newG);
         }
 
-
+        reader.readEndElement("Geometry");
     }
 
     reader.readEndElement("GeometryList");
 
     // assignment
     setValues(values);
-
-    if(partialrestore)
-        THROW(Base::RestoreError);
 }
 
 App::Property *PropertyGeometryList::Copy(void) const
