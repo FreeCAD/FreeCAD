@@ -32,32 +32,15 @@
 
 //#define _WIN32_WINNT 0x0501  //target at least windows XP
 #include <Windows.h>
-#include <QAbstractNativeEventFilter>
-
+#if QT_VERSION >= 0x050000
+#include "GuiRawInputEventFilter.h"
+#endif
 
 class QMainWindow;
 class GUIApplicationNativeEventAware;
 
 namespace Gui
 {
-#if QT_VERSION >= 0x050000
-    class RawInputEventFilter : public QAbstractNativeEventFilter
-    {
-    public:
-        typedef bool (*EventFilter)(void *message, long *result);
-        RawInputEventFilter(EventFilter filter) : eventFilter(filter) {
-        }
-        virtual ~RawInputEventFilter() {
-        }
-
-        virtual bool nativeEventFilter(const QByteArray & /*eventType*/, void *message, long *result) {
-            return eventFilter(message, result);
-        }
-
-    private:
-        EventFilter eventFilter;
-    };
-#endif // if QT_VERSION >= 0x050000
 	class GUIApplicationNativeEventAware;
 
 	class GuiNativeEvent : public QObject

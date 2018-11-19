@@ -23,6 +23,8 @@
 #ifndef GUIRAWNATIVEINPUTEVENTFILTER_H
 #define GUIRAWNATIVEINPUTEVENTFILTER_H
 
+#include <QAbstractNativeEventFilter>
+
 namespace Gui
 {
     class RawInputEventFilter : public QAbstractNativeEventFilter
