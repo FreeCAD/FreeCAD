@@ -1581,7 +1581,7 @@ Document::readObjects(Base::XMLReader& reader)
 
             pObj->setStatus(ObjectStatus::Restore, false);
 
-            if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
+            if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
                 Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result geometry may have changed or be incomplete.\n",name.c_str());
                 reader.clearPartialRestoreDocumentObject();
             }
@@ -1882,7 +1882,7 @@ void Document::restore (void)
     GetApplication().signalFinishRestoreDocument(*this);
     setStatus(Document::Restoring, false);
 
-    if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
+    if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
         setStatus(Document::PartialRestore, true);
         Base::Console().Error("There were errors while loading the file. Some data might have been modified or not recovered at all. Look above for more specific information about the objects involved.\n");
     }

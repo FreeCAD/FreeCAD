@@ -276,13 +276,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         try {
             // name and type match
             if (prop && strcmp(prop->getTypeId().getName(), TypeName.c_str()) == 0) {
-                    prop->Restore(reader);
-
-                    if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInProperty)) {
-                        Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
-
-                        reader.clearPartialRestoreProperty();
-                    }
+                prop->Restore(reader);
             }
             // name matches but not the type
             else if (prop) {
@@ -293,9 +287,19 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             else {
                 handleChangedPropertyName(reader, TypeName.c_str(), PropName.c_str());
             }
+
+            if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInProperty)) {
+                Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+                reader.clearPartialRestoreProperty();
+            }
         }
         catch (const Base::XMLParseException&) {
             throw; // re-throw
+        }
+        catch (const Base::RestoreError &) {
+            reader.setPartialRestore(true);
+            reader.clearPartialRestoreProperty();
+            Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
         }
         catch (const Base::Exception &e) {
             Base::Console().Error("%s\n", e.what());
