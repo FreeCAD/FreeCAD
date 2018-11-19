@@ -37,7 +37,7 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 
 #include "PreCompiled.h"
 
-#include "GuiNativeEventLinux.h"
+#include "GuiNativeEventWin32.h"
 
 #include <QGlobalStatic>
 #include <QMainWindow>
@@ -192,7 +192,7 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
     }
 }
 
-void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
+void Gui::GuiNativeEvent::initSpaceball(QMainWindow *mainWindow)
 {
     mainApp->setSpaceballPresent(Is3dmouseAttached());
 
@@ -299,7 +299,7 @@ void Gui::GuiNativeEvent::Move3d(HANDLE device, std::vector<float>& motionData)
     motionDataArray[4] = ceil(motionData[4]);
     motionDataArray[5] = ceil(motionData[5]);
 
-    mainApp->postMotionEvent(&motionDataArray[0]);
+    mainApp->postMotionEvent(motionDataArray);
 }
 
 /*!
