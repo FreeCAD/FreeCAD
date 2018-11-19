@@ -315,7 +315,7 @@ class _TaskPanelFemMaterial:
                 self.material['KinematicViscosity'] = '0 m^2/s'
             if 'VolumetricThermalExpansionCoefficient' in self.material:
                 # unit type of VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
-                if 'ThermalExpansionCoefficient' not in str(Units.Unit(self.material['VolumetricThermalExpansionCoefficient'])):
+                if 'VolumetricThermalExpansionCoefficient' not in str(Units.Unit(self.material['VolumetricThermalExpansionCoefficient'])):
                     print('VolumetricThermalExpansionCoefficient in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                     self.material['VolumetricThermalExpansionCoefficient'] = '0 m/m/K'
             else:
