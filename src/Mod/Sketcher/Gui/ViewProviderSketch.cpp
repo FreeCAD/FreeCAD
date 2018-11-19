@@ -1663,7 +1663,7 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                         SbVec3s iconSize = getDisplayedSize(static_cast<SoImage *>(tail));
                         // Center of the icon
                         //SbVec2f iconCoords = viewer->screenCoordsOfPath(path); 
-                        
+
                         // The use of the Path to get the screen coordinates to get the icon center coordinates
                         // does not work.
                         //
@@ -1676,22 +1676,21 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                         //
                         // Coordinates are projected on the sketch plane and then to the screen in the interval [0 1]
                         // Then this result is coverted to pixels using the scale factor.
-                        
+
                         SbVec3f absPos;
                         SbVec3f trans;
 
                         absPos = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos.getValue();
-                        
+
                         trans = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation.getValue();
-                        
-                        if(tail != sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
+
+                        if (tail != sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
 
                             absPos += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos.getValue();
-                            
+
                             trans += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation.getValue();
                         }
-                        
-                        
+
                         double x,y;
 
                         SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
@@ -1702,13 +1701,12 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                         SbViewVolume vol = pCam->getViewVolume();
 
                         getCoordsOnSketchPlane(x,y,absPos+trans,vol.getProjectionDirection());
-                        
+
                         Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
-                        
+
                         // dimensionless [0 1] (or 1.5 see View3DInventorViewer.cpp )
                         Base::Vector3d screencoords = proj(Base::Vector3d(x,y,0)); 
-                        
-                        
+
                         int width = viewer->getGLWidget()->width(),
                             height = viewer->getGLWidget()->height();
 
@@ -1717,7 +1715,6 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                             screencoords.x *= height;
                             screencoords.x += (width-height) / 2.0;
                             screencoords.y *= height;
-
                         }
                         else {
                             // "Portrait" orientation
@@ -1727,8 +1724,7 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                         }
 
                         SbVec2f iconCoords(screencoords.x,screencoords.y);
-                        
-                                                
+
                         // cursorPos is SbVec2s in screen coordinates coming from SoEvent in mousemove
                         // 
                         // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
@@ -1740,10 +1736,12 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
 
                         for (ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
                             b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
-                           
+
+#ifdef FC_DEBUG
                             Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());
-                            
-                        if (b->first.contains(iconX, iconY)) {
+#endif
+
+                            if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
                                 for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k)
                                     constrIndices.insert(*k);
@@ -3287,8 +3285,6 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
                                              iconRotation,
                                              &boundingBoxesVec,
                                              &lastVPad);
-            
-            //compositeIcon.invertPixels(QImage::InvertRgba);
         } else {
             int thisVPad;
             QImage partialIcon = renderConstrIcon(thisType,
@@ -3298,8 +3294,6 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
                                                   iconRotation,
                                                   &boundingBoxesVec,
                                                   &thisVPad);
-            
-            //partialIcon.invertPixels(QImage::InvertRgba);
 
             // Stack vertically for now.  Down the road, it might make sense
             // to figure out the best orientation automatically.
@@ -3367,7 +3361,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     QString joinStr = QString::fromLatin1(", ");
 
     QImage icon = Gui::BitmapFactory().pixmap(type.toLatin1()).toImage();
-    
+
     QFont font = QApplication::font();
     font.setPixelSize(11);
     font.setBold(true);
