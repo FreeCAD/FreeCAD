@@ -1448,6 +1448,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::AbortException>;
     new ExceptionProducer<Base::XMLBaseException>;
     new ExceptionProducer<Base::XMLParseException>;
+    new ExceptionProducer<Base::XMLAttributeError>;
     new ExceptionProducer<Base::FileException>;
     new ExceptionProducer<Base::FileSystemError>;
     new ExceptionProducer<Base::BadFormatError>;

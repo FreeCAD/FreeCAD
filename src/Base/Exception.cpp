@@ -210,14 +210,13 @@ XMLBaseException::XMLBaseException(const XMLBaseException &inst)
 
 // ---------------------------------------------------------
 
-
 XMLParseException::XMLParseException(const char * sMessage)
-  : Exception(sMessage)
+  : XMLBaseException(sMessage)
 {
 }
 
 XMLParseException::XMLParseException(const std::string& sMessage)
-  : Exception(sMessage)
+  : XMLBaseException(sMessage)
 {
 }
 
@@ -227,13 +226,40 @@ XMLParseException::XMLParseException()
 }
 
 XMLParseException::XMLParseException(const XMLParseException &inst)
-  : Exception(inst)
+  : XMLBaseException(inst)
 {
 }
 
 const char* XMLParseException::what() const throw()
 {
-    return Exception::what();
+    return XMLBaseException::what();
+}
+
+// ---------------------------------------------------------
+
+XMLAttributeError::XMLAttributeError(const char * sMessage)
+  : XMLBaseException(sMessage)
+{
+}
+
+XMLAttributeError::XMLAttributeError(const std::string& sMessage)
+  : XMLBaseException(sMessage)
+{
+}
+
+XMLAttributeError::XMLAttributeError()
+{
+    _sErrMsg = "XML attribute error";
+}
+
+XMLAttributeError::XMLAttributeError(const XMLAttributeError &inst)
+  : XMLBaseException(inst)
+{
+}
+
+const char* XMLAttributeError::what() const throw()
+{
+    return XMLBaseException::what();
 }
 
 // ---------------------------------------------------------
@@ -827,7 +853,6 @@ CADKernelError::CADKernelError(const CADKernelError &inst)
 }
 
 
-// ---------------------------------------------------------
 // ---------------------------------------------------------
 
 RestoreError::RestoreError()

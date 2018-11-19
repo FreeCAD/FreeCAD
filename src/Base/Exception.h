@@ -179,7 +179,7 @@ public:
  * The XMLParseException is thrown if parsing an XML failed.
  * @author Werner Mayer
  */
-class BaseExport XMLParseException : public Exception
+class BaseExport XMLParseException : public XMLBaseException
 {
 public:
   /// Construction
@@ -193,6 +193,28 @@ public:
 
   /// Destruction
   virtual ~XMLParseException() throw() {}
+  /// Description of the exception
+  virtual const char* what() const throw();
+};
+
+/**
+ * The XMLAttributeError is thrown if a requested attribute doesn't exist.
+ * @author Werner Mayer
+ */
+class BaseExport XMLAttributeError : public XMLBaseException
+{
+public:
+  /// Construction
+  XMLAttributeError(const char * sMessage);
+  /// Construction
+  XMLAttributeError(const std::string& sMessage);
+  /// Construction
+  XMLAttributeError();
+  /// Construction
+  XMLAttributeError(const XMLAttributeError &inst);
+
+  /// Destruction
+  virtual ~XMLAttributeError() throw() {}
   /// Description of the exception
   virtual const char* what() const throw();
 };

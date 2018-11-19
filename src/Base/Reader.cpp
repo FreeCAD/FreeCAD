@@ -175,8 +175,8 @@ const char*  Base::XMLReader::getAttribute (const char* AttrName) const
     else {
         // wrong name, use hasAttribute if not sure!
         std::ostringstream msg;
-        msg << "Attribute: \"" << AttrName << "\" not found";
-        THROWM(Base::AttributeError, msg.str());
+        msg << "XML Attribute: \"" << AttrName << "\" not found";
+        throw Base::XMLAttributeError(msg.str());
     }
 }
 
