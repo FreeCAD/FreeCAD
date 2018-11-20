@@ -248,11 +248,11 @@ class GmshTools():
 
     def get_group_data(self):
         # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
-        #       some print or make them work together
+        #       some output message or make them work together
 
         # mesh group objects
         if not self.mesh_obj.MeshGroupList:
-            # print ('  No mesh group objects.')
+            # print('  No mesh group objects.')
             pass
         else:
             print('  Mesh group objects, we need to get the elements.')
@@ -284,7 +284,7 @@ class GmshTools():
     def get_region_data(self):
         # mesh regions
         if not self.mesh_obj.MeshRegionList:
-            # print ('  No mesh regions.')
+            # print('  No mesh regions.')
             pass
         else:
             print('  Mesh regions, we need to get the elements.')
@@ -301,7 +301,7 @@ class GmshTools():
                             'It is strongly recommended to extract the shape to mesh from the Compound and use this one.'
                         )
                         FreeCAD.Console.PrintError(error_message + "\n")
-                        # TODO: no gui popup because FreeCAD will be in a endless print loop
+                        # TODO: no gui popup because FreeCAD will be in a endless output loop
                         #       as long as the pop up is on --> maybe find a better solution for
                         #       either of both --> thus the pop up is in task panel
             for mr_obj in self.mesh_obj.MeshRegionList:
@@ -349,7 +349,7 @@ class GmshTools():
         # currently only one boundary layer setting object is allowed, but multiple boundary can be selected
         # Mesh.CharacteristicLengthMin, must be zero, or a value less than first inflation layer height
         if not self.mesh_obj.MeshBoundaryLayerList:
-            # print ('  No mesh boundary layer setting document object.')
+            # print('  No mesh boundary layer setting document object.')
             pass
         else:
             print('  Mesh boundary layers, we need to get the elements.')

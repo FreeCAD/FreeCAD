@@ -26,12 +26,12 @@ __url__ = "http://www.freecadweb.org"
 ## @package Fenics
 #  \ingroup FEM
 
-from __future__ import print_function
+import FreeCAD
 
 try:
     import fenics
 except:
-    print("No Fenics modules found, please install them.")
+    FreeCAD.Console.PrintError("No Fenics modules found, please install them.")
 else:
     import numpy as np
 

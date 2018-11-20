@@ -107,7 +107,7 @@ class WriteXDMFTaskPanel:
                 default_value = int(self.form.tableGroups.item(r, 3).text())
                 marked_value = int(self.form.tableGroups.item(r, 4).text())
             except:
-                print("ERROR: value conversion failed in table to dict: assuming 0 for default, 1 for marked.")
+                FreeCAD.Console.PrintError("ERROR: value conversion failed in table to dict: assuming 0 for default, 1 for marked.\n")
 
             group_values_dict[g] = (marked_value, default_value)
 
