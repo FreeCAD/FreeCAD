@@ -1769,12 +1769,15 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
             else:
                 s1 = obj.Shape
                 s2 = newwire
-            w1 = s1.Edges
-            w2 = s2.Edges
-            w3 = Part.LineSegment(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
-            w4 = Part.LineSegment(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
-            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
-            newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
+            if s1 and s2:
+                w1 = s1.Edges
+                w2 = s2.Edges
+                w3 = Part.LineSegment(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
+                w4 = Part.LineSegment(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
+            else:
+                print("Draft.offset: Unable to bind wires")
         else:
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
             newobj.Shape = Part.Face(obj.Shape.Wires[0])
