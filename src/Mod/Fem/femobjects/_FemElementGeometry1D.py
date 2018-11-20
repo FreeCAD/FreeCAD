@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM element geometry 1D object
 
+
 class _FemElementGeometry1D:
     "The FemElementGeometry1D object"
 

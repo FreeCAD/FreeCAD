@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshGmsh
 
+
 class _FemMeshGmsh():
     """A Fem::FemMeshObject python type, add Gmsh specific properties
     """

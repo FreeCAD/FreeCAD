@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FEM material
 
+
 class _FemMaterial:
     "The FEM Material object"
     def __init__(self, obj):

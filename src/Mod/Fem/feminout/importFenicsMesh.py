@@ -19,7 +19,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
 
 __title__ = "FreeCAD Fenics mesh reader and writer"
 __author__ = "Johannes Hartung"
@@ -42,7 +41,7 @@ from . import writeFenicsXDMF
 
 
 # Template copied from importZ88Mesh.py. Thanks Bernd!
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -163,6 +162,7 @@ def export(objectslist, fileString):
                 writeFenicsXDMF.write_fenics_mesh_xdmf(obj, fileString)
 
 
+# ********* module specific methods *********
 def import_fenics_mesh(filename, analysis=None):
     '''insert a FreeCAD FEM Mesh object in the ActiveDocument
     '''

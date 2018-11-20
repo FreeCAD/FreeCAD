@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM constraint self weight object
 
+
 class _FemConstraintSelfWeight:
     "The FemConstraintSelfWeight object"
     def __init__(self, obj):
