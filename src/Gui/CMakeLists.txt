@@ -293,6 +293,7 @@ set(Gui_MOC_HDRS
     GraphvizView.h
     GuiApplication.h
     GuiApplicationNativeEventAware.h
+    3Dconnexion/GuiAbstractNativeEvent.h
     InputVector.h
     MainWindow.h
     ManualAlignment.h
@@ -1140,6 +1141,7 @@ SET(FreeCADGui_CPP_SRCS
     ExpressionCompleter.cpp
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
+    3Dconnexion/GuiAbstractNativeEvent.cpp
     GuiConsole.cpp
     Macro.cpp
     MergeDocuments.cpp
@@ -1168,6 +1170,7 @@ SET(FreeCADGui_SRCS
     GraphicsViewZoom.h
     GuiApplication.h
     GuiApplicationNativeEventAware.h
+    3Dconnexion/GuiAbstractNativeEvent.h
     GuiConsole.h
     InventorAll.h
     Macro.h
