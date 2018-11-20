@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "run"
+__title__ = "FreeCAD FEM solver run"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import os
 import os.path
@@ -421,3 +422,5 @@ class MustSaveError(Exception):
 
 class DirectoryDoesNotExist(Exception):
     pass
+
+##  @}

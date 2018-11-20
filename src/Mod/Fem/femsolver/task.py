@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "task"
+__title__ = "FreeCAD FEM solver task"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import threading
 import time
@@ -144,3 +145,5 @@ class Thread(Task):
         thread = threading.Thread(target=waitForStop)
         thread.daemon = True
         thread.start()
+
+##  @}

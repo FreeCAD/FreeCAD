@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Fluxsolver"
+__title__ = "FreeCAD FEM solver Elmer equation object Fluxsolver"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import femtools.femutils as FemUtils
 from ... import equationbase
@@ -75,3 +76,5 @@ class Proxy(linear.Proxy, equationbase.FluxsolverProxy):
 
 class ViewProxy(linear.ViewProxy, equationbase.FluxsolverViewProxy):
     pass
+
+##  @}

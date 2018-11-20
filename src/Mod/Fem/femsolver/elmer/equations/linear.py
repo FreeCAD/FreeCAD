@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "_Linear"
+__title__ = "FreeCAD FEM solver Elmer equation object _Linear"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 from . import equation
 
@@ -106,3 +107,5 @@ class Proxy(equation.Proxy):
 
 class ViewProxy(equation.ViewProxy):
     pass
+
+##  @}
