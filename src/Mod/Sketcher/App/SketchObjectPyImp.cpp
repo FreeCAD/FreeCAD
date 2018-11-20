@@ -1617,6 +1617,21 @@ PyObject* SketchObjectPy::getGeometryWithDependentParameters(PyObject *args)
     return Py::new_reference_to(list);
 }
 
+Py::List SketchObjectPy::getOpenVertices(void) const
+{
+    std::vector<Base::Vector3d> points = this->getSketchObjectPtr()->getOpenVertices();
+
+    Py::List list;
+    for (auto p : points) {
+        Py::Tuple t(3);
+        t.setItem(0, Py::Float(p.x));
+        t.setItem(1, Py::Float(p.y));
+        t.setItem(2, Py::Float(p.z));
+        list.append(t);
+    }
+    return list;
+}
+
 Py::Long SketchObjectPy::getConstraintCount(void) const
 {
     return Py::Long(this->getSketchObjectPtr()->Constraints.getSize());
