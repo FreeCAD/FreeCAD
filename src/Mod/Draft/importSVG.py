@@ -1118,6 +1118,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 sy = argsplit[1] if len(argsplit) > 1 else sx
                                 m.scale(Vector(sx,sy,1))
                         elif transformation == 'rotate':
+                                cx = 0
+                                cy = 0
                                 angle = argsplit[0]
                                 if len(argsplit) >= 3:
                                         cx = argsplit[1]

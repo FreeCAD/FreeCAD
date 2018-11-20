@@ -1817,6 +1817,9 @@ class DraftToolBar:
             
     def getDefaultColor(self,type,rgb=False):
         "gets color from the preferences or toolbar"
+        r = 0
+        g = 0
+        b = 0
         if type == "snap":
             color = Draft.getParam("snapcolor",4294967295)
             r = ((color>>24)&0xFF)/255
