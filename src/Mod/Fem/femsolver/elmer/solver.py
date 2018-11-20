@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Elmer"
+__title__ = "FreeCAD FEM solver object Elmer"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import femtools.femutils as FemUtils
 
@@ -96,3 +97,5 @@ class ViewProxy(solverbase.ViewProxy):
 
     def getIcon(self):
         return ":/icons/fem-solver-elmer.svg"
+
+##  @}

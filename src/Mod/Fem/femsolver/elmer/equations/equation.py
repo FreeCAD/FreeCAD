@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Equation"
+__title__ = "FreeCAD FEM solver Elmer equation base object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD as App
 from ... import equationbase
@@ -109,3 +110,5 @@ class _TaskPanel(object):
                 self._part.ViewObject.show()
             else:
                 self._part.ViewObject.hide()
+
+##  @}

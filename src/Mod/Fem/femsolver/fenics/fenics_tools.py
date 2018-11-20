@@ -19,6 +19,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+
+__title__ = "FreeCAD FEM solver Fenics tools"
+__author__ = "Johannes Hartung"
+__url__ = "http://www.freecadweb.org"
+
+## @package Fenics
+#  \ingroup FEM
+
 from __future__ import print_function
 
 try:
@@ -209,3 +217,5 @@ else:
             return dbcs
         # TODO: write some functions to return integrals for Neumann and Robin
         # boundary conditions for the general case (i.e. vector, tensor)
+
+##  @}

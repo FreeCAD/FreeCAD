@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Electrostatic"
+__title__ = "FreeCAD FEM solver Elmer equation object Electrostatic"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import femtools.femutils as FemUtils
 from ... import equationbase
@@ -68,3 +69,5 @@ class Proxy(linear.Proxy, equationbase.ElectrostaticProxy):
 
 class ViewProxy(linear.ViewProxy, equationbase.ElectrostaticViewProxy):
     pass
+
+##  @}

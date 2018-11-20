@@ -21,11 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "CalculiX Tasks"
+__title__ = "FreeCAD FEM solver CalculiX tasks"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import os
 import subprocess
@@ -271,3 +272,5 @@ class _Container(object):
         else:
             print(fem_doc_object.Name + ' has empty References.')
             return ''
+
+##  @}

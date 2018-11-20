@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "CalculiX SolverObject"
+__title__ = "FreeCAD FEM solver object CalculiX"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 

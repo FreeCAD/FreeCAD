@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "report"
+__title__ = "FreeCAD FEM solver report"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD as App
 
@@ -92,3 +93,5 @@ class Report(object):
 
     def error(self, msg):
         self.errors.append(msg)
+
+##  @}

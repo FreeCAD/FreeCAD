@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "reportdialog"
+__title__ = "FreeCAD FEM solver report dialog"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 from PySide import QtGui
 
@@ -69,3 +70,5 @@ class ReportDialog(QtGui.QDialog):
 
     def _getColoredLine(self, text, color):
         return '<font color="%s">%s</font>' % (color, text)
+
+##  @}
