@@ -28,6 +28,7 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM element geometry 2D object
 
+
 class _FemElementGeometry2D:
     "The FemElementGeometry2D object"
     def __init__(self, obj):

@@ -35,7 +35,7 @@ import FreeCAD
 import Fem
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -80,7 +80,7 @@ def export(objectslist, filename):
         return
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def importVtk(filename, object_name=None, object_type=None):
     if not object_type:
         vtkinout_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk")

@@ -398,7 +398,7 @@ class GmshTools():
                         else:
                             setting['hfar'] = setting['thickness']  # set a value for safety, it may works as background mesh cell size
                         # from face name -> face id is done in geo file write up
-                        #TODO: fan angle setup is not implemented yet
+                        # TODO: fan angle setup is not implemented yet
                         if self.dimension == '2':
                             setting['EdgesList'] = belem_list
                         elif self.dimension == '3':
@@ -425,7 +425,7 @@ class GmshTools():
                     v = item[k]
                     if k in set(['EdgesList', 'FacesList']):
                         # the element name of FreeCAD which starts with 1 (example: 'Face1'), same as Gmsh
-                        #el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
+                        # el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
                         ele_nodes = (''.join((str(el[4:]) + ', ') for el in v)).rstrip(', ')
                         line = prefix + '.' + str(k) + ' = {' + ele_nodes + ' };\n'
                         geo.write(line)

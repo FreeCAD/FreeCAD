@@ -36,7 +36,7 @@ import os
 Debug = False
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -79,7 +79,7 @@ def export(objectslist, filename):
     f.close()
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def write(fem_mesh, filename):
     '''directly write a FemMesh to a Z88 mesh file format
     fem_mesh: a FemMesh'''

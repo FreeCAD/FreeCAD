@@ -33,7 +33,7 @@ import FreeCAD
 import os
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -58,7 +58,7 @@ def insert(filename, docname):
     import_inp(filename)
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def import_inp(filename):
     "create imported objects in FreeCAD, currently only FemMesh"
 

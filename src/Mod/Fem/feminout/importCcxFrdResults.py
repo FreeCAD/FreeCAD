@@ -34,7 +34,7 @@ import FreeCAD
 import os
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -59,7 +59,7 @@ def insert(filename, docname):
     importFrd(filename)
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def importFrd(filename, analysis=None, result_name_prefix=None):
     from . import importToolsFem
     import ObjectsFem

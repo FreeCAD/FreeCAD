@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD DocumentObject class to hold mechanical results in FEM workbench
 
+
 class _FemResultMechanical():
     """The Fem::_FemResultMechanical's Proxy python type, add result specific properties
     """

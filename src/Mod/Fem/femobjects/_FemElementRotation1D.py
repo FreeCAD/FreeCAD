@@ -28,6 +28,7 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM element rotation 1D object
 
+
 class _FemElementRotation1D:
     "The FemElementRotation1D object"
 

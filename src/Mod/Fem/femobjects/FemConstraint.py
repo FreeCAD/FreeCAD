@@ -27,6 +27,7 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+
 class Proxy(object):
 
     BaseType = "Fem::ConstraintPython"

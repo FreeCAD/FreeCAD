@@ -35,7 +35,7 @@ import os
 EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -60,7 +60,7 @@ def insert(filename, docname):
     import_dat(filename)
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def import_dat(filename, Analysis=None):
     r = readResult(filename)
     # print("Results {}".format(r))

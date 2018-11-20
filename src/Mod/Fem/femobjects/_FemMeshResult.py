@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshResult
 
+
 class _FemMeshResult():
     """The Fem::FemMeshObject's Proxy python type, add Result specific object type
     """
