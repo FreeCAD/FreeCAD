@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM _FemMeshGroup
 
+
 class _FemMeshGroup:
     "The FemMeshGroup object"
     def __init__(self, obj):

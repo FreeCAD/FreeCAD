@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief FEM mesh boundary layer object
 
+
 class _FemMeshBoundaryLayer:
     "The FemMeshBoundaryLayer object"
     def __init__(self, obj):

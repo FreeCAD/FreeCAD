@@ -26,6 +26,7 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+
 def notify(signal, *args):
     for slot in signal:
         slot(*args)
