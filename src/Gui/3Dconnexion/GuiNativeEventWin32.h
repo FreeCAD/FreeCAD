@@ -23,11 +23,10 @@
 #ifndef GUINATIVEEVENT_H
 #define GUINATIVEEVENT_H
 
-#include <QObject>
+#include "GuiAbstractNativeEvent.h"
 
 #include "3Dconnexion/MouseParameters.h"
 
-#include <vector>
 #include <map>
 
 //#define _WIN32_WINNT 0x0501  //target at least windows XP
@@ -43,9 +42,17 @@ namespace Gui
 {
 	class GUIApplicationNativeEventAware;
 
-	class GuiNativeEvent : public QObject
+	class GuiNativeEvent : public GuiAbstractNativeEvent
 	{
-#include "GuiNativeEventCommon.h"
+	Q_OBJECT
+	public:
+		GuiNativeEvent(GUIApplicationNativeEventAware *app);
+		~GuiNativeEvent() override final;
+		void initSpaceball(QMainWindow *window) override final;
+	private:
+		GuiNativeEvent();
+		GuiNativeEvent(const GuiNativeEvent&);
+		GuiNativeEvent& operator=(const GuiNativeEvent&);
     public:
         static bool Is3dmouseAttached();
 
