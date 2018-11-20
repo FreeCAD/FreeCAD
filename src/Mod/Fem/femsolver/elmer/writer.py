@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "FemWriterElmer"
+__title__ = "FreeCAD FEM solver Elmer writer"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import os
 import os.path
@@ -781,3 +782,5 @@ class Writer(object):
 
 class WriteError(Exception):
     pass
+
+##  @}

@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Z88 SolverObject"
+__title__ = "FreeCAD FEM solver object Z88"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -89,3 +89,5 @@ class Proxy(solverbase.Proxy):
 
 class ViewProxy(solverbase.ViewProxy):
     pass
+
+##  @}

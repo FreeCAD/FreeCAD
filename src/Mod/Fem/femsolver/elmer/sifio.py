@@ -20,6 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "FreeCAD FEM solver Elmer sifio"
+__author__ = "Markus Hovorka"
+__url__ = "http://www.freecadweb.org"
+
+## \addtogroup FEM
+#  @{
 
 import collections
 import six
@@ -435,3 +441,5 @@ class _IdManager(object):
         if section not in self._ids:
             self.setId(section)
         return self._ids[section]
+
+##  @}

@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "_Base"
+__title__ = "FreeCAD FEM solver equation base object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 if FreeCAD.GuiUp:
@@ -114,3 +115,5 @@ class FlowViewProxy(BaseViewProxy):
 
     def getIcon(self):
         return ":/icons/fem-equation-flow.svg"
+
+##  @}

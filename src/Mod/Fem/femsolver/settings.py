@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "settings"
+__title__ = "FreeCAD FEM solver settings"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import distutils.spawn
 import FreeCAD as App
@@ -99,3 +100,5 @@ def getDirSetting():
         return BESIDE
     elif param.GetBool("UseCustomDirectory"):
         return CUSTOM
+
+##  @}

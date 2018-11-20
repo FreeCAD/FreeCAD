@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "Flow"
+__title__ = "FreeCAD FEM solver Elmer equation object Flow"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import femtools.femutils as FemUtils
 from . import nonlinear
@@ -47,3 +48,5 @@ class Proxy(nonlinear.Proxy, equationbase.FlowProxy):
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.FlowViewProxy):
     pass
+
+##  @}

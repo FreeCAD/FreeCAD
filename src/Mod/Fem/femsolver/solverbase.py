@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "General Solver Object"
+__title__ = "FreeCAD FEM solver base object"
 __author__ = "Markus Hovorka"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 from PySide import QtGui
 
@@ -106,3 +107,5 @@ class ViewProxy(object):
 
     def attach(self, vobj):
         pass
+
+##  @}

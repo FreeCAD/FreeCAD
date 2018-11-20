@@ -20,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemInputWriter"
+__title__ = "FreeCAD FEM solver writer base object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
