@@ -31,12 +31,9 @@
 
 #include <spnav.h>
 
-std::vector<int> Gui::GuiNativeEvent::motionDataArray(6,0);
-
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
-: QObject(app)
+: GuiAbstractNativeEvent(app)
 {
-	mainApp = app;
 }
 
 Gui::GuiNativeEvent::~GuiNativeEvent()

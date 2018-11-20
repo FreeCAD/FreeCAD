@@ -36,8 +36,6 @@ With special thanks to marcxs for making the first steps
 #include <FCConfig.h>
 #include <Base/Console.h>
 
-std::vector<int> Gui::GuiNativeEvent::motionDataArray(6,0);
-
 UInt16 Gui::GuiNativeEvent::tdxClientID = 0;
 uint32_t Gui::GuiNativeEvent::lastButtons = 0;
 
@@ -69,9 +67,6 @@ uint32_t Gui::GuiNativeEvent::lastButtons = 0;
 	//printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);	 
 	if (msg->client == tdxClientID)
 	  {
-            auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware *>(QApplication::instance()));
-            if (!inst)
-              return;
 	    switch (msg->command)
 	      {
 	      case kConnexionCmdHandleAxis:
@@ -82,7 +77,7 @@ uint32_t Gui::GuiNativeEvent::lastButtons = 0;
 		  motionDataArray[3] = -msg->axis[3];                        
 		  motionDataArray[4] = msg->axis[4];                        
 		  motionDataArray[5] = msg->axis[5];
-		  inst->postMotionEvent(motionDataArray);
+		  mainApp->postMotionEvent(motionDataArray);
 		  break;
 		}
                         
@@ -96,13 +91,13 @@ uint32_t Gui::GuiNativeEvent::lastButtons = 0;
 		  for (uint8_t bt = 0; bt < 32; bt++)
 		    {
 		      if (pressedButtons & 1)
-				inst->postButtonEvent(bt, 1);
+				mainApp->postButtonEvent(bt, 1);
 		      pressedButtons = pressedButtons>>1;
 		    }
 		  for (uint8_t bt = 0; bt < 32; bt++)
 		    {
 		      if (releasedButtons & 1)
-				inst->postButtonEvent(bt, 0);
+				mainApp->postButtonEvent(bt, 0);
 		      releasedButtons = releasedButtons>>1;
 		    }
 		  lastButtons = msg->buttons;
@@ -124,9 +119,8 @@ uint32_t Gui::GuiNativeEvent::lastButtons = 0;
   }
   
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
-: QObject(app)
+: GuiAbstractNativeEvent(app)
 {
-	mainApp = app;
 }
 
 Gui::GuiNativeEvent::~GuiNativeEvent()

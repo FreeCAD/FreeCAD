@@ -20,44 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
-
 #include "GuiAbstractNativeEvent.h"
-#include <vector>
 
-#if QT_VERSION >= 0x050000
-  #include <QAbstractNativeEventFilter>
-  #include <xcb/xcb.h>
-  #include <xcb/xproto.h>
-#endif
+#include "GuiApplicationNativeEventAware.h"
 
-class QMainWindow;
-class GUIApplicationNativeEventAware;
+std::vector<int> Gui::GuiAbstractNativeEvent::motionDataArray(6,0);
+Gui::GUIApplicationNativeEventAware* Gui::GuiAbstractNativeEvent::mainApp;
 
-namespace Gui
+Gui::GuiAbstractNativeEvent::GuiAbstractNativeEvent(GUIApplicationNativeEventAware *app)
+ : QObject(app)
 {
-	class GUIApplicationNativeEventAware;
-
-	class GuiNativeEvent : public GuiAbstractNativeEvent
-	{
-	Q_OBJECT
-	public:
-		GuiNativeEvent(GUIApplicationNativeEventAware *app);
-		~GuiNativeEvent() override final;
-		void initSpaceball(QMainWindow *window) override final;
-	private:
-		GuiNativeEvent();
-		GuiNativeEvent(const GuiNativeEvent&);
-		GuiNativeEvent& operator=(const GuiNativeEvent&);
-    public:
-  #if QT_VERSION >= 0x050000
-        static bool xcbEventFilter(void *message, long* result);
-  #else
-        bool x11EventFilter(XEvent *event);
-  #endif // if/else QT_VERSION >= 0x050000
-	};
+  mainApp = app;	
 }
 
-#endif //GUINATIVEEVENT_H
+Gui::GuiAbstractNativeEvent::~GuiAbstractNativeEvent()
+{}
 
+#include "3Dconnexion/moc_GuiAbstractNativeEvent.cpp"

@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "SpaceballEvent.h"
+
 #include <QMainWindow>
 
 #include "GuiNativeEventLinuxX11.h"
@@ -50,12 +51,9 @@
   #undef Complex
 #endif // #if QT_VERSION >= 0x050000
 
-std::vector<int> Gui::GuiNativeEvent::motionDataArray(6,0);
-
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
-: QObject(app)
+: GuiAbstractNativeEvent(app)
 {
-	mainApp = app;
 }
 
 Gui::GuiNativeEvent::~GuiNativeEvent()
