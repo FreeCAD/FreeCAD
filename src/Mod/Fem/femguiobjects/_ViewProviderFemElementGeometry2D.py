@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemElementGeometry2D"
+__title__ = "FreeCAD FEM element geometry 2D ViewProvider for the document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ViewProviderFemElementGeometry2D
 #  \ingroup FEM
+#  \brief FreeCAD FEM _ViewProviderFemElementGeometry2D
 
 import FreeCAD
 import FreeCADGui

@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemMeshBoundaryLayer"
+__title__ = "FreeCAD FEM mesh boundary layer ViewProvider for the document object"
 __author__ = "Bernd Hahnebach, Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ViewProviderFemMeshBoundaryLayer
 #  \ingroup FEM
+#  \brief FreeCAD FEM _ViewProviderFemMeshBoundaryLayer
 
 import FreeCAD
 import FreeCADGui
