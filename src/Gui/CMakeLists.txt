@@ -120,16 +120,20 @@ IF(SPNAV_FOUND)
         )
       endif(X11_FOUND)
       SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/GuiAbstractNativeEvent.cpp
         3Dconnexion/GuiNativeEventLinuxX11.cpp
         )
       SET(FreeCADGui_SDK_MOC_HDRS
+        3Dconnexion/GuiAbstractNativeEvent.h
         3Dconnexion/GuiNativeEventLinuxX11.h
         )
     else(SPNAV_USE_X11)
       SET(FreeCADGui_SDK_SRCS
+        3Dconnexion/GuiAbstractNativeEvent.cpp
         3Dconnexion/GuiNativeEventLinux.cpp
       )
       SET(FreeCADGui_SDK_MOC_HDRS
+        3Dconnexion/GuiAbstractNativeEvent.h
         3Dconnexion/GuiNativeEventLinux.h
       )
 	endif(SPNAV_USE_X11)
@@ -213,20 +217,24 @@ SET(FreeCADGui_SDK_SRCS
     3Dconnexion/I3dMouseParams.h
     3Dconnexion/MouseParameters.cpp
     3Dconnexion/MouseParameters.h
+    3Dconnexion/GuiAbstractNativeEvent.cpp
     3Dconnexion/GuiNativeEventWin32.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
 SET(FreeCADGui_SDK_MOC_HDRS
+  3Dconnexion/GuiAbstractNativeEvent.h
   3Dconnexion/GuiNativeEventWin32.h
 )
 endif(FREECAD_USE_3DCONNEXION AND MSVC)
 
 if(FREECAD_USE_3DCONNEXION AND APPLE)
 SET(FreeCADGui_SDK_SRCS
+    3Dconnexion/GuiAbstractNativeEvent.cpp
     3Dconnexion/GuiNativeEventMac.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
 SET(FreeCADGui_SDK_MOC_HDRS
+  3Dconnexion/GuiAbstractNativeEvent.h
   3Dconnexion/GuiNativeEventMac.h
 )
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
@@ -293,7 +301,6 @@ set(Gui_MOC_HDRS
     GraphvizView.h
     GuiApplication.h
     GuiApplicationNativeEventAware.h
-    3Dconnexion/GuiAbstractNativeEvent.h
     InputVector.h
     MainWindow.h
     ManualAlignment.h
@@ -1141,7 +1148,6 @@ SET(FreeCADGui_CPP_SRCS
     ExpressionCompleter.cpp
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
-    3Dconnexion/GuiAbstractNativeEvent.cpp
     GuiConsole.cpp
     Macro.cpp
     MergeDocuments.cpp
