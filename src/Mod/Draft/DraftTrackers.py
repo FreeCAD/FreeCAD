@@ -560,7 +560,7 @@ class arcTracker(Tracker):
 class ghostTracker(Tracker):
     '''A Ghost tracker, that allows to copy whole object representations.
     You can pass it an object or a list of objects, or a shape.'''
-    def __init__(self,sel):
+    def __init__(self,sel,dotted=False,scolor=None,swidth=None):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         self.children = [self.trans]
@@ -570,7 +570,7 @@ class ghostTracker(Tracker):
         for obj in sel:
             rootsep.addChild(self.getNode(obj))
         self.children.append(rootsep)        
-        Tracker.__init__(self,children=self.children,name="ghostTracker")
+        Tracker.__init__(self,dotted,scolor,swidth,children=self.children,name="ghostTracker")
 
     def update(self,obj):
         "recreates the ghost from a new object"
@@ -606,18 +606,18 @@ class ghostTracker(Tracker):
         else:
             return self.getNodeFull(obj)
 
-    def getNode(self,obj):
+    def getNodeFull(self,obj):
         "gets a coin node which is a full copy of the current representation"
         sep = coin.SoSeparator()
         try:
             sep.addChild(obj.ViewObject.RootNode.copy())
         except:
-            pass
+            print("ghostTracker: Error retrieving coin node (full)")
         return sep
 
     def getNodeLight(self,shape):
         "extract a lighter version directly from a shape"
-        # very error-prone, will be obsoleted ASAP
+        # error-prone
         sep = coin.SoSeparator()
         try:
             inputstr = coin.SoInput()
@@ -627,7 +627,7 @@ class ghostTracker(Tracker):
             sep.addChild(coinobj.getChildren()[1])
             # sep.addChild(coinobj)
         except:
-            print("Error retrieving coin node")
+            print("ghostTracker: Error retrieving coin node (light)")
         return sep
         
     def getMatrix(self):
