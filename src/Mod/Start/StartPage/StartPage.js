@@ -22,6 +22,13 @@ function load() {
 
     // run at startup
 
+    if (localStorage["notepad"]) {
+        document.getElementById("notepad").value = localStorage["notepad"]; // Load notepad from local storage
+    }
+    document.getElementById("notepad").addEventListener( "input", function () {
+        localStorage.setItem("notepad", document.getElementById("notepad").value); // Save notepad on type
+    }, false);
+
     if (allowDownloads == 1) {
         // load latest commits
         ddiv = document.getElementById("commits");
@@ -46,12 +53,6 @@ function load() {
             tobj.addScriptTag(); // Execute (add) the script tag
             ddiv.innerHTML = "Downloading addons list...";
         }
-        if (localStorage["notepad"]) {
-            document.getElementById("notepad").value = localStorage["notepad"]; // Load notepad from local storage
-        }
-        document.getElementById("notepad").addEventListener( "input", function () {
-            localStorage.setItem("notepad", document.getElementById("notepad").value); // Save notepad on type
-        }, false);
     }
 }
 
