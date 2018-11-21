@@ -705,7 +705,7 @@ PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args)
                         "Unknown Log Level (use 'Default', 'Error', 'Warning', 'Message', 'Log', 'Trace' or an integer)");
                 return NULL;
             }
-        }else 
+        }else
             l = PyLong_AsLong(pcObj);
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/LogLevels")->SetInt(tag,l);
         if(strcmp(tag,"Default") == 0) {

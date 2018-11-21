@@ -176,7 +176,7 @@ Py::String WaypointPy::getType(void) const
     else if(getWaypointPtr()->Type == Waypoint::UNDEF)
         return Py::String("UNDEF");
     else
-        throw Base::Exception("Unknown waypoint type! Only: PTP,LIN,CIRC,WAIT are supported.");
+        throw Base::TypeError("Unknown waypoint type! Only: PTP,LIN,CIRC,WAIT are supported.");
 }
 
 void WaypointPy::setType(Py::String arg)
@@ -191,7 +191,7 @@ void WaypointPy::setType(Py::String arg)
     else if(typeStr=="WAIT")
         getWaypointPtr()->Type = Waypoint::WAIT;
     else
-        throw Base::Exception("Unknown waypoint type! Only: PTP,LIN,CIRC,WAIT are allowed.");
+        throw Base::TypeError("Unknown waypoint type! Only: PTP,LIN,CIRC,WAIT are allowed.");
 }
 
 

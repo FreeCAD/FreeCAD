@@ -196,7 +196,7 @@ bool OffsetWidget::accept()
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!d->offset->isValid())
-            throw Base::Exception(d->offset->getStatusString());
+            throw Base::CADKernelError(d->offset->getStatusString());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
         Gui::Command::commitCommand();
     }

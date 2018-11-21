@@ -334,6 +334,7 @@ def fill_femresult_stats(results):
     ''' fills a FreeCAD FEM mechanical result object with stats data
     '''
     # result stats, set stats values to 0, they may not exist
+    no_of_values = 1 # to avoid division by zero
     x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
     a_max = a_min = a_avg = s_max = s_min = s_avg = 0
     p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0

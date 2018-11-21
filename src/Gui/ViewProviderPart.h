@@ -55,5 +55,5 @@ typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;
 
 } // namespace Gui
 
-#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+#endif // GUI_VIEWPROVIDER_ViewProviderPart_H
 

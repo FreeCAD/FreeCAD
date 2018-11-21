@@ -138,7 +138,7 @@ def install_macro(macro, macro_repo_dir):
     # macro.src_filename.
     base_dir = os.path.dirname(macro.src_filename)
     for other_file in macro.other_files:
-        dst_dir = os.path.join(base_dir, os.path.dirname(other_file))
+        dst_dir = os.path.join(macro_dir, os.path.dirname(other_file))
         if not os.path.isdir(dst_dir):
             try:
                 os.makedirs(dst_dir)

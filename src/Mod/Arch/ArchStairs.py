@@ -243,7 +243,7 @@ def makeRailing(stairs):
                     stairs[0].Additions = railList
                     break
                 elif stair.OutlineRight:
-                    lrRailWire = Draft.makeWire(stair.OutlineLeft)
+                    lrRailWire = Draft.makeWire(stair.OutlineRight)
                     lrRail.Base = lrRailWire
                     stair.OutlineWireRight = lrRailWire.Name
                     railList = stair.Additions
@@ -735,6 +735,7 @@ class _Stairs(ArchComponent.Component):
 
         vNose = DraftVecUtils.scaleTo(vLength,-abs(obj.Nosing.Value))
         h = 0
+        l = 0
 
         if obj.RiserHeightEnforce != 0:
             h = obj.RiserHeightEnforce * numberofsteps
@@ -805,6 +806,7 @@ class _Stairs(ArchComponent.Component):
         # structure
         lProfile = []
         struct = None
+        p5 = None
         p7 = None
         p1 = p1.add(DraftVecUtils.neg(vNose))
         p2 = p1.add(Vector(0,0,-fHeight)).add(Vector(0,0,-obj.StructureThickness.Value/math.cos(a)))
@@ -854,7 +856,7 @@ class _Stairs(ArchComponent.Component):
                 p1c = p1.add(DraftVecUtils.scaleTo(vLength,reslength))
                 p5b = None
                 p5c = None
-                if obj.TreadThickness.Value:
+                if obj.TreadThickness.Value and p5:
                     reslength = obj.StructureThickness.Value/math.sin(a)
                     p5b = p5.add(DraftVecUtils.scaleTo(vLength,-reslength))
                     reslength = obj.TreadThickness.Value/math.tan(a)
@@ -1112,7 +1114,8 @@ class _Stairs(ArchComponent.Component):
                     p3r = self.align(p2,"Right",-vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
                 else:
                     print("Should have a bug here, if see this")
-                p4r = p3r.add(DraftVecUtils.scale(-vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
+                if p3r:
+                    p4r = p3r.add(DraftVecUtils.scale(-vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
             else:
                 p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
             self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape(), None, True)

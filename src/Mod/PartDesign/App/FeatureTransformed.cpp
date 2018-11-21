@@ -102,7 +102,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
     }
 
     if (!silent && err) {
-        throw Base::Exception(err);
+        throw Base::RuntimeError(err);
     }
 
     return rv;

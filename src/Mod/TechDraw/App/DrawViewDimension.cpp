@@ -561,7 +561,7 @@ double DrawViewDimension::getDimValue()
         } else if(Type.isValue("Angle")){
             result = measurement->angle();
         } else {  //tarfu
-            throw Base::Exception("getDimValue() - Unknown Dimension Type (3)");
+            throw Base::ValueError("getDimValue() - Unknown Dimension Type (3)");
         }
     } else {
         // Projected Values
@@ -793,7 +793,7 @@ pointPair DrawViewDimension::closestPoints(TopoDS_Shape s1,
     pointPair result;
     BRepExtrema_DistShapeShape extss(s1, s2);
     if (!extss.IsDone()) {
-        throw Base::Exception("DVD::closestPoints - BRepExtrema_DistShapeShape failed");
+        throw Base::RuntimeError("DVD::closestPoints - BRepExtrema_DistShapeShape failed");
     }
     int count = extss.NbSolution();
     if (count != 0) {
@@ -860,7 +860,7 @@ double DrawViewDimension::dist2Segs(Base::Vector2d s1,
 
     BRepExtrema_DistShapeShape extss(edge1, edge2);
     if (!extss.IsDone()) {
-        throw Base::Exception("DVD::dist2Segs - BRepExtrema_DistShapeShape failed");
+        throw Base::RuntimeError("DVD::dist2Segs - BRepExtrema_DistShapeShape failed");
     }
     int count = extss.NbSolution();
     double minDist = 0.0;

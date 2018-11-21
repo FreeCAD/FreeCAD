@@ -35,6 +35,8 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "ZVALUE.h"
+#include "QGICMark.h"
 #include "QGCustomClip.h"
 
 using namespace TechDrawGui;
@@ -47,6 +49,7 @@ QGCustomClip::QGCustomClip()
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
+//    setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);   //good for debugging
     m_rect = QRectF(0.,0.,10.,10.);
 }
 
@@ -95,4 +98,20 @@ QRectF QGCustomClip::boundingRect() const     //sb shape()?
 {
     return m_rect;
 }
+
+void QGCustomClip::makeMark(double x, double y)
+{
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(1.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
+}
+
+void QGCustomClip::makeMark(Base::Vector3d v)
+{
+    makeMark(v.x,v.y);
+}
+
 

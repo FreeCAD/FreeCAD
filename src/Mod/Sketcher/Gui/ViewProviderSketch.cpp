@@ -1662,16 +1662,85 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                         // Screen dimensions of the icon
                         SbVec3s iconSize = getDisplayedSize(static_cast<SoImage *>(tail));
                         // Center of the icon
-                        SbVec2f iconCoords = viewer->screenCoordsOfPath(path);
+                        //SbVec2f iconCoords = viewer->screenCoordsOfPath(path); 
+
+                        // The use of the Path to get the screen coordinates to get the icon center coordinates
+                        // does not work.
+                        //
+                        // This implementation relies on the use of ZoomTranslation to get the absolute and relative
+                        // positions of the icons.
+                        //
+                        // In the case of second icons (the same constraint has two icons at two different positions),
+                        // the translation vectors have to be added, as the second ZoomTranslation operates on top of
+                        // the first.
+                        //
+                        // Coordinates are projected on the sketch plane and then to the screen in the interval [0 1]
+                        // Then this result is coverted to pixels using the scale factor.
+
+                        SbVec3f absPos;
+                        SbVec3f trans;
+
+                        absPos = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos.getValue();
+
+                        trans = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation.getValue();
+
+                        if (tail != sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
+
+                            absPos += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos.getValue();
+
+                            trans += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation.getValue();
+                        }
+
+                        double x,y;
+
+                        SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
+
+                        if (!pCam)
+                            continue;
+
+                        SbViewVolume vol = pCam->getViewVolume();
+
+                        getCoordsOnSketchPlane(x,y,absPos+trans,vol.getProjectionDirection());
+
+                        Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
+
+                        // dimensionless [0 1] (or 1.5 see View3DInventorViewer.cpp )
+                        Base::Vector3d screencoords = proj(Base::Vector3d(x,y,0)); 
+
+                        int width = viewer->getGLWidget()->width(),
+                            height = viewer->getGLWidget()->height();
+
+                        if (width >= height) {
+                            // "Landscape" orientation, to square
+                            screencoords.x *= height;
+                            screencoords.x += (width-height) / 2.0;
+                            screencoords.y *= height;
+                        }
+                        else {
+                            // "Portrait" orientation
+                            screencoords.x *= width;
+                            screencoords.y *= width;
+                            screencoords.y += (height-width) / 2.0;
+                        }
+
+                        SbVec2f iconCoords(screencoords.x,screencoords.y);
+
+                        // cursorPos is SbVec2s in screen coordinates coming from SoEvent in mousemove
+                        // 
                         // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
                         // but bottom-left for OIV.
                         // The coordinates are needed in Qt format, i.e. from top to bottom.
                         int iconX = cursorPos[0] - iconCoords[0] + iconSize[0]/2,
-                            iconY = cursorPos[1] - iconCoords[1] - iconSize[1]/2;
+                            iconY = cursorPos[1] - iconCoords[1] + iconSize[1]/2;
                         iconY = iconSize[1] - iconY;
 
                         for (ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
                             b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
+
+#ifdef FC_DEBUG
+                            Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());
+#endif
+
                             if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
                                 for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k)

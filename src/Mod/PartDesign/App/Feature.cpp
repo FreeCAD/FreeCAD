@@ -106,7 +106,7 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 
     // TODO: Other method, e.g. intersect X,Y,Z axis with the (unlimited?) face?
     // Or get a "corner" point if the face is limited?
-    throw Base::Exception("getPointFromFace(): Not implemented yet for this case");
+    throw Base::NotImplementedError("getPointFromFace(): Not implemented yet for this case");
 }
 
 Part::Feature* Feature::getBaseObject(bool silent) const {
@@ -127,7 +127,7 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
 
     // If the function not in silent mode throw the exception describing the error
     if (!silent && err) {
-        throw Base::Exception(err);
+        throw Base::RuntimeError(err);
     }
 
     return BaseObject;
@@ -142,10 +142,10 @@ const TopoDS_Shape& Feature::getBaseShape() const {
 
     const TopoDS_Shape& result = BaseObject->Shape.getValue();
     if (result.IsNull())
-        throw Base::Exception("Base feature's shape is invalid");
+        throw Base::ValueError("Base feature's shape is invalid");
     TopExp_Explorer xp (result, TopAbs_SOLID);
     if (!xp.More())
-        throw Base::Exception("Base feature's shape is not a solid");
+        throw Base::ValueError("Base feature's shape is not a solid");
 
     return result;
 }
@@ -159,7 +159,7 @@ const Part::TopoShape Feature::getBaseTopoShape() const {
 
     const Part::TopoShape& result = BaseObject->Shape.getShape();
     if (result.getShape().IsNull())
-        throw Base::Exception("Base feature's TopoShape is invalid");
+        throw Base::ValueError("Base feature's TopoShape is invalid");
 
     return result;
 }
@@ -183,7 +183,7 @@ gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
     const App::GeoFeature* plane = static_cast<const App::GeoFeature*>(obj);
     if (plane == NULL)
-        throw Base::Exception("Feature: Null object");
+        throw Base::ValueError("Feature: Null object");
 
     Base::Vector3d pos = plane->Placement.getValue().getPosition();
     Base::Rotation rot = plane->Placement.getValue().getRotation();
@@ -196,7 +196,7 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 {
     BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
     if (!builder.IsDone())
-        throw Base::Exception("Feature: Could not create shape from base plane");
+        throw Base::CADKernelError("Feature: Could not create shape from base plane");
 
     return builder.Shape();
 }

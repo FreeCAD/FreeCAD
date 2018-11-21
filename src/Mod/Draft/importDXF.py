@@ -1226,7 +1226,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     # drawing solids
 
     solids = drawing.entities.get_type("solid")
-    if solids: FreeCAD.Console.PrintMessage("drawing "+str(len(circles))+" solids...\n")
+    if solids: FreeCAD.Console.PrintMessage("drawing "+str(len(solids))+" solids...\n")
     for solid in solids:
         lay = rawValue(solid,8)
         if dxfImportLayouts or (not rawValue(solid,67)):

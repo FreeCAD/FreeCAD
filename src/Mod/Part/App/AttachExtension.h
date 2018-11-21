@@ -46,6 +46,19 @@
 namespace Part
 {
 
+class PartExport AttachEngineException : public Base::Exception
+{
+public:
+   /// Construction
+   AttachEngineException();
+   AttachEngineException(const char * sMessage);
+   AttachEngineException(const std::string& sMessage);
+   /// Construction
+   AttachEngineException(const AttachEngineException &inst);
+   /// Destruction
+   virtual ~AttachEngineException() throw() {}
+};
+
 /**
  * @brief The AttachableObject class is the thing to extend an object with
  * that should be attachable. It includes the required properties, and
@@ -75,7 +88,7 @@ public:
      */
     bool changeAttacherType(const char* typeName);
 
-    Attacher::AttachEngine &attacher(void) const {if(!_attacher) throw Base::Exception("AttachableObject: no attacher is set."); return *_attacher;}
+    Attacher::AttachEngine &attacher(void) const {if(!_attacher) throw AttachEngineException("AttachableObject: no attacher is set."); return *_attacher;}
 
 
     App::PropertyString         AttacherType;
@@ -98,7 +111,7 @@ public:
     virtual bool positionBySupport(void);
 
     virtual bool isTouched_Mapping()
-    {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/};
+    {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/}
 
     virtual short int extensionMustExecute(void);
     virtual App::DocumentObjectExecReturn *extensionExecute(void);

@@ -433,7 +433,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                                 else:
                                     FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
                                     solid_to_add = None
-                                found_edge = True
+                                found_face = True
                 if solid_to_add:
                     selection = (selection[0], 'Solid' + solid_to_add)
                     ele_ShapeType = 'Solid'

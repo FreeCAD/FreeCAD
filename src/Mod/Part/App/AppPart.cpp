@@ -23,6 +23,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/ExceptionFactory.h>
 
 #include <App/Application.h>
 
@@ -245,6 +246,11 @@ PyMOD_INIT_FUNC(Part)
 
     Py::Object module(partModule);
     module.setAttr("OCC_VERSION", Py::String(OCC_VERSION_STRING_EXT));
+
+    // C++ exceptions
+    new Base::ExceptionProducer<Part::NullShapeException>;
+    new Base::ExceptionProducer<Part::AttachEngineException>;
+    new Base::ExceptionProducer<Part::BooleanException>;
 
     // Python exceptions
     //

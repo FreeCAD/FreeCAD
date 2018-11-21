@@ -545,7 +545,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
         return False
     else:
         return True
-    print("")
+    #print("")
 
 
 def get_elset_short_name(obj, i):
