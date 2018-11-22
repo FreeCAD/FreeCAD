@@ -333,7 +333,10 @@ class MaterialEditor:
 
     def savefile(self):
         "Saves a FCMat file"
-        name = str(self.widget.Editor.findItems(translate("Material", "Name"), QtCore.Qt.MatchRecursive, 0)[0].text(1))
+        name = self.widget.Editor.findItems(translate("Material", "Name"), QtCore.Qt.MatchRecursive, 0)[0].text(1)
+        if sys.version_info.major < 3:
+            if isinstance(name,unicode):
+                name = name.encode("utf8")
         if not name:
             name = "Material"
         filetuple = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(), 'Save FreeCAD Material file', name + '.FCMat')
