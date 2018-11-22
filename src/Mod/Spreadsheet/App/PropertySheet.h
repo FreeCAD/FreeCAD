@@ -37,7 +37,8 @@ class Sheet;
 class PropertySheet;
 class SheetObserver;
 
-class PropertySheet : public App::PropertyLinkBase, private App::AtomicPropertyChangeInterface<PropertySheet> {
+class PropertySheet : public App::PropertyXLinkContainer
+                    , private App::AtomicPropertyChangeInterface<PropertySheet> {
     TYPESYSTEM_HEADER();
 public:
 
@@ -47,9 +48,6 @@ public:
 
     virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) override;
     virtual bool referenceChanged() const override;
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
-    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
@@ -139,11 +137,10 @@ public:
 
     const std::set<std::string> &getDeps(App::CellAddress pos) const;
 
-    const std::set<App::DocumentObject*> & getDocDeps() const { return docDeps; }
-
     void recomputeDependencies(App::CellAddress key);
 
     PyObject *getPyObject(void);
+    void setPyObject(PyObject *);
 
     void invalidateDependants(const App::DocumentObject *docObj);
 
@@ -159,6 +156,8 @@ public:
 
 protected:
     virtual void hasSetValue() override;
+    virtual void hasSetChildValue(App::Property &prop) override;
+    virtual void onBreakLink(App::DocumentObject *obj) override;
 
 private:
 
@@ -221,11 +220,6 @@ private:
 
     /*! DocumentObject this cell depends on */
     std::map<App::CellAddress, std::set< std::string > > cellToDocumentObjectMap;
-
-    /*! Other document objects the sheet depends on */
-    std::set<App::DocumentObject*> docDeps;
-
-    std::list<App::PropertyXLink> xlinks;
 
     /*! Name of documents, used for renaming */
     std::map<const App::Document*, std::string> documentName;

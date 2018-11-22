@@ -167,6 +167,10 @@ public:
     /// Paste the value from the property (mainly for Undo/Redo and transactions)
     virtual void Paste(const Property &from) = 0;
 
+    /// Called when a child property has changed value
+    virtual void hasSetChildValue(Property &) {}
+    /// Called before a child property changing value
+    virtual void aboutToSetChildValue(Property &) {}
 
     friend class PropertyContainer;
 

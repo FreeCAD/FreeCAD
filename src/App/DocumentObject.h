@@ -197,6 +197,8 @@ public:
     std::vector<App::DocumentObject*> getOutListOfProperty(App::Property*) const;
     /// returns a list of objects this object is pointing to by Links and all further descended
     std::vector<App::DocumentObject*> getOutListRecursive(void) const;
+    /// clear internal out list cache
+    void clearOutListCache() const;
     /// get all possible paths from this to another object following the OutList
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList(App::DocumentObject* to) const;
     /// get all objects link to this object
@@ -499,23 +501,6 @@ public:
     static const std::string &hiddenMarker();
     /// Check if the subname reference ends with hidden marker.
     static const char *hasHiddenMarker(const char *subname);
-
-    /** Helper function to update object dependencies
-     *
-     * @param prop: the property that is holding the dependenecies
-     * @param deps: current depending objects
-     * @param newDeps: new depending objects
-     * @param xlinks: properties of holding current depending external objects
-     *
-     * On output, \c deps and \c xlinks will be holding the updated
-     * dependencies, \c newDeps will be invalidated.
-     *
-     * An example usage is in App::PropertyExpressionEngine.
-     */
-    void updateDeps(App::Property *prop,
-                    std::set<DocumentObject*> &deps,
-                    std::set<DocumentObject*> &&newDeps,
-                    std::list<PropertyXLink> &xlinks);
 
 protected:
     /// recompute only this object

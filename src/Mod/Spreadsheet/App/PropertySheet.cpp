@@ -30,6 +30,7 @@
 #include <boost/assign.hpp>
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
+#include <Base/Console.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Property.h>
@@ -42,6 +43,8 @@
 #include <PropertySheetPy.h>
 #include <App/ExpressionVisitors.h>
 #include <App/ExpressionParser.h>
+
+FC_LOG_LEVEL_INIT("Spreadsheet", true, true);
 
 using namespace App;
 using namespace Base;
@@ -68,18 +71,10 @@ void PropertySheet::clear()
     propertyNameToCellMap.clear();
     documentObjectToCellMap.clear();
 
-    if(getContainer()==owner && owner && owner->getNameInDocument()) {  
-        for(auto obj : docDeps) {
-            if(obj && obj->getNameInDocument() && 
-               obj->getDocument()==owner->getDocument())
-                obj->_removeBackLink(owner);
-        }
-    }
-    docDeps.clear();
-    xlinks.clear();
-
     aliasProp.clear();
     revAliasProp.clear();
+
+    clearDeps();
 }
 
 Cell *PropertySheet::getValue(CellAddress key)
@@ -191,7 +186,6 @@ PropertySheet::PropertySheet(const PropertySheet &other)
     , cellToPropertyNameMap(other.cellToPropertyNameMap)
     , documentObjectToCellMap(other.documentObjectToCellMap)
     , cellToDocumentObjectMap(other.cellToDocumentObjectMap)
-    , docDeps(other.docDeps)
     , documentName(other.documentName)
     , aliasProp(other.aliasProp)
     , revAliasProp(other.revAliasProp)
@@ -279,13 +273,13 @@ void PropertySheet::Save(Base::Writer &writer) const
         ++ci;
     }
 
-    writer.Stream() << writer.ind() << "<Cells Count=\"" << count;
-    if(xlinks.size()) 
-        writer.Stream() << "\" xcount=\"" << xlinks.size();
-    writer.Stream() <<"\">" << std::endl;
+    writer.Stream() << writer.ind() << "<Cells Count=\"" << count
+        << "\" xlink=\"1\">" << std::endl;
+
     writer.incInd();
-    for(auto &l : xlinks)
-        l.Save(writer);
+
+    PropertyXLinkContainer::Save(writer);
+
     ci = data.begin();
     while (ci != data.end()) {
         ci->second->save(writer);
@@ -305,13 +299,8 @@ void PropertySheet::Restore(Base::XMLReader &reader)
     reader.readElement("Cells");
     Cnt = reader.getAttributeAsInteger("Count");
 
-    if(reader.hasAttribute("xcount")) {
-        int xcount = reader.getAttributeAsInteger("xcount");
-        for(int i=0;i<xcount;++i) {
-            xlinks.emplace_back(false,this);
-            xlinks.back().Restore(reader);
-        }
-    }
+    if(reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink"))
+        PropertyXLinkContainer::Restore(reader);
 
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Cell");
@@ -991,6 +980,15 @@ void PropertySheet::recomputeDependants(const App::DocumentObject *owner, const 
     }
 }
 
+void PropertySheet::onBreakLink(App::DocumentObject *obj) {
+    invalidateDependants(obj);
+}
+
+void PropertySheet::hasSetChildValue(App::Property &prop) {
+    ++updateCount;
+    PropertyXLinkContainer::hasSetChildValue(prop);
+}
+
 void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
 {
     const char * docName = docObj->getDocument()->Label.getValue();
@@ -1006,16 +1004,10 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
     // Touch to force recompute
     touch();
     
-    std::set<CellAddress> s = i->second;
-    std::set<CellAddress>::const_iterator j = s.begin();
-    std::set<CellAddress>::const_iterator end = s.end();
-
-    while (j != end) {
-        Cell * cell = getValue(*j);
-
+    for(const auto &address : i->second) {
+        Cell * cell = getValue(address);
         cell->setResolveException("Unresolved dependency");
-        setDirty((*j));
-        ++j;
+        setDirty(address);
     }
 }
 
@@ -1071,17 +1063,20 @@ void PropertySheet::renameObjectIdentifiers(const std::map<App::ObjectIdentifier
 
 void PropertySheet::deletedDocumentObject(const App::DocumentObject *docObj)
 {
-    if(docDeps.erase(const_cast<App::DocumentObject*>(docObj))) {
-        const App::DocumentObject * docObj = dynamic_cast<const App::DocumentObject*>(getContainer());
-        if(docObj && docObj->getDocument()!=docObj->getDocument()) {
-            for(auto it=xlinks.begin();it!=xlinks.end();++it) {
-                if(it->getValue() == docObj) {
-                    xlinks.erase(it);
-                    break;
-                }
-            }
-        }
-    }
+    (void)docObj;
+    // This function is only used in SheetObserver, which is obselete.
+    //
+    // if(docDeps.erase(const_cast<App::DocumentObject*>(docObj))) {
+    //     const App::DocumentObject * docObj = dynamic_cast<const App::DocumentObject*>(getContainer());
+    //     if(docObj && docObj->getDocument()!=docObj->getDocument()) {
+    //         for(auto it=xlinks.begin();it!=xlinks.end();++it) {
+    //             if(it->getValue() == docObj) {
+    //                 xlinks.erase(it);
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 void PropertySheet::documentSet()
@@ -1123,11 +1118,13 @@ void PropertySheet::hasSetValue()
 {
     if(!updateCount || 
        !owner || !owner->getNameInDocument() || owner->isRestoring() ||
-       this!=&owner->cells) 
+       this!=&owner->cells ||
+       testFlag(LinkDetached)) 
     {
-        PropertyLinkBase::hasSetValue();
+        PropertyXLinkContainer::hasSetValue();
         return;
     }
+
     updateCount = 0;
 
     std::set<App::DocumentObject*> deps;
@@ -1141,11 +1138,11 @@ void PropertySheet::hasSetValue()
             expr->visit(v);
         }
     }
-    registerLabelReferences(labels);
+    registerLabelReferences(std::move(labels));
 
-    owner->updateDeps(this,docDeps,std::move(deps),xlinks);
+    updateDeps(std::move(deps));
 
-    PropertyLinkBase::hasSetValue();
+    PropertyXLinkContainer::hasSetValue();
 }
 
 PyObject *PropertySheet::getPyObject()
@@ -1157,16 +1154,32 @@ PyObject *PropertySheet::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
+void PropertySheet::setPyObject(PyObject *obj) {
+    if(!obj || !PyObject_TypeCheck(obj, &PropertySheetPy::Type))
+        throw Base::TypeError("Invalid type");
+    if(obj != PythonObject.ptr())
+        Paste(*static_cast<PropertySheetPy*>(obj)->getPropertySheetPtr());
+}
+
 void PropertySheet::afterRestore()
 {
     AtomicPropertyChange signaller(*this);
     for(auto &d : data)
         d.second->afterRestore();
-}
 
-void PropertySheet::breakLink(App::DocumentObject *obj, bool) {
-    invalidateDependants(obj);
-    deletedDocumentObject(obj);
+    PropertyXLinkContainer::afterRestore();
+
+    for(auto &v : _XLinks) {
+        auto &xlink = *v.second;
+        if(!xlink.checkRestore())
+            continue;
+        auto iter = documentObjectToCellMap.find(xlink.getValue()->getFullName());
+        if(iter == documentObjectToCellMap.end())
+            continue;
+        touch();
+        for(const auto &address : iter->second)
+            setDirty(address);
+    }
 }
 
 bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
@@ -1217,12 +1230,6 @@ void PropertySheet::updateElementReference(DocumentObject *feature,bool reverse)
 
 bool PropertySheet::referenceChanged() const {
     return false;
-}
-
-void PropertySheet::getLinks(std::vector<App::DocumentObject *> &objs, 
-        bool, std::vector<std::string> * /*subs*/, bool /*newStyle*/) const
-{
-    objs.insert(objs.end(),docDeps.begin(),docDeps.end());
 }
 
 Property *PropertySheet::CopyOnImportExternal(

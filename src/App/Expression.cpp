@@ -153,7 +153,7 @@ bool ExpressionVisitor::adjustLinks(Expression &e, const std::set<App::DocumentO
     return e._adjustLinks(inList,*this);
 }
 
-void ExpressionVisitor::importSubNames(Expression &e, const std::map<std::string,std::string> &subNameMap) {
+void ExpressionVisitor::importSubNames(Expression &e, const ObjectIdentifier::SubNameMap &subNameMap) {
     e._importSubNames(subNameMap);
 }
 
@@ -907,7 +907,7 @@ bool Expression::adjustLinks(const std::set<App::DocumentObject*> &inList) {
 
 class ImportSubNamesExpressionVisitor : public ExpressionVisitor {
 public:
-    ImportSubNamesExpressionVisitor(const std::map<std::string,std::string> &subNameMap)
+    ImportSubNamesExpressionVisitor(const ObjectIdentifier::SubNameMap &subNameMap)
         :subNameMap(subNameMap)
     {}
 
@@ -915,23 +915,29 @@ public:
         this->importSubNames(e,subNameMap);
     }
 
-    const std::map<std::string,std::string> &subNameMap;
+    const ObjectIdentifier::SubNameMap &subNameMap;
 };
 
 ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string> &nameMap) const {
-    std::map<std::string,std::string> subNameMap;
+    if(!owner || !owner->getDocument())
+        return 0;
+    ObjectIdentifier::SubNameMap subNameMap;
     for(auto &dep : getDeps()) {
         for(auto &info : dep.second) {
             for(auto &path : info.second) {
                 auto obj = path.getDocumentObject();
                 if(!obj)
                     continue;
-                std::string sub = path.getSubObjectName(true);
-                if(sub.empty() || subNameMap.count(sub))
+                auto it = nameMap.find(obj->getExportName(true));
+                if(it!=nameMap.end())
+                    subNameMap.emplace(std::make_pair(obj,std::string()),it->second);
+                auto key = std::make_pair(obj,path.getSubObjectName());
+                if(key.second.empty() || subNameMap.count(key))
                     continue;
-                std::string imported = PropertyLinkBase::tryImportSubName(nameMap,obj,sub.c_str());
+                std::string imported = PropertyLinkBase::tryImportSubName(
+                               obj,key.second.c_str(),owner->getDocument(), nameMap);
                 if(imported.size())
-                    subNameMap.emplace(sub,imported);
+                    subNameMap.emplace(std::move(key),std::move(imported));
             }
         }
     }
@@ -961,14 +967,20 @@ public:
 ExpressionPtr Expression::updateLabelReference(
         App::DocumentObject *obj, const std::string &ref, const char *newLabel) const 
 {
+    if(ref.size()<=2)
+        return 0;
     std::vector<std::string> labels;
     getDepObjects(&labels);
-    if(std::find(labels.begin(),labels.end(),ref) == labels.end())
-        return 0;
-    UpdateLabelExpressionVisitor v(obj,ref,newLabel);
-    ExpressionPtr expr(copy());
-    expr->visit(v);
-    return expr;
+    for(auto &label : labels) {
+        // ref contains something like $label. and we need to strip '$' and '.'
+        if(ref.compare(1,ref.size()-2,label)==0) {
+            UpdateLabelExpressionVisitor v(obj,ref,newLabel);
+            ExpressionPtr expr(copy());
+            expr->visit(v);
+            return expr;
+        }
+    }
+    return 0;
 }
 
 App::any Expression::getValueAsAny() const {
@@ -2887,15 +2899,16 @@ void VariableExpression::_getIdentifiers(std::set<App::ObjectIdentifier> &deps) 
 bool VariableExpression::_renameDocument(const std::string &oldName,
         const std::string &newName, ExpressionVisitor &v)
 {
-    return var.renameDocument(oldName, newName,&v);
+    return var.renameDocument(v, oldName, newName);
 }
 
-bool VariableExpression::_adjustLinks(const std::set<App::DocumentObject *> &inList, ExpressionVisitor &v) 
+bool VariableExpression::_adjustLinks(
+        const std::set<App::DocumentObject *> &inList, ExpressionVisitor &v) 
 {
-    return var.adjustLinks(inList,&v);
+    return var.adjustLinks(v,inList);
 }
 
-void VariableExpression::_importSubNames(const std::map<std::string,std::string> &subNameMap) 
+void VariableExpression::_importSubNames(const ObjectIdentifier::SubNameMap &subNameMap) 
 {
     var.importSubNames(subNameMap);
 }
@@ -2909,7 +2922,7 @@ void VariableExpression::_updateLabelReference(
 bool VariableExpression::_updateElementReference(
         App::DocumentObject *feature, bool reverse, ExpressionVisitor &v) 
 {
-    return var.updateElementReference(feature,reverse,&v);
+    return var.updateElementReference(v,feature,reverse);
 }
 
 bool VariableExpression::_renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &paths, 

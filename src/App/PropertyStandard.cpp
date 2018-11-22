@@ -1447,9 +1447,13 @@ void PropertyString::setValue(const char* newLabel)
         newLabel = label.c_str();
 
         if(!obj->getDocument()->testStatus(App::Document::Restoring)) {
-            // TODO: Here can only mean that we are importing. We don't support
-            // linked lable auto correction on import yet. Is this ever going to
-            // be possible?
+            // Only update label reference if we are not restoring. When
+            // importing (which also counts as restoring), it is possible the
+            // new object changes its label. However, we cannot update label
+            // references here, because object restoring is not based on
+            // dependency order. It can only be done in afterRestore(). 
+            //
+            // See PropertyLinkBase::restoreLabelReference() for more details.
             propChanges = PropertyLinkBase::updateLabelReferences(obj,newLabel);
         }
 

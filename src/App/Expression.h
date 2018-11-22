@@ -68,7 +68,7 @@ protected:
     bool renameObjectIdentifier(Expression &e,const std::map<ObjectIdentifier,ObjectIdentifier> &paths,
             const ObjectIdentifier &path);
     bool updateElementReference(Expression &e, App::DocumentObject *feature,bool reverse);
-    void importSubNames(Expression &e, const std::map<std::string,std::string> &subNameMap);
+    void importSubNames(Expression &e, const ObjectIdentifier::SubNameMap &subNameMap);
     void updateLabelReference(Expression &e, App::DocumentObject *obj, 
             const std::string &ref, const char *newLabel);
     void moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount);
@@ -256,7 +256,7 @@ protected:
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) {return false;}
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &) {return false;}
     virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &) {return false;}
-    virtual void _importSubNames(const std::map<std::string,std::string> &) {}
+    virtual void _importSubNames(const ObjectIdentifier::SubNameMap &) {}
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) {}
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &) {return false;}

@@ -52,7 +52,6 @@ PropertyExpressionEngine::PropertyExpressionEngine()
     : running(false)
     , validator(0)
 {
-    _pcScope = LinkScope::Global;
 }
 
 /**
@@ -91,8 +90,8 @@ Property *PropertyExpressionEngine::Copy() const
 void PropertyExpressionEngine::hasSetValue()
 {
     App::DocumentObject *owner = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(!owner || !owner->getNameInDocument() || owner->isRestoring()) {
-        PropertyLinkBase::hasSetValue();
+    if(!owner || !owner->getNameInDocument() || owner->isRestoring() || testFlag(LinkDetached)) {
+        PropertyXLinkContainer::hasSetValue();
         return;
     }
 
@@ -107,11 +106,11 @@ void PropertyExpressionEngine::hasSetValue()
             expr->visit(v);
         }
     }
-    registerLabelReferences(labels);
+    registerLabelReferences(std::move(labels));
 
-    owner->updateDeps(this,depObjs,std::move(deps),xlinks);
+    updateDeps(std::move(deps));
 
-    PropertyLinkBase::hasSetValue();
+    PropertyXLinkContainer::hasSetValue();
 }
 
 void PropertyExpressionEngine::Paste(const Property &from)
@@ -127,17 +126,15 @@ void PropertyExpressionEngine::Paste(const Property &from)
         expressionChanged(e.first);
     }
     validator = fromee->validator;
+    signaller.tryInvoke();
 }
 
 void PropertyExpressionEngine::Save(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" <<  expressions.size();
-    if(xlinks.size()) 
-        writer.Stream() << "\" xcount=\"" << xlinks.size();
-    writer.Stream() <<"\">" << std::endl;
+    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" <<  expressions.size()
+        << "\" xlink=\"1\">" << std::endl;
     writer.incInd();
-    for(auto &l : xlinks)
-        l.Save(writer);
+    PropertyXLinkContainer::Save(writer);
     for (ExpressionMap::const_iterator it = expressions.begin(); it != expressions.end(); ++it) {
         writer.Stream() << writer.ind() << "<Expression path=\"" 
             << Property::encodeAttribute(it->first.toString()) <<"\" expression=\"" 
@@ -155,16 +152,11 @@ void PropertyExpressionEngine::Restore(Base::XMLReader &reader)
     reader.readElement("ExpressionEngine");
     int count = reader.getAttributeAsFloat("count");
 
-    if(reader.hasAttribute("xcount")) {
-        int xcount = reader.getAttributeAsInteger("xcount");
-        for(int i=0;i<xcount;++i) {
-            xlinks.emplace_back(false,this);
-            xlinks.back().Restore(reader);
-        }
-    }
+    if(reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink"))
+        PropertyXLinkContainer::Restore(reader);
 
     restoredExpressions.reset(new std::vector<RestoredExpression>);
-
+    restoredExpressions->reserve(count);
     for (int i = 0; i < count; ++i) {
 
         reader.readElement("Expression");
@@ -273,6 +265,8 @@ void PropertyExpressionEngine::afterRestore()
             boost::shared_ptr<Expression> expression(Expression::parse(docObj, info.expr.c_str()));
             setValue(path, expression, info.comment.size()?info.comment.c_str():0);
         }
+        PropertyXLinkContainer::afterRestore();
+        signaller.tryInvoke();
     }
     restoredExpressions.reset();
 }
@@ -323,10 +317,12 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
         AtomicPropertyChange signaller(*this);
         expressions[usePath] = ExpressionInfo(expr, comment);
         expressionChanged(usePath);
+        signaller.tryInvoke();
     } else {
         AtomicPropertyChange signaller(*this);
         expressions.erase(usePath);
         expressionChanged(usePath);
+        signaller.tryInvoke();
     }
 }
 
@@ -493,31 +489,19 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute(ExecuteOption o
             throw Base::RuntimeError("Invalid property owner.");
 
         /* Set value of property */
-        auto value = expressions[*it].expression->getValueAsAny();
-        prop->setPathValue(*it, value);
+        try {
+            auto value = expressions[*it].expression->getValueAsAny();
+            prop->setPathValue(*it, value);
+        }catch(Base::Exception &e) {
+            std::ostringstream ss;
+            ss << e.what() << std::endl << "in property binding '" << prop->getName() << "'";
+            e.setMessage(ss.str());
+            throw;
+        }
 
         ++it;
     }
     return DocumentObject::StdReturn;
-}
-
-/**
- * @brief Find document objects that the expressions depend on.
- * @param docObjs Dependencies
- */
-
-void PropertyExpressionEngine::getDocumentObjectDeps(std::vector<DocumentObject *> &docObjs) const
-{
-    DocumentObject * owner = freecad_dynamic_cast<DocumentObject>(getContainer());
-
-    if (owner == 0)
-        return;
-
-    std::set<App::DocumentObject *> deps;
-    for(auto &v : expressions)
-        v.second.expression->getDepObjects(deps);
-    deps.erase(owner);
-    docObjs.insert(docObjs.end(),deps.begin(),deps.end());
 }
 
 /**
@@ -551,8 +535,8 @@ void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
 
 bool PropertyExpressionEngine::depsAreTouched() const
 {
-    for(auto &v : expressions)
-        if(v.second.expression->isTouched())
+    for(auto obj : _Deps)
+        if(obj->isTouched())
             return true;
     return false;
 }
@@ -691,11 +675,15 @@ void PropertyExpressionEngine::setPyObject(PyObject *)
     throw Base::RuntimeError("Property is read-only");
 }
 
+/* The policy implemented in the following function is to auto erase binding in
+ * case linked object is gone. I think it is better to cause error and get
+ * user's attension
+ *
 void PropertyExpressionEngine::breakLink(App::DocumentObject *obj, bool clear) {
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!owner)
         return;
-    if(depObjs.count(obj)==0 && (!clear || obj!=owner || depObjs.size()==0))
+    if(_Deps.count(obj)==0 && (!clear || obj!=owner || _Deps.empty()))
         return;
     AtomicPropertyChange signaler(*this);
     for(auto it=expressions.begin(),itNext=it;it!=expressions.end();it=itNext) {
@@ -713,13 +701,14 @@ void PropertyExpressionEngine::breakLink(App::DocumentObject *obj, bool clear) {
         expressionChanged(path);
     }
 }
+*/
 
 bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inList) {
     auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
     if(!owner)
         return false;
     bool found = false;
-    for(auto obj : depObjs) {
+    for(auto obj : _Deps) {
         if(inList.count(obj)) {
             found = true;
             break;
@@ -757,35 +746,6 @@ void PropertyExpressionEngine::updateElementReference(DocumentObject *feature, b
 
 bool PropertyExpressionEngine::referenceChanged() const {
     return false;
-}
-
-void PropertyExpressionEngine::getLinks(std::vector<App::DocumentObject *> &objs, 
-        bool, std::vector<std::string> *subs, bool newStyle) const
-{
-    if(!subs) {
-        getDocumentObjectDeps(objs);
-        return;
-    }
-
-    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
-
-    ExpressionDeps deps;
-    for(auto &v : expressions) 
-        v.second.expression->getDeps(deps);
-
-    for(auto &dep : deps) {
-        if(dep.first == owner)
-            continue;
-        std::set<std::string> subset;
-        for(auto &info : dep.second) {
-            for(auto &path : info.second)
-                subset.insert(path.getSubObjectName(newStyle));
-        }
-        for(auto &sub : subset) {
-            objs.push_back(dep.first);
-            subs->push_back(sub);
-        }
-    }
 }
 
 Property *PropertyExpressionEngine::CopyOnImportExternal(

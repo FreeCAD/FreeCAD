@@ -2296,7 +2296,11 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         if(objSet.find(obj)==objSet.end())
             continue;
         try {
-            obj->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteTransient);
+            auto returnCode = obj->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteTransient);
+            if(returnCode!=DocumentObject::StdReturn) {
+                FC_ERR("Failed to restore " << obj->getFullName() << ": " << returnCode->Why);
+                delete returnCode;
+            }
             obj->onDocumentRestored();
         }
         catch (const Base::Exception& e) {
@@ -2304,8 +2308,9 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         }
         if(checkXLink && !d->touchedObjs.count(obj)) {
             for(auto prop : propMap[obj]) {
-                int res = PropertyXLink::checkRestore(prop);
-                if(res) {
+                auto link = dynamic_cast<PropertyLinkBase*>(prop);
+                int res;
+                if(link && (res=link->checkRestore())) {
                     d->touchedObjs.insert(obj);
                     FC_WARN("'" << getName() << "' object '" << obj->getNameInDocument() 
                         << "' xlink property '" << obj->getPropertyName(prop) 
@@ -3634,15 +3639,16 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
         std::vector<App::Property*> props;
         obj->getPropertyList(props);
         for(auto prop : props) {
-            auto xlink = dynamic_cast<App::PropertyXLink*>(prop);
-            if(!xlink || xlink->testStatus(Property::Immutable) || obj->isReadOnly(prop))
+            auto link = dynamic_cast<App::PropertyLinkBase*>(prop);
+            if(!link || prop->testStatus(Property::Immutable) || obj->isReadOnly(prop))
                 continue;
-            auto linked = xlink->getValue();
-            if(linked && linked->getNameInDocument() && 
-               linked->getDocument()!=this && 
-               objSet.insert(linked).second)
-            {
-                objs.push_back(linked);
+            for(auto linked : link->linkedObjects()) {
+                if(linked && linked->getNameInDocument() && 
+                    linked->getDocument()!=this && 
+                    objSet.insert(linked).second)
+                {
+                    objs.push_back(linked);
+                }
             }
         }
     }

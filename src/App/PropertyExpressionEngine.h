@@ -45,7 +45,7 @@ class ObjectIdentifier;
 class Expression;
 
 
-class AppExport PropertyExpressionEngine : public App::PropertyLinkBase, 
+class AppExport PropertyExpressionEngine : public App::PropertyXLinkContainer, 
                                            private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
 {
     TYPESYSTEM_HEADER();
@@ -53,9 +53,6 @@ public:
 
     virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) override;
     virtual bool referenceChanged() const override;
-    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
-    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;
     virtual Property *CopyOnLabelChange(App::DocumentObject *obj, 
@@ -125,8 +122,6 @@ public:
      */
     DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll);
 
-    void getDocumentObjectDeps(std::vector<DocumentObject*> & docObjs) const;
-
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 
     bool depsAreTouched() const;
@@ -189,10 +184,6 @@ private:
     std::unique_ptr<std::vector<RestoredExpression> > restoredExpressions;
 
     friend class AtomicPropertyChange;
-
-    std::set<App::DocumentObject*> depObjs;
-
-    std::list<App::PropertyXLink> xlinks;
 };
 
 }

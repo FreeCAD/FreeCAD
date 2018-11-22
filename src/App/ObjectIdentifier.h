@@ -119,8 +119,8 @@ public:
 
         bool operator>(const String & other) const { return str > other.str; }
 
-        void checkImport(bool isSubname=false);
-
+        void checkImport(const App::DocumentObject *owner, 
+                const App::DocumentObject *obj=0, String *objName=0);
     private:
 
         std::string str;
@@ -298,13 +298,15 @@ public:
 
     String getDocumentObjectName() const;
 
-    const std::string &getSubObjectName(bool newStyle=false) const;
+    const std::string &getSubObjectName(bool newStyle) const;
+    const std::string &getSubObjectName() const;
 
-    void importSubNames(const std::map<std::string,std::string> &subNameMap);
+    typedef std::map<std::pair<App::DocumentObject*,std::string>,std::string> SubNameMap;
+    void importSubNames(const SubNameMap &subNameMap);
 
     bool updateLabelReference(App::DocumentObject *, const std::string &, const char *);
 
-    bool renameDocument(const std::string &oldName, const std::string &newName, ExpressionVisitor *v);
+    bool renameDocument(ExpressionVisitor &v, const std::string &oldName, const std::string &newName);
 
     std::pair<App::DocumentObject*,std::string> getDep(std::vector<std::string> *labels=0) const;
 
@@ -342,9 +344,9 @@ public:
 
     std::string resolveErrorString() const;
 
-    bool adjustLinks(const std::set<App::DocumentObject *> &inList, ExpressionVisitor *v);
+    bool adjustLinks(ExpressionVisitor &v, const std::set<App::DocumentObject *> &inList);
 
-    bool updateElementReference(App::DocumentObject *feature=0, bool reverse=false, ExpressionVisitor *v=0);
+    bool updateElementReference(ExpressionVisitor &v, App::DocumentObject *feature=0, bool reverse=false);
 
     void resolveAmbiguity();
 
@@ -384,7 +386,8 @@ protected:
     void resolve(ResolveResults & results) const;
     void resolveAmbiguity(ResolveResults &results);
 
-    App::DocumentObject *getDocumentObject(const App::Document *doc, const String &name, std::bitset<32> &flags) const;
+    static App::DocumentObject *getDocumentObject(
+            const App::Document *doc, const String &name, std::bitset<32> &flags);
 
     App::DocumentObject * owner;
     String  documentName;

@@ -546,7 +546,7 @@ iden
                                             }
     | object '.' id_or_cell                 { /* Path to property of a given document object */
                                                 $$ = ObjectIdentifier(ctx.obj);
-                                                $1.checkImport();
+                                                $1.checkImport(ctx.obj);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($1));
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($3));
                                                 $$.resolveAmbiguity();
@@ -556,6 +556,13 @@ iden
                                                 $$.setDocumentName(std::move($1), true);
                                                 $$.setDocumentObjectName(std::move($3), true);
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($5));
+                                                $$.resolveAmbiguity();
+                                            }
+    | document '#' object '.' STRING '.' id_or_cell    
+                                            {   $$ = ObjectIdentifier(ctx.obj);
+                                                $$.setDocumentName(std::move($1), true);
+                                                $$.setDocumentObjectName(std::move($3), true, ObjectIdentifier::String(std::move($5),true));
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent($7));
                                                 $$.resolveAmbiguity();
                                             }
     | iden '.' IDENTIFIER                   { $$= std::move($1); $$.addComponent(ObjectIdentifier::SimpleComponent($3)); }

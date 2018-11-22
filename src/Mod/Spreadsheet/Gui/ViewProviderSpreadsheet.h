@@ -57,7 +57,7 @@ public:
 
     Spreadsheet::Sheet* getSpreadsheetObject() const;
 
-    virtual bool onDelete(const std::vector<std::string> &);
+    virtual void beforeDelete() override;
 
     QIcon getIcon() const;
 

@@ -655,7 +655,7 @@ void Cell::save(Base::Writer &writer) const
     if (isUsed(EXPRESSION_SET)) {
         std::string content;
 
-        getStringContent(content);
+        getStringContent(content,true);
         writer.Stream() << "content=\"" << App::Property::encodeAttribute(content) << "\" ";
     }
 

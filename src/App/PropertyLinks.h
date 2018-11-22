@@ -44,6 +44,11 @@ namespace App
 class DocumentObject;
 class Document;
 
+class DocInfo;
+typedef std::shared_ptr<DocInfo> DocInfoPtr;
+
+class PropertyXLink;
+
 /**
  * @brief Defines different scopes for which a link can be valid
  * The scopes defined in this enum describe the different possibilities of where a link can point to.
@@ -104,6 +109,8 @@ public:
     PropertyLinkBase();
     virtual ~PropertyLinkBase();
 
+    friend class DocInfo;
+
     /** Link type property interface APIs
      * These APIs are moved here so that any type of property can have the
      * property link behavior, e.g. the PropertyExpressionEngine
@@ -124,11 +131,22 @@ public:
 
     /** Register label reference for future object relabel update
      *
-     *  @param subs: subname reference to check for label references
+     *  @param labels: labels to be registered
      *  @param reset: if ture, then calls unregisterLabelReference() before
-     *  registering new references
+     *  registering
      */
-    void registerLabelReferences(const std::vector<std::string> &subs, bool reset=true);
+    void registerLabelReferences(std::vector<std::string> &&labels, bool reset=true);
+
+    /** Check subnames for label registeration
+     *
+     *  @param subs: subname references
+     *  @param reset: if ture, then calls unregisterLabelReference() before
+     *  registering
+     *
+     *  Check the give subname references and extract any label reference
+     *  inside (by calling getLabelReferences()), and register them.
+     */
+    void checkLabelReferences(const std::vector<std::string> &subs, bool reset=true);
 
     /// Clear internal label references registration
     void unregisterLabelReferences();
@@ -137,6 +155,13 @@ public:
     virtual bool referenceChanged() const {
         return false;
     }
+
+    /** Test if the link is restored unchanged
+     *
+     * @return For external linked object, return non zero in case the link is
+     * missing, or the time stamp has changed.
+     */
+    virtual int checkRestore() const {return 0;}
 
     /** Obtain the linked objects
      *
@@ -240,9 +265,9 @@ public:
     }
     //@}
 
-    void setAllowExternalLink(bool allow) { _allowExternal = allow; }
-    bool allowExternalLink() const {return _allowExternal;}
+    void setAllowExternal(bool allow);
 
+    /// Helper functions
     //@{
 
     /// Update all element references in all link properties of \a feature
@@ -251,7 +276,6 @@ public:
 
     /** Helper function for update individual element reference
      *
-     * @param owner: the owner property of the subname referece
      * @param feature: if given, than only update element reference belonging
      *                 to this feature. If not, then update geometry element
      *                 references.
@@ -265,12 +289,11 @@ public:
      * This helper function is to be called by each link property in the event of
      * geometry element reference change due to geometry model changes.
      */
-    static bool _updateElementReference(PropertyLinkBase *owner, App::DocumentObject *feature,
+     bool _updateElementReference(App::DocumentObject *feature,
         App::DocumentObject *obj, std::string &sub, ShadowSub &shadow, bool reverse);
 
     /** Helper function to register geometry element reference
      * 
-     * @param owner: the link property to be registered
      * @param obj: the linked object
      * @param sub: the subname reference
      * @param shadow: a pair of new and old style element references to be updated.
@@ -278,8 +301,7 @@ public:
      * Search for any geometry element reference inside the subname, and
      * register for future update in case of geometry model update.
      */
-    static void _registerElementReference(PropertyLinkBase *owner, 
-                    App::DocumentObject *obj, std::string &sub, ShadowSub &shadow);
+    void _registerElementReference(App::DocumentObject *obj, std::string &sub, ShadowSub &shadow);
 
     /** Helper function for breaking link properties
      *
@@ -291,22 +313,163 @@ public:
      */
     static void breakLinks(App::DocumentObject *link, const std::vector<App::DocumentObject*> &objs, bool clear);
 
-    static std::string tryImportSubName(const std::map<std::string,std::string> &nameMap, 
-                                        const App::DocumentObject *obj, const char *sub);
-    static std::string exportSubName(const App::DocumentObject *obj, const char *sub);
-    static std::string importSubName(Base::XMLReader &reader, const char *sub);
+    /** Helper function for link import operation
+     *
+     * @param obj: the linked object
+     * @param sub: subname reference
+     * @param doc: importing document
+     * @param nameMap: a name map from source object to its imported counter part
+     *
+     * @return Return a changed subname reference, or empty string if no change.
+     *
+     * Link import operation will go through all link property and imports all
+     * externally linked object. After import, the link property must be
+     * changed to point to the newly imported objects, which should happen inside
+     * the API CopyOnImportExternal(). This function helps to rewrite subname
+     * reference to point to the correct sub objects that are imported.
+     */
+    static std::string tryImportSubName(const App::DocumentObject *obj, const char *sub, 
+            const App::Document *doc, const std::map<std::string,std::string> &nameMap); 
+                                        
+    /** Helper function for link import operation
+     *
+     * @param doc: owner document of the imported objects
+     * @param obj: the linked object
+     * @param nameMap: a name map from source object to its imported counter part
+     *
+     * @return Return the imported object if found, or the input \c obj if no change.
+     * @sa tryImportSubNames
+     *
+     * This function searches for the name map and tries to find the imported
+     * object from the given source object.
+     */
+    static App::DocumentObject *tryImport(const App::Document *doc, const App::DocumentObject *obj,
+                                          const std::map<std::string,std::string> &nameMap);
 
+    /** Helper function to export a subname reference
+     *
+     * @param obj: linked object
+     * @param sub: subname reference
+     * @param check: if Ture, then the return string will be empty if non of
+     *               sub object referenced is exporting.
+     * 
+     * @return The subname reference suitable for exporting
+     * @sa importSubName(), restoreLabelReference()
+     *
+     * The function go through the input subname reference and changes any sub
+     * object references inside for exporting. If the sub object is referenced
+     * by its internal object name, then the reference is changed from
+     * 'objName' to 'objName@docName'. If referenced by label, then it will be
+     * changed to 'objName@docName@' instead. importSubName() and
+     * restoreLabelReference() can be used together to restore the reference
+     * during import.
+     */
+    static std::string exportSubName(const App::DocumentObject *obj, const char *sub, bool check=false);
+
+    /** Helper function to import a subname reference
+     *
+     * @param reader: the import reader
+     * @param sub: input subname reference
+     * @param restoreLabel: output indicate whether post process is required
+     *                      after restore.
+     *
+     * @sa exportSubName(), restoreLabelReference()
+     *
+     * @return return either an updated subname reference or the input
+     * reference if no change. If restoreLabel is set to true on output, it
+     * means there are some label reference changes that must be corrected
+     * after restore, by calling restoreLabelReference() in property's
+     * afterRestore().
+     */
+    static std::string importSubName(Base::XMLReader &reader, const char *sub, bool &restoreLabel);
+
+    /** Helper function to restore label references during import
+     *
+     * @param obj: linked object
+     * @param sub: subname reference
+     * @param shadow: optional shadow subname reference
+     *
+     * @sa exportSubName(), importSubName()
+     *
+     * When exporting and importing (i.e. copy and paste) objects into the same
+     * document, the new object must be renamed, both the internal name and the
+     * label. Therefore, the link reference of the new objects must be
+     * corrected accordingly. The basic idea is that when exporting object, all
+     * object name references are changed to 'objName@docName', and label
+     * references are changed to 'objName@docName@'. During import,
+     * MergeDocument will maintain a map from objName@docName to object's new
+     * name. Object name reference can be restored on spot by consulting the
+     * map, while label reference will be restored later in property's
+     * afterRestore() function, which calls this function to do the string
+     * parsing.
+     */
+    static void restoreLabelReference(const App::DocumentObject *obj, std::string &sub, ShadowSub *shadow=0);
+
+    /** Helper function to extract labels from a subname reference
+     *
+     * @param labels: output vector of extracted labels
+     * @param subname: subname reference
+     *
+     * @sa registerLabelReferences()
+     *
+     * This function is used to extrac label from subname reference for
+     * registering of label changes.
+     */
     static void getLabelReferences(std::vector<std::string> &labels, const char *subname);
 
+    /** Helper function to collect changed property when an object re-label
+     *
+     * @param obj: the object that owns the label
+     * @param newLabel: the new label
+     * 
+     * @return return a map from the affected property to a copy of it with
+     * updated subname references
+     */
     static std::vector<std::pair<Property*, std::unique_ptr<Property> > > updateLabelReferences(
             App::DocumentObject *obj, const char *newLabel);
 
-    static std::string updateLabelReference(App::DocumentObject *obj, const std::string &ref, 
-            const char *newLabel, App::DocumentObject *parent, const char *subname);
+    /** Helper function to update subname reference on label change
+     *
+     * @param linked: linked object
+     * @param subname: subname reference
+     * @param obj: the object that owns the label
+     * @param ref: label reference in the format of '$<old_label>.', which is
+     *             the format used in subname reference for label reference.
+     *             This parameter is provided for easy search of label
+     *             reference.
+     * @param newLabel: new label
+     *
+     * @return Returns an updated subname reference, or empty string if no change.
+     *
+     * This function helps to update subname reference on label change. It is
+     * usually called inside CopyOnLabelChange(), the API for handling label
+     * change, which is called just before label change. In other word, when
+     * called, the sub object can still be reached using the original label
+     * references, but not the new labels.
+     */
+    static std::string updateLabelReference(const App::DocumentObject *linked, const char *subname,
+            App::DocumentObject *obj, const std::string &ref, const char *newLabel);
     //@}
 
+    enum LinkFlags {
+        LinkAllowExternal,
+        LinkDetached,
+        LinkRestoring,
+        LinkAllowPartial,
+        LinkRestoreLabel,
+    };
+    inline bool testFlag(int flag) const {
+        return _Flags.test((std::size_t)flag);
+    }
+
 protected:
-    bool _allowExternal = false;
+    virtual void hasSetValue() override;
+
+protected:
+    std::bitset<32> _Flags;
+    inline void setFlag(int flag, bool value=true) {
+        _Flags.set((std::size_t)flag,value);
+    }
 
 private:
     std::set<std::string> _LabelRefs;
@@ -602,6 +765,7 @@ protected:
     std::vector<std::string> _cSubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
+    bool _restoreLabel;
 };
 
 /** The general Link Property with Child scope
@@ -737,6 +901,7 @@ private:
     std::vector<std::string>     _lSubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
+    bool _restoreLabel;
 };
 
 /** The general Link Property with Child scope
@@ -775,7 +940,7 @@ class AppExport PropertyXLink : public PropertyLinkGlobal
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyXLink(bool allowPartial=false, Property *parent=0);
+    PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=0);
 
     virtual ~PropertyXLink();
 
@@ -793,8 +958,7 @@ public:
     const char *getDocumentPath() const;
     const char *getObjectName() const;
 
-    static int checkRestore(const App::Property *prop);
-    int checkRestore() const;
+    virtual int checkRestore() const override;
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
@@ -811,9 +975,7 @@ public:
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
 
-    class DocInfo;
     friend class DocInfo;
-    typedef std::shared_ptr<DocInfo> DocInfoPtr;
 
     static bool hasXLink(const App::Document *doc);
     static bool hasXLink(const std::vector<App::DocumentObject*> &objs, std::vector<App::Document*> *unsaved=0);
@@ -843,7 +1005,6 @@ public:
     std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle=false) const;
 
     void setAllowPartial(bool enable);
-    bool allowPartial() const { return _allowPartial; }
 
 protected:
     void unlink();
@@ -864,7 +1025,7 @@ protected:
 
     virtual bool upgrade(Base::XMLReader &reader, const char *typeName);
 
-    void copyTo(PropertyXLink &other) const;
+    void copyTo(PropertyXLink &other, App::DocumentObject *linked=0, std::vector<std::string> *subs=0) const;
 
     virtual void aboutToSetValue() override;
 
@@ -875,21 +1036,23 @@ protected:
 protected:
     DocInfoPtr docInfo;
     std::string filePath;
+    std::string docName;
     std::string objectName;
     std::string stamp;
     std::vector<std::string> _SubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;
-    Property *parentProp;
-    bool _allowPartial;
+    PropertyLinkBase *parentProp;
 };
 
 
+/** Link to one or more (sub)object from the same or different document
+ */
 class AppExport PropertyXLinkSub: public PropertyXLink {
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyXLinkSub(bool allowPartial=false, Property *parent=0);
+    PropertyXLinkSub(bool allowPartial=false, PropertyLinkBase *parent=0);
 
     virtual ~PropertyXLinkSub();
 
@@ -912,6 +1075,8 @@ protected:
 };
 
 
+/** Link to one or more (sub)object(s) of one or more object(s) from the same or different document
+ */
 class AppExport PropertyXLinkSubList: public PropertyLinkBase {
     TYPESYSTEM_HEADER();
 
@@ -993,13 +1158,46 @@ public:
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
     bool upgrade(Base::XMLReader &reader, const char *typeName);
-    int checkRestore() const;
+
+    virtual int checkRestore() const override;
 
     void setAllowPartial(bool enable);
 
 protected:
     std::list<PropertyXLinkSub> _Links;
-    bool _allowPartial;
+};
+
+/** Abstract property that can link to multiple external objects
+ *
+ * @sa See PropertyExpressionEngine for example usage
+ */
+class PropertyXLinkContainer : public PropertyLinkBase {
+public:
+    PropertyXLinkContainer();
+    ~PropertyXLinkContainer();
+
+    virtual void afterRestore() override;
+    virtual int checkRestore() const override;
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
+    virtual void breakLink(App::DocumentObject *obj, bool clear) override;
+    virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
+            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+
+protected:
+    virtual void aboutToSetChildValue(App::Property &prop) override;
+    virtual PropertyXLink *createXLink();
+    virtual void onBreakLink(App::DocumentObject *obj);
+    void updateDeps(std::set<DocumentObject*> &&newDeps);
+    void clearDeps();
+
+protected:
+    std::set<App::DocumentObject*> _Deps;
+    std::map<std::string, std::unique_ptr<PropertyXLink> > _XLinks;
+    bool _LinkRestored;
+
+private:
+    std::unique_ptr<std::vector<std::unique_ptr<PropertyXLink> > > _XLinkRestores;
 };
 
 } // namespace App

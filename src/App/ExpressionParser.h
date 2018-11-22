@@ -123,7 +123,7 @@ protected:
     virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const;
     virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const;
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &);
-    virtual void _importSubNames(const std::map<std::string,std::string> &);
+    virtual void _importSubNames(const ObjectIdentifier::SubNameMap &);
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *);
     virtual bool _updateElementReference(App::DocumentObject *,bool,ExpressionVisitor &);
     virtual bool _renameDocument(const std::string &, const std::string &, ExpressionVisitor &);

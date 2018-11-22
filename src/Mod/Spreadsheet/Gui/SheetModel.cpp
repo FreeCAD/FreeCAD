@@ -437,7 +437,20 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                     return QVariant(QString::fromUtf8(res.front().c_str()));
             }
             Base::PyGILStateLocker lock;
-            return QVariant(QString::fromUtf8(pyProp->getValue().as_string().c_str()));
+            std::string value;
+            try {
+                value = pyProp->getValue().as_string();
+            } catch (Py::Exception &) {
+                Base::PyException e;
+                value = "#ERR: ";
+                value += e.what();
+            } catch (Base::Exception &e) {
+                value = "#ERR: ";
+                value += e.what();
+            } catch (...) {
+                value = "#ERR: unknown exception";
+            }
+            return QVariant(QString::fromUtf8(value.c_str()));
         }
         default:
             return QVariant();

@@ -83,7 +83,7 @@ Sheet::Sheet()
     , props(this)
     , cells(this)
 {
-    ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden), "Cell contents");
+    ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_Hidden), "Cell contents");
     ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Column widths");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
 
@@ -367,13 +367,12 @@ void Sheet::setCell(CellAddress address, const char * value)
     // Update expression, delete old first if necessary
     Cell * cell = getNewCell(address);
 
+    PropertySheet::AtomicPropertyChange signaller(cells);
+
     if (cell->getExpression()) {
         setContent(address, 0);
     }
     setContent(address, value);
-
-    // Recompute dependencies
-    touch();
 }
 
 /**
@@ -862,8 +861,6 @@ DocumentObjectExecReturn *Sheet::execute(void)
     rowHeights.clearDirty();
     columnWidths.clearDirty();
 
-    purgeTouched();
-
     if (cellErrors.size() == 0)
         return DocumentObject::StdReturn;
     else
@@ -1278,8 +1275,10 @@ void Sheet::onDocumentRestored()
 
 void Sheet::onRelabledDocument(const Document &document)
 {
+    bool touched = cells.isTouched();
     cells.renamedDocument(&document);
-    cells.purgeTouched();
+    if(!touched)
+        cells.purgeTouched();
 }
 
 /**

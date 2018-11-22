@@ -145,12 +145,13 @@ Sheet *ViewProviderSheet::getSpreadsheetObject() const
     return freecad_dynamic_cast<Sheet>(pcObject);
 }
 
-bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
+void ViewProviderSheet::beforeDelete()
 {
+    if(!view)
+        return;
     if(view==Gui::getMainWindow()->activeWindow())
         getDocument()->setActiveView(0,Gui::View3DInventor::getClassTypeId());
     Gui::getMainWindow()->removeWindow(view);
-    return true;
 }
 
 SheetView *ViewProviderSheet::showSpreadsheetView()

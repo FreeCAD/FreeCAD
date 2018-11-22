@@ -219,7 +219,7 @@ std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
             link->getLinks(ret,noHidden);
     }
     if(!(options & OutListNoExpression))
-        ExpressionEngine.getDocumentObjectDeps(ret);
+        ExpressionEngine.getLinks(ret);
     if(!options) {
         _outList = ret;
         _outListCached = true;
@@ -528,9 +528,7 @@ void DocumentObject::onAboutToRemoveProperty(const char* prop)
 {
     if (_pDoc) {
         _pDoc->removePropertyOfObject(this, prop);
-        _outListCached = false;
-        _outList.clear();
-        _outListMap.clear();
+        clearOutListCache();
     }
 }
 
@@ -561,12 +559,6 @@ void DocumentObject::onChanged(const Property* prop)
     // if (_pDoc)
     //     _pDoc->onChangedProperty(this,prop);
 
-    if(prop->isDerivedFrom(PropertyLinkBase::getClassTypeId())) {
-        _outList.clear();
-        _outListMap.clear();
-        _outListCached = false;
-    }
-    
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
         _pDoc->signalRelabelObject(*this);
 
@@ -580,6 +572,12 @@ void DocumentObject::onChanged(const Property* prop)
     // Now signal the view provider
     if (_pDoc)
         _pDoc->onChangedProperty(this,prop);
+}
+
+void DocumentObject::clearOutListCache() const {
+    _outList.clear();
+    _outListMap.clear();
+    _outListCached = false;
 }
 
 PyObject *DocumentObject::getPyObject(void)
@@ -1028,60 +1026,5 @@ const char *DocumentObject::hasHiddenMarker(const char *subname) {
 
 bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, DocumentObject *) const {
     return false;
-}
-
-void DocumentObject::updateDeps(Property *prop,
-                                std::set<DocumentObject*> &deps, 
-                                std::set<DocumentObject*> &&newDeps,
-                                std::list<PropertyXLink> &xlinks) 
-{
-    newDeps.erase(this);
-
-    for(auto obj : newDeps) {
-        if(obj && obj->getNameInDocument()) {
-            auto it = deps.find(obj);
-            if(it == deps.end()) {
-                if(getDocument()!=obj->getDocument()) {
-                    xlinks.emplace_back(false,prop);
-                    xlinks.back().setValue(obj);
-                }
-#ifndef USE_OLD_DAG
-                else
-                    obj->_addBackLink(this);
-#endif
-            } else {
-                deps.erase(it);
-                for(auto iter=xlinks.begin();iter!=xlinks.end();++iter) {
-                    if(iter->getValue() == obj) {
-                        xlinks.erase(iter);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    for(auto it=deps.begin(),itNext=it;it!=deps.end();it=itNext) {
-        ++itNext;
-        auto obj = *it;
-        if(!obj || !obj->getNameInDocument())
-            deps.erase(it);
-        else if(obj->getDocument()==getDocument()) {
-#ifndef USE_OLD_DAG
-            obj->_removeBackLink(this);
-#endif
-            deps.erase(it);
-        }
-    }
-    if(deps.size()) {
-        for(auto it=xlinks.begin(),itNext=it;it!=xlinks.end();it=itNext) {
-            ++itNext;
-            if(deps.erase(it->getValue())) {
-                xlinks.erase(it);
-                if(deps.empty())
-                    break;
-            }
-        }
-    }
-    deps = std::move(newDeps);
 }
 

@@ -717,12 +717,12 @@ void Application::slotDeleteDocument(const App::Document& Doc)
     doc->second->signalDeleteDocument(*doc->second);
     signalDeleteDocument(*doc->second);
 
+    doc->second->beforeDelete();
+
     // If the active document gets destructed we must set it to 0. If there are further existing documents then the
     // view that becomes active sets the active document again. So, we needn't worry about this.
     if (d->activeDocument == doc->second)
         setActiveDocument(0);
-
-    doc->second->beforeDelete();
 
     // For exception-safety use a smart pointer
     unique_ptr<Document> delDoc (doc->second);
@@ -2139,8 +2139,27 @@ App::Document *Application::reopen(App::Document *doc) {
         if(name == v.first->FileName.getValue())
             doc = const_cast<App::Document*>(v.first);
         if(untouchedDocs.count(v.second)) {
-            v.second->getDocument()->purgeTouched();
-            v.second->setModified(false);
+            if(!v.second->isModified()) continue;
+            bool reset = true;
+            for(auto obj : v.second->getDocument()->getObjects()) {
+                if(!obj->isTouched())
+                    continue;
+                std::vector<App::Property*> props;
+                obj->getPropertyList(props);
+                for(auto prop : props){
+                    auto link = dynamic_cast<App::PropertyLinkBase*>(prop);
+                    if(link && link->checkRestore()) {
+                        reset = false;
+                        break;
+                    }
+                }
+                if(!reset)
+                    break;
+            }
+            if(reset) {
+                v.second->getDocument()->purgeTouched();
+                v.second->setModified(false);
+            }
         }
     }
     return doc;
