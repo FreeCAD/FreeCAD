@@ -96,7 +96,7 @@ void PropertyContainer::setPropertyStatus(unsigned char bit,bool value)
 
 short PropertyContainer::getPropertyType(const Property* prop) const 
 {
-    return getPropertyData().getType(this,prop);
+    return prop?prop->getType():0;
 }
 
 short PropertyContainer::getPropertyType(const char *name) const 
@@ -146,7 +146,7 @@ bool PropertyContainer::isHidden(const char *name) const
 
 const char* PropertyContainer::getPropertyName(const Property* prop)const
 {
-    return getPropertyData().getName(this,prop);
+    return prop?prop->myName:0;
 }
 
 
@@ -327,50 +327,54 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
 
 void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)
 {
-  bool IsIn = false;
-  for (vector<PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
-    if(strcmp(It->Name,PropName)==0)
-      IsIn = true;
+    auto ret = propertyData.insert(PropName);
+    if(ret.second) {
+        PropertySpec &temp = const_cast<PropertySpec&>(*ret.first);
+        temp.Group  = PropertyGroup;
+        temp.Type   = Type;
+        temp.Docu   = PropertyDocu;
+        temp.Index = (short)propertyData.size()-1;
+        temp.Offset = offsetBase.getOffsetTo(Prop);
+        assert(temp.Offset>=0);
+        auto res = propertyMap.emplace(temp.Offset,&temp);
+        assert(res.second);
+    }
 
-  if( !IsIn )
-  {
-    PropertySpec temp;
-    temp.Name   = PropName;
-    temp.Offset = offsetBase.getOffsetTo(Prop);
-    assert(temp.Offset>=0);
-    temp.Group  = PropertyGroup;
-    temp.Type   = Type;
-    temp.Docu   = PropertyDocu;
-    propertyData.push_back(temp);
-  }
+#define SYNC_PTYPE(_name) do{\
+        if(Type & Prop_##_name) Prop->setStatus(App::Property::Prop##_name,true);\
+    }while(0)
+    SYNC_PTYPE(ReadOnly);
+    SYNC_PTYPE(Transient);
+    SYNC_PTYPE(Hidden);
+    SYNC_PTYPE(Output);
+    Prop->myName = PropName;
 }
 
 const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBase,const char* PropName) const
 {
-  for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
-    if(strcmp(It->Name,PropName)==0)
-      return &(*It);
+    auto it = propertyData.find(PropName);
+    if(it != propertyData.end())
+        return &(*it);
 
-  if(parentPropertyData)
-      return parentPropertyData->findProperty(offsetBase,PropName);
- 
-  return 0;
+    if(parentPropertyData)
+        return parentPropertyData->findProperty(offsetBase,PropName);
+    return 0;
 }
 
 const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBase,const Property* prop) const
 {
-  const int diff = offsetBase.getOffsetTo(prop);
-  if(diff<0)
-      return 0;
+    int diff = offsetBase.getOffsetTo(prop);
+    if(diff<0)
+        return 0;
 
-  for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
-    if(diff == It->Offset)
-        return &(*It);
+    auto it = propertyMap.find(diff);
+    if(it!=propertyMap.end())
+        return it->second;
   
-  if(parentPropertyData)
-      return parentPropertyData->findProperty(offsetBase,prop);
-  
-  return 0;
+    if(parentPropertyData)
+        return parentPropertyData->findProperty(offsetBase,prop);
+
+    return 0;
 }
 
 const char* PropertyData::getName(OffsetBase offsetBase,const Property* prop) const
@@ -507,8 +511,8 @@ Property *PropertyData::getPropertyByName(OffsetBase offsetBase,const char* name
 
 void PropertyData::getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const
 {
-  for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
-    Map[It->Name] = (Property *) (It->Offset + offsetBase.getOffset());
+    for(auto &spec : propertyData) 
+        Map[spec.Name] = (Property *) (spec.Offset + offsetBase.getOffset());
 /*
   std::map<std::string,PropertySpec>::const_iterator pos;
 
@@ -525,18 +529,13 @@ void PropertyData::getPropertyMap(OffsetBase offsetBase,std::map<std::string,Pro
 
 void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const
 {
-  for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
-    List.push_back((Property *) (It->Offset + offsetBase.getOffset()) );
+    size_t base = List.size();
+    List.resize(base+propertyData.size());
+    for (auto &spec : propertyData)
+        List[base + spec.Index] = (Property *) (spec.Offset + offsetBase.getOffset());
 
-/*  std::map<std::string,PropertySpec>::const_iterator pos;
-
-  for(pos = propertyData.begin();pos != propertyData.end();++pos)
-  {
-    List.push_back((Property *) (pos->second.Offset + (char *)container) );
-  }*/
-  if(parentPropertyData)
-      parentPropertyData->getPropertyList(offsetBase,List);
-
+    if(parentPropertyData)
+        parentPropertyData->getPropertyList(offsetBase,List);
 }
 
 

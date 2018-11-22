@@ -74,6 +74,17 @@ public:
         LockDynamic = 8, // prevent being removed from dynamic property
         NoModify = 9, // prevent causing Gui::Document::setModified()
         PartialTrigger = 10, // allow change in partial doc
+
+        // The following bits are corresponding to PropertyType set when the
+        // property added. These types are meant to be static, and cannot be
+        // changed in runtime. It is mirrored here to save the linear search
+        // required in PropertyContainer::getPropertyType()
+        //
+        PropReadOnly = 24, // corresponding to Prop_ReadOnly
+        PropTransient= 25, // corresponding to Prop_Transient
+        PropHidden   = 26, // corresponding to Prop_Hidden
+        PropOutput   = 27, // corresponding to Prop_Output
+
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
         User3 = 30, // user-defined status
@@ -149,12 +160,8 @@ public:
     inline bool testStatus(Status pos) const {
         return StatusBits.test(static_cast<size_t>(pos));
     }
-    inline void setStatus(Status pos, bool on) {
-        StatusBits.set(static_cast<size_t>(pos), on);
-    }
-    inline void setStatus(unsigned long status) {
-        StatusBits = decltype(StatusBits)(status);
-    }
+    void setStatus(Status pos, bool on);
+    void setStatus(unsigned long status);
     ///Sets property editable/grayed out in property editor
     void setReadOnly(bool readOnly);
     inline bool isReadOnly() const {
@@ -173,6 +180,8 @@ public:
     virtual void aboutToSetChildValue(Property &) {}
 
     friend class PropertyContainer;
+    friend class PropertyData;
+    friend class DynamicProperty;
 
 protected:
     /** Status bits of the property
@@ -202,6 +211,7 @@ private:
 
 private:
     PropertyContainer *father;
+    const char *myName;
 };
 
 

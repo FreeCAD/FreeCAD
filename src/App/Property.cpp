@@ -49,7 +49,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::Property , Base::Persistence);
 
 // Here is the implementation! Description should take place in the header file!
 Property::Property()
-  :father(0)
+  :father(0), myName(0)
 {
 
 }
@@ -61,12 +61,20 @@ Property::~Property()
 
 const char* Property::getName(void) const
 {
-    return father->getPropertyName(this);
+    return myName;
 }
 
 short Property::getType(void) const
 {
-    return father->getPropertyType(this);
+    short type = 0;
+#define GET_PTYPE(_name) do {\
+        if(testStatus(App::Property::Prop##_name)) type|=Prop_##_name;\
+    }while(0)
+    GET_PTYPE(ReadOnly);
+    GET_PTYPE(Hidden);
+    GET_PTYPE(Output);
+    GET_PTYPE(Transient);
+    return type;
 }
 
 const char* Property::getGroup(void) const
@@ -155,6 +163,19 @@ void Property::Paste(const Property& /*from*/)
     assert(0);
 }
 
+void Property::setStatus(unsigned long status) {
+    static const unsigned long mask = 
+        (1<<PropReadOnly)|(1<<PropTransient)|(1<<PropOutput)|(1<<PropHidden);
+    status |= StatusBits.to_ulong() & mask;
+    StatusBits = decltype(StatusBits)(status);
+}
+
+void Property::setStatus(Status pos, bool on) {
+    // Those PropXXXX bits corresponding to PropertyType which can only be
+    // initialize once
+    if(on || (pos!=PropReadOnly && pos!=PropTransient && pos!=PropOutput && pos!=PropHidden))
+        StatusBits.set(static_cast<size_t>(pos), on);
+}
 //**************************************************************************
 //**************************************************************************
 // PropertyListsBase
