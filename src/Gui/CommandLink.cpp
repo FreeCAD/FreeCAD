@@ -611,33 +611,31 @@ StdCmdLinkImport::StdCmdLinkImport()
     sPixmap       = "LinkImport";
 }
 
-static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImportSelections(bool checking) 
+static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImportSelections() 
 {
     std::map<App::Document*, std::vector<App::DocumentObject*> > objMap;
     for(auto &sel : Selection().getCompleteSelection(false)) {
-        App::DocumentObject *parent = 0;
-        auto obj = sel.pObject->resolve(sel.SubName,&parent);
-        if(!parent || parent->getDocument()==obj->getDocument()) {
-            if(!checking) 
-                FC_WARN("skip invalid parent of " << 
-                    sel.DocName << '.' << sel.FeatName << '.' << sel.SubName);
-        }else{
-            objMap[parent->getDocument()].push_back(obj);
-            if(checking)
+        auto obj = sel.pObject->resolve(sel.SubName);
+        if(!obj || !obj->getNameInDocument())
+            continue;
+        for(auto o : obj->getOutList()) {
+            if(o && o->getNameInDocument() && o->getDocument()!=obj->getDocument()) {
+                objMap[obj->getDocument()].push_back(obj);
                 break;
+            }
         }
     }
     return objMap;
 }
 
 bool StdCmdLinkImport::isActive() {
-    return !getLinkImportSelections(true).empty();
+    return !getLinkImportSelections().empty();
 }
 
 void StdCmdLinkImport::activated(int) {
     App::GetApplication().setActiveTransaction("Import links");
     try {
-        for(auto &v : getLinkImportSelections(false)) {
+        for(auto &v : getLinkImportSelections()) {
             auto doc = v.first;
             // TODO: Is it possible to do this using interpreter?
             for(auto obj : doc->importLinks(v.second))
