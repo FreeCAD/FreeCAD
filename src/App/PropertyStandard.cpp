@@ -31,6 +31,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <boost/math/special_functions/round.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -1419,8 +1420,24 @@ void PropertyString::setValue(const char* newLabel)
                     lastpos--;
                 }
 
-                label = label.substr(0, lastpos+1);
-                label = Base::Tools::getUniqueName(label, objectLabels, 3);
+                bool changed = false;
+                label = label.substr(0,lastpos+1);
+                if(boost::starts_with(obj->getNameInDocument(),label)) {
+                    // In case the label has the same base name as object's
+                    // internal name, use it as the label instead.
+                    const char *objName = obj->getNameInDocument();
+                    const char *c = &objName[lastpos+1];
+                    for(;*c;++c) {
+                        if(*c<48 || *c>57)
+                            break;
+                    }
+                    if(*c == 0) {
+                        label = obj->getNameInDocument();
+                        changed = true;
+                    }
+                }
+                if(!changed)
+                    label = Base::Tools::getUniqueName(label, objectLabels, 3);
             }
         }
 
