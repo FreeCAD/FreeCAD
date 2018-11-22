@@ -1371,18 +1371,6 @@ void PropertyString::setValue(const char* newLabel)
         obj->getDocument()->testStatus(App::Document::Importing)) && 
        !obj->getDocument()->isPerformingTransaction()) 
     {
-        const char *dot = strchr(newLabel,'.');
-        if(dot) {
-            _newLabel = newLabel;
-            for(size_t i=dot-newLabel;i<_newLabel.size();++i) {
-                if(_newLabel[i]=='.')
-                    _newLabel[i] = '_';
-            }
-            if(_cValue == _newLabel)
-                return;
-            newLabel = _newLabel.c_str();
-        }
-
         // allow object to control label change
 
         static ParameterGrp::handle _hPGrp;
