@@ -42,7 +42,7 @@ using namespace App;
 using namespace Base;
 using namespace boost;
 
-TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyLinkBase);
+TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyXLinkContainer);
 
 /**
  * @brief Construct a new PropertyExpressionEngine object.

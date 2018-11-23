@@ -3076,6 +3076,12 @@ void PropertyXLink::Paste(const Property &from)
     setFlag(LinkAllowPartial,other.testFlag(LinkAllowPartial));
 }
 
+bool PropertyXLink::supportXLink(const App::Property *prop) {
+    return prop->isDerivedFrom(PropertyXLink::getClassTypeId()) ||
+        prop->isDerivedFrom(PropertyXLinkSubList::getClassTypeId()) ||
+        prop->isDerivedFrom(PropertyXLinkContainer::getClassTypeId());
+}
+
 bool PropertyXLink::hasXLink(const App::Document *doc) {
     for(auto &v : _DocInfoMap) {
         if(v.second->hasXLink(doc))
@@ -3876,6 +3882,7 @@ void PropertyXLinkSubList::setAllowPartial(bool enable) {
 //**************************************************************************
 // PropertyXLinkContainer
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyXLinkContainer , App::PropertyLinkBase)
 
 PropertyXLinkContainer::PropertyXLinkContainer() {
     _pcScope = LinkScope::Global;

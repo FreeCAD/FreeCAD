@@ -977,6 +977,7 @@ public:
 
     friend class DocInfo;
 
+    static bool supportXLink(const App::Property *prop);
     static bool hasXLink(const App::Document *doc);
     static bool hasXLink(const std::vector<App::DocumentObject*> &objs, std::vector<App::Document*> *unsaved=0);
     static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=0);
@@ -1172,6 +1173,7 @@ protected:
  * @sa See PropertyExpressionEngine for example usage
  */
 class PropertyXLinkContainer : public PropertyLinkBase {
+    TYPESYSTEM_HEADER();
 public:
     PropertyXLinkContainer();
     ~PropertyXLinkContainer();

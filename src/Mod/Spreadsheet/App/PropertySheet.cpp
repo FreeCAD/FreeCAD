@@ -50,7 +50,7 @@ using namespace App;
 using namespace Base;
 using namespace Spreadsheet;
 
-TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyLinkBase);
+TYPESYSTEM_SOURCE(Spreadsheet::PropertySheet , App::PropertyXLinkContainer);
 
 void PropertySheet::clear()
 {

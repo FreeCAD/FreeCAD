@@ -215,7 +215,7 @@ std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
     bool noXLinked = !!(options & OutListNoXLinked);
     for(auto prop : props) {
         auto link = dynamic_cast<PropertyLinkBase*>(prop);
-        if(link && (!noXLinked || !prop->isDerivedFrom(PropertyXLink::getClassTypeId())))
+        if(link && (!noXLinked || !PropertyXLink::supportXLink(prop)))
             link->getLinks(ret,noHidden);
     }
     if(!(options & OutListNoExpression))
