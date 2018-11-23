@@ -308,6 +308,7 @@ set(Gui_MOC_HDRS
     DAGView/DAGView.h
     DAGView/DAGModel.h
     TaskElementColors.h
+    DlgObjectSelection.h
 )
 
 fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
@@ -379,6 +380,7 @@ SET(Gui_UIC_SRCS
     TaskView/TaskAppearance.ui
     TaskView/TaskSelectLinkProperty.ui
     TaskElementColors.ui
+    DlgObjectSelection.ui
 )
 
 SET(Gui_RES_SRCS
@@ -452,6 +454,7 @@ SET(Dialog_CPP_SRCS
     DownloadManager.cpp
     DocumentRecovery.cpp
     TaskElementColors.cpp
+    DlgObjectSelection.cpp
 )
 
 SET(Dialog_HPP_SRCS
@@ -485,6 +488,7 @@ SET(Dialog_HPP_SRCS
     DownloadManager.h
     DocumentRecovery.h
     TaskElementColors.h
+    DlgObjectSelection.h
 )
 
 SET(Dialog_SRCS
@@ -520,6 +524,7 @@ SET(Dialog_SRCS
     SceneInspector.ui
     TextureMapping.ui
     TaskElementColors.ui
+    DlgObjectSelection.ui
 )
 SOURCE_GROUP("Dialog" FILES ${Dialog_SRCS})
 

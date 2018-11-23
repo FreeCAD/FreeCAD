@@ -69,6 +69,7 @@
 #include "MergeDocuments.h"
 #include "NavigationStyle.h"
 #include "GraphvizView.h"
+#include "DlgObjectSelection.h"
 
 using namespace Gui;
 
@@ -993,16 +994,14 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     bool hasXLink = false;
     Base::FileInfo fi(App::Application::getTempFileName());
     {
-        auto all = App::Document::getDependencyList(sel,App::Document::DepNoXLinked);
+        auto all = App::Document::getDependencyList(sel);
         if (all.size() > sel.size()) {
-            int ret = QMessageBox::question(getMainWindow(),
-                qApp->translate("Std_DuplicateSelection","Object dependencies"),
-                qApp->translate("Std_DuplicateSelection",
-                    "The selected objects have a dependency to unselected objects.\n"
-                    "Do you want to duplicate them, too?"),
-                QMessageBox::Yes,QMessageBox::No);
-            if (ret == QMessageBox::Yes) 
-                sel.swap(all);
+            DlgObjectSelection dlg(sel,getMainWindow());
+            if(dlg.exec()!=QDialog::Accepted)
+                return;
+            sel = dlg.getSelections();
+            if(sel.empty())
+                return;
         }
         std::vector<App::Document*> unsaved;
         hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);

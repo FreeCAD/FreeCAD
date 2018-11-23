@@ -116,6 +116,7 @@
 #include "SpaceballEvent.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "DlgObjectSelection.h"
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true);
 
@@ -1419,31 +1420,14 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     if(sel.empty())
         return 0;
 
-    auto all = App::Document::getDependencyList(sel,App::Document::DepNoXLinked);
+    auto all = App::Document::getDependencyList(sel);
     if (all.size() > sel.size()) {
-        //check if selection are only geofeaturegroup objects, for them it is intuitive and wanted to copy the 
-        //dependencies
-        bool hasGroup = false, hasNormal = false;
-        for(auto obj : sel) {
-            if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
-                hasGroup = true;
-            else 
-                hasNormal = true;
-        }
-        if(hasGroup && !hasNormal) {
-            sel.swap(all);
-        }
-        else {
-            //if there are normal objects selected it may be possible that some dependencies are 
-            //from them, and not only from groups. so ask the user what to do.
-            int ret = QMessageBox::question(getMainWindow(),
-                tr("Object dependencies"),
-                tr("The selected objects have a dependency to unselected objects.\n"
-                "Do you want to copy them, too?"),
-                QMessageBox::Yes,QMessageBox::No);
-            if (ret == QMessageBox::Yes)
-                sel.swap(all);
-        }
+        DlgObjectSelection dlg(sel,getMainWindow());
+        if(dlg.exec()!=QDialog::Accepted)
+            return 0;
+        sel = dlg.getSelections();
+        if(sel.empty())
+            return 0;
     }
 
     std::vector<App::Document*> unsaved;
