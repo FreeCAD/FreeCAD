@@ -34,7 +34,11 @@
 # include <QPaintEvent>
 # include <QSvgGenerator>
 # include <QWheelEvent>
-# include <cmath>
+#include <QTemporaryFile>
+#include <QDomDocument>
+#include <QTextStream>
+#include <QFile>
+#include <cmath>
 #endif
 
 #include <App/Application.h>
@@ -578,15 +582,15 @@ void QGVPage::saveSvg(QString filename)
                              tr(" exported from FreeCAD document: ") +
                              docName;
 
-
     QSvgGenerator svgGen;
-    svgGen.setFileName(filename);
+    QTemporaryFile* tempFile = new QTemporaryFile();;
+    svgGen.setOutputDevice(tempFile);
     svgGen.setSize(QSize((int) Rez::guiX(page->getPageWidth()), (int) Rez::guiX(page->getPageHeight())));   //expects pixels, gets mm
     //"By default this property is set to QSize(-1, -1), which indicates that the generator should not output 
     // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
     svgGen.setViewBox(QRect(0, 0, Rez::guiX(page->getPageWidth()), Rez::guiX(page->getPageHeight())));
-    
-    svgGen.setResolution(Rez::guiX(25.4));    // docs say this is DPI. 1dot/mm so 25.4dpi
+
+    svgGen.setResolution(Rez::guiX(25.4));    // docs say this is DPI. Rez::guiX(1dot/mm) so 254 dpi?
 
     svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
     svgGen.setDescription(svgDescription);
@@ -614,6 +618,54 @@ void QGVPage::saveSvg(QString filename)
     toggleHatch(true);
     scene()->update();
     viewport()->repaint();
+
+    tempFile->close();
+    postProcessXml(tempFile, filename, pageName);
+}
+
+void QGVPage::postProcessXml(QTemporaryFile* tempFile, QString fileName, QString pageName)
+{    
+    QDomDocument doc(QString::fromUtf8("SvgDoc"));
+    QFile file(tempFile->fileName());
+    if (!file.open(QIODevice::ReadOnly)) {
+        Base::Console().Message("QGVPage::ppsvg - tempfile open error\n");
+        return;
+    }
+    if (!doc.setContent(&file)) {
+        Base::Console().Message("QGVPage::ppsvg - xml error\n");
+        file.close();
+        return;
+    }
+    file.close();
+
+    QDomElement docElem = doc.documentElement();          //root <svg>
+
+    QDomNode n = docElem.firstChild();
+    bool firstGroupFound = false;
+    QString groupTag = QString::fromUtf8("g");
+    QDomElement e;
+    while(!n.isNull()) {
+        e = n.toElement();                          // try to convert the node to an element.
+        if(!e.isNull()) {
+            if (!firstGroupFound) {
+                if (e.tagName() == groupTag) {
+                    firstGroupFound = true;
+                    break;
+                }
+            }
+        }
+        n = n.nextSibling();
+    }
+    e.setAttribute(QString::fromUtf8("id"),pageName);
+
+    QFile outFile( fileName );
+    if( !outFile.open( QIODevice::WriteOnly | QIODevice::Text ) ) {
+        Base::Console().Message("QGVP::ppxml - failed to open file for writing: %s\n.",qPrintable(fileName) );
+    }
+    QTextStream stream( &outFile );
+    stream << doc.toString();
+    outFile.close();
+    delete tempFile;
 }
 
 void QGVPage::paintEvent(QPaintEvent *event)
