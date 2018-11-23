@@ -205,7 +205,7 @@ struct DocumentP
     std::vector<App::DocumentObject*>
     topologicalSort(const std::vector<App::DocumentObject*>& objects) const;
     std::vector<App::DocumentObject*>
-    partialTopologicalSort(const std::vector<App::DocumentObject*>& objects) const;
+    static partialTopologicalSort(const std::vector<App::DocumentObject*>& objects);
 };
 
 } // namespace App
@@ -2283,15 +2283,7 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
     }
 
     std::set<DocumentObject*> objSet(objArray.begin(),objArray.end());
-    std::vector<DocumentObject *> objs;
-    try {
-        objs = getDependencyList(objArray.empty()?d->objectArray:objArray,DepSort);
-    }catch (Base::Exception &e) {
-        e.ReportException();
-        objs = d->partialTopologicalSort(objArray.empty()?d->objectArray:objArray);
-        std::reverse(objs.begin(),objs.end());
-    }
-
+    auto objs = getDependencyList(objArray.empty()?d->objectArray:objArray,DepSort);
     for (auto obj : objs) {
         if(objSet.find(obj)==objSet.end())
             continue;
@@ -2531,9 +2523,10 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
     try {
         boost::topological_sort(depList, std::front_inserter(make_order));
     } catch (const std::exception& e) {
-        std::string msg("Document::getDependencyList: ");
-        msg += e.what();
-        throw Base::RuntimeError(msg);
+        FC_WARN(e.what());
+        ret = DocumentP::partialTopologicalSort(objectArray);
+        std::reverse(ret.begin(),ret.end());
+        return ret;
     }
 
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i)
@@ -2820,14 +2813,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
     std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
 #else
-    vector<DocumentObject*> topoSortedObjects;
-    try {
-        topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,DepSort);
-    }catch (Base::Exception &e) {
-        e.ReportException();
-        topoSortedObjects = d->partialTopologicalSort(getDependencyList(objs.empty()?d->objectArray:objs));
-        std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
-    }
+    auto topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,DepSort);
 #endif
     for(auto obj : topoSortedObjects)
         obj->setStatus(ObjectStatus::PendingRecompute,true);
@@ -2900,7 +2886,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
   An alternative to this method might be:
   https://en.wikipedia.org/wiki/Tarjan%E2%80%99s_strongly_connected_components_algorithm
  */
-std::vector<App::DocumentObject*> DocumentP::partialTopologicalSort(const std::vector<App::DocumentObject*>& objects) const
+std::vector<App::DocumentObject*> DocumentP::partialTopologicalSort(
+        const std::vector<App::DocumentObject*>& objects)
 {
     vector < App::DocumentObject* > ret;
     ret.reserve(objects.size());
