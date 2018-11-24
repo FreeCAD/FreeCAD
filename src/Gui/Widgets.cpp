@@ -57,7 +57,7 @@ using namespace Gui;
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
-    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)), 
+    connect(this, SIGNAL (currentItemChanged(QListWidgetItem *, QListWidgetItem *)),
             this, SLOT (onSelectionChanged(QListWidgetItem *, QListWidgetItem *)) );
 }
 
@@ -69,7 +69,7 @@ CommandIconView::~CommandIconView ()
 }
 
 /**
- * Stores the name of the selected commands for drag and drop. 
+ * Stores the name of the selected commands for drag and drop.
  */
 void CommandIconView::startDrag (Qt::DropActions supportedActions)
 {
@@ -97,7 +97,7 @@ void CommandIconView::startDrag (Qt::DropActions supportedActions)
 }
 
 /**
- * This slot is called when a new item becomes current. \a item is the new current item 
+ * This slot is called when a new item becomes current. \a item is the new current item
  * (or 0 if no item is now current). This slot emits the emitSelectionChanged()
  * signal for its part.
  */
@@ -617,8 +617,8 @@ ColorButton::~ColorButton()
     delete d;
 }
 
-/** 
- * Sets the color \a c to the button. 
+/**
+ * Sets the color \a c to the button.
  */
 void ColorButton::setColor(const QColor& c)
 {
@@ -627,7 +627,7 @@ void ColorButton::setColor(const QColor& c)
     update();
 }
 
-/** 
+/**
  * Returns the current color of the button.
  */
 QColor ColorButton::color() const
@@ -700,7 +700,7 @@ void ColorButton::paintEvent (QPaintEvent * e)
         }
     }
 
-    // overpaint the rectangle to paint icon and text 
+    // overpaint the rectangle to paint icon and text
     QStyleOptionButton opt;
     opt.init(this);
     opt.text = text();
@@ -748,6 +748,10 @@ void ColorButton::onChooseColor()
 #endif
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
+
+#if QT_VERSION >= 0x050000
+        cd.setOption(QColorDialog::DontUseNativeDialog);
+#endif
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -995,7 +999,7 @@ bool ToolTip::eventFilter(QObject* o, QEvent*e)
                 removeEventFilter();
                 this->hidden = true;
             }
-            else if (e->type() == QEvent::Timer && 
+            else if (e->type() == QEvent::Timer &&
                 !this->hidden && displayTime.elapsed() < 5000) {
                 return true;
             }
