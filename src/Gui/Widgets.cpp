@@ -749,7 +749,7 @@ void ColorButton::onChooseColor()
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= 0x050000 && !defined(FC_OS_WIN32)
         cd.setOption(QColorDialog::DontUseNativeDialog);
 #endif
 
