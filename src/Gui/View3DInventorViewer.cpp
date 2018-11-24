@@ -1515,8 +1515,8 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     // format and in the output image search for the above color and
     // replaces it with the color requested by the user.
 #if defined(HAVE_QT5_OPENGL)
-    //fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
-    fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
+    fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
+    //fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
 #else
     //fboFormat.setInternalTextureFormat(GL_RGBA);
     fboFormat.setInternalTextureFormat(GL_RGB);
