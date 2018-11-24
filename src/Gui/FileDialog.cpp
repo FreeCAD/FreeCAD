@@ -114,7 +114,7 @@ void FileDialog::accept()
 /**
  * This is a convenience static function that will return a file name selected by the user. The file does not have to exist.
  */
-QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir, 
+QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, const QString & dir,
                                      const QString & filter, QString * selectedFilter, Options options)
 {
     QString dirName = dir;
@@ -127,7 +127,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
             dirName += QLatin1String("/");
             dirName += fi.fileName();
         }
-    
+
         // get the suffix for the filter
         QRegExp rx;
         rx.setPattern(QLatin1String("\\s(\\(\\*\\.\\w{1,})\\W"));
@@ -144,11 +144,11 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Save as");
 
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
+#if (QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)) || QT_VERSION >= 0x050000
     options |= QFileDialog::DontUseNativeDialog;
 #endif
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
-    // existing file. Hence we must extract the first matching suffix from the filter list and append it 
+    // existing file. Hence we must extract the first matching suffix from the filter list and append it
     // before showing the file dialog.
 #if defined(USE_QT_FILEDIALOG)
     QList<QUrl> urls;
@@ -209,7 +209,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
  */
 QString FileDialog::getExistingDirectory( QWidget * parent, const QString & caption, const QString & dir, Options options )
 {
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
+#if (QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)) || QT_VERSION >= 0x050000
     options |= QFileDialog::DontUseNativeDialog;
 #endif
     QString path = QFileDialog::getExistingDirectory(parent, caption, dir, options);
@@ -222,11 +222,11 @@ QString FileDialog::getExistingDirectory( QWidget * parent, const QString & capt
     return path;
 }
 
-/** 
- * This is a convenience static function that returns an existing file selected by the user. 
+/**
+ * This is a convenience static function that returns an existing file selected by the user.
  * If the user pressed Cancel, it returns a null string.
  */
-QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, const QString & dir, 
+QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, const QString & dir,
                                     const QString & filter, QString * selectedFilter, Options options)
 {
     QString dirName = dir;
@@ -237,7 +237,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     QString windowTitle = caption;
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Open");
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
+#if (QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)) || QT_VERSION >= 0x050000
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
@@ -307,7 +307,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     QString windowTitle = caption;
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Open");
-#if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
+#if (QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)) || QT_VERSION >= 0x050000
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
@@ -360,7 +360,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     if (!files.isEmpty()) {
         setWorkingDirectory(files.front());
     }
-    
+
     return files;
 }
 
@@ -651,7 +651,7 @@ void FileChooser::editingFinished()
     fileNameSelected(le_converted);
 }
 
-/** 
+/**
  * Sets the file name \a s.
  */
 void FileChooser::setFileName( const QString& s )
@@ -670,7 +670,7 @@ void FileChooser::chooseFile()
         prechosenDirectory = FileDialog::getWorkingDirectory();
     }
 
-#if defined(USE_QT_FILEDIALOG)
+#if defined(USE_QT_FILEDIALOG) || (QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)) || QT_VERSION >= 0x050000
     QFileDialog::Options dlgOpt = QFileDialog::DontUseNativeDialog;
 #else
     QFileDialog::Options dlgOpt;
@@ -717,7 +717,7 @@ void FileChooser::setMode( FileChooser::Mode m )
 /**
  * \property FileChooser::filter
  *
- * This property holds the set filter to choose a file. This property is used only if 
+ * This property holds the set filter to choose a file. This property is used only if
  * FileChooser::Mode is set to File.
  *
  * \sa chooseFile(), filter(), setFilter().
@@ -728,7 +728,7 @@ QString FileChooser::filter() const
 }
 
 /**
- * Sets the filter for choosing a file.  
+ * Sets the filter for choosing a file.
  */
 void FileChooser::setFilter ( const QString& filter )
 {
@@ -888,7 +888,7 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
         QFileInfo fi(*it);
         QString ext = fi.completeSuffix().toLower();
         std::map<std::string, std::string> filters = App::GetApplication().getExportFilters(ext.toLatin1());
-        
+
         if (filters.empty()) {
             ext = fi.suffix().toLower();
             filters = App::GetApplication().getExportFilters(ext.toLatin1());
@@ -902,7 +902,7 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
             dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
-    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 
+    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin();
         it != filetypeHandler.end(); ++it) {
         if (it.value().size() > 1) {
             SelectModule dlg(it.key(),it.value(), getMainWindow());
@@ -950,7 +950,7 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
         QFileInfo fi(*it);
         QString ext = fi.completeSuffix().toLower();
         std::map<std::string, std::string> filters = App::GetApplication().getImportFilters(ext.toLatin1());
-        
+
         if (filters.empty()) {
             ext = fi.suffix().toLower();
             filters = App::GetApplication().getImportFilters(ext.toLatin1());
@@ -964,7 +964,7 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
             dict[*it] = QString::fromLatin1(filters.begin()->second.c_str());
     }
 
-    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin(); 
+    for (QMap<QString, SelectModule::Dict>::const_iterator it = filetypeHandler.begin();
         it != filetypeHandler.end(); ++it) {
         if (it.value().size() > 1) {
             SelectModule dlg(it.key(),it.value(), getMainWindow());
