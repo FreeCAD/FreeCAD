@@ -402,7 +402,7 @@ void Cell::setDisplayUnit(const std::string &unit)
     if (unit.size() > 0) {
         auto e = Expression::parseUnit(owner->sheet(), unit.c_str());
         if (!e)
-            throw Base::Exception("Invalid unit");
+            throw Base::UnitsMismatchError("Invalid unit");
         UnitExpression *expr = static_cast<UnitExpression*>(e.get());
         newDisplayUnit = DisplayUnit(unit, expr->getUnit(), expr->getScaler());
     }
@@ -758,7 +758,7 @@ int Cell::decodeAlignment(const std::string & itemStr, int alignment)
     else if (itemStr == "bottom")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_BOTTOM;
     else
-        throw Base::Exception("Invalid alignment.");
+        throw Base::ValueError("Invalid alignment.");
 
     return alignment;
 }

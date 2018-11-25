@@ -257,7 +257,10 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
 
                 // Note: ReferenceSelection has already checked the selection for validity
                 if (selObj && (selectionMode == reference ||
-                               selObj->isDerivedFrom(App::Line::getClassTypeId()))) {
+                               selObj->isDerivedFrom(App::Line::getClassTypeId()) ||
+                               selObj->isDerivedFrom(Part::Feature::getClassTypeId()) ||
+                               selObj->isDerivedFrom(PartDesign::Line::getClassTypeId()) ||
+                               selObj->isDerivedFrom(PartDesign::Plane::getClassTypeId()))) {
                     pcLinearPattern->Direction.setValue(selObj, directions);
 
                     recomputeFeature();

@@ -31,7 +31,6 @@
 #include "ui_DlgEvaluateMesh.h"
 #include "DlgEvaluateSettings.h"
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include <Base/Interpreter.h>

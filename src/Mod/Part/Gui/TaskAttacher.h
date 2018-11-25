@@ -24,12 +24,12 @@
 #ifndef GUI_TASKVIEW_TaskAttacher_H
 #define GUI_TASKVIEW_TaskAttacher_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/App/Attacher.h>
 
-#include "Gui/ViewProviderDocumentObject.h"
 
 class Ui_TaskAttacher;
 class QLineEdit;
@@ -90,6 +90,7 @@ protected:
     void changeEvent(QEvent *e) override;
 private:
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
+    void documentDeleted(const Gui::Document&);
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateReferencesUI();
 
@@ -131,8 +132,9 @@ private:
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectDelObject;
+    Connection connectDelDocument;
 };
 
 /// simulation dialog for the TaskView

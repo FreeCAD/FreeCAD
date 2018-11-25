@@ -41,7 +41,7 @@
 #include <QGraphicsView>
 #include <QtCore/QUrl>
 #include <QtOpenGL.h>
-#include "Gui/Quarter/Basic.h"
+#include <Gui/Quarter/Basic.h>
 
 class QMenu;
 class SoNode;

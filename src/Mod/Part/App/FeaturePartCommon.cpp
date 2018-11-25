@@ -121,7 +121,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
             std::vector<ShapeHistory> history;
             TopoDS_Shape resShape = s.front();
             if (resShape.IsNull())
-                throw Base::RuntimeError("Input shape is null");
+                throw NullShapeException("Input shape is null");
 
             for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
                 if (it->IsNull())
@@ -131,7 +131,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                 BRepAlgoAPI_Common mkCommon(resShape, *it);
                 // Let's check if the fusion has been successful
                 if (!mkCommon.IsDone()) 
-                    throw Base::Exception("Intersection failed");
+                    throw BooleanException("Intersection failed");
                 resShape = mkCommon.Shape();
 
                 ShapeHistory hist1(mkCommon, TopAbs_FACE, resShape, mkCommon.Shape1());
@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
                 }
             }
             if (resShape.IsNull())
-                throw Base::Exception("Resulting shape is invalid");
+                throw NullShapeException("Resulting shape is invalid");
 
             Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                 .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part/Boolean");
@@ -201,7 +201,7 @@ App::DocumentObjectExecReturn *MultiCommon::execute(void)
         }
     }
     else {
-        throw Base::Exception("Not enough shape objects linked");
+        throw Base::CADKernelError("Not enough shape objects linked");
     }
 
 #else

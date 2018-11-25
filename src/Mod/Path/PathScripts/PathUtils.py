@@ -465,9 +465,9 @@ def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
     PathLog.track()
     for i in obj.InList:
-        if isinstance(i.Proxy, PathScripts.PathJob.ObjectJob):
+        if hasattr(i, 'Proxy') and isinstance(i.Proxy, PathScripts.PathJob.ObjectJob):
             return i
-        if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython":
+        if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython" or i.TypeId == "App::DocumentObjectGroup":
             grandParent = findParentJob(i)
             if grandParent is not None:
                 return grandParent

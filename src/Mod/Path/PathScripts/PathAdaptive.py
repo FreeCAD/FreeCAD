@@ -22,6 +22,7 @@
 
 
 import PathScripts.PathOp as PathOp
+import PathScripts.PathUtils as PathUtils
 import Path
 import FreeCAD
 import FreeCADGui
@@ -33,11 +34,6 @@ import area
 from pivy import coin
 
 __doc__ = "Class and implementation of the Adaptive path operation."
-
-def discretize(edge, flipDirection=False):
-    pts=edge.discretize(Deflection=0.01)
-    if flipDirection: pts.reverse()
-    return pts
 
 def convertTo2d(pathArray):
     output = []
@@ -80,14 +76,23 @@ def sceneClean():
         sceneGraph.removeChild(n)
     del scenePathNodes[:]
 
+def discretize(edge, flipDirection=False):
+    pts=edge.discretize(Deflection=0.0001)
+    if flipDirection: pts.reverse()
+    return pts
+
 def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     if len(adaptiveResults)==0 or len(adaptiveResults[0]["AdaptivePaths"])==0:
       return
 
     minLiftDistance = op.tool.Diameter
-    p1 =  adaptiveResults[0]["HelixCenterPoint"]
-    p2 =  adaptiveResults[0]["StartPoint"]
-    helixRadius =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
+    helixRadius=0
+    for region in adaptiveResults:
+        p1 =  region["HelixCenterPoint"]
+        p2 =  region["StartPoint"]
+        r =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
+        if r>helixRadius: helixRadius=r
+
     stepDown = obj.StepDown.Value
     passStartDepth=obj.StartDepth.Value
     if stepDown<0.1 : stepDown=0.1
@@ -99,15 +104,27 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
     if stepUp<0:
         stepUp=0
 
+
+    finish_step = obj.FinishDepth.Value if hasattr(obj, "FinishDepth") else 0.0
+    if finish_step>stepDown: finish_step = stepDown
+        
+    depth_params = PathUtils.depth_params(
+            clearance_height=obj.ClearanceHeight.Value,
+            safe_height=obj.SafeHeight.Value,
+            start_depth=obj.StartDepth.Value,
+            step_down=stepDown,
+            z_finish_step=finish_step,
+            final_depth=obj.FinalDepth.Value,
+            user_depths=None)
+
+
+
     lx=adaptiveResults[0]["HelixCenterPoint"][0]
     ly=adaptiveResults[0]["HelixCenterPoint"][1]
     lz=passStartDepth
     step=0
-    while passStartDepth>obj.FinalDepth.Value and step<1000:
+    for passEndDepth in depth_params.data:
         step=step+1
-        passEndDepth=passStartDepth-stepDown
-        if passEndDepth<obj.FinalDepth.Value: passEndDepth=obj.FinalDepth.Value
-
         for region in adaptiveResults:
             startAngle = math.atan2(region["StartPoint"][1] - region["HelixCenterPoint"][1], region["StartPoint"][0] - region["HelixCenterPoint"][0])
 
@@ -116,6 +133,9 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
 
             passDepth = (passStartDepth - passEndDepth)
 
+            p1 =  region["HelixCenterPoint"]
+            p2 =  region["StartPoint"]
+            helixRadius =math.sqrt((p1[0]-p2[0]) * (p1[0]-p2[0]) +  (p1[1]-p2[1]) * (p1[1]-p2[1]))
 
             #helix ramp
             if helixRadius>0.0001:
@@ -127,7 +147,7 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                 helixStart = [region["HelixCenterPoint"][0] + r * math.cos(offsetFi), region["HelixCenterPoint"][1] + r * math.sin(offsetFi)]
 
                 op.commandlist.append(Path.Command("(helix to depth: %f)"%passEndDepth))
-                #if step == 1:
+
                 #rapid move to start point
                 op.commandlist.append(Path.Command(
                     "G0", {"X": helixStart[0], "Y": helixStart[1], "Z": obj.ClearanceHeight.Value}))
@@ -143,6 +163,16 @@ def GenerateGCode(op,obj,adaptiveResults, helixDiameter):
                     y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
                     z = passStartDepth - fi / maxfi * (passStartDepth - passEndDepth)
                     op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.vertFeed}))
+                    lx=x
+                    ly=y
+                    fi=fi+math.pi/16
+                # one more circle at target depth to make sure center is cleared
+                maxfi=maxfi+2*math.pi
+                while fi<maxfi:
+                    x = region["HelixCenterPoint"][0] + r * math.cos(fi+offsetFi)
+                    y = region["HelixCenterPoint"][1] + r * math.sin(fi+offsetFi)
+                    z = passEndDepth
+                    op.commandlist.append(Path.Command("G1", { "X": x, "Y":y, "Z":z, "F": op.horizFeed}))
                     lx=x
                     ly=y
                     fi=fi+math.pi/16
@@ -216,10 +246,8 @@ def Execute(op,obj):
 
     FreeCADGui.updateGui()
     try:
-        Console.PrintMessage("Tool diam: %f \n"%op.tool.Diameter)
-        helixDiameter = min(op.tool.Diameter,1000.0 if obj.HelixDiameterLimit.Value==0.0 else obj.HelixDiameterLimit.Value )
+        helixDiameter =obj.HelixDiameterLimit.Value
         topZ=op.stock.Shape.BoundBox.ZMax
-
         obj.Stopped = False
         obj.StopProcessing = False
         if obj.Tolerance<0.001: obj.Tolerance=0.001
@@ -346,7 +374,7 @@ class PathAdaptive(PathOp.ObjectOp):
         '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.
         The default implementation returns "FeatureTool | FeatureDeptsh | FeatureHeights | FeatureStartPoint"
         Should be overwritten by subclasses.'''
-        return PathOp.FeatureTool | PathOp.FeatureBaseEdges | PathOp.FeatureDepths | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureBaseGeometry
+        return PathOp.FeatureTool | PathOp.FeatureBaseEdges | PathOp.FeatureDepths | PathOp.FeatureFinishDepth | PathOp.FeatureStepDown | PathOp.FeatureHeights | PathOp.FeatureBaseGeometry
 
     def initOperation(self, obj):
         '''initOperation(obj) ... implement to create additional properties.

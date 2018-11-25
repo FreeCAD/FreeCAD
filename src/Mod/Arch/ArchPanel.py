@@ -448,6 +448,11 @@ class _Panel(ArchComponent.Component):
 
         import Part #, DraftGeomUtils
 
+        layers = []
+        length = 0
+        width = 0
+        thickness = 0
+
         # base tests
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -473,7 +478,6 @@ class _Panel(ArchComponent.Component):
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not obj.Base.Shape.Solids:
                     return
-        layers = []
         if hasattr(obj,"Material"):
             if obj.Material:
                 if hasattr(obj.Material,"Materials"):
@@ -939,6 +943,8 @@ class PanelCut(Draft._DraftObject):
         if not "AllowedAngles" in pl:
             obj.addProperty("App::PropertyFloatList","AllowedAngles","PanelCut",QT_TRANSLATE_NOOP("App::Property","The allowed angles this object can be rotated to when placed on sheets"))
         self.Type = "PanelCut"
+        if not "CutOffset" in pl:
+            obj.addProperty("App::PropertyDistance","CutOffset","PanelCut",QT_TRANSLATE_NOOP("App::Property","An offset value to move the cut plane from the center point"))
 
     def onDocumentRestored(self,obj):
 
@@ -968,6 +974,11 @@ class PanelCut(Draft._DraftObject):
                                 n = baseobj.Dir
                             if not n:
                                 n = Vector(0,0,1)
+                            if hasattr(obj,"CutOffset") and obj.CutOffset.Value:
+                                l = obj.CutOffset.Value
+                                d = Vector(n)
+                                d.multiply(l)
+                                center = center.add(d)
                             plane = Part.makePlane(diag,diag,center,n)
                             plane.translate(center.sub(plane.BoundBox.Center))
                             wires = []
@@ -1099,7 +1110,7 @@ class ViewProviderPanelCut(Draft._ViewProviderDraft):
     def __init__(self,vobj):
 
         Draft._ViewProviderDraft.__init__(self,vobj)
-        self.setProperties(self,vobj)
+        self.setProperties(vobj)
 
     def setProperties(self,vobj):
 

@@ -35,6 +35,7 @@
 #include <Gui/DockWindow.h>
 #include <Gui/Selection.h>
 
+class QLineEdit;
 
 namespace Gui {
 
@@ -124,6 +125,8 @@ protected:
     bool event(QEvent *e);
     void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent * event);
+    QList<App::DocumentObject *> buildListChildren(QTreeWidgetItem* targetitem,
+                                                   Gui::ViewProviderDocumentObject* vp);
 
 protected:
     void showEvent(QShowEvent *) override;
@@ -145,6 +148,7 @@ protected Q_SLOTS:
     void onPreSelectTimer();
     void onShowHidden();
     void onHideInTree();
+    void onSearchObjects();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -152,6 +156,9 @@ private Q_SLOTS:
     void onItemCollapsed(QTreeWidgetItem * item);
     void onItemExpanded(QTreeWidgetItem * item);
     void onUpdateStatus(void);
+
+Q_SIGNALS:
+    void emitSearchObjects();
 
 private:
     void slotNewDocument(const Gui::Document&);
@@ -180,6 +187,7 @@ private:
     QAction* showHiddenAction;
     QAction* hideInTreeAction;
     QAction* reloadDocAction;
+    QAction* searchObjectsAction;
     QTreeWidgetItem* contextItem;
     DocumentObjectItem *editingItem;
     DocumentItem *currentDocItem;
@@ -271,7 +279,7 @@ private:
     std::map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
     std::vector<long> TransactingObjects;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;
@@ -353,12 +361,39 @@ private:
     DocumentItem *myOwner;
     DocumentObjectDataPtr myData;
     std::vector<std::string> mySubs;
+    typedef boost::signals2::connection Connection;
     int previousStatus;
     int selected;
     bool populated;
 
     friend class TreeWidget;
     friend class DocumentItem;
+};
+
+class TreePanel : public QWidget
+{
+    Q_OBJECT
+
+public:
+    TreePanel(const char *name, QWidget* parent=nullptr);
+    virtual ~TreePanel();
+
+    bool eventFilter(QObject *obj, QEvent *ev);
+
+private Q_SLOTS:
+    void accept();
+    void showEditor();
+    void hideEditor();
+    void findMatchingItems(const QString&);
+
+private:
+    void searchTreeItem(QTreeWidgetItem* item, const QString& text);
+    void selectTreeItem(QTreeWidgetItem* item, const QString& text);
+    void resetBackground(QTreeWidgetItem* item);
+
+private:
+    QLineEdit* searchBox;
+    QTreeWidget* treeWidget;
 };
 
 /**

@@ -295,7 +295,11 @@ class GmshTools():
             if self.mesh_obj.MeshRegionList:
                 if part.Shape.ShapeType == "Compound" and hasattr(part, "Proxy"):  # other part obj might not have a Proxy, thus an exception would be raised
                     if (part.Proxy.Type == "FeatureBooleanFragments" or part.Proxy.Type == "FeatureSlice" or part.Proxy.Type == "FeatureXOR"):
-                        error_message = "  The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. Gmsh could return unexpected meshes in such circumstances. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                        error_message = (
+                            '  The mesh to shape is a boolean split tools Compound and the mesh has mesh region list. '
+                            'Gmsh could return unexpected meshes in such circumstances. '
+                            'It is strongly recommended to extract the shape to mesh from the Compound and use this one.'
+                        )
                         FreeCAD.Console.PrintError(error_message + "\n")
                         # TODO: no gui popup because FreeCAD will be in a endless print loop
                         #       as long as the pop up is on --> maybe find a better solution for
@@ -576,7 +580,7 @@ class GmshTools():
             # print(output)  # stdout is still cut at some point but the warnings are in stderr and thus printed :-)
             # print(error)
         except:
-            error = 'Error executing: {}\n'.format(self.gmsh_command)
+            error = 'Error executing: {}\n'.format(" ".join(comandlist))
             FreeCAD.Console.PrintError(error)
             self.error = True
         return error

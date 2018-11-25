@@ -985,12 +985,16 @@ Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
 
 Standard_Boolean BOPProgressIndicator::UserBreak()
 {
-    // this is needed to check the status outside BOPAlgo_ArgumentAnalyzer
-    if (canceled)
-        return Standard_True;
-
     QThread *currentThread = QThread::currentThread();
     if (currentThread == myProgress->thread()) {
+        // this is needed to check the status outside BOPAlgo_ArgumentAnalyzer
+        //
+        // Hint: We must make sure to do this only when calling from the GUI
+        // thread because when calling it from a worker thread the thrown
+        // exception isn't handled anywhere and thus std::terminate is called
+        if (canceled)
+            return Standard_True;
+
         // it suffices to update only every second
         // to avoid to unnecessarily process events
         steps++;

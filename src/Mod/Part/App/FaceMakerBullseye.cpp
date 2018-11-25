@@ -50,13 +50,13 @@
 #include "FaceMakerBullseye.h"
 #include "FaceMakerCheese.h"
 
-#include <Base/Exception.h>
+#include "TopoShape.h"
 
 #include <QtGlobal>
 
 using namespace Part;
 
-TYPESYSTEM_SOURCE(Part::FaceMakerBullseye, Part::FaceMakerPublic);
+TYPESYSTEM_SOURCE(Part::FaceMakerBullseye, Part::FaceMakerPublic)
 
 void FaceMakerBullseye::setPlane(const gp_Pln &plane)
 {
@@ -166,7 +166,7 @@ bool FaceMakerBullseye::FaceDriller::hitTest(gp_Pnt point) const
     TopAbs_State ret = cl.State();
     switch(ret){
         case TopAbs_UNKNOWN:
-            throw Base::Exception("FaceMakerBullseye::FaceDriller::hitTest: result unknown.");
+            throw Base::ValueError("FaceMakerBullseye::FaceDriller::hitTest: result unknown.");
         break;
         default:
             return ret == TopAbs_IN || ret == TopAbs_ON;

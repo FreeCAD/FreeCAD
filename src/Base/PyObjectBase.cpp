@@ -148,6 +148,15 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
     attr = PyString_AsString(attro);
 #endif
 
+    // For the __class__ attribute get it directly as with
+    // ExtensionContainerPy::getCustomAttributes we may get
+    // the wrong type object (#0003311)
+    if (streq(attr, "__class__")) {
+        PyObject* res = PyObject_GenericGetAttr(obj, attro);
+        if (res)
+            return res;
+    }
+
     // This should be the entry in Type
     PyObjectBase* pyObj = static_cast<PyObjectBase*>(obj);
     if (!pyObj->isValid()){

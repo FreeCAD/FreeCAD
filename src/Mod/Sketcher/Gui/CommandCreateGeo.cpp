@@ -27,6 +27,8 @@
 # include <QApplication>
 #endif
 
+# include <QMessageBox>
+
 #include <stdlib.h>
 #include <qdebug.h>
 #include <QString>
@@ -3222,7 +3224,7 @@ public:
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
         STATUS_SEEK_Second,     /**< enum value ----. */
-        STATUS_SEEK_Third,     /**< enum value ----. */      
+        STATUS_SEEK_Third,      /**< enum value ----. */
         STATUS_SEEK_Fourth,     /**< enum value ----. */
         STATUS_Close
     };
@@ -5603,7 +5605,7 @@ namespace SketcherGui {
                 int GeoId = std::atoi(element.substr(4,4000).c_str()) - 1;
                 Sketcher::SketchObject *Sketch = static_cast<Sketcher::SketchObject*>(object);
                 const Part::Geometry *geom = Sketch->getGeometry(GeoId);
-                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+                if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId()))
                     return true;
             }
             if (element.substr(0,6) == "Vertex") {
@@ -5766,7 +5768,7 @@ public:
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
                 if (Mode==STATUS_SEEK_First) {
                     firstCurve = GeoId;
                     firstPos = onSketchPos;
@@ -5784,19 +5786,38 @@ public:
                 else if (Mode==STATUS_SEEK_Second) {
                     int secondCurve = GeoId;
                     Base::Vector2d secondPos = onSketchPos;
-
-                    // guess fillet radius
-                    const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
-                                                            (sketchgui->getSketchObject()->getGeometry(firstCurve));
-                    const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
-                                                            (sketchgui->getSketchObject()->getGeometry(secondCurve));
+                    
                     Base::Vector3d refPnt1(firstPos.x, firstPos.y, 0.f);
                     Base::Vector3d refPnt2(secondPos.x, secondPos.y, 0.f);
-                    double radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
-                    if (radius < 0)
-                        return false;
                     
-                    construction=lineSeg1->Construction && lineSeg2->Construction;
+                    const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(firstCurve);
+
+                    double radius = 0;
+                    
+                    if( geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                        geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        // guess fillet radius
+                        const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
+                                                                (sketchgui->getSketchObject()->getGeometry(firstCurve));
+                        const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
+                                                                (sketchgui->getSketchObject()->getGeometry(secondCurve));
+
+                        radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
+                        if (radius < 0)
+                            return false;
+                        
+                        construction=lineSeg1->Construction && lineSeg2->Construction;
+                    }
+                    else { // other supported curves
+                        const Part::Geometry *geo1 = static_cast<const Part::Geometry *>
+                                                                (sketchgui->getSketchObject()->getGeometry(firstCurve));
+                        const Part::Geometry *geo2 = static_cast<const Part::Geometry *>
+                                                                (sketchgui->getSketchObject()->getGeometry(secondCurve));
+                        
+                        construction=geo1->Construction && geo2->Construction;                       
+                    }
+                    
+                    
                     int currentgeoid= getHighestCurveIndex();
 
                     // create fillet between lines
@@ -5809,9 +5830,21 @@ public:
                                   secondPos.x, secondPos.y, radius);
                         Gui::Command::commitCommand();
                     }
-                    catch (const Base::Exception& e) {
-                        Base::Console().Error("Failed to create fillet: %s\n", e.what());
+                    catch (const Base::CADKernelError& e) {
+                        e.ReportException();
+                        if(e.getTranslatable()) {
+                            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("CAD Kernel Error"),
+                                                QObject::tr(e.getMessage().c_str()));
+                        }
+                        Gui::Selection().clearSelection();
                         Gui::Command::abortCommand();
+                        Mode = STATUS_SEEK_First;
+                    }
+                    catch (const Base::ValueError& e) {
+                        e.ReportException();
+                        Gui::Selection().clearSelection();
+                        Gui::Command::abortCommand();
+                        Mode = STATUS_SEEK_First;
                     }
 
                     tryAutoRecompute(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
@@ -6546,8 +6579,8 @@ public:
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
             if (obj == NULL)
-                throw Base::Exception("Sketcher: External geometry: Invalid object in selection");
-            std::string subName(msg.pSubName);
+                throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
+            std::string subName(msg.pSubName);
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
                 obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
                 (subName.size() > 4 && subName.substr(0,4) == "Edge") ||
@@ -6574,6 +6607,7 @@ public:
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("Failed to add external geometry: %s\n", e.what());
+                    Gui::Selection().clearSelection();
                     Gui::Command::abortCommand();
                 }
                 return true;
@@ -6769,7 +6803,7 @@ static const char *cursor_carboncopy[]={
             if (msg.Type == Gui::SelectionChanges::AddSelection) {
                 App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
                 if (obj == NULL)
-                    throw Base::Exception("Sketcher: Carbon Copy: Invalid object in selection");
+                    throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
                 
                 if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
 
@@ -7014,7 +7048,7 @@ public:
                     StartPos.x,StartPos.y,  // center of the  arc1
                     fabs(r),                  // radius arc1
                     start,end,                 // start and end angle of arc1
-                    StartPos.x+lx,StartPos.y+ly,    // center of the  arc2
+                    StartPos.x+lx,StartPos.y+ly,    // center of the arc2
                     fabs(r),                          // radius arc2
                     end,start,                         // start and end angle of arc2
                     EditCurve[16].x,EditCurve[16].y,EditCurve[17].x,EditCurve[17].y, // line1
@@ -7028,7 +7062,7 @@ public:
                     (fabs(lx)>fabs(ly))?"Horizontal":"Vertical", firstCurve+2, // vertical or horizontal constraint
                     firstCurve,firstCurve+1, // equal constraint
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch                
-                
+
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the start of the first side

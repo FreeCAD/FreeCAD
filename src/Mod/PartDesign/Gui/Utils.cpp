@@ -140,7 +140,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
                     QObject::tr("In order to use PartDesign you need an active Body object in the document. "
                                 "Please make one active (double click) or create one.\n\nIf you have a legacy document "
-                                "with PartDesign objects without Body, use the transfer function in "
+                                "with PartDesign objects without Body, use the migrate function in "
                                 "PartDesign to put them into a Body."
                                 ));
             }
@@ -256,7 +256,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     const App::Document* doc = sketch->getDocument();
     PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
     if (!body) {
-        throw Base::Exception ("Couldn't find body for the sketch");
+        throw Base::RuntimeError ("Couldn't find body for the sketch");
     }
 
     // Get the Origin for the body
@@ -281,7 +281,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     else if (sketchVector == Base::Vector3d(1,0,0))
         plane = origin->getYZ ();
     else {
-        throw Base::Exception("Sketch plane cannot be migrated");
+        throw Base::ValueError("Sketch plane cannot be migrated");
     }
     assert (plane);
 
@@ -366,7 +366,7 @@ void relinkToBody (PartDesign::Feature *feature) {
     PartDesign::Body *body = PartDesign::Body::findBodyOf ( feature );
 
     if (!body) {
-        throw Base::Exception ("Couldn't find body for the feature");
+        throw Base::RuntimeError ("Couldn't find body for the feature");
     }
 
     for ( const auto & obj: doc->getObjects () ) {

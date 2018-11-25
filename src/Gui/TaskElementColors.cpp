@@ -28,7 +28,6 @@
 
 #include <QColorDialog>
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -57,7 +56,7 @@ using namespace Gui;
 class ElementColors::Private: public Gui::SelectionGate
 {
 public:
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     std::unique_ptr<Ui_TaskElementColors> ui;
     ViewProviderDocumentObject *vp;
     ViewProviderDocumentObject *vpParent;

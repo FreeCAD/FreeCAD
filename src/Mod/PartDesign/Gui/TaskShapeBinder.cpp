@@ -324,7 +324,7 @@ bool TaskDlgShapeBinder::accept()
     try {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())
-            throw Base::Exception(vp->getObject()->getStatusString());
+            throw Base::RuntimeError(vp->getObject()->getStatusString());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }

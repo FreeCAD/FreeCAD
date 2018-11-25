@@ -84,6 +84,10 @@ void View3DInventorViewerPy::init_type()
         "hidden. Call resetEditingRoot() to restore everything back to normal");
     add_varargs_method("resetEditingRoot", &View3DInventorViewerPy::resetEditingRoot,
         "resetEditingRoot(updateLinks=True): restore the editing ViewProvider's root node");
+    add_varargs_method("setRedirectToSceneGraph", &View3DInventorViewerPy::setRedirectToSceneGraph,
+        "setRedirectToSceneGraph(bool): enables or disables to redirect events directly to the scene graph.");
+    add_varargs_method("isRedirectedToSceneGraph", &View3DInventorViewerPy::isRedirectedToSceneGraph,
+        "isRedirectedToSceneGraph() -> bool: check whether event redirection is enabled.");
     add_varargs_method("setEnabledNaviCube", &View3DInventorViewerPy::setEnabledNaviCube,
         "setEnabledNaviCube(bool): enables or disables the navi cube of the viewer.");
     add_varargs_method("isEnabledNaviCube", &View3DInventorViewerPy::isEnabledNaviCube,
@@ -420,6 +424,23 @@ Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
     catch(...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
+}
+
+Py::Object View3DInventorViewerPy::setRedirectToSceneGraph(const Py::Tuple& args)
+{
+    PyObject* m=Py_False;
+    if (!PyArg_ParseTuple(args.ptr(), "O!", &PyBool_Type, &m))
+        throw Py::Exception();
+    _viewer->setRedirectToSceneGraph(PyObject_IsTrue(m) ? true : false);
+    return Py::None();
+}
+
+Py::Object View3DInventorViewerPy::isRedirectedToSceneGraph(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    bool ok = _viewer->isRedirectedToSceneGraph();
+    return Py::Boolean(ok);
 }
 
 Py::Object View3DInventorViewerPy::setEnabledNaviCube(const Py::Tuple& args)

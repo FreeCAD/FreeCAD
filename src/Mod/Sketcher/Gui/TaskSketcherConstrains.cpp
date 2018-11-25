@@ -318,6 +318,12 @@ public:
         return false;
     }
 
+    bool isDimensional() const {
+        assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
+
+        return (sketch->Constraints[ConstraintNbr])->isDimensional();
+    }
+
     bool isDriving() const {
         assert(ConstraintNbr >= 0 && ConstraintNbr < sketch->Constraints.getSize());
 
@@ -378,7 +384,9 @@ protected:
         App::ObjectIdentifier path = item->sketch->Constraints.createPath(item->ConstraintNbr);
         App::PropertyExpressionEngine::ExpressionInfo expr_info = item->sketch->getExpression(path);
 
-        if (item->sketch->Constraints[item->ConstraintNbr]->isDriving && expr_info.expression) {
+        // in case the constraint property is invalidated it returns a null pointer
+        const Sketcher::Constraint* constraint = item->sketch->Constraints[item->ConstraintNbr];
+        if (constraint && constraint->isDriving && expr_info.expression) {
             // Paint pixmap
             int s = 2 * options.rect.height() / 4;
             int margin = s;
@@ -420,13 +428,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     if (it) {
         // if its the right constraint
-        if ((it->constraintType() == Sketcher::Distance ||
-             it->constraintType() == Sketcher::DistanceX ||
-             it->constraintType() == Sketcher::DistanceY ||
-             it->constraintType() == Sketcher::Radius ||
-             it->constraintType() == Sketcher::Diameter ||
-             it->constraintType() == Sketcher::Angle ||
-             it->constraintType() == Sketcher::SnellsLaw)) {
+        if (it->isDimensional()) {
 
             isQuantity = true;
             if (it->isEnforceable())
@@ -730,13 +732,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
     if (!it) return;
 
     // if its the right constraint
-    if (it->constraintType() == Sketcher::Distance ||
-        it->constraintType() == Sketcher::DistanceX ||
-        it->constraintType() == Sketcher::DistanceY ||
-        it->constraintType() == Sketcher::Radius ||
-        it->constraintType() == Sketcher::Diameter ||
-        it->constraintType() == Sketcher::Angle ||
-        it->constraintType() == Sketcher::SnellsLaw) {
+    if (it->isDimensional()) {
 
         EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
         editDatumDialog->exec(false);

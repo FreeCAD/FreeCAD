@@ -23,6 +23,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
+#include <Base/ExceptionFactory.h>
 
 #include <App/Application.h>
 
@@ -237,7 +238,7 @@ PyMOD_INIT_FUNC(Part)
     // Python's cmath module.
     // For Linux use segmentation_fault_handler in Application.cpp
 #if !defined(_DEBUG) && !defined(FC_OS_LINUX)
-    OSD::SetSignal(Standard_False);
+    //OSD::SetSignal(Standard_False);
 #endif
 
     PyObject* partModule = Part::initModule();
@@ -245,6 +246,11 @@ PyMOD_INIT_FUNC(Part)
 
     Py::Object module(partModule);
     module.setAttr("OCC_VERSION", Py::String(OCC_VERSION_STRING_EXT));
+
+    // C++ exceptions
+    new Base::ExceptionProducer<Part::NullShapeException>;
+    new Base::ExceptionProducer<Part::AttachEngineException>;
+    new Base::ExceptionProducer<Part::BooleanException>;
 
     // Python exceptions
     //
@@ -478,6 +484,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomBezierCurve         ::init();
     Part::GeomBSplineCurve        ::init();
     Part::GeomConic               ::init();
+    Part::GeomTrimmedCurve        ::init();
     Part::GeomArcOfConic          ::init();
     Part::GeomCircle              ::init();
     Part::GeomArcOfCircle         ::init();
@@ -490,7 +497,6 @@ PyMOD_INIT_FUNC(Part)
     Part::GeomLine                ::init();
     Part::GeomLineSegment         ::init();
     Part::GeomOffsetCurve         ::init();
-    Part::GeomTrimmedCurve        ::init();
     Part::GeomSurface             ::init();
     Part::GeomBezierSurface       ::init();
     Part::GeomBSplineSurface      ::init();

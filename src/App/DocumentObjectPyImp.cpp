@@ -158,6 +158,14 @@ PyObject*  DocumentObjectPy::purgeTouched(PyObject * args)
     Py_Return;
 }
 
+PyObject*  DocumentObjectPy::enforceRecompute(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+    getDocumentObjectPtr()->enforceRecompute();
+    Py_Return;
+}
+
 Py::List DocumentObjectPy::getState(void) const
 {
     DocumentObject* object = this->getDocumentObjectPtr();

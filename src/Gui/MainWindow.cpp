@@ -52,7 +52,6 @@
 # include <QWhatsThis>
 #endif
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 // FreeCAD Base header
@@ -377,30 +376,43 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 #endif
 
-    auto hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    int treemode = hGrp->GetInt("TreeViewMode",0);
-    if(treemode!=hGrp->GetInt("TreeViewMode",1)) {
-        if(App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                        ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView",true))
-            treemode = 1;
-    }
-
-    // Tree view
-    if (treemode>0 && hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
-        TreeDockWidget* tree = new TreeDockWidget(0, this);
-        tree->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
-        tree->setMinimumWidth(210);
-        pDockMgr->registerDockWindow("Std_TreeView", tree);
+    if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("TreeView");
+        bool enabled = group->GetBool("Enabled", true);
+        if(enabled != group->GetBool("Enabled", false)) {
+            enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView",true);
+        }
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        if (enabled) {
+            TreeDockWidget* tree = new TreeDockWidget(0, this);
+            tree->setObjectName
+                (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
+            tree->setMinimumWidth(210);
+            pDockMgr->registerDockWindow("Std_TreeView", tree);
+        }
     }
 
     // Property view
-    if (treemode>0 && hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
-        PropertyDockView* pcPropView = new PropertyDockView(0, this);
-        pcPropView->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
-        pcPropView->setMinimumWidth(210);
-        pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+    if (hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("PropertyView");
+        bool enabled = group->GetBool("Enabled", true);
+        if(enabled != group->GetBool("Enabled", false)) {
+            enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView",true);
+        }
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        if (enabled) {
+            PropertyDockView* pcPropView = new PropertyDockView(0, this);
+            pcPropView->setObjectName
+                (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
+            pcPropView->setMinimumWidth(210);
+            pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+        }
     }
 
     // Selection view
@@ -413,7 +425,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     }
 
     // Combo view
-    if (treemode!=1 && hiddenDockWindows.find("Std_CombiView") == std::string::npos) {
+    if (hiddenDockWindows.find("Std_CombiView") == std::string::npos) {
         CombiView* pcCombiView = new CombiView(0, this);
         pcCombiView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
         pcCombiView->setMinimumWidth(150);
@@ -461,16 +473,24 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     //Dag View.
     if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
         //work through parameter.
+        // old group name
+        ParameterGrp::handle deprecateGroup = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp")->GetGroup("Preferences");
+        bool enabled = false;
+        if (deprecateGroup->HasGroup("DAGView")) {
+            deprecateGroup = deprecateGroup->GetGroup("DAGView");
+            enabled = deprecateGroup->GetBool("Enabled", enabled);
+        }
+        // new group name
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
-        bool enabled = group->GetBool("Enabled", false);
+              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
+        enabled = group->GetBool("Enabled", enabled);
         group->SetBool("Enabled", enabled); //ensure entry exists.
-        if (enabled)
-        {
-          DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
-          dagDockWindow->setObjectName
-              (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
-          pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
+        if (enabled) {
+            DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
+            dagDockWindow->setObjectName
+                (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+            pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
         }
     }
 #endif
@@ -1141,7 +1161,9 @@ void MainWindow::delayedStartup()
     // Create new document?
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
     if (hGrp->GetBool("CreateNewDoc", false)) {
-        App::GetApplication().newDocument();
+        if (App::GetApplication().getDocuments().size()==0){
+            App::GetApplication().newDocument();
+        }
     }
 
     if (hGrp->GetBool("RecoveryEnabled", true)) {
@@ -1373,8 +1395,8 @@ void MainWindow::dropEvent (QDropEvent* e)
 {
     const QMimeData* data = e->mimeData();
     if (data->hasUrls()) {
-        // pass no document to let create a new one if needed
-        loadUrls(0, data->urls());
+        // load the files into the active document if there is one, otherwise let create one
+        loadUrls(App::GetApplication().getActiveDocument(), data->urls());
     }
     else {
         QMainWindow::dropEvent(e);
@@ -1631,7 +1653,7 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
         }
     }
 
-    const char *docName = doc ? doc->getName() : "Unnamed";
+    QByteArray docName = doc ? QByteArray(doc->getName()) : qApp->translate("StdCmdNew","Unnamed").toUtf8();
     SelectModule::Dict dict = SelectModule::importHandler(files);
     // load the files with the associated modules
     for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {

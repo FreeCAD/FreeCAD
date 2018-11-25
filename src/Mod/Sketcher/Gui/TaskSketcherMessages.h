@@ -26,10 +26,10 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 class Ui_TaskSketcherMessages;
-typedef boost::signals::connection Connection;
+typedef boost::signals2::connection Connection;
 
 namespace App {
 class Property;

@@ -590,11 +590,13 @@ void AboutDialog::showLicenseInformation()
     libInfo << li;
 
     // OCCT
+#if defined(HAVE_OCC_VERSION)
     li.name = QLatin1String("Open CASCADE Technology");
     li.href = baseurl + QLatin1String("#_TocOCCT");
     li.url = QLatin1String("http://www.opencascade.com");
     li.version = QLatin1String(OCC_VERSION_STRING_EXT);
     libInfo << li;
+#endif
 
     // pcl
     li.name = QLatin1String("Point Cloud Library");

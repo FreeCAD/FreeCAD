@@ -52,6 +52,17 @@ LuxFeature::LuxFeature(void)
     ADD_PROPERTY(Transparency,(0));
 }
 
+short LuxFeature::mustExecute() const
+{
+    if (Source.isTouched())
+        return 1;
+    if (Color.isTouched())
+        return 1;
+    if (Transparency.isTouched())
+        return 1;
+    return RaySegment::mustExecute();
+}
+
 App::DocumentObjectExecReturn *LuxFeature::execute(void)
 {
     std::stringstream result;

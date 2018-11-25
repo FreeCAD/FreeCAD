@@ -361,6 +361,10 @@ class Snapper:
                     # for points we only snap to points
                     snaps.extend(self.snapToEndpoints(obj.Points))
 
+                elif Draft.getType(obj) == "WorkingPlaneProxy":
+                    # snap to the center of WPProxies
+                    snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Placement.Base)])
+
             # updating last objects list
             if not self.lastObj[1]:
                 self.lastObj[1] = obj.Name

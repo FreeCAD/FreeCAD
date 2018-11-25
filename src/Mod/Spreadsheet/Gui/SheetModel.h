@@ -24,7 +24,6 @@
 #define SHEETMODEL_H
 
 #include <QAbstractTableModel>
-#include <boost/signals/connection.hpp>
 #include <Mod/Spreadsheet/App/Utils.h>
 #include <App/Range.h>
 
@@ -52,7 +51,7 @@ public:
 private:
     void cellUpdated(App::CellAddress address);
 
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellUpdatedConnection;
+    boost::signals2::scoped_connection cellUpdatedConnection;
     Spreadsheet::Sheet * sheet;
     QColor aliasBgColor;
     QColor textFgColor;

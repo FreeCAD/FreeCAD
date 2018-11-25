@@ -444,8 +444,11 @@ void PropertyItem::setPropertyName(const QString& name)
     for (int i=0; i<name.length(); i++) {
         if (name[i].isUpper() && !display.isEmpty()) {
             // if there is a sequence of capital letters do not insert spaces
-            if (!upper)
-                display += QLatin1String(" ");
+            if (!upper) {
+                QChar last = display.at(display.length()-1);
+                if (!last.isSpace())
+                    display += QLatin1String(" ");
+            }
         }
         upper = name[i].isUpper();
         display += name[i];
@@ -536,7 +539,7 @@ QVariant PropertyItem::data(int column, int role) const
 bool PropertyItem::setData (const QVariant& value)
 {
     cleared = false;
-    
+
     // This is the basic mechanism to set the value to
     // a property and if no property is set for this item
     // it delegates it to its parent which sets then the
@@ -571,12 +574,14 @@ int PropertyItem::row() const
     return 0;
 }
 
-void PropertyItem::bind(const App::ObjectIdentifier& _path) {
+void PropertyItem::bind(const App::ObjectIdentifier& _path)
+{
     Gui::ExpressionBinding::bind(_path);
     propertyBound();
 }
 
-void PropertyItem::bind(const App::Property& prop) {
+void PropertyItem::bind(const App::Property& prop)
+{
     Gui::ExpressionBinding::bind(prop);
     propertyBound();
 }
@@ -731,7 +736,7 @@ QVariant PropertyIntegerItem::value(const App::Property* prop) const
 void PropertyIntegerItem::setValue(const QVariant& value)
 {
     //if the item has an expression it issues the python code
-    if(!hasExpression())  {
+    if (!hasExpression()) {
         if (!value.canConvert(QVariant::Int))
             return;
         int val = value.toInt();
@@ -746,13 +751,12 @@ QWidget* PropertyIntegerItem::createEditor(QWidget* parent, const QObject* recei
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(int)), receiver, method);
-    
-    if(isBound()) {
+
+    if (isBound()) {
         sb->bind(getPath());
         sb->setAutoApply(autoApply());
     }
 
-    
     return sb;
 }
 
@@ -769,12 +773,13 @@ QVariant PropertyIntegerItem::editorData(QWidget *editor) const
     return QVariant(sb->value());
 }
 
-QVariant PropertyIntegerItem::toString(const QVariant& v) const {
+QVariant PropertyIntegerItem::toString(const QVariant& v) const
+{
     QString string(PropertyItem::toString(v).toString());
-    
-    if(hasExpression())
+
+    if (hasExpression())
         string += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
-    
+
     return QVariant(string);
 }
 
@@ -798,7 +803,7 @@ QVariant PropertyIntegerConstraintItem::value(const App::Property* prop) const
 void PropertyIntegerConstraintItem::setValue(const QVariant& value)
 {
     //if the item has an expression it issues the python code
-    if(!hasExpression())  {
+    if (!hasExpression()) {
         if (!value.canConvert(QVariant::Int))
             return;
         int val = value.toInt();
@@ -813,12 +818,12 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObj
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(int)), receiver, method);
-    
-    if(isBound()) {
+
+    if (isBound()) {
         sb->bind(getPath());
         sb->setAutoApply(autoApply());
-    }  
-    
+    }
+
     return sb;
 }
 
@@ -851,13 +856,13 @@ QVariant PropertyIntegerConstraintItem::editorData(QWidget *editor) const
     return QVariant(sb->value());
 }
 
-QVariant PropertyIntegerConstraintItem::toString(const QVariant& v) const {
-    
+QVariant PropertyIntegerConstraintItem::toString(const QVariant& v) const
+{
     QString string(PropertyItem::toString(v).toString());
-    
-    if(hasExpression())
+
+    if (hasExpression())
         string += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
-    
+
     return QVariant(string);
 }
 
@@ -874,10 +879,10 @@ QVariant PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
     QString data = QLocale::system().toString(value, 'f', decimals());
-    
-    if(hasExpression())
+
+    if (hasExpression())
         data += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
-    
+
     return QVariant(data);
 }
 
@@ -892,7 +897,7 @@ QVariant PropertyFloatItem::value(const App::Property* prop) const
 void PropertyFloatItem::setValue(const QVariant& value)
 {
     //if the item has an expression it issues the python code
-    if(!hasExpression())  {
+    if (!hasExpression()) {
         if (!value.canConvert(QVariant::Double))
             return;
         double val = value.toDouble();
@@ -908,12 +913,12 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent, const QObject* receive
     sb->setDecimals(decimals());
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
-    
-    if(isBound()) {
+
+    if (isBound()) {
         sb->bind(getPath());
         sb->setAutoApply(autoApply());
     }
-        
+
     return sb;
 }
 
@@ -943,9 +948,9 @@ QVariant PropertyUnitItem::toString(const QVariant& prop) const
 {
     const Base::Quantity& unit = prop.value<Base::Quantity>();
     QString string = unit.getUserString();
-    if(hasExpression())
+    if (hasExpression())
         string += QString::fromLatin1("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
-    
+
     return QVariant(string);
 }
 
@@ -960,7 +965,7 @@ QVariant PropertyUnitItem::value(const App::Property* prop) const
 void PropertyUnitItem::setValue(const QVariant& value)
 {
     //if the item has an expression it handles the python code
-    if(!hasExpression()) {
+    if (!hasExpression()) {
         if (!value.canConvert<Base::Quantity>())
             return;
         const Base::Quantity& val = value.value<Base::Quantity>();
@@ -978,7 +983,7 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver
     infield->setReadOnly(isReadOnly());
     
     //if we are bound to an expression we need to bind it to the input field
-    if(isBound()) {
+    if (isBound()) {
         infield->bind(getPath());
         infield->setAutoApply(autoApply());
     }
@@ -1067,7 +1072,7 @@ QVariant PropertyFloatConstraintItem::value(const App::Property* prop) const
 void PropertyFloatConstraintItem::setValue(const QVariant& value)
 {
     //if the item has an expression it issues the python code
-    if(!hasExpression())  {
+    if (!hasExpression()) {
         if (!value.canConvert(QVariant::Double))
             return;
         double val = value.toDouble();
@@ -1083,13 +1088,12 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObjec
     sb->setFrame(false);
     sb->setReadOnly(isReadOnly());
     QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
-    
-    if(isBound()) {
+
+    if (isBound()) {
         sb->bind(getPath());
         sb->setAutoApply(autoApply());
     }
 
-    
     return sb;
 }
 
@@ -1327,13 +1331,12 @@ void PropertyVectorItem::setZ(double z)
     setData(QVariant::fromValue(Base::Vector3d(x(), y(), z)));
 }
 
-void PropertyVectorItem::propertyBound() {
-    
+void PropertyVectorItem::propertyBound()
+{
     m_x->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("x"));
     m_y->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("y"));
     m_z->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("z"));
 }
-
 
 // ---------------------------------------------------------------
 
@@ -1440,9 +1443,9 @@ void PropertyVectorDistanceItem::setZ(Base::Quantity z)
     setData(QVariant::fromValue(Base::Vector3d(x().getValue(), y().getValue(), z.getValue())));
 }
 
-void PropertyVectorDistanceItem::propertyBound() {
-
-    if(isBound()) {
+void PropertyVectorDistanceItem::propertyBound()
+{
+    if (isBound()) {
         m_x->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("x"));
         m_y->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("y"));
         m_z->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("z"));
@@ -2125,9 +2128,9 @@ QVariant PropertyPlacementItem::editorData(QWidget *editor) const
     return pe->value();
 }
 
-void PropertyPlacementItem::propertyBound() {
-    
-    if(isBound()) {
+void PropertyPlacementItem::propertyBound()
+{
+    if (isBound()) {
         m_a->bind(App::ObjectIdentifier(getPath())<<App::ObjectIdentifier::String("Rotation")
                                                   <<App::ObjectIdentifier::String("Angle"));
    

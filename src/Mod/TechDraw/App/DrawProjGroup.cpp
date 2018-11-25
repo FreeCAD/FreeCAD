@@ -151,6 +151,10 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
     if (docObj == nullptr) {
         return DrawViewCollection::execute();
     }
+    
+    for (auto& v: Views.getValues()) {
+        v->recomputeFeature();
+    }
 
     for (auto& item: getViewsAsDPGI()) {
         item->autoPosition();
@@ -220,7 +224,7 @@ double DrawProjGroup::calculateAutomaticScale() const
 {
     TechDraw::DrawPage *page = getPage();
     if (page == NULL)
-      throw Base::Exception("No page is assigned to this feature");
+      throw Base::RuntimeError("No page is assigned to this feature");
 
     DrawProjGroupItem *viewPtrs[10];
 
@@ -233,6 +237,7 @@ double DrawProjGroup::calculateAutomaticScale() const
     double bbFudge = 1.2;
     width *= bbFudge;
     height *= bbFudge;
+
 
     // C++ Standard says casting bool to int gives 0 or 1
     int numVertSpaces = (viewPtrs[0] || viewPtrs[3] || viewPtrs[7]) +
@@ -257,6 +262,7 @@ double DrawProjGroup::calculateAutomaticScale() const
         Base::Console().Log("DPG - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),result);
         result = 1.0;
     }
+    
     return result;
 }
 
@@ -279,7 +285,7 @@ void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
 {
     // Get bounding boxes in object scale
     Base::BoundBox3d bboxes[10];
-    makeViewBbs(viewPtrs, bboxes, false);
+    makeViewBbs(viewPtrs, bboxes, true);
 
     //TODO: note that TLF/TRF/BLF,BRF extend a bit farther than a strict row/col arrangement would suggest.
     //get widest view in each row/column
@@ -398,7 +404,7 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
     // TODO: shouldn't be able to delete "Front" unless deleting whole group
     if ( checkViewProjType(viewProjType) ) {
         if( !hasProjection(viewProjType) ) {
-            throw Base::Exception("The projection doesn't exist in the group");
+            throw Base::RuntimeError("The projection doesn't exist in the group");
         }
 
         // Iterate through the child views and find the projection type
@@ -670,10 +676,10 @@ int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
         } else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
             result = thirdAngle ? 9 : 0;
         } else {
-            throw Base::Exception("Unknown view type in DrawProjGroup::getViewIndex()");
+            throw Base::TypeError("Unknown view type in DrawProjGroup::getViewIndex()");
         }
     } else {
-        throw Base::Exception("Unknown Projection convention in DrawProjGroup::getViewIndex()");
+        throw Base::ValueError("Unknown Projection convention in DrawProjGroup::getViewIndex()");
     }
     return result;
 }
@@ -730,12 +736,12 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
                 } else if (strcmp(viewTypeCStr, "FrontBottomRight") == 0) {
                     viewPtrs[thirdAngle ? 9 : 0] = oView;
                 } else {
-                    throw Base::Exception("Unknown view type in DrawProjGroup::arrangeViewPointers()");
+                    throw Base::TypeError("Unknown view type in DrawProjGroup::arrangeViewPointers()");
                 }
             }
         }
     } else {
-        throw Base::Exception("Unknown view type in DrawProjGroup::arrangeViewPointers()");
+        throw Base::ValueError("Unknown view type in DrawProjGroup::arrangeViewPointers()");
     }
 }
 

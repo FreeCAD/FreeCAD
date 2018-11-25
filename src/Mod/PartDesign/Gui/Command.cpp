@@ -441,15 +441,27 @@ void CmdPartDesignClone::activated(int iMsg)
     std::vector<App::DocumentObject*> objs = getSelection().getObjectsOfType
             (Part::Feature::getClassTypeId());
     if (objs.size() == 1) {
+        // As suggested in https://forum.freecadweb.org/viewtopic.php?f=3&t=25265&p=198547#p207336
+        // put the clone into its own new body.
+        // This also fixes bug #3447 because the clone is a PD feature and thus
+        // requires a body where it is part of.
         openCommand("Create Clone");
         auto obj = objs[0];
         std::string FeatName = getUniqueObjectName("Clone",obj);
+        std::string BodyName = getUniqueObjectName("Body",obj);
+        FCMD_OBJ_DOC_CMD(obj,"addObject('PartDesign::Body','" << BodyName << "')");
         FCMD_OBJ_DOC_CMD(obj,"addObject('PartDesign::FeatureBase','" << FeatName << "')");
         auto Feat = obj->getDocument()->getObject(FeatName.c_str());
         auto objCmd = getObjectCmd(obj);
         FCMD_OBJ_CMD(Feat,"BaseFeature = " << objCmd);
         FCMD_OBJ_CMD(Feat,"Placement = " << objCmd << ".Placement");
         FCMD_OBJ_CMD(Feat,"setEditorMode('Placement',0)");
+
+        auto Body = obj->getDocument()->getObject(BodyName.c_str());
+        FCMD_OBJ_CMD(Body,"Group = [" << getObjectCmd(Feat) << "]");
+
+        // Set the tip of the body
+        FCMD_OBJ_CMD(Body,"Tip = " << getObjectCmd(Feat));
         updateActive();
         copyVisual(Feat, "ShapeColor", obj);
         copyVisual(Feat, "LineColor", obj);
@@ -821,18 +833,14 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
     if (updateDocument)
         cmd->updateActive();
 
-    // #0001721: use '0' as edit value to avoid switching off selection in
-    // ViewProviderGeometryObject::setEditViewer
-    PartDesignGui::setEdit(Feat,pcActiveBody);
-    cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
-    //cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
-
     auto base = dynamic_cast<PartDesign::Feature*>(Feat);
     if(base)
         base = dynamic_cast<PartDesign::Feature*>(base->getBaseObject(true));
     App::DocumentObject *obj = base;
     if(!obj)
         obj = pcActiveBody;
+
+    // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
     if (obj) {
         cmd->copyVisual(Feat, "ShapeColor", obj);
         cmd->copyVisual(Feat, "LineColor", obj);
@@ -840,6 +848,12 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
         cmd->copyVisual(Feat, "Transparency", obj);
         cmd->copyVisual(Feat, "DisplayMode", obj);
     }
+
+    // #0001721: use '0' as edit value to avoid switching off selection in
+    // ViewProviderGeometryObject::setEditViewer
+    PartDesignGui::setEdit(Feat,pcActiveBody);
+    cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
+    //cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 }
 
 //===========================================================================
@@ -2229,9 +2243,17 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         openCommand("Convert to MultiTransform feature");
         doCommand(Gui, "FreeCADGui.runCommand('PartDesign_MoveTip')");
 
+        // We cannot remove the Transform feature from the body as otherwise
+        // we will have a PartDesign feature without a body which is not allowed
+        // and causes to pop up the migration dialog later when adding new features
+        // to the body.
+        // Additionally it creates the error message: "Links go out of the allowed scope"
+        // #0003509
+#if 0
         // Remove the Transformed feature from the Body
         if(pcActiveBody)
             FCMD_OBJ_CMD(pcActiveBody,"removeObject("<<getObjectCmd(trFeat)<<")");
+#endif
 
         // Create a MultiTransform feature and move the Transformed feature inside it
         std::string FeatName = getUniqueObjectName("MultiTransform",pcActiveBody);

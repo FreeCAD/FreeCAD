@@ -211,9 +211,9 @@ def makeBuildingPart(objectslist=None,baseobj=None,name="BuildingPart"):
 
 
 def makeFloor(objectslist=None,baseobj=None,name="Floor"):
-    
+
     """overwrites ArchFloor.makeFloor"""
-    
+
     obj = makeBuildingPart(objectslist)
     obj.Label = name
     obj.IfcRole = "Building Storey"
@@ -221,9 +221,9 @@ def makeFloor(objectslist=None,baseobj=None,name="Floor"):
 
 
 def makeBuilding(objectslist=None,baseobj=None,name="Building"):
-    
+
     """overwrites ArchBuilding.makeBuilding"""
-    
+
     obj = makeBuildingPart(objectslist)
     obj.Label = name
     obj.IfcRole = "Building"
@@ -396,17 +396,34 @@ class BuildingPart:
     def execute(self,obj):
 
         # gather all the child shapes into a compound
-        shapes = []
-        for o in obj.Group:
-            if o.isDerivedFrom("Part::Feature") and o.Shape and (not o.Shape.isNull()):
-                shapes.append(o.Shape)
+        shapes = self.getShapes(obj)
         if shapes:
             import Part
             obj.Shape = Part.makeCompound(shapes)
 
+    def getShapes(self,obj):
+
+        "recursively get the shapes of objects inside this BuildingPart"
+
+        shapes = []
+        if obj.isDerivedFrom("Part::Feature") and obj.Shape and (not obj.Shape.isNull()):
+            shapes.append(obj.Shape)
+        if hasattr(obj,"Group"):
+            for child in obj.Group:
+                shapes.extend(self.getShapes(child))
+        for i in obj.InList:
+            if hasattr(i,"Hosts"):
+                if obj in i.Hosts:
+                    shapes.extend(self.getShapes(i))
+            elif hasattr(i,"Host"):
+                if obj == i.Host:
+                    shapes.extend(self.getShapes(i))
+        return shapes
+
     def getSpaces(self,obj):
 
         "gets the list of Spaces that have this object as their Zone property"
+
         g = []
         for o in obj.OutList:
             if hasattr(o,"Zone"):
@@ -528,19 +545,39 @@ class ViewProviderBuildingPart:
             self.onChanged(obj.ViewObject,"OverrideUnit")
         elif prop == "Shape":
             # gather all the child shapes
-            cols = []
-            for o in obj.Group:
-                if o.isDerivedFrom("Part::Feature") and o.Shape and (not o.Shape.isNull()):
-                    if len(o.ViewObject.DiffuseColor) == len(o.Shape.Faces):
-                        cols.extend(o.ViewObject.DiffuseColor)
-                    else:
-                        c = o.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
-                        for i in range(len(o.Shape.Faces)):
-                            cols.append(c)
-            if hasattr(obj.ViewObject,"DiffuseColor"):
-                obj.ViewObject.DiffuseColor = cols
+            colors = self.getColors(obj)
+            if colors and hasattr(obj.ViewObject,"DiffuseColor"):
+                if len(colors) == len(obj.Shape.Faces):
+                    if colors != obj.ViewObject.DiffuseColor:
+                        obj.ViewObject.DiffuseColor = colors
+
+    def getColors(self,obj):
+
+        "recursively get the colors of objects inside this BuildingPart"
+
+        colors = []
+        if obj.isDerivedFrom("Part::Feature") and obj.Shape and (not obj.Shape.isNull()):
+            if hasattr(obj.ViewObject,"DiffuseColor") and (len(obj.ViewObject.DiffuseColor) == len(obj.Shape.Faces)):
+                colors.extend(obj.ViewObject.DiffuseColor)
+            elif hasattr(obj.ViewObject,"ShapeColor"):
+                c = obj.ViewObject.ShapeColor[:3]+(obj.ViewObject.Transparency/100.0,)
+                for i in range(len(obj.Shape.Faces)):
+                    colors.append(c)
+        if hasattr(obj,"Group"):
+            for child in obj.Group:
+                colors.extend(self.getColors(child))
+        for i in obj.InList:
+            if hasattr(i,"Hosts"):
+                if obj in i.Hosts:
+                    colors.extend(self.getColors(i))
+            elif hasattr(i,"Host"):
+                if obj == i.Host:
+                    colors.extend(self.getColors(i))
+        return colors
 
     def onChanged(self,vobj,prop):
+
+        #print(vobj.Object.Label," - ",prop)
 
         if prop == "ShapeColor":
             if hasattr(vobj,"ShapeColor"):

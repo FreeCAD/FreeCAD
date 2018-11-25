@@ -1263,7 +1263,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         }
 
         // set the subtractive shape property for later usage in e.g. pattern
-        this->AddSubShape.setValue(TopoShape().makECompound(holes).moved(invObjLoc));
+        this->AddSubShape.setValue(TopoShape().makECompound(holes));
 
         remapSupportShape(base.getShape());
         if(base.countSubShapes(TopAbs_SOLID)>1)

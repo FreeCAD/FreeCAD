@@ -14,7 +14,7 @@
 #define FLEX_BETA
 #endif
 
-/* First, we deal with  platform-specific or compiler-specific issues. */
+/* First, we deal with platform-specific or compiler-specific issues. */
 
 /* begin standard C headers. */
 #include <stdio.h>
@@ -2183,19 +2183,19 @@ static void yy_fatal_error (yyconst char* msg )
 		} \
 	while ( 0 )
 
-/* Accessor  methods (get/set functions) to struct members. */
+/* Accessor methods (get/set functions) to struct members. */
 
 /** Get the current line number.
- * 
+ *
  */
 int yyget_lineno  (void)
 {
-        
+
     return yylineno;
 }
 
 /** Get the input stream.
- * 
+ *
  */
 FILE *yyget_in  (void)
 {

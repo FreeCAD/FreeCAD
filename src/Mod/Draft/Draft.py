@@ -883,9 +883,12 @@ def makeWire(pointslist,closed=False,placement=None,face=None,support=None):
         print("Invalid input points: ",pointslist)
     #print(pointslist)
     #print(closed)
-    if placement: typecheck([(placement,FreeCAD.Placement)], "makeWire")
+    if placement:
+        typecheck([(placement,FreeCAD.Placement)], "makeWire")
+        ipl = placement.inverse()
+        pointslist = [ipl.multVec(p) for p in pointslist]
     if len(pointslist) == 2: fname = "Line"
-    else: fname = "DWire"
+    else: fname = "Wire"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
     _Wire(obj)
     obj.Points = pointslist
@@ -1784,12 +1787,15 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
             else:
                 s1 = obj.Shape
                 s2 = newwire
-            w1 = s1.Edges
-            w2 = s2.Edges
-            w3 = Part.LineSegment(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
-            w4 = Part.LineSegment(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
-            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
-            newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
+            if s1 and s2:
+                w1 = s1.Edges
+                w2 = s2.Edges
+                w3 = Part.LineSegment(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
+                w4 = Part.LineSegment(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
+            else:
+                print("Draft.offset: Unable to bind wires")
         else:
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
             newobj.Shape = Part.Face(obj.Shape.Wires[0])
@@ -1978,7 +1984,6 @@ def getDXF(obj,direction=None):
 
     return result
 
-
 def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0):
     '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color],[linespacing]):
     returns a string containing a SVG representation of the given object,
@@ -2127,7 +2132,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     if round(c.Axis.getAngle(drawing_plane_normal),2) in [0,3.14]:
                         occversion = Part.OCC_VERSION.split(".")
                         done = False
-                        if (occversion[0] >= 7) and (occversion[1] >= 1):
+                        if (int(occversion[0]) >= 7) and (int(occversion[1]) >= 1):
                             # if using occ >= 7.1, use HLR algorithm
                             import Drawing
                             snip = Drawing.projectToSVG(e,drawing_plane_normal)
@@ -2279,50 +2284,51 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
         svg = ""
-        if not obj.ViewObject:
-            return svg
-        if obj.ViewObject.ArrowType == "Circle":
-            svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
-            svg += '" r="'+str(arrowsize)+'" '
-            svg += 'fill="none" stroke="'+ color + '" '
-            svg += 'style="stroke-width:'+ str(linewidth) + ';stroke-miterlimit:4;stroke-dasharray:none" '
-            svg += 'freecad:skip="1"'
-            svg += '/>\n'
-        elif obj.ViewObject.ArrowType == "Dot":
-            svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
-            svg += '" r="'+str(arrowsize)+'" '
-            svg += 'fill="'+ color +'" stroke="none" '
-            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-            svg += 'freecad:skip="1"'
-            svg += '/>\n'
-        elif obj.ViewObject.ArrowType == "Arrow":
-            svg += '<path transform="rotate('+str(math.degrees(angle))
-            svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-            svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-            svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
-            svg += 'fill="'+ color +'" stroke="none" '
-            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-            svg += 'd="M 0 0 L 4 1 L 4 -1 Z"/>\n'
-        elif obj.ViewObject.ArrowType == "Tick":
-            svg += '<path transform="rotate('+str(math.degrees(angle))
-            svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-            svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-            svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
-            svg += 'fill="'+ color +'" stroke="none" '
-            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
-            svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"/>\n'
-        elif obj.ViewObject.ArrowType == "Tick-2":
-            svg += '<line transform="rotate('+str(math.degrees(angle)+45)
-            svg += ','+ str(point.x) + ',' + str(point.y) + ') '
-            svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
-            svg += '" freecad:skip="1" '
-            svg += 'fill="none" stroke="'+ color +'" '
-            svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
-            svg += 'stroke-width:'+ str(linewidth) +'" '
-            svg += 'x1="-'+ str(arrowsize*2) +'" y1="0" '
-            svg += 'x2="' + str(arrowsize*2) +'" y2="0" />\n'
-        else:
-            print("getSVG: arrow type not implemented")
+        if gui:
+            if not obj.ViewObject:
+                return svg
+            if obj.ViewObject.ArrowType == "Circle":
+                svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
+                svg += '" r="'+str(arrowsize)+'" '
+                svg += 'fill="none" stroke="'+ color + '" '
+                svg += 'style="stroke-width:'+ str(linewidth) + ';stroke-miterlimit:4;stroke-dasharray:none" '
+                svg += 'freecad:skip="1"'
+                svg += '/>\n'
+            elif obj.ViewObject.ArrowType == "Dot":
+                svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
+                svg += '" r="'+str(arrowsize)+'" '
+                svg += 'fill="'+ color +'" stroke="none" '
+                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+                svg += 'freecad:skip="1"'
+                svg += '/>\n'
+            elif obj.ViewObject.ArrowType == "Arrow":
+                svg += '<path transform="rotate('+str(math.degrees(angle))
+                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
+                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
+                svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
+                svg += 'fill="'+ color +'" stroke="none" '
+                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+                svg += 'd="M 0 0 L 4 1 L 4 -1 Z"/>\n'
+            elif obj.ViewObject.ArrowType == "Tick":
+                svg += '<path transform="rotate('+str(math.degrees(angle))
+                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
+                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
+                svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
+                svg += 'fill="'+ color +'" stroke="none" '
+                svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+                svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"/>\n'
+            elif obj.ViewObject.ArrowType == "Tick-2":
+                svg += '<line transform="rotate('+str(math.degrees(angle)+45)
+                svg += ','+ str(point.x) + ',' + str(point.y) + ') '
+                svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
+                svg += '" freecad:skip="1" '
+                svg += 'fill="none" stroke="'+ color +'" '
+                svg += 'style="stroke-dasharray:none;stroke-linecap:square;'
+                svg += 'stroke-width:'+ str(linewidth) +'" '
+                svg += 'x1="-'+ str(arrowsize*2) +'" y1="0" '
+                svg += 'x2="' + str(arrowsize*2) +'" y2="0" />\n'
+            else:
+                print("getSVG: arrow type not implemented")
         return svg
 
     def getOvershoot(point,shootsize,color,linewidth,angle=0):
@@ -2360,7 +2366,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg = ""
             for i in range(len(text)):
                 t = text[i]
-                if not isinstance(t,unicode):
+                if sys.version_info.major < 3 and (not isinstance(t,unicode)):
                     t = t.decode("utf8")
                 # possible workaround if UTF8 is unsupported
                 #    import unicodedata
@@ -2428,199 +2434,250 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
 
     elif getType(obj) == "Dimension":
-        if not obj.ViewObject:
-            print ("export of dimensions to SVG is only available in GUI mode")
-        elif obj.ViewObject.Proxy:
-            if hasattr(obj.ViewObject.Proxy,"p1"):
-                prx = obj.ViewObject.Proxy
-                ts = (len(prx.string)*obj.ViewObject.FontSize.Value)/4.0
-                rm = ((prx.p3.sub(prx.p2)).Length/2.0)-ts
-                p2a = getProj(prx.p2.add(DraftVecUtils.scaleTo(prx.p3.sub(prx.p2),rm)))
-                p2b = getProj(prx.p3.add(DraftVecUtils.scaleTo(prx.p2.sub(prx.p3),rm)))
-                p1 = getProj(prx.p1)
-                p2 = getProj(prx.p2)
-                p3 = getProj(prx.p3)
-                p4 = getProj(prx.p4)
-                tbase = getProj(prx.tbase)
-                r = prx.textpos.rotation.getValue().getValue()
-                rv = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(1,0,0))
-                angle = -DraftVecUtils.angle(getProj(rv))
-                #angle = -DraftVecUtils.angle(p3.sub(p2))
-
-                # drawing lines
-                svg = '<path '
-                if obj.ViewObject.DisplayMode == "2D":
-                    tangle = angle
-                    if tangle > math.pi/2:
-                        tangle = tangle-math.pi
-                    #elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
-                    #    tangle = tangle+math.pi
-                    #tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
-                    if rotation != 0:
-                        #print "dim: tangle:",tangle," rot: ",rotation," text: ",prx.string
-                        if abs(tangle+math.radians(rotation)) < 0.0001:
-                            tangle += math.pi
-                            tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
-                    svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                    svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                    svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                    svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
-                else:
-                    tangle = 0
-                    if rotation != 0:
-                        tangle = -math.radians(rotation)
-                    tbase = tbase.add(Vector(0,-2.0/scale,0))
-                    svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
-                    svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
-                    svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
-                    svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
-                    svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
-                    svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
-
-                svg += 'fill="none" stroke="'
-                svg += stroke + '" '
-                svg += 'stroke-width="' + str(linewidth) + ' px" '
-                svg += 'style="stroke-width:'+ str(linewidth)
-                svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
-                svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
-                svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
-                svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
-                svg += '/>\n'
-
-                # drawing dimension and extension lines overshoots
-                if hasattr(obj.ViewObject,"DimOvershoot") and obj.ViewObject.DimOvershoot.Value:
-                    shootsize = obj.ViewObject.DimOvershoot.Value/pointratio
-                    svg += getOvershoot(p2,shootsize,stroke,linewidth,angle)
-                    svg += getOvershoot(p3,shootsize,stroke,linewidth,angle+math.pi)
-                if hasattr(obj.ViewObject,"ExtOvershoot") and obj.ViewObject.ExtOvershoot.Value:
-                    shootsize = obj.ViewObject.ExtOvershoot.Value/pointratio
-                    shootangle = -DraftVecUtils.angle(p1.sub(p2))
-                    svg += getOvershoot(p2,shootsize,stroke,linewidth,shootangle)
-                    svg += getOvershoot(p3,shootsize,stroke,linewidth,shootangle)
-
-                # drawing arrows
-                if hasattr(obj.ViewObject,"ArrowType"):
-                    arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                    if hasattr(obj.ViewObject,"FlipArrows"):
-                        if obj.ViewObject.FlipArrows:
-                            angle = angle+math.pi
-                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
-                    svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
-
-                # drawing text
-                svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
-
-    elif getType(obj) == "AngularDimension":
-        if not obj.ViewObject:
-            print ("export of dimensions to SVG is only available in GUI mode")
-        elif obj.ViewObject.Proxy:
-            if hasattr(obj.ViewObject.Proxy,"circle"):
-                prx = obj.ViewObject.Proxy
-
-                # drawing arc
-                fill= "none"
-                lstyle = getLineStyle()
-                if obj.ViewObject.DisplayMode == "2D":
-                    svg += getPath([prx.circle])
-                else:
-                    if hasattr(prx,"circle1"):
-                        svg += getPath([prx.circle1])
-                        svg += getPath([prx.circle2])
-                    else:
-                        svg += getPath([prx.circle])
-
-                # drawing arrows
-                if hasattr(obj.ViewObject,"ArrowType"):
+        if gui:
+            if not obj.ViewObject:
+                print ("export of dimensions to SVG is only available in GUI mode")
+            elif obj.ViewObject.Proxy:
+                if hasattr(obj.ViewObject.Proxy,"p1"):
+                    prx = obj.ViewObject.Proxy
+                    ts = (len(prx.string)*obj.ViewObject.FontSize.Value)/4.0
+                    rm = ((prx.p3.sub(prx.p2)).Length/2.0)-ts
+                    p2a = getProj(prx.p2.add(DraftVecUtils.scaleTo(prx.p3.sub(prx.p2),rm)))
+                    p2b = getProj(prx.p3.add(DraftVecUtils.scaleTo(prx.p2.sub(prx.p3),rm)))
+                    p1 = getProj(prx.p1)
                     p2 = getProj(prx.p2)
                     p3 = getProj(prx.p3)
-                    arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
-                    arrowlength = 4*obj.ViewObject.ArrowSize.Value
-                    u1 = getProj((prx.circle.valueAt(prx.circle.FirstParameter+arrowlength)).sub(prx.circle.valueAt(prx.circle.FirstParameter)))
-                    u2 = getProj((prx.circle.valueAt(prx.circle.LastParameter-arrowlength)).sub(prx.circle.valueAt(prx.circle.LastParameter)))
-                    angle1 = -DraftVecUtils.angle(u1)
-                    angle2 = -DraftVecUtils.angle(u2)
-                    if hasattr(obj.ViewObject,"FlipArrows"):
-                        if obj.ViewObject.FlipArrows:
-                            angle1 = angle1+math.pi
-                            angle2 = angle2+math.pi
-                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle1)
-                    svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle2)
-
-                # drawing text
-                if obj.ViewObject.DisplayMode == "2D":
-                    t = prx.circle.tangentAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0)
-                    t = getProj(t)
-                    tangle = DraftVecUtils.angle(t)
-                    if (tangle <= -math.pi/2) or (tangle > math.pi/2):
-                        tangle = tangle + math.pi
-                    tbase = getProj(prx.circle.valueAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0))
-                    tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2.0/scale,0),tangle))
-                    #print(tbase)
-                else:
-                    tangle = 0
+                    p4 = getProj(prx.p4)
                     tbase = getProj(prx.tbase)
-                svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+                    r = prx.textpos.rotation.getValue().getValue()
+                    rv = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(1,0,0))
+                    angle = -DraftVecUtils.angle(getProj(rv))
+                    #angle = -DraftVecUtils.angle(p3.sub(p2))
+
+                    # drawing lines
+                    svg = '<path '
+                    if obj.ViewObject.DisplayMode == "2D":
+                        tangle = angle
+                        if tangle > math.pi/2:
+                            tangle = tangle-math.pi
+                        #elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
+                        #    tangle = tangle+math.pi
+                        #tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
+                        if rotation != 0:
+                            #print "dim: tangle:",tangle," rot: ",rotation," text: ",prx.string
+                            if abs(tangle+math.radians(rotation)) < 0.0001:
+                                tangle += math.pi
+                                tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
+                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+                    else:
+                        tangle = 0
+                        if rotation != 0:
+                            tangle = -math.radians(rotation)
+                        tbase = tbase.add(Vector(0,-2.0/scale,0))
+                        svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
+                        svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
+                        svg += 'L '+str(p2a.x)+' '+str(p2a.y)+' '
+                        svg += 'M '+str(p2b.x)+' '+str(p2b.y)+' '
+                        svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
+                        svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
+
+                    svg += 'fill="none" stroke="'
+                    svg += stroke + '" '
+                    svg += 'stroke-width="' + str(linewidth) + ' px" '
+                    svg += 'style="stroke-width:'+ str(linewidth)
+                    svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
+                    svg += 'freecad:basepoint1="'+str(p1.x)+' '+str(p1.y)+'" '
+                    svg += 'freecad:basepoint2="'+str(p4.x)+' '+str(p4.y)+'" '
+                    svg += 'freecad:dimpoint="'+str(p2.x)+' '+str(p2.y)+'"'
+                    svg += '/>\n'
+
+                    # drawing dimension and extension lines overshoots
+                    if hasattr(obj.ViewObject,"DimOvershoot") and obj.ViewObject.DimOvershoot.Value:
+                        shootsize = obj.ViewObject.DimOvershoot.Value/pointratio
+                        svg += getOvershoot(p2,shootsize,stroke,linewidth,angle)
+                        svg += getOvershoot(p3,shootsize,stroke,linewidth,angle+math.pi)
+                    if hasattr(obj.ViewObject,"ExtOvershoot") and obj.ViewObject.ExtOvershoot.Value:
+                        shootsize = obj.ViewObject.ExtOvershoot.Value/pointratio
+                        shootangle = -DraftVecUtils.angle(p1.sub(p2))
+                        svg += getOvershoot(p2,shootsize,stroke,linewidth,shootangle)
+                        svg += getOvershoot(p3,shootsize,stroke,linewidth,shootangle)
+
+                    # drawing arrows
+                    if hasattr(obj.ViewObject,"ArrowType"):
+                        arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
+                        if hasattr(obj.ViewObject,"FlipArrows"):
+                            if obj.ViewObject.FlipArrows:
+                                angle = angle+math.pi
+                        svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
+                        svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
+
+                    # drawing text
+                    svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+
+    elif getType(obj) == "AngularDimension":
+        if gui:
+            if not obj.ViewObject:
+                print ("export of dimensions to SVG is only available in GUI mode")
+            elif obj.ViewObject.Proxy:
+                if hasattr(obj.ViewObject.Proxy,"circle"):
+                    prx = obj.ViewObject.Proxy
+
+                    # drawing arc
+                    fill= "none"
+                    lstyle = getLineStyle()
+                    if obj.ViewObject.DisplayMode == "2D":
+                        svg += getPath([prx.circle])
+                    else:
+                        if hasattr(prx,"circle1"):
+                            svg += getPath([prx.circle1])
+                            svg += getPath([prx.circle2])
+                        else:
+                            svg += getPath([prx.circle])
+
+                    # drawing arrows
+                    if hasattr(obj.ViewObject,"ArrowType"):
+                        p2 = getProj(prx.p2)
+                        p3 = getProj(prx.p3)
+                        arrowsize = obj.ViewObject.ArrowSize.Value/pointratio
+                        arrowlength = 4*obj.ViewObject.ArrowSize.Value
+                        u1 = getProj((prx.circle.valueAt(prx.circle.FirstParameter+arrowlength)).sub(prx.circle.valueAt(prx.circle.FirstParameter)))
+                        u2 = getProj((prx.circle.valueAt(prx.circle.LastParameter-arrowlength)).sub(prx.circle.valueAt(prx.circle.LastParameter)))
+                        angle1 = -DraftVecUtils.angle(u1)
+                        angle2 = -DraftVecUtils.angle(u2)
+                        if hasattr(obj.ViewObject,"FlipArrows"):
+                            if obj.ViewObject.FlipArrows:
+                                angle1 = angle1+math.pi
+                                angle2 = angle2+math.pi
+                        svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle1)
+                        svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle2)
+
+                    # drawing text
+                    if obj.ViewObject.DisplayMode == "2D":
+                        t = prx.circle.tangentAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0)
+                        t = getProj(t)
+                        tangle = DraftVecUtils.angle(t)
+                        if (tangle <= -math.pi/2) or (tangle > math.pi/2):
+                            tangle = tangle + math.pi
+                        tbase = getProj(prx.circle.valueAt(prx.circle.FirstParameter+(prx.circle.LastParameter-prx.circle.FirstParameter)/2.0))
+                        tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2.0/scale,0),tangle))
+                        #print(tbase)
+                    else:
+                        tangle = 0
+                        tbase = getProj(prx.tbase)
+                    svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+
+    elif getType(obj) == "Label":
+        if getattr(obj.ViewObject, "Line", True):  # some Labels may have no Line property
+            def format_point(coords, action='L'):
+                return "{action}{x},{y}".format(
+                    x=coords.x, y=coords.y, action=action
+                )
+
+            # Draw multisegment line
+            proj_points = list(map(getProj, obj.Points))
+            path_dir_list = [format_point(proj_points[0], action='M')]
+            path_dir_list += map(format_point, proj_points[1:])
+            path_dir_str = " ".join(path_dir_list)
+            svg_path = '<path fill="none" stroke="{stroke}" stroke-width="{linewidth}" d="{directions}"/>'.format(
+                stroke=stroke,
+                linewidth=linewidth,
+                directions=path_dir_str
+            )
+            svg += svg_path
+
+            # Draw arrow.
+            # We are different here from 3D view
+            # if Line is set to 'off', no arrow is drawn
+            if hasattr(obj.ViewObject, "ArrowType") and len(obj.Points) >= 2:
+                last_segment = FreeCAD.Vector(obj.Points[-1] - obj.Points[-2])
+                angle = -DraftVecUtils.angle(getProj(last_segment)) + math.pi
+                svg += getArrow(
+                    arrowtype=obj.ViewObject.ArrowType,
+                    point=proj_points[-1],
+                    arrowsize=obj.ViewObject.ArrowSize.Value/pointratio,
+                    color=stroke,
+                    linewidth=linewidth,
+                    angle=angle
+                )
+
+        # print text
+        if gui:
+            if not obj.ViewObject:
+                print("export of texts to SVG is only available in GUI mode")
+            else:
+                fontname = obj.ViewObject.TextFont
+                position = getProj(obj.Placement.Base)
+                rotation = obj.Placement.Rotation
+                justification = obj.ViewObject.TextAlignment
+                text = obj.Text
+                svg += getText(stroke, fontsize, fontname, rotation, position,
+                               text, linespacing, justification)
 
     elif getType(obj) in ["Annotation","DraftText"]:
         "returns an svg representation of a document annotation"
-        if not obj.ViewObject:
-            print ("export of texts to SVG is only available in GUI mode")
-        else:
-            n = obj.ViewObject.FontName
-            if getType(obj) == "Annotation":
-                p = getProj(obj.Position)
-                r = obj.ViewObject.Rotation.getValueAs("rad")
-                t = obj.LabelText
-            else: # DraftText
-                p = getProj(obj.Placement.Base)
-                r = obj.Placement.Rotation
-                t = obj.Text
-            j = obj.ViewObject.Justification
-            svg += getText(stroke,fontsize,n,r,p,t,linespacing,j)
+        if gui:
+            if not obj.ViewObject:
+                print ("export of texts to SVG is only available in GUI mode")
+            else:
+                n = obj.ViewObject.FontName
+                if getType(obj) == "Annotation":
+                    p = getProj(obj.Position)
+                    r = obj.ViewObject.Rotation.getValueAs("rad")
+                    t = obj.LabelText
+                else: # DraftText
+                    p = getProj(obj.Placement.Base)
+                    r = obj.Placement.Rotation
+                    t = obj.Text
+                j = obj.ViewObject.Justification
+                svg += getText(stroke,fontsize,n,r,p,t,linespacing,j)
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
-        if not obj.ViewObject:
-            print ("export of axes to SVG is only available in GUI mode")
-        else:
-            vobj = obj.ViewObject
-            lorig = getLineStyle()
-            fill = 'none'
-            rad = vobj.BubbleSize.Value/2
-            n = 0
-            for e in obj.Shape.Edges:
-                lstyle = lorig
-                svg += getPath([e])
-                lstyle = "none"
-                pos = ["Start"]
-                if hasattr(vobj,"BubblePosition"):
-                    if vobj.BubblePosition == "Both":
-                        pos = ["Start","End"]
-                    else:
-                        pos = [vobj.BubblePosition]
-                for p in pos:
-                    if p == "Start":
-                        p1 = e.Vertexes[0].Point
-                        p2 = e.Vertexes[1].Point
-                    else:
-                        p1 = e.Vertexes[1].Point
-                        p2 = e.Vertexes[0].Point
-                    dv = p2.sub(p1)
-                    dv.normalize()
-                    center = p2.add(dv.scale(rad,rad,rad))
-                    svg += getCircle(Part.makeCircle(rad,center))
-                    if hasattr(vobj.Proxy,"bubbletexts"):
-                        if len (vobj.Proxy.bubbletexts) >= n:
-                            svg += '<text fill="' + stroke + '" '
-                            svg += 'font-size="' + str(rad) + '" '
-                            svg += 'style="text-anchor:middle;'
-                            svg += 'text-align:center;'
-                            svg += 'font-family: sans;" '
-                            svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
-                            svg += 'scale(1,-1)"> '
-                            svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
-                            svg += '</text>\n'
-                            n += 1
+        if gui:
+            if not obj.ViewObject:
+                print ("export of axes to SVG is only available in GUI mode")
+            else:
+                vobj = obj.ViewObject
+                lorig = getLineStyle()
+                fill = 'none'
+                rad = vobj.BubbleSize.Value/2
+                n = 0
+                for e in obj.Shape.Edges:
+                    lstyle = lorig
+                    svg += getPath([e])
+                    lstyle = "none"
+                    pos = ["Start"]
+                    if hasattr(vobj,"BubblePosition"):
+                        if vobj.BubblePosition == "Both":
+                            pos = ["Start","End"]
+                        else:
+                            pos = [vobj.BubblePosition]
+                    for p in pos:
+                        if p == "Start":
+                            p1 = e.Vertexes[0].Point
+                            p2 = e.Vertexes[1].Point
+                        else:
+                            p1 = e.Vertexes[1].Point
+                            p2 = e.Vertexes[0].Point
+                        dv = p2.sub(p1)
+                        dv.normalize()
+                        center = p2.add(dv.scale(rad,rad,rad))
+                        svg += getCircle(Part.makeCircle(rad,center))
+                        if hasattr(vobj.Proxy,"bubbletexts"):
+                            if len (vobj.Proxy.bubbletexts) >= n:
+                                svg += '<text fill="' + stroke + '" '
+                                svg += 'font-size="' + str(rad) + '" '
+                                svg += 'style="text-anchor:middle;'
+                                svg += 'text-align:center;'
+                                svg += 'font-family: sans;" '
+                                svg += 'transform="translate(' + str(center.x+rad/4.0) + ',' + str(center.y-rad/3.0) + ') '
+                                svg += 'scale(1,-1)"> '
+                                svg += '<tspan>' + obj.ViewObject.Proxy.bubbletexts[n].string.getValues()[0] + '</tspan>\n'
+                                svg += '</text>\n'
+                                n += 1
 
     elif getType(obj) == "Pipe":
         fill = stroke
@@ -2646,28 +2703,29 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Space":
         "returns an SVG fragment for the text of a space"
-        if not obj.ViewObject:
-            print ("export of spaces to SVG is only available in GUI mode")
-        else:
-            c = getrgb(obj.ViewObject.TextColor)
-            n = obj.ViewObject.FontName
-            a = 0
-            if rotation != 0:
-                a = math.radians(rotation)
-            t1 = obj.ViewObject.Proxy.text1.string.getValues()
-            t2 = obj.ViewObject.Proxy.text2.string.getValues()
-            scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
-            f1 = fontsize*scale
-            p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
-            lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
-            p1 = p2.add(lspc)
-            j = obj.ViewObject.TextAlign
-            svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
-            if t2:
-                ofs = FreeCAD.Vector(0,lspc.Length,0)
-                if a:
-                    ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
-                svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
+        if gui:
+            if not obj.ViewObject:
+                print ("export of spaces to SVG is only available in GUI mode")
+            else:
+                c = getrgb(obj.ViewObject.TextColor)
+                n = obj.ViewObject.FontName
+                a = 0
+                if rotation != 0:
+                    a = math.radians(rotation)
+                t1 = obj.ViewObject.Proxy.text1.string.getValues()
+                t2 = obj.ViewObject.Proxy.text2.string.getValues()
+                scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
+                f1 = fontsize*scale
+                p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
+                lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
+                p1 = p2.add(lspc)
+                j = obj.ViewObject.TextAlign
+                svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
+                if t2:
+                    ofs = FreeCAD.Vector(0,lspc.Length,0)
+                    if a:
+                        ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
+                    svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull():
@@ -4154,6 +4212,7 @@ class _Dimension(_DraftObject):
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
+        obj.Normal = FreeCAD.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
         if hasattr(obj,"Distance"):
@@ -4211,8 +4270,13 @@ class _Dimension(_DraftObject):
                         n2 = int(lsub2[0][6:])-1
                         obj.Start = lobj1.Shape.Vertexes[n1].Point
                         obj.End = lobj2.Shape.Vertexes[n2].Point
-        if obj.ViewObject:
-            obj.ViewObject.update()
+        # set the distance property
+        total_len = (obj.Start.sub(obj.End)).Length
+        if round(obj.Distance.Value, precision()) != round(total_len, precision()):
+            obj.Distance = total_len
+        if gui:
+            if obj.ViewObject:
+                obj.ViewObject.update()
 
 
 class _ViewProviderDimension(_ViewProviderDraft):
@@ -4466,9 +4530,6 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     self.string = obj.ViewObject.Override.replace("$dim",\
                             self.string)
             self.text.string = self.text3d.string = stringencodecoin(self.string)
-            # set the distance property
-            if round(obj.Distance.Value,precision()) != round(l,precision()):
-                obj.Distance = l
 
             # set the lines
             if m == "3D":
@@ -4678,6 +4739,7 @@ class _AngularDimension(_DraftObject):
         obj.LastAngle = 90
         obj.Dimline = FreeCAD.Vector(0,1,0)
         obj.Center = FreeCAD.Vector(0,0,0)
+        obj.Normal = FreeCAD.Vector(0,0,1)
 
     def onChanged(self,obj,prop):
         if hasattr(obj,"Angle"):
@@ -6322,7 +6384,7 @@ class _PointArray(_DraftObject):
         	        i += 1
         	        base.append(nshape)
         obj.Count = i
-        if i > 0: 
+        if i > 0:
             obj.Shape = Part.makeCompound(base)
         else:
             FreeCAD.Console.PrintError(translate("draft","No point found\n"))
@@ -7474,37 +7536,44 @@ class ViewProviderDraftText:
     def updateData(self,obj,prop):
         if prop == "Text":
             if obj.Text:
-                self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
-                self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                if sys.version_info.major >= 3:
+                    self.text2d.string.setValues([l for l in obj.Text if l])
+                    self.text3d.string.setValues([l for l in obj.Text if l])
+                else:
+                    self.text2d.string.setValues([l.encode("utf8") for l in obj.Text if l])
+                    self.text3d.string.setValues([l.encode("utf8") for l in obj.Text if l])
         elif prop == "Placement":
             self.trans.translation.setValue(obj.Placement.Base)
             self.trans.rotation.setValue(obj.Placement.Rotation.Q)
 
     def onChanged(self,vobj,prop):
         if prop == "TextColor":
-            if hasattr(vobj,"TextColor"):
+            if "TextColor" in vobj.PropertiesList:
                 l = vobj.TextColor
                 self.mattext.diffuseColor.setValue([l[0],l[1],l[2]])
         elif (prop == "FontName"):
-            if hasattr(vobj,"FontName"):
+            if "FontName" in vobj.PropertiesList:
                 self.font.name = vobj.FontName.encode("utf8")
         elif prop  == "FontSize":
-            if hasattr(vobj,"FontSize"):
+            if "FontSize" in vobj.PropertiesList:
                 self.font.size = vobj.FontSize.Value
         elif prop == "Justification":
-            if hasattr(vobj,"Justification"):
+            if getattr(vobj.PropertiesList, "Justification", None) is not None:
                 from pivy import coin
-                if vobj.Justification == "Left":
-                    self.text2d.justification = coin.SoText2.LEFT
-                    self.text3d.justification = coin.SoAsciiText.LEFT
-                elif vobj.Justification == "Right":
-                    self.text2d.justification = coin.SoText2.RIGHT
-                    self.text3d.justification = coin.SoAsciiText.RIGHT
-                else:
-                    self.text2d.justification = coin.SoText2.CENTER
-                    self.text3d.justification = coin.SoAsciiText.CENTER
+                try:
+                    if vobj.Justification == "Left":
+                        self.text2d.justification = coin.SoText2.LEFT
+                        self.text3d.justification = coin.SoAsciiText.LEFT
+                    elif vobj.Justification == "Right":
+                        self.text2d.justification = coin.SoText2.RIGHT
+                        self.text3d.justification = coin.SoAsciiText.RIGHT
+                    else:
+                        self.text2d.justification = coin.SoText2.CENTER
+                        self.text3d.justification = coin.SoAsciiText.CENTER
+                except AssertionError:
+                    pass # Race condition - Justification enum has not been set yet
         elif prop == "LineSpacing":
-            if hasattr(vobj,"LineSpacing"):
+            if "LineSpacing" in vobj.PropertiesList:
                 self.text2d.spacing = vobj.LineSpacing
                 self.text3d.spacing = vobj.LineSpacing
 

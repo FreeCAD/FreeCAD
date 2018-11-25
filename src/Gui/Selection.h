@@ -31,6 +31,7 @@
 #include <list>
 #include <map>
 #include <deque>
+#include <boost/signals2.hpp>
 #include <CXX/Objects.hxx>
 
 #include <Base/Observer.h>
@@ -209,11 +210,12 @@ private:
     void _onSelectionChanged(const SelectionChanges& msg);
 
 private:
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectSelection;
-    int resolve;
     std::string filterDocName;
     std::string filterObjName;
+    int resolve;
+    bool blockSelection;
 };
 
 /**
@@ -312,6 +314,8 @@ public:
     /// Add to selection 
     bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
             float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0);
+    /// Add to selection
+    bool addSelection(const SelectionObject&);
     /// Add to selection with several sub-elements
     bool addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
     /// Update a selection 
@@ -395,13 +399,13 @@ public:
      */
     void setVisible(int visible);
 
-    /// signal on selection with un-resolved object if inside a container
-    boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
+    /// signal on new object
+    boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged;
 
     /// signal on selection change with resolved object
-    boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged2;
+    boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged2;
     /// signal on selection change with resolved object and sub element map
-    boost::signal<void (const SelectionChanges& msg)> signalSelectionChanged3;
+    boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged3;
 
     /** Returns a vector of selection objects
      *

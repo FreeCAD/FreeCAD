@@ -59,6 +59,13 @@ if(MSVC)
          ${COIN3D_LIBRARIES}
          ${OPENGL_gl_LIBRARY}
     )
+
+    if(FREECAD_USE_3DCONNEXION)
+        list(APPEND FreeCADGui_LIBS
+            hid
+        )
+    endif()
+
 else(MSVC)
     set(FreeCADGui_LIBS
         FreeCADApp
@@ -99,6 +106,12 @@ else()
 endif()
 
 IF(SPNAV_FOUND)
+    if (BUILD_QT5 AND UNIX AND NOT APPLE)
+        find_package(Qt5X11Extras REQUIRED)
+        include_directories(${Qt5X11Extras_INCLUDE_DIRS})
+        list(APPEND FreeCADGui_LIBS ${Qt5X11Extras_LIBRARIES})
+    endif()
+
     add_definitions(-DSPNAV_FOUND)
     include_directories(
         ${SPNAV_INCLUDE_DIR}
@@ -1118,6 +1131,7 @@ SET(FreeCADGui_CPP_SRCS
     DocumentModel.cpp
     DocumentPyImp.cpp
     DocumentObserver.cpp
+    DocumentObserverPython.cpp
     ExpressionBinding.cpp
     GraphicsViewZoom.cpp
     ExpressionCompleter.cpp
@@ -1126,6 +1140,7 @@ SET(FreeCADGui_CPP_SRCS
     GuiConsole.cpp
     Macro.cpp
     MergeDocuments.cpp
+    Namespace.h
     resource.cpp
     Control.cpp
     SpaceballEvent.cpp
@@ -1143,6 +1158,7 @@ SET(FreeCADGui_SRCS
     Document.h
     DocumentModel.h
     DocumentObserver.h
+    DocumentObserverPython.h
     ExpressionBinding.cpp
     ExpressionCompleter.h
     FreeCADGuiInit.py

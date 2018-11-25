@@ -916,8 +916,8 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineNodesCallback,ud);
     n->setHandled();
 
-    SbBool clip_inner;
-    std::vector<SbVec2f> clPoly = view->getGLPolygon(&clip_inner);
+    Gui::SelectionRole role;
+    std::vector<SbVec2f> clPoly = view->getGLPolygon(&role);
     if (clPoly.size() < 3)
         return;
     if (clPoly.front() != clPoly.back())

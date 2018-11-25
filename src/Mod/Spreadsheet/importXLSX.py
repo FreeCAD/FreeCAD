@@ -62,7 +62,7 @@ try: import FreeCADGui
 except ValueError: gui = False
 else: gui = True
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 

@@ -32,21 +32,21 @@
 
 class QMainWindow;
 
+#if defined(Q_OS_LINUX) && QT_VERSION >= 0x050000
+  #include <xcb/xcb.h>
+  #include <xcb/xproto.h>
 
-#ifdef _USE_3DCONNEXION_SDK
-
-#ifdef Q_OS_WIN
+#elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
 #include "3Dconnexion/MouseParameters.h"
 
 #include <vector>
 #include <map>
 
 //#define _WIN32_WINNT 0x0501  //target at least windows XP
-
 #include <Windows.h>
-#endif // Q_OS_WIN
 
-#ifdef Q_OS_MACX
+#elif defined(Q_OS_MACX) && defined(_USE_3DCONNEXION_SDK)
+
 #include <IOKit/IOKitLib.h>
 #include <ConnexionClientAPI.h>
 // Note that InstallConnexionHandlers will be replaced with
@@ -59,9 +59,7 @@ extern UInt16 RegisterConnexionClient(UInt32 signature, UInt8 *name, UInt16 mode
                                       UInt32 mask) __attribute__((weak_import));
 extern void UnregisterConnexionClient(UInt16 clientID) __attribute__((weak_import));
 extern void CleanupConnexionHandlers(void) __attribute__((weak_import));
-#endif // Q_OS_MACX
-
-#endif // _USE_3DCONNEXION_SDK
+#endif // Platform switch
 
 namespace Gui
 {
@@ -82,7 +80,7 @@ namespace Gui
     private:
         EventFilter eventFilter;
     };
-#endif
+#endif // if QT_VERSION >= 0x050000
 
     class GUIApplicationNativeEventAware : public QApplication
     {
@@ -102,10 +100,14 @@ namespace Gui
         float convertPrefToSensitivity(int value);
 
 // For X11
-#ifdef Q_WS_X11
+#ifdef Q_OS_LINUX
     public:
+  #if QT_VERSION >= 0x050000
+        bool xcbEventFilter(const xcb_client_message_event_t *message);
+  #else
         bool x11EventFilter(XEvent *event);
-#endif // Q_WS_X11
+  #endif // if/else QT_VERSION >= 0x050000
+#endif // Q_OS_LINUX
 
 #ifdef _USE_3DCONNEXION_SDK
 // For Windows
@@ -126,6 +128,7 @@ namespace Gui
         void OnRawInput(UINT nInputCode, HRAWINPUT hRawInput);
         UINT GetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT cbSizeHeader);
         bool TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawInput);
+        bool ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput);
         void On3dmouseInput();
 
         class TInputData
@@ -167,7 +170,7 @@ namespace Gui
 
 #endif// Q_OS_MACX
 #endif // _USE_3DCONNEXION_SDK
-    };
-}
+    }; // end class GUIApplicationNativeEventAware
+} // end namespace Gui
 
 #endif // GUIAPPLICATIONNATIVEEVENTAWARE_H

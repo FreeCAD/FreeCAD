@@ -35,7 +35,8 @@ else:
     def translate(ctxt, txt): return txt
 
 
-if open.__module__ == '__builtin__': pythonopen = open
+if open.__module__ in ['__builtin__','io']:
+    pythonopen = open
 
 
 def export(exportList, filename):

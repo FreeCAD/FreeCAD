@@ -423,8 +423,10 @@ void PropertyFileIncluded::Save (Base::Writer &writer) const
         // instead initiate an extra file 
         if (!_cValue.empty()) {
             Base::FileInfo file(_cValue.c_str());
+            std::string filename = writer.addFile(file.fileName().c_str(), this);
+            filename = encodeAttribute(filename);
             writer.Stream() << writer.ind() << "<FileIncluded file=\""
-                            << writer.addFile(file.fileName().c_str(), this) << "\"/>" << std::endl;
+                            << filename << "\"/>" << std::endl;
         }
         else {
             writer.Stream() << writer.ind() << "<FileIncluded file=\"\"/>" << std::endl;

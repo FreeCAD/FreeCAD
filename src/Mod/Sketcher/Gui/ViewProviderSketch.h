@@ -33,11 +33,10 @@
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
 #include <App/Part.h>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <QCoreApplication>
 #include <Gui/Document.h>
 
-#include <boost/signals.hpp>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -234,13 +233,13 @@ public:
     friend struct ::EditData;
 
     /// signals if the constraints list has changed
-    boost::signal<void ()> signalConstraintsChanged;
+    boost::signals2::signal<void ()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signal<void (QString msg)> signalSetUp;
+    boost::signals2::signal<void (QString msg)> signalSetUp;
     /// signals if the sketch has been solved
-    boost::signal<void (QString msg)> signalSolved;
+    boost::signals2::signal<void (QString msg)> signalSolved;
     /// signals if the elements list has changed
-    boost::signal<void ()> signalElementsChanged;
+    boost::signals2::signal<void ()> signalElementsChanged;
         
     virtual std::vector<App::DocumentObject*> claimChildren(void) const override;
     void selectElement(const char *element) const;
@@ -274,8 +273,8 @@ protected:
     void slotRedoDocument(const Gui::Document&);
     
 protected:
-    boost::signals::connection connectUndoDocument;
-    boost::signals::connection connectRedoDocument;
+    boost::signals2::connection connectUndoDocument;
+    boost::signals2::connection connectRedoDocument;
     
     /// Return display string for constraint including hiding units if
     //requested.

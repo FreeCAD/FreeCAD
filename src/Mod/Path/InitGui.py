@@ -69,71 +69,37 @@ class PathWorkbench (Workbench):
         from PySide import QtCore, QtGui
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
-        # load python modules
-        from PathScripts import PathArray
-        from PathScripts import PathChamferGui
-        from PathScripts import PathComment
-        from PathScripts import PathCustom
-        from PathScripts import PathDressupAxisMap
-        from PathScripts import PathDressupDogbone
-        from PathScripts import PathDressupDragknife
-        from PathScripts import PathDressupRampEntry
-        from PathScripts import PathDressupTagGui
-        from PathScripts import PathDressupLeadInOut
-        from PathScripts import PathDrillingGui
-        from PathScripts import PathEngraveGui
-        from PathScripts import PathFixture
-        from PathScripts import PathHelixGui
-        from PathScripts import PathHop
-        from PathScripts import PathInspect
+        from PathScripts import PathGuiInit
         from PathScripts import PathJobCmd
-        from PathScripts import PathMillFaceGui
-        from PathScripts import PathPocketGui
-        from PathScripts import PathPocketShapeGui
-        from PathScripts import PathPost
-        from PathScripts import PathProfileContourGui
-        from PathScripts import PathProfileEdgesGui
-        from PathScripts import PathProfileFacesGui
-        from PathScripts import PathSanity
-        from PathScripts import PathSetupSheetGui
-        from PathScripts import PathSimpleCopy
-        from PathScripts import PathStop
-        from PathScripts import PathSurfaceGui
-        from PathScripts import PathToolController
-        from PathScripts import PathToolLibraryManager
-        from PathScripts import PathSimulatorGui
-        from PathScripts import PathAdaptiveGui
         import PathCommands
+        PathGuiInit.Startup()
 
         # build commands list
         projcmdlist = ["Path_Job", "Path_Post"]
         toolcmdlist = ["Path_Inspect", "Path_Simulator", "Path_ToolLibraryEdit", "Path_SelectLoop"]
         prepcmdlist = ["Path_Fixture", "Path_Comment", "Path_Stop", "Path_Custom"]
-        twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix" ]
+        twodopcmdlist = ["Path_Contour", "Path_Profile_Faces", "Path_Profile_Edges", "Path_Pocket_Shape", "Path_Drilling", "Path_MillFace", "Path_Helix", "Path_Adaptive" ]
         threedopcmdlist = ["Path_Pocket_3D"]
-        engravecmdlist = ["Path_Engrave"]
+        engravecmdlist = ["Path_Engrave", "Path_Deburr"]
         modcmdlist = ["Path_OperationCopy", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["Path_DressupAxisMap", "Path_DressupDogbone", "Path_DressupDragKnife", "Path_DressupLeadInOut", "Path_DressupRampEntry", "Path_DressupTag"]
         extracmdlist = []
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 
+        engravecmdgroup = ['Path_EngraveTools']
+        FreeCADGui.addCommand('Path_EngraveTools', PathCommandGroup(engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", 'Engraving Operations')))
+
         if PathPreferences.experimentalFeaturesEnabled():
             projcmdlist.append("Path_Sanity")
             prepcmdlist.append("Path_Shape")
             extracmdlist.extend(["Path_Area", "Path_Area_Workplane"])
 
-            engravecmdlist = sorted(engravecmdlist + ['Path_Chamfer'])
-            engravecmdgroup = ['Path_EngraveTools']
-            FreeCADGui.addCommand('Path_EngraveTools', PathCommandGroup(engravecmdlist, QtCore.QT_TRANSLATE_NOOP("Path", 'Engraving Operations')))
-
             threedopcmdlist.append("Path_Surface")
             threedcmdgroup = ['Path_3dTools']
             FreeCADGui.addCommand('Path_3dTools', PathCommandGroup(threedopcmdlist, QtCore.QT_TRANSLATE_NOOP("Path",'3D Operations')))
 
-            twodopcmdlist.append("Path_Adaptive")
         else:
-            engravecmdgroup = engravecmdlist
             threedcmdgroup = threedopcmdlist
 
         self.appendToolbar(QtCore.QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
@@ -157,7 +123,7 @@ class PathWorkbench (Workbench):
 
         curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()
         if curveAccuracy:
-            Path.Area.setDefaultParams(curveAccuracy)
+            Path.Area.setDefaultParams(Accuracy = curveAccuracy)
 
         Log('Loading Path workbench... done\n')
 

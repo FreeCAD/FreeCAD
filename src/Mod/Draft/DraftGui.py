@@ -131,7 +131,7 @@ class todo:
             for f, arg in todo.itinerary:
                 try:
                     # print("debug: executing",f)
-                    if arg:
+                    if arg or (arg == False):
                         f(arg)
                     else:
                         f()
@@ -357,7 +357,7 @@ class DraftToolBar:
             mw = FreeCADGui.getMainWindow()
             mw.addToolBar(self.tray)
             self.tray.setParent(mw)
-            self.tray.show()
+            self.tray.hide()
 
         else:
             # create the draft Toolbar                
@@ -1817,6 +1817,9 @@ class DraftToolBar:
             
     def getDefaultColor(self,type,rgb=False):
         "gets color from the preferences or toolbar"
+        r = 0
+        g = 0
+        b = 0
         if type == "snap":
             color = Draft.getParam("snapcolor",4294967295)
             r = ((color>>24)&0xFF)/255

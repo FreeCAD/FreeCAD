@@ -32,7 +32,7 @@
 #include <App/Property.h>
 #include <Mod/Part/App/Geometry.h>
 #include "Constraint.h"
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/unordered/unordered_map.hpp>
 
 namespace Base {
@@ -129,8 +129,8 @@ public:
 
     typedef std::pair<int, const Constraint*> ConstraintInfo ;
 
-    boost::signal<void (const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &)> signalConstraintsRenamed;
-    boost::signal<void (const std::set<App::ObjectIdentifier> &)> signalConstraintsRemoved;
+    boost::signals2::signal<void (const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &)> signalConstraintsRenamed;
+    boost::signals2::signal<void (const std::set<App::ObjectIdentifier> &)> signalConstraintsRemoved;
 
     static std::string getConstraintName(const std::string &name, int i);
 

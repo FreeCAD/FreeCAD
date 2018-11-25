@@ -115,28 +115,25 @@ def importVtkFemMesh(filename, meshname):
 
 
 def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=None):
-    # for import restrictions see https://forum.freecadweb.org/viewtopic.php?f=18&t=22576&start=20#p179862
+    # only fields from vtk are imported if they exactly named as the FreeCAD result properties
+    # See _getFreeCADMechResultProperties() in FemVTKTools.cpp for the supported names
+
     import ObjectsFem
+    from . import importToolsFem
     if result_name_prefix is None:
         result_name_prefix = ''
     if analysis:
         analysis_object = analysis
 
-    # if properties can be added in FemVTKTools importCfdResult(), this file can be used for CFD workbench
     results_name = result_name_prefix + 'results'
     result_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
     Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
+    result_obj = importToolsFem.fill_femresult_stats(result_obj)
 
     # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
     if not result_obj.DisplacementLengths:
-        from . import importToolsFem
         result_obj.DisplacementLengths = importToolsFem.calculate_disp_abs(result_obj.DisplacementVectors)
-
-    # workaround for wrong stats calculation fix in App/VTKtools.cpp
-    while len(result_obj.Stats) < 39:
-        tmpstats = result_obj.Stats
-        tmpstats.append(0.0)
-        result_obj.Stats = tmpstats
+        FreeCAD.Console.PrintMessage('Recalculated DisplacementLengths.\n')
 
     ''' seems unused at the moment
     filenamebase = '.'.join(filename.split('.')[:-1])  # pattern: filebase_timestamp.vtk
@@ -145,7 +142,6 @@ def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=No
         time_step = float(ts)
     except:
         time_step = 0.0
-    # Stats has been setup in C++ function FemVTKTools importCfdResult()
     '''
 
     if analysis:

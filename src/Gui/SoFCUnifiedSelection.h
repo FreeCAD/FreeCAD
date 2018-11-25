@@ -30,6 +30,7 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/lists/SoPathList.h>
 #include "View3DInventorViewer.h"
 #include "SoFCSelectionContext.h"
 #include <list>
@@ -68,6 +69,8 @@ public:
 
     const char* getFileFormatName(void) const;
     void write(SoWriteAction * action);
+    int getNumSelected(void) const;
+    const SoPathList* getList(void) const;
 
     SoSFColor colorHighlight;
     SoSFColor colorSelection;
@@ -88,10 +91,26 @@ public:
     static bool hasHighlight();
 
     friend class View3DInventorViewer;
+
 protected:
     virtual ~SoFCUnifiedSelection();
     //virtual void redrawHighlighted(SoAction * act, SbBool flag);
     //virtual SbBool readInstance(SoInput *  in, unsigned short  flags); 
+
+    /** @name Nodes selection.
+     * The SoBoxSelectionRenderAction uses these nodes to draw a
+     * bounding box.
+     */
+    //@{
+    void addPath(SoPath * path);
+    void removePath(const int which);
+    SoPath * copyFromThis(const SoPath * path) const;
+    SoPath * searchNode(SoNode * node) const;
+    int findPath(const SoPath * path) const;
+    void select(SoNode * node);
+    void deselect(const SoPath * path);
+    void deselect(SoNode * node);
+    //@}
 
 private:
     //static void turnoffcurrent(SoAction * action);
@@ -119,6 +138,7 @@ private:
 
     static SoFullPath * currenthighlight;
     SoFullPath * detailPath;
+    SoPathList selectionList;
 
     SbBool setPreSelection;
 

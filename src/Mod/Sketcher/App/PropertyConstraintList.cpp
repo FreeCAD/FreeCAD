@@ -343,9 +343,8 @@ void PropertyConstraintList::acceptGeometry(const std::vector<Part::Geometry *> 
     aboutToSetValue();
     validGeometryKeys.clear();
     validGeometryKeys.reserve(GeoList.size());
-    for (std::vector< Part::Geometry * >::const_iterator it=GeoList.begin();
-         it != GeoList.end(); ++it)
-        validGeometryKeys.push_back((*it)->getTypeId().getKey());
+    for (const auto& it : GeoList)
+        validGeometryKeys.push_back((it)->getTypeId().getKey());
     invalidGeometry = false;
     hasSetValue();
 }
@@ -484,7 +483,7 @@ void PropertyConstraintList::setPathValue(const ObjectIdentifier &path, const Ap
 const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier &path) const
 {
     if(path.numSubComponents()!=2 || path.getPropertyComponent(0).getName()!=getName())
-        FC_THROWM(Base::ValueError,"invalid constraint path " << path.toString());
+        FC_THROWM(Base::ValueError,"Invalid constraint path " << path.toString());
 
     const ObjectIdentifier::Component & c1 = path.getPropertyComponent(1);
 
@@ -499,7 +498,7 @@ const Constraint * PropertyConstraintList::getConstraint(const ObjectIdentifier 
                 return *it;
         }
     }
-    FC_THROWM(Base::ValueError,"invalid constraint path " << path.toString());
+    FC_THROWM(Base::ValueError,"Invalid constraint path " << path.toString());
 }
 
 App::any PropertyConstraintList::getPathValue(const ObjectIdentifier &path) const
@@ -510,7 +509,7 @@ App::any PropertyConstraintList::getPathValue(const ObjectIdentifier &path) cons
 ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p) const
 {
     if(p.numSubComponents()!=2 || p.getPropertyComponent(0).getName()!=getName())
-        FC_THROWM(Base::ValueError,"invalid constraint path " << p.toString());
+        FC_THROWM(Base::ValueError,"Invalid constraint path " << p.toString());
 
     const ObjectIdentifier::Component & c1 = p.getPropertyComponent(1);
 
@@ -523,7 +522,7 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
     else if (c1.isSimple()) {
         return p;
     }
-    FC_THROWM(Base::ValueError,"invalid constraint path " << p.toString());
+    FC_THROWM(Base::ValueError,"Invalid constraint path " << p.toString());
 }
 
 void PropertyConstraintList::getPaths(std::vector<ObjectIdentifier> &paths) const

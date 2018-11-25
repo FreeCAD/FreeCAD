@@ -81,6 +81,8 @@ public:
 public Q_SLOTS:
     /// get called when text is entered in the search box
     void search(const QString& text);
+    /// get called when enter is pressed in the search box
+    void validateSearch(void);
     /// get called when the list is right-clicked
     void onItemContextMenu(const QPoint& point);
     /// different actions
@@ -106,6 +108,7 @@ private:
 
 private:
     float x,y,z;
+    std::vector<App::DocumentObject*> searchList;
 };
 
 } // namespace DockWnd

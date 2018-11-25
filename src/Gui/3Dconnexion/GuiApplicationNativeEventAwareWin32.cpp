@@ -296,16 +296,18 @@ void Gui::GUIApplicationNativeEventAware::On3dmouseKeyUp(HANDLE device, int virt
  */
 static PRAWINPUTDEVICE GetDevicesToRegister(unsigned int* pNumDevices)
 {
-	// Array of raw input devices to register
-	static RAWINPUTDEVICE sRawInputDevices[] = {
-		{0x01, 0x08, 0x00, 0x00} // Usage Page = 0x01 Generic Desktop Page, Usage Id= 0x08 Multi-axis Controller
-	};
+    // Array of raw input devices to register
+    static RAWINPUTDEVICE sRawInputDevices[] = {
+        {0x01, 0x08, 0x00, 0x00} // Usage Page = 0x01 Generic Desktop Page, Usage Id= 0x08 Multi-axis Controller
+       ,{0x01, 0x05, 0x00, 0x00} // game pad
+       ,{0x01, 0x04, 0x00, 0x00} // joystick
+    };
 
-	if (pNumDevices) {
-		*pNumDevices = sizeof(sRawInputDevices) / sizeof(sRawInputDevices[0]);
-	}
+    if (pNumDevices) {
+        *pNumDevices = sizeof(sRawInputDevices) / sizeof(sRawInputDevices[0]);
+    }
 
-	return sRawInputDevices;
+    return sRawInputDevices;
 }
 
 /*!
@@ -764,8 +766,172 @@ bool Gui::GUIApplicationNativeEventAware::TranslateRawInputData(UINT nInputCode,
 					}
 				}
 			}
+            else {
+                // SpaceMouse Plus XT
+                return ParseRawInput(nInputCode, pRawInput);
+            }
 		}
    }
    return false;
 }
+
+// ----------------------------------------------------------------------------
+
+// SpaceMouse Plus XT
+
+// https://www.codeproject.com/Articles/185522/Using-the-Raw-Input-API-to-Process-Joystick-Input
+// https://zfx.info/viewtopic.php?f=11&t=2977
+//
+
+#include <hidsdi.h>
+#include <hidpi.h>
+#include <hidusage.h>
+
+//#pragma comment(lib, "user32.lib")
+//#pragma comment(lib, "hid.lib")
+
+#define MAX_BUTTONS		128
+#define CHECK(exp)		{ if(!(exp)) goto Error; }
+#define SAFE_FREE(p)	{ if(p) { HeapFree(hHeap, 0, p); (p) = NULL; } }
+
+bool Gui::GUIApplicationNativeEventAware::ParseRawInput(UINT nInputCode, PRAWINPUT pRawInput)
+{
+    bool processed = false;
+    bool bIsForeground = (nInputCode == RIM_INPUT);
+
+    PHIDP_PREPARSED_DATA pPreparsedData;
+    HIDP_CAPS            Caps;
+    PHIDP_BUTTON_CAPS    pButtonCaps;
+    PHIDP_VALUE_CAPS     pValueCaps;
+    USHORT               capsLength;
+    UINT                 bufferSize;
+    HANDLE               hHeap;
+    USAGE                usage[MAX_BUTTONS];
+    ULONG                i, usageLength, value;
+
+    BOOL bButtonStates[MAX_BUTTONS];
+
+    pPreparsedData = NULL;
+    pButtonCaps    = NULL;
+    pValueCaps     = NULL;
+    hHeap          = GetProcessHeap();
+
+    //
+    // Get the preparsed data block
+    //
+
+    CHECK( GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_PREPARSEDDATA, NULL, &bufferSize) == 0 );
+    CHECK( pPreparsedData = (PHIDP_PREPARSED_DATA)HeapAlloc(hHeap, 0, bufferSize) );
+    CHECK( (int)GetRawInputDeviceInfo(pRawInput->header.hDevice, RIDI_PREPARSEDDATA, pPreparsedData, &bufferSize) >= 0 );
+
+    //
+    // Get the joystick's capabilities
+    //
+
+    // Button caps
+    CHECK( HidP_GetCaps(pPreparsedData, &Caps) == HIDP_STATUS_SUCCESS )
+    CHECK( pButtonCaps = (PHIDP_BUTTON_CAPS)HeapAlloc(hHeap, 0, sizeof(HIDP_BUTTON_CAPS) * Caps.NumberInputButtonCaps) );
+
+    capsLength = Caps.NumberInputButtonCaps;
+    CHECK( HidP_GetButtonCaps(HidP_Input, pButtonCaps, &capsLength, pPreparsedData) == HIDP_STATUS_SUCCESS )
+    usageLength = pButtonCaps->Range.UsageMax - pButtonCaps->Range.UsageMin + 1;
+
+    // Value caps
+    CHECK( pValueCaps = (PHIDP_VALUE_CAPS)HeapAlloc(hHeap, 0, sizeof(HIDP_VALUE_CAPS) * Caps.NumberInputValueCaps) );
+    capsLength = Caps.NumberInputValueCaps;
+    CHECK( HidP_GetValueCaps(HidP_Input, pValueCaps, &capsLength, pPreparsedData) == HIDP_STATUS_SUCCESS )
+
+    processed = true;
+
+    //
+    // Get the pressed buttons
+    //
+
+    CHECK(
+        HidP_GetUsages(
+            HidP_Input, pButtonCaps->UsagePage, 0, usage, &usageLength, pPreparsedData,
+            (PCHAR)pRawInput->data.hid.bRawData, pRawInput->data.hid.dwSizeHid
+        ) == HIDP_STATUS_SUCCESS );
+
+    ZeroMemory(bButtonStates, sizeof(bButtonStates));
+    for(i = 0; i < usageLength; i++)
+        bButtonStates[usage[i] - pButtonCaps->Range.UsageMin] = TRUE;
+
+    //
+    // Get the state of discrete-valued-controls
+    //
+
+    TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
+    deviceData.fTimeToLive = kTimeToLive;
+    if (bIsForeground) {
+        for(i = 0; i < Caps.NumberInputValueCaps; i++)
+        {
+            HidP_GetUsageValue(
+                HidP_Input, pValueCaps[i].UsagePage, 0, pValueCaps[i].Range.UsageMin, &value, pPreparsedData,
+                (PCHAR)pRawInput->data.hid.bRawData, pRawInput->data.hid.dwSizeHid
+            );
+
+            short svalue = static_cast<short>(value);
+            switch(pValueCaps[i].Range.UsageMin)
+            {
+            case HID_USAGE_GENERIC_X:	// X-axis
+                qDebug("X-Axis: %d\n", svalue);
+                deviceData.fAxes[0] = static_cast<float>(svalue);
+                deviceData.fIsDirty = true;
+                break;
+
+            case HID_USAGE_GENERIC_Y:	// Y-axis
+                qDebug("Y-Axis: %d\n", svalue);
+                deviceData.fAxes[1] = static_cast<float>(svalue);
+                deviceData.fIsDirty = true;
+                break;
+
+            case HID_USAGE_GENERIC_Z: // Z-axis
+                qDebug("Z-Axis: %d\n", svalue);
+                deviceData.fAxes[2] = static_cast<float>(svalue);
+                deviceData.fIsDirty = true;
+                break;
+
+            case HID_USAGE_GENERIC_RX: // Rotate-X
+                qDebug("X-Rotate: %d\n", svalue);
+                deviceData.fAxes[3] = static_cast<float>(svalue);
+                deviceData.fIsDirty = true;
+                break;
+
+            case HID_USAGE_GENERIC_RY: // Rotate-Y
+                qDebug("Y-Rotate: %d\n", svalue);
+                deviceData.fAxes[4] = static_cast<float>(svalue);
+                deviceData.fIsDirty = true;
+                break;
+
+            case HID_USAGE_GENERIC_RZ: // Rotate-Z
+                qDebug("Z-Rotate: %d\n", svalue);
+                deviceData.fAxes[5] = static_cast<float>(svalue);
+                deviceData.fIsDirty = true;
+                break;
+
+            default:
+                break;
+            }
+        }
+    }
+    else {
+        // Zero out the data if the app is not in foreground
+        deviceData.fAxes.assign(6, 0.f);
+        deviceData.fIsDirty = true;
+        qDebug("Not in foreground\n");
+    }
+
+    //
+    // Clean up
+    //
+
+Error:
+    SAFE_FREE(pPreparsedData);
+    SAFE_FREE(pButtonCaps);
+    SAFE_FREE(pValueCaps);
+
+    return processed;
+}
+
 #endif // _USE_3DCONNEXION_SDK

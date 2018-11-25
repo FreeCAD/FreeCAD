@@ -36,6 +36,7 @@
 #include <QCursor>
 #include <QEvent>
 #include <Base/BaseClass.h>
+#include <Gui/Namespace.h>
 
 // forward declarations
 class SoEvent;
@@ -157,7 +158,7 @@ public:
     void startSelection(SelectionMode = Lasso);
     void stopSelection();
     SbBool isSelecting() const;
-    const std::vector<SbVec2s>& getPolygon(SbBool* clip_inner=0) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
 
     void setOrbitStyle(OrbitStyle style);
     OrbitStyle getOrbitStyle() const;
@@ -238,7 +239,7 @@ protected:
     //@{
     AbstractMouseSelection* mouseSelection;
     std::vector<SbVec2s> pcPolygon;
-    SbBool clipInner;
+    SelectionRole selectedRole;
     //@}
 
     /** @name Spinning data */

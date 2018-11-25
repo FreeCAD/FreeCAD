@@ -448,7 +448,7 @@ void Area::addWire(CArea &area, const TopoDS_Wire& wire,
             AREA_WARN("ccurve not closed");
             ccurve.append(ccurve.m_vertices.front());
         }
-        area.append(ccurve);
+        area.move(std::move(ccurve));
     }
 }
 
@@ -1955,6 +1955,8 @@ void Area::makeOffset(list<shared_ptr<CArea> > &areas,
                 areas.pop_front();
             else
                 areas.pop_back();
+            if(areas.empty())
+                break;
             if(last_stepover && last_stepover>stepover) {
                 offset -= stepover;
                 stepover = last_stepover;

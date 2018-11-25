@@ -99,6 +99,7 @@ public:
 
     // interface methods
     void setHighlightNodes(const std::set<long>&);
+    std::set<long> getHighlightNodes() const;
     void resetHighlightNodes(void);
 
     /** @name Postprocessing
@@ -145,6 +146,7 @@ protected:
     /// index of elements to their triangles
     std::vector<unsigned long> vFaceElementIdx;
     std::vector<unsigned long> vNodeElementIdx;
+    std::vector<unsigned long> vHighlightedIdx;
 
     std::vector<Base::Vector3d> DisplacementVector;
     double                      DisplacementFactor;

@@ -137,7 +137,7 @@ void CmdTechDrawNewPageDef::activated(int iMsg)
         commitCommand();
         TechDraw::DrawPage* fp = dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
         if (!fp) {
-            throw Base::Exception("CmdTechDrawNewPageDef fp not found\n");
+            throw Base::TypeError("CmdTechDrawNewPageDef fp not found\n");
         }
 
         Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
@@ -217,7 +217,7 @@ void CmdTechDrawNewPage::activated(int iMsg)
         commitCommand();
         TechDraw::DrawPage* fp = dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
         if (!fp) {
-            throw Base::Exception("CmdTechDrawNewPagePick fp not found\n");
+            throw Base::TypeError("CmdTechDrawNewPagePick fp not found\n");
         }
         Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
         TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
@@ -270,7 +270,7 @@ void CmdTechDrawNewView::activated(int iMsg)
     std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     if ((shapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Can not make a View from this selection"));
+            QObject::tr("No Shapes or Groups in this selection"));
         return;
     }
 
@@ -296,7 +296,7 @@ void CmdTechDrawNewView::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart *>(docObj);
     if (!dvp) {
-        throw Base::Exception("CmdTechDrawNewView DVP not found\n");
+        throw Base::TypeError("CmdTechDrawNewView DVP not found\n");
     }
     dvp->Source.setValues(shapes);
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
@@ -368,7 +368,7 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
     if (!dsv) {
-        throw Base::Exception("CmdTechDrawNewViewSection DVS not found\n");
+        throw Base::TypeError("CmdTechDrawNewViewSection DVS not found\n");
     }
     dsv->Source.setValues(dvp->Source.getValues());
     doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
@@ -436,7 +436,7 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
     if (!dvd) {
-        throw Base::Exception("CmdTechDrawNewViewDetail DVD not found\n");
+        throw Base::TypeError("CmdTechDrawNewViewDetail DVD not found\n");
     }
     dvd->Source.setValues(dvp->Source.getValues());
     
@@ -491,7 +491,7 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Can not make a ProjectionGroup from this selection"));
+            QObject::tr("No Shapes or Groups in this selection"));
         return;
     }
 
@@ -586,7 +586,7 @@ bool CmdTechDrawProjGroup::isActive(void)
 //    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
 //    if (shapes.empty()) {
 //        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Can not make a MultiView from this selection."));
+//            QObject::tr("Can not  MultiView from this selection."));
 //        return;
 //    }
 
@@ -752,14 +752,9 @@ void CmdTechDrawClipPlus::activated(int iMsg)
     std::string ClipName = clip->getNameInDocument();
     std::string ViewName = view->getNameInDocument();
 
-    double newX = clip->Width.getValue() / 2.0;
-    double newY = clip->Height.getValue() / 2.0;
-
     openCommand("ClipPlus");
     doCommand(Doc,"App.activeDocument().%s.ViewObject.Visibility = False",ViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",ClipName.c_str(),ViewName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.X = %.3f",ViewName.c_str(),newX);
-    doCommand(Doc,"App.activeDocument().%s.Y = %.3f",ViewName.c_str(),newY);
     doCommand(Doc,"App.activeDocument().%s.ViewObject.Visibility = True",ViewName.c_str());
     updateActive();
     commitCommand();
@@ -887,7 +882,11 @@ void CmdTechDrawSymbol::activated(int iMsg)
     {
         std::string FeatName = getUniqueObjectName("Symbol");
         openCommand("Create Symbol");
+#if PY_MAJOR_VERSION < 3
         doCommand(Doc,"f = open(unicode(\"%s\",'utf-8'),'r')",(const char*)filename.toUtf8());
+#else
+        doCommand(Doc,"f = open(\"%s\",'r')",(const char*)filename.toUtf8());
+#endif
         doCommand(Doc,"svg = f.read()");
         doCommand(Doc,"f.close()");
         doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSymbol','%s')",FeatName.c_str());

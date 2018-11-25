@@ -234,13 +234,13 @@ std::vector<App::DocumentObject*> DlgRevolution::getShapesToRevolve() const
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (!doc)
-        throw Base::Exception("Document lost");
+        throw Base::RuntimeError("Document lost");
 
     std::vector<App::DocumentObject*> objects;
     for (int i = 0; i < items.size(); i++) {
         App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
         if (!obj)
-            throw Base::Exception("Object not found");
+            throw Base::RuntimeError("Object not found");
         objects.push_back(obj);
     }
     return objects;
@@ -313,6 +313,13 @@ void DlgRevolution::changeEvent(QEvent *e)
     else {
         QDialog::changeEvent(e);
     }
+}
+
+void DlgRevolution::keyPressEvent(QKeyEvent* ke)
+{
+    // The revolution dialog is embedded into a task panel
+    // which is a parent widget and will handle the event
+    ke->ignore();
 }
 
 void DlgRevolution::findShapes()
@@ -507,7 +514,7 @@ App::DocumentObject&DlgRevolution::getShapeToRevolve() const
 {
     std::vector<App::DocumentObject*> objs = this->getShapesToRevolve();
     if (objs.size() == 0)
-        throw Base::Exception("No shapes selected");
+        throw Base::ValueError("No shapes selected");
     return *(objs[0]);
 }
 

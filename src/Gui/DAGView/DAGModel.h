@@ -26,7 +26,7 @@
 #include <memory>
 #include <vector>
 
-#include <boost/signal.hpp>
+#include <boost/signals2.hpp>
 
 #include <QGraphicsScene>
 #include <QBrush>
@@ -86,7 +86,7 @@ namespace Gui
     private:
       Model(){}
       //documentObject slots.
-      typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+      typedef boost::signals2::connection Connection;
       Connection connectNewObject;
       Connection connectDelObject;
       Connection connectChgObject;

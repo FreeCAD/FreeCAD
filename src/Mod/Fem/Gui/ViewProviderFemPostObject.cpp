@@ -121,6 +121,8 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     m_surfaceEdges->AddInputConnection(m_wireframeSurface->GetOutputPort());
 
     m_currentAlgorithm = m_outline;
+
+    updateProperties();  // initialize the enums
 }
 
 ViewProviderFemPostObject::~ViewProviderFemPostObject()

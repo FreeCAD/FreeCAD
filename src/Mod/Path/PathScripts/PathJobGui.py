@@ -31,6 +31,7 @@ import PathScripts.PathJobCmd as PathJobCmd
 import PathScripts.PathJobDlg as PathJobDlg
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
+import PathScripts.PathGuiInit as PathGuiInit
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathSetupSheetGui as PathSetupSheetGui
@@ -64,6 +65,13 @@ def _OpenCloseResourceEditor(obj, vobj, edit):
             job.ViewObject.Proxy.editObject(obj)
         else:
             job.ViewObject.Proxy.uneditObject(obj)
+    else:
+        missing = 'Job'
+        if job:
+            missing = 'ViewObject'
+            if job.ViewObject:
+                missing = 'Proxy'
+        PathLog.warning("Cannot edit %s - no %s" % (obj.Label, missing))
 
 @contextmanager
 def selectionEx():
@@ -73,7 +81,10 @@ def selectionEx():
     finally:
         FreeCADGui.Selection.clearSelection()
         for s in sel:
-            FreeCADGui.Selection.addSelection(s.Object, s.SubElementNames)
+            if s.SubElementNames:
+                FreeCADGui.Selection.addSelection(s.Object, s.SubElementNames)
+            else:
+                FreeCADGui.Selection.addSelection(s.Object)
 
 
 class ViewProvider:
@@ -130,8 +141,10 @@ class ViewProvider:
     def deleteObjectsOnReject(self):
         return hasattr(self, 'deleteOnReject') and self.deleteOnReject
 
-    def setEdit(self, vobj, mode=0):
-        self.openTaskPanel()
+    def setEdit(self, vobj=None, mode=0):
+        PathLog.track(mode)
+        if 0 == mode:
+            self.openTaskPanel()
         return True
 
     def openTaskPanel(self, activate=None):
@@ -159,7 +172,7 @@ class ViewProvider:
             PathLog.info("Expected a specific object to edit - %s not recognized" % obj.Label)
         return self.openTaskPanel()
 
-    def uneditObject(self):
+    def uneditObject(self, obj = None):
         self.unsetEdit(None, None)
 
     def getIcon(self):
@@ -225,11 +238,20 @@ class ViewProvider:
         if obj.Stock and obj.Stock.ViewObject:
             obj.Stock.ViewObject.Visibility = self.stockVisibility
 
+    def setupContextMenu(self, vobj, menu):
+        PathLog.track()
+        for action in menu.actions():
+            menu.removeAction(action)
+        action = QtGui.QAction(translate('Path', 'Edit'), menu)
+        action.triggered.connect(self.setEdit)
+        menu.addAction(action)
+
 class StockEdit(object):
     Index = -1
     StockType = PathStock.StockType.Unknown
 
     def __init__(self, obj, form, force):
+        PathLog.track(obj.Label, force)
         self.obj = obj
         self.form = form
         self.force = force
@@ -258,7 +280,9 @@ class StockEdit(object):
     def setStock(self, obj, stock):
         PathLog.track(obj.Label, stock)
         if obj.Stock:
-            obj.Document.removeObject(self.obj.Stock.Name)
+            PathLog.track(obj.Stock.Name)
+            obj.Document.removeObject(obj.Stock.Name)
+        PathLog.track(stock.Name)
         obj.Stock = stock
         if stock.ViewObject and stock.ViewObject.Proxy:
             stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
@@ -282,24 +306,27 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         PathLog.track()
         return self.form.stockFromBase
 
+    def getFieldsStock(self, stock, fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
+        try:
+            if 'xneg' in fields:
+                stock.ExtXneg = FreeCAD.Units.Quantity(self.form.stockExtXneg.text())
+            if 'xpos' in fields:
+                stock.ExtXpos = FreeCAD.Units.Quantity(self.form.stockExtXpos.text())
+            if 'yneg' in fields:
+                stock.ExtYneg = FreeCAD.Units.Quantity(self.form.stockExtYneg.text())
+            if 'ypos' in fields:
+                stock.ExtYpos = FreeCAD.Units.Quantity(self.form.stockExtYpos.text())
+            if 'zneg' in fields:
+                stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
+            if 'zpos' in fields:
+                stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
+        except:
+            pass
+
     def getFields(self, obj, fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
         PathLog.track(obj.Label, fields)
         if self.IsStock(obj):
-            try:
-                if 'xneg' in fields:
-                    obj.Stock.ExtXneg = FreeCAD.Units.Quantity(self.form.stockExtXneg.text())
-                if 'xpos' in fields:
-                    obj.Stock.ExtXpos = FreeCAD.Units.Quantity(self.form.stockExtXpos.text())
-                if 'yneg' in fields:
-                    obj.Stock.ExtYneg = FreeCAD.Units.Quantity(self.form.stockExtYneg.text())
-                if 'ypos' in fields:
-                    obj.Stock.ExtYpos = FreeCAD.Units.Quantity(self.form.stockExtYpos.text())
-                if 'zneg' in fields:
-                    obj.Stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
-                if 'zpos' in fields:
-                    obj.Stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
-            except:
-                pass
+            self.getFieldsStock(obj.Stock, fields)
         else:
             PathLog.error(translate('PathJob', 'Stock not from Base bound box!'))
 
@@ -307,7 +334,10 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         PathLog.track()
         if self.force or not self.IsStock(obj):
             PathLog.track()
-            self.setStock(obj, PathStock.CreateFromBase(obj))
+            stock = PathStock.CreateFromBase(obj)
+            if self.force and self.editorFrame().isVisible():
+                self.getFieldsStock(stock)
+            self.setStock(obj, stock)
             self.force = False
         self.setLengthField(self.form.stockExtXneg, obj.Stock.ExtXneg)
         self.setLengthField(self.form.stockExtXpos, obj.Stock.ExtXpos)
@@ -877,8 +907,13 @@ class TaskPanel:
     def modelRotate(self, axis):
         angle = self.form.modelRotateValue.value()
         with selectionEx() as selection:
-            for sel in selection:
-                Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
+            if self.form.modelRotateCompound.isChecked() and len(selection) > 1:
+                bb = PathStock.shapeBoundBox([sel.Object for sel in selection])
+                for sel in selection:
+                    Draft.rotate(sel.Object, angle, bb.Center, axis)
+            else:
+                for sel in selection:
+                    Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
 
     def alignSetOrigin(self):
         (obj, by) = self.alignMoveToOrigin()
@@ -1019,6 +1054,7 @@ class TaskPanel:
             self.form.modelSetZ0.setEnabled(True)
             self.form.modelMoveGroup.setEnabled(True)
             self.form.modelRotateGroup.setEnabled(True)
+            self.form.modelRotateCompound.setEnabled(len(sel) > 1)
         else:
             self.form.modelSetX0.setEnabled(False)
             self.form.modelSetY0.setEnabled(False)
@@ -1070,7 +1106,7 @@ class TaskPanel:
     def setupUi(self, activate):
         self.setupGlobal.setupUi()
         self.setupOps.setupUi()
-        self.updateStockEditor(-1, True)
+        self.updateStockEditor(-1, False)
         self.setFields()
 
         # Info
@@ -1137,7 +1173,7 @@ class TaskPanel:
         self.updateSelection()
 
         # set active page
-        if activate in ['General', 'Base']:
+        if activate in ['General', 'Model']:
             self.form.setCurrentIndex(0)
         if activate in ['Output', 'Post Processor']:
             self.form.setCurrentIndex(1)
@@ -1184,4 +1220,7 @@ def Create(base, template=None):
         PathLog.error(exc)
         traceback.print_exc(exc)
         FreeCAD.ActiveDocument.abortTransaction()
+
+# make sure the UI has been initialized
+PathGuiInit.Startup()
 

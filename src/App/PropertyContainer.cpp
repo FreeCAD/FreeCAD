@@ -42,7 +42,7 @@
 using namespace App;
 using namespace Base;
 using namespace std;
- 
+
 TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence);
 
 
@@ -94,12 +94,12 @@ void PropertyContainer::setPropertyStatus(unsigned char bit,bool value)
         (**it).StatusBits.set(bit,value);
 }
 
-short PropertyContainer::getPropertyType(const Property* prop) const 
+short PropertyContainer::getPropertyType(const Property* prop) const
 {
     return prop?prop->getType():0;
 }
 
-short PropertyContainer::getPropertyType(const char *name) const 
+short PropertyContainer::getPropertyType(const char *name) const
 {
     return getPropertyData().getType(this,name);
 }
@@ -146,12 +146,17 @@ bool PropertyContainer::isHidden(const char *name) const
 
 const char* PropertyContainer::getPropertyName(const Property* prop)const
 {
-    return prop?prop->myName:0;
+    // Although the property name is cached inside Property now, we still search
+    // from it here to make sure the property belongs to us.
+    //
+    // return prop?prop->myName:0;
+
+    return getPropertyData().getName(this,prop);
 }
 
 
-const PropertyData * PropertyContainer::getPropertyDataPtr(void){return &propertyData;} 
-const PropertyData & PropertyContainer::getPropertyData(void) const{return propertyData;} 
+const PropertyData * PropertyContainer::getPropertyDataPtr(void){return &propertyData;}
+const PropertyData & PropertyContainer::getPropertyData(void) const{return propertyData;}
 
 /**
  * @brief PropertyContainer::handleChangedPropertyName is called during restore to possibly
@@ -267,6 +272,7 @@ void PropertyContainer::Save (Base::Writer &writer) const
 
 void PropertyContainer::Restore(Base::XMLReader &reader)
 {
+    reader.clearPartialRestoreProperty();
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
     int transientCount = 0;
@@ -300,9 +306,19 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
             else {
                 handleChangedPropertyName(reader, TypeName.c_str(), PropName.c_str());
             }
+
+            if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInProperty)) {
+                Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+                reader.clearPartialRestoreProperty();
+            }
         }
         catch (const Base::XMLParseException&) {
             throw; // re-throw
+        }
+        catch (const Base::RestoreError &) {
+            reader.setPartialRestore(true);
+            reader.clearPartialRestoreProperty();
+            Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
         }
         catch (const Base::Exception &e) {
             Base::Console().Error("%s\n", e.what());
@@ -347,6 +363,7 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
     SYNC_PTYPE(Transient);
     SYNC_PTYPE(Hidden);
     SYNC_PTYPE(Output);
+    SYNC_PTYPE(NoRecompute);
     Prop->myName = PropName;
 }
 
@@ -486,7 +503,7 @@ const char* PropertyData::getDocumentation(OffsetBase offsetBase,const char* nam
 
 
 
-Property *PropertyData::getPropertyByName(OffsetBase offsetBase,const char* name) const 
+Property *PropertyData::getPropertyByName(OffsetBase offsetBase,const char* name) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(offsetBase,name);
 
@@ -524,7 +541,7 @@ void PropertyData::getPropertyMap(OffsetBase offsetBase,std::map<std::string,Pro
 
   if(parentPropertyData)
       parentPropertyData->getPropertyMap(offsetBase,Map);
-  
+
 }
 
 void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const
@@ -548,7 +565,7 @@ The property framework introduces the ability to access attributes (member varia
 knowing the class type. It's like the reflection mechanism of Java or C#.
 This ability is introduced by the App::PropertyContainer class and can be used by all derived classes.
 
-This makes it possible in the first place to make an automatic mapping to python (e.g. in App::FeaturePy) and 
+This makes it possible in the first place to make an automatic mapping to python (e.g. in App::FeaturePy) and
 abstract editing properties in Gui::PropertyEditor.
 
 \section Examples

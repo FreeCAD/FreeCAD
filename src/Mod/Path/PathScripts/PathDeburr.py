@@ -29,6 +29,7 @@ import PathScripts.PathEngraveBase as PathEngraveBase
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathOpTools as PathOpTools
+import PathScripts.PathUtil as PathUtil
 import math
 
 from PySide import QtCore
@@ -58,17 +59,17 @@ def toolDepthAndOffset(width, extraDepth, tool):
     offset = toolOffset + extraOffset
     return (depth, offset)
 
-class ObjectChamfer(PathEngraveBase.ObjectOp):
-    '''Proxy class for Chamfer operation.'''
+class ObjectDeburr(PathEngraveBase.ObjectOp):
+    '''Proxy class for Deburr operation.'''
 
     def opFeatures(self, obj):
-        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
+        return PathOp.FeatureTool | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureBaseFaces
 
     def initOperation(self, obj):
         PathLog.track(obj.Label)
-        obj.addProperty('App::PropertyDistance',    'Width',      'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'The desired width of the chamfer'))
-        obj.addProperty('App::PropertyDistance',    'ExtraDepth', 'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'The additional depth of the tool path'))
-        obj.addProperty('App::PropertyEnumeration', 'Join',       'Chamfer', QtCore.QT_TRANSLATE_NOOP('PathChamfer', 'How to join chamfer segments'))
+        obj.addProperty('App::PropertyDistance',    'Width',      'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'The desired width of the chamfer'))
+        obj.addProperty('App::PropertyDistance',    'ExtraDepth', 'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'The additional depth of the tool path'))
+        obj.addProperty('App::PropertyEnumeration', 'Join',       'Deburr', QtCore.QT_TRANSLATE_NOOP('PathDeburr', 'How to join chamfer segments'))
         obj.Join = ['Round', 'Miter']
         obj.setEditorMode('Join', 2) # hide for now
 
@@ -106,8 +107,17 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
                 if wire:
                     wires.append(wire)
 
+        zValues = []
+        z = 0
+        if obj.StepDown.Value != 0:
+            while z + obj.StepDown.Value < depth:
+                z = z + obj.StepDown.Value
+                zValues.append(z)
+        zValues.append(depth)
+        PathLog.track(obj.Label, depth, zValues)
+
         self.wires = wires
-        self.buildpathocc(obj, wires, [depth], True)
+        self.buildpathocc(obj, wires, zValues, True)
 
     def opRejectAddBase(self, obj, base, sub):
         '''The chamfer op can only deal with features of the base model, all others are rejected.'''
@@ -118,6 +128,8 @@ class ObjectChamfer(PathEngraveBase.ObjectOp):
         obj.Width = '1 mm'
         obj.ExtraDepth = '0.1 mm'
         obj.Join = 'Round'
+        obj.setExpression('StepDown', '0 mm')
+        obj.StepDown = '0 mm'
 
 def SetupProperties():
     setup = []
@@ -126,9 +138,9 @@ def SetupProperties():
     return setup
 
 def Create(name, obj = None):
-    '''Create(name) ... Creates and returns a Chamfer operation.'''
+    '''Create(name) ... Creates and returns a Deburr operation.'''
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectChamfer(obj, name)
+    proxy = ObjectDeburr(obj, name)
     return obj
 

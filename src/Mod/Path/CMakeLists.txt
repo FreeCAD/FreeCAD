@@ -29,11 +29,11 @@ SET(PathScripts_SRCS
     PathScripts/PathArray.py
     PathScripts/PathCircularHoleBase.py
     PathScripts/PathCircularHoleBaseGui.py
-    PathScripts/PathChamfer.py
-    PathScripts/PathChamferGui.py
     PathScripts/PathComment.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
+    PathScripts/PathDeburr.py
+    PathScripts/PathDeburrGui.py
     PathScripts/PathDressup.py
     PathScripts/PathDressupAxisMap.py
     PathScripts/PathDressupDogbone.py
@@ -53,6 +53,7 @@ SET(PathScripts_SRCS
     PathScripts/PathGeom.py
     PathScripts/PathGetPoint.py
     PathScripts/PathGui.py
+    PathScripts/PathGuiInit.py
     PathScripts/PathHelix.py
     PathScripts/PathHelixGui.py
     PathScripts/PathHop.py
@@ -130,8 +131,8 @@ SET(PathScripts_post_SRCS
 SET(PathTests_SRCS
     PathTests/__init__.py
     PathTests/PathTestUtils.py
-    PathTests/TestPathChamfer.py
     PathTests/TestPathCore.py
+    PathTests/TestPathDeburr.py
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py

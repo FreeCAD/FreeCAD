@@ -84,7 +84,6 @@ class _TaskPanel(object):
             self._part.ViewObject.show()
 
     def reject(self):
-        # self._obj.ViewObject.finishEditing()
         FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
         return True
@@ -94,7 +93,6 @@ class _TaskPanel(object):
             self._obj.References = self._refWidget.references()
         self._applyWidgetChanges()
         self._obj.Document.recompute()
-        # self._obj.ViewObject.finishEditing()
         FreeCADGui.ActiveDocument.resetEdit()
         self._restoreVisibility()
         return True

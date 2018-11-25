@@ -92,6 +92,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+    requestPaint();
     return App::DocumentObject::StdReturn;                //DO::execute returns 0
 }
 
@@ -112,10 +113,7 @@ void DrawView::checkScale(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if ((this->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) ||
-            (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))) {
-            //do nothing. DPGI/DPG handles itself
-        } else if (prop == &ScaleType) {
+        if (prop == &ScaleType) {
             auto page = findParentPage();
             if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
@@ -133,23 +131,19 @@ void DrawView::onChanged(const App::Property* prop)
             } else if ( ScaleType.isValue("Automatic") ) {
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
-                if (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))  {
-                    //do nothing. DPG handles itself
-                } else {
-                    if (!checkFit(page)) {
-                        double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
-                        if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                            Scale.setValue(newScale);
-                            Scale.purgeTouched();
-                        }
+                if (!checkFit(page)) {
+                    double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
+                    if(std::abs(newScale - getScale()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                        Scale.setValue(newScale);
+                        Scale.purgeTouched();
                     }
                 }
             }
         }
-        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
-            prop == &Y) {
-            requestPaint();
-        }
+//        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
+//            prop == &Y) {
+//            requestPaint();
+//        }
     }
     App::DocumentObject::onChanged(prop);
 }
@@ -159,7 +153,9 @@ short DrawView::mustExecute() const
     short result = 0;
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
-                    ScaleType.isTouched() );
+                    ScaleType.isTouched() ||
+                    X.isTouched() ||
+                    Y.isTouched() );
     }
     if ((bool) result) {
         return result;
@@ -212,6 +208,23 @@ bool DrawView::isInClip()
     }
     return false;
 }
+
+DrawViewClip* DrawView::getClipGroup(void)
+{
+    std::vector<App::DocumentObject*> parent = getInList();
+    App::DocumentObject* obj = nullptr;
+    DrawViewClip* result = nullptr;
+    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawViewClip::getClassTypeId())) {
+            obj = (*it);
+            result = dynamic_cast<DrawViewClip*>(obj);
+            break;
+
+        }
+    }
+    return result;
+}
+
 
 double DrawView::autoScale(double w, double h) const
 {

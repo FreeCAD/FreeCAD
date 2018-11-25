@@ -80,6 +80,7 @@ public:
     void unsetEdit(int ModNum);
     MDIViewPage* getMDIViewPage();
     bool showMDIViewPage();
+    void removeMDIView(void);
 
     virtual Gui::MDIView *getMDIView() override;
 

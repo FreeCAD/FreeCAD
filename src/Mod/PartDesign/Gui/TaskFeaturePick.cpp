@@ -295,7 +295,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
 }
 
 App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::string sub, bool independent) {
-    
+
     App::DocumentObject* copy = nullptr;
     // Check for null to avoid segfault
     if (!obj)
@@ -363,7 +363,9 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
         // TODO Replace it with commands (2015-09-11, Fat-Zer)
         if(obj->isDerivedFrom(Part::Datum::getClassTypeId())) {
             copy = App::GetApplication().getActiveDocument()->addObject(
-                    obj->getClassTypeId().getName(), name.c_str() );
+                    obj->getTypeId().getName(), name.c_str() );
+
+            assert(copy->isDerivedFrom(Part::Datum::getClassTypeId()));
 
             //we need to reference the individual datums and make again datums. This is important as
             //datum adjust their size dependent on the part size, hence simply copying the shape is

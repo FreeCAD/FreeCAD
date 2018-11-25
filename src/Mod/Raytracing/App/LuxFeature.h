@@ -53,6 +53,7 @@ public:
 
     /** @name methods override Feature */
     //@{
+    short mustExecute() const;
     /// recalculate the Feature
     App::DocumentObjectExecReturn *execute(void);
 

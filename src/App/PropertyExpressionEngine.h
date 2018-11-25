@@ -25,7 +25,7 @@
 
 #include <boost/unordered/unordered_map.hpp>
 #include <boost/function.hpp>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <App/PropertyLinks.h>
@@ -59,7 +59,7 @@ public:
                         const std::string &ref, const char *newLabel) const override;
 
     typedef boost::function<std::string (const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr)> ValidatorFunc;
-    
+
     /**
      * @brief The ExpressionInfo struct encapsulates an expression and a comment.
      */
@@ -141,8 +141,8 @@ public:
 
     size_t numExpressions() const;
 
-    ///signal called when a expression was changed 
-    boost::signal<void (const App::ObjectIdentifier &)> expressionChanged; 
+    ///signal called when an expression was changed 
+    boost::signals2::signal<void (const App::ObjectIdentifier &)> expressionChanged;
 
     virtual void afterRestore() override;
 

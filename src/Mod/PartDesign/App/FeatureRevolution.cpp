@@ -43,6 +43,7 @@
 #include <Base/Tools.h>
 #include <App/Document.h>
 
+#include <Mod/Part/App/TopoShape.h>
 #include "FeatureRevolution.h"
 
 

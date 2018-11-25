@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <algorithm>
 # include <QAbstractButton>
 # include <qapplication.h>
 # include <qdir.h>
@@ -31,7 +32,7 @@
 # include <QKeySequence>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
-# include <boost/signals.hpp>
+# include <boost/signals2.hpp>
 # include <boost/bind.hpp>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -100,7 +101,7 @@ struct DocumentP
     std::map<SoSeparator *,ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
 
-    typedef boost::signals::connection Connection;
+    typedef boost::signals2::connection Connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectCngObject;
@@ -117,11 +118,14 @@ struct DocumentP
     Connection connectFinishImportObjects;
     Connection connectUndoDocument;
     Connection connectRedoDocument;
-    Connection connectRecomputed;;
+    Connection connectRecomputed;
     Connection connectSkipRecompute;
     Connection connectTransactionAppend;
     Connection connectTransactionRemove;
-    Connection connectTouchedObject;;
+    Connection connectTouchedObject;
+
+    typedef boost::signals2::shared_connection_block ConnectionBlock;
+    ConnectionBlock connectActObjectBlocker;
 };
 
 } // namespace Gui
@@ -158,6 +162,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotRelabelObject, this, _1));
     d->connectActObject = pcDocument->signalActivatedObject.connect
         (boost::bind(&Gui::Document::slotActivatedObject, this, _1));
+    d->connectActObjectBlocker = boost::signals2::shared_connection_block
+        (d->connectActObject, false);
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect
         (boost::bind(&Gui::Document::Save, this, _1));
     d->connectRestDocument = pcDocument->signalRestoreDocument.connect
@@ -247,6 +253,7 @@ Document::~Document()
         delete it2->second;
 
     // remove the reference from the object
+    Base::PyGILStateLocker lock;
     _pcDocPy->setInvalid();
     _pcDocPy->DecRef();
     delete d;
@@ -309,7 +316,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     }
 
     if (d->_ViewProviderMap.find(obj) == d->_ViewProviderMap.end()) {
-        // We can actuall support editing external object, by calling
+        // We can actually support editing external object, by calling
         // View3DInventViewer::setupEditingRoot() before exiting from
         // ViewProvider::setEditViewer(), which transfer all child node of the view
         // provider into an editing node inside the viewer of this document. And
@@ -1233,7 +1240,7 @@ void Document::slotStartRestoreDocument(const App::Document& doc)
     if (d->_pcDocument != &doc)
         return;
     // disable this signal while loading a document
-    d->connectActObject.block();
+    d->connectActObjectBlocker.block();
 }
 
 void Document::slotFinishRestoreObject(const App::DocumentObject &obj) {
@@ -1250,7 +1257,7 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
 {
     if (d->_pcDocument != &doc)
         return;
-    d->connectActObject.unblock();
+    d->connectActObjectBlocker.unblock();
     App::DocumentObject* act = doc.getActiveObject();
     if (act) {
         ViewProvider* viewProvider = getViewProvider(act);
@@ -1851,6 +1858,36 @@ MDIView *Document::setActiveView(ViewProviderDocumentObject *vp, Base::Type type
     if(view)
         getMainWindow()->setActiveWindow(view);
     return view;
+}
+
+/**
+ * @brief Document::setActiveWindow
+ * If this document is active and the view is part of it then it will be
+ * activated. If the document is not active of the view is already active
+ * nothing is done.
+ * @param view
+ */
+void Document::setActiveWindow(Gui::MDIView* view)
+{
+    // get the main window's active view
+    MDIView* active = getMainWindow()->activeWindow();
+
+    // view is already active
+    if (active == view)
+        return;
+
+    // get all MDI views of the document
+    std::list<MDIView*> mdis = getMDIViews();
+
+    // this document is not active
+    if (std::find(mdis.begin(), mdis.end(), active) == mdis.end())
+        return;
+
+    // the view is not part of the document
+    if (std::find(mdis.begin(), mdis.end(), view) == mdis.end())
+        return;
+
+    getMainWindow()->setActiveWindow(view);
 }
 
 Gui::MDIView* Document::getViewOfNode(SoNode* node) const

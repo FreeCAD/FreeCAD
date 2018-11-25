@@ -394,7 +394,7 @@ class PathDressupTagViewProvider:
         if self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
         job = PathUtils.findParentJob(self.obj)
-        job.Proxy.addOperation(arg1.Object.Base)
+        job.Proxy.addOperation(arg1.Object.Base, arg1.Object)
         arg1.Object.Base = None
         # if self.debugDisplay():
         #    self.vobj.Debug.removeObjectsFromDocument()
@@ -495,7 +495,7 @@ def Create(baseObject, name='DressupTag'):
     obj = PathDressupTag.Create(baseObject, name)
     vp = PathDressupTagViewProvider(obj.ViewObject)
     FreeCAD.ActiveDocument.commitTransaction()
-    obj.ViewObject.startEditing()
+    obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
     return obj
 
 

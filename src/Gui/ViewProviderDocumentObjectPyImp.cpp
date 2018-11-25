@@ -27,8 +27,8 @@
 # include <sstream>
 #endif
 
-#include "Document.h"
-#include "Gui/ViewProviderDocumentObject.h"
+#include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/Document.h>
 #include <App/DocumentObject.h>
 
 // inclusion of the generated files (generated out of ViewProviderDocumentObjectPy.xml)
@@ -72,11 +72,10 @@ void ViewProviderDocumentObjectPy::setForceUpdate(Py::Boolean arg)
     getViewProviderDocumentObjectPtr()->forceUpdate(arg);
 }
 
-Py::Object ViewProviderDocumentObjectPy::getDocument() const {
-    auto doc = getViewProviderDocumentObjectPtr()->getDocument();
-    if(!doc)
-        return Py::None();
-    return Py::Object(doc->getPyObject(),true);
+Py::Object ViewProviderDocumentObjectPy::getDocument(void) const
+{
+    Document* doc = getViewProviderDocumentObjectPtr()->getDocument();
+    return Py::asObject(doc->getPyObject()); // do not inc'ref twice
 }
 
 PyObject *ViewProviderDocumentObjectPy::getCustomAttributes(const char* /*attr*/) const

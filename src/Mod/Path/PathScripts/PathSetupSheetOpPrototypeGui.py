@@ -49,10 +49,26 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class _PropertyEditor(object):
+    '''Base class of all property editors - just outlines the TableView delegate interface.'''
     def __init__(self, prop):
         self.prop = prop
 
+    def widget(self, parent):
+        '''widget(parent) ... called by the delegate to get a new editor widget.
+        Must be implemented by subclasses and return the widget.'''
+        pass
+    def setEditorData(self, widget):
+        '''setEditorData(widget) ... called by the delegate to initialize the editor.
+        The widget is the object returned by widget().
+        Must be implemented by subclasses.'''
+        pass
+    def setModelData(self, widget):
+        '''setModelData(widget) ... called by the delegate to store new values.
+        Must be implemented by subclasses.'''
+        pass
+
 class _PropertyEnumEditor(_PropertyEditor):
+    '''Editor for enumeration values - uses a combo box.'''
 
     def widget(self, parent):
         PathLog.track(self.prop.name, self.prop.getEnumValues())
@@ -71,6 +87,8 @@ class _PropertyEnumEditor(_PropertyEditor):
 
 
 class _PropertyBoolEditor(_PropertyEditor):
+    '''Editor for boolean values - uses a combo box.'''
+
     def widget(self, parent):
         return QtGui.QComboBox(parent)
 
@@ -85,6 +103,7 @@ class _PropertyBoolEditor(_PropertyEditor):
         self.prop.setValue(widget.currentText() == 'true')
 
 class _PropertyStringEditor(_PropertyEditor):
+    '''Editor for string values - uses a line edit.'''
 
     def widget(self, parent):
         return QtGui.QLineEdit(parent)
@@ -97,6 +116,8 @@ class _PropertyStringEditor(_PropertyEditor):
         self.prop.setValue(widget.text())
 
 class _PropertyLengthEditor(_PropertyEditor):
+    '''Editor for length values - uses a line edit.'''
+
     def widget(self, parent):
         return QtGui.QLineEdit(parent)
 
@@ -110,6 +131,7 @@ class _PropertyLengthEditor(_PropertyEditor):
         self.prop.setValue(FreeCAD.Units.Quantity(widget.text()))
 
 class _PropertyPercentEditor(_PropertyEditor):
+    '''Editor for percent values - uses a spin box.'''
 
     def widget(self, parent):
         return QtGui.QSpinBox(parent)
@@ -125,6 +147,7 @@ class _PropertyPercentEditor(_PropertyEditor):
         self.prop.setValue(widget.value())
 
 class _PropertyIntegerEditor(_PropertyEditor):
+    '''Editor for integer values - uses a spin box.'''
 
     def widget(self, parent):
         return QtGui.QSpinBox(parent)
@@ -139,6 +162,7 @@ class _PropertyIntegerEditor(_PropertyEditor):
         self.prop.setValue(widget.value())
 
 class _PropertyFloatEditor(_PropertyEditor):
+    '''Editor for float values - uses a double spin box.'''
 
     def widget(self, parent):
         return QtGui.QDoubleSpinBox(parent)
@@ -164,12 +188,8 @@ _EditorFactory = {
         PathSetupSheetOpPrototype.PropertyString: _PropertyStringEditor,
         }
 
-X = []
-
 def Editor(prop):
-    '''Returns an editor class to be used for that property.'''
-    global X
-    X.append(prop)
+    '''Returns an editor class to be used for the given property.'''
     factory = _EditorFactory[prop.__class__]
     if factory:
         return factory(prop)

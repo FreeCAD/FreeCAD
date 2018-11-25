@@ -325,33 +325,6 @@ PyObject*  ViewProviderPy::toString(PyObject *args)
     } PY_CATCH;
 }
 
-PyObject* ViewProviderPy::startEditing(PyObject *args)
-{
-    int mode=0;
-    if (!PyArg_ParseTuple(args, "|i", &mode))     // convert args: Python->C 
-        return NULL;                     // NULL triggers exception 
-    bool edit = getViewProviderPtr()->startEditing(mode);
-    Py::Boolean ok(edit);
-    return Py::new_reference_to(ok);
-}
-
-PyObject* ViewProviderPy::finishEditing(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                     // NULL triggers exception 
-    getViewProviderPtr()->finishEditing();
-    Py_Return;
-}
-
-PyObject* ViewProviderPy::isEditing(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                     // NULL triggers exception 
-    bool edit = getViewProviderPtr()->isEditing();
-    Py::Boolean ok(edit);
-    return Py::new_reference_to(ok);
-}
-
 PyObject*  ViewProviderPy::setTransformation(PyObject *args)
 {
     PyObject* p;

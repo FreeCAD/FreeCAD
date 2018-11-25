@@ -1003,13 +1003,7 @@ void ViewProviderSketch::editDoubleClicked(void)
             Constraint *Constr = constrlist[*it];
 
             // if its the right constraint
-            if ((Constr->Type == Sketcher::Distance ||
-                Constr->Type == Sketcher::DistanceX || 
-                Constr->Type == Sketcher::DistanceY ||
-                Constr->Type == Sketcher::Radius ||
-                Constr->Type == Sketcher::Diameter ||
-                Constr->Type == Sketcher::Angle ||
-                Constr->Type == Sketcher::SnellsLaw)) {
+            if (Constr->isDimensional()) {
 
                 if(!Constr->isDriving) {
                     FCMD_OBJ_CMD2("setDriving(%i,%s)", getObject(),*it,"True");
@@ -1669,16 +1663,85 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
                         // Screen dimensions of the icon
                         SbVec3s iconSize = getDisplayedSize(static_cast<SoImage *>(tail));
                         // Center of the icon
-                        SbVec2f iconCoords = viewer->screenCoordsOfPath(path);
+                        //SbVec2f iconCoords = viewer->screenCoordsOfPath(path); 
+
+                        // The use of the Path to get the screen coordinates to get the icon center coordinates
+                        // does not work.
+                        //
+                        // This implementation relies on the use of ZoomTranslation to get the absolute and relative
+                        // positions of the icons.
+                        //
+                        // In the case of second icons (the same constraint has two icons at two different positions),
+                        // the translation vectors have to be added, as the second ZoomTranslation operates on top of
+                        // the first.
+                        //
+                        // Coordinates are projected on the sketch plane and then to the screen in the interval [0 1]
+                        // Then this result is coverted to pixels using the scale factor.
+
+                        SbVec3f absPos;
+                        SbVec3f trans;
+
+                        absPos = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos.getValue();
+
+                        trans = static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation.getValue();
+
+                        if (tail != sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
+
+                            absPos += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos.getValue();
+
+                            trans += static_cast<SoZoomTranslation *>(static_cast<SoSeparator *>(tailFather)->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation.getValue();
+                        }
+
+                        double x,y;
+
+                        SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
+
+                        if (!pCam)
+                            continue;
+
+                        SbViewVolume vol = pCam->getViewVolume();
+
+                        getCoordsOnSketchPlane(x,y,absPos+trans,vol.getProjectionDirection());
+
+                        Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
+
+                        // dimensionless [0 1] (or 1.5 see View3DInventorViewer.cpp )
+                        Base::Vector3d screencoords = proj(Base::Vector3d(x,y,0)); 
+
+                        int width = viewer->getGLWidget()->width(),
+                            height = viewer->getGLWidget()->height();
+
+                        if (width >= height) {
+                            // "Landscape" orientation, to square
+                            screencoords.x *= height;
+                            screencoords.x += (width-height) / 2.0;
+                            screencoords.y *= height;
+                        }
+                        else {
+                            // "Portrait" orientation
+                            screencoords.x *= width;
+                            screencoords.y *= width;
+                            screencoords.y += (height-width) / 2.0;
+                        }
+
+                        SbVec2f iconCoords(screencoords.x,screencoords.y);
+
+                        // cursorPos is SbVec2s in screen coordinates coming from SoEvent in mousemove
+                        // 
                         // Coordinates of the mouse cursor on the icon, origin at top-left for Qt
                         // but bottom-left for OIV.
                         // The coordinates are needed in Qt format, i.e. from top to bottom.
                         int iconX = cursorPos[0] - iconCoords[0] + iconSize[0]/2,
-                            iconY = cursorPos[1] - iconCoords[1] - iconSize[1]/2;
+                            iconY = cursorPos[1] - iconCoords[1] + iconSize[1]/2;
                         iconY = iconSize[1] - iconY;
 
                         for (ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
                             b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
+
+#ifdef FC_DEBUG
+                            Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n", absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1], b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());
+#endif
+
                             if (b->first.contains(iconX, iconY)) {
                                 // We've found a bounding box that contains the mouse pointer!
                                 for (std::set<int>::iterator k = b->second.begin(); k != b->second.end(); ++k)
@@ -4107,18 +4170,26 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     SbVec3f *verts = edit->CurvesCoordinate->point.startEditing();
     int32_t *index = edit->CurveSet->numVertices.startEditing();
     SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
+    
+    float dMg = 100;
 
     int i=0; // setting up the line set
-    for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++)
+    for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++) {
+        dMg = dMg>std::abs(it->x)?dMg:std::abs(it->x);
+        dMg = dMg>std::abs(it->y)?dMg:std::abs(it->y);
         verts[i].setValue(it->x,it->y,zLowLines);
+    }
     
     i=0; // setting up the indexes of the line set
     for (std::vector<unsigned int>::const_iterator it = Index.begin(); it != Index.end(); ++it,i++)
         index[i] = *it;
 
     i=0; // setting up the point set
-    for (std::vector<Base::Vector3d>::const_iterator it = Points.begin(); it != Points.end(); ++it,i++)
+    for (std::vector<Base::Vector3d>::const_iterator it = Points.begin(); it != Points.end(); ++it,i++){
+        dMg = dMg>std::abs(it->x)?dMg:std::abs(it->x);
+        dMg = dMg>std::abs(it->y)?dMg:std::abs(it->y);
         pverts[i].setValue(it->x,it->y,zLowPoints);
+    }
 
     edit->CurvesCoordinate->point.finishEditing();
     edit->CurveSet->numVertices.finishEditing();
@@ -4128,26 +4199,35 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     edit->RootCrossSet->numVertices.set1Value(0,2);
     edit->RootCrossSet->numVertices.set1Value(1,2);
 
+    // This code relies on Part2D, which is generally not updated in no update mode.
+    // Additionally it does not relate to the actual sketcher geometry.
+
+    /*
+    Base::Console().Log("MinX:%d,MaxX:%d,MinY:%d,MaxY:%d\n",MinX,MaxX,MinY,MaxY);
     // make sure that nine of the numbers are exactly zero because log(0)
     // is not defined
     float xMin = std::abs(MinX) < FLT_EPSILON ? 0.01f : MinX;
     float xMax = std::abs(MaxX) < FLT_EPSILON ? 0.01f : MaxX;
     float yMin = std::abs(MinY) < FLT_EPSILON ? 0.01f : MinY;
     float yMax = std::abs(MaxY) < FLT_EPSILON ? 0.01f : MaxY;
+    */
 
-    float MiX = -exp(ceil(log(std::abs(xMin))));
-    MiX = std::min(MiX,(float)-exp(ceil(log(std::abs(0.1f*xMax)))));
-    float MaX = exp(ceil(log(std::abs(xMax))));
-    MaX = std::max(MaX,(float)exp(ceil(log(std::abs(0.1f*xMin)))));
-    float MiY = -exp(ceil(log(std::abs(yMin))));
-    MiY = std::min(MiY,(float)-exp(ceil(log(std::abs(0.1f*yMax)))));
-    float MaY = exp(ceil(log(std::abs(yMax))));
-    MaY = std::max(MaY,(float)exp(ceil(log(std::abs(0.1f*yMin)))));
+    float dMagF = exp(ceil(log(std::abs(dMg))));
 
-    edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(MiX, 0.0f, zCross));
-    edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(MaX, 0.0f, zCross));
-    edit->RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, MiY, zCross));
-    edit->RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, MaY, zCross));
+    MinX = -dMagF;
+    MaxX = dMagF;
+    MinY = -dMagF;
+    MaxY = dMagF;
+
+    if (ShowGrid.getValue())
+        createGrid();
+    else
+        GridRoot->removeAllChildren();
+
+    edit->RootCrossCoordinate->point.set1Value(0,SbVec3f(-dMagF, 0.0f, zCross));
+    edit->RootCrossCoordinate->point.set1Value(1,SbVec3f(dMagF, 0.0f, zCross));
+    edit->RootCrossCoordinate->point.set1Value(2,SbVec3f(0.0f, -dMagF, zCross));
+    edit->RootCrossCoordinate->point.set1Value(3,SbVec3f(0.0f, dMagF, zCross));
 
     // Render Constraints ===================================================
     const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();

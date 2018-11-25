@@ -174,13 +174,13 @@ public:
 
     // Signals
 
-    boost::signal<void (App::CellAddress)> cellUpdated;
+    boost::signals2::signal<void (App::CellAddress)> cellUpdated;
 
-    boost::signal<void (App::CellAddress)> cellSpanChanged;
+    boost::signals2::signal<void (App::CellAddress)> cellSpanChanged;
 
-    boost::signal<void (int, int)> columnWidthChanged;
+    boost::signals2::signal<void (int, int)> columnWidthChanged;
 
-    boost::signal<void (int, int)> rowHeightChanged;
+    boost::signals2::signal<void (int, int)> rowHeightChanged;
 
     /** @name Access properties */
     //@{
@@ -297,8 +297,8 @@ protected:
     typedef std::map<std::string, SheetObserver* > ObserverMap;
     ObserverMap observers;
 
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledDocumentConnection;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRenamedDocumentConnection;
+    boost::signals2::scoped_connection onRelabledDocumentConnection;
+    boost::signals2::scoped_connection onRenamedDocumentConnection;
 
     friend class SheetObserver;
 

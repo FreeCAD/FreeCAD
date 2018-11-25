@@ -44,10 +44,15 @@
 
 using namespace Base;
 
+// ====== Static attributes =========================
+int QuantityFormat::defaultDenominator = 8; // for 1/8"
+
+
 QuantityFormat::QuantityFormat()
   : option(static_cast<NumberOption>(OmitGroupSeparator | RejectGroupSeparator))
   , format(Fixed)
   , precision(UnitsApi::getDecimals())
+  , denominator(defaultDenominator)
 {
 }
 

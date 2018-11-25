@@ -229,10 +229,17 @@ void TaskProjGroup::scaleTypeChanged(int index)
                                                                                              , "Page");
     } else if(index == 1) {
         // Automatic Scale Type
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
-                                                                                             , "Automatic");
+//        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
+//                                                                                             , "Automatic");
+        //block recompute
+        multiView->ScaleType.setValue("Automatic");
+        double autoScale = multiView->calculateAutomaticScale();
+        multiView->Scale.setValue(autoScale);
+        //unblock recompute
+
     } else if(index == 2) {
         // Custom Scale Type
+        //block recompute
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
                                                                                              , "Custom");
         ui->sbScaleNum->setEnabled(true);
@@ -243,6 +250,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
         double scale = (double) a / (double) b;
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
                                                                                      , scale);
+        //unblock recompute
     } else {
         Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n",index);
         return;

@@ -89,7 +89,7 @@ Part::Feature *DressUp::getBaseObject(bool silent) const
     }
 
     if (!silent && err) {
-        throw Base::Exception(err);
+        throw Base::RuntimeError(err);
     }
 
     return rv;
@@ -107,7 +107,7 @@ std::vector<TopoShape> DressUp::getContiniusEdges(const TopoShape &shape) {
         }catch(...){}
         if(subshape.IsNull()) {
             FC_ERR(getNameInDocument() << ": invalid edge link '" << ref << "'");
-            throw Base::Exception("Invalid edge link");
+            throw Part::NullShapeException("Invalid edge link");
         }
 
         if (subshape.ShapeType() == TopAbs_EDGE) {
@@ -158,7 +158,7 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape &shape) {
         }catch(...){}
         if(subshape.isNull()) {
             FC_ERR(getNameInDocument() << ": invalid face reference '" << ref << "'");
-            throw Base::Exception("Invalid Invalid face link");
+            throw Part::NullShapeException("Invalid Invalid face link");
         }
 
         if(subshape.shapeType() != TopAbs_FACE) {

@@ -67,7 +67,7 @@ void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, c
     QAction* act;
     act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromStdString(featureName)), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    ViewProvider::setupContextMenu(menu,receiver,member);
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderTransformed::setEdit(int ModNum)

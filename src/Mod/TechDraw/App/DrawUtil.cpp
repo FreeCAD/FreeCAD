@@ -90,10 +90,10 @@ using namespace TechDraw;
          return int (std::strtol(what.str().c_str(), &endChar, 10));         //TODO: use std::stoi() in c++11
       } else {
          ErrorMsg << "getIndexFromName: malformed geometry name - " << geomName;
-         throw Base::Exception(ErrorMsg.str());
+         throw Base::ValueError(ErrorMsg.str());
       }
    } else {
-         throw Base::Exception("getIndexFromName - empty geometry name");
+         throw Base::ValueError("getIndexFromName - empty geometry name");
    }
 }
 
@@ -114,10 +114,10 @@ std::string DrawUtil::getGeomTypeFromName(std::string geomName)
          return what.str();         //TODO: use std::stoi() in c++11
       } else {
          ErrorMsg << "In getGeomTypeFromName: malformed geometry name - " << geomName;
-         throw Base::Exception(ErrorMsg.str());
+         throw Base::ValueError(ErrorMsg.str());
       }
    } else {
-         throw Base::Exception("getGeomTypeFromName - empty geometry name");
+         throw Base::ValueError("getGeomTypeFromName - empty geometry name");
    }
 }
 
@@ -314,6 +314,16 @@ std::string DrawUtil::formatVector(const gp_Dir& v)
 }
 
 std::string DrawUtil::formatVector(const gp_Vec& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
+    builder << " (" << v.X()  << "," << v.Y() << "," << v.Z() << ") ";
+    result = builder.str();
+    return result;
+}
+
+std::string DrawUtil::formatVector(const gp_Pnt& v)
 {
     std::string result;
     std::stringstream builder;

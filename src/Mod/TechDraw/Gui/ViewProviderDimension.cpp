@@ -57,12 +57,13 @@ ViewProviderDimension::ViewProviderDimension()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
+
     hGrp = App::GetApplication().GetUserParameter()
                                          .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     double fontSize = hGrp->GetFloat("FontSize", 3.5);
-
     ADD_PROPERTY_TYPE(Font ,(fontName.c_str()),group,App::Prop_None, "The name of the font to use");
     ADD_PROPERTY_TYPE(Fontsize,(fontSize)    ,group,(App::PropertyType)(App::Prop_None),"Dimension text size in units");
+
 
     hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     std::string lgName = hGrp->GetASCII("LineGroup","FC 0.70mm");
@@ -71,11 +72,14 @@ ViewProviderDimension::ViewProviderDimension()
     delete lg;                                   //Coverity CID 174670
     ADD_PROPERTY_TYPE(LineWidth,(weight)    ,group,(App::PropertyType)(App::Prop_None),"Dimension line weight");
 
+
     hGrp = App::GetApplication().GetUserParameter()
                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
     ADD_PROPERTY_TYPE(Color,(fcColor),group,App::Prop_None,"The color of the Dimension");
+
+    ADD_PROPERTY_TYPE(FlipArrowheads ,(false),group,App::Prop_None,"Reverse the normal direction of arrowheads on dimline");
 
 }
 
@@ -115,6 +119,8 @@ void ViewProviderDimension::updateData(const App::Property* p)
             sPixmap = "TechDraw_Dimension_Diameter";
         } else if (getViewObject()->Type.isValue("Angle")) {
             sPixmap = "TechDraw_Dimension_Angle";
+        } else if (getViewObject()->Type.isValue("Angle3Pt")) {
+            sPixmap = "TechDraw_Dimension_Angle3Pt";
         }
     }
     ViewProviderDrawingView::updateData(p);
@@ -124,7 +130,8 @@ void ViewProviderDimension::onChanged(const App::Property* p)
 {
     if ((p == &Font)  ||
         (p == &Fontsize) ||
-        (p == &LineWidth) ) {
+        (p == &LineWidth) ||
+        (p == &FlipArrowheads)) {
         QGIView* qgiv = getQView();
         if (qgiv) {
             qgiv->updateView(true);

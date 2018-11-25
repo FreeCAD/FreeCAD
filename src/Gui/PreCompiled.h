@@ -75,7 +75,7 @@
 #include <bitset>
 
 // Boost
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 #include <boost/bind.hpp>
 #include <boost/program_options.hpp>
 #include <boost/tuple/tuple.hpp>

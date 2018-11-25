@@ -1226,7 +1226,7 @@ def processdxf(document,filename,getShapes=False,reComputeFlag=True):
     # drawing solids
 
     solids = drawing.entities.get_type("solid")
-    if solids: FreeCAD.Console.PrintMessage("drawing "+str(len(circles))+" solids...\n")
+    if solids: FreeCAD.Console.PrintMessage("drawing "+str(len(solids))+" solids...\n")
     for solid in solids:
         lay = rawValue(solid,8)
         if dxfImportLayouts or (not rawValue(solid,67)):
@@ -1914,17 +1914,29 @@ def getStrGroup(ob):
                 return ''.join((c for c in unicodedata.normalize('NFD', l) if unicodedata.category(c) != 'Mn')).encode("ascii",errors="replace")
     return l
 
+
 def export(objectslist,filename,nospline=False,lwPoly=False):
-    "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs lwPoly=True for OpenSCAD DXF"
+
+    "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs. lwPoly=True is for OpenSCAD DXF"
+
     readPreferences()
     getDXFlibs()
     if dxfLibrary:
         global exportList
         exportList = objectslist
         exportList = Draft.getGroupContents(exportList)
+        nlist = []
+        for ob in exportList:
+            if Draft.getType(ob) == "AxisSystem":
+                nlist.extend(ob.Axes)
+            else:
+                nlist.append(ob)
+        exportList = nlist
 
         if (len(exportList) == 1) and (Draft.getType(exportList[0]) == "ArchSectionView"):
+
             # arch view: export it "as is"
+
             dxf = exportList[0].Proxy.getDXF()
             if dxf:
                 f = open(filename,"w")
@@ -1932,19 +1944,28 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                 f.close()
 
         elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("Drawing::FeaturePage")):
+
             # page: special hack-export! (see below)
+
             exportPage(exportList[0],filename)
 
         elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("TechDraw::DrawPage")):
+
             # page: special hack-export! (see below)
+
             exportPage(exportList[0],filename)
 
         else:
-            # other cases, treat edges
+
+            # other cases, treat objects one by one
+
             dxf = dxfLibrary.Drawing()
             for ob in exportList:
+
                 print("processing "+str(ob.Name))
+
                 if Draft.getType(ob) == "PanelSheet":
+
                     if not hasattr(ob.Proxy,"sheetborder"):
                         ob.Proxy.execute(ob)
                     sb = ob.Proxy.sheetborder
@@ -1962,9 +1983,49 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                             shp = subob.Shape.copy()
                             shp.Placement = ob.Placement.multiply(shp.Placement)
                             writeShape(shp,ob,dxf,nospline,lwPoly,layer="Outlines",color=5)
+
                 elif Draft.getType(ob) == "PanelCut":
+
                     writePanelCut(ob,dxf,nospline,lwPoly)
+
+                elif Draft.getType(ob) == "Axis":
+
+                    axes = ob.Proxy.getAxisData(ob)
+                    if not axes:
+                        continue
+                    for ax in axes:
+                        dxf.append(dxfLibrary.Line([tuple(ax[0]),tuple(ax[1])],color=getACI(ob),layer=getStrGroup(ob)))
+                        p = ax[1]
+                        h = 1
+                        if FreeCAD.GuiUp:
+                            vobj = ob.ViewObject
+                            rad = vobj.BubbleSize.Value/2
+                            n = 0
+                            pos = ["Start"]
+                            if hasattr(vobj,"BubblePosition"):
+                                if vobj.BubblePosition == "Both":
+                                    pos = ["Start","End"]
+                                else:
+                                    pos = [vobj.BubblePosition]
+                            for p in pos:
+                                if p == "Start":
+                                    p1 = ax[0]
+                                    p2 = ax[1]
+                                else:
+                                    p1 = ax[1]
+                                    p2 = ax[0]
+                                dv = p2.sub(p1)
+                                dv.normalize()
+                                center = p2.add(dv.scale(rad,rad,rad))
+                                h = float(ob.ViewObject.FontSize)
+                                dxf.append(dxfLibrary.Circle(center,rad,color=getACI(ob),layer=getStrGroup(ob)))
+                                dxf.append(dxfLibrary.Text(ax[2],center,alignment=center,height=h,justifyhor=1,justifyver=2,color=getACI(ob),style='STANDARD',layer=getStrGroup(ob)))
+                        else:
+                            dxf.append(dxfLibrary.Text(ax[2],p,alignment=p,height=h,justifyhor=1,justifyver=2,color=getACI(ob),style='STANDARD',layer=getStrGroup(ob)))
+
+
                 elif ob.isDerivedFrom("Part::Feature"):
+
                     tess = None
                     if hasattr(ob,"Tessellation"):
                         if ob.Tessellation:
@@ -2008,6 +2069,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                                 writeShape(sh,ob,dxf,nospline,lwPoly)
 
                 elif Draft.getType(ob) == "Annotation":
+
                     # texts
 
                     # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
@@ -2024,16 +2086,22 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                                                    layer=getStrGroup(ob)))
 
                 elif Draft.getType(ob) == "DraftText":
+
                     # texts
 
-                    # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
-                    # well, anyway, at the moment, Draft only writes single-line texts, so...
                     for text in ob.Text:
                         point = DraftVecUtils.tup(FreeCAD.Vector(ob.Placement.Base.x,
                                                          ob.Placement.Base.y-ob.Text.index(text),
                                                          ob.Placement.Base.z))
+                        if gui: height = float(ob.ViewObject.FontSize)
+                        else: height = 1
+                        dxf.append(dxfLibrary.Text(text,point,height=height,
+                                                   color=getACI(ob,text=True),
+                                                   style='STANDARD',
+                                                   layer=getStrGroup(ob)))
 
                 elif Draft.getType(ob) == "Dimension":
+
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)
                     base = Part.LineSegment(ob.Start,ob.End).toShape()
@@ -2044,12 +2112,16 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         pbase = DraftVecUtils.tup(ob.End.add(proj.negative()))
                     dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
                                                     layer=getStrGroup(ob)))
+
             if sys.version_info.major < 3:
                 if isinstance(filename,unicode):
                     filename = filename.encode("utf8")
             dxf.saveas(filename)
+
         FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
+
     else:
+
         errorDXFLib(gui)
         
 class dxfcounter:

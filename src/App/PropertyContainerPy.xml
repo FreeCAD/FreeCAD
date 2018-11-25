@@ -86,6 +86,23 @@ text names of the status.
 			  <UserDocu>Return the documentation string of the property of this class.</UserDocu>
 		  </Documentation>
 	  </Methode>
+      <Methode Name="dumpPropertyContent" Keyword="true" Const="true">
+            <Documentation>
+                <UserDocu>Dumps the content of the property, both the XML representation as well as the additional datafiles  
+required, into a byte representation. It will be returned as byte array.
+dumpPropertyContent(propertyname) -- returns a byte array with full content
+dumpPropertyContent(propertyname, [Compression=1-9]) -- Sets the data compression from 0 (no) to 9 (max)
+                </UserDocu>
+            </Documentation>
+      </Methode>
+      <Methode Name="restorePropertyContent">
+            <Documentation>
+                <UserDocu>Restore the content of given property from a byte representation as stored by \"dumpContent\".
+It could be restored from any python object implementing the buffer protocol.
+restorePropertyContent(propertyname, buffer) -- restores from the given byte array
+                </UserDocu>
+            </Documentation>
+      </Methode>
     <Attribute Name="PropertiesList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all property names</UserDocu>

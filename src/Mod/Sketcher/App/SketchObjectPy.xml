@@ -98,6 +98,16 @@
         <UserDocu>set the Driving status of a datum constraint</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setDatumsDriving">
+      <Documentation>
+        <UserDocu>set the Driving status of datum constraints</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="moveDatumsToEnd">
+      <Documentation>
+        <UserDocu>Moves all datum constraints to the end of the constraint list</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getDriving">
       <Documentation>
         <UserDocu>Get the Driving status of a datum constraint</UserDocu>

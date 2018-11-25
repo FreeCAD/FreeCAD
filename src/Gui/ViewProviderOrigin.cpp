@@ -195,7 +195,11 @@ void ViewProviderOrigin::onChanged(const App::Property* prop) {
             if (vpLineZ) { vpLineZ->Size.setValue ( szZ ); }
 
         } catch (const Base::Exception &ex) {
-            Base::Console().Error ("%s\n", ex.what() );
+            // While restoring a document don't report errors if one of the lines or planes
+            // cannot be found.
+            App::Document* doc = getObject()->getDocument();
+            if (!doc->testStatus(App::Document::Restoring))
+                Base::Console().Error ("%s\n", ex.what() );
         }
     }
 

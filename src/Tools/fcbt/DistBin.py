@@ -6,7 +6,7 @@ import os,sys
 
 import DistTools, FileTools
 
-# line separator 
+# line separator
 ls = os.linesep
 # path separator
 ps = os.pathsep
@@ -26,13 +26,13 @@ if (DistTools.EnsureDir(DistDir+DistBin) == 1):
     raise "Dist path already there!!"
 
 #====================================================================
-# copy src 
+# copy src
 sys.stdout.write( 'Copy src Tree ...\n')
 DistTools.EnsureDir(DistDir+DistBin+'/src')
 FileTools.cpallWithFilter('../../src',DistDir+DistBin+'/src',FileTools.SetUpFilter(DistTools.SrcFilter))
 
 #====================================================================
-# copy bin and lib 
+# copy bin and lib
 sys.stdout.write( 'Copy bin and lib Tree ...\n')
 DistTools.EnsureDir(DistDir+DistBin+'/bin')
 FileTools.cpallWithFilter('../../bin',DistDir+DistBin+'/bin',FileTools.SetUpFilter(DistTools.BinFilter))
@@ -55,7 +55,7 @@ FileTools.cpallWithFilter('../../src/Mod',DistDir+DistBin+'/Mod',FileTools.SetUp
 #DistTools.cpfile("../Tools/BuildTool.py",DistDir+DistBin+"/BuildTool.py")
 
 #====================================================================
-# ziping a archiv
+# zipping an archive
 #os.popen("rar.exe a "+DistDir+DistBin+".rar "+ DistDir+DistBin)
 os.popen("7z a -tzip "+DistDir+DistBin+".zip "+ DistDir+DistBin+ " -mx9")
 

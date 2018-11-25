@@ -35,7 +35,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form = QtGui.QWidget()
         layout = QtGui.QVBoxLayout()
 
-        #tool contoller
+        #tool controller
         hlayout = QtGui.QHBoxLayout()
         form.ToolController = QtGui.QComboBox()
         form.ToolControllerLabel=QtGui.QLabel("Tool Controller")
@@ -61,7 +61,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         #step over
         form.StepOver = QtGui.QSpinBox()
         form.StepOver.setMinimum(15)
-        form.StepOver.setMaximum(50)
+        form.StepOver.setMaximum(75)
         form.StepOver.setSingleStep(1)
         form.StepOver.setValue(25)
         form.StepOver.setToolTip("Optimal value for tool stepover")
@@ -69,12 +69,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         #tolerance
         form.Tolerance = QtGui.QSlider(QtCore.Qt.Horizontal)
-        form.Tolerance.setMinimum(2)
+        form.Tolerance.setMinimum(5)
         form.Tolerance.setMaximum(15)
         form.Tolerance.setTickInterval(1)
         form.Tolerance.setValue(10)
         form.Tolerance.setTickPosition(QtGui.QSlider.TicksBelow)
-        form.Tolerance.setToolTip("Influences calculation performace vs stability and accuracy.")
+        form.Tolerance.setToolTip("Influences calculation performance vs stability and accuracy.")
         formLayout.addRow(QtGui.QLabel("Accuracy vs Performance"),form.Tolerance)
 
         #helix angle
@@ -92,7 +92,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         form.HelixDiameterLimit.setMaximum(90)
         form.HelixDiameterLimit.setSingleStep(0.1)
         form.HelixDiameterLimit.setValue(0)
-        form.HelixDiameterLimit.setToolTip("If >0 it limits the helix ramp diameter\notherwise the tool diameter is used as helix diameter")
+        form.HelixDiameterLimit.setToolTip("If >0 it limits the helix ramp diameter\notherwise the 75 percent of tool diameter is used as helix diameter")
         formLayout.addRow(QtGui.QLabel("Helix Max Diameter"),form.HelixDiameterLimit)
 
         #lift distance

@@ -45,6 +45,11 @@
 				<UserDocu>Mark the object as unchanged</UserDocu>
 			</Documentation>
 		</Methode>
+        <Methode Name="enforceRecompute">
+            <Documentation>
+                <UserDocu>Mark the object for recompute</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="setExpression">
             <Documentation>
                 <UserDocu>Register an expression for a property</UserDocu>

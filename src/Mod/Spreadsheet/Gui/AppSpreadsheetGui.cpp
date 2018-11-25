@@ -73,17 +73,19 @@ public:
 private:
     Py::Object open(const Py::Tuple& args)
     {
-        const char* Name;
+        char* Name;
         const char* DocName=0;
-        if (!PyArg_ParseTuple(args.ptr(), "s|s",&Name,&DocName))
+        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
             throw Py::Exception();
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
 
         try {
-            Base::FileInfo file(Name);
+            Base::FileInfo file(EncodedName);
             App::Document *pcDoc = App::GetApplication().newDocument(DocName ? DocName : QT_TR_NOOP("Unnamed"));
             Spreadsheet::Sheet *pcSheet = static_cast<Spreadsheet::Sheet *>(pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
 
-            pcSheet->importFromFile(Name, '\t', '"', '\\');
+            pcSheet->importFromFile(EncodedName, '\t', '"', '\\');
             pcSheet->execute();
         }
         catch (const Base::Exception& e) {

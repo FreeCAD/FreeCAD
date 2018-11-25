@@ -73,28 +73,34 @@ void ViewProviderLux::setupContextMenu(QMenu* menu, QObject* receiver, const cha
 bool ViewProviderLux::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
+        QStringList items;
+        auto addTemplates = [&items](const std::string& path) {
+            QString dataDir = QString::fromUtf8(path.c_str());
+            QDir dir(dataDir);
+            QFileInfoList files = dir.entryInfoList(QStringList() << QString::fromLatin1("*.lxs"));
+            for (int i=0; i<files.count(); i++ ) {
+                QFileInfo fi(files[i]);
+                items << fi.absoluteFilePath();
+            }
+        };
+
         std::string path = App::Application::getResourceDir();
         path += "Mod/Raytracing/Templates/";
-        QString dataDir = QString::fromUtf8(path.c_str());
-        QDir dir(dataDir, QString::fromLatin1("*.lxs"));
-        QStringList items;
-        int current = 0;
+        addTemplates(path);
+
+        path = App::Application::getUserAppDataDir();
+        path += "data/Mod/Raytracing/Templates/";
+        addTemplates(path);
+
         QFileInfo cfi(QString::fromUtf8(static_cast<Raytracing::LuxProject*>(getObject())->Template.getValue()));
-        for (unsigned int i=0; i<dir.count(); i++ ) {
-            QFileInfo fi(dir[i]);
-            items << fi.baseName();
-            if (fi.baseName() == cfi.baseName()) {
-                current = i;
-            }
-        }
+        int current = items.indexOf(cfi.absoluteFilePath());
 
         bool ok;
         QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("LuxRender template"), tr("Select a LuxRender template"), items, current, false, &ok);
         if (ok) {
             App::Document* doc  = getObject()->getDocument();
             doc->openTransaction("Edit LuxRender project");
-            QString fn = QString::fromLatin1("%1%2.lxs").arg(dataDir).arg(file);
-            static_cast<Raytracing::LuxProject*>(getObject())->Template.setValue((const char*)fn.toUtf8());
+            static_cast<Raytracing::LuxProject*>(getObject())->Template.setValue((const char*)file.toUtf8());
             doc->commitTransaction();
             doc->recompute();
         }
@@ -145,28 +151,34 @@ void ViewProviderPovray::setupContextMenu(QMenu* menu, QObject* receiver, const 
 bool ViewProviderPovray::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
+        QStringList items;
+        auto addTemplates = [&items](const std::string& path) {
+            QString dataDir = QString::fromUtf8(path.c_str());
+            QDir dir(dataDir);
+            QFileInfoList files = dir.entryInfoList(QStringList() << QString::fromLatin1("*.pov"));
+            for (int i=0; i<files.count(); i++ ) {
+                QFileInfo fi(files[i]);
+                items << fi.absoluteFilePath();
+            }
+        };
+
         std::string path = App::Application::getResourceDir();
         path += "Mod/Raytracing/Templates/";
-        QString dataDir = QString::fromUtf8(path.c_str());
-        QDir dir(dataDir, QString::fromLatin1("*.pov"));
-        QStringList items;
-        int current = 0;
+        addTemplates(path);
+
+        path = App::Application::getUserAppDataDir();
+        path += "data/Mod/Raytracing/Templates/";
+        addTemplates(path);
+
         QFileInfo cfi(QString::fromUtf8(static_cast<Raytracing::RayProject*>(getObject())->Template.getValue()));
-        for (unsigned int i=0; i<dir.count(); i++ ) {
-            QFileInfo fi(dir[i]);
-            items << fi.baseName();
-            if (fi.baseName() == cfi.baseName()) {
-                current = i;
-            }
-        }
+        int current = items.indexOf(cfi.absoluteFilePath());
 
         bool ok;
         QString file = QInputDialog::getItem(Gui::getMainWindow(), tr("Povray template"), tr("Select a Povray template"), items, current, false, &ok);
         if (ok) {
             App::Document* doc  = getObject()->getDocument();
             doc->openTransaction("Edit Povray project");
-            QString fn = QString::fromLatin1("%1%2.pov").arg(dataDir).arg(file);
-            static_cast<Raytracing::RayProject*>(getObject())->Template.setValue((const char*)fn.toUtf8());
+            static_cast<Raytracing::RayProject*>(getObject())->Template.setValue((const char*)file.toUtf8());
             doc->commitTransaction();
             doc->recompute();
         }

@@ -393,7 +393,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyLinkListBase , App::PropertyLinkBase)
 // PropertyLink
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLink , App::PropertyLinkBase)
+TYPESYSTEM_SOURCE(App::PropertyLink, App::PropertyLinkBase)
 TYPESYSTEM_SOURCE(App::PropertyLinkChild , App::PropertyLink)
 TYPESYSTEM_SOURCE(App::PropertyLinkGlobal , App::PropertyLink)
 TYPESYSTEM_SOURCE(App::PropertyLinkHidden , App::PropertyLink)
@@ -545,7 +545,7 @@ Property *PropertyLink::Copy(void) const
 
 void PropertyLink::Paste(const Property &from)
 {
-    if(!from.isDerivedFrom(PropertyLink::getClassTypeId()))
+    if (!from.isDerivedFrom(PropertyLink::getClassTypeId()))
         throw Base::TypeError("Incompatible property to paste to");
 
     setValue(static_cast<const PropertyLink&>(from)._pcLink);
@@ -589,9 +589,9 @@ bool PropertyLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLinkListBase)
-TYPESYSTEM_SOURCE(App::PropertyLinkListChild , App::PropertyLinkList)
-TYPESYSTEM_SOURCE(App::PropertyLinkListGlobal , App::PropertyLinkList)
-TYPESYSTEM_SOURCE(App::PropertyLinkListHidden , App::PropertyLinkList)
+TYPESYSTEM_SOURCE(App::PropertyLinkListChild, App::PropertyLinkList)
+TYPESYSTEM_SOURCE(App::PropertyLinkListGlobal, App::PropertyLinkList)
+TYPESYSTEM_SOURCE(App::PropertyLinkListHidden, App::PropertyLinkList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -870,10 +870,10 @@ bool PropertyLinkList::adjustLink(const std::set<App::DocumentObject*> &inList) 
 // PropertyLinkSub
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::PropertyLinkBase)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubChild , App::PropertyLinkSub)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubGlobal , App::PropertyLinkSub)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubHidden , App::PropertyLinkSub)
+TYPESYSTEM_SOURCE(App::PropertyLinkSub, App::PropertyLinkBase)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubChild, App::PropertyLinkSub)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubGlobal, App::PropertyLinkSub)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubHidden, App::PropertyLinkSub)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1016,7 +1016,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
         Py::Sequence seq(value);
         if(seq.size() == 0)
             setValue(NULL);
-        else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))){
+        else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
             DocumentObjectPy  *pcObj = (DocumentObjectPy*)seq[0].ptr();
             if (seq[1].isString()) {
                 std::vector<std::string> vals;
@@ -1454,10 +1454,10 @@ bool PropertyLinkSub::adjustLink(const std::set<App::DocumentObject*> &inList) {
 // PropertyLinkSubList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLinkBase)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubListChild , App::PropertyLinkSubList)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubListGlobal , App::PropertyLinkSubList)
-TYPESYSTEM_SOURCE(App::PropertyLinkSubListHidden , App::PropertyLinkSubList)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubList, App::PropertyLinkBase)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListChild, App::PropertyLinkSubList)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListGlobal, App::PropertyLinkSubList)
+TYPESYSTEM_SOURCE(App::PropertyLinkSubListHidden, App::PropertyLinkSubList)
 
 //**************************************************************************
 // Construction/Destruction
@@ -1810,7 +1810,7 @@ PyObject *PropertyLinkSubList::getPyObject(void)
 #else
     Py::List sequence(count);
 #endif
-    for (unsigned int i = 0; i<count; i++){
+    for (unsigned int i = 0; i<count; i++) {
         Py::Tuple tup(2);
         tup[0] = Py::Object(_lValueList[i]->getPyObject());
         std::string subItem;
@@ -2232,7 +2232,7 @@ class App::DocInfo :
     public std::enable_shared_from_this<App::DocInfo> 
 {
 public:
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection connFinishRestoreDocument;
     Connection connDeleteDocument;
     Connection connSaveDocument;
@@ -2257,7 +2257,7 @@ public:
 
         const char *docPath = pDoc->FileName.getValue();
         if(!docPath || *docPath==0)
-            throw Base::Exception("Owner document not saved");
+            throw Base::RuntimeError("Owner document not saved");
         
         QDir docDir(QFileInfo(QString::fromUtf8(docPath)).absoluteDir());
         if(!absolute) {
@@ -2648,7 +2648,7 @@ void PropertyXLink::restoreLink(App::DocumentObject *lValue) {
 
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument()) 
-        throw Base::Exception("invalid container");
+        throw Base::RuntimeError("invalid container");
 
     bool touched = owner->isTouched();
     setFlag(LinkDetached,false);
@@ -2680,16 +2680,16 @@ void PropertyXLink::_setValue(App::DocumentObject *lValue,
         return;
 
     if(lValue && (!lValue->getNameInDocument() || !lValue->getDocument())) {
-        throw Base::Exception("Invalid object");
+        throw Base::ValueError("Invalid object");
         return;
     }
 
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument()) 
-        throw Base::Exception("invalid container");
+        throw Base::RuntimeError("invalid container");
 
     if(lValue == owner)
-        throw Base::Exception("self linking");
+        throw Base::ValueError("self linking");
 
     DocInfoPtr info;
     const char *name = "";
@@ -2700,7 +2700,7 @@ void PropertyXLink::_setValue(App::DocumentObject *lValue,
             {
                 const char *filename = lValue->getDocument()->FileName.getValue();
                 if(!filename || *filename==0) 
-                    throw Base::Exception("Linked document not saved");
+                    throw Base::RuntimeError("Linked document not saved");
                 FC_LOG("xlink set to new document " << lValue->getDocument()->getName());
                 info = DocInfo::get(filename,owner->getDocument(),this,name);
                 assert(info && info->pcDoc == lValue->getDocument());
@@ -2740,7 +2740,7 @@ void PropertyXLink::_setValue(std::string &&filename, std::string &&name,
     }
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument()) 
-        throw Base::Exception("invalid container");
+        throw Base::RuntimeError("invalid container");
 
     DocumentObject *pObject=0;
     DocInfoPtr info;

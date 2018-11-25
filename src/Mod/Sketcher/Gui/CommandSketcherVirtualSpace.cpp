@@ -108,23 +108,23 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     bool modeChange=true;
-    
+
     std::vector<Gui::SelectionObject> selection;
     std::vector<std::string> SubNames;
     
     if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0){
         // Now we check whether we have a constraint selected or not.
-        
+
         // get the selection
         selection = getSelection().getSelectionEx();
-        
+
         // only one sketch with its subelements are allowed to be selected
-        if (selection.size() != 1) {
+        if (selection.size() != 1 || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
+
         // get the needed lists and objects
         SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
@@ -132,7 +132,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
                                  QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
+
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
             // see if we have constraints, if we do it is not a mode change, but a toggle.
             if (it->size() > 10 && it->substr(0,10) == "Constraint")

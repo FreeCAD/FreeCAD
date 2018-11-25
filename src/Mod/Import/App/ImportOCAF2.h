@@ -39,6 +39,7 @@
 #include <Mod/Part/App/FeatureCompound.h>
 #include <Base/Sequencer.h>
 #include "ImportOCAF.h"
+#include "ExportOCAF.h"
 
 
 class TDF_Label;

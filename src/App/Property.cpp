@@ -74,6 +74,7 @@ short Property::getType(void) const
     GET_PTYPE(Hidden);
     GET_PTYPE(Output);
     GET_PTYPE(Transient);
+    GET_PTYPE(NoRecompute);
     return type;
 }
 
@@ -165,7 +166,7 @@ void Property::Paste(const Property& /*from*/)
 
 void Property::setStatus(unsigned long status) {
     static const unsigned long mask = 
-        (1<<PropReadOnly)|(1<<PropTransient)|(1<<PropOutput)|(1<<PropHidden);
+        (1<<PropNoRecompute)|(1<<PropReadOnly)|(1<<PropTransient)|(1<<PropOutput)|(1<<PropHidden);
     status |= StatusBits.to_ulong() & mask;
     StatusBits = decltype(StatusBits)(status);
 }
@@ -173,7 +174,7 @@ void Property::setStatus(unsigned long status) {
 void Property::setStatus(Status pos, bool on) {
     // Those PropXXXX bits corresponding to PropertyType which can only be
     // initialize once
-    if(on || (pos!=PropReadOnly && pos!=PropTransient && pos!=PropOutput && pos!=PropHidden))
+    if(on || !(pos<=PropStaticBegin && pos>=PropStaticEnd))
         StatusBits.set(static_cast<size_t>(pos), on);
 }
 //**************************************************************************

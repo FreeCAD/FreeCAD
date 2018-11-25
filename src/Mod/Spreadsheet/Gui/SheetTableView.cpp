@@ -26,6 +26,8 @@
 # include <QAction>
 # include <QPushButton>
 # include <QMenu>
+# include <QApplication>
+# include <QClipboard>
 #endif
 
 #include <App/Document.h>
@@ -380,8 +382,136 @@ bool SheetTableView::event(QEvent *event)
                 return true;
             }
         }
+        else if (kevent->key() == Qt::Key_Delete) {
+            deleteSelection();
+            return true;
+        }
+        else if (kevent->matches(QKeySequence::Cut)) {
+            cutSelection();
+            return true;
+        }
+        else if (kevent->matches(QKeySequence::Copy)) {
+            copySelection();
+            return true;
+        }
+        else if (kevent->matches(QKeySequence::Paste)) {
+            pasteClipboard();
+            return true;
+        }
+    }
+    else if (event && event->type() == QEvent::ShortcutOverride) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+        if (kevent->modifiers() == Qt::NoModifier ||
+            kevent->modifiers() == Qt::ShiftModifier ||
+            kevent->modifiers() == Qt::KeypadModifier) {
+            switch (kevent->key()) {
+                case Qt::Key_Return:
+                case Qt::Key_Enter:
+                case Qt::Key_Delete:
+                case Qt::Key_Home:
+                case Qt::Key_End:
+                case Qt::Key_Backspace:
+                case Qt::Key_Left:
+                case Qt::Key_Right:
+                case Qt::Key_Up:
+                case Qt::Key_Down:
+                case Qt::Key_Tab:
+                    kevent->accept();
+                default:
+                    break;
+            }
+
+            if (kevent->key() < Qt::Key_Escape) {
+                kevent->accept();
+            }
+        }
+
+        if (kevent->matches(QKeySequence::Cut)) {
+            kevent->accept();
+        }
+        else if (kevent->matches(QKeySequence::Copy)) {
+            kevent->accept();
+        }
+        else if (kevent->matches(QKeySequence::Paste)) {
+            kevent->accept();
+        }
     }
     return QTableView::event(event);
+}
+
+void SheetTableView::deleteSelection()
+{
+    QModelIndexList selection = selectionModel()->selectedIndexes();
+
+    if (selection.size() > 0) {
+        Gui::Command::openCommand("Clear cell(s)");
+        std::vector<Range> ranges = selectedRanges();
+        std::vector<Range>::const_iterator i = ranges.begin();
+
+        for (; i != ranges.end(); ++i) {
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
+                                    i->rangeString().c_str());
+        }
+        Gui::Command::commitCommand();
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    }
+}
+
+void SheetTableView::copySelection()
+{
+    QModelIndexList selection = selectionModel()->selectedIndexes();
+    int minRow = INT_MAX;
+    int maxRow = 0;
+    int minCol = INT_MAX;
+    int maxCol = 0;
+
+    for (auto it : selection) {
+        int row = it.row();
+        int col = it.column();
+        minRow = std::min(minRow, row);
+        maxRow = std::max(maxRow, row);
+        minCol = std::min(minCol, col);
+        maxCol = std::max(maxCol, col);
+    }
+
+    QString selectedText;
+    for (int i=minRow; i<=maxRow; i++) {
+        for (int j=minCol; j<=maxCol; j++) {
+            QModelIndex index = model()->index(i,j);
+            QString cell = index.data(Qt::EditRole).toString();
+            if (j < maxCol)
+                cell.append(QChar::fromLatin1('\t'));
+            selectedText += cell;
+        }
+        if (i < maxRow)
+            selectedText.append(QChar::fromLatin1('\n'));
+    }
+    QApplication::clipboard()->setText(selectedText);
+}
+
+void SheetTableView::cutSelection()
+{
+    copySelection();
+    deleteSelection();
+}
+
+void SheetTableView::pasteClipboard()
+{
+    QString text = QApplication::clipboard()->text();
+    QStringList rows = text.split(QLatin1Char('\n'));
+
+    QModelIndex current = currentIndex();
+    int i=0;
+    for (auto it : rows) {
+        QStringList cols = it.split(QLatin1Char('\t'));
+        int j=0;
+        for (auto jt : cols) {
+            QModelIndex index = model()->index(current.row()+i, current.column()+j);
+            model()->setData(index, jt);
+            j++;
+        }
+        i++;
+    }
 }
 
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)

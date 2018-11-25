@@ -74,16 +74,22 @@ public:
         LockDynamic = 8, // prevent being removed from dynamic property
         NoModify = 9, // prevent causing Gui::Document::setModified()
         PartialTrigger = 10, // allow change in partial doc
+        NoRecompute = 11, // touch owner for recompute on property change
+        Single = 12, // for save/load of floating point numbers
+        Ordered = 13, // for PropertyLists whether the order of the elements is relevant for the container using it
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
         // changed in runtime. It is mirrored here to save the linear search
         // required in PropertyContainer::getPropertyType()
         //
+        PropStaticBegin = 23,
+        PropNoRecompute = 23, // corresponding to Prop_NoRecompute
         PropReadOnly = 24, // corresponding to Prop_ReadOnly
         PropTransient= 25, // corresponding to Prop_Transient
         PropHidden   = 26, // corresponding to Prop_Hidden
         PropOutput   = 27, // corresponding to Prop_Output
+        PropStaticEnd = 27,
 
         User1 = 28, // user-defined status
         User2 = 29, // user-defined status
@@ -112,7 +118,7 @@ public:
     virtual const char* getEditorName(void) const { return ""; }
 
     /// Get the type of the property in the container
-    short getType(void) const; 
+    short getType(void) const;
 
     /// Get the group of this property
     const char* getGroup(void) const;
@@ -145,11 +151,11 @@ public:
     //@{
     /// Set the property touched
     void touch();
-    /// Test if this property is touched 
+    /// Test if this property is touched
     inline bool isTouched(void) const {
         return StatusBits.test(Touched);
     }
-    /// Reset this property touched 
+    /// Reset this property touched
     inline void purgeTouched(void) {
         StatusBits.reset(Touched);
     }
@@ -166,6 +172,15 @@ public:
     void setReadOnly(bool readOnly);
     inline bool isReadOnly() const {
         return testStatus(App::Property::ReadOnly);
+    }
+    /// Sets precision of properties using floating point
+    /// numbers to single, the default is double.
+    void setSinglePrecision(bool single) {
+        setStatus(App::Property::Single, single);
+    }
+    /// Gets precision of properties using floating point numbers
+    inline bool isSinglePrecision() const {
+        return testStatus(App::Property::Single);
     }
     //@}
 
@@ -186,7 +201,7 @@ public:
 protected:
     /** Status bits of the property
      * The first 8 bits are used for the base system the rest can be used in
-     * descendent classes to to mark special stati on the objects.
+     * descendent classes to mark special statuses on the objects.
      * The bits and their meaning are listed below:
      * 0 - object is marked as 'touched'
      * 1 - object is marked as 'immutable'
@@ -250,7 +265,7 @@ protected:
 
 /** Base class of all property lists.
  * The PropertyLists class is the base class for properties which can contain
- * multiple values, not only a single value. 
+ * multiple values, not only a single value.
  * All property types which may contain more than one value inherits this class.
  */
 class AppExport PropertyLists : public Property, public PropertyListsBase
@@ -260,6 +275,13 @@ public:
     virtual void setPyObject(PyObject *obj) override {
         _setPyObject(obj);
     }
+
+    // if the order of the elements in the list relevant?
+    // if yes, certain operations, like restoring must make sure that the
+    // order is kept despite errors.
+    inline void setOrderRelevant(bool on) { this->setStatus(Status::Ordered,on); };
+    inline bool isOrderRelevant() const { return this->testStatus(Status::Ordered);}
+
 };
 
 
@@ -372,18 +394,22 @@ protected:
 
 /** A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties.
  *
- * A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties, and
- * only invoke it the first and last time it is needed. This is useful in cases where you want to change multiple
- * values in a property "atomically", using possibly multiple primitive functions that normally would trigger
- * aboutToSetValue/hasSetValue calls on their own.
+ * A template class that is used to inhibit multiple nested calls to
+ * aboutToSetValue/hasSetValue for properties, and only invoke it the first and
+ * last time it is needed. This is useful in cases where you want to change multiple
+ * values in a property "atomically", using possibly multiple primitive functions
+ * that normally would trigger aboutToSetValue/hasSetValue calls on their own.
  *
- * To use, inherit privately from the AtomicPropertyChangeInterface class, using your class name as the template argument.
- * In all cases where you normally would call aboutToSetValue/hasSetValue before and after a change, create
- * an AtomicPropertyChange object before you do the change. Depending on a counter in the main property, the constructor might
- * invoke aboutToSetValue. When the AtomicPropertyChange object is destructed, it might call hasSetValue if it is found
- * necessary to do (i.e last item on the AtomicPropertyChange stack). This makes it easy to match the calls, and it is also
- * exception safe in the sense that the destructors are guaranteed to be called during unwinding and exception
- * handling, making the calls to boutToSetValue and hasSetValue balanced.
+ * To use, inherit privately from the AtomicPropertyChangeInterface class, using
+ * your class name as the template argument. In all cases where you normally would
+ * call aboutToSetValue/hasSetValue before and after a change, create an
+ * AtomicPropertyChange object before you do the change. Depending on a counter
+ * in the main property, the constructor might invoke aboutToSetValue. When the
+ * AtomicPropertyChange object is destructed, it might call hasSetValue if it is
+ * found necessary to do (i.e last item on the AtomicPropertyChange stack).
+ * This makes it easy to match the calls, and it is also exception safe in the
+ * sense that the destructors are guaranteed to be called during unwinding and
+ * exception handling, making the calls to boutToSetValue and hasSetValue balanced.
  *
  */
 

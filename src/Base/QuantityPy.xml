@@ -70,7 +70,7 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
       <Documentation>
         <UserDocu>Format of the Quantity</UserDocu>
       </Documentation>
-      <Parameter Name="Format" Type="Tuple" />
+      <Parameter Name="Format" Type="Dict" />
     </Attribute>
     </PythonExport>
 </GenerateModel>

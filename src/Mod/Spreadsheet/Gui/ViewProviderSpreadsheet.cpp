@@ -30,6 +30,7 @@
 # include <QFileInfo>
 # include <QImage>
 # include <QString>
+# include <QMdiSubWindow>
 # include <QMenu>
 #endif
 

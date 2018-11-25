@@ -77,7 +77,7 @@ void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     QAction* act;
     act = menu->addAction(QObject::tr("Edit loft"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    ViewProvider::setupContextMenu(menu,receiver,member);
+    PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderLoft::doubleClicked(void)
@@ -87,9 +87,9 @@ bool ViewProviderLoft::doubleClicked(void)
 
 bool ViewProviderLoft::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default)        
+    if (ModNum == ViewProvider::Default)
         setPreviewDisplayMode(true);
-        
+
     return ViewProviderAddSub::setEdit(ModNum);
 }
 
@@ -99,7 +99,6 @@ TaskDlgFeatureParameters* ViewProviderLoft::getEditDialog() {
 
 
 void ViewProviderLoft::unsetEdit(int ModNum) {
-    
     setPreviewDisplayMode(false);
     ViewProviderAddSub::unsetEdit(ModNum);
 }

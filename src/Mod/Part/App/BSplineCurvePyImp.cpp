@@ -37,10 +37,10 @@
 # include <TColStd_HArray1OfReal.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_HArray1OfBoolean.hxx>
-
 # include <Precision.hxx>
 #endif
 
+#include <cmath>
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
@@ -298,7 +298,17 @@ PyObject* BSplineCurvePy::segment(PyObject * args)
     try {
         Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast
             (getGeometryPtr()->handle());
-        curve->Segment(u1,u2);
+        Handle(Geom_BSplineCurve) tempCurve = Handle(Geom_BSplineCurve)::DownCast
+            (curve->Copy());
+        tempCurve->Segment(u1,u2);
+        if (std::abs(tempCurve->FirstParameter()-u1) > Precision::Approximation() ||
+            std::abs(tempCurve->LastParameter()-u2) > Precision::Approximation()) {
+            Standard_Failure::Raise("Failed to segment BSpline curve");
+            return 0;
+        }
+        else {
+            curve->Segment(u1,u2);
+        }
         Py_Return;
     }
     catch (Standard_Failure& e) {

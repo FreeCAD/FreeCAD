@@ -206,13 +206,14 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
     try {
         Py::Module module("__main__");
         Py::Dict dict = module.getDict();
-#if 0
+
+        // this is used to filter out input of the form "1."
         QStringList items = context.split(QLatin1Char('.'));
         QString modname = items.front();
         items.pop_front();
         if (!dict.hasKey(std::string(modname.toLatin1())))
             return tips; // unknown object
-
+#if 0
         // get the Python object we need
         Py::Object obj = dict.getItem(std::string(modname.toLatin1()));
         while (!items.isEmpty()) {
@@ -415,7 +416,11 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     tip.parameter = longdoc.left(pos);
                 }
             }
-            tips[str] = tip;
+
+            // Do not override existing items
+            QMap<QString, CallTip>::iterator pos = tips.find(str);
+            if (pos == tips.end())
+                tips[str] = tip;
         }
     }
     catch (Py::Exception& e) {

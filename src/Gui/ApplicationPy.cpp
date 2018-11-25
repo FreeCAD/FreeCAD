@@ -57,6 +57,7 @@
 #include "Language/Translator.h"
 #include "DownloadManager.h"
 #include "DlgPreferencesImp.h"
+#include "DocumentObserverPython.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
@@ -167,6 +168,9 @@ PyMethodDef Application::Methods[] = {
   {"activeView", (PyCFunction)Application::sActiveView, METH_VARARGS,
    "activeView() -> object or None\n\n"
    "Return the active view of the active document or None if no one exists" },
+  {"activateView", (PyCFunction)Application::sActivateView, METH_VARARGS,
+   "activateView(type)\n\n"
+   "Activate a view of the given type of the active document"},
   {"editDocument", (PyCFunction)Application::sEditDocument, METH_VARARGS,
    "editDocument() -> object or None\n\n"
    "Return the current editing document or None if no one exists" },
@@ -194,6 +198,13 @@ PyMethodDef Application::Methods[] = {
 
   {"getMarkerIndex", (PyCFunction) Application::sGetMarkerIndex, METH_VARARGS,
    "Get marker index according to marker size setting"},
+   
+    {"addDocumentObserver",  (PyCFunction) Application::sAddDocObserver, METH_VARARGS,
+     "addDocumentObserver() -> None\n\n"
+     "Add an observer to get notified about changes on documents."},
+    {"removeDocumentObserver",  (PyCFunction) Application::sRemoveDocObserver, METH_VARARGS,
+     "removeDocumentObserver() -> None\n\n"
+     "Remove an added document observer."},
 
   {"reload",                    (PyCFunction) Application::sReload, METH_VARARGS,
    "reload(name) -> doc\n\n"
@@ -235,14 +246,24 @@ PyObject* Gui::Application::sActiveView(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    Document *pcDoc = Instance->activeDocument();
-    if (pcDoc) {
-        Gui::MDIView *pcView = pcDoc->getActiveView();
-        if (pcView)
-            // already incremented in getPyObject().
-            return pcView->getPyObject();
+    Gui::MDIView* mdiView = Instance->activeView();
+    if (mdiView) {
+        // already incremented in getPyObject().
+        return mdiView->getPyObject();
     }
 
+    Py_Return;
+}
+
+PyObject* Gui::Application::sActivateView(PyObject * /*self*/, PyObject *args)
+{
+    char* typeStr;
+    PyObject *create = Py_False;
+    if (!PyArg_ParseTuple(args, "sO!", &typeStr, &PyBool_Type, &create))
+        return NULL;
+
+    Base::Type type = Base::Type::fromName(typeStr);
+    Instance->activateView(type, PyObject_IsTrue(create) ? true : false);
     Py_Return;
 }
 
@@ -616,9 +637,12 @@ PyObject* Application::sGetMainWindow(PyObject * /*self*/, PyObject *args)
         return NULL;
 
     PythonWrapper wrap;
-    wrap.loadCoreModule();
-    wrap.loadGuiModule();
-    wrap.loadWidgetsModule();
+    if (!wrap.loadCoreModule() ||
+        !wrap.loadGuiModule() ||
+        !wrap.loadWidgetsModule()) {
+        PyErr_SetString(PyExc_RuntimeError, "Failed to load Python wrapper for Qt");
+        return 0;
+    }
     try {
         return Py::new_reference_to(wrap.fromQWidget(Gui::getMainWindow(), "QMainWindow"));
     }
@@ -1344,3 +1368,24 @@ PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
     Py_Return;
 }
 
+PyObject* Application::sAddDocObserver(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O",&o))
+        return NULL;
+    PY_TRY {
+        DocumentObserverPython::addObserver(Py::Object(o));
+        Py_Return;
+    } PY_CATCH;
+}
+
+PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O",&o))
+        return NULL;
+    PY_TRY {
+        DocumentObserverPython::removeObserver(Py::Object(o));
+        Py_Return;
+    } PY_CATCH;
+}

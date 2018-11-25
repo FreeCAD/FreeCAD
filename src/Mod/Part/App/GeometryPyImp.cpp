@@ -219,7 +219,7 @@ Py::Boolean GeometryPy::getConstruction(void) const
 
 void  GeometryPy::setConstruction(Py::Boolean arg)
 {
-    if(getGeometryPtr()->getClassTypeId() != Part::GeomPoint::getClassTypeId())
+    if (getGeometryPtr()->getTypeId() != Part::GeomPoint::getClassTypeId())
         getGeometryPtr()->Construction = arg;
 }
 

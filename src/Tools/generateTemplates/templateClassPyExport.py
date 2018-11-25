@@ -56,6 +56,9 @@ namespace @self.export.Namespace@
  */
 class @self.export.Namespace@Export @self.export.Name@ : public @self.export.FatherNamespace@::@self.export.Father@
 {
+protected:
+    ~@self.export.Name@();
+
 public:
     static PyTypeObject   Type;
     static PyMethodDef    Methods[];
@@ -76,8 +79,7 @@ public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
     virtual int PyInit(PyObject* args, PyObject*k);
-    ~@self.export.Name@();
-    
+
 + if (self.export.Initialization):
     int initialization();
     int finalization();
@@ -114,10 +116,8 @@ public:
     static PyObject * number_subtract_handler (PyObject *self, PyObject *other);
     /// callback for the number_multiply_handler
     static PyObject * number_multiply_handler (PyObject *self, PyObject *other);
-#if PY_MAJOR_VERSION < 3
     /// callback for the number_divide_handler
     static PyObject * number_divide_handler (PyObject *self, PyObject *other);
-#endif
     /// callback for the number_remainder_handler
     static PyObject * number_remainder_handler (PyObject *self, PyObject *other);
     /// callback for the number_divmod_handler
@@ -413,7 +413,11 @@ PyNumberMethods @self.export.Name@::Number[] = { {
     NULL,    /*nb_inplace_xor*/
     NULL,    /*nb_inplace_or*/
     NULL,    /*nb_floor_divide*/
+#if PY_MAJOR_VERSION < 3
     NULL,    /*nb_true_divide*/
+#else
+    number_divide_handler,    /*nb_true_divide*/
+#endif
     NULL,    /*nb_inplace_floor_divide*/
     NULL,    /*nb_inplace_true_divide*/
     NULL     /*nb_index*/
@@ -798,7 +802,7 @@ PyObject *@self.export.Name@::_getattr(const char *attr)			// __getattr__ functi
 int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr__ function: note only need to handle new state
 {
     try {
-        // setter for  special Attributes (e.g. dynamic ones)
+        // setter for special Attributes (e.g. dynamic ones)
         int r = setCustomAttributes(attr, value);
         // r = 1: handled
         // r = -1: error

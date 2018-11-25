@@ -127,6 +127,9 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectRedoDocument =
     App::GetApplication().signalRedoDocument.connect(boost::bind
         (&PropertyView::slotRollback, this));
+    this->connectActiveDoc =
+    Application::Instance->signalActiveDocument.connect(boost::bind
+        (&PropertyView::slotActiveDocument, this, _1));
 }
 
 PropertyView::~PropertyView()
@@ -139,6 +142,7 @@ PropertyView::~PropertyView()
     this->connectPropChange.disconnect();
     this->connectUndoDocument.disconnect();
     this->connectRedoDocument.disconnect();
+    this->connectActiveDoc.disconnect();
 }
 
 void PropertyView::OnChange(Base::Subject<const char*> &, const char* sReason) {
@@ -241,6 +245,27 @@ void PropertyView::slotChangePropertyEditor(const App::Property& prop)
     }
 }
 
+void PropertyView::slotActiveDocument(const Gui::Document &doc)
+{
+    // allow to disable the auto-deactivation
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bool enableEditor = hGrp->GetBool("EnablePropertyViewForInactiveDocument", true);
+    if (enableEditor) {
+        setEnabled(true);
+        return;
+    }
+
+    // check if at least one selected object is part of the active document
+    std::vector<SelectionSingleton::SelObj> array = Gui::Selection().getCompleteSelection();
+    for (std::vector<SelectionSingleton::SelObj>::const_iterator it = array.begin(); it != array.end(); ++it) {
+        if (Gui::Application::Instance->getDocument(it->pDoc) == &doc) {
+            enableEditor = true;
+            break;
+        }
+    }
+    setEnabled(enableEditor || array.empty());
+}
+
 struct PropertyView::PropInfo
 {
     std::string propName;
@@ -277,6 +302,10 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
 void PropertyView::onTimer() {
     timer->stop();
     std::set<App::DocumentObject *> objSet;
+    // allow to disable the auto-deactivation
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    bool enableEditor = hGrp->GetBool("EnablePropertyViewForInactiveDocument", true);
+    Gui::Document *activeDoc = Application::Instance->activeDocument();
 
     // group the properties by <name,id>
     std::vector<PropInfo> propDataMap;
@@ -312,6 +341,9 @@ void PropertyView::onTimer() {
         if(!objSet.insert(ob).second)
             continue;
 
+        if(ob->getDocument() == activeDoc->getDocument())
+            enableEditor = true;
+
         std::vector<App::Property*> dataList;
         std::map<std::string, App::Property*> viewList;
 
@@ -342,7 +374,7 @@ void PropertyView::onTimer() {
                     continue;
 
                 PropInfo nameType;
-                nameType.propName = ob->getPropertyName(*pt);
+                nameType.propName = (*pt)->getName();
                 nameType.propId = (*pt)->getTypeId().getKey();
 
                 std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
@@ -398,7 +430,7 @@ void PropertyView::onTimer() {
             for(auto prop : dataList) {
                 if(isPropertyHidden(prop))
                     continue;
-                std::string name(linked->getPropertyName(prop));
+                std::string name(prop->getName());
                 auto it = propMap.find(name);
                 if(it!=propMap.end() && 
                    !it->second->testStatus(App::Property::Hidden) &&
@@ -416,7 +448,7 @@ void PropertyView::onTimer() {
                 for(auto prop : dataList) {
                     if(isPropertyHidden(prop))
                         continue;
-                    std::string name(vpLinked->getPropertyName(prop));
+                    std::string name(prop->getName());
                     auto it = propMap.find(name);
                     if(it!=propMap.end() && 
                        !it->second->testStatus(App::Property::Hidden) &&
@@ -442,6 +474,9 @@ void PropertyView::onTimer() {
     }
 
     propertyEditorView->buildUp(viewProps);
+
+    // make sure the editors are enabled/disabled properly
+    setEnabled(enableEditor || array.empty());
 }
 
 void PropertyView::tabChanged(int index)

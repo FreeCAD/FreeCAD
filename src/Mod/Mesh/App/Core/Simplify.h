@@ -53,8 +53,8 @@ public:
                int a21, int a22, int a23,
                int a31, int a32, int a33)
     {
-        double det =  m[a11]*m[a22]*m[a33] + m[a13]*m[a21]*m[a32] + m[a12]*m[a23]*m[a31] 
-                    - m[a13]*m[a22]*m[a31] - m[a11]*m[a23]*m[a32]- m[a12]*m[a21]*m[a33]; 
+        double det =  m[a11]*m[a22]*m[a33] + m[a13]*m[a21]*m[a32] + m[a12]*m[a23]*m[a31]
+                    - m[a13]*m[a22]*m[a31] - m[a11]*m[a23]*m[a32] - m[a12]*m[a21]*m[a33];
         return det;
     }
 
@@ -62,8 +62,8 @@ public:
     { 
         return SymmetricMatrix( m[0]+n[0],    m[1]+n[1],   m[2]+n[2],   m[3]+n[3],
                                               m[4]+n[4],   m[5]+n[5],   m[6]+n[6],
-                                                         m[ 7]+n[ 7], m[ 8]+n[8 ],
-                                                                     m[ 9]+n[9 ]);
+                                                           m[7]+n[7],   m[8]+n[8],
+                                                                        m[9]+n[9]);
     }
 
     SymmetricMatrix& operator+=(const SymmetricMatrix& n)
@@ -88,7 +88,7 @@ public:
     std::vector<Vertex> vertices;
     std::vector<Ref> refs;
 
-    void simplify_mesh(int target_count, double tolerance_factor, double agressiveness=7);
+    void simplify_mesh(int target_count, double tolerance, double aggressiveness=7);
 
 private:
     // Helper functions
@@ -104,14 +104,18 @@ private:
 //
 // Main simplification function 
 //
-// target_count  : target nr. of triangles
-// agressiveness : sharpness to increase the threshold.
-//                 5..8 are good numbers
-//                 more iterations yield higher quality
+// target_count   : target nr. of triangles
+// tolerance      : tolerance for the quadratic errors
+// aggressiveness : sharpness to increase the threashold.
+//                  5..8 are good numbers
+//                  more iterations yield higher quality
+// If the passed tolerance is > 0 then this will be used to check
+// the quadratic error metric of all triangles. If none of them is below
+// the tolerance the algorithm will stop at this point. The number of the
+// remaining triangles usually will be higher than \a target_count
 //
-void Simplify::simplify_mesh(int target_count, double tolerance_factor, double agressiveness)
+void Simplify::simplify_mesh(int target_count, double tolerance, double aggressiveness)
 {
-    (void)tolerance_factor;
     // init
     //printf("%s - start\n",__FUNCTION__);
     //int timeStart=timeGetTime();
@@ -148,9 +152,27 @@ void Simplify::simplify_mesh(int target_count, double tolerance_factor, double a
         // The following numbers works well for most models.
         // If it does not, try to adjust the 3 parameters
         //
-        double threshold = 0.000000001*pow(double(iteration+3),agressiveness);
-        //if (tolerance_factor < 1.0)
-        //    threshold *= tolerance_factor;
+        double threshold = 0.000000001*pow(double(iteration+3),aggressiveness);
+        if (tolerance > 0.0)
+        {
+            bool canContinue = false;
+            for (std::size_t i=0;i<triangles.size();++i)
+            {
+                Triangle &t=triangles[i];
+                if (t.deleted)
+                    continue;
+                if (t.dirty)
+                    continue;
+                if (fabs(t.err[3])<tolerance)
+                {
+                    canContinue = true;
+                    break;
+                }
+            }
+
+            if (!canContinue)
+                break;
+        }
 
         // remove vertices & mark deleted triangles
         for (std::size_t i=0;i<triangles.size();++i)

@@ -46,6 +46,9 @@ static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
 
     static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_STATIC_CONF),NULL};
 
+    if(args && PySequence_Size(args)>0) 
+        PyErr_SetString(PyExc_ValueError,"Non-keyword argument is not supported");
+
     //Declare variables defined in the NAME field of the CONF parameter list
     PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_STATIC_CONF);
 
@@ -203,10 +206,12 @@ std::string AreaPy::representation(void) const
 
 PyObject *AreaPy::PyMake(struct _typeobject *, PyObject *args, PyObject *kwd)  // Python wrapper
 {
-    std::unique_ptr<AreaPy> ret(new AreaPy(new Area));
-    if(!ret->setParams(args,kwd))
+    AreaPy* ret = new AreaPy(new Area);
+    if(!ret->setParams(args,kwd)) {
+        Py_DecRef(ret);
         return 0;
-    return ret.release();
+    }
+    return ret;
 }
 
 // constructor method

@@ -47,7 +47,6 @@ PropertyItemDelegate::PropertyItemDelegate(QObject* parent)
     : QItemDelegate(parent), expressionEditor(0)
     , pressed(false), activeTransactionID(0),changed(false)
 {
-
     connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), 
             this, SLOT(editorClosed(QWidget*)));
 }
@@ -159,8 +158,7 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         editor->setAutoFillBackground(true);
     if (editor && childItem->isReadOnly())
         editor->setDisabled(true);
-    // else if (editor && this->pressed)
-    else if(editor) {
+    else if (editor /*&& this->pressed*/) {
         // We changed the way editor is activated in PropertyEditor (in response
         // of signal activated and clicked), so now we should grab focus
         // regardless of "pressed" or not (e.g. when activated by keyboard
@@ -201,8 +199,7 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
                     str << obj->getNameInDocument() << '.';
                 else
                     str << "property ";
-                if(parent)
-                    str << parent->getPropertyName(prop);
+                str << prop->getName();
                 if(items.size()>1)
                     str << "...";
                 activeTransactionID = app.setActiveTransaction(str.str().c_str());

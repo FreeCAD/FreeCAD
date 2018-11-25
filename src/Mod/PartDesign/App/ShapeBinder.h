@@ -25,6 +25,7 @@
 #define PARTDESIGN_DATUMSHAPE_H
 
 #include <QString>
+#include <boost/signals2.hpp>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/DatumFeature.h>
 
@@ -48,6 +49,7 @@ public:
     virtual ~ShapeBinder();
 
     App::PropertyLinkSubListGlobal    Support;
+    App::PropertyBool TraceSupport;
 
     static void getFilteredReferences(App::PropertyLinkSubList* prop, Part::Feature*& object, std::vector< std::string >& subobjects);
     static Part::TopoShape buildShapeFromReferences(Feature* obj, std::vector< std::string > subs);
@@ -60,6 +62,13 @@ protected:
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
     virtual short int mustExecute(void) const;
     virtual App::DocumentObjectExecReturn* execute(void);
+
+private:
+    void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+    virtual void onSettingDocument();
+
+    typedef boost::signals2::connection Connection;
+    Connection connectDocumentChangedObject;
 };
 
 class PartDesignExport SubShapeBinder : public Part::Feature {

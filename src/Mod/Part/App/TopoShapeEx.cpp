@@ -142,7 +142,6 @@
 # include <Poly_Triangulation.hxx>
 # include <Standard_Failure.hxx>
 # include <StlAPI_Writer.hxx>
-# include <Standard_Failure.hxx>
 # include <gp_GTrsf.hxx>
 # include <ShapeAnalysis_Shell.hxx>
 # include <ShapeBuild_ReShape.hxx>
@@ -191,7 +190,7 @@ using namespace Part;
 
 #define _HANDLE_NULL_SHAPE(_msg,_throw) do {\
     if(_throw) {\
-        Standard_Failure::Raise(_msg);\
+        FC_THROWM(NullShapeException,_msg);\
     }\
     FC_WARN(_msg);\
 }while(0)
@@ -409,7 +408,7 @@ void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool force
                         if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                             FC_WARN("hasher mismatch");
                     }else {
-                        // throw Base::RuntimeError("hasher mismatch");
+                        // FC_THROWM(Base::RuntimeError, "hasher mismatch");
                         FC_ERR("hasher mismatch");
                     }
                     Hasher = other.Hasher;
@@ -523,19 +522,19 @@ TopoShape TopoShape::getSubTopoShape(const char *Type, bool silent) const {
 TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent) const {
     if(isNull()) {
         if(!silent)
-            Standard_Failure::Raise("null shape");
+            FC_THROWM(Base::CADKernelError,"null shape");
         return TopoShape();
     }
     if(idx <= 0) {
         if(!silent)
-            Standard_Failure::Raise("Invalid shape index");
+            FC_THROWM(Base::CADKernelError,"Invalid shape index");
         return TopoShape();
     }
     INIT_SHAPE_CACHE();
     auto &info = _Cache->getInfo(type);
     if(idx > info.shapes.Extent()) {
         if(!silent)
-            Standard_Failure::Raise("Shape index out of bound");
+            FC_THROWM(Base::CADKernelError,"Shape index out of bound");
         return TopoShape();
     }
 
@@ -702,12 +701,12 @@ static std::vector<TopoShape> prepareProfiles(const std::vector<TopoShape> &shap
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(shape));
             shape = mkWire.Wire();
         } else if (shape.ShapeType() != TopAbs_VERTEX) {
-            Standard_Failure::Raise("Profile shape is not a vertex, edge, wire nor face.");
+            FC_THROWM(Base::CADKernelError,"Profile shape is not a vertex, edge, wire nor face.");
         }
         ret.push_back(shape);
     }
     if(ret.empty())
-        Standard_Failure::Raise("No profile");
+        FC_THROWM(Base::CADKernelError,"No profile");
     return ret;
 }
 
@@ -719,13 +718,13 @@ TopoShape &TopoShape::makEPipeShell( const std::vector<TopoShape> &shapes,
     resetElementMap();
 
     if(shapes.size()<2)
-        Standard_Failure::Raise("Not enough input shape");
+        FC_THROWM(Base::CADKernelError,"Not enough input shape");
 
     auto spine = shapes.front().makEWires();
     if(spine.isNull())
         HANDLE_NULL_INPUT;
     if(spine.getShape().ShapeType()!=TopAbs_WIRE)
-        Standard_Failure::Raise("Spine shape cannot form a single wire");
+        FC_THROWM(Base::CADKernelError,"Spine shape cannot form a single wire");
 
     BRepOffsetAPI_MakePipeShell mkPipeShell(TopoDS::Wire(spine.getShape()));
     BRepBuilderAPI_TransitionMode transMode;
@@ -744,7 +743,7 @@ TopoShape &TopoShape::makEPipeShell( const std::vector<TopoShape> &shapes,
         mkPipeShell.Add(sh.getShape());
 
     if (!mkPipeShell.IsReady()) 
-        Standard_Failure::Raise("shape is not ready to build");
+        FC_THROWM(Base::CADKernelError,"shape is not ready to build");
     else 
         mkPipeShell.Build();
 
@@ -761,7 +760,7 @@ TopoShape &TopoShape::makERuledSurface(const std::vector<TopoShape> &shapes,
     resetElementMap();
 
     if(shapes.size()!=2)
-        Standard_Failure::Raise("Wrong number of input shape");
+        FC_THROWM(Base::CADKernelError,"Wrong number of input shape");
 
     std::array<TopoDS_Shape,2> curves;
     int i=0;
@@ -776,14 +775,14 @@ TopoShape &TopoShape::makERuledSurface(const std::vector<TopoShape> &shapes,
         }
         auto count = s.countSubShapes(TopAbs_WIRE);
         if(count>1)
-            Standard_Failure::Raise("Input shape has more than one wire");
+            FC_THROWM(Base::CADKernelError,"Input shape has more than one wire");
         if(count==1) {
             curves[i++] = s.getSubShape(TopAbs_WIRE,1);
             continue;
         }
         count = s.countSubShapes(TopAbs_EDGE);
         if(count==0)
-            Standard_Failure::Raise("Input shape has no edge"); 
+            FC_THROWM(Base::CADKernelError,"Input shape has no edge"); 
         if(count == 1) {
             curves[i++] = s.getSubShape(TopAbs_EDGE,1);
             continue;
@@ -792,7 +791,7 @@ TopoShape &TopoShape::makERuledSurface(const std::vector<TopoShape> &shapes,
         if(curves[i].IsNull())
             HANDLE_NULL_INPUT;
         if(curves[i].ShapeType()!=TopAbs_WIRE)
-            Standard_Failure::Raise("Input shape forms more than one wire");
+            FC_THROWM(Base::CADKernelError,"Input shape forms more than one wire");
         ++i;
     }
 
@@ -969,7 +968,7 @@ TopoShape &TopoShape::makELoft(const std::vector<TopoShape> &shapes,
 
     auto profiles = prepareProfiles(shapes);
     if (shapes.size() < 2)
-        Standard_Failure::Raise("Need at least two vertices, edges or wires to create loft face");
+        FC_THROWM(Base::CADKernelError,"Need at least two vertices, edges or wires to create loft face");
 
     for(auto &sh : profiles) {
         const auto &shape = sh.getShape();
@@ -1112,7 +1111,7 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
 #endif
 
     if (!mkOffset.IsDone())
-        Standard_Failure::Raise("BRepOffsetAPI_MakeOffsetShape not done");
+        FC_THROWM(Base::CADKernelError,"BRepOffsetAPI_MakeOffsetShape not done");
 
     TopoShape res(Tag,Hasher);
     res.makEShape(mkOffset,shape,op);
@@ -1134,7 +1133,7 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
     freeCheck.Perform();
     if (freeCheck.NbClosedFreeBounds() < 1)
     {
-        Standard_Failure::Raise("no closed bounds");
+        FC_THROWM(Base::CADKernelError,"no closed bounds");
     }
 
     BRep_Builder builder;
@@ -1151,7 +1150,7 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
         for(const auto &s : originalWire.getSubShapes(TopAbs_EDGE)) {
             if (!img.HasImage(s))
             {
-                Standard_Failure::Raise("no image for shape");
+                FC_THROWM(Base::CADKernelError,"no image for shape");
             }
             const TopTools_ListOfShape& currentImage = img.Image(s);
             TopTools_ListIteratorOfListOfShape listIt;
@@ -1169,7 +1168,7 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
             {
                 std::ostringstream stream;
                 stream << "wrong edge count: " << edgeCount << std::endl;
-                Standard_Failure::Raise(stream.str().c_str());
+                FC_THROWM(Base::CADKernelError,stream.str().c_str());
             }
             builder.Add(offsetWire, mappedEdge);
         }
@@ -1187,7 +1186,7 @@ TopoShape &TopoShape::makEOffset(const TopoShape &shape,
         aGenerator.Build();
         if (!aGenerator.IsDone())
         {
-            Standard_Failure::Raise("ThruSections failed");
+            FC_THROWM(Base::CADKernelError,"ThruSections failed");
         }
 
         shapes.push_back(TopoShape(Tag,Hasher).makEShape(aGenerator,wires));
@@ -1235,9 +1234,9 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
     resetElementMap();
 
     if(shape.isNull())
-        throw Base::ValueError("makeOffset2D: input shape is null!");
+        FC_THROWM(Base::ValueError, "makeOffset2D: input shape is null!");
     if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
-        throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
+        FC_THROWM(Base::AttributeError, "openResult argument is not supported on OCC < 6.9.0.");
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
@@ -1307,12 +1306,12 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
                     haveFaces = true;
                 }break;
                 default:
-                    throw Base::TypeError("makeOffset2D: input shape is not an edge, wire or face or compound of those.");
+                    FC_THROWM(Base::TypeError, "makeOffset2D: input shape is not an edge, wire or face or compound of those.");
                 break;
             }
         }
         if (haveWires && haveFaces)
-            throw Base::TypeError("makeOffset2D: collective offset of a mix of wires and faces is not supported");
+            FC_THROWM(Base::TypeError, "makeOffset2D: collective offset of a mix of wires and faces is not supported");
         if (haveFaces)
             allowOpenResult = false;
 
@@ -1326,7 +1325,7 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
                 builder.Add(compoundSourceWires, w.getShape());
             BRepLib_FindSurface planefinder(compoundSourceWires, -1, Standard_True);
             if (!planefinder.Found())
-                throw Base::Exception("makeOffset2D: wires are nonplanar or noncoplanar");
+                FC_THROWM(Base::CADKernelError,"makeOffset2D: wires are nonplanar or noncoplanar");
             if (haveFaces){
                 //extract plane from first face (useful for preserving the plane of face precisely if dealing with only one face)
                 workingPlane = BRepAdaptor_Surface(TopoDS::Face(shapesToProcess[0].getShape())).Plane();
@@ -1357,14 +1356,14 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
                 throw;
             }
             catch (...) {
-                throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
+                FC_THROWM(Base::CADKernelError,"BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
             }
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
             offsetShape = shape.makEShape(mkOffset,op).makECopy();
 
             if(offsetShape.isNull())
-                throw Base::Exception("makeOffset2D: result of offsetting is null!");
+                FC_THROWM(NullShapeException, "makeOffset2D: result of offsetting is null!");
         } else {
             offsetShape = TopoShape(Tag,Hasher).makECompound(sourceWires,0,false);
         }
@@ -1374,7 +1373,7 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
         //so, we just extract all nesting
         expandCompound(offsetShape,offsetWires);
         if (offsetWires.empty())
-            throw Base::Exception("makeOffset2D: offset result has no wires.");
+            FC_THROWM(Base::CADKernelError, "makeOffset2D: offset result has no wires.");
 
         std::vector<TopoShape> wiresForMakingFaces;
         if (!fill){
@@ -1386,7 +1385,7 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
         } else {
             //fill offset
             if (fabs(offset) < Precision::Confusion())
-                throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
+                FC_THROWM(Base::ValueError, "makeOffset2D: offset distance is zero. Can't fill offset.");
 
             //filling offset. There are three major cases to consider:
             // 1. source wires and result wires are closed (simplest) -> make face
@@ -1422,7 +1421,7 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
 
                 //for now, only support offsetting one open wire -> there should be exactly two open wires for connecting
                 if (openWires.size() != 2)
-                    throw Base::Exception("makeOffset2D: collective offset with filling of multiple wires is not supported yet.");
+                    FC_THROWM(Base::CADKernelError, "makeOffset2D: collective offset with filling of multiple wires is not supported yet.");
 
                 TopoShape openWire1 = openWires.front();
                 TopoShape openWire2 = openWires.back();
@@ -1441,10 +1440,10 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
                 TopoDS_Vertex v4 = xp.CurrentVertex();
 
                 //check
-                if (v1.IsNull())  throw Base::Exception("v1 is null");
-                if (v2.IsNull())  throw Base::Exception("v2 is null");
-                if (v3.IsNull())  throw Base::Exception("v3 is null");
-                if (v4.IsNull())  throw Base::Exception("v4 is null");
+                if (v1.IsNull())  FC_THROWM(NullShapeException, "v1 is null");
+                if (v2.IsNull())  FC_THROWM(NullShapeException, "v2 is null");
+                if (v3.IsNull())  FC_THROWM(NullShapeException, "v3 is null");
+                if (v4.IsNull())  FC_THROWM(NullShapeException, "v4 is null");
 
                 //assemble new wire
 
@@ -1460,7 +1459,7 @@ TopoShape &TopoShape::makEOffset2D(const TopoShape &shape, double offset, short 
                 } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
                     //orientation is as expected, nothing to do
                 } else {
-                    throw Base::Exception("makeOffset2D: fill offset: failed to establish open vertex relationship.");
+                    FC_THROWM(Base::CADKernelError, "makeOffset2D: fill offset: failed to establish open vertex relationship.");
                 }
 
                 //now directions of open wires are aligned. Finally. make new wire!
@@ -1519,7 +1518,7 @@ TopoShape &TopoShape::makEThickSolid(const TopoShape &shape,
         if(face.isNull())
             HANDLE_NULL_INPUT;
         if(!shape.findShape(face.getShape()))
-            Standard_Failure::Raise("face does not belong to the shape");
+            FC_THROWM(Base::CADKernelError,"face does not belong to the shape");
         remFace.Append(face.getShape());
     }
 #if OCC_VERSION_HEX < 0x070200
@@ -1704,7 +1703,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
         const std::vector<TopoShape> &shapes, const char *op, double tol)
 {
     if(!maker)
-        Standard_Failure::Raise("no maker");
+        FC_THROWM(Base::CADKernelError,"no maker");
 
     if(!op) op = maker;
     _Shape.Nullify();
@@ -1744,11 +1743,11 @@ TopoShape &TopoShape::makEShape(const char *maker,
 
     if(strcmp(maker,TOPOP_PIPE)==0) {
         if(shapes.size()!=2)
-            Standard_Failure::Raise("Not enough input shapes");
+            FC_THROWM(Base::CADKernelError,"Not enough input shapes");
         if (shapes[0].isNull() || shapes[1].isNull())
-            Standard_Failure::Raise("Cannot sweep along empty spine");
+            FC_THROWM(Base::CADKernelError,"Cannot sweep along empty spine");
         if (shapes[0].getShape().ShapeType() != TopAbs_WIRE)
-            Standard_Failure::Raise("Spine shape is not a wire");
+            FC_THROWM(Base::CADKernelError,"Spine shape is not a wire");
         BRepOffsetAPI_MakePipe mkPipe(TopoDS::Wire(shapes[0].getShape()), shapes[1].getShape());
         return makEShape(mkPipe,shapes,op);
     }
@@ -1780,7 +1779,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
     else if(strcmp(maker, TOPOP_SECTION)==0)
         mk.reset(new BRepAlgoAPI_Section);
     else
-        Standard_Failure::Raise("Unknown maker");
+        FC_THROWM(Base::CADKernelError,"Unknown maker");
         
 # if OCC_VERSION_HEX >= 0x060900
     mk->SetRunParallel(true);
@@ -1794,7 +1793,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
     if(shapes.size()==1) {
         expandCompound(shapes.front(),_shapes);
         if(_shapes.size()==1)
-            Standard_Failure::Raise("Boolean operation with only one shape");
+            FC_THROWM(Base::CADKernelError,"Boolean operation with only one shape");
     }
     int i=-1;
     for(const auto &shape : shapes.size()==1?_shapes:shapes) {
@@ -2366,7 +2365,7 @@ TopoShape &TopoShape::makEFilledFace(const std::vector<TopoShape> &_shapes,
         }
     }
     if (!count) 
-        Standard_Failure::Raise("Failed to created face with no constraints");
+        FC_THROWM(Base::CADKernelError,"Failed to created face with no constraints");
     return makEShape(maker,_shapes,op);
 }
 
@@ -2401,7 +2400,7 @@ TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op) {
         }
 
         if (count == 0)//no shells?
-            Standard_Failure::Raise("No shells or compsolids found in shape");
+            FC_THROWM(Base::CADKernelError,"No shells or compsolids found in shape");
 
         makEShape(mkSolid,shape,op);
         BRepLib::OrientClosedSolid(TopoDS::Solid(_Shape));
@@ -2409,7 +2408,7 @@ TopoShape &TopoShape::makESolid(const TopoShape &shape, const char *op) {
         BRepBuilderAPI_MakeSolid mkSolid(compsolid);
         makEShape(mkSolid,shape,op);
     } else { // if (count > 1)
-        Standard_Failure::Raise("Only one compsolid can be accepted. "
+        FC_THROWM(Base::CADKernelError,"Only one compsolid can be accepted. "
                 "Provided shape has more than one compsolid.");
     }
     return *this;
@@ -2472,7 +2471,7 @@ TopoShape &TopoShape::makEFillet(const TopoShape &shape, const std::vector<TopoS
             HANDLE_NULL_INPUT;
         const auto &edge = e.getShape();
         if(!shape.findShape(edge))
-            Standard_Failure::Raise("edge does not belong to the shape");
+            FC_THROWM(Base::CADKernelError,"edge does not belong to the shape");
         mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
     }
     return makEShape(mkFillet,shape,op);
@@ -2496,7 +2495,7 @@ TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<Topo
         if(e.isNull())
             HANDLE_NULL_INPUT;
         if(!shape.findShape(edge))
-            Standard_Failure::Raise("edge does not belong to the shape");
+            FC_THROWM(Base::CADKernelError,"edge does not belong to the shape");
         //Add edge to fillet algorithm
         auto face = TopoDS::Face(shape.findAncestorShape(edge,TopAbs_FACE));
         mkChamfer.Add(radius1, radius2, TopoDS::Edge(edge), face);
@@ -2536,7 +2535,7 @@ TopoShape &TopoShape::makEGeneralFuse(const std::vector<TopoShape> &_shapes,
 #endif
     mkGFA.Build();
     if (!mkGFA.IsDone())
-        Standard_Failure::Raise("GeneralFuse failed");
+        FC_THROWM(Base::CADKernelError,"GeneralFuse failed");
     makEShape(mkGFA,shapes,op);
     modifies.resize(shapes.size());
     int i=0;
@@ -2602,7 +2601,7 @@ TopoShape &TopoShape::makEDraft(const TopoShape &shape, const std::vector<TopoSh
     BRepOffsetAPI_DraftAngle mkDraft;
     do {
         if(faces.empty())
-            Standard_Failure::Raise("no faces can be used");
+            FC_THROWM(Base::CADKernelError,"no faces can be used");
 
         mkDraft.Init(shape.getShape());
         done = true;

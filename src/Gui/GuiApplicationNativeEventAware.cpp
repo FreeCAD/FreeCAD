@@ -23,9 +23,6 @@
 #include "PreCompiled.h"
 
 #include <QGlobalStatic>
-#ifdef Q_WS_X11
-#include <QX11Info>
-#endif
 #include <QMainWindow>
 #include <QWidget>
 #include <FCConfig.h>
@@ -33,13 +30,29 @@
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
 #include "Application.h"
+#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
+  #include <QX11Info>
+  #include <spnav.h>
 
-//linux dependency libspnav-dev
-#ifdef Q_WS_X11
-#ifdef SPNAV_FOUND
-#include <spnav.h>
-#endif
-#endif
+  #if QT_VERSION >= 0x050000
+    #include <X11/Xlib.h>
+    #undef Bool
+    #undef CursorShape
+    #undef Expose
+    #undef KeyPress
+    #undef KeyRelease
+    #undef FocusIn
+    #undef FocusOut
+    #undef FontChange
+    #undef None
+    #undef Status
+    #undef Unsorted
+    #undef False
+    #undef True
+    #undef Complex
+  #endif // #if QT_VERSION >= 0x050000
+
+#endif // if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
 
 #ifdef _USE_3DCONNEXION_SDK
 //windows
@@ -56,24 +69,19 @@ Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int &argc, c
 
 Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 {
-#ifdef Q_WS_X11
-#ifdef SPNAV_FOUND
+#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
     if (spnav_close())
         Base::Console().Log("Couldn't disconnect from spacenav daemon\n");
     else
         Base::Console().Log("Disconnected from spacenav daemon\n");
-#endif
-#endif
 
-#ifdef _USE_3DCONNEXION_SDK
-#ifdef Q_OS_WIN
+#elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
     if (gMouseInput == this) {
         gMouseInput = 0;
         Base::Console().Log("3Dconnexion device detached.\n");
     }
-#endif
-//mac
-#ifdef Q_OS_MACX
+
+#elif defined(Q_OS_MACX) && defined(_USE_3DCONNEXION_SDK)
     // if 3Dconnexion library was loaded at runtime
     if (InstallConnexionHandlers) {
         // Close our connection with the 3dx driver
@@ -82,28 +90,35 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
         CleanupConnexionHandlers();
         Base::Console().Log("Disconnected from 3Dconnexion driver\n");
     }
-#endif
-#endif
+#endif // Platform switch
 }
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 {
     mainWindow = window;
 
-#ifdef Q_WS_X11
-#ifdef SPNAV_FOUND
-    if (spnav_x11_open(QX11Info::display(), window->winId()) == -1)
+#if defined(Q_OS_LINUX) && defined(SPNAV_FOUND)
+    if (spnav_x11_open(QX11Info::display(), window->winId()) == -1) {
         Base::Console().Log("Couldn't connect to spacenav daemon\n");
-    else
-    {
+    } else {
         Base::Console().Log("Connected to spacenav daemon\n");
         spaceballPresent = true;
-    }
-#endif
-#endif
 
-#ifdef _USE_3DCONNEXION_SDK
-#ifdef Q_OS_WIN
+    #if QT_VERSION >= 0x050000
+        static auto evFilter( [](void *msg, long *result){
+                Q_UNUSED(result);
+                auto inst(dynamic_cast<Gui::GUIApplicationNativeEventAware *>(QApplication::instance()));
+                if (inst) {
+                    return inst->xcbEventFilter(static_cast<const xcb_client_message_event_t *>(msg));
+                } else {
+                    return false;
+                }
+            } );
+        qApp->installNativeEventFilter(new Gui::RawInputEventFilter(evFilter));
+    #endif // #if QT_VERSION >= 0x050000
+    }
+
+#elif defined(Q_OS_WIN) && defined(_USE_3DCONNEXION_SDK)
     spaceballPresent = Is3dmouseAttached();
 
     if (spaceballPresent) {
@@ -123,9 +138,8 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
     } else {
         Base::Console().Log("3Dconnexion device not attached.\n");
     }
-#endif // #ifdef Q_OS_WIN
-//mac
-#ifdef Q_OS_MACX
+
+#elif defined(Q_OS_MACX) && defined(_USE_3DCONNEXION_SDK)
     OSStatus err;
     /* make sure the framework is installed */
     if (InstallConnexionHandlers == NULL)
@@ -157,8 +171,7 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
     
     Base::Console().Log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
     spaceballPresent = true;
-#endif
-#endif // _USE_3DCONNEXION_SDK
+#endif // Platform switch
 
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();
     Spaceball::ButtonEvent::ButtonEventType = QEvent::registerEventType();
@@ -166,8 +179,10 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 
 bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object, QEvent *event)
 {
-    if (!activeWindow())
+    if (!activeWindow()) {
+        qDebug("No active window\n");
         return true;
+    }
 
     QApplication::notify(object, event);
     if (event->type() == Spaceball::MotionEvent::MotionEventType)
@@ -236,7 +251,7 @@ bool Gui::GUIApplicationNativeEventAware::setOSIndependentMotionData()
     temp = motionDataArray[4];
     motionDataArray[4] = -motionDataArray[5];
     motionDataArray[5] = -temp;
-#elif _USE_3DCONNEXION_SDK
+#elif defined(_USE_3DCONNEXION_SDK)
     motionDataArray[0] = -motionDataArray[0];
     motionDataArray[3] = -motionDataArray[3];
 #else
@@ -375,8 +390,97 @@ void Gui::GUIApplicationNativeEventAware::importSettings()
     }
 }
 
+#if defined(Q_OS_LINUX)
 
-#ifdef Q_WS_X11
+#if QT_VERSION >= 0x050000
+
+bool Gui::GUIApplicationNativeEventAware::xcbEventFilter(const xcb_client_message_event_t *xcb_ev)
+{
+#if defined(SPNAV_FOUND)
+    spnav_event navEvent;
+
+    // Qt4 used XEvents in native event filters, but Qt5 changed to XCB.  The
+    // SpaceNavigator API only works with XEvent, so we need to construct a
+    // temporary XEvent with just enough information for spnav_x11_event()
+    if ((xcb_ev->response_type & 0x7F) == XCB_CLIENT_MESSAGE) {
+        XClientMessageEvent xev;
+
+        xev.type = ClientMessage;
+        xev.message_type = xcb_ev->type;
+        memcpy(xev.data.b, xcb_ev->data.data8, sizeof(xev.data.b));
+        xev.serial = 0; // These are just to squash warnings...
+        xev.send_event = 0;
+        xev.display = 0;
+        xev.window = 0;
+        xev.format = 0;
+
+        if (!spnav_x11_event(reinterpret_cast<XEvent *>(&xev), &navEvent)) {
+            return false;
+        }
+    } else {
+        return false;
+    }
+    // navEvent is now initialised
+
+    auto currentWidget(focusWidget());
+    if (!currentWidget) {
+        currentWidget = mainWindow;
+    }
+
+    switch (navEvent.type) {
+        case SPNAV_EVENT_MOTION:
+        {
+            motionDataArray[0] = navEvent.motion.x;
+            motionDataArray[1] = navEvent.motion.y;
+            motionDataArray[2] = navEvent.motion.z;
+            motionDataArray[3] = navEvent.motion.rx;
+            motionDataArray[4] = navEvent.motion.ry;
+            motionDataArray[5] = navEvent.motion.rz;
+
+            setOSIndependentMotionData();
+
+            importSettings();
+
+            auto motionEvent(new Spaceball::MotionEvent());
+
+            motionEvent->setTranslations( motionDataArray[0],
+                                          motionDataArray[1],
+                                          motionDataArray[2] );
+            motionEvent->setRotations( motionDataArray[3],
+                                       motionDataArray[4],
+                                       motionDataArray[5] );
+
+            postEvent(currentWidget, motionEvent);
+            return true;
+        }
+
+        case SPNAV_EVENT_BUTTON:
+        {
+            auto buttonEvent(new Spaceball::ButtonEvent());
+            buttonEvent->setButtonNumber(navEvent.button.bnum);
+            if (navEvent.button.press) {
+                buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
+            } else {
+                buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
+            }
+
+            postEvent(currentWidget, buttonEvent);
+            return true;
+        }
+
+        default:
+            Base::Console().Log("Unknown spaceball event\n");
+            return true;
+    } // end switch (navEvent.type) {
+
+#else
+    Q_UNUSED(xcb_ev);
+    return false;
+#endif // if/else defined(SPNAV_FOUND)
+}
+
+#else  // if QT_VERSION >= 0x050000
+
 bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
 {
 #ifdef SPNAV_FOUND
@@ -506,10 +610,12 @@ bool Gui::GUIApplicationNativeEventAware::x11EventFilter(XEvent *event)
     Base::Console().Log("Unknown spaceball event\n");
     return true;
 #else
-    Q_UNUSED(event); 
+    Q_UNUSED(event);
     return false;
 #endif // SPNAV_FOUND
 }
-#endif // Q_WS_X11
+#endif  // if/else QT_VERSION >= 0x050000
+
+#endif // Q_OS_LINUX
 
 #include "moc_GuiApplicationNativeEventAware.cpp"

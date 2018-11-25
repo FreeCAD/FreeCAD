@@ -12,20 +12,23 @@
 # https://forum.freecadweb.org/viewtopic.php?t=20815
 
 import FreeCAD,FreeCADGui
-import gzip_utf8, shutil
+import shutil
 import sys, os, re
 import ImportGui
 import PySide
 from PySide import QtGui, QtCore
 import tempfile
 
-___stpZversion___ = "1.3.1"
+___stpZversion___ = "1.3.2"
 
-try:
-    import __builtin__ as builtin #py2
-except:
+
+if (sys.version_info > (3, 0)):  #py3
     import builtins as builtin  #py3
-
+    import gzip as gz
+else:  #py2
+    import __builtin__ as builtin #py2
+    import gzip_utf8 as gz
+    
 # import stepZ; reload(stepZ); import gzip_utf8; reload(gzip_utf8)
 
 def mkz_string(input):
@@ -71,7 +74,7 @@ def sayzerr(msg):
 def open(filename):
 
     sayz("stpZ version "+___stpZversion___)
-    with gzip_utf8.open(filename, 'rb') as f:
+    with gz.open(filename, 'rb') as f:
         file_content = f.read()
 
     ext = os.path.splitext(os.path.basename(filename))[1]
@@ -82,7 +85,7 @@ def open(filename):
     tempdir = tempfile.gettempdir() # get the current temporary directory
     tempfilepath = os.path.join(tempdir,fname + u'.stp')
 
-    with builtin.open(tempfilepath, 'w') as f: #py3
+    with builtin.open(tempfilepath, 'wb') as f: #py3
         f.write(file_content)
     #ImportGui.insert(filepath)
     ImportGui.open(tempfilepath)
@@ -96,7 +99,7 @@ def open(filename):
 def insert(filename,doc):
 
     sayz("stpZ version "+___stpZversion___)
-    with gzip_utf8.open(filename, 'rb') as f:
+    with gz.open(filename, 'rb') as f:
         file_content = f.read()
 
     ext = os.path.splitext(os.path.basename(filename))[1]
@@ -107,7 +110,7 @@ def insert(filename,doc):
     tempdir = tempfile.gettempdir() # get the current temporary directory
     tempfilepath = os.path.join(tempdir,fname + u'.stp')
     
-    with builtin.open(tempfilepath, 'w') as f: #py3
+    with builtin.open(tempfilepath, 'wb') as f: #py3
         f.write(file_content)
     ImportGui.insert(tempfilepath, doc)
     #ImportGui.open(tempfilepath)
@@ -155,7 +158,7 @@ def export(objs,filename):
                 file_content = f_in.read()
                 new_f_content = file_content
                 f_in.close()
-            with gzip_utf8.open(outfpath_str, 'wb') as f_out:
+            with gz.open(outfpath_str, 'wb') as f_out:
                 f_out.write(new_f_content)
                 f_out.close()    
             if os.path.exists(outfpath):

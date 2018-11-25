@@ -415,7 +415,7 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
 
             str << "Elem" << (edx>>3) << "F"<< (edx&7)+1;
         }
-        // trigger on edges only if edge only mesh, otherwise you only hit edges an never faces....
+        // trigger on edges only if edge only mesh, otherwise you only hit edges and never faces....
         else if (onlyEdges && detail->getTypeId() == SoLineDetail::getClassTypeId()) {
             const SoLineDetail* line_detail = static_cast<const SoLineDetail*>(detail);
             int edge = line_detail->getLineIndex() + 1;
@@ -424,8 +424,13 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
         else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
             const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
             int idx = point_detail->getCoordinateIndex();
-            if (idx < static_cast<int>(vNodeElementIdx.size())) {
-                int vertex = vNodeElementIdx[point_detail->getCoordinateIndex()];
+            // first check if the index is part of the highlighted nodes (#0003618)
+            if (idx < static_cast<int>(vHighlightedIdx.size())) {
+                int vertex = vHighlightedIdx[idx];
+                str << "Node" << vertex;
+            }
+            else if (idx < static_cast<int>(vNodeElementIdx.size())) {
+                int vertex = vNodeElementIdx[idx];
                 str << "Node" << vertex;
             }
             else {
@@ -471,15 +476,22 @@ std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* /
     return std::vector<Base::Vector3d>();
 }
 
+std::set<long> ViewProviderFemMesh::getHighlightNodes() const
+{
+    std::set<long> nodes;
+    nodes.insert(vHighlightedIdx.begin(), vHighlightedIdx.end());
+    return nodes;
+}
+
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
 {
-    if(!HighlightedNodes.empty()){
+    if (!HighlightedNodes.empty()) {
         SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
         SbVec3f* verts = pcAnoCoords->point.startEditing();
         int i=0;
-        for(std::set<long>::const_iterator it=HighlightedNodes.begin();it!=HighlightedNodes.end();++it,i++){
+        for (std::set<long>::const_iterator it=HighlightedNodes.begin();it!=HighlightedNodes.end();++it,i++){
             const SMDS_MeshNode *Node = data->FindNode(*it);
             if (Node)
                 verts[i].setValue((float)Node->X(),(float)Node->Y(),(float)Node->Z());
@@ -487,13 +499,22 @@ void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNod
                 verts[i].setValue(0,0,0);
         }
         pcAnoCoords->point.finishEditing();
-    }else{
+
+        // save the node ids
+        vHighlightedIdx.clear();
+        vHighlightedIdx.insert(vHighlightedIdx.end(),
+                               HighlightedNodes.begin(), HighlightedNodes.end());
+    }
+    else {
         pcAnoCoords->point.setNum(0);
+        vHighlightedIdx.clear();
     }
 }
+
 void ViewProviderFemMesh::resetHighlightNodes(void)
 {
     pcAnoCoords->point.setNum(0);
+    vHighlightedIdx.clear();
 }
 
 PyObject * ViewProviderFemMesh::getPyObject()

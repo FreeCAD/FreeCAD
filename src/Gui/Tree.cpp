@@ -24,12 +24,12 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/signals.hpp>
 # include <boost/bind.hpp>
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
 # include <qcursor.h>
+# include <QVBoxLayout>
 # include <qlayout.h>
 # include <qstatusbar.h>
 # include <QContextMenuEvent>
@@ -165,7 +165,7 @@ public:
     std::string label;
     std::string label2;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
 
     Connection connectIcon;
     Connection connectTool;
@@ -363,6 +363,11 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     this->recomputeObjectAction = new QAction(this);
     connect(this->recomputeObjectAction, SIGNAL(triggered()),
             this, SLOT(onRecomputeObject()));
+    this->searchObjectsAction = new QAction(this);
+    this->searchObjectsAction->setText(tr("Search..."));
+    this->searchObjectsAction->setStatusTip(tr("Search for objects"));
+    connect(this->searchObjectsAction, SIGNAL(triggered()),
+            this, SLOT(onSearchObjects()));
 
     // Setup connections
     Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
@@ -502,6 +507,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         App::Document* doc = docitem->document()->getDocument();
         showHiddenAction->setChecked(docitem->showHidden());
         contextMenu.addAction(this->showHiddenAction);
+        contextMenu.addAction(this->searchObjectsAction);
         if(doc->testStatus(App::Document::PartialDoc))
             contextMenu.addAction(this->reloadDocAction);
         else {
@@ -713,7 +719,7 @@ void TreeWidget::onMarkRecompute()
         App::Document* doc = docitem->document()->getDocument();
         std::vector<App::DocumentObject*> obj = doc->getObjects();
         for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
-            (*it)->touch();
+            (*it)->enforceRecompute();
     }
     // mark all selected objects
     else {
@@ -722,7 +728,7 @@ void TreeWidget::onMarkRecompute()
             if ((*it)->type() == ObjectType) {
                 DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
                 App::DocumentObject* obj = objitem->object()->getObject();
-                obj->touch();
+                obj->enforceRecompute();
             }
         }
     }
@@ -828,6 +834,11 @@ void TreeWidget::selectAllLinks(App::DocumentObject *obj) {
     }
 }
 
+void TreeWidget::onSearchObjects()
+{
+    emitSearchObjects();
+}
+
 void TreeWidget::onActivateDocument(QAction* active)
 {
     // activate the specified document
@@ -839,7 +850,7 @@ void TreeWidget::onActivateDocument(QAction* active)
 
 Qt::DropActions TreeWidget::supportedDropActions () const
 {
-    return QTreeWidget::supportedDropActions();
+    return Qt::LinkAction | Qt::CopyAction | Qt::MoveAction;
 }
 
 bool TreeWidget::event(QEvent *e)
@@ -951,18 +962,18 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
     if (!event->isAccepted())
         return;
 
-    QTreeWidgetItem* targetitem = itemAt(event->pos());
-    if (!targetitem || this->isItemSelected(targetitem)) {
+    QTreeWidgetItem* targetItem = itemAt(event->pos());
+    if (!targetItem || this->isItemSelected(targetItem)) {
         leaveEvent(0);
         event->ignore();
     }
-    else if (targetitem->type() == TreeWidget::DocumentType) {
+    else if (targetItem->type() == TreeWidget::DocumentType) {
         leaveEvent(0);
     }
-    else if (targetitem->type() == TreeWidget::ObjectType) {
-        onItemEntered(targetitem);
+    else if (targetItem->type() == TreeWidget::ObjectType) {
+        onItemEntered(targetItem);
 
-        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
+        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
 
         if (!vp->canDropObjects()) {
@@ -988,7 +999,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             }
 
             // if the item is already a child of the target item there is nothing to do
-            if (item->parent() == targetitem) {
+            if (item->parent() == targetItem) {
                 TREE_TRACE("cannot drop");
                 event->ignore();
                 return;
@@ -1041,12 +1052,12 @@ void TreeWidget::dropEvent(QDropEvent *event)
 {
     //FIXME: This should actually be done inside dropMimeData
 
-    QTreeWidgetItem* targetitem = itemAt(event->pos());
+    QTreeWidgetItem* targetItem = itemAt(event->pos());
     // not dropped onto an item
-    if (!targetitem)
+    if (!targetItem)
         return;
     // one of the source items is also the destination item, that's not allowed
-    if (this->isItemSelected(targetitem))
+    if (this->isItemSelected(targetItem))
         return;
 
     // filter out the selected items we cannot handle
@@ -1059,9 +1070,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
         // ignore child elements if the parent is selected
         if(sels.contains(ti->parent())) 
             continue;
-        if (ti == targetitem)
+        if (ti == targetItem)
             continue;
-        if (ti->parent() == targetitem)
+        if (ti->parent() == targetItem)
             continue;
         auto item = static_cast<DocumentObjectItem*>(ti);
         items.emplace_back();
@@ -1075,9 +1086,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
     bool dropOnly = QApplication::keyboardModifiers()== Qt::ControlModifier;
 
-    if (targetitem->type() == TreeWidget::ObjectType) {
+    if (targetItem->type() == TreeWidget::ObjectType) {
         // add object to group
-        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetitem);
+        DocumentObjectItem* targetItemObj = static_cast<DocumentObjectItem*>(targetItem);
         Gui::ViewProviderDocumentObject* vp = targetItemObj->object();
         if (!vp->canDropObjects()) {
             return; // no group like object
@@ -1324,11 +1335,11 @@ void TreeWidget::dropEvent(QDropEvent *event)
         }
         gui->commitCommand();
     }
-    else if (targetitem->type() == TreeWidget::DocumentType) {
+    else if (targetItem->type() == TreeWidget::DocumentType) {
         std::vector<ItemInfo2> infos;
         infos.reserve(items.size());
         bool syncPlacement = FC_TREEPARAM(SyncPlacement);
-        auto targetDocItem = static_cast<DocumentItem*>(targetitem);
+        auto targetDocItem = static_cast<DocumentItem*>(targetItem);
         App::Document* thisDoc = targetDocItem->document()->getDocument();
 
         // check if items can be dragged
@@ -1339,7 +1350,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
             if(!parentItem) {
                 if(obj->getDocument() == thisDoc)
                     continue;
-            }else if(dropOnly || item->myOwner!=targetitem) {
+            }else if(dropOnly || item->myOwner!=targetItem) {
                 // We will not drag item out of parent if either, 1) the CTRL
                 // key is held, or 2) the dragging item is not inside the
                 // dropping document tree.
@@ -1555,7 +1566,7 @@ void TreeWidget::onReloadDoc() {
 void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 {
     // do nothing here
-    Q_UNUSED(Doc); 
+    Q_UNUSED(Doc);
 }
 
 void TreeWidget::slotChangedViewObject(const Gui::ViewProvider& vp, const App::Property &prop)
@@ -1603,11 +1614,12 @@ void TreeWidget::slotActiveDocument(const Gui::Document& Doc)
     {
         QFont f = it->second->font(0);
         f.setBold(it == jt);
-        it->second->setFont(0, f);
         it->second->setHidden(0 == displayMode && it != jt);
         if (2 == displayMode) {
             it->second->setExpanded(it == jt);
         }
+        // this must be done as last step
+        it->second->setFont(0, f);
     }
 }
 
@@ -1895,7 +1907,145 @@ void TreeWidget::onSelectionChanged(const SelectionChanges& msg)
 
 // ----------------------------------------------------------------------------
 
+/* TRANSLATOR Gui::TreePanel */
+
+TreePanel::TreePanel(const char *name, QWidget* parent)
+  : QWidget(parent)
+{
+    this->treeWidget = new TreeWidget(name, this);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    this->treeWidget->setIndentation(hGrp->GetInt("Indentation", this->treeWidget->indentation()));
+
+    QVBoxLayout* pLayout = new QVBoxLayout(this);
+    pLayout->setSpacing(0);
+    pLayout->setMargin (0);
+    pLayout->addWidget(this->treeWidget);
+    connect(this->treeWidget, SIGNAL(emitSearchObjects()),
+            this, SLOT(showEditor()));
+
+    this->searchBox = new Gui::ClearLineEdit(this);
+    pLayout->addWidget(this->searchBox);
+    this->searchBox->hide();
+    this->searchBox->installEventFilter(this);
+#if QT_VERSION >= 0x040700
+    this->searchBox->setPlaceholderText(tr("Search"));
+#endif
+    connect(this->searchBox, SIGNAL(returnPressed()),
+            this, SLOT(accept()));
+    connect(this->searchBox, SIGNAL(textEdited(QString)),
+            this, SLOT(findMatchingItems(QString)));
+}
+
+TreePanel::~TreePanel()
+{
+}
+
+void TreePanel::accept()
+{
+    QString text = this->searchBox->text();
+    if (!text.isEmpty()) {
+        for (int i=0; i<treeWidget->topLevelItemCount(); i++) {
+            selectTreeItem(treeWidget->topLevelItem(i), text);
+        }
+    }
+    hideEditor();
+}
+
+bool TreePanel::eventFilter(QObject *obj, QEvent *ev)
+{
+    if (obj != this->searchBox)
+        return false;
+
+    if (ev->type() == QEvent::KeyPress) {
+        bool consumed = false;
+        int key = static_cast<QKeyEvent*>(ev)->key();
+        switch (key) {
+        case Qt::Key_Escape:
+            hideEditor();
+            consumed = true;
+            break;
+
+        default:
+            break;
+        }
+
+        return consumed;
+    }
+
+    return false;
+}
+
+void TreePanel::showEditor()
+{
+    this->searchBox->show();
+    this->searchBox->setFocus();
+}
+
+void TreePanel::hideEditor()
+{
+    this->searchBox->clear();
+    this->searchBox->hide();
+    for (int i=0; i<treeWidget->topLevelItemCount(); i++) {
+        resetBackground(treeWidget->topLevelItem(i));
+    }
+}
+
+void TreePanel::findMatchingItems(const QString& text)
+{
+    if (text.isEmpty()) {
+        for (int i=0; i<treeWidget->topLevelItemCount(); i++) {
+            resetBackground(treeWidget->topLevelItem(i));
+        }
+    }
+    else {
+        for (int i=0; i<treeWidget->topLevelItemCount(); i++) {
+            searchTreeItem(treeWidget->topLevelItem(i), text);
+        }
+    }
+}
+
+void TreePanel::searchTreeItem(QTreeWidgetItem* item, const QString& text)
+{
+    for (int i=0; i<item->childCount(); i++) {
+        QTreeWidgetItem* child = item->child(i);
+        child->setBackground(0, QBrush());
+        child->setExpanded(false);
+        if (child->text(0).indexOf(text, 0, Qt::CaseInsensitive) >= 0) {
+            child->setBackground(0, QColor(255, 255, 0, 100));
+            QTreeWidgetItem* parent = child->parent();
+            while (parent) {
+                parent->setExpanded(true);
+                parent = parent->parent();
+            }
+        }
+        searchTreeItem(child, text);
+    }
+}
+
+void TreePanel::selectTreeItem(QTreeWidgetItem* item, const QString& text)
+{
+    for (int i=0; i<item->childCount(); i++) {
+        QTreeWidgetItem* child = item->child(i);
+        if (child->text(0).indexOf(text, 0, Qt::CaseInsensitive) >= 0) {
+            child->setSelected(true);
+        }
+        selectTreeItem(child, text);
+    }
+}
+
+void TreePanel::resetBackground(QTreeWidgetItem* item)
+{
+    for (int i=0; i<item->childCount(); i++) {
+        QTreeWidgetItem* child = item->child(i);
+        child->setBackground(0, QBrush());
+        resetBackground(child);
+    }
+}
+
+// ----------------------------------------------------------------------------
+
 /* TRANSLATOR Gui::TreeDockWidget */
+
 TreeDockWidget::TreeDockWidget(Gui::Document* pcDocument,QWidget *parent)
   : DockWindow(pcDocument,parent)
 {
@@ -2566,16 +2716,28 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
 
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
 {
+    // In the past it was checked if the parent item is collapsed and if yes nothing was done.
+    // Now with the auto-expand mechanism of active part containers or bodies it must be made
+    // sure to expand all parent items when expanding a child item.
+    // Example:
+    // When there are two nested part containers and if first the outer and then the inner is
+    // activated the outer will be collapsed and thus hides the inner item.
+    // Alternatively, this could be handled inside ActiveObjectList::setObject() but querying
+    // the parent-children relationship of the view providers is rather inefficient.
     FOREACH_ITEM(item,obj)
         // All document object items must always have a parent, either another
         // object item or document item. If not, then there is a bug somewhere
         // else.
         assert(item->parent());
-        if (!item->parent()->isExpanded()) continue;
         switch (mode) {
-        case Gui::Expand:
+        case Gui::Expand: {
+            QTreeWidgetItem* parent = item->parent();
+            while (parent) {
+                parent->setExpanded(true);
+                parent = parent->parent();
+            }
             item->setExpanded(true);
-            break;
+        }   break;
         case Gui::Collapse:
             item->setExpanded(false);
             break;
@@ -2641,21 +2803,6 @@ const Gui::Document* DocumentItem::document() const
 {
     return this->pDocument;
 }
-
-//void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
-//{
-//    // never call without Object!
-//    assert(Obj);
-//
-//
-//    std::map<std::string,DocumentObjectItem*>::iterator pos;
-//    pos = ObjectMap.find(Obj);
-//    if (pos != ObjectMap.end()) {
-//        QFont f = pos->second->font(0);
-//        f.setUnderline(mark);
-//        pos->second->setFont(0,f);
-//    }
-//}
 
 //void DocumentItem::markItem(const App::DocumentObject* Obj,bool mark)
 //{

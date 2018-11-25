@@ -34,6 +34,8 @@
 # include <XCAFApp_Application.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
+# include <XCAFDoc_DocumentTool.hxx>
+# include <XCAFDoc_ShapeTool.hxx>
 # include <STEPCAFControl_Reader.hxx>
 # include <STEPCAFControl_Writer.hxx>
 # include <STEPControl_Writer.hxx>
@@ -72,6 +74,22 @@
 #include <Mod/Part/App/PartFeaturePy.h>
 
 #include "ImpExpDxf.h"
+
+class ImportOCAFExt : public Import::ImportOCAF2
+{
+public:
+    ImportOCAFExt(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
+        : ImportOCAF2(h, d, name)
+    {
+    }
+
+    std::map<Part::Feature*, std::vector<App::Color> > partColors;
+
+private:
+    virtual void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
+        partColors[part] = colors;
+    }
+};
 
 namespace Import {
 class Module : public Py::ExtensionModule<Module>
@@ -137,7 +155,7 @@ private:
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
-            Import::ImportOCAF2 ocaf(hDoc, pcDoc, file.fileNamePure());
+            ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
 
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 try {
@@ -217,6 +235,22 @@ private:
             pcDoc->recompute();
 #endif
             hApp->Close(hDoc);
+
+            if (!ocaf.partColors.size()) {
+                Py::List list;
+                for (auto &it : ocaf.partColors) {
+                    Py::Tuple tuple(2);
+                    tuple.setItem(0, Py::asObject(it.first->getPyObject()));
+
+                    App::PropertyColorList colors;
+                    colors.setValues(it.second);
+                    tuple.setItem(1, Py::asObject(colors.getPyObject()));
+
+                    list.append(tuple);
+                }
+
+                return list;
+            }
         }
         catch (Standard_Failure& e) {
             throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
@@ -264,6 +298,8 @@ private:
             if (file.hasExtension("stp") || file.hasExtension("step")) {
                 //Interface_Static::SetCVal("write.step.schema", "AP214IS");
                 STEPCAFControl_Writer writer;
+                Interface_Static::SetIVal("write.step.assembly",1);
+                // writer.SetColorMode(Standard_False);
                 writer.Transfer(hDoc, STEPControl_AsIs);
 
                 // edit STEP header

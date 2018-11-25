@@ -26,7 +26,6 @@
 #ifndef _PreComp_
 # include <assert.h>
 # include <string>
-# include <boost/signals.hpp>
 # include <boost/bind.hpp>
 # include <QApplication>
 # include <QString>
@@ -82,14 +81,14 @@ bool SelectionGateFilterExternal::allow(App::Document *doc ,App::DocumentObject 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 SelectionObserver::SelectionObserver(bool attach,int resolve)
-    :resolve(resolve)
+    :resolve(resolve),blockSelection(false)
 {
     if(attach)
         attachSelection();
 }
 
 SelectionObserver::SelectionObserver(const ViewProviderDocumentObject *vp,bool attach,int resolve)
-    :resolve(resolve)
+    :resolve(resolve),blockSelection(false)
 {
     if(vp && vp->getObject() && vp->getObject()->getDocument()) {
         filterDocName = vp->getObject()->getDocument()->getName();
@@ -107,20 +106,17 @@ SelectionObserver::~SelectionObserver()
 
 bool SelectionObserver::blockConnection(bool block)
 {
-    if(!isConnectionAttached())
-        return false;
-
-    bool ok = connectSelection.blocked();
+    bool ok = blockSelection;
     if (block)
-        connectSelection.block();
+        blockSelection = true;
     else
-        connectSelection.unblock();
+        blockSelection = false;
     return ok;
 }
 
 bool SelectionObserver::isConnectionBlocked() const
 {
-    return connectSelection.blocked();
+    return blockSelection;
 }
 
 bool SelectionObserver::isConnectionAttached() const
@@ -143,7 +139,9 @@ void SelectionObserver::attachSelection()
 }
 
 void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
-    try { 
+    try {
+        if (blockSelection)
+            return;
         onSelectionChanged(msg);
     } catch (Base::Exception &e) {
         e.ReportException();
@@ -1163,6 +1161,35 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
     return true;
 }
 
+bool SelectionSingleton::addSelection(const SelectionObject& obj)
+{
+    const std::vector<std::string>& subNames = obj.getSubNames();
+    const std::vector<Base::Vector3d> points = obj.getPickedPoints();
+    if (!subNames.empty() && subNames.size() == points.size()) {
+        bool ok = true;
+        for (std::size_t i=0; i<subNames.size(); i++) {
+            const std::string& name = subNames[i];
+            const Base::Vector3d& pnt = points[i];
+            ok &= addSelection(obj.getDocName(), obj.getFeatName(), name.c_str(),
+                               static_cast<float>(pnt.x),
+                               static_cast<float>(pnt.y),
+                               static_cast<float>(pnt.z));
+        }
+        return ok;
+    }
+    else if (!subNames.empty()) {
+        bool ok = true;
+        for (std::size_t i=0; i<subNames.size(); i++) {
+            const std::string& name = subNames[i];
+            ok &= addSelection(obj.getDocName(), obj.getFeatName(), name.c_str());
+        }
+        return ok;
+    }
+    else {
+        return addSelection(obj.getDocName(), obj.getFeatName());
+    }
+}
+
 
 void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectName, const char* pSubName, 
         const std::vector<SelObj> *pickedList)
@@ -1216,6 +1243,11 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
         _SelList.erase(It);
     }
 
+    // NOTE: It can happen that there are nested calls of rmvSelection()
+    // so that it's not safe to invoke the notifications inside the loop
+    // as this can invalidate the iterators and thus leads to undefined
+    // behaviour.
+    // So, the notification is done after the loop, see also #0003469
     if(changes.size()) {
         for(auto &Chng : changes) {
             FC_LOG("Rmv Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);

@@ -27,7 +27,7 @@
 #include <App/ObjectIdentifier.h>
 #include <boost/shared_ptr.hpp>
 #include <QLabel>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 namespace App {
 class Expression;
@@ -75,7 +75,7 @@ protected:
     int iconHeight;
 
     void expressionChange(const App::ObjectIdentifier& id);
-    boost::signals::scoped_connection connection;
+    boost::signals2::scoped_connection connection;
     bool m_autoApply;
 };
 

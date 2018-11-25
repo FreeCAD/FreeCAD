@@ -50,6 +50,7 @@
 }while(0)
 
 #define FCMD_OBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(App,_obj,_cmd)
+#define FCMD_VOBJ_DOC_CMD(_obj,_cmd) _FCMD_OBJ_DOC_CMD(Gui,_obj,_cmd)
 
 #define _FCMD_OBJ_CMD(_type,_cmd_type,_obj,_cmd) do{\
     auto __obj = _obj;\
@@ -183,8 +184,8 @@ public:
 protected:
     /** @name Attributes set by the inherited constructor.
      *
-     *  They set up the most important properties  of the command.
-     *  In the constructor are set default values. 
+     *  They set up the most important properties of the command.
+     *  In the constructor are set default values.
      *  The real values should be set in the constructor of the inheriting class.
      */
     //@{

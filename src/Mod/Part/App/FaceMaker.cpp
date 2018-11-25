@@ -34,13 +34,13 @@
 #include "TopoShapeOpCode.h"
 #include "FaceMaker.h"
 
-#include <Base/Exception.h>
+#include "TopoShape.h"
 #include <memory>
 
 #include <QtGlobal>
 
-TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass);
-TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMakerPublic, Part::FaceMaker);
+TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass)
+TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMakerPublic, Part::FaceMaker)
 
 void Part::FaceMaker::addWire(const TopoDS_Wire& w)
 {
@@ -94,7 +94,7 @@ const TopoDS_Face& Part::FaceMaker::Face()
 
 const Part::TopoShape &Part::FaceMaker::TopoFace() const{
     if(this->myTopoShape.isNull())
-        throw Base::Exception("Part::FaceMaker: result shape is null.");
+        throw NullShapeException("Part::FaceMaker: result shape is null.");
     if (this->myTopoShape.getShape().ShapeType() != TopAbs_FACE)
         throw Base::TypeError("Part::FaceMaker: return shape is not a single face.");
     return this->myTopoShape;
@@ -102,7 +102,7 @@ const Part::TopoShape &Part::FaceMaker::TopoFace() const{
 
 const Part::TopoShape &Part::FaceMaker::getTopoShape() const{
     if(this->myTopoShape.isNull())
-        throw Base::Exception("Part::FaceMaker: result shape is null.");
+        throw NullShapeException("Part::FaceMaker: result shape is null.");
     return this->myTopoShape;
 }
 
@@ -228,7 +228,7 @@ void Part::FaceMaker::throwNotImplemented()
 
 //----------------------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::FaceMakerSimple, Part::FaceMakerPublic);
+TYPESYSTEM_SOURCE(Part::FaceMakerSimple, Part::FaceMakerPublic)
 
 
 std::string Part::FaceMakerSimple::getUserFriendlyName() const

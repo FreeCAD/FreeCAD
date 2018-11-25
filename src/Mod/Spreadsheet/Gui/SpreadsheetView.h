@@ -75,6 +75,8 @@ public:
 
     QModelIndex currentIndex() const;
 
+    void deleteSelection();
+
     PyObject *getPyObject(void);
 
     virtual void deleteSelf();
@@ -98,9 +100,9 @@ protected:
     Spreadsheet::Sheet * sheet;
     SpreadsheetDelegate * delegate;
     SheetModel * model;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection columnWidthChangedConnection;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection rowHeightChangedConnection;
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection positionChangedConnection;
+    boost::signals2::scoped_connection columnWidthChangedConnection;
+    boost::signals2::scoped_connection rowHeightChangedConnection;
+    boost::signals2::scoped_connection positionChangedConnection;
 
     QMap<int, int> newColumnSizes;
     QMap<int, int> newRowSizes;

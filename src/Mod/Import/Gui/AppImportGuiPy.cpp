@@ -336,6 +336,24 @@ private:
     }
 };
 
+class ExportOCAFGui : public Import::ExportOCAF
+{
+public:
+    ExportOCAFGui(Handle(TDocStd_Document) h, bool explicitPlacement)
+        : ExportOCAF(h, explicitPlacement)
+    {
+    }
+    virtual void findColors(Part::Feature* part, std::vector<App::Color>& colors) const
+    {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
+        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+            colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
+            if (colors.empty())
+                colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
+        }
+    }
+};
+
 namespace ImportGui {
 class Module : public Py::ExtensionModule<Module>
 {
@@ -499,71 +517,6 @@ private:
         return Py::None();
     }
 
-    int export_app_object(App::DocumentObject* obj, Import::ExportOCAF ocaf, 
-                          std::vector <TDF_Label>& hierarchical_label,
-                          std::vector <TopLoc_Location>& hierarchical_loc,
-                          std::vector <App::DocumentObject*>& hierarchical_part)
-    {
-        std::vector <int> local_label;
-        int root_id;
-        int return_label = -1;
-
-
-        if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
-            App::Part* part = static_cast<App::Part*>(obj);
-            // I shall recusrively select the elements and call back
-            std::vector<App::DocumentObject*> entries = part->Group.getValues();
-            std::vector<App::DocumentObject*>::iterator it;
-
-            for ( it = entries.begin(); it != entries.end(); it++ ) {
-                int new_label=0;
-                new_label=export_app_object((*it),ocaf,hierarchical_label,hierarchical_loc, hierarchical_part);
-                local_label.push_back(new_label);
-            }
-
-            ocaf.createNode(part,root_id,hierarchical_label,hierarchical_loc, hierarchical_part);
-            std::vector<int>::iterator label_it;
-            for (label_it = local_label.begin(); label_it != local_label.end(); ++label_it) {
-                ocaf.pushNode(root_id,(*label_it), hierarchical_label,hierarchical_loc);
-            }
-
-            return_label=root_id;
-        }
-
-        if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            Part::Feature* part = static_cast<Part::Feature*>(obj);
-            std::vector<App::Color> colors;
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-                colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
-                if (colors.empty())
-                    colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
-            }
-
-            return_label=ocaf.saveShape(part, colors, hierarchical_label, hierarchical_loc, hierarchical_part);
-        }
-
-        return(return_label);
-    }
-
-    void get_parts_colors(std::vector <App::DocumentObject*> hierarchical_part, std::vector <TDF_Label> FreeLabels,
-                          std::vector <int> part_id, std::vector< std::vector<App::Color> >& Colors)
-    {
-        // I am seeking for the colors of each parts
-        int n = FreeLabels.size();
-        for (int i = 0; i < n; i++) {
-            std::vector<App::Color> colors;
-            Part::Feature * part = static_cast<Part::Feature *>(hierarchical_part.at(part_id.at(i)));
-            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-            if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-                colors = static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.getValues();
-                if (colors.empty())
-                    colors.push_back(static_cast<PartGui::ViewProviderPart*>(vp)->ShapeColor.getValue());
-                Colors.push_back(colors);
-            }
-        }
-    }
-
     static std::map<std::string, App::Color> getShapeColors(App::DocumentObject *obj, const char *subname) {
         auto vp = Gui::Application::Instance->getViewProvider(obj);
         if(vp)
@@ -606,13 +559,13 @@ private:
             else {
                 bool keepExplicitPlacement = objs.size() > 1;
                 keepExplicitPlacement = Standard_True;
-                Import::ExportOCAF ocaf(hDoc, keepExplicitPlacement);
+                ExportOCAFGui ocaf(hDoc, keepExplicitPlacement);
                 // That stuff is exporting a list of selected objects into FreeCAD Tree
                 std::vector <TDF_Label> hierarchical_label;
                 std::vector <TopLoc_Location> hierarchical_loc;
                 std::vector <App::DocumentObject*> hierarchical_part;
                 for(auto obj : objs)
-                    export_app_object(obj,ocaf, hierarchical_label, hierarchical_loc,hierarchical_part);
+                    ocaf.exportObject(obj,hierarchical_label, hierarchical_loc,hierarchical_part);
 
                 // Free Shapes must have absolute placement and not explicit
                 std::vector <TDF_Label> FreeLabels;
@@ -621,7 +574,7 @@ private:
                 // Got issue with the colors as they are coming from the View Provider they can't be determined into
                 // the App Code.
                 std::vector< std::vector<App::Color> > Colors;
-                get_parts_colors(hierarchical_part,FreeLabels,part_id,Colors);
+                ocaf.getPartColors(hierarchical_part,FreeLabels,part_id,Colors);
                 ocaf.reallocateFreeShape(hierarchical_part,FreeLabels,part_id,Colors);
 
 #if OCC_VERSION_HEX >= 0x070200
@@ -653,12 +606,12 @@ private:
                 Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
                     .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
 
-                makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)(Utf8Name.c_str())));
+                makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
                 makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::GetApplication().getExecutableName()));
                 makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
-                IFSelect_ReturnStatus ret = writer.Write((const char*)name8bit.c_str());
+                IFSelect_ReturnStatus ret = writer.Write(name8bit.c_str());
                 if (ret == IFSelect_RetError || ret == IFSelect_RetFail || ret == IFSelect_RetStop) {
                     PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
                     throw Py::Exception();
@@ -688,6 +641,7 @@ private:
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
         }
+
         return Py::None();
     }
     Py::Object ocaf(const Py::Tuple& args)

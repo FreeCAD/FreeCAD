@@ -162,19 +162,24 @@ void DrawViewSection::onChanged(const App::Property* prop)
     }
     if (prop == &FileHatchPattern    ||
         prop == &NameGeomPattern ) {
-      if ((!FileHatchPattern.isEmpty())  &&
-          (!NameGeomPattern.isEmpty())) {
-              std::vector<PATLineSpec> specs = 
-                               DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
-              m_lineSets.clear();
-              for (auto& hl: specs) {
-                  //hl.dump("hl from section");
-                  LineSet ls;
-                  ls.setPATLineSpec(hl);
-                  m_lineSets.push_back(ls);
-              }
-                  
-      }
+        std::string fileSpec = FileHatchPattern.getValue();
+        Base::FileInfo fi(fileSpec);
+        std::string ext = fi.extension();
+        if ( (ext == "pat") ||
+             (ext == "PAT") ) {
+            if ((!FileHatchPattern.isEmpty())  &&
+                (!NameGeomPattern.isEmpty())) {
+                std::vector<PATLineSpec> specs = 
+                           DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
+                m_lineSets.clear();
+                for (auto& hl: specs) {
+                    //hl.dump("hl from section");
+                    LineSet ls;
+                    ls.setPATLineSpec(hl);
+                    m_lineSets.push_back(ls);
+                }
+            }
+        }
     }
 
     DrawView::onChanged(prop);
@@ -245,6 +250,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return DrawView::execute();
     }
 
+    m_cutShape = rawShape;
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(rawShape,
@@ -385,7 +391,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
                                      const Base::Vector3d &direction)
 {
     if(face.IsNull()) {
-        throw Base::Exception("DrawViewSection::projectFace - input Face is NULL");
+        throw Base::ValueError("DrawViewSection::projectFace - input Face is NULL");
     }
 
     Base::Vector3d origin(faceCenter.X(),faceCenter.Y(),faceCenter.Z());

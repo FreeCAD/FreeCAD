@@ -34,7 +34,7 @@
 #include <CXX/Objects.hxx>
 
 #include <bitset>
-#include <boost/signals.hpp>
+#include <boost/signals2.hpp>
 
 namespace App
 {
@@ -52,11 +52,12 @@ enum ObjectStatus {
     Remove = 5,
     PythonCall = 6,
     Destroy = 7,
-    Recompute2 = 8, // set when the object is being recomputed in the second pass
-    PartialObject = 9,
-    PendingRecompute = 10, // set by Document, indicating the object is in recomputation queue
-    PendingRemove = 11, // set by Document, indicating the object is in pending for remove after recompute
-    ObjImporting = 12, // Mark the object as importing
+    Enforce = 8,
+    Recompute2 = 9, // set when the object is being recomputed in the second pass
+    PartialObject = 10,
+    PendingRecompute = 11, // set by Document, indicating the object is in recomputation queue
+    PendingRemove = 12, // set by Document, indicating the object is in pending for remove after recompute
+    ObjImporting = 13, // Mark the object as importing
     Expand = 16,
 };
 
@@ -124,13 +125,18 @@ public:
     /** Set the property touched -> changed, cause recomputation in Update()
      */
     //@{
-    /// set this feature touched (cause recomputation on depndend features)
+    /// set this document object touched (cause recomputation on dependent features)
     void touch(void);
-    /// test if this feature is touched
+    /// test if this document object is touched
     bool isTouched(void) const;
-    /// reset this feature touched
+    /// Enforce this document object to be recomputed
+    void enforceRecompute();
+    /// Test if this document object must be recomputed
+    bool mustRecompute(void) const;
+    /// reset this document object touched
     void purgeTouched(void) {
         StatusBits.reset(ObjectStatus::Touch);
+        StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0,false);
     }
     /// set this feature to error
@@ -179,7 +185,7 @@ public:
 
     /** DAG handling
         This part of the interface deals with viewing the document as
-        an DAG (directed acyclic graph). 
+        a DAG (directed acyclic graph).
     */
     //@{
     /// OutList options
@@ -203,7 +209,7 @@ public:
     std::vector<std::list<App::DocumentObject*> > getPathsByOutList(App::DocumentObject* to) const;
     /// get all objects link to this object
     std::vector<App::DocumentObject*> getInList(void) const;
-    /// get all objects link directly or indirectly to this object 
+    /// get all objects link directly or indirectly to this object
     std::vector<App::DocumentObject*> getInListRecursive(void) const;
     /// Get a set of all objects linking to this object, including possible external parent objects
     void getInListEx(std::set<App::DocumentObject*> &inList, bool recursive) const;
@@ -249,9 +255,12 @@ public:
      *  We call this method to check if the object was modified to
      *  be invoked. If the object label or an argument is modified.
      *  If we must recompute the object - to call the method execute().
-     *  0: no recompution is needed
-     *  1: recompution needed
-     * -1: the document examine all links of this object and if one is touched -> recompute
+     *  0: no recomputation is needed
+     *  1: recomputation needed
+     *
+     * @remark If an object is marked as 'touched' then this does not
+     * necessarily mean that it will be recomputed. It only means that all
+     * objects that link it (i.e. its InList) will be recomputed.
      */
     virtual short mustExecute(void) const;
 
@@ -508,7 +517,7 @@ protected:
     /** get called by the document to recompute this feature
       * Normally this method get called in the processing of
       * Document::recompute().
-      * In execute() the outpupt properties get recomputed
+      * In execute() the output properties get recomputed
       * with the data from linked objects and objects own
       * properties.
       */
@@ -516,7 +525,7 @@ protected:
 
     /** Status bits of the document object
      * The first 8 bits are used for the base system the rest can be used in
-     * descendent classes to to mark special stati on the objects.
+     * descendent classes to mark special statuses on the objects.
      * The bits and their meaning are listed below:
      *  0 - object is marked as 'touched'
      *  1 - object is marked as 'erroneous'
@@ -549,7 +558,7 @@ protected:
     /// get called when object is going to be removed from the document
     virtual void unsetupObject();
 
-     /// python object of this class and all descendend
+     /// python object of this class and all descendent
 protected: // attributes
     Py::Object PythonObject;
     /// pointer to the document this object belongs to
@@ -572,11 +581,6 @@ private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling
     std::vector<App::DocumentObject*> _inList;
-    // helper for isInInListRecursive()
-    bool _isInInListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
-    // helper for isInOutListRecursive()
-    bool _isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
-
     mutable std::vector<App::DocumentObject *> _outList;
     mutable std::map<std::string, App::DocumentObject*> _outListMap;
     mutable bool _outListCached = false;

@@ -119,17 +119,21 @@ Py::Object BrowserViewPy::setHtml(const Py::Tuple& args)
 {
     char* HtmlCode;
     char* BaseUrl;
-    if (! PyArg_ParseTuple(args.ptr(), "ss",&HtmlCode,&BaseUrl))
+    if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&HtmlCode,&BaseUrl))
         throw Py::Exception();
+
+    std::string EncodedHtml = std::string(HtmlCode);
+    PyMem_Free(HtmlCode);
+
     if (myWebView)
-        myWebView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
+        myWebView->setHtml(QString::fromUtf8(EncodedHtml.c_str()), QUrl(QString::fromLatin1(BaseUrl)));
     return Py::None();
 }
 }
 
 /**
  *  Constructs a WebView widget which can be zoomed with Ctrl+Mousewheel
- *  
+ *
  */
 
 WebView::WebView(QWidget *parent)
@@ -228,11 +232,11 @@ BrowserView::BrowserView(QWidget* parent)
 
     view->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     view->page()->setForwardUnsupportedContent(true);
-    
+
     // set our custom cookie manager
     FcCookieJar* cookiejar = new FcCookieJar(this);
     view->page()->networkAccessManager()->setCookieJar(cookiejar);
-    
+
     // enable local storage so we can store stuff across sessions (startpage)
     QWebSettings* settings = view->settings();
     settings->setAttribute(QWebSettings::LocalStorageEnabled, true);
@@ -268,18 +272,18 @@ BrowserView::~BrowserView()
     delete view;
 }
 
-void BrowserView::onLinkClicked (const QUrl & url) 
+void BrowserView::onLinkClicked (const QUrl & url)
 {
     QString scheme   = url.scheme();
     QString host     = url.host();
     //QString username = url.userName();
 
-    // path handling 
+    // path handling
     QString path     = url.path();
     QFileInfo fi(path);
     QString ext = fi.completeSuffix();
     QUrl exturl(url);
-    
+
     // query
     QString q;
     if (url.hasQuery())
@@ -316,14 +320,17 @@ void BrowserView::onLinkClicked (const QUrl & url)
                         q = q.replace(QString::fromLatin1("="),QString::fromLatin1("=\""))+QString::fromLatin1("\"");
                         q = q.replace(QString::fromLatin1("%"),QString::fromLatin1("%%"));
                         // url queries in the form of somescript.py?key=value, the first key=value will be printed in the py console as key="value"
-                        Gui::Command::doCommand(Gui::Command::Gui,q.toStdString().c_str()); 
+                        Gui::Command::doCommand(Gui::Command::Gui,q.toStdString().c_str());
                     }
                     // Gui::Command::doCommand(Gui::Command::Gui,"execfile('%s')",(const char*) fi.absoluteFilePath().	toLocal8Bit());
-                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) fi.absoluteFilePath()	.toLocal8Bit());  
+                    Gui::Command::doCommand(Gui::Command::Gui,"exec(open('%s').read())",(const char*) fi.absoluteFilePath()	.toLocal8Bit());
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));
                 }
+
+                if(this->getAppDocument()->testStatus(App::Document::PartialRestore))
+                    QMessageBox::critical(this, tr("Error"), tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
             }
         }
         else {
@@ -335,7 +342,7 @@ void BrowserView::onLinkClicked (const QUrl & url)
 
 bool BrowserView::chckHostAllowed(const QString& host)
 {
-    // only check if a local file, later we can do here a dialog to ask the user if 
+    // only check if a local file, later we can do here a dialog to ask the user if
     return host.isEmpty();
 }
 

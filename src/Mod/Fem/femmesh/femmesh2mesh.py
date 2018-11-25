@@ -96,27 +96,50 @@ def femmesh_2_mesh(myFemMesh, myResults=None):
     faceCodeList = []
     faceCodeDict = {}
 
-    for ele in myFemMesh.Volumes:
-        element_nodes = myFemMesh.getElementNodes(ele)
-        # print 'element_node: ', element_nodes
-        faceDef = face_dicts[len(element_nodes)]
+    if myFemMesh.VolumeCount > 0:
+        for ele in myFemMesh.Volumes:
+            element_nodes = myFemMesh.getElementNodes(ele)
+            # print 'element_node: ', element_nodes
+            faceDef = face_dicts[len(element_nodes)]
 
-        for key in faceDef:
-            nodeList = []
-            codeList = []
-            faceCode = 0
-            shifter = 0
-            for nodeIdx in faceDef[key]:
-                nodeList.append(element_nodes[nodeIdx])
-                codeList.append(element_nodes[nodeIdx])
-            codeList.sort()
-            for node in codeList:
-                faceCode += (node << shifter)
-                # x << n: x shifted left by n bits = Multiplication
-                shifter += shiftBits
-            # print 'codeList: ', codeList
-            faceCodeDict[faceCode] = nodeList
-            faceCodeList.append(faceCode)
+            for key in faceDef:
+                nodeList = []
+                codeList = []
+                faceCode = 0
+                shifter = 0
+                for nodeIdx in faceDef[key]:
+                    nodeList.append(element_nodes[nodeIdx])
+                    codeList.append(element_nodes[nodeIdx])
+                codeList.sort()
+                for node in codeList:
+                    faceCode += (node << shifter)
+                    # x << n: x shifted left by n bits = Multiplication
+                    shifter += shiftBits
+                # print 'codeList: ', codeList
+                faceCodeDict[faceCode] = nodeList
+                faceCodeList.append(faceCode)
+    elif myFemMesh.FaceCount > 0:
+        for ele in myFemMesh.Faces:
+            element_nodes = myFemMesh.getElementNodes(ele)
+            # print 'element_node: ', element_nodes
+            faceDef = {1: [0, 1, 2]}
+
+            for key in faceDef:
+                nodeList = []
+                codeList = []
+                faceCode = 0
+                shifter = 0
+                for nodeIdx in faceDef[key]:
+                    nodeList.append(element_nodes[nodeIdx])
+                    codeList.append(element_nodes[nodeIdx])
+                codeList.sort()
+                for node in codeList:
+                    faceCode += (node << shifter)
+                    # x << n: x shifted left by n bits = Multiplication
+                    shifter += shiftBits
+                # print 'codeList: ', codeList
+                faceCodeDict[faceCode] = nodeList
+                faceCodeList.append(faceCode)
 
     faceCodeList.sort()
     allFaces = len(faceCodeList)

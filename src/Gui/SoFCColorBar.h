@@ -41,7 +41,7 @@ namespace Gui {
 class SoFCColorGradient;
 
 /**
- * The abstract color bar base class to get most important information on how to convert a scalar to an RGB color. 
+ * The abstract color bar base class to get most important information on how to convert a scalar to an RGB color.
  * @author Werner Mayer
  */
 class GuiExport SoFCColorBarBase : public SoSeparator, public App::ValueFloatToRGB {
@@ -82,24 +82,24 @@ public:
    * This method must be implemented in subclasses.
    */
   virtual void setOutsideGrayed (bool bVal) = 0;
-  /** Returns the current minimum of the parameter range. 
+  /** Returns the current minimum of the parameter range.
    *
    * This method must be implemented in subclasses.
    */
   virtual float getMinValue (void) const = 0;
-  /** Returns the current maximum of the parameter range. 
+  /** Returns the current maximum of the parameter range.
    *
    * This method must be implemented in subclasses.
    */
   virtual float getMaxValue (void) const = 0;
   /**
-   * Opems a dialog to customie the current settings of the color bar.
+   * Opens a dialog to customize the current settings of the color bar.
    * Returns true if the settings have been changed, false otherwise.
    *
    * This method must be implemented in subclasses.
    */
   virtual bool customize() = 0;
-  /** Returns the name of the color bar. 
+  /** Returns the name of the color bar.
    *
    * This method must be implemented in subclasses.
    */
@@ -123,7 +123,7 @@ private:
 // --------------------------------------------------------------------------
 
 /**
- * The color bar class that redirects all calls to its handled color bars. 
+ * The color bar class that redirects all calls to its handled color bars.
  * @author Werner Mayer
  */
 class GuiExport SoFCColorBar : public SoFCColorBarBase, public Base::Subject<int> {
@@ -161,19 +161,19 @@ public:
    * Returns the return value of the currently active color bar.
    */
   bool isVisible (float fVal) const;
-  /** 
-   * Returns the current minimum of the parameter range of the currently active color bar. 
+  /**
+   * Returns the current minimum of the parameter range of the currently active color bar.
    */
   float getMinValue (void) const;
-  /** 
-   * Returns the current maximum of the parameter range of the currently active color bar. 
+  /**
+   * Returns the current maximum of the parameter range of the currently active color bar.
    */
   float getMaxValue (void) const;
   /**
    * Customizes the currently active color bar.
    */
   bool customize();
-  /** Returns the name of the color bar. 
+  /** Returns the name of the color bar.
    */
   const char* getColorBarName() const { return "Color Bar"; }
 
@@ -192,7 +192,7 @@ private:
   float _fMaxX, _fMinX, _fMaxY, _fMinY;
   QTime _timer;
 
-  SoSwitch* pColorMode; 
+  SoSwitch* pColorMode;
   std::vector<SoFCColorBarBase*> _colorBars;
 };
 
@@ -200,4 +200,3 @@ private:
 
 
 #endif // GUI_SOFCCOLORBAR_H
-

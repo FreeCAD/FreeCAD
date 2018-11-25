@@ -430,13 +430,13 @@ void PropertySheet::setDisplayUnit(CellAddress address, const std::string &unit)
 void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 {
     if (alias.size() > 0 && !isValidAlias(alias))
-        throw Base::Exception("Invalid alias");
+        throw Base::ValueError("Invalid alias");
 
     const Cell * aliasedCell = getValueFromAlias(alias);
     Cell * cell = nonNullCellAt(address);
 
     if (aliasedCell != 0 && cell != aliasedCell)
-        throw Base::Exception("Alias already defined.");
+        throw Base::ValueError("Alias already defined.");
 
     assert(cell != 0);
 

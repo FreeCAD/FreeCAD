@@ -48,8 +48,6 @@ class ViewProvider;
 
 namespace PartDesignGui { 
 
-namespace s = boost::signals;
-
 class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
                           public Gui::DocumentObserver
 {

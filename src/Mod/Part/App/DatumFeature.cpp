@@ -87,7 +87,7 @@ App::DocumentObject *Datum::getSubObject(const char *subname,
         str += " ";
         if (msg) {str += msg;}
         else     {str += "No OCCT Exception Message";}
-        throw Base::Exception(str.c_str());
+        throw Base::CADKernelError(str.c_str());
     }
 }
 

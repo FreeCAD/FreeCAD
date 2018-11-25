@@ -251,8 +251,11 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 
     gp_Pnt inputCenter;
+    Base::Vector3d stdOrg(0.0,0.0,0.0);
+    
     inputCenter = TechDrawGeometry::findCentroid(shape,
-                                                 Direction.getValue());
+                                                 getViewAxis(stdOrg,Direction.getValue()));
+                                                 
     shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
     TopoDS_Shape mirroredShape;
     mirroredShape = TechDrawGeometry::mirrorShape(shape,
@@ -293,6 +296,7 @@ short DrawViewPart::mustExecute() const
                     ScaleType.isTouched() ||
                     Perspective.isTouched() ||
                     Focus.isTouched() ||
+                    Rotation.isTouched() ||
                     SmoothVisible.isTouched() ||
                     SeamVisible.isTouched() ||
                     IsoVisible.isTouched() ||
@@ -337,6 +341,9 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
         go->projectShape(shape,
             viewAxis);
     }
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     go->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                         true);
     go->extractGeometry(TechDrawGeometry::ecOUTLINE,
@@ -371,6 +378,11 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
         go->extractGeometry(TechDrawGeometry::ecUVISO,
                             false);
     }
+    auto end   = std::chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = std::chrono::duration <double, std::milli> (diff).count();
+    Base::Console().Log("TIMING - %s DVP spent: %.3f millisecs in GO::extractGeometry\n",getNameInDocument(),diffOut);
+
     bbox = go->calcBoundingBox();
     return go;
 }
@@ -477,7 +489,7 @@ void DrawViewPart::extractFaces()
     ew.loadEdges(newEdges);
     bool success = ew.perform();
     if (!success) {
-        Base::Console().Warning("DVP::extractFaces - input is not planar graph. No face detection\n");
+        Base::Console().Warning("DVP::extractFaces - %s -Can't make faces from projected edges\n", getNameInDocument());
         return;
     }
     std::vector<TopoDS_Wire> fw = ew.getResultNoDups();
@@ -697,13 +709,7 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
 {
     gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);
      
-    //put X dir of viewAxis on other side to get view right side up
-    gp_Ax1 rotAxis(viewAxis.Location(),viewAxis.Direction());
-    gp_Dir xDir = viewAxis.XDirection();
-    gp_Dir newX = xDir.Rotated(rotAxis, M_PI);
-    viewAxis.SetXDirection(newX);
-
-     return viewAxis;
+    return viewAxis;
 }
 
 void DrawViewPart::saveParamSpace(const Base::Vector3d& direction, const Base::Vector3d& xAxis)

@@ -111,7 +111,8 @@ void CmdSketcherCloseShape::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -215,7 +216,8 @@ void CmdSketcherConnect::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -297,7 +299,8 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -828,7 +831,8 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -920,7 +924,8 @@ void CmdSketcherSymmetry::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1808,8 +1813,9 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),

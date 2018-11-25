@@ -96,7 +96,8 @@ public:
   App::PropertyInteger   TypeOutput;
   App::PropertyInteger   TypeAll;
   App::PropertyInteger   TypeTransient;
-  
+  App::PropertyInteger   TypeNoRecompute;
+
   App::PropertyQuantity  QuantityLength;
   App::PropertyQuantity  QuantityOther;
   //App::PropertyQuantity  QuantityMass;
@@ -104,6 +105,7 @@ public:
 
   /** @name methods override Feature */
   //@{
+  virtual short mustExecute(void) const;
   /// recalculate the Feature
   virtual DocumentObjectExecReturn *execute(void);
   /// returns the type name of the ViewProvider

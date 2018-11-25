@@ -74,6 +74,8 @@ public:
     static int getNewID(void);
     static int getLastID(void);
 
+    /// Returns true if the transaction list is empty; otherwise returns false.
+    bool isEmpty() const;
     /// check if this object is used in a transaction
     bool hasObject(const TransactionalObject *Obj) const;
     void removeProperty(TransactionalObject *Obj, const Property* pcProp);

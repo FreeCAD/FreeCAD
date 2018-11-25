@@ -394,7 +394,7 @@ class _CommandFemMaterialFluid(CommandManager):
     def __init__(self):
         super(_CommandFemMaterialFluid, self).__init__()
         self.resources = {'Pixmap': 'fem-material-fluid',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "FEM material for fluid"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Material for fluid"),
                           'Accel': "M, M",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for fluid")}
         self.is_active = 'with_analysis'
@@ -435,8 +435,9 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
                     # we do not change attributes if we have more than one solver, since we do not know which one to take
                     solver_object = None
                     break
-        # check new frame work solver and old frame work solver
-        if solver_object and (hasattr(solver_object, "SolverType") and solver_object.SolverType == 'FemSolverCalculix' or (hasattr(solver_object, "Proxy") and solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix')):
+        # set solver attribute for nonlinearity for ccxtools CalculiX solver or new frame work CalculiX solver
+        if solver_object and hasattr(solver_object, "Proxy") and (solver_object.Proxy.Type == 'Fem::FemSolverCalculixCcxTools' or solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix'):
+            print('Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for ' + solver_object.Label)
             solver_object.MaterialNonlinearity = "nonlinear"
             solver_object.GeometricalNonlinearity = "nonlinear"
         FreeCADGui.Selection.clearSelection()
@@ -448,7 +449,7 @@ class _CommandFemMaterialSolid(CommandManager):
     def __init__(self):
         super(_CommandFemMaterialSolid, self).__init__()
         self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "FEM material for solid"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Material for solid"),
                           'Accel': "M, M",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a FEM material for solid")}
         self.is_active = 'with_analysis'
@@ -523,6 +524,26 @@ class _CommandFemMeshClear(CommandManager):
         FreeCAD.ActiveDocument.openTransaction("Clear FEM mesh")
         FreeCADGui.addModule("Fem")
         FreeCADGui.doCommand("FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh = Fem.FemMesh()")
+        FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
+
+
+class _CommandFemMeshDisplayInfo(CommandManager):
+    "The FEM_MeshDisplayInfo command definition"
+    def __init__(self):
+        super(_CommandFemMeshDisplayInfo, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-print-info',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info"),
+                          # 'Accel': "Z, Z",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info")}
+        self.is_active = 'with_femmesh'
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Display FEM mesh info")
+        FreeCADGui.doCommand("print(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
+        FreeCADGui.addModule("PySide")
+        FreeCADGui.doCommand("mesh_info = str(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
+        FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
@@ -602,26 +623,6 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
 
-class _CommandFemMeshPrintInfo(CommandManager):
-    "The FEM_MeshPrintInfo command definition"
-    def __init__(self):
-        super(_CommandFemMeshPrintInfo, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-print-info',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info"),
-                          # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshPrintInfo", "Print FEM mesh info")}
-        self.is_active = 'with_femmesh'
-
-    def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Print FEM mesh info")
-        FreeCADGui.doCommand("print(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
-        FreeCADGui.addModule("PySide")
-        FreeCADGui.doCommand("mesh_info = str(FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh)")
-        FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
-        FreeCADGui.Selection.clearSelection()
-        FreeCAD.ActiveDocument.recompute()
-
-
 class _CommandFemMeshRegion(CommandManager):
     "The FEM_MeshRegion command definition"
     def __init__(self):
@@ -652,7 +653,7 @@ class _CommandFemResultShow(CommandManager):
         self.is_active = 'with_selresult'
 
     def Activated(self):
-        self.selobj.ViewObject.startEditing()
+        self.selobj.ViewObject.Document.setEdit(self.selobj.ViewObject, 0)
 
 
 class _CommandFemResultsPurge(CommandManager):
@@ -766,6 +767,11 @@ class _CommandFemSolverRun(CommandManager):
         def load_results(ret_code):
             if ret_code == 0:
                 self.fea.load_results()
+            elif ret_code == 201:
+                if self.fea.solver.AnalysisType == 'check':
+                    print('We run into the NOANALYSIS problem!')
+                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=31303&start=10#p260743
+                    self.fea.load_results()
             else:
                 print("CalculiX failed ccx finished with error {}".format(ret_code))
 
@@ -850,10 +856,10 @@ FreeCADGui.addCommand('FEM_MaterialSolid', _CommandFemMaterialSolid())
 FreeCADGui.addCommand('FEM_FEMMesh2Mesh', _CommandFemMesh2Mesh())
 FreeCADGui.addCommand('FEM_MeshBoundaryLayer', _CommandFemMeshBoundaryLayer())
 FreeCADGui.addCommand('FEM_MeshClear', _CommandFemMeshClear())
+FreeCADGui.addCommand('FEM_MeshDisplayInfo', _CommandFemMeshDisplayInfo())
 FreeCADGui.addCommand('FEM_MeshGmshFromShape', _CommandFemMeshGmshFromShape())
 FreeCADGui.addCommand('FEM_MeshGroup', _CommandFemMeshGroup())
 FreeCADGui.addCommand('FEM_MeshNetgenFromShape', _CommandFemMeshNetgenFromShape())
-FreeCADGui.addCommand('FEM_MeshPrintInfo', _CommandFemMeshPrintInfo())
 FreeCADGui.addCommand('FEM_MeshRegion', _CommandFemMeshRegion())
 FreeCADGui.addCommand('FEM_ResultShow', _CommandFemResultShow())
 FreeCADGui.addCommand('FEM_ResultsPurge', _CommandFemResultsPurge())

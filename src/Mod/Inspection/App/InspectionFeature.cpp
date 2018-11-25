@@ -35,7 +35,6 @@
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
 
-#include <boost/signals.hpp>
 #include <boost/bind.hpp>
 
 #include <Base/Console.h>
@@ -704,7 +703,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
 {
     App::DocumentObject* pcActual = Actual.getValue();
     if (!pcActual)
-        throw Base::Exception("No actual geometry to inspect specified");
+        throw Base::ValueError("No actual geometry to inspect specified");
 
     InspectActualGeometry* actual = 0;
     if (pcActual->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
@@ -720,7 +719,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
         actual = new InspectActualShape(part->Shape.getShape());
     }
     else {
-        throw Base::Exception("Unknown geometric type");
+        throw Base::TypeError("Unknown geometric type");
     }
 
     // get a list of nominals

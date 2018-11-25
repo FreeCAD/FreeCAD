@@ -212,6 +212,101 @@ void SoFCUnifiedSelection::write(SoWriteAction * action)
     }
 }
 
+int SoFCUnifiedSelection::getNumSelected(void) const
+{
+    return this->selectionList.getLength();
+}
+
+const SoPathList* SoFCUnifiedSelection::getList(void) const
+{
+    return &this->selectionList;
+}
+
+void SoFCUnifiedSelection::addPath(SoPath * path)
+{
+    this->selectionList.append(path);
+}
+
+void SoFCUnifiedSelection::removePath(const int which)
+{
+    SoPath * path = this->selectionList[which];
+    path->ref();
+    this->selectionList.remove(which);
+    path->unref();
+}
+
+SoPath * SoFCUnifiedSelection::copyFromThis(const SoPath * path) const
+{
+    SoPath * newpath = NULL;
+    path->ref();
+    int i = path->findNode(this);
+    if (i >= 0) {
+        newpath = path->copy(i);
+    }
+    path->unrefNoDelete();
+    return newpath;
+}
+
+int SoFCUnifiedSelection::findPath(const SoPath * path) const
+{
+    int idx = -1;
+
+    // make copy only if necessary
+    if (path->getHead() != this) {
+        SoPath * newpath = this->copyFromThis(path);
+        if (newpath) {
+            newpath->ref();
+            idx = this->selectionList.findPath(*newpath);
+            newpath->unref();
+        }
+        else {
+            idx = -1;
+        }
+    }
+    else {
+        idx = this->selectionList.findPath(*path);
+    }
+    return idx;
+}
+
+SoPath * SoFCUnifiedSelection::searchNode(SoNode * node) const
+{
+    SoSearchAction sa;
+    sa.setNode(node);
+    sa.apply(const_cast<SoFCUnifiedSelection*>(this));
+    SoPath * path = sa.getPath();
+    if (path)
+        path->ref();
+    return path;
+}
+
+void SoFCUnifiedSelection::select(SoNode * node)
+{
+    SoPath * path = this->searchNode(node);
+    if (path) {
+        // don't ref() the path. searchNode() will ref it before returning
+        if (this->findPath(path) < 0)
+            this->addPath(path);
+        path->unref();
+    }
+}
+
+void SoFCUnifiedSelection::deselect(const SoPath * path)
+{
+    int idx = this->findPath(path);
+    if (idx >= 0) this->removePath(idx);
+}
+
+void SoFCUnifiedSelection::deselect(SoNode * node)
+{
+    SoPath * path = this->searchNode(node);
+    if (path) {
+        // don't ref() the path. searchNode() will ref it before returning
+        this->deselect(path);
+        path->unref();
+    }
+}
+
 int SoFCUnifiedSelection::getPriority(const SoPickedPoint* p)
 {
     const SoDetail* detail = p->getDetail();
@@ -398,7 +493,7 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                         type = SoSelectionElementAction::All;
                     else
                         type = SoSelectionElementAction::None;
-                    if(checkSelectionStyle(type,vpd)) {
+                    if (checkSelectionStyle(type, vpd)) {
                         SoSelectionElementAction action(type);
                         action.setColor(this->colorSelection.getValue());
                         action.apply(vpd->getRoot());
@@ -727,15 +822,27 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     inherited::handleEvent(action);
 }
 
-bool SoFCUnifiedSelection::checkSelectionStyle(int type, ViewProvider *vp) {
-    if((type == SoSelectionElementAction::All ||
-        type == SoSelectionElementAction::None) &&
+bool SoFCUnifiedSelection::checkSelectionStyle(int type, ViewProvider *vp)
+{
+    if ((type == SoSelectionElementAction::All || type == SoSelectionElementAction::None) &&
         vp->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId()) &&
-        static_cast<ViewProviderGeometryObject*>(vp)->SelectionStyle.getValue()==1)
+        static_cast<ViewProviderGeometryObject*>(vp)->SelectionStyle.getValue() == 1)
     {
-        bool selected = type==SoSelectionElementAction::All;
-        static_cast<ViewProviderGeometryObject*>(vp)->showBoundingBox(selected);
-        if(selected) return false;
+        bool selected = (type == SoSelectionElementAction::All);
+        int numSelected = getNumSelected();
+        if (selected) {
+            select(vp->getRoot());
+        }
+        else {
+            deselect(vp->getRoot());
+        }
+
+        if (numSelected != getNumSelected())
+            this->touch();
+
+        if (selected) {
+            return false;
+        }
     }
     return true;
 }

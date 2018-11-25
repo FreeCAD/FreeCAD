@@ -39,7 +39,7 @@ import Part
 import PathScripts.PostUtils as PostUtils
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 

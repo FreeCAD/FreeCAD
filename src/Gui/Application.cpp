@@ -25,7 +25,7 @@
 
 #ifndef _PreComp_
 # include "InventorAll.h"
-# include <boost/signals.hpp>
+# include <boost/signals2.hpp>
 # include <boost/bind.hpp>
 # include <sstream>
 # include <stdexcept>
@@ -96,6 +96,7 @@
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
+#include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "ViewProviderExtern.h"
 #include "ViewProviderFeature.h"
@@ -281,15 +282,6 @@ struct PyMethodDef FreeCADGui_methods[] = {
      "of the Coin library and version information"},
     {NULL, NULL, 0, NULL}  /* sentinel */
 };
-
-
-Gui::MDIView* Application::activeView(void) const
-{
-    if (activeDocument())
-        return activeDocument()->getActiveView();
-    else
-        return NULL;
-}
 
 } // namespace Gui
 
@@ -574,14 +566,22 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                     activeDocument()->setModified(false);
             }
             else {
-                Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
-                                               , Module, unicodepath.c_str(), DocName);
+                if (DocName) {
+                    Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
+                                                   , Module, unicodepath.c_str(), DocName);
+                }
+                else {
+                    Command::doCommand(Command::App, "%s.insert(u\"%s\")"
+                                                   , Module, unicodepath.c_str());
+                }
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                     ("User parameter:BaseApp/Preferences/View");
                 if (hGrp->GetBool("AutoFitToView", true))
                     Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
-                if (getDocument(DocName))
-                    getDocument(DocName)->setModified(true);
+                Gui::Document* doc = activeDocument();
+                if (DocName) doc = getDocument(DocName);
+                if (doc)
+                    doc->setModified(true);
             }
 
             // the original file name is required
@@ -691,8 +691,9 @@ void Application::slotNewDocument(const App::Document& Doc)
     pDoc->signalChangedObject.connect(boost::bind(&Gui::Application::slotChangedObject, this, _1, _2));
     pDoc->signalRelabelObject.connect(boost::bind(&Gui::Application::slotRelabelObject, this, _1));
     pDoc->signalActivatedObject.connect(boost::bind(&Gui::Application::slotActivatedObject, this, _1));
-
-
+    pDoc->signalInEdit.connect(boost::bind(&Gui::Application::slotInEdit, this, _1));
+    pDoc->signalResetEdit.connect(boost::bind(&Gui::Application::slotResetEdit, this, _1));
+ 
     signalNewDocument(*pDoc);
     pDoc->createView(View3DInventor::getClassTypeId());
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
@@ -817,6 +818,16 @@ void Application::slotActivatedObject(const ViewProvider& vp)
     getMainWindow()->updateActions();
 }
 
+void Application::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
+{
+    this->signalInEdit(vp);
+}
+
+void Application::slotResetEdit(const Gui::ViewProviderDocumentObject& vp)
+{
+    this->signalResetEdit(vp);
+}
+
 void Application::onLastWindowClosed(Gui::Document* pcDoc)
 {
     if (!d->isClosing && pcDoc) {
@@ -845,6 +856,37 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     return pView ? pView->onHasMsg(pMsg) : false;
+}
+
+Gui::MDIView* Application::activeView(void) const
+{
+    if (activeDocument())
+        return activeDocument()->getActiveView();
+    else
+        return NULL;
+}
+
+/**
+ * @brief Application::activateView
+ * Activates a view of the given type of the active document.
+ * If a view of this type doesn't exist and \a create is true
+ * a new view of this type will be created.
+ * @param type
+ * @param create
+ */
+void Application::activateView(const Base::Type& type, bool create)
+{
+    Document* doc = activeDocument();
+    if (doc) {
+        MDIView* mdiView = doc->getActiveView();
+        if (mdiView && mdiView->isDerivedFrom(type))
+            return;
+        std::list<MDIView*> mdiViews = doc->getMDIViewsOfType(type);
+        if (!mdiViews.empty())
+            doc->setActiveWindow(mdiViews.back());
+        else if (create)
+            doc->createView(type);
+    }
 }
 
 /// Getter for the active view

@@ -345,6 +345,8 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
 
     PY_TRY {
         auto ret = getDocumentPtr()->copyObject(objs,PyObject_IsTrue(rec));
+        if(ret.size()==1)
+            return ret[0]->getPyObject();
 
         Py::Tuple tuple(ret.size());
         for(size_t i=0;i<ret.size();++i) 

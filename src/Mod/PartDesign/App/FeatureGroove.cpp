@@ -157,11 +157,12 @@ App::DocumentObjectExecReturn *Groove::execute(void)
         if (solRes.isNull())
             return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
+        solRes = refineShapeIfActive(solRes);
+        this->Shape.setValue(getSolid(solRes));
+
         if(solRes.countSubShapes(TopAbs_SOLID)>1)
             return new App::DocumentObjectExecReturn("Groove: Result has multiple solids. This is not supported at this time.");
 
-        solRes = refineShapeIfActive(solRes);
-        this->Shape.setValue(getSolid(solRes));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

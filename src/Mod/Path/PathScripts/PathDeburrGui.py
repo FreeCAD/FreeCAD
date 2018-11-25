@@ -24,7 +24,7 @@
 
 import FreeCAD
 import FreeCADGui
-import PathScripts.PathChamfer as PathChamfer
+import PathScripts.PathDeburr as PathDeburr
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
@@ -32,10 +32,10 @@ import PathScripts.PathSelection as PathSelection
 
 from PySide import QtCore, QtGui
 
-__title__ = "Path Chamfer Operation UI"
+__title__ = "Path Deburr Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
-__doc__ = "Chamfer operation page controller and command implementation."
+__doc__ = "Deburr operation page controller and command implementation."
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -48,10 +48,10 @@ def translate(context, text, disambig=None):
 
 
 class TaskPanelOpPage(PathOpGui.TaskPanelPage):
-    '''Page controller class for the Chamfer operation.'''
+    '''Page controller class for the Deburr operation.'''
 
     def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpChamferEdit.ui")
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageOpDeburrEdit.ui")
 
     def initPage(self, obj):
         self.opImagePath = "{}Mod/Path/Images/Ops/{}".format(FreeCAD.getHomePath(), 'chamfer.svg')
@@ -99,13 +99,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.value_h.editingFinished.connect(self.updateExtraDepth)
 
 
-Command = PathOpGui.SetupOperation('Chamfer',
-        PathChamfer.Create,
+Command = PathOpGui.SetupOperation('Deburr',
+        PathDeburr.Create,
         TaskPanelOpPage,
-        'Path-Chamfer',
-        QtCore.QT_TRANSLATE_NOOP("PathChamfer", "Chamfer"),
-        QtCore.QT_TRANSLATE_NOOP("PathChamfer", "Creates a Chamfer Path along Edges or around Faces"),
-        PathChamfer.SetupProperties)
+        'Path-Deburr',
+        QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Deburr"),
+        QtCore.QT_TRANSLATE_NOOP("PathDeburr", "Creates a Deburr Path along Edges or around Faces"),
+        PathDeburr.SetupProperties)
 
-FreeCAD.Console.PrintLog("Loading PathChamferGui... done\n")
+FreeCAD.Console.PrintLog("Loading PathDeburrGui... done\n")
 

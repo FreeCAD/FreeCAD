@@ -593,15 +593,15 @@ class AppExport PropertyLinkList :
 
 public:
     /**
-    * A constructor.
-    * A more elaborate description of the constructor.
-    */
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
     PropertyLinkList();
 
     /**
-    * A destructor.
-    * A more elaborate description of the destructor.
-    */
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
     virtual ~PropertyLinkList();
 
     virtual void setSize(int newSize);
@@ -676,7 +676,7 @@ class PropertyXLinkSub;
  *  are stored as names, which can be resolved by the 
  *  ComplexGeoDataType interface to concrete sub objects.
  */
-class AppExport PropertyLinkSub: public PropertyLinkBase
+class AppExport PropertyLinkSub : public PropertyLinkBase
 {
     TYPESYSTEM_HEADER();
 
@@ -795,7 +795,7 @@ public:
     PropertyLinkSubHidden() {_pcScope = LinkScope::Hidden;};
 };
 
-class AppExport PropertyLinkSubList: public PropertyLinkBase
+class AppExport PropertyLinkSubList : public PropertyLinkBase
 {
     TYPESYSTEM_HEADER();
 

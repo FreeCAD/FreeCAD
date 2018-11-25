@@ -26,7 +26,6 @@
 #include <QTableView>
 #include <QHeaderView>
 #include <QKeyEvent>
-#include <boost/signals/connection.hpp>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/Utils.h>
 
@@ -58,6 +57,11 @@ public:
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
+    void deleteSelection();
+    void copySelection();
+    void cutSelection();
+    void pasteClipboard();
+
 protected Q_SLOTS:
     void commitData(QWidget *editor);
     void updateCellSpan(App::CellAddress address);
@@ -88,7 +92,7 @@ protected:
     QAction *actionEditButton;
     QAction *actionEditCombo;
 
-    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection cellSpanChangedConnection;
+    boost::signals2::scoped_connection cellSpanChangedConnection;
 };
 
 }

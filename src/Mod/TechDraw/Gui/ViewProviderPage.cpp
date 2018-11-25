@@ -83,6 +83,7 @@ ViewProviderPage::ViewProviderPage()
 
 ViewProviderPage::~ViewProviderPage()
 {
+    removeMDIView();                    //if the MDIViewPage is still in MainWindow, remove it.
 }
 
 void ViewProviderPage::attach(App::DocumentObject *pcFeat)
@@ -115,13 +116,18 @@ std::vector<std::string> ViewProviderPage::getDisplayModes(void) const
 
 void ViewProviderPage::show(void)
 {
+    Visibility.setValue(true);
     showMDIViewPage();
 }
 
-//this "hide" is only used for Visibility property toggle
-//not when Page tab is closed.
-//WF: is this right? same behaviour either way.
 void ViewProviderPage::hide(void)
+{
+    Visibility.setValue(false);
+    removeMDIView();
+    ViewProviderDocumentObject::hide();
+}
+
+void ViewProviderPage::removeMDIView(void)
 {
     if (!m_mdiView.isNull()) {                                //m_mdiView is a QPointer
         // https://forum.freecadweb.org/viewtopic.php?f=3&t=22797&p=182614#p182614
@@ -136,7 +142,6 @@ void ViewProviderPage::hide(void)
             }
         }
     }
-    ViewProviderDocumentObject::hide();
 }
 
 void ViewProviderPage::updateData(const App::Property* prop)
@@ -155,17 +160,19 @@ void ViewProviderPage::updateData(const App::Property* prop)
             m_mdiView->matchSceneRectToTemplate();
             m_mdiView->updateTemplate();
         }
+    } else if (prop == &(getDrawPage()->Label)) {
+       if(m_mdiView && 
+          !getDrawPage()->isUnsetting()) {
+           m_mdiView->setTabText(getDrawPage()->Label.getValue());
+       }
     }
-
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
 bool ViewProviderPage::onDelete(const std::vector<std::string> &items)
 {
     bool rc = ViewProviderDocumentObject::onDelete(items);
-    if (!m_mdiView.isNull()) {
-        m_mdiView->deleteSelf();
-    }
+    removeMDIView();
     return rc;
 }
 
@@ -182,8 +189,8 @@ bool ViewProviderPage::setEdit(int ModNum)
 {
     bool rc = true;
     if (ModNum == _SHOWDRAWING) {
+        Visibility.setValue(true);
         showMDIViewPage();   // show the drawing
-        Gui::getMainWindow()->setActiveWindow(m_mdiView);
         rc = false;  //finished editing
     } else if (ModNum == _TOGGLEUPDATE) {
          auto page = getDrawPage();
@@ -208,14 +215,18 @@ bool ViewProviderPage::doubleClicked(void)
 bool ViewProviderPage::showMDIViewPage()
 {
    if (isRestoring()) {
-        return true;
-    }
+       return true;
+   }
+   if (!Visibility.getValue())   {
+       return true;
+   }
 
     if (m_mdiView.isNull()){
         Gui::Document* doc = Gui::Application::Instance->getDocument
             (pcObject->getDocument());
         m_mdiView = new MDIViewPage(this, doc, Gui::getMainWindow());
-        QString tabTitle = QString::fromUtf8(getDrawPage()->getNameInDocument());
+//        QString tabTitle = QString::fromUtf8(getDrawPage()->getNameInDocument());
+        QString tabTitle = QString::fromUtf8(getDrawPage()->Label.getValue());
 
         m_mdiView->setDocumentObject(getDrawPage()->getNameInDocument());
         m_mdiView->setDocumentName(pcObject->getDocument()->getName());
@@ -296,11 +307,11 @@ MDIViewPage* ViewProviderPage::getMDIViewPage()
 
 void ViewProviderPage::onChanged(const App::Property *prop)
 {
-    if (prop == &(getDrawPage()->Template)) {
-       if(m_mdiView) {
-            m_mdiView->updateTemplate();
-        }
-    }
+//    if (prop == &(getDrawPage()->Template)) {
+//       if(m_mdiView) {
+//            m_mdiView->updateTemplate();
+//        }
+//    }
 
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }

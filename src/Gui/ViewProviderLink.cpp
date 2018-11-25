@@ -96,7 +96,7 @@ class Gui::LinkInfo {
 public:
     std::atomic<int> ref;
 
-    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    typedef boost::signals2::scoped_connection Connection;
     Connection connChangeIcon;
 
     ViewProviderDocumentObject *pcLinked;

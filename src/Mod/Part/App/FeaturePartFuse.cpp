@@ -97,7 +97,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
     for (it = obj.begin(); it != obj.end(); ++it) {
         s.push_back(Feature::getShape(*it));
         if(s.back().IsNull())
-            throw Base::Exception("Input shape is null");
+            throw NullShapeException("Input shape is null");
     }
 
     bool argumentsAreInCompound = false;
@@ -128,7 +128,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                 BRepAlgoAPI_Fuse mkFuse(resShape, *it);
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone()) 
-                    throw Base::Exception("Fusion failed");
+                    throw BooleanException("Fusion failed");
                 resShape = mkFuse.Shape();
 
                 ShapeHistory hist1(mkFuse, TopAbs_FACE, resShape, mkFuse.Shape1());
@@ -224,7 +224,7 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         }
     }
     else {
-        throw Base::Exception("Not enough shape objects linked");
+        throw Base::CADKernelError("Not enough shape objects linked");
     }
 
 #else

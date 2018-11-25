@@ -83,7 +83,8 @@ before_install:
 
    "linux")
        sudo apt-get update -qq
-       sudo apt-get install -y doxygen                          \
+       sudo apt-get install -y --no-install-recommends          \
+                               doxygen                          \
                                libboost1.55-dev                 \
                                libboost-filesystem1.55-dev      \
                                libboost-program-options1.55-dev \
@@ -128,21 +129,21 @@ before_install:
                                libmedc-dev			\
                                asciidoc
 
-       #Install Eigen 3.3.3 to reduce compiler warnings
-       curl -L "http://bitbucket.org/eigen/eigen/get/3.3.3.tar.gz" | tar xvz && cd eigen-*
-       mkdir build && cd build
-       cmake -DCMAKE_C_FLAGS_RELEASE=-DNDEBUG -DCMAKE_CXX_FLAGS_RELEASE=-DNDEBUG -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE=ON ..
-       sudo make -j2 install
-       cd ${TRAVIS_BUILD_DIR}
+       # Make sure dpkg is upgraded for Ubuntu 14.04 (required for eigen3)
+       sudo apt-get install -y dpkg
 
-       #Install ccache to reduce successive build times (use 3.2.5+ to avoid spurious warnings)
-       curl -L "https://codeload.github.com/ccache/ccache/tar.gz/v3.2.5" | tar xvz && cd ccache-*
+       # Use latest Eigen3 package
+       curl -L http://security.ubuntu.com/ubuntu/pool/universe/e/eigen3/libeigen3-dev_3.3.4-4_all.deb -o libeigen3.deb \
+            && sudo dpkg -i libeigen3.deb
+
+       # Install ccache to reduce successive build times (use newer version to minimize issues)
+       # XXX: ccache <=3.4.3 always builds manuals, requiring asciidoc/xsltproc
+       # XXX: 3.4.4 might have --disable-man (at least its present in their git)
+       sudo apt install -y xsltproc
+       curl -L "https://codeload.github.com/ccache/ccache/tar.gz/v3.4.3" | tar xvz && cd ccache-*
        ./autogen.sh && ./configure CC=gcc && sudo make install
        cd ${TRAVIS_BUILD_DIR}
 
-       #Patch the system - there is a bug related to invalid location of libs on ubuntu 12.04
-       sudo ln -s /usr/lib/x86_64-linux-gnu/ /usr/lib/i386-linux-gnu
-       sudo find /usr/lib -name libpq.so -exec ln -s {} /usr/lib/libpq.so ';'
        export DISPLAY=:99.0
        sh -e /etc/init.d/xvfb start
 

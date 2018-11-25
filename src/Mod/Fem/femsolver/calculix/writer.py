@@ -32,6 +32,7 @@ import FreeCAD
 import os
 import sys
 import time
+import codecs
 import femmesh.meshtools as FemMeshTools
 from .. import writerbase as FemInputWriter
 import six
@@ -81,7 +82,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.femmesh.writeABAQUS(self.file_name, 1, False)
 
         # reopen file with "append" and add the analysis definition
-        inpfile = open(self.file_name, 'a')
+        inpfile = codecs.open(self.file_name, 'a', encoding="utf-8")
         inpfile.write('\n\n')
 
         # Check to see if fluid sections are in analysis and use D network element type
@@ -134,7 +135,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_constraints_displacement(inpfile)
 
         # constraints depend on step and depending on analysis type
-        if self.analysis_type == "frequency":
+        if self.analysis_type == "frequency" or self.analysis_type == "check":
             pass
         elif self.analysis_type == "static":
             if self.selfweight_objects:
@@ -281,7 +282,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_constraints_displacement(inpfileMain)
 
         # constraints depend on step and depending on analysis type
-        if self.analysis_type == "frequency":
+        if self.analysis_type == "frequency" or self.analysis_type == "check":
             pass
         elif self.analysis_type == "static":
             if self.selfweight_objects:
@@ -396,7 +397,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             elif len(self.fluidsection_objects) > 1:
                 self.get_ccx_elsets_multiple_mat_multiple_fluid()
 
-        # TODO: some elemetIDs are collected for 1D-Flow calculation,
+        # TODO: some elementIDs are collected for 1D-Flow calculation,
         # this should be a def somewhere else, preferable inside the get_ccx_elsets_... methods
         for ccx_elset in self.ccx_elsets:
             if ccx_elset['ccx_elset'] and not isinstance(ccx_elset['ccx_elset'], six.string_types):  # use six to be sure to be Python 2.7 and 3.x compatible
@@ -732,6 +733,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             analysis_type = '*FREQUENCY'
         elif self.analysis_type == 'thermomech':
             analysis_type = '*COUPLED TEMPERATURE-DISPLACEMENT'
+        elif self.analysis_type == 'check':
+            analysis_type = '*NO ANALYSIS'
         # analysis line --> solver type
         if self.solver_obj.MatrixSolverType == "default":
             pass
@@ -759,7 +762,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                 pass  # not supported for static and frequency!
         # ANALYSIS parameter line
         analysis_parameter = ''
-        if self.analysis_type == 'static':
+        if self.analysis_type == 'static' or self.analysis_type == 'check':
             if self.solver_obj.IterationsUserDefinedIncrementations is True or self.solver_obj.IterationsUserDefinedTimeStepLength is True:
                 analysis_parameter = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)
         elif self.analysis_type == 'frequency':
@@ -989,7 +992,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                             v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
                             f.write("** Heat flux on face {}\n".format(elem))
                             for i in v:
-                                f.write("{},F{},{},{}\n".format(i[0], i[1], heatflux_obj.AmbientTemp, heatflux_obj.FilmCoef * 0.001))  # SvdW add factor to force heatflux to units system of t/mm/s/K # OvG: Only write out the VolumeIDs linked to a particular face
+                                # SvdW: add factor to force heatflux to units system of t/mm/s/K # OvG: Only write out the VolumeIDs linked to a particular face
+                                f.write("{},F{},{},{}\n".format(i[0], i[1], heatflux_obj.AmbientTemp, heatflux_obj.FilmCoef * 0.001))
             elif heatflux_obj.ConstraintType == "DFlux":
                 f.write('*DFLUX\n')
                 for o, elem_tup in heatflux_obj.References:
@@ -1032,7 +1036,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                             for line in lines:
                                 b = line.split(',')
                                 if int(b[0]) == n and b[3] == 'PIPE INLET\n':
-                                    f.write(b[1] + ',1,1,' + str(fluidsection_obj.InletFlowRate * 0.001) + '\n')  # degree of freedom 1 is for defining flow rate, factor applied to convert unit from kg/s to t/s
+                                    # degree of freedom 1 is for defining flow rate, factor applied to convert unit from kg/s to t/s
+                                    f.write(b[1] + ',1,1,' + str(fluidsection_obj.InletFlowRate * 0.001) + '\n')
                 elif fluidsection_obj.LiquidSectionType == 'PIPE OUTLET':
                     f.write('**Fluid Section Outlet \n')
                     if fluidsection_obj.OutletPressureActive is True:
@@ -1048,7 +1053,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                             for line in lines:
                                 b = line.split(',')
                                 if int(b[0]) == n and b[3] == 'PIPE OUTLET\n':
-                                    f.write(b[1] + ',1,1,' + str(fluidsection_obj.OutletFlowRate * 0.001) + '\n')  # degree of freedom 1 is for defining flow rate, factor applied to convert unit from kg/s to t/s
+                                    # degree of freedom 1 is for defining flow rate, factor applied to convert unit from kg/s to t/s
+                                    f.write(b[1] + ',1,1,' + str(fluidsection_obj.OutletFlowRate * 0.001) + '\n')
 
     def write_outputs_types(self, f):
         f.write('\n***********************************************************\n')
