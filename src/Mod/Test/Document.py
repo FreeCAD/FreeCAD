@@ -25,7 +25,6 @@
 import FreeCAD, os, unittest, tempfile
 import math
 
-
 #---------------------------------------------------------------------------
 # define the functions to test the FreeCAD Document code
 #---------------------------------------------------------------------------
@@ -1402,9 +1401,10 @@ class DocumentObserverCases(unittest.TestCase):
 
   class Observer():
     
-    signal = []
-    parameter = []
-    parameter2 = []
+    def __init__(self):
+      self.signal = []
+      self.parameter = []
+      self.parameter2 = []
     
     def slotCreatedDocument(self, doc):
       self.signal.append('DocCreated');
@@ -1506,9 +1506,10 @@ class DocumentObserverCases(unittest.TestCase):
 
   class GuiObserver():
     
-    signal = []
-    parameter = []
-    parameter2 = []
+    def __init__(self):
+      self.signal = []
+      self.parameter = []
+      self.parameter2 = []
     
     def slotCreatedDocument(self, doc):
       self.signal.append('DocCreated');
@@ -1625,11 +1626,25 @@ class DocumentObserverCases(unittest.TestCase):
     #undo/redo is not enabled in cmd line mode by default
     self.Doc2.UndoMode = 1
     
-    self.Doc2.openTransaction('test')
-    self.failUnless(self.Obs.signal.pop() == 'DocOpenTransaction')
+    # Must set Doc2 as active document before start transaction test. If not,
+    # then a transaction will be auto created inside the active document if a
+    # new transaction is triggered from a non active document
+    FreeCAD.setActiveDocument('Observer2')
+    self.failUnless(self.Obs.signal.pop() == 'DocActivated')
     self.failUnless(self.Obs.parameter.pop() is self.Doc2)
-    self.failUnless(self.Obs.parameter2.pop() == 'test')
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+
+    self.Doc2.openTransaction('test')
+    # openTransaction() now only setup pending transaction, which will only be
+    # created when there is actual change
+    self.Doc2.addObject('App::FeatureTest','test')
+    self.failUnless(self.Obs.signal[0] == 'DocOpenTransaction')
+    self.failUnless(self.Obs.signal.count('DocOpenTransaction')==1)
+    self.failUnless(self.Obs.parameter[0] is self.Doc2)
+    self.failUnless(self.Obs.parameter2[0] == 'test')
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc2.commitTransaction()
     self.failUnless(self.Obs.signal.pop() == 'DocCommitTransaction')
@@ -1637,25 +1652,41 @@ class DocumentObserverCases(unittest.TestCase):
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     
     self.Doc2.openTransaction('test2')
-    self.failUnless(self.Obs.signal.pop() == 'DocOpenTransaction')
-    self.failUnless(self.Obs.parameter.pop() is self.Doc2)
-    self.failUnless(self.Obs.parameter2.pop() == 'test2')
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    # openTransaction() now only setup pending transaction, which will only be
+    # created when there is actual change
+    self.Doc2.addObject('App::FeatureTest','test')
+    self.failUnless(self.Obs.signal[0] == 'DocOpenTransaction')
+    self.failUnless(self.Obs.signal.count('DocOpenTransaction')==1)
+    self.failUnless(self.Obs.parameter[0] is self.Doc2)
+    self.failUnless(self.Obs.parameter2[0] == 'test2')
+    # there will be other signals because of the addObject()
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc2.abortTransaction()
     self.failUnless(self.Obs.signal.pop() == 'DocAbortTransaction')
     self.failUnless(self.Obs.parameter.pop() is self.Doc2)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    # there will be other signals because of aborting the above addObject()
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc2.undo()
     self.failUnless(self.Obs.signal.pop() == 'DocUndo')
     self.failUnless(self.Obs.parameter.pop() is self.Doc2)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    # there will be other signals because undoing the above addObject()
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc2.redo()
     self.failUnless(self.Obs.signal.pop() == 'DocRedo')
     self.failUnless(self.Obs.parameter.pop() is self.Doc2)
-    self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+    # there will be other signals because redoing the above addObject()
+    self.Obs.signal = []
+    self.Obs.parameter = []
+    self.Obs.parameter2 = []
     
     self.Doc1.Comment = 'test comment'
     self.failUnless(self.Obs.signal.pop(0) == 'DocBeforeChange')
@@ -1668,6 +1699,8 @@ class DocumentObserverCases(unittest.TestCase):
     FreeCAD.closeDocument(self.Doc2.Name)
     self.failUnless(self.Obs.signal.pop() == 'DocDeleted')
     self.failUnless(self.Obs.parameter.pop() is self.Doc2)
+    self.failUnless(self.Obs.signal.pop() == 'DocActivated')
+    self.failUnless(self.Obs.parameter.pop() is self.Doc1)
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
     FreeCAD.closeDocument(self.Doc1.Name)
@@ -1783,6 +1816,8 @@ class DocumentObserverCases(unittest.TestCase):
     self.Obs.signal = []
     self.Obs.parameter = []
     self.Obs.parameter2 = []
+    logger = FreeCAD.Logger('test')
+    logger.info(self.GuiObs.signal)
     self.failUnless(self.GuiObs.signal.pop(0) == 'DocCreated')
     self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
     self.failUnless(self.GuiObs.signal.pop(0) == 'DocActivated')
@@ -1819,9 +1854,19 @@ class DocumentObserverCases(unittest.TestCase):
     self.Obs.parameter2 = []    
     self.failUnless(self.GuiObs.signal.pop() == "ObjCreated")
     self.failUnless(self.GuiObs.parameter.pop() is obj.ViewObject)
-    self.failUnless(not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2)
+
+    # There are object change signals, caused by sync of obj.Visibility. Same below.
+    self.GuiObs.signal = []
+    self.GuiObs.parameter = []
+    self.GuiObs.parameter2 = []
 
     obj.ViewObject.Visibility = False
+    self.failUnless(self.Obs.signal.pop() == "ObjChanged")
+    self.failUnless(self.Obs.parameter.pop() is obj)
+    self.failUnless(self.Obs.parameter2.pop() == "Visibility")
+    self.failUnless(self.Obs.signal.pop() == "ObjBeforeChange")
+    self.failUnless(self.Obs.parameter.pop() is obj)
+    self.failUnless(self.Obs.parameter2.pop() == "Visibility")
     self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
     self.failUnless(self.GuiObs.signal.pop(0) == 'ObjChanged')
     self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
