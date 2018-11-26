@@ -248,6 +248,22 @@ private:
 
 private:
     Py::Object inst;
+
+#define FC_PY_SEL_OBSERVER \
+    FC_PY_ELEMENT(onSelectionChanged) \
+    FC_PY_ELEMENT(addSelection) \
+    FC_PY_ELEMENT(removeSelection) \
+    FC_PY_ELEMENT(setSelection) \
+    FC_PY_ELEMENT(clearSelection) \
+    FC_PY_ELEMENT(setPreselection) \
+    FC_PY_ELEMENT(removePreselection) \
+    FC_PY_ELEMENT(pickedListChanged)
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) Py::Object py_##_name;
+
+    FC_PY_SEL_OBSERVER
+
     static std::vector<SelectionObserverPython*> _instances;
 };
 

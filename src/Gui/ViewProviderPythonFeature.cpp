@@ -287,7 +287,7 @@ ViewProviderPythonFeatureObserver::~ViewProviderPythonFeatureObserver()
 // ----------------------------------------------------------------------------
 
 ViewProviderPythonFeatureImp::ViewProviderPythonFeatureImp(ViewProviderDocumentObject* vp)
-  : object(vp)
+  : object(vp), has__object__(false)
 {
 #if 0
     (void)ViewProviderPythonFeatureObserver::instance();
@@ -298,60 +298,63 @@ ViewProviderPythonFeatureImp::~ViewProviderPythonFeatureImp()
 {
 }
 
+void ViewProviderPythonFeatureImp::init(PyObject *pyobj) {
+    Base::PyGILStateLocker lock;
+    has__object__ = !!PyObject_HasAttrString(pyobj, "__object__");
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) FC_PY_GetCallable(pyobj,#_name,py_##_name);
+    FC_PY_VIEW_OBJECT
+}
+
 QIcon ViewProviderPythonFeatureImp::getIcon() const
 {
+    if(py_getIcon.isNone())
+        return QIcon();
+
     // default icon
     //static QPixmap px = BitmapFactory().pixmap("Tree_Python");
 
     // Run the getIcon method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("getIcon"))) {
-                Py::Callable method(vp.getAttr(std::string("getIcon")));
-                Py::Tuple args;
-                Py::Object ret(method.apply(args));
-                if(ret.isNone())
-                    return QIcon();
+        Py::Object ret(Base::pyCall(py_getIcon.ptr()));
+        if(ret.isNone())
+            return QIcon();
 
-                PythonWrapper wrap;
-                wrap.loadGuiModule();
-                wrap.loadWidgetsModule();
-                QIcon *picon = wrap.toQIcon(ret.ptr());
-                if(picon) 
-                    return *picon;
+        PythonWrapper wrap;
+        wrap.loadGuiModule();
+        wrap.loadWidgetsModule();
+        QIcon *picon = wrap.toQIcon(ret.ptr());
+        if(picon) 
+            return *picon;
 
-                std::string content = Py::String(ret).as_std_string("utf-8");
-                QPixmap icon;
-                // Check if the passed string is a filename, otherwise treat as xpm data
-                QFileInfo fi(QString::fromUtf8(content.c_str()));
-                if (fi.isFile() && fi.exists()) {
-                    icon.load(fi.absoluteFilePath());
-                } else {
-                    QByteArray ary;
-                    int strlen = (int)content.size();
-                    ary.resize(strlen);
-                    for (int j=0; j<strlen; j++)
-                        ary[j]=content[j];
-                    // Make sure to remove crap around the XPM data
-                    QList<QByteArray> lines = ary.split('\n');
-                    QByteArray buffer;
-                    buffer.reserve(ary.size()+lines.size());
-                    for (QList<QByteArray>::iterator it = lines.begin(); it != lines.end(); ++it) {
-                        QByteArray trim = it->trimmed();
-                        if (!trim.isEmpty()) {
-                            buffer.append(trim);
-                            buffer.append('\n');
-                        }
-                    }
-                    icon.loadFromData(buffer, "XPM");
-                }
-                if (!icon.isNull()) {
-                    return icon;
+        std::string content = Py::String(ret).as_std_string("utf-8");
+        QPixmap icon;
+        // Check if the passed string is a filename, otherwise treat as xpm data
+        QFileInfo fi(QString::fromUtf8(content.c_str()));
+        if (fi.isFile() && fi.exists()) {
+            icon.load(fi.absoluteFilePath());
+        } else {
+            QByteArray ary;
+            int strlen = (int)content.size();
+            ary.resize(strlen);
+            for (int j=0; j<strlen; j++)
+                ary[j]=content[j];
+            // Make sure to remove crap around the XPM data
+            QList<QByteArray> lines = ary.split('\n');
+            QByteArray buffer;
+            buffer.reserve(ary.size()+lines.size());
+            for (QList<QByteArray>::iterator it = lines.begin(); it != lines.end(); ++it) {
+                QByteArray trim = it->trimmed();
+                if (!trim.isEmpty()) {
+                    buffer.append(trim);
+                    buffer.append('\n');
                 }
             }
+            icon.loadFromData(buffer, "XPM");
+        }
+        if (!icon.isNull()) {
+            return icon;
         }
     }
     catch (Py::Exception&) {
@@ -362,28 +365,21 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
     return QIcon();
 }
 
-std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren(const std::vector<App::DocumentObject*>& base) const 
+std::vector<App::DocumentObject*> 
+ViewProviderPythonFeatureImp::claimChildren(std::vector<App::DocumentObject*>&& base) const 
 {
+    if(py_claimChildren.isNone())
+        return std::move(base);
+
     std::vector<App::DocumentObject*> children;
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("claimChildren"))) {
-                Py::Callable method(vp.getAttr(std::string("claimChildren")));
-                Py::Tuple args;
-                Py::Sequence list(method.apply(args));
-                for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                    PyObject* item = (*it).ptr();
-                    if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                        children.push_back(obj);
-                    }
-                }
-            }
-            else {
-                children = base;
+        Py::Sequence list(Base::pyCall(py_claimChildren.ptr()));
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* item = (*it).ptr();
+            if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
+                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                children.push_back(obj);
             }
         }
     }
@@ -397,19 +393,13 @@ std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren(co
 
 bool ViewProviderPythonFeatureImp::useNewSelectionModel() const
 {
+    if(py_useNewSelectionModel.isNone())
+        return true;
     // Run the useNewSelectionModel method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("useNewSelectionModel"))) {
-                Py::Callable method(vp.getAttr(std::string("useNewSelectionModel")));
-                Py::Tuple args;
-                Py::Boolean ok(method.apply(args));
-                return (bool)ok;
-            }
-        }
+        Py::Boolean ok(Py::Callable(py_useNewSelectionModel).apply(Py::Tuple()));
+        return (bool)ok;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -421,25 +411,21 @@ bool ViewProviderPythonFeatureImp::useNewSelectionModel() const
 
 std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
 {
+    if(py_getElement.isNone())
+        return std::string();
+
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("getElement"))) {
-                PyObject* pivy = 0;
-                // Note: As there is no ref'counting mechanism for the SoDetail class we must
-                // pass '0' as the last parameter so that the Python object does not 'own'
-                // the detail object.
-                pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
-                Py::Callable method(vp.getAttr(std::string("getElement")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::Object(pivy, true));
-                Py::String name(method.apply(args));
-                return (std::string)name;
-            }
-        }
+        PyObject* pivy = 0;
+        // Note: As there is no ref'counting mechanism for the SoDetail class we must
+        // pass '0' as the last parameter so that the Python object does not 'own'
+        // the detail object.
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoDetail *", (void*)det, 0);
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(pivy, true));
+        Py::String name(Base::pyCall(py_getElement.ptr(),args.ptr()));
+        return (std::string)name;
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -449,29 +435,25 @@ std::string ViewProviderPythonFeatureImp::getElement(const SoDetail *det) const
         e.ReportException();
     }
 
-    return "";
+    return std::string();
 }
 
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
+    if(py_getElementPicked.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("getElementPicked"))) {
-                PyObject* pivy = 0;
-                pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", (void*)pp, 0);
-                Py::Callable method(vp.getAttr(std::string("getElementPicked")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::Object(pivy, true));
-                Py::Object ret(method.apply(args));
-                if(!ret.isString()) return Rejected;
-                subname = ret.as_string();
-                return Accepted;
-            }
-        }
+        PyObject* pivy = 0;
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", (void*)pp, 0);
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(pivy, true));
+        Py::Object ret(Base::pyCall(py_getElementPicked.ptr(),args.ptr()));
+        if(!ret.isString()) return Rejected;
+        subname = ret.as_string();
+        return Accepted;
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -485,23 +467,18 @@ ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::str
 }
 SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
 {
+    if(py_getDetail.isNone())
+        return 0;
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("getDetail"))) {
-                Py::Callable method(vp.getAttr(std::string("getDetail")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::String(name));
-                Py::Object det(method.apply(args));
-                void* ptr = 0;
-                Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", det.ptr(), &ptr, 0);
-                SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
-                return detail ? detail->copy() : 0;
-            }
-        }
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(name));
+        Py::Object det(Base::pyCall(py_getDetail.ptr(),args.ptr()));
+        void* ptr = 0;
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", det.ptr(), &ptr, 0);
+        SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
+        return detail ? detail->copy() : 0;
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -517,33 +494,27 @@ SoDetail* ViewProviderPythonFeatureImp::getDetail(const char* name) const
 ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath(
         const char* name, SoFullPath *path, bool append, SoDetail *&det) const
 {
+    if(py_getDetailPath.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     auto length = path->getLength();
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("getDetailPath"))) {
-                Py::Callable method(vp.getAttr(std::string("getDetailPath")));
-                PyObject* pivy = 0;
-                pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", (void*)path, 1);
-                path->ref();
-                Py::Tuple args(3);
-                args.setItem(0, Py::String(name));
-                args.setItem(1, Py::Object(pivy, true));
-                args.setItem(2, Py::Boolean(append));
-                Py::Object pyDet(method.apply(args));
-                void* ptr = 0;
-                Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
-                SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
-                det = detail ? detail->copy() : 0;
-                if(det || pyDet.isTrue())
-                    return Accepted;
-                delete det;
-                return Rejected;
-            }
-        }
-        return NotImplemented;
+        PyObject* pivy = 0;
+        pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", (void*)path, 1);
+        path->ref();
+        Py::Tuple args(3);
+        args.setItem(0, Py::String(name));
+        args.setItem(1, Py::Object(pivy, true));
+        args.setItem(2, Py::Boolean(append));
+        Py::Object pyDet(Base::pyCall(py_getDetailPath.ptr(),args.ptr()));
+        void* ptr = 0;
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
+        SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
+        det = detail ? detail->copy() : 0;
+        if(det || pyDet.isTrue())
+            return Accepted;
+        delete det;
     }
     catch (const Base::Exception& e) {
         e.ReportException();
@@ -565,37 +536,31 @@ std::vector<Base::Vector3d> ViewProviderPythonFeatureImp::getSelectionShape(cons
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::setEdit(int ModNum)
 {
-    // Run the onChanged method of the proxy object.
+    if(py_setEdit.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("setEdit"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("setEdit")));
-                    Py::Tuple args(1);
-                    args.setItem(0, Py::Int(ModNum));
-                    Py::Object ret(method.apply(args));
-                    if (ret.isNone())
-                        return NotImplemented;
-                    Py::Boolean ok(ret);
-                    bool value = static_cast<bool>(ok);
-                    return value ? Accepted : Rejected;
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("setEdit")));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    args.setItem(1, Py::Int(ModNum));
-                    Py::Object ret(method.apply(args));
-                    if (ret.isNone())
-                        return NotImplemented;
-                    Py::Boolean ok(ret);
-                    bool value = static_cast<bool>(ok);
-                    return value ? Accepted : Rejected;
-                }
-            }
+        if (has__object__) {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Int(ModNum));
+            Py::Object ret(Base::pyCall(py_setEdit.ptr(),args.ptr()));
+            if (ret.isNone())
+                return NotImplemented;
+            Py::Boolean ok(ret);
+            bool value = static_cast<bool>(ok);
+            return value ? Accepted : Rejected;
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            args.setItem(1, Py::Int(ModNum));
+            Py::Object ret(Base::pyCall(py_setEdit.ptr(),args.ptr()));
+            if (ret.isNone())
+                return NotImplemented;
+            Py::Boolean ok(ret);
+            bool value = static_cast<bool>(ok);
+            return value ? Accepted : Rejected;
         }
     }
     catch (Py::Exception&) {
@@ -609,37 +574,31 @@ ViewProviderPythonFeatureImp::setEdit(int ModNum)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
 {
-    // Run the onChanged method of the proxy object.
+    if(py_unsetEdit.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("unsetEdit"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("unsetEdit")));
-                    Py::Tuple args(1);
-                    args.setItem(0, Py::Int(ModNum));
-                    Py::Object ret(method.apply(args));
-                    if (ret.isNone())
-                        return NotImplemented;
-                    Py::Boolean ok(ret);
-                    bool value = static_cast<bool>(ok);
-                    return value ? Accepted : Rejected;
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("unsetEdit")));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    args.setItem(1, Py::Int(ModNum));
-                    Py::Object ret(method.apply(args));
-                    if (ret.isNone())
-                        return NotImplemented;
-                    Py::Boolean ok(ret);
-                    bool value = static_cast<bool>(ok);
-                    return value ? Accepted : Rejected;
-                }
-            }
+        if (has__object__) {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Int(ModNum));
+            Py::Object ret(Base::pyCall(py_unsetEdit.ptr(),args.ptr()));
+            if (ret.isNone())
+                return NotImplemented;
+            Py::Boolean ok(ret);
+            bool value = static_cast<bool>(ok);
+            return value ? Accepted : Rejected;
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            args.setItem(1, Py::Int(ModNum));
+            Py::Object ret(Base::pyCall(py_unsetEdit.ptr(),args.ptr()));
+            if (ret.isNone())
+                return NotImplemented;
+            Py::Boolean ok(ret);
+            bool value = static_cast<bool>(ok);
+            return value ? Accepted : Rejected;
         }
     }
     catch (Py::Exception&) {
@@ -652,33 +611,17 @@ ViewProviderPythonFeatureImp::unsetEdit(int ModNum)
 
 bool ViewProviderPythonFeatureImp::setEditViewer(View3DInventorViewer *viewer, int ModNum)
 {
-    // Run the onChanged method of the proxy object.
+    if(py_setEditViewer.isNone())
+        return false;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            const char *fname = "setEditViewer";
-            if (vp.hasAttr(fname)) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(fname));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(viewer->getPyObject(),true));
-                    args.setItem(1, Py::Int(ModNum));
-                    Py::Object ret(method.apply(args));
-                    return ret.isTrue();
-                }
-                else {
-                    Py::Callable method(vp.getAttr(fname));
-                    Py::Tuple args(3);
-                    args.setItem(0, Py::Object(object->getPyObject(),true));
-                    args.setItem(1, Py::Object(viewer->getPyObject(),true));
-                    args.setItem(2, Py::Int(ModNum));
-                    Py::Object ret(method.apply(args));
-                    return ret.isTrue();
-                }
-            }
-        }
+        Py::Tuple args(3);
+        args.setItem(0, Py::Object(object->getPyObject(),true));
+        args.setItem(1, Py::Object(viewer->getPyObject(),true));
+        args.setItem(2, Py::Int(ModNum));
+        Py::Object ret(Base::pyCall(py_setEditViewer.ptr(),args.ptr()));
+        return ret.isTrue();
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -689,31 +632,17 @@ bool ViewProviderPythonFeatureImp::setEditViewer(View3DInventorViewer *viewer, i
 
 bool ViewProviderPythonFeatureImp::unsetEditViewer(View3DInventorViewer *viewer)
 {
+    if(py_unsetEditViewer.isNone())
+        return false;
+
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            const char *fname = "unsetEditViewer";
-            if (vp.hasAttr(fname)) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(fname));
-                    Py::Tuple args(1);
-                    args.setItem(0, Py::Object(viewer->getPyObject(),true));
-                    Py::Object ret(method.apply(args));
-                    return ret.isTrue();
-                }
-                else {
-                    Py::Callable method(vp.getAttr(fname));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getPyObject(),true));
-                    args.setItem(1, Py::Object(viewer->getPyObject(),true));
-                    Py::Object ret(method.apply(args));
-                    return ret.isTrue();
-                }
-            }
-        }
+        Py::Tuple args(2);
+        args.setItem(0, Py::Object(object->getPyObject(),true));
+        args.setItem(1, Py::Object(viewer->getPyObject(),true));
+        Py::Object ret(Base::pyCall(py_unsetEditViewer.ptr(),args.ptr()));
+        return ret.isTrue();
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -725,30 +654,23 @@ bool ViewProviderPythonFeatureImp::unsetEditViewer(View3DInventorViewer *viewer)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::doubleClicked(void)
 {
+    if(py_doubleClicked.isNone())
+        return NotImplemented;
+
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("doubleClicked"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("doubleClicked")));
-                    Py::Tuple args;
-                    //args.setItem(0, Py::Int(ModNum));
-                    Py::Boolean ok(method.apply(args));
-                    bool value = (bool)ok;
-                    return value ? Accepted : Rejected;
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("doubleClicked")));
-                    Py::Tuple args(1);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    Py::Boolean ok(method.apply(args));
-                    bool value = (bool)ok;
-                    return value ? Accepted : Rejected;
-                }
-            }
+        if (has__object__) {
+            Py::Boolean ok(Base::pyCall(py_doubleClicked.ptr()));
+            bool value = (bool)ok;
+            return value ? Accepted : Rejected;
+        }
+        else {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            Py::Boolean ok(Base::pyCall(py_doubleClicked.ptr(),args.ptr()));
+            bool value = (bool)ok;
+            return value ? Accepted : Rejected;
         }
     }
     catch (Py::Exception&) {
@@ -761,33 +683,27 @@ ViewProviderPythonFeatureImp::doubleClicked(void)
 
 void ViewProviderPythonFeatureImp::setupContextMenu(QMenu* menu)
 {
+    if(py_setupContextMenu.isNone())
+        return;
     // Run the attach method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("setupContextMenu"))) {
-                if (vp.hasAttr("__object__")) {
-                    PythonWrapper wrap;
-                    wrap.loadGuiModule();
-                    wrap.loadWidgetsModule();
-                    Py::Callable method(vp.getAttr(std::string("setupContextMenu")));
-                    Py::Tuple args(1);
-                    args.setItem(0, wrap.fromQWidget(menu, "QMenu"));
-                    method.apply(args);
-                }
-                else {
-                    PythonWrapper wrap;
-                    wrap.loadGuiModule();
-                    wrap.loadWidgetsModule();
-                    Py::Callable method(vp.getAttr(std::string("setupContextMenu")));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    args.setItem(1, wrap.fromQWidget(menu, "QMenu"));
-                    method.apply(args);
-                }
-            }
+        if (has__object__) {
+            PythonWrapper wrap;
+            wrap.loadGuiModule();
+            wrap.loadWidgetsModule();
+            Py::Tuple args(1);
+            args.setItem(0, wrap.fromQWidget(menu, "QMenu"));
+            Base::pyCall(py_setupContextMenu.ptr(),args.ptr());
+        }
+        else {
+            PythonWrapper wrap;
+            wrap.loadGuiModule();
+            wrap.loadWidgetsModule();
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            args.setItem(1, wrap.fromQWidget(menu, "QMenu"));
+            Base::pyCall(py_setupContextMenu.ptr(),args.ptr());
         }
     }
     catch (Py::Exception&) {
@@ -798,30 +714,23 @@ void ViewProviderPythonFeatureImp::setupContextMenu(QMenu* menu)
 
 void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
 {
+    if(py_attach.isNone())
+        return;
     // Run the attach method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("attach"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("attach")));
-                    Py::Tuple args;
-                    method.apply(args);
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("attach")));
-                    Py::Tuple args(1);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    method.apply(args);
-                }
-
-                // #0000415: Now simulate a property change event to call
-                // claimChildren if implemented.
-                pcObject->Label.touch();
-            }
+        if (has__object__) {
+            Base::pyCall(py_attach.ptr());
         }
+        else {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            Base::pyCall(py_attach.ptr(),args.ptr());
+        }
+
+        // #0000415: Now simulate a property change event to call
+        // claimChildren if implemented.
+        pcObject->Label.touch();
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -831,32 +740,26 @@ void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
 
 void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
 {
+    if(py_updateData.isNone())
+        return;
     // Run the updateData method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("updateData"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("updateData")));
-                    Py::Tuple args(1);
-                    const char* prop_name = object->getObject()->getPropertyName(prop);
-                    if (prop_name) {
-                        args.setItem(0, Py::String(prop_name));
-                        method.apply(args);
-                    }
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("updateData")));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getObject()->getPyObject(), true));
-                    const char* prop_name = object->getObject()->getPropertyName(prop);
-                    if (prop_name) {
-                        args.setItem(1, Py::String(prop_name));
-                        method.apply(args);
-                    }
-                }
+        if (has__object__) {
+            Py::Tuple args(1);
+            const char* prop_name = object->getObject()->getPropertyName(prop);
+            if (prop_name) {
+                args.setItem(0, Py::String(prop_name));
+                Base::pyCall(py_updateData.ptr(),args.ptr());
+            }
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getObject()->getPyObject(), true));
+            const char* prop_name = object->getObject()->getPropertyName(prop);
+            if (prop_name) {
+                args.setItem(1, Py::String(prop_name));
+                Base::pyCall(py_updateData.ptr(),args.ptr());
             }
         }
     }
@@ -868,32 +771,26 @@ void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
 
 void ViewProviderPythonFeatureImp::onChanged(const App::Property* prop)
 {
+    if(py_onChanged.isNone())
+        return;
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("onChanged"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("onChanged")));
-                    Py::Tuple args(1);
-                    const char* prop_name = object->getPropertyName(prop);
-                    if (prop_name) {
-                        args.setItem(0, Py::String(prop_name));
-                        method.apply(args);
-                    }
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("onChanged")));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    const char* prop_name = object->getPropertyName(prop);
-                    if (prop_name) {
-                        args.setItem(1, Py::String(prop_name));
-                        method.apply(args);
-                    }
-                }
+        if (has__object__) {
+            Py::Tuple args(1);
+            const char* prop_name = object->getPropertyName(prop);
+            if (prop_name) {
+                args.setItem(0, Py::String(prop_name));
+                Base::pyCall(py_onChanged.ptr(),args.ptr());
+            }
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            const char* prop_name = object->getPropertyName(prop);
+            if (prop_name) {
+                args.setItem(1, Py::String(prop_name));
+                Base::pyCall(py_onChanged.ptr(),args.ptr());
             }
         }
     }
@@ -917,10 +814,8 @@ void ViewProviderPythonFeatureImp::finishRestoring()
             if (vp.ptr() == Py::_None()) {
                 object->show();
                 static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
-            }else if (vp.hasAttr(std::string("onFinishRestoring"))) {
-                Py::Callable method(vp.getAttr(std::string("onFinishRestoring")));
-                Py::Tuple args;
-                method.apply(args);
+            }else if (!py_finishRestoring.isNone()) {
+                Base::pyCall(py_finishRestoring.ptr());
             }
         }
     }catch (Py::Exception&) {
@@ -931,34 +826,28 @@ void ViewProviderPythonFeatureImp::finishRestoring()
 
 bool ViewProviderPythonFeatureImp::onDelete(const std::vector<std::string> & sub)
 {
+    if(py_onDelete.isNone())
+        return true;
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("onDelete"))) {
-                Py::Tuple seq(sub.size());
-                int index=0;
-                for (std::vector<std::string>::const_iterator it = sub.begin(); it != sub.end(); ++it) {
-                    seq.setItem(index++, Py::String(*it));
-                }
+        Py::Tuple seq(sub.size());
+        int index=0;
+        for (std::vector<std::string>::const_iterator it = sub.begin(); it != sub.end(); ++it) {
+            seq.setItem(index++, Py::String(*it));
+        }
 
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("onDelete")));
-                    Py::Tuple args(1);
-                    args.setItem(0, seq);
-                    Py::Boolean ok(method.apply(args));
-                    return (bool)ok;
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("onDelete")));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    args.setItem(1, seq);
-                    Py::Boolean ok(method.apply(args));
-                    return (bool)ok;
-                }
-            }
+        if (has__object__) {
+            Py::Tuple args(1);
+            args.setItem(0, seq);
+            Py::Boolean ok(Base::pyCall(py_onDelete.ptr(),args.ptr()));
+            return (bool)ok;
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            args.setItem(1, seq);
+            Py::Boolean ok(Base::pyCall(py_onDelete.ptr(),args.ptr()));
+            return (bool)ok;
         }
     }
     catch (Py::Exception&) {
@@ -969,72 +858,54 @@ bool ViewProviderPythonFeatureImp::onDelete(const std::vector<std::string> & sub
     return true;
 }
 
-bool ViewProviderPythonFeatureImp::canDelete(App::DocumentObject *obj) const
+ViewProviderPythonFeatureImp::ValueT
+ViewProviderPythonFeatureImp::canDelete(App::DocumentObject *obj) const
 {
+    if(py_canDelete.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            const char *attr = "canDelete";
-            if (vp.hasAttr(attr)) {
-                Py::Tuple args(1);
-                args.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::Object());
-                Py::Callable method(vp.getAttr(attr));
-                return Py::Boolean(method.apply(args));
-            }
-        }
+        Py::Tuple args(1);
+        args.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::Object());
+        return Py::Boolean(Base::pyCall(py_canDelete.ptr(),args.ptr()))?Accepted:Rejected;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
+        return Rejected;
     }
-
-    return false;
 }
 
 bool ViewProviderPythonFeatureImp::canAddToSceneGraph() const
 {
+    if(py_canAddToSceneGraph.isNone())
+        return true;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            const char *attr = "canAddToSceneGraph";
-            if (vp.hasAttr(attr)) {
-                Py::Tuple args;
-                Py::Callable method(vp.getAttr(attr));
-                return Py::Boolean(method.apply(args));
-            }
-        }
+        return Py::Boolean(Py::Callable(py_canAddToSceneGraph).apply(Py::Tuple()));
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
         e.ReportException();
     }
-
     return true;
 }
 
 const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
 {
+    if(py_getDefaultDisplayMode.isNone())
+        return 0;
     // Run the getDefaultDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
     static std::string mode;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("getDefaultDisplayMode"))) {
-                Py::Callable method(vp.getAttr(std::string("getDefaultDisplayMode")));
-                Py::Tuple args;
-                Py::String str(method.apply(args));
-                //if (str.isUnicode())
-                //    str = str.encode("ascii"); // json converts strings into unicode
-                mode = str.as_std_string("ascii");
-                return mode.c_str();
-            }
-        }
+        Py::String str(Base::pyCall(py_getDefaultDisplayMode.ptr()));
+        //if (str.isUnicode())
+        //    str = str.encode("ascii"); // json converts strings into unicode
+        mode = str.as_std_string("ascii");
+        return mode.c_str();
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1046,33 +917,27 @@ const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
 
 std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) const
 {
+    std::vector<std::string> modes;
+    if(py_getDefaultDisplayMode.isNone())
+        return modes;
+
     // Run the getDisplayModes method of the proxy object.
     Base::PyGILStateLocker lock;
-    std::vector<std::string> modes;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("getDisplayModes"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
-                    Py::Tuple args;
-                    Py::Sequence list(method.apply(args));
-                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                        Py::String str(*it);
-                        modes.push_back(str.as_std_string("ascii"));
-                    }
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
-                    Py::Tuple args(1);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    Py::Sequence list(method.apply(args));
-                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                        Py::String str(*it);
-                        modes.push_back(str.as_std_string("ascii"));
-                    }
-                }
+        if (has__object__) {
+            Py::Sequence list(Base::pyCall(py_getDisplayModes.ptr()));
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Py::String str(*it);
+                modes.push_back(str.as_std_string("ascii"));
+            }
+        }
+        else {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            Py::Sequence list(Base::pyCall(py_getDisplayModes.ptr(),args.ptr()));
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                Py::String str(*it);
+                modes.push_back(str.as_std_string("ascii"));
             }
         }
     }
@@ -1086,20 +951,15 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
 
 std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
 {
+    if(py_setDisplayMode.isNone())
+        return std::string();
     // Run the setDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("setDisplayMode"))) {
-                Py::Callable method(vp.getAttr(std::string("setDisplayMode")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::String(ModeName));
-                Py::String str(method.apply(args));
-                return str.as_std_string("ascii");
-            }
-        }
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(ModeName));
+        Py::String str(Base::pyCall(py_setDisplayMode.ptr(),args.ptr()));
+        return str.as_std_string("ascii");
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1112,22 +972,13 @@ std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDragObjects() const
 {
-    // Run the onChanged method of the proxy object.
+    if(py_canDragObjects.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("canDragObjects"))) {
-                Py::Callable method(vp.getAttr(std::string("canDragObjects")));
-                Py::Tuple args;
-                Py::Boolean ok(method.apply(args));
-                return static_cast<bool>(ok) ? Accepted : Rejected;
-            }
-            else {
-                return NotImplemented;
-            }
-        }
+        Py::Boolean ok(Base::pyCall(py_canDragObjects.ptr()));
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1140,23 +991,15 @@ ViewProviderPythonFeatureImp::canDragObjects() const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDragObject(App::DocumentObject* obj) const
 {
-    // Run the onChanged method of the proxy object.
+    if(py_canDragObject.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("canDragObject"))) {
-                Py::Callable method(vp.getAttr(std::string("canDragObject")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::Object(obj->getPyObject(), true));
-                Py::Boolean ok(method.apply(args));
-                return static_cast<bool>(ok) ? Accepted : Rejected;
-            }
-            else {
-                return NotImplemented;
-            }
-        }
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(obj->getPyObject(), true));
+        Py::Boolean ok(Base::pyCall(py_canDragObject.ptr(),args.ptr()));
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1169,32 +1012,24 @@ ViewProviderPythonFeatureImp::canDragObject(App::DocumentObject* obj) const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::dragObject(App::DocumentObject* obj)
 {
+    if(py_dragObject.isNone())
+        return NotImplemented;
+
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("dragObject"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("dragObject")));
-                    Py::Tuple args(1);
-                    args.setItem(0, Py::Object(obj->getPyObject(), true));
-                    method.apply(args);
-                    return Accepted;
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("dragObject")));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    args.setItem(1, Py::Object(obj->getPyObject(), true));
-                    method.apply(args);
-                    return Accepted;
-                }
-            }
-            else {
-                return NotImplemented;
-            }
+        if (has__object__) {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(obj->getPyObject(), true));
+            Base::pyCall(py_dragObject.ptr(),args.ptr());
+            return Accepted;
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            args.setItem(1, Py::Object(obj->getPyObject(), true));
+            Base::pyCall(py_dragObject.ptr(),args.ptr());
+            return Accepted;
         }
     }
     catch (Py::Exception&) {
@@ -1208,22 +1043,13 @@ ViewProviderPythonFeatureImp::dragObject(App::DocumentObject* obj)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDropObjects() const
 {
-    // Run the onChanged method of the proxy object.
+    if(py_canDropObjects.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("canDropObjects"))) {
-                Py::Callable method(vp.getAttr(std::string("canDropObjects")));
-                Py::Tuple args;
-                Py::Boolean ok(method.apply(args));
-                return static_cast<bool>(ok) ? Accepted : Rejected;
-            }
-            else {
-                return NotImplemented;
-            }
-        }
+        Py::Boolean ok(Base::pyCall(py_canDropObjects.ptr()));
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1236,23 +1062,15 @@ ViewProviderPythonFeatureImp::canDropObjects() const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDropObject(App::DocumentObject* obj) const
 {
-    // Run the onChanged method of the proxy object.
+    if(py_canDropObject.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("canDropObject"))) {
-                Py::Callable method(vp.getAttr(std::string("canDropObject")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::Object(obj->getPyObject(), true));
-                Py::Boolean ok(method.apply(args));
-                return static_cast<bool>(ok) ? Accepted : Rejected;
-            }
-            else {
-                return NotImplemented;
-            }
-        }
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(obj->getPyObject(), true));
+        Py::Boolean ok(Base::pyCall(py_canDropObject.ptr(),args.ptr()));
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1265,32 +1083,23 @@ ViewProviderPythonFeatureImp::canDropObject(App::DocumentObject* obj) const
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::dropObject(App::DocumentObject* obj)
 {
-    // Run the onChanged method of the proxy object.
+    if(py_dropObject.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("dropObject"))) {
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("dropObject")));
-                    Py::Tuple args(1);
-                    args.setItem(0, Py::Object(obj->getPyObject(), true));
-                    method.apply(args);
-                    return Accepted;
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("dropObject")));
-                    Py::Tuple args(2);
-                    args.setItem(0, Py::Object(object->getPyObject(), true));
-                    args.setItem(1, Py::Object(obj->getPyObject(), true));
-                    method.apply(args);
-                    return Accepted;
-                }
-            }
-            else {
-                return NotImplemented;
-            }
+        if (has__object__) {
+            Py::Tuple args(1);
+            args.setItem(0, Py::Object(obj->getPyObject(), true));
+            Base::pyCall(py_dropObject.ptr(),args.ptr());
+            return Accepted;
+        }
+        else {
+            Py::Tuple args(2);
+            args.setItem(0, Py::Object(object->getPyObject(), true));
+            args.setItem(1, Py::Object(obj->getPyObject(), true));
+            Base::pyCall(py_dropObject.ptr(),args.ptr());
+            return Accepted;
         }
     }
     catch (Py::Exception&) {
@@ -1305,19 +1114,14 @@ ViewProviderPythonFeatureImp::dropObject(App::DocumentObject* obj)
 ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDragAndDropObject(App::DocumentObject *obj) const
 {
+    if(py_canDragAndDropObject.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("canDragAndDropObject"))) {
-                Py::Callable method(vp.getAttr(std::string("canDragAndDropObject")));
-                Py::TupleN args(Py::Object(obj->getPyObject(),true));
-                Py::Boolean ok(method.apply(args));
-                return static_cast<bool>(ok) ? Accepted : Rejected;
-            }
-        }
-        return NotImplemented;
+        Py::TupleN args(Py::Object(obj->getPyObject(),true));
+        Py::Boolean ok(Base::pyCall(py_canDragAndDropObject.ptr(),args.ptr()));
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1331,29 +1135,22 @@ ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::canDropObjectEx(App::DocumentObject* obj,
         App::DocumentObject *owner, const char *subname, const std::vector<std::string> &elements) const
 {
+    if(py_canDropObjectEx.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("canDropObjectEx"))) {
-                Py::Callable method(vp.getAttr(std::string("canDropObjectEx")));
-                Py::Tuple args(4);
-                args.setItem(0, Py::Object(obj->getPyObject(), true));
-                args.setItem(1, owner?Py::Object(owner->getPyObject(), true):Py::None());
-                args.setItem(2, Py::String(subname?subname:""));
-                Py::Tuple tuple(elements.size());
-                int i=0;
-                for(auto &element : elements)
-                    tuple.setItem(i++,Py::String(element));
-                args.setItem(3, tuple);
-                Py::Boolean ok(method.apply(args));
-                return static_cast<bool>(ok) ? Accepted : Rejected;
-            }
-            else {
-                return NotImplemented;
-            }
-        }
+        Py::Tuple args(4);
+        args.setItem(0, Py::Object(obj->getPyObject(), true));
+        args.setItem(1, owner?Py::Object(owner->getPyObject(), true):Py::None());
+        args.setItem(2, Py::String(subname?subname:""));
+        Py::Tuple tuple(elements.size());
+        int i=0;
+        for(auto &element : elements)
+            tuple.setItem(i++,Py::String(element));
+        args.setItem(3, tuple);
+        Py::Boolean ok(Base::pyCall(py_canDropObjectEx.ptr(),args.ptr()));
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1367,40 +1164,25 @@ ViewProviderPythonFeatureImp::ValueT
 ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner, 
         const char *subname, const std::vector<std::string> &elements,std::string &ret)
 {
+    if(py_dropObjectEx.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("dropObjectEx"))) {
-                Py::Tuple tuple(elements.size());
-                int i=0;
-                for(auto &element : elements)
-                    tuple.setItem(i++,Py::String(element));
-                Py::Object res;
-                if (vp.hasAttr("__object__")) {
-                    Py::Callable method(vp.getAttr(std::string("dropObjectEx")));
-                    Py::TupleN args(
-                            Py::Object(obj->getPyObject(),true),
-                            owner?Py::Object(owner->getPyObject(),true):Py::Object(),
-                            Py::String(subname?subname:""),tuple);
-                    res = method.apply(args);
-                }
-                else {
-                    Py::Callable method(vp.getAttr(std::string("dropObjectEx")));
-                    Py::TupleN args(
-                            Py::Object(object->getPyObject(),true),
-                            Py::Object(obj->getPyObject(),true),
-                            owner?Py::Object(owner->getPyObject(),true):Py::Object(),
-                            Py::String(subname?subname:""),tuple);
-                    res = method.apply(args);
-                }
-                if(!res.isNone())
-                    ret = res.as_string();
-                return Accepted;
-            }
-        }
-        return NotImplemented;
+        Py::Tuple tuple(elements.size());
+        int i=0;
+        for(auto &element : elements)
+            tuple.setItem(i++,Py::String(element));
+        Py::Object res;
+        Py::TupleN args(
+                Py::Object(object->getPyObject(),true),
+                Py::Object(obj->getPyObject(),true),
+                owner?Py::Object(owner->getPyObject(),true):Py::Object(),
+                Py::String(subname?subname:""),tuple);
+        res = Base::pyCall(py_dropObjectEx.ptr(),args.ptr());
+        if(!res.isNone())
+            ret = res.as_string();
+        return Accepted;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1410,19 +1192,13 @@ ViewProviderPythonFeatureImp::dropObjectEx(App::DocumentObject* obj, App::Docume
 
 bool ViewProviderPythonFeatureImp::isShow() const
 {
-    // Run the onChanged method of the proxy object.
+    if(py_isShow.isNone())
+        return false;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("isShow"))) {
-                Py::Callable method(vp.getAttr(std::string("isShow")));
-                Py::Tuple args;
-                Py::Boolean ok(method.apply(args));
-                return static_cast<bool>(ok) ? true : false;
-            }
-        }
+        Py::Boolean ok(Base::pyCall(py_isShow.ptr()));
+        return static_cast<bool>(ok) ? true : false;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1435,19 +1211,13 @@ bool ViewProviderPythonFeatureImp::isShow() const
 
 ViewProviderPythonFeatureImp::ValueT 
 ViewProviderPythonFeatureImp::canRemoveChildrenFromRoot() const {
+    if(py_canRemoveChildrenFromRoot.isNone())
+        return NotImplemented;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.hasAttr(std::string("canRemoveChildrenFromRoot"))) {
-                Py::Callable method(vp.getAttr(std::string("canRemoveChildrenFromRoot")));
-                Py::Tuple args;
-                Py::Boolean ok(method.apply(args));
-                return static_cast<bool>(ok) ? Accepted : Rejected;
-            }
-        }
-        return NotImplemented;
+        Py::Boolean ok(Base::pyCall(py_canRemoveChildrenFromRoot.ptr()));
+        return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
@@ -1457,22 +1227,16 @@ ViewProviderPythonFeatureImp::canRemoveChildrenFromRoot() const {
 }
 
 bool ViewProviderPythonFeatureImp::getDropPrefix(std::string &prefix) const {
+    if(py_getDropPrefix.isNone())
+        return false;
+
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            const char *attr = "getDropPrefix";
-            if (vp.hasAttr(attr)) {
-                Py::Callable method(vp.getAttr(attr));
-                Py::Tuple args;
-                Py::Object ret(method.apply(args));
-                if(ret.isNone())
-                    return false;
-                prefix = ret.as_string();
-                return true;
-            }
-        }
+        Py::Object ret(Base::pyCall(py_getDropPrefix.ptr()));
+        if(ret.isNone())
+            return false;
+        prefix = ret.as_string();
+        return true;
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text

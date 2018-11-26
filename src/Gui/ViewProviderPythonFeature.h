@@ -51,7 +51,7 @@ public:
 
     // Returns the icon
     QIcon getIcon() const;
-    std::vector<App::DocumentObject*> claimChildren(const std::vector<App::DocumentObject*>&) const;
+    std::vector<App::DocumentObject*> claimChildren(std::vector<App::DocumentObject*>&&) const;
     bool useNewSelectionModel() const;
     ValueT getElementPicked(const SoPickedPoint *pp, std::string &subname) const;
     std::string getElement(const SoDetail *det) const;
@@ -73,7 +73,7 @@ public:
     void startRestoring();
     void finishRestoring();
     bool onDelete(const std::vector<std::string> & sub);
-    bool canDelete(App::DocumentObject *obj) const;
+    ValueT canDelete(App::DocumentObject *obj) const;
     //@}
 
     /** @name Display methods */
@@ -120,6 +120,54 @@ public:
 
 private:
     ViewProviderDocumentObject* object;
+    bool has__object__;
+
+#define FC_PY_VIEW_OBJECT \
+    FC_PY_ELEMENT(getIcon) \
+    FC_PY_ELEMENT(claimChildren) \
+    FC_PY_ELEMENT(useNewSelectionModel) \
+    FC_PY_ELEMENT(getElementPicked) \
+    FC_PY_ELEMENT(getElement) \
+    FC_PY_ELEMENT(getDetail) \
+    FC_PY_ELEMENT(getDetailPath) \
+    FC_PY_ELEMENT(getSelectionShape) \
+    FC_PY_ELEMENT(setEdit) \
+    FC_PY_ELEMENT(unsetEdit) \
+    FC_PY_ELEMENT(setEditViewer) \
+    FC_PY_ELEMENT(unsetEditViewer) \
+    FC_PY_ELEMENT(doubleClicked) \
+    FC_PY_ELEMENT(setupContextMenu) \
+    FC_PY_ELEMENT(attach) \
+    FC_PY_ELEMENT(updateData) \
+    FC_PY_ELEMENT(onChanged) \
+    FC_PY_ELEMENT(startRestoring) \
+    FC_PY_ELEMENT(finishRestoring) \
+    FC_PY_ELEMENT(onDelete) \
+    FC_PY_ELEMENT(canDelete) \
+    FC_PY_ELEMENT(isShow) \
+    FC_PY_ELEMENT(getDefaultDisplayMode) \
+    FC_PY_ELEMENT(getDisplayModes) \
+    FC_PY_ELEMENT(setDisplayMode) \
+    FC_PY_ELEMENT(canRemoveChildrenFromRoot) \
+    FC_PY_ELEMENT(canDragObjects) \
+    FC_PY_ELEMENT(canDragObject) \
+    FC_PY_ELEMENT(dragObject) \
+    FC_PY_ELEMENT(canDropObjects) \
+    FC_PY_ELEMENT(canDropObject) \
+    FC_PY_ELEMENT(dropObject) \
+    FC_PY_ELEMENT(canDragAndDropObject) \
+    FC_PY_ELEMENT(canDropObjectEx) \
+    FC_PY_ELEMENT(dropObjectEx) \
+    FC_PY_ELEMENT(canAddToSceneGraph) \
+    FC_PY_ELEMENT(getDropPrefix) 
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) Py::Object py_##_name;
+
+    FC_PY_VIEW_OBJECT
+
+public:
+    void init(PyObject *pyobj);
 };
 
 template <class ViewProviderT>
@@ -220,7 +268,14 @@ public:
         return ViewProviderT::onDelete(sub);
     }
     virtual bool canDelete(App::DocumentObject *obj) const override {
-        return imp->canDelete(obj) || ViewProviderT::canDelete(obj);
+        switch(imp->canDelete(obj)) {
+        case ViewProviderPythonFeatureImp::Accepted:
+            return true;
+        case ViewProviderPythonFeatureImp::Rejected:
+            return false;
+        default:
+            return ViewProviderT::canDelete(obj);
+        }
     }
     //@}
 
@@ -468,6 +523,7 @@ public:
 protected:
     virtual void onChanged(const App::Property* prop) {
         if (prop == &Proxy) {
+            imp->init(Proxy.getValue().ptr());
             if (ViewProviderT::pcObject && !Proxy.getValue().is(Py::_None())) {
                 if (!_attached) {
                     _attached = true;

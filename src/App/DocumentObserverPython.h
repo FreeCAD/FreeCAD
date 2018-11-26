@@ -101,28 +101,37 @@ private:
     static std::vector<DocumentObserverPython*> _instances;
 
     typedef boost::signals2::connection Connection;
-    Connection connectApplicationCreatedDocument;
-    Connection connectApplicationDeletedDocument;
-    Connection connectApplicationRelabelDocument;
-    Connection connectApplicationActivateDocument;
-    Connection connectApplicationUndoDocument;
-    Connection connectApplicationRedoDocument;
-    Connection connectDocumentBeforeChange;
-    Connection connectDocumentChanged;
-    Connection connectDocumentCreatedObject;
-    Connection connectDocumentDeletedObject;
-    Connection connectDocumentBeforeChangeObject;
-    Connection connectDocumentChangedObject;
-    Connection connectDocumentObjectRecomputed;
-    Connection connectDocumentRecomputed;
-    Connection connectDocumentOpenTransaction;
-    Connection connectDocumentCommitTransaction;
-    Connection connectDocumentAbortTransaction;
-    Connection connectDocumentStartSave;
-    Connection connectDocumentFinishSave;
-    Connection connectObjectAppendDynamicProperty;
-    Connection connectObjectRemoveDynamicProperty;
-    Connection connectObjectChangePropertyEditor;
+
+#define FC_PY_DOC_OBSERVER \
+    FC_PY_ELEMENT(CreatedDocument,_1) \
+    FC_PY_ELEMENT(DeletedDocument,_1) \
+    FC_PY_ELEMENT(RelabelDocument,_1) \
+    FC_PY_ELEMENT(ActivateDocument,_1) \
+    FC_PY_ELEMENT(UndoDocument,_1) \
+    FC_PY_ELEMENT(RedoDocument,_1) \
+    FC_PY_ELEMENT(BeforeChangeDocument,_1,_2) \
+    FC_PY_ELEMENT(ChangedDocument,_1,_2) \
+    FC_PY_ELEMENT(CreatedObject,_1) \
+    FC_PY_ELEMENT(DeletedObject,_1) \
+    FC_PY_ELEMENT(BeforeChangeObject,_1,_2) \
+    FC_PY_ELEMENT(ChangedObject,_1,_2) \
+    FC_PY_ELEMENT(RecomputedObject,_1) \
+    FC_PY_ELEMENT(RecomputedDocument,_1) \
+    FC_PY_ELEMENT(OpenTransaction,_1,_2) \
+    FC_PY_ELEMENT(CommitTransaction,_1) \
+    FC_PY_ELEMENT(AbortTransaction,_1) \
+    FC_PY_ELEMENT(StartSaveDocument,_1,_2) \
+    FC_PY_ELEMENT(FinishSaveDocument,_1,_2) \
+    FC_PY_ELEMENT(AppendDynamicProperty,_1) \
+    FC_PY_ELEMENT(RemoveDynamicProperty,_1) \
+    FC_PY_ELEMENT(ChangePropertyEditor,_1)
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name,...) \
+    Connection connect##_name;\
+    Py::Object py##_name;
+
+    FC_PY_DOC_OBSERVER
 };
 
 } //namespace App

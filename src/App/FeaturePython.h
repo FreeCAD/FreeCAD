@@ -80,6 +80,34 @@ public:
 
 private:
     App::DocumentObject* object;
+    bool has__object__;
+
+#define FC_PY_FEATURE_PYTHON \
+    FC_PY_ELEMENT(execute)\
+    FC_PY_ELEMENT(mustExecute)\
+    FC_PY_ELEMENT(onBeforeChange)\
+    FC_PY_ELEMENT(onBeforeChangeLabel)\
+    FC_PY_ELEMENT(onChanged)\
+    FC_PY_ELEMENT(onDocumentRestored)\
+    FC_PY_ELEMENT(getViewProviderName)\
+    FC_PY_ELEMENT(getSubObject)\
+    FC_PY_ELEMENT(getSubObjects)\
+    FC_PY_ELEMENT(getLinkedObject)\
+    FC_PY_ELEMENT(canLinkProperties)\
+    FC_PY_ELEMENT(allowDuplicateLabel)\
+    FC_PY_ELEMENT(redirectSubName)\
+    FC_PY_ELEMENT(canLoadPartial)\
+    FC_PY_ELEMENT(hasChildElement)\
+    FC_PY_ELEMENT(isElementVisible)\
+    FC_PY_ELEMENT(setElementVisible)
+
+#undef FC_PY_ELEMENT
+#define FC_PY_ELEMENT(_name) Py::Object py_##_name;
+
+    FC_PY_FEATURE_PYTHON
+
+public:
+    void init(PyObject *pyobj);
 };
 
 /**
@@ -314,6 +342,8 @@ protected:
             FeatureT::onBeforeChangeLabel(newLabel);
     }
     virtual void onChanged(const Property* prop) {
+        if(prop == &Proxy)
+            imp->init(Proxy.getValue().ptr());
         imp->onChanged(prop);
         FeatureT::onChanged(prop);
     }
