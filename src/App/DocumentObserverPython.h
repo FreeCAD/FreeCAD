@@ -77,6 +77,8 @@ private:
     void slotRedoDocument(const App::Document& Doc);
     /** Called when a given object is recomputed */
     void slotRecomputedObject(const App::DocumentObject& Obj);
+    /** Called before an observed document is recomputed */
+    void slotBeforeRecomputeDocument(const App::Document& Doc);
     /** Called when an observed document is recomputed */
     void slotRecomputedDocument(const App::Document& Doc);
     /** Called when an observed document opens a transaction */
@@ -116,6 +118,7 @@ private:
     FC_PY_ELEMENT(BeforeChangeObject,_1,_2) \
     FC_PY_ELEMENT(ChangedObject,_1,_2) \
     FC_PY_ELEMENT(RecomputedObject,_1) \
+    FC_PY_ELEMENT(BeforeRecomputeDocument,_1) \
     FC_PY_ELEMENT(RecomputedDocument,_1) \
     FC_PY_ELEMENT(OpenTransaction,_1,_2) \
     FC_PY_ELEMENT(CommitTransaction,_1) \

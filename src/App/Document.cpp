@@ -2854,8 +2854,6 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
         return 0;
     }
 
-    Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
-
     // delete recompute log
     for (auto LogEntry: _RecomputeLog)
         delete LogEntry;
@@ -2864,6 +2862,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     //do we have anything to do?
     if(d->objectMap.empty())
         return 0;
+
+    Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
+    signalBeforeRecompute(*this);
 
 #if 0
     //////////////////////////////////////////////////////////////////////////

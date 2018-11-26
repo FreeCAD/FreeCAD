@@ -173,6 +173,7 @@ public:
     boost::signals2::signal<void (const App::Document&, const std::string&)> signalStartSave;
     //signal finishing a save action to a file
     boost::signals2::signal<void (const App::Document&, const std::string&)> signalFinishSave;
+    boost::signals2::signal<void (const App::Document&)> signalBeforeRecompute;
     boost::signals2::signal<void (const App::Document&, const std::vector<App::DocumentObject*>&)> signalRecomputed;
     boost::signals2::signal<void (const App::DocumentObject&)> signalRecomputedObject;
     //signal a new opened transaction

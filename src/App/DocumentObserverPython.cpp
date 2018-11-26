@@ -307,6 +307,20 @@ void DocumentObserverPython::slotRecomputedDocument(const App::Document& doc)
     }
 }
 
+void DocumentObserverPython::slotBeforeRecomputeDocument(const App::Document& doc)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::Object(const_cast<App::Document&>(doc).getPyObject(), true));
+        Base::pyCall(pyBeforeRecomputeDocument.ptr(),args.ptr());
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
 void DocumentObserverPython::slotOpenTransaction(const App::Document& doc, std::string str)
 {
     Base::PyGILStateLocker lock;

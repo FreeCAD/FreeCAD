@@ -412,6 +412,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     _pActiveDoc->signalRedo.connect(boost::bind(&App::Application::slotRedoDocument, this, _1));
     _pActiveDoc->signalRecomputedObject.connect(boost::bind(&App::Application::slotRecomputedObject, this, _1));
     _pActiveDoc->signalRecomputed.connect(boost::bind(&App::Application::slotRecomputed, this, _1));
+    _pActiveDoc->signalBeforeRecompute.connect(boost::bind(&App::Application::slotBeforeRecompute, this, _1));
     _pActiveDoc->signalOpenTransaction.connect(boost::bind(&App::Application::slotOpenTransaction, this, _1, _2));
     _pActiveDoc->signalCommitTransaction.connect(boost::bind(&App::Application::slotCommitTransaction, this, _1));
     _pActiveDoc->signalAbortTransaction.connect(boost::bind(&App::Application::slotAbortTransaction, this, _1));
@@ -1250,6 +1251,11 @@ void Application::slotRecomputedObject(const DocumentObject& obj)
 void Application::slotRecomputed(const Document& doc)
 {
     this->signalRecomputed(doc);
+}
+
+void Application::slotBeforeRecompute(const Document& doc)
+{
+    this->signalBeforeRecomputeDocument(doc);
 }
 
 void Application::slotOpenTransaction(const Document& d, string s)

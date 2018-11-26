@@ -808,14 +808,16 @@ void ViewProviderPythonFeatureImp::finishRestoring()
 {
     Base::PyGILStateLocker lock;
     try {
-        App::Property* proxy = object->getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-            if (vp.ptr() == Py::_None()) {
-                object->show();
-                static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
-            }else if (!py_finishRestoring.isNone()) {
-                Base::pyCall(py_finishRestoring.ptr());
+        if(!py_finishRestoring.isNone())
+            Base::pyCall(py_finishRestoring.ptr());
+        else {
+            App::Property* proxy = object->getPropertyByName("Proxy");
+            if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+                Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+                if (vp.isNone()) {
+                    object->show();
+                    static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
+                }
             }
         }
     }catch (Py::Exception&) {
@@ -952,7 +954,7 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
 std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
 {
     if(py_setDisplayMode.isNone())
-        return std::string();
+        return ModeName;
     // Run the setDisplayMode method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
