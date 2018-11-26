@@ -311,7 +311,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
     const char *element=0;
     auto ret = GeoFeature::resolveElement(obj,subname, elementName,true,
                 GeoFeature::ElementNameType::Export,feature,&element,&geo);
-    if(!geo || !element || !element[0]) {
+    if(!ret || !geo || !element || !element[0]) {
         if(elementName.second.size())
             shadow.second.swap(elementName.second);
         return false;
@@ -2488,22 +2488,24 @@ public:
         }
         if(pcDoc!=&doc) return;
         std::map<App::PropertyLinkBase*,std::vector<App::PropertyXLink*> > parentLinks;
-        for(auto it=links.begin(),itNext=it;it!=links.end();it=itNext) {
-            ++itNext;
-            auto link = *it;
+        for(auto link : links) {
             link->setFlag(PropertyLinkBase::LinkDetached);
             if(link->parentProp)
                 parentLinks[link->parentProp].push_back(link);
             else
-                link->detach();
+                parentLinks[0].push_back(link);
         }
         for(auto &v : parentLinks) {
-            v.first->setFlag(PropertyLinkBase::LinkDetached);
-            v.first->aboutToSetValue();
+            if(v.first) {
+                v.first->setFlag(PropertyLinkBase::LinkDetached);
+                v.first->aboutToSetValue();
+            }
             for(auto l : v.second)
                 l->detach();
-            v.first->hasSetValue();
-            v.first->setFlag(PropertyLinkBase::LinkDetached,false);
+            if(v.first) {
+                v.first->hasSetValue();
+                v.first->setFlag(PropertyLinkBase::LinkDetached,false);
+            }
         }
         pcDoc = 0;
     }
