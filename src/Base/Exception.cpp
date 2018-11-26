@@ -634,6 +634,28 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 
 // ---------------------------------------------------------
 
+BadGraphError::BadGraphError()
+  : RuntimeError("The graph must be a DAG.")
+{
+}
+
+BadGraphError::BadGraphError(const char * sMessage)
+  : RuntimeError(sMessage)
+{
+}
+
+BadGraphError::BadGraphError(const std::string& sMessage)
+  : RuntimeError(sMessage)
+{
+}
+
+BadGraphError::BadGraphError(const BadGraphError &inst)
+  : RuntimeError(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 NotImplementedError::NotImplementedError()
   : Exception()
 {
