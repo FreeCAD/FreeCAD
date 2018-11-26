@@ -146,12 +146,12 @@ bool PropertyContainer::isHidden(const char *name) const
 
 const char* PropertyContainer::getPropertyName(const Property* prop)const
 {
-    // Although the property name is cached inside Property now, we still search
-    // from it here to make sure the property belongs to us.
-    //
-    // return prop?prop->myName:0;
+    // return getPropertyData().getName(this,prop);
 
-    return getPropertyData().getName(this,prop);
+    if(prop && prop->getContainer()==this)
+        return prop->myName;
+    return 0;
+
 }
 
 

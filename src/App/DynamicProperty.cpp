@@ -129,19 +129,14 @@ void DynamicProperty::addDynamicProperties(const PropertyContainer* cont)
 
 const char* DynamicProperty::getPropertyName(const Property* prop) const
 {
-    // Although the property name is cached inside Property now, we still search
-    // from it here to make sure the property belongs to us.
-    //
-    // return prop?prop->myName:0;
+    if(prop) {
+        if(prop->getContainer()==pc)
+            return prop->myName;
 
-    auto it = propMap.find(prop);
-    if(it!=propMap.end())
-        return prop->myName;
-    
-    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
-        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyName(prop);
-
-    return this->pc->PropertyContainer::getPropertyName(prop);
+        if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+            return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyName(prop);
+    }
+    return 0;
 }
 
 unsigned int DynamicProperty::getMemSize (void) const
