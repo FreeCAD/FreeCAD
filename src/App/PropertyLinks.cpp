@@ -2788,7 +2788,10 @@ const char *PropertyXLink::getObjectName() const {
 }
 
 bool PropertyXLink::upgrade(Base::XMLReader &reader, const char *typeName) {
-    if(strcmp(typeName,App::PropertyLink::getClassTypeId().getName())==0) {
+    if(strcmp(typeName,App::PropertyLinkGlobal::getClassTypeId().getName())==0 ||
+       strcmp(typeName,App::PropertyLink::getClassTypeId().getName())==0 ||
+       strcmp(typeName,App::PropertyLinkChild::getClassTypeId().getName())==0) 
+    {
         PropertyLink::Restore(reader);
         return true;
     }
@@ -3295,8 +3298,12 @@ PropertyXLink *PropertyXLinkSub::createInstance() const{
 }
 
 bool PropertyXLinkSub::upgrade(Base::XMLReader &reader, const char *typeName) {
-    if(strcmp(typeName, PropertyLinkSub::getClassTypeId().getName())==0) {
+    if(strcmp(typeName, PropertyLinkSubGlobal::getClassTypeId().getName())==0 ||
+       strcmp(typeName, PropertyLinkSub::getClassTypeId().getName())==0 ||
+       strcmp(typeName, PropertyLinkSubChild::getClassTypeId().getName())==0) 
+    {
         App::PropertyLinkSub linkProp;
+        linkProp.setContainer(getContainer());
         linkProp.Restore(reader);
         setValue(linkProp.getValue(),linkProp.getSubValues());
         return true;
@@ -3854,12 +3861,16 @@ int PropertyXLinkSubList::checkRestore() const {
 }
 
 bool PropertyXLinkSubList::upgrade(Base::XMLReader &reader, const char *typeName) {
-    if(strcmp(typeName, PropertyLinkSubList::getClassTypeId().getName())==0) {
-        PropertyLinkSubList link;
-        link.Restore(reader);
+    if(strcmp(typeName, PropertyLinkSubListGlobal::getClassTypeId().getName())==0 ||
+       strcmp(typeName, PropertyLinkSubList::getClassTypeId().getName())==0 ||
+       strcmp(typeName, PropertyLinkSubListChild::getClassTypeId().getName())==0) 
+    {
+        PropertyLinkSubList linkProp;
+        linkProp.setContainer(getContainer());
+        linkProp.Restore(reader);
         std::map<DocumentObject *, std::vector<std::string> > values;
-        const auto &objs = link.getValues();
-        const auto &subs = link.getSubValues();
+        const auto &objs = linkProp.getValues();
+        const auto &subs = linkProp.getSubValues();
         assert(objs.size() == subs.size());
         for(size_t i=0;i<objs.size();++i)
             values[objs[i]].push_back(subs[i]);
