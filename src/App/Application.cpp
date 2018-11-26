@@ -1463,6 +1463,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::IndexError>;
     new ExceptionProducer<Base::AttributeError>;
     new ExceptionProducer<Base::RuntimeError>;
+    new ExceptionProducer<Base::BadGraphError>;
     new ExceptionProducer<Base::NotImplementedError>;
     new ExceptionProducer<Base::DivisionByZeroError>;
     new ExceptionProducer<Base::ReferencesError>;

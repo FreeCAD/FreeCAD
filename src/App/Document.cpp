@@ -2040,7 +2040,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         std::stringstream ss;
         ss << "Gathering all dependencies failed, probably due to circular dependencies. Error: ";
         ss << e.what();
-        throw Base::RuntimeError(ss.str().c_str());
+        throw Base::BadGraphError(ss.str().c_str());
     }
 
     std::set<Vertex> out;
