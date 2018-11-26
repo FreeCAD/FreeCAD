@@ -667,6 +667,9 @@ class ViewProviderBuildingPart:
         action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write camera position",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.writeCamera)
         menu.addAction(action2)
+        action3 = QtGui.QAction(QtGui.QIcon(),"Create group...",menu)
+        QtCore.QObject.connect(action3,QtCore.SIGNAL("triggered()"),self.createGroup)
+        menu.addAction(action3)
 
     def setWorkingPlane(self,restore=False):
 
@@ -706,6 +709,12 @@ class ViewProviderBuildingPart:
                 cdata.append(n.heightAngle.getValue())
                 cdata.append(1.0) # perspective camera
             self.Object.ViewObject.ViewData = cdata
+
+    def createGroup(self):
+        
+        if hasattr(self,"Object"):
+            s = "FreeCAD.ActiveDocument.getObject(\"%s\").newObject(\"App::DocumentObjectGroup\",\"Group\")" % self.Object.Name
+            FreeCADGui.doCommand(s)
 
     def __getstate__(self):
         return None
