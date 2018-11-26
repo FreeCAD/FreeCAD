@@ -109,6 +109,9 @@
         <property name="toolTip">
          <string>an optional custom folder to be displayed at the bottom of the first page</string>
         </property>
+        <property name="mode">
+         <enum>Gui::FileChooser::Directory</enum>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowCustomFolder</cstring>
         </property>
