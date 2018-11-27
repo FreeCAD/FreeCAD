@@ -59,7 +59,7 @@ namespace App {
      %token EXPAND
      %token NEWLINE INDENT DEDENT
      %token IF ELIF ELSE WHILE FOR BREAK CONTINUE RETURN IN PY_BEGIN PY_END DEF PASS DEL GLOBAL NONLOCAL
-     %type <std::ostringstream> module
+     %type <std::string> module
      %type <StringList> id_list
      %type <FlagExpression> item
      %type <FlagExpressionList> items items2
@@ -382,26 +382,26 @@ function_stmt
     ;
 
 module
-    : IDENTIFIER                            { $$ << $1; }
-    | module '.' IDENTIFIER                 { $$ << '.' << $3; }
+    : IDENTIFIER                            { $$ = std::move($1); }
+    | module '.' IDENTIFIER                 { $$ += "."; $$ += $3; }
     ;
 
 import_stmt1
-    : IMPORT module                         { $$ = ImportStatement::create(ctx.obj, $2.str()); }
-    | IMPORT module AS IDENTIFIER           { $$ = ImportStatement::create(ctx.obj, $2.str(), std::move($4)); }
-    | import_stmt1 ',' module               { static_cast<ImportStatement&>(*$1).add($3.str()); $$ = std::move($1); }
-    | import_stmt1 ',' module AS IDENTIFIER { static_cast<ImportStatement&>(*$1).add($3.str(), std::move($5)); $$ = std::move($1); }
+    : IMPORT module                         { $$ = ImportStatement::create(ctx.obj, std::move($2)); }
+    | IMPORT module AS IDENTIFIER           { $$ = ImportStatement::create(ctx.obj, std::move($2), std::move($4)); }
+    | import_stmt1 ',' module               { static_cast<ImportStatement&>(*$1).add(std::move($3)); $$ = std::move($1); }
+    | import_stmt1 ',' module AS IDENTIFIER { static_cast<ImportStatement&>(*$1).add(std::move($3), std::move($5)); $$ = std::move($1); }
     ;
 
 import_stmt2
-    : FROM module IMPORT IDENTIFIER         { $$ = FromStatement::create(ctx.obj, $2.str(), std::move($4)); }
-    | FROM module IMPORT IDENTIFIER AS IDENTIFIER { $$ = FromStatement::create(ctx.obj, $2.str(), std::move($4), std::move($4)); }
+    : FROM module IMPORT IDENTIFIER         { $$ = FromStatement::create(ctx.obj, std::move($2), std::move($4)); }
+    | FROM module IMPORT IDENTIFIER AS IDENTIFIER { $$ = FromStatement::create(ctx.obj, std::move($2), std::move($4), std::move($4)); }
     | import_stmt2 ',' IDENTIFIER           { static_cast<FromStatement&>(*$1).add(std::move($3)); $$ = std::move($1); }
     | import_stmt2 ',' IDENTIFIER AS IDENTIFIER { static_cast<FromStatement&>(*$1).add(std::move($3), std::move($5)); $$ = std::move($1); }
     ;
 
 import_stmt3
-    : FROM module IMPORT '*'                { $$ = FromStatement::create(ctx.obj, $2.str(), std::string("*")); }
+    : FROM module IMPORT '*'                { $$ = FromStatement::create(ctx.obj, std::move($2), std::string("*")); }
     ;
 
 id_or_cell 
