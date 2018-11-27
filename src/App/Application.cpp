@@ -1453,7 +1453,6 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::FileSystemError>;
     new ExceptionProducer<Base::BadFormatError>;
     new ExceptionProducer<Base::MemoryException>;
-    new ExceptionProducer<Base::MemoryException>;
     new ExceptionProducer<Base::AccessViolation>;
     new ExceptionProducer<Base::AbnormalProgramTermination>;
     new ExceptionProducer<Base::UnknownProgramOption>;
@@ -1474,6 +1473,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::UnderflowError>;
     new ExceptionProducer<Base::UnitsMismatchError>;
     new ExceptionProducer<Base::CADKernelError>;
+    new ExceptionProducer<Base::RestoreError>;
 }
 
 void Application::initConfig(int argc, char ** argv)
