@@ -3425,8 +3425,11 @@ App::any CallableExpression::_getValueAsAny() const {
         ImportParamLock lock;
         return pyObjectToAny(Py::Callable(pyobj).apply(tuple,dict));
     }catch (Py::Exception&) {
-        Base::PyException::ThrowException();
-        return App::any();
+        Base::PyException e;
+        std::ostringstream ss;
+        ss << e.what() << std::endl << toStr();
+        e.setMessage(ss.str().c_str());
+        throw e;
     }
 }
 
