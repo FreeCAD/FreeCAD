@@ -195,7 +195,7 @@ public:
     virtual void aboutToSetChildValue(Property &) {}
 
     friend class PropertyContainer;
-    friend class PropertyData;
+    friend struct PropertyData;
     friend class DynamicProperty;
 
 protected:

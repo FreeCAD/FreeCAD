@@ -1473,23 +1473,10 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         break;
     }
 
-<<<<<<< HEAD
-   //switch (code)
-   //{
-   //    case FLT_DIVIDE_BY_ZERO :
-   //       //throw CMyFunkyDivideByZeroException(code, pExp);
-   //       throw Base::ZeroDivisionError("Division by zero!");
-   //    break;
-   //}
-
-   // general C++ SEH exception for things we don't need to handle separately....
-   throw Base::RuntimeError("my_trans_func()");
-=======
     std::stringstream str;
     str << "SEH exception of type: " << code;
     // general C++ SEH exception for things we don't need to handle separately....
     throw Base::RuntimeError(str.str());
->>>>>>> 73df4e6fc0ed90a30e5958232dbc737d8a47e492
 }
 #endif
 

@@ -1172,7 +1172,7 @@ protected:
  *
  * @sa See PropertyExpressionEngine for example usage
  */
-class PropertyXLinkContainer : public PropertyLinkBase {
+class AppExport PropertyXLinkContainer : public PropertyLinkBase {
     TYPESYSTEM_HEADER();
 public:
     PropertyXLinkContainer();
