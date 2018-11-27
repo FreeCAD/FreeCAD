@@ -327,14 +327,19 @@ def fill_femresult_mechanical(results, result_set, span):
             results.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
             results.Time = step_time
 
+    # fill the stats list
+    fill_femresult_stats(results)
     return results
 
 
 def fill_femresult_stats(results):
-    ''' fills a FreeCAD FEM mechanical result object with stats data
     '''
-    # result stats, set stats values to 0, they may not exist
+    fills a FreeCAD FEM mechanical result object with stats data
+    results: FreeCAD FEM result object
+    '''
+    FreeCAD.Console.PrintMessage('Calculate stats list for result obj: ' + results.Name + '\n')
     no_of_values = 1  # to avoid division by zero
+    # set stats values to 0, they may not exist in result obj results
     x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
     a_max = a_min = a_avg = s_max = s_min = s_avg = 0
     p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
@@ -408,7 +413,7 @@ def fill_femresult_stats(results):
     # - module femtest/testccxtools.py
     # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
 
-    print('Recalculated Stats.\n')
+    FreeCAD.Console.PrintMessage('Stats list for result obj: ' + results.Name + ' calculated\n')
     return results
 
 
