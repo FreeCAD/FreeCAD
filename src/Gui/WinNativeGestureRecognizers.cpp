@@ -42,6 +42,8 @@
 #include <qgesture.h>
 
 #include <Base/Exception.h>
+#include <App/Application.h>
+#include <Base/Parameter.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -257,8 +259,16 @@ void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
     cfgs[0].dwID = GID_PAN;
     cfgs[0].dwWant = GC_PAN;
     cfgs[0].dwBlock = GC_PAN_WITH_GUTTER;//disables stickiness to pure vertical/pure horizontal pans
-    cfgs[1].dwID = GID_ROTATE;
-    cfgs[1].dwWant = GC_ROTATE;
+
+    bool enableGestureTilt = !(App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
+    if(enableGestureTilt){
+        cfgs[1].dwID = GID_ROTATE;
+        cfgs[1].dwWant = GC_ROTATE;
+    } else {
+        cfgs[1].dwID = GID_ROTATE;
+        cfgs[1].dwBlock = GC_ROTATE;
+    }
 
     //set the options
     bool ret = dllSetGestureConfig(w, 0, nCfg, cfgs, sizeof(GESTURECONFIG));

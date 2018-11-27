@@ -922,6 +922,8 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
     if (t.isBad())
         return;
 
+    this->winGestureTuneState = View3DInventorViewer::ewgtsNeedTuning; //triggers enable/disable rotation gesture when preferences change
+
     if (this->navigation && this->navigation->getTypeId() == t)
         return; // nothing to do
 
