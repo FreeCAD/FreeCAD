@@ -1190,6 +1190,8 @@ protected:
     virtual void aboutToSetChildValue(App::Property &prop) override;
     virtual PropertyXLink *createXLink();
     virtual void onBreakLink(App::DocumentObject *obj);
+    virtual void onAddDep(App::DocumentObject *) {}
+    virtual void onRemoveDep(App::DocumentObject *) {}
     void updateDeps(std::set<DocumentObject*> &&newDeps);
     void clearDeps();
 

@@ -4022,6 +4022,7 @@ void PropertyXLinkContainer::updateDeps(std::set<DocumentObject*> &&newDeps) {
             else
                 obj->_addBackLink(owner);
 #endif
+            onAddDep(obj);
         }
     }
     for(auto obj : _Deps) {
@@ -4033,6 +4034,7 @@ void PropertyXLinkContainer::updateDeps(std::set<DocumentObject*> &&newDeps) {
 #endif
         }else
             _XLinks.erase(obj->getFullName());
+        onRemoveDep(obj);
     }
     _Deps = std::move(newDeps);
 
