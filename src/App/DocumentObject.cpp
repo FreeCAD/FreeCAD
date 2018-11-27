@@ -585,6 +585,8 @@ void DocumentObject::onBeforeChange(const Property* prop)
 
     if (_pDoc)
         onBeforeChangeProperty(_pDoc, prop);
+
+    signalBeforeChange(*this,*prop);
 }
 
 /// get called by the container when a Property was changed
@@ -620,6 +622,8 @@ void DocumentObject::onChanged(const Property* prop)
     // Now signal the view provider
     if (_pDoc)
         _pDoc->onChangedProperty(this,prop);
+
+    signalChanged(*this,*prop);
 }
 
 void DocumentObject::clearOutListCache() const {

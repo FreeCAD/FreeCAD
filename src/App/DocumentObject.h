@@ -98,6 +98,11 @@ public:
     /// Allow control visibility status in App name space
     PropertyBool Visibility;
 
+    /// signal before changing a property of this object
+    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalBeforeChange;
+    /// signal on changed  property of this object
+    boost::signals2::signal<void (const App::DocumentObject&, const App::Property&)> signalChanged;
+
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "";
