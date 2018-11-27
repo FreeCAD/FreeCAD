@@ -62,6 +62,10 @@ class _FemResultMechanical():
         obj.addProperty("App::PropertyFloatList", "UserDefined", "NodeData", "User Defined Results", True)
         obj.addProperty("App::PropertyFloatList", "Temperature", "NodeData", "Temperature field", True)
 
+        # initialize the Stats with the appropriate count of items (see fill_femresult_stats in feminout/importToolsFem.py)
+        zero_list = 39 * [0]
+        obj.Stats = zero_list
+
     # standard Feature methods
     def execute(self, obj):
         """"this method is executed on object creation and whenever the document is recomputed"
