@@ -154,6 +154,10 @@ public:
 
     void documentSet();
 
+    std::string getRow(int offset=0) const;
+
+    std::string getColumn(int offset=0) const;
+
 protected:
     virtual void hasSetValue() override;
     virtual void hasSetChildValue(App::Property &prop) override;

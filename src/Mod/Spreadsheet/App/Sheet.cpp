@@ -625,6 +625,22 @@ void Sheet::updateAlias(CellAddress key)
     }
 }
 
+struct CurrentAddressLock {
+    CurrentAddressLock(int &r, int &c, const CellAddress &addr)
+        :row(r),col(c)
+    {
+        row = addr.row();
+        col = addr.col();
+    }
+    ~CurrentAddressLock() {
+        row = -1;
+        col = -1;
+    }
+
+    int &row;
+    int &col;
+};
+
 /**
   * Update the Property given by \a key. This will also eventually trigger recomputations of cells depending on \a key.
   *
@@ -641,6 +657,7 @@ void Sheet::updateProperty(CellAddress key)
         const Expression * input = cell->getExpression();
 
         if (input) {
+            CurrentAddressLock lock(currentRow,currentCol,key);
             output = input->eval();
         }
         else {
@@ -1348,6 +1365,36 @@ bool Sheet::hasCell(const std::vector<App::Range> &ranges) const {
         }while(range.next());
     }
     return false;
+}
+
+std::string Sheet::getRow(int offset) const {
+    if(currentRow < 0)
+        throw Base::RuntimeError("No current row");
+    int row = currentRow + offset;
+    if(row<0 || row>CellAddress::MAX_ROWS)
+        throw Base::ValueError("Out of range");
+    return std::to_string(row+1);
+}
+
+std::string Sheet::getColumn(int offset) const {
+    if(currentCol < 0)
+        throw Base::RuntimeError("No current column");
+    int col = currentCol + offset;
+    if(col<0 || col>CellAddress::MAX_COLUMNS)
+        throw Base::ValueError("Out of range");
+    if (col < 26) {
+        char txt[2];
+        txt[0] = (char)('A' + col);
+        txt[1] = 0;
+        return txt;
+    }
+
+    col -= 26;
+    char txt[3];
+    txt[0] = (char)('A' + (col / 26));
+    txt[1] = (char)('A' + (col % 26));
+    txt[2] = 0;
+    return txt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

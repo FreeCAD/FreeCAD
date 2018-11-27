@@ -172,6 +172,10 @@ public:
 
     std::map<int, int> getRowHeights() const;
 
+    std::string getRow(int offset=0) const;
+
+    std::string getColumn(int offset=0) const;
+
     // Signals
 
     boost::signals2::signal<void (App::CellAddress)> cellUpdated;
@@ -299,6 +303,9 @@ protected:
 
     boost::signals2::scoped_connection onRelabledDocumentConnection;
     boost::signals2::scoped_connection onRenamedDocumentConnection;
+
+    int currentRow = -1;
+    int currentCol = -1;
 
     friend class SheetObserver;
 

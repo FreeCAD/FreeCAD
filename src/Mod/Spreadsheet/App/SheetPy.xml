@@ -179,5 +179,15 @@ Supported modes are, 'normal', 'button', 'combo'.
           </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="row">
+      <Documentation>
+        <UserDocu>row(offset=0): Return the current row index with optional offset</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="column">
+      <Documentation>
+        <UserDocu>column(offset=0): Return the current column index with optional offset</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

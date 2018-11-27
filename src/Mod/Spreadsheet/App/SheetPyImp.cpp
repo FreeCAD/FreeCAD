@@ -1068,6 +1068,25 @@ PyObject* SheetPy::setEditMode(PyObject *args)
 
     Py_Return;
 }
+
+PyObject* SheetPy::row(PyObject *args) {
+    int offset=0;
+    if (!PyArg_ParseTuple(args, "|i:row", &offset))
+        return 0;
+    PY_TRY {
+        return Py::new_reference_to(Py::String(getSheetPtr()->getRow(offset)));
+    }PY_CATCH
+}
+
+PyObject* SheetPy::column(PyObject *args) {
+    int offset=0;
+    if (!PyArg_ParseTuple(args, "|i:column", &offset))
+        return 0;
+    PY_TRY {
+        return Py::new_reference_to(Py::String(getSheetPtr()->getColumn(offset)));
+    }PY_CATCH
+}
+
 // +++ custom attributes implementer ++++++++++++++++++++++++++++++++++++++++
 
 PyObject *SheetPy::getCustomAttributes(const char* attr) const
