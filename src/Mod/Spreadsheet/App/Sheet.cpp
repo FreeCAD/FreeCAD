@@ -875,7 +875,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
 
 short Sheet::mustExecute(void) const
 {
-    if (cellErrors.size() > 0 || cells.isTouched())
+    if (cellErrors.size() > 0 || cells.isDirty())
         return 1;
     else
         return 0;

@@ -991,6 +991,8 @@ void PropertySheet::hasSetChildValue(App::Property &prop) {
 
 void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
 {
+    depConnections.erase(docObj);
+
     const char * docName = docObj->getDocument()->Label.getValue();
     const char * docObjName = docObj->getNameInDocument();
 
@@ -1009,6 +1011,19 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
         cell->setResolveException("Unresolved dependency");
         setDirty(address);
     }
+}
+
+void PropertySheet::slotChangedObject(const App::DocumentObject &obj, const App::Property &prop) {
+    recomputeDependants(&obj, &prop);
+}
+
+void PropertySheet::onAddDep(App::DocumentObject *obj) {
+    depConnections[obj] = obj->signalChanged.connect(boost::bind(
+                &PropertySheet::slotChangedObject, this, _1, _2));
+}
+
+void PropertySheet::onRemoveDep(App::DocumentObject *obj) {
+    depConnections.erase(obj);
 }
 
 void PropertySheet::renamedDocumentObject(const App::DocumentObject * docObj)

@@ -158,6 +158,8 @@ protected:
     virtual void hasSetValue() override;
     virtual void hasSetChildValue(App::Property &prop) override;
     virtual void onBreakLink(App::DocumentObject *obj) override;
+    virtual void onAddDep(App::DocumentObject *obj) override;
+    virtual void onRemoveDep(App::DocumentObject *obj) override;
 
 private:
 
@@ -203,6 +205,7 @@ private:
 
     void removeDependencies(App::CellAddress key);
 
+    void slotChangedObject(const App::DocumentObject &obj, const App::Property &prop);
     void recomputeDependants(const App::DocumentObject *obj, const App::Property * prop);
 
     /*! Cell dependencies, i.e when a change occurs to property given in key,
@@ -232,6 +235,8 @@ private:
 
     /*! The associated python object */
     Py::Object PythonObject;
+
+    std::map<const App::DocumentObject*, boost::signals2::scoped_connection> depConnections;
 
     int updateCount;
 };
