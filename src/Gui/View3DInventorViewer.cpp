@@ -2869,9 +2869,6 @@ void View3DInventorViewer::viewAll(float factor)
 
 void View3DInventorViewer::viewSelection()
 {
-    SoGroup* root = new SoGroup();
-    root->ref();
-
     Base::BoundBox3d bbox;
     for(auto &sel : Selection().getSelection(0,0)) {
         auto vp = Application::Instance->getViewProvider(sel.pObject);
@@ -2883,6 +2880,7 @@ void View3DInventorViewer::viewSelection()
     SoCamera* cam = this->getSoRenderManager()->getCamera();
     if (cam && bbox.IsValid()) {
         SbBox3f box(bbox.MinX,bbox.MinY,bbox.MinZ,bbox.MaxX,bbox.MaxY,bbox.MaxZ);
+#if (COIN_MAJOR_VERSION >= 4)
         float aspectratio = getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
         switch (cam->viewportMapping.getValue()) {
             case SoCamera::CROP_VIEWPORT_FILL_FRAME:
@@ -2894,9 +2892,28 @@ void View3DInventorViewer::viewSelection()
                 break;
         }
         cam->viewBoundingBox(box,aspectratio,1.0);
+#else
+        SoTempPath path(2);
+        path.ref();
+        auto pcGroup = new SoGroup;
+        pcGroup->ref();
+        auto pcTransform = new SoTransform;
+        pcGroup->addChild(pcTransform);
+        pcTransform->translation = box.getCenter();
+        auto *pcCube = new SoCube;
+        pcGroup->addChild(pcCube);
+        float sizeX,sizeY,sizeZ;
+        box.getSize(sizeX,sizeY,sizeZ);
+        pcCube->width = sizeX;
+        pcCube->height = sizeY;
+        pcCube->depth = sizeZ;
+        path.append(pcGroup);
+        path.append(pcCube);
+        cam->viewAll(&path,getSoRenderManager()->getViewportRegion());
+        path.unrefNoDelete();
+        pcGroup->unref();
+#endif
     }
-
-    root->unref();
 }
 
 /*!
