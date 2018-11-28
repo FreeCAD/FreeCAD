@@ -240,4 +240,4 @@ after_success:
   fi
 
 after_failure:
-  - tail -n 500 build_output.txt
+  - curl -T build_output.txt chunk.io
