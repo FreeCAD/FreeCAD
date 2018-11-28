@@ -2525,6 +2525,8 @@ def checkRectangle(edges):
     """ checkRectangle(edges=[]): This function checks whether the given form rectangle
        or not. It will return True when edges form rectangular shape or return False
        when edges not form a rectangular."""
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("DisableIfcRectangleProfileDef",False):
+        return False
     if len(edges) != 4:
         return False
     angles = [round(getEdgesAngle(edges[0], edges[1])), round(getEdgesAngle(edges[0], edges[2])),
