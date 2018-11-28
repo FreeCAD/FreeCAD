@@ -143,7 +143,16 @@ class ArchReference:
         if not filename.lower().endswith(".fcstd"):
             return parts
         if not os.path.exists(filename):
-            return parts
+            # search for the file in the current directory if not found
+            basename = os.path.basename(filename)
+            currentdir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
+            altfile = os.path.join(currentdir,basename)
+            if altfile == FreeCAD.ActiveDocument.FileName:
+                return parts
+            elif os.path.exists(altfile):
+                filename = altfile
+            else:
+                return parts
         zdoc = zipfile.ZipFile(filename)
         with zdoc.open("Document.xml") as docf:
             name = None
@@ -186,7 +195,16 @@ class ArchReference:
         if not filename.lower().endswith(".fcstd"):
             return None
         if not os.path.exists(filename):
-            return None
+            # search for the file in the current directory if not found
+            basename = os.path.basename(filename)
+            currentdir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
+            altfile = os.path.join(currentdir,basename)
+            if altfile == FreeCAD.ActiveDocument.FileName:
+                return None
+            elif os.path.exists(altfile):
+                filename = altfile
+            else:
+                return None
         part = obj.Part
         if not obj.Part:
             return None
@@ -438,6 +456,8 @@ class ArchReferenceTaskPanel:
             i = self.partCombo.currentIndex()
             if self.partCombo.itemData(i) != self.obj.Part:
                 self.obj.Part = self.partCombo.itemData(i)
+                if self.obj.Label == "External Reference":
+                    self.obj.Label = self.partCombo.itemText(i)
                 FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
