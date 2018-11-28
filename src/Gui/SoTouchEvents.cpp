@@ -84,8 +84,8 @@ SoGesturePinchEvent::SoGesturePinchEvent(QPinchGesture* qpinch, QWidget *widget)
     deltaZoom = qpinch->scaleFactor();
     totalZoom = qpinch->totalScaleFactor();
 
-    deltaAngle = unbranchAngle((qpinch->rotationAngle()-qpinch->lastRotationAngle()) / 180.0 * M_PI);
-    totalAngle = qpinch->totalRotationAngle() / 180 * M_PI;
+    deltaAngle = -unbranchAngle((qpinch->rotationAngle()-qpinch->lastRotationAngle()) / 180.0 * M_PI);
+    totalAngle = -qpinch->totalRotationAngle() / 180 * M_PI;
 
     state = SbGestureState(qpinch->state());
 
