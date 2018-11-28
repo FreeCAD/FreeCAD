@@ -2360,7 +2360,7 @@ class Move(Modifier):
         # testing for special case: only Arch groups in selection
         onlyarchgroups = True
         for o in self.sel:
-            if not(Draft.getType(o) in ["Floor","Building","Site"]):
+            if not(Draft.getType(o) in ["Floor","BuildingPart","Building","Site"]):
                 onlyarchgroups = False
         if not onlyarchgroups:
             # arch groups can be moved, no need to add their children
