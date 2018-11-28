@@ -107,11 +107,11 @@ bool Range::next()
   * @returns The row.
   */
 
-int App::decodeRow(const std::string &rowstr)
+int App::decodeRow(const std::string &rowstr, bool silent)
 {
     int row = validRow(rowstr);
 
-    if (row >= 0)
+    if (silent || row >= 0)
         return row;
     else
         throw Base::IndexError("Invalid row specification.");
@@ -126,11 +126,11 @@ int App::decodeRow(const std::string &rowstr)
   *
   */
 
-int App::decodeColumn(const std::string &colstr)
+int App::decodeColumn(const std::string &colstr, bool silent)
 {
     int col = validColumn(colstr);
 
-    if (col >= 0)
+    if (silent || col >= 0)
         return col;
     else
         throw Base::IndexError("Invalid column specification");
@@ -203,16 +203,24 @@ int App::validColumn(const std::string &colstr)
 
 App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
 {
-    static const boost::regex e("\\${0,1}([A-Z]{1,2})\\${0,1}([0-9]{1,5})");
-    boost::cmatch cm;
-
     assert(strAddress != 0);
 
-    if (boost::regex_match(strAddress, cm, e)) {
-        const boost::sub_match<const char *> colstr = cm[1];
-        const boost::sub_match<const char *> rowstr = cm[2];
+    static boost::regex e("(\\$?[A-Z]{1,2})(\\$?[0-9]{1,5})");
+    boost::cmatch cm;
 
-        return CellAddress(decodeRow(rowstr.str()), decodeColumn(colstr.str()));
+    if (boost::regex_match(strAddress, cm, e)) {
+        bool absCol = (cm[1].first[0]=='$');
+        std::string r,c;
+        if(absCol)
+            c = std::string(cm[1].first+1,cm[1].second);
+        else
+            c = std::string(cm[1].first,cm[1].second);
+        bool absRow = (cm[2].first[0]=='$');
+        if(absRow) 
+            r = std::string(cm[2].first+1,cm[2].second);
+        else
+            r = std::string(cm[2].first,cm[2].second);
+        return CellAddress(decodeRow(r,silent), decodeColumn(c,silent), absRow, absCol);
     }
     else if(silent)
         return CellAddress();
@@ -226,10 +234,12 @@ App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
   * @returns Address given as a string.
   */
 
-std::string App::CellAddress::toString() const
+std::string App::CellAddress::toString(bool noAbsolute) const
 {
     std::stringstream s;
 
+    if(_absCol && !noAbsolute)
+        s << '$';
     if (col() < 26)
         s << (char)('A' + col());
     else {
@@ -239,7 +249,21 @@ std::string App::CellAddress::toString() const
         s << (char)('A' + (colnum % 26));
     }
 
+    if(_absRow && !noAbsolute)
+        s << '$';
     s << (row() + 1);
 
     return s.str();
 }
+
+bool App::CellAddress::parseAbsoluteAddress(const char *txt) {
+    if(txt[0]=='$' || (txt[0] && txt[1] && (txt[1]=='$' || txt[2]=='$'))) {
+        CellAddress addr = stringToAddress(txt,true);
+        if(addr.isValid()) {
+            *this = addr;
+            return true;
+        }
+    }
+    return false;
+}
+

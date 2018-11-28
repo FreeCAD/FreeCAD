@@ -700,7 +700,8 @@ void Cell::setUsed(int mask, bool state)
     else
         used &= ~mask;
 
-    owner->setDirty(address);
+    if(owner)
+        owner->setDirty(address);
 }
 
 /**

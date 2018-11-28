@@ -130,6 +130,7 @@ protected:
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &);
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
+    virtual void _offsetCells(int, int, ExpressionVisitor &);
     virtual App::any _getValueAsAny() const;
 
 protected:
@@ -464,6 +465,7 @@ protected:
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &);
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &);
+    virtual void _offsetCells(int, int, ExpressionVisitor &);
     virtual App::any _getValueAsAny() const;
 
 protected:

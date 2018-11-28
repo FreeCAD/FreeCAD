@@ -180,7 +180,11 @@ bool ExpressionVisitor::renameObjectIdentifier(Expression &e,
 }
 
 void ExpressionVisitor::moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount) {
-    return e._moveCells(address,rowCount,colCount,*this);
+    e._moveCells(address,rowCount,colCount,*this);
+}
+
+void ExpressionVisitor::offsetCells(Expression &e, int rowOffset, int colOffset) {
+    e._offsetCells(rowOffset,colOffset,*this);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -2941,19 +2945,39 @@ bool VariableExpression::_renameObjectIdentifier(const std::map<ObjectIdentifier
 void VariableExpression::_moveCells(const CellAddress &address, 
         int rowCount, int colCount, ExpressionVisitor &v) 
 {
-    std::string name = var.getPropertyName();
-    CellAddress addr = stringToAddress(name.c_str(),true);
+    if(var.hasDocumentObjectName(true))
+        return;
+
+    auto &comp = var.getPropertyComponent(0);
+    CellAddress addr = stringToAddress(comp.getName().c_str(),true);
     if(!addr.isValid())
         return;
 
     int thisRow = addr.row();
     int thisCol = addr.col();
     if (thisRow >= address.row() || thisCol >= address.col()) {
-        thisRow += rowCount;
-        thisCol += colCount;
         v.setExpressionChanged();
-        var = ObjectIdentifier(owner,CellAddress(thisRow,thisCol).toString());
+        addr.setRow(thisRow + rowCount);
+        addr.setCol(thisCol + colCount);
+        comp = ObjectIdentifier::SimpleComponent(addr.toString());
     }
+}
+
+void VariableExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVisitor &v) {
+    if(var.hasDocumentObjectName(true))
+        return;
+
+    auto &comp = var.getPropertyComponent(0);
+    CellAddress addr = stringToAddress(comp.getName().c_str(),true);
+    if(!addr.isValid() || (addr.isAbsoluteCol() && addr.isAbsoluteRow()))
+        return;
+
+    v.setExpressionChanged();
+    if(!addr.isAbsoluteCol())
+        addr.setCol(addr.col()+colOffset);
+    if(!addr.isAbsoluteRow())
+        addr.setRow(addr.row()+rowOffset);
+    comp = ObjectIdentifier::SimpleComponent(addr.toString());
 }
 
 //
@@ -3997,10 +4021,10 @@ void RangeExpression::_moveCells(const CellAddress &address,
         int thisRow = addr.row();
         int thisCol = addr.col();
         if (thisRow >= address.row() || thisCol >= address.col()) {
-            thisRow += rowCount;
-            thisCol += colCount;
             v.setExpressionChanged();
-            begin = CellAddress(thisRow,thisCol).toString();
+            addr.setRow(thisRow+rowCount);
+            addr.setCol(thisCol+colCount);
+            begin = addr.toString();
         }
     }
     addr = stringToAddress(end.c_str(),true);
@@ -4008,13 +4032,36 @@ void RangeExpression::_moveCells(const CellAddress &address,
         int thisRow = addr.row();
         int thisCol = addr.col();
         if (thisRow >= address.row() || thisCol >= address.col()) {
-            thisRow += rowCount;
-            thisCol += colCount;
             v.setExpressionChanged();
-            end = CellAddress(thisRow,thisCol).toString();
+            addr.setRow(thisRow + rowCount);
+            addr.setCol(thisCol + colCount);
+            end = addr.toString();
         }
     }
 }
+
+void RangeExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVisitor &v) 
+{
+    CellAddress addr = stringToAddress(begin.c_str(),true);
+    if(addr.isValid() && (!addr.isAbsoluteRow() || !addr.isAbsoluteCol())) {
+        v.setExpressionChanged();
+        if(!addr.isAbsoluteRow())
+            addr.setRow(addr.row()+rowOffset);
+        if(!addr.isAbsoluteCol()) 
+            addr.setCol(addr.col()+colOffset);
+        begin = addr.toString();
+    }
+    addr = stringToAddress(end.c_str(),true);
+    if(addr.isValid() && (!addr.isAbsoluteRow() || !addr.isAbsoluteCol())) {
+        v.setExpressionChanged();
+        if(!addr.isAbsoluteRow())
+            addr.setRow(addr.row()+rowOffset);
+        if(!addr.isAbsoluteCol()) 
+            addr.setCol(addr.col()+colOffset);
+        end = addr.toString();
+    }
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////
 

@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <boost/regex.hpp>
 #include <boost/tokenizer.hpp>
 #include <boost/range/adaptor/map.hpp>
 #include <boost/range/algorithm/copy.hpp>
@@ -708,6 +709,12 @@ void Sheet::updateProperty(CellAddress key)
 
 Property *Sheet::getPropertyByName(const char* name) const
 {
+    std::string _name;
+    CellAddress addr;
+    if(addr.parseAbsoluteAddress(name)) {
+        _name = addr.toString(true);
+        name = _name.c_str();
+    }
     Property * prop = getProperty(name);
 
     if (prop)

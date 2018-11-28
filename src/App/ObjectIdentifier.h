@@ -259,6 +259,8 @@ public:
 
     const Component & getPropertyComponent(int i) const;
 
+    Component & getPropertyComponent(int i);
+
     std::vector<Component> getPropertyComponents() const;
     const std::vector<Component> &getComponents() const { return components; }
 
@@ -349,6 +351,8 @@ public:
     bool updateElementReference(ExpressionVisitor &v, App::DocumentObject *feature=0, bool reverse=false);
 
     void resolveAmbiguity();
+
+    bool verify(const App::Property &prop, bool silent=false) const;
 
     std::size_t hash() const;
 

@@ -105,6 +105,21 @@ private:
     int colCount;
 };
 
+template<class P> class OffsetCellsExpressionVisitor : public ExpressionModifier<P> {
+public:
+    OffsetCellsExpressionVisitor(P &prop, int rowOffset, int colOffset)
+        : ExpressionModifier<P>(prop),rowOffset(rowOffset),colOffset(colOffset)
+    {}
+
+    void visit(Expression &node) {
+        this->offsetCells(node,rowOffset,colOffset);
+    }
+
+private:
+    int rowOffset;
+    int colOffset;
+};
+
 }
 
 #endif // RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H

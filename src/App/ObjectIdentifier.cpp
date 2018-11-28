@@ -209,6 +209,14 @@ const App::ObjectIdentifier::Component &App::ObjectIdentifier::getPropertyCompon
     return components[result.propertyIndex + i];
 }
 
+App::ObjectIdentifier::Component &App::ObjectIdentifier::getPropertyComponent(int i)
+{
+    ResolveResults result(*this);
+    assert(result.propertyIndex + i >=0 && 
+            static_cast<std::size_t>(result.propertyIndex) + i < components.size());
+    return components[result.propertyIndex + i];
+}
+
 std::vector<ObjectIdentifier::Component> ObjectIdentifier::getPropertyComponents() const {
     if(components.size()<=1 || documentObjectName.getString().empty())
         return components;
@@ -277,6 +285,28 @@ int ObjectIdentifier::numSubComponents() const
     ResolveResults result(*this);
 
     return components.size() - result.propertyIndex;
+}
+
+bool ObjectIdentifier::verify(const App::Property &prop, bool silent) const {
+    ResolveResults result(*this);
+    if(components.size() - result.propertyIndex != 1) {
+        if(silent) return false;
+        throw Base::ValueError("Invalid property path: single component expected");
+    }
+    if(!components[result.propertyIndex].isSimple()) {
+        if(silent) return false;
+        throw Base::ValueError("Invalid property path: simple component expected");
+    }
+    const std::string &name = components[result.propertyIndex].getName();
+    CellAddress addr;
+    bool isAddress = addr.parseAbsoluteAddress(name.c_str());
+    if((isAddress && addr.toString(true) != prop.getName()) ||
+       (!isAddress && name!=prop.getName())) 
+    {
+        if(silent) return false;
+        throw Base::ValueError("Invalid property path: name mismatch");
+    }
+    return true;
 }
 
 /**
@@ -1019,8 +1049,12 @@ std::pair<DocumentObject*,std::string> ObjectIdentifier::getDep(std::vector<std:
         if(subObjectName.getString().size()) 
             PropertyLinkBase::getLabelReferences(*labels,subObjectName.getString().c_str());
     }
-    if(result.propertyType==PseudoNone && subObjectName.getString().empty())
+    if(result.propertyType==PseudoNone && subObjectName.getString().empty()) {
+        CellAddress addr;
+        if(addr.parseAbsoluteAddress(result.propertyName.c_str())) 
+            return std::make_pair(result.resolvedDocumentObject,addr.toString(true));
         return std::make_pair(result.resolvedDocumentObject,result.propertyName);
+    }
     return std::make_pair(result.resolvedDocumentObject,std::string());
 }
 

@@ -158,6 +158,8 @@ public:
 
     PyObject *getPyObject();
 
+    PropertySheet *getCells() { return &cells; }
+
     App::Property *getPropertyByName(const char *name) const;
 
     const char* getPropertyName(const App::Property* prop) const;

@@ -72,6 +72,7 @@ protected:
     void updateLabelReference(Expression &e, App::DocumentObject *obj, 
             const std::string &ref, const char *newLabel);
     void moveCells(Expression &e, const CellAddress &address, int rowCount, int colCount);
+    void offsetCells(Expression &e, int rowOffset, int colOffset);
 };
 
 template<class P> class ExpressionModifier : public ExpressionVisitor {
@@ -261,6 +262,7 @@ protected:
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &, 
                                          const ObjectIdentifier &, ExpressionVisitor &) {return false;}
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) {}
+    virtual void _offsetCells(int, int, ExpressionVisitor &) {}
     virtual App::any _getValueAsAny() const = 0;
     virtual ExpressionPtr _eval() const {return 0;}
     virtual void _visit(ExpressionVisitor &) {}

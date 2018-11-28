@@ -327,6 +327,94 @@ void PropertySheet::Restore(Base::XMLReader &reader)
     reader.readEndElement("Cells");
 }
 
+void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ranges) const {
+    writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << std::endl;
+    writer.Stream() << "<Cells count=\"" << ranges.size() << "\">" << std::endl;
+    writer.incInd();
+    for(auto range : ranges) {
+        auto r = range;
+        int count = 0;
+        do {
+            if(getValue(*r))
+                ++count;
+        }while(r.next());
+        writer.Stream() << writer.ind() << "<Range from=\"" << range.fromCellString()
+            << "\" to=\"" << range.toCellString() << "\" count=\"" << count << "\">" << std::endl;
+        writer.incInd();
+        do {
+            auto cell = getValue(*range);
+            if(cell)
+                cell->save(writer);
+        }while(range.next());
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</Range>" << std::endl;
+    }
+    writer.decInd();
+    writer.Stream() << "</Cells>" << std::endl;
+}
+
+void PropertySheet::pasteCells(XMLReader &reader, const CellAddress &addr) {
+    AtomicPropertyChange signaller(*this);
+
+    bool first = true;
+    int roffset=0,coffset=0;
+
+    reader.readElement("Cells");
+    int rangeCount = reader.getAttributeAsInteger("count");
+
+    for(;rangeCount;--rangeCount) {
+        reader.readElement("Range");
+        CellAddress from(reader.getAttribute("from"));
+        CellAddress to(reader.getAttribute("to"));
+        int cellCount = reader.getAttributeAsInteger("count");
+        Range range(from,to);
+        bool hasCells = !!cellCount;
+        for(;cellCount;--cellCount) {
+            reader.readElement("Cell");
+            CellAddress src(reader.getAttribute("address"));
+            if(first) {
+                first = false;
+                roffset = addr.row() - from.row();
+                coffset = addr.col() - from.col();
+            }else
+                range.next();
+            while(src!=*range) {
+                CellAddress dst(*range);
+                dst.setRow(dst.row()+roffset);
+                dst.setCol(dst.col()+coffset);
+                owner->clear(dst);
+                owner->cellUpdated(dst);
+                range.next();
+            }
+            CellAddress dst(src.row()+roffset, src.col()+coffset);
+            auto cell = owner->getNewCell(dst);
+            cell->setSpans(-1,-1);
+            cell->restore(reader);
+            int rows, cols;
+            if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1)) 
+                mergeCells(dst, CellAddress(dst.row() + rows - 1, dst.col() + cols - 1));
+
+            if(roffset || coffset) {
+                OffsetCellsExpressionVisitor<PropertySheet> visitor(*this, roffset, coffset);
+                cell->visit(visitor);
+                if(visitor.changed())
+                    recomputeDependencies(dst);
+            }
+            dirty.insert(dst);
+            owner->cellUpdated(dst);
+        }
+        if(!hasCells || range.next()) {
+            do {
+                CellAddress dst(*range);
+                dst.setRow(dst.row()+roffset);
+                dst.setCol(dst.col()+coffset);
+                owner->clear(dst);
+                owner->cellUpdated(dst);
+            }while(range.next());
+        }
+    }
+}
+
 Cell * PropertySheet::cellAt(CellAddress address)
 {
     std::map<CellAddress, CellAddress>::const_iterator j = mergedCells.find(address);

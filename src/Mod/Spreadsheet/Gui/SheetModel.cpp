@@ -227,12 +227,12 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant(list);
         }
     }
+    if(cell == emptyCell)
+        return QVariant();
 
     // Get display value as computed property
     std::string address = CellAddress(row, col).toString();
     Property * prop = sheet->getPropertyByName(address.c_str());
-    if (prop == 0)
-        return QVariant();
 
     if (role == Qt::BackgroundRole) {
         Color color;
@@ -283,7 +283,21 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         return QVariant::fromValue(f);
     }
 
-    if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
+    if (!prop) {
+        switch (role) {
+        case  Qt::TextColorRole: {
+            return QColor(0, 0, 255.0);
+        }
+        case Qt::TextAlignmentRole: {
+            qtAlignment = Qt::AlignHCenter | Qt::AlignVCenter;
+            return QVariant::fromValue(qtAlignment);
+        }
+        case Qt::DisplayRole:
+            return QVariant(QLatin1String("#PENDING"));
+        default:
+            return QVariant();
+        }
+    } else if (prop->isDerivedFrom(App::PropertyString::getClassTypeId())) {
         /* String */
         const App::PropertyString * stringProp = static_cast<const App::PropertyString*>(prop);
 
@@ -350,7 +364,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
                 if (computedUnit.isEmpty() || computedUnit == displayUnit.unit)
                     v = QString::number(floatProp->getValue() / displayUnit.scaler) + Base::Tools::fromStdString(" " + displayUnit.stringRep);
                 else
-                    v = QString::fromUtf8("ERR: unit");
+                    v = QString::fromUtf8("#ERR: unit");
             }
             else {
                 if (!computedUnit.isEmpty())

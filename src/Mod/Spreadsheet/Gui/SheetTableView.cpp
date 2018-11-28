@@ -28,10 +28,13 @@
 # include <QMenu>
 # include <QApplication>
 # include <QClipboard>
+# include <QMessageBox>
 #endif
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <boost/bind.hpp>
 #include "../App/Utils.h"
 #include "../App/Cell.h"
@@ -457,6 +460,8 @@ void SheetTableView::deleteSelection()
     }
 }
 
+static const QLatin1String _SheetMime("application/x-fc-spreadsheet");
+
 void SheetTableView::copySelection()
 {
     QModelIndexList selection = selectionModel()->selectedIndexes();
@@ -464,7 +469,6 @@ void SheetTableView::copySelection()
     int maxRow = 0;
     int minCol = INT_MAX;
     int maxCol = 0;
-
     for (auto it : selection) {
         int row = it.row();
         int col = it.column();
@@ -487,6 +491,12 @@ void SheetTableView::copySelection()
             selectedText.append(QChar::fromLatin1('\n'));
     }
     QApplication::clipboard()->setText(selectedText);
+
+    Base::StringWriter writer;
+    sheet->getCells()->copyCells(writer,selectedRanges());
+    QMimeData *mime = new QMimeData();
+    mime->setData(_SheetMime,QByteArray(writer.getString().c_str()));
+    QApplication::clipboard()->setMimeData(mime);
 }
 
 void SheetTableView::cutSelection()
@@ -497,21 +507,50 @@ void SheetTableView::cutSelection()
 
 void SheetTableView::pasteClipboard()
 {
-    QString text = QApplication::clipboard()->text();
-    QStringList rows = text.split(QLatin1Char('\n'));
+    const QMimeData* mimeData = QApplication::clipboard()->mimeData();
+
+    if(selectionModel()->selectedIndexes().size()>1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Spreadsheet"),
+                QObject::tr("Spreadsheet does not support range selection when pasting.\n"
+                            "Please select one cell only."));
+        return;
+    }
 
     QModelIndex current = currentIndex();
-    int i=0;
-    for (auto it : rows) {
-        QStringList cols = it.split(QLatin1Char('\t'));
-        int j=0;
-        for (auto jt : cols) {
-            QModelIndex index = model()->index(current.row()+i, current.column()+j);
-            model()->setData(index, jt);
-            j++;
+
+    GetApplication().setActiveTransaction("Paste cell");
+    try {
+        if (!mimeData || !mimeData->hasFormat(_SheetMime)) {
+            QStringList cells;
+            QString text = QApplication::clipboard()->text();
+            int i=0;
+            for (auto it : text.split(QLatin1Char('\n'))) {
+                QStringList cols = it.split(QLatin1Char('\t'));
+                int j=0;
+                for (auto jt : cols) {
+                    QModelIndex index = model()->index(current.row()+i, current.column()+j);
+                    model()->setData(index, jt);
+                    j++;
+                }
+                i++;
+            }
+        }else{
+            QByteArray res = mimeData->data(_SheetMime);
+            Base::ByteArrayIStreambuf buf(res);
+            std::istream in(0);
+            in.rdbuf(&buf);
+            Base::XMLReader reader("<memory>", in);
+            sheet->getCells()->pasteCells(reader,CellAddress(current.row(),current.column()));
         }
-        i++;
+
+        GetApplication().getActiveDocument()->recompute();
+
+    }catch(Base::Exception &e) {
+        e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Copy & Paste failed"),
+                QString::fromLatin1(e.what()));
     }
+    GetApplication().closeActiveTransaction();
 }
 
 void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)

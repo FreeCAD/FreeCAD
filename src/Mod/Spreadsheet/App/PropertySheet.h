@@ -63,6 +63,10 @@ public:
 
     virtual void Restore(Base::XMLReader & reader);
 
+    void copyCells(Base::Writer &writer, const std::vector<App::Range> &ranges) const;
+
+    void pasteCells(Base::XMLReader &reader, const App::CellAddress &addr);
+
     Cell *createCell(App::CellAddress address);
 
     void setValue() { }
@@ -112,6 +116,8 @@ public:
     bool isDirty() const { return dirty.size() > 0; }
 
     void moveCell(App::CellAddress currPos, App::CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renames);
+
+    void pasteCells(const std::map<App::CellAddress, std::string> &cells, int rowOffset, int colOffset);
 
     void insertRows(int row, int count);
 

@@ -30,14 +30,16 @@ namespace App {
 struct CellAddress;
 
 AppExport CellAddress stringToAddress(const char *strAddress, bool silent=false);
-AppExport int decodeColumn(const std::string &colstr);
-AppExport int decodeRow(const std::string &rowstr);
+AppExport int decodeColumn(const std::string &colstr, bool silent=false);
+AppExport int decodeRow(const std::string &rowstr, bool silent=false);
 AppExport int validColumn(const std::string &colstr);
 AppExport int validRow(const std::string &rowstr);
 
 struct AppExport CellAddress {
 
-    CellAddress(int row = -1, int col = -1) : _row(row), _col(col) { }
+    CellAddress(int row = -1, int col = -1, bool absRow=false, bool absCol=false) 
+        : _row(row), _col(col), _absRow(absRow), _absCol(absCol) 
+    { }
 
     CellAddress(const char * address) {
         *this = stringToAddress(address);
@@ -47,9 +49,15 @@ struct AppExport CellAddress {
         *this = stringToAddress(address.c_str());
     }
 
+    bool parseAbsoluteAddress(const char *txt);
+
     inline int row() const { return _row; }
 
     inline int col() const { return _col; }
+
+    void setRow(int r) { _row = r; }
+
+    void setCol(int c) { _col = c; }
 
     inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
 
@@ -59,7 +67,11 @@ struct AppExport CellAddress {
 
     inline bool isValid() { return (row() >=0 && row() < MAX_ROWS && col() >= 0 && col() < MAX_COLUMNS); }
 
-    std::string toString() const;
+    inline bool isAbsoluteRow() const { return _absRow; }
+
+    inline bool isAbsoluteCol() const { return _absCol; }
+
+    std::string toString(bool noAbsolute=false) const;
 
     // Static members
 
@@ -73,6 +85,8 @@ protected:
 
     short _row;
     short _col;
+    bool _absRow;
+    bool _absCol;
 };
 
 /**
