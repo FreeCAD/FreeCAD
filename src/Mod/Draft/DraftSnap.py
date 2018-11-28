@@ -305,9 +305,6 @@ class Snapper:
                     if Draft.getType(obj) == "Polygon":
                         # special snapping for polygons: add the center
                         snaps.extend(self.snapToPolygon(obj))
-                    elif Draft.getType(obj) == "BuildingPart":
-                        # special snapping for Arch building parts: add the location
-                        snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Pacement.Base)])
 
                     if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
                         if "Edge" in comp:
@@ -361,8 +358,8 @@ class Snapper:
                     # for points we only snap to points
                     snaps.extend(self.snapToEndpoints(obj.Points))
 
-                elif Draft.getType(obj) == "WorkingPlaneProxy":
-                    # snap to the center of WPProxies
+                elif Draft.getType(obj) in ["WorkingPlaneProxy","BuildingPart"]:
+                    # snap to the center of WPProxies and BuildingParts
                     snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Placement.Base)])
 
             # updating last objects list
