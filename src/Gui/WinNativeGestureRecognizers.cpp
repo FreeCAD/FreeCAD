@@ -129,7 +129,7 @@ QGestureRecognizer::Result WinNativeGestureRecognizerPinch::recognize(QGesture *
         }
         double ang = 0.0;
         if (bRotate)
-            ang=GID_ROTATE_ANGLE_FROM_ARGUMENT(LOWORD(ev->argument)) / M_PI * 180.0;
+            ang = -GID_ROTATE_ANGLE_FROM_ARGUMENT(LOWORD(ev->argument)) / M_PI * 180.0;
         if (q->state() == Qt::NoGesture) {
             //start of a new gesture, prefill stuff
             //d->isNewSequence = true;
