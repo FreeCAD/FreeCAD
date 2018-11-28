@@ -600,6 +600,8 @@ class ViewProviderBuildingPart:
                     self.fon.size = fs
                     b = vobj.DisplayOffset.Base
                     self.tra.translation.setValue([b.x+fs/8,b.y,b.z+fs/8])
+                    r = vobj.DisplayOffset.Rotation
+                    self.tra.rotation.setValue(r.Q)
                     if vobj.OriginOffset:
                         self.lco.point.setValues([[b.x-fs,b.y,b.z],[b.x+fs,b.y,b.z],[b.x,b.y-fs,b.z],[b.x,b.y+fs,b.z],[b.x,b.y,b.z-fs],[b.x,b.y,b.z+fs]])
                     else:
@@ -665,7 +667,7 @@ class ViewProviderBuildingPart:
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.setWorkingPlane)
         menu.addAction(action1)
         action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),"Write camera position",menu)
-        QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.writeCamera)
+        QtCore.QObject.connect(action2,QtCore.SIGNAL("triggered()"),self.writeCamera)
         menu.addAction(action2)
         action3 = QtGui.QAction(QtGui.QIcon(),"Create group...",menu)
         QtCore.QObject.connect(action3,QtCore.SIGNAL("triggered()"),self.createGroup)
