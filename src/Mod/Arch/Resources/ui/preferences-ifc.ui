@@ -485,6 +485,22 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_16">
+        <property name="toolTip">
+         <string>When possible, IFC objects that are extruded rectangles are exported as IfcRectangleProfileDef. However, some other applications notoriously have problems importing that entity. If this is your case, you can disable this here (all profiles will be exported as IfcArbitraryClosedProfileDef).</string>
+        </property>
+        <property name="text">
+         <string>Disable IfcRectangleProfileDef</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisableIfcRectangleProfileDef</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Arch</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
