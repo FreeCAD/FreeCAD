@@ -154,6 +154,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
+    options |= QFileDialog::DontUseNativeDialog;
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
@@ -245,6 +246,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
+    options |= QFileDialog::DontUseNativeDialog;
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
@@ -315,6 +317,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
+    options |= QFileDialog::DontUseNativeDialog;
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
     urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
