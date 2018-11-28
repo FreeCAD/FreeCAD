@@ -161,20 +161,20 @@ before_install:
        ;;
 
    "osx")
-       xcodebuild -version -sdk
-       brew --config &>> build_output.txt
+       xcodebuild -version -sdk >> build_output.txt
+       brew --config >> build_output.txt
        if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
-            brew install jq &>> build_output.txt
+            brew install jq >> build_output.txt
             cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
             travis_wait prime_local_ports_cache $cacheContext
        fi
        brew update >/dev/null
-       brew --config &>> build_output.txt
+       brew --config >> build_output.txt
 
-       brew tap FreeCAD/freecad &>> build_output.txt
+       brew tap FreeCAD/freecad >> build_output.txt
 
-       brew install --verbose --only-dependencies freecad --with-packaging-utils &>> build_output.txt
-       pip install six &>> build_output.txt
+       brew install --verbose --only-dependencies freecad --with-packaging-utils >> build_output.txt
+       pip install six >> build_output.txt
        # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
        QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
        QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
@@ -207,7 +207,7 @@ install:
 ####
 #  Build FreeCAD with cmake options set above for each platform
 ##
-  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../ &>> build_output.txt
+  - mkdir build && cd build && cmake ${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ../
 
 script:
 ####
