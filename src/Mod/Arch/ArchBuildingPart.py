@@ -375,23 +375,27 @@ class BuildingPart:
                     deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
                     if deltap.Length == 0:
                         deltap = None
-                    deltar = self.oldPlacement.Rotation.multiply(obj.Placement.Rotation)
+                    v = FreeCAD.Vector(0,0,1)
+                    deltar = FreeCAD.Rotation(self.oldPlacement.Rotation.multVec(v),obj.Placement.Rotation.multVec(v))
                     #print "Rotation",deltar.Axis,deltar.Angle
                     if deltar.Angle < 0.0001:
                         deltar = None
                     for child in obj.Group:
                         if ((not hasattr(child,"MoveWithHost")) or child.MoveWithHost) and hasattr(child,"Placement"):
                             #print "moving ",child.Label
-                            if deltap:
-                                child.Placement.move(deltap)
                             if deltar:
                                 #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
                                 # use shape methods to obtain a correct placement
                                 import Part,math
                                 shape = Part.Shape()
                                 shape.Placement = child.Placement
+                                #print("angle before rotation:",shape.Placement.Rotation.Angle)
+                                #print("rotation angle:",math.degrees(deltar.Angle))
                                 shape.rotate(DraftVecUtils.tup(obj.Placement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
+                                #print("angle after rotation:",shape.Placement.Rotation.Angle)
                                 child.Placement = shape.Placement
+                            if deltap:
+                                child.Placement.move(deltap)
 
     def execute(self,obj):
 
