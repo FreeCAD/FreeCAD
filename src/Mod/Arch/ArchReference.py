@@ -133,26 +133,35 @@ class ArchReference:
                             print("Part not found in file")
             self.reload = False
 
-    def getPartsList(self,obj,filename=None):
+    def getFile(self,obj,filename=None):
+        
+        "gets a valid file, if possible"
 
-        parts = {}
         if not filename:
             filename = obj.File
         if not filename:
-            return parts
+            return None
         if not filename.lower().endswith(".fcstd"):
-            return parts
+            return None
         if not os.path.exists(filename):
             # search for the file in the current directory if not found
             basename = os.path.basename(filename)
             currentdir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
             altfile = os.path.join(currentdir,basename)
             if altfile == FreeCAD.ActiveDocument.FileName:
-                return parts
+                return None
             elif os.path.exists(altfile):
                 filename = altfile
             else:
-                return parts
+                return None
+        return filename
+
+    def getPartsList(self,obj,filename=None):
+
+        parts = {}
+        filename = self.getFile(obj,filename)
+        if not filename:
+            return parts
         zdoc = zipfile.ZipFile(filename)
         with zdoc.open("Document.xml") as docf:
             name = None
@@ -189,22 +198,9 @@ class ArchReference:
 
     def getColors(self,obj):
 
-        filename = obj.File
+        filename = self.getFile(obj)
         if not filename:
             return None
-        if not filename.lower().endswith(".fcstd"):
-            return None
-        if not os.path.exists(filename):
-            # search for the file in the current directory if not found
-            basename = os.path.basename(filename)
-            currentdir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
-            altfile = os.path.join(currentdir,basename)
-            if altfile == FreeCAD.ActiveDocument.FileName:
-                return None
-            elif os.path.exists(altfile):
-                filename = altfile
-            else:
-                return None
         part = obj.Part
         if not obj.Part:
             return None
@@ -330,13 +326,15 @@ class ViewProviderArchReference:
                     self.timer.stop()
                     del self.timer
             if f:
-                st_mtime = os.stat(self.Object.File).st_mtime
-                if hasattr(self.Object.ViewObject,"TimeStamp"):
-                    if self.Object.ViewObject.TimeStamp:
-                        if self.Object.ViewObject.TimeStamp != st_mtime:
-                            self.Object.Proxy.reload = True
-                            self.Object.touch()
-                    self.Object.ViewObject.TimeStamp = st_mtime
+                filename = self.Object.Proxy.getFile(self.Object)
+                if filename:
+                    st_mtime = os.stat(filename).st_mtime
+                    if hasattr(self.Object.ViewObject,"TimeStamp"):
+                        if self.Object.ViewObject.TimeStamp:
+                            if self.Object.ViewObject.TimeStamp != st_mtime:
+                                self.Object.Proxy.reload = True
+                                self.Object.touch()
+                        self.Object.ViewObject.TimeStamp = st_mtime
 
     def onChanged(self,vobj,prop):
 
