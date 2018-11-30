@@ -3899,6 +3899,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyXLinkContainer , App::PropertyLinkBase)
 
 PropertyXLinkContainer::PropertyXLinkContainer() {
     _pcScope = LinkScope::Global;
+    _LinkRestored = false;
 }
 
 PropertyXLinkContainer::~PropertyXLinkContainer() {
