@@ -195,6 +195,8 @@ public:
     virtual bool canDropObject(App::DocumentObject*) const;
     /** Add an object to the view provider by drag and drop */
     virtual void dropObject(App::DocumentObject*);
+    /** Replace an object to the view provider by drag and drop */
+    virtual void replaceObject(App::DocumentObject*, App::DocumentObject*);
     //@}
 
     /** @name Signals of the view provider */
