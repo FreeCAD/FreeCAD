@@ -741,7 +741,13 @@ endif()
         else(NOT FREECAD_USE_EXTERNAL_SMESH)
             find_package(SMESH CONFIG)
             set (SMESH_INCLUDE_DIR ${SMESH_INCLUDE_PATH})
-            SET(EXTERNAL_SMESH_LIBS ${SMESH_LIBRARIES})
+            foreach(LIB ${SMESH_LIBRARIES})
+                set(FOUND_LIB "FOUND_LIB-NOTFOUND")
+                find_library(FOUND_LIB ${LIB} PATHS ${SMESH_LIB_PATH})
+                list(APPEND SMESH_ABS_LIBS ${FOUND_LIB})
+            endforeach(LIB)
+            unset(FOUND_LIB CACHE)
+            set(EXTERNAL_SMESH_LIBS ${SMESH_ABS_LIBS})
             if(NOT SMESH_FOUND)
                 message(ERROR "================\n"
                               "SMESH not found.\n"
@@ -1012,7 +1018,7 @@ endif()
                                                             "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
 
-	if(APPLE)
+	if(APPLE AND NOT BUILD_WITH_CONDA)
 	    INSTALL(
 	        DIRECTORY
                     ${CMAKE_BINARY_DIR}/Ext/PySide
