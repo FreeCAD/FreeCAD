@@ -2221,17 +2221,23 @@ class ShapeString(Creator):
         Creator.Activated(self,name)
         if self.ui:
             self.ui.sourceCmd = self
-            self.dialog = None
-            self.text = ''
-            self.ui.sourceCmd = self
-            self.ui.pointUi(name)
-            self.active = True
-            self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.ssBase = None
-            self.ui.xValue.setFocus()
-            self.ui.xValue.selectAll()
-            msg(translate("draft", "Pick ShapeString location point:")+"\n")
-            FreeCADGui.draftToolBar.show()
+            self.taskmode = Draft.getParam("UiMode",1)
+            if self.taskmode:
+                self.task = DraftGui.ShapeStringTaskPanel()
+                self.task.sourceCmd = self
+                DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
+            else:
+                self.dialog = None
+                self.text = ''
+                self.ui.sourceCmd = self
+                self.ui.pointUi(name)
+                self.active = True
+                self.call = self.view.addEventCallback("SoEvent",self.action)
+                self.ssBase = None
+                self.ui.xValue.setFocus()
+                self.ui.xValue.selectAll()
+                msg(translate("draft", "Pick ShapeString location point:")+"\n")
+                FreeCADGui.draftToolBar.show()
 
     def createObject(self):
         "creates object in the current doc"
