@@ -29,6 +29,7 @@
 # include <QApplication>
 # include <QClipboard>
 # include <QMessageBox>
+# include <QMimeData>
 #endif
 
 #include <App/Application.h>
