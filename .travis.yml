@@ -166,7 +166,7 @@ before_install:
        if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
             brew install jq >> build_output.txt
             cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
-            travis_wait prime_local_ports_cache $cacheContext
+            #travis_wait prime_local_ports_cache $cacheContext
        fi
        brew update >/dev/null
        brew --config >> build_output.txt
