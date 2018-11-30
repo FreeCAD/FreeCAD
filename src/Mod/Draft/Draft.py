@@ -3181,10 +3181,8 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
     return obj
 
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
-
     '''ShapeString(Text,FontFile,Height,Track): Turns a text string
     into a Compound Shape'''
-
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
