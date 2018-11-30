@@ -53,7 +53,10 @@ using namespace Base;
 
 PyException::PyException(const Py::Object &obj) {
     _sErrMsg = obj.as_string();
-    _exceptionType = PyObject_Type(obj.ptr());
+    // WARNING: we are assumming that python type object will never be
+    // destroied, so we don't keep reference here to save book-keeping in
+    // our copy constructor and desctructor
+    _exceptionType = (PyObject*)obj.ptr()->ob_type;
     _errorType = obj.ptr()->ob_type->tp_name;
 }
 
@@ -76,7 +79,15 @@ PyException::PyException(void)
     _errorType = prefix;
 
     _exceptionType = PP_last_exception_type;
-    PP_last_exception_type = 0;
+
+    if(PP_last_exception_type) {
+        // WARNING: we are assumming that python type object will never be
+        // destroied, so we don't keep reference here to save book-keeping in
+        // our copy constructor and desctructor
+        Py_DECREF(PP_last_exception_type);
+        PP_last_exception_type = 0;
+
+    }
 
     _stackTrace = PP_last_error_trace;     /* exception traceback text */
 
@@ -89,15 +100,11 @@ PyException::PyException(void)
 
 PyException::~PyException() throw()
 {
-    if(_exceptionType) {
-        PyGILStateLocker locker;
-        Py_DECREF(_exceptionType);
-    }
 }
 
 void PyException::ThrowException(void)
 {
-    PyException myexcp = PyException();
+    PyException myexcp;
 
     PyGILStateLocker locker;
     if (PP_PyDict_Object!=NULL) {
