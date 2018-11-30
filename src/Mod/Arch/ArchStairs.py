@@ -27,6 +27,9 @@ __url__ = "http://www.freecadweb.org"
 
 
 import FreeCAD,ArchComponent,ArchCommands,Draft,DraftVecUtils,math,ArchPipe
+import Part, DraftGeomUtils
+
+
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -453,7 +456,7 @@ class _Stairs(ArchComponent.Component):
         if self.clone(obj):
             return
 
-        import Part
+        #import Part
         self.steps = []
         self.pseudosteps = []
         self.structures = []
@@ -560,7 +563,9 @@ class _Stairs(ArchComponent.Component):
             obj.RiserHeight = float(h)/obj.NumberOfSteps
             obj.BlondelRatio = obj.RiserHeight.Value*2+obj.TreadDepth.Value
 
-    def align(self,basepoint,align,widthvec):
+
+    @staticmethod
+    def align(basepoint,align,widthvec):
 
         "moves a given basepoint according to the alignment"
         if align == "Center":
@@ -574,12 +579,11 @@ class _Stairs(ArchComponent.Component):
 
         "builds a 'multi-edges' landing from edges" # 'copying' from makeStraightLanding()
 
-        # import Again?
-        import Draft, Part
-
-        outline, outlineL, outlineR, vBase1 = self.returnOutlines(obj, edges, "left", zeroMM, zeroMM, zeroMM, zeroMM, zeroMM)
-        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edges,"left",zeroMM,obj.RailingOffsetLeft, obj.RailingOffsetRight, obj.RailingHeightLeft, obj.RailingHeightRight)
-
+        outline, outlineL, outlineR, vBase1, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding, obj.TreadThickness,
+                                                                                                                zeroMM, zeroMM, zeroMM, zeroMM, zeroMM, True)
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding,
+                                                                                                                               obj.TreadThickness, zeroMM, obj.RailingOffsetLeft, obj.RailingOffsetRight,
+                                                                                                                               obj.RailingHeightLeft, obj.RailingHeightRight, True)
         obj.OutlineLeft = outlineRailL
         obj.OutlineRight = outlineRailR
         obj.AbsTop = vBase1[0]
@@ -602,116 +606,160 @@ class _Stairs(ArchComponent.Component):
         self.connectRailingVector(obj,outlineRailL,outlineRailR)
 
 
-    #@staticmethod
-    def returnOutlines(self, obj, edges, align="left", railStartRiser=zeroMM, offsetHLeft=zeroMM, offsetHRight=zeroMM, offsetVLeft=zeroMM, offsetVRight=zeroMM):
-    # better omit 'obj' latter?- currently only for vbaseFollowLastSegment()?
+    @staticmethod								# obj become stairsObj
+    def returnOutlines(stairsObj, edges, align="Left", mode=None, widthFirstSegment=zeroMM, widthOtherSegment=[], treadThickness=zeroMM,
+                       railStartRiser=zeroMM, offsetHLeft=zeroMM, offsetHRight=zeroMM, offsetVLeft=zeroMM, offsetVRight=zeroMM, widthFirstSegmentDefault=False):
 
-        import DraftGeomUtils
+        ''' Construct outline of stairs landing or the like from Edges - Side effect is vertexes are 'ordered' in series of findIntersection() functions '''
+
+        ''' outlineP1P2Ordered seem no use at the moment '''
+
+        #import DraftGeomUtils
 
         v, vLength, vWidth, vBase = [], [], [], []
-        p1o, p2o, p1, p2, p3, p4 = [], [], [], [], [], []
-        outline, outlineP1P2, outlineP3P4 = [], [], []
+
+        p1, p2, p3, p4 = [], [], [], []						# p1o, p2o - Not used
+        outline, outlineP1P2, outlineP3P4, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered = [], [], [], [], [], []
 
         if not isinstance(edges, list):
             edges = [edges]
 
         enum_edges = enumerate(edges)
         for i, edge in enum_edges:
-            v.append(DraftGeomUtils.vec(edge))
-            vLength.append(Vector(v[i].x,v[i].y,v[i].z)) # TODO vLength in this f() is 3d
 
-            # TODO obj.Width[i].Value for different 'edges' / 'sections' of the landing
+
+            ''' (1) append v (vec) ''' 
+            v.append(DraftGeomUtils.vec(edge))
+
+
+            ''' (2) get netWidthI ''' 
             netWidthI = 0
             if i > 0:
                 try:
-                    if obj.WidthOfLanding[i-1] > 0:
-                        netWidthI = obj.WidthOfLanding[i-1] - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+                    if widthOtherSegment[i-1] > 0 or (not widthFirstSegmentDefault):
+                        netWidthI = widthOtherSegment[i-1] - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+                    else: # i.e. elif widthFirstSegmentDefault:
+                        netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
                 except:
-                    pass
-            if netWidthI == 0:
-                netWidthI = obj.Width.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+                    if widthFirstSegmentDefault:
+                        netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+
+            else:
+               netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+
+
+            ''' (3) append vBase ''' 
+            vBase.append(edges[i].Vertexes[0].Point)
+
+
+            ''' (1a) calc & append vLength - Need v (vec) ''' 
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z)) # TODO vLength in this f() is 3d
+
+
+            ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI ''' 
             vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidthI))
 
-            vBase.append(edges[i].Vertexes[0].Point)
-            vBase[i] = self.vbaseFollowLastSegment(obj, vBase[i])
+
+            ''' (3a) alter vBase ''' 
+            if stairsObj:
+                vBase[i] = stairsObj.Proxy.vbaseFollowLastSegment(stairsObj, vBase[i])
 
             vBase[i] = vBase[i].add(Vector(0,0,offsetVLeft.Value))
             vBase[i] = vBase[i].add(Vector(0,0,railStartRiser.Value))
             vOffsetH = DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),offsetHLeft.Value)
-            vBase[i] = self.align(vBase[i], "Right", -vOffsetH)
 
-            # step + structure							# assume all left-align first # no nosing
-            p1o.append(vBase[i].add(Vector(0,0,-abs(obj.TreadThickness.Value))))
-            p2o.append(p1o[i].add(vLength[i]))
-            p1.append(self.align(vBase[i],obj.Align,vWidth[i]).add(Vector(0,0,-abs(obj.TreadThickness.Value))))
+            vBase[i] = _Stairs.align(vBase[i], "Right", -vOffsetH)
 
+
+            ''' (3b, 2b/1c) get + alter [p1, p2, p3, p4] - Need vBase ''' 
+
+            p1.append(_Stairs.align(vBase[i], align, vWidth[i]).add(Vector(0,0,-abs(treadThickness.Value))))
             p2.append(p1[i].add(vLength[i]).add(Vector(0,0,-railStartRiser.Value)))
             p3.append(p2[i].add(vWidth[i]).add(Vector(0,0,(offsetVRight-offsetVLeft).Value)))
             p4.append(p3[i].add(DraftVecUtils.neg(vLength[i])).add(Vector(0,0,railStartRiser.Value)))
 
-            #if obj.Align == 'Left':
-            if False:
-                outlineP1P2.append(p1[i])
-                outlineP1P2.append(p2[i])					# can better skip 1 'supposedly' overlapping point every pair?
-                if i > 0:
-                    print ("Debug - intersection calculation")
-                    print (p3[i-1])
-                    print (p4[i-1])
-                    print (p3[i])
-                    print (p4[i])
-                    intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
-                    print (intersection)
-                    outlineP3P4.insert(0, intersection[0])
-                else:
-                    outlineP3P4.insert(0, p4[i])
 
-            #elif obj.Align == 'Right':
-            if False:
+            ''' (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 ''' 
 
-                if i > 0:
-                    intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
-                    outlineP1P2.append(intersection[0])
-                else:
-                    outlineP1P2.append(p1[i])
-                outlineP3P4.insert(0, p4[i])
-                outlineP3P4.insert(0, p3[i])
-
-            #elif obj.Align == 'Center':
             if True:
 
                 if i > 0:
                     intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
                     outlineP1P2.append(intersection[0])
+
                     intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
                     outlineP3P4.insert(0, intersection[0])
+
                 else:
                     outlineP1P2.append(p1[i])
                     outlineP3P4.insert(0, p4[i])
 
-            else:
-                outlineP1P2.append(p1[i])
-                outlineP1P2.append(p2[i])
-                outlineP3P4.insert(0, p4[i])
-                outlineP3P4.insert(0, p3[i])
 
         # add back last/first 'missing' point(s)
-        outlineP3P4.insert(0, p3[i])
         outlineP1P2.append(p2[i])
-
+        outlineP3P4.insert(0, p3[i])
         outline = outlineP1P2 + outlineP3P4
         outline.append(p1[0])
-        print (outlineP1P2)
-        print (outlineP3P4)
-        print (outline)
 
-        return outline, outlineP1P2, outlineP3P4, vBase
+        if mode in ["OrderedClose", "OrderedCloseAndOrderedOpen"]:
+            outlineP1P2Closed = list(outlineP1P2)
+            intersection = DraftGeomUtils.findIntersection(p1[i],p2[i],p1[0],p2[0],True,True)
+            outlineP1P2Closed[0] = intersection[0]
+            outlineP1P2Closed[i+1] = intersection[0]
+
+            outlineP3P4Closed = list(outlineP3P4)
+            intersection = DraftGeomUtils.findIntersection(p3[i],p4[i],p3[0],p4[0],True,True)
+            outlineP3P4Closed[0] = intersection[0]
+            outlineP3P4Closed[i+1] = intersection[0]
+
+        if mode in ["OrderedOpen", "OrderedCloseAndOrderedOpen"]:
+          if i > 0: # Multi-edge, otherwise no use
+
+            outlineP1P2Ordered = list(outlineP1P2)
+
+            ''' Guessing the 1st Start Point based on Intersection '''
+            vx1 = Vector(outlineP1P2[1].x, outlineP1P2[1].y, 0)
+            l0 = Part.LineSegment(edges[0].Vertexes[0].Point, edges[0].Vertexes[1].Point)
+            try:
+                distFrom1stParameter = l0.parameter(vx1)
+                distFrom2ndParameter = l0.length()-distFrom1stParameter
+
+                ''' Further point of this line from intersection '''
+                if distFrom2ndParameter > distFrom1stParameter:
+                    print edges[0].Vertexes[1].Point
+                    foundStart = edges[0].Vertexes[1].Point
+                else: # if distFrom2ndParameter = / < distFrom1stParameter (i.e. if equal, Vertexes[0].Point is taken ?)
+                    print edges[0].Vertexes[0].Point
+                    foundStart = edges[0].Vertexes[0].Point
+            except:
+                print('Intersection point Not on this edge')
+
+            ''' Guessing the last End Point based on Intersection '''
+            vx99 = Vector(outlineP1P2[i].x, outlineP1P2[i].y, 0)
+            l99 = Part.LineSegment(edges[i].Vertexes[0].Point, edges[i].Vertexes[1].Point)
+            try:
+                distFrom1stParameter = l99.parameter(vx99)
+                distFrom2ndParameter = l99.length()-distFrom1stParameter
+                if distFrom2ndParameter > distFrom1stParameter:
+                    print edges[i].Vertexes[1].Point
+                    foundEnd = edges[i].Vertexes[1].Point
+                else:
+                    print edges[i].Vertexes[0].Point
+                    foundEnd = edges[i].Vertexes[0].Point
+            except:
+                print('Intersection point Not on this edge')
+
+            outlineP1P2Ordered[0] = foundStart
+            outlineP1P2Ordered[i+1] = foundEnd
+
+        return outline, outlineP1P2, outlineP3P4, vBase, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered
 
 
     @staticmethod
     def vbaseFollowLastSegment(obj, vBase):
         if obj.LastSegment:
             lastSegmentAbsTop = obj.LastSegment.AbsTop
-            vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z) # use Last Segment top's z-coordinate
+            vBase = Vector(vBase.x, vBase.y,lastSegmentAbsTop.z)		# use Last Segment top's z-coordinate
         return vBase
 
 
@@ -722,7 +770,7 @@ class _Stairs(ArchComponent.Component):
         # general data
         if not numberofsteps:
             numberofsteps = obj.NumberOfSteps
-        import Part,DraftGeomUtils
+        #import Part,DraftGeomUtils
         v = DraftGeomUtils.vec(edge)
         vLength = Vector(v.x,v.y,0)
         vWidth = vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
@@ -775,6 +823,7 @@ class _Stairs(ArchComponent.Component):
         print("landing data:",fLength,":",fHeight)
 
         # step
+
         p1 = self.align(vBase,obj.Align,vWidth)
         p1o = p1.add(Vector(0,0,-abs(obj.TreadThickness.Value)))
 
@@ -905,7 +954,7 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"))
 
         # general data
-        import Part,DraftGeomUtils
+        #import Part,DraftGeomUtils
         if not numberofsteps:
             numberofsteps = obj.NumberOfSteps
             # if not numberofsteps - not call by makeStraightStairsWithLanding()
@@ -941,6 +990,7 @@ class _Stairs(ArchComponent.Component):
         # steps
         for i in range(numberofsteps-1):
             p1 = vBase.add((Vector(vLength).multiply(i)).add(Vector(vHeight).multiply(i+1)))
+
             p1 = self.align(p1,obj.Align,vWidth)
             p1 = p1.add(vNose).add(Vector(0,0,-abs(obj.TreadThickness.Value)))
             p2 = p1.add(DraftVecUtils.neg(vNose)).add(vLength)
@@ -960,6 +1010,7 @@ class _Stairs(ArchComponent.Component):
             if obj.StructureThickness.Value:
 
                 # Massive Structure to respect 'align' attribute
+
                 vBasedAligned = self.align(vBase,obj.Align,vWidth)
                 vBase = vBasedAligned
 
@@ -993,7 +1044,9 @@ class _Stairs(ArchComponent.Component):
                 l1 = Vector(vLength).multiply(numberofsteps-1)
                 h1 = Vector(vHeight).multiply(numberofsteps-1).add(Vector(0,0,-abs(obj.TreadThickness.Value)+obj.StringerOverlap.Value))
                 p1 = vBase.add(l1).add(h1)
+
                 p1 = self.align(p1,obj.Align,vWidth)
+
                 if obj.StringerOverlap.Value <= float(h)/numberofsteps:
                     lProfile.append(p1)
                 else:
@@ -1044,7 +1097,7 @@ class _Stairs(ArchComponent.Component):
 
         if obj.NumberOfSteps < 3:
             return
-        import Part,DraftGeomUtils
+        #import Part,DraftGeomUtils
         v = DraftGeomUtils.vec(edge)
 
         landing = 0
@@ -1105,6 +1158,7 @@ class _Stairs(ArchComponent.Component):
                 if (obj.Align == "Left" and obj.Flight == "HalfTurnLeft") or (obj.Align == "Right" and obj.Flight == "HalfTurnRight"):
                     p3r = p2
                 elif (obj.Align == "Left" and obj.Flight == "HalfTurnRight"):
+
                     p3r = self.align(p2,"Right",-2*vWidth) # -ve / opposite direction of "Right" - no "Left" in _Stairs.Align()
                 elif (obj.Align == "Right" and obj.Flight == "HalfTurnLeft"):
                     p3r = self.align(p2,"Right",2*vWidth)
@@ -1133,7 +1187,11 @@ class _Stairs(ArchComponent.Component):
             print (p3r, p4r)
 
         edge = Part.LineSegment(p1,p2).toShape()
-        outlineNotUsed, outlineRailL, outlineRailR, vBase2 = self.returnOutlines(obj, edge,"left",obj.RiserHeight,obj.RailingOffsetLeft,obj.RailingOffsetRight,obj.RailingHeightLeft,obj.RailingHeightRight)
+
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU = self.returnOutlines(obj, edge, obj.Align, None, obj.Width, obj.WidthOfLanding,
+                                                                                                                               obj.TreadThickness, obj.RiserHeight, obj.RailingOffsetLeft,
+                                                                                                                               obj.RailingOffsetRight, obj.RailingHeightLeft, obj.RailingHeightRight, True)
+
         self.connectRailingVector(obj,outlineRailL,outlineRailR)
 
 
