@@ -2368,6 +2368,12 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
         catch (const Base::Exception& e) {
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
         }
+        catch (std::exception &e) {
+            FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
+        }
+        catch (...) {
+            FC_ERR("Failed to restore " << obj->getFullName() << ": " << "unknown exception");
+        }
         if(checkXLink && !d->touchedObjs.count(obj)) {
             for(auto prop : propMap[obj]) {
                 auto link = dynamic_cast<PropertyLinkBase*>(prop);
