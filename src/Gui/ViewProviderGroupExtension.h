@@ -46,6 +46,7 @@ public:
     virtual bool extensionCanDropObjects() const override;
     virtual bool extensionCanDropObject(App::DocumentObject*) const override;
     virtual void extensionDropObject(App::DocumentObject*) override;   
+    virtual void extensionReplaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue) override;
  
     virtual void extensionHide(void) override;
     virtual void extensionShow(void) override;

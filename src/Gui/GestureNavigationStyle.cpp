@@ -236,10 +236,13 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     if (evIsGesture) {
         const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
         switch(gesture->state) {
-        case SoGestureEvent::SbGSStart:
+        case SoGestureEvent::SbGSStart:{
             //assert(!inGesture);//start of another gesture before the first finished? Happens all the time for Pan gesture... No idea why!  --DeepSOIC
             inGesture = true;
-        break;
+
+            enableGestureTilt = !(App::GetApplication().GetParameterGroupByPath
+                    ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
+        }break;
         case SoGestureEvent::SbGSUpdate:
             assert(inGesture);//gesture update without start?
             inGesture = true;
@@ -551,7 +554,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));
                     }
                     NavigationStyle::doZoom(viewer->getSoRenderManager()->getCamera(),-logf(event->deltaZoom),this->normalizePixelPos(event->curCenter));
-                    if (event->deltaAngle != 0)
+                    if (event->deltaAngle != 0 && enableGestureTilt)
                         NavigationStyle::doRotate(viewer->getSoRenderManager()->getCamera(),event->deltaAngle,this->normalizePixelPos(event->curCenter));
                     processed = true;
                 }
