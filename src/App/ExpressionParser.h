@@ -427,6 +427,7 @@ public:
     virtual bool isTouched() const;
 
     std::string getDocString() const;
+    const std::string &getName() const {return name;}
 
 protected:
     CallableExpression(const App::DocumentObject *_owner):Expression(_owner) {}
