@@ -89,7 +89,7 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 
 #define _EXPR_THROW(_msg,_expr) __EXPR_THROW(ExpressionError,_msg,_expr)
 
-#define __EXPR_RETHROW(_e,_msg,_expr) do {\
+#define __EXPR_SET_MSG(_e,_msg,_expr) do {\
     std::ostringstream ss;\
     ss << _msg << _e.what();\
     if(_expr) ss << std::endl << (_expr)->toStr();\
@@ -97,8 +97,14 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
 }while(0)
 
 #define _EXPR_RETHROW(_e,_msg,_expr) do {\
-    __EXPR_RETHROW(_e,_msg,_expr);\
+    __EXPR_SET_MSG(_e,_msg,_expr);\
     throw;\
+}while(0)
+
+#define _EXPR_PY_THROW(_msg,_expr) do {\
+    Base::PyException _e;\
+    __EXPR_SET_MSG(_e,_msg,_expr);\
+    throw _e;\
 }while(0)
 
 #define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
@@ -432,9 +438,9 @@ Expression::ComponentPtr Expression::Component::eval() const {
 }
 
 Py::Object Expression::Component::get(const Expression *owner, const Py::Object &pyobj) const {
-    if(!e1 && !e2 && !e3)
-        return comp.get(pyobj);
     try {
+        if(!e1 && !e2 && !e3)
+            return comp.get(pyobj);
         if(!comp.isRange() && !e2 && !e3) {
             auto index = _pyObjectFromAny(e1->getValueAsAny(),e1.get());
             if(pyobj.isMapping())
@@ -459,10 +465,8 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
             return Py::Mapping(pyobj).getItem(slice);
         }
     }catch(Py::Exception &) {
-        PyException e;
-        __EXPR_RETHROW(e,"",owner);
+        _EXPR_PY_THROW("",owner);
     }
-    return Py::Object();
 }
 
 void Expression::Component::set(const Expression *owner, Py::Object &pyobj, const Py::Object &value) const 
@@ -493,8 +497,7 @@ void Expression::Component::set(const Expression *owner, Py::Object &pyobj, cons
             Py::Mapping(pyobj).setItem(slice,value);
         }
     }catch(Py::Exception &) {
-        PyException e;
-        __EXPR_RETHROW(e,"",owner);
+        _EXPR_PY_THROW("",owner);
     }
 }
 
@@ -525,8 +528,7 @@ void Expression::Component::del(const Expression *owner, Py::Object &pyobj) cons
             Py::Mapping(pyobj).delItem(slice);
         }
     }catch(Py::Exception &) {
-        PyException e;
-        __EXPR_RETHROW(e,"",owner);
+        _EXPR_PY_THROW("",owner);
     }
 }
 
@@ -988,13 +990,17 @@ ExpressionPtr Expression::updateLabelReference(
 }
 
 App::any Expression::getValueAsAny() const {
-    if(components.empty())
-        return _getValueAsAny();
-    Base::PyGILStateLocker lock;
-    Py::Object pyobj = _pyObjectFromAny(_getValueAsAny(),this);
-    for(auto &c : components)
-        pyobj = c->get(this,pyobj);
-    return pyObjectToAny(pyobj);
+    try {
+        if(components.empty())
+            return _getValueAsAny();
+        Base::PyGILStateLocker lock;
+        Py::Object pyobj = _pyObjectFromAny(_getValueAsAny(),this);
+        for(auto &c : components)
+            pyobj = c->get(this,pyobj);
+        return pyObjectToAny(pyobj);
+    }catch(Py::Exception &) {
+        _EXPR_PY_THROW("",this);
+    }
 }
 
 void Expression::addComponent(ComponentPtr &&component) {
@@ -3971,9 +3977,7 @@ Range RangeExpression::getRange() const
             arg.setItem(0,Py::String(begin));
             c1 = CellAddress(callable.apply(arg).as_string().c_str());
         } catch(Py::Exception &) {
-            Base::PyException e;
-            __EXPR_RETHROW(e,"Invalid cell address '" << begin << "': ",this);
-            e.ThrowException();
+            _EXPR_PY_THROW("Invalid cell address '" << begin << "': ",this);
         } catch(Base::Exception &e) {
             _EXPR_RETHROW(e,"Invalid cell address '" << begin << "': ",this);
         }
@@ -3984,9 +3988,7 @@ Range RangeExpression::getRange() const
             arg.setItem(0,Py::String(end));
             c2 = CellAddress(callable.apply(arg).as_string().c_str());
         } catch(Py::Exception &) {
-            Base::PyException e;
-            __EXPR_RETHROW(e,"Invalid cell address '" << end << "': ", this);
-            e.ThrowException();
+            _EXPR_PY_THROW("Invalid cell address '" << end << "': ", this);
         } catch(Base::Exception &e) {
             _EXPR_RETHROW(e,"Invalid cell address '" << end << "': ", this);
         }
@@ -4196,8 +4198,7 @@ App::any ComprehensionExpression::_getValueAsAny() const {
     try {
         _calc(res,comps.begin());
     }catch(Py::Exception &) {
-        PyException e;
-        __EXPR_RETHROW(e,"",this);
+        _EXPR_PY_THROW("",this);
     }
     return pyObjectToAny(res,false);
 }
