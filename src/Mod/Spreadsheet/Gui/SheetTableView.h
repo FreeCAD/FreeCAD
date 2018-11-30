@@ -71,6 +71,8 @@ protected Q_SLOTS:
     void removeColumns();
     void cellProperties();
     void editMode(QAction *);
+    void onRecompute();
+
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     bool event(QEvent *event);

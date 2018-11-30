@@ -178,6 +178,8 @@ public:
 
     std::string getColumn(int offset=0) const;
 
+    void touchCells(App::Range range);
+
     // Signals
 
     boost::signals2::signal<void (App::CellAddress)> cellUpdated;

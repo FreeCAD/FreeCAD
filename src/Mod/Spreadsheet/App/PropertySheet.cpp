@@ -1032,38 +1032,33 @@ void PropertySheet::removeDependencies(CellAddress key)
 /**
   * Recompute any cells that depend on \a prop.
   *
-  * @param prop Property that presumably has changed an triggers updates of other cells.
-  *
   */
 
-void PropertySheet::recomputeDependants(const App::DocumentObject *owner, const Property *prop)
+void PropertySheet::recomputeDependants(const App::DocumentObject *owner, const char *propName)
 {
-    const char * name = prop->getName();
+    const char * nameInDoc = owner->getNameInDocument();
+    if (!nameInDoc)
+        return;
+    const char * docName = owner->getDocument()->Label.getValue();
 
-    assert(name != 0);
+    // First, search without actual property name for sub-object/link
+    // references, i.e indirect references. The depenedecies of these
+    // references are too complex to track exactly, so we only track the
+    // top parent object instead, and mark the involved expression
+    // whenever the top parent changes.
+    std::string fullName = std::string(docName) + "#" + std::string(nameInDoc) + ".";
+    auto it = propertyNameToCellMap.find(fullName);
+    if (it != propertyNameToCellMap.end()) {
+        for(auto &cell : it->second)
+            setDirty(cell);
+    }
 
-    if (name) {
-        const char * docName = owner->getDocument()->Label.getValue();
-        const char * nameInDoc = owner->getNameInDocument();
-
-        if (nameInDoc) {
-            // First, search without actual property name for sub-object/link
-            // references, i.e indirect references. The depenedecies of these
-            // references are too complex to track exactly, so we only track the
-            // top parent object instead, and mark the involved expression
-            // whenever the top parent changes.
-            std::string fullName = std::string(docName) + "#" + std::string(nameInDoc) + ".";
-            auto it = propertyNameToCellMap.find(fullName);
-            if (it != propertyNameToCellMap.end()) {
-                for(auto &cell : it->second)
-                    setDirty(cell);
-            }
-            // Now, we check for direct property references
-            it = propertyNameToCellMap.find(fullName + name);
-            if (it != propertyNameToCellMap.end()) {
-                for(auto &cell : it->second)
-                    setDirty(cell);
-            }
+    if (propName) {
+        // Now, we check for direct property references
+        it = propertyNameToCellMap.find(fullName + propName);
+        if (it != propertyNameToCellMap.end()) {
+            for(auto &cell : it->second)
+                setDirty(cell);
         }
     }
 }
@@ -1102,7 +1097,7 @@ void PropertySheet::invalidateDependants(const App::DocumentObject *docObj)
 }
 
 void PropertySheet::slotChangedObject(const App::DocumentObject &obj, const App::Property &prop) {
-    recomputeDependants(&obj, &prop);
+    recomputeDependants(&obj, prop.getName());
 }
 
 void PropertySheet::onAddDep(App::DocumentObject *obj) {

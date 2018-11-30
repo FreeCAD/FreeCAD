@@ -108,12 +108,16 @@ SheetTableView::SheetTableView(QWidget *parent)
     contextMenu->addMenu(subMenu);
     subMenu->addActions(editGroup->actions());
     connect(editGroup, SIGNAL(triggered(QAction*)), this, SLOT(editMode(QAction*)));
+
+    QAction *recompute = new QAction(tr("Recompute"),this);
+    connect(recompute, SIGNAL(triggered()), this, SLOT(onRecompute()));
+    contextMenu->addAction(recompute);
 }
 
 void SheetTableView::editMode(QAction *action) {
     int mode = action->data().toInt();
 
-    Gui::Command::openCommand("Set cell edit mode");
+    Gui::Command::openCommand("Cell edit mode");
     try {
         for(auto &index : selectionModel()->selectedIndexes()) {
             auto cell = sheet->getCell(CellAddress(index.row(), index.column()));
@@ -129,6 +133,16 @@ void SheetTableView::editMode(QAction *action) {
         e.ReportException();
         Gui::Command::abortCommand();
     }
+    Gui::Command::commitCommand();
+}
+
+void SheetTableView::onRecompute() {
+    Gui::Command::openCommand("Recompute cells");
+    for(auto &range : selectedRanges()) {
+        FCMD_OBJ_CMD(sheet, "touchCells('" << range.fromCellString()
+                << "','" << range.toCellString() << "')");
+    }
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     Gui::Command::commitCommand();
 }
 

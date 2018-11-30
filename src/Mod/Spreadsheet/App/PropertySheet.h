@@ -216,7 +216,7 @@ private:
     void removeDependencies(App::CellAddress key);
 
     void slotChangedObject(const App::DocumentObject &obj, const App::Property &prop);
-    void recomputeDependants(const App::DocumentObject *obj, const App::Property * prop);
+    void recomputeDependants(const App::DocumentObject *obj, const char *propName);
 
     /*! Cell dependencies, i.e when a change occurs to property given in key,
       the set of addresses needs to be recomputed.

@@ -739,6 +739,12 @@ const char *Sheet::getPropertyName(const Property *prop) const
         return PropertyContainer::getPropertyName(prop);
 }
 
+void Sheet::touchCells(Range range) {
+    do {
+        cells.setDirty(*range);
+    }while(range.next());
+}
+
 /**
  * @brief Recompute cell at address \a p.
  * @param p Address of cell.

@@ -189,5 +189,10 @@ Supported modes are, 'normal', 'button', 'combo'.
         <UserDocu>column(offset=0): Return the current column index with optional offset</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="touchCells">
+      <Documentation>
+        <UserDocu>touchCells(from, to=None): touch cells in the given range</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
