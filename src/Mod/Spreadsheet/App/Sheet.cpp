@@ -761,9 +761,9 @@ void Sheet::recomputeCell(CellAddress p)
         cellErrors.erase(p);
     }
     catch (const Base::Exception & e) {
-        QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
-
-        setStringProperty(p, Base::Tools::toStdString(msg));
+        // QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
+        //
+        // setStringProperty(p, Base::Tools::toStdString(msg));
         if (cell)
             cell->setException(e.what());
 
@@ -1290,7 +1290,11 @@ void Sheet::providesTo(CellAddress address, std::set<CellAddress> & result) cons
 
 void Sheet::onDocumentRestored()
 {
-    execute();
+    auto ret = execute();
+    if(ret!=DocumentObject::StdReturn) {
+        FC_ERR("Failed to restore " << getFullName() << ": " << ret->Why);
+        delete ret;
+    }
 }
 
 /**
