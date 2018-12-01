@@ -625,7 +625,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             pass # IfcOpenShell will yield an error if a given product has no shape, but we don't care, we're brave enough
 
         if brep:
-            if DEBUG: print(" "+str(len(brep)/1000)+"k ",end="")
+            if DEBUG: print(" "+str(int(len(brep)/1000))+"k ",end="")
 
             shape = Part.Shape()
             shape.importBrepFromString(brep,False)
@@ -2642,6 +2642,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             if hasattr(obj.Proxy,"getExtrusionData"):
                 extdata = obj.Proxy.getExtrusionData(obj)
                 if extdata:
+                    #print(extdata)
                     # convert to meters
                     p = extdata[0]
                     if not isinstance(p,list):
@@ -2656,14 +2657,14 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         pi = p[i]
                         pi.scale(0.001)
                         if i < len(ev):
-                            evi = ev[i]
+                            evi = FreeCAD.Vector(ev[i])
                         else:
-                            evi = ev[-1]
+                            evi = FreeCAD.Vector(ev[-1])
                         evi.multiply(0.001)
                         if i < len(pl):
-                            pli = pl[i]
+                            pli = pl[i].copy()
                         else:
-                            pli = pl[-1]
+                            pli = pl[-1].copy()
                         pli.Base = pli.Base.multiply(0.001)
                         pstr = str([v.Point for v in p[i].Vertexes])
                         if pstr in profiledefs:
@@ -2690,19 +2691,19 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             shapes.append(shape)
                             solidType = "SweptSolid"
                             shapetype = "extrusion"
-                elif hasattr(obj.Proxy,"getRebarData"):
-                    # export rebars as IfcSweptDiskSolid
-                    rdata = obj.Proxy.getRebarData(obj)
-                    if rdata:
-                        # convert to meters
-                        r = rdata[1] * 0.001
-                        for w in rdata[0]:
-                            w.scale(0.001)
-                            cur =       createCurve(ifcfile,w)
-                            shape =     ifcfile.createIfcSweptDiskSolid(cur,r)
-                            shapes.append(shape)
-                            solidType = "SweptSolid"
-                            shapetype = "extrusion"
+            elif hasattr(obj.Proxy,"getRebarData"):
+                # export rebars as IfcSweptDiskSolid
+                rdata = obj.Proxy.getRebarData(obj)
+                if rdata:
+                    # convert to meters
+                    r = rdata[1] * 0.001
+                    for w in rdata[0]:
+                        w.scale(0.001)
+                        cur =       createCurve(ifcfile,w)
+                        shape =     ifcfile.createIfcSweptDiskSolid(cur,r)
+                        shapes.append(shape)
+                        solidType = "SweptSolid"
+                        shapetype = "extrusion"
 
     if not shapes:
 
