@@ -45,6 +45,8 @@ class gp_Ax2;
 class gp_Vec;
 class gp_Trsf;
 class gp_GTrsf;
+class gp_Pln;
+class gp_Dir;
 
 namespace Part
 {

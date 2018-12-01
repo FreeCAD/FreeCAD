@@ -158,6 +158,7 @@
 # include <BRepFill.hxx>
 # include <BRepOffsetAPI_DraftAngle.hxx>
 # include <BRepPrimAPI_MakeHalfSpace.hxx>
+# include <gp_Pln.hxx>
 #endif
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
@@ -1769,6 +1770,67 @@ TopoShape &TopoShape::makEShape(const char *maker,
         return *this;
     }
 
+    std::vector<TopoShape> _shapes;
+    if(shapes.size()==1) {
+        expandCompound(shapes.front(),_shapes);
+        if(_shapes.size()==1)
+            FC_THROWM(Base::CADKernelError,"Boolean operation with only one shape");
+    }
+
+    auto &inputs = _shapes.size()?_shapes:shapes;
+
+#if OCC_VERSION_HEX <= 0x060800
+    if (tol > 0.0)
+        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
+
+    TopoShape resShape = inputs[0];
+    if (resShape.isNull())
+        FC_THROWM(Base::ValueError,"Object shape is null");
+    if(strcmp(maker, TOPOP_FUSE)==0) {
+        for(size_t i=1;i<inputs.size();++i) {
+            const auto &s = inputs[i];
+            if (s.isNull())
+                FC_THROWM(NullShapeException,"Input shape is null");
+            BRepAlgoAPI_Fuse mk(resShape.getShape(), s.getShape());
+            if (!mk.IsDone())
+                FC_THROWM(CADKernelError,"Fusion failed");
+            resShape = makeShape(mk,{resShape,s},op);
+        }
+    } else if(strcmp(maker, TOPOP_CUT)==0) {
+        for(size_t i=1;i<inputs.size();++i) {
+            const auto &s = inputs[i];
+            if (s.isNull())
+                FC_THROWM(NullShapeException,"Input shape is null");
+            BRepAlgoAPI_Cut mk(resShape.getShape(), s.getShape());
+            if (!mk.IsDone())
+                FC_THROWM(CADKernelError,"Cut failed");
+            resShape = makeShape(mk,{resShape,s},op);
+        }
+    } else if(strcmp(maker, TOPOP_COMMON)==0) {
+        for(size_t i=1;i<inputs.size();++i) {
+            const auto &s = inputs[i];
+            if (s.isNull())
+                FC_THROWM(NullShapeException,"Input shape is null");
+            BRepAlgoAPI_Common mk(resShape.getShape(), s.getShape());
+            if (!mk.IsDone())
+                FC_THROWM(CADKernelError,"Common failed");
+            resShape = makeShape(mk,{resShape,s},op);
+        }
+    } else if(strcmp(maker, TOPOP_SECTION)==0) {
+        for(size_t i=1;i<inputs.size();++i) {
+            const auto &s = inputs[i];
+            if (s.isNull())
+                FC_THROWM(NullShapeException,"Input shape is null");
+            BRepAlgoAPI_Section mk(resShape.getShape(), s.getShape());
+            if (!mk.IsDone())
+                FC_THROWM(CADKernelError,"Section failed");
+            resShape = makeShape(mk,{resShape,s},op);
+        }
+    } else
+        FC_THROWM(Base::CADKernelError,"Unknown maker");
+    return *this;
+#else
+
     std::unique_ptr<BRepAlgoAPI_BooleanOperation> mk;
     if(strcmp(maker, TOPOP_FUSE)==0) 
         mk.reset(new BRepAlgoAPI_Fuse);
@@ -1789,14 +1851,8 @@ TopoShape &TopoShape::makEShape(const char *maker,
 #endif
     TopTools_ListOfShape shapeArguments,shapeTools;
 
-    std::vector<TopoShape> _shapes;
-    if(shapes.size()==1) {
-        expandCompound(shapes.front(),_shapes);
-        if(_shapes.size()==1)
-            FC_THROWM(Base::CADKernelError,"Boolean operation with only one shape");
-    }
     int i=-1;
-    for(const auto &shape : shapes.size()==1?_shapes:shapes) {
+    for(const auto &shape : inputs) {
         if(shape.isNull())
             HANDLE_NULL_INPUT;
         if(++i == 0)
@@ -1813,6 +1869,7 @@ TopoShape &TopoShape::makEShape(const char *maker,
         mk->SetFuzzyValue(tol);
     mk->Build();
     return makEShape(*mk,shapes,op);
+#endif
 }
 
 TopoShape &TopoShape::makEShape(BRepBuilderAPI_MakeShape &mkShape, 
