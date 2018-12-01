@@ -304,31 +304,56 @@ class Component:
     def onBeforeChange(self,obj,prop):
 
         if prop == "Placement":
-            self.placementBefore = FreeCAD.Placement(obj.Placement)
+            self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
 
         if prop == "Placement":
-            if hasattr(self,"placementBefore"):
-                delta = FreeCAD.Placement()
-                delta.Base = obj.Placement.Base.sub(self.placementBefore.Base)
-                delta.Rotation = obj.Placement.multiply(self.placementBefore.inverse()).Rotation
-                for o in self.getIncluded(obj,movable=True):
-                    o.Placement = o.Placement.multiply(delta)
+            if hasattr(self,"oldPlacement"):
+                if self.oldPlacement:
+                    import DraftVecUtils
+                    deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
+                    if deltap.Length == 0:
+                        deltap = None
+                    v = FreeCAD.Vector(0,0,1)
+                    deltar = FreeCAD.Rotation(self.oldPlacement.Rotation.multVec(v),obj.Placement.Rotation.multVec(v))
+                    #print "Rotation",deltar.Axis,deltar.Angle
+                    if deltar.Angle < 0.0001:
+                        deltar = None
+                    for child in self.getMovableChildren(obj):
+                        #print "moving ",child.Label
+                        if deltar:
+                            #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
+                            # use shape methods to obtain a correct placement
+                            import Part,math
+                            shape = Part.Shape()
+                            shape.Placement = child.Placement
+                            #print("angle before rotation:",shape.Placement.Rotation.Angle)
+                            #print("rotation angle:",math.degrees(deltar.Angle))
+                            shape.rotate(DraftVecUtils.tup(self.oldPlacement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
+                            #print("angle after rotation:",shape.Placement.Rotation.Angle)
+                            child.Placement = shape.Placement
+                        if deltap:
+                            child.Placement.move(deltap)
 
-    def getIncluded(self,obj,movable=False):
+    def getMovableChildren(self,obj):
 
-        ilist = []
+        ilist = obj.Additions + obj.Subtractions
         for o in obj.InList:
             if hasattr(o,"Hosts"):
                 if obj in o.Hosts:
-                    if movable:
-                        if hasattr(o,"MoveWithHost"):
-                            if o.MoveWithHost:
-                                ilist.append(o)
-                    else:
-                        ilist.append(o)
-        return ilist
+                    ilist.append(o)
+            elif hasattr(o,"Host"):
+                if obj == o.Host:
+                    ilist.append(o)
+        ilist2 = []
+        for o in ilist:
+            if hasattr(o,"MoveWithHost"):
+                if o.MoveWithHost:
+                    ilist2.append(o)
+            else:
+                ilist2.append(o)
+        return ilist2
 
     def clone(self,obj):
 
