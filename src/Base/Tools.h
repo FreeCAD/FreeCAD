@@ -189,12 +189,26 @@ private:
 
 template<typename Flag=bool>
 struct FlagToggler {
+
     Flag &flag;
-    FlagToggler(Flag &_flag):flag(_flag) {
+    bool toggled;
+
+    FlagToggler(Flag &_flag)
+        :flag(_flag),toggled(true)
+    {
         flag = !flag;
     }
+
+    FlagToggler(Flag &_flag, Flag check)
+        :flag(_flag),toggled(check==_flag)
+    {
+        if(toggled)
+            flag = !flag;
+    }
+
     ~FlagToggler() {
-        flag = !flag;
+        if(toggled)
+            flag = !flag;
     }
 };
 

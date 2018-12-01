@@ -889,10 +889,12 @@ void LinkBaseExtension::setLink(int index, DocumentObject *obj,
     if(!parent)
         LINK_THROW(Base::RuntimeError,"No parent container");
 
-    auto inSet = parent->getInListEx(true);
-    inSet.insert(parent);
-    if(inSet.find(obj)!=inSet.end())
-        LINK_THROW(Base::RuntimeError,"Cyclic dependency");
+    if(obj && !App::Document::isAnyRestoring()) {
+        auto inSet = parent->getInListEx(true);
+        inSet.insert(parent);
+        if(inSet.find(obj)!=inSet.end())
+            LINK_THROW(Base::RuntimeError,"Cyclic dependency");
+    }
 
     auto linkProp = getLinkedObjectProperty();
 

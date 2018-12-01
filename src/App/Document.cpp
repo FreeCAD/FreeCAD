@@ -2018,7 +2018,7 @@ std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
     d->hashers.clear();
-    Base::FlagToggler<> flag(_IsRestoring);
+    Base::FlagToggler<> flag(_IsRestoring,false);
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
     ExpressionParser::ExpressionImporter expImporter(reader);
@@ -2259,7 +2259,7 @@ bool Document::isAnyRestoring() {
 // Open the document
 void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
 {
-    Base::FlagToggler<> flag(_IsRestoring);
+    Base::FlagToggler<> flag(_IsRestoring,false);
 
     // clean up if the document is not empty
     // !TODO mind exceptions while restoring!
@@ -2326,6 +2326,7 @@ void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
 }
 
 void Document::afterRestore(bool checkXLink) {
+    Base::FlagToggler<> flag(_IsRestoring,false);
     afterRestore(d->objectArray,checkXLink);
     GetApplication().signalFinishRestoreDocument(*this);
     setStatus(Document::Restoring, false);
