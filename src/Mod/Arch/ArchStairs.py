@@ -741,10 +741,10 @@ class _Stairs(ArchComponent.Component):
                 distFrom1stParameter = l99.parameter(vx99)
                 distFrom2ndParameter = l99.length()-distFrom1stParameter
                 if distFrom2ndParameter > distFrom1stParameter:
-                    print edges[i].Vertexes[1].Point
+                    print(edges[i].Vertexes[1].Point)
                     foundEnd = edges[i].Vertexes[1].Point
                 else:
-                    print edges[i].Vertexes[0].Point
+                    print(edges[i].Vertexes[0].Point)
                     foundEnd = edges[i].Vertexes[0].Point
             except:
                 print('Intersection point Not on this edge')
