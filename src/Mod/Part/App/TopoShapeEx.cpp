@@ -1793,8 +1793,8 @@ TopoShape &TopoShape::makEShape(const char *maker,
                 FC_THROWM(NullShapeException,"Input shape is null");
             BRepAlgoAPI_Fuse mk(resShape.getShape(), s.getShape());
             if (!mk.IsDone())
-                FC_THROWM(CADKernelError,"Fusion failed");
-            resShape = makeShape(mk,{resShape,s},op);
+                FC_THROWM(Base::CADKernelError,"Fusion failed");
+            resShape = makEShape(mk,{resShape,s},op);
         }
     } else if(strcmp(maker, TOPOP_CUT)==0) {
         for(size_t i=1;i<inputs.size();++i) {
@@ -1803,8 +1803,8 @@ TopoShape &TopoShape::makEShape(const char *maker,
                 FC_THROWM(NullShapeException,"Input shape is null");
             BRepAlgoAPI_Cut mk(resShape.getShape(), s.getShape());
             if (!mk.IsDone())
-                FC_THROWM(CADKernelError,"Cut failed");
-            resShape = makeShape(mk,{resShape,s},op);
+                FC_THROWM(Base::CADKernelError,"Cut failed");
+            resShape = makEShape(mk,{resShape,s},op);
         }
     } else if(strcmp(maker, TOPOP_COMMON)==0) {
         for(size_t i=1;i<inputs.size();++i) {
@@ -1813,8 +1813,8 @@ TopoShape &TopoShape::makEShape(const char *maker,
                 FC_THROWM(NullShapeException,"Input shape is null");
             BRepAlgoAPI_Common mk(resShape.getShape(), s.getShape());
             if (!mk.IsDone())
-                FC_THROWM(CADKernelError,"Common failed");
-            resShape = makeShape(mk,{resShape,s},op);
+                FC_THROWM(Base::CADKernelError,"Common failed");
+            resShape = makEShape(mk,{resShape,s},op);
         }
     } else if(strcmp(maker, TOPOP_SECTION)==0) {
         for(size_t i=1;i<inputs.size();++i) {
@@ -1823,8 +1823,8 @@ TopoShape &TopoShape::makEShape(const char *maker,
                 FC_THROWM(NullShapeException,"Input shape is null");
             BRepAlgoAPI_Section mk(resShape.getShape(), s.getShape());
             if (!mk.IsDone())
-                FC_THROWM(CADKernelError,"Section failed");
-            resShape = makeShape(mk,{resShape,s},op);
+                FC_THROWM(Base::CADKernelError,"Section failed");
+            resShape = makEShape(mk,{resShape,s},op);
         }
     } else
         FC_THROWM(Base::CADKernelError,"Unknown maker");
@@ -2563,6 +2563,13 @@ TopoShape &TopoShape::makEChamfer(const TopoShape &shape, const std::vector<Topo
 TopoShape &TopoShape::makEGeneralFuse(const std::vector<TopoShape> &_shapes,
         std::vector<std::vector<TopoShape> > &modifies, double tol, const char *op)
 {
+#if OCC_VERSION_HEX < 0x060900
+    (void)_shapes;
+    (void)modifies;
+    (void)tol;
+    (void)op;
+    FC_THROWM(Base::NotImplementedError,"GFA is available only in OCC 6.9.0 and up.");
+#else
     if(!op) op = TOPOP_GENERAL_FUSE;
     resetElementMap();
     _Shape.Nullify();
@@ -2606,6 +2613,7 @@ TopoShape &TopoShape::makEGeneralFuse(const std::vector<TopoShape> &_shapes,
         mapSubElementsTo(mod);
     }
     return *this;
+#endif
 }
 
 TopoShape &TopoShape::makEFuse(const std::vector<TopoShape> &shapes, 

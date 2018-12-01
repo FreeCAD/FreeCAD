@@ -43,6 +43,7 @@
 # include <Quantity_Color.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <Interface_Static.hxx>
+# include <TDF_AttributeSequence.hxx>
 #endif
 
 #include <boost/algorithm/string.hpp>
