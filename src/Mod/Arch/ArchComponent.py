@@ -257,6 +257,7 @@ class Component:
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcRole\n")
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+            obj.MoveWithHost = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveWithHost",False)
         if not "IfcProperties" in pl:
             obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         if not "VerticalArea" in pl:
