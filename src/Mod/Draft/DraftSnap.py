@@ -362,6 +362,10 @@ class Snapper:
                     # snap to the center of WPProxies and BuildingParts
                     snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Placement.Base)])
 
+                elif Draft.getType(obj) == "SectionPlane":
+                    # snap to corners of section planes
+                    snaps.extend(self.snapToEndpoints(obj.Shape))
+
             # updating last objects list
             if not self.lastObj[1]:
                 self.lastObj[1] = obj.Name
