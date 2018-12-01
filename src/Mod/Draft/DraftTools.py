@@ -376,6 +376,8 @@ class SelectPlane(DraftTool):
                                             if o.Visibility != (v == "True"):
                                                 FreeCADGui.doCommand("FreeCADGui.ActiveDocument.getObject(\""+k+"\").Visibility = "+v)
                     self.display(plane.axis)
+                    self.ui.wplabel.setText(sel.Object.Label)
+                    self.ui.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.ui.wplabel.text())
                     self.finish()
                     return
                 elif sel.HasSubObjects:
@@ -2363,14 +2365,7 @@ class Move(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
-        # testing for special case: only Arch groups in selection
-        onlyarchgroups = True
-        for o in self.sel:
-            if not(Draft.getType(o) in ["Floor","BuildingPart","Building","Site"]):
-                onlyarchgroups = False
-        if not onlyarchgroups:
-            # arch groups can be moved, no need to add their children
-            self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
+        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True,noarchchild=True)
         self.ui.pointUi(self.name)
         self.ui.modUi()
         if self.copymode:
@@ -2527,7 +2522,7 @@ class Rotate(Modifier):
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
         self.sel = FreeCADGui.Selection.getSelection()
-        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True)
+        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True,noarchchild=True)
         self.step = 0
         self.center = None
         self.ui.arcUi()

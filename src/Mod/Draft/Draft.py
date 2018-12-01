@@ -359,7 +359,7 @@ def shapify(obj):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
-def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
+def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarchchild=False):
     '''getGroupContents(objectlist,[walls,addgroups]): if any object of the given list
     is a group, its content is appened to the list, which is returned. If walls is True,
     walls and structures are also scanned for included windows or rebars. If addgroups
@@ -387,7 +387,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
+            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["Building","BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
                 if getType(obj) == "Site":
                     if obj.Shape:
                         newlist.append(obj)
@@ -397,7 +397,10 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
                 else:
                     if addgroups or (spaces and (getType(obj) == "Space")):
                         newlist.append(obj)
-                    newlist.extend(getGroupContents(obj.Group,walls,addgroups))
+                    if noarchchild and (getType(obj) in ["Building","BuildingPart"]):
+                        pass
+                    else:
+                        newlist.extend(getGroupContents(obj.Group,walls,addgroups))
             else:
                 #print("adding ",obj.Name)
                 newlist.append(obj)
@@ -1427,6 +1430,15 @@ def move(objectslist,vector,copy=False):
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::Annotation",getRealName(obj.Name))
                 newobj.LabelText = obj.LabelText
+                if gui:
+                    formatObject(newobj,obj)
+            else:
+                newobj = obj
+            newobj.Position = obj.Position.add(vector)
+        elif getType(obj) == "DraftText":
+            if copy:
+                newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
+                newobj.Text = obj.Text
                 if gui:
                     formatObject(newobj,obj)
             else:
