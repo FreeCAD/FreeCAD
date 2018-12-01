@@ -1438,12 +1438,17 @@ def move(objectslist,vector,copy=False):
         elif getType(obj) == "DraftText":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
+                DraftText(newobj)
+                if gui:
+                    ViewProviderDraftText(newobj.ViewObject)
+                    formatObject(newobj,obj)
                 newobj.Text = obj.Text
+                newobj.Placement = obj.Placement
                 if gui:
                     formatObject(newobj,obj)
             else:
                 newobj = obj
-            newobj.Position = obj.Position.add(vector)
+            newobj.Placement.Base = obj.Placement.Base.add(vector)
         elif getType(obj) == "Dimension":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
@@ -3240,6 +3245,8 @@ def clone(obj,delta=None,forcedraft=False):
         base = getCloneBase(obj[0])
         cl.Label = prefix + base.Label
         cl.CloneOf = base
+        if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
+            cl.Material = obj[0].Material
         if getType(obj[0]) != "BuildingPart":
             cl.Placement = obj[0].Placement
         try:

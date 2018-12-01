@@ -691,7 +691,10 @@ class _Structure(ArchComponent.Component):
         if base and placement:
             if obj.Normal.Length:
                 normal = Vector(obj.Normal)
-                normal = placement.inverse().Rotation.multVec(normal)
+                if isinstance(placement,list):
+                    normal = placement[0].inverse().Rotation.multVec(normal)
+                else:
+                    normal = placement.inverse().Rotation.multVec(normal)
             if not normal:
                 normal = Vector(0,0,1)
             if not normal.Length:
