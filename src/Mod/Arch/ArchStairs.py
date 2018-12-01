@@ -726,10 +726,10 @@ class _Stairs(ArchComponent.Component):
 
                 ''' Further point of this line from intersection '''
                 if distFrom2ndParameter > distFrom1stParameter:
-                    print edges[0].Vertexes[1].Point
+                    print(edges[0].Vertexes[1].Point)
                     foundStart = edges[0].Vertexes[1].Point
                 else: # if distFrom2ndParameter = / < distFrom1stParameter (i.e. if equal, Vertexes[0].Point is taken ?)
-                    print edges[0].Vertexes[0].Point
+                    print(edges[0].Vertexes[0].Point)
                     foundStart = edges[0].Vertexes[0].Point
             except:
                 print('Intersection point Not on this edge')
