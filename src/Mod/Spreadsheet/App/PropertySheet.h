@@ -37,8 +37,8 @@ class Sheet;
 class PropertySheet;
 class SheetObserver;
 
-class PropertySheet : public App::PropertyXLinkContainer
-                    , private App::AtomicPropertyChangeInterface<PropertySheet> {
+class SpreadsheetExport PropertySheet : public App::PropertyXLinkContainer
+                                      , private App::AtomicPropertyChangeInterface<PropertySheet> {
     TYPESYSTEM_HEADER();
 public:
 
