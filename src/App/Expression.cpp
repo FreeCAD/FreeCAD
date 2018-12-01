@@ -448,7 +448,7 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
             else {
                 Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
                 if(PyErr_Occurred())
-                    PyException::ThrowException();
+                    throw Py::Exception();
                 return Py::Sequence(pyobj).getItem(i);
             }
         }else{
@@ -460,9 +460,12 @@ Py::Object Expression::Component::get(const Expression *owner, const Py::Object 
                                       e2?v2.ptr():nullptr,
                                       e3?v3.ptr():nullptr);
             if(!s)
-                PyException::ThrowException();
+                throw Py::Exception();
             Py::Object slice(s,true);
-            return Py::Mapping(pyobj).getItem(slice);
+            PyObject *res = PyObject_GetItem(pyobj.ptr(),slice.ptr());
+            if(!res)
+                throw Py::Exception();
+            return Py::asObject(res);
         }
     }catch(Py::Exception &) {
         _EXPR_PY_THROW("",owner);
@@ -481,7 +484,7 @@ void Expression::Component::set(const Expression *owner, Py::Object &pyobj, cons
             else {
                 Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
                 if(PyErr_Occurred() || PySequence_SetItem(pyobj.ptr(),i,value.ptr())==-1)
-                    PyException::ThrowException();
+                    throw Py::Exception();
             }
         }else{
             Py::Object v1,v2,v3;
@@ -492,9 +495,10 @@ void Expression::Component::set(const Expression *owner, Py::Object &pyobj, cons
                                       e2?v2.ptr():nullptr,
                                       e3?v3.ptr():nullptr);
             if(!s)
-                PyException::ThrowException();
+                throw Py::Exception();
             Py::Object slice(s,true);
-            Py::Mapping(pyobj).setItem(slice,value);
+            if(PyObject_SetItem(pyobj.ptr(),slice.ptr(),value.ptr())<0)
+                throw Py::Exception();
         }
     }catch(Py::Exception &) {
         _EXPR_PY_THROW("",owner);
@@ -512,7 +516,7 @@ void Expression::Component::del(const Expression *owner, Py::Object &pyobj) cons
             else {
                 Py_ssize_t i = PyNumber_AsSsize_t(pyobj.ptr(), PyExc_IndexError);
                 if(PyErr_Occurred() || PySequence_DelItem(pyobj.ptr(),i)==-1)
-                    PyException::ThrowException();
+                    throw Py::Exception();
             }
         }else{
             Py::Object v1,v2,v3;
@@ -523,9 +527,10 @@ void Expression::Component::del(const Expression *owner, Py::Object &pyobj) cons
                                       e2?v2.ptr():nullptr,
                                       e3?v3.ptr():nullptr);
             if(!s)
-                PyException::ThrowException();
+                throw Py::Exception();
             Py::Object slice(s,true);
-            Py::Mapping(pyobj).delItem(slice);
+            if(PyObject_DelItem(pyobj.ptr(),slice.ptr())<0)
+                throw Py::Exception();
         }
     }catch(Py::Exception &) {
         _EXPR_PY_THROW("",owner);
