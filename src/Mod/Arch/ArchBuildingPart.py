@@ -555,6 +555,8 @@ class ViewProviderBuildingPart:
                 if len(colors) == len(obj.Shape.Faces):
                     if colors != obj.ViewObject.DiffuseColor:
                         obj.ViewObject.DiffuseColor = colors
+        elif prop == "Label":
+            self.onChanged(obj.ViewObject,"ShowLabel")
 
     def getColors(self,obj):
 
@@ -621,8 +623,8 @@ class ViewProviderBuildingPart:
                 else:
                     if rn.findChild(self.sep) != -1:
                         rn.removeChild(self.sep)
-        elif prop in ["OverrideUnit","ShowUnit"]:
-            if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit"):
+        if prop in ["OverrideUnit","ShowUnit","ShowLevel","ShowLabel"]:
+            if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit") and hasattr(vobj,"ShowLevel") and hasattr(vobj,"ShowLabel"):
                 z = vobj.Object.Placement.Base.z + vobj.Object.LevelOffset.Value
                 q = FreeCAD.Units.Quantity(z,FreeCAD.Units.Length)
                 txt = ""
@@ -632,7 +634,7 @@ class ViewProviderBuildingPart:
                     if txt:
                         txt += " "
                     if z >= 0:
-                        txt = "+"
+                        txt += "+"
                     if vobj.OverrideUnit:
                         u = vobj.OverrideUnit
                     else:
