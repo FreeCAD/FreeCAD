@@ -304,7 +304,10 @@ private: // Storage and Virtual Method Table
 
         static void swap(storage_union& lhs, storage_union& rhs) BOOST_NOEXCEPT
         {
-            std::swap(reinterpret_cast<T&>(lhs.stack), reinterpret_cast<T&>(rhs.stack));
+            storage_union tmp_storage;
+            move(rhs, tmp_storage);
+            move(lhs, rhs);
+            move(tmp_storage, lhs);
         }
     };
 
@@ -379,6 +382,20 @@ private:
     storage_union storage; // on offset(0) so no padding for align
     vtable_type*  vtable;
 
+    template<typename ValueType, typename T>
+    typename std::enable_if<requires_allocation<T>::value>::type
+    do_construct(ValueType&& value)
+    {
+        storage.dynamic = new T(std::forward<ValueType>(value));
+    }
+
+    template<typename ValueType, typename T>
+    typename std::enable_if<!requires_allocation<T>::value>::type
+    do_construct(ValueType&& value)
+    {
+        new (&storage.stack) T(std::forward<ValueType>(value));
+    }
+
     /// Chooses between stack and dynamic allocation for the type decay_t<ValueType>,
     /// assigns the correct vtable, and constructs the object on our storage.
     template<typename ValueType>
@@ -388,10 +405,7 @@ private:
 
         this->vtable = vtable_for_type<T>();
 
-        if(requires_allocation<T>::value)
-            storage.dynamic = new T(std::forward<ValueType>(value));
-        else
-            new (&storage.stack) T(std::forward<ValueType>(value));
+        do_construct<ValueType,T>(std::forward<ValueType>(value));
     }
 };
 
