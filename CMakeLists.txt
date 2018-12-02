@@ -105,9 +105,9 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
     # get linker errors as soon as possible and not at runtime e.g. for modules
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,-undefined,error")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-undefined,error")
     elseif(UNIX)
-        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
     endif()
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
