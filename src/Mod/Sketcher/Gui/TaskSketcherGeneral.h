@@ -58,6 +58,7 @@ public:
     void checkAutoconstraints(bool);
 
     bool isGridViewChecked() const;
+    void saveGridViewChecked();
 
 Q_SIGNALS:
     void emitToggleGridView(bool);

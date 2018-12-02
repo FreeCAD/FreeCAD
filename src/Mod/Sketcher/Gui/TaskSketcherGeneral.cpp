@@ -138,6 +138,14 @@ bool SketcherGeneralWidget::isGridViewChecked() const
     return ui->checkBoxShowGrid->isChecked();
 }
 
+void SketcherGeneralWidget::saveGridViewChecked()
+{
+    // only save this setting
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
+    hGrp->SetBool("ShowGrid", ui->checkBoxShowGrid->isChecked());
+}
+
 void SketcherGeneralWidget::onToggleGridView(bool on)
 {
     checkGridView(on);
@@ -270,7 +278,7 @@ void TaskSketcherGeneral::onToggleGridView(bool on)
 {
     Base::ConnectionBlocker block(changedSketchView);
     sketchView->ShowGrid.setValue(on);
-    widget->saveSettings();
+    widget->saveGridViewChecked();
 }
 
 void TaskSketcherGeneral::onSetGridSize(double val)
