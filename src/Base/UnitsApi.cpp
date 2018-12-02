@@ -97,6 +97,8 @@ const char* UnitsApi::getDescription(UnitSystem system)
         return "Building US (ft-in/sqft/cuft)";
     case MmMin:
         return "Metric small parts & CNC(mm, mm/min)";
+    case ImperialCivil:
+        return "Imperial for Civil Eng (ft, ft/sec)";
     default:
         return "Unknown schema";
     }
@@ -119,6 +121,8 @@ UnitsSchema* UnitsApi::createSchema(UnitSystem s)
         return new UnitsSchemaImperialBuilding();
     case MmMin:
         return new UnitsSchemaMmMin();
+    case ImperialCivil:
+        return new UnitsSchemaImperialCivil();
     default:
         break;
     }

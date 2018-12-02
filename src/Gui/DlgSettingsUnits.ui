@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
+    <width>484</width>
     <height>388</height>
    </rect>
   </property>
@@ -98,6 +98,11 @@
           <item>
            <property name="text">
             <string>Metric small parts &amp; CNC(mm, mm/min)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Imperial Civil (ft/ft^2/ft^3)</string>
            </property>
           </item>
          </widget>

@@ -36,6 +36,7 @@
             |  unit                         { QuantResult = $1     ;            }
             |  quantity                     { QuantResult = $1     ;            }
             |  quantity quantity            { QuantResult = $1 + $2;            }
+            |  quantity quantity quantity   { QuantResult = $1 + $2 + $3;       }
  ;
      num:      NUM                			{ $$ = $1;         	}
              | ONE                			{ $$ = $1;         	}
