@@ -161,20 +161,20 @@ before_install:
        ;;
 
    "osx")
-       xcodebuild -version -sdk >> build_output.txt
-       brew --config >> build_output.txt
-       #if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
-       #     brew install jq >> build_output.txt
-       #     cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
-       #     #travis_wait prime_local_ports_cache $cacheContext
-       #fi
+       xcodebuild -version -sdk >>  tee build_output.txt | sed -s "s/^.*$/$(date)/"
+       brew --config >>  tee build_output.txt | sed -s "s/^.*$/$(date)/"
+       if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
+            brew install jq >>  tee build_output.txt | sed -s "s/^.*$/$(date)/"
+            cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
+            #travis_wait prime_local_ports_cache $cacheContext
+       fi
        brew update >/dev/null
-       brew --config >> build_output.txt
+       brew --config >>  tee build_output.txt | sed -s "s/^.*$/$(date)/"
 
-       brew tap FreeCAD/freecad >> build_output.txt
+       brew tap FreeCAD/freecad >>  tee build_output.txt | sed -s "s/^.*$/$(date)/"
 
-       brew install --verbose --only-dependencies freecad --with-packaging-utils >> build_output.txt
-       pip install six >> build_output.txt
+       brew install --verbose --only-dependencies freecad --with-packaging-utils >>  tee build_output.txt | sed -s "s/^.*$/$(date)/"
+       pip install six >>  tee build_output.txt | sed -s "s/^.*$/$(date)/"
        # Qt5:  Set Qt5 build flag and CMAKE_PREFIX
        QT5_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qt/*/lib/cmake)
        QT5_WEBKIT_CMAKE_PREFIX=$(ls -d $(brew --cellar)/qtwebkit/*/lib/cmake)
