@@ -5571,6 +5571,11 @@ ExpressionPtr TryStatement::findException(Base::Exception &e, PyObject *pyobj) c
     return ExpressionPtr();
 }
 
+bool TryStatement::needLineEnd() const {
+    return true;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 EXPR_TYPESYSTEM_SOURCE(App::ImportStatement, App::BaseStatement);

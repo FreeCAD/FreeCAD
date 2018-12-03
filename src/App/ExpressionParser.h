@@ -940,6 +940,7 @@ public:
     void addElse(ExpressionPtr &&body);
     void addFinal(ExpressionPtr &&body);
     void check();
+    virtual bool needLineEnd() const;
 
 protected:
     TryStatement(const App::DocumentObject *_owner):BaseStatement(_owner) {}
