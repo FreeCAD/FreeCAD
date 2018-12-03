@@ -487,30 +487,32 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 //check the prerequisites for the selected objects
                 //the user has to decide which option we should take if external references are used
                 // TODO share this with UnifiedDatumCommand() (2015-10-20, Fat-Zer)
-                QDialog* dia = new QDialog;
-                Ui_Dialog dlg;
-                dlg.setupUi(dia);
-                dia->setModal(true);
-                int result = dia->exec();
-                if(result == QDialog::DialogCode::Rejected)
+                QDialog dia(Gui::getMainWindow());
+                PartDesignGui::Ui_DlgReference dlg;
+                dlg.setupUi(&dia);
+                dia.setModal(true);
+                int result = dia.exec();
+                if (result == QDialog::DialogCode::Rejected)
                     return;
-                else if(!dlg.radioXRef->isChecked()) {
-
+                else if (!dlg.radioXRef->isChecked()) {
+                    openCommand("Make copy");
                     std::string sub;
                     if(FaceFilter.match())
                         sub = FaceFilter.Result[0][0].getSubNames()[0];
                     auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub, dlg.radioIndependent->isChecked());
 
-                    if(pcActiveBody)
+                    if (pcActiveBody)
                         pcActiveBody->addObject(copy);
                     else if (pcActivePart)
                         pcActivePart->addObject(copy);
 
-                    if(PlaneFilter.match())
+                    if (PlaneFilter.match())
                         supportString = std::string("(App.activeDocument().") + copy->getNameInDocument() + ", '')";
                     else
                         //it is ensured that only a single face is selected, hence it must always be Face1 of the shapebinder
                         supportString = std::string("(App.activeDocument().") + copy->getNameInDocument() + ", 'Face1')";
+
+                    commitCommand();
                 }
             }
         }
@@ -842,7 +844,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         Gui::Command::openCommand((std::string("Make ") + which).c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.newObject(\"PartDesign::%s\",\"%s\")",
             PartDesignGui::getBody(false)->getNameInDocument(), which.c_str(), FeatName.c_str());
-        
+
         if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = App.activeDocument().%s",
                         FeatName.c_str(), feature->getNameInDocument());
@@ -850,11 +852,11 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         else {
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = (App.activeDocument().%s, [\"%s\"])",
                         FeatName.c_str(), feature->getNameInDocument(), sub.c_str());   
-        }         
+        }
 
         func(static_cast<Part::Feature*>(feature), FeatName);
     };
-    
+
     //if a profile is selected we can make our life easy and fast
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (!selection.empty() && selection.front().hasSubNames()) {
@@ -872,7 +874,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
         sketches = cmd->getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
         bNoSketchWasSelected = true;
     }
-    
+
     if (sketches.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No sketch to work on"),
             QObject::tr("No sketch is available in the document"));
@@ -890,52 +892,52 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
 
         return true;
     };
-    
+
     auto sketch_worker = [&, base_worker](std::vector<App::DocumentObject*> features) {
-        
         base_worker(features.front(), "");
     };
-    
+
     //if there is a sketch selected which is from another body or part we need to bring up the
     //pick task dialog to decide how those are handled
-    bool ext = std::find_if( status.begin(), status.end(),
+    bool extReference = std::find_if( status.begin(), status.end(),
             [] (const PartDesignGui::TaskFeaturePick::featureStatus& s) {
                 return s == PartDesignGui::TaskFeaturePick::otherBody ||
                     s == PartDesignGui::TaskFeaturePick::otherPart ||
                     s == PartDesignGui::TaskFeaturePick::notInBody;
             }
         ) != status.end();
-        
+
     // TODO Clean this up (2015-10-20, Fat-Zer)
     auto* pcActiveBody = PartDesignGui::getBody(false);
-    if (pcActiveBody && !bNoSketchWasSelected && ext) {
+    if (pcActiveBody && !bNoSketchWasSelected && extReference) {
 
         auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, true);
         // getPartFor() already has reported an error
         if (!pcActivePart)
             return;
 
-        QDialog* dia = new QDialog;
-        Ui_Dialog dlg;
-        dlg.setupUi(dia);
-        dia->setModal(true);
-        int result = dia->exec();
-        if(result == QDialog::DialogCode::Rejected)
+        QDialog dia(Gui::getMainWindow());
+        PartDesignGui::Ui_DlgReference dlg;
+        dlg.setupUi(&dia);
+        dia.setModal(true);
+        int result = dia.exec();
+        if (result == QDialog::DialogCode::Rejected)
             return;
-        else if(!dlg.radioXRef->isChecked()) {
 
-                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
-                auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
-                if(oBody)
-                    pcActiveBody->addObject(copy);
-                else
-                    pcActivePart->addObject(copy);
+        if (!dlg.radioXRef->isChecked()) {
+            Gui::Command::openCommand("Make copy");
+            auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
+            auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
+            if (oBody)
+                pcActiveBody->addObject(copy);
+            else
+                pcActivePart->addObject(copy);
 
-                sketches[0] = copy;
-                firstFreeSketch = sketches.begin();
+            sketches[0] = copy;
+            firstFreeSketch = sketches.begin();
         }
     }
-    
+
     // Show sketch choose dialog and let user pick sketch if no sketch was selected and no free one available or
     // multiple free ones are available
     if (bNoSketchWasSelected && (freeSketches != 1) ) {
@@ -960,7 +962,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
 
         Gui::Selection().clearSelection();
         pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker);
-        if (!bNoSketchWasSelected && ext)
+        if (!bNoSketchWasSelected && extReference)
             pickDlg->showExternal(true);
 
         Gui::Control().showDialog(pickDlg);
