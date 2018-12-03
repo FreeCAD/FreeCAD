@@ -370,7 +370,7 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
 
     std::vector<std::string> values;
     if(value != Py_None) {
-        PyObject *item;
+        PyObject *item = 0;
         Py_ssize_t nSize;
         if (PyList_Check(value) || PyTuple_Check(value))
             nSize = PySequence_Size(value);
@@ -397,7 +397,11 @@ PyObject* ViewProviderPy::partialRender(PyObject* args)
             }
 #endif
             else {
-                std::string error = std::string("type must be str or unicode, not ");
+                std::string error = std::string("type must be str or unicode");
+                if(item) {
+                    error += " not, ";
+                    error += item->ob_type->tp_name;
+                }
                 throw Base::TypeError(error + item->ob_type->tp_name);
             }
         }
