@@ -767,14 +767,15 @@ void Sheet::recomputeCell(CellAddress p)
         cellErrors.erase(p);
     }
     catch (const Base::Exception & e) {
-        // QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
-        //
-        // setStringProperty(p, Base::Tools::toStdString(msg));
+        QString msg = QString::fromUtf8("ERR: %1").arg(QString::fromUtf8(e.what()));
+
+        setStringProperty(p, Base::Tools::toStdString(msg));
         if (cell)
             cell->setException(e.what());
 
         // Mark as erroneous
         cellErrors.insert(p);
+        cellUpdated(p);
     }
 
     updateAlias(p);
