@@ -391,6 +391,9 @@ public:
 
     int type() const {return f;}
 
+    static ExpressionPtr evaluate(const Expression *owner, int type, const ExpressionList &args);
+    static App::any evalToAny(const Expression *owner, int type, const ExpressionList &args);
+
 protected:
     FunctionExpression(const App::DocumentObject *_owner):UnitExpression(_owner){}
 
@@ -399,7 +402,7 @@ protected:
     virtual ExpressionPtr _copy() const;
     virtual ExpressionPtr _eval() const;
     virtual App::any _getValueAsAny() const;
-    ExpressionPtr evalAggregate() const;
+    static ExpressionPtr evalAggregate(const Expression *owner, int type, const ExpressionList &args);
 
     int f;        /**< Function to execute */
     ExpressionList args; /** Arguments to function*/

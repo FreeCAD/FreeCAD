@@ -2104,7 +2104,7 @@ public:
     }
 };
 
-ExpressionPtr FunctionExpression::evalAggregate() const
+ExpressionPtr FunctionExpression::evalAggregate(const Expression *owner, int f, const ExpressionList &args)
 {
     std::unique_ptr<Collector> c;
 
@@ -2136,7 +2136,7 @@ ExpressionPtr FunctionExpression::evalAggregate() const
             Range range(static_cast<const RangeExpression&>(*arg).getRange());
 
             do {
-                Property * p = owner->getPropertyByName(range.address().c_str());
+                Property * p = owner->getOwner()->getPropertyByName(range.address().c_str());
                 PropertyQuantity * qp;
                 PropertyFloat * fp;
 
@@ -2148,7 +2148,7 @@ ExpressionPtr FunctionExpression::evalAggregate() const
                 else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
                     c->collect(Quantity(fp->getValue()));
                 else
-                    EXPR_THROW("Invalid property type for aggregate.");
+                    _EXPR_THROW("Invalid property type for aggregate.", owner);
             } while (range.next());
         }
         else {
@@ -2160,7 +2160,7 @@ ExpressionPtr FunctionExpression::evalAggregate() const
         }
     }
 
-    return NumberExpression::create(owner, c->getQuantity());
+    return NumberExpression::create(owner->getOwner(), c->getQuantity());
 }
 
 /**
@@ -2170,14 +2170,21 @@ ExpressionPtr FunctionExpression::evalAggregate() const
   * @returns A NumberExpression with the result.
   */
 
-ExpressionPtr FunctionExpression::_eval() const
+ExpressionPtr FunctionExpression::_eval() const {
+    return evaluate(this, f, args);
+}
+
+ExpressionPtr FunctionExpression::evaluate(const Expression *owner, int f, const ExpressionList &args) 
 {
+    if(!owner || !owner->getOwner())
+        _EXPR_THROW("Invalid owner.", owner);
+
     if(args.empty())
-        EXPR_THROW("Function requires at least one argument.");
+        _EXPR_THROW("Function requires at least one argument.",owner);
 
     // Handle aggregate functions
     if (f > AGGREGATES)
-        return evalAggregate();
+        return evalAggregate(owner, f, args);
 
     switch(f) {
     case GET_VAR:
@@ -2199,7 +2206,7 @@ ExpressionPtr FunctionExpression::_eval() const
     double scaler = 1;
 
     if (v1 == 0)
-        EXPR_THROW("Invalid argument.");
+        _EXPR_THROW("Invalid argument.",owner);
 
     double value = v1->getValue();
 
@@ -2209,7 +2216,7 @@ ExpressionPtr FunctionExpression::_eval() const
     case SIN:
     case TAN:
         if (!(v1->getUnit() == Unit::Angle || v1->getUnit().isEmpty()))
-            EXPR_THROW("Unit must be either empty or an angle.");
+            _EXPR_THROW("Unit must be either empty or an angle.",owner);
 
         // Convert value to radians
         value *= M_PI / 180.0;
@@ -2219,7 +2226,7 @@ ExpressionPtr FunctionExpression::_eval() const
     case ASIN:
     case ATAN:
         if (!v1->getUnit().isEmpty())
-            EXPR_THROW("Unit must be empty.");
+            _EXPR_THROW("Unit must be empty.",owner);
         unit = Unit::Angle;
         scaler = 180.0 / M_PI;
         break;
@@ -2230,7 +2237,7 @@ ExpressionPtr FunctionExpression::_eval() const
     case TANH:
     case COSH:
         if (!v1->getUnit().isEmpty())
-            EXPR_THROW("Unit must be empty.");
+            _EXPR_THROW("Unit must be empty.",owner);
         unit = Unit();
         break;
     case ROUND:
@@ -2253,7 +2260,7 @@ ExpressionPtr FunctionExpression::_eval() const
               ((s.AmountOfSubstance % 2) == 0) &&
               ((s.LuminousIntensity % 2) == 0) &&
               ((s.Angle % 2) == 0))
-            EXPR_THROW("All dimensions must be even to compute the square root.");
+            _EXPR_THROW("All dimensions must be even to compute the square root.",owner);
 
         unit = Unit(s.Length /2,
                     s.Mass / 2,
@@ -2267,24 +2274,24 @@ ExpressionPtr FunctionExpression::_eval() const
     }
     case ATAN2:
         if (v2 == 0)
-            EXPR_THROW("Invalid second argument.");
+            _EXPR_THROW("Invalid second argument.",owner);
 
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Units must be equal.");
+            _EXPR_THROW("Units must be equal.",owner);
         unit = Unit::Angle;
         scaler = 180.0 / M_PI;
         break;
     case FMOD:
         if (v2 == 0)
-            EXPR_THROW("Invalid second argument.");
+            _EXPR_THROW("Invalid second argument.",owner);
         unit = v1->getUnit() / v2->getUnit();
         break;
     case FPOW: {
         if (v2 == 0)
-            EXPR_THROW("Invalid second argument.");
+            _EXPR_THROW("Invalid second argument.",owner);
 
         if (!v2->getUnit().isEmpty())
-            EXPR_THROW("Exponent is not allowed to have a unit.");
+            _EXPR_THROW("Exponent is not allowed to have a unit.",owner);
 
         // Compute new unit for exponentiation
         double exponent = v2->getValue();
@@ -2292,27 +2299,27 @@ ExpressionPtr FunctionExpression::_eval() const
             if (exponent - boost::math::round(exponent) < 1e-9)
                 unit = v1->getUnit().pow(exponent);
             else
-                EXPR_THROW("Exponent must be an integer when used with a unit.");
+                _EXPR_THROW("Exponent must be an integer when used with a unit.",owner);
         }
         break;
     }
     case HYPOT:
     case CATH:
         if (v2 == 0)
-            EXPR_THROW("Invalid second argument.");
+            _EXPR_THROW("Invalid second argument.",owner);
         if (v1->getUnit() != v2->getUnit())
-            EXPR_THROW("Units must be equal.");
+            _EXPR_THROW("Units must be equal.",owner);
 
         if (args.size() > 2) {
             if (v3 == 0)
-                EXPR_THROW("Invalid second argument.");
+                _EXPR_THROW("Invalid second argument.",owner);
             if (v2->getUnit() != v3->getUnit())
-                EXPR_THROW("Units must be equal.");
+                _EXPR_THROW("Units must be equal.",owner);
         }
         unit = v1->getUnit();
         break;
     default:
-        assert(0);
+        _EXPR_THROW("Unknown function: " << f,owner);
     }
 
     /* Compute result */
@@ -2392,26 +2399,30 @@ ExpressionPtr FunctionExpression::_eval() const
         output = floor(value);
         break;
     default:
-        output = 0;
-        assert(0);
+        _EXPR_THROW("Unknown function: " << f,owner);
     }
 
-    return NumberExpression::create(owner, Quantity(scaler * output, unit));
+    return NumberExpression::create(owner->getOwner(), Quantity(scaler * output, unit));
 }
 
 App::any FunctionExpression::_getValueAsAny() const {
+    return evalToAny(this,f,args);
+}
+
+App::any FunctionExpression::evalToAny(const Expression *owner, int f, const ExpressionList &args) 
+{
     if(args.empty())
-        EXPR_THROW("Function requires at least one argument.");
+        _EXPR_THROW("Function requires at least one argument.",owner);
 
     switch(f) {
     case GET_VAR: 
         if(args.size()>2)
-            EXPR_THROW("Function expects 2 or 3 arguments.");
+            _EXPR_THROW("Function expects 2 or 3 arguments.",owner);
         // fall through
     case HAS_VAR: {
         App::any value = args[0]->getValueAsAny();
         if(value.type()!=typeid(std::string))
-            EXPR_THROW("Expects the first argument evaluating to a string.");
+            _EXPR_THROW("Expects the first argument evaluating to a string.",owner);
         Base::PyGILStateLocker lock;
         Py::Object pyobj;
         bool found = Base::Interpreter().getVariable(
@@ -2421,14 +2432,14 @@ App::any FunctionExpression::_getValueAsAny() const {
         if(!found) {
             if(args.size()==2)
                 return args[1]->getValueAsAny();
-            EXPR_THROW("Variable not found.");
+            _EXPR_THROW("Variable not found.",owner);
         }
         return pyObjectToAny(pyobj);
     } default:
         break;
     } 
 
-    ExpressionPtr expr(_eval());
+    ExpressionPtr expr(evaluate(owner,f,args));
     assert(expr);
     return expr->getValueAsAny();
 }
@@ -3022,17 +3033,16 @@ ExpressionPtr CallableExpression::create(const DocumentObject *owner,
         return CallableExpression::create(owner,
                 VariableExpression::create(owner,std::move(path)), std::move(names),std::move(args));
     }
-    if(it->second > CALLABLE_START && it->second < CALLABLE_END) {
-        return create(owner,ExpressionPtr(),std::move(names),std::move(args),
-                it->second,std::string(it->first));
-    }
-
-    for(auto &n : names) {
-        if(n.size()) {
-            PARSER_THROW("Function '" << name << "' does not support named argument.");
+    if(it->second < CALLABLE_START || it->second > CALLABLE_END) {
+        for(auto &n : names) {
+            if(n.size()) {
+                PARSER_THROW("Function '" << name << "' does not support named argument.");
+            }
         }
     }
-    return FunctionExpression::create(owner,it->second,std::move(args));
+    return create(owner,ExpressionPtr(),std::move(names),std::move(args),
+            it->second,std::string(it->first));
+
 }
 
 ExpressionPtr CallableExpression::create(const DocumentObject *owner, ExpressionPtr &&expr, 
@@ -3330,7 +3340,15 @@ ExpressionPtr CallableExpression::_eval() const {
 }
 
 App::any CallableExpression::_getValueAsAny() const {
-    if(!expr) {
+    Py::Object *pyCallable = 0;
+    if(!expr && ftype!=EVAL && _EvalStack.size() && _EvalStack.front()->pythonMode) {
+        Base::PyGILStateLocker lock;
+        auto &frame = *_EvalStack.back();
+        pyCallable = frame.getVar(this,name.c_str(),BindQuery);
+        if(pyCallable && !pyCallable->isCallable()) 
+            pyCallable = 0;
+    }
+    if(!expr && !pyCallable) {
         switch(ftype) {
         case EVAL: {
             ExpressionPtr e(_eval());
@@ -3380,14 +3398,19 @@ App::any CallableExpression::_getValueAsAny() const {
             Base::PyGILStateLocker lock;
             return pyObjectToAny(ImportModules::instance()->getModule(
                         App::any_cast<const std::string &>(value),this),false);
-        } default: {
-            EXPR_THROW("Unknonw function");
-        }}
+        } default:
+            return FunctionExpression::evalToAny(this,ftype,args);
+        }
     }
     Base::PyGILStateLocker lock;
-    Py::Object pyobj = _pyObjectFromAny(expr->getValueAsAny(),expr.get());
-    if(!pyobj.isCallable())
-        EXPR_THROW("Expects Python callable.");
+    Py::Object pyobj;
+    if(pyCallable) {
+       pyobj = *pyCallable;
+    }else {
+       pyobj = _pyObjectFromAny(expr->getValueAsAny(),expr.get());
+       if(!pyobj.isCallable())
+           EXPR_THROW("Expects Python callable.");
+    }
 
     static std::set<PyObject*> blockedObjs;
     if(blockedObjs.empty()) {
