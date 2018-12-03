@@ -80,9 +80,13 @@ PyObject *ExpressionPy::__call__(PyObject *args, PyObject *kwds) {
 
 Py::String ExpressionPy::get__doc__() const {
     auto expr = dynamic_cast<CallableExpression*>(getExpressionPtr());
-    if(expr)
-        return Py::String(expr->getDocString());
-    return Py::String();
+    std::string doc;
+    if(expr) {
+        doc = expr->getDocString();
+        if(doc.empty())
+            doc = expr->getName();
+    }
+    return Py::String(doc);
 }
 
 PyObject *ExpressionPy::getCustomAttributes(const char* /*attr*/) const
