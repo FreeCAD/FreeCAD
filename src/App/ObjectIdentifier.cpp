@@ -1456,7 +1456,11 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
         GET_MODULE(re);
         break;
     case PseudoBuiltins:
+#if PY_MAJOR_VERSION < 3
+        GET_MODULE(__builtin__);
+#else
         GET_MODULE(builtins);
+#endif
         break;
     case PseudoMath:
         GET_MODULE(math);

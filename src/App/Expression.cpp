@@ -678,7 +678,11 @@ struct EvalFrame {
     static PyObject *getBuiltin(const std::string &name) {
         static std::map<std::string,PyObject*> builtins;
         if(builtins.empty()) {
+#if PY_MAJOR_VERSION < 3
+            PyObject *pymod = PyImport_ImportModule("__builtin__");
+#else
             PyObject *pymod = PyImport_ImportModule("builtins");
+#endif
             if(!pymod) 
                 Base::PyException::ThrowException();
             Py::Object mod(pymod,true);
