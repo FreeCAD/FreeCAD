@@ -28,7 +28,7 @@
 # include <TopoDS_Face.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
-#include <QDialog>
+# include <QDialog>
 #endif
 
 #include <App/OriginFeature.h>
@@ -37,6 +37,7 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -213,32 +214,33 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     //be supportet
     PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
     bool originfeature = selObj->isDerivedFrom(App::OriginFeature::getClassTypeId());
-    if(!originfeature && body) {
+    if (!originfeature && body) {
         PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
         if(!selBody || body != selBody) {
             
             auto* pcActivePart = PartDesignGui::getPartFor(body, false);
 
-            QDialog* dia = new QDialog;
-            Ui_Dialog dlg;
-            dlg.setupUi(dia);
-            dia->setModal(true);
-            int result = dia->exec();
-            if(result == QDialog::DialogCode::Rejected) {
+            QDialog dia(Gui::getMainWindow());
+            Ui_DlgReference dlg;
+            dlg.setupUi(&dia);
+            dia.setModal(true);
+            int result = dia.exec();
+            if (result == QDialog::DialogCode::Rejected) {
                 selObj = NULL;
                 return;
             }
             else if(!dlg.radioXRef->isChecked()) {
+                App::Document* document = thisObj->getDocument();
+                document->openTransaction("Make copy");
+                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
+                if (body)
+                    body->addObject(copy);
+                else if (pcActivePart)
+                    pcActivePart->addObject(copy);
 
-                    auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
-                    if(selBody)
-                        body->addObject(copy);
-                    else
-                        pcActivePart->addObject(copy);
-
-                    selObj = copy;
-                    subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
-                    subname.append("1");
+                selObj = copy;
+                subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
+                subname.append("1");
             }
         
         }
