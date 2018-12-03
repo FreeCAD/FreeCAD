@@ -2373,42 +2373,42 @@ class ScaleTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
-def translateWidget(w, context=None, disAmb=None):
-    '''translator for items where retranslateUi() is unavailable.
-    translates widget w and children.'''
-    #handle w itself
-    if w.metaObject().className() == "QWidget":
-        origText = None
-        origText = w.windowTitle()
-        if origText:
-            newText = translate(context, str(origText))
-            if newText:
-                w.setWindowTitle(newText)
+#def translateWidget(w, context=None, disAmb=None):
+#    '''translator for items where retranslateUi() is unavailable.
+#    translates widget w and children.'''
+#    #handle w itself
+#    if w.metaObject().className() == "QWidget":
+#        origText = None
+#        origText = w.windowTitle()
+#        if origText:
+#            newText = translate(context, str(origText))
+#            if newText:
+#                w.setWindowTitle(newText)
 
-    #handle children
-    wKids = w.findChildren(QtGui.QWidget)
-    for i in wKids:
-        className = i.metaObject().className()
-        if hasattr(i,"text") and hasattr(i,"setText"):
-            origText = i.text()
-            newText = translate(context, str(origText))
-            if newText:
-                i.setText(newText)
-        elif hasattr(i,"title") and hasattr(i,"setTitle"):
-            origText = i.title()
-            newText = translate(context, str(origText))
-            if newText:
-                i.setTitle(newText)
-        elif hasattr(i,"itemText") and hasattr(i,"setItemText"):
-            for item in range(i.count()):
-                oldText = i.itemText(item)
-                newText = translate(context, str(origText))
-                if newText:
-                    i.setItemText(item,newText)
-#for debugging:
-#        else:
-#            msg = "TranslateWidget: Can not translate widget: {0} type: {1}\n".format(w.objectName(),w.metaObject().className())
-#            FreeCAD.Console.PrintMessage(msg)
+#    #handle children
+#    wKids = w.findChildren(QtGui.QWidget)
+#    for i in wKids:
+#        className = i.metaObject().className()
+#        if hasattr(i,"text") and hasattr(i,"setText"):
+#            origText = i.text()
+#            newText = translate(context, str(origText))
+#            if newText:
+#                i.setText(newText)
+#        elif hasattr(i,"title") and hasattr(i,"setTitle"):
+#            origText = i.title()
+#            newText = translate(context, str(origText))
+#            if newText:
+#                i.setTitle(newText)
+#        elif hasattr(i,"itemText") and hasattr(i,"setItemText"):
+#            for item in range(i.count()):
+#                oldText = i.itemText(item)
+#                newText = translate(context, str(origText))
+#                if newText:
+#                    i.setItemText(item,newText)
+##for debugging:
+##        else:
+##            msg = "TranslateWidget: Can not translate widget: {0} type: {1}\n".format(w.objectName(),w.metaObject().className())
+##            FreeCAD.Console.PrintMessage(msg)
 
 class ShapeStringTaskPanel:
     '''A TaskPanel for ShapeString'''
@@ -2438,8 +2438,6 @@ class ShapeStringTaskPanel:
         self.fileSpec = Draft.getParam("FontFile","")
 
         QtCore.QObject.connect(self.task.fcFontFile,QtCore.SIGNAL("fileNameSelected(const QString&)"),self.fileSelect)
-
-        self.retranslateUi()
 
     def fileSelect(self, fn):
         self.fileSpec = fn
@@ -2475,9 +2473,6 @@ class ShapeStringTaskPanel:
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
         return True
-
-    def retranslateUi(self):
-        translateWidget(self.form, "draft")
 
 if not hasattr(FreeCADGui,"draftToolBar"):
     FreeCADGui.draftToolBar = DraftToolBar()
