@@ -215,6 +215,9 @@ def deformat(text):
                     ns += ss.decode("latin1")
                 except UnicodeError:
                     print("unable to decode text: ",text)
+            except AttributeError:
+                # this is python3 (nothing to do)
+                ns += ss
     t = ns
     # replace degrees, diameters chars
     t = re.sub('%%d',u'°',t)
