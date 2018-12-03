@@ -1562,12 +1562,8 @@ void ExpLineEdit::finishFormulaDialog()
 
 void ExpLineEdit::keyPressEvent(QKeyEvent *event)
 {
-    if (event->text() == QString::fromUtf8("=") && isBound())
-        openFormulaDialog();
-    else {
-        if (!hasExpression())
-            QLineEdit::keyPressEvent(event);
-    }
+    if (!hasExpression())
+        QLineEdit::keyPressEvent(event);
 }
 
 #include "moc_Widgets.cpp"
