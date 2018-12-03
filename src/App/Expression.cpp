@@ -3439,6 +3439,7 @@ App::any CallableExpression::_getValueAsAny() const {
         blockedObjs.insert(EvalFrame::getBuiltin("__import__"));
         blockedObjs.insert(EvalFrame::getBuiltin("file"));
         blockedObjs.insert(EvalFrame::getBuiltin("open"));
+        blockedObjs.insert(EvalFrame::getBuiltin("input"));
     }
     if(blockedObjs.find(pyobj.ptr()) != blockedObjs.end())
         EXPR_THROW("Python built-in blocked");
