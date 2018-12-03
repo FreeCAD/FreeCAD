@@ -104,6 +104,10 @@ SheetTableView::SheetTableView(QWidget *parent)
     actionEditCombo->setCheckable(true);
     actionEditCombo->setData(QVariant((int)Cell::EditCombo));
     editGroup->addAction(actionEditCombo);
+    actionEditLabel = new QAction(tr("Label"),this);
+    actionEditLabel->setCheckable(true);
+    actionEditLabel->setData(QVariant((int)Cell::EditLabel));
+    editGroup->addAction(actionEditLabel);
 
     QMenu *subMenu = new QMenu(tr("Edit mode"),contextMenu);
     contextMenu->addMenu(subMenu);
@@ -600,6 +604,9 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
                 break;
             case Cell::EditCombo:
                 action = actionEditCombo;
+                break;
+            case Cell::EditLabel:
+                action = actionEditLabel;
                 break;
             default:
                 action = actionEditNormal;

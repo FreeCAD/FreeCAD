@@ -123,6 +123,7 @@ public:
         EditNormal,
         EditButton,
         EditCombo,
+        EditLabel,
     };
     void setEditMode(EditMode mode);
     EditMode getEditMode() const;

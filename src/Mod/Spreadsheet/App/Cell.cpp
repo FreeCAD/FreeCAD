@@ -911,16 +911,47 @@ void Cell::setEditData(const char *data) {
         if(!data || !data[0])
             FC_THROWM(Base::ValueError,"invalid value");
         auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
-        if(expr && expr->getSize()==2) {
+        if(expr && expr->getSize()>=2) {
             App::ExpressionPtr e(expr->copy());
             static_cast<App::ListExpression&>(*e).setItem(1,
+                    App::StringExpression::create(
+                        dynamic_cast<App::DocumentObject*>(owner->getContainer()),data));
+            setExpression(std::move(e));
+            if(expr->getSize()>=3) {
+                Base::PyGILStateLocker lock;
+                try {
+                    Py::Sequence seq(App::pyObjectFromAny(expression->getValueAsAny()));
+                    Py::Object item(seq[2]);
+                    if(item.isCallable()) {
+                        Py::Tuple args(2);
+                        args.setItem(0,Py::String(address.toString()));
+                        args.setItem(1,seq);
+                        Py::Callable(item).apply(args);
+                    }
+                }catch(Py::Exception &) {
+                    Base::PyException::ThrowException();
+                }
+            }
+            return;
+        }
+        FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                "' contains a list expression of [mapping,obj]");
+        break;
+    }
+    case EditLabel: {
+        if(!data)
+            FC_THROWM(Base::ValueError,"invalid value");
+        auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
+        if(expr && expr->getSize()>=1) {
+            App::ExpressionPtr e(expr->copy());
+            static_cast<App::ListExpression&>(*e).setItem(0,
                     App::StringExpression::create(
                         dynamic_cast<App::DocumentObject*>(owner->getContainer()),data));
             setExpression(std::move(e));
             return;
         }
         FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
-                "' contains a list expression of [mapping,obj]");
+                "' to be a list expression of [string...]");
         break;
     }
     default:
@@ -957,7 +988,8 @@ std::vector<std::string> Cell::getEditData(bool silent) const {
                     "' evaluates to a Python callable");
         break;
     }
-    case EditCombo: {
+    case EditCombo: 
+    case EditLabel: {
         if(!owner || !owner->getContainer()) {
             if(silent) break;
             FC_THROWM(Base::RuntimeError,"Invalid cell '" << address.toString() << "'");
@@ -968,7 +1000,12 @@ std::vector<std::string> Cell::getEditData(bool silent) const {
             Py::Object obj(static_cast<App::PropertyPythonObject*>(prop)->getPyObject(),true);
             if(obj.isSequence()) {
                 Py::Sequence seq(obj);
-                if(seq.size()==2 && seq[0].isMapping()) {
+                if(editMode == EditLabel) {
+                    if(seq.size()>=1 && seq[0].isString()) {
+                        res.push_back(Py::Object(seq[0].ptr()).as_string());
+                        return res;
+                    }
+                }else if(seq.size()>=2 && seq[0].isMapping()) {
                     res.push_back(Py::Object(seq[1].ptr()).as_string());
                     Py::Mapping map(seq[0].ptr());
                     for(auto it=map.begin();it!=map.end();++it) {
@@ -1014,13 +1051,23 @@ void Cell::setEditMode(EditMode mode) {
         }else if(mode == Cell::EditCombo){
             bool valid = false;
             auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
-            if(expr && expr->getSize()==2) {
+            if(expr && expr->getSize()>=2) {
                 Py::Sequence seq(obj);
-                valid = seq.size()==2 && seq[0].isMapping() && seq[1].isString();
+                valid = seq.size()>=2 && seq[0].isMapping() && seq[1].isString();
             }
             if(!valid)
                 FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
                         "' contains a list expression of [mapping,string]");
+        }else if(mode == Cell::EditLabel){
+            bool valid = false;
+            auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
+            if(expr && expr->getSize()>=1) {
+                Py::Sequence seq(obj);
+                valid = seq.size()>=1 && seq[0].isString();
+            }
+            if(!valid)
+                FC_THROWM(Base::TypeError,"Expects the cell '" << address.toString() << 
+                        "' contains a list expression [string...]");
         }else
             FC_THROWM(Base::ValueError,"Unknown edit mode");
     }

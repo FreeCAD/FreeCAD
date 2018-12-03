@@ -93,6 +93,7 @@ protected:
     QAction *actionEditNormal;
     QAction *actionEditButton;
     QAction *actionEditCombo;
+    QAction *actionEditLabel;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };
