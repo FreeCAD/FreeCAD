@@ -2254,6 +2254,13 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
         return 0;
     }
 
+    // TODO: the 0x8000 mask here is for caller to disambiguate the intension
+    // here. Whether he wants to, say transform the link itself or the linked
+    // object. Use a mask here will allow forwarding those editing mode that
+    // supported by both the link and the linked object, such as transform and
+    // set color. We need to find a better place to declare this constant.
+    mode &= ~0x8000;
+
     auto doc = Application::Instance->editDocument();
     if(!doc) {
         FC_ERR("no editing document");
