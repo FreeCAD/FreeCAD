@@ -911,6 +911,7 @@ void Application::setEditDocument(Gui::Document *doc) {
     for(auto &v : d->documents)
         v.second->_resetEdit();
     d->editDocument = doc;
+    getMainWindow()->updateActions();
 }
 
 void Application::setActiveDocument(Gui::Document* pcDocument)
