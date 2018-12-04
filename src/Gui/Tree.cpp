@@ -2164,9 +2164,25 @@ const char *DocumentItem::getTreeName() const {
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
+    (void)v;
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
     unsigned long col = hGrp->GetUnsigned("TreeEditColor",4294902015);
     QColor color((col >> 24) & 0xff,(col >> 16) & 0xff,(col >> 8) & 0xff);
+
+    if(!getTree()->editingItem) {
+        auto doc = Application::Instance->editDocument();
+        if(!doc)
+            return;
+        ViewProviderDocumentObject *parentVp=0;
+        std::string subname;
+        auto vp = doc->getInEdit(&parentVp,&subname);
+        if(!parentVp)
+            parentVp = dynamic_cast<ViewProviderDocumentObject*>(vp);
+        if(parentVp)
+            getTree()->editingItem = findItem(true,parentVp->getObject(),subname.c_str());
+    }
+
     if(getTree()->editingItem)
         getTree()->editingItem->setBackgroundColor(0,color);
     else{
@@ -2943,15 +2959,34 @@ void DocumentItem::updateItemSelection(DocumentObjectItem *item) {
         getTree()->syncView(item->object());
 }
 
-void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char *subname) 
+DocumentObjectItem *DocumentItem::findItem(
+        bool sync, App::DocumentObject *obj, const char *subname) 
+{
+    auto it = ObjectMap.find(obj);
+    if(it == ObjectMap.end())
+        return 0;
+    // search for top level item of this object
+    for(auto item : it->second->items) {
+        if(item->parent() == this) {
+            // search for sub object item
+            return findItem(sync,item,subname,false);
+        }
+    }
+    return 0;
+}
+
+DocumentObjectItem *DocumentItem::findItem(
+        bool sync, DocumentObjectItem *item, const char *subname, bool select) 
 {
     if(item->isHidden())
-        return;
+        return 0;
 
     if(!subname || *subname==0) {
-        item->selected+=2;
-        item->mySubs.clear();
-        return;
+        if(select) {
+            item->selected+=2;
+            item->mySubs.clear();
+        }
+        return item;
     }
 
     TREE_TRACE("find next " << subname);
@@ -2962,10 +2997,12 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     if((dot=strchr(subname,'.'))) 
         nextsub = dot+1;
     else {
-        item->selected+=2;
-        if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
-            item->mySubs.push_back(subname);
-        return;
+        if(select) {
+            item->selected+=2;
+            if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
+                item->mySubs.push_back(subname);
+        }
+        return item;
     }
 
     std::string name(subname,nextsub-subname);
@@ -2974,13 +3011,16 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
     if(!subObj || subObj==obj) {
         if(!subObj)
             TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
-        item->selected += 2;
-        if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
-            item->mySubs.push_back(subname);
-        return;
+        if(select) {
+            item->selected += 2;
+            if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
+                item->mySubs.push_back(subname);
+        }
+        return 0;
     }
 
-    item->mySubs.clear();
+    if(select)
+        item->mySubs.clear();
 
     if(!item->populated && sync) {
         //force populate the item
@@ -2993,26 +3033,27 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         if(!ti || ti->type()!=TreeWidget::ObjectType) continue;
         auto child = static_cast<DocumentObjectItem*>(ti);
 
-        if(child->object()->getObject() == subObj) {
-            findSelection(sync,child,nextsub);
-            return;
-        }
+        if(child->object()->getObject() == subObj) 
+            return findItem(sync,child,nextsub,select);
     }
 
     // The sub object is not found. This could happen for geo group, since its
     // children may be in more than one hierarchy down.
     bool found = false;
+    DocumentObjectItem *res=0;
     auto it = ObjectMap.find(subObj);
     if(it != ObjectMap.end()) {
         for(auto child : it->second->items) {
             if(child->isChildOfItem(item)) {
                 found = true;
-                findSelection(sync,child,nextsub);
+                res = findItem(sync,child,nextsub,select);
+                if(!select)
+                    return res;
             }
         }
     }
 
-    if(!found) {
+    if(select && !found) {
         // The sub object is still not found. Maybe it is a non-object sub-element.
         // Select the current object instead.
         TREE_TRACE("element " << subname << " not found");
@@ -3020,6 +3061,7 @@ void DocumentItem::findSelection(bool sync, DocumentObjectItem *item, const char
         if(std::find(item->mySubs.begin(),item->mySubs.end(),subname)==item->mySubs.end())
             item->mySubs.push_back(subname);
     }
+    return res;
 }
 
 void DocumentItem::selectItems(bool sync) {
@@ -3035,7 +3077,7 @@ void DocumentItem::selectItems(bool sync) {
             if(item->isParentGroup())
                 continue;
 
-            findSelection(sync,item,sel.SubName);
+            findItem(sync,item,sel.SubName);
         }
     }
 

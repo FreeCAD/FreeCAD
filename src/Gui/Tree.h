@@ -267,7 +267,8 @@ protected:
                     QTreeWidgetItem *parent=0, int index=-1, 
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
-    void findSelection(bool sync, DocumentObjectItem *item, const char *subname);
+    DocumentObjectItem *findItem(bool sync, App::DocumentObject *obj, const char *subname);
+    DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
 
     typedef std::map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
     void populateParents(const ViewProvider *vp, ViewParentMap &);
