@@ -549,7 +549,7 @@ class _Structure(ArchComponent.Component):
                 else:
                     pli = pla[-1].copy()
                 shi.Placement = pli.multiply(shi.Placement)
-                extv = pli.Rotation.multVec(evi)
+                extv = pla[0].Rotation.multVec(evi)
                 if obj.Tool:
                     try:
                         shi = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
