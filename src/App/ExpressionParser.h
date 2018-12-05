@@ -338,6 +338,8 @@ protected:
     virtual ExpressionPtr _copy() const;
     virtual App::any _getValueAsAny() const;
 
+    static void assign(const Expression *owner, const Expression *left, PyObject *right);
+
 protected:
     ExpressionList left;
     ExpressionPtr right;
@@ -564,6 +566,8 @@ protected:
     virtual App::any _getValueAsAny() const;
     virtual void _toString(std::ostream &, bool, int) const;
     virtual ExpressionPtr _copy() const;
+
+    friend class AssignmentExpression;
 
 protected:
     ExpressionList items;

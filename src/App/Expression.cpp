@@ -2655,6 +2655,30 @@ private:
     int i;
 };
 
+void AssignmentExpression::assign(const Expression *owner, const Expression *left, PyObject *right) {
+    auto &frame = *_EvalStack.back();
+    auto list = dynamic_cast<const ListExpression*>(left);
+    if(list) {
+        int catchAll = -1;
+        int i=-1;
+        for(bool flag : list->flags) {
+            ++i;
+            if(!flag) continue;
+            if(catchAll >= 0)
+                _EXPR_THROW("Too many catch all", list);
+            catchAll = i;
+        }
+        auto r = PyObjectExpression::create(owner->getOwner(),right);
+        AssignmentExpression::apply(owner,catchAll,list->items,r.get());
+    }else{
+        auto e = dynamic_cast<const VariableExpression*>(left);
+        if(!e) _EXPR_THROW("Invalid left expression in assignment",owner);
+        VarInfo info(e->push(owner,false));
+        info.rhs = right;
+        frame.setVar(owner,info);
+    }
+}
+
 App::any AssignmentExpression::apply(const Expression *owner, int _catchAll, 
         const ExpressionList &left, const Expression *right, int op, bool needReturn)
 {
@@ -2663,7 +2687,7 @@ App::any AssignmentExpression::apply(const Expression *owner, int _catchAll,
     auto &frame = *_EvalStack.back();
     if(left.size()==1) {
         auto e = dynamic_cast<VariableExpression*>(left[0].get());
-        if(!e) _EXPR_THROW("Invalid expression",owner);
+        if(!e) _EXPR_THROW("Invalid assignement",owner);
         VarInfo info(e->push(owner,!!op));
         if(op) {
             auto res = OperatorExpression::calc(owner,op, 
@@ -2676,6 +2700,9 @@ App::any AssignmentExpression::apply(const Expression *owner, int _catchAll,
             return pyObjectToAny(info.rhs);
         return App::any();
     }
+
+    if(op)
+        _EXPR_THROW("Invalid argumented assignement",owner);
 
     PyIterable value(_pyObjectFromAny(right->getValueAsAny(),right),owner,true);
     Py::Sequence seq(value);
@@ -2691,30 +2718,21 @@ App::any AssignmentExpression::apply(const Expression *owner, int _catchAll,
     else
         catchAll = (size_t)_catchAll;
     int j=0;
-    for(size_t i=0;i<catchAll;++i) {
-        auto e = dynamic_cast<VariableExpression*>(left[i].get());
-        if(!e) _EXPR_THROW("Invalid expression",owner);
-        VarInfo info(e->push(owner,false));
-        info.rhs = seq[j++];
-        frame.setVar(owner,info);
-    }
+    for(size_t i=0;i<catchAll;++i)
+        assign(owner,left[i].get(),seq[j++].ptr());
+
     if(catchAll < left.size()) {
-        Py::Tuple tuple(seq.size()-left.size());
-        for(size_t i=0;i<tuple.size();++i) 
-            tuple.setItem(i,seq[j++]);
+        Py::List list(seq.size()-left.size()+1);
+        for(size_t i=0;i<list.size();++i) 
+            list.setItem(i,seq[j++]);
         auto e = dynamic_cast<VariableExpression*>(left[catchAll].get());
-        if(!e) _EXPR_THROW("Invalid expression",owner);
+        if(!e) _EXPR_THROW("Invalid catch all in assignment",owner);
         VarInfo info(e->push(owner,false));
-        info.rhs = tuple;
+        info.rhs = list;
         frame.setVar(owner,info);
 
-        for(size_t i=catchAll+1;i<left.size();++i) {
-            auto e = dynamic_cast<VariableExpression*>(left[i].get());
-            if(!e) _EXPR_THROW("Invalid expression",owner);
-            VarInfo info(e->push(owner,false));
-            info.rhs = seq[j++];
-            frame.setVar(owner,info);
-        }
+        for(size_t i=catchAll+1;i<left.size();++i) 
+            assign(owner,left[i].get(),seq[j++].ptr());
     }
     if(needReturn)
         return pyObjectToAny(value,false);
