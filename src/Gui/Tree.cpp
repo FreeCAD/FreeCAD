@@ -1037,6 +1037,7 @@ struct ItemInfo {
     std::string topObj;
     std::string topSubname;
     std::vector<std::string> subs;
+    bool dragging = false;
 };
 struct ItemInfo2 {
     std::string doc;
@@ -1094,24 +1095,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             return; // no group like object
         }
 
-        if(!dropOnly) {
-            // check if items can be dragged
-            for(auto &v : items) {
-                auto item = v.first;
-                auto parentItem = item->getParentItem();
-                if(!parentItem || !vp->canDragAndDropObject(item->object()->getObject()))
-                    continue;
-                if(!parentItem->object()->canDragObjects() || 
-                   !parentItem->object()->canDragObject(item->object()->getObject()))
-                {
-                    TREE_ERR("'" << item->object()->getObject()->getNameInDocument() << 
-                           "' cannot be dragged out of '" << 
-                           parentItem->object()->getObject()->getNameInDocument() << "'");
-                    return;
-                }
-            }
-        }
-
         std::ostringstream targetSubname;
         App::DocumentObject *targetParent = 0;
         targetItemObj->getSubName(targetSubname,targetParent);
@@ -1153,13 +1136,31 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 info.ownerDoc = owner->getDocument()->getName();
                 info.owner = owner->getNameInDocument();
             }
-            QTreeWidgetItem* parent = item->parent();
-            if (parent && parent->type() == TreeWidget::ObjectType) {
-                auto vpp = static_cast<DocumentObjectItem *>(parent)->object();
-                info.parent = vpp->getObject()->getNameInDocument();
-                info.parentDoc = vpp->getObject()->getDocument()->getName();
-            }
+
             info.subs.swap(v.second);
+
+            // check if items can be dragged
+            if(!dropOnly && 
+               item->myOwner == targetItemObj->myOwner && 
+               vp->canDragAndDropObject(item->object()->getObject()))
+            {
+                auto parentItem = item->getParentItem();
+                if(parentItem &&
+                   (!parentItem->object()->canDragObjects() || 
+                    !parentItem->object()->canDragObject(item->object()->getObject())))
+                {
+                    TREE_ERR("'" << item->object()->getObject()->getNameInDocument() << 
+                           "' cannot be dragged out of '" << 
+                           parentItem->object()->getObject()->getNameInDocument() << "'");
+                    return;
+                }
+                info.dragging = true;
+                if(parentItem) {
+                    auto vpp = parentItem->object();
+                    info.parent = vpp->getObject()->getNameInDocument();
+                    info.parentDoc = vpp->getObject()->getDocument()->getName();
+                }
+            }
         }
 
         // Open command
@@ -1241,12 +1242,8 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 }
 
                 auto manager = Application::Instance->macroManager();
-                bool dragged =false;
                 std::ostringstream ss;
-                if(!vpp)
-                    dragged = true;
-                else if(!dropOnly && vp->canDragAndDropObject(obj)) {
-                    dragged = true;
+                if(vpp) {
                     auto lines = manager->getLines();
                     ss << Command::getObjectCmd(vpp->getObject())
                         << ".ViewObject.dragObject(" << Command::getObjectCmd(obj) << ')';
@@ -1264,7 +1261,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                     }
                 }
 
-                if(dragged) {
+                if(info.dragging) {
                     // Construct the subname pointing to the future dropped location
                     auto parentObj = targetObj;
                     std::string dropName = vp->getDropPrefix();
@@ -1313,8 +1310,10 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
                 if(propPlacement) {
                     // try to adjust placement
-                    if((dragged && sobj==obj) || (!dragged && sobj->getLinkedObject(false)==obj)) {
-                        if(!dragged)
+                    if((info.dragging && sobj==obj) || 
+                       (!info.dragging && sobj->getLinkedObject(false)==obj)) 
+                    {
+                        if(!info.dragging)
                             propPlacement = dynamic_cast<App::PropertyPlacement*>(
                                     sobj->getPropertyByName("Placement"));
                         if(propPlacement) {
