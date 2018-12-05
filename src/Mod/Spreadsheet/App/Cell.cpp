@@ -742,23 +742,27 @@ void Cell::visit(App::ExpressionVisitor &v)
 
 int Cell::decodeAlignment(const std::string & itemStr, int alignment)
 {
-    if (itemStr == "himplied")
-        alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_HIMPLIED;
-    else if (itemStr == "left")
+    if (itemStr == "himplied") {
+        if(!(alignment & ALIGNMENT_HORIZONTAL))
+            alignment |= ALIGNMENT_LEFT;
+        alignment |= Cell::ALIGNMENT_HIMPLIED;
+    } else if (itemStr == "left")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_LEFT;
     else if (itemStr == "center")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_HCENTER;
     else if (itemStr == "right")
         alignment = (alignment & ~Cell::ALIGNMENT_HORIZONTAL) | Cell::ALIGNMENT_RIGHT;
-    else if (itemStr == "vimplied")
-        alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_VIMPLIED;
-    else if (itemStr == "top")
+    else if (itemStr == "vimplied") {
+        if(!(alignment & ALIGNMENT_VERTICAL))
+            alignment |= ALIGNMENT_VCENTER;
+        alignment |= Cell::ALIGNMENT_VIMPLIED;
+    } else if (itemStr == "top")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_TOP;
     else if (itemStr == "vcenter")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_VCENTER;
     else if (itemStr == "bottom")
         alignment = (alignment & ~Cell::ALIGNMENT_VERTICAL) | Cell::ALIGNMENT_BOTTOM;
-    else
+    else if(itemStr.size())
         throw Base::ValueError("Invalid alignment.");
 
     return alignment;
