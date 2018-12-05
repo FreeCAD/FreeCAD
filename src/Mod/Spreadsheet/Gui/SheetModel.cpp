@@ -293,7 +293,10 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant::fromValue(qtAlignment);
         }
         case Qt::DisplayRole:
-            return QVariant(QLatin1String("#PENDING"));
+            if(cell->getExpression())
+                return QVariant(QLatin1String("#PENDING"));
+            else
+                return QVariant();
         default:
             return QVariant();
         }
