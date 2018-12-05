@@ -59,6 +59,8 @@ recompute path. Also enables more complicated dependencies beyond trees.
 # include <random>
 #endif
 
+#include <boost/algorithm/string.hpp>
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
@@ -2080,9 +2082,29 @@ unsigned int Document::getMemSize (void) const
     return size;
 }
 
-bool Document::saveAs(const char* file)
+static std::string checkFileName(const char *file) {
+    std::string fn(file);
+
+    // Append extension if missing. This option is added for security reason, so
+    // that the user won't accidently overwrite other file that may be critical.
+    if(App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetBool("CheckExtension",true))
+    {
+        const char *ext = strrchr(file,'.');
+        if(!ext || !boost::iequals(ext+1,"fcstd")) {
+            if(ext && ext[1] == 0)
+                fn += "fcstd";
+            else
+                fn += ".fcstd";
+        }
+    }
+    return fn;
+}
+
+bool Document::saveAs(const char* _file)
 {
-    Base::FileInfo fi(file);
+    std::string file = checkFileName(_file);
+    Base::FileInfo fi(file.c_str());
     if (this->FileName.getStrValue() != file) {
         this->FileName.setValue(file);
         this->Label.setValue(fi.fileNamePure());
@@ -2092,10 +2114,11 @@ bool Document::saveAs(const char* file)
     return save();
 }
 
-bool Document::saveCopy(const char* file) const
+bool Document::saveCopy(const char* _file) const
 {
+    std::string file = checkFileName(_file);
     if (this->FileName.getStrValue() != file) {
-        bool result = saveToFile(file);
+        bool result = saveToFile(file.c_str());
         return result;
     }
     return false;
