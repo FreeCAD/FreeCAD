@@ -1023,6 +1023,7 @@ class Snapper:
         self.lastArchPoint = None
         self.selectMode = False
         self.running = False
+        self.holdPoints = []
         
     def setSelectMode(self,mode):
         "sets the snapper into select mode (hides snapping temporarily)"
@@ -1152,6 +1153,7 @@ class Snapper:
         
         self.pt = None
         self.lastSnappedObject = None
+        self.holdPoints = []
         self.ui = FreeCADGui.draftToolBar
         self.view = Draft.get3DView()
 
