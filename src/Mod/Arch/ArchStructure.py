@@ -630,8 +630,9 @@ class _Structure(ArchComponent.Component):
                                 # multiple extrusions
                                 b = []
                                 p = []
+                                hint = obj.Base.Shape.Faces[0].normalAt(0,0)
                                 for f in obj.Base.Shape.Faces:
-                                    bf,pf = self.rebase(f)
+                                    bf,pf = self.rebase(f,hint)
                                     b.append(bf)
                                     p.append(pf)
                                 base = b
