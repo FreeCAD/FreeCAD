@@ -33,52 +33,46 @@ from femtest.testccxtools import FemCcxAnalysisTest
 from femtest.testsolverframework import SolverFrameWorkTest
 
 
+# For more information on how to run a specific test class or a test method see 
+# file src/Mod/Test/__init__ and forum https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
+
+# It may be useful to temporary comment FreeCAD.closeDocument("FemCommon") in tearDown method to not close the document
+
+
 '''
-for more information on how to run a specific test class or a test def see
-file src/Mod/Test/__init__
-https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
-
-
-
-examples from within FreeCAD:
-
-# module
+# examples from within FreeCAD:
+# all FEM tests
 import Test, TestFem
 Test.runTestsFromModule(TestFem)
 
+# module
 import Test, femtest.testcommon
 Test.runTestsFromModule(femtest.testcommon)
 
 # class
-import Test, TestFem
-Test.runTestsFromClass(TestFem.FemTest)
-
 import Test, femtest.testcommon
-Test.runTestsFromClass(femtest.testcommon.FemTest)
+Test.runTestsFromClass(femtest.testcommon.FemCommon)
 
 # method
 import unittest
-mytest = unittest.TestLoader().loadTestsFromName("TestFem.FemTest.test_pyimport_all_FEM_modules")
+mytest = unittest.TestLoader().loadTestsFromName("femtest.testcommon.FemCommon.test_pyimport_all_FEM_modules")
 unittest.TextTestRunner().run(mytest)
 
-import unittest
-mytest = unittest.TestLoader().loadTestsFromName("TestFem.FemTest.test_femobjects_make")
-unittest.TextTestRunner().run(mytest)
 
-# it may be useful to temporary comment FreeCAD.closeDocument("FemTest") in tearDown method to not close the document
+# examples from shell in build dir:
+# all FreeCAD tests
+./bin/FreeCAD --run-test 0
 
-examples from shell in build dir:
-
+# all FEM tests
 ./bin/FreeCAD --run-test "TestFem"
 
-./bin/FreeCAD --run-test "TestFem.FemTest"
+# module
+./bin/FreeCAD --run-test "femtest.testcommon"
 
-./bin/FreeCAD --run-test "TestFem.FemTest.test_pyimport_all_FEM_modules"
+# class
+./bin/FreeCAD --run-test "femtest.testcommon.FemCommon"
 
+# method
+./bin/FreeCAD --run-test "femtest.testcommon.FemCommon.test_pyimport_all_FEM_modules"
 
-
-
-to run all FreeCAD tests from shell:
-
-./bin/FreeCAD --run-test 0
 '''
