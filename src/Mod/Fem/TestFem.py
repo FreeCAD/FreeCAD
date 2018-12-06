@@ -27,7 +27,7 @@
 # Unit test for the FEM module
 # the order should be as follows:
 # common-, object-, mesh-, inout-, ccxtools-, solverframworktests
-from femtest.testcommon import FemTest
+from femtest.testcommon import FemCommon
 from femtest.testmesh import FemMeshTest
 from femtest.testccxtools import FemCcxAnalysisTest
 from femtest.testsolverframework import SolverFrameWorkTest
