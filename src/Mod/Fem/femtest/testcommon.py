@@ -33,12 +33,13 @@ from .testtools import fcc_print
 class FemCommon(unittest.TestCase):
 
     def setUp(self):
+        self.doc_name = "TestsFemCommon"
         try:
-            FreeCAD.setActiveDocument("FemTest")
+            FreeCAD.setActiveDocument(self.doc_name)
         except:
-            FreeCAD.newDocument("FemTest")
+            FreeCAD.newDocument(self.doc_name)
         finally:
-            FreeCAD.setActiveDocument("FemTest")
+            FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
     def test_read_frd_massflow_networkpressure(self):
@@ -539,5 +540,5 @@ class FemCommon(unittest.TestCase):
             self.assertTrue(im, 'Problem importing {0}'.format(mod))
 
     def tearDown(self):
-        FreeCAD.closeDocument("FemTest")
+        FreeCAD.closeDocument(self.doc_name)
         pass
