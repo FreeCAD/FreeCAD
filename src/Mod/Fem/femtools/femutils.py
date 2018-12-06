@@ -60,6 +60,7 @@ def _searchGroups(member, objs):
     return False
 
 
+# typeID and object type defs used in Elmer
 def getMember(analysis, t):
     if analysis is None:
         raise ValueError("Analysis must not be None")
@@ -75,14 +76,6 @@ def getSingleMember(analysis, t):
     return objs[0] if objs else None
 
 
-def isOfTypeNew(obj, ty):
-    '''returns if an object is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
-    if type_of_obj(obj) == ty:
-        return True
-    else:
-        return False
-
-
 def isOfType(obj, t):
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type == t
@@ -96,11 +89,20 @@ def isDerivedFrom(obj, t):
     return obj.isDerivedFrom(t)
 
 
+# typeID and object type defs ATM not used in FEM solver writer modules
 def type_of_obj(obj):
     '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
         return obj.Proxy.Type
     return obj.TypeId
+
+
+def is_of_type(obj, ty):
+    '''returns if an object is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
+    if type_of_obj(obj) == ty:
+        return True
+    else:
+        return False
 
 
 def getBoundBoxOfAllDocumentShapes(doc):
