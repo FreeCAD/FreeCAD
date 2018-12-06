@@ -197,7 +197,7 @@ class Writer(object):
     def _handleHeat(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.isOfType(equation, "Fem::FemEquationElmerHeat"):
+            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerHeat"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -297,7 +297,7 @@ class Writer(object):
     def _handleElectrostatic(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.isOfType(equation, "Fem::FemEquationElmerElectrostatic"):
+            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerElectrostatic"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -361,7 +361,7 @@ class Writer(object):
     def _handleFluxsolver(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.isOfType(equation, "Fem::FemEquationElmerFluxsolver"):
+            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerFluxsolver"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -382,7 +382,7 @@ class Writer(object):
     def _handleElasticity(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.isOfType(equation, "Fem::FemEquationElmerElasticity"):
+            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerElasticity"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
@@ -540,7 +540,7 @@ class Writer(object):
     def _handleFlow(self):
         activeIn = []
         for equation in self.solver.Group:
-            if FemUtils.isOfType(equation, "Fem::FemEquationElmerFlow"):
+            if FemUtils.is_of_type(equation, "Fem::FemEquationElmerFlow"):
                 if equation.References:
                     activeIn = equation.References[0][1]
                 else:
