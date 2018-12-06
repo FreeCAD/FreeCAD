@@ -136,3 +136,23 @@ def getSelectedFace(selectionex):
                 FreeCAD.Console.PrintMessage(':-)')
                 return aFace
     return aFace
+
+
+def get_refshape_type(fem_doc_object):
+    # returns the reference shape type
+    # for force object:
+    # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
+    # for material object:
+    # in GUI defined material_obj could have no RefShape and RefShapes could be different type
+    # we're going to need the RefShapes to be the same type inside one fem_doc_object
+    # TODO: check if all RefShapes inside the object really have the same type
+    import femmesh.meshtools as FemMeshTools
+    if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
+        first_ref_obj = fem_doc_object.References[0]
+        first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
+        st = first_ref_shape.ShapeType
+        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has ' + st + ' reference shapes.\n')
+        return st
+    else:
+        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
+        return ''
