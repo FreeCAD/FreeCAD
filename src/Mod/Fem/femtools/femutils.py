@@ -75,16 +75,9 @@ def getSingleMember(analysis, t):
     return objs[0] if objs else None
 
 
-def typeOfObj(obj):
-    '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
-    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
-        return obj.Proxy.Type
-    return obj.TypeId
-
-
 def isOfTypeNew(obj, ty):
     '''returns if an object is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
-    if typeOfObj(obj) == ty:
+    if type_of_obj(obj) == ty:
         return True
     else:
         return False
@@ -101,6 +94,13 @@ def isDerivedFrom(obj, t):
             obj.Proxy.Type == t):
         return True
     return obj.isDerivedFrom(t)
+
+
+def type_of_obj(obj):
+    '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
+    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
+        return obj.Proxy.Type
+    return obj.TypeId
 
 
 def getBoundBoxOfAllDocumentShapes(doc):
