@@ -98,11 +98,8 @@ def type_of_obj(obj):
 
 
 def is_of_type(obj, ty):
-    '''returns if an object is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
-    if type_of_obj(obj) == ty:
-        return True
-    else:
-        return False
+    '''returns True if an object is of a given TypeId (C++ objects) or Proxy.Type (Python Features)'''
+    return type_of_obj(obj) == ty
 
 
 def getBoundBoxOfAllDocumentShapes(doc):
