@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 
 import sys
 import FreeCAD
+import femtools.femutils as femutils
 from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
@@ -219,7 +220,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             elif m.isDerivedFrom("Fem::ConstraintForce"):
                 force_constraint_dict = {}
                 force_constraint_dict['Object'] = m
-                force_constraint_dict['RefShapeType'] = get_refshape_type(m)
+                force_constraint_dict['RefShapeType'] = femutils.get_refshape_type(m)
                 self.force_constraints.append(force_constraint_dict)
             elif m.isDerivedFrom("Fem::ConstraintPressure"):
                 PressureObjectDict = {}
@@ -321,7 +322,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 has_no_references = True
         mat_ref_shty = ''
         for m in self.materials_linear:
-            ref_shty = get_refshape_type(m['Object'])
+            ref_shty = femutils.get_refshape_type(m['Object'])
             if not mat_ref_shty:
                 mat_ref_shty = ref_shty
             if mat_ref_shty and ref_shty and ref_shty != mat_ref_shty:
@@ -806,26 +807,5 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
                             m.EigenmodeFrequency = mf['frequency']
-
-
-# helper
-def get_refshape_type(fem_doc_object):
-    # returns the reference shape type
-    # for force object:
-    # in GUI defined frc_obj all frc_obj have at least one ref_shape and ref_shape have all the same shape type
-    # for material object:
-    # in GUI defined material_obj could have no RefShape and RefShapes could be different type
-    # we're going to need the RefShapes to be the same type inside one fem_doc_object
-    # TODO: check if all RefShapes inside the object really have the same type
-    import femmesh.meshtools as FemMeshTools
-    if hasattr(fem_doc_object, 'References') and fem_doc_object.References:
-        first_ref_obj = fem_doc_object.References[0]
-        first_ref_shape = FemMeshTools.get_element(first_ref_obj[0], first_ref_obj[1][0])
-        st = first_ref_shape.ShapeType
-        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has ' + st + ' reference shapes.\n')
-        return st
-    else:
-        FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
-        return ''
 
 ##  @}
