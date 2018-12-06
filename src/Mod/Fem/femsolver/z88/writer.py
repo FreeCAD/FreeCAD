@@ -80,7 +80,7 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         return self.dir_name
 
     def set_z88_elparam(self):
-        # TODO: z88_param should be moved to the solver object like the known analysis
+        # TODO: param should be moved to the solver object like the known analysis
         z8804 = {'INTORD': '0', 'INTOS': '0', 'IHFLAG': '0', 'ISFLAG': '1'}  # seg2 --> stab4
         z8824 = {'INTORD': '7', 'INTOS': '7', 'IHFLAG': '1', 'ISFLAG': '1'}  # tria6 --> schale24
         z8823 = {'INTORD': '3', 'INTOS': '0', 'IHFLAG': '1', 'ISFLAG': '0'}  # quad8 --> schale23
@@ -88,11 +88,13 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         z8816 = {'INTORD': '4', 'INTOS': '0', 'IHFLAG': '0', 'ISFLAG': '0'}  # tetra10 --> volume16
         z8801 = {'INTORD': '2', 'INTOS': '2', 'IHFLAG': '0', 'ISFLAG': '1'}  # hexa8 --> volume1
         z8810 = {'INTORD': '3', 'INTOS': '0', 'IHFLAG': '0', 'ISFLAG': '0'}  # hexa20 --> volume10
-        z88_param = {4: z8804, 24: z8824, 23: z8823, 17: z8817, 16: z8816, 1: z8801, 10: z8810}
-        self.z88_param = z88_param
+        param = {4: z8804, 24: z8824, 23: z8823, 17: z8817, 16: z8816, 1: z8801, 10: z8810}
         # elemente 17, 16, 10, INTORD etc ... testen !!!
         self.z88_element_type = importZ88Mesh.get_z88_element_type(self.femmesh, self.femelement_table)
-        self.z88_elparam = self.z88_param[self.z88_element_type]
+        if self.z88_element_type in param:
+            self.z88_elparam = param[self.z88_element_type]
+        else:
+            raise Exception('Element type not supported by Z88.')
         FreeCAD.Console.PrintMessage(self.z88_elparam)
         FreeCAD.Console.PrintMessage('\n')
 
