@@ -121,7 +121,7 @@ class Results(run.Results):
 
     def purge_results(self):
         for m in FemUtils.getMember(self.analysis, "Fem::FemResultObject"):
-            if FemUtils.isOfType(m.Mesh, "FemMeshResult"):
+            if FemUtils.isOfType(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
         App.ActiveDocument.recompute()
