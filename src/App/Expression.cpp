@@ -4243,8 +4243,7 @@ App::any ComprehensionExpression::_getValueAsAny() const {
         return App::any();
     Base::PyGILStateLocker lock;
     EvalFrame frame;
-    if(_EvalStack.empty())
-        frame.push();
+    frame.push();
     Py::Object res(list?PyList_New(0):(value?PyDict_New():PySet_New(0)));
     try {
         _calc(res,comps.begin());
