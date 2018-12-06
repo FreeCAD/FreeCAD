@@ -105,6 +105,7 @@ protected: // the python API wrapper methods
     static PyObject *sParseQuantity   (PyObject *self,PyObject *args);
     static PyObject *sListSchemas     (PyObject *self,PyObject *args);
     static PyObject *sGetSchema       (PyObject *self,PyObject *args);
+    static PyObject *sSetSchema       (PyObject *self,PyObject *args);
     static PyObject *sSchemaTranslate (PyObject *self,PyObject *args);
 };
 
