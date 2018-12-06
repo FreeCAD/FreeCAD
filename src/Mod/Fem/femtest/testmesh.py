@@ -33,12 +33,13 @@ from .testtools import fcc_print
 class FemMeshTest(unittest.TestCase):
 
     def setUp(self):
+        self.doc_name = "TestsFemMesh"
         try:
-            FreeCAD.setActiveDocument("FemTest")
+            FreeCAD.setActiveDocument(self.doc_name)
         except:
-            FreeCAD.newDocument("FemTest")
+            FreeCAD.newDocument(self.doc_name)
         finally:
-            FreeCAD.setActiveDocument("FemTest")
+            FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
 
     def test_mesh_seg2_python(self):
@@ -203,5 +204,5 @@ class FemMeshTest(unittest.TestCase):
                         "Problem in test_writeAbaqus_precision, \n{0}\n{1}".format(read_node_line, expected))
 
     def tearDown(self):
-        FreeCAD.closeDocument("FemTest")
+        FreeCAD.closeDocument(self.doc_name)
         pass

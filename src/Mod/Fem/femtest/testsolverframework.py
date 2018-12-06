@@ -34,12 +34,13 @@ from .testtools import fcc_print
 class SolverFrameWorkTest(unittest.TestCase):
 
     def setUp(self):
+        self.doc_name = "TestsFemSolverFrameWork"
         try:
-            FreeCAD.setActiveDocument("FemTest")
+            FreeCAD.setActiveDocument(self.doc_name)
         except:
-            FreeCAD.newDocument("FemTest")
+            FreeCAD.newDocument(self.doc_name)
         finally:
-            FreeCAD.setActiveDocument("FemTest")
+            FreeCAD.setActiveDocument(self.doc_name)
         self.active_doc = FreeCAD.ActiveDocument
         self.mesh_name = 'Mesh'
         self.temp_dir = testtools.get_fem_test_tmp_dir()
@@ -180,5 +181,5 @@ class SolverFrameWorkTest(unittest.TestCase):
         fcc_print('--------------- End of FEM tests solver frame work ---------------')
 
     def tearDown(self):
-        FreeCAD.closeDocument("FemTest")
+        FreeCAD.closeDocument(self.doc_name)
         pass
