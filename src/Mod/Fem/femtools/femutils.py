@@ -60,13 +60,13 @@ def _searchGroups(member, objs):
     return False
 
 
-# typeID and object type defs used in Elmer
+# collect analyis members used in Elmer
 def getMember(analysis, t):
     if analysis is None:
         raise ValueError("Analysis must not be None")
     matching = []
     for m in analysis.Group:
-        if isDerivedFrom(m, t):
+        if is_derived_from(m, t):
             matching.append(m)
     return matching
 
@@ -76,20 +76,7 @@ def getSingleMember(analysis, t):
     return objs[0] if objs else None
 
 
-def isOfType(obj, t):
-    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
-        return obj.Proxy.Type == t
-    return obj.TypeId == t
-
-
-def isDerivedFrom(obj, t):
-    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and
-            obj.Proxy.Type == t):
-        return True
-    return obj.isDerivedFrom(t)
-
-
-# typeID and object type defs ATM not used in FEM solver writer modules
+# typeID and object type defs
 def type_of_obj(obj):
     '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type"):
@@ -99,7 +86,19 @@ def type_of_obj(obj):
 
 def is_of_type(obj, ty):
     '''returns True if an object is of a given TypeId (C++ objects) or Proxy.Type (Python Features)'''
+    # only returns true if the exact TypeId is given.
+    # For FeaturPythons the Proxy.Type has to be given. Keep in mind the TypeId for them is the TypeId from the C++ father class
     return type_of_obj(obj) == ty
+
+
+def is_derived_from(obj, t):
+    '''returns True if an object or its inheritance chain is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
+    # returns true for all FEM objects if given t == 'App::DocumentObject' since this is a father of the given object
+    # see https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
+    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and
+            obj.Proxy.Type == t):
+        return True
+    return obj.isDerivedFrom(t)
 
 
 def getBoundBoxOfAllDocumentShapes(doc):
