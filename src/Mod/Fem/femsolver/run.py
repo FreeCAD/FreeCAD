@@ -284,10 +284,10 @@ class Check(BaseTask):
 
     def checkSupported(self, allSupported):
         for m in self.analysis.Group:
-            if FemUtils.isOfType(m, "Fem::Constraint"):
+            if FemUtils.is_of_type(m, "Fem::Constraint"):
                 supported = False
                 for sc in allSupported:
-                    if FemUtils.isOfType(m, *sc):
+                    if FemUtils.is_of_type(m, *sc):
                         supported = True
                 if not supported:
                     self.report.warning(

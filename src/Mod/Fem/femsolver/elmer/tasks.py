@@ -46,7 +46,7 @@ class Check(run.Check):
 
     def checkMeshType(self):
         mesh = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
-        if not FemUtils.isOfType(mesh, "Fem::FemMeshGmsh"):
+        if not FemUtils.is_of_type(mesh, "Fem::FemMeshGmsh"):
             self.report.error(
                 "Unsupported type of mesh. "
                 "Mesh must be created with gmsh.")
