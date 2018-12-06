@@ -30,7 +30,7 @@ from . import testtools
 from .testtools import fcc_print
 
 
-class FemTest(unittest.TestCase):
+class FemCommon(unittest.TestCase):
 
     def setUp(self):
         try:
