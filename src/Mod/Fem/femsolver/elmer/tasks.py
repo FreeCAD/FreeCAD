@@ -110,13 +110,13 @@ class Solve(run.Solve):
             self.fail()
 
     def _observeSolver(self, process):
-        output = ""
+        output = b""
         line = process.stdout.readline()
         self.pushStatus(line)
         output += line
         line = process.stdout.readline()
         while line:
-            line = "\n%s" % line.rstrip()
+            line = b"\n%s" % line.rstrip()
             self.pushStatus(line)
             output += line
             line = process.stdout.readline()
