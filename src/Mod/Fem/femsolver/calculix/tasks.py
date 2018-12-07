@@ -157,100 +157,34 @@ class Results(run.Results):
 class _Container(object):
 
     def __init__(self, analysis):
+        self.analysis = analysis
         self.mesh = None
-        self.materials_linear = []
-        self.materials_nonlinear = []
-        self.fixed_constraints = []
-        self.selfweight_constraints = []
-        self.force_constraints = []
-        self.pressure_constraints = []
-        self.beam_sections = []
-        self.beam_rotations = []
-        self.fluid_sections = []
-        self.shell_thicknesses = []
-        self.displacement_constraints = []
-        self.temperature_constraints = []
-        self.heatflux_constraints = []
-        self.initialtemperature_constraints = []
-        self.planerotation_constraints = []
-        self.contact_constraints = []
-        self.transform_constraints = []
+        self.materials_linear = self.get_several_member('Fem::Material')
+        self.materials_nonlinear = self.get_several_member('Fem::MaterialMechanicalNonlinear')
+        self.fixed_constraints = self.get_several_member('Fem::ConstraintFixed')
+        self.selfweight_constraints = self.get_several_member('Fem::ConstraintSelfWeight')
+        self.force_constraints = self.get_several_member('Fem::ConstraintForce')
+        self.pressure_constraints = self.get_several_member('Fem::ConstraintPressure')
+        self.beam_sections = self.get_several_member('Fem::FemElementGeometry1D')
+        self.beam_rotations = self.get_several_member('Fem::FemElementRotation1D')
+        self.fluid_sections = self.get_several_member('Fem::FemElementFluid1D')
+        self.shell_thicknesses = self.get_several_member('Fem::FemElementGeometry2D')
+        self.displacement_constraints = self.get_several_member('Fem::ConstraintDisplacement')
+        self.temperature_constraints = self.get_several_member('Fem::ConstraintTemperature')
+        self.heatflux_constraints = self.get_several_member('Fem::ConstraintHeatflux')
+        self.initialtemperature_constraints = self.get_several_member('Fem::ConstraintInitialTemperature')
+        self.planerotation_constraints = self.get_several_member('Fem::ConstraintPlaneRotation')
+        self.contact_constraints = self.get_several_member('Fem::ConstraintContact')
+        self.transform_constraints = self.get_several_member('Fem::ConstraintTransform')
 
-        for m in analysis.Group:
+        for m in self.analysis.Group:
             if m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m
                 else:
                     raise Exception('FEM: Multiple mesh in analysis not yet supported!')
-            elif m.isDerivedFrom("App::MaterialObjectPython"):
-                material_linear_dict = {}
-                material_linear_dict['Object'] = m
-                self.materials_linear.append(material_linear_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
-                material_nonlinear_dict = {}
-                material_nonlinear_dict['Object'] = m
-                self.materials_nonlinear.append(material_nonlinear_dict)
-            elif m.isDerivedFrom("Fem::ConstraintFixed"):
-                fixed_constraint_dict = {}
-                fixed_constraint_dict['Object'] = m
-                self.fixed_constraints.append(fixed_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::ConstraintSelfWeight":
-                selfweight_dict = {}
-                selfweight_dict['Object'] = m
-                self.selfweight_constraints.append(selfweight_dict)
-            elif m.isDerivedFrom("Fem::ConstraintForce"):
-                force_constraint_dict = {}
-                force_constraint_dict['Object'] = m
-                force_constraint_dict['RefShapeType'] = FemUtils.get_refshape_type(m)
-                self.force_constraints.append(force_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintPressure"):
-                PressureObjectDict = {}
-                PressureObjectDict['Object'] = m
-                self.pressure_constraints.append(PressureObjectDict)
-            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):
-                displacement_constraint_dict = {}
-                displacement_constraint_dict['Object'] = m
-                self.displacement_constraints.append(displacement_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintTemperature"):
-                temperature_constraint_dict = {}
-                temperature_constraint_dict['Object'] = m
-                self.temperature_constraints.append(temperature_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintHeatflux"):
-                heatflux_constraint_dict = {}
-                heatflux_constraint_dict['Object'] = m
-                self.heatflux_constraints.append(heatflux_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintInitialTemperature"):
-                initialtemperature_constraint_dict = {}
-                initialtemperature_constraint_dict['Object'] = m
-                self.initialtemperature_constraints.append(
-                    initialtemperature_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintPlaneRotation"):
-                planerotation_constraint_dict = {}
-                planerotation_constraint_dict['Object'] = m
-                self.planerotation_constraints.append(planerotation_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintContact"):
-                contact_constraint_dict = {}
-                contact_constraint_dict['Object'] = m
-                self.contact_constraints.append(contact_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintTransform"):
-                transform_constraint_dict = {}
-                transform_constraint_dict['Object'] = m
-                self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry1D":
-                beam_section_dict = {}
-                beam_section_dict['Object'] = m
-                self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementRotation1D":
-                beam_rotation_dict = {}
-                beam_rotation_dict['Object'] = m
-                self.beam_rotations.append(beam_rotation_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
-                fluid_section_dict = {}
-                fluid_section_dict['Object'] = m
-                self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry2D":
-                shell_thickness_dict = {}
-                shell_thickness_dict['Object'] = m
-                self.shell_thicknesses.append(shell_thickness_dict)
+
+    def get_several_member(self, t):
+        return FemUtils.get_several_member(self.analysis, t)
 
 ##  @}
