@@ -117,7 +117,7 @@ class Writer(object):
         self._writeStartinfo()
 
     def _writeMesh(self):
-        mesh = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        mesh = self._getSingleMember("Fem::FemMeshObject")
         unvPath = os.path.join(self.directory, "mesh.unv")
         groups = []
         groups.extend(self._builder.getBodyNames())
@@ -702,7 +702,7 @@ class Writer(object):
         return varName
 
     def _getAllBodies(self):
-        obj = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        obj = self._getSingleMember("Fem::FemMeshObject")
         bodyCount = 0
         prefix = ""
         if obj.Part.Shape.Solids:
@@ -717,7 +717,7 @@ class Writer(object):
         return [prefix + str(i + 1) for i in range(bodyCount)]
 
     def _getMeshDimension(self):
-        obj = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        obj = self._getSingleMember("Fem::FemMeshObject")
         if obj.Part.Shape.Solids:
             return 3
         elif obj.Part.Shape.Faces:
