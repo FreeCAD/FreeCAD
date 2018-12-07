@@ -107,6 +107,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     def reset_all(self):
         self.purge_results()
 
+    def _get_several_member(self, obj_type):
+        return femutils.get_several_member(self.analysis, obj_type)
+
     def update_objects(self):
         # [{'Object':materials_linear}, {}, ...]
         # [{'Object':materials_nonlinear}, {}, ...]
@@ -127,55 +130,55 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.mesh = None
         ## @var materials_linear
         #  list of linear materials from the analysis. Updated with update_objects
-        self.materials_linear = []
+        self.materials_linear = self._get_several_member('Fem::Material')
         ## @var materials_nonlinear
         #  list of nonlinear materials from the analysis. Updated with update_objects
-        self.materials_nonlinear = []
+        self.materials_nonlinear = self._get_several_member('Fem::MaterialMechanicalNonlinear')
         ## @var fixed_constraints
         #  list of fixed constraints from the analysis. Updated with update_objects
-        self.fixed_constraints = []
+        self.fixed_constraints = self._get_several_member('Fem::ConstraintFixed')
         ## @var selfweight_constraints
         #  list of selfweight constraints from the analysis. Updated with update_objects
-        self.selfweight_constraints = []
+        self.selfweight_constraints = self._get_several_member('Fem::ConstraintSelfWeight')
         ## @var force_constraints
         #  list of force constraints from the analysis. Updated with update_objects
-        self.force_constraints = []
+        self.force_constraints = self._get_several_member('Fem::ConstraintForce')
         ## @var pressure_constraints
         #  list of pressure constraints from the analysis. Updated with update_objects
-        self.pressure_constraints = []
+        self.pressure_constraints = self._get_several_member('Fem::ConstraintPressure')
         ## @var beam_sections
         # list of beam sections from the analysis. Updated with update_objects
-        self.beam_sections = []
+        self.beam_sections = self._get_several_member('Fem::FemElementGeometry1D')
         ## @var beam_rotations
         # list of beam rotations from the analysis. Updated with update_objects
-        self.beam_rotations = []
+        self.beam_rotations = self._get_several_member('Fem::FemElementRotation1D')
         ## @var fluid_sections
         # list of fluid sections from the analysis. Updated with update_objects
-        self.fluid_sections = []
+        self.fluid_sections = self._get_several_member('Fem::FemElementFluid1D')
         ## @var shell_thicknesses
         # list of shell thicknesses from the analysis. Updated with update_objects
-        self.shell_thicknesses = []
+        self.shell_thicknesses = self._get_several_member('Fem::FemElementGeometry2D')
         ## @var displacement_constraints
         # list of displacements for the analysis. Updated with update_objects
-        self.displacement_constraints = []
+        self.displacement_constraints = self._get_several_member('Fem::ConstraintDisplacement')
         ## @var temperature_constraints
         # list of temperatures for the analysis. Updated with update_objects
-        self.temperature_constraints = []
+        self.temperature_constraints = self._get_several_member('Fem::ConstraintTemperature')
         ## @var heatflux_constraints
         # list of heatflux constraints for the analysis. Updated with update_objects
-        self.heatflux_constraints = []
+        self.heatflux_constraints = self._get_several_member('Fem::ConstraintHeatflux')
         ## @var initialtemperature_constraints
         # list of initial temperatures for the analysis. Updated with update_objects
-        self.initialtemperature_constraints = []
+        self.initialtemperature_constraints = self._get_several_member('Fem::ConstraintInitialTemperature')
         ## @var planerotation_constraints
         #  list of plane rotation constraints from the analysis. Updated with update_objects
-        self.planerotation_constraints = []
+        self.planerotation_constraints = self._get_several_member('Fem::ConstraintPlaneRotation')
         ## @var contact_constraints
         #  list of contact constraints from the analysis. Updated with update_objects
-        self.contact_constraints = []
+        self.contact_constraints = self._get_several_member('Fem::ConstraintContact')
         ## @var transform_constraints
         #  list of transform constraints from the analysis. Updated with update_objects
-        self.transform_constraints = []
+        self.transform_constraints = self._get_several_member('Fem::ConstraintTransform')
 
         found_solver_for_use = False
         for m in self.analysis.Group:
@@ -201,75 +204,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
                     raise Exception(message + '\n')
-            elif m.isDerivedFrom("App::MaterialObjectPython"):
-                material_linear_dict = {}
-                material_linear_dict['Object'] = m
-                self.materials_linear.append(material_linear_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::MaterialMechanicalNonlinear":
-                material_nonlinear_dict = {}
-                material_nonlinear_dict['Object'] = m
-                self.materials_nonlinear.append(material_nonlinear_dict)
-            elif m.isDerivedFrom("Fem::ConstraintFixed"):
-                fixed_constraint_dict = {}
-                fixed_constraint_dict['Object'] = m
-                self.fixed_constraints.append(fixed_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::ConstraintSelfWeight":
-                selfweight_dict = {}
-                selfweight_dict['Object'] = m
-                self.selfweight_constraints.append(selfweight_dict)
-            elif m.isDerivedFrom("Fem::ConstraintForce"):
-                force_constraint_dict = {}
-                force_constraint_dict['Object'] = m
-                force_constraint_dict['RefShapeType'] = femutils.get_refshape_type(m)
-                self.force_constraints.append(force_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintPressure"):
-                PressureObjectDict = {}
-                PressureObjectDict['Object'] = m
-                self.pressure_constraints.append(PressureObjectDict)
-            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):
-                displacement_constraint_dict = {}
-                displacement_constraint_dict['Object'] = m
-                self.displacement_constraints.append(displacement_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintTemperature"):
-                temperature_constraint_dict = {}
-                temperature_constraint_dict['Object'] = m
-                self.temperature_constraints.append(temperature_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintHeatflux"):
-                heatflux_constraint_dict = {}
-                heatflux_constraint_dict['Object'] = m
-                self.heatflux_constraints.append(heatflux_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintInitialTemperature"):
-                initialtemperature_constraint_dict = {}
-                initialtemperature_constraint_dict['Object'] = m
-                self.initialtemperature_constraints.append(initialtemperature_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintPlaneRotation"):
-                planerotation_constraint_dict = {}
-                planerotation_constraint_dict['Object'] = m
-                self.planerotation_constraints.append(planerotation_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintContact"):
-                contact_constraint_dict = {}
-                contact_constraint_dict['Object'] = m
-                self.contact_constraints.append(contact_constraint_dict)
-            elif m.isDerivedFrom("Fem::ConstraintTransform"):
-                transform_constraint_dict = {}
-                transform_constraint_dict['Object'] = m
-                self.transform_constraints.append(transform_constraint_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry1D":
-                beam_section_dict = {}
-                beam_section_dict['Object'] = m
-                self.beam_sections.append(beam_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementRotation1D":
-                beam_rotation_dict = {}
-                beam_rotation_dict['Object'] = m
-                self.beam_rotations.append(beam_rotation_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementFluid1D":
-                fluid_section_dict = {}
-                fluid_section_dict['Object'] = m
-                self.fluid_sections.append(fluid_section_dict)
-            elif hasattr(m, "Proxy") and m.Proxy.Type == "Fem::FemElementGeometry2D":
-                shell_thickness_dict = {}
-                shell_thickness_dict['Object'] = m
-                self.shell_thicknesses.append(shell_thickness_dict)
 
     def check_prerequisites(self):
         from FreeCAD import Units
