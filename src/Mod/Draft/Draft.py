@@ -6281,7 +6281,7 @@ class _Clone(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Clone")
-        obj.addProperty("App::PropertyLinkList","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this clone"))
+        obj.addProperty("App::PropertyLinkListGlobal","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this clone"))
         obj.addProperty("App::PropertyVector","Scale","Draft",QT_TRANSLATE_NOOP("App::Property","The scale factor of this clone"))
         obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","If this clones several objects, this specifies if the result is a fusion or a compound"))
         obj.Scale = Vector(1,1,1)
