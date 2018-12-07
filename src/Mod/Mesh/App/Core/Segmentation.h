@@ -110,8 +110,8 @@ class MeshExport MeshCurvatureCylindricalSegment : public MeshCurvatureSurfaceSe
 {
 public:
     MeshCurvatureCylindricalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets,
-                                    float tolMin, float tolMax, float radius)
-        : MeshCurvatureSurfaceSegment(ci, minFacets), toleranceMin(tolMin), toleranceMax(tolMax) { curvature = 1/radius;}
+                                    float tolMin, float tolMax, float curv)
+        : MeshCurvatureSurfaceSegment(ci, minFacets), toleranceMin(tolMin), toleranceMax(tolMax) { curvature = curv;}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
     virtual const char* GetType() const { return "Cylinder"; }
 
@@ -124,8 +124,8 @@ private:
 class MeshExport MeshCurvatureSphericalSegment : public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float radius)
-        : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) { curvature = 1/radius;}
+    MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float curv)
+        : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) { curvature = curv;}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
     virtual const char* GetType() const { return "Sphere"; }
 
