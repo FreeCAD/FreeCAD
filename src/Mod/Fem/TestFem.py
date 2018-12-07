@@ -68,7 +68,12 @@ unittest.TextTestRunner().run(mytest)
 ./bin/FreeCAD --run-test "TestFem"
 
 # module
+./bin/FreeCAD --run-test "femtest.testccxtools"
 ./bin/FreeCAD --run-test "femtest.testcommon"
+./bin/FreeCAD --run-test "femtest.testmesh"
+./bin/FreeCAD --run-test "femtest.testobject"
+./bin/FreeCAD --run-test "femtest.testsolverframework"
+./bin/FreeCAD --run-test "femtest.testtools"
 
 # class
 ./bin/FreeCAD --run-test "femtest.testcommon.FemCommon"
