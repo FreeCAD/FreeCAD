@@ -70,7 +70,7 @@ def get_member(analysis, t):
     return matching
 
 
-def getSingleMember(analysis, t):
+def get_single_member(analysis, t):
     objs = get_member(analysis, t)
     return objs[0] if objs else None
 

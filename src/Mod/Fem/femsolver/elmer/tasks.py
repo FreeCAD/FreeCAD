@@ -45,7 +45,7 @@ class Check(run.Check):
         self.checkEquations()
 
     def checkMeshType(self):
-        mesh = FemUtils.getSingleMember(self.analysis, "Fem::FemMeshObject")
+        mesh = FemUtils.get_single_member(self.analysis, "Fem::FemMeshObject")
         if not FemUtils.is_of_type(mesh, "Fem::FemMeshGmsh"):
             self.report.error(
                 "Unsupported type of mesh. "
