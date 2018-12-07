@@ -773,7 +773,7 @@ class Writer(object):
         self._builder.addSection(section)
 
     def _getMember(self, t):
-        return FemUtils.getMember(self.analysis, t)
+        return FemUtils.get_member(self.analysis, t)
 
     def _getSingleMember(self, t):
         return FemUtils.getSingleMember(self.analysis, t)

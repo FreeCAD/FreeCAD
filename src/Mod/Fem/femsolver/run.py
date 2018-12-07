@@ -257,7 +257,7 @@ class Machine(BaseTask):
 class Check(BaseTask):
 
     def checkMesh(self):
-        meshes = FemUtils.getMember(
+        meshes = FemUtils.get_member(
             self.analysis, "Fem::FemMeshObject")
         if len(meshes) == 0:
             self.report.error("Missing a mesh object.")
@@ -272,7 +272,7 @@ class Check(BaseTask):
         return True
 
     def checkMaterial(self):
-        matObjs = FemUtils.getMember(
+        matObjs = FemUtils.get_member(
             self.analysis, "App::MaterialObjectPython")
         if len(matObjs) == 0:
             self.report.error(
