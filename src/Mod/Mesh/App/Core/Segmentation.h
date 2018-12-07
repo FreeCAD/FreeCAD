@@ -82,6 +82,50 @@ protected:
     PlaneFit* fitter;
 };
 
+class MeshExport AbstractSurfaceFit
+{
+public:
+    AbstractSurfaceFit(){}
+    virtual ~AbstractSurfaceFit(){}
+    virtual void Initialize(const MeshGeomFacet&) = 0;
+    virtual void AddTriangle(const MeshGeomFacet&) = 0;
+    virtual bool Done() const = 0;
+    virtual float Fit() = 0;
+    virtual float GetDistanceToSurface(const Base::Vector3f&) = 0;
+};
+
+class MeshExport PlaneSurfaceFit : public AbstractSurfaceFit
+{
+public:
+    PlaneSurfaceFit();
+    ~PlaneSurfaceFit();
+    void Initialize(const MeshGeomFacet&);
+    void AddTriangle(const MeshGeomFacet&);
+    bool Done() const;
+    float Fit();
+    float GetDistanceToSurface(const Base::Vector3f&);
+
+private:
+    Base::Vector3f basepoint;
+    Base::Vector3f normal;
+    PlaneFit* fitter;
+};
+
+class MeshExport MeshDistanceGenericSurfaceSegment : public MeshDistanceSurfaceSegment
+{
+public:
+    MeshDistanceGenericSurfaceSegment(AbstractSurfaceFit*, const MeshKernel& mesh,
+                                      unsigned long minFacets, float tol);
+    virtual ~MeshDistanceGenericSurfaceSegment();
+    bool TestFacet (const MeshFacet& rclFacet) const;
+    const char* GetType() const { return "Generic"; }
+    void Initialize(unsigned long);
+    void AddFacet(const MeshFacet& rclFacet);
+
+protected:
+    AbstractSurfaceFit* fitter;
+};
+
 // --------------------------------------------------------
 
 class MeshExport MeshCurvatureSurfaceSegment : public MeshSurfaceSegment

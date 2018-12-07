@@ -101,6 +101,90 @@ void MeshDistancePlanarSegment::AddFacet(const MeshFacet& face)
 
 // --------------------------------------------------------
 
+PlaneSurfaceFit::PlaneSurfaceFit()
+    : fitter(new PlaneFit)
+{
+}
+
+PlaneSurfaceFit::~PlaneSurfaceFit()
+{
+    delete fitter;
+}
+
+void PlaneSurfaceFit::Initialize(const MeshCore::MeshGeomFacet& tria)
+{
+    fitter->Clear();
+
+    basepoint = tria.GetGravityPoint();
+    normal = tria.GetNormal();
+    fitter->AddPoint(tria._aclPoints[0]);
+    fitter->AddPoint(tria._aclPoints[1]);
+    fitter->AddPoint(tria._aclPoints[2]);
+}
+
+void PlaneSurfaceFit::AddTriangle(const MeshCore::MeshGeomFacet& tria)
+{
+    fitter->AddPoint(tria.GetGravityPoint());
+}
+
+bool PlaneSurfaceFit::Done() const
+{
+    return fitter->Done();
+}
+
+float PlaneSurfaceFit::Fit()
+{
+    return fitter->Fit();
+}
+
+float PlaneSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt)
+{
+    return fitter->GetDistanceToPlane(pnt);
+}
+
+// --------------------------------------------------------
+
+MeshDistanceGenericSurfaceSegment::MeshDistanceGenericSurfaceSegment(AbstractSurfaceFit* fit,
+                                                                     const MeshKernel& mesh,
+                                                                     unsigned long minFacets,
+                                                                     float tol)
+  : MeshDistanceSurfaceSegment(mesh, minFacets, tol)
+  , fitter(fit)
+{
+}
+
+MeshDistanceGenericSurfaceSegment::~MeshDistanceGenericSurfaceSegment()
+{
+    delete fitter;
+}
+
+void MeshDistanceGenericSurfaceSegment::Initialize(unsigned long index)
+{
+    MeshGeomFacet triangle = kernel.GetFacet(index);
+    fitter->Initialize(triangle);
+}
+
+bool MeshDistanceGenericSurfaceSegment::TestFacet (const MeshFacet& face) const
+{
+    if (!fitter->Done())
+        fitter->Fit();
+    MeshGeomFacet triangle = kernel.GetFacet(face);
+    for (int i=0; i<3; i++) {
+        if (fabs(fitter->GetDistanceToSurface(triangle._aclPoints[i])) > tolerance)
+            return false;
+    }
+
+    return true;
+}
+
+void MeshDistanceGenericSurfaceSegment::AddFacet(const MeshFacet& face)
+{
+    MeshGeomFacet triangle = kernel.GetFacet(face);
+    fitter->AddTriangle(triangle);
+}
+
+// --------------------------------------------------------
+
 bool MeshCurvaturePlanarSegment::TestFacet (const MeshFacet &rclFacet) const
 {
     for (int i=0; i<3; i++) {

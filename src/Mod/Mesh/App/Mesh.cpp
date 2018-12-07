@@ -1710,8 +1710,10 @@ std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::GeometryType ty
     std::unique_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
     switch (type) {
     case PLANE:
-        surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
-        break;
+        //surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
+        surf.reset(new MeshCore::MeshDistanceGenericSurfaceSegment(new MeshCore::PlaneSurfaceFit,
+                   this->_kernel, minFacets, dev));
+    break;
     // todo!
     case CYLINDER:
         break;
