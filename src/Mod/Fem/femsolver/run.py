@@ -323,7 +323,7 @@ class _DocObserver(object):
 
     def __init__(self):
         self._saved = {}
-        for doc in App.listDocuments().itervalues():
+        for doc in iter(App.listDocuments().values()):
             for obj in doc.Objects:
                 if obj.isDerivedFrom("Fem::FemAnalysis"):
                     self._saved[obj] = obj.Group
@@ -375,7 +375,7 @@ class _DocObserver(object):
 
     def _checkSolver(self, obj):
         analysis = FemUtils.findAnalysisOfMember(obj)
-        for m in _machines.itervalues():
+        for m in iter(_machines.values()):
             if analysis == m.analysis and obj == m.solver:
                 m.reset()
 
@@ -404,7 +404,7 @@ class _DocObserver(object):
         return delta
 
     def _resetAll(self, analysis):
-        for m in _machines.itervalues():
+        for m in iter(_machines.values()):
             if analysis == m.analysis:
                 m.reset()
 
