@@ -776,7 +776,7 @@ class Writer(object):
         return FemUtils.get_member(self.analysis, t)
 
     def _getSingleMember(self, t):
-        return FemUtils.getSingleMember(self.analysis, t)
+        return FemUtils.get_single_member(self.analysis, t)
 
 
 class WriteError(Exception):

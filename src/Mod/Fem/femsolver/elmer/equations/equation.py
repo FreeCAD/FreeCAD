@@ -76,7 +76,7 @@ class _TaskPanel(object):
         else:
             self.form = [self.refWidget, propWidget]
         analysis = FemUtils.findAnalysisOfMember(obj)
-        self._mesh = FemUtils.getSingleMember(analysis, "Fem::FemMeshObject")
+        self._mesh = FemUtils.get_single_member(analysis, "Fem::FemMeshObject")
         self._part = self._mesh.Part if self._mesh is not None else None
         self._partVisible = None
         self._meshVisible = None
