@@ -75,6 +75,19 @@ def get_single_member(analysis, t):
     return objs[0] if objs else None
 
 
+# collect analysis members used in CalculiX and Z88
+def get_several_member(analysis, t):
+    # if no member is found, an empty list is returned
+    objs = get_member(analysis, t)
+    members = []
+    for m in objs:
+        obj_dict = {}
+        obj_dict['Object'] = m
+        obj_dict['RefShapeType'] = get_refshape_type(m)
+        members.append(obj_dict)
+    return members
+
+
 # typeID and object type defs
 def type_of_obj(obj):
     '''returns objects TypeId (C++ objects) or Proxy.Type (Python objects)'''
