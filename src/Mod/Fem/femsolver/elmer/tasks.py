@@ -84,7 +84,7 @@ class Prepare(run.Prepare):
 
     def checkHandled(self, w):
         handled = w.getHandledConstraints()
-        allConstraints = FemUtils.getMember(self.analysis, "Fem::Constraint")
+        allConstraints = FemUtils.get_member(self.analysis, "Fem::Constraint")
         for obj in set(allConstraints) - handled:
             self.report.warning("Ignored constraint %s." % obj.Label)
 

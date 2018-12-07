@@ -60,19 +60,18 @@ def _searchGroups(member, objs):
     return False
 
 
-# collect analyis members used in Elmer
-def getMember(analysis, t):
+def get_member(analysis, t):
     if analysis is None:
         raise ValueError("Analysis must not be None")
     matching = []
     for m in analysis.Group:
-        if is_derived_from(m, t):
+        if is_derived_from(m, t):  # since is _derived_from is used the father could be used to test too (ex. 'Fem::FemMeshObject')
             matching.append(m)
     return matching
 
 
 def getSingleMember(analysis, t):
-    objs = getMember(analysis, t)
+    objs = get_member(analysis, t)
     return objs[0] if objs else None
 
 
