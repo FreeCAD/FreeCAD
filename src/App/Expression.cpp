@@ -3255,6 +3255,8 @@ Py::Object CallableExpression::evaluate(PyObject *pyargs, PyObject *pykwds) {
             PY_THROW("Function " << FUNC_NAME << " does accept any arg");
         }
         for(i=0;i<seq.size();++i) {
+            if(i>=names.size())
+                PY_THROW("Too many args when calling " << FUNC_NAME);
             auto &name = names[i];
             if(name[0] != '*') {
                 *frame.getVar(this,name,BindLocalOnly) = seq[i];
