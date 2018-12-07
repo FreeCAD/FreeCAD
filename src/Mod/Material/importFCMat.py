@@ -113,7 +113,7 @@ def write(filename, dictionary):
             user = contents[-1]
         for p in key[1]:
             contents[-1][p] = ""
-    for k, i in dictionary.iteritems():
+    for k, i in dictionary.items():
         found = False
         for group in contents:
             if not found:
@@ -145,7 +145,7 @@ def write(filename, dictionary):
             if len(s) > 1:
                 # if the section has no contents, we don't write it
                 f.write("[" + s["keyname"] + "]\n")
-                for k, i in s.iteritems():
+                for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name even if empty
                         f.write(k + "=" + i.encode('utf-8') + "\n")
