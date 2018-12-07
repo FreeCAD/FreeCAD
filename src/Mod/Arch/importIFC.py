@@ -814,7 +814,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         else:
                             # pre-0.18 objects, only support a small subset of types
                             r = ptype[3:]
-                            tr = dict((v,k) for k, v in translationtable.iteritems())
+                            tr = dict((v,k) for k, v in translationtable.items())
                             if r in tr.keys():
                                 r = tr[r]
                             # remove the "StandardCase"
