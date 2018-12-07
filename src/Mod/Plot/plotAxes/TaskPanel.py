@@ -448,7 +448,7 @@ class TaskPanel:
             # need store it in order to regenerate later
             x = axes.get_xlabel()
             y = axes.get_ylabel()
-            for loc, spine in axes.spines.iteritems():
+            for loc, spine in axes.spines.items():
                 if loc in ['bottom', 'top']:
                     spine.set_position(('outward', form.xOffset.value()))
                 if loc in ['left', 'right']:

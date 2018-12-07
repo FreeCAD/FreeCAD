@@ -72,7 +72,7 @@ class Plot(object):
             ax.yaxis.set_ticks_position('right')
             ax.yaxis.set_label_position('right')
             # And X axis can be placed at bottom
-            for loc, spine in ax.spines.iteritems():
+            for loc, spine in ax.spines.items():
                 if loc in ['bottom', 'top']:
                     spine.set_position(('outward', (i + 1) * 35))
             Plot.grid(True)
@@ -154,7 +154,7 @@ class Plot(object):
             ax.yaxis.set_ticks_position('right')
             ax.yaxis.set_label_position('right')
             # And X axis can be placed at bottom
-            for loc, spine in ax.spines.iteritems():
+            for loc, spine in ax.spines.items():
                 if loc in ['bottom', 'top']:
                     spine.set_position(('outward', (i + 1) * 35))
             Plot.grid(True)
@@ -236,7 +236,7 @@ class Plot(object):
             ax.yaxis.set_ticks_position('right')
             ax.yaxis.set_label_position('right')
             # And X axis can be placed at bottom
-            for loc, spine in ax.spines.iteritems():
+            for loc, spine in ax.spines.items():
                 if loc in ['bottom', 'top']:
                     spine.set_position(('outward', (i + 1) * 35))
             Plot.grid(True)

@@ -3192,7 +3192,7 @@ def parseAndGenerate(outfileName, subclassFilename, prefix, \
     root = dh.getRoot()
     root.annotate()
 ##    print 'ElementDict:', ElementDict
-##    for name, obj in ElementDict.iteritems():
+##    for name, obj in ElementDict.items():
 ##        print '    ', name, obj.getName(), obj.type
 ##    print '=' * 50
 ##    root.show(sys.stdout, 0)
