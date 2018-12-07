@@ -262,7 +262,7 @@ class Section(object):
     def __iter__(self):
         return self._attrs.items()
 
-    def iterkeys(self):
+    def keys(self):
         return self._attrs.keys()
 
     def __contains__(self, item):
