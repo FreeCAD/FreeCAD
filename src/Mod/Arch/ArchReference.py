@@ -113,10 +113,11 @@ class ArchReference:
 
     def execute(self,obj):
 
-        if obj.File and obj.Part and self.reload:
+        filename = self.getFile(obj)
+        if filename and obj.Part and self.reload:
             self.parts = self.getPartsList(obj)
             if self.parts:
-                zdoc = zipfile.ZipFile(obj.File)
+                zdoc = zipfile.ZipFile(filename)
                 if zdoc:
                     if obj.Part in self.parts:
                         if self.parts[obj.Part][1] in zdoc.namelist():
