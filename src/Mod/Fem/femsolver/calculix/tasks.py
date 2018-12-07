@@ -120,7 +120,7 @@ class Results(run.Results):
         self.load_results_ccxdat()
 
     def purge_results(self):
-        for m in FemUtils.getMember(self.analysis, "Fem::FemResultObject"):
+        for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
             if FemUtils.is_of_type(m.Mesh, "Fem::FemMeshResult"):
                 self.analysis.Document.removeObject(m.Mesh.Name)
             self.analysis.Document.removeObject(m.Name)
@@ -147,7 +147,7 @@ class Results(run.Results):
             raise Exception(
                 'FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
-            for m in FemUtils.getMember(self.analysis, "Fem::FemResultObject"):
+            for m in FemUtils.get_member(self.analysis, "Fem::FemResultObject"):
                 if m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
