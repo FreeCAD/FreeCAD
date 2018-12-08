@@ -90,6 +90,14 @@ do{\
 #define appendPath(_path, _node) (_path)->append(_node)
 #endif
 
+// Not using removeAllChildren() to work around of Coind3D bug
+// https://bitbucket.org/Coin3D/coin/pull-requests/119/fix-sochildlist-auditing/diff
+#define CLEAR_CHILDREN(_node) do {\
+    int count = _node->getNumChildren();\
+    for(;count>0;--count)\
+        _node->removeChild(count-1);\
+}while(0)
+
 ////////////////////////////////////////////////////////////////////////////
 class Gui::LinkInfo {
 
@@ -201,19 +209,19 @@ public:
         }
         for(auto &node : pcSnapshots) {
             if(node) {
-                node->removeAllChildren();
+                CLEAR_CHILDREN(node);
                 node.reset();
             }
         }
         for(auto &node : pcSwitches) {
             if(node) {
-                node->removeAllChildren();
+                CLEAR_CHILDREN(node);
                 node.reset();
             }
         }
         pcLinkedSwitch.reset();
         if(pcChildGroup) {
-            pcChildGroup->removeAllChildren();
+            CLEAR_CHILDREN(pcChildGroup);
             pcChildGroup.reset();
         }
         pcLinked = 0;
@@ -322,9 +330,9 @@ public:
 
         pcLinkedSwitch.reset();
 
-        pcSnapshot->removeAllChildren();
+        CLEAR_CHILDREN(pcSnapshot);
         pcModeSwitch->whichChild = -1;
-        pcModeSwitch->removeAllChildren();
+        CLEAR_CHILDREN(pcModeSwitch);
 
         auto childRoot = pcLinked->getChildRoot();
 
@@ -372,7 +380,7 @@ public:
             if(!pcChildGroup)
                 pcChildGroup = new SoGroup;
             else
-                pcChildGroup->removeAllChildren();
+                CLEAR_CHILDREN(pcChildGroup);
 
             NodeMap nodeMap;
 
@@ -687,7 +695,7 @@ public:
             linkInfo->remove(this);
             linkInfo.reset();
         }
-        pcNode->removeAllChildren();
+        CLEAR_CHILDREN(pcNode);
         pcNode->addChild(pcTransform);
     }
 
@@ -741,7 +749,7 @@ public:
             linkInfo->remove(this);
             linkInfo.reset();
         }
-        pcRoot->removeAllChildren();
+        CLEAR_CHILDREN(pcRoot);
     }
 
     void link(App::DocumentObject *obj) {
@@ -1023,7 +1031,7 @@ void LinkView::setSize(int _size) {
 }
 
 void LinkView::resetRoot() {
-    pcLinkRoot->removeAllChildren();
+    CLEAR_CHILDREN(pcLinkRoot);
     if(pcTransform)
         pcLinkRoot->addChild(pcTransform);
     if(pcShapeHints)
@@ -1227,7 +1235,7 @@ void LinkView::updateLink() {
     else{
         SoSelectionElementAction action(SoSelectionElementAction::None,true);
         action.apply(linkedRoot);
-        linkedRoot->removeAllChildren();
+        CLEAR_CHILDREN(linkedRoot);
     }
 
     SoTempPath path(10);
