@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
+# include <cstdlib>
 #endif
 
 #include "Approximation.h"
@@ -793,6 +794,120 @@ void SurfaceFit::GetCoefficients(double& a,double& b,double& c,double& d,double&
     d = _fCoeff[1];
     e = _fCoeff[2];
     f = _fCoeff[0];
+}
+
+// -------------------------------------------------------------------------------
+
+CylinderFit::CylinderFit()
+  : _vBase(0,0,0)
+  , _vAxis(0,0,1)
+  , _fRadius(0)
+{
+}
+
+CylinderFit::~CylinderFit()
+{
+}
+
+float CylinderFit::Fit()
+{
+    if (CountPoints() < 7)
+        return FLOAT_MAX;
+    _bIsFitted = true;
+
+    // TODO
+
+    _fLastResult = 0;
+    return _fLastResult;
+}
+
+float CylinderFit::GetRadius() const
+{
+    return _fRadius;
+}
+
+Base::Vector3f CylinderFit::GetBase() const
+{
+    if (_bIsFitted)
+        return _vBase;
+    else
+        return Base::Vector3f();
+}
+
+Base::Vector3f CylinderFit::GetAxis() const
+{
+    if (_bIsFitted)
+        return _vAxis;
+    else
+        return Base::Vector3f();
+}
+
+float CylinderFit::GetDistanceToCylinder(const Base::Vector3f &rcPoint) const
+{
+    float fResult = FLOAT_MAX;
+    if (_bIsFitted)
+        fResult = rcPoint.DistanceToLine(_vBase, _vAxis) - _fRadius;
+    return fResult;
+}
+
+float CylinderFit::GetStdDeviation() const
+{
+    // Mean: M=(1/N)*SUM Xi
+    // Variance: VAR=(N/N-3)*[(1/N)*SUM(Xi^2)-M^2]
+    // Standard deviation: SD=SQRT(VAR)
+    // Standard error of the mean: SE=SD/SQRT(N)
+    if (!_bIsFitted)
+        return FLOAT_MAX;
+
+    float fSumXi = 0.0f, fSumXi2 = 0.0f,
+          fMean  = 0.0f, fDist   = 0.0f;
+
+    float ulPtCt = (float)CountPoints();
+    std::list< Base::Vector3f >::const_iterator cIt;
+
+    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
+        fDist = GetDistanceToCylinder( *cIt );
+        fSumXi  += fDist;
+        fSumXi2 += ( fDist * fDist );
+    }
+
+    fMean = (1.0f / ulPtCt) * fSumXi;
+    return (float)sqrt((ulPtCt / (ulPtCt - 3.0)) * ((1.0 / ulPtCt) * fSumXi2 - fMean * fMean));
+}
+
+void CylinderFit::ProjectToCylinder()
+{
+    Base::Vector3f cBase(GetBase());
+    Base::Vector3f cAxis(GetAxis());
+
+    for (std::list< Base::Vector3f >::iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
+        Base::Vector3f& cPnt = *it;
+        if (cPnt.DistanceToLine(cBase, cAxis) > 0) {
+            Base::Vector3f proj;
+            cBase.ProjectToPlane(cPnt, cAxis, proj);
+            Base::Vector3f diff = cPnt - proj;
+            diff.Normalize();
+            cPnt = proj + diff * _fRadius;
+        }
+        else {
+            // Point is on the cylinder axis, so it can be moved in
+            // any direction perpendicular to the cylinder axis
+            Base::Vector3f cMov(cPnt);
+            do {
+                float x = ((float)rand() / (float)RAND_MAX);
+                float y = ((float)rand() / (float)RAND_MAX);
+                float z = ((float)rand() / (float)RAND_MAX);
+                cMov.Move(x,y,z);
+            }
+            while (cMov.DistanceToLine(cBase, cAxis) == 0);
+
+            Base::Vector3f proj;
+            cMov.ProjectToPlane(cPnt, cAxis, proj);
+            Base::Vector3f diff = cPnt - proj;
+            diff.Normalize();
+            cPnt = proj + diff * _fRadius;
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------
