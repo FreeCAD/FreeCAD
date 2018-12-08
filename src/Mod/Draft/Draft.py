@@ -6125,11 +6125,11 @@ class _PathArray(_DraftObject):
             theta = 0.0
             phi = 0.0
             FreeCAD.Console.PrintWarning("Draft PathArray.orientShape - Path normal is Null. Cannot align.\n")
-        elif b == z:                                                 # 2) binormal is same as z
-            psi = math.degrees(DraftVecUtils.angle(x,t,z))           #    align shape x to tangent
+        elif abs(b.dot(z)) == 1.0:                                    # 2) binormal is || z
+            psi = math.degrees(DraftVecUtils.angle(x,t,z))            #    align shape to tangent only
             theta = 0.0
             phi = 0.0
-            FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Aligned to tangent only (b == z).\n")
+            FreeCAD.Console.PrintWarning("Draft PathArray.orientShape - Gimbal lock. Infinite lnodes. Change Path or Base.\n")
         else:                                                        # regular case
             psi = math.degrees(DraftVecUtils.angle(x,lnodes,z))
             theta = math.degrees(DraftVecUtils.angle(z,b,lnodes))
