@@ -280,7 +280,7 @@ QColor QGISectionLine::getSectionColor()
 Qt::PenStyle QGISectionLine::getSectionStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     Qt::PenStyle sectStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("SectionLine", 2));
     return sectStyle;
 }
