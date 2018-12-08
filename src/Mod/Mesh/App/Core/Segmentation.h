@@ -31,6 +31,7 @@
 namespace MeshCore {
 
 class PlaneFit;
+class CylinderFit;
 class MeshFacet;
 typedef std::vector<unsigned long> MeshSegment;
 
@@ -43,6 +44,7 @@ public:
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
     virtual const char* GetType() const = 0;
     virtual void Initialize(unsigned long);
+    virtual bool TestInitialFacet(unsigned long) const;
     virtual void AddFacet(const MeshFacet& rclFacet);
     void AddSegment(const std::vector<unsigned long>&);
     const std::vector<MeshSegment>& GetSegments() const { return segments; }
@@ -88,10 +90,11 @@ public:
     AbstractSurfaceFit(){}
     virtual ~AbstractSurfaceFit(){}
     virtual void Initialize(const MeshGeomFacet&) = 0;
+    virtual bool TestTriangle(const MeshGeomFacet&) const = 0;
     virtual void AddTriangle(const MeshGeomFacet&) = 0;
     virtual bool Done() const = 0;
     virtual float Fit() = 0;
-    virtual float GetDistanceToSurface(const Base::Vector3f&) = 0;
+    virtual float GetDistanceToSurface(const Base::Vector3f&) const = 0;
 };
 
 class MeshExport PlaneSurfaceFit : public AbstractSurfaceFit
@@ -100,15 +103,54 @@ public:
     PlaneSurfaceFit();
     ~PlaneSurfaceFit();
     void Initialize(const MeshGeomFacet&);
+    bool TestTriangle(const MeshGeomFacet&) const;
     void AddTriangle(const MeshGeomFacet&);
     bool Done() const;
     float Fit();
-    float GetDistanceToSurface(const Base::Vector3f&);
+    float GetDistanceToSurface(const Base::Vector3f&) const;
 
 private:
     Base::Vector3f basepoint;
     Base::Vector3f normal;
     PlaneFit* fitter;
+};
+
+class MeshExport CylinderSurfaceFit : public AbstractSurfaceFit
+{
+public:
+    CylinderSurfaceFit();
+    CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& a, float r);
+    ~CylinderSurfaceFit();
+    void Initialize(const MeshGeomFacet&);
+    bool TestTriangle(const MeshGeomFacet&) const;
+    void AddTriangle(const MeshGeomFacet&);
+    bool Done() const;
+    float Fit();
+    float GetDistanceToSurface(const Base::Vector3f&) const;
+
+private:
+    Base::Vector3f basepoint;
+    Base::Vector3f axis;
+    float radius;
+    CylinderFit* fitter;
+};
+
+class MeshExport SphereSurfaceFit : public AbstractSurfaceFit
+{
+public:
+    SphereSurfaceFit();
+    SphereSurfaceFit(const Base::Vector3f& c, float r);
+    ~SphereSurfaceFit();
+    void Initialize(const MeshGeomFacet&);
+    bool TestTriangle(const MeshGeomFacet&) const;
+    void AddTriangle(const MeshGeomFacet&);
+    bool Done() const;
+    float Fit();
+    float GetDistanceToSurface(const Base::Vector3f&) const;
+
+private:
+    Base::Vector3f center;
+    float radius;
 };
 
 class MeshExport MeshDistanceGenericSurfaceSegment : public MeshDistanceSurfaceSegment
@@ -120,6 +162,7 @@ public:
     bool TestFacet (const MeshFacet& rclFacet) const;
     const char* GetType() const { return "Generic"; }
     void Initialize(unsigned long);
+    bool TestInitialFacet(unsigned long) const;
     void AddFacet(const MeshFacet& rclFacet);
 
 protected:
