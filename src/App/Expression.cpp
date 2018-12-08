@@ -2433,12 +2433,17 @@ App::any FunctionExpression::evalToAny(const Expression *owner, int f, const Exp
                 App::any_cast<std::string>(value).c_str(),pyobj);
         if(f == HAS_VAR)
             return App::any(found);
+#if 1
+        // getvar() may pose as a security problem. Disable it for now.
+        __EXPR_THROW(Base::NotImplementedError, "getvar() is disabled.", owner);
+#else
         if(!found) {
             if(args.size()==2)
                 return args[1]->getValueAsAny();
             _EXPR_THROW("Variable not found.",owner);
         }
         return pyObjectToAny(pyobj);
+#endif
     } default:
         break;
     } 
