@@ -843,6 +843,7 @@ protected:
     Statement(const App::DocumentObject *_owner):SimpleStatement(_owner) {}
 
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const;
+    virtual ExpressionPtr _copy() const;
 };
 
 /////////////////////////////////////////////////////////////

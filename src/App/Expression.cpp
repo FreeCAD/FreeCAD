@@ -1033,6 +1033,14 @@ ExpressionPtr Expression::eval() const {
     return expressionFromAny(owner,getValueAsAny());
 }
 
+bool Expression::isSame(const Expression &other) const {
+    if(&other == this)
+        return true;
+    if(getTypeId()!=other.getTypeId())
+        return false;
+    return toString(true,true) == other.toString(true,true);
+}
+
 std::string Expression::toString(bool persistent, bool checkPriority, int indent) const {
     std::ostringstream ss;
     toString(ss,persistent,checkPriority,indent);
@@ -5183,6 +5191,12 @@ void Statement::_toString(std::ostream &ss, bool persistent, int indent) const {
         printIndent(ss,indent);
         ss << exprs[i]->toStr(persistent,false,indent);
     }
+}
+
+ExpressionPtr Statement::_copy() const {
+    _EXPR_NEW(res,Statement,owner);
+    copy_vector(res->exprs,exprs);
+    return _res;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

@@ -159,6 +159,8 @@ public:
 
     ExpressionPtr eval() const;
 
+    bool isSame(const Expression &other) const;
+
     std::string toString(bool persistent=false, bool checkPriority=false, int indent=0) const;
 
     void toString(std::ostream &ss, bool persistent, bool checkPriority, int indent) const;
