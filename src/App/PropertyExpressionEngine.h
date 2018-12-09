@@ -44,8 +44,15 @@ class DocumentObjectExecReturn;
 class ObjectIdentifier;
 class Expression;
 
+class AppExport PropertyExpressionContainer : public App::PropertyXLinkContainer
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const = 0;
+    virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) = 0;
+};
 
-class AppExport PropertyExpressionEngine : public App::PropertyXLinkContainer, 
+class AppExport PropertyExpressionEngine : public App::PropertyExpressionContainer, 
                                            private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
 {
     TYPESYSTEM_HEADER();
@@ -91,6 +98,9 @@ public:
 
     unsigned int getMemSize (void) const;
 
+    virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
+    virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
+
     void setValue() { } // Dummy
 
     Property *Copy(void) const;
@@ -125,8 +135,6 @@ public:
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 
     bool depsAreTouched() const;
-
-    boost::unordered_map<const App::ObjectIdentifier, const ExpressionInfo> getExpressions() const;
 
     /* Expression validator */
     void setValidator(ValidatorFunc f) { validator = f; }

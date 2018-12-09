@@ -37,7 +37,7 @@ class Sheet;
 class PropertySheet;
 class SheetObserver;
 
-class SpreadsheetExport PropertySheet : public App::PropertyXLinkContainer
+class SpreadsheetExport PropertySheet : public App::PropertyExpressionContainer
                                       , private App::AtomicPropertyChangeInterface<PropertySheet> {
     TYPESYSTEM_HEADER();
 public:
@@ -45,6 +45,9 @@ public:
     PropertySheet(Sheet * _owner = 0);
 
     ~PropertySheet();
+
+    virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
+    virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
 
     virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) override;
     virtual bool referenceChanged() const override;

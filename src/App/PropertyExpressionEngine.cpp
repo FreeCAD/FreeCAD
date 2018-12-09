@@ -42,7 +42,9 @@ using namespace App;
 using namespace Base;
 using namespace boost;
 
-TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyXLinkContainer);
+TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyExpressionContainer , App::PropertyXLinkContainer);
+
+TYPESYSTEM_SOURCE(App::PropertyExpressionEngine , App::PropertyExpressionContainer);
 
 /**
  * @brief Construct a new PropertyExpressionEngine object.
@@ -542,24 +544,6 @@ bool PropertyExpressionEngine::depsAreTouched() const
 }
 
 /**
- * @brief Get a map of all registered expressions.
- * @return Map of expressions.
- */
-
-boost::unordered_map<const ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> PropertyExpressionEngine::getExpressions() const
-{
-    boost::unordered_map<const ObjectIdentifier, const ExpressionInfo> result;
-
-    ExpressionMap::const_iterator i = expressions.begin();
-    while (i != expressions.end()) {
-        result.insert(std::make_pair(i->first, i->second));
-        ++i;
-    }
-
-    return result;
-}
-
-/**
  * @brief Validate the given path and expression.
  * @param path Object Identifier for expression.
  * @param expr Expression tree.
@@ -796,4 +780,21 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
         return 0;
     engine->validator = validator;
     return engine.release();
+}
+
+std::map<App::ObjectIdentifier, const App::Expression*> 
+PropertyExpressionEngine::getExpressions() const 
+{
+    std::map<App::ObjectIdentifier, const Expression*> res;
+    for(auto &v : expressions) 
+        res[v.first] = v.second.expression.get();
+    return res;
+}
+
+void PropertyExpressionEngine::setExpressions(
+        std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs)
+{
+    AtomicPropertyChange signaller(*this);
+    for(auto &v : exprs)
+        setValue(v.first,std::move(v.second));
 }

@@ -1369,3 +1369,31 @@ Property *PropertySheet::CopyOnLabelChange(App::DocumentObject *obj,
         copy->data[change.first]->setExpression(std::move(change.second));
     return copy.release();
 }
+
+std::map<App::ObjectIdentifier, const App::Expression*> PropertySheet::getExpressions() const {
+    std::map<App::ObjectIdentifier, const Expression*> res;
+    for(auto &d : data) {
+        if(d.second->expression)
+            res[ObjectIdentifier(owner,d.first.toString())] = d.second->expression.get();
+    }
+    return res;
+}
+
+void PropertySheet::setExpressions(
+        std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) 
+{
+    AtomicPropertyChange signaller(*this);
+    for(auto &v : exprs) {
+        CellAddress addr(v.first.getPropertyName().c_str());
+        auto &cell = data[addr];
+        if(!cell) {
+            if(!v.second)
+                continue;
+            cell = new Cell(addr,this);
+        }
+        if(!v.second)
+            clear(addr);
+        else
+            cell->setExpression(std::move(v.second));
+    }
+}

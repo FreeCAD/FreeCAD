@@ -37,11 +37,14 @@
 #endif
 #include <algorithm>
 
+#include <boost/regex.hpp>
+
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/Console.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
@@ -70,6 +73,8 @@
 #include "NavigationStyle.h"
 #include "GraphvizView.h"
 #include "DlgObjectSelection.h"
+
+FC_LOG_LEVEL_INIT("Command", true,true);
 
 using namespace Gui;
 
@@ -1490,6 +1495,203 @@ bool StdCmdEdit::isActive(void)
     return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != 0);
 }
 
+//======================================================================
+// StdCmdExpression
+//===========================================================================
+static const QLatin1String _ExprMime("application/x-fc-expressions");
+class StdCmdExpression : public Gui::Command
+{
+public:
+    StdCmdExpression() : Command("Std_Expressions")
+    {
+        sGroup        = QT_TR_NOOP("Edit");
+        sMenuText     = QT_TR_NOOP("Expression actions");
+        sToolTipText  = QT_TR_NOOP("Expression actions");
+        sWhatsThis    = "Std_Expressions";
+        sStatusTip    = QT_TR_NOOP("Expression actions");
+        eType         = ForEdit;
+    }
+
+    virtual const char* className() const {return "StdCmdExpression";}
+protected:
+
+    virtual void activated(int iMsg) {
+        std::map<App::Document*, std::set<App::DocumentObject*> > objs;
+        switch(iMsg) {
+        case 0:
+            for(auto &sel : Selection().getCompleteSelection())
+                objs[sel.pObject->getDocument()].insert(sel.pObject);
+            break;
+        case 1:
+            if(App::GetApplication().getActiveDocument()) {
+                auto doc = App::GetApplication().getActiveDocument();
+                auto array = doc->getObjects();
+                auto &set = objs[doc];
+                set.insert(array.begin(),array.end());
+            }
+            break;
+        case 2:
+            for(auto doc : App::GetApplication().getDocuments()) {
+                auto &set = objs[doc];
+                auto array = doc->getObjects();
+                set.insert(array.begin(),array.end());
+            }
+            break;
+        case 3:
+            pasteExpressions();
+            break;
+        }
+        copyExpressions(objs);
+    }
+
+    virtual Gui::Action * createAction(void) {
+        ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+        pcAction->setDropDownMenu(true);
+        applyCommandData(this->className(), pcAction);
+
+        pcActionCopySel = pcAction->addAction(QObject::tr("Copy selected"));
+        pcActionCopyActive = pcAction->addAction(QObject::tr("Copy active document"));
+        pcActionCopyAll = pcAction->addAction(QObject::tr("Copy all documents"));
+        pcActionPaste = pcAction->addAction(QObject::tr("Paste"));
+
+        return pcAction;
+    }
+
+    void copyExpressions(const std::map<App::Document*, std::set<App::DocumentObject*> > &objs) {
+        std::ostringstream ss;
+        std::vector<App::Property*> props;
+        for(auto &v : objs) {
+            for(auto obj : v.second) {
+                props.clear();
+                obj->getPropertyList(props);
+                for(auto prop : props) {
+                    auto p = dynamic_cast<App::PropertyExpressionContainer*>(prop);
+                    if(!p) continue;
+                    for(auto &v : p->getExpressions()) {
+                        ss << "##@@ " << v.first.toString() << ' '
+                           << obj->getFullName() << '.' << p->getName()
+                           << " (" << obj->Label.getValue() << ')' << std::endl
+                           << v.second->toStr(true,true) << std::endl << std::endl;
+                    }
+                }
+            }
+        }
+        QMimeData *mime = new QMimeData();
+        mime->setData(_ExprMime,QByteArray());
+        mime->setText(QString::fromUtf8(ss.str().c_str()));
+        QApplication::clipboard()->setMimeData(mime);
+    }
+
+    void pasteExpressions() {
+        const QMimeData* mimeData = QApplication::clipboard()->mimeData();
+        if(!mimeData || !mimeData->hasFormat(_ExprMime) || !mimeData->hasText())
+            return;
+        QStringList list = mimeData->text().split(
+                                QLatin1String("##@@ "), QString::SkipEmptyParts);
+
+        std::map<App::Document*, std::map<App::PropertyExpressionContainer*, 
+            std::map<App::ObjectIdentifier, App::ExpressionPtr> > > exprs;
+
+        bool failed = false;
+
+        for(auto &entry : list) {
+            auto idx = entry.indexOf(QLatin1Char('\n'));
+            if(idx < 0)
+                continue;
+            static boost::regex e("^([^ ]+) (\\w+)#(\\w+)\\.(\\w+) .*");
+            std::string txt = QStringRef(&entry,0,idx).toUtf8().constData();
+            boost::smatch sm;
+            if(!boost::regex_match(txt,sm,e)) {
+                FC_WARN("Invalid expression header: " << txt);
+                continue;
+            }
+
+            auto pathName = sm.str(1);
+            auto docName = sm.str(2);
+            auto objName = sm.str(3);
+            auto propName = sm.str(4);
+
+            App::Document *doc = App::GetApplication().getDocument(docName.c_str());
+            if(!doc) {
+                FC_WARN("Cannot find document '" << docName << "'");
+                continue;
+            }
+
+            auto obj = doc->getObject(objName.c_str());
+            if(!obj) {
+                FC_WARN("Cannot find object '" << docName << '#' << objName << "'");
+                continue;
+            }
+
+            auto prop = dynamic_cast<App::PropertyExpressionContainer*>(
+                    obj->getPropertyByName(propName.c_str()));
+            if(!prop) {
+                FC_WARN("Invalid property '" << docName << '#' << objName << '.' << propName << "'");
+                continue;
+            }
+
+            try {
+                exprs[doc][prop][App::ObjectIdentifier::parse(obj,pathName)] = App::Expression::parse(obj, 
+                        QStringRef(&entry,idx+1,entry.size()-idx-1).toUtf8().constData(),0,true);
+            } catch(Base::Exception &e) {
+                FC_ERR(e.what() << std::endl << txt);
+                failed = true;
+            }
+        }
+        if(failed) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Expression error"),
+                QObject::tr("Failed to parse some of the expressions.\n"
+                            "Please check the Report View for more details."));
+            return;
+        }
+
+        App::GetApplication().setActiveTransaction("Paste expressions");
+        try {
+            for(auto &v : exprs) {
+                for(auto &v2 : v.second) {
+                    auto &expressions = v2.second;
+                    auto old = v2.first->getExpressions();
+                    for(auto it=expressions.begin(),itNext=it;it!=expressions.end();it=itNext) {
+                        ++itNext;
+                        auto iter = old.find(it->first);
+                        if(iter != old.end() && it->second->isSame(*iter->second))
+                            expressions.erase(it);
+                    }
+                    if(expressions.size())
+                        v2.first->setExpressions(std::move(expressions));
+                }
+            }
+            App::GetApplication().closeActiveTransaction(false);
+        } catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
+                QString::fromLatin1(e.what()));
+            App::GetApplication().closeActiveTransaction(true);
+            e.ReportException();
+        }
+    }
+
+    bool isActive() {
+        if(!App::GetApplication().getActiveDocument()) {
+            pcActionCopyAll->setEnabled(false);
+            pcActionCopySel->setEnabled(false);
+            pcActionCopyActive->setEnabled(false);
+            pcActionPaste->setEnabled(false);
+            return true;
+        }
+        pcActionCopyActive->setEnabled(true);
+        pcActionCopyAll->setEnabled(true);
+        pcActionCopySel->setEnabled(Selection().hasSelection());
+
+        const QMimeData* mimeData = QApplication::clipboard()->mimeData();
+        pcActionPaste->setEnabled(mimeData && mimeData->hasFormat(_ExprMime));
+        return true;
+    }
+
+    QAction *pcActionCopyAll;
+    QAction *pcActionCopySel;
+    QAction *pcActionCopyActive;
+    QAction *pcActionPaste;
+};
 
 namespace Gui {
 
@@ -1529,6 +1731,7 @@ void CreateDocCommands(void)
     rcCmdMgr.addCommand(new StdCmdTransformManip());
     rcCmdMgr.addCommand(new StdCmdAlignment());
     rcCmdMgr.addCommand(new StdCmdEdit());
+    rcCmdMgr.addCommand(new StdCmdExpression());
 }
 
 } // namespace Gui

@@ -488,6 +488,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     Gui::Application::Instance->setupContextMenu("Tree", &view);
 
     Workbench::createLinkMenu(&view);
+    view << "Std_Expressions";
 
     QMenu contextMenu;
 

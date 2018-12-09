@@ -1608,6 +1608,7 @@ void Application::initTypes(void)
     App ::PropertyFile              ::init();
     App ::PropertyFileIncluded      ::init();
     App ::PropertyPythonObject      ::init();
+    App ::PropertyExpressionContainer  ::init();
     App ::PropertyExpressionEngine  ::init();
 
     // Extension classes

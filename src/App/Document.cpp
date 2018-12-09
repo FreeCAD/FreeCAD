@@ -372,7 +372,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
         void addExpressionSubgraphIfNeeded(DocumentObject * obj, bool CSsubgraphs) {
 
-            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();
+            auto expressions = obj->ExpressionEngine.getExpressions();
 
             if (!expressions.empty()) {
 
@@ -394,11 +394,11 @@ void Document::exportGraphviz(std::ostream& out) const
                 }
 
                 // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
-                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+                auto i = expressions.begin();
                 while (i != expressions.end()) {
                     std::set<ObjectIdentifier> deps;
 
-                    i->second.expression->getIdentifiers(deps);
+                    i->second->getIdentifiers(deps);
 
                     std::set<ObjectIdentifier>::const_iterator j = deps.begin();
                     while (j != deps.end()) {
@@ -486,8 +486,8 @@ void Document::exportGraphviz(std::ostream& out) const
             }
 
             // Add expressions and its dependencies
-            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
-            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+            auto expressions = docObj->ExpressionEngine.getExpressions();
+            auto i = expressions.begin();
 
             // Add nodes for each property that has an expression attached to it
             while (i != expressions.end()) {
@@ -507,7 +507,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
                 // Get dependencies
                 std::set<ObjectIdentifier> deps;
-                i->second.expression->getIdentifiers(deps);
+                i->second->getIdentifiers(deps);
 
                 // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
                 std::set<ObjectIdentifier>::const_iterator j = deps.begin();
@@ -644,12 +644,12 @@ void Document::exportGraphviz(std::ostream& out) const
                 const DocumentObject * docObj = *j;
 
                 // Add expressions and its dependencies
-                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
-                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+                auto expressions = docObj->ExpressionEngine.getExpressions();
+                auto i = expressions.begin();
 
                 while (i != expressions.end()) {
                     std::set<ObjectIdentifier> deps;
-                    i->second.expression->getIdentifiers(deps);
+                    i->second->getIdentifiers(deps);
 
                     // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
                     std::set<ObjectIdentifier>::const_iterator k = deps.begin();
