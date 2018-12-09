@@ -46,7 +46,7 @@ QGISectionLine::QGISectionLine()
     m_symbol = "";
     m_symSize = 0.0;
 
-    m_extLen = Rez::guiX(QGIArrow::getPrefArrowSize());
+    m_extLen = 1.5 * Rez::guiX(QGIArrow::getPrefArrowSize());
     m_arrowSize = QGIArrow::getPrefArrowSize();
     
     m_line = new QGraphicsPathItem();
@@ -78,23 +78,41 @@ void QGISectionLine::draw()
 void QGISectionLine::makeLine()
 {
     QPainterPath pp;
-    QPointF extLineStart,extLineEnd;
+    QPointF beginExtLineStart,beginExtLineEnd;             //ext line start pts for measure Start side and measure End side
+    QPointF endExtLineStart, endExtLineEnd; 
     QPointF offset(m_arrowDir.x,-m_arrowDir.y);
+    double arrowLen2 = 2.0 * Rez::guiX(QGIArrow::getPrefArrowSize());
     int format = getPrefSectionFormat();
     if (format == 0) {                           //"ASME"
-        offset = 0.75 * m_extLen * offset;                  //0.75 is hack to hide line end behind arrowhead
-        extLineStart = m_start + offset;
-        extLineEnd = m_end + offset;
+        //draw from section line endpoint to just short of arrow tip
+        QPointF offsetBegin = m_extLen * offset;
+        beginExtLineStart = m_start;
+        beginExtLineEnd = m_end;
+        endExtLineStart = m_start + offsetBegin;
+        endExtLineEnd   = m_end + offsetBegin;
+        pp.moveTo(beginExtLineStart);
+        pp.lineTo(endExtLineStart);
+        pp.moveTo(beginExtLineEnd);
+        pp.lineTo(endExtLineEnd);
     } else {                                     //"ISO"
-        offset = 2.0* m_extLen * offset;
-        extLineStart = m_start - offset;
-        extLineEnd = m_end - offset;
+        //draw from extension line end to just short of section line
+        QPointF offsetBegin = arrowLen2 * offset;
+        QPointF offsetEnd   = (arrowLen2 - m_extLen) * offset;
+        beginExtLineStart = m_start - offsetBegin;
+        beginExtLineEnd = m_end - offsetBegin;
+        endExtLineStart = m_start - offsetEnd;
+        endExtLineEnd   = m_end - offsetEnd;
+        pp.moveTo(beginExtLineStart);
+        pp.lineTo(endExtLineStart);
+        pp.moveTo(beginExtLineEnd);
+        pp.lineTo(endExtLineEnd);
     }
 
-    pp.moveTo(extLineStart);
-    pp.lineTo(m_start);
-    pp.lineTo(m_end);
-    pp.lineTo(extLineEnd);
+//    pp.moveTo(beginExtLineStart);
+//    pp.lineTo(m_start);          //arrow line
+//    pp.moveTo(beginExtLineEnd); 
+    pp.moveTo(m_end);
+    pp.lineTo(m_start);          //sectionLine
     m_line->setPath(pp);
 }
 
