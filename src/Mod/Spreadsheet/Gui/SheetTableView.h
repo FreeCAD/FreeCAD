@@ -57,6 +57,8 @@ public:
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
+
+public Q_SLOTS:
     void deleteSelection();
     void copySelection();
     void cutSelection();
@@ -94,6 +96,11 @@ protected:
     QAction *actionEditButton;
     QAction *actionEditCombo;
     QAction *actionEditLabel;
+
+    QAction *actionCopy;
+    QAction *actionPaste;
+    QAction *actionCut;
+    QAction *actionDel;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };

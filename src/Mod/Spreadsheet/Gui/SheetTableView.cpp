@@ -117,6 +117,16 @@ SheetTableView::SheetTableView(QWidget *parent)
     QAction *recompute = new QAction(tr("Recompute"),this);
     connect(recompute, SIGNAL(triggered()), this, SLOT(onRecompute()));
     contextMenu->addAction(recompute);
+
+    contextMenu->addSeparator();
+    actionCut = contextMenu->addAction(tr("Cut"));
+    connect(actionCut,SIGNAL(triggered()), this, SLOT(cutSelection()));
+    actionCopy = contextMenu->addAction(tr("Copy"));
+    connect(actionCopy,SIGNAL(triggered()), this, SLOT(copySelection()));
+    actionPaste = contextMenu->addAction(tr("Paste"));
+    connect(actionPaste,SIGNAL(triggered()), this, SLOT(pasteClipboard()));
+    actionDel = contextMenu->addAction(tr("Delete"));
+    connect(actionDel,SIGNAL(triggered()), this, SLOT(deleteSelection()));
 }
 
 void SheetTableView::editMode(QAction *action) {
@@ -509,11 +519,11 @@ void SheetTableView::copySelection()
         if (i < maxRow)
             selectedText.append(QChar::fromLatin1('\n'));
     }
-    QApplication::clipboard()->setText(selectedText);
 
     Base::StringWriter writer;
     sheet->getCells()->copyCells(writer,selectedRanges());
     QMimeData *mime = new QMimeData();
+    mime->setText(selectedText);
     mime->setData(_SheetMime,QByteArray(writer.getString().c_str()));
     QApplication::clipboard()->setMimeData(mime);
 }
@@ -527,6 +537,8 @@ void SheetTableView::cutSelection()
 void SheetTableView::pasteClipboard()
 {
     const QMimeData* mimeData = QApplication::clipboard()->mimeData();
+    if(!mimeData || (!mimeData->hasText() && !mimeData->hasText()))
+        return;
 
     if(selectionModel()->selectedIndexes().size()>1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Spreadsheet"),
@@ -539,9 +551,9 @@ void SheetTableView::pasteClipboard()
 
     GetApplication().setActiveTransaction("Paste cell");
     try {
-        if (!mimeData || !mimeData->hasFormat(_SheetMime)) {
+        if (!mimeData->hasFormat(_SheetMime)) {
             QStringList cells;
-            QString text = QApplication::clipboard()->text();
+            QString text = mimeData->text();
             int i=0;
             for (auto it : text.split(QLatin1Char('\n'))) {
                 QStringList cols = it.split(QLatin1Char('\t'));
@@ -620,6 +632,20 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *) {
     if(!action)
         action = actionEditNormal;
     action->setChecked(true);
+
+    const QMimeData* mimeData = QApplication::clipboard()->mimeData();
+    if(!selectionModel()->hasSelection()) {
+        actionCut->setEnabled(false);
+        actionCopy->setEnabled(false);
+        actionDel->setEnabled(false);
+        actionPaste->setEnabled(false);
+    }else{
+        actionPaste->setEnabled(mimeData && (mimeData->hasText() || mimeData->hasText()));
+        actionCut->setEnabled(true);
+        actionCopy->setEnabled(true);
+        actionDel->setEnabled(true);
+    }
+
     contextMenu->exec(QCursor::pos());
 }
 
