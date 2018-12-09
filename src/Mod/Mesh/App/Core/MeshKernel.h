@@ -140,6 +140,10 @@ public:
 
     /** Returns the array of all data points. */
     const MeshPointArray& GetPoints (void) const { return _aclPointArray; }
+    /** Returns an array of points to the given indices. The indices
+     * must not be out of range.
+     */
+    MeshPointArray GetPoints(const std::vector<unsigned long>&) const;
 
     /** Returns a modifier for the point array */
     MeshPointModifier ModifyPoints()
