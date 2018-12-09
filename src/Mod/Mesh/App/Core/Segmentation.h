@@ -101,6 +101,7 @@ class MeshExport PlaneSurfaceFit : public AbstractSurfaceFit
 {
 public:
     PlaneSurfaceFit();
+    PlaneSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& n);
     ~PlaneSurfaceFit();
     void Initialize(const MeshGeomFacet&);
     bool TestTriangle(const MeshGeomFacet&) const;
@@ -153,14 +154,14 @@ private:
     float radius;
 };
 
-class MeshExport MeshDistanceGenericSurfaceSegment : public MeshDistanceSurfaceSegment
+class MeshExport MeshDistanceGenericSurfaceFitSegment : public MeshDistanceSurfaceSegment
 {
 public:
-    MeshDistanceGenericSurfaceSegment(AbstractSurfaceFit*, const MeshKernel& mesh,
-                                      unsigned long minFacets, float tol);
-    virtual ~MeshDistanceGenericSurfaceSegment();
+    MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit*, const MeshKernel& mesh,
+                                         unsigned long minFacets, float tol);
+    virtual ~MeshDistanceGenericSurfaceFitSegment();
     bool TestFacet (const MeshFacet& rclFacet) const;
-    const char* GetType() const { return "Generic"; }
+    const char* GetType() const { return "GenericSurfaceFit"; }
     void Initialize(unsigned long);
     bool TestInitialFacet(unsigned long) const;
     void AddFacet(const MeshFacet& rclFacet);

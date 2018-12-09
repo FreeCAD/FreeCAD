@@ -26,11 +26,11 @@ set(Mesh_MOC_HDRS
     DlgRegularSolidImp.h
     DlgSettingsMeshView.h
     DlgSettingsImportExportImp.h
-
     DlgSmoothing.h
     MeshEditor.h
     PropertyEditorMesh.h
     RemoveComponents.h
+    SegmentationBestFit.h
     Selection.h
 )
 fc_wrap_cpp(Mesh_MOC_SRCS ${Mesh_MOC_HDRS})
@@ -45,6 +45,7 @@ set(Dialogs_UIC_SRCS
     DlgSmoothing.ui
     RemoveComponents.ui
     Segmentation.ui
+    SegmentationBestFit.ui
     Selection.ui
 )
 
@@ -74,6 +75,9 @@ SET(Dialogs_SRCS
     Segmentation.ui
     Segmentation.cpp
     Segmentation.h
+    SegmentationBestFit.ui
+    SegmentationBestFit.cpp
+    SegmentationBestFit.h
     Selection.ui
     Selection.cpp
     Selection.h

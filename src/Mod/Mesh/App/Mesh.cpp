@@ -1711,15 +1711,15 @@ std::vector<Segment> MeshObject::getSegmentsOfType(MeshObject::GeometryType type
     switch (type) {
     case PLANE:
         //surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
-        surf.reset(new MeshCore::MeshDistanceGenericSurfaceSegment(new MeshCore::PlaneSurfaceFit,
+        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::PlaneSurfaceFit,
                    this->_kernel, minFacets, dev));
     break;
     case CYLINDER:
-        surf.reset(new MeshCore::MeshDistanceGenericSurfaceSegment(new MeshCore::CylinderSurfaceFit,
+        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::CylinderSurfaceFit,
                    this->_kernel, minFacets, dev));
         break;
     case SPHERE:
-        surf.reset(new MeshCore::MeshDistanceGenericSurfaceSegment(new MeshCore::SphereSurfaceFit,
+        surf.reset(new MeshCore::MeshDistanceGenericSurfaceFitSegment(new MeshCore::SphereSurfaceFit,
                    this->_kernel, minFacets, dev));
         break;
     default:
