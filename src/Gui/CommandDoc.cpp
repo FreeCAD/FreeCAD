@@ -1222,35 +1222,32 @@ void StdCmdDelete::activated(int iMsg)
                 }
             }
         }
-        App::GetApplication().closeActiveTransaction();
+        if(docs.size()) {
+            const auto &outList = App::PropertyXLink::getDocumentOutList();
+            for(auto it=docs.begin();it!=docs.end();++it) {
+                auto itd = outList.find(*it);
+                if(itd!=outList.end()) {
+                    for(auto doc : itd->second) {
+                        if(doc != *it)
+                            docs.erase(doc);
+                    }
+                }
+            }
+            for(auto doc : docs) {
+                FCMD_DOC_CMD(doc,"recompute()");
+            }
+        }
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QString::fromLatin1(e.what()));
         e.ReportException();
-        App::GetApplication().closeActiveTransaction(true);
     } catch (...) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QString::fromLatin1("Unknown error"));
-        App::GetApplication().closeActiveTransaction(true);
     }
+    App::GetApplication().closeActiveTransaction();
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
-
-    if(docs.size()) {
-        const auto &outList = App::PropertyXLink::getDocumentOutList();
-        for(auto it=docs.begin();it!=docs.end();++it) {
-            auto itd = outList.find(*it);
-            if(itd!=outList.end()) {
-                for(auto doc : itd->second) {
-                    if(doc != *it)
-                        docs.erase(doc);
-                }
-            }
-        }
-        for(auto doc : docs) {
-            FCMD_DOC_CMD(doc,"recompute()");
-        }
-    }
 }
 
 bool StdCmdDelete::isActive(void)

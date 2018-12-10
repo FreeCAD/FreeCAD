@@ -985,8 +985,10 @@ bool Document::save(void)
             for(auto v : docs) {
                 auto doc = v.first;
                 // Changed 'mustExecute' status may be triggered by saving external document
-                if(!v.second && doc->mustExecute())
+                if(!v.second && doc->mustExecute()) {
+                    App::AutoTransaction trans("Recompute");
                     Command::doCommand(Command::Doc,"App.getDocument(\"%s\").recompute()",doc->getName());
+                }
                 Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()",doc->getName());
                 auto gdoc = Application::Instance->getDocument(doc);
                 if(gdoc) gdoc->setModified(false);
@@ -1068,8 +1070,10 @@ void Document::saveAll() {
 
         try {
             // Changed 'mustExecute' status may be triggered by saving external document
-            if(!dmap[doc] && doc->mustExecute())
+            if(!dmap[doc] && doc->mustExecute()) {
+                App::AutoTransaction trans("Recompute");
                 Command::doCommand(Command::Doc,"App.getDocument('%s').recompute()",doc->getName());
+            }
             Command::doCommand(Command::Doc,"App.getDocument('%s').save()",doc->getName());
             gdoc->setModified(false);
         } catch (const Base::Exception& e) {
