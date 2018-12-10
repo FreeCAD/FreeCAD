@@ -580,7 +580,7 @@ def drawFace(face):
         warn(face)
     return None
 
-def drawMesh(mesh):
+def drawMesh(mesh,forceShape=False):
     "returns a Mesh from a dxf mesh"
     md = []
     if mesh.flags == 16:
@@ -604,18 +604,26 @@ def drawMesh(mesh):
                 pts.append(p)
             elif p.flags == 128:
                 fcs.append(p)
+        #print("Creating polyface with",len(pts),"points and",len(fcs),"facets")
         for f in fcs:
-            p1 = pts[rawValue(f,71)-1]
-            p2 = pts[rawValue(f,72)-1]
-            p3 = pts[rawValue(f,73)-1]
+            p1 = pts[abs(rawValue(f,71))-1]
+            p2 = pts[abs(rawValue(f,72))-1]
+            p3 = pts[abs(rawValue(f,73))-1]
             md.append([p1,p2,p3])
             if rawValue(f,74) != None:
-                p4 = pts[rawValue(f,74)-1]
+                p4 = pts[abs(rawValue(f,74))-1]
                 md.append([p1,p3,p4])
     try:
-        return Mesh.Mesh(md)
+        m = Mesh.Mesh(md)
+        if forceShape:
+            s = Part.Shape()
+            s.makeShapeFromMesh(m.Topology,1)
+            s = s.removeSplitter()
+            m = s
     except FreeCAD.Base.FreeCADError:
         warn(mesh)
+    else:
+        return m
     return None
 
 def drawSolid(solid):
@@ -832,7 +840,10 @@ def drawBlock(blockref,num=None,createObject=False):
         s = drawLine(line,forceShape=True)
         if s: shapes.append(s)
     for polyline in blockref.entities.get_type('polyline'):
-        s = drawPolyline(polyline,forceShape=True)
+        if hasattr(polyline,"flags") and polyline.flags in [16,64]:
+            s = drawMesh(polyline,forceShape=True)
+        else:
+            s = drawPolyline(polyline,forceShape=True)
         if s: shapes.append(s)
     for polyline in blockref.entities.get_type('lwpolyline'):
         s = drawPolyline(polyline,forceShape=True)
@@ -908,9 +919,16 @@ def drawInsert(insert,num=None,clone=False):
             rot = math.radians(insert.rotation)
             scale = insert.scale
             tsf = FreeCAD.Matrix()
-            tsf.scale(scale[0],scale[1],0) # for some reason z must be 0 to work
+            #tsf.scale(scale[0],scale[1],0) # for some reason z must be 0 to work
             tsf.rotateZ(rot)
-            shape = shape.transformGeometry(tsf)
+            try:
+                shape = shape.transformGeometry(tsf)
+            except Part.OCCError:
+                tsf.scale(scale[0],scale[1],0)
+                try:
+                    shape = shape.transformGeometry(tsf)
+                except Part.OCCError:
+                    print("importDXF: unable to apply insert transform:",tsf)
             shape.translate(pos)
             return shape
     return None

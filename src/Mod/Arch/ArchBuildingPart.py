@@ -486,6 +486,8 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyBool","RestoreView","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
         if not "DiffuseColor" in pl:
             vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"))
+        if not "AutoWorkingPlane" in pl:
+            vobj.addProperty("App::PropertyBool","AutoWorkingPlane","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If set to True, the working plane will be kept on Auto mode"))
 
 
     def onDocumentRestored(self,vobj):
@@ -690,6 +692,9 @@ class ViewProviderBuildingPart:
                 FreeCAD.DraftWorkingPlane.save()
                 FreeCAD.DraftWorkingPlane.setFromPlacement(self.Object.Placement,rebase=True)
                 FreeCAD.DraftWorkingPlane.weak = False
+                if hasattr(self.Object.ViewObject,"AutoWorkingPlane"):
+                    if self.Object.ViewObject.AutoWorkingPlane:
+                        FreeCAD.DraftWorkingPlane.weak = True
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setGrid()
             if hasattr(FreeCADGui,"draftToolBar"):
