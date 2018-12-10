@@ -323,11 +323,12 @@ class ViewProviderArchReference:
     def updateData(self,obj,prop):
         
         if (prop == "Shape") and hasattr(obj.ViewObject,"UpdateColors") and obj.ViewObject.UpdateColors:
-            colors = obj.Proxy.getColors(obj)
-            if colors:
-                obj.ViewObject.DiffuseColor = colors
-            from DraftGui import todo
-            DraftGui.todo.delay(self.recolorize,obj.ViewObject)
+            if obj.Shape and not obj.Shape.isNull():
+                colors = obj.Proxy.getColors(obj)
+                if colors:
+                    obj.ViewObject.DiffuseColor = colors
+                from DraftGui import todo
+                todo.delay(self.recolorize,obj.ViewObject)
 
     def recolorize(self,vobj):
         
