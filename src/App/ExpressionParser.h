@@ -819,6 +819,17 @@ public:
     std::size_t getSize() const {return exprs.size();}
     const Expression *getExpr(std::size_t idx) const;
 
+    template<typename T>
+    static const T *cast(const Expression *expr) {
+        auto res = dynamic_cast<const T*>(expr);
+        if(res)
+            return res;
+        auto stmt = dynamic_cast<const SimpleStatement*>(expr);
+        if(stmt && stmt->getSize()==1)
+            return cast<T>(stmt->getExpr(0));
+        return 0;
+    }
+
 protected:
     SimpleStatement(const App::DocumentObject *_owner):BaseStatement(_owner) {}
 

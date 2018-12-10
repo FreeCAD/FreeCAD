@@ -1584,7 +1584,7 @@ protected:
         const char *tstart = txt.c_str();
         const char *tend = tstart + txt.size();
 
-        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+$");
+        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+\n");
         boost::cmatch m;
         if(!boost::regex_search(tstart,m,rule)) {
             FC_WARN("No expression header found");

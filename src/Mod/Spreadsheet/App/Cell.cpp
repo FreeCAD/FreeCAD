@@ -166,12 +166,9 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
     /* Update dependencies */
     owner->addDependencies(address);
 
-	auto stmt = dynamic_cast<Statement*>(expression.get());
-	if(stmt && stmt->getSize()==1) {
-        auto func = dynamic_cast<const FunctionStatement*>(stmt->getExpr(0));
-        if(func)
-            setAlias(func->getName());
-    }
+    auto func = SimpleStatement::cast<FunctionStatement>(expression.get());
+    if(func)
+        setAlias(func->getName());
 
     signaller.tryInvoke();
 }
@@ -194,7 +191,7 @@ const App::Expression *Cell::getExpression() const
 bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
-        auto sexpr = freecad_dynamic_cast<App::StringExpression>(expression.get());
+        auto sexpr = SimpleStatement::cast<App::StringExpression>(expression.get());
         if(sexpr) {
             const auto &txt = sexpr->getText();
             if(txt.size() && txt[0]!='=') {
@@ -203,9 +200,9 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
             }else
                 s = txt;
         }
-        else if (freecad_dynamic_cast<App::ConstantExpression>(expression.get()))
+        else if (SimpleStatement::cast<App::ConstantExpression>(expression.get()))
             s = "=" + expression->toString();
-        else if (freecad_dynamic_cast<App::NumberExpression>(expression.get()))
+        else if (SimpleStatement::cast<App::NumberExpression>(expression.get()))
             s = expression->toString();
         else
             s = "=" + expression->toString(persistent);
@@ -219,7 +216,7 @@ bool Cell::getStringContent(std::string & s, bool persistent) const
 }
 
 void Cell::afterRestore() {
-    auto expr = dynamic_cast<StringExpression*>(expression.get());
+    auto expr = SimpleStatement::cast<StringExpression>(expression.get());
     if(expr) 
         setContent(expr->getText().c_str());
 }
@@ -921,7 +918,7 @@ void Cell::setEditData(const char *data) {
     case EditCombo: {
         if(!data || !data[0])
             FC_THROWM(Base::ValueError,"invalid value");
-        auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
+        auto expr = SimpleStatement::cast<ListExpression>(expression.get());
         if(expr && expr->getSize()>=2) {
             App::ExpressionPtr e(expr->copy());
             static_cast<App::ListExpression&>(*e).setItem(1,
@@ -952,7 +949,7 @@ void Cell::setEditData(const char *data) {
     case EditLabel: {
         if(!data)
             FC_THROWM(Base::ValueError,"invalid value");
-        auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
+        auto expr = SimpleStatement::cast<App::ListExpression>(expression.get());
         if(expr && expr->getSize()>=1) {
             App::ExpressionPtr e(expr->copy());
             static_cast<App::ListExpression&>(*e).setItem(0,
@@ -1061,7 +1058,7 @@ void Cell::setEditMode(EditMode mode) {
             }
         }else if(mode == Cell::EditCombo){
             bool valid = false;
-            auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
+            auto expr = SimpleStatement::cast<ListExpression>(expression.get());
             if(expr && expr->getSize()>=2) {
                 Py::Sequence seq(obj);
                 valid = seq.size()>=2 && seq[0].isMapping() && seq[1].isString();
@@ -1071,7 +1068,7 @@ void Cell::setEditMode(EditMode mode) {
                         "' contains a list expression of [mapping,string]");
         }else if(mode == Cell::EditLabel){
             bool valid = false;
-            auto expr = dynamic_cast<const App::ListExpression*>(expression.get());
+            auto expr = SimpleStatement::cast<ListExpression>(expression.get());
             if(expr && expr->getSize()>=1) {
                 Py::Sequence seq(obj);
                 valid = seq.size()>=1 && seq[0].isString();
