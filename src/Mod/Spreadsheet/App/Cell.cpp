@@ -166,6 +166,13 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
     /* Update dependencies */
     owner->addDependencies(address);
 
+	auto stmt = dynamic_cast<Statement*>(expression.get());
+	if(stmt && stmt->getSize()==1) {
+        auto func = dynamic_cast<const FunctionStatement*>(stmt->getExpr(0));
+        if(func)
+            setAlias(func->getName());
+    }
+
     signaller.tryInvoke();
 }
 

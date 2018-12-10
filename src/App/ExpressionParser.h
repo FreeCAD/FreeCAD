@@ -882,6 +882,8 @@ public:
 
     virtual bool needLineEnd() const;
 
+    const std::string &getName() const {return name;}
+
 protected:
     FunctionStatement(const App::DocumentObject *_owner):LambdaExpression(_owner) {}
 
