@@ -74,7 +74,7 @@
 #include "GraphvizView.h"
 #include "DlgObjectSelection.h"
 
-FC_LOG_LEVEL_INIT("Command", true,true);
+FC_LOG_LEVEL_INIT("Command", false);
 
 using namespace Gui;
 
@@ -1586,30 +1586,29 @@ protected:
         const QMimeData* mimeData = QApplication::clipboard()->mimeData();
         if(!mimeData || !mimeData->hasFormat(_ExprMime) || !mimeData->hasText())
             return;
-        QStringList list = mimeData->text().split(
-                                QLatin1String("##@@ "), QString::SkipEmptyParts);
-
         std::map<App::Document*, std::map<App::PropertyExpressionContainer*, 
             std::map<App::ObjectIdentifier, App::ExpressionPtr> > > exprs;
 
         bool failed = false;
+        std::string txt = mimeData->text().toUtf8().constData();
+        const char *tstart = txt.c_str();
+        const char *tend = tstart + txt.size();
 
-        for(auto &entry : list) {
-            auto idx = entry.indexOf(QLatin1Char('\n'));
-            if(idx < 0)
-                continue;
-            static boost::regex e("^([^ ]+) (\\w+)#(\\w+)\\.(\\w+) .*");
-            std::string txt = QStringRef(&entry,0,idx).toUtf8().constData();
-            boost::smatch sm;
-            if(!boost::regex_match(txt,sm,e)) {
-                FC_WARN("Invalid expression header: " << txt);
-                continue;
-            }
+        static boost::regex rule("^##@@ ([^ ]+) (\\w+)#(\\w+)\\.(\\w+) [^\n]+$");
+        boost::cmatch m;
+        if(!boost::regex_search(tstart,m,rule)) {
+            FC_WARN("No expression header found");
+            return;
+        }
+        boost::cmatch m2;
+        bool found = true;
+        for(;found;m=m2) {
+            found = boost::regex_search(m[0].second,tend,m2,rule);
 
-            auto pathName = sm.str(1);
-            auto docName = sm.str(2);
-            auto objName = sm.str(3);
-            auto propName = sm.str(4);
+            auto pathName = m.str(1);
+            auto docName = m.str(2);
+            auto objName = m.str(3);
+            auto propName = m.str(4);
 
             App::Document *doc = App::GetApplication().getDocument(docName.c_str());
             if(!doc) {
@@ -1630,11 +1629,12 @@ protected:
                 continue;
             }
 
+            size_t len = (found?m2[0].first:tend) - m[0].second;
             try {
-                exprs[doc][prop][App::ObjectIdentifier::parse(obj,pathName)] = App::Expression::parse(obj, 
-                        QStringRef(&entry,idx+1,entry.size()-idx-1).toUtf8().constData(),0,true);
+                exprs[doc][prop][App::ObjectIdentifier::parse(obj,pathName)] = 
+                        App::Expression::parse(obj,m[0].second,len,true);
             } catch(Base::Exception &e) {
-                FC_ERR(e.what() << std::endl << txt);
+                FC_ERR(e.what() << std::endl << m[0].str());
                 failed = true;
             }
         }
