@@ -912,6 +912,55 @@ void CylinderFit::ProjectToCylinder()
 
 // -----------------------------------------------------------------------------
 
+SphereFit::SphereFit()
+  : _vCenter(0,0,0)
+  , _fRadius(0)
+{
+}
+
+SphereFit::~SphereFit()
+{
+
+}
+
+float SphereFit::GetRadius() const
+{
+    if (_bIsFitted)
+        return _fRadius;
+    else
+        return FLOAT_MAX;
+}
+
+Base::Vector3f SphereFit::GetCenter() const
+{
+    if (_bIsFitted)
+        return _vCenter;
+    else
+        return Base::Vector3f();
+}
+
+float SphereFit::Fit()
+{
+    return FLOAT_MAX;
+}
+
+float SphereFit::GetDistanceToSphere(const Base::Vector3f &) const
+{
+    return FLOAT_MAX;
+}
+
+float SphereFit::GetStdDeviation() const
+{
+    return FLOAT_MAX;
+}
+
+void SphereFit::ProjectToSphere()
+{
+
+}
+
+// -------------------------------------------------------------------------------
+
 PolynomialFit::PolynomialFit()
 {
     for (int i=0; i<9; i++)

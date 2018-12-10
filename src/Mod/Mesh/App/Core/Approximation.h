@@ -407,6 +407,48 @@ protected:
 // -------------------------------------------------------------------------------
 
 /**
+ * Approximation of a sphere into a given set of points.
+ */
+class MeshExport SphereFit : public Approximation
+{
+public:
+    /**
+     * Construction
+     */
+    SphereFit();
+    /**
+     * Destruction
+     */
+    virtual ~SphereFit();
+    float GetRadius() const;
+    Base::Vector3f GetCenter() const;
+    /**
+     * Fit a sphere into the given points. If the fit fails FLOAT_MAX is returned.
+     */
+    float Fit();
+    /**
+     * Returns the distance from the point \a rcPoint to the fitted sphere. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetDistanceToSphere(const Base::Vector3f &rcPoint) const;
+    /**
+     * Returns the standard deviation from the points to the fitted sphere. If Fit() has not been
+     * called FLOAT_MAX is returned.
+     */
+    float GetStdDeviation() const;
+    /**
+     * Projects the points onto the fitted sphere.
+     */
+    void ProjectToSphere();
+
+protected:
+    Base::Vector3f _vCenter; /**< Center of the sphere. */
+    float _fRadius; /**< Radius of the cylinder. */
+};
+
+// -------------------------------------------------------------------------------
+
+/**
  * Helper class for the quadric fit. Includes the
  * partial derivates of the quadric and serves for
  * calculation of the quadric properties.
