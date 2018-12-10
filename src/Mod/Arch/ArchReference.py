@@ -91,6 +91,8 @@ class ArchReference:
             obj.addProperty("App::PropertyFile","File","Reference",QT_TRANSLATE_NOOP("App::Property","The base file this component is built upon"))
         if not "Part" in pl:
             obj.addProperty("App::PropertyString","Part","Reference",QT_TRANSLATE_NOOP("App::Property","The part to use from the base file"))
+        if not "TransientReference" in pl:
+            obj.addProperty("App::PropertyBool","TransientReference","Reference",QT_TRANSLATE_NOOP("App::Property","If True, the shape will be discarded when turning visibility off, resulting in a lighter file, but with an additional loading time when turning the object back on"))
         self.Type = "Reference"
 
     def onDocumentRestored(self,obj):
@@ -110,9 +112,24 @@ class ArchReference:
 
         if prop in ["File","Part"]:
             self.reload = True
+        elif prop == "TransientReference":
+            if obj.TransientReference:
+                if (not obj.Shape) or obj.Shape.isNull():
+                    self.reload = True
+                    obj.touch()
+            else:
+                if obj.ViewObject:
+                    obj.ViewObject.Visibility = False
+                else:
+                    self.reload = False
+                    import Part
+                    pl = obj.Placement
+                    obj.Shape = Part.Shape()
+                    obj.Placement = pl
 
     def execute(self,obj):
 
+        pl = obj.Placement
         filename = self.getFile(obj)
         if filename and obj.Part and self.reload:
             self.parts = self.getPartsList(obj)
@@ -130,6 +147,7 @@ class ArchReference:
                                 shapedata = shapedata.decode("utf8")
                             shape.importBrepFromString(shapedata)
                             obj.Shape = shape
+                            obj.Placement = obj.Shape.Placement.multiply(pl)
                         else:
                             print("Part not found in file")
             self.reload = False
@@ -308,6 +326,8 @@ class ViewProviderArchReference:
             colors = obj.Proxy.getColors(obj)
             if colors:
                 obj.ViewObject.DiffuseColor = colors
+            from DraftGui import todo
+            DraftGui.todo.delay(self.recolorize,obj.ViewObject)
 
     def recolorize(self,vobj):
         
@@ -344,6 +364,18 @@ class ViewProviderArchReference:
             if hasattr(vobj,"DiffuseColor") and hasattr(vobj,"UpdateColors"):
                 if vobj.DiffuseColor and vobj.UpdateColors:
                     vobj.DiffuseColor = vobj.DiffuseColor
+        elif prop == "Visibility":
+            if vobj.Visibility == True:
+                if (not vobj.Object.Shape) or vobj.Object.Shape.isNull():
+                    vobj.Object.Proxy.reload = True
+                    vobj.Object.Proxy.execute(vobj.Object)
+            else:
+                if hasattr(vobj.Object,"TransientReference") and vobj.Object.TransientReference:
+                    vobj.Object.Proxy.reload = False
+                    import Part
+                    pl = vobj.Object.Placement
+                    vobj.Object.Shape = Part.Shape()
+                    vobj.Object.Placement = pl
 
     def onDelete(self,obj,doc):
 
