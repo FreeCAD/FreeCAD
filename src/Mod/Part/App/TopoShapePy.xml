@@ -720,6 +720,13 @@ infos contains additional info on the solutions. It is a list of tuples:
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="refineShape" Const="true">
+      <Documentation>
+        <UserDocu>
+        refineShape() -> returns refined shape if possible
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>

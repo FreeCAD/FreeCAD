@@ -78,6 +78,7 @@
 
 #include "TopoShape.h"
 #include "PartPyCXX.h"
+#include "modelRefine.h"
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapePy.cpp>
 
@@ -2664,6 +2665,23 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
     catch (const Standard_Failure& e) {
         throw Py::RuntimeError(e.GetMessageString());
     }
+}
+
+PyObject* TopoShapePy::refineShape(PyObject *args)
+{
+    TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+    try {
+        Part::BRepBuilderAPI_RefineModel mkRefine(shape);
+        shape = mkRefine.Shape();
+    }
+    catch (Standard_Failure& e) {
+        throw Py::RuntimeError(e.GetMessageString());
+    }
+
+    PyTypeObject* type = this->GetType();
+    PyObject* refined = type->tp_new(type, this, 0);
+    static_cast<TopoShapePy*>(refined)->getTopoShapePtr()->setShape(shape);
+    return refined;
 }
 
 PyObject* TopoShapePy::defeaturing(PyObject *args)
