@@ -52,18 +52,19 @@ public:
     PlaneFitParameter() {}
     virtual ~PlaneFitParameter() {}
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
+        std::vector<float> values;
         MeshCore::PlaneFit fit;
         fit.AddPoints(pts);
-        fit.Fit();
-        Base::Vector3f base = fit.GetBase();
-        Base::Vector3f axis = fit.GetNormal();
-        std::vector<float> values;
-        values.push_back(base.x);
-        values.push_back(base.y);
-        values.push_back(base.z);
-        values.push_back(axis.x);
-        values.push_back(axis.y);
-        values.push_back(axis.z);
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::Vector3f base = fit.GetBase();
+            Base::Vector3f axis = fit.GetNormal();
+            values.push_back(base.x);
+            values.push_back(base.y);
+            values.push_back(base.z);
+            values.push_back(axis.x);
+            values.push_back(axis.y);
+            values.push_back(axis.z);
+        }
         return values;
     }
 };
@@ -75,6 +76,20 @@ public:
     virtual ~CylinderFitParameter() {}
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
         std::vector<float> values;
+        MeshCore::CylinderFit fit;
+        fit.AddPoints(pts);
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::Vector3f base = fit.GetBase();
+            Base::Vector3f axis = fit.GetAxis();
+            float radius = fit.GetRadius();
+            values.push_back(base.x);
+            values.push_back(base.y);
+            values.push_back(base.z);
+            values.push_back(axis.x);
+            values.push_back(axis.y);
+            values.push_back(axis.z);
+            values.push_back(radius);
+        }
         return values;
     }
 };
@@ -86,6 +101,16 @@ public:
     virtual ~SphereFitParameter() {}
     virtual std::vector<float> getParameter(FitParameter::Points pts) const {
         std::vector<float> values;
+        MeshCore::SphereFit fit;
+        fit.AddPoints(pts);
+        if (fit.Fit() < FLOAT_MAX) {
+            Base::Vector3f base = fit.GetCenter();
+            float radius = fit.GetRadius();
+            values.push_back(base.x);
+            values.push_back(base.y);
+            values.push_back(base.z);
+            values.push_back(radius);
+        }
         return values;
     }
 };

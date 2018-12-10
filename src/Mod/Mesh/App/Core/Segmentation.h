@@ -32,6 +32,7 @@ namespace MeshCore {
 
 class PlaneFit;
 class CylinderFit;
+class SphereFit;
 class MeshFacet;
 typedef std::vector<unsigned long> MeshSegment;
 
@@ -89,6 +90,7 @@ class MeshExport AbstractSurfaceFit
 public:
     AbstractSurfaceFit(){}
     virtual ~AbstractSurfaceFit(){}
+    virtual const char* GetType() const = 0;
     virtual void Initialize(const MeshGeomFacet&) = 0;
     virtual bool TestTriangle(const MeshGeomFacet&) const = 0;
     virtual void AddTriangle(const MeshGeomFacet&) = 0;
@@ -103,6 +105,7 @@ public:
     PlaneSurfaceFit();
     PlaneSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& n);
     ~PlaneSurfaceFit();
+    const char* GetType() const { return "Plane"; }
     void Initialize(const MeshGeomFacet&);
     bool TestTriangle(const MeshGeomFacet&) const;
     void AddTriangle(const MeshGeomFacet&);
@@ -122,6 +125,7 @@ public:
     CylinderSurfaceFit();
     CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& a, float r);
     ~CylinderSurfaceFit();
+    const char* GetType() const { return "Cylinder"; }
     void Initialize(const MeshGeomFacet&);
     bool TestTriangle(const MeshGeomFacet&) const;
     void AddTriangle(const MeshGeomFacet&);
@@ -142,6 +146,7 @@ public:
     SphereSurfaceFit();
     SphereSurfaceFit(const Base::Vector3f& c, float r);
     ~SphereSurfaceFit();
+    const char* GetType() const { return "Sphere"; }
     void Initialize(const MeshGeomFacet&);
     bool TestTriangle(const MeshGeomFacet&) const;
     void AddTriangle(const MeshGeomFacet&);
@@ -152,6 +157,7 @@ public:
 private:
     Base::Vector3f center;
     float radius;
+    SphereFit* fitter;
 };
 
 class MeshExport MeshDistanceGenericSurfaceFitSegment : public MeshDistanceSurfaceSegment
@@ -161,7 +167,7 @@ public:
                                          unsigned long minFacets, float tol);
     virtual ~MeshDistanceGenericSurfaceFitSegment();
     bool TestFacet (const MeshFacet& rclFacet) const;
-    const char* GetType() const { return "GenericSurfaceFit"; }
+    const char* GetType() const { return fitter->GetType(); }
     void Initialize(unsigned long);
     bool TestInitialFacet(unsigned long) const;
     void AddFacet(const MeshFacet& rclFacet);

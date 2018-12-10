@@ -218,8 +218,10 @@ void CylinderSurfaceFit::AddTriangle(const MeshCore::MeshGeomFacet& tria)
 
 bool CylinderSurfaceFit::TestTriangle(const MeshGeomFacet& tria) const
 {
+    // This is to filter out triangles whose points lie on the cylinder and
+    // that whose normals are more or less parallel to the cylinder axis
     float dot = axis.Dot(tria.GetNormal());
-    return fabs(dot) < 0.01f;
+    return fabs(dot) < 0.5f;
 }
 
 bool CylinderSurfaceFit::Done() const
@@ -258,6 +260,7 @@ float CylinderSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
 // --------------------------------------------------------
 
 SphereSurfaceFit::SphereSurfaceFit()
+    : fitter(new SphereFit)
 {
     center.Set(0,0,0);
     radius = FLOAT_MAX;
@@ -266,25 +269,36 @@ SphereSurfaceFit::SphereSurfaceFit()
 SphereSurfaceFit::SphereSurfaceFit(const Base::Vector3f& c, float r)
     : center(c)
     , radius(r)
+    , fitter(0)
 {
 
 }
 
 SphereSurfaceFit::~SphereSurfaceFit()
 {
+    delete fitter;
 }
 
 void SphereSurfaceFit::Initialize(const MeshCore::MeshGeomFacet& tria)
 {
-    //FIXME
+    if (fitter) {
+        fitter->Clear();
+        fitter->AddPoint(tria._aclPoints[0]);
+        fitter->AddPoint(tria._aclPoints[1]);
+        fitter->AddPoint(tria._aclPoints[2]);
+    }
 }
 
 void SphereSurfaceFit::AddTriangle(const MeshCore::MeshGeomFacet& tria)
 {
-    //FIXME
+    if (fitter) {
+        fitter->AddPoint(tria._aclPoints[0]);
+        fitter->AddPoint(tria._aclPoints[1]);
+        fitter->AddPoint(tria._aclPoints[2]);
+    }
 }
 
-bool SphereSurfaceFit::TestTriangle(const MeshGeomFacet& tria) const
+bool SphereSurfaceFit::TestTriangle(const MeshGeomFacet&) const
 {
     // Already handled by GetDistanceToSurface
     return true;
@@ -292,14 +306,24 @@ bool SphereSurfaceFit::TestTriangle(const MeshGeomFacet& tria) const
 
 bool SphereSurfaceFit::Done() const
 {
-    //FIXME
+    if (fitter) {
+        return fitter->Done();
+    }
+
     return true;
 }
 
 float SphereSurfaceFit::Fit()
 {
-    //FIXME
-    return 0;
+    if (!fitter)
+        return 0;
+
+    float fit = fitter->Fit();
+    if (fit < FLOAT_MAX) {
+        center = fitter->GetCenter();
+        radius = fitter->GetRadius();
+    }
+    return fit;
 }
 
 float SphereSurfaceFit::GetDistanceToSurface(const Base::Vector3f& pnt) const
