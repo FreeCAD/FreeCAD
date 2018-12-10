@@ -971,6 +971,8 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
     getMainWindow()->updateActions();
 
+    rmvPreselect();
+
     // allow selection
     return true;
 }
