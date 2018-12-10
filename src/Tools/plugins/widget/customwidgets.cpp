@@ -284,50 +284,50 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     {
     case Qt::ControlModifier:
         {
-            QKeySequence key(Qt::CTRL+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::CTRL+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::AltModifier:
         {
-            QKeySequence key(Qt::ALT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::ALT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ShiftModifier:
         {
-            QKeySequence key(Qt::SHIFT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::SHIFT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ControlModifier+Qt::AltModifier:
         {
-            QKeySequence key(Qt::CTRL+Qt::ALT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::CTRL+Qt::ALT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ControlModifier+Qt::ShiftModifier:
         {
-            QKeySequence key(Qt::CTRL+Qt::SHIFT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::CTRL+Qt::SHIFT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ShiftModifier+Qt::AltModifier:
         {
-            QKeySequence key(Qt::SHIFT+Qt::ALT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::SHIFT+Qt::ALT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     case Qt::ControlModifier+Qt::AltModifier+Qt::ShiftModifier:
         {
-            QKeySequence key(Qt::CTRL+Qt::ALT+Qt::SHIFT+key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(Qt::CTRL+Qt::ALT+Qt::SHIFT+key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     default:
         {
-            QKeySequence key(key);
-            txt += key.toString(QKeySequence::NativeText);
+            QKeySequence keyseq(key);
+            txt += keyseq.toString(QKeySequence::NativeText);
             setText(txt);
         }   break;
     }
