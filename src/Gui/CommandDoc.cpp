@@ -1495,7 +1495,6 @@ bool StdCmdEdit::isActive(void)
 //======================================================================
 // StdCmdExpression
 //===========================================================================
-static const QLatin1String _ExprMime("application/x-fc-expressions");
 class StdCmdExpression : public Gui::Command
 {
 public:
@@ -1573,21 +1572,15 @@ protected:
                 }
             }
         }
-        QMimeData *mime = new QMimeData();
-        mime->setData(_ExprMime,QByteArray());
-        mime->setText(QString::fromUtf8(ss.str().c_str()));
-        QApplication::clipboard()->setMimeData(mime);
+        QApplication::clipboard()->setText(QString::fromUtf8(ss.str().c_str()));
     }
 
     void pasteExpressions() {
-        const QMimeData* mimeData = QApplication::clipboard()->mimeData();
-        if(!mimeData || !mimeData->hasFormat(_ExprMime) || !mimeData->hasText())
-            return;
         std::map<App::Document*, std::map<App::PropertyExpressionContainer*, 
             std::map<App::ObjectIdentifier, App::ExpressionPtr> > > exprs;
 
         bool failed = false;
-        std::string txt = mimeData->text().toUtf8().constData();
+        std::string txt = QApplication::clipboard()->text().toUtf8().constData();
         const char *tstart = txt.c_str();
         const char *tend = tstart + txt.size();
 
@@ -1679,8 +1672,8 @@ protected:
         pcActionCopyAll->setEnabled(true);
         pcActionCopySel->setEnabled(Selection().hasSelection());
 
-        const QMimeData* mimeData = QApplication::clipboard()->mimeData();
-        pcActionPaste->setEnabled(mimeData && mimeData->hasFormat(_ExprMime));
+        pcActionPaste->setEnabled(
+                QApplication::clipboard()->text().startsWith(QLatin1String("##@@ ")));
         return true;
     }
 
