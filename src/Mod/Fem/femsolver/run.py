@@ -368,7 +368,7 @@ class _DocObserver(object):
 
     def _checkEquation(self, obj):
         for o in obj.Document.Objects:
-            if (FemUtils.isDerivedFrom(o, "Fem::FemSolverObject") and
+            if (FemUtils.is_derived_from(o, "Fem::FemSolverObject") and
                     hasattr(o, "Group") and obj in o.Group):
                 if o in _machines:
                     _machines[o].reset()
@@ -380,7 +380,7 @@ class _DocObserver(object):
                 m.reset()
 
     def _checkAnalysis(self, obj):
-        if FemUtils.isDerivedFrom(obj, "Fem::FemAnalysis"):
+        if FemUtils.is_derived_from(obj, "Fem::FemAnalysis"):
             deltaObjs = self._getAdded(obj)
             if deltaObjs:
                 reset = False
@@ -410,7 +410,7 @@ class _DocObserver(object):
 
     def _partOfModel(self, obj):
         for t in self._WHITELIST:
-            if FemUtils.isDerivedFrom(obj, t):
+            if FemUtils.is_derived_from(obj, t):
                 return True
         return False
 
