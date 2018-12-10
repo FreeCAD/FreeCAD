@@ -186,6 +186,8 @@ def getType(obj):
         return "Sketch"
     if (obj.TypeId == "Part::Line"):
         return "Part::Line"
+    if (obj.TypeId == "Part::Offset2D"):
+        return "Offset2D"
     if obj.isDerivedFrom("Part::Feature"):
         return "Part"
     if (obj.TypeId == "App::Annotation"):
