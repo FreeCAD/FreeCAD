@@ -125,7 +125,7 @@ class Solve(run.Solve):
     def _updateOutput(self, output):
         if self.solver.ElmerOutput is None:
             self._createOutput()
-        self.solver.ElmerOutput.Text = output
+        self.solver.ElmerOutput.Text = output.decode("utf-8")
 
     def _createOutput(self):
         self.solver.ElmerOutput = self.analysis.Document.addObject(
