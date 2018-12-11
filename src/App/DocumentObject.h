@@ -131,7 +131,7 @@ public:
      */
     //@{
     /// set this document object touched (cause recomputation on dependent features)
-    void touch(void);
+    void touch(bool noRecompute=false);
     /// test if this document object is touched
     bool isTouched(void) const;
     /// Enforce this document object to be recomputed

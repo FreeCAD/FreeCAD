@@ -168,7 +168,6 @@ struct DocumentP
     int iTransactionMode;
     bool rollback;
     bool undoing; ///< document in the middle of undo or redo
-    std::vector<DocumentObject *> pendingRecomputes;
     std::bitset<32> StatusBits;
     int iUndoMode;
     unsigned int UndoMemSize;
@@ -1319,7 +1318,7 @@ void Document::onChanged(const Property* prop)
         for(auto obj : d->objectArray) {
             auto geofeature = dynamic_cast<GeoFeature*>(obj);
             if(geofeature && geofeature->getPropertyOfGeometry())
-                geofeature->touch();
+                geofeature->enforceRecompute();
         }
     }
 }
@@ -1546,6 +1545,7 @@ void Document::Restore(Base::XMLReader &reader)
 {
     int i,Cnt;
     d->hashers.clear();
+    d->touchedObjs.clear();
     addStringHasher(Hasher);
 
     setStatus(Document::PartialDoc,false);
@@ -1849,7 +1849,6 @@ std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
     d->touchedObjs.clear();
-    d->pendingRecomputes.clear();
     bool keepDigits = testStatus(Document::KeepTrailingDigits);
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
     std::vector<App::DocumentObject*> objs;
@@ -2012,8 +2011,10 @@ Document::readObjects(Base::XMLReader& reader)
 }
 
 void Document::addRecomputeObject(DocumentObject *obj) {
-    if(testStatus(Status::Restoring) && obj)
-        d->pendingRecomputes.push_back(obj);
+    if(testStatus(Status::Restoring) && obj) {
+        d->touchedObjs.insert(obj);
+        obj->touch();
+    }
 }
 
 std::vector<App::DocumentObject*>
@@ -2298,6 +2299,9 @@ void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
         (*obj)->setStatus(ObjectStatus::Destroy, true);
         delete *obj;
     }
+
+    setStatus(Document::PartialDoc,false);
+
     d->objectArray.clear();
     d->objectMap.clear();
     d->objectIdMap.clear();
@@ -2345,17 +2349,27 @@ void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
     }
 
     if(!delaySignal)
-        afterRestore();
+        afterRestore(false,true);
 }
 
-void Document::afterRestore(bool checkXLink) {
+void Document::afterRestore(bool checkXLink, bool checkPartial) {
     Base::FlagToggler<> flag(_IsRestoring,false);
-    afterRestore(d->objectArray,checkXLink);
+    if(!afterRestore(d->objectArray,checkXLink,checkPartial)) {
+        FC_WARN("Reload partial document " << getName());
+        restore();
+        return;
+    }
     GetApplication().signalFinishRestoreDocument(*this);
     setStatus(Document::Restoring, false);
 }
 
-void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool checkXLink) {
+bool Document::afterRestore(const std::vector<DocumentObject *> &objArray, 
+        bool checkXLink, bool checkPartial) 
+{
+    checkPartial = checkPartial && testStatus(Document::PartialDoc);
+    if(checkPartial && d->touchedObjs.size())
+        return false;
+
     // some link type property cannot restore link information until other
     // objects has been restored. For example, PropertyExpressionEngine and
     // PropertySheet with expression containing label reference. So we add the
@@ -2375,6 +2389,9 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
             }
         }
     }
+
+    if(checkPartial && d->touchedObjs.size())
+        return false;
 
     std::set<DocumentObject*> objSet(objArray.begin(),objArray.end());
     auto objs = getDependencyList(objArray.empty()?d->objectArray:objArray,DepSort);
@@ -2411,24 +2428,17 @@ void Document::afterRestore(const std::vector<DocumentObject *> &objArray, bool 
                 }
             }
         }
-        if(!d->touchedObjs.count(obj)) 
+
+        if(checkPartial && d->touchedObjs.size())
+            return false;
+        else if(!d->touchedObjs.count(obj)) 
             obj->purgeTouched();
 
         signalFinishRestoreObject(*obj);
     }
 
-    if(d->pendingRecomputes.size()) {
-        for(auto obj : d->pendingRecomputes) {
-            if(obj) {
-                FC_LOG("recompute '" << obj->getNameInDocument() << "' after restore");
-                obj->touch();
-            }
-        }
-        // recompute(objs);
-    }
     d->touchedObjs.clear();
-    d->pendingRecomputes.clear();
-
+    return true;
 }
 
 bool Document::isSaved() const

@@ -132,8 +132,10 @@ bool DocumentObject::recomputeFeature(bool recursive)
  * If it should be forced to recompute a document object then use
  * \ref enforceRecompute() instead.
  */
-void DocumentObject::touch(void)
+void DocumentObject::touch(bool noRecompute)
 {
+    if(!noRecompute)
+        StatusBits.set(ObjectStatus::Enforce);
     StatusBits.set(ObjectStatus::Touch);
     if (_pDoc)
         _pDoc->signalTouchedObject(*this);
@@ -155,8 +157,7 @@ bool DocumentObject::isTouched() const
  */
 void DocumentObject::enforceRecompute(void)
 {
-    StatusBits.set(ObjectStatus::Enforce);
-    touch();
+    touch(false);
 }
 
 /**

@@ -625,7 +625,7 @@ Document* Application::openDocument(const char * FileName)
 
     for(auto &v : newDocs) {
         FC_TIME_INIT(t1);
-        v.first->afterRestore(true);
+        v.first->afterRestore(true,true);
         FC_DURATION_PLUS(v.second.d2,t1);
     }
     setActiveDocument(newDocs.back().first);

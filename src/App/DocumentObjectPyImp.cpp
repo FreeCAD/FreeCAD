@@ -139,6 +139,10 @@ PyObject*  DocumentObjectPy::touch(PyObject * args)
     if (!PyArg_ParseTuple(args, "|s",&propName))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception 
     if(propName) {
+        if(!propName[0]) {
+            getDocumentObjectPtr()->touch(true);
+            Py_Return;
+        }
         auto prop = getDocumentObjectPtr()->getPropertyByName(propName);
         if(!prop) 
             throw Py::RuntimeError("Property not found");
