@@ -19,7 +19,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
 
 __title__ = "FreeCAD Z88 Mesh reader and writer"
 __author__ = "Bernd Hahnebach"
@@ -31,9 +30,6 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import os
-
-
-Debug = False
 
 
 # ********* generic FreeCAD import and export methods *********
@@ -153,12 +149,16 @@ def read_z88_mesh(z88_mesh_input):
     nodes_last_line = nodes_count + 1
     elemts_first_line = nodes_last_line + 1
     elements_last_line = elemts_first_line - 1 + elements_count * 2
-    if Debug:
-        print(nodes_count)
-        print(elements_count)
-        print(nodes_last_line)
-        print(elemts_first_line)
-        print(elements_last_line)
+
+    FreeCAD.Console.PrintLog(nodes_count)
+    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog(elements_count)
+    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog(nodes_last_line)
+    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog(elemts_first_line)
+    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog(elements_last_line)
 
     z88_mesh_file.seek(0)  # go back to the beginning of the file
     for no, line in enumerate(z88_mesh_file):
@@ -320,11 +320,11 @@ def read_z88_mesh(z88_mesh_input):
                     FreeCAD.Console.PrintError("Unknown element\n")
                     return {}
 
-    if Debug:
-        for n in nodes:
-            print(n, '  ', nodes[n])
-        for e in elements_tria6:
-            print(e, '  ', elements_tria6[e])
+    for n in nodes:
+        FreeCAD.Console.PrintLog(str(n) + '  ' + str(nodes[n]) + '\n')
+    for e in elements_tria6:
+        FreeCAD.Console.PrintLog(str(e) + '  ' + str(elements_tria6[e]) + '\n')
+    FreeCAD.Console.PrintLog('\n')
 
     z88_mesh_file.close()
     return {
