@@ -30,8 +30,8 @@ from . import testtools
 from .testtools import fcc_print
 
 
-class FemCommon(unittest.TestCase):
-    fcc_print('import FemCommon')
+class TestFemCommon(unittest.TestCase):
+    fcc_print('import TestFemCommon')
 
     def setUp(self):
         self.doc_name = "TestsFemCommon"

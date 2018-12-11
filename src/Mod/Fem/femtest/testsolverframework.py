@@ -31,11 +31,11 @@ from . import testtools
 from .testtools import fcc_print
 
 
-class SolverFrameWorkTest(unittest.TestCase):
-    fcc_print('import SolverFrameWorkTest')
+class TestSolverFrameWork(unittest.TestCase):
+    fcc_print('import TestSolverFrameWork')
 
     def setUp(self):
-        self.doc_name = "TestsFemSolverFrameWork"
+        self.doc_name = "TestSolverFrameWork"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
         except:

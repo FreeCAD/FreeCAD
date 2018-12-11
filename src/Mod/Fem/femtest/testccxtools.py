@@ -32,11 +32,11 @@ from . import testtools
 from .testtools import fcc_print
 
 
-class FemCcxAnalysisTest(unittest.TestCase):
-    fcc_print('import FemCcxAnalysisTest')
+class TestCcxTools(unittest.TestCase):
+    fcc_print('import TestCcxTools')
 
     def setUp(self):
-        self.doc_name = "TestsFemCcxTools"
+        self.doc_name = "TestCcxTools"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
         except:
