@@ -741,14 +741,26 @@ void TreeWidget::onRecomputeObject() {
         if (ti->type() == ObjectType) {
             DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(ti);
             objs.push_back(objitem->object()->getObject());
-            objs.back()->touch();
+            objs.back()->enforceRecompute();
         }
     }
     if(objs.empty())
         return;
-    App::GetApplication().setActiveTransaction("Recompute");
-    objs.front()->getDocument()->recompute(objs,true);
+    App::GetApplication().setActiveTransaction("Recompute object");
+    std::string msg;
+    try {
+        objs.front()->getDocument()->recompute(objs,true);
+    }catch (Base::Exception &e) {
+        e.ReportException();
+        msg = e.what();
+    }catch (std::exception &e) {
+        msg = e.what();
+    }
     App::GetApplication().closeActiveTransaction();
+    if(msg.size()) {
+        QMessageBox::critical(getMainWindow(), QObject::tr("Recompute failed"),
+                QString::fromUtf8(msg.c_str()));
+    }
 }
 
 
