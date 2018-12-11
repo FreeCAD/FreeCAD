@@ -152,6 +152,16 @@ class FemMeshTest(unittest.TestCase):
         self.assertEqual(femmesh_outfile.Nodes, femmesh_testfile.Nodes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n")
         self.assertEqual(femmesh_outfile.Volumes, femmesh_testfile.Volumes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n")
 
+        filetyp = 'z88'
+        outfile = base_outfile + filetyp
+        testfile = base_testfile + filetyp
+        femmesh.write(outfile)
+        import feminout.importZ88Mesh
+        femmesh_outfile = feminout.importZ88Mesh.read(testfile)
+        femmesh_testfile = feminout.importZ88Mesh.read(outfile)
+        self.assertEqual(femmesh_outfile.Nodes, femmesh_testfile.Nodes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n")
+        self.assertEqual(femmesh_outfile.Volumes, femmesh_testfile.Volumes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n")
+
     def test_unv_save_load(self):
         tetra10 = Fem.FemMesh()
         tetra10.addNode(6, 12, 18, 1)
