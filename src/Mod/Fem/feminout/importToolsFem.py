@@ -126,7 +126,7 @@ def make_femmesh(mesh_data):
     mesh = Fem.FemMesh()
     m = mesh_data
     if ('Nodes' in m) and (len(m['Nodes']) > 0):
-        print("Found: nodes")
+        FreeCAD.Console.PrintLog("Found: nodes\n")
         if (
                 ('Seg2Elem' in m) or
                 ('Seg3Elem' in m) or
@@ -143,7 +143,7 @@ def make_femmesh(mesh_data):
         ):
 
             nds = m['Nodes']
-            print("Found: elements")
+            FreeCAD.Console.PrintLog("Found: elements\n")
             for i in nds:
                 n = nds[i]
                 mesh.addNode(n[0], n[1], n[2], i)
@@ -197,10 +197,12 @@ def make_femmesh(mesh_data):
             for i in elms_seg3:
                 e = elms_seg3[i]
                 mesh.addEdge([e[0], e[1], e[2]], i)
-            print("imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15".format(
-                  len(nds), len(elms_hexa8), len(elms_penta6), len(elms_tetra4), len(elms_tetra10), len(elms_penta15)))
-            print("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3".format(
-                  len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2), len(elms_seg3)))
+            FreeCAD.Console.PrintLog("imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15".format(
+                len(nds), len(elms_hexa8), len(elms_penta6), len(elms_tetra4), len(elms_tetra10), len(elms_penta15)
+            ))
+            FreeCAD.Console.PrintLog("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3".format(
+                len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2), len(elms_seg3)
+            ))
         else:
             FreeCAD.Console.PrintError("No Elements found!\n")
     else:
