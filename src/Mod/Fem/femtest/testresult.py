@@ -25,8 +25,8 @@
 
 import FreeCAD
 import unittest
-from . import testtools
-from .testtools import fcc_print
+from . import utilstest as testtools
+from .utilstest import fcc_print
 
 
 class TestResult(unittest.TestCase):
