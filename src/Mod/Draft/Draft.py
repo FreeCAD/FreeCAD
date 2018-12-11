@@ -3542,14 +3542,44 @@ def upgrade(objects,delete=False,force=None):
 
     def makeShell(objectslist):
         """makes a shell with the given objects"""
+        params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        preserveFaceColor = params.GetBool("preserveFaceColor") # True
+        preserveFaceNames = params.GetBool("preserveFaceNames") # True
         faces = []
+        facecolors = [[], []] if (preserveFaceColor) else None
         for obj in objectslist:
             faces.extend(obj.Shape.Faces)
+            if (preserveFaceColor):
+                """ at this point, obj.Shape.Faces are not in same order as the
+                original faces we might have gotten as a result of downgrade, nor do they
+                have the same hashCode(); but they still keep reference to their original
+                colors - capture that in facecolors.
+                Also, cannot w/ .ShapeColor here, need a whole array matching the colors
+                of the array of faces per object, only DiffuseColor has that """
+                facecolors[0].extend(obj.ViewObject.DiffuseColor)
+                facecolors[1] = faces
         sh = Part.makeShell(faces)
         if sh:
             if sh.Faces:
                 newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Shell")
                 newobj.Shape = sh
+                if (preserveFaceNames):
+                    import re
+                    firstName = objectslist[0].Label
+                    nameNoTrailNumbers = re.sub("\d+$", "", firstName)
+                    newobj.Label = "{} {}".format(newobj.Label, nameNoTrailNumbers)
+                if (preserveFaceColor):
+                    """ At this point, sh.Faces are completely new, with different hashCodes
+                    and different ordering from obj.Shape.Faces; since we cannot compare
+                    via hashCode(), we have to iterate and use a different criteria to find
+                    the original matching color """
+                    colarray = []
+                    for ind, face in enumerate(newobj.Shape.Faces):
+                        for fcind, fcface in enumerate(facecolors[1]):
+                            if ((face.Area == fcface.Area) and (face.CenterOfMass == fcface.CenterOfMass)):
+                                colarray.append(facecolors[0][fcind])
+                                break
+                    newobj.ViewObject.DiffuseColor = colarray;
                 addList.append(newobj)
                 deleteList.extend(objectslist)
                 return newobj
@@ -3836,11 +3866,24 @@ def downgrade(objects,delete=False,force=None):
     def splitFaces(objects):
         """split faces contained in objects into new objects"""
         result = False
+        params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        preserveFaceColor = params.GetBool("preserveFaceColor") # True
+        preserveFaceNames = params.GetBool("preserveFaceNames") # True
         for o in objects:
+            voDColors = o.ViewObject.DiffuseColor if (preserveFaceColor and hasattr(o,'ViewObject')) else None
+            oLabel = o.Label if hasattr(o,'Label') else ""
             if o.Shape.Faces:
-                for f in o.Shape.Faces:
+                for ind, f in enumerate(o.Shape.Faces):
                     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Face")
                     newobj.Shape = f
+                    if preserveFaceNames:
+                        newobj.Label = "{} {}".format(oLabel, newobj.Label)
+                    if preserveFaceColor:
+                        """ At this point, some single-color objects might have
+                        just a single entry in voDColors for all their faces; handle that"""
+                        tcolor = voDColors[ind] if ind<len(voDColors) else voDColors[0]
+                        newobj.ViewObject.DiffuseColor[0] = tcolor # does is not applied visually on its own; left just in case
+                        newobj.ViewObject.ShapeColor = tcolor # this gets applied, works by itself too
                     addList.append(newobj)
                 result = True
                 deleteList.append(o)
