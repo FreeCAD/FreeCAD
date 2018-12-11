@@ -30,6 +30,7 @@
 from femtest.testcommon import FemCommon
 from femtest.testobject import FemObject
 from femtest.testmesh import FemMeshTest
+from femtest.testmesh import TestEleTetra10
 from femtest.testccxtools import FemCcxAnalysisTest
 from femtest.testsolverframework import SolverFrameWorkTest
 
