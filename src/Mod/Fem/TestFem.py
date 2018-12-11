@@ -77,7 +77,6 @@ unittest.TextTestRunner().run(mytest)
 ./bin/FreeCAD --run-test "femtest.testobject"
 ./bin/FreeCAD --run-test "femtest.testresult"
 ./bin/FreeCAD --run-test "femtest.testsolverframework"
-./bin/FreeCAD --run-test "femtest.testtools"
 
 # class
 ./bin/FreeCAD --run-test "femtest.testcommon.TestFemCommon"
