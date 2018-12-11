@@ -30,11 +30,11 @@ from . import testtools
 from .testtools import fcc_print
 
 
-class FemMeshTest(unittest.TestCase):
-    fcc_print('import FemMeshTest')
+class TestMeshCommon(unittest.TestCase):
+    fcc_print('import TestMeshCommon')
 
     def setUp(self):
-        self.doc_name = "TestsFemMesh"
+        self.doc_name = "TestMeshCommon"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
         except:
@@ -138,11 +138,11 @@ class FemMeshTest(unittest.TestCase):
         pass
 
 
-class TestEleTetra10(unittest.TestCase):
-    fcc_print('import TestEleTetra10')
+class TestMeshEleTetra10(unittest.TestCase):
+    fcc_print('import TestMeshEleTetra10')
 
     def setUp(self):
-        self.doc_name = "TestEleTetra10"
+        self.doc_name = "TestMeshEleTetra10"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
         except:

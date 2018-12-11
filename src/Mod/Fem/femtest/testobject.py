@@ -30,11 +30,11 @@ from . import testtools
 from .testtools import fcc_print
 
 
-class FemObject(unittest.TestCase):
-    fcc_print('import FemObject')
+class TestObjectCreate(unittest.TestCase):
+    fcc_print('import TestObjectCreate')
 
     def setUp(self):
-        self.doc_name = "TestsFemObject"
+        self.doc_name = "TestObjectCreate"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
         except:
@@ -102,6 +102,24 @@ class FemObject(unittest.TestCase):
 
         doc.recompute()
         self.assertEqual(len(analysis.Group), testtools.get_defmake_count() - 1)  # because of the analysis itself count -1
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc_name)
+        pass
+
+
+class TestObjectType(unittest.TestCase):
+    fcc_print('import TestObjectType')
+
+    def setUp(self):
+        self.doc_name = "TestObjectType"
+        try:
+            FreeCAD.setActiveDocument(self.doc_name)
+        except:
+            FreeCAD.newDocument(self.doc_name)
+        finally:
+            FreeCAD.setActiveDocument(self.doc_name)
+        self.active_doc = FreeCAD.ActiveDocument
 
     def test_femobjects_type(self):
         doc = self.active_doc

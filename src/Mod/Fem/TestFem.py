@@ -27,18 +27,19 @@
 # Unit test for the FEM module
 # the order should be as follows:
 # common-, object-, mesh-, inout-, ccxtools-, solverframworktests
-from femtest.testcommon import FemCommon
-from femtest.testobject import FemObject
-from femtest.testmesh import FemMeshTest
-from femtest.testmesh import TestEleTetra10
-from femtest.testccxtools import FemCcxAnalysisTest
-from femtest.testsolverframework import SolverFrameWorkTest
+from femtest.testcommon import TestFemCommon
+from femtest.testobject import TestObjectCreate
+from femtest.testobject import TestObjectType
+from femtest.testmesh import TestMeshCommon
+from femtest.testmesh import TestMeshEleTetra10
+from femtest.testccxtools import TestCcxTools
+from femtest.testsolverframework import TestSolverFrameWork
 
 
 # For more information on how to run a specific test class or a test method see 
 # file src/Mod/Test/__init__ and forum https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
 
-# It may be useful to temporary comment FreeCAD.closeDocument("FemCommon") in tearDown method to not close the document
+# It may be useful to temporary comment FreeCAD.closeDocument(self.doc_name) in tearDown method to not close the document
 
 
 '''
@@ -53,11 +54,11 @@ Test.runTestsFromModule(femtest.testcommon)
 
 # class
 import Test, femtest.testcommon
-Test.runTestsFromClass(femtest.testcommon.FemCommon)
+Test.runTestsFromClass(femtest.testcommon.TestFemCommon)
 
 # method
 import unittest
-mytest = unittest.TestLoader().loadTestsFromName("femtest.testcommon.FemCommon.test_pyimport_all_FEM_modules")
+mytest = unittest.TestLoader().loadTestsFromName("femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules")
 unittest.TextTestRunner().run(mytest)
 
 
@@ -77,9 +78,9 @@ unittest.TextTestRunner().run(mytest)
 ./bin/FreeCAD --run-test "femtest.testtools"
 
 # class
-./bin/FreeCAD --run-test "femtest.testcommon.FemCommon"
+./bin/FreeCAD --run-test "femtest.testcommon.TestFemCommon"
 
 # method
-./bin/FreeCAD --run-test "femtest.testcommon.FemCommon.test_pyimport_all_FEM_modules"
+./bin/FreeCAD --run-test "femtest.testcommon.TestFemCommon.test_pyimport_all_FEM_modules"
 
 '''
