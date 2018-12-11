@@ -775,7 +775,7 @@ def create_test_results():
     thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
     Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
 
-    # run unit test from tests classes from this module
+    # run all unit tests from this module
     import Test
     import sys
     current_module = sys.modules[__name__]
