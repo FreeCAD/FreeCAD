@@ -119,6 +119,7 @@ SET(FemTests_SRCS
     femtest/testcommon.py
     femtest/testmesh.py
     femtest/testobject.py
+    femtest/testresult.py
     femtest/testsolverframework.py
     femtest/testtools.py
 )
