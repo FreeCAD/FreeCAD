@@ -27,10 +27,11 @@ import FreeCAD
 import ObjectsFem
 import unittest
 from . import testtools
-# from .testtools import fcc_print
+from .testtools import fcc_print
 
 
 class FemObject(unittest.TestCase):
+    fcc_print('import FemObject')
 
     def setUp(self):
         self.doc_name = "TestsFemObject"
