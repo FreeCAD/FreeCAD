@@ -27,8 +27,8 @@ import FreeCAD
 import ObjectsFem
 import femsolver.run
 import unittest
-from . import testtools
-from .testtools import fcc_print
+from . import utilstest as testtools
+from .utilstest import fcc_print
 
 
 class TestSolverFrameWork(unittest.TestCase):
