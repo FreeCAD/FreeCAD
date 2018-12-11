@@ -363,6 +363,10 @@ void FileException::setPyObject( PyObject * pydict)
     }
 }
 
+PyObject * FileException::getPyExceptionType() const {
+    return PyExc_IOError;
+}
+
 // ---------------------------------------------------------
 
 

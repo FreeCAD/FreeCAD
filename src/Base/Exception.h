@@ -257,6 +257,8 @@ public:
   virtual PyObject * getPyObject(void);
   /// returns sets the exception data from a Python dictionary
   virtual void setPyObject( PyObject * pydict);
+
+  virtual PyObject * getPyExceptionType() const override;
 protected:
   FileInfo file;
   // necessary   for what() legacy behaviour as it returns a buffer that

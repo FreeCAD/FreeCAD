@@ -56,20 +56,12 @@ PyObject*  DocumentPy::save(PyObject * args)
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                    // NULL triggers exception
 
-    try {
+    PY_TRY {
         if (!getDocumentPtr()->save()) {
             PyErr_SetString(PyExc_ValueError, "Object attribute 'FileName' is not set");
             return NULL;
         }
-    }
-    catch (const Base::FileException& e) {
-        PyErr_SetString(PyExc_IOError, e.what());
-        return 0;
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
+    } PY_CATCH;
 
     const char* filename = getDocumentPtr()->FileName.getValue();
     Base::FileInfo fi(filename);
@@ -504,7 +496,7 @@ PyObject*  DocumentPy::recompute(PyObject * args)
     PyObject *pyobjs = Py_None;
     if (!PyArg_ParseTuple(args, "|O",&pyobjs))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception
-    try {
+    PY_TRY {
         std::vector<App::DocumentObject *> objs;
         if(pyobjs!=Py_None) {
             if(!PySequence_Check(pyobjs)) {
@@ -522,11 +514,7 @@ PyObject*  DocumentPy::recompute(PyObject * args)
         }
         int objectCount = getDocumentPtr()->recompute(objs);
         return Py::new_reference_to(Py::Int(objectCount));
-    }
-    catch (const Base::RuntimeError& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
+    } PY_CATCH;
 }
 
 PyObject*  DocumentPy::getObject(PyObject *args)
