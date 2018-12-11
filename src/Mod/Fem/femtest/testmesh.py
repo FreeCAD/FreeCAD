@@ -136,11 +136,10 @@ class FemMeshTest(unittest.TestCase):
         filetyp = 'inp'
         outfile = base_outfile + filetyp
         testfile = base_testfile + filetyp
-        femmesh.writeABAQUS(outfile, 1, False)
-        import feminout.importToolsFem
-        import feminout.importInpMesh
-        femmesh_outfile = feminout.importToolsFem.make_femmesh(feminout.importInpMesh.read_inp(outfile))
-        femmesh_testfile = feminout.importToolsFem.make_femmesh(feminout.importInpMesh.read_inp(testfile))
+        self.femmesh.writeABAQUS(outfile, 1, False)  # write the mesh
+        from feminout.importInpMesh import read as read_inp
+        femmesh_outfile = read_inp(outfile)  # read the mesh from written mesh
+        femmesh_testfile = read_inp(testfile)  # read the mesh from test mesh
         self.assertEqual(femmesh_outfile.Nodes, femmesh_testfile.Nodes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n")
         self.assertEqual(femmesh_outfile.Volumes, femmesh_testfile.Volumes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n")
 
