@@ -32,6 +32,7 @@ from .testtools import fcc_print
 
 
 class SolverFrameWorkTest(unittest.TestCase):
+    fcc_print('import SolverFrameWorkTest')
 
     def setUp(self):
         self.doc_name = "TestsFemSolverFrameWork"

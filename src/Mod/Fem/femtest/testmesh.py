@@ -31,6 +31,7 @@ from .testtools import fcc_print
 
 
 class FemMeshTest(unittest.TestCase):
+    fcc_print('import FemMeshTest')
 
     def setUp(self):
         self.doc_name = "TestsFemMesh"
@@ -130,6 +131,7 @@ class FemMeshTest(unittest.TestCase):
 
 
 class TestEleTetra10(unittest.TestCase):
+    fcc_print('import TestEleTetra10')
 
     def setUp(self):
         self.doc_name = "TestEleTetra10"
