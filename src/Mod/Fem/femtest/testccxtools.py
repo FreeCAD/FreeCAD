@@ -33,6 +33,7 @@ from .testtools import fcc_print
 
 
 class FemCcxAnalysisTest(unittest.TestCase):
+    fcc_print('import FemCcxAnalysisTest')
 
     def setUp(self):
         self.doc_name = "TestsFemCcxTools"

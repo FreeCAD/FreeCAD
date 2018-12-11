@@ -31,6 +31,7 @@ from .testtools import fcc_print
 
 
 class FemCommon(unittest.TestCase):
+    fcc_print('import FemCommon')
 
     def setUp(self):
         self.doc_name = "TestsFemCommon"
