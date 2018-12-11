@@ -96,24 +96,29 @@ class FemMeshTest(unittest.TestCase):
             'count': femmesh.NodeCount,
             'nodes': femmesh.Nodes
         }
-        elem_data = {'volcount': femmesh.VolumeCount, 'tetcount': femmesh.TetraCount, 'volumes': {
-            femmesh.Volumes[0], femmesh.getElementNodes(femmesh.Volumes[0]),
-        }}
-        expected_nodes = {'count': 10, 'nodes': {
-            1: FreeCAD.Vector(6.0, 12.0, 18.0),
-            2: FreeCAD.Vector(0.0, 0.0, 18.0),
-            3: FreeCAD.Vector(12.0, 0.0, 18.0),
-            4: FreeCAD.Vector(6.0, 6.0, 0.0),
-            5: FreeCAD.Vector(3.0, 6.0, 18.0),
-            6: FreeCAD.Vector(6.0, 0.0, 18.0),
-            7: FreeCAD.Vector(9.0, 6.0, 18.0),
-            8: FreeCAD.Vector(6.0, 9.0, 9.0),
-            9: FreeCAD.Vector(3.0, 3.0, 9.0),
-            10: FreeCAD.Vector(9.0, 3.0, 9.0),
-        }}
-        expected_elem = {'volcount': 1, 'tetcount': 1, 'volumes': {
-            1, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-        }}
+        elem_data = {
+            'volcount': femmesh.VolumeCount,
+            'tetcount': femmesh.TetraCount,
+            'volumes': [femmesh.Volumes[0], femmesh.getElementNodes(femmesh.Volumes[0])]
+        }
+        expected_nodes = {
+            'count': 10,
+            'nodes': {
+                1: FreeCAD.Vector(6.0, 12.0, 18.0),
+                2: FreeCAD.Vector(0.0, 0.0, 18.0),
+                3: FreeCAD.Vector(12.0, 0.0, 18.0),
+                4: FreeCAD.Vector(6.0, 6.0, 0.0),
+                5: FreeCAD.Vector(3.0, 6.0, 18.0),
+                6: FreeCAD.Vector(6.0, 0.0, 18.0),
+                7: FreeCAD.Vector(9.0, 6.0, 18.0),
+                8: FreeCAD.Vector(6.0, 9.0, 9.0),
+                9: FreeCAD.Vector(3.0, 3.0, 9.0),
+                10: FreeCAD.Vector(9.0, 3.0, 9.0),
+            }
+        }
+        expected_elem = {
+            'volcount': 1, 'tetcount': 1, 'volumes': [1, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)]
+        }
         '''
         fcc_print('\n')
         fcc_print(elem_data)
@@ -136,31 +141,132 @@ class FemMeshTest(unittest.TestCase):
         filetyp = 'inp'
         outfile = base_outfile + filetyp
         testfile = base_testfile + filetyp
-        self.femmesh.writeABAQUS(outfile, 1, False)  # write the mesh
-        from feminout.importInpMesh import read as read_inp
-        femmesh_outfile = read_inp(outfile)  # read the mesh from written mesh
-        femmesh_testfile = read_inp(testfile)  # read the mesh from test mesh
-        self.assertEqual(femmesh_outfile.Nodes, femmesh_testfile.Nodes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n")
-        self.assertEqual(femmesh_outfile.Volumes, femmesh_testfile.Volumes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n")
+        fcc_print(outfile)
+        fcc_print(testfile)
+        import feminout.importToolsFem
+        import feminout.importInpMesh
+        femmesh.writeABAQUS(outfile, 1, False)  # write the mesh
+        femmesh_outfile = feminout.importToolsFem.make_femmesh(feminout.importInpMesh.read_inp(outfile))  # read the mesh from written mesh
+        femmesh_testfile = feminout.importToolsFem.make_femmesh(feminout.importInpMesh.read_inp(testfile))  # read the mesh from test mesh
+        # reading the test mesh
+        # fcc_print([femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])])
+        self.assertEqual(
+            femmesh_testfile.Nodes,
+            expected_nodes['nodes'],
+            "Test reading " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
+            expected_elem['volumes'],
+            "Test reading " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
+        # reading the written mesh
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            expected_nodes['nodes'],
+            "Test reading " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
+            expected_elem['volumes'],
+            "Test reading " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
+        # both
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            femmesh_testfile.Nodes,
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
+            [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
 
         filetyp = 'unv'
         outfile = base_outfile + filetyp
         testfile = base_testfile + filetyp
-        femmesh.write(outfile)
-        femmesh_outfile = Fem.read(outfile)
-        femmesh_testfile = Fem.read(testfile)
-        self.assertEqual(femmesh_outfile.Nodes, femmesh_testfile.Nodes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n")
-        self.assertEqual(femmesh_outfile.Volumes, femmesh_testfile.Volumes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n")
+        fcc_print(outfile)
+        fcc_print(testfile)
+        femmesh.write(outfile)  # write the mesh
+        femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
+        femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
+        # reading the test mesh
+        self.assertEqual(
+            femmesh_testfile.Nodes,
+            expected_nodes['nodes'],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
+            expected_elem['volumes'],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
+        # reading the written mesh
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            expected_nodes['nodes'],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
+            expected_elem['volumes'],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
+        # both
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            femmesh_testfile.Nodes,
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            femmesh_outfile.Volumes,
+            femmesh_testfile.Volumes,
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
 
         filetyp = 'z88'
         outfile = base_outfile + filetyp
         testfile = base_testfile + filetyp
-        femmesh.write(outfile)
+        fcc_print(outfile)
+        fcc_print(testfile)
+        femmesh.write(outfile)  # write the mesh
         import feminout.importZ88Mesh
-        femmesh_outfile = feminout.importZ88Mesh.read(testfile)
-        femmesh_testfile = feminout.importZ88Mesh.read(outfile)
-        self.assertEqual(femmesh_outfile.Nodes, femmesh_testfile.Nodes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n")
-        self.assertEqual(femmesh_outfile.Volumes, femmesh_testfile.Volumes, "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n")
+        femmesh_testfile = feminout.importZ88Mesh.read(outfile)  # read the mesh from written mesh
+        femmesh_outfile = feminout.importZ88Mesh.read(testfile)  # read the mesh from test mesh
+       # reading the test mesh
+        self.assertEqual(
+            femmesh_testfile.Nodes,
+            expected_nodes['nodes'],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            [femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])],
+            expected_elem['volumes'],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
+        # reading the written mesh
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            expected_nodes['nodes'],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            [femmesh_outfile.Volumes[0], femmesh_outfile.getElementNodes(femmesh_outfile.Volumes[0])],
+            expected_elem['volumes'],
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
+        # both
+        self.assertEqual(
+            femmesh_outfile.Nodes,
+            femmesh_testfile.Nodes,
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Nodes are different.\n"
+        )
+        self.assertEqual(
+            femmesh_outfile.Volumes,
+            femmesh_testfile.Volumes,
+            "Test writing " + elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
+        )
 
     def test_unv_save_load(self):
         tetra10 = Fem.FemMesh()
