@@ -433,7 +433,7 @@ def get_z88_element_type(femmesh, femelement_table=None):
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
         elem_length = len(femelement_table[elem])
-        print(elem_length)
+        FreeCAD.Console.PrintLog('node count of first element: ' + str(elem_length) + '\n')
         break  # break after the first elem
     if FemMeshTools.is_solid_femmesh(femmesh):
         if femmesh.TetraCount == femmesh.VolumeCount:
