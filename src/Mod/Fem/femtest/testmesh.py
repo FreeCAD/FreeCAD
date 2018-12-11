@@ -70,7 +70,15 @@ class FemMeshTest(unittest.TestCase):
 
         node_data = [seg3.NodeCount, seg3.Nodes]
         edge_data = [seg3.EdgeCount, seg3.Edges[0], seg3.getElementNodes(seg3.Edges[0]), seg3.Edges[1], seg3.getElementNodes(seg3.Edges[1])]
-        expected_nodes = [5, {1: FreeCAD.Vector(0.0, 0.0, 0.0), 2: FreeCAD.Vector(1.0, 0.0, 0.0), 3: FreeCAD.Vector(2.0, 0.0, 0.0), 4: FreeCAD.Vector(3.0, 0.0, 0.0), 5: FreeCAD.Vector(4.0, 0.0, 0.0)}]
+        expected_nodes = [
+            5, {
+                1: FreeCAD.Vector(0.0, 0.0, 0.0),
+                2: FreeCAD.Vector(1.0, 0.0, 0.0),
+                3: FreeCAD.Vector(2.0, 0.0, 0.0),
+                4: FreeCAD.Vector(3.0, 0.0, 0.0),
+                5: FreeCAD.Vector(4.0, 0.0, 0.0)
+            }
+        ]
         expected_edges = [2, 1, (1, 3, 2), 2, (3, 5, 4)]
         self.assertEqual(node_data, expected_nodes, "Nodes of Python created seg3 element are unexpected")
         self.assertEqual(edge_data, expected_edges, "Edges of Python created seg3 element are unexpected")
@@ -176,7 +184,9 @@ class TestEleTetra10(unittest.TestCase):
             }
         }
         self.expected_elem = {
-            'volcount': 1, 'tetcount': 1, 'volumes': [1, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)]
+            'volcount': 1,
+            'tetcount': 1,
+            'volumes': [1, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)]
         }
         '''
         fcc_print('\n')
@@ -186,7 +196,7 @@ class TestEleTetra10(unittest.TestCase):
         '''
 
     def test_tetra10_create(self):
-        fcc_print('test creating tetra10 \n')
+        # tetra10 element: creating by Python
         node_data = {
             'count': self.femmesh.NodeCount,
             'nodes': self.femmesh.Nodes
@@ -206,17 +216,16 @@ class TestEleTetra10(unittest.TestCase):
         '''
 
     def test_tetra10_inp(self):
-        fcc_print(self.elem + 'tetra10 inp file format.\n')
+        # tetra10 element: reading from and writing to inp mesh file format
         filetyp = 'inp'
         outfile = self.base_outfile + filetyp
         testfile = self.base_testfile + filetyp
-        fcc_print(outfile)
-        fcc_print(testfile)
-        import feminout.importToolsFem
-        import feminout.importInpMesh
+        # fcc_print(outfile)
+        # fcc_print(testfile)
         self.femmesh.writeABAQUS(outfile, 1, False)  # write the mesh
-        femmesh_outfile = feminout.importToolsFem.make_femmesh(feminout.importInpMesh.read_inp(outfile))  # read the mesh from written mesh
-        femmesh_testfile = feminout.importToolsFem.make_femmesh(feminout.importInpMesh.read_inp(testfile))  # read the mesh from test mesh
+        from feminout.importInpMesh import read as read_inp
+        femmesh_outfile = read_inp(outfile)  # read the mesh from written mesh
+        femmesh_testfile = read_inp(testfile)  # read the mesh from test mesh
         # reading the test mesh
         # fcc_print([femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])])
         self.assertEqual(
@@ -253,11 +262,12 @@ class TestEleTetra10(unittest.TestCase):
         )
 
     def test_tetra10_unv(self):
+        # tetra10 element: reading from and writing to unv mesh file format
         filetyp = 'unv'
         outfile = self.base_outfile + filetyp
         testfile = self.base_testfile + filetyp
-        fcc_print(outfile)
-        fcc_print(testfile)
+        # fcc_print(outfile)
+        # fcc_print(testfile)
         self.femmesh.write(outfile)  # write the mesh
         femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
         femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
@@ -296,15 +306,16 @@ class TestEleTetra10(unittest.TestCase):
         )
 
     def test_tetra10_z88(self):
+        # tetra10 element: reading from and writing to z88 mesh file format
         filetyp = 'z88'
         outfile = self.base_outfile + filetyp
         testfile = self.base_testfile + filetyp
-        fcc_print(outfile)
-        fcc_print(testfile)
+        # fcc_print(outfile)
+        # fcc_print(testfile)
         self.femmesh.write(outfile)  # write the mesh
-        import feminout.importZ88Mesh
-        femmesh_testfile = feminout.importZ88Mesh.read(outfile)  # read the mesh from written mesh
-        femmesh_outfile = feminout.importZ88Mesh.read(testfile)  # read the mesh from test mesh
+        from feminout.importZ88Mesh import read as read_z88
+        femmesh_testfile = read_z88(outfile)  # read the mesh from written mesh
+        femmesh_outfile = read_z88(testfile)  # read the mesh from test mesh
         # reading the test mesh
         self.assertEqual(
             femmesh_testfile.Nodes,
