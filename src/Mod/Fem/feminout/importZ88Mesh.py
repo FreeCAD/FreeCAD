@@ -104,10 +104,8 @@ def read(filename):
 def import_z88_mesh(filename, analysis=None):
     '''read a FEM mesh from a Z88 mesh file and insert a FreeCAD FEM Mesh object in the ActiveDocument
     '''
-    mesh_data = read_z88_mesh(filename)
+    femmesh = read(filename)
     mesh_name = os.path.basename(os.path.splitext(filename)[0])
-    from . import importToolsFem
-    femmesh = importToolsFem.make_femmesh(mesh_data)
     if femmesh:
         mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = femmesh
