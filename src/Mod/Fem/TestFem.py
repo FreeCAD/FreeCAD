@@ -32,6 +32,7 @@ from femtest.testobject import TestObjectCreate
 from femtest.testobject import TestObjectType
 from femtest.testmesh import TestMeshCommon
 from femtest.testmesh import TestMeshEleTetra10
+from femtest.testresult import TestResult
 from femtest.testccxtools import TestCcxTools
 from femtest.testsolverframework import TestSolverFrameWork
 
@@ -74,6 +75,7 @@ unittest.TextTestRunner().run(mytest)
 ./bin/FreeCAD --run-test "femtest.testcommon"
 ./bin/FreeCAD --run-test "femtest.testmesh"
 ./bin/FreeCAD --run-test "femtest.testobject"
+./bin/FreeCAD --run-test "femtest.testresult"
 ./bin/FreeCAD --run-test "femtest.testsolverframework"
 ./bin/FreeCAD --run-test "femtest.testtools"
 
