@@ -96,8 +96,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def initPage(self, obj):
         self.setTitle("Pocket Extensions")
-        self.enabled = not obj.UseOutline
-        self.enable(not self.enabled)
         self.extensions = obj.Proxy.getExtensions(obj)
 
         self.defaultLength = PathGui.QuantitySpinBox(self.form.defaultLength, obj, 'ExtensionLengthDefault')
@@ -111,16 +109,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def cleanupPage(self, obj):
         self.obj.ViewObject.RootNode.removeChild(self.switch)
-
-    def enable(self, ena):
-        if ena != self.enabled:
-            self.enabled = ena
-            if ena:
-                self.form.info.hide()
-                self.form.extensionEdit.setEnabled(True)
-            else:
-                self.form.info.show()
-                self.form.extensionEdit.setEnabled(False)
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
@@ -257,11 +245,8 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         self.extensionsPanel = TaskPanelExtensionPage(obj, features)
         return self.extensionsPanel
 
-    def enableExtensions(self):
-        self.extensionsPanel.enable(self.form.useOutline.isChecked())
-
     def pageRegisterSignalHandlers(self):
-        self.form.useOutline.clicked.connect(self.enableExtensions)
+        pass
 
 Command = PathOpGui.SetupOperation('Pocket Shape',
         PathPocketShape.Create,
