@@ -148,6 +148,7 @@ Sheet *ViewProviderSheet::getSpreadsheetObject() const
 
 void ViewProviderSheet::beforeDelete()
 {
+    ViewProviderDocumentObject::beforeDelete();
     if(!view)
         return;
     if(view==Gui::getMainWindow()->activeWindow())
