@@ -31,6 +31,7 @@ import PathScripts.PathPocketBase as PathPocketBase
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import TechDraw
+import math
 import sys
 
 from PySide import QtCore
@@ -50,6 +51,56 @@ else:
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
+def endPoints(edgeOrWire):
+    if Part.Wire == type(edgeOrWire):
+        edges = edgeOrWire.Edges
+        pts = [e.valueAt(e.FirstParameter) for e in edgeOrWire.Edges]
+        pts.extend([e.valueAt(e.LastParameter) for e in edgeOrWire.Edges])
+        unique = []
+        for p in pts:
+            cnt = len([p2 for p2 in pts if PathGeom.pointsCoincide(p, p2)])
+            if 1 == cnt:
+                unique.append(p)
+        return unique
+    return [e.valueAt(edgeOrWire.FirstParameter), e.valueAt(edgeOrWire.LastParameter)]
+
+def includesPoint(p, pts):
+    for pt in pts:
+        if PathGeom.pointsCoincide(p, pt):
+            return True
+    return False
+
+def extendWire(wire, length, direction):
+    if type(direction) == FreeCAD.Vector:
+        direction = PathGeom.getAngle(direction)
+    off2D = wire.makeOffset2D(length)
+    endPts = endPoints(wire)
+    edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]
+    wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
+    direct = None
+    for w in wires:
+        a = 0
+        for ep in endPoints(w):
+            angles = [math.fabs(PathGeom.getAngle(ep - p)) for p in endPts]
+            a = a + sum(angles) / len(angles)
+        a = math.fabs(a / len(ep) - direction)
+        if direct is None or direct[0] > a:
+            direct = (a, w)
+    offset = direct[1]
+    ePts = endPoints(offset)
+    l0 = (ePts[0] - endPts[0]).Length
+    l1 = (ePts[1] - endPts[0]).Length
+    edges = wire.Edges
+    if l0 < l1:
+        edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[0])))
+        edges.extend(offset.Edges)
+        edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[1])))
+    else:
+        edges.append(Part.Edge(Part.LineSegment(endPts[1], ePts[0])))
+        edges.extend(offset.Edges)
+        edges.append(Part.Edge(Part.LineSegment(endPts[0], ePts[1])))
+    return Part.Wire(edges)
+
 class Extension(object):
     DirectionNormal    = 0
     DirectionX         = 1
@@ -62,15 +113,17 @@ class Extension(object):
         self.direction = direction
 
     def extendEdge(self, e0, direction):
-        e2 = e0.copy()
-        off = self.length.Value * direction
-        e2.translate(off)
-        e2 = PathGeom.flipEdge(e2)
-        e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)))
-        e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter)))
-        wire = Part.Wire([e0, e1, e2, e3])
-        self.wire = wire
-        return wire
+        if Part.Line == type(e0.Curve) or Part.LineSegment == type(e0.Curve):
+            e2 = e0.copy()
+            off = self.length.Value * direction
+            e2.translate(off)
+            e2 = PathGeom.flipEdge(e2)
+            e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.LastParameter), e2.valueAt(e2.FirstParameter)))
+            e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), e0.valueAt(e0.FirstParameter)))
+            wire = Part.Wire([e0, e1, e2, e3])
+            self.wire = wire
+            return wire
+        return extendWire(Part.Wire([e0]), self.length.Value, direction)
 
     def getWire(self):
         if PathGeom.isRoughly(0, self.length.Value):
