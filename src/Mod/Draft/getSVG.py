@@ -1,6 +1,33 @@
 import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
+import Part, DraftGeomUtils
 from FreeCAD import Vector
 from Draft import getType, getrgb
+
+
+def getLineStyle(linestyle):
+    "returns a linestyle"
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    l = None
+    if linestyle == "Dashed":
+        l = p.GetString("svgDashedLine","0.09,0.05")
+    elif linestyle == "Dashdot":
+        l = p.GetString("svgDashdotLine","0.09,0.05,0.02,0.05")
+    elif linestyle == "Dotted":
+        l = p.GetString("svgDottedLine","0.02,0.02")
+    elif linestyle:
+        if "," in linestyle:
+            l = linestyle
+    if l:
+        l = l.split(",")
+        try:
+            # scale dashes
+            l = ",".join([str(float(d)/scale) for d in l])
+            #print "lstyle ",l
+        except:
+            return "none"
+        else:
+            return l
+    return "none"
 
 
 def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0):
@@ -18,7 +45,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
             return svg
 
-    import Part, DraftGeomUtils
     pathdata = []
     svg = ""
     linewidth = float(linewidth)/scale
@@ -48,30 +74,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             if hasattr(obj.ViewObject,"LineColor"):
                 stroke = getrgb(obj.ViewObject.LineColor)
 
-    def getLineStyle():
-        "returns a linestyle"
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        l = None
-        if linestyle == "Dashed":
-            l = p.GetString("svgDashedLine","0.09,0.05")
-        elif linestyle == "Dashdot":
-            l = p.GetString("svgDashdotLine","0.09,0.05,0.02,0.05")
-        elif linestyle == "Dotted":
-            l = p.GetString("svgDottedLine","0.02,0.02")
-        elif linestyle:
-            if "," in linestyle:
-                l = linestyle
-        if l:
-            l = l.split(",")
-            try:
-                # scale dashes
-                l = ",".join([str(float(d)/scale) for d in l])
-                #print "lstyle ",l
-            except:
-                return "none"
-            else:
-                return l
-        return "none"
 
     def getProj(vec):
         if not plane: return vec
@@ -448,7 +450,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             fill = "#888888"
         else:
             fill = 'url(#'+fillstyle+')'
-        lstyle = getLineStyle()
+        lstyle = getLineStyle(linestyle)
         svg += getPath(obj.Edges,pathname="")
 
 
@@ -546,7 +548,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
                     # drawing arc
                     fill= "none"
-                    lstyle = getLineStyle()
+                    lstyle = getLineStyle(linestyle)
                     if obj.ViewObject.DisplayMode == "2D":
                         svg += getPath([prx.circle])
                     else:
@@ -660,7 +662,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 print ("export of axes to SVG is only available in GUI mode")
             else:
                 vobj = obj.ViewObject
-                lorig = getLineStyle()
+                lorig = getLineStyle(linestyle)
                 fill = 'none'
                 rad = vobj.BubbleSize.Value/2
                 n = 0
@@ -700,7 +702,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Pipe":
         fill = stroke
-        lstyle = getLineStyle()
+        lstyle = getLineStyle(linestyle)
         if obj.Base and obj.Diameter:
             svg += getPath(obj.Base.Shape.Edges)
         for f in obj.Shape.Faces:
@@ -710,7 +712,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Rebar":
         fill = "none"
-        lstyle = getLineStyle()
+        lstyle = getLineStyle(linestyle)
         if obj.Proxy:
             if not hasattr(obj.Proxy,"wires"):
                 obj.Proxy.execute(obj)
@@ -769,7 +771,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 fill = "#888888"
         else:
             fill = 'none'
-        lstyle = getLineStyle()
+        lstyle = getLineStyle(linestyle)
 
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
