@@ -312,7 +312,7 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
 
                 Base::Vector3d dir1 = segm1->getEndPoint() - segm1->getStartPoint();
                 Base::Vector3d dir2 = segm2->getEndPoint() - segm2->getStartPoint();
-            
+
                 if( (checkVertical(dir1,angleprecision)  || checkHorizontal(dir1,angleprecision)) &&
                     (checkVertical(dir2,angleprecision)  || checkHorizontal(dir2,angleprecision)) ) {
                     // this is a job for horizontal/vertical constraints alone
@@ -322,26 +322,26 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
 
             try {
                 double u1, u2;
-                
+
                 curve1->closestParameter(vc.v,u1);
                 curve2->closestParameter(vc.v,u2);
 
                 Base::Vector3d tgv1 = curve1->firstDerivativeAtParameter(u1).Normalize();
                 Base::Vector3d tgv2 = curve2->firstDerivativeAtParameter(u2).Normalize();
-                
+
                 if(fabs(tgv1*tgv2)>fabs(cos(angleprecision))) {
                     vc.Type = Sketcher::Tangent;
                 }
                 else if(fabs(tgv1*tgv2)<fabs(cos(M_PI/2 - angleprecision))) {
                     vc.Type = Sketcher::Perpendicular;
                 }
-            
+
             }
             catch(Base::Exception &) {
                 Base::Console().Warning("Point-On-Point Coincidence analysis: unable to obtain derivative. Detection ignored.\n");
                 continue;
             }
-            
+
 
         }
     }
@@ -431,7 +431,7 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
 {
     int status, dofs;
     std::vector<Sketcher::Constraint*> constr;
-    
+
     for (std::vector<Sketcher::ConstraintIds>::iterator it = verthorizConstraints.begin(); it != verthorizConstraints.end(); ++it) {
         Sketcher::Constraint* c = new Sketcher::Constraint();
         c->Type = it->Type;
@@ -484,7 +484,7 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
 {
     std::vector<EdgeIds> lineedgeIds;
     std::vector<EdgeIds> radiusedgeIds;
-    
+
     const std::vector<Part::Geometry *>& geom = sketch->getInternalGeometry();
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
@@ -511,11 +511,11 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
             radiusedgeIds.push_back(id);
         }
     }
-    
+
     std::sort(lineedgeIds.begin(), lineedgeIds.end(), Edge_Less(precision));
     std::vector<EdgeIds>::iterator vt = lineedgeIds.begin();
     Edge_EqualTo pred(precision);
-    
+
     std::list<ConstraintIds> equallines;
     // Make a list of constraint we expect for coincident vertexes
     while (vt < lineedgeIds.end()) {
@@ -538,14 +538,14 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
                     break;
                 }
             }
-            
+
             vt = vn;
         }
     }
-    
+
     std::sort(radiusedgeIds.begin(), radiusedgeIds.end(), Edge_Less(precision));
     vt = radiusedgeIds.begin();
-    
+
     std::list<ConstraintIds> equalradius;
     // Make a list of constraint we expect for coincident vertexes
     while (vt < radiusedgeIds.end()) {
@@ -568,12 +568,12 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
                     break;
                 }
             }
-            
+
             vt = vn;
         }
     }
-    
-    
+
+
     // Go through the available 'Coincident', 'Tangent' or 'Perpendicular' constraints
     // and check which of them is forcing two vertexes to be coincident.
     // If there is none but two vertexes can be considered equal a coincident constraint is missing.
@@ -585,37 +585,37 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
             id.FirstPos = (*it)->FirstPos;
             id.Second = (*it)->Second;
             id.SecondPos = (*it)->SecondPos;
-            
+
             std::list<ConstraintIds>::iterator pos = std::find_if
                 (equallines.begin(), equallines.end(), Constraint_Equal(id));
 
             if (pos != equallines.end()) {
                 equallines.erase(pos);
             }
-            
+
             pos = std::find_if
                 (equalradius.begin(), equalradius.end(), Constraint_Equal(id));
-            
+
             if (pos != equalradius.end()) {
                 equalradius.erase(pos);
             }
         }
     }
-    
+
     this->lineequalityConstraints.clear();
     this->lineequalityConstraints.reserve(equallines.size());
-    
+
     for (std::list<ConstraintIds>::iterator it = equallines.begin(); it != equallines.end(); ++it) {
         this->lineequalityConstraints.push_back(*it);
     }
-    
+
     this->radiusequalityConstraints.clear();
     this->radiusequalityConstraints.reserve(equalradius.size());
-    
+
     for (std::list<ConstraintIds>::iterator it = equalradius.begin(); it != equalradius.end(); ++it) {
         this->radiusequalityConstraints.push_back(*it);
     }
-    
+
     return this->lineequalityConstraints.size() + this->radiusequalityConstraints.size();
 }
 
@@ -678,7 +678,7 @@ void SketchAnalysis::solvesketch(int &status, int &dofs, bool updategeo)
     if (sketch->getLastHasRedundancies()) { // redundant constraints
         status = -2;
     }
- 
+
     if (dofs < 0) { // over-constrained sketch
         status = -4;
     }
@@ -794,4 +794,31 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
 
 
     return 0;
+}
+
+
+std::vector<Base::Vector3d> SketchAnalysis::getOpenVertices(void) const
+{
+    std::vector<Base::Vector3d> points;
+    TopoDS_Shape shape = sketch->Shape.getValue();
+
+    Base::Placement Plm = sketch->Placement.getValue();
+
+    Base::Placement invPlm = Plm.inverse();
+
+    // build up map vertex->edge
+    TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
+    TopExp::MapShapesAndAncestors(shape, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
+    for (int i=1; i<= vertex2Edge.Extent(); ++i) {
+        const TopTools_ListOfShape& los = vertex2Edge.FindFromIndex(i);
+        if (los.Extent() != 2) {
+            const TopoDS_Vertex& vertex = TopoDS::Vertex(vertex2Edge.FindKey(i));
+            gp_Pnt pnt = BRep_Tool::Pnt(vertex);
+            Base::Vector3d pos;
+            invPlm.multVec(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()),pos);
+            points.push_back(pos);
+        }
+    }
+
+    return points;
 }

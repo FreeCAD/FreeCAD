@@ -185,6 +185,8 @@ def getType(obj):
         return "Sketch"
     if (obj.TypeId == "Part::Line"):
         return "Part::Line"
+    if (obj.TypeId == "Part::Offset2D"):
+        return "Offset2D"
     if obj.isDerivedFrom("Part::Feature"):
         return "Part"
     if (obj.TypeId == "App::Annotation"):
@@ -358,7 +360,7 @@ def shapify(obj):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
-def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
+def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarchchild=False):
     '''getGroupContents(objectlist,[walls,addgroups]): if any object of the given list
     is a group, its content is appened to the list, which is returned. If walls is True,
     walls and structures are also scanned for included windows or rebars. If addgroups
@@ -386,7 +388,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
+            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["Building","BuildingPart","Space","Site"]) and hasattr(obj,"Group")):
                 if getType(obj) == "Site":
                     if obj.Shape:
                         newlist.append(obj)
@@ -396,7 +398,10 @@ def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False):
                 else:
                     if addgroups or (spaces and (getType(obj) == "Space")):
                         newlist.append(obj)
-                    newlist.extend(getGroupContents(obj.Group,walls,addgroups))
+                    if noarchchild and (getType(obj) in ["Building","BuildingPart"]):
+                        pass
+                    else:
+                        newlist.extend(getGroupContents(obj.Group,walls,addgroups))
             else:
                 #print("adding ",obj.Name)
                 newlist.append(obj)
@@ -1431,6 +1436,20 @@ def move(objectslist,vector,copy=False):
             else:
                 newobj = obj
             newobj.Position = obj.Position.add(vector)
+        elif getType(obj) == "DraftText":
+            if copy:
+                newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
+                DraftText(newobj)
+                if gui:
+                    ViewProviderDraftText(newobj.ViewObject)
+                    formatObject(newobj,obj)
+                newobj.Text = obj.Text
+                newobj.Placement = obj.Placement
+                if gui:
+                    formatObject(newobj,obj)
+            else:
+                newobj = obj
+            newobj.Placement.Base = obj.Placement.Base.add(vector)
         elif getType(obj) == "Dimension":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",getRealName(obj.Name))
@@ -1768,12 +1787,15 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
             else:
                 s1 = obj.Shape
                 s2 = newwire
-            w1 = s1.Edges
-            w2 = s2.Edges
-            w3 = Part.LineSegment(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
-            w4 = Part.LineSegment(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
-            newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
-            newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
+            if s1 and s2:
+                w1 = s1.Edges
+                w2 = s2.Edges
+                w3 = Part.LineSegment(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
+                w4 = Part.LineSegment(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
+            else:
+                print("Draft.offset: Unable to bind wires")
         else:
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
             newobj.Shape = Part.Face(obj.Shape.Wires[0])
@@ -2379,10 +2401,8 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
     return obj
 
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
-
     '''ShapeString(Text,FontFile,Height,Track): Turns a text string
     into a Compound Shape'''
-
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -2428,6 +2448,8 @@ def clone(obj,delta=None,forcedraft=False):
         base = getCloneBase(obj[0])
         cl.Label = prefix + base.Label
         cl.CloneOf = base
+        if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
+            cl.Material = obj[0].Material
         if getType(obj[0]) != "BuildingPart":
             cl.Placement = obj[0].Placement
         try:
@@ -2721,14 +2743,44 @@ def upgrade(objects,delete=False,force=None):
 
     def makeShell(objectslist):
         """makes a shell with the given objects"""
+        params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        preserveFaceColor = params.GetBool("preserveFaceColor") # True
+        preserveFaceNames = params.GetBool("preserveFaceNames") # True
         faces = []
+        facecolors = [[], []] if (preserveFaceColor) else None
         for obj in objectslist:
             faces.extend(obj.Shape.Faces)
+            if (preserveFaceColor):
+                """ at this point, obj.Shape.Faces are not in same order as the
+                original faces we might have gotten as a result of downgrade, nor do they
+                have the same hashCode(); but they still keep reference to their original
+                colors - capture that in facecolors.
+                Also, cannot w/ .ShapeColor here, need a whole array matching the colors
+                of the array of faces per object, only DiffuseColor has that """
+                facecolors[0].extend(obj.ViewObject.DiffuseColor)
+                facecolors[1] = faces
         sh = Part.makeShell(faces)
         if sh:
             if sh.Faces:
                 newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Shell")
                 newobj.Shape = sh
+                if (preserveFaceNames):
+                    import re
+                    firstName = objectslist[0].Label
+                    nameNoTrailNumbers = re.sub("\d+$", "", firstName)
+                    newobj.Label = "{} {}".format(newobj.Label, nameNoTrailNumbers)
+                if (preserveFaceColor):
+                    """ At this point, sh.Faces are completely new, with different hashCodes
+                    and different ordering from obj.Shape.Faces; since we cannot compare
+                    via hashCode(), we have to iterate and use a different criteria to find
+                    the original matching color """
+                    colarray = []
+                    for ind, face in enumerate(newobj.Shape.Faces):
+                        for fcind, fcface in enumerate(facecolors[1]):
+                            if ((face.Area == fcface.Area) and (face.CenterOfMass == fcface.CenterOfMass)):
+                                colarray.append(facecolors[0][fcind])
+                                break
+                    newobj.ViewObject.DiffuseColor = colarray;
                 addList.append(newobj)
                 deleteList.extend(objectslist)
                 return newobj
@@ -3015,11 +3067,24 @@ def downgrade(objects,delete=False,force=None):
     def splitFaces(objects):
         """split faces contained in objects into new objects"""
         result = False
+        params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        preserveFaceColor = params.GetBool("preserveFaceColor") # True
+        preserveFaceNames = params.GetBool("preserveFaceNames") # True
         for o in objects:
+            voDColors = o.ViewObject.DiffuseColor if (preserveFaceColor and hasattr(o,'ViewObject')) else None
+            oLabel = o.Label if hasattr(o,'Label') else ""
             if o.Shape.Faces:
-                for f in o.Shape.Faces:
+                for ind, f in enumerate(o.Shape.Faces):
                     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Face")
                     newobj.Shape = f
+                    if preserveFaceNames:
+                        newobj.Label = "{} {}".format(oLabel, newobj.Label)
+                    if preserveFaceColor:
+                        """ At this point, some single-color objects might have
+                        just a single entry in voDColors for all their faces; handle that"""
+                        tcolor = voDColors[ind] if ind<len(voDColors) else voDColors[0]
+                        newobj.ViewObject.DiffuseColor[0] = tcolor # does is not applied visually on its own; left just in case
+                        newobj.ViewObject.ShapeColor = tcolor # this gets applied, works by itself too
                     addList.append(newobj)
                 result = True
                 deleteList.append(o)
@@ -5209,9 +5274,9 @@ class _PathArray(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"PathArray")
-        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
-        obj.addProperty("App::PropertyLink","PathObj","Draft",QT_TRANSLATE_NOOP("App::Property","The path object along which to distribute objects"))
-        obj.addProperty("App::PropertyLinkSubList","PathSubs",QT_TRANSLATE_NOOP("App::Property","Selected subobjects (edges) of PathObj"))
+        obj.addProperty("App::PropertyLinkGlobal","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
+        obj.addProperty("App::PropertyLinkGlobal","PathObj","Draft",QT_TRANSLATE_NOOP("App::Property","The path object along which to distribute objects"))
+        obj.addProperty("App::PropertyLinkSubListGlobal","PathSubs",QT_TRANSLATE_NOOP("App::Property","Selected subobjects (edges) of PathObj"))
         obj.addProperty("App::PropertyInteger","Count","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies"))
         obj.addProperty("App::PropertyVectorDistance","Xlate","Draft",QT_TRANSLATE_NOOP("App::Property","Optional translation vector"))
         obj.addProperty("App::PropertyBool","Align","Draft",QT_TRANSLATE_NOOP("App::Property","Orientation of Base along path"))
@@ -5306,11 +5371,11 @@ class _PathArray(_DraftObject):
             theta = 0.0
             phi = 0.0
             FreeCAD.Console.PrintWarning("Draft PathArray.orientShape - Path normal is Null. Cannot align.\n")
-        elif b == z:                                                 # 2) binormal is same as z
-            psi = math.degrees(DraftVecUtils.angle(x,t,z))           #    align shape x to tangent
+        elif abs(b.dot(z)) == 1.0:                                    # 2) binormal is || z
+            psi = math.degrees(DraftVecUtils.angle(x,t,z))            #    align shape to tangent only
             theta = 0.0
             phi = 0.0
-            FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Aligned to tangent only (b == z).\n")
+            FreeCAD.Console.PrintWarning("Draft PathArray.orientShape - Gimbal lock. Infinite lnodes. Change Path or Base.\n")
         else:                                                        # regular case
             psi = math.degrees(DraftVecUtils.angle(x,lnodes,z))
             theta = math.degrees(DraftVecUtils.angle(z,b,lnodes))
@@ -5462,7 +5527,7 @@ class _Clone(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Clone")
-        obj.addProperty("App::PropertyLinkList","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this clone"))
+        obj.addProperty("App::PropertyLinkListGlobal","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this clone"))
         obj.addProperty("App::PropertyVector","Scale","Draft",QT_TRANSLATE_NOOP("App::Property","The scale factor of this clone"))
         obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","If this clones several objects, this specifies if the result is a fusion or a compound"))
         obj.Scale = Vector(1,1,1)

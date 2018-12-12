@@ -436,7 +436,7 @@ class _CommandFemMaterialMechanicalNonlinear(CommandManager):
                     solver_object = None
                     break
         # set solver attribute for nonlinearity for ccxtools CalculiX solver or new frame work CalculiX solver
-        if hasattr(solver_object, "Proxy") and (solver_object.Proxy.Type == 'Fem::FemSolverCalculixCcxTools' or solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix'):
+        if solver_object and hasattr(solver_object, "Proxy") and (solver_object.Proxy.Type == 'Fem::FemSolverCalculixCcxTools' or solver_object.Proxy.Type == 'Fem::FemSolverObjectCalculix'):
             print('Set MaterialNonlinearity and GeometricalNonlinearity to nonlinear for ' + solver_object.Label)
             solver_object.MaterialNonlinearity = "nonlinear"
             solver_object.GeometricalNonlinearity = "nonlinear"

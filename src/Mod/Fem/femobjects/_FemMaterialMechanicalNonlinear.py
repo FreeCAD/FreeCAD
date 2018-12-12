@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "the fem nonlinear mechanical material object"
+__title__ = "FreeCAD FEM material mechanical nonlinear document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package FemMaterialMechanicalNonLinear
 #  \ingroup FEM
+#  \brief FEM nonlinear mechanical material object
 
 
 class _FemMaterialMechanicalNonlinear:

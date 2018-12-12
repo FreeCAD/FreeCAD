@@ -89,9 +89,10 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
 
     connect(clearButton, SIGNAL(clicked()), searchBox, SLOT(clear()));
     connect(searchBox, SIGNAL(textChanged(QString)), this, SLOT(search(QString)));
+    connect(searchBox, SIGNAL(editingFinished()), this, SLOT(validateSearch()));
     connect(selectionView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(select(QListWidgetItem*)));
     connect(selectionView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onItemContextMenu(QPoint)));
-    
+
     Gui::Selection().Attach(this);
 }
 
@@ -104,7 +105,7 @@ SelectionView::~SelectionView()
 void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                              Gui::SelectionSingleton::MessageType Reason)
 {
-    Q_UNUSED(rCaller); 
+    Q_UNUSED(rCaller);
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
@@ -128,7 +129,7 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
         str << " (";
         str << QString::fromUtf8(obj->Label.getValue());
         str << ")";
-        
+
         QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
         item->setData(Qt::UserRole, list);
     }
@@ -182,7 +183,7 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             str << " (";
             str << QString::fromUtf8(obj->Label.getValue());
             str << ")";
-            
+
             QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
             item->setData(Qt::UserRole, list);
             selObject.clear();
@@ -195,17 +196,47 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
 void SelectionView::search(const QString& text)
 {
     if (!text.isEmpty()) {
+        searchList.clear();
         App::Document* doc = App::GetApplication().getActiveDocument();
         std::vector<App::DocumentObject*> objects;
         if (doc) {
-            Gui::Selection().clearSelection();
             objects = doc->getObjects();
+            selectionView->clear();
             for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
                 QString label = QString::fromUtf8((*it)->Label.getValue());
                 if (label.contains(text,Qt::CaseInsensitive)) {
-                    if (!Gui::Selection().hasSelection((*it)->getNameInDocument())) {
-                        Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),0);
-                    }
+                    searchList.push_back(*it);
+                    // save as user data
+                    QString selObject;
+                    QTextStream str(&selObject);
+                    QStringList list;
+                    list << QString::fromLatin1(doc->getName());
+                    list << QString::fromLatin1((*it)->getNameInDocument());
+                    // build name
+                    str << doc->getName();
+                    str << ".";
+                    str << (*it)->getNameInDocument();
+                    str << " (";
+                    str << label;
+                    str << ")";
+                    QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
+                    item->setData(Qt::UserRole, list);
+                }
+            }
+            countLabel->setText(QString::number(selectionView->count()));
+        }
+    }
+}
+
+void SelectionView::validateSearch(void)
+{
+    if (!searchList.empty()) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            Gui::Selection().clearSelection();
+            for (std::vector<App::DocumentObject*>::iterator it = searchList.begin(); it != searchList.end(); ++it) {
+                if (!Gui::Selection().hasSelection((*it)->getNameInDocument())) {
+                    Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),0);
                 }
             }
         }
@@ -246,13 +277,13 @@ void SelectionView::deselect(void)
 void SelectionView::zoom(void)
 {
     select();
-    Gui::Command::runCommand(Gui::Command::Gui,"Gui.SendMsgToActiveView(\"ViewSelection\")"); 
+    Gui::Command::runCommand(Gui::Command::Gui,"Gui.SendMsgToActiveView(\"ViewSelection\")");
 }
 
 void SelectionView::treeSelect(void)
 {
     select();
-    Gui::Command::runCommand(Gui::Command::Gui,"Gui.runCommand(\"Std_TreeSelection\")"); 
+    Gui::Command::runCommand(Gui::Command::Gui,"Gui.runCommand(\"Std_TreeSelection\")");
 }
 
 void SelectionView::touch(void)

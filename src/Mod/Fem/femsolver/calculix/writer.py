@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2015 - Przemo Firszt <przemo@firszt.eu>                 *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
+# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "CalculiX Writer"
+__title__ = "FreeCAD FEM solver CalculiX writer"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 

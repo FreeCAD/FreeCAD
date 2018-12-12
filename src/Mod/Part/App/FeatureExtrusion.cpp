@@ -149,8 +149,8 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
             bool fetched;
             Base::Vector3d base;
             fetched = fetchAxisLink(this->DirLink, base, dir);
-            if (! fetched)
-                throw Base::Exception("DirMode is set to use edge, but no edge is linked.");
+            if (!fetched)
+                throw Base::ValueError("DirMode is set to use edge, but no edge is linked.");
             this->Dir.setValue(dir);
         }break;
         case dmNormal:
@@ -198,7 +198,7 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLink)
 {
     if (!shapeLink.getValue())
-        throw Base::Exception("calculateShapeNormal: link is empty");
+        throw Base::ValueError("calculateShapeNormal: link is empty");
     const App::DocumentObject* docobj = shapeLink.getValue();
 
     //special case for sketches and the like: no matter what shape they have, use their local Z axis.
@@ -217,7 +217,7 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
     const TopoShape &tsh = static_cast<const Part::Feature*>(docobj)->Shape.getShape();
     TopoDS_Shape sh = tsh.getShape();
     if (sh.IsNull())
-        throw Base::Exception("calculateShapeNormal: link points to a valid object, but its shape is null.");
+        throw NullShapeException("calculateShapeNormal: link points to a valid object, but its shape is null.");
 
     //find plane
     BRepLib_FindSurface planeFinder(sh, -1, /*OnlyPlane=*/true);
@@ -318,7 +318,7 @@ TopoShape Extrusion::extrudeShape(const TopoShape source, Extrusion::ExtrusionPa
     }
 
     if (result.IsNull())
-        throw Base::Exception("Result of extrusion is null shape.");
+        throw NullShapeException("Result of extrusion is null shape.");
     return TopoShape(result);
 
 }
@@ -492,7 +492,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
             throw;
         }
         catch (...) {
-            throw Base::Exception("Unknown exception from BRepOffsetAPI_ThruSections");
+            throw Base::CADKernelError("Unknown exception from BRepOffsetAPI_ThruSections");
         }
     }
 }
@@ -519,7 +519,7 @@ void FaceMakerExtrusion::Build()
     this->myShape = TopoDS_Shape();
     TopoDS_Shape inputShape;
     if (mySourceShapes.empty())
-        throw Base::Exception("No input shapes!");
+        throw Base::ValueError("No input shapes!");
     if (mySourceShapes.size() == 1){
         inputShape = mySourceShapes[0];
     } else {

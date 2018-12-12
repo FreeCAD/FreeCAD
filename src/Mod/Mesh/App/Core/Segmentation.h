@@ -31,6 +31,8 @@
 namespace MeshCore {
 
 class PlaneFit;
+class CylinderFit;
+class SphereFit;
 class MeshFacet;
 typedef std::vector<unsigned long> MeshSegment;
 
@@ -43,6 +45,7 @@ public:
     virtual bool TestFacet (const MeshFacet &rclFacet) const = 0;
     virtual const char* GetType() const = 0;
     virtual void Initialize(unsigned long);
+    virtual bool TestInitialFacet(unsigned long) const;
     virtual void AddFacet(const MeshFacet& rclFacet);
     void AddSegment(const std::vector<unsigned long>&);
     const std::vector<MeshSegment>& GetSegments() const { return segments; }
@@ -82,6 +85,97 @@ protected:
     PlaneFit* fitter;
 };
 
+class MeshExport AbstractSurfaceFit
+{
+public:
+    AbstractSurfaceFit(){}
+    virtual ~AbstractSurfaceFit(){}
+    virtual const char* GetType() const = 0;
+    virtual void Initialize(const MeshGeomFacet&) = 0;
+    virtual bool TestTriangle(const MeshGeomFacet&) const = 0;
+    virtual void AddTriangle(const MeshGeomFacet&) = 0;
+    virtual bool Done() const = 0;
+    virtual float Fit() = 0;
+    virtual float GetDistanceToSurface(const Base::Vector3f&) const = 0;
+};
+
+class MeshExport PlaneSurfaceFit : public AbstractSurfaceFit
+{
+public:
+    PlaneSurfaceFit();
+    PlaneSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& n);
+    ~PlaneSurfaceFit();
+    const char* GetType() const { return "Plane"; }
+    void Initialize(const MeshGeomFacet&);
+    bool TestTriangle(const MeshGeomFacet&) const;
+    void AddTriangle(const MeshGeomFacet&);
+    bool Done() const;
+    float Fit();
+    float GetDistanceToSurface(const Base::Vector3f&) const;
+
+private:
+    Base::Vector3f basepoint;
+    Base::Vector3f normal;
+    PlaneFit* fitter;
+};
+
+class MeshExport CylinderSurfaceFit : public AbstractSurfaceFit
+{
+public:
+    CylinderSurfaceFit();
+    CylinderSurfaceFit(const Base::Vector3f& b, const Base::Vector3f& a, float r);
+    ~CylinderSurfaceFit();
+    const char* GetType() const { return "Cylinder"; }
+    void Initialize(const MeshGeomFacet&);
+    bool TestTriangle(const MeshGeomFacet&) const;
+    void AddTriangle(const MeshGeomFacet&);
+    bool Done() const;
+    float Fit();
+    float GetDistanceToSurface(const Base::Vector3f&) const;
+
+private:
+    Base::Vector3f basepoint;
+    Base::Vector3f axis;
+    float radius;
+    CylinderFit* fitter;
+};
+
+class MeshExport SphereSurfaceFit : public AbstractSurfaceFit
+{
+public:
+    SphereSurfaceFit();
+    SphereSurfaceFit(const Base::Vector3f& c, float r);
+    ~SphereSurfaceFit();
+    const char* GetType() const { return "Sphere"; }
+    void Initialize(const MeshGeomFacet&);
+    bool TestTriangle(const MeshGeomFacet&) const;
+    void AddTriangle(const MeshGeomFacet&);
+    bool Done() const;
+    float Fit();
+    float GetDistanceToSurface(const Base::Vector3f&) const;
+
+private:
+    Base::Vector3f center;
+    float radius;
+    SphereFit* fitter;
+};
+
+class MeshExport MeshDistanceGenericSurfaceFitSegment : public MeshDistanceSurfaceSegment
+{
+public:
+    MeshDistanceGenericSurfaceFitSegment(AbstractSurfaceFit*, const MeshKernel& mesh,
+                                         unsigned long minFacets, float tol);
+    virtual ~MeshDistanceGenericSurfaceFitSegment();
+    bool TestFacet (const MeshFacet& rclFacet) const;
+    const char* GetType() const { return fitter->GetType(); }
+    void Initialize(unsigned long);
+    bool TestInitialFacet(unsigned long) const;
+    void AddFacet(const MeshFacet& rclFacet);
+
+protected:
+    AbstractSurfaceFit* fitter;
+};
+
 // --------------------------------------------------------
 
 class MeshExport MeshCurvatureSurfaceSegment : public MeshSurfaceSegment
@@ -110,8 +204,8 @@ class MeshExport MeshCurvatureCylindricalSegment : public MeshCurvatureSurfaceSe
 {
 public:
     MeshCurvatureCylindricalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets,
-                                    float tolMin, float tolMax, float radius)
-        : MeshCurvatureSurfaceSegment(ci, minFacets), toleranceMin(tolMin), toleranceMax(tolMax) { curvature = 1/radius;}
+                                    float tolMin, float tolMax, float curv)
+        : MeshCurvatureSurfaceSegment(ci, minFacets), toleranceMin(tolMin), toleranceMax(tolMax) { curvature = curv;}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
     virtual const char* GetType() const { return "Cylinder"; }
 
@@ -124,8 +218,8 @@ private:
 class MeshExport MeshCurvatureSphericalSegment : public MeshCurvatureSurfaceSegment
 {
 public:
-    MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float radius)
-        : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) { curvature = 1/radius;}
+    MeshCurvatureSphericalSegment(const std::vector<CurvatureInfo>& ci, unsigned long minFacets, float tol, float curv)
+        : MeshCurvatureSurfaceSegment(ci, minFacets), tolerance(tol) { curvature = curv;}
     virtual bool TestFacet (const MeshFacet &rclFacet) const;
     virtual const char* GetType() const { return "Sphere"; }
 

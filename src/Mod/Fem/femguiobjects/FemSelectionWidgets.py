@@ -1,7 +1,7 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
-# *   Copyright (c) 2018 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
+# *   Copyright (c) 2018 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,11 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "FemSelectWidget"
+__title__ = "FreeCAD FEM select widget"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemSelectWidget
+#  \ingroup FEM
+#  \brief FreeCAD FEM FemSelectWidget
 
 import FreeCAD
 import FreeCADGui
@@ -433,7 +435,7 @@ class GeometryElementsSelection(QtGui.QWidget):
                                 else:
                                     FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
                                     solid_to_add = None
-                                found_edge = True
+                                found_face = True
                 if solid_to_add:
                     selection = (selection[0], 'Solid' + solid_to_add)
                     ele_ShapeType = 'Solid'

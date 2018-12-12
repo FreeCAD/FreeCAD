@@ -922,6 +922,8 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
     if (t.isBad())
         return;
 
+    this->winGestureTuneState = View3DInventorViewer::ewgtsNeedTuning; //triggers enable/disable rotation gesture when preferences change
+
     if (this->navigation && this->navigation->getTypeId() == t)
         return; // nothing to do
 
@@ -1515,8 +1517,13 @@ void View3DInventorViewer::imageFromFramebuffer(int width, int height, int sampl
     // format and in the output image search for the above color and
     // replaces it with the color requested by the user.
 #if defined(HAVE_QT5_OPENGL)
-    //fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
-    fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
+    if (App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("SaveThumbnailFix",false)) {
+        fboFormat.setInternalTextureFormat(GL_RGBA32F_ARB);
+    }
+    else {
+        fboFormat.setInternalTextureFormat(GL_RGB32F_ARB);
+    }
 #else
     //fboFormat.setInternalTextureFormat(GL_RGBA);
     fboFormat.setInternalTextureFormat(GL_RGB);

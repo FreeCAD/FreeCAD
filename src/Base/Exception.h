@@ -117,7 +117,6 @@ public:
   virtual void setPyObject( PyObject * pydict);
 
 protected:
-public: // FIXME: Remove the public keyword
  /* sMessage may be:
   * - a UI compliant string susceptible to being translated and shown to the user in the UI
   * - a very technical message not intended to be translated or shown to the user in the UI
@@ -180,7 +179,7 @@ public:
  * The XMLParseException is thrown if parsing an XML failed.
  * @author Werner Mayer
  */
-class BaseExport XMLParseException : public Exception
+class BaseExport XMLParseException : public XMLBaseException
 {
 public:
   /// Construction
@@ -194,6 +193,28 @@ public:
 
   /// Destruction
   virtual ~XMLParseException() throw() {}
+  /// Description of the exception
+  virtual const char* what() const throw();
+};
+
+/**
+ * The XMLAttributeError is thrown if a requested attribute doesn't exist.
+ * @author Werner Mayer
+ */
+class BaseExport XMLAttributeError : public XMLBaseException
+{
+public:
+  /// Construction
+  XMLAttributeError(const char * sMessage);
+  /// Construction
+  XMLAttributeError(const std::string& sMessage);
+  /// Construction
+  XMLAttributeError();
+  /// Construction
+  XMLAttributeError(const XMLAttributeError &inst);
+
+  /// Destruction
+  virtual ~XMLAttributeError() throw() {}
   /// Description of the exception
   virtual const char* what() const throw();
 };
@@ -448,6 +469,23 @@ public:
 };
 
 /**
+ * The BadGraphError can be used to indicate that a graph is e.g. not a DAG.
+ * @author Werner Mayer
+ */
+class BaseExport BadGraphError : public RuntimeError
+{
+public:
+  /// Construction
+  BadGraphError();
+  BadGraphError(const char * sMessage);
+  BadGraphError(const std::string& sMessage);
+  /// Construction
+  BadGraphError(const BadGraphError &inst);
+  /// Destruction
+  virtual ~BadGraphError() throw() {}
+};
+
+/**
  * The NotImplementedError can be used to indicate that an invoked function is not implemented.
  * @author Werner Mayer
  */
@@ -618,6 +656,27 @@ public:
     /// Destruction
     virtual ~CADKernelError() throw() {}
 };
+
+/* The RestoreError can be used to try to do a best recovery effort when an error during restoring
+ * occurs. The best recovery effort may be to ignore the element altogether or to insert a placeholder
+ * depending on where the actual element being restored is used.
+ * 
+ * For example, if it is part of an array (e.g. PropertyList) and the order in the array is relevant, it 
+ * is better to have a placeholder than to fail to restore the whole array.
+ */ 
+class BaseExport RestoreError : public Exception
+{
+public:
+    /// Construction
+    RestoreError();
+    RestoreError(const char * sMessage);
+    RestoreError(const std::string& sMessage);
+    /// Construction
+    RestoreError(const RestoreError &inst);
+    /// Destruction
+    virtual ~RestoreError() throw() {}
+};
+
 
 
 inline void Exception::setMessage(const char * sMessage)

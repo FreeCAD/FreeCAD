@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2017 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemElementRotation1D"
+__title__ = "FreeCAD FEM element rotation 1D document object"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecadweb.org"
+__url__ = "https://www.freecadweb.org"
 
 ## @package FemElementRotation1D
 #  \ingroup FEM
+#  \brief FreeCAD FEM element rotation 1D object
 
 
 class _FemElementRotation1D:

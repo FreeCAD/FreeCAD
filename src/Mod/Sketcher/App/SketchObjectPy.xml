@@ -181,7 +181,7 @@
       <Documentation>
         <UserDocu>add a symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>
       </Documentation>
-    </Methode> 
+    </Methode>
     <Methode Name="addCopy">
       <Documentation>
         <UserDocu>add a copy of geometric objects to the sketch displaced by a vector3d</UserDocu>
@@ -200,12 +200,12 @@
     <Methode Name="ExposeInternalGeometry">
       <Documentation>
         <UserDocu>Deprecated -- use exposeInternalGeometry</UserDocu>
-      </Documentation>    
+      </Documentation>
     </Methode>
     <Methode Name="DeleteUnusedInternalGeometry">
       <Documentation>
         <UserDocu>Deprecated -- use deleteUnusedInternalGeometry</UserDocu>
-      </Documentation>    
+      </Documentation>
     </Methode>
     <Methode Name="exposeInternalGeometry">
       <Documentation>
@@ -220,7 +220,7 @@
     <Methode Name="convertToNURBS">
         <Documentation>
             <UserDocu>Approximates the given geometry with a B-Spline</UserDocu>
-        </Documentation>    
+        </Documentation>
     </Methode>
     <Methode Name="increaseBSplineDegree">
         <Documentation>
@@ -305,7 +305,7 @@
     <Methode Name="analyseMissingPointOnPointCoincident">
         <Documentation>
             <UserDocu>
-                Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular. 
+                Analyses the already detected Missing Point On Point Constraints to detect endpoint tagency/perpendicular.
                 The result may be retrieved or applied using the corresponding Get / Make methods.
             </UserDocu>
         </Documentation>
@@ -354,7 +354,7 @@
             </UserDocu>
         </Documentation>
     </Methode>
-    
+
     <Attribute Name="MissingPointOnPointConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
@@ -378,7 +378,7 @@
             </UserDocu>
         </Documentation>
         <Parameter Name="MissingLineEqualityConstraints" Type="List"/>
-    </Attribute>    
+    </Attribute>
     <Attribute Name="MissingRadiusConstraints" ReadOnly="false">
         <Documentation>
             <UserDocu>
@@ -386,6 +386,14 @@
             </UserDocu>
         </Documentation>
         <Parameter Name="MissingRadiusConstraints" Type="List"/>
+    </Attribute>
+    <Attribute Name="OpenVertices" ReadOnly="true">
+        <Documentation>
+            <UserDocu>
+                returns a list of vertices positions.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="OpenVertices" Type="List"/>
     </Attribute>
     <Attribute Name="ConstraintCount" ReadOnly="true">
       <Documentation>

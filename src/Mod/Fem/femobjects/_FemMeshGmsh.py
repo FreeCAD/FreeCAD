@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemMeshGmsh"
+__title__ = "FreeCAD FEM mesh gmsh document object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package FemMeshGmsh
 #  \ingroup FEM
+#  \brief FreeCAD FEM _FemMeshGmsh
 
 
 class _FemMeshGmsh():

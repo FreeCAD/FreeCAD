@@ -71,21 +71,21 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
 {
     double distance = Length.getValue();
     if (distance < Precision::Confusion())
-        throw Base::Exception("Pattern length too small");
+        throw Base::ValueError("Pattern length too small");
     int occurrences = Occurrences.getValue();
     if (occurrences < 2)
-        throw Base::Exception("At least two occurrences required");
+        throw Base::ValueError("At least two occurrences required");
     bool reversed = Reversed.getValue();
 
     double offset = distance / (occurrences - 1);
 
     App::DocumentObject* refObject = Direction.getValue();
     if (refObject == NULL)
-        throw Base::Exception("No direction reference specified");
+        throw Base::ValueError("No direction reference specified");
 
     std::vector<std::string> subStrings = Direction.getSubValues();
     if (subStrings.empty())
-        throw Base::Exception("No direction reference specified");
+        throw Base::ValueError("No direction reference specified");
 
     gp_Dir dir;
     if (refObject->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
@@ -107,10 +107,10 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
             TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
             if (refEdge.IsNull())
-                throw Base::Exception("Failed to extract direction edge");
+                throw Base::ValueError("Failed to extract direction edge");
             BRepAdaptor_Curve adapt(refEdge);
             if (adapt.GetType() != GeomAbs_Line)
-                throw Base::Exception("Direction edge must be a straight line");
+                throw Base::TypeError("Direction edge must be a straight line");
 
             gp_Pnt p = adapt.Line().Location();
             gp_Dir d = adapt.Line().Direction();
@@ -135,7 +135,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
         dir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         if (subStrings[0].empty())
-            throw Base::Exception("No direction reference specified");
+            throw Base::ValueError("No direction reference specified");
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);
         Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
@@ -143,26 +143,26 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
         if (ref.ShapeType() == TopAbs_FACE) {
             TopoDS_Face refFace = TopoDS::Face(ref);
             if (refFace.IsNull())
-                throw Base::Exception("Failed to extract direction plane");
+                throw Base::ValueError("Failed to extract direction plane");
             BRepAdaptor_Surface adapt(refFace);
             if (adapt.GetType() != GeomAbs_Plane)
-                throw Base::Exception("Direction face must be planar");
+                throw Base::TypeError("Direction face must be planar");
 
             dir = adapt.Plane().Axis().Direction();
         } else if (ref.ShapeType() == TopAbs_EDGE) {
             TopoDS_Edge refEdge = TopoDS::Edge(ref);
             if (refEdge.IsNull())
-                throw Base::Exception("Failed to extract direction edge");
+                throw Base::ValueError("Failed to extract direction edge");
             BRepAdaptor_Curve adapt(refEdge);
             if (adapt.GetType() != GeomAbs_Line)
-                throw Base::Exception("Direction edge must be a straight line");
+                throw Base::ValueError("Direction edge must be a straight line");
 
             dir = adapt.Line().Direction();
         } else {
-            throw Base::Exception("Direction reference must be edge or face");
+            throw Base::ValueError("Direction reference must be edge or face");
         }
     } else {
-        throw Base::Exception("Direction reference must be edge/face of a feature or a datum line/plane");
+        throw Base::ValueError("Direction reference must be edge/face of a feature or a datum line/plane");
     }
     TopLoc_Location invObjLoc = this->getLocation().Inverted();
     dir.Transform(invObjLoc.Transformation());

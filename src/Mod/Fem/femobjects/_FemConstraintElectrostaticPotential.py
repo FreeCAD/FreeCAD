@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "the constraint electrostatic potential object"
+__title__ = "FreeCAD FEM constraint electrostatic potential document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemConstraintElectrostaticPotential
+#  \ingroup FEM
+#  \brief FreeCAD FEM constraint electrostatic potential object
 
 from . import FemConstraint
 

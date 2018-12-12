@@ -26,11 +26,16 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <boost/signals2.hpp>
 
 class Ui_TaskSketcherGeneral;
 
 namespace App {
 class Property;
+}
+
+namespace Gui {
+class ViewProvider;
 }
 
 namespace SketcherGui {
@@ -47,21 +52,26 @@ public:
 
     void saveSettings();
     void loadSettings();
-	void setInitGridSize(double val);
+    void setGridSize(double val);
+    void checkGridView(bool);
+    void checkGridSnap(bool);
+    void checkAutoconstraints(bool);
+
+    bool isGridViewChecked() const;
+    void saveGridViewChecked();
 
 Q_SIGNALS:
-    void setGridSnap(int Type);
     void emitToggleGridView(bool);
     void emitToggleGridSnap(int);
     void emitSetGridSize(double);
     void emitToggleAutoconstraints(int);
     void emitRenderOrderChanged();
 
-public Q_SLOTS:
-    void toggleGridView(bool on);
-    void setGridSize(double val);
-    void toggleGridSnap(int state);
-    void renderOrderChanged();
+private Q_SLOTS:
+    void onToggleGridView(bool on);
+    void onSetGridSize(double val);
+    void onToggleGridSnap(int state);
+    void onRenderOrderChanged();
     void on_checkBoxRedundantAutoconstraints_stateChanged(int);
 
 protected:
@@ -83,19 +93,21 @@ public:
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                   Gui::SelectionSingleton::MessageType Reason);
 
-Q_SIGNALS:
-    void setGridSnap(int Type);
-
 public Q_SLOTS:
-    void toggleGridView(bool on);
-    void setGridSize(double val);
-    void toggleGridSnap(int state);
-    void toggleAutoconstraints(int state);
-    void renderOrderChanged();
+    void onToggleGridView(bool on);
+    void onSetGridSize(double val);
+    void onToggleGridSnap(int state);
+    void onToggleAutoconstraints(int state);
+    void onRenderOrderChanged();
+
+private:
+    void onChangedSketchView(const Gui::ViewProvider&,
+                             const App::Property&);
 
 private:
     ViewProviderSketch *sketchView;
     SketcherGeneralWidget* widget;
+    boost::signals2::scoped_connection changedSketchView;
 };
 
 } //namespace SketcherGui

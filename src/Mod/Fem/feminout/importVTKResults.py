@@ -35,7 +35,7 @@ import FreeCAD
 import Fem
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -80,7 +80,7 @@ def export(objectslist, filename):
         return
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def importVtk(filename, object_name=None, object_type=None):
     if not object_type:
         vtkinout_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk")
@@ -128,7 +128,6 @@ def importVtkFCResult(filename, resultname, analysis=None, result_name_prefix=No
     results_name = result_name_prefix + 'results'
     result_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
     Fem.readResult(filename, result_obj.Name)  # readResult always creates a new femmesh named ResultMesh
-    result_obj = importToolsFem.fill_femresult_stats(result_obj)
 
     # workaround for the DisplacementLengths (They should have been calculated by Fem.readResult)
     if not result_obj.DisplacementLengths:

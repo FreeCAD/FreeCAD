@@ -294,10 +294,11 @@ class _ViewProviderAxis:
 
     def setProperties(self,vobj):
 
+        ts = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("textheight",350)
         pl = vobj.PropertiesList
         if not "BubbleSize" in pl:
             vobj.addProperty("App::PropertyLength","BubbleSize","Axis", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"))
-            vobj.BubbleSize = 500
+            vobj.BubbleSize = ts*1.42
         if not "NumberingStyle" in pl:
             vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Axis", QT_TRANSLATE_NOOP("App::Property","The numbering style"))
             vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
@@ -323,7 +324,7 @@ class _ViewProviderAxis:
             vobj.FontName = Draft.getParam("textfont","Arial,Sans")
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","Axis",QT_TRANSLATE_NOOP("App::Property","The font size"))
-            vobj.FontSize = 350
+            vobj.FontSize = ts
         if not "ShowLabel" in pl:
             vobj.addProperty("App::PropertyBool","ShowLabel","Axis",QT_TRANSLATE_NOOP("App::Property","If true, show the labels"))
         if not "LabelOffset" in pl:
