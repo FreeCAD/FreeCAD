@@ -2283,22 +2283,22 @@ bool Document::isAnyRestoring() {
 // Open the document
 void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
 {
-    Base::FlagToggler<> flag(_IsRestoring,false);
-
-    // clean up if the document is not empty
-    // !TODO mind exceptions while restoring!
     clearUndos();
-    // first notify the objects to being deleted and then delete them in a second loop (#0002521)
-    // FIXME: To delete every object individually is inefficient. Add a new signal 'signalClear'
-    // and then clear everything in one go.
-    for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
-        signalDeletedObject(*(*obj));
-        signalTransactionRemove(*(*obj), 0);
+    d->activeObject = 0;
+
+    if(d->objectArray.size()) {
+        GetApplication().signalDeleteDocument(*this);
+        d->objectArray.clear();
+        for(auto &v : d->objectMap) {
+            v.second->setStatus(ObjectStatus::Destroy, true);
+            delete(v.second);
+        }
+        d->objectMap.clear();
+        d->objectIdMap.clear();
+        GetApplication().signalNewDocument(*this);
     }
-    for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
-        (*obj)->setStatus(ObjectStatus::Destroy, true);
-        delete *obj;
-    }
+
+    Base::FlagToggler<> flag(_IsRestoring,false);
 
     setStatus(Document::PartialDoc,false);
 
@@ -2306,7 +2306,6 @@ void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
     d->objectMap.clear();
     d->objectIdMap.clear();
     d->lastObjectId = 0;
-    d->activeObject = 0;
 
     Base::FileInfo fi(FileName.getValue());
     Base::ifstream file(fi, std::ios::in | std::ios::binary);
