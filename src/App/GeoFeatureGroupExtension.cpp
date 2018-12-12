@@ -109,11 +109,9 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
         //There is a chance that a derived geofeaturegroup links with a local link and hence is not 
         //the parent group even though it links to the object. We use hasObject as one and only truth 
         //if it has the object within the group
-        if(inObj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) &&
-           inObj->getExtensionByType<GeoFeatureGroupExtension>()->hasObject(obj)) {            
-
+        auto group = inObj->getExtensionByType<GeoFeatureGroupExtension>(true);
+        if(group && group->hasObject(obj))
             return inObj;
-        }
     }
 
     return nullptr;
@@ -133,10 +131,9 @@ Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGrou
     
     auto inList = group->getExtendedObject()->getInList();
     for(auto* link : inList) {
-        if(link->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())){
-            if (link->getExtensionByType<GeoFeatureGroupExtension>()->hasObject(group->getExtendedObject()))
-                return recursiveGroupPlacement(link->getExtensionByType<GeoFeatureGroupExtension>()) * group->placement().getValue();
-        }
+        auto parent = link->getExtensionByType<GeoFeatureGroupExtension>(true);
+        if(parent && parent->hasObject(group->getExtendedObject()))
+            return recursiveGroupPlacement(parent) * group->placement().getValue();
     }
     
     return group->placement().getValue();
@@ -218,9 +215,10 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
                 //would return anyone of it and hence it is possible that we miss an error. We need a custom check
                 auto list = obj->getInList();
                 for (auto in : list) {
-                    if(in->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()) && //is GeoFeatureGroup?
-                    in != getExtendedObject() &&                                                  //is a different one?
-                    in->getExtensionByType<App::GeoFeatureGroupExtension>()->hasObject(obj)) {    //is not a non-grouping link?
+                    if(in == getExtendedObject())
+                        continue;
+                    auto parent = in->getExtensionByType<GeoFeatureGroupExtension>(true);
+                    if(parent && parent->hasObject(obj)) {
                         error = true;
                         corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
                     }
