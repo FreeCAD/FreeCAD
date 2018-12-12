@@ -64,6 +64,7 @@ class GuiExport ViewProviderLinkObserver: public ViewProviderExtension {
     EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
     ViewProviderLinkObserver();
+    virtual ~ViewProviderLinkObserver();
     void extensionBeforeDelete() override;
     void extensionOnChanged(const App::Property *) override;
     void extensionUpdateData(const App::Property*) override;

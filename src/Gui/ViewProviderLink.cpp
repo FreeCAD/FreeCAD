@@ -608,6 +608,10 @@ ViewProviderLinkObserver::ViewProviderLinkObserver() {
     initExtensionType(ViewProviderLinkObserver::getExtensionClassTypeId());
 }
 
+ViewProviderLinkObserver::~ViewProviderLinkObserver() {
+    linkInfo.reset();
+}
+
 bool ViewProviderLinkObserver::isLinkVisible() const {
     if(linkInfo)
         return linkInfo->isVisible();
