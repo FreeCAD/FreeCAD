@@ -585,8 +585,8 @@ void MainWindow::closeAllWindows ()
         if(gdoc && !gdoc->canClose())
             return;
     }
-    App::GetApplication().closeAllDocuments();
     d->mdiArea->closeAllSubWindows();
+    App::GetApplication().closeAllDocuments();
 }
 
 void MainWindow::activateNextWindow ()
