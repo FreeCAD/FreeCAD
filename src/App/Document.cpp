@@ -1697,8 +1697,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         for(auto o : obj) {
             if(o && o->getNameInDocument())
-                FC_LOG("exporting " << o->getDocument()->getName() <<
-                        '.' << o->getNameInDocument());
+                FC_LOG("exporting " << o->getFullName());
         }
     }
 
@@ -2044,7 +2043,7 @@ Document::importObjects(Base::XMLReader& reader)
     for(auto o : objs) {
         if(o && o->getNameInDocument()) {
             o->setStatus(App::ObjImporting,true);
-            FC_LOG("importing " << o->getNameInDocument());
+            FC_LOG("importing " << o->getFullName());
         }
     }
 
@@ -2420,7 +2419,7 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
                 int res;
                 if(link && (res=link->checkRestore())) {
                     d->touchedObjs.insert(obj);
-                    FC_WARN("'" << getName() << "' object '" << obj->getNameInDocument() 
+                    FC_WARN("'" << obj->getFullName() 
                         << "' xlink property '" << prop->getName() 
                         << (res==1?"' time stamp changed":"' not restored"));
                     break;
@@ -2879,8 +2878,10 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force) {
     int objectCount = 0;
 
-    if (testStatus(Document::PartialDoc))
-        throw Base::RuntimeError("Cannot recompute a partially loaded document");
+    if (testStatus(Document::PartialDoc)) {
+        FC_ERR("Cannot recompute partially loaded document: " << getName());
+        return 0;
+    }
 
     if (testStatus(Document::Recomputing)) {
         // this is clearly a bug in the calling instance
@@ -2965,9 +2966,9 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
             obj->setStatus(ObjectStatus::Recompute2,false);
             if(!filter.count(obj) && obj->isTouched()) {
                 if(passes>0) 
-                    FC_ERR(obj->getNameInDocument() << " still touched after recompute");
+                    FC_ERR(obj->getFullName() << " still touched after recompute");
                 else{
-                    FC_LOG(obj->getNameInDocument() << " still touched after recompute");
+                    FC_LOG(obj->getFullName() << " still touched after recompute");
                     if(idx>=topoSortedObjects.size()) {
                         // let's start the next pass on the first touched object
                         idx = i;
@@ -3171,7 +3172,7 @@ const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
 // call the recompute of the Feature and handle the exceptions and errors.
 bool Document::_recomputeFeature(DocumentObject* Feat)
 {
-    FC_LOG("Recomputing " << Feat->getDocument()->getName() << '#' << Feat->getNameInDocument());
+    FC_LOG("Recomputing " << Feat->getFullName());
 
     DocumentObjectExecReturn  *returnCode = 0;
     try {
@@ -3189,7 +3190,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         return true;
     }
     catch (const Base::MemoryException& e) {
-        Base::Console().Error("Memory exception in feature '%s' thrown: %s\n",Feat->getNameInDocument(),e.what());
+        FC_ERR("Memory exception in " << Feat->getFullName() << " thrown: " << e.what());
         _RecomputeLog.push_back(new DocumentObjectExecReturn("Out of memory exception",Feat));
         Feat->setError();
         return true;
@@ -3201,14 +3202,14 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         return true;
     }
     catch (std::exception &e) {
-        Base::Console().Warning("exception in Feature \"%s\" thrown: %s\n",Feat->getNameInDocument(),e.what());
+        FC_ERR("exception in " << Feat->getFullName() << " thrown: " << e.what());
         _RecomputeLog.push_back(new DocumentObjectExecReturn(e.what(),Feat));
         Feat->setError();
         return true;
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Feat->getNameInDocument());
+        FC_ERR("Unknown exception in " << Feat->getFullName() << " thrown");
         _RecomputeLog.push_back(new DocumentObjectExecReturn("Unknown exception!"));
         Feat->setError();
         return true;
@@ -3622,8 +3623,7 @@ void Document::removeObject(const char* sName)
 void Document::_removeObject(DocumentObject* pcObject)
 {
     if (testStatus(Document::Recomputing)) {
-        FC_ERR("Cannot delete " << pcObject->getNameInDocument() 
-                << " while recomputing document " << getName());
+        FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
         return;
     }
 

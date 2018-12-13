@@ -513,6 +513,11 @@ bool TopoShape::hasSubShape(const char *Type) const {
 
 TopoShape TopoShape::getSubTopoShape(const char *Type, bool silent) const {
     Type = getElementName(Type);
+    if(Type && boost::starts_with(Type,elementMapPrefix())) {
+        if(!silent)
+            FC_THROWM(Base::CADKernelError, "Mapped element not found: " << Type);
+        return TopoShape();
+    }
     auto type = shapeType(Type,silent);
     if(silent && type == TopAbs_SHAPE)
         return TopoShape();

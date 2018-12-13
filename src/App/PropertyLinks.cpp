@@ -343,12 +343,12 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
             return res;
         }
         FC_ERR(propertyName(this) 
-                << " missing element reference " << ret->getNameInDocument() << " "
+                << " missing element reference " << ret->getFullName() << " "
                 << (elementName.first.size()?elementName.first:elementName.second));
         shadow.second.swap(elementName.second);
     }else{
         FC_LOG(propertyName(this) 
-                << " element reference shadow update " << ret->getNameInDocument() << " "
+                << " element reference shadow update " << ret->getFullName() << " "
                 << shadow.first << " -> " << elementName.first);
         shadow.swap(elementName);
     }
@@ -573,8 +573,8 @@ static inline void adjustLinkError(bool relative,
     if(!owner)
         THROWM(Base::RuntimeError,msg);
     std::ostringstream ss;
-    ss << msg << " to " << link->getNameInDocument() << '.' << subname
-        << " by " << owner->getExportName() << '.' << prop->getName();
+    ss << msg << " to " << link->getFullName() << '.' << subname
+        << " by " << owner->getFullName() << '.' << prop->getName();
     THROWM(Base::RuntimeError,ss.str());
 }
 

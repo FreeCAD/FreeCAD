@@ -301,7 +301,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
             _subname = sel.SubName;
         }
         if(parentObj) {
-            FC_LOG("deduced editing reference " << parentObj->getNameInDocument() << '.' << _subname);
+            FC_LOG("deduced editing reference " << parentObj->getFullName() << '.' << _subname);
             subname = _subname.c_str();
             obj = parentObj;
             vp = dynamic_cast<ViewProviderDocumentObject*>(
@@ -353,7 +353,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     // }
     auto sobj = obj->getSubObject(subname,0,&d->_editingTransform);
     if(!sobj || !sobj->getNameInDocument()) {
-        FC_ERR("Invalid sub object '" << obj->getNameInDocument() 
+        FC_ERR("Invalid sub object '" << obj->getFullName() 
                 << '.' << (subname?subname:"") << "'");
         return false;
     }
@@ -362,7 +362,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         svp = dynamic_cast<ViewProviderDocumentObject*>(
                 Application::Instance->getViewProvider(sobj));
         if(!svp) {
-            FC_ERR("Cannot edit '" << sobj->getNameInDocument() << "' without view provider");
+            FC_ERR("Cannot edit '" << sobj->getFullName() << "' without view provider");
             return false;
         }
     }
@@ -395,7 +395,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     d->_editViewProvider = svp->startEditing(ModNum);
     if(!d->_editViewProvider) {
         d->_editViewProviderParent = 0;
-        FC_LOG("object '" << sobj->getNameInDocument() << "' refuse to edit");
+        FC_LOG("object '" << sobj->getFullName() << "' refuse to edit");
         return false;
     }
     activeView->getViewer()->setEditingViewProvider(d->_editViewProvider,ModNum);
@@ -634,19 +634,19 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
                 pcProvider->setActiveMode();
             }
             catch(const Base::MemoryException& e){
-                Base::Console().Error("Memory exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
+                FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
             }
             catch(Base::Exception &e){
                 e.ReportException();
             }
 #ifndef FC_DEBUG
             catch(...){
-                Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Obj.getNameInDocument());
+                FC_ERR("Unknown exception in Feature " << Obj.getFullName() << " thrown");
             }
 #endif
         }
         else {
-            Base::Console().Warning("Gui::Document::slotNewObject() no view provider for the object %s found\n",cName.c_str());
+            FC_WARN("no view provider for the object " << cName << " found");
         }
     }else{
         try {
@@ -738,16 +738,16 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             viewProvider->update(&Prop);
         }
         catch(const Base::MemoryException& e) {
-            Base::Console().Error("Memory exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
+            FC_ERR("Memory exception in " << Obj.getFullName() << " thrown: " << e.what());
         }
         catch(Base::Exception& e){
             e.ReportException();
         }
         catch(const std::exception& e){
-            Base::Console().Error("C++ exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
+            FC_ERR("C++ exception in " << Obj.getFullName() << " thrown " << e.what());
         }
         catch (...) {
-            Base::Console().Error("Cannot update representation for '%s'.\n", Obj.getNameInDocument());
+            FC_ERR("Cannot update representation for " << Obj.getFullName());
         }
 
         handleChildren3D(viewProvider);
@@ -1277,8 +1277,7 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
         if(it->first->isTouched()) {
             isModified = true;
-            FC_LOG("'" << getDocument()->getName() << '#'
-                    << it->first->getNameInDocument() << "' is touched after restore");
+            FC_LOG("'" << it->first->getFullName() << "' is touched after restore");
         }
     }
 

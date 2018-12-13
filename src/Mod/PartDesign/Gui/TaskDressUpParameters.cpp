@@ -106,7 +106,7 @@ void TaskDressUpParameters::setup(QListWidget *widget) {
             widget->addItem(QString::fromStdString(sub.second));
             continue;
         }
-        FC_WARN("missing element reference: " << pcDressUp->getNameInDocument() << "." << ref);
+        FC_WARN("missing element reference: " << pcDressUp->getFullName() << "." << ref);
         touched = true;
         refs.pop_back();
         for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {

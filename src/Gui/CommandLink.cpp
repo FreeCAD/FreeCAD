@@ -244,7 +244,7 @@ void StdCmdLinkMakeRelative::activated(int) {
     }
     auto obj = owner->getSubObject(subname.c_str());
     if(!obj) {
-        FC_ERR("invalid sub-object " << owner->getNameInDocument() << '.' << subname);
+        FC_ERR("invalid sub-object " << owner->getFullName() << '.' << subname);
         return;
     }
 
@@ -299,7 +299,7 @@ static void linkConvert(bool unlink) {
         auto obj = sel.second->getObject();
         auto parent = sel.first;
         if(!parent) {
-            FC_WARN("skip '" << obj->getNameInDocument() << "' with no parent");
+            FC_WARN("skip '" << obj->getFullName() << "' with no parent");
             continue;
         }
         auto parentObj = parent->getObject();
@@ -311,7 +311,7 @@ static void linkConvert(bool unlink) {
             }
         }
         if(parentObj->getDocument()!=obj->getDocument()) {
-            FC_WARN("cannot convert link for external object '" << obj->getNameInDocument() << "'");
+            FC_WARN("cannot convert link for external object '" << obj->getFullName() << "'");
             continue;
         }
 
@@ -357,7 +357,7 @@ static void linkConvert(bool unlink) {
             }
             replaceCmds[std::make_pair(parentObj,obj)].swap(cmds);
         }else 
-            FC_WARN("skip '" << obj->getNameInDocument() << "': no link property found");
+            FC_WARN("skip '" << obj->getFullName() << "': no link property found");
     }
 
     // Collect all realtive links in all documents, so that we can make
@@ -463,15 +463,13 @@ static void linkConvert(bool unlink) {
                     auto pos = strstr(sub,subName.c_str());
                     if(!pos) continue;
                     if(pos!=sub && pos[-1]!='.') {
-                        FC_LOG("subname mismatch " << pDoc->getName() << '.' << 
-                                linked->getNameInDocument() << '.' << sub);
+                        FC_LOG("subname mismatch " << linked->getFullName() << '.' << sub);
                         continue;
                     }
                     std::string tmpSub(sub,pos-sub+offset);
                     auto subObj = linked->getSubObject(tmpSub.c_str());
                     if(subObj != parent) {
-                        FC_LOG("sub object mismatch " << pDoc->getName() << '.' << 
-                                linked->getNameInDocument() << '.' << sub);
+                        FC_LOG("sub object mismatch " << linked->getFullName() << '.' << sub);
                         continue;
                     }
                     std::ostringstream str;

@@ -161,7 +161,7 @@ public:
     LinkInfo(ViewProviderDocumentObject *vp)
         :ref(0),pcLinked(vp) 
     {
-        FC_LOG("new link to " << pcLinked->getObject()->getNameInDocument());
+        FC_LOG("new link to " << pcLinked->getObject()->getFullName());
         connChangeIcon = vp->signalChangeIcon.connect(
                 boost::bind(&LinkInfo::slotChangeIcon,this));
         vp->forceUpdate(true);
@@ -521,13 +521,13 @@ public:
 
             auto ssobj = sobj->getSubObject(objname.c_str());
             if(!ssobj) {
-                FC_ERR("invalid sub name " << nextsub << " of object " << sobj->getNameInDocument());
+                FC_ERR("invalid sub name " << nextsub << " of object " << sobj->getFullName());
                 return false;
             }
             sobj = ssobj;
             auto vp = Application::Instance->getViewProvider(sobj);
             if(!vp) {
-                FC_ERR("cannot find view provider of " << sobj->getNameInDocument());
+                FC_ERR("cannot find view provider of " << sobj->getFullName());
                 return false;
             }
             if(vp->getChildRoot()) {
@@ -1220,7 +1220,7 @@ void LinkView::updateLink() {
         return;
 
     if(linkOwner && linkOwner->isLinked() && linkOwner->pcLinked->isRestoring()) {
-        FC_TRACE("restoring '" << linkOwner->pcLinked->getObject()->getNameInDocument() << "'");
+        FC_TRACE("restoring '" << linkOwner->pcLinked->getObject()->getFullName() << "'");
         return;
     }
 

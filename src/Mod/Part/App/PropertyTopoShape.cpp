@@ -305,16 +305,17 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             // empty string marks the need for recompute after import
             if(owner) owner->getDocument()->addRecomputeObject(owner);
         }else{
+            _Shape.Restore(reader);
             auto ver = owner?owner->getElementMapVersion(this):_Shape.getElementMapVersion();
-            if(ver!=_Ver) {
+            if(ver!=_Ver && _Shape.getElementMapSize()) {
                 // version mismatch, signal for regenerating.
                 if(owner && owner->getNameInDocument()) {
-                    FC_WARN("geo element map version changed: " << owner->getNameInDocument()
+                    FC_WARN("geo element map version changed: " << owner->getFullName()
                             << ", " << _Ver << " -> " << ver);
                     owner->getDocument()->addRecomputeObject(owner);
                 }
-            }
-            _Shape.Restore(reader);
+            }else
+                _Ver = ver;
         }
     } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
         static int buildElementMap = -1;
@@ -324,7 +325,7 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             buildElementMap = hGrp->GetBool("AutoElementMap",true)?1:0;
         }
         if(buildElementMap) {
-            FC_WARN("auto generate element map: " << owner->getNameInDocument());
+            FC_WARN("auto generate element map: " << owner->getFullName());
             owner->getDocument()->addRecomputeObject(owner);
         }
     }

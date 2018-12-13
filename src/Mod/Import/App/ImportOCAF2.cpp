@@ -937,7 +937,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 if(!warned) {
                     warned = true;
                     FC_WARN("Current OCCT does not support element color override, for object "
-                            << obj->getNameInDocument());
+                            << obj->getFullName());
                 }
                 continue;
             }
@@ -988,7 +988,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     App::DocumentObject *obj;
     auto shape = Part::Feature::getTopoShape(parentObj,sub,false,0,&obj,false,!sub);
     if(!obj || shape.isNull()) {
-        FC_WARN(obj->getNameInDocument() << " has null shape");
+        FC_WARN(obj->getFullName() << " has null shape");
         return TDF_Label();
     }
 
@@ -1089,7 +1089,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         std::string childName;
         auto sobj = obj->resolve(sub.c_str(),&parent,&childName);
         if(!sobj) {
-            FC_WARN("Cannot find object " << obj->getNameInDocument() << '.' << sub);
+            FC_WARN("Cannot find object " << obj->getFullName() << '.' << sub);
             continue;
         }
         int vis;

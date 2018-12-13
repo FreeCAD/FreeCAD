@@ -53,13 +53,13 @@ App::Origin *OriginGroupExtension::getOrigin () const {
 
     if ( !originObj ) {
         std::stringstream err;
-        err << "Can't find Origin for \"" << getExtendedObject()->getNameInDocument () << "\"";
+        err << "Can't find Origin for \"" << getExtendedObject()->getFullName () << "\"";
         throw Base::RuntimeError ( err.str().c_str () );
 
     } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
         std::stringstream err;
-        err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
-            << ") linked to the Origin of \"" << getExtendedObject()->getNameInDocument () << "\"";
+        err << "Bad object \"" << originObj->getFullName () << "\"(" << originObj->getTypeId().getName()
+            << ") linked to the Origin of \"" << getExtendedObject()->getFullName () << "\"";
         throw Base::RuntimeError ( err.str().c_str () );
     } else {
             return static_cast<App::Origin *> ( originObj );

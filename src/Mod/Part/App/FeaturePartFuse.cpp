@@ -236,9 +236,9 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
             return new App::DocumentObjectExecReturn("Input shape is null");
         if(!sh.hasSubShape(TopAbs_SOLID)) {
             if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                FC_WARN("fusion of non solid: " << obj->getNameInDocument());
+                FC_WARN("fusion of non solid: " << obj->getFullName());
             else
-                FC_MSG("fusion of non solid: " << obj->getNameInDocument());
+                FC_MSG("fusion of non solid: " << obj->getFullName());
         }
         shapes.push_back(sh);
     }

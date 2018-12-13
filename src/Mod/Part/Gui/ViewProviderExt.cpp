@@ -130,6 +130,8 @@
 
 #include "ViewProviderPartExtPy.h"
 
+FC_LOG_LEVEL_INIT("Part", true, true);
+
 using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
@@ -1776,7 +1778,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         lineset ->coordIndex  .finishEditing();
     }
     catch (...) {
-        Base::Console().Error("Cannot compute Inventor representation for the shape of %s.\n",pcObject->getNameInDocument());
+        FC_ERR("Cannot compute Inventor representation for the shape of " << pcObject->getFullName());
     }
 
 #   ifdef FC_DEBUG

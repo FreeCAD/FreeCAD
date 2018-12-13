@@ -204,7 +204,7 @@ public:
         for (auto child : newChildren) {
             if(child && child->getNameInDocument()) {
                 if(!newSet.insert(child).second) {
-                    TREE_WARN("duplicate child item " << obj->getNameInDocument() 
+                    TREE_WARN("duplicate child item " << obj->getFullName() 
                         << '.' << child->getNameInDocument());
                 }else if(!childSet.erase(child)) {
                     // this means new child detected
@@ -814,7 +814,7 @@ TreeWidget::getSelection(App::Document *doc)
         if(parent) {
             parentVp = parent->object();
             if(!parentVp->getObject()->getNameInDocument()) {
-                FC_WARN("skip '" << obj->getNameInDocument() << "' with invalid parent");
+                FC_WARN("skip '" << obj->getFullName() << "' with invalid parent");
                 continue;
             }
         }
@@ -1025,8 +1025,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
             auto obj = item->object()->getObject();
             // let the view provider decide to accept the object or ignore it
             if (!vp->canDropObjectEx(obj,owner,subname.c_str(), item->mySubs)) {
-                TREE_TRACE("cannot drop " << obj->getNameInDocument() << ' '
-                        << (owner?owner->getNameInDocument():"<No Owner>") << '.' << subname);
+                TREE_TRACE("cannot drop " << obj->getFullName() << ' '
+                        << (owner?owner->getFullName():"<No Owner>") << '.' << subname);
                 event->ignore();
                 return;
             }
@@ -1162,9 +1162,9 @@ void TreeWidget::dropEvent(QDropEvent *event)
                    (!parentItem->object()->canDragObjects() || 
                     !parentItem->object()->canDragObject(item->object()->getObject())))
                 {
-                    TREE_ERR("'" << item->object()->getObject()->getNameInDocument() << 
+                    TREE_ERR("'" << item->object()->getObject()->getFullName() << 
                            "' cannot be dragged out of '" << 
-                           parentItem->object()->getObject()->getNameInDocument() << "'");
+                           parentItem->object()->getObject()->getFullName() << "'");
                     return;
                 }
                 info.dragging = true;
@@ -1369,7 +1369,7 @@ void TreeWidget::dropEvent(QDropEvent *event)
                 parentItem = 0;
             }else if(!parentItem->object()->canDragObjects() || !parentItem->object()->canDragObject(obj)) {
                 TREE_ERR("'" << obj->getFullName() << "' cannot be dragged out of '" << 
-                    parentItem->object()->getObject()->getNameInDocument() << "'");
+                    parentItem->object()->getObject()->getFullName() << "'");
                 return;
             }
             infos.emplace_back();
@@ -2448,7 +2448,7 @@ bool DocumentItem::populateObject(App::DocumentObject *obj) {
         if(item->populated)
             return true;
     }
-    TREE_LOG("force populate object " << obj->getNameInDocument());
+    TREE_LOG("force populate object " << obj->getFullName());
     auto item = *items.begin();
     item->populated = true;
     populateItem(item,true);
@@ -2561,8 +2561,8 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             DocumentObjectItem *childItem = it->second->rootItem;
             if(item->isChildOfItem(childItem)) {
                 TREE_ERR("Cyclic dependency in " 
-                    << item->object()->getObject()->getNameInDocument()
-                    << '.' << childItem->object()->getObject()->getNameInDocument());
+                    << item->object()->getObject()->getFullName()
+                    << '.' << childItem->object()->getObject()->getFullName());
                 --i;
                 continue;
             }
@@ -3237,13 +3237,13 @@ DocumentObjectItem::DocumentObjectItem(DocumentItem *ownerDocItem, DocumentObjec
     setFlags(flags()|Qt::ItemIsEditable);
     myData->items.insert(this);
     ++countItems;
-    TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getNameInDocument());
+    TREE_LOG("Create item: " << countItems << ", " << object()->getObject()->getFullName());
 }
 
 DocumentObjectItem::~DocumentObjectItem()
 {
     --countItems;
-    TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getNameInDocument());
+    TREE_LOG("Delete item: " << countItems << ", " << object()->getObject()->getFullName());
     auto it = myData->items.find(this);
     if(it == myData->items.end())
         assert(0);
@@ -3753,7 +3753,7 @@ App::DocumentObject *DocumentObjectItem::getRelativeParent(
             auto substr = subname.substr(0,dot-subname.c_str()+1);
             auto ret = top->getSubObject(substr.c_str());
             if(!top) {
-                FC_ERR("invalid subname " << top->getNameInDocument() << '.' << substr);
+                FC_ERR("invalid subname " << top->getFullName() << '.' << substr);
                 str.str("");
                 return 0;
             }

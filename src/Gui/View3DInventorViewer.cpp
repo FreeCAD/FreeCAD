@@ -817,12 +817,12 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         if(idx<0 || idx>=modeSwitch->getNumChildren() ||
            modeSwitch->getChild(idx)!=childRoot)
         {
-            FC_LOG("skip " << obj->getNameInDocument() << '.' << (subname?subname:"") 
+            FC_LOG("skip " << obj->getFullName() << '.' << (subname?subname:"") 
                     << ", hidden inside geo group");
             return;
         }
         if(childRoot->findChild(childVp->getRoot())<0) {
-            FC_WARN("cannot find '" << childVp->getObject()->getNameInDocument() 
+            FC_WARN("cannot find '" << childVp->getObject()->getFullName() 
                     << "' in geo group '" << grp->getNameInDocument() << "'");
             break;
         }

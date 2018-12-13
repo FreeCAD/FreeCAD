@@ -106,7 +106,7 @@ std::vector<TopoShape> DressUp::getContiniusEdges(const TopoShape &shape) {
             subshape = shape.getSubShape(ref.c_str());
         }catch(...){}
         if(subshape.IsNull()) {
-            FC_ERR(getNameInDocument() << ": invalid edge link '" << ref << "'");
+            FC_ERR(getFullName() << ": invalid edge link '" << ref << "'");
             throw Part::NullShapeException("Invalid edge link");
         }
 
@@ -115,7 +115,7 @@ std::vector<TopoShape> DressUp::getContiniusEdges(const TopoShape &shape) {
             const TopTools_ListOfShape& los = mapEdgeFace.FindFromKey(edge);
 
             if(los.Extent() != 2) {
-                FC_WARN(getNameInDocument() << ": skip edge '" 
+                FC_WARN(getFullName() << ": skip edge '" 
                         << ref << "' with less two attaching faces");
                 continue;
             }
@@ -126,7 +126,7 @@ std::vector<TopoShape> DressUp::getContiniusEdges(const TopoShape &shape) {
                                                        TopoDS::Face(face1),
                                                        TopoDS::Face(face2));
             if (cont != GeomAbs_C0) {
-                FC_WARN(getNameInDocument() << ": skip edge '"
+                FC_WARN(getFullName() << ": skip edge '"
                        << ref << "' that is not C0 continuous");
                 continue;
             }
@@ -136,7 +136,7 @@ std::vector<TopoShape> DressUp::getContiniusEdges(const TopoShape &shape) {
             for(TopExp_Explorer exp(subshape,TopAbs_EDGE);exp.More();exp.Next())
                 ret.push_back(exp.Current());
         } else
-            FC_WARN(getNameInDocument() << ": skip invalid shape '"
+            FC_WARN(getFullName() << ": skip invalid shape '"
                     << ref << "' with type " << TopoShape::shapeName(subshape.ShapeType()));
     }
     return ret;
@@ -157,12 +157,12 @@ std::vector<TopoShape> DressUp::getFaces(const TopoShape &shape) {
             subshape = shape.getSubTopoShape(ref.c_str());
         }catch(...){}
         if(subshape.isNull()) {
-            FC_ERR(getNameInDocument() << ": invalid face reference '" << ref << "'");
+            FC_ERR(getFullName() << ": invalid face reference '" << ref << "'");
             throw Part::NullShapeException("Invalid Invalid face link");
         }
 
         if(subshape.shapeType() != TopAbs_FACE) {
-            FC_WARN(getNameInDocument() << ": skip invalid shape '"
+            FC_WARN(getFullName() << ": skip invalid shape '"
                     << ref << "' with type " << subshape.shapeName());
             continue;
         }

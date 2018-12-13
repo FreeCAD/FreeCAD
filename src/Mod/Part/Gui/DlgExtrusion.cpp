@@ -57,6 +57,8 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/Utilities.h>
 
+FC_LOG_LEVEL_INIT("Part",true,true);
+
 using namespace PartGui;
 
 class DlgExtrusion::EdgeSelection : public Gui::SelectionFilterGate
@@ -433,9 +435,8 @@ void DlgExtrusion::apply()
             assert(sourceObj);
 
             if (!sourceObj->isDerivedFrom(Part::Feature::getClassTypeId())){
-                std::stringstream errmsg;
-                errmsg << "Object " << sourceObj->getNameInDocument() << " is not Part object (has no OCC shape). Can't extrude it.\n";
-                Base::Console().Error(errmsg.str().c_str());
+                FC_ERR("Object " << sourceObj->getFullName() 
+                        << " is not Part object (has no OCC shape). Can't extrude it.");
                 continue;
             }
 

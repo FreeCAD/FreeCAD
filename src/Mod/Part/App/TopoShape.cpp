@@ -367,7 +367,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
         }
     }
     if(!silent)
-        Standard_Failure::Raise("invalid shape type");
+        FC_THROWM(Base::CADKernelError,"invalid shape type: " << (type?type:"?"));
     return TopAbs_SHAPE;
 }
 
@@ -381,7 +381,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(char type, bool silent) {
         return TopAbs_FACE;
     default:
         if(!silent)
-            Standard_Failure::Raise("invalid shape type");
+            FC_THROWM(Base::CADKernelError, "invalid shape type '" << type << "'");
         return TopAbs_SHAPE;
     }
 }
@@ -389,7 +389,7 @@ TopAbs_ShapeEnum TopoShape::shapeType(char type, bool silent) {
 TopAbs_ShapeEnum TopoShape::shapeType(bool silent) const {
     if(isNull()) {
         if(!silent)
-            Standard_Failure::Raise("null shape");
+            FC_THROWM(NullShapeException, "Input shape is null");
         return TopAbs_SHAPE;
     }
     return getShape().ShapeType();
@@ -401,7 +401,7 @@ const std::string &TopoShape::shapeName(TopAbs_ShapeEnum type, bool silent) {
     if(it != _ShapeNameMap.end())
         return it->second;
     if(!silent)
-        Standard_Failure::Raise("invalid shape type");
+        FC_THROWM(Base::CADKernelError, "invalid shape type '" << type << "'");
     static std::string ret("");
     return ret;
 }

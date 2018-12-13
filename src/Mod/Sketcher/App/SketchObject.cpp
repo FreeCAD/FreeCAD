@@ -210,7 +210,8 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
         rebuildExternalGeometry();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\nClear constraints to external geometry\n", e.what());
+        e.ReportException();
+        FC_ERR("Clear constraints to external geometry of " << getFullName());
         // we cannot trust the constraints of external geometries, so remove them
         delConstraintsToExternal();
     }
@@ -5433,7 +5434,7 @@ int SketchObject::carbonCopy(App::DocumentObject * pObj, bool construction)
             rebuildExternalGeometry();
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            e.ReportException();
             // revert to original values
             ExternalGeometry.setValues(originalObjects,originalSubElements);
             return -1;

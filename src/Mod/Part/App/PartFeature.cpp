@@ -180,7 +180,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         str << typeid(e).name() << " ";
         if (msg) {str << msg;}
         else     {str << "No OCCT Exception Message";}
-        str << ": " << getNameInDocument();
+        str << ": " << getFullName();
         if (subname) 
             str << '.' << subname;
         FC_ERR(str.str());
@@ -668,7 +668,7 @@ void FilletBase::onUpdateElementReference(const App::Property *prop) {
     const auto &subs = EdgeLinks.getSubValues();
     for(size_t i=0;i<values.size();++i) {
         if(i>=subs.size()) {
-            FC_WARN("fillet edge count mismatch in object " << getNameInDocument());
+            FC_WARN("fillet edge count mismatch in object " << getFullName());
             break;
         }
         int idx = 0;
@@ -677,7 +677,7 @@ void FilletBase::onUpdateElementReference(const App::Property *prop) {
             values[i].edgeid = idx;
         else
             FC_WARN("invalid fillet edge link '" << subs[i] << "' in object " 
-                    << getNameInDocument());
+                    << getFullName());
     }
     Edges.setStatus(App::Property::User3,true);
     Edges.setValues(values);

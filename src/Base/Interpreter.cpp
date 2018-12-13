@@ -105,6 +105,7 @@ PyException::~PyException() throw()
 void PyException::ThrowException(void)
 {
     PyException myexcp;
+    myexcp.ReportException();
 
     PyGILStateLocker locker;
     if (PP_PyDict_Object!=NULL) {
