@@ -1609,9 +1609,9 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
                         //Add edge to fillet algorithm
                         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
 #if OCC_VERSION_HEX > 0x070300
-                        mkChamfer.Add(radius, TopoDS::Edge(edge), face);
-#else
                         mkChamfer.Add(radius, radius, TopoDS::Edge(edge), face);
+#else
+                        mkChamfer.Add(radius, TopoDS::Edge(edge), face);
 #endif
                     }
                 }
