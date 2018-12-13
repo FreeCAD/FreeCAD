@@ -585,8 +585,8 @@ void MainWindow::closeAllWindows ()
         if(gdoc && !gdoc->canClose())
             return;
     }
-    d->mdiArea->closeAllSubWindows();
     App::GetApplication().closeAllDocuments();
+    // d->mdiArea->closeAllSubWindows();
 }
 
 void MainWindow::activateNextWindow ()
@@ -859,8 +859,11 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
     // of other mdi windows to get maximized if this window is maximized will fail.
     // However, we must let it here otherwise deleting MDI child views directly can
     // cause other problems.
-    if(d->mdiArea->subWindowList().contains(dynamic_cast<QMdiSubWindow*>(parent)))
+    if(d->mdiArea->subWindowList().contains(dynamic_cast<QMdiSubWindow*>(parent))) {
+        QChildEvent childRemoved(QEvent::ChildRemoved, parent);
+        QApplication::sendEvent(parent->parentWidget(), &childRemoved);
         d->mdiArea->removeSubWindow(parent);
+    }
 
     if(close) 
         parent->deleteLater();
