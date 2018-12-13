@@ -1,7 +1,7 @@
 import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
 import Part, DraftGeomUtils
 from FreeCAD import Vector
-from Draft import getType, getrgb
+from Draft import getType, getrgb, svgpatterns
 
 
 def getLineStyle(linestyle):
@@ -41,6 +41,29 @@ def getProj(vec, plane):
     #if techdraw: buggy - we now simply do it at the end
     #    ly = -ly
     return Vector(lx,ly,0)
+
+
+def getDiscretized(edge, plane):
+    ml = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("svgDiscretization",10.0)
+    if ml == 0:
+        ml = 10
+    d = int(edge.Length/ml)
+    if d == 0:
+        d = 1
+    edata = ""
+    for i in range(d+1):
+        v = getProj(edge.valueAt(edge.FirstParameter+((float(i)/d)*(edge.LastParameter-edge.FirstParameter))), plane)
+        if not edata:
+            edata += 'M ' + str(v.x) +' '+ str(v.y) + ' '
+        else:
+            edata += 'L ' + str(v.x) +' '+ str(v.y) + ' '
+    return edata
+
+
+def getPattern(pat):
+    if pat in svgpatterns():
+        return svgpatterns()[pat][0]
+    return ''
 
 
 def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0):
@@ -87,27 +110,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             if hasattr(obj.ViewObject,"LineColor"):
                 stroke = getrgb(obj.ViewObject.LineColor)
 
-
-    def getDiscretized(edge):
-        ml = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("svgDiscretization",10.0)
-        if ml == 0:
-            ml = 10
-        d = int(edge.Length/ml)
-        if d == 0:
-            d = 1
-        edata = ""
-        for i in range(d+1):
-            v = getProj(edge.valueAt(edge.FirstParameter+((float(i)/d)*(edge.LastParameter-edge.FirstParameter))), plane)
-            if not edata:
-                edata += 'M ' + str(v.x) +' '+ str(v.y) + ' '
-            else:
-                edata += 'L ' + str(v.x) +' '+ str(v.y) + ' '
-        return edata
-
-    def getPattern(pat):
-        if pat in svgpatterns():
-            return svgpatterns()[pat][0]
-        return ''
 
     def getPath(edges=[],wires=[],pathname=None):
         import Part,DraftGeomUtils
@@ -207,7 +209,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                         str(int(flag_large_arc)),\
                                         str(int(flag_sweep)),str(v.x),str(v.y))
                     else:
-                        edata += getDiscretized(e)
+                        edata += getDiscretized(e, plane)
                 elif DraftGeomUtils.geomType(e) == "Line":
                     v = getProj(vs[-1].Point, plane)
                     edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
@@ -276,7 +278,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             # any other projection: ellipse
             svg = '<path d="'
-            svg += getDiscretized(edge)
+            svg += getDiscretized(edge, plane)
             svg += '" '
         svg += 'stroke="' + stroke + '" '
         svg += 'stroke-width="' + str(linewidth) + ' px" '
