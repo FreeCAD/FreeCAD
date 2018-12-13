@@ -383,7 +383,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         bool enabled = group->GetBool("Enabled", true);
         if(enabled != group->GetBool("Enabled", false)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView",true);
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView",false);
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
@@ -403,7 +403,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         bool enabled = group->GetBool("Enabled", true);
         if(enabled != group->GetBool("Enabled", false)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView",true);
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView",false);
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
