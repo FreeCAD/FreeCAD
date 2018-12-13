@@ -4,7 +4,7 @@ from FreeCAD import Vector
 from Draft import getType, getrgb, svgpatterns
 
 
-def getLineStyle(linestyle):
+def getLineStyle(linestyle, scale):
     "returns a linestyle"
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     l = None
@@ -453,7 +453,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             fill = "#888888"
         else:
             fill = 'url(#'+fillstyle+')'
-        lstyle = getLineStyle(linestyle)
+        lstyle = getLineStyle(linestyle, scale)
         svg += getPath(obj.Edges,pathname="")
 
 
@@ -551,7 +551,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
                     # drawing arc
                     fill= "none"
-                    lstyle = getLineStyle(linestyle)
+                    lstyle = getLineStyle(linestyle, scale)
                     if obj.ViewObject.DisplayMode == "2D":
                         svg += getPath([prx.circle])
                     else:
@@ -665,7 +665,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 print ("export of axes to SVG is only available in GUI mode")
             else:
                 vobj = obj.ViewObject
-                lorig = getLineStyle(linestyle)
+                lorig = getLineStyle(linestyle, scale)
                 fill = 'none'
                 rad = vobj.BubbleSize.Value/2
                 n = 0
@@ -705,7 +705,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Pipe":
         fill = stroke
-        lstyle = getLineStyle(linestyle)
+        lstyle = getLineStyle(linestyle, scale)
         if obj.Base and obj.Diameter:
             svg += getPath(obj.Base.Shape.Edges)
         for f in obj.Shape.Faces:
@@ -715,7 +715,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Rebar":
         fill = "none"
-        lstyle = getLineStyle(linestyle)
+        lstyle = getLineStyle(linestyle, scale)
         if obj.Proxy:
             if not hasattr(obj.Proxy,"wires"):
                 obj.Proxy.execute(obj)
@@ -774,7 +774,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 fill = "#888888"
         else:
             fill = 'none'
-        lstyle = getLineStyle(linestyle)
+        lstyle = getLineStyle(linestyle, scale)
 
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
