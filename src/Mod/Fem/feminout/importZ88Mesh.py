@@ -87,7 +87,7 @@ def write(fem_mesh, filename):
     import femmesh.meshtools as FemMeshTools
     femelement_table = FemMeshTools.get_femelement_table(fem_mesh)
     z88_element_type = get_z88_element_type(fem_mesh, femelement_table)
-    f = pyopen(filename, "wb")
+    f = pyopen(filename, "w")
     write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
     f.close()
 
