@@ -136,6 +136,8 @@ public:
     bool exportToVrml(const char* filename, const MeshCore::Material&, bool binary=false) const;
     void exportMesh(const char* filename, const char* fmt=0) const;
     void setupContextMenu(QMenu*, QObject*, const char*);
+    /// Get the python wrapper for that ViewProvider
+    PyObject* getPyObject();
 
     /** @name Editing */
     //@{
