@@ -210,7 +210,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
             mb.setText(_translate('AttachmentEditor',
-                         "{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametic."
+                         "{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric."
                          ,None)
                        .format(obj= obj_to_attach.Label))
             mb.setWindowTitle(_translate('AttachmentEditor',"Attachment",None))
