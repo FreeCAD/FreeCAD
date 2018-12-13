@@ -78,7 +78,7 @@ class DocumentBasicCases(unittest.TestCase):
     self.assertEqual(L1.ExecCount, countChild)
     self.assertEqual(L2.ExecCount, countParent+1)
 
-    L1.touch()
+    L1.touch('')
     countChild = L1.ExecCount
     countParent = L2.ExecCount
     objectcount = self.Doc.recompute()
