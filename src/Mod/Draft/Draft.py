@@ -24,6 +24,7 @@
 #***************************************************************************
 
 #from __future__ import division
+
 __title__="FreeCAD Draft Workbench"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry Chigrin, Daniel Falck"
 __url__ = "http://www.freecadweb.org"
