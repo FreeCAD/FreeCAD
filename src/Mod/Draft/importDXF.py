@@ -46,7 +46,7 @@ texts, colors,layers (from groups)
 '''
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
-CURRENTDXFLIB = 1.39 # the minimal version of the dxfLibrary needed to run
+CURRENTDXFLIB = 1.40 # the minimal version of the dxfLibrary needed to run
 
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
