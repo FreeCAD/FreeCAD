@@ -76,8 +76,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             else:
                 raise Exception('FEM: No solver found!')
             if test_mode:
+                self.test_mode = True
                 self.ccx_binary_present = True
             else:
+                self.test_mode = False
                 self.ccx_binary_present = False
                 self.setup_ccx()
             self.result_object = None
@@ -632,6 +634,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return (int(m.group(1)), int(m.group(2)))
 
     def run(self):
+        if self.test_mode:
+            FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
+            return
         ret_code = 0
         message = self.check_prerequisites()
         if not message:
