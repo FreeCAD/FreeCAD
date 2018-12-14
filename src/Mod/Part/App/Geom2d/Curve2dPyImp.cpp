@@ -902,9 +902,9 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
             }
             if (intersector.NbSegments() > 0) {
                 Handle(Geom2d_Curve) c1, c2;
+                gp_Pnt2d p1,p2;
                 for (int i = 1; i <= intersector.NbSegments(); i++) {
                     intersector.Segment(i, c1, c2);
-                    gp_Pnt2d p1,p2;
                     p1 = c1->Value(c1->FirstParameter());
                     p2 = c1->Value(c1->LastParameter());
                     arg.setItem(0, Py::Float(p1.X()));
