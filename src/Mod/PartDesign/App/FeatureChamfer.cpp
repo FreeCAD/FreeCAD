@@ -35,6 +35,7 @@
 # include <BRep_Tool.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -102,7 +103,11 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+#if OCC_VERSION_HEX > 0x070300
+            mkChamfer.Add(size, size, edge, face);
+#else
             mkChamfer.Add(size, edge, face);
+#endif
         }
 
         mkChamfer.Build();
