@@ -223,9 +223,8 @@ class TestMeshEleTetra10(unittest.TestCase):
         # fcc_print(outfile)
         # fcc_print(testfile)
         self.femmesh.writeABAQUS(outfile, 1, False)  # write the mesh
-        from feminout.importInpMesh import read as read_inp
-        femmesh_outfile = read_inp(outfile)  # read the mesh from written mesh
-        femmesh_testfile = read_inp(testfile)  # read the mesh from test mesh
+        femmesh_outfile = Fem.read(outfile)  # read the mesh from written mesh
+        femmesh_testfile = Fem.read(testfile)  # read the mesh from test mesh
         # reading the test mesh
         # fcc_print([femmesh_testfile.Volumes[0], femmesh_testfile.getElementNodes(femmesh_outfile.Volumes[0])])
         self.assertEqual(

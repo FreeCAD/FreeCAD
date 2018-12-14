@@ -1169,6 +1169,42 @@ void FemMesh::readNastran(const std::string &Filename)
 
 }
 
+void FemMesh::readAbaqus(const std::string &FileName)
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readAbaqus() =================================\n");
+
+    /*
+    Python command to read Abaqus inp mesh file from test suite:
+    from feminout.importInpMesh import read as read_inp
+    femmesh = read_inp(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/mesh/tetra10_mesh.inp')
+    */
+
+    PyObject* module = PyImport_ImportModule("feminout.importInpMesh");
+    if (!module)
+        return;
+    try {
+        Py::Module abaqusmod(module, true);
+        Py::Callable method(abaqusmod.getAttr("read"));
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(FileName));
+        Py::Object mesh(method.apply(args));
+        if (PyObject_TypeCheck(mesh.ptr(), &FemMeshPy::Type)) {
+            FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
+            FemMesh* fem = fempy->getFemMeshPtr();
+            *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
+                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+        }
+        else {
+            throw Base::FileException("Problems reading file");
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+}
+
 void FemMesh::readZ88(const std::string &FileName)
 {
     Base::TimeInfo Start;
@@ -1220,6 +1256,10 @@ void FemMesh::read(const char *FileName)
     }
     else if (File.hasExtension("med") ) {
         myMesh->MEDToMesh(File.filePath().c_str(),File.fileNamePure().c_str());
+    }
+    else if (File.hasExtension("inp") ) {
+        // read Abaqus inp mesh file
+        readAbaqus(File.filePath());
     }
     else if (File.hasExtension("stl") ) {
         // read brep-file
