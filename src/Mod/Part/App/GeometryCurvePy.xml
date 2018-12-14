@@ -193,6 +193,17 @@ or raises an exception if it is not periodic.</UserDocu>
             </UserDocu>
           </Documentation>
         </Methode>
+		<Methode Name="extendToPoint" Const="true">
+			<Documentation>
+				<UserDocu>
+					Modifies this curve by extending it to a point.
+					my_curve.extendToPoint(point, cont, after)
+					cont is the desired continuity (1, 2 or 3)
+					if after is True, the end of the curve is extended.
+					if after is False, the start of the curve is extended.
+				</UserDocu>
+			</Documentation>
+		</Methode>
         <Attribute Name="Continuity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>

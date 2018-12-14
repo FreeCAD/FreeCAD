@@ -53,6 +53,7 @@
 # include <ShapeConstruct_Curve.hxx>
 # include <GeomAPI_IntCS.hxx>
 # include <GeomAPI_ExtremaCurveCurve.hxx>
+# include <GeomLib.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -66,6 +67,8 @@
 #include "PlanePy.h"
 #include "PointPy.h"
 #include "BSplineCurvePy.h"
+#include "BezierCurvePy.h"
+// #include "TrimmedCurvePy.h"
 
 #include "OCCError.h"
 #include "TopoShape.h"
@@ -938,4 +941,44 @@ PyObject* GeometryCurvePy::isClosed(PyObject *args)
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
         return 0;
     }
+}
+
+PyObject* GeometryCurvePy::extendToPoint(PyObject *args)
+{
+    Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(getGeometryPtr()->handle());
+    try {
+        if (!curve.IsNull()) {
+            Handle(Geom_BoundedCurve) bc = Handle(Geom_BoundedCurve)::DownCast(curve);
+            PyObject *p;
+            int cont = 1;
+            PyObject* after = Py_True; // PyObject_IsTrue(after) ? Standard_True : Standard_False
+            if (!PyArg_ParseTuple(args, "O!|iO!", &(Base::VectorPy::Type), &p, &cont, &PyBool_Type, &after))
+                return 0;
+            Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
+            gp_Pnt pnt(vec.x, vec.y, vec.z);
+            GeomLib::ExtendCurveToPoint (bc, pnt, cont, PyObject_IsTrue(after) ? Standard_True : Standard_False);
+            // Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(bc)
+            // check the result curve type
+            return Py::new_reference_to(makeGeometryCurvePy(bc));
+//             if (bc->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+//                 Handle(Geom_BSplineCurve) nc = Handle(Geom_BSplineCurve)::DownCast(bc);
+//                 return new BSplineCurvePy(new GeomBSplineCurve(nc));
+//             }
+//             else if (bc->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+//                 Handle(Geom_BezierCurve) nc = Handle(Geom_BezierCurve)::DownCast(bc);
+//                 return new BezierCurvePy(new GeomBezierCurve(nc));
+//             }
+//             else if (bc->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+//                 Handle(Geom_TrimmedCurve) nc = Handle(Geom_TrimmedCurve)::DownCast(bc);
+//                 return new GeometryCurvePy(new GeomTrimmedCurve(nc));
+//             }
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
+    return 0;
 }
