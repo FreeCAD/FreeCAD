@@ -33,6 +33,8 @@
 # include <QTreeWidget>
 #endif
 
+#include <boost/regex.hpp>
+
 #include "ui_DlgParameter.h"
 #include "DlgParameterImp.h"
 #include "DlgInputDialogImp.h"
@@ -322,16 +324,11 @@ bool validateInput(QWidget* parent, const QString& input)
 {
     if (input.isEmpty())
         return false;
-    for (int i=0; i<input.size(); i++) {
-        const char c = input.at(i).toLatin1();
-        if ((c < '0' || c > '9') &&  // Numbers
-            (c < 'A' || c > 'Z') &&  // Uppercase letters
-            (c < 'a' || c > 'z') &&  // Lowercase letters
-            (c != ' ')) {            // Space
-            QMessageBox::warning(parent, DlgParameterImp::tr("Invalid input"), 
-                                         DlgParameterImp::tr("Invalid key name '%1'").arg(input));
-            return false;
-        }
+    static boost::regex e("\\w[\\w.]*");
+    if(!boost::regex_match(input.toUtf8().constData(),e)) {
+        QMessageBox::warning(parent, DlgParameterImp::tr("Invalid input"), 
+                DlgParameterImp::tr("Invalid key name '%1'").arg(input));
+        return false;
     }
     return true;
 }
