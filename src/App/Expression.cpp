@@ -1798,27 +1798,39 @@ public:
         handle->Attach(this);
         for(auto &m : handle->GetBoolMap()) {
             if(m.second)
-                modules.insert(m.first);
+                modules.emplace(m.first,nullptr);
         }
     }
 
     void OnChange(Base::Subject<const char*> &, const char* sReason) {
         if(!sReason)
             return;
-        if(!handle->GetBool(sReason,false))
-            modules.erase(sReason);
-        else
-            modules.insert(sReason);
+        if(!handle->GetBool(sReason,false)) {
+            auto it = modules.find(sReason);
+            if(it!=modules.end()) {
+                imports.erase(it->second);
+                modules.erase(it);
+            }
+        }else
+            modules.emplace(sReason,nullptr);
     }
 
     Py::Object getModule(const std::string &name, const Expression *e) {
         auto it = modules.find(name);
         if(it == modules.end())
-            __EXPR_THROW(ImportError, "Python module '" << name << "' not allowd.", e);
-        PyObject *pyobj = PyImport_ImportModule(name.c_str());
-        if(!pyobj) 
+            __EXPR_THROW(ImportError, "Python module '" << name << "' access denied.", e);
+        if(it->second)
+            return Py::Object(it->second);
+        it->second = PyImport_ImportModule(name.c_str());
+        if(!it->second) 
             Base::PyException::ThrowException();
-        return Py::Object(pyobj,true);
+        imports.insert(it->second);
+        // Not ref counted inside modules or ipmorts
+        return Py::Object(it->second,true);
+    }
+
+    bool isImported(PyObject *module) const {
+        return imports.count(module);
     }
 
     static ImportModules *instance() {
@@ -1833,7 +1845,8 @@ public:
     }
 
 private:
-    std::set<std::string> modules;
+    std::map<std::string,PyObject*> modules;
+    std::set<PyObject*> imports;
     ParameterGrp::handle handle;
 };
 
@@ -5792,6 +5805,10 @@ Base::XMLReader *ExpressionParser::ExpressionImporter::reader() {
 namespace App {
 
 namespace ExpressionParser {
+
+bool isModuleImported(PyObject *module) {
+    return ImportModules::instance()->isImported(module);
+}
 
 bool check_text(const char *txt, const char *prefix) {
     for(;*txt && std::isspace((unsigned char)txt[0]);++txt);

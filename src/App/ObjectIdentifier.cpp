@@ -592,13 +592,16 @@ size_t ObjectIdentifier::Component::getIndex(size_t count) const {
         if(idx >= 0)
             return idx;
     }
-    FC_THROWM(Base::RuntimeError, "Array out of bound: " << begin << ", " << count);
+    FC_THROWM(Base::IndexError, "Array out of bound: " << begin << ", " << count);
 }
 
 Py::Object ObjectIdentifier::Component::get(const Py::Object &pyobj) const {
-    if(isSimple()) 
-        return pyobj.getAttr(getName());
-    else if(isArray()) {
+    if(isSimple()) {
+        Py::Object res = pyobj.getAttr(getName());
+        if(PyModule_Check(res.ptr()) && !ExpressionParser::isModuleImported(res.ptr()))
+            FC_THROWM(Base::RuntimeError, "Module '" << getName() << "' access denied.");
+        return res;
+    } else if(isArray()) {
         if(pyobj.isMapping())
             return Py::Mapping(pyobj).getItem(Py::Int(begin));
         else

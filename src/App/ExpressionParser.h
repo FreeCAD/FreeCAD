@@ -1063,8 +1063,9 @@ public:
     static Base::XMLReader *reader();
 };
 
-} // end of namespace ExpressionParser
+AppExport bool isModuleImported(PyObject *);
 
+} // end of namespace ExpressionParser
 } // end of namespace App
 
 #endif //EXPRESSION_PARSER_H
