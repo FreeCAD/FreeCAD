@@ -362,8 +362,8 @@ public:
   std::vector<unsigned long> GetIndices() const;
 
 private:
-  float fMinAngle;
-  float fMaxAngle;
+  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
+  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
 };
 
 /**
@@ -392,9 +392,9 @@ public:
   bool Fixup ();
 
 private:
-  float fMinAngle;
-  float fMaxAngle;
-  float fMaxSwapAngle;
+  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
+  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
+  float fMaxSwapAngle; /**< A swap edge is only allowed if the angle of both normals doesn't exceed fMaxSwapAngle */
   float fEpsilon;
 };
 
