@@ -1169,6 +1169,41 @@ void FemMesh::readNastran(const std::string &Filename)
 
 }
 
+void FemMesh::readZ88(const std::string &FileName)
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readZ88() =================================\n");
+
+    /*
+    Python command to read Z88 mesh file from test suite:
+    from feminout.importZ88Mesh import read as read_z88
+    femmesh = read_z88(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/mesh/tetra10_mesh.z88')
+    */
+
+    PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
+    if (!module)
+        return;
+    try {
+        Py::Module z88mod(module, true);
+        Py::Callable method(z88mod.getAttr("read"));
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(FileName));
+        Py::Object mesh(method.apply(args));
+        if (PyObject_TypeCheck(mesh.ptr(), &FemMeshPy::Type)) {
+            FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
+            FemMesh* fem = fempy->getFemMeshPtr();
+            *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
+                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+        }
+        else {
+            throw Base::FileException("Problems reading file");
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+}
 
 void FemMesh::read(const char *FileName)
 {
@@ -1207,6 +1242,10 @@ void FemMesh::read(const char *FileName)
         FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
     }
 #endif
+    else if (File.hasExtension("z88") ) {
+        // read Z88 mesh file
+        readZ88(File.filePath());
+    }
     else{
         throw Base::FileException("Unknown extension");
     }
