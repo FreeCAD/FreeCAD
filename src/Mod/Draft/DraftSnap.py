@@ -880,11 +880,11 @@ class Snapper:
         p = Vector(info['x'],info['y'],info['z'])
         if active:
             if self.isEnabled("passive"):
-                return [p,'endpoint',p]
+                return [p,'endpoint',self.toWP(p)]
             else:
                 return []
         elif self.isEnabled("passive"):
-            return [p,'passive',p]
+            return [p,'passive',self.toWP(p)]
         else:
             return []
             

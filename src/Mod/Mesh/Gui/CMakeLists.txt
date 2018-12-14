@@ -20,6 +20,13 @@ set(MeshGui_LIBS
     FreeCADGui
 )
 
+generate_from_xml(ViewProviderMeshPy)
+
+SET(MeshGui_XML_SRCS
+    ViewProviderMeshPy.xml
+)
+SOURCE_GROUP("XML" FILES ${MeshGui_XML_SRCS})
+
 set(Mesh_MOC_HDRS
     DlgEvaluateMeshImp.h
     DlgEvaluateSettings.h
@@ -117,6 +124,7 @@ SET(ViewProvider_SRCS
     ViewProviderCurvature.h
     ViewProviderDefects.cpp
     ViewProviderDefects.h
+    ViewProviderMeshPyImp.cpp
     ViewProviderMeshFaceSet.cpp
     ViewProviderMeshFaceSet.h
     ViewProviderTransform.cpp
@@ -127,6 +135,7 @@ SET(ViewProvider_SRCS
 SOURCE_GROUP("ViewProvider" FILES ${ViewProvider_SRCS})
 
 SET(MeshGui_SRCS
+    ${MeshGui_XML_SRCS}
     ${Dialogs_SRCS}
     ${Inventor_SRCS}
     ${resource_SRCS}

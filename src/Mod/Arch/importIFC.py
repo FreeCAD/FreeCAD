@@ -2885,31 +2885,30 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
         # set surface style
         if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
-            # only set a surface style if the object has no material.
-            # apparently not needed, no harm in having both.
-            # but they must have the same name for revit to see them
-            #m = False
-            #if hasattr(obj,"Material"):
-            #    if obj.Material:
-            #        if "Color" in obj.Material.Material:
-            #            m = True
-            #if not m:
+            # every object gets a surface style. If the obj has a material, the surfstyle
+            # is named after it. Revit will treat surfacestyles as materials (and discard
+            # actual ifcmaterial)
+            key = None
             rgb = obj.ViewObject.ShapeColor[:3]
-            if rgb in surfstyles:
-                psa = surfstyles[rgb]
+            if hasattr(obj,"Material"):
+                if obj.Material:
+                    key = obj.Material.Name
+            if not key:
+                key = rgb
+            if key in surfstyles:
+                psa = surfstyles[key]
             else:
                 m = None
                 if hasattr(obj,"Material"):
                     if obj.Material:
-                        if obj.Material.isDerivedFrom("App::MaterialObject"):
-                            m = obj.Material.Label
-                            if sys.version_info.major < 3:
-                                m = m.encode("utf8")
+                        m = obj.Material.Label
+                        if sys.version_info.major < 3:
+                            m = m.encode("utf8")
                 col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
                 ssr = ifcbin.createIfcSurfaceStyleRendering(col)
                 iss = ifcfile.createIfcSurfaceStyle(m,"BOTH",[ssr])
                 psa = ifcfile.createIfcPresentationStyleAssignment([iss])
-                surfstyles[rgb] = psa
+                surfstyles[key] = psa
             for shape in shapes:
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 

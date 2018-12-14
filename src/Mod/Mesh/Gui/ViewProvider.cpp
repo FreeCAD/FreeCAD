@@ -93,6 +93,7 @@
 #include <Mod/Mesh/App/Core/Visitor.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/Gui/ViewProviderMeshPy.h>
 #include <zipios++/gzipoutputstream.h>
 #include <boost/bind.hpp>
 
@@ -2044,6 +2045,14 @@ void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
         float fBlu = colors[0].b;
         pcShapeMaterial->diffuseColor.setValue(fRed,fGrn,fBlu);
     }
+}
+
+PyObject* ViewProviderMesh::getPyObject()
+{
+    if (!pyViewObject)
+        pyViewObject = new ViewProviderMeshPy(this);
+    pyViewObject->IncRef();
+    return pyViewObject;
 }
 
 // ------------------------------------------------------
