@@ -357,9 +357,8 @@ class TestMeshEleTetra10(unittest.TestCase):
         # fcc_print(outfile)
         # fcc_print(testfile)
         self.femmesh.write(outfile)  # write the mesh
-        from feminout.importZ88Mesh import read as read_z88
-        femmesh_testfile = read_z88(outfile)  # read the mesh from written mesh
-        femmesh_outfile = read_z88(testfile)  # read the mesh from test mesh
+        femmesh_testfile = Fem.read(outfile)  # read the mesh from written mesh
+        femmesh_outfile = Fem.read(testfile)  # read the mesh from test mesh
         # reading the test mesh
         self.assertEqual(
             femmesh_testfile.Nodes,

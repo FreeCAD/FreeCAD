@@ -157,6 +157,7 @@ public:
 private:
     void copyMeshData(const FemMesh&);
     void readNastran(const std::string &Filename);
+    void readZ88(const std::string &Filename);
 
 private:
     /// positioning matrix
