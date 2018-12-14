@@ -854,15 +854,19 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
     }
 
     QWidget* parent = view->parentWidget();
+
     // The call of 'd->mdiArea->removeSubWindow(parent)' causes the QMdiSubWindow
     // to lose its parent and thus the notification in QMdiSubWindow::closeEvent
     // of other mdi windows to get maximized if this window is maximized will fail.
     // However, we must let it here otherwise deleting MDI child views directly can
     // cause other problems.
+    //
+    // The above mentioned problem can be fixed by sending ChildRemoved event instead.
+    //
     if(d->mdiArea->subWindowList().contains(dynamic_cast<QMdiSubWindow*>(parent))) {
         QChildEvent childRemoved(QEvent::ChildRemoved, parent);
-        QApplication::sendEvent(parent->parentWidget(), &childRemoved);
-        d->mdiArea->removeSubWindow(parent);
+        QApplication::sendEvent(d->mdiArea, &childRemoved);
+        // d->mdiArea->removeSubWindow(parent);
     }
 
     if(close) 
