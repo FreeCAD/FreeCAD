@@ -304,6 +304,7 @@ class TestMeshEleTetra10(unittest.TestCase):
             "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
         )
 
+    '''
     def test_tetra10_vkt(self):
         # tetra10 element: reading from and writing to unv mesh file format
         filetyp = 'vtk'
@@ -347,6 +348,7 @@ class TestMeshEleTetra10(unittest.TestCase):
             femmesh_testfile.Volumes,
             "Test writing " + self.elem + " mesh to " + filetyp + " file failed. Volumes are different.\n"
         )
+    '''
 
     def test_tetra10_z88(self):
         # tetra10 element: reading from and writing to z88 mesh file format
