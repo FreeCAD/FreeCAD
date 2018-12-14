@@ -8,11 +8,17 @@
 
 #define yy_create_buffer ExpressionParser_create_buffer
 #define yy_delete_buffer ExpressionParser_delete_buffer
-#define yy_flex_debug ExpressionParser_flex_debug
+#define yy_scan_buffer ExpressionParser_scan_buffer
+#define yy_scan_string ExpressionParser_scan_string
+#define yy_scan_bytes ExpressionParser_scan_bytes
 #define yy_init_buffer ExpressionParser_init_buffer
 #define yy_flush_buffer ExpressionParser_flush_buffer
 #define yy_load_buffer_state ExpressionParser_load_buffer_state
 #define yy_switch_to_buffer ExpressionParser_switch_to_buffer
+#define yypush_buffer_state ExpressionParserpush_buffer_state
+#define yypop_buffer_state ExpressionParserpop_buffer_state
+#define yyensure_buffer_stack ExpressionParserensure_buffer_stack
+#define yy_flex_debug ExpressionParser_flex_debug
 #define yyin ExpressionParserin
 #define yyleng ExpressionParserleng
 #define yylex ExpressionParserlex
@@ -28,9 +34,243 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 6
-#define YY_FLEX_SUBMINOR_VERSION 0
+#define YY_FLEX_SUBMINOR_VERSION 4
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
+#endif
+
+#ifdef yy_create_buffer
+#define ExpressionParser_create_buffer_ALREADY_DEFINED
+#else
+#define yy_create_buffer ExpressionParser_create_buffer
+#endif
+
+#ifdef yy_delete_buffer
+#define ExpressionParser_delete_buffer_ALREADY_DEFINED
+#else
+#define yy_delete_buffer ExpressionParser_delete_buffer
+#endif
+
+#ifdef yy_scan_buffer
+#define ExpressionParser_scan_buffer_ALREADY_DEFINED
+#else
+#define yy_scan_buffer ExpressionParser_scan_buffer
+#endif
+
+#ifdef yy_scan_string
+#define ExpressionParser_scan_string_ALREADY_DEFINED
+#else
+#define yy_scan_string ExpressionParser_scan_string
+#endif
+
+#ifdef yy_scan_bytes
+#define ExpressionParser_scan_bytes_ALREADY_DEFINED
+#else
+#define yy_scan_bytes ExpressionParser_scan_bytes
+#endif
+
+#ifdef yy_init_buffer
+#define ExpressionParser_init_buffer_ALREADY_DEFINED
+#else
+#define yy_init_buffer ExpressionParser_init_buffer
+#endif
+
+#ifdef yy_flush_buffer
+#define ExpressionParser_flush_buffer_ALREADY_DEFINED
+#else
+#define yy_flush_buffer ExpressionParser_flush_buffer
+#endif
+
+#ifdef yy_load_buffer_state
+#define ExpressionParser_load_buffer_state_ALREADY_DEFINED
+#else
+#define yy_load_buffer_state ExpressionParser_load_buffer_state
+#endif
+
+#ifdef yy_switch_to_buffer
+#define ExpressionParser_switch_to_buffer_ALREADY_DEFINED
+#else
+#define yy_switch_to_buffer ExpressionParser_switch_to_buffer
+#endif
+
+#ifdef yypush_buffer_state
+#define ExpressionParserpush_buffer_state_ALREADY_DEFINED
+#else
+#define yypush_buffer_state ExpressionParserpush_buffer_state
+#endif
+
+#ifdef yypop_buffer_state
+#define ExpressionParserpop_buffer_state_ALREADY_DEFINED
+#else
+#define yypop_buffer_state ExpressionParserpop_buffer_state
+#endif
+
+#ifdef yyensure_buffer_stack
+#define ExpressionParserensure_buffer_stack_ALREADY_DEFINED
+#else
+#define yyensure_buffer_stack ExpressionParserensure_buffer_stack
+#endif
+
+#ifdef yylex
+#define ExpressionParserlex_ALREADY_DEFINED
+#else
+#define yylex ExpressionParserlex
+#endif
+
+#ifdef yyrestart
+#define ExpressionParserrestart_ALREADY_DEFINED
+#else
+#define yyrestart ExpressionParserrestart
+#endif
+
+#ifdef yylex_init
+#define ExpressionParserlex_init_ALREADY_DEFINED
+#else
+#define yylex_init ExpressionParserlex_init
+#endif
+
+#ifdef yylex_init_extra
+#define ExpressionParserlex_init_extra_ALREADY_DEFINED
+#else
+#define yylex_init_extra ExpressionParserlex_init_extra
+#endif
+
+#ifdef yylex_destroy
+#define ExpressionParserlex_destroy_ALREADY_DEFINED
+#else
+#define yylex_destroy ExpressionParserlex_destroy
+#endif
+
+#ifdef yyget_debug
+#define ExpressionParserget_debug_ALREADY_DEFINED
+#else
+#define yyget_debug ExpressionParserget_debug
+#endif
+
+#ifdef yyset_debug
+#define ExpressionParserset_debug_ALREADY_DEFINED
+#else
+#define yyset_debug ExpressionParserset_debug
+#endif
+
+#ifdef yyget_extra
+#define ExpressionParserget_extra_ALREADY_DEFINED
+#else
+#define yyget_extra ExpressionParserget_extra
+#endif
+
+#ifdef yyset_extra
+#define ExpressionParserset_extra_ALREADY_DEFINED
+#else
+#define yyset_extra ExpressionParserset_extra
+#endif
+
+#ifdef yyget_in
+#define ExpressionParserget_in_ALREADY_DEFINED
+#else
+#define yyget_in ExpressionParserget_in
+#endif
+
+#ifdef yyset_in
+#define ExpressionParserset_in_ALREADY_DEFINED
+#else
+#define yyset_in ExpressionParserset_in
+#endif
+
+#ifdef yyget_out
+#define ExpressionParserget_out_ALREADY_DEFINED
+#else
+#define yyget_out ExpressionParserget_out
+#endif
+
+#ifdef yyset_out
+#define ExpressionParserset_out_ALREADY_DEFINED
+#else
+#define yyset_out ExpressionParserset_out
+#endif
+
+#ifdef yyget_leng
+#define ExpressionParserget_leng_ALREADY_DEFINED
+#else
+#define yyget_leng ExpressionParserget_leng
+#endif
+
+#ifdef yyget_text
+#define ExpressionParserget_text_ALREADY_DEFINED
+#else
+#define yyget_text ExpressionParserget_text
+#endif
+
+#ifdef yyget_lineno
+#define ExpressionParserget_lineno_ALREADY_DEFINED
+#else
+#define yyget_lineno ExpressionParserget_lineno
+#endif
+
+#ifdef yyset_lineno
+#define ExpressionParserset_lineno_ALREADY_DEFINED
+#else
+#define yyset_lineno ExpressionParserset_lineno
+#endif
+
+#ifdef yywrap
+#define ExpressionParserwrap_ALREADY_DEFINED
+#else
+#define yywrap ExpressionParserwrap
+#endif
+
+#ifdef yyalloc
+#define ExpressionParseralloc_ALREADY_DEFINED
+#else
+#define yyalloc ExpressionParseralloc
+#endif
+
+#ifdef yyrealloc
+#define ExpressionParserrealloc_ALREADY_DEFINED
+#else
+#define yyrealloc ExpressionParserrealloc
+#endif
+
+#ifdef yyfree
+#define ExpressionParserfree_ALREADY_DEFINED
+#else
+#define yyfree ExpressionParserfree
+#endif
+
+#ifdef yytext
+#define ExpressionParsertext_ALREADY_DEFINED
+#else
+#define yytext ExpressionParsertext
+#endif
+
+#ifdef yyleng
+#define ExpressionParserleng_ALREADY_DEFINED
+#else
+#define yyleng ExpressionParserleng
+#endif
+
+#ifdef yyin
+#define ExpressionParserin_ALREADY_DEFINED
+#else
+#define yyin ExpressionParserin
+#endif
+
+#ifdef yyout
+#define ExpressionParserout_ALREADY_DEFINED
+#else
+#define yyout ExpressionParserout
+#endif
+
+#ifdef yy_flex_debug
+#define ExpressionParser_flex_debug_ALREADY_DEFINED
+#else
+#define yy_flex_debug ExpressionParser_flex_debug
+#endif
+
+#ifdef yylineno
+#define ExpressionParserlineno_ALREADY_DEFINED
+#else
+#define yylineno ExpressionParserlineno
 #endif
 
 /* First, we deal with  platform-specific or compiler-specific issues. */
@@ -103,60 +343,48 @@ typedef unsigned int flex_uint32_t;
 #define UINT32_MAX             (4294967295U)
 #endif
 
+#ifndef SIZE_MAX
+#define SIZE_MAX               (~(size_t)0)
+#endif
+
 #endif /* ! C99 */
 
 #endif /* ! FLEXINT_H */
 
-#ifdef __cplusplus
+/* begin standard C++ headers. */
 
-/* The "const" storage-class-modifier is valid. */
-#define YY_USE_CONST
-
-#else	/* ! __cplusplus */
-
-/* C99 requires __STDC__ to be defined as 1. */
-#if defined (__STDC__)
-
-#define YY_USE_CONST
-
-#endif	/* defined (__STDC__) */
-#endif	/* ! __cplusplus */
-
-#ifdef YY_USE_CONST
+/* TODO: this is always defined, so inline it */
 #define yyconst const
+
+#if defined(__GNUC__) && __GNUC__ >= 3
+#define yynoreturn __attribute__((__noreturn__))
 #else
-#define yyconst
+#define yynoreturn
 #endif
 
 /* Returned upon end-of-file. */
 #define YY_NULL 0
 
-/* Promotes a possibly negative, possibly signed char to an unsigned
- * integer for use as an array index.  If the signed char is negative,
- * we want to instead treat it as an 8-bit unsigned char, hence the
- * double cast.
+/* Promotes a possibly negative, possibly signed char to an
+ *   integer in range [0..255] for use as an array index.
  */
-#define YY_SC_TO_UI(c) ((unsigned int) (unsigned char) c)
+#define YY_SC_TO_UI(c) ((YY_CHAR) (c))
 
 /* Enter a start condition.  This macro really ought to take a parameter,
  * but we do it the disgusting crufty way forced on us by the ()-less
  * definition of BEGIN.
  */
 #define BEGIN (yy_start) = 1 + 2 *
-
 /* Translate the current start state into a value that can be later handed
  * to BEGIN to return to the state.  The YYSTATE alias is for lex
  * compatibility.
  */
 #define YY_START (((yy_start) - 1) / 2)
 #define YYSTATE YY_START
-
 /* Action number for EOF rule of a given start state. */
 #define YY_STATE_EOF(state) (YY_END_OF_BUFFER + state + 1)
-
 /* Special action meaning "start processing a new file". */
-#define YY_NEW_FILE ExpressionParserrestart(ExpressionParserin  )
-
+#define YY_NEW_FILE yyrestart( yyin  )
 #define YY_END_OF_BUFFER_CHAR 0
 
 /* Size of default input buffer. */
@@ -186,14 +414,14 @@ typedef struct yy_buffer_state *YY_BUFFER_STATE;
 typedef size_t yy_size_t;
 #endif
 
-extern yy_size_t ExpressionParserleng;
+extern int yyleng;
 
-extern FILE *ExpressionParserin, *ExpressionParserout;
+extern FILE *yyin, *yyout;
 
 #define EOB_ACT_CONTINUE_SCAN 0
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
-
+    
     #define YY_LESS_LINENO(n)
     #define YY_LINENO_REWIND_TO(ptr)
     
@@ -201,16 +429,15 @@ extern FILE *ExpressionParserin, *ExpressionParserout;
 #define yyless(n) \
 	do \
 		{ \
-		/* Undo effects of setting up ExpressionParsertext. */ \
+		/* Undo effects of setting up yytext. */ \
         int yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		*yy_cp = (yy_hold_char); \
 		YY_RESTORE_YY_MORE_OFFSET \
 		(yy_c_buf_p) = yy_cp = yy_bp + yyless_macro_arg - YY_MORE_ADJ; \
-		YY_DO_BEFORE_ACTION; /* set up ExpressionParsertext again */ \
+		YY_DO_BEFORE_ACTION; /* set up yytext again */ \
 		} \
 	while ( 0 )
-
 #define unput(c) yyunput( c, (yytext_ptr)  )
 
 #ifndef YY_STRUCT_YY_BUFFER_STATE
@@ -225,7 +452,7 @@ struct yy_buffer_state
 	/* Size of input buffer in bytes, not including room for EOB
 	 * characters.
 	 */
-	yy_size_t yy_buf_size;
+	int yy_buf_size;
 
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
@@ -253,7 +480,7 @@ struct yy_buffer_state
 
     int yy_bs_lineno; /**< The line count. */
     int yy_bs_column; /**< The column count. */
-    
+
 	/* Whether to try to fill the input buffer when we reach the
 	 * end of it.
 	 */
@@ -270,8 +497,8 @@ struct yy_buffer_state
 	 * possible backing-up.
 	 *
 	 * When we actually see the EOF, we change the status to "new"
-	 * (via ExpressionParserrestart()), so that the user can continue scanning by
-	 * just pointing ExpressionParserin at a new input file.
+	 * (via yyrestart()), so that the user can continue scanning by
+	 * just pointing yyin at a new input file.
 	 */
 #define YY_BUFFER_EOF_PENDING 2
 
@@ -281,7 +508,7 @@ struct yy_buffer_state
 /* Stack of input buffers. */
 static size_t yy_buffer_stack_top = 0; /**< index of top of stack. */
 static size_t yy_buffer_stack_max = 0; /**< capacity of stack. */
-static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
+static YY_BUFFER_STATE * yy_buffer_stack = NULL; /**< Stack as an array. */
 
 /* We provide macros for accessing buffer states in case in the
  * future we want to put the buffer states in a more general
@@ -292,110 +519,99 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
 #define YY_CURRENT_BUFFER ( (yy_buffer_stack) \
                           ? (yy_buffer_stack)[(yy_buffer_stack_top)] \
                           : NULL)
-
 /* Same as previous macro, but useful when we know that the buffer stack is not
  * NULL or when we need an lvalue. For internal use only.
  */
 #define YY_CURRENT_BUFFER_LVALUE (yy_buffer_stack)[(yy_buffer_stack_top)]
 
-/* yy_hold_char holds the character lost when ExpressionParsertext is formed. */
+/* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
 static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-yy_size_t ExpressionParserleng;
+int yyleng;
 
 /* Points to current character in buffer. */
-static char *yy_c_buf_p = (char *) 0;
+static char *yy_c_buf_p = NULL;
 static int yy_init = 0;		/* whether we need to initialize */
 static int yy_start = 0;	/* start state number */
 
-/* Flag which is used to allow ExpressionParserwrap()'s to do buffer switches
- * instead of setting up a fresh ExpressionParserin.  A bit of a hack ...
+/* Flag which is used to allow yywrap()'s to do buffer switches
+ * instead of setting up a fresh yyin.  A bit of a hack ...
  */
 static int yy_did_buffer_switch_on_eof;
 
-void ExpressionParserrestart (FILE *input_file  );
-void ExpressionParser_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
-YY_BUFFER_STATE ExpressionParser_create_buffer (FILE *file,int size  );
-void ExpressionParser_delete_buffer (YY_BUFFER_STATE b  );
-void ExpressionParser_flush_buffer (YY_BUFFER_STATE b  );
-void ExpressionParserpush_buffer_state (YY_BUFFER_STATE new_buffer  );
-void ExpressionParserpop_buffer_state (void );
+void yyrestart ( FILE *input_file  );
+void yy_switch_to_buffer ( YY_BUFFER_STATE new_buffer  );
+YY_BUFFER_STATE yy_create_buffer ( FILE *file, int size  );
+void yy_delete_buffer ( YY_BUFFER_STATE b  );
+void yy_flush_buffer ( YY_BUFFER_STATE b  );
+void yypush_buffer_state ( YY_BUFFER_STATE new_buffer  );
+void yypop_buffer_state ( void );
 
-static void ExpressionParserensure_buffer_stack (void );
-static void ExpressionParser_load_buffer_state (void );
-static void ExpressionParser_init_buffer (YY_BUFFER_STATE b,FILE *file  );
+static void yyensure_buffer_stack ( void );
+static void yy_load_buffer_state ( void );
+static void yy_init_buffer ( YY_BUFFER_STATE b, FILE *file  );
+#define YY_FLUSH_BUFFER yy_flush_buffer( YY_CURRENT_BUFFER )
 
-#define YY_FLUSH_BUFFER ExpressionParser_flush_buffer(YY_CURRENT_BUFFER )
+YY_BUFFER_STATE yy_scan_buffer ( char *base, yy_size_t size  );
+YY_BUFFER_STATE yy_scan_string ( const char *yy_str  );
+YY_BUFFER_STATE yy_scan_bytes ( const char *bytes, int len  );
 
-YY_BUFFER_STATE ExpressionParser_scan_buffer (char *base,yy_size_t size  );
-YY_BUFFER_STATE ExpressionParser_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE ExpressionParser_scan_bytes (yyconst char *bytes,yy_size_t len  );
+void *yyalloc ( yy_size_t  );
+void *yyrealloc ( void *, yy_size_t  );
+void yyfree ( void *  );
 
-void *ExpressionParseralloc (yy_size_t  );
-void *ExpressionParserrealloc (void *,yy_size_t  );
-void ExpressionParserfree (void *  );
-
-#define yy_new_buffer ExpressionParser_create_buffer
-
+#define yy_new_buffer yy_create_buffer
 #define yy_set_interactive(is_interactive) \
 	{ \
 	if ( ! YY_CURRENT_BUFFER ){ \
-        ExpressionParserensure_buffer_stack (); \
+        yyensure_buffer_stack (); \
 		YY_CURRENT_BUFFER_LVALUE =    \
-            ExpressionParser_create_buffer(ExpressionParserin,YY_BUF_SIZE ); \
+            yy_create_buffer( yyin, YY_BUF_SIZE ); \
 	} \
 	YY_CURRENT_BUFFER_LVALUE->yy_is_interactive = is_interactive; \
 	}
-
 #define yy_set_bol(at_bol) \
 	{ \
 	if ( ! YY_CURRENT_BUFFER ){\
-        ExpressionParserensure_buffer_stack (); \
+        yyensure_buffer_stack (); \
 		YY_CURRENT_BUFFER_LVALUE =    \
-            ExpressionParser_create_buffer(ExpressionParserin,YY_BUF_SIZE ); \
+            yy_create_buffer( yyin, YY_BUF_SIZE ); \
 	} \
 	YY_CURRENT_BUFFER_LVALUE->yy_at_bol = at_bol; \
 	}
-
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 #define ExpressionParserwrap() (/*CONSTCOND*/1)
 #define YY_SKIP_YYWRAP
+typedef flex_uint8_t YY_CHAR;
 
-typedef unsigned char YY_CHAR;
-
-FILE *ExpressionParserin = (FILE *) 0, *ExpressionParserout = (FILE *) 0;
+FILE *yyin = NULL, *yyout = NULL;
 
 typedef int yy_state_type;
 
-extern int ExpressionParserlineno;
+extern int yylineno;
+int yylineno = 1;
 
-int ExpressionParserlineno = 1;
-
-extern char *ExpressionParsertext;
+extern char *yytext;
 #ifdef yytext_ptr
 #undef yytext_ptr
 #endif
-#define yytext_ptr ExpressionParsertext
+#define yytext_ptr yytext
 
-static yy_state_type yy_get_previous_state (void );
-static yy_state_type yy_try_NUL_trans (yy_state_type current_state  );
-static int yy_get_next_buffer (void );
-#if defined(__GNUC__) && __GNUC__ >= 3
-__attribute__((__noreturn__))
-#endif
-static void yy_fatal_error (yyconst char msg[]  );
+static yy_state_type yy_get_previous_state ( void );
+static yy_state_type yy_try_NUL_trans ( yy_state_type current_state  );
+static int yy_get_next_buffer ( void );
+static void yynoreturn yy_fatal_error ( const char* msg  );
 
 /* Done after the current pattern has been matched and before the
- * corresponding action - sets up ExpressionParsertext.
+ * corresponding action - sets up yytext.
  */
 #define YY_DO_BEFORE_ACTION \
 	(yytext_ptr) = yy_bp; \
-	ExpressionParserleng = (size_t) (yy_cp - yy_bp); \
+	yyleng = (int) (yy_cp - yy_bp); \
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-
 #define YY_NUM_RULES 91
 #define YY_END_OF_BUFFER 92
 /* This struct is not used in this scanner,
@@ -405,7 +621,7 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[2208] =
+static const flex_int16_t yy_accept[2208] =
     {   0,
         0,    0,   92,   91,    1,    2,   91,   42,    4,   91,
        44,    4,   11,    4,   83,    8,    4,    7,   31,   90,
@@ -652,7 +868,7 @@ static yyconst flex_int16_t yy_accept[2208] =
        64,   65,   90,   90,   90,   66,    0
     } ;
 
-static yyconst YY_CHAR yy_ec[256] =
+static const YY_CHAR yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    4,    1,    1,    1,    1,
@@ -684,7 +900,7 @@ static yyconst YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst YY_CHAR yy_meta[167] =
+static const YY_CHAR yy_meta[167] =
     {   0,
         1,    1,    2,    1,    1,    1,    1,    1,    3,    1,
         1,    1,    1,    1,    1,    4,    1,    1,    1,    5,
@@ -706,7 +922,7 @@ static yyconst YY_CHAR yy_meta[167] =
         1,    1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_uint16_t yy_base[2355] =
+static const flex_int16_t yy_base[2355] =
     {   0,
         0,    0, 4364,19612,  165,19612, 4345,19612,19612,    0,
     19612, 4343,19612, 4338,  156,  156, 4331, 4315,  194,    0,
@@ -969,7 +1185,7 @@ static yyconst flex_uint16_t yy_base[2355] =
     19381,19442,19497,19560
     } ;
 
-static yyconst flex_int16_t yy_def[2355] =
+static const flex_int16_t yy_def[2355] =
     {   0,
      2207,    1, 2207, 2207, 2207, 2207, 2207, 2207, 2207, 2208,
      2207, 2207, 2207, 2207, 2207, 2207, 2207, 2207, 2207,   19,
@@ -1232,7 +1448,7 @@ static yyconst flex_int16_t yy_def[2355] =
      2207, 2207, 2207, 2207
     } ;
 
-static yyconst flex_uint16_t yy_nxt[19779] =
+static const flex_int16_t yy_nxt[19779] =
     {   0,
         4,    5,    6,    4,    5,    7,    8,    9,   10,   11,
         9,    9,   12,   13,   14,   15,   16,   17,   18,   19,
@@ -3411,7 +3627,7 @@ static yyconst flex_uint16_t yy_nxt[19779] =
      2207, 2207, 2207, 2207, 2207, 2207, 2207, 2207
     } ;
 
-static yyconst flex_int16_t yy_chk[19779] =
+static const flex_int16_t yy_chk[19779] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -5593,8 +5809,8 @@ static yyconst flex_int16_t yy_chk[19779] =
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
 
-extern int ExpressionParser_flex_debug;
-int ExpressionParser_flex_debug = 0;
+extern int yy_flex_debug;
+int yy_flex_debug = 0;
 
 /* The intent behind this definition is that it'll catch
  * any uses of REJECT which flex missed.
@@ -5603,9 +5819,9 @@ int ExpressionParser_flex_debug = 0;
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-char *ExpressionParsertext;
-#line 1 "ExpressionParser.l"
-#line 2 "ExpressionParser.l"
+char *yytext;
+#line 1 "<stdin>"
+#line 2 "<stdin>"
 /* Lexer for the FreeCAD  Expression language   */
 /* (c) 2010 Juergen Riegel  LGPL           */
 /* (c) 2015 Eivind Kvedalen LGPL           */
@@ -5623,14 +5839,15 @@ extern std::stack<FunctionExpression::Function> functions;                /**< F
 extern int last_column;
 extern int column;
 
-#define COUNTCHARS do { last_column = column; column += ExpressionParserleng; } while (0)
+#define COUNTCHARS do { last_column = column; column += yyleng; } while (0)
 
+#line 5845 "lex.ExpressionParser.c"
 /*** Flex Declarations and Options ***/
 /* change the name of the scanner class. */
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 /* UTF-8 unicode regular expressions. */
-#line 5634 "lex.ExpressionParser.c"
+#line 5851 "lex.ExpressionParser.c"
 
 #define INITIAL 0
 
@@ -5646,36 +5863,36 @@ extern int column;
 #define YY_EXTRA_TYPE void *
 #endif
 
-static int yy_init_globals (void );
+static int yy_init_globals ( void );
 
 /* Accessor methods to globals.
    These are made visible to non-reentrant scanners for convenience. */
 
-int ExpressionParserlex_destroy (void );
+int yylex_destroy ( void );
 
-int ExpressionParserget_debug (void );
+int yyget_debug ( void );
 
-void ExpressionParserset_debug (int debug_flag  );
+void yyset_debug ( int debug_flag  );
 
-YY_EXTRA_TYPE ExpressionParserget_extra (void );
+YY_EXTRA_TYPE yyget_extra ( void );
 
-void ExpressionParserset_extra (YY_EXTRA_TYPE user_defined  );
+void yyset_extra ( YY_EXTRA_TYPE user_defined  );
 
-FILE *ExpressionParserget_in (void );
+FILE *yyget_in ( void );
 
-void ExpressionParserset_in  (FILE * _in_str  );
+void yyset_in  ( FILE * _in_str  );
 
-FILE *ExpressionParserget_out (void );
+FILE *yyget_out ( void );
 
-void ExpressionParserset_out  (FILE * _out_str  );
+void yyset_out  ( FILE * _out_str  );
 
-yy_size_t ExpressionParserget_leng (void );
+			int yyget_leng ( void );
 
-char *ExpressionParserget_text (void );
+char *yyget_text ( void );
 
-int ExpressionParserget_lineno (void );
+int yyget_lineno ( void );
 
-void ExpressionParserset_lineno (int _line_number  );
+void yyset_lineno ( int _line_number  );
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -5683,9 +5900,9 @@ void ExpressionParserset_lineno (int _line_number  );
 
 #ifndef YY_SKIP_YYWRAP
 #ifdef __cplusplus
-extern "C" int ExpressionParserwrap (void );
+extern "C" int yywrap ( void );
 #else
-extern int ExpressionParserwrap (void );
+extern int yywrap ( void );
 #endif
 #endif
 
@@ -5694,19 +5911,18 @@ extern int ExpressionParserwrap (void );
 #endif
 
 #ifndef yytext_ptr
-static void yy_flex_strncpy (char *,yyconst char *,int );
+static void yy_flex_strncpy ( char *, const char *, int );
 #endif
 
 #ifdef YY_NEED_STRLEN
-static int yy_flex_strlen (yyconst char * );
+static int yy_flex_strlen ( const char * );
 #endif
 
 #ifndef YY_NO_INPUT
-
 #ifdef __cplusplus
-static int yyinput (void );
+static int yyinput ( void );
 #else
-static int input (void );
+static int input ( void );
 #endif
 
 #endif
@@ -5726,7 +5942,7 @@ static int input (void );
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO do { if (fwrite( ExpressionParsertext, ExpressionParserleng, 1, ExpressionParserout )) {} } while (0)
+#define ECHO do { if (fwrite( yytext, (size_t) yyleng, 1, yyout )) {} } while (0)
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -5737,20 +5953,20 @@ static int input (void );
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
 		{ \
 		int c = '*'; \
-		size_t n; \
+		int n; \
 		for ( n = 0; n < max_size && \
-			     (c = getc( ExpressionParserin )) != EOF && c != '\n'; ++n ) \
+			     (c = getc( yyin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
 		if ( c == '\n' ) \
 			buf[n++] = (char) c; \
-		if ( c == EOF && ferror( ExpressionParserin ) ) \
+		if ( c == EOF && ferror( yyin ) ) \
 			YY_FATAL_ERROR( "input in flex scanner failed" ); \
 		result = n; \
 		} \
 	else \
 		{ \
 		errno=0; \
-		while ( (result = fread(buf, 1, max_size, ExpressionParserin))==0 && ferror(ExpressionParserin)) \
+		while ( (result = (int) fread(buf, 1, (yy_size_t) max_size, yyin)) == 0 && ferror(yyin)) \
 			{ \
 			if( errno != EINTR) \
 				{ \
@@ -5758,7 +5974,7 @@ static int input (void );
 				break; \
 				} \
 			errno=0; \
-			clearerr(ExpressionParserin); \
+			clearerr(yyin); \
 			} \
 		}\
 \
@@ -5791,12 +6007,12 @@ static int input (void );
 #ifndef YY_DECL
 #define YY_DECL_IS_OURS 1
 
-extern int ExpressionParserlex (void);
+extern int yylex (void);
 
-#define YY_DECL int ExpressionParserlex (void)
+#define YY_DECL int yylex (void)
 #endif /* !YY_DECL */
 
-/* Code executed at the beginning of each rule, after ExpressionParsertext and ExpressionParserleng
+/* Code executed at the beginning of each rule, after yytext and yyleng
  * have been set up.
  */
 #ifndef YY_USER_ACTION
@@ -5830,32 +6046,32 @@ YY_DECL
 		if ( ! (yy_start) )
 			(yy_start) = 1;	/* first start state */
 
-		if ( ! ExpressionParserin )
-			ExpressionParserin = stdin;
+		if ( ! yyin )
+			yyin = stdin;
 
-		if ( ! ExpressionParserout )
-			ExpressionParserout = stdout;
+		if ( ! yyout )
+			yyout = stdout;
 
 		if ( ! YY_CURRENT_BUFFER ) {
-			ExpressionParserensure_buffer_stack ();
+			yyensure_buffer_stack ();
 			YY_CURRENT_BUFFER_LVALUE =
-				ExpressionParser_create_buffer(ExpressionParserin,YY_BUF_SIZE );
+				yy_create_buffer( yyin, YY_BUF_SIZE );
 		}
 
-		ExpressionParser_load_buffer_state( );
+		yy_load_buffer_state(  );
 		}
 
 	{
-#line 142 "ExpressionParser.l"
+#line 142 "<stdin>"
 
 
-#line 5853 "lex.ExpressionParser.c"
+#line 6069 "lex.ExpressionParser.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
 		yy_cp = (yy_c_buf_p);
 
-		/* Support of ExpressionParsertext. */
+		/* Support of yytext. */
 		*yy_cp = (yy_hold_char);
 
 		/* yy_bp points to the position in yy_ch_buf of the start of
@@ -5877,9 +6093,9 @@ yy_match:
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
 				if ( yy_current_state >= 2208 )
-					yy_c = yy_meta[(unsigned int) yy_c];
+					yy_c = yy_meta[yy_c];
 				}
-			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
 		while ( yy_current_state != 2207 );
@@ -5904,421 +6120,421 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 144 "ExpressionParser.l"
+#line 144 "<stdin>"
 COUNTCHARS;
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 145 "ExpressionParser.l"
+#line 145 "<stdin>"
 column = 0;
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 147 "ExpressionParser.l"
-COUNTCHARS; yylval.string = unquote(ExpressionParsertext); return STRING;
+#line 147 "<stdin>"
+COUNTCHARS; yylval.string = unquote(yytext); return STRING;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 149 "ExpressionParser.l"
-COUNTCHARS; return *ExpressionParsertext;
+#line 149 "<stdin>"
+COUNTCHARS; return *yytext;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 151 "ExpressionParser.l"
+#line 151 "<stdin>"
 COUNTCHARS; return EQ;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 152 "ExpressionParser.l"
+#line 152 "<stdin>"
 COUNTCHARS; return NEQ;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 153 "ExpressionParser.l"
+#line 153 "<stdin>"
 COUNTCHARS; return GT;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 154 "ExpressionParser.l"
+#line 154 "<stdin>"
 COUNTCHARS; return LT;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 155 "ExpressionParser.l"
+#line 155 "<stdin>"
 COUNTCHARS; return GTE;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 156 "ExpressionParser.l"
+#line 156 "<stdin>"
 COUNTCHARS; return LTE;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 158 "ExpressionParser.l"
+#line 158 "<stdin>"
 COUNTCHARS; return MINUSSIGN;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 159 "ExpressionParser.l"
+#line 159 "<stdin>"
 COUNTCHARS; return MINUSSIGN;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 161 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // nano meter
+#line 161 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::NanoMetre;           yylval.quantity.unitStr = yytext; return UNIT; // nano meter
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 162 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro meter
+#line 162 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = yytext; return UNIT; // micro meter
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 163 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro meter    (greek micro in UTF8)
+#line 163 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroMetre;          yylval.quantity.unitStr = yytext; return UNIT; // micro meter    (greek micro in UTF8)
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 164 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli meter    (internal standard length)
+#line 164 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliMetre;          yylval.quantity.unitStr = yytext; return UNIT; // milli meter    (internal standard length)
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 165 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::CentiMetre;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // centi meter
+#line 165 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::CentiMetre;          yylval.quantity.unitStr = yytext; return UNIT; // centi meter
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 166 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::DeciMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // deci meter
+#line 166 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::DeciMetre;           yylval.quantity.unitStr = yytext; return UNIT; // deci meter
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 167 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // metre
+#line 167 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Metre;               yylval.quantity.unitStr = yytext; return UNIT; // metre
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 168 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloMetre;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo meter
+#line 168 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloMetre;           yylval.quantity.unitStr = yytext; return UNIT; // kilo meter
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 170 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Liter;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Liter      dm^3
+#line 170 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Liter;               yylval.quantity.unitStr = yytext; return UNIT; // Liter      dm^3
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 172 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro gram
+#line 172 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return UNIT; // micro gram
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 173 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // micro gram
+#line 173 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroGram;           yylval.quantity.unitStr = yytext; return UNIT; // micro gram
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 174 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliGram;           yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli gram
+#line 174 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliGram;           yylval.quantity.unitStr = yytext; return UNIT; // milli gram
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 175 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Gram;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // gram
+#line 175 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Gram;                yylval.quantity.unitStr = yytext; return UNIT; // gram
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 176 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloGram;            yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo gram      (internal standard for mass)
+#line 176 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloGram;            yylval.quantity.unitStr = yytext; return UNIT; // kilo gram      (internal standard for mass)
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 177 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Ton;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Metric Tonne
+#line 177 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Ton;                 yylval.quantity.unitStr = yytext; return UNIT; // Metric Tonne
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 179 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Second;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // second         (internal standard time)
+#line 179 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Second;              yylval.quantity.unitStr = yytext; return UNIT; // second         (internal standard time)
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 180 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Minute;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // minute
+#line 180 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Minute;              yylval.quantity.unitStr = yytext; return UNIT; // minute
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 181 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Hour;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // hour
+#line 181 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Hour;                yylval.quantity.unitStr = yytext; return UNIT; // hour
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 183 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Ampere         (internal standard electric current)
+#line 183 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Ampere;              yylval.quantity.unitStr = yytext; return UNIT; // Ampere         (internal standard electric current)
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 184 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // milli Ampere
+#line 184 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliAmpere;         yylval.quantity.unitStr = yytext; return UNIT; // milli Ampere
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 185 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // kilo Ampere
+#line 185 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // kilo Ampere
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 186 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Mega Ampere
+#line 186 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // Mega Ampere
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 188 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Kelvin;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin         (internal standard thermodynamic temperature)
+#line 188 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Kelvin;              yylval.quantity.unitStr = yytext; return UNIT; // Kelvin         (internal standard thermodynamic temperature)
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 189 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
+#line 189 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // Kelvin
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 190 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
+#line 190 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // Kelvin
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 191 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Kelvin
+#line 191 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MicroKelvin;         yylval.quantity.unitStr = yytext; return UNIT; // Kelvin
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 193 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Mole           (internal standard amount of substance)
+#line 193 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Mole;                yylval.quantity.unitStr = yytext; return UNIT; // Mole           (internal standard amount of substance)
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 195 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Candela        (internal standard luminous intensity)
+#line 195 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Candela;             yylval.quantity.unitStr = yytext; return UNIT; // Candela        (internal standard luminous intensity)
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 197 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // inch
+#line 197 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 198 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // inch
+#line 198 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Inch;                yylval.quantity.unitStr = yytext; return UNIT; // inch
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 199 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // foot
+#line 199 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 200 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // foot
+#line 200 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Foot;                yylval.quantity.unitStr = yytext; return UNIT; // foot
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 201 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // thou (in/1000)
+#line 201 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // thou (in/1000)
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 202 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // mil  (the thou in US)
+#line 202 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Thou;                yylval.quantity.unitStr = yytext; return UNIT; // mil  (the thou in US)
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 203 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // yard
+#line 203 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Yard;                yylval.quantity.unitStr = yytext; return UNIT; // yard
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 204 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // mile
+#line 204 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Mile;                yylval.quantity.unitStr = yytext; return UNIT; // mile
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 208 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
+#line 208 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return UNIT; // pound
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 209 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
+#line 209 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Pound;               yylval.quantity.unitStr = yytext; return UNIT; // pound
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 210 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Ounce;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // ounce
+#line 210 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Ounce;               yylval.quantity.unitStr = yytext; return UNIT; // ounce
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 211 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Stone;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Stone
+#line 211 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Stone;               yylval.quantity.unitStr = yytext; return UNIT; // Stone
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 212 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Hundredweights;      yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // hundredweights
+#line 212 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Hundredweights;      yylval.quantity.unitStr = yytext; return UNIT; // hundredweights
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 214 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::PoundForce;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pound
+#line 214 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::PoundForce;          yylval.quantity.unitStr = yytext; return UNIT; // pound
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 216 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Newton;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton (kg*m/s^2)a-za-za-z
+#line 216 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Newton;              yylval.quantity.unitStr = yytext; return UNIT; // Newton (kg*m/s^2)a-za-za-z
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 217 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
+#line 217 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloNewton;          yylval.quantity.unitStr = yytext; return UNIT; // Newton
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 218 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
+#line 218 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaNewton;          yylval.quantity.unitStr = yytext; return UNIT; // Newton
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 219 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Newton
+#line 219 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliNewton;         yylval.quantity.unitStr = yytext; return UNIT; // Newton
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 221 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal (kg/m*s^2 or N/m^2)
+#line 221 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Pascal;              yylval.quantity.unitStr = yytext; return UNIT; // Pascal (kg/m*s^2 or N/m^2)
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 222 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
+#line 222 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloPascal;          yylval.quantity.unitStr = yytext; return UNIT; // Pascal
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 223 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
+#line 223 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::MegaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // Pascal
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 224 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Pascal
+#line 224 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::GigaPascal;          yylval.quantity.unitStr = yytext; return UNIT; // Pascal
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 226 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Torr;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // portion of Pascal ( 101325/760 )
+#line 226 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Torr;                yylval.quantity.unitStr = yytext; return UNIT; // portion of Pascal ( 101325/760 )
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 227 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::mTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
+#line 227 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::mTorr;               yylval.quantity.unitStr = yytext; return UNIT; //
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 228 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
+#line 228 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = yytext; return UNIT; //
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 229 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
+#line 229 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::yTorr;               yylval.quantity.unitStr = yytext; return UNIT; //
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 231 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::PSI;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // pounds/in^2
+#line 231 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::PSI;                 yylval.quantity.unitStr = yytext; return UNIT; // pounds/in^2
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 232 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::KSI;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // 1000 x pounds/in^2
+#line 232 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::KSI;                 yylval.quantity.unitStr = yytext; return UNIT; // 1000 x pounds/in^2
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 234 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Watt (kg*m^2/s^3)
+#line 234 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Watt;                yylval.quantity.unitStr = yytext; return UNIT; // Watt (kg*m^2/s^3)
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 235 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // VoltAmpere (kg*m^2/s^3)
+#line 235 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpere;          yylval.quantity.unitStr = yytext; return UNIT; // VoltAmpere (kg*m^2/s^3)
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 237 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Joule;               yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // Joule (kg*m^2/s^2)
+#line 237 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Joule;               yylval.quantity.unitStr = yytext; return UNIT; // Joule (kg*m^2/s^2)
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 238 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // N*m = Joule
+#line 238 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = yytext; return UNIT; // N*m = Joule
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 239 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // V*A*s = Joule
+#line 239 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = yytext; return UNIT; // V*A*s = Joule
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 240 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; //
+#line 240 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return UNIT; //
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 241 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // W*s = Joule
+#line 241 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return UNIT; // W*s = Joule
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 243 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // degree         (internal standard angle)
+#line 243 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 244 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // degree         (internal standard angle)
+#line 244 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Degree;              yylval.quantity.unitStr = yytext; return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 245 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // radian
+#line 245 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Radian;              yylval.quantity.unitStr = yytext; return UNIT; // radian
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 246 "ExpressionParser.l"
-COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = ExpressionParsertext; return UNIT; // gon
+#line 246 "<stdin>"
+COUNTCHARS; yylval.quantity.scaler  = Quantity::Gon;                 yylval.quantity.unitStr = yytext; return UNIT; // gon
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 248 "ExpressionParser.l"
-COUNTCHARS; yylval.fvalue = num_change(ExpressionParsertext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
+#line 248 "<stdin>"
+COUNTCHARS; yylval.fvalue = num_change(yytext,'.',',');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 249 "ExpressionParser.l"
-COUNTCHARS; yylval.fvalue = num_change(ExpressionParsertext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
+#line 249 "<stdin>"
+COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 250 "ExpressionParser.l"
-COUNTCHARS; yylval.fvalue = num_change(ExpressionParsertext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
+#line 250 "<stdin>"
+COUNTCHARS; yylval.fvalue = num_change(yytext,',','.');       return yylval.fvalue == 1 ? ONE : NUM;
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 251 "ExpressionParser.l"
+#line 251 "<stdin>"
 { COUNTCHARS;
-                               yylval.ivalue = strtoll( ExpressionParsertext, NULL, 0 );
+                               yylval.ivalue = strtoll( yytext, NULL, 0 );
                                if (yylval.ivalue == LLONG_MIN)
                                   throw Base::UnderflowError("Integer underflow");
                                else if (yylval.ivalue == LLONG_MAX)
@@ -6328,35 +6544,35 @@ YY_RULE_SETUP
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 260 "ExpressionParser.l"
+#line 260 "<stdin>"
 COUNTCHARS; yylval.constant.fvalue = M_PI; yylval.constant.name = "pi"; return CONSTANT; // constant pi
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 261 "ExpressionParser.l"
+#line 261 "<stdin>"
 COUNTCHARS; yylval.constant.fvalue = M_E; yylval.constant.name = "e"; return CONSTANT; // constant e
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 263 "ExpressionParser.l"
-COUNTCHARS; yylval.string = ExpressionParsertext; return CELLADDRESS;
+#line 263 "<stdin>"
+COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 264 "ExpressionParser.l"
-COUNTCHARS; yylval.string = ExpressionParsertext; return CELLADDRESS;
+#line 264 "<stdin>"
+COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 265 "ExpressionParser.l"
-COUNTCHARS; yylval.string = ExpressionParsertext; return CELLADDRESS;
+#line 265 "<stdin>"
+COUNTCHARS; yylval.string = yytext; return CELLADDRESS;
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 267 "ExpressionParser.l"
+#line 267 "<stdin>"
 {
                             COUNTCHARS;
-                            std::string s = ExpressionParsertext;
+                            std::string s = yytext;
                             size_t i = s.size() - 2;
                             while (isspace(s[i]))
                               --i;
@@ -6371,15 +6587,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 282 "ExpressionParser.l"
-COUNTCHARS; yylval.string = ExpressionParsertext; return IDENTIFIER;
+#line 282 "<stdin>"
+COUNTCHARS; yylval.string = yytext; return IDENTIFIER;
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 283 "ExpressionParser.l"
+#line 283 "<stdin>"
 ECHO;
 	YY_BREAK
-#line 6383 "lex.ExpressionParser.c"
+#line 6599 "lex.ExpressionParser.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -6396,15 +6612,15 @@ case YY_STATE_EOF(INITIAL):
 			{
 			/* We're scanning a new file or input source.  It's
 			 * possible that this happened because the user
-			 * just pointed ExpressionParserin at a new source and called
-			 * ExpressionParserlex().  If so, then we have to assure
+			 * just pointed yyin at a new source and called
+			 * yylex().  If so, then we have to assure
 			 * consistency between YY_CURRENT_BUFFER and our
 			 * globals.  Here is the right place to do so, because
 			 * this is the first action (other than possibly a
 			 * back-up) that will match for the new input source.
 			 */
 			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
-			YY_CURRENT_BUFFER_LVALUE->yy_input_file = ExpressionParserin;
+			YY_CURRENT_BUFFER_LVALUE->yy_input_file = yyin;
 			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status = YY_BUFFER_NORMAL;
 			}
 
@@ -6458,11 +6674,11 @@ case YY_STATE_EOF(INITIAL):
 				{
 				(yy_did_buffer_switch_on_eof) = 0;
 
-				if ( ExpressionParserwrap( ) )
+				if ( yywrap(  ) )
 					{
 					/* Note: because we've taken care in
 					 * yy_get_next_buffer() to have set up
-					 * ExpressionParsertext, we can now set up
+					 * yytext, we can now set up
 					 * yy_c_buf_p so that if some total
 					 * hoser (like flex itself) wants to
 					 * call the scanner after we return the
@@ -6512,7 +6728,7 @@ case YY_STATE_EOF(INITIAL):
 	} /* end of action switch */
 		} /* end of scanning one token */
 	} /* end of user's declarations */
-} /* end of ExpressionParserlex */
+} /* end of yylex */
 
 /* yy_get_next_buffer - try to read in a new buffer
  *
@@ -6525,7 +6741,7 @@ static int yy_get_next_buffer (void)
 {
     	char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
 	char *source = (yytext_ptr);
-	yy_size_t number_to_move, i;
+	int number_to_move, i;
 	int ret_val;
 
 	if ( (yy_c_buf_p) > &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[(yy_n_chars) + 1] )
@@ -6554,7 +6770,7 @@ static int yy_get_next_buffer (void)
 	/* Try to read more data. */
 
 	/* First move last chars to start of buffer. */
-	number_to_move = (yy_size_t) ((yy_c_buf_p) - (yytext_ptr)) - 1;
+	number_to_move = (int) ((yy_c_buf_p) - (yytext_ptr) - 1);
 
 	for ( i = 0; i < number_to_move; ++i )
 		*(dest++) = *(source++);
@@ -6567,7 +6783,7 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-			yy_size_t num_to_read =
+			int num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
@@ -6581,7 +6797,7 @@ static int yy_get_next_buffer (void)
 
 			if ( b->yy_is_our_buffer )
 				{
-				yy_size_t new_size = b->yy_buf_size * 2;
+				int new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
 					b->yy_buf_size += b->yy_buf_size / 8;
@@ -6590,11 +6806,12 @@ static int yy_get_next_buffer (void)
 
 				b->yy_ch_buf = (char *)
 					/* Include room in for 2 EOB chars. */
-					ExpressionParserrealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
+					yyrealloc( (void *) b->yy_ch_buf,
+							 (yy_size_t) (b->yy_buf_size + 2)  );
 				}
 			else
 				/* Can't grow it, we don't own it. */
-				b->yy_ch_buf = 0;
+				b->yy_ch_buf = NULL;
 
 			if ( ! b->yy_ch_buf )
 				YY_FATAL_ERROR(
@@ -6622,7 +6839,7 @@ static int yy_get_next_buffer (void)
 		if ( number_to_move == YY_MORE_ADJ )
 			{
 			ret_val = EOB_ACT_END_OF_FILE;
-			ExpressionParserrestart(ExpressionParserin  );
+			yyrestart( yyin  );
 			}
 
 		else
@@ -6636,12 +6853,15 @@ static int yy_get_next_buffer (void)
 	else
 		ret_val = EOB_ACT_CONTINUE_SCAN;
 
-	if ((int) ((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
+	if (((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
 		/* Extend the array by 50%, plus the number we really need. */
 		int new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
-		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) ExpressionParserrealloc((void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf,new_size  );
+		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) yyrealloc(
+			(void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf, (yy_size_t) new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
 			YY_FATAL_ERROR( "out of dynamic memory in yy_get_next_buffer()" );
+		/* "- 2" to take care of EOB's */
+		YY_CURRENT_BUFFER_LVALUE->yy_buf_size = (int) (new_size - 2);
 	}
 
 	(yy_n_chars) += number_to_move;
@@ -6674,9 +6894,9 @@ static int yy_get_next_buffer (void)
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
 			if ( yy_current_state >= 2208 )
-				yy_c = yy_meta[(unsigned int) yy_c];
+				yy_c = yy_meta[yy_c];
 			}
-		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 		}
 
 	return yy_current_state;
@@ -6702,9 +6922,9 @@ static int yy_get_next_buffer (void)
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
 		if ( yy_current_state >= 2208 )
-			yy_c = yy_meta[(unsigned int) yy_c];
+			yy_c = yy_meta[yy_c];
 		}
-	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
+	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 	yy_is_jam = (yy_current_state == 2207);
 
 		return yy_is_jam ? 0 : yy_current_state;
@@ -6738,7 +6958,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
+			int offset = (int) ((yy_c_buf_p) - (yytext_ptr));
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -6755,14 +6975,14 @@ static int yy_get_next_buffer (void)
 					 */
 
 					/* Reset buffer status. */
-					ExpressionParserrestart(ExpressionParserin );
+					yyrestart( yyin );
 
 					/*FALLTHROUGH*/
 
 				case EOB_ACT_END_OF_FILE:
 					{
-					if ( ExpressionParserwrap( ) )
-						return EOF;
+					if ( yywrap(  ) )
+						return 0;
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
 						YY_NEW_FILE;
@@ -6781,7 +7001,7 @@ static int yy_get_next_buffer (void)
 		}
 
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
-	*(yy_c_buf_p) = '\0';	/* preserve ExpressionParsertext */
+	*(yy_c_buf_p) = '\0';	/* preserve yytext */
 	(yy_hold_char) = *++(yy_c_buf_p);
 
 	return c;
@@ -6793,32 +7013,32 @@ static int yy_get_next_buffer (void)
  * 
  * @note This function does not reset the start condition to @c INITIAL .
  */
-    void ExpressionParserrestart  (FILE * input_file )
+    void yyrestart  (FILE * input_file )
 {
     
 	if ( ! YY_CURRENT_BUFFER ){
-        ExpressionParserensure_buffer_stack ();
+        yyensure_buffer_stack ();
 		YY_CURRENT_BUFFER_LVALUE =
-            ExpressionParser_create_buffer(ExpressionParserin,YY_BUF_SIZE );
+            yy_create_buffer( yyin, YY_BUF_SIZE );
 	}
 
-	ExpressionParser_init_buffer(YY_CURRENT_BUFFER,input_file );
-	ExpressionParser_load_buffer_state( );
+	yy_init_buffer( YY_CURRENT_BUFFER, input_file );
+	yy_load_buffer_state(  );
 }
 
 /** Switch to a different input buffer.
  * @param new_buffer The new input buffer.
  * 
  */
-    void ExpressionParser_switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
+    void yy_switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
 {
     
 	/* TODO. We should be able to replace this entire function body
 	 * with
-	 *		ExpressionParserpop_buffer_state();
-	 *		ExpressionParserpush_buffer_state(new_buffer);
+	 *		yypop_buffer_state();
+	 *		yypush_buffer_state(new_buffer);
      */
-	ExpressionParserensure_buffer_stack ();
+	yyensure_buffer_stack ();
 	if ( YY_CURRENT_BUFFER == new_buffer )
 		return;
 
@@ -6831,21 +7051,21 @@ static int yy_get_next_buffer (void)
 		}
 
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
-	ExpressionParser_load_buffer_state( );
+	yy_load_buffer_state(  );
 
 	/* We don't actually know whether we did this switch during
-	 * EOF (ExpressionParserwrap()) processing, but the only time this flag
-	 * is looked at is after ExpressionParserwrap() is called, so it's safe
+	 * EOF (yywrap()) processing, but the only time this flag
+	 * is looked at is after yywrap() is called, so it's safe
 	 * to go ahead and always set it.
 	 */
 	(yy_did_buffer_switch_on_eof) = 1;
 }
 
-static void ExpressionParser_load_buffer_state  (void)
+static void yy_load_buffer_state  (void)
 {
     	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
 	(yytext_ptr) = (yy_c_buf_p) = YY_CURRENT_BUFFER_LVALUE->yy_buf_pos;
-	ExpressionParserin = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
+	yyin = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
 	(yy_hold_char) = *(yy_c_buf_p);
 }
 
@@ -6855,35 +7075,35 @@ static void ExpressionParser_load_buffer_state  (void)
  * 
  * @return the allocated buffer state.
  */
-    YY_BUFFER_STATE ExpressionParser_create_buffer  (FILE * file, int  size )
+    YY_BUFFER_STATE yy_create_buffer  (FILE * file, int  size )
 {
 	YY_BUFFER_STATE b;
     
-	b = (YY_BUFFER_STATE) ExpressionParseralloc(sizeof( struct yy_buffer_state )  );
+	b = (YY_BUFFER_STATE) yyalloc( sizeof( struct yy_buffer_state )  );
 	if ( ! b )
-		YY_FATAL_ERROR( "out of dynamic memory in ExpressionParser_create_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in yy_create_buffer()" );
 
-	b->yy_buf_size = (yy_size_t)size;
+	b->yy_buf_size = size;
 
 	/* yy_ch_buf has to be 2 characters longer than the size given because
 	 * we need to put in 2 end-of-buffer characters.
 	 */
-	b->yy_ch_buf = (char *) ExpressionParseralloc(b->yy_buf_size + 2  );
+	b->yy_ch_buf = (char *) yyalloc( (yy_size_t) (b->yy_buf_size + 2)  );
 	if ( ! b->yy_ch_buf )
-		YY_FATAL_ERROR( "out of dynamic memory in ExpressionParser_create_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in yy_create_buffer()" );
 
 	b->yy_is_our_buffer = 1;
 
-	ExpressionParser_init_buffer(b,file );
+	yy_init_buffer( b, file );
 
 	return b;
 }
 
 /** Destroy the buffer.
- * @param b a buffer created with ExpressionParser_create_buffer()
+ * @param b a buffer created with yy_create_buffer()
  * 
  */
-    void ExpressionParser_delete_buffer (YY_BUFFER_STATE  b )
+    void yy_delete_buffer (YY_BUFFER_STATE  b )
 {
     
 	if ( ! b )
@@ -6893,27 +7113,27 @@ static void ExpressionParser_load_buffer_state  (void)
 		YY_CURRENT_BUFFER_LVALUE = (YY_BUFFER_STATE) 0;
 
 	if ( b->yy_is_our_buffer )
-		ExpressionParserfree((void *) b->yy_ch_buf  );
+		yyfree( (void *) b->yy_ch_buf  );
 
-	ExpressionParserfree((void *) b  );
+	yyfree( (void *) b  );
 }
 
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
- * such as during a ExpressionParserrestart() or at EOF.
+ * such as during a yyrestart() or at EOF.
  */
-    static void ExpressionParser_init_buffer  (YY_BUFFER_STATE  b, FILE * file )
+    static void yy_init_buffer  (YY_BUFFER_STATE  b, FILE * file )
 
 {
 	int oerrno = errno;
     
-	ExpressionParser_flush_buffer(b );
+	yy_flush_buffer( b );
 
 	b->yy_input_file = file;
 	b->yy_fill_buffer = 1;
 
-    /* If b is the current buffer, then ExpressionParser_init_buffer was _probably_
-     * called from ExpressionParserrestart() or through yy_get_next_buffer.
+    /* If b is the current buffer, then yy_init_buffer was _probably_
+     * called from yyrestart() or through yy_get_next_buffer.
      * In that case, we don't want to reset the lineno or column.
      */
     if (b != YY_CURRENT_BUFFER){
@@ -6930,7 +7150,7 @@ static void ExpressionParser_load_buffer_state  (void)
  * @param b the buffer state to be flushed, usually @c YY_CURRENT_BUFFER.
  * 
  */
-    void ExpressionParser_flush_buffer (YY_BUFFER_STATE  b )
+    void yy_flush_buffer (YY_BUFFER_STATE  b )
 {
     	if ( ! b )
 		return;
@@ -6950,7 +7170,7 @@ static void ExpressionParser_load_buffer_state  (void)
 	b->yy_buffer_status = YY_BUFFER_NEW;
 
 	if ( b == YY_CURRENT_BUFFER )
-		ExpressionParser_load_buffer_state( );
+		yy_load_buffer_state(  );
 }
 
 /** Pushes the new state onto the stack. The new state becomes
@@ -6959,14 +7179,14 @@ static void ExpressionParser_load_buffer_state  (void)
  *  @param new_buffer The new state.
  *  
  */
-void ExpressionParserpush_buffer_state (YY_BUFFER_STATE new_buffer )
+void yypush_buffer_state (YY_BUFFER_STATE new_buffer )
 {
     	if (new_buffer == NULL)
 		return;
 
-	ExpressionParserensure_buffer_stack();
+	yyensure_buffer_stack();
 
-	/* This block is copied from ExpressionParser_switch_to_buffer. */
+	/* This block is copied from yy_switch_to_buffer. */
 	if ( YY_CURRENT_BUFFER )
 		{
 		/* Flush out information for old buffer. */
@@ -6980,8 +7200,8 @@ void ExpressionParserpush_buffer_state (YY_BUFFER_STATE new_buffer )
 		(yy_buffer_stack_top)++;
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
 
-	/* copied from ExpressionParser_switch_to_buffer. */
-	ExpressionParser_load_buffer_state( );
+	/* copied from yy_switch_to_buffer. */
+	yy_load_buffer_state(  );
 	(yy_did_buffer_switch_on_eof) = 1;
 }
 
@@ -6989,18 +7209,18 @@ void ExpressionParserpush_buffer_state (YY_BUFFER_STATE new_buffer )
  *  The next element becomes the new top.
  *  
  */
-void ExpressionParserpop_buffer_state (void)
+void yypop_buffer_state (void)
 {
     	if (!YY_CURRENT_BUFFER)
 		return;
 
-	ExpressionParser_delete_buffer(YY_CURRENT_BUFFER );
+	yy_delete_buffer(YY_CURRENT_BUFFER );
 	YY_CURRENT_BUFFER_LVALUE = NULL;
 	if ((yy_buffer_stack_top) > 0)
 		--(yy_buffer_stack_top);
 
 	if (YY_CURRENT_BUFFER) {
-		ExpressionParser_load_buffer_state( );
+		yy_load_buffer_state(  );
 		(yy_did_buffer_switch_on_eof) = 1;
 	}
 }
@@ -7008,7 +7228,7 @@ void ExpressionParserpop_buffer_state (void)
 /* Allocates the stack if it does not exist.
  *  Guarantees space for at least one push.
  */
-static void ExpressionParserensure_buffer_stack (void)
+static void yyensure_buffer_stack (void)
 {
 	yy_size_t num_to_alloc;
     
@@ -7018,15 +7238,15 @@ static void ExpressionParserensure_buffer_stack (void)
 		 * scanner will even need a stack. We use 2 instead of 1 to avoid an
 		 * immediate realloc on the next call.
          */
-		num_to_alloc = 1; /* After all that talk, this was set to 1 anyways... */
-		(yy_buffer_stack) = (struct yy_buffer_state**)ExpressionParseralloc
+      num_to_alloc = 1; /* After all that talk, this was set to 1 anyways... */
+		(yy_buffer_stack) = (struct yy_buffer_state**)yyalloc
 								(num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
 		if ( ! (yy_buffer_stack) )
-			YY_FATAL_ERROR( "out of dynamic memory in ExpressionParserensure_buffer_stack()" );
-								  
+			YY_FATAL_ERROR( "out of dynamic memory in yyensure_buffer_stack()" );
+
 		memset((yy_buffer_stack), 0, num_to_alloc * sizeof(struct yy_buffer_state*));
-				
+
 		(yy_buffer_stack_max) = num_to_alloc;
 		(yy_buffer_stack_top) = 0;
 		return;
@@ -7038,12 +7258,12 @@ static void ExpressionParserensure_buffer_stack (void)
 		yy_size_t grow_size = 8 /* arbitrary grow size */;
 
 		num_to_alloc = (yy_buffer_stack_max) + grow_size;
-		(yy_buffer_stack) = (struct yy_buffer_state**)ExpressionParserrealloc
+		(yy_buffer_stack) = (struct yy_buffer_state**)yyrealloc
 								((yy_buffer_stack),
 								num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
 		if ( ! (yy_buffer_stack) )
-			YY_FATAL_ERROR( "out of dynamic memory in ExpressionParserensure_buffer_stack()" );
+			YY_FATAL_ERROR( "out of dynamic memory in yyensure_buffer_stack()" );
 
 		/* zero only the new slots.*/
 		memset((yy_buffer_stack) + (yy_buffer_stack_max), 0, grow_size * sizeof(struct yy_buffer_state*));
@@ -7055,9 +7275,9 @@ static void ExpressionParserensure_buffer_stack (void)
  * @param base the character buffer
  * @param size the size in bytes of the character buffer
  * 
- * @return the newly allocated buffer state object. 
+ * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE ExpressionParser_scan_buffer  (char * base, yy_size_t  size )
+YY_BUFFER_STATE yy_scan_buffer  (char * base, yy_size_t  size )
 {
 	YY_BUFFER_STATE b;
     
@@ -7065,69 +7285,69 @@ YY_BUFFER_STATE ExpressionParser_scan_buffer  (char * base, yy_size_t  size )
 	     base[size-2] != YY_END_OF_BUFFER_CHAR ||
 	     base[size-1] != YY_END_OF_BUFFER_CHAR )
 		/* They forgot to leave room for the EOB's. */
-		return 0;
+		return NULL;
 
-	b = (YY_BUFFER_STATE) ExpressionParseralloc(sizeof( struct yy_buffer_state )  );
+	b = (YY_BUFFER_STATE) yyalloc( sizeof( struct yy_buffer_state )  );
 	if ( ! b )
-		YY_FATAL_ERROR( "out of dynamic memory in ExpressionParser_scan_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in yy_scan_buffer()" );
 
-	b->yy_buf_size = size - 2;	/* "- 2" to take care of EOB's */
+	b->yy_buf_size = (int) (size - 2);	/* "- 2" to take care of EOB's */
 	b->yy_buf_pos = b->yy_ch_buf = base;
 	b->yy_is_our_buffer = 0;
-	b->yy_input_file = 0;
+	b->yy_input_file = NULL;
 	b->yy_n_chars = b->yy_buf_size;
 	b->yy_is_interactive = 0;
 	b->yy_at_bol = 1;
 	b->yy_fill_buffer = 0;
 	b->yy_buffer_status = YY_BUFFER_NEW;
 
-	ExpressionParser_switch_to_buffer(b  );
+	yy_switch_to_buffer( b  );
 
 	return b;
 }
 
-/** Setup the input buffer state to scan a string. The next call to ExpressionParserlex() will
+/** Setup the input buffer state to scan a string. The next call to yylex() will
  * scan from a @e copy of @a str.
  * @param yystr a NUL-terminated string to scan
  * 
  * @return the newly allocated buffer state object.
  * @note If you want to scan bytes that may contain NUL values, then use
- *       ExpressionParser_scan_bytes() instead.
+ *       yy_scan_bytes() instead.
  */
-YY_BUFFER_STATE ExpressionParser_scan_string (yyconst char * yystr )
+YY_BUFFER_STATE yy_scan_string (const char * yystr )
 {
     
-	return ExpressionParser_scan_bytes(yystr,strlen(yystr) );
+	return yy_scan_bytes( yystr, (int) strlen(yystr) );
 }
 
-/** Setup the input buffer state to scan the given bytes. The next call to ExpressionParserlex() will
+/** Setup the input buffer state to scan the given bytes. The next call to yylex() will
  * scan from a @e copy of @a bytes.
  * @param yybytes the byte buffer to scan
  * @param _yybytes_len the number of bytes in the buffer pointed to by @a bytes.
  * 
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE ExpressionParser_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len )
+YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, int  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
 	yy_size_t n;
-	yy_size_t i;
+	int i;
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
-	n = _yybytes_len + 2;
-	buf = (char *) ExpressionParseralloc(n  );
+	n = (yy_size_t) (_yybytes_len + 2);
+	buf = (char *) yyalloc( n  );
 	if ( ! buf )
-		YY_FATAL_ERROR( "out of dynamic memory in ExpressionParser_scan_bytes()" );
+		YY_FATAL_ERROR( "out of dynamic memory in yy_scan_bytes()" );
 
 	for ( i = 0; i < _yybytes_len; ++i )
 		buf[i] = yybytes[i];
 
 	buf[_yybytes_len] = buf[_yybytes_len+1] = YY_END_OF_BUFFER_CHAR;
 
-	b = ExpressionParser_scan_buffer(buf,n );
+	b = yy_scan_buffer( buf, n );
 	if ( ! b )
-		YY_FATAL_ERROR( "bad buffer in ExpressionParser_scan_bytes()" );
+		YY_FATAL_ERROR( "bad buffer in yy_scan_bytes()" );
 
 	/* It's okay to grow etc. this buffer, and we should throw it
 	 * away when we're done.
@@ -7141,9 +7361,9 @@ YY_BUFFER_STATE ExpressionParser_scan_bytes  (yyconst char * yybytes, yy_size_t 
 #define YY_EXIT_FAILURE 2
 #endif
 
-static void yy_fatal_error (yyconst char* msg )
+static void yynoreturn yy_fatal_error (const char* msg )
 {
-			(void) fprintf( stderr, "%s\n", msg );
+			fprintf( stderr, "%s\n", msg );
 	exit( YY_EXIT_FAILURE );
 }
 
@@ -7153,14 +7373,14 @@ static void yy_fatal_error (yyconst char* msg )
 #define yyless(n) \
 	do \
 		{ \
-		/* Undo effects of setting up ExpressionParsertext. */ \
+		/* Undo effects of setting up yytext. */ \
         int yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
-		ExpressionParsertext[ExpressionParserleng] = (yy_hold_char); \
-		(yy_c_buf_p) = ExpressionParsertext + yyless_macro_arg; \
+		yytext[yyleng] = (yy_hold_char); \
+		(yy_c_buf_p) = yytext + yyless_macro_arg; \
 		(yy_hold_char) = *(yy_c_buf_p); \
 		*(yy_c_buf_p) = '\0'; \
-		ExpressionParserleng = yyless_macro_arg; \
+		yyleng = yyless_macro_arg; \
 		} \
 	while ( 0 )
 
@@ -7169,126 +7389,126 @@ static void yy_fatal_error (yyconst char* msg )
 /** Get the current line number.
  * 
  */
-int ExpressionParserget_lineno  (void)
+int yyget_lineno  (void)
 {
-        
-    return ExpressionParserlineno;
+    
+    return yylineno;
 }
 
 /** Get the input stream.
  * 
  */
-FILE *ExpressionParserget_in  (void)
+FILE *yyget_in  (void)
 {
-        return ExpressionParserin;
+        return yyin;
 }
 
 /** Get the output stream.
  * 
  */
-FILE *ExpressionParserget_out  (void)
+FILE *yyget_out  (void)
 {
-        return ExpressionParserout;
+        return yyout;
 }
 
 /** Get the length of the current token.
  * 
  */
-yy_size_t ExpressionParserget_leng  (void)
+int yyget_leng  (void)
 {
-        return ExpressionParserleng;
+        return yyleng;
 }
 
 /** Get the current token.
  * 
  */
 
-char *ExpressionParserget_text  (void)
+char *yyget_text  (void)
 {
-        return ExpressionParsertext;
+        return yytext;
 }
 
 /** Set the current line number.
  * @param _line_number line number
  * 
  */
-void ExpressionParserset_lineno (int  _line_number )
+void yyset_lineno (int  _line_number )
 {
     
-    ExpressionParserlineno = _line_number;
+    yylineno = _line_number;
 }
 
 /** Set the input stream. This does not discard the current
  * input buffer.
  * @param _in_str A readable stream.
  * 
- * @see ExpressionParser_switch_to_buffer
+ * @see yy_switch_to_buffer
  */
-void ExpressionParserset_in (FILE *  _in_str )
+void yyset_in (FILE *  _in_str )
 {
-        ExpressionParserin = _in_str ;
+        yyin = _in_str ;
 }
 
-void ExpressionParserset_out (FILE *  _out_str )
+void yyset_out (FILE *  _out_str )
 {
-        ExpressionParserout = _out_str ;
+        yyout = _out_str ;
 }
 
-int ExpressionParserget_debug  (void)
+int yyget_debug  (void)
 {
-        return ExpressionParser_flex_debug;
+        return yy_flex_debug;
 }
 
-void ExpressionParserset_debug (int  _bdebug )
+void yyset_debug (int  _bdebug )
 {
-        ExpressionParser_flex_debug = _bdebug ;
+        yy_flex_debug = _bdebug ;
 }
 
 static int yy_init_globals (void)
 {
         /* Initialization is the same as for the non-reentrant scanner.
-     * This function is called from ExpressionParserlex_destroy(), so don't allocate here.
+     * This function is called from yylex_destroy(), so don't allocate here.
      */
 
-    (yy_buffer_stack) = 0;
+    (yy_buffer_stack) = NULL;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
-    (yy_c_buf_p) = (char *) 0;
+    (yy_c_buf_p) = NULL;
     (yy_init) = 0;
     (yy_start) = 0;
 
 /* Defined in main.c */
 #ifdef YY_STDINIT
-    ExpressionParserin = stdin;
-    ExpressionParserout = stdout;
+    yyin = stdin;
+    yyout = stdout;
 #else
-    ExpressionParserin = (FILE *) 0;
-    ExpressionParserout = (FILE *) 0;
+    yyin = NULL;
+    yyout = NULL;
 #endif
 
     /* For future reference: Set errno on error, since we are called by
-     * ExpressionParserlex_init()
+     * yylex_init()
      */
     return 0;
 }
 
-/* ExpressionParserlex_destroy is for both reentrant and non-reentrant scanners. */
-int ExpressionParserlex_destroy  (void)
+/* yylex_destroy is for both reentrant and non-reentrant scanners. */
+int yylex_destroy  (void)
 {
     
     /* Pop the buffer stack, destroying each element. */
 	while(YY_CURRENT_BUFFER){
-		ExpressionParser_delete_buffer(YY_CURRENT_BUFFER  );
+		yy_delete_buffer( YY_CURRENT_BUFFER  );
 		YY_CURRENT_BUFFER_LVALUE = NULL;
-		ExpressionParserpop_buffer_state();
+		yypop_buffer_state();
 	}
 
 	/* Destroy the stack itself. */
-	ExpressionParserfree((yy_buffer_stack) );
+	yyfree((yy_buffer_stack) );
 	(yy_buffer_stack) = NULL;
 
     /* Reset the globals. This is important in a non-reentrant scanner so the next time
-     * ExpressionParserlex() is called, initialization will occur. */
+     * yylex() is called, initialization will occur. */
     yy_init_globals( );
 
     return 0;
@@ -7299,7 +7519,7 @@ int ExpressionParserlex_destroy  (void)
  */
 
 #ifndef yytext_ptr
-static void yy_flex_strncpy (char* s1, yyconst char * s2, int n )
+static void yy_flex_strncpy (char* s1, const char * s2, int n )
 {
 		
 	int i;
@@ -7309,7 +7529,7 @@ static void yy_flex_strncpy (char* s1, yyconst char * s2, int n )
 #endif
 
 #ifdef YY_NEED_STRLEN
-static int yy_flex_strlen (yyconst char * s )
+static int yy_flex_strlen (const char * s )
 {
 	int n;
 	for ( n = 0; s[n]; ++n )
@@ -7319,12 +7539,12 @@ static int yy_flex_strlen (yyconst char * s )
 }
 #endif
 
-void *ExpressionParseralloc (yy_size_t  size )
+void *yyalloc (yy_size_t  size )
 {
-			return (void *) malloc( size );
+			return malloc(size);
 }
 
-void *ExpressionParserrealloc  (void * ptr, yy_size_t  size )
+void *yyrealloc  (void * ptr, yy_size_t  size )
 {
 		
 	/* The cast to (char *) in the following accommodates both
@@ -7334,14 +7554,14 @@ void *ExpressionParserrealloc  (void * ptr, yy_size_t  size )
 	 * any pointer type to void*, and deal with argument conversions
 	 * as though doing an assignment.
 	 */
-	return (void *) realloc( (char *) ptr, size );
+	return realloc(ptr, size);
 }
 
-void ExpressionParserfree (void * ptr )
+void yyfree (void * ptr )
 {
-			free( (char *) ptr );	/* see ExpressionParserrealloc() for (char *) cast */
+			free( (char *) ptr );	/* see yyrealloc() for (char *) cast */
 }
 
 #define YYTABLES_NAME "yytables"
 
-#line 283 "ExpressionParser.l"
+#line 283 "<stdin>"
