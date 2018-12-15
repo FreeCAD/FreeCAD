@@ -114,8 +114,8 @@ SET(SketcherGui_SRCS
     TaskSketcherValidation.ui
     TaskSketcherValidation.cpp
     TaskSketcherValidation.h
-    ShortcutListener.h
     ShortcutListener.cpp
+    ShortcutListener.h
     ViewProviderSketch.cpp
     ViewProviderSketch.h
     DrawSketchHandler.cpp

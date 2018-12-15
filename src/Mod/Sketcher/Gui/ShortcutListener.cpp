@@ -32,10 +32,11 @@
 
 using namespace SketcherGui;
 
-ShortcutListener::ShortcutListener(ViewProviderSketch * vp):QObject()
+ShortcutListener::ShortcutListener(ViewProviderSketch * vp)
 {
     pViewProvider = vp;
 }
+
 ShortcutListener::~ShortcutListener()
 {
 }
