@@ -339,7 +339,7 @@ def fill_femresult_stats(results):
     fills a FreeCAD FEM mechanical result object with stats data
     results: FreeCAD FEM result object
     '''
-    FreeCAD.Console.PrintMessage('Calculate stats list for result obj: ' + results.Name + '\n')
+    FreeCAD.Console.PrintLog('Calculate stats list for result obj: ' + results.Name + '\n')
     no_of_values = 1  # to avoid division by zero
     # set stats values to 0, they may not exist in result obj results
     x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
@@ -417,7 +417,7 @@ def fill_femresult_stats(results):
     # - module femtest/testccxtools.py
     # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
 
-    FreeCAD.Console.PrintMessage('Stats list for result obj: ' + results.Name + ' calculated\n')
+    FreeCAD.Console.PrintLog('Stats list for result obj: ' + results.Name + ' calculated\n')
     return results
 
 
