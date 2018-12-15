@@ -46,7 +46,7 @@ protected:
     ViewProviderSketch * pViewProvider;
 };
 
-} // namespace PartGui
+} // namespace SketcherGui
 
 
 #endif // SKETCHERGUI_SHORTCUTLISTENER_H
