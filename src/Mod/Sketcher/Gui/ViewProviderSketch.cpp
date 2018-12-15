@@ -69,6 +69,7 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QTextStream>
+# include <QKeyEvent>
 #endif
 
 #ifndef _PreComp_
@@ -281,7 +282,8 @@ ViewProviderSketch::ViewProviderSketch()
     Mode(STATUS_NONE),
     visibleInformationChanged(true),
     combrepscalehyst(0),
-    isShownVirtualSpace(false)
+    isShownVirtualSpace(false),
+    listener(0)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -5689,6 +5691,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     getSketchObject()->getSolvedSketch().RecalculateInitialSolutionWhileMovingPoint = hGrp2->GetBool("RecalculateInitialSolutionWhileDragging",true);
 
+
+    // intercept del key press from main app
+    listener = new ShortcutListener(this);
+
+    Gui::getMainWindow()->installEventFilter(listener);
+
     return true;
 }
 
@@ -5972,6 +5980,11 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     ShowGrid.setValue(false);
     TightGrid.setValue(true);
 
+    if(listener) {
+        Gui::getMainWindow()->removeEventFilter(listener);
+        delete listener;
+    }
+
     if (edit) {
         if (edit->sketchHandler)
             deactivateHandler();
@@ -6224,6 +6237,31 @@ Sketcher::SketchObject *ViewProviderSketch::getSketchObject(void) const
     return dynamic_cast<Sketcher::SketchObject *>(pcObject);
 }
 
+void ViewProviderSketch::deleteSelected()
+{
+    std::vector<Gui::SelectionObject> selection;
+    selection = Gui::Selection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        Base::Console().Warning("Delete: Selection not restricted to one sketch and its subelements");
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+
+    if(SubNames.size()>0) {
+        App::Document* doc = getSketchObject()->getDocument();
+
+        doc->openTransaction("delete sketch geometry");
+
+        onDelete(SubNames);
+
+        doc->commitTransaction();
+    }
+}
+
 bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 {
     if (edit) {
@@ -6349,8 +6387,20 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         // This function is generally called from StdCmdDelete::activated
         // Since 2015-05-03 that function includes a recompute at the end.
 
-        /*this->drawConstraintIcons();
-        this->updateColor();*/
+        // Since December 2018, the function is no longer called from StdCmdDelete::activated,
+        // as there is an event filter installed that intercepts the del key event. So now we do
+        // need to tidy up after ourselves again.
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if (autoRecompute) {
+            Gui::Command::updateActive();
+        }
+        else {
+            this->drawConstraintIcons();
+            this->updateColor();
+        }
 
         // if in edit not delete the object
         return false;
