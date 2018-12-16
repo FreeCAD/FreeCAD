@@ -36,6 +36,10 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "Rez.h"
+#include "ZVALUE.h"
+#include "DrawGuiUtil.h"
+#include "QGICMark.h"
 #include "QGIDecoration.h"
 
 using namespace TechDrawGui;
@@ -82,3 +86,20 @@ void QGIDecoration::setColor(QColor c)
     m_colCurrent = c;
     m_pen.setColor(m_colCurrent);
 }
+
+void QGIDecoration::makeMark(double x, double y)
+{
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(2.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
+}
+
+void QGIDecoration::makeMark(Base::Vector3d v)
+{
+    makeMark(v.x,v.y);
+}
+
+
