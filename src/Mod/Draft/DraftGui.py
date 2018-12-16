@@ -81,10 +81,16 @@ except AttributeError:
         """
         if sys.version_info.major >= 3:
             return QtGui.QApplication.translate(context, text, None)
-        elif utf8_decode:
-            return QtGui.QApplication.translate(context, text, None, _encoding)
+        elif QtCore.qVersion() > "4":
+            if utf8_decode:
+                return QtGui.QApplication.translate(context, text, None)
+            else:
+                return QtGui.QApplication.translate(context, text, None).encode("utf8")
         else:
-            return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+            if utf8_decode:
+                return QtGui.QApplication.translate(context, text, None, _encoding)
+            else:
+                return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
 
 def utf8_decode(text):
     """py2: str     -> unicode
