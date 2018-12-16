@@ -41,6 +41,9 @@
 #include <qmath.h>
 #include <QRectF>
 #include "Rez.h"
+#include "ZVALUE.h"
+#include "DrawGuiUtil.h"
+#include "QGICMark.h"
 #include "QGIView.h"
 #include "QGCustomText.h"
 
@@ -152,6 +155,8 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
         painter->scale(1.0,1.0);
     }
 
+//    painter->drawRect(boundingRect());          //good for debugging
+
     setDefaultTextColor(m_colCurrent);
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
@@ -200,3 +205,20 @@ Base::Reference<ParameterGrp> QGCustomText::getParmGroup()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     return hGrp;
 }
+
+void QGCustomText::makeMark(double x, double y)
+{
+    QGICMark* cmItem = new QGICMark(-1);
+    cmItem->setParentItem(this);
+    cmItem->setPos(x,y);
+    cmItem->setThick(1.0);
+    cmItem->setSize(40.0);
+    cmItem->setZValue(ZVALUE::VERTEX);
+}
+
+void QGCustomText::makeMark(Base::Vector3d v)
+{
+    makeMark(v.x,v.y);
+}
+
+

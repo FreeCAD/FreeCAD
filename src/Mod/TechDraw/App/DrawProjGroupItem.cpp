@@ -195,7 +195,6 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
     return viewAxis;
 }
 
-//obs??
 //get the angle between the current RotationVector vector and the original X dir angle
 double DrawProjGroupItem::getRotateAngle()
 {
@@ -212,8 +211,7 @@ double DrawProjGroupItem::getRotateAngle()
     gp_Dir gxDir = viewAxis.XDirection();
     Base::Vector3d origX(gxDir.X(),gxDir.Y(),gxDir.Z());
     origX.Normalize();
-    double dot = fabs(origX.Dot(nx));  
-    double angle = acos(dot);
+    double angle = origX.GetAngle(nx);
 
     Base::Vector3d rotAxis = origX.Cross(nx);
     if (rotAxis == Direction.getValue()) {
