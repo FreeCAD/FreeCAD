@@ -1064,36 +1064,12 @@ PropertyAngleItem::PropertyAngleItem()
 
 void PropertyAngleItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
-    const App::PropertyQuantityConstraint* prop = static_cast
-        <const App::PropertyQuantityConstraint*>(getFirstProperty());
-
-    const App::PropertyQuantityConstraint::Constraints* c = 0;
-    if (prop) {
-        c = prop->getConstraints();
-    }
-
-    QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
-    if (c) {
-        sb->setMinimum(c->LowerBound);
-        sb->setMaximum(c->UpperBound);
-        sb->setSingleStep(c->StepSize);
-    }
-    else {
-        sb->setMinimum((double)INT_MIN);
-        sb->setMaximum((double)INT_MAX);
-        sb->setSingleStep(1.0);
-    }
-
-    sb->setValue(data.toDouble());
-    sb->setSuffix(QString::fromUtf8(" \xc2\xb0"));
+    PropertyUnitConstraintItem::setEditorData(editor, data);
 }
 
 QVariant PropertyAngleItem::toString(const QVariant& prop) const
 {
-    double value = prop.toDouble();
-    QString data = QString::fromUtf8("%1 \xc2\xb0")
-        .arg(QLocale::system().toString(value, 'f', decimals()));
-    return QVariant(data);
+    return PropertyUnitConstraintItem::toString(prop);
 }
 
 // --------------------------------------------------------------------
