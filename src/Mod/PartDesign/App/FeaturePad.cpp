@@ -65,7 +65,7 @@ PROPERTY_SOURCE(PartDesign::Pad, PartDesign::ProfileBased)
 Pad::Pad()
 {
     addSubType = FeatureAddSub::Additive;
-    
+
     ADD_PROPERTY_TYPE(Type,((long)0),"Pad",App::Prop_None,"Pad type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pad",App::Prop_None,"Pad length");
@@ -117,7 +117,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
 
 
     // get the Sketch plane
-    Base::Placement SketchPos    = obj->Placement.getValue(); 
+    Base::Placement SketchPos    = obj->Placement.getValue();
     Base::Vector3d  SketchVector = getProfileNormal();
 
     try {
@@ -134,7 +134,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
         sketchshape.Move(invObjLoc);
 
         TopoDS_Shape prism;
-        std::string method(Type.getValueAsString());                
+        std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
               // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
@@ -184,7 +184,7 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                 dir = gp_Dir(gp_Vec(basePoint, prjP));
                 dir.Transform(invObjLoc.Transformation());
 #else
-                TopLoc_Location upToFaceLoc;
+                /*TopLoc_Location upToFaceLoc;
                 Handle(Geom_Surface) surf = BRep_Tool::Surface(upToFace, upToFaceLoc);
                 GeomLib_IsPlanarSurface checkSurface(surf);
                 if (surf.IsNull() || !checkSurface.IsPlanar())
@@ -209,10 +209,23 @@ App::DocumentObjectExecReturn *Pad::execute(void)
                     return new App::DocumentObjectExecReturn("Pad: Extruding up to a face failed because of zero height");
 
                 // Direction (the distance is always positive)
-                dir = gp_Dir(gp_Vec(basePoint, projPoint));
+                dir = gp_Dir(gp_Vec(basePoint, projPoint));*/
 #endif
 
-                generatePrism(prism, sketchshape, "Length", dir, length, 0.0, false, false);
+                //generatePrism(prism, sketchshape, "Length", dir, length, 0.0, false, false);
+                base = sketchshape;
+                supportface = TopoDS::Face(sketchshape);
+                TopExp_Explorer Ex(supportface,TopAbs_WIRE);
+                if (!Ex.More())
+                    supportface = TopoDS_Face();
+                BRepFeat_MakePrism PrismMaker;
+                PrismMaker.Init(base, sketchshape, supportface, dir, 2, 1);
+                PrismMaker.Perform(upToFace);
+
+                if (!PrismMaker.IsDone())
+                    return new App::DocumentObjectExecReturn("Pad: Up to face: Could not extrude the sketch!");
+                prism = PrismMaker.Shape();
+                base.Nullify();
             } else {
                 // A support object is always required and we need to use BRepFeat_MakePrism
                 // Problem: For Pocket/UpToFirst (or an equivalent Pocket/UpToFace) the resulting shape is invalid
