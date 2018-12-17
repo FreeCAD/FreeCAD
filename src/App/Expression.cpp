@@ -276,7 +276,7 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
         return _pyObjectFromAny(value);
     const auto &type = value.type();
     if (type == typeid(Quantity))
-        return Py::Object(new QuantityPy(new Quantity(App::any_cast<Quantity>(value))));
+        return Py::Object(new QuantityPy(new Quantity(App::any_cast<const Quantity&>(value))));
     else if (type == typeid(double)) {
         double v = App::any_cast<double>(value);
         double rv = std::round(v);
@@ -296,14 +296,14 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
     } else if (type == typeid(int)) 
         return Py::Int(App::any_cast<int>(value));
     else if (type == typeid(long)) {
-        long l = App::any_cast<long>(value);;
+        long l = App::any_cast<long>(value);
         if(std::abs(l)<INT_MAX)
             return Py::Int(int(l));
         return Py::Long(App::any_cast<long>(value));
     } else if (type == typeid(bool))
         return Py::Boolean(App::any_cast<bool>(value));
     else if (type == typeid(std::string))
-        return Py::String(App::any_cast<string>(value));
+        return Py::String(App::any_cast<const string&>(value));
     else if (type == typeid(const char*))
         return Py::String(App::any_cast<const char*>(value));
 
@@ -3183,7 +3183,7 @@ static Expression::StringList prepareCommands(const Expression *owner, const Exp
     Expression::StringList cmds;
     App::any value(arg0->getValueAsAny());
     if(value.type() == typeid(std::string))
-        cmds.emplace_back(App::any_cast<std::string>(value));
+        cmds.push_back(App::any_cast<std::string&&>(std::move(value)));
     else {
         PyIterable pyobj(_pyObjectFromAny(value,arg0),owner,true);
         Py::Sequence seq(pyobj);
@@ -5165,6 +5165,13 @@ void SimpleStatement::_toString(std::ostream &ss, bool persistent, int) const {
 ExpressionPtr SimpleStatement::_eval() const {
     ExpressionPtr expr;
     for(auto &e : exprs) {
+        // Optimization for using string as comment, i.e. do not evaluate
+        // string if it used as a statement. The side effect is that string
+        // expression won't be used as implicit return value
+        if(e->getTypeId() == StringExpression::getClassTypeId()) {
+            expr.reset();
+            continue;
+        }
         expr = e->eval();
         switch(expr->jump()) {
         case JUMP_RETURN:
