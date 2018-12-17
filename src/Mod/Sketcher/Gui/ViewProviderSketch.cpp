@@ -298,6 +298,9 @@ ViewProviderSketch::ViewProviderSketch()
         this->ShowLinks.setValue(hGrp->GetBool("ShowLinks", true));
         this->ShowSupport.setValue(hGrp->GetBool("ShowSupport", true));
         this->RestoreCamera.setValue(hGrp->GetBool("RestoreCamera", true));
+
+        // well it is not visibility automation but a good place nevertheless
+        this->Autoconstraints.setValue(hGrp->GetBool("AutoConstraints",false));
     }
 
     sPixmap = "Sketcher_Sketch";
