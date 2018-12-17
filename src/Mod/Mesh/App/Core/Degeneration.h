@@ -399,6 +399,32 @@ private:
 };
 
 /**
+ * The MeshFixMergeFacets class removes vertexes which have three adjacent vertexes and is referenced by three facets.
+ * Usually all the three facets that reference this vertex are not well-formed. If the number of adjacent vertexes
+ * is equal to the number of adjacent facets the affected vertex never lies on the boundary and thus it's safe to delete
+ * and replace the three facets with a single facet.
+ * Effectively this algorithm does the opposite of \ref MeshTopoAlgorithm::InsertVertex
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixMergeFacets : public MeshValidation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshFixMergeFacets (MeshKernel &rclM)
+      : MeshValidation(rclM) { }
+  /**
+   * Destruction.
+   */
+  ~MeshFixMergeFacets () { }
+  /**
+   * Removes deformed facets.
+   */
+  bool Fixup ();
+};
+
+/**
  * If an adjacent point (A) of a point (P) can be projected onto a triangle shared
  * by (P) but not by (A) then we have a local dent. The topology is not affected.
  */

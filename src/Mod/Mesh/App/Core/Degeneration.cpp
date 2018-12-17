@@ -701,6 +701,34 @@ bool MeshFixDeformedFacets::Fixup()
 
 // ----------------------------------------------------------------------
 
+bool MeshFixMergeFacets::Fixup()
+{
+    MeshCore::MeshRefPointToPoints vv_it(_rclMesh);
+    MeshCore::MeshRefPointToFacets vf_it(_rclMesh);
+    unsigned long countPoints = _rclMesh.CountPoints();
+
+    std::vector<MeshFacet> newFacets;
+    newFacets.reserve(countPoints/20); // 5% should be sufficient
+
+    MeshTopoAlgorithm topAlg(_rclMesh);
+    for (unsigned long i=0; i<countPoints; i++) {
+        if (vv_it[i].size() == 3 && vf_it[i].size() == 3) {
+            VertexCollapse vc;
+            vc._point = i;
+            const std::set<unsigned long>& adjPts = vv_it[i];
+            vc._circumPoints.insert(vc._circumPoints.begin(), adjPts.begin(), adjPts.end());
+            const std::set<unsigned long>& adjFts = vf_it[i];
+            vc._circumFacets.insert(vc._circumFacets.begin(), adjFts.begin(), adjFts.end());
+            topAlg.CollapseVertex(vc);
+        }
+    }
+
+    topAlg.Cleanup();
+    return true;
+}
+
+// ----------------------------------------------------------------------
+
 bool MeshEvalDentsOnSurface::Evaluate()
 {
     this->indices.clear();
