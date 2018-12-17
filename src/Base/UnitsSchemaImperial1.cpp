@@ -363,7 +363,9 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
     // this schema expresses angles in degrees + minutes + seconds
     else if (unit == Unit::Angle) {
         unitString = QString::fromUtf8("deg");
-        QString degreeString = QString::fromUtf8("\xC2\xB0");
+//        unitString = QString::fromUtf8("\xC2\xB0");           //U+00B0 degree symbol
+//        QString degreeString = QString::fromUtf8("\xC2\xB0");
+        QString degreeString = QString::fromUtf8("deg");
         QString minuteString = QString::fromUtf8("M");
         QString secondString = QString::fromUtf8("S");
         factor = 1.0;                                  //1deg = 1"\xC2\xB0 "
