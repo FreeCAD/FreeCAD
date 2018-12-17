@@ -108,6 +108,7 @@ class ArchWorkbench(Workbench):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui","Draft")
                 FreeCADGui.draftToolBar.loadedPreferences = True
+            FreeCADGui.draftToolBar.loadedArchPreferences = True
         Log ('Loading Arch module... done\n')
 
     def Activated(self):
