@@ -368,7 +368,7 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
         QString secondString = QString::fromUtf8("S");
         factor = 1.0;                                  //1deg = 1"\xC2\xB0 "
 
-        double totalDegrees = std::abs(quant.getValue())/factor;
+        double totalDegrees = quant.getValue()/factor;
         double wholeDegrees = std::floor(totalDegrees);
         double sumMinutes = totalDegrees * 60.0;            //quant as minutes
         double rawMinutes = sumMinutes - wholeDegrees * 60.0;
