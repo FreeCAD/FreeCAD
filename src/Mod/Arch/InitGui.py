@@ -99,16 +99,17 @@ class ArchWorkbench(Workbench):
         self.appendMenu([QT_TRANSLATE_NOOP("arch","&Draft"),QT_TRANSLATE_NOOP("arch","Snapping")],self.snapList)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
-        FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui","Arch")
-        FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui","Arch")
         if hasattr(FreeCADGui,"draftToolBar"):
+            if not hasattr(FreeCADGui.draftToolBar,"loadedArchPreferences"):
+                FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui","Arch")
+                FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui","Arch")
+                FreeCADGui.draftToolBar.loadedArchPreferences = True
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui","Draft")
                 FreeCADGui.draftToolBar.loadedPreferences = True
-            FreeCADGui.draftToolBar.loadedArchPreferences = True
         Log ('Loading Arch module... done\n')
 
     def Activated(self):
