@@ -28,6 +28,8 @@
 # include <QWidget>
 # ifdef FC_OS_WIN32
 # include <Windows.h>
+# define _USE_MATH_DEFINES
+# include <cmath>
 # endif
 # include <cassert>
 #endif
