@@ -74,7 +74,7 @@ def errorDXFLib(gui):
     dxfAllowDownload = p.GetBool("dxfAllowDownload",False)
     if dxfAllowDownload:
         files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
-        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+str(CURRENTDXFLIB)+"/"
+        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+'{0:.2f}'.format(CURRENTDXFLIB)+"/"
         import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
