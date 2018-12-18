@@ -1,7 +1,7 @@
 import FreeCAD, math, sys, os, DraftVecUtils, WorkingPlane
 import Part, DraftGeomUtils
 from FreeCAD import Vector
-from Draft import getType, getrgb, svgpatterns
+from Draft import getType, getrgb, svgpatterns, gui
 
 
 def getLineStyle(linestyle, scale):
@@ -176,8 +176,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 #svg = getEllipse(e)
                                 #return svg
                                 endpoints = (getProj(c.value((c.LastParameter-\
-                                        c.FirstParameter)/2.0)), \
-                                        getProj(vs[-1].Point), plane)
+                                        c.FirstParameter)/2.0), plane), \
+                                        getProj(vs[-1].Point, plane))
                             else:
                                 endpoints = (getProj(vs[-1].Point), plane)
                             # arc
@@ -601,7 +601,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 )
 
             # Draw multisegment line
-            proj_points = list(map(getProj, obj.Points), plane)
+            proj_points = list(map(lambda x: getProj(x, plane), obj.Points))
             path_dir_list = [format_point(proj_points[0], action='M')]
             path_dir_list += map(format_point, proj_points[1:])
             path_dir_str = " ".join(path_dir_list)
