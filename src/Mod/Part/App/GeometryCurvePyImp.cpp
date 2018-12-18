@@ -948,30 +948,18 @@ PyObject* GeometryCurvePy::extendToPoint(PyObject *args)
     Handle(Geom_Curve) curve = Handle(Geom_Curve)::DownCast(getGeometryPtr()->handle());
     try {
         if (!curve.IsNull()) {
-            Handle(Geom_BoundedCurve) bc = Handle(Geom_BoundedCurve)::DownCast(curve);
-            PyObject *p;
-            int cont = 1;
-            PyObject* after = Py_True; // PyObject_IsTrue(after) ? Standard_True : Standard_False
-            if (!PyArg_ParseTuple(args, "O!|iO!", &(Base::VectorPy::Type), &p, &cont, &PyBool_Type, &after))
-                return 0;
-            Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
-            gp_Pnt pnt(vec.x, vec.y, vec.z);
-            GeomLib::ExtendCurveToPoint (bc, pnt, cont, PyObject_IsTrue(after) ? Standard_True : Standard_False);
-            // Handle(Geom_Curve) c = Handle(Geom_Curve)::DownCast(bc)
-            // check the result curve type
-            return Py::new_reference_to(makeGeometryCurvePy(bc));
-//             if (bc->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
-//                 Handle(Geom_BSplineCurve) nc = Handle(Geom_BSplineCurve)::DownCast(bc);
-//                 return new BSplineCurvePy(new GeomBSplineCurve(nc));
-//             }
-//             else if (bc->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
-//                 Handle(Geom_BezierCurve) nc = Handle(Geom_BezierCurve)::DownCast(bc);
-//                 return new BezierCurvePy(new GeomBezierCurve(nc));
-//             }
-//             else if (bc->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
-//                 Handle(Geom_TrimmedCurve) nc = Handle(Geom_TrimmedCurve)::DownCast(bc);
-//                 return new GeometryCurvePy(new GeomTrimmedCurve(nc));
-//             }
+            if (curve->IsKind(STANDARD_TYPE(Geom_BoundedCurve))) {
+                Handle(Geom_BoundedCurve) bc = Handle(Geom_BoundedCurve)::DownCast(curve);
+                PyObject *p;
+                int cont = 1;
+                PyObject* after = Py_True;
+                if (!PyArg_ParseTuple(args, "O!|iO!", &(Base::VectorPy::Type), &p, &cont, &PyBool_Type, &after))
+                    return 0;
+                Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
+                gp_Pnt pnt(vec.x, vec.y, vec.z);
+                GeomLib::ExtendCurveToPoint (bc, pnt, cont, PyObject_IsTrue(after) ? Standard_True : Standard_False);
+                return Py::new_reference_to(makeGeometryCurvePy(bc));
+            }
         }
     }
     catch (Standard_Failure& e) {
@@ -979,6 +967,6 @@ PyObject* GeometryCurvePy::extendToPoint(PyObject *args)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
+    PyErr_SetString(PyExc_TypeError, "Geometry is not a valid bounded curve");
     return 0;
 }
