@@ -38,6 +38,7 @@ from DraftGeomUtils import vec
 
 DEBUG = False # Set to True to see debug messages. Otherwise, totally silent
 ADDDEFAULTSTOREY = False # If True, an exported file will ALWAYS have at least one storey
+ZOOMOUT = True # Set to False to not zoom extents after import
 
 if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
@@ -1319,7 +1320,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     FreeCAD.ActiveDocument.recompute()
 
-    if FreeCAD.GuiUp:
+    if ZOOMOUT and FreeCAD.GuiUp:
         import FreeCADGui
         FreeCADGui.SendMsgToActiveView("ViewFit")
     print("Finished importing.")
