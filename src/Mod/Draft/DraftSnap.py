@@ -1432,7 +1432,7 @@ class Snapper:
             self.grid.set()
             
     def addHoldPoint(self):
-        if self.spoint:
+        if self.spoint and not(self.spoint in self.holdPoints):
             if self.holdTracker:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()
