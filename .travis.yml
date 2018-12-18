@@ -57,12 +57,14 @@ matrix:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=3
 
-      - os: osx
-        osx_image: xcode7.3
-        compiler: clang
-        env:
-          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
-          - PYTHON_MAJOR_VERSION=2
+# This is commented out to stop permanently failing osx builds. Please check this thread for the details:
+# https://forum.freecadweb.org/viewtopic.php?f=10&t=32272
+#      - os: osx
+#        osx_image: xcode7.3
+#        compiler: clang
+#        env:
+#          - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
+#          - PYTHON_MAJOR_VERSION=2
 
 git:
   depth: 5000
