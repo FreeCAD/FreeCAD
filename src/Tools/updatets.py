@@ -24,6 +24,7 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
 
 Usage = """updatets - update all .ts files found in the source directories
 
