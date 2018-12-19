@@ -500,9 +500,11 @@ void View3DInventorViewer::init()
     pcGroupOnTop->addChild(pcOnTopMaterial);
 
     pcGroupOnTopSel = new SoFCSelectionRoot;
+    pcGroupOnTopSel->setName("GroupOnTopSel");
     pcGroupOnTopSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopSel);
     pcGroupOnTopPreSel = new SoFCSelectionRoot;
+    pcGroupOnTopPreSel->setName("GroupOnTopPreSel");
     pcGroupOnTopPreSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopPreSel);
 
@@ -510,8 +512,10 @@ void View3DInventorViewer::init()
 
     pcEditingRoot = new SoSeparator;
     pcEditingRoot->ref();
+    pcEditingRoot->setName("EditingRoot");
     pcEditingTransform = new SoTransform;
     pcEditingTransform->ref();
+    pcEditingTransform->setName("EditingTransform");
     restoreEditingRoot = false;
     pcEditingRoot->addChild(pcEditingTransform);
     pcViewProviderRoot->addChild(pcEditingRoot);
