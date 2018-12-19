@@ -121,9 +121,12 @@ public:
      *
      * @sa _updateElementReference()
      */
-    virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) {
+    virtual void updateElementReference(App::DocumentObject *feature,
+            bool reverse=false, bool notify=false) 
+    {
         (void)feature;
         (void)reverse;
+        (void)notify;
     }
 
     /// Clear internal element reference registration
@@ -285,12 +288,14 @@ public:
      *                 reference to query for the new style, i.e. mapped
      *                 element reference when update. If false, then the other
      *                 way around.
+     * @param notify: if true, call aboutToSetValue() before change
      *
      * This helper function is to be called by each link property in the event of
      * geometry element reference change due to geometry model changes.
      */
      bool _updateElementReference(App::DocumentObject *feature,
-        App::DocumentObject *obj, std::string &sub, ShadowSub &shadow, bool reverse);
+        App::DocumentObject *obj, std::string &sub, ShadowSub &shadow, 
+        bool reverse, bool notify=false);
 
     /** Helper function to register geometry element reference
      * 
@@ -749,7 +754,8 @@ public:
         return sizeof(App::DocumentObject *);
     }
 
-    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) override;
+    virtual void updateElementReference(
+            DocumentObject *feature,bool reverse=false, bool notify=false) override;
 
     virtual bool referenceChanged() const override;
 
@@ -884,7 +890,8 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) override;
+    virtual void updateElementReference(
+            DocumentObject *feature,bool reverse=false, bool notify=false) override;
 
     virtual bool referenceChanged() const override;
 
@@ -983,7 +990,9 @@ public:
     static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=0);
     static std::map<App::Document*,std::set<App::Document*> > getDocumentInList(App::Document *doc=0);
 
-    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) override;
+    virtual void updateElementReference(
+            DocumentObject *feature,bool reverse=false, bool notify=false) override;
+
     virtual bool referenceChanged() const override;
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs, 
@@ -1147,7 +1156,8 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-    virtual void updateElementReference(DocumentObject *feature,bool reverse=false) override;
+    virtual void updateElementReference(
+            DocumentObject *feature,bool reverse=false, bool notify=false) override;
 
     virtual bool referenceChanged() const override;
 

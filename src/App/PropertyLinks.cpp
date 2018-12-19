@@ -201,7 +201,7 @@ void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool rev
     props.insert(props.end(),it->second.begin(),it->second.end());
     for(auto prop : props) {
         if(prop->getContainer())
-            prop->updateElementReference(feature,reverse);
+            prop->updateElementReference(feature,reverse,true);
     }
 }
 
@@ -296,7 +296,8 @@ void PropertyLinkBase::restoreLabelReference(const DocumentObject *obj,
 }
 
 bool PropertyLinkBase::_updateElementReference(DocumentObject *feature, 
-        App::DocumentObject *obj, std::string &sub, ShadowSub &shadow, bool reverse)
+        App::DocumentObject *obj, std::string &sub, ShadowSub &shadow, 
+        bool reverse, bool notify)
 {
     if(!obj || !obj->getNameInDocument()) return false;
     ShadowSub elementName;
@@ -335,18 +336,22 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
             // the first try failed. 
             ShadowSub shadowCopy;
             shadowCopy.second = shadow.second;
-            bool res = _updateElementReference(feature,obj,sub,shadowCopy,reverse);
+            bool res = _updateElementReference(feature,obj,sub,shadowCopy,reverse,notify);
             if(shadowCopy.first.size()) 
                 shadow.swap(shadowCopy);
             else
                 shadow.second.swap(shadowCopy.second);
             return res;
         }
+        if(notify)
+            aboutToSetValue();
         FC_ERR(propertyName(this) 
                 << " missing element reference " << ret->getFullName() << " "
                 << (elementName.first.size()?elementName.first:elementName.second));
         shadow.second.swap(elementName.second);
     }else{
+        if(notify)
+            aboutToSetValue();
         FC_LOG(propertyName(this) 
                 << " element reference shadow update " << ret->getFullName() << " "
                 << shadow.first << " -> " << elementName.first);
@@ -1052,7 +1057,8 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     }
 }
 
-static void updateLinkReference(App::PropertyLinkBase *prop, App::DocumentObject *feature, bool reverse, 
+static bool updateLinkReference(App::PropertyLinkBase *prop, 
+        App::DocumentObject *feature, bool reverse, bool notify,
         App::DocumentObject *link, std::vector<std::string> &subs, std::vector<int> &mapped,
         std::vector<PropertyLinkBase::ShadowSub> &shadows)
 {
@@ -1060,26 +1066,27 @@ static void updateLinkReference(App::PropertyLinkBase *prop, App::DocumentObject
     if(!feature) shadows.clear();
     shadows.resize(subs.size());
     if(!link || !link->getNameInDocument())
-        return;
+        return false;
     auto owner = dynamic_cast<DocumentObject*>(prop->getContainer());
     if(!owner || owner->isRestoring())
-        return;
+        return false;
     int i=0;
     bool touched = false;
     for(auto &sub : subs) {
-        if(prop->_updateElementReference(feature,link,sub,shadows[i++],reverse))
+        if(prop->_updateElementReference(
+                    feature,link,sub,shadows[i++],reverse,notify&&!touched))
             touched = true;
     }
     if(!touched)
-        return;
+        return false;
     for(int idx : mapped) {
         if(idx<(int)subs.size() && shadows[idx].first.size())
             subs[idx] = shadows[idx].first;
     }
     mapped.clear();
-    prop->touch();
     if(owner) 
         owner->onUpdateElementReference(prop);
+    return true;
 }
 
 void PropertyLinkSub::afterRestore() {
@@ -1094,8 +1101,9 @@ void PropertyLinkSub::afterRestore() {
     setFlag(LinkRestoreLabel,false);
 }
 
-void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool reverse) {
-    updateLinkReference(this,feature,reverse,_pcLinkSub,_cSubList,_mapped,_ShadowSubList);
+void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool reverse, bool notify) {
+    if(updateLinkReference(this,feature,reverse,notify,_pcLinkSub,_cSubList,_mapped,_ShadowSubList))
+        hasSetValue();
 }
 
 bool PropertyLinkSub::referenceChanged() const {
@@ -1897,7 +1905,7 @@ void PropertyLinkSubList::afterRestore() {
     setFlag(LinkRestoreLabel,false);
 }
 
-void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool reverse) {
+void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool reverse, bool notify) {
     unregisterElementReference();
     if(!feature) _ShadowSubList.clear();
     _ShadowSubList.resize(_lSubList.size());
@@ -1908,7 +1916,7 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool r
     bool touched = false;
     for(auto &sub : _lSubList) {
         auto obj = _lValueList[i];
-        if(_updateElementReference(feature,obj,sub,_ShadowSubList[i++],reverse))
+        if(_updateElementReference(feature,obj,sub,_ShadowSubList[i++],reverse,notify&&!touched))
             touched = true;
     }
     if(!touched) 
@@ -1925,8 +1933,10 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool r
         }
     }
     _mapped.swap(mapped);
-    touch();
-    if(owner) owner->onUpdateElementReference(this);
+    if(owner) 
+        owner->onUpdateElementReference(this);
+    if(notify)
+        hasSetValue();
 }
 
 bool PropertyLinkSubList::referenceChanged() const{
@@ -2826,8 +2836,9 @@ void PropertyXLink::afterRestore() {
     setFlag(LinkRestoreLabel,false);
 }
 
-void PropertyXLink::updateElementReference(DocumentObject *feature,bool reverse) {
-    updateLinkReference(this,feature,reverse,_pcLink,_SubList,_mapped,_ShadowSubList);
+void PropertyXLink::updateElementReference(DocumentObject *feature,bool reverse,bool notify) {
+    if(updateLinkReference(this,feature,reverse,notify,_pcLink,_SubList,_mapped,_ShadowSubList))
+        hasSetValue();
 }
 
 bool PropertyXLink::referenceChanged() const{
@@ -3618,9 +3629,9 @@ void PropertyXLinkSubList::afterRestore() {
         l.afterRestore();
 }
 
-void PropertyXLinkSubList::updateElementReference(DocumentObject *feature, bool reverse) {
+void PropertyXLinkSubList::updateElementReference(DocumentObject *feature, bool reverse,bool notify) {
     for(auto &l : _Links)
-        l.updateElementReference(feature,reverse);
+        l.updateElementReference(feature,reverse,notify);
 }
 
 bool PropertyXLinkSubList::referenceChanged() const{

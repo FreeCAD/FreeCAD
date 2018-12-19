@@ -49,7 +49,8 @@ public:
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr> &&exprs) override;
 
-    virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) override;
+    virtual void updateElementReference(
+            App::DocumentObject *feature,bool reverse=false,bool notify=false) override;
     virtual bool referenceChanged() const override;
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;

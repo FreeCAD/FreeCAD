@@ -58,7 +58,8 @@ class AppExport PropertyExpressionEngine : public App::PropertyExpressionContain
     TYPESYSTEM_HEADER();
 public:
 
-    virtual void updateElementReference(App::DocumentObject *feature,bool reverse=false) override;
+    virtual void updateElementReference(
+            App::DocumentObject *feature, bool reverse=false, bool notify=false) override;
     virtual bool referenceChanged() const override;
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const override;

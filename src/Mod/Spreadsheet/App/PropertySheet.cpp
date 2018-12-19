@@ -1315,7 +1315,10 @@ bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
     return !!signaler;
 }
 
-void PropertySheet::updateElementReference(DocumentObject *feature,bool reverse) {
+void PropertySheet::updateElementReference(
+        DocumentObject *feature,bool reverse,bool notify) 
+{
+    (void)notify;
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertySheet> visitor(*this,feature,reverse);
     for(auto &d : data) {
@@ -1323,6 +1326,11 @@ void PropertySheet::updateElementReference(DocumentObject *feature,bool reverse)
         if(!expr)
             continue;
         expr->visit(visitor);
+    }
+    if(visitor.changed()) {
+        auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+        if(owner)
+            owner->onUpdateElementReference(this);
     }
 }
 

@@ -716,7 +716,10 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inLis
     return true;
 }
 
-void PropertyExpressionEngine::updateElementReference(DocumentObject *feature, bool reverse) {
+void PropertyExpressionEngine::updateElementReference(
+        DocumentObject *feature, bool reverse, bool notify) 
+{
+    (void)notify;
     unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this,feature,reverse);
     for(auto &e : expressions) {
@@ -725,6 +728,11 @@ void PropertyExpressionEngine::updateElementReference(DocumentObject *feature, b
             expressionChanged(e.first);
             v.reset();
         }
+    }
+    if(v.changed()) {
+        auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+        if(owner)
+            owner->onUpdateElementReference(this);
     }
 }
 
