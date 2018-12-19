@@ -135,6 +135,27 @@ public:
         return *this;
     }
 
+    SelectionChanges(SelectionChanges &&other) {
+        *this = std::move(other);
+    }
+
+    SelectionChanges &operator=(SelectionChanges &&other) {
+        Type = other.Type;
+        SubType = other.SubType;
+        x = other.x;
+        y = other.y;
+        z = other.z;
+        DocName = std::move(other.DocName);
+        ObjName = std::move(other.ObjName);
+        SubName = std::move(other.SubName);
+        TypeName = std::move(other.TypeName);
+        pDocName = DocName.c_str();
+        pObjectName = ObjName.c_str();
+        pSubName = SubName.c_str();
+        pTypeName = TypeName.c_str();
+        return *this;
+    }
+
     MsgType Type;
     int SubType;
 
@@ -529,6 +550,12 @@ protected:
     void slotSelectionChanged(const SelectionChanges& msg);
 
     SelectionChanges CurrentPreselection;
+
+    std::deque<SelectionChanges> NotificationQueue;
+    bool Notifying = false;
+
+    void notify(SelectionChanges &&Chng);
+    void notify(const SelectionChanges &Chng) { notify(SelectionChanges(Chng)); }
 
     struct _SelObj {
         std::string DocName;

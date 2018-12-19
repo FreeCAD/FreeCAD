@@ -42,6 +42,7 @@
 #include "View3DInventor.h"
 #include <Base/Exception.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -535,9 +536,44 @@ void SelectionSingleton::enablePickedList(bool enable) {
     if(enable != _needPickedList) {
         _needPickedList = enable;
         _PickedList.clear();
-        SelectionChanges Chng(SelectionChanges::PickedListChanged);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
+    }
+}
+
+void SelectionSingleton::notify(SelectionChanges &&Chng) {
+    if(Notifying) {
+        NotificationQueue.push_back(std::move(Chng));
+        return;
+    }
+    Base::FlagToggler<bool> flag(Notifying);
+    NotificationQueue.push_back(std::move(Chng));
+    while(NotificationQueue.size()) {
+        const auto &msg = NotificationQueue.front();
+        bool notify;
+        switch(msg.Type) {
+        case SelectionChanges::AddSelection:
+            notify = isSelected(msg.pDocName,msg.pObjectName,msg.pSubName,0);
+            break;
+        case SelectionChanges::RmvSelection:
+            notify = !isSelected(msg.pDocName,msg.pObjectName,msg.pSubName,0);
+            break;
+        case SelectionChanges::SetPreselect:
+            notify = CurrentPreselection.Type==SelectionChanges::SetPreselect 
+                && CurrentPreselection.DocName == msg.DocName
+                && CurrentPreselection.ObjName == msg.ObjName
+                && CurrentPreselection.SubName == msg.SubName;
+            break;
+        case SelectionChanges::RmvPreselect:
+            notify = CurrentPreselection.Type==SelectionChanges::ClrSelection;
+            break;
+        default:
+            notify = true;
+        }
+        if(notify) {
+            Notify(msg);
+            signalSelectionChanged(msg);
+        }
+        NotificationQueue.pop_front();
     }
 }
 
@@ -755,13 +791,12 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     if(!signal)
         CurrentPreselection = Chng;
 
-    Notify(Chng);
-    signalSelectionChanged(Chng);
+    notify(Chng);
 
     if(signal==1) {
         Chng.Type = SelectionChanges::SetPreselect;
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        CurrentPreselection = Chng;
+        notify(std::move(Chng));
     }
 
     // allows the preselection
@@ -795,8 +830,7 @@ void SelectionSingleton::rmvPreselect(bool signal)
 
     if(signal) {
         SelectionChanges Chng(SelectionChanges::RmvPreselectSignal,DocName,FeatName,SubName);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        notify(std::move(Chng));
         return;
     }
 
@@ -804,10 +838,6 @@ void SelectionSingleton::rmvPreselect(bool signal)
 
     // reset the current preselection
     CurrentPreselection = SelectionChanges();
-
-    // notify observing objects
-    Notify(Chng);
-    signalSelectionChanged(Chng);
 
     DocName = "";
     FeatName= "";
@@ -821,7 +851,11 @@ void SelectionSingleton::rmvPreselect(bool signal)
         mdi->restoreOverrideCursor();
     }
 
-    //Base::Console().Log("Sel : Rmv preselect \n");
+    FC_TRACE("rmv preselect");
+
+    // notify observing objects
+    notify(std::move(Chng));
+
 }
 
 const SelectionChanges &SelectionSingleton::getPreselection(void) const
@@ -923,9 +957,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
             s.y = sel.y;
             s.z = sel.z;
         }
-        SelectionChanges Chng(SelectionChanges::PickedListChanged);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     _SelObj temp;
@@ -965,23 +997,23 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     _SelList.push_back(temp);
     _SelStackForward.clear();
 
+    rmvPreselect();
+
     SelectionChanges Chng(SelectionChanges::AddSelection,
             temp.DocName,temp.FeatName,temp.SubName,temp.TypeName, x,y,z);
 
     FC_LOG("Add Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName
             << " (" << x << ", " << y << ", " << z << ')');
 
-    Notify(Chng);
-    FC_TRACE("signaling add selection");
-    signalSelectionChanged(Chng);
-    FC_TRACE("done signaling add selection");
+    notify(std::move(Chng));
 
     getMainWindow()->updateActions();
 
     rmvPreselect(true);
 
-    // allow selection
-    return true;
+    // There is a possibility that some observer removes or clears selection
+    // inside signal handler, hence the check here
+    return isSelected(temp.DocName.c_str(),temp.FeatName.c_str(), temp.SubName.c_str());
 }
 
 void SelectionSingleton::selStackPush(bool clearForward, bool overwrite) {
@@ -1095,9 +1127,7 @@ bool SelectionSingleton::addSelections(const char* pDocName, const char* pObject
 {
     if(_PickedList.size()) {
         _PickedList.clear();
-        SelectionChanges Chng(SelectionChanges::PickedListChanged);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     bool update = false;
@@ -1119,10 +1149,7 @@ bool SelectionSingleton::addSelections(const char* pDocName, const char* pObject
 
         FC_LOG("Add Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
 
-        Notify(Chng);
-        FC_TRACE("signaling add selection");
-        signalSelectionChanged(Chng);
-        FC_TRACE("done signaling add selection");
+        notify(std::move(Chng));
         update = true;
     }
 
@@ -1140,9 +1167,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
         pSubName = "";
     if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
         if(show) {
-            SelectionChanges Chng(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName);
-            Notify(Chng);
-            signalSelectionChanged(Chng);
+            notify(SelectionChanges(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName));
         }else
             rmvPreselect();
     }
@@ -1158,10 +1183,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
 
     FC_LOG("Update Selection "<<Chng.DocName << '.' << Chng.ObjName << '.' <<Chng.SubName);
 
-    FC_TRACE("signaling update selection");
-    Notify(Chng);
-    signalSelectionChanged(Chng);
-    FC_TRACE("done signaling update selection");
+    notify(std::move(Chng));
     return true;
 }
 
@@ -1213,9 +1235,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
             s.y = sel.y;
             s.z = sel.z;
         }
-        SelectionChanges Chng(SelectionChanges::PickedListChanged);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     if(!pDocName) return;
@@ -1255,8 +1275,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     if(changes.size()) {
         for(auto &Chng : changes) {
             FC_LOG("Rmv Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
-            Notify(Chng);
-            signalSelectionChanged(Chng);
+            notify(std::move(Chng));
         }
         getMainWindow()->updateActions();
     }
@@ -1330,9 +1349,7 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
 {
     if(_PickedList.size()) {
         _PickedList.clear();
-        SelectionChanges Chng(SelectionChanges::PickedListChanged);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     App::Document *pcDoc;
@@ -1379,9 +1396,7 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
 
     _SelList = temp;
 
-    SelectionChanges Chng(SelectionChanges::SetSelection,pDocName);
-    Notify(Chng);
-    signalSelectionChanged(Chng);
+    notify(SelectionChanges(SelectionChanges::SetSelection,pDocName));
     getMainWindow()->updateActions();
 }
 
@@ -1397,9 +1412,7 @@ void SelectionSingleton::clearSelection(const char* pDocName)
 
     if(_PickedList.size()) {
         _PickedList.clear();
-        SelectionChanges Chng(SelectionChanges::PickedListChanged);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     App::Document* pDoc;
@@ -1429,13 +1442,7 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         ss << "Gui.clearSelection('" << docName << "')";
         Application::Instance->macroManager()->addLine(MacroManager::Cmt,ss.str().c_str());
 
-        SelectionChanges Chng(SelectionChanges::ClrSelection,docName.c_str());
-
-        FC_TRACE("notifying clear selection");
-        Notify(Chng);
-        FC_TRACE("signaling clear selection");
-        signalSelectionChanged(Chng);
-        FC_TRACE("done signaling clear selection");
+        notify(SelectionChanges(SelectionChanges::ClrSelection,docName.c_str()));
 
         getMainWindow()->updateActions();
     }
@@ -1445,9 +1452,7 @@ void SelectionSingleton::clearCompleteSelection()
 {
     if(_PickedList.size()) {
         _PickedList.clear();
-        SelectionChanges Chng(SelectionChanges::PickedListChanged);
-        Notify(Chng);
-        signalSelectionChanged(Chng);
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     rmvPreselect();
@@ -1464,8 +1469,7 @@ void SelectionSingleton::clearCompleteSelection()
 
     FC_LOG("Clear selection");
 
-    Notify(Chng);
-    signalSelectionChanged(Chng);
+    notify(std::move(Chng));
     getMainWindow()->updateActions();
 }
 
@@ -1594,8 +1598,7 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
     if(changes.size()) {
         for(auto &Chng : changes) {
             FC_LOG("Rmv Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
-            Notify(Chng);
-            signalSelectionChanged(Chng);
+            notify(std::move(Chng));
         }
         getMainWindow()->updateActions();
     }
@@ -1612,11 +1615,8 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
                 _PickedList.erase(it);
             }
         }
-        if(changed) {
-            SelectionChanges Chng(SelectionChanges::PickedListChanged);
-            Notify(Chng);
-            signalSelectionChanged(Chng);
-        }
+        if(changed)
+            notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 }
 
