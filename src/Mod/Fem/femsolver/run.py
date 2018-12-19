@@ -296,7 +296,19 @@ class Check(BaseTask):
 
 
 class Solve(BaseTask):
-    pass
+
+    def _observeSolver(self, process):
+        output = ""
+        line = FemUtils.pydecode(process.stdout.readline())
+        self.pushStatus(line)
+        output += line
+        line = FemUtils.pydecode(process.stdout.readline())
+        while line:
+            line = "\n%s" % line.rstrip()
+            self.pushStatus(line)
+            output += line
+            line = FemUtils.pydecode(process.stdout.readline())
+        return output
 
 
 class Prepare(BaseTask):
