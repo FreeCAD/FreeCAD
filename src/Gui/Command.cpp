@@ -715,7 +715,7 @@ const std::string Command::strToPython(const char* Str)
 void Command::updateActive(void)
 {
     WaitCursor wc;
-    App::AutoTransaction trans("Recompute");
+    // App::AutoTransaction trans("Recompute");
     doCommand(App,"App.ActiveDocument.recompute()");
 }
 
