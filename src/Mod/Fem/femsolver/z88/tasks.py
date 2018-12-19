@@ -110,19 +110,6 @@ class Solve(run.Solve):
         #     self._updateOutput(output)
         del output   # get flake8 quiet
 
-    def _observeSolver(self, process):
-        output = ""
-        line = process.stdout.readline()
-        self.pushStatus(line)
-        output += line
-        line = process.stdout.readline()
-        while line:
-            line = "\n%s" % line.rstrip()
-            self.pushStatus(line)
-            output += line
-            line = process.stdout.readline()
-        return output
-
 
 class Results(run.Results):
 
