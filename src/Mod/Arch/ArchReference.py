@@ -170,17 +170,17 @@ class ArchReference:
             if altfile == FreeCAD.ActiveDocument.FileName:
                 return None
             elif os.path.exists(altfile):
-                filename = altfile
+                return altfile
             else:
                 # search for subpaths in current folder
-                filename = None
+                altfile = None
                 subdirs = splitall(os.path.dirname(filename))
                 for i in range(len(subdirs)):
                     subpath = [currentdir]+subdirs[-i:]+[basename]
                     altfile = os.path.join(*subpath)
                     if os.path.exists(altfile):
-                        filename = altfile
-                        break
+                        return altfile
+                return None
         return filename
 
     def getPartsList(self,obj,filename=None):
