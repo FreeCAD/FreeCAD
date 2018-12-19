@@ -106,6 +106,32 @@ void PropertyGeometryList::setValues(const std::vector<Geometry*>& lValue)
     hasSetValue();
 }
 
+void PropertyGeometryList::setValues(std::vector<Geometry*> &&lValue)
+{
+    aboutToSetValue();
+    std::set<Geometry*> valueSet(_lValueList.begin(),_lValueList.end());
+    for(auto v : lValue)
+        valueSet.erase(v);
+    _lValueList = std::move(lValue);
+    for(auto v : valueSet)
+        delete v;
+    hasSetValue();
+}
+
+void PropertyGeometryList::set1Value(int idx, std::unique_ptr<Geometry> &&lValue)
+{
+    if(idx>=(int)_lValueList.size())
+        throw Base::IndexError("Index out of bound");
+    aboutToSetValue();
+    if(idx < 0) 
+        _lValueList.push_back(lValue.release());
+    else {
+        delete _lValueList[idx];
+        _lValueList[idx] = lValue.release();
+    }
+    hasSetValue();
+}
+
 PyObject *PropertyGeometryList::getPyObject(void)
 {
     PyObject* list = PyList_New(getSize());
@@ -159,7 +185,9 @@ void PropertyGeometryList::Save(Writer &writer) const
     for (int i = 0; i < getSize(); i++) {
         writer.Stream() << writer.ind() << "<Geometry  type=\"" 
                         << _lValueList[i]->getTypeId().getName() 
-                        << "\" id=\"" << _lValueList[i]->Id << "\">" << endl;
+                        << "\" id=\"" << _lValueList[i]->Id 
+                        << "\" ref=\"" << encodeAttribute(_lValueList[i]->Ref) 
+                        << "\" flags=\"" << _lValueList[i]->Flags.to_ulong() << "\">" << endl;
         writer.incInd();
         _lValueList[i]->Save(writer);
         writer.decInd();
@@ -184,6 +212,13 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
         if(reader.hasAttribute("id"))
             newG->Id = reader.getAttributeAsInteger("id");
+        if(reader.hasAttribute("ref"))
+            newG->Ref = reader.getAttribute("ref");
+        if(reader.hasAttribute("flags")) {
+            newG->Flags = (unsigned long)reader.getAttributeAsUnsigned("flags");
+            newG->setFlag(Part::Geometry::Sync,false);
+            newG->setFlag(Part::Geometry::Detached,false);
+        }
         newG->Restore(reader);
 
         if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
@@ -207,7 +242,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     reader.readEndElement("GeometryList");
 
     // assignment
-    setValues(values);
+    setValues(std::move(values));
 }
 
 App::Property *PropertyGeometryList::Copy(void) const

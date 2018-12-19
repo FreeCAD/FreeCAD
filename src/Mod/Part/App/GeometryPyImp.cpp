@@ -240,6 +240,38 @@ void GeometryPy::setID(Py::Int pyId) {
     getGeometryPtr()->Id = id;
 }
 
+Py::String GeometryPy::getRef() const {
+    return Py::String(getGeometryPtr()->Ref);
+}
+
+void GeometryPy::setRef(Py::String ref) {
+    getGeometryPtr()->Ref = ref.as_string();
+}
+
+Py::Boolean GeometryPy::getDetached() const {
+    return Py::Boolean(getGeometryPtr()->testFlag(Part::Geometry::Detached));
+}
+
+void GeometryPy::setDetached(Py::Boolean detached) {
+    getGeometryPtr()->setFlag(Part::Geometry::Detached,detached);
+}
+
+Py::Boolean GeometryPy::getDefining() const {
+    return Py::Boolean(getGeometryPtr()->testFlag(Part::Geometry::Defining));
+}
+
+void GeometryPy::setDefining(Py::Boolean defining) {
+    getGeometryPtr()->setFlag(Part::Geometry::Defining,defining);
+}
+
+Py::Boolean GeometryPy::getFrozen() const {
+    return Py::Boolean(getGeometryPtr()->testFlag(Part::Geometry::Frozen));
+}
+
+void GeometryPy::setFrozen(Py::Boolean frozen) {
+    getGeometryPtr()->setFlag(Part::Geometry::Frozen,frozen);
+}
+
 PyObject *GeometryPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

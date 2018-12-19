@@ -250,6 +250,8 @@ Geometry *Geometry::clone(void) const
     Geometry* cpy = this->copy();
     cpy->tag = this->tag;
     cpy->Id = this->Id;
+    cpy->Ref = this->Ref;
+    cpy->Flags = this->Flags;
     return cpy;
 }
 

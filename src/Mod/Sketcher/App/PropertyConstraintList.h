@@ -87,6 +87,13 @@ public:
     void setValues(const std::vector<Constraint*>&);
 
     /*!
+      Sets a vector of constraint to the property.
+      The values of the array are moved, and the ownership of constraints
+      inside are taken by this property
+    */
+    void setValues(std::vector<Constraint*>&&);
+
+    /*!
      Index operator
      \note If the geometry is invalid then the index operator
            returns null. This must be checked by the caller.
@@ -153,7 +160,7 @@ private:
     std::vector<unsigned int> validGeometryKeys;
     bool invalidGeometry;
 
-    void applyValues(const std::vector<Constraint*>&);
+    void applyValues(std::vector<Constraint*>&&);
     void applyValidGeometryKeys(const std::vector<unsigned int> &keys);
 
     static std::vector<Constraint *> _emptyValueList;

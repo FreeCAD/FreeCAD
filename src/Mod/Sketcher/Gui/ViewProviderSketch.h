@@ -132,6 +132,8 @@ public:
     void purgeHandler(void);
     /// set the pick style of the sketch coordinate axes
     void setAxisPickStyle(bool on);
+    /// show/hide editing geometry
+    void showGeometry(bool visible=true);
     //@}
 
     /** @name modus handling */
@@ -378,6 +380,9 @@ protected:
     static SbColor CreateCurveColor;
     static SbColor CurveDraftColor;
     static SbColor CurveExternalColor;
+    static SbColor CurveFrozenColor;
+    static SbColor CurveDetachedColor;
+    static SbColor CurveMissingColor;
     static SbColor CrossColorV;
     static SbColor CrossColorH;
     static SbColor FullyConstrainedColor;

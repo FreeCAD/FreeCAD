@@ -67,5 +67,29 @@ means that it is not part of a later built shape.</UserDocu>
       </Documentation>
       <Parameter Name="ID" Type="Int"/>
     </Attribute>
+    <Attribute Name="Ref">
+      <Documentation>
+        <UserDocu>Gives the internal geometry reference of this geometry.</UserDocu>
+      </Documentation>
+      <Parameter Name="Ref" Type="String"/>
+    </Attribute>
+    <Attribute Name="Detached">
+      <Documentation>
+          <UserDocu>Get/set the detached flag of an external geometry</UserDocu>
+      </Documentation>
+      <Parameter Name="Detached" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="Defining">
+      <Documentation>
+          <UserDocu>Get/set the defining flag of an external geometry</UserDocu>
+      </Documentation>
+      <Parameter Name="Defining" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="Frozen">
+      <Documentation>
+          <UserDocu>Get/set the frozen flag of an external geometry</UserDocu>
+      </Documentation>
+      <Parameter Name="Frozen" Type="Boolean"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

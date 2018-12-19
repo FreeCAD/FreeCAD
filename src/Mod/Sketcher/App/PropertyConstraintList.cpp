@@ -176,43 +176,52 @@ void PropertyConstraintList::setValue(const Constraint* lValue)
 
 void PropertyConstraintList::setValues(const std::vector<Constraint*>& lValue)
 {
+    auto copy = lValue;
+    for(auto &cstr : copy)
+        cstr = cstr->clone();
     aboutToSetValue();
-    applyValues(lValue);
+    applyValues(std::move(copy));
     hasSetValue();
 }
 
-void PropertyConstraintList::applyValues(const std::vector<Constraint*>& lValue)
+void PropertyConstraintList::setValues(std::vector<Constraint*>&& lValue) {
+    aboutToSetValue();
+    applyValues(std::move(lValue));
+    hasSetValue();
+}
+
+void PropertyConstraintList::applyValues(std::vector<Constraint*>&& lValue)
 {
-    std::vector<Constraint*> oldVals(_lValueList);
+    std::set<Constraint*> oldVals(_lValueList.begin(),_lValueList.end());
     std::map<App::ObjectIdentifier, App::ObjectIdentifier> renamed;
     std::set<App::ObjectIdentifier> removed;
+    boost::unordered_map<boost::uuids::uuid, std::size_t> newValueMap;
     
     /* Check for renames */
     for (unsigned int i = 0; i < lValue.size(); i++) {
         boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(lValue[i]->tag);
 
-        if (j != valueMap.end() && (i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) ) {
-            App::ObjectIdentifier old_oid(makePath(j->second, _lValueList[j->second] ));
-            App::ObjectIdentifier new_oid(makePath(i, lValue[i]));
-            
-            renamed[old_oid] = new_oid;
+        if (j != valueMap.end()) {
+            if(i != j->second || _lValueList[j->second]->Name != lValue[i]->Name) {
+                App::ObjectIdentifier old_oid(makePath(j->second, _lValueList[j->second] ));
+                App::ObjectIdentifier new_oid(makePath(i, lValue[i]));
+                renamed[old_oid] = new_oid;
+            }
+            valueMap.erase(j);
         }
-    }
 
-    /* Update value map with new tags from new array */
-    valueMap.clear();
-    for (std::size_t i = 0; i < lValue.size(); i++)
-        valueMap[lValue[i]->tag] = i;
+        newValueMap[lValue[i]->tag] = i;
+
+        // safety insurance in case new new values contain some pointers of the old values
+        oldVals.erase(lValue[i]);
+    }
 
     /* Collect info about removed elements */
-    for (std::size_t i = 0; i < oldVals.size(); i++) {
-        boost::unordered_map<boost::uuids::uuid, std::size_t>::const_iterator j = valueMap.find(oldVals[i]->tag);
-        App::ObjectIdentifier oid(makePath(i, oldVals[i]));
+    for(auto &v : valueMap) 
+        removed.insert(makePath(v.second,_lValueList[v.second]));
 
-        /* If not found in new values, place it in the set to be removed */
-        if (j == valueMap.end())
-            removed.insert(oid);
-    }
+    /* Update value map with new tags from new array */
+    valueMap = std::move(newValueMap);
 
     /* Signal removes first, in case renamed values below have the same names as some of the removed ones. */
     if (removed.size() > 0)
@@ -222,16 +231,11 @@ void PropertyConstraintList::applyValues(const std::vector<Constraint*>& lValue)
     if (renamed.size() > 0)
         signalConstraintsRenamed(renamed);
     
-    /* Resize array to new size */
-    _lValueList.resize(lValue.size());
-
-    /* copy all objects */
-    for (unsigned int i = 0; i < lValue.size(); i++)
-        _lValueList[i] = lValue[i]->clone();
+    _lValueList = std::move(lValue);
 
     /* Clean-up; remove old values */
-    for (unsigned int i = 0; i < oldVals.size(); i++)
-        delete oldVals[i];
+    for(auto &v : oldVals)
+        delete v;
 }
 
 PyObject *PropertyConstraintList::getPyObject(void)
@@ -308,26 +312,21 @@ void PropertyConstraintList::Restore(Base::XMLReader &reader)
     reader.readEndElement("ConstraintList");
 
     // assignment
-    setValues(values);
-    for (Constraint* it : values)
-        delete it;
+    setValues(std::move(values));
 }
 
 Property *PropertyConstraintList::Copy(void) const
 {
     PropertyConstraintList *p = new PropertyConstraintList();
     p->applyValidGeometryKeys(validGeometryKeys);
-    p->applyValues(_lValueList);
+    p->setValues(_lValueList);
     return p;
 }
 
 void PropertyConstraintList::Paste(const Property &from)
 {
     const PropertyConstraintList& FromList = dynamic_cast<const PropertyConstraintList&>(from);
-    aboutToSetValue();
-    applyValues(FromList._lValueList);
-    applyValidGeometryKeys(FromList.validGeometryKeys);
-    hasSetValue();
+    setValues(FromList._lValueList);
 }
 
 unsigned int PropertyConstraintList::getMemSize(void) const

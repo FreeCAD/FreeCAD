@@ -56,6 +56,7 @@
 #include <gp_Vec.hxx>
 #include <list>
 #include <vector>
+#include <bitset>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -95,6 +96,19 @@ public:
     boost::uuids::uuid getTag() const;
 
     long Id;
+    std::string Ref;
+
+    enum Flag {
+        Defining = 0, // allow an external geometry to build shape
+        Frozen = 1, // freeze an external geometry
+        Detached = 2, // signal the intentions of detaching the geometry from external reference
+        Missing = 3, // geometry with missing external reference
+        Sync = 4, // signal the intension to synchronize a frozen geometry
+    };
+    std::bitset<32> Flags;
+
+    bool testFlag(int flag) const { return Flags.test((size_t)(flag)); }
+    void setFlag(int flag, bool v=true) { Flags.set((size_t)(flag),v); }
 
 protected:
     /// create a new tag for the geometry object

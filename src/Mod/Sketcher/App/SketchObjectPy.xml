@@ -78,6 +78,11 @@
         <UserDocu>delete a external geometry link from the sketch</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="attachExternal">
+      <Documentation>
+        <UserDocu>attach a link to an external geometry</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="delConstraintOnPoint">
       <Documentation>
         <UserDocu>delete coincident constraints associated with a sketch point</UserDocu>
@@ -285,6 +290,16 @@
                 with all the geometry element edges and vertices which the solver regards
                 as being dependent on other parameters.
             </UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getGeometry">
+        <Documentation>
+            <UserDocu>Get internal/external geometry by either its GeoId or text name</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setGeometry">
+        <Documentation>
+            <UserDocu>Set internal/external geometry by either its GeoId or text name</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="autoconstraint">

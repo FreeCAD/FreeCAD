@@ -141,6 +141,9 @@ SbColor ViewProviderSketch::VertexColor                 (1.0f,0.149f,0.0f);   //
 SbColor ViewProviderSketch::CurveColor                  (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
 SbColor ViewProviderSketch::CurveDraftColor             (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
 SbColor ViewProviderSketch::CurveExternalColor          (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
+SbColor ViewProviderSketch::CurveFrozenColor            (0.5f,1.0f,1.0f);     // #7FFFFF -> (127, 255, 255)
+SbColor ViewProviderSketch::CurveDetachedColor          (0.1f,0.5f,0.1f);     // #1C7F1C -> (28, 127, 28)
+SbColor ViewProviderSketch::CurveMissingColor           (0.5f,0.0f,1.0f);     // #7F00FF -> (127, 0, 255)
 SbColor ViewProviderSketch::CrossColorH                 (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
 SbColor ViewProviderSketch::CrossColorV                 (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
 SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
@@ -178,6 +181,8 @@ struct EditData {
     FullyConstrained(false),
     //ActSketch(0), // if you are wondering, it went to SketchObject, accessible via getSketchObject()->getSolvedSketch()
     EditRoot(0),
+    PointSwitch(0),
+    CurveSwitch(0),
     PointsMaterials(0),
     CurvesMaterials(0),
     RootCrossMaterials(0),
@@ -240,6 +245,8 @@ struct EditData {
 
     // nodes for the visuals
     SoSeparator   *EditRoot;
+    SoSwitch      *PointSwitch;
+    SoSwitch      *CurveSwitch;
     SoMaterial    *PointsMaterials;
     SoMaterial    *CurvesMaterials;
     SoMaterial    *RootCrossMaterials;
@@ -405,6 +412,7 @@ void ViewProviderSketch::deactivateHandler()
 void ViewProviderSketch::purgeHandler(void)
 {
     deactivateHandler();
+    Gui::Selection().clearSelection();
 
     // ensure that we are in sketch only selection mode
     Gui::MDIView *mdi = Gui::Application::Instance->editDocument()->getActiveView();
@@ -749,9 +757,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SELECT_Constraint:
                     if (pp) {
-                        for(std::set<int>::iterator it = edit->PreselectConstraintSet.begin(); it != edit->PreselectConstraintSet.end(); ++it) {
+                        auto sels = edit->PreselectConstraintSet;
+                        for(int id : sels) {
                             std::stringstream ss;
-                            ss << Sketcher::PropertyConstraintList::getConstraintName(*it);
+                            ss << Sketcher::PropertyConstraintList::getConstraintName(id);
 
                             // If the constraint already selected remove
                             if (Gui::Selection().isSelected(SEL_PARAMS) ) {
@@ -832,9 +841,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SKETCH_DragConstraint:
                     if (edit->DragConstraintSet.empty() == false) {
                         getDocument()->openCommand("Drag Constraint");
-                        for(std::set<int>::iterator it = edit->DragConstraintSet.begin();
-                            it != edit->DragConstraintSet.end(); ++it) {
-                            moveConstraint(*it, Base::Vector2d(x, y));
+                        auto idset = edit->DragConstraintSet;
+                        for(int id : idset) {
+                            moveConstraint(id, Base::Vector2d(x, y));
                             //updateColor();
                         }
                         edit->PreselectConstraintSet = edit->DragConstraintSet;
@@ -883,9 +892,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         } else if (edit->PreselectConstraintSet.empty() != true) {
                             return true;
                         } else {
-                            Gui::MenuItem *geom = new Gui::MenuItem();
-                            geom->setCommand("Sketcher geoms");
-                            *geom << "Sketcher_CreatePoint"
+                            Gui::MenuItem geom;
+                            geom.setCommand("Sketcher geoms");
+                            geom << "Sketcher_CreatePoint"
                                   << "Sketcher_CreateArc"
                                   << "Sketcher_Create3PointArc"
                                   << "Sketcher_CreateCircle"
@@ -897,16 +906,16 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                   << "Sketcher_CreateFillet"
                                   << "Sketcher_Trimming"
                                   << "Sketcher_Extend"
-                                  << "Sketcher_External"
+                                  << "Sketcher_ExternalCmds"
                                   << "Sketcher_ToggleConstruction"
                                 /*<< "Sketcher_CreateText"*/
                                 /*<< "Sketcher_CreateDraftLine"*/
                                   << "Separator";
 
-                            Gui::Application::Instance->setupContextMenu("View", geom);
+                            Gui::Application::Instance->setupContextMenu("View", &geom);
                             //Create the Context Menu using the Main View Qt Widget
                             QMenu contextMenu(viewer->getGLWidget());
-                            Gui::MenuManager::getInstance()->setupContextMenu(geom, contextMenu);
+                            Gui::MenuManager::getInstance()->setupContextMenu(&geom, contextMenu);
                             contextMenu.exec(QCursor::pos());
 
                             return true;
@@ -916,9 +925,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     break;
                 case STATUS_SELECT_Edge:
                     {
-                        Gui::MenuItem *geom = new Gui::MenuItem();
-                        geom->setCommand("Sketcher constraints");
-                        *geom << "Sketcher_ConstrainVertical"
+                        Gui::MenuItem geom;
+                        geom.setCommand("Sketcher constraints");
+                        geom << "Sketcher_ConstrainVertical"
                         << "Sketcher_ConstrainHorizontal";
 
                         // Gets a selection vector
@@ -955,14 +964,14 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         }
 
                         if (rightClickOnSelectedLine) {
-                            *geom << "Sketcher_ConstrainParallel"
+                            geom << "Sketcher_ConstrainParallel"
                                   << "Sketcher_ConstrainPerpendicular";
                         }
 
-                        Gui::Application::Instance->setupContextMenu("View", geom);
+                        Gui::Application::Instance->setupContextMenu("View", &geom);
                         //Create the Context Menu using the Main View Qt Widget
                         QMenu contextMenu(viewer->getGLWidget());
-                        Gui::MenuManager::getInstance()->setupContextMenu(geom, contextMenu);
+                        Gui::MenuManager::getInstance()->setupContextMenu(&geom, contextMenu);
                         contextMenu.exec(QCursor::pos());
 
                         return true;
@@ -997,20 +1006,20 @@ void ViewProviderSketch::editDoubleClicked(void)
         // Find the constraint
         const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
 
-        for(std::set<int>::iterator it = edit->PreselectConstraintSet.begin();
-            it != edit->PreselectConstraintSet.end(); ++it) {
+        auto sels = edit->PreselectConstraintSet;
+        for(int id : sels) {
 
-            Constraint *Constr = constrlist[*it];
+            Constraint *Constr = constrlist[id];
 
             // if its the right constraint
             if (Constr->isDimensional()) {
 
                 if(!Constr->isDriving) {
-                    FCMD_OBJ_CMD2("setDriving(%i,%s)", getObject(),*it,"True");
+                    FCMD_OBJ_CMD2("setDriving(%i,%s)", getObject(),id,"True");
                 }
 
                 // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
-                EditDatumDialog *editDatumDialog = new EditDatumDialog(this, *it);
+                EditDatumDialog *editDatumDialog = new EditDatumDialog(this, id);
                 QCoreApplication::postEvent(editDatumDialog, new QEvent(QEvent::User));
                 edit->editDatumDialog = true; // avoid to double handle "ESC"
             }
@@ -1168,9 +1177,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         case STATUS_SKETCH_DragConstraint:
             if (edit->DragConstraintSet.empty() == false) {
-                for(std::set<int>::iterator it = edit->DragConstraintSet.begin();
-                    it != edit->DragConstraintSet.end(); ++it)
-                    moveConstraint(*it, Base::Vector2d(x,y));
+                auto idset = edit->DragConstraintSet;
+                for(int id : idset) 
+                    moveConstraint(id, Base::Vector2d(x,y));
             }
             return true;
         case STATUS_SKETCH_UseHandler:
@@ -2676,7 +2685,22 @@ void ViewProviderSketch::updateColor(void)
             }
         }
         else if (GeoId <= Sketcher::GeoEnum::RefExt) {  // external Geometry
-            color[i] = CurveExternalColor;
+            auto geo = getSketchObject()->getGeometry(GeoId);
+            if(geo->Ref.empty())
+                color[i] = CurveDetachedColor;
+            else if(geo->testFlag(Part::Geometry::Missing))
+                color[i] = CurveMissingColor;
+            else if(geo->testFlag(Part::Geometry::Frozen))
+                color[i] = CurveFrozenColor;
+            else
+                color[i] = CurveExternalColor;
+            if(geo->testFlag(Part::Geometry::Defining) && !geo->testFlag(Part::Geometry::Missing)) {
+                float hsv[3];
+                color[i].getHSVValue(hsv);
+                hsv[1] = 0.2;
+                hsv[2] = 1.0;
+                color[i].setHSVValue(hsv);
+            }
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
                 verts[j] = SbVec3f(x,y,zExtLine);
@@ -5650,6 +5674,18 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = hGrp->GetUnsigned("ExternalColor", color);
     CurveExternalColor.setPackedValue((uint32_t)color, transparency);
 
+    color = (unsigned long)(CurveFrozenColor.getPackedValue());
+    color = hGrp->GetUnsigned("FrozenColor", color);
+    CurveFrozenColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(CurveDetachedColor.getPackedValue());
+    color = hGrp->GetUnsigned("DetachedColor", color);
+    CurveDetachedColor.setPackedValue((uint32_t)color, transparency);
+
+    color = (unsigned long)(CurveMissingColor.getPackedValue());
+    color = hGrp->GetUnsigned("MissingColor", color);
+    CurveMissingColor.setPackedValue((uint32_t)color, transparency);
+
     // set the highlight color
     unsigned long highlight = (unsigned long)(PreselectColor.getPackedValue());
     highlight = hGrp->GetUnsigned("HighlightColor", highlight);
@@ -5669,11 +5705,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
     // so as not to trigger an onChanged that would set the document as modified and trigger a recompute
     // if we just close the sketch without touching anything.
-    if (getSketchObject()->Support.getValue()) {
-        if (!getSketchObject()->evaluateSupport())
-            getSketchObject()->validateExternalLinks();
-    }
-
     getSketchObject()->solve(false);
     UpdateSolverInformation();
     draw(false,true);
@@ -5798,8 +5829,11 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->EditRoot->renderCaching = SoSeparator::OFF ;
 
     // stuff for the points ++++++++++++++++++++++++++++++++++++++
+    edit->PointSwitch = new SoSwitch;
+    edit->EditRoot->addChild(edit->PointSwitch);
     SoSeparator* pointsRoot = new SoSeparator;
-    edit->EditRoot->addChild(pointsRoot);
+    edit->PointSwitch->addChild(pointsRoot);
+    edit->PointSwitch->whichChild = 0;
     edit->PointsMaterials = new SoMaterial;
     edit->PointsMaterials->setName("PointsMaterials");
     pointsRoot->addChild(edit->PointsMaterials);
@@ -5824,8 +5858,11 @@ void ViewProviderSketch::createEditInventorNodes(void)
     pointsRoot->addChild(edit->PointSet);
 
     // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
+    edit->CurveSwitch = new SoSwitch;
+    edit->EditRoot->addChild(edit->CurveSwitch);
     SoSeparator* curvesRoot = new SoSeparator;
-    edit->EditRoot->addChild(curvesRoot);
+    edit->CurveSwitch->addChild(curvesRoot);
+    edit->CurveSwitch->whichChild = 0;
     edit->CurvesMaterials = new SoMaterial;
     edit->CurvesMaterials->setName("CurvesMaterials");
     curvesRoot->addChild(edit->CurvesMaterials);
@@ -5963,6 +6000,12 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->infoGroup->setName("InformationGroup");
     edit->EditRoot->addChild(edit->infoGroup);
     
+}
+
+void ViewProviderSketch::showGeometry(bool visible) {
+    if(!edit) return;
+    edit->PointSwitch->whichChild = visible?0:-1;
+    edit->CurveSwitch->whichChild = visible?0:-1;
 }
 
 void ViewProviderSketch::unsetEdit(int ModNum)

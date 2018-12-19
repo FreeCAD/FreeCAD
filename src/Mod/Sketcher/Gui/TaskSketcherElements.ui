@@ -62,20 +62,18 @@
     </layout>
    </item>
    <item>
-    <widget class="ElementView" name="listWidgetElements">
-     <property name="modelColumn">
-      <number>0</number>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="namingBox">
-     <property name="text">
-      <string>Extended Naming</string>
-     </property>
-     <property name="checked">
+    <widget class="ElementView" name="elementsWidget">
+     <property name="rootIsDecorated">
       <bool>false</bool>
      </property>
+     <attribute name="headerShowSortIndicator" stdset="0">
+      <bool>true</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item>
@@ -100,8 +98,8 @@
  <customwidgets>
   <customwidget>
    <class>ElementView</class>
-   <extends>QListWidget</extends>
-   <header location="global">QListWidget</header>
+   <extends>QTreeWidget</extends>
+   <header location="global">QTreeWidget</header>
   </customwidget>
  </customwidgets>
  <resources/>
