@@ -1247,9 +1247,13 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
     sel = Selection().getSelection(documentName);
 
     try {
+        std::set<App::DocumentObject*> noduplicates;
         Py::List list;
         for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {
-            list.append(Py::asObject(it->pObject->getPyObject()));
+            noduplicates.insert(it->pObject);
+        }
+        for (std::set<App::DocumentObject*>::iterator it = noduplicates.begin(); it != noduplicates.end(); ++it) {
+            list.append(Py::asObject((*it)->getPyObject()));
         }
         return Py::new_reference_to(list);
     }
