@@ -805,7 +805,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             pass
                     if ptype == "IfcBuildingStorey":
                         if product.Elevation:
-                            obj.Placement.Base.z = product.Elevation * 1000
+                            obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
 
                     # setting IFC role
 
@@ -854,7 +854,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if ptype == "IfcBuildingStorey":
                             if product.Elevation:
-                                obj.Placement.Base.z = product.Elevation * 1000
+                                obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
 
@@ -868,7 +868,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if ptype == "IfcBuildingStorey":
                             if product.Elevation:
-                                obj.Placement.Base.z = product.Elevation * 1000
+                                obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
@@ -991,7 +991,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             if product.is_a("IfcSite"):
                 if product.RefElevation:
-                    obj.Elevation = product.RefElevation*1000
+                    obj.Elevation = product.RefElevation * getScaling(ifcfile)
                 if product.RefLatitude:
                     obj.Latitude = dms2dd(*product.RefLatitude)
                 if product.RefLongitude:
@@ -1249,7 +1249,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             for rep in annotation.Representation.Representations:
                 if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
                     sh = setRepresentation(rep,scaling)
-                    if sh in FreeCAD.ActiveDocument.Objects: 
+                    if sh in FreeCAD.ActiveDocument.Objects:
                         # dirty hack: setRepresentation might return an object directly if non-shape based (texts for ex)
                         anno = sh
                     else:
