@@ -62,7 +62,20 @@
 
 #include <Mod/Part/App/Geometry2d.h>
 #include <Mod/Part/App/GeometrySurfacePy.h>
+#include <Mod/Part/App/Geom2d/Line2dPy.h>
+#include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
+#include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
 #include <Mod/Part/App/Geom2d/BSplineCurve2dPy.h>
+#include <Mod/Part/App/Geom2d/Circle2dPy.h>
+#include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
+#include <Mod/Part/App/Geom2d/Ellipse2dPy.h>
+#include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
+#include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
+#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
+#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
+#include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.h>
+#include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
+#include <Mod/Part/App/Geom2d/Geometry2dPy.h>
 #include <Mod/Part/App/Geom2d/Curve2dPy.h>
 #include <Mod/Part/App/Geom2d/Curve2dPy.cpp>
 
@@ -74,6 +87,150 @@
 
 namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
+const Py::Object makeTrimmedCurve2dPy(const Handle(Geom2d_Curve)& c, double f,double l)
+{
+    if (c->IsKind(STANDARD_TYPE(Geom2d_Circle))) {
+        Handle(Geom2d_Circle) circ = Handle(Geom2d_Circle)::DownCast(c);
+        Geom2dArcOfCircle* arc = new Geom2dArcOfCircle();
+        Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom2d_Circle) this_circ = Handle(Geom2d_Circle)::DownCast
+            (this_arc->BasisCurve());
+        this_circ->SetCirc2d(circ->Circ2d());
+        this_arc->SetTrim(f, l);
+        return Py::Object(new ArcOfCircle2dPy(arc),true);
+
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Ellipse))) {
+        Handle(Geom2d_Ellipse) ellp = Handle(Geom2d_Ellipse)::DownCast(c);
+        Geom2dArcOfEllipse* arc = new Geom2dArcOfEllipse();
+        Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom2d_Ellipse) this_ellp = Handle(Geom2d_Ellipse)::DownCast
+            (this_arc->BasisCurve());
+        this_ellp->SetElips2d(ellp->Elips2d());
+        this_arc->SetTrim(f, l);
+        return Py::Object(new ArcOfEllipse2dPy(arc),true);
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Hyperbola))) {
+        Handle(Geom2d_Hyperbola) hypr = Handle(Geom2d_Hyperbola)::DownCast(c);
+        Geom2dArcOfHyperbola* arc = new Geom2dArcOfHyperbola();
+        Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom2d_Hyperbola) this_hypr = Handle(Geom2d_Hyperbola)::DownCast
+            (this_arc->BasisCurve());
+        this_hypr->SetHypr2d(hypr->Hypr2d());
+        this_arc->SetTrim(f, l);
+        return Py::Object(new ArcOfHyperbola2dPy(arc),true);
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Line))) {
+        Handle(Geom2d_Line) line = Handle(Geom2d_Line)::DownCast(c);
+        Geom2dLineSegment* segm = new Geom2dLineSegment();
+        Handle(Geom2d_TrimmedCurve) this_segm = Handle(Geom2d_TrimmedCurve)::DownCast
+            (segm->handle());
+        Handle(Geom2d_Line) this_line = Handle(Geom2d_Line)::DownCast
+            (this_segm->BasisCurve());
+        this_line->SetLin2d(line->Lin2d());
+        this_segm->SetTrim(f, l);
+        return Py::Object(new Line2dSegmentPy(segm),true);
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Parabola))) {
+        Handle(Geom2d_Parabola) para = Handle(Geom2d_Parabola)::DownCast(c);
+        Geom2dArcOfParabola* arc = new Geom2dArcOfParabola();
+        Handle(Geom2d_TrimmedCurve) this_arc = Handle(Geom2d_TrimmedCurve)::DownCast
+            (arc->handle());
+        Handle(Geom2d_Parabola) this_para = Handle(Geom2d_Parabola)::DownCast
+            (this_arc->BasisCurve());
+        this_para->SetParab2d(para->Parab2d());
+        this_arc->SetTrim(f, l);
+        return Py::Object(new ArcOfParabola2dPy(arc),true);
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_BezierCurve))) {
+        Handle(Geom2d_BezierCurve) bezier = Handle(Geom2d_BezierCurve)::DownCast(c->Copy());
+        bezier->Segment(f, l);
+        return Py::asObject(new BezierCurve2dPy(new Geom2dBezierCurve(bezier)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_BSplineCurve))) {
+        Handle(Geom2d_BSplineCurve) bspline = Handle(Geom2d_BSplineCurve)::DownCast(c->Copy());
+        bspline->Segment(f, l);
+        return Py::asObject(new BSplineCurve2dPy(new Geom2dBSplineCurve(bspline)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_OffsetCurve))) {
+        Handle(Geom2d_OffsetCurve) oc = Handle(Geom2d_OffsetCurve)::DownCast(c);
+        double v = oc->Offset();
+        Py::Object off(makeTrimmedCurve2dPy(oc->BasisCurve(), f, l));
+
+        Py::Tuple args(2);
+        args.setItem(0, off);
+        args.setItem(1, Py::Float(v));
+
+        Py::Module partModule(PyImport_ImportModule("Part"), true);
+        Py::Callable call(partModule.getAttr("OffsetCurve"));
+        return call.apply(args);
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_TrimmedCurve))) {
+        Handle(Geom2d_TrimmedCurve) trc = Handle(Geom2d_TrimmedCurve)::DownCast(c);
+        return makeTrimmedCurve2dPy(trc->BasisCurve(), f, l);
+    }
+    /*else if (c->IsKind(STANDARD_TYPE(Geom2d_BoundedCurve))) {
+        Handle(Geom2d_BoundedCurve) bc = Handle(Geom2d_BoundedCurve)::DownCast(c);
+        return Py::asObject(new Geom2detryCurvePy(new Geom2dBoundedCurve(bc)));
+    }*/
+
+    std::string err = "Unhandled curve type ";
+    err += c->DynamicType()->Name();
+    throw Py::TypeError(err);
+}
+
+
+const Py::Object makeGeometryCurve2dPy(const Handle(Geom2d_Curve)& c)
+{
+    if (c->IsKind(STANDARD_TYPE(Geom2d_Circle))) {
+        Handle(Geom2d_Circle) circ = Handle(Geom2d_Circle)::DownCast(c);
+        return Py::asObject(new Circle2dPy(new Geom2dCircle(circ)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Ellipse))) {
+        Handle(Geom2d_Ellipse) ell = Handle(Geom2d_Ellipse)::DownCast(c);
+        return Py::asObject(new Ellipse2dPy(new Geom2dEllipse(ell)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Hyperbola))) {
+        Handle(Geom2d_Hyperbola) hyp = Handle(Geom2d_Hyperbola)::DownCast(c);
+        return Py::asObject(new Hyperbola2dPy(new Geom2dHyperbola(hyp)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Line))) {
+        Handle(Geom2d_Line) lin = Handle(Geom2d_Line)::DownCast(c);
+        return Py::asObject(new Line2dPy(new Geom2dLine(lin)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_OffsetCurve))) {
+        Handle(Geom2d_OffsetCurve) oc = Handle(Geom2d_OffsetCurve)::DownCast(c);
+        return Py::asObject(new OffsetCurve2dPy(new Geom2dOffsetCurve(oc)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_Parabola))) {
+        Handle(Geom2d_Parabola) par = Handle(Geom2d_Parabola)::DownCast(c);
+        return Py::asObject(new Parabola2dPy(new Geom2dParabola(par)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_TrimmedCurve))) {
+        Handle(Geom2d_TrimmedCurve) trc = Handle(Geom2d_TrimmedCurve)::DownCast(c);
+        // return Py::asObject(new Curve2dPy(new Geom2dTrimmedCurve(trc)));
+        return Py::Object(makeTrimmedCurve2dPy(c,c->FirstParameter(),c->LastParameter()));
+    }
+    /*else if (c->IsKind(STANDARD_TYPE(Geom2d_BoundedCurve))) {
+        Handle(Geom2d_BoundedCurve) bc = Handle(Geom2d_BoundedCurve)::DownCast(c);
+        return Py::asObject(new Geometry2dCurvePy(new Geom2dBoundedCurve(bc)));
+    }*/
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_BezierCurve))) {
+        Handle(Geom2d_BezierCurve) bezier = Handle(Geom2d_BezierCurve)::DownCast(c);
+        return Py::asObject(new BezierCurve2dPy(new Geom2dBezierCurve(bezier)));
+    }
+    else if (c->IsKind(STANDARD_TYPE(Geom2d_BSplineCurve))) {
+        Handle(Geom2d_BSplineCurve) bspline = Handle(Geom2d_BSplineCurve)::DownCast(c);
+        return Py::asObject(new BSplineCurve2dPy(new Geom2dBSplineCurve(bspline)));
+    }
+
+    std::string err = "Unhandled curve type ";
+    err += c->DynamicType()->Name();
+    throw Py::TypeError(err);
+}
 }
 
 using namespace Part;
@@ -889,6 +1046,8 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
             }
 
             Py::List points;
+            Py::List result;
+            Py::List segments;
             Py::Module module("__FreeCADBase__");
             Py::Callable method(module.getAttr("Vector2d"));
             Py::Tuple arg(2);
@@ -905,17 +1064,15 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
                 gp_Pnt2d p1,p2;
                 for (int i = 1; i <= intersector.NbSegments(); i++) {
                     intersector.Segment(i, c1, c2);
-                    p1 = c1->Value(c1->FirstParameter());
-                    p2 = c1->Value(c1->LastParameter());
-                    arg.setItem(0, Py::Float(p1.X()));
-                    arg.setItem(1, Py::Float(p1.Y()));
-                    points.append(method.apply(arg));
-                    arg.setItem(0, Py::Float(p2.X()));
-                    arg.setItem(1, Py::Float(p2.Y()));
-                    points.append(method.apply(arg));
+                    Py::List pair;
+                    pair.append(makeGeometryCurve2dPy(c1));
+                    pair.append(makeGeometryCurve2dPy(c2));
+                    segments.append(pair);
                 }
             }
-            return Py::new_reference_to(points);
+            result.append(points);
+            result.append(segments);
+            return Py::new_reference_to(result);
         }
     }
     catch (Standard_Failure& e) {
