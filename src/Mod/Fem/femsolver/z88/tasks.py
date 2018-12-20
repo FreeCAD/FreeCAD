@@ -39,9 +39,6 @@ from .. import settings
 from . import writer
 
 
-_inputFileName = None
-
-
 class Check(run.Check):
 
     def run(self):
@@ -53,7 +50,6 @@ class Check(run.Check):
 class Prepare(run.Prepare):
 
     def run(self):
-        global _inputFileName
         self.pushStatus("Preparing input files...\n")
         c = _Container(self.analysis)
         w = writer.FemInputWriterZ88(
@@ -72,9 +68,7 @@ class Prepare(run.Prepare):
             self.pushStatus("Write completed!")
         else:
             self.pushStatus("Writing Z88 input files failed!")
-        _inputFileName = os.path.splitext(os.path.basename(path))[0]  # AFAIK empty for z88
         # print(path)
-        # print(_inputFileName)
 
 
 class Solve(run.Solve):
