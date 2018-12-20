@@ -68,7 +68,7 @@ def get_defmake_count(fem_vtk_post=True):
     if not fem_vtk_post:  # FEM VTK post processing is disabled, we are not able to create VTK post objects
         new_lines = []
         for l in lines_defmake:
-            if not "PostVtk" in l:
+            if "PostVtk" not in l:
                 new_lines.append(l)
         lines_defmake = new_lines
     return len(lines_defmake)
