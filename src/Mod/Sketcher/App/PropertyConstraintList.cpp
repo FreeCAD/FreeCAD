@@ -514,8 +514,8 @@ ObjectIdentifier PropertyConstraintList::canonicalPath(const ObjectIdentifier &p
     const ObjectIdentifier::Component & c1 = p.getPropertyComponent(1);
 
     if (c1.isArray()) {
-        size_t idx = c1.getIndex(_lValueList.size());
-        if (_lValueList[idx]->Name.size() > 0)
+        size_t idx = c1.getIndex();
+        if (idx < _lValueList.size() && _lValueList[idx]->Name.size() > 0)
             return ObjectIdentifier(*this) << ObjectIdentifier::SimpleComponent(_lValueList[idx]->Name);
         return p;
     }
