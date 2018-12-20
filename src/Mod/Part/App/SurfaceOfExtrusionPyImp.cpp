@@ -43,6 +43,7 @@
 
 namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle(Geom_Curve)& c);
+extern const Py::Object makeTrimmedCurvePy(const Handle(Geom_Curve)& c, double f,double l);
 }
 
 using namespace Part;
@@ -127,35 +128,15 @@ Py::Object SurfaceOfExtrusionPy::getBasisCurve(void) const
         Handle(Geom_SurfaceOfLinearExtrusion) sole = Handle(Geom_SurfaceOfLinearExtrusion)::DownCast
             (getGeometryPtr()->handle());
         Handle(Geom_Curve) c = sole->BasisCurve();
-        return makeGeometryCurvePy(c);
-//         if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
-//             Handle(Geom_TrimmedCurve) aCurve = Handle(Geom_TrimmedCurve)::DownCast(c);
-//             return Py::asObject(new GeometryCurvePy(new GeomTrimmedCurve(aCurve)));
-//         }
-//         if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
-//             Handle(Geom_BezierCurve) aCurve = Handle(Geom_BezierCurve)::DownCast(c);
-//             return Py::asObject(new BezierCurvePy(new GeomBezierCurve(aCurve)));
-//         }
-//         if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
-//             Handle(Geom_BSplineCurve) aCurve = Handle(Geom_BSplineCurve)::DownCast(c);
-//             return Py::asObject(new BSplineCurvePy(new GeomBSplineCurve(aCurve)));
-//         }
-//         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
-//             Handle(Geom_Line) aLine = Handle(Geom_Line)::DownCast(c);
-//             GeomLine* line = new GeomLine();
-//             Handle(Geom_Line) this_line = Handle(Geom_Line)::DownCast
-//                 (line->handle());
-//             this_line->SetLin(aLine->Lin());
-//             return Py::asObject(new LinePy(line));
-//         }
-//         PyErr_Format(PyExc_NotImplementedError, "Basis curve is of type '%s'",
-//             c->DynamicType()->Name());
-        // return Py::Object();
+        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+            Handle(Geom_TrimmedCurve) trc = Handle(Geom_TrimmedCurve)::DownCast(c);
+            return makeTrimmedCurvePy(c,c->FirstParameter(),c->LastParameter());
+        }
+        else
+            return makeGeometryCurvePy(c);
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        // Py_Return;
     }
 }
 
