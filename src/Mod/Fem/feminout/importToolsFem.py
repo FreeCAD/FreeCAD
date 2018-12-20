@@ -442,12 +442,16 @@ def calculate_principal_stress(i):
     sigma = np.array([[i[0], i[3], i[5]],
                       [i[3], i[1], i[4]],
                       [i[5], i[4], i[2]]])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
-    # compute principal stresses
-    eigvals = list(np.linalg.eigvalsh(sigma))
-    eigvals.sort()
-    eigvals.reverse()
-    maxshear = (eigvals[0] - eigvals[2]) / 2.0
-    return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+
+    try:  # it will fail if NaN is inside the array,
+        # compute principal stresses
+        eigvals = list(np.linalg.eigvalsh(sigma))
+        eigvals.sort()
+        eigvals.reverse()
+        maxshear = (eigvals[0] - eigvals[2]) / 2.0
+        return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+    except:
+        return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
 
 
 def calculate_disp_abs(displacements):
