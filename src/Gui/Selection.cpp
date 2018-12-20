@@ -788,19 +788,23 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     SelectionChanges Chng(signal==1?SelectionChanges::SetPreselectSignal:SelectionChanges::SetPreselect,
             DocName,FeatName,SubName,std::string(),x,y,z,signal);
 
-    if(!signal)
+    if(Chng.Type==SelectionChanges::SetPreselect) {
         CurrentPreselection = Chng;
+        FC_TRACE("preselect"<<DocName<<'.'<<FeatName<<'.'<<SubName);
+    }else
+        FC_TRACE("preselect signal "<<DocName<<'.'<<FeatName<<'.'<<SubName);
 
     notify(Chng);
 
-    if(signal==1) {
+    if(signal==1 && DocName.size()) {
+        FC_TRACE("preselect"<<DocName<<'.'<<FeatName<<'.'<<SubName);
         Chng.Type = SelectionChanges::SetPreselect;
         CurrentPreselection = Chng;
         notify(std::move(Chng));
     }
 
-    // allows the preselection
-    return 1;
+    // It is possible the preselect is removed during notification
+    return DocName.empty()?0:1;
 }
 
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
@@ -1167,6 +1171,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
         pSubName = "";
     if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
         if(show) {
+            FC_TRACE("preselect signal");
             notify(SelectionChanges(SelectionChanges::SetPreselectSignal,DocName,FeatName,SubName));
         }else
             rmvPreselect();
