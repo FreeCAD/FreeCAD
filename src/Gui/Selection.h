@@ -75,6 +75,7 @@ public:
         PickedListChanged,
         ShowSelection, // to show a selection
         HideSelection, // to hide a selection
+        RmvPreselectSignal, // to request 3D view to remove preselect
     };
 
     SelectionChanges(MsgType type = ClrSelection, 
@@ -357,7 +358,7 @@ public:
     int setPreselect(const char* pDocName, const char* pObjectName, 
             const char* pSubName, float x=0, float y=0, float z=0, int signal=0);
     /// remove the present preselection
-    void rmvPreselect();
+    void rmvPreselect(bool signal=false);
     /// sets different coords for the preselection
     void setPreselectCoord(float x, float y, float z);
     /// returns the present preselection

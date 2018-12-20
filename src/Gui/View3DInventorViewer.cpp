@@ -705,7 +705,9 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         if(Reason.Type == SelectionChanges::ClrSelection)
             return;
     }
-    if(Reason.Type == SelectionChanges::RmvPreselect) {
+    if(Reason.Type == SelectionChanges::RmvPreselect ||
+       Reason.Type == SelectionChanges::RmvPreselectSignal) 
+    {
         SoSelectionElementAction action(SoSelectionElementAction::None,true);
         action.apply(pcGroupOnTopPreSel);
         pcGroupOnTopPreSel->removeAllChildren();
@@ -888,6 +890,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
         if(Reason.SubType!=2) // 2 means it is triggered from tree view
             break;
     case SelectionChanges::RmvPreselect:
+    case SelectionChanges::RmvPreselectSignal:
     case SelectionChanges::SetSelection:
     case SelectionChanges::AddSelection:     
     case SelectionChanges::RmvSelection:
@@ -900,8 +903,10 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
         return;
     }
 
-    if(Reason.Type == SelectionChanges::RmvPreselect) {
-        SoFCHighlightAction cAct(Reason);
+    if(Reason.Type == SelectionChanges::RmvPreselect || 
+       Reason.Type == SelectionChanges::RmvPreselectSignal) 
+    {
+        SoFCHighlightAction cAct(SelectionChanges::RmvPreselect);
         cAct.apply(pcViewProviderRoot);
     } else {
         SoFCSelectionAction cAct(Reason);

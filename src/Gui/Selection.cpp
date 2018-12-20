@@ -788,10 +788,17 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
         getMainWindow()->showMessage(QString::fromLatin1(buf));
 }
 
-void SelectionSingleton::rmvPreselect()
+void SelectionSingleton::rmvPreselect(bool signal)
 {
     if (DocName == "")
         return;
+
+    if(signal) {
+        SelectionChanges Chng(SelectionChanges::RmvPreselectSignal,DocName,FeatName,SubName);
+        Notify(Chng);
+        signalSelectionChanged(Chng);
+        return;
+    }
 
     SelectionChanges Chng(SelectionChanges::RmvPreselect,DocName,FeatName,SubName);
 
@@ -971,7 +978,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
 
     getMainWindow()->updateActions();
 
-    rmvPreselect();
+    rmvPreselect(true);
 
     // allow selection
     return true;
