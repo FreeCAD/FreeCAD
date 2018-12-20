@@ -41,6 +41,7 @@
 # include <ShapeAnalysis_Surface.hxx>
 # include <GeomAPI_IntSS.hxx>
 # include <GeomLib_IsPlanarSurface.hxx>
+# include <GeomLib.hxx>
 #endif
 
 #include <Base/GeometryPyCXX.h>
@@ -853,5 +854,38 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
     }
 
     PyErr_SetString(PyExc_TypeError, "intersect(): Geometry is not a surface");
+    return 0;
+}
+
+PyObject* GeometrySurfacePy::extendByLength(PyObject *args)
+{
+    Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(getGeometryPtr()->handle());
+    try {
+        if (!surf.IsNull()) {
+            if (surf->IsKind(STANDARD_TYPE(Geom_BoundedSurface))) {
+                Handle(Geom_BoundedSurface) bs = Handle(Geom_BoundedSurface)::DownCast(surf);
+                double d = 1.0;
+                int cont = 1;
+                PyObject* after = Py_True;
+                PyObject* inU = Py_True;
+                if (!PyArg_ParseTuple(args, "d|iO!O!", &d, &cont, &PyBool_Type, &after, &PyBool_Type, &inU))
+                    return 0;
+//                 Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
+//                 gp_Pnt pnt(vec.x, vec.y, vec.z);
+                GeomLib::ExtendSurfByLength(bs, d, cont, PyObject_IsTrue(after) ? Standard_True : Standard_False, PyObject_IsTrue(inU) ? Standard_True : Standard_False);
+                if (bs->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
+                    Handle(Geom_BSplineSurface) bspline = Handle(Geom_BSplineSurface)::DownCast(bs);
+                    return new BSplineSurfacePy(new GeomBSplineSurface(bspline));
+                }
+//                 return Py::new_reference_to(makeGeometryCurvePy(bc));
+            }
+        }
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Geometry is not a valid bounded surface");
     return 0;
 }

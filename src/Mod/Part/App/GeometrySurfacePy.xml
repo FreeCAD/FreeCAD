@@ -145,33 +145,45 @@ of the nearest orthogonal projection of the point.</UserDocu>
 			<Documentation>
 				<UserDocu>
 					Returns a B-Spline representation of this surface. 
-The required arguments are:
-* tolerance
-* continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN)
-* continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN)
-* maximum degree in u
-* maximum degree in v
-* maximum number of segments
-* precision code (optional, default=0)
+					The required arguments are:
+					* tolerance
+					* continuity in u (as string e.g. C0, G0, G1, C1, G2, C3, CN)
+					* continuity in v (as string e.g. C0, G0, G1, C1, G2, C3, CN)
+					* maximum degree in u
+					* maximum degree in v
+					* maximum number of segments
+					* precision code (optional, default=0)
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="intersect" Const="true">
-                        <Documentation>
-                                <UserDocu>
-                                        Returns all intersection points/curves between the surface and the curve/surface.
-                                </UserDocu>
-                        </Documentation>
-                </Methode>
-                <Methode Name="intersectSS">
-                        <Documentation>
-                                <UserDocu>
-                                        Returns all intersection curves of this surface and the given surface.
-The required arguments are:
-* Second surface
-* precision code (optional, default=0)
-                                </UserDocu>
-                        </Documentation>
-                </Methode>
+		<Methode Name="intersect" Const="true">
+			<Documentation>
+				<UserDocu>
+					Returns all intersection points/curves between the surface and the curve/surface.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="intersectSS">
+			<Documentation>
+				<UserDocu>
+					Returns all intersection curves of this surface and the given surface.
+					The required arguments are:
+					* Second surface
+					* precision code (optional, default=0)
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="extendByLength" Const="true">
+			<Documentation>
+				<UserDocu>
+					Extends the bounded surface along one of its boundaries.
+					extended_bspline = bspline.extendByLength(length,continuity,after,inU)
+					* length is the extension length (float)
+					* continuity must be 1,2 or 3 (int)
+					* after is a boolean. True = extend the end of the choosen direction. False = extend the beginning.
+					* inU is a boolean. True = the extension is in the U direction. False =  the extension is in the V direction.
+				</UserDocu>
+			</Documentation>
+		</Methode>
 	</PythonExport>
 </GenerateModel>
