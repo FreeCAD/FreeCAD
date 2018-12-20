@@ -91,6 +91,7 @@ class FemInputWriter():
         self.femelement_volumes_table = {}
         self.femelement_faces_table = {}
         self.femelement_edges_table = {}
+        self.femelement_count_test = True
 
     def get_constraints_fixed_nodes(self):
         # get nodes
@@ -260,7 +261,9 @@ class FemInputWriter():
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femnodes_ele_table:
                     self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
-                FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
+                control = FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
+                if (self.femelement_count_test is True) and (control is False):  # we only need to set it, if it is still True
+                    self.femelement_count_test = False
         if self.shellthickness_objects:
             if not self.femelement_faces_table:
                 self.femelement_faces_table = FemMeshTools.get_femelement_faces_table(self.femmesh)
