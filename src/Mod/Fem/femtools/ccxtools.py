@@ -292,6 +292,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
                 if 'SpecificHeat' not in mat_map:
                     message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
+        if len(self.materials_linear) == 1:
+            mobj = self.materials_linear[0]['Object']
+            if hasattr(mobj, 'References') and mobj.References:
+                FreeCAD.Console.PrintError('Only one material object, but this one has a reference shape. The reference shape will be ignored.\n')
         for m in self.materials_linear:
             has_nonlinear_material = False
             for nlm in self.materials_nonlinear:
