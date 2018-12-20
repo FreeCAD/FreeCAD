@@ -86,6 +86,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
         span = max(x_span, y_span, z_span)
 
         number_of_increments = len(m['Results'])
+        FreeCAD.Console.PrintLog('Increments: ' + str(number_of_increments) + '\n')
         if len(m['Results']) > 0:
             for result_set in m['Results']:
                 if 'number' in result_set:
@@ -110,7 +111,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             error_message = (
                 "We have nodes but no results in frd file, which means we only have a mesh in frd file. "
                 "Usually this happens for analysis type 'NOANALYSIS' or if CalculiX returned no results because "
-                "of nonpositive jacobian determinant in at least one element.\n"
+                "of nonpositive jacobian determinant in at least one element or if the time step in frd file = 0.0."
+                "If the later an error message should have been printed.\n"
             )
             FreeCAD.Console.PrintMessage(error_message)
             if analysis:
@@ -180,6 +182,7 @@ def readResult(frd_input):
     input_continues = False
     mode_eigen_changed = False
     mode_time_changed = False
+    zero_mode_time = False  # result will not be imported
 
     eigenmode = 0
     eigentemp = 0
@@ -396,7 +399,12 @@ def readResult(frd_input):
             mode_time_found = True
         if mode_time_found and (line[2:7] == "100CL"):
             # we found the new time step line
+            # !!! be careful here, there is timetemp and timestep! TODO: use more differ names
             timetemp = float(line[13:25])
+            if timetemp == 0:
+                FreeCAD.Console.PrintError('Time step in frd file = 0.0, result will not be imported.\n')
+                # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649&start=10#p274686
+                zero_mode_time = True
             if timetemp > timestep:
                 timestep = timetemp
                 mode_time_changed = True
@@ -557,7 +565,7 @@ def readResult(frd_input):
         if line[1:5] == "9999":
             end_of_frd_data_found = True
 
-        if (mode_eigen_changed or mode_time_changed or end_of_frd_data_found) and end_of_section_found and not node_element_section:
+        if (not zero_mode_time) and (mode_eigen_changed or mode_time_changed or end_of_frd_data_found) and end_of_section_found and not node_element_section:
 
             '''
             print('\n\n----Append mode_results to results')
