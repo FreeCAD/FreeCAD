@@ -641,6 +641,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         message = self.check_prerequisites()
         if not message:
             self.write_inp_file()
+            if self.inp_file_name != "":
+                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed!")
+            else:
+                # TODO do not run solver, do not try to read results in a smarter way than an Exception
+                raise Exception('Error on writing CalculiX input file.\n')
             from FreeCAD import Base
             progress_bar = Base.ProgressIndicator()
             progress_bar.start("Running CalculiX ccx...", 0)
