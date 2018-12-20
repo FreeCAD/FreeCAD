@@ -637,6 +637,8 @@ class ViewProviderBuildingPart:
                     if not vobj.ShowUnit:
                         u = ""
                     txt += fmt.format(float(q)) + str(u)
+                if not txt:
+                    txt = " " # empty texts make coin crash...
                 if isinstance(txt,unicode):
                     txt = txt.encode("utf8")
                 self.txt.string.setValue(txt)
