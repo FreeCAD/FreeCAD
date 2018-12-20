@@ -866,18 +866,35 @@ PyObject* GeometrySurfacePy::extendByLength(PyObject *args)
                 Handle(Geom_BoundedSurface) bs = Handle(Geom_BoundedSurface)::DownCast(surf);
                 double d = 1.0;
                 int cont = 1;
-                PyObject* after = Py_True;
-                PyObject* inU = Py_True;
-                if (!PyArg_ParseTuple(args, "d|iO!O!", &d, &cont, &PyBool_Type, &after, &PyBool_Type, &inU))
+                Standard_Boolean after = Standard_False;
+                Standard_Boolean inU = Standard_True;
+                char* side = "u0";
+                if (!PyArg_ParseTuple(args, "d|is", &d, &cont, &side))
                     return 0;
-//                 Base::Vector3d vec = static_cast<Base::VectorPy*>(p)->value();
-//                 gp_Pnt pnt(vec.x, vec.y, vec.z);
-                GeomLib::ExtendSurfByLength(bs, d, cont, PyObject_IsTrue(after) ? Standard_True : Standard_False, PyObject_IsTrue(inU) ? Standard_True : Standard_False);
+                
+                std::string str = side;
+                if (str == "u1") {
+                    after = Standard_True;
+                    inU = Standard_True;
+                }
+                else if (str == "v0") {
+                    after = Standard_False;
+                    inU = Standard_False;
+                }
+                else if (str == "v1") {
+                    after = Standard_True;
+                    inU = Standard_False;
+                }
+                else {
+                    after = Standard_False;
+                    inU = Standard_True;
+                }                
+
+                GeomLib::ExtendSurfByLength(bs, d, cont, inU, after);
                 if (bs->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
                     Handle(Geom_BSplineSurface) bspline = Handle(Geom_BSplineSurface)::DownCast(bs);
                     return new BSplineSurfacePy(new GeomBSplineSurface(bspline));
                 }
-//                 return Py::new_reference_to(makeGeometryCurvePy(bc));
             }
         }
     }
