@@ -2161,6 +2161,7 @@ QVariant PropertyStringListItem::toString(const QVariant& prop) const
         list = list.mid(0, 10);
         list.append(QLatin1String("..."));
     }
+
     QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
     text.replace(QString::fromUtf8("'"),QString::fromUtf8("\\'"));
 
