@@ -165,7 +165,8 @@ const Py::Object makeTrimmedCurve2dPy(const Handle(Geom2d_Curve)& c, double f,do
         args.setItem(1, Py::Float(v));
 
         Py::Module partModule(PyImport_ImportModule("Part"), true);
-        Py::Callable call(partModule.getAttr("OffsetCurve"));
+        Py::Object submod(partModule.getAttr("Geom2d"));
+        Py::Callable call(submod.getAttr("OffsetCurve2d"));
         return call.apply(args);
     }
     else if (c->IsKind(STANDARD_TYPE(Geom2d_TrimmedCurve))) {
