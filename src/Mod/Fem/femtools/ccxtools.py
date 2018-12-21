@@ -643,17 +643,16 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         if self.test_mode:
             FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
             return
-        ret_code = 0
         message = self.check_prerequisites()
         if not message:
             self.write_inp_file()
             if self.inp_file_name != "":
-                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed!")
+                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed!\n")
             else:
                 # TODO do not run solver, do not try to read results in a smarter way than an Exception
                 raise Exception('Error on writing CalculiX input file.\n')
-            from FreeCAD import Base
-            progress_bar = Base.ProgressIndicator()
+            ret_code = 0
+            progress_bar = FreeCAD.Base.ProgressIndicator()
             progress_bar.start("Running CalculiX ccx...", 0)
             ret_code = self.start_ccx()
             self.finished.emit(ret_code)
@@ -669,12 +668,13 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
                     FreeCAD.Console.PrintMessage(self.ccx_stdout)
                     self.has_for_nonpositive_jacobians()
-                    FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
+                    FreeCAD.Console.PrintMessage("\n--------end of stdout---------\n")
             else:
                 FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
         else:
             FreeCAD.Console.PrintError("CalculiX was not started due to missing prerequisites:\n{}\n".format(message))
             # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
+        self.load_results()
 
     def has_for_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
