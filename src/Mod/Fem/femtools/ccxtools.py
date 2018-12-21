@@ -659,8 +659,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
                 FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
                 FreeCAD.Console.PrintMessage(self.ccx_stdout)
-                self.has_nonpositive_jacobians()
                 FreeCAD.Console.PrintMessage("\n--------end of stdout---------\n")
+                FreeCAD.Console.PrintMessage("--------start problems---------\n")
+                self.has_no_material_assigned()
+                self.has_nonpositive_jacobians()
+                FreeCAD.Console.PrintMessage("\n--------end problems---------\n")
         else:
             FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
 
@@ -678,6 +681,41 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             FreeCAD.Console.PrintError("CalculiX was not started due to missing prerequisites:\n{}\n".format(message))
             # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
         self.load_results()
+
+    def has_no_material_assigned(self):
+        if ' *ERROR in calinput: no material was assigned' in self.ccx_stdout:
+            without_material_elements = []
+            without_material_elemnodes = []
+            for line in self.ccx_stdout.splitlines():
+                if 'to element' in line:
+                    # print(line)
+                    # print(line.split())
+                    non_mat_ele = int(line.split()[2])
+                    # print(non_mat_ele)
+                    if non_mat_ele not in without_material_elements:
+                        without_material_elements.append(non_mat_ele)
+            for e in without_material_elements:
+                for n in self.mesh.FemMesh.getElementNodes(e):
+                    without_material_elemnodes.append(n)
+            without_material_elements = sorted(without_material_elements)
+            without_material_elemnodes = sorted(without_material_elemnodes)
+            command_for_withoutmatnodes = 'without_material_elemnodes = ' + str(without_material_elemnodes)
+            command_to_highlight = "Gui.ActiveDocument." + self.mesh.Name + ".HighlightedNodes = without_material_elemnodes"
+            # some output for the user
+            FreeCAD.Console.PrintError('\n\nCalculiX returned an error due to elements without materials.\n')
+            FreeCAD.Console.PrintMessage('without_material_elements = {}\n'.format(without_material_elements))
+            FreeCAD.Console.PrintMessage(command_for_withoutmatnodes + '\n')
+            if FreeCAD.GuiUp:
+                import FreeCADGui
+                FreeCADGui.doCommand(command_for_withoutmatnodes)  # with this the list without_material_elemnodes will be available for further user interaction
+                FreeCAD.Console.PrintMessage('\n')
+                FreeCADGui.doCommand(command_to_highlight)
+            FreeCAD.Console.PrintMessage('\nFollowing some commands to copy which highlight the elements without materials or to reset the highlighted nodes:\n')
+            FreeCAD.Console.PrintMessage(command_to_highlight + '\n')
+            FreeCAD.Console.PrintMessage('Gui.ActiveDocument.' + self.mesh.Name + '.HighlightedNodes = []\n\n')  # command to reset the Highlighted Nodes
+            return True
+        else:
+            return False
 
     def has_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
