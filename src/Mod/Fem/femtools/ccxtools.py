@@ -28,7 +28,9 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import os
 import sys
+import subprocess
 import FreeCAD
 import femtools.femutils as femutils
 from PySide import QtCore
@@ -217,7 +219,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             message += "No active Analysis\n"
         if not self.working_dir:
             message += "Working directory not set\n"
-        import os
         if not (os.path.isdir(self.working_dir)):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
         # solver
@@ -450,7 +451,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     #  @param self The python object self
     #  @working_dir directory to be used for writing solver input file or files and executing solver
     def setup_working_dir(self, working_dir=None):
-        import os
         if working_dir is not None:
             self.working_dir = working_dir
         else:
@@ -486,7 +486,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def write_inp_file(self):
         import femsolver.calculix.writer as iw
-        import sys
         self.inp_file_name = ""
         try:
             inp_writer = iw.FemInputWriterCcx(
@@ -518,7 +517,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString("ccxBinaryPath", ccx_path)
                 self.ccx_binary = ccx_path
             elif system() == "Linux":
-                import subprocess
                 p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
                     if sys.version_info.major >= 3:
@@ -549,7 +547,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     raise Exception(error_message)
             self.ccx_binary = ccx_binary
 
-        import subprocess
         startup_info = None
         if system() == "Windows":
             # Windows workaround to avoid blinking terminal window
@@ -592,8 +589,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def start_ccx(self):
         import multiprocessing
-        import os
-        import subprocess
         self.ccx_stdout = ""
         self.ccx_stderr = ""
         if self.inp_file_name != "" and self.ccx_binary_present:
@@ -622,7 +617,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def get_ccx_version(self):
         import re
-        import subprocess
         from platform import system
         startup_info = None
         if system() == "Windows":
@@ -760,7 +754,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     ## Load results of ccx calculations from .frd file.
     #  @param self The python object self
     def load_results_ccxfrd(self):
-        import os
         import feminout.importCcxFrdResults as importCcxFrdResults
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
         if os.path.isfile(frd_result_file):
@@ -784,7 +777,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     ## Load results of ccx calculations from .dat file.
     #  @param self The python object self
     def load_results_ccxdat(self):
-        import os
         import feminout.importCcxDatResults as importCcxDatResults
         dat_result_file = os.path.splitext(self.inp_file_name)[0] + '.dat'
         if os.path.isfile(dat_result_file):
