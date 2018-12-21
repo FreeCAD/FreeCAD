@@ -682,11 +682,7 @@ class ViewProviderBuildingPart:
                 FreeCAD.DraftWorkingPlane.restore()
             else:
                 FreeCAD.DraftWorkingPlane.save()
-                FreeCAD.DraftWorkingPlane.setFromPlacement(self.Object.Placement,rebase=True)
-                FreeCAD.DraftWorkingPlane.weak = False
-                if hasattr(self.Object.ViewObject,"AutoWorkingPlane"):
-                    if self.Object.ViewObject.AutoWorkingPlane:
-                        FreeCAD.DraftWorkingPlane.weak = True
+                FreeCADGui.runCommand("Draft_SelectPlane")
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.setGrid()
             if hasattr(FreeCADGui,"draftToolBar"):
