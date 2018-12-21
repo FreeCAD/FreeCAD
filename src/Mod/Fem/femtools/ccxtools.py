@@ -184,7 +184,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
         found_solver_for_use = False
         for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemSolverObjectPython"):
+            if femutils.is_of_type(m, "Fem::FemSolverCalculixCcxTools"):
+                # we gone check for exlicit for the ccx tools solver type only,
+                # thus it is possible to have lots of frame work solver inside the analysis anyway
                 # for some methods no solver is needed (purge_results) --> solver could be none
                 # analysis has one solver and no solver was set --> use the one solver
                 # analysis has more than one solver and no solver was set --> use solver none
