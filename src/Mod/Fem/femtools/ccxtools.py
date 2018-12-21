@@ -659,7 +659,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
                 FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
                 FreeCAD.Console.PrintMessage(self.ccx_stdout)
-                self.has_for_nonpositive_jacobians()
+                self.has_nonpositive_jacobians()
                 FreeCAD.Console.PrintMessage("\n--------end of stdout---------\n")
         else:
             FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
@@ -679,7 +679,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
         self.load_results()
 
-    def has_for_nonpositive_jacobians(self):
+    def has_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
             nonpositive_jacobian_elements = []
             nonpositive_jacobian_elenodes = []
