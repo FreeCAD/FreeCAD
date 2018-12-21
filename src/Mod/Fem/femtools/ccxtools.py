@@ -292,6 +292,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
                 if 'SpecificHeat' not in mat_map:
                     message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
+        if len(self.materials_linear) == 1:
+            mobj = self.materials_linear[0]['Object']
+            if hasattr(mobj, 'References') and mobj.References:
+                FreeCAD.Console.PrintError('Only one material object, but this one has a reference shape. The reference shape will be ignored.\n')
         for m in self.materials_linear:
             has_nonlinear_material = False
             for nlm in self.materials_nonlinear:
@@ -641,6 +645,11 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         message = self.check_prerequisites()
         if not message:
             self.write_inp_file()
+            if self.inp_file_name != "":
+                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed!")
+            else:
+                # TODO do not run solver, do not try to read results in a smarter way than an Exception
+                raise Exception('Error on writing CalculiX input file.\n')
             from FreeCAD import Base
             progress_bar = Base.ProgressIndicator()
             progress_bar.start("Running CalculiX ccx...", 0)
