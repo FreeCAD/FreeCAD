@@ -639,10 +639,32 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
         return (int(m.group(1)), int(m.group(2)))
 
-    def run(self):
+    def ccx_run(self):
         if self.test_mode:
             FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
             return
+        ret_code = 0
+        progress_bar = FreeCAD.Base.ProgressIndicator()
+        progress_bar.start("Running CalculiX ccx...", 0)
+        ret_code = self.start_ccx()
+        self.finished.emit(ret_code)
+        progress_bar.stop()
+        if ret_code or self.ccx_stderr:
+            if ret_code == 201 and self.solver.AnalysisType == 'check':
+                FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
+            else:
+                FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
+                FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
+                FreeCAD.Console.PrintMessage(self.ccx_stderr)
+                FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
+                FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
+                FreeCAD.Console.PrintMessage(self.ccx_stdout)
+                self.has_for_nonpositive_jacobians()
+                FreeCAD.Console.PrintMessage("\n--------end of stdout---------\n")
+        else:
+            FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
+
+    def run(self):
         message = self.check_prerequisites()
         if not message:
             self.write_inp_file()
@@ -651,26 +673,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             else:
                 # TODO do not run solver, do not try to read results in a smarter way than an Exception
                 raise Exception('Error on writing CalculiX input file.\n')
-            ret_code = 0
-            progress_bar = FreeCAD.Base.ProgressIndicator()
-            progress_bar.start("Running CalculiX ccx...", 0)
-            ret_code = self.start_ccx()
-            self.finished.emit(ret_code)
-            progress_bar.stop()
-            if ret_code or self.ccx_stderr:
-                if ret_code == 201 and self.solver.AnalysisType == 'check':
-                    FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
-                else:
-                    FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
-                    FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
-                    FreeCAD.Console.PrintMessage(self.ccx_stderr)
-                    FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
-                    FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
-                    FreeCAD.Console.PrintMessage(self.ccx_stdout)
-                    self.has_for_nonpositive_jacobians()
-                    FreeCAD.Console.PrintMessage("\n--------end of stdout---------\n")
-            else:
-                FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
+            self.ccx_run()
         else:
             FreeCAD.Console.PrintError("CalculiX was not started due to missing prerequisites:\n{}\n".format(message))
             # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
