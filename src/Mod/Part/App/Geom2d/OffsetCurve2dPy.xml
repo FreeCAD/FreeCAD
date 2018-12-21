@@ -13,7 +13,10 @@
 		Constructor="true">
 		<Documentation>
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-			<UserDocu></UserDocu>
+			<UserDocu>
+				Describes an offset curve in 2D space.
+				Part.Geom2d.OffsetCurve2d(curve, offset)
+			</UserDocu>
 		</Documentation>
 		<Attribute Name="OffsetValue">
 			<Documentation>
