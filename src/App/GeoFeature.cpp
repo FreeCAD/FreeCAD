@@ -161,7 +161,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         return sobj;
     }
 
-    if(!geo) {
+    if(!geo || hasHiddenMarker(element)) {
         if(!append) 
             elementName.second = element;
         else
