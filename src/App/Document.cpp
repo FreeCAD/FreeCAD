@@ -896,15 +896,16 @@ bool Document::undo(int id)
 
         if (d->activeUndoTransaction)
             commitTransaction();
-        else if (mUndoTransactions.empty())
+        if (mUndoTransactions.empty())
             return false;
         // redo
         d->activeUndoTransaction = new Transaction(mUndoTransactions.back()->getID());
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
-        d->undoing = true;
-        // applying the undo
-        mUndoTransactions.back()->apply(*this,false);
-        d->undoing = false;
+        {
+            Base::FlagToggler<bool> flag(d->undoing);
+            // applying the undo
+            mUndoTransactions.back()->apply(*this,false);
+        }
 
         // save the redo
         mRedoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
@@ -943,9 +944,10 @@ bool Document::redo(int id)
         d->activeUndoTransaction->Name = mRedoTransactions.back()->Name;
 
         // do the redo
-        d->undoing = true;
-        mRedoTransactions.back()->apply(*this,true);
-        d->undoing = false;
+        {
+            Base::FlagToggler<bool> flag(d->undoing);
+            mRedoTransactions.back()->apply(*this,true);
+        }
         mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
@@ -998,6 +1000,11 @@ std::vector<std::string> Document::getAvailableRedoNames() const
 }
 
 void Document::openTransaction(const char* name) {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot open transaction while transacting");
+        return;
+    }
+
     auto &app = GetApplication();
     if(app.autoTransaction())
         app.setActiveTransaction(name?name:"<empty>");
@@ -1007,6 +1014,11 @@ void Document::openTransaction(const char* name) {
 
 int Document::_openTransaction(const char* name, int id)
 {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot open transaction while transacting");
+        return 0;
+    }
+
     if (d->iUndoMode) {
         if(id && mUndoMap.find(id)!=mUndoMap.end())
             throw Base::RuntimeError("invalid transaction id");
@@ -1093,6 +1105,11 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
 
 void Document::_clearRedos()
 {
+    if(isPerformingTransaction()) {
+        FC_ERR("Cannot clear redo while transacting");
+        return;
+    }
+
     mRedoMap.clear();
     while (!mRedoTransactions.empty()) {
         delete mRedoTransactions.back();
@@ -1102,6 +1119,11 @@ void Document::_clearRedos()
 
 void Document::commitTransaction()
 {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot commit transaction while transacting");
+        return;
+    }
+
     if (d->activeUndoTransaction) {
         int id = d->activeUndoTransaction->getID();
         mUndoTransactions.push_back(d->activeUndoTransaction);
@@ -1120,11 +1142,17 @@ void Document::commitTransaction()
 
 void Document::abortTransaction()
 {
+    if(isPerformingTransaction()) {
+        FC_WARN("Cannot abort transaction while transacting");
+        return;
+    }
+
     if (d->activeUndoTransaction) {
-        d->rollback = true;
-        // applying the so far made changes
-        d->activeUndoTransaction->apply(*this,false);
-        d->rollback = false;
+        {
+            Base::FlagToggler<bool> flag(d->rollback);
+            // applying the so far made changes
+            d->activeUndoTransaction->apply(*this,false);
+        }
 
         // destroy the undo
         int id = d->activeUndoTransaction->getID();
@@ -1176,6 +1204,11 @@ bool Document::isTransactionEmpty() const
 
 void Document::clearUndos()
 {
+    if(isPerformingTransaction()) {
+        FC_ERR("Cannot clear undos while transacting");
+        return;
+    }
+
     if (d->activeUndoTransaction)
         commitTransaction();
 
