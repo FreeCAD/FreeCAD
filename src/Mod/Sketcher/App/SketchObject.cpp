@@ -1417,7 +1417,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             if(!curve1->closestParameter(refPnt1,refparam1))
                 return -1;
         }
-        catch (Base::CADKernelError e) {
+        catch (Base::CADKernelError &e) {
             e.ReportException();
             THROWM(Base::CADKernelError, "Unable to determine the parameter of the first selected curve at the reference point.")
         }
@@ -1426,7 +1426,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
              if(!curve2->closestParameter(refPnt2,refparam2))
                 return -1;
         }
-        catch (Base::CADKernelError e) {
+        catch (Base::CADKernelError &e) {
             e.ReportException();
             THROWM(Base::CADKernelError, "Unable to determine the parameter of the second selected curve at the reference point.")
         }
@@ -1495,7 +1495,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
                     if(!tcurve1->intersectBasisCurves(tcurve2,points))
                         return -1;
                 }
-                catch (Base::CADKernelError e) {
+                catch (Base::CADKernelError &e) {
                     e.ReportException();
                     THROWMT(Base::CADKernelError,QT_TRANSLATE_NOOP("Exceptions", "Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet."))
                 }
@@ -1517,7 +1517,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             if(!curve1->closestParameter(interpoints.first,intparam1))
                 return -1;
         }
-        catch (Base::CADKernelError e) {
+        catch (Base::CADKernelError &e) {
             e.ReportException();
             THROWM(Base::CADKernelError,"Unable to determine the parameter of the first selected curve at the intersection of the curves.")
         }
@@ -1526,7 +1526,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             if(!curve2->closestParameter(interpoints.second,intparam2))
                 return -1;
         }
-        catch (Base::CADKernelError e) {
+        catch (Base::CADKernelError &e) {
             e.ReportException();
             THROWM(Base::CADKernelError,"Unable to determine the parameter of the second selected curve at the intersection of the curves.")
         }
@@ -1647,7 +1647,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
 
             }
         }
-        catch (Base::CADKernelError e) {
+        catch (Base::CADKernelError &e) {
             e.ReportException();
             THROWM(Base::CADKernelError,"Unable to find intersection between offset curves.")
         }
@@ -1674,7 +1674,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             if(!curve1->closestParameter(filletcenterpoint.first,refoparam1))
                 return -1;
         }
-        catch (Base::CADKernelError e) {
+        catch (Base::CADKernelError &e) {
             e.ReportException();
             THROWM(Base::CADKernelError,"Unable to determine the starting point of the arc.")
         }
@@ -1683,7 +1683,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             if(!curve2->closestParameter(filletcenterpoint.second,refoparam2))
                 return -1;
         }
-        catch (Base::CADKernelError e) {
+        catch (Base::CADKernelError &e) {
             e.ReportException();
             THROWM(Base::CADKernelError,"Unable to determine the end point of the arc.")
         }
