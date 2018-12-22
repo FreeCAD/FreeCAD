@@ -214,16 +214,19 @@ Py::Object DocumentObjectPy::getViewObject(void) const
             // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
             return Py::None();
         }
-        Py::Callable method(module.getAttr("getDocument"));
-        Py::Tuple arg(1);
-        arg.setItem(0, Py::String(getDocumentObjectPtr()->getDocument()->getName()));
-        Py::Object doc = method.apply(arg);
-        method = doc.getAttr("getObject");
+        if(!getDocumentObjectPtr()->getDocument()) {
+            throw Py::RuntimeError("Object has no document");
+        }
         const char* internalName = getDocumentObjectPtr()->getNameInDocument();
         if (!internalName) {
             throw Py::RuntimeError("Object has been removed from document");
         }
 
+        Py::Callable method(module.getAttr("getDocument"));
+        Py::Tuple arg(1);
+        arg.setItem(0, Py::String(getDocumentObjectPtr()->getDocument()->getName()));
+        Py::Object doc = method.apply(arg);
+        method = doc.getAttr("getObject");
         arg.setItem(0, Py::String(internalName));
         Py::Object obj = method.apply(arg);
         return obj;
