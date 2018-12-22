@@ -480,7 +480,8 @@ void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
         name.resize(name.size()-ViewProvider::hiddenMarker().size());
     }
     Selection().setPreselect(d->editDoc.c_str(),
-            d->editObj.c_str(), (d->editSub+name).c_str(),0,0,0,2);
+            d->editObj.c_str(), (d->editSub+name).c_str(),0,0,0,
+            d->ui->onTop->isChecked()?2:1);
 }
 
 void ElementColors::on_elementList_itemSelectionChanged() {
