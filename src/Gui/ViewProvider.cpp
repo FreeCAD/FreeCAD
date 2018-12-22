@@ -59,6 +59,7 @@
 #include "ViewProviderExtension.h"
 #include "SoFCUnifiedSelection.h"
 #include "ViewProviderLink.h"
+#include "ViewParams.h"
 
 #include <boost/bind.hpp>
 
@@ -66,7 +67,6 @@ FC_LOG_LEVEL_INIT("ViewProvider",true,true)
 
 using namespace std;
 using namespace Gui;
-
 
 //**************************************************************************
 //**************************************************************************
@@ -85,7 +85,7 @@ ViewProvider::ViewProvider()
 {
     setStatus(UpdateData, true);
 
-    pcRoot = new SoFCSeparator();
+    pcRoot = new SoFCSeparator;
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
     pcModeSwitch->ref();
@@ -96,9 +96,7 @@ ViewProvider::ViewProvider()
     sPixmap = "px";
     pcModeSwitch->whichChild = _iActualMode;
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    setRenderCacheMode(hGrp->GetInt("RenderCache",0));
+    setRenderCacheMode(ViewParams::instance()->getRenderCache());
 }
 
 ViewProvider::~ViewProvider()
@@ -878,13 +876,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
 }
 
 bool ViewProvider::useNewSelectionModel() const {
-    static int useNewModel = -1;
-    if(useNewModel<0) {
-        ParameterGrp::handle hGrp = 
-            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-        useNewModel = hGrp->GetBool("UseNewSelection",true)?1:0;
-    }
-    return useNewModel>0;
+    return ViewParams::instance()->getUseNewSelection();
 }
 
 void ViewProvider::beforeDelete() {

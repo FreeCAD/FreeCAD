@@ -52,6 +52,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "Window.h"
+#include "ViewParams.h"
 
 #include <Base/Console.h>
 #include <Base/Placement.h>
@@ -78,18 +79,16 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     : pcBoundSwitch(0)
     , pcBoundColor(0)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    bool randomColor = hGrp->GetBool("RandomColor", false);
     float r,g,b;
 
-    if (randomColor){
+    if (ViewParams::instance()->getRandomColor()){
         float fMax = (float)RAND_MAX;
         r = (float)rand()/fMax;
         g = (float)rand()/fMax;
         b = (float)rand()/fMax;
     }
     else {
-        unsigned long shcol = hGrp->GetUnsigned("DefaultShapeColor",3435973887UL); // light gray (204,204,204)
+        unsigned long shcol = ViewParams::instance()->getDefaultShapeColor();
         r = ((shcol >> 24) & 0xff) / 255.0; 
         g = ((shcol >> 16) & 0xff) / 255.0; 
         b = ((shcol >> 8) & 0xff) / 255.0;
@@ -107,8 +106,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
     SelectionStyle.setEnums(SelectionStyleEnum);
 
-    bool enableSel = hGrp->GetBool("EnableSelection", true);
-    Selectable.setValue(enableSel);
+    Selectable.setValue(ViewParams::instance()->getEnableSelection());
 
     pcShapeMaterial = new SoMaterial;
     pcShapeMaterial->ref();
@@ -237,9 +235,7 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
 
 unsigned long ViewProviderGeometryObject::getBoundColor() const
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long bbcol = hGrp->GetUnsigned("BoundingBoxColor",4294967295UL); // white (255,255,255)
-    return bbcol;
+    return ViewParams::instance()->getBoundingBoxColor();
 }
 
 void ViewProviderGeometryObject::showBoundingBox(bool show)

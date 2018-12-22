@@ -45,6 +45,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "View3DInventorViewer.h"
+#include "ViewParams.h"
 
 #include <App/PropertyGeo.h>
 #include <App/PropertyStandard.h>
@@ -170,7 +171,8 @@ void ViewProviderMeasureDistance::attach(App::DocumentObject* pcObject)
     lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
     SoMarkerSet* points = new SoMarkerSet();
-    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
+    points->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", 
+            ViewParams::instance()->getMarkerSize());
     points->numPoints=2;
     lineSep->addChild(points);
 
@@ -289,7 +291,8 @@ ViewProviderPointMarker::ViewProviderPointMarker()
     pCoords->ref();
     pCoords->point.setNum(0);
     pMarker = new SoMarkerSet();
-    pMarker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
+    pMarker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CROSS",
+            ViewParams::instance()->getMarkerSize());
     pMarker->numPoints=0;
     pMarker->ref();
 

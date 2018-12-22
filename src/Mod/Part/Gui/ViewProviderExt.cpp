@@ -118,6 +118,7 @@
 #include <Gui/Control.h>
 #include <Gui/ViewProviderLink.h>
 #include <Gui/TaskElementColors.h>
+#include <Gui/ViewParams.h>
 
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
@@ -241,12 +242,10 @@ ViewProviderPartExt::ViewProviderPartExt()
     forceUpdateCount = 0;
     NormalsFromUV = true;
 
-    ParameterGrp::handle hView = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-
-    unsigned long lcol = hView->GetUnsigned("DefaultShapeLineColor",421075455UL); // dark grey (25,25,25)
+    unsigned long lcol = Gui::ViewParams::instance()->getDefaultShapeLineColor(); // dark grey (25,25,25)
     float r,g,b;
     r = ((lcol >> 24) & 0xff) / 255.0; g = ((lcol >> 16) & 0xff) / 255.0; b = ((lcol >> 8) & 0xff) / 255.0;
-    int lwidth = hView->GetInt("DefaultShapeLineWidth",2);
+    int lwidth = Gui::ViewParams::instance()->getDefaultShapeLineWidth();
 
     ParameterGrp::handle hPart = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Part");
@@ -1092,8 +1091,7 @@ static bool getLinkColor(const std::string &mapped, App::DocumentObject *&obj,
 std::vector<App::Color> ViewProviderPartExt::getShapeColors(const Part::TopoShape &shape, 
         App::Color &defColor, App::Document *sourceDoc, bool linkOnly)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    defColor.setPackedValue(hGrp->GetUnsigned("DefaultShapeColor",0xCCCCCC00));
+    defColor.setPackedValue(Gui::ViewParams::instance()->getDefaultShapeColor());
     defColor.a = 0;
 
     if(!sourceDoc) {

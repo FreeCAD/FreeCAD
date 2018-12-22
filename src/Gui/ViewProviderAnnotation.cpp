@@ -58,6 +58,7 @@
 #include "Application.h"
 #include "Document.h"
 #include "Window.h"
+#include "ViewParams.h"
 
 using namespace Gui;
 
@@ -69,8 +70,7 @@ PROPERTY_SOURCE(Gui::ViewProviderAnnotation, Gui::ViewProviderDocumentObject)
 
 ViewProviderAnnotation::ViewProviderAnnotation() 
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    unsigned long col = hGrp->GetUnsigned("AnnotationTextColor",4294967295UL); // light grey
+    unsigned long col = ViewParams::instance()->getAnnotationTextColor();
     float r,g,b;
     r = ((col >> 24) & 0xff) / 255.0; g = ((col >> 16) & 0xff) / 255.0; b = ((col >> 8) & 0xff) / 255.0;
     ADD_PROPERTY(TextColor,(r,g,b));

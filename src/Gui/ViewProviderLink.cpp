@@ -67,6 +67,7 @@
 #include "Control.h"
 #include "TaskCSysDragger.h"
 #include "TaskElementColors.h"
+#include "ViewParams.h"
 
 FC_LOG_LEVEL_INIT("App::Link",true,true)
 
@@ -319,7 +320,10 @@ public:
         if(pcSnapshot) {
             if(!update) return pcSnapshot;
         }else{
-            pcSnapshot = new SoSeparator;
+            if(ViewParams::instance()->getUseSelectionRoot())
+                pcSnapshot = new SoFCSelectionRoot;
+            else
+                pcSnapshot = new SoSeparator;
             pcSnapshot->renderCaching = SoSeparator::OFF;
             std::ostringstream ss;
             ss << pcLinked->getObject()->getNameInDocument() 
@@ -1459,10 +1463,8 @@ ViewProviderLink::ViewProviderLink()
 
     ADD_PROPERTY_TYPE(OverrideMaterial, (false), " Link", App::Prop_None, "Override linked object's material");
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View");
     App::Material mat(App::Material::DEFAULT);
-    mat.diffuseColor.setPackedValue(hGrp->GetUnsigned("DefaultLinkColor",0x66FFFF00));
+    mat.diffuseColor.setPackedValue(ViewParams::instance()->getDefaultLinkColor());
     ADD_PROPERTY_TYPE(ShapeMaterial, (mat), " Link", App::Prop_None, 0);
     ShapeMaterial.setStatus(App::Property::MaterialEdit, true);
 
@@ -1470,7 +1472,7 @@ ViewProviderLink::ViewProviderLink()
     static const char* DrawStyleEnums[]= {"None","Solid","Dashed","Dotted","Dashdot",NULL};
     DrawStyle.setEnums(DrawStyleEnums);
 
-    int lwidth = hGrp->GetInt("DefaultShapeLineWidth",2);
+    int lwidth = ViewParams::instance()->getDefaultShapeLineWidth();
     ADD_PROPERTY_TYPE(LineWidth,(lwidth), " Link", App::Prop_None, "");
 
     static App::PropertyFloatConstraint::Constraints sizeRange = {1.0,64.0,1.0};
