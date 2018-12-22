@@ -3250,7 +3250,9 @@ void PropertyXLink::setAllowPartial(bool enable) {
     if(!owner)
         return;
     if(!App::GetApplication().isRestoring() && 
-      !_pcLink && docInfo && filePath.size() && objectName.size())
+       !owner->getDocument()->isPerformingTransaction() &&
+       !_pcLink && docInfo && filePath.size() && objectName.size() &&
+       (!docInfo->pcDoc || docInfo->pcDoc->testStatus(Document::PartialDoc)))
     {
         auto path = docInfo->getDocPath(filePath.c_str(),owner->getDocument(),false);
         if(path.size())
