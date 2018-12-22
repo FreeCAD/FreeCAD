@@ -1402,7 +1402,13 @@ bool SoFCSelectionRoot::doActionPrivate(Stack &stack, SoAction *action) {
     bool ctx2Searched = false;
     bool isTail = false;
     if(action->getCurPathCode()==SoAction::IN_PATH) {
-        isTail = action->getPathAppliedTo() && action->getPathAppliedTo()->getTail()==this;
+        auto path = action->getPathAppliedTo();
+        if(path) {
+            isTail = path->getTail()==this || 
+                     (path->getLength()>1 
+                      && path->getNodeFromTail(1)==this
+                      && path->getTail()->isOfType(SoSwitch::getClassTypeId()));
+        }
 
         if(!action->isOfType(SoSelectionElementAction::getClassTypeId())) {
             ctx2Searched = true;
