@@ -882,5 +882,7 @@ Py::Object DocumentPy::getHasher() const {
     return Py::Object(getDocumentPtr()->Hasher->getPyObject(),true);
 }
 
-
+Py::Boolean DocumentPy::getTransacting() const {
+    return Py::Boolean(getDocumentPtr()->isPerformingTransaction());
+}
 

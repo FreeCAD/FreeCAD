@@ -327,7 +327,13 @@ sort: whether to topologically sort the return list
         <UserDocu>Get the string hasher of this document</UserDocu>
 	  </Documentation>
 	  <Parameter Name="Hasher" Type="Object" />
-	 </Attribute>
+	</Attribute>
+	<Attribute Name="Transacting" ReadOnly="true">
+	  <Documentation>
+          <UserDocu>Indicate whether the document is undoing/redoing</UserDocu>
+	  </Documentation>
+	  <Parameter Name="Transacting" Type="Boolean" />
+	</Attribute>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>
