@@ -129,7 +129,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
             # extrude all faces up to StartDepth and those are the removal shapes
             extent = FreeCAD.Vector(0, 0, obj.StartDepth.Value - obj.FinalDepth.Value)
-            self.removalshapes = [(face.extrude(extent), False) for face in self.horizontal]
+            self.removalshapes = [(face.removeSplitter().extrude(extent), False) for face in self.horizontal]
 
         else:  # process the job base object as a whole
             PathLog.debug("processing the whole job base object")
