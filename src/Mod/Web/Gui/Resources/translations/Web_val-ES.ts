@@ -168,7 +168,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
@@ -235,12 +235,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="412"/>
+      <location filename="../../BrowserView.cpp" line="440"/>
       <source>Browser</source>
       <translation>Navegador</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="309"/>
+      <location filename="../../BrowserView.cpp" line="337"/>
       <source>File does not exist!</source>
       <translation>El fitxer no existeix.</translation>
     </message>
@@ -248,12 +248,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="329"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="383"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Hi hagué errors quan es carregava el fitxer. Algunes dades s'han pogut modificar o no s'han recuperat. Busqueu en la vista d'informes per a obtindre informació més específica sobre els objectes implicats.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="411"/>
       <source>Loading %1...</source>
       <translation>S'està carregant 1%...</translation>
     </message>
@@ -261,12 +267,12 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="181"/>
+      <location filename="../../BrowserView.cpp" line="185"/>
       <source>Open in External Browser</source>
       <translation>Obri en un navegador extern</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="185"/>
+      <location filename="../../BrowserView.cpp" line="189"/>
       <source>Open in new window</source>
       <translation>Obri en una finestra nova</translation>
     </message>

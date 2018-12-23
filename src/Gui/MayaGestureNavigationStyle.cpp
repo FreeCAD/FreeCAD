@@ -314,7 +314,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //mode-independent spaceball/joystick handling
     if (evIsLoc3) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -549,7 +549,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed=true;
             } else if (gesture->state == SoGestureEvent::SbGSUpdate){
                 if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
-                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent* const>(ev);
+                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent*>(ev);
                     if (this->zoomAtCursor){
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                         SbVec2f panDist = this->normalizePixelPos(event->deltaCenter.getValue());
@@ -561,7 +561,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                     processed = true;
                 }
                 if(type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())){
-                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent* const>(ev);
+                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent*>(ev);
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                     SbVec2f panDist = this->normalizePixelPos(event->deltaOffset);
                     NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));

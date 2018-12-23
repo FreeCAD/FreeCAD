@@ -66,7 +66,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
       <source>Orbit style</source>
-      <translation>导航模式</translation>
+      <translation>环绕模式</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="293"/>

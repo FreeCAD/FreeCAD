@@ -47,5 +47,7 @@
         <file>translations/Web_id.qm</file>
         <file>translations/Web_lt.qm</file>
         <file>translations/Web_val-ES.qm</file>
+        <file>translations/Web_ar.qm</file>
+        <file>translations/Web_vi.qm</file>
     </qresource>
 </RCC>

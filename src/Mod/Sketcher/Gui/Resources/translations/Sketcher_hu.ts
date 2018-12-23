@@ -76,7 +76,7 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+6773"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+6866"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1474"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1234"/>
+      <location line="-1378"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -162,9 +162,37 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherCompConstrainRadDia</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="+5915"/>
+      <source>Sketcher</source>
+      <translation>Vázlatkészítõ</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain arc or circle</source>
+      <translation>Kör vagy körív kényszer</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain an arc or a circle</source>
+      <translation>Egy kör vagy körív kényszerítése</translation>
+    </message>
+    <message>
+      <location line="+83"/>
+      <source>Constrain radius</source>
+      <translation>Sugár illesztés</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Constrain diameter</source>
+      <translation>Átmérő kényszer</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1450"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -182,7 +210,7 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4800"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4852"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -210,7 +238,7 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location line="+2831"/>
+      <location line="+2848"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -256,7 +284,7 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location line="-1076"/>
+      <location line="-1093"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -299,7 +327,7 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location line="+3091"/>
+      <location line="+3143"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -356,7 +384,7 @@
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="+473"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+492"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -384,7 +412,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1346"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -402,7 +430,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5429"/>
+      <location filename="../../CommandConstraints.cpp" line="+29"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -420,7 +448,7 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location line="-3501"/>
+      <location line="-4079"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -454,9 +482,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherConstrainDiameter</name>
+    <message>
+      <location line="+3188"/>
+      <source>Sketcher</source>
+      <translation>Vázlatkészítõ</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain diameter</source>
+      <translation>Átmérő kényszer</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Fix the diameter of a circle or an arc</source>
+      <translation>Rögzíteni egy kör vagy egy ív átmérőjét</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="+190"/>
+      <location line="-3000"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -518,7 +564,7 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+2689"/>
+      <location line="+3267"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -536,7 +582,7 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-4776"/>
+      <location line="-5354"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -554,7 +600,7 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location line="+5376"/>
+      <location line="+5966"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -572,7 +618,7 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="-4886"/>
+      <location line="-5476"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -666,7 +712,7 @@
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location line="+1433"/>
+      <location line="+2023"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -706,7 +752,7 @@
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-1774"/>
+      <location line="-2364"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -742,7 +788,7 @@
   <context>
     <name>CmdSketcherConvertToNURB</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-520"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-539"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -760,7 +806,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1222"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -778,7 +824,7 @@
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-5666"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-5718"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -796,7 +842,7 @@
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location line="+3272"/>
+      <location line="+3289"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -814,7 +860,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location line="-3588"/>
+      <location line="-3605"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -894,7 +940,7 @@
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location line="+588"/>
+      <location line="+605"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -912,7 +958,7 @@
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location line="-2565"/>
+      <location line="-2582"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -930,7 +976,7 @@
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location line="+3274"/>
+      <location line="+3291"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -948,7 +994,7 @@
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location line="-2407"/>
+      <location line="-2424"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -984,7 +1030,7 @@
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location line="+2721"/>
+      <location line="+2769"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1006,7 +1052,7 @@
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location line="+1574"/>
+      <location line="+1578"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1042,7 +1088,7 @@
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location line="-6951"/>
+      <location line="-7042"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1060,7 +1106,7 @@
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location line="+6999"/>
+      <location line="+7090"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1096,7 +1142,7 @@
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location line="-2482"/>
+      <location line="-2517"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1132,7 +1178,7 @@
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location line="-4122"/>
+      <location line="-4139"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1154,7 +1200,7 @@
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location line="-697"/>
+      <location line="-736"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1172,7 +1218,7 @@
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location line="+6786"/>
+      <location line="+6877"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1226,7 +1272,7 @@
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location line="-1815"/>
+      <location line="-1850"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1244,7 +1290,7 @@
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location line="+1785"/>
+      <location line="+1820"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1262,7 +1308,7 @@
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="+302"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+320"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1278,9 +1324,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherDeleteAllConstraints</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+590"/>
+      <source>Sketcher</source>
+      <translation>Vázlatkészítõ</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Delete All Constraints</source>
+      <translation>Töröl minden kényszert</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Deletes all the constraints</source>
+      <translation>Töröl minden kényszert</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+453"/>
+      <location line="-68"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1316,7 +1380,7 @@
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-954"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-958"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1334,7 +1398,7 @@
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location line="+223"/>
+      <location line="+224"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1352,7 +1416,7 @@
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-226"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-243"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1370,12 +1434,16 @@
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location line="+62"/>
+      <location line="+78"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Increase knot multiplicity</source>
+      <translation>Sokszög növelése</translation>
+    </message>
+    <message>
       <source>Increase degree</source>
       <translation>Fok növelése</translation>
     </message>
@@ -1475,9 +1543,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherMove</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="-441"/>
+      <source>Sketcher</source>
+      <translation>Vázlatkészítõ</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Move</source>
+      <translation>Mozgat</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Moves the geometry taking as reference the last selected point</source>
+      <translation>Mozgatja a geometriát az utolsó kiválasztott pont, mint referencia pont, figyelembevételével</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location line="-548"/>
+      <location filename="../../Command.cpp" line="-548"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1514,7 +1600,7 @@
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-140"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+298"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1550,7 +1636,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-997"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1568,7 +1654,7 @@
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location line="-175"/>
+      <location line="-282"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1582,7 +1668,7 @@
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location line="-253"/>
+      <location line="-254"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1600,7 +1686,7 @@
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location line="+300"/>
+      <location line="+301"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1612,9 +1698,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherSelectElementsWithDoFs</name>
+    <message>
+      <location line="+120"/>
+      <source>Sketcher</source>
+      <translation>Vázlatkészítõ</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select solver DoFs</source>
+      <translation>Válasasza a szabad kapcsolatok megoldóját</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select elements where the solver still detects unconstrained degrees of freedom.</source>
+      <translation>Jelölje ki az elemeket, ha a megoldó még mindig felismeri-e a szabad kapcsolatokat.</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location line="-149"/>
+      <location line="-271"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1700,7 +1804,7 @@
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+517"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1744,7 +1848,7 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5545"/>
+      <location filename="../../CommandConstraints.cpp" line="+6135"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1762,7 +1866,7 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-583"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-584"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1810,9 +1914,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherViewSection</name>
+    <message>
+      <location line="+209"/>
+      <source>Sketcher</source>
+      <translation>Vázlatkészítõ</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>View section</source>
+      <translation>Szakasz nézete</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Switches between section and full view</source>
+      <translation>Kiválasztás és teljes nézet közti váltás</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location line="-53"/>
+      <location line="-264"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -1830,11 +1952,20 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>Ez az OCE/OCC verzió nem támogatja a csomópont műveletet. 6.9.0 vagy magasabb verzió szükséges
 </translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="+1500"/>
+      <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
+      <translation>Nem tudja meghatározni a görbék metszéspontját. Próbáljon meg hozzáadni egybeesés kényszerítést a görbék csúcsaihoz, melyeket le szeretné kerekíteni.</translation>
+    </message>
+    <message>
+      <location line="+3397"/>
+      <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
+      <translation>Ez az OCE/OCC verzió nem támogatja a szög műveletet. 6.9.0 vagy magasabb verzió szükséges.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1871,6 +2002,55 @@
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC képtelen csökkenteni a sokszorozást a maximális megengedett tűrésen belül.</translation>
     </message>
+    <message>
+      <location filename="../../../App/SketchAnalysis.cpp" line="+376"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.
+</source>
+      <translation>Auto kényszer hiba: megoldhatatlan vázlat egybeeső kényszerek alkalmazása mellett.
+</translation>
+    </message>
+    <message>
+      <location line="+79"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
+</source>
+      <translation>Autokényszer hiba: megoldhatatlan vázlat függőleges/vízszintes megkötések alkalmazása mellett.
+</translation>
+    </message>
+    <message>
+      <location line="+195"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.
+</source>
+      <translation>Autokényszer hiba: megoldhatatlan vázlat egyenlőség kényszerek alkalmazása mellett.
+</translation>
+    </message>
+    <message>
+      <location line="+54"/>
+      <source>Autoconstrain error: Unsolvable sketch without constraints.
+</source>
+      <translation>Autokényszer hiba: megoldhatatlan kényszerek nélküli vázlat.
+</translation>
+    </message>
+    <message>
+      <location line="+37"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
+</source>
+      <translation>Autokényszer hiba: megoldhatatlan vázlat függőleges/vízszintes kényszerek alkalmazása után.
+</translation>
+    </message>
+    <message>
+      <location line="+22"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
+</source>
+      <translation>Autokényszer hiba: megoldhatatlan vázlat pont-a-ponton kényszerek alkalmazása után.
+</translation>
+    </message>
+    <message>
+      <location line="+28"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.
+</source>
+      <translation>Autoconstrain hiba: megoldhatatlan vázlat egyenlőségi kényszer alkalmazása után.
+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskSketcherCreateCommands</name>
@@ -1883,11 +2063,11 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="+45"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="+48"/>
       <location line="+8"/>
-      <location filename="../../CommandConstraints.cpp" line="-6737"/>
+      <location filename="../../CommandConstraints.cpp" line="-7352"/>
       <location line="+6"/>
-      <location line="+965"/>
+      <location line="+990"/>
       <location line="+247"/>
       <location line="+246"/>
       <location line="+23"/>
@@ -1949,17 +2129,21 @@
       <location line="+11"/>
       <location line="+51"/>
       <location line="+237"/>
-      <location line="+185"/>
+      <location line="+172"/>
+      <location line="+11"/>
+      <location line="+51"/>
+      <location line="+237"/>
+      <location line="+292"/>
       <location line="+12"/>
       <location line="+180"/>
       <location line="+56"/>
       <location line="+252"/>
       <location line="+13"/>
-      <location line="+15"/>
-      <location line="+6"/>
       <location line="+16"/>
-      <location line="+16"/>
-      <location line="+9"/>
+      <location line="+5"/>
+      <location line="+19"/>
+      <location line="+20"/>
+      <location line="+14"/>
       <location line="+111"/>
       <location line="+12"/>
       <location line="+24"/>
@@ -1982,29 +2166,30 @@
       <location line="+6"/>
       <location line="+6"/>
       <location line="+133"/>
-      <location line="+53"/>
+      <location line="+55"/>
       <location line="+8"/>
-      <location line="+30"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-88"/>
-      <location line="+119"/>
+      <location line="+32"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-104"/>
+      <location line="+80"/>
+      <location line="+56"/>
       <location line="+67"/>
-      <location line="+93"/>
+      <location line="+94"/>
       <location line="+54"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-696"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-806"/>
       <location line="+8"/>
       <location line="+42"/>
-      <location line="+57"/>
+      <location line="+58"/>
       <location line="+8"/>
-      <location line="+75"/>
-      <location line="+424"/>
-      <location line="+98"/>
+      <location line="+76"/>
+      <location line="+532"/>
+      <location line="+99"/>
       <location line="+8"/>
       <location line="+106"/>
       <location line="+6"/>
-      <location line="+218"/>
+      <location line="+243"/>
       <location line="+8"/>
-      <location line="+62"/>
-      <location line="+392"/>
+      <location line="+59"/>
+      <location line="+466"/>
       <location line="+8"/>
       <location line="+62"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="+23"/>
@@ -2020,7 +2205,7 @@
       <translation>A kiválasztott él(ek) a vázlatból való.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5836"/>
+      <location filename="../../CommandConstraints.cpp" line="-6430"/>
       <location line="+247"/>
       <source>Select an edge from the sketch.</source>
       <translation>Egy él kiválasztása a vázlaton.</translation>
@@ -2059,13 +2244,13 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
-      <location line="+99"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1749"/>
+      <location line="+100"/>
       <source>Impossible constraint</source>
       <translation>Lehetetlen kényszerítés</translation>
     </message>
     <message>
-      <location line="-1356"/>
+      <location line="-1381"/>
       <source>Cannot add a constraint between two external geometries!</source>
       <translation>Nem lehet hozzáadni egy illesztést két külső geometriához!</translation>
     </message>
@@ -2075,7 +2260,7 @@
       <translation>Nem adhat hozzá egy kényszerítést két rögzített geometria között! Rögzített geometriák külső geometriát, blokk geometriát vagy speciális pontot mint B-görbe csomópontot foglalnak magukba.</translation>
     </message>
     <message>
-      <location line="+520"/>
+      <location line="+545"/>
       <location line="+11"/>
       <location line="+12"/>
       <source>Only sketch and its support is allowed to select</source>
@@ -2248,16 +2433,19 @@
     <message>
       <location line="+422"/>
       <location line="+51"/>
+      <location line="+420"/>
+      <location line="+51"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Válasszon egy vagy több ívet vagy kört a vázlatból.</translation>
     </message>
     <message>
-      <location line="+52"/>
+      <location line="-419"/>
+      <location line="+471"/>
       <source>Constrain equal</source>
       <translation>Illesztás megtartása</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-470"/>
       <source>Do you want to share the same radius for all selected elements?</source>
       <translation>Az összes kijelölt elemre vonatkozólag ugyanolyan sugárt kívánt kiosztani?</translation>
     </message>
@@ -2286,7 +2474,8 @@
       <location line="+185"/>
       <location line="+249"/>
       <location line="+1706"/>
-      <location line="+484"/>
+      <location line="+471"/>
+      <location line="+591"/>
       <source>Select the right things from the sketch.</source>
       <translation>Válassza ki a megfelelő dolgokat a vázlatból.</translation>
     </message>
@@ -2295,7 +2484,7 @@
       <translation>BGörbe él pontja jelenleg nem támogatott.</translation>
     </message>
     <message>
-      <location line="-2294"/>
+      <location line="-2872"/>
       <location line="+247"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
       <translation>Ez a kényszerítés csak egy vonalszakaszon vagy egy pont páron érvényesül</translation>
@@ -2320,11 +2509,17 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     </message>
     <message>
       <location line="+913"/>
+      <location line="+471"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Kényszerítés csak az ívekre és körökre vonatkozik.</translation>
     </message>
     <message>
-      <location line="+197"/>
+      <location line="-184"/>
+      <source>Do you want to share the same diameter for all selected elements?</source>
+      <translation>Az összes kijelölt elemre vonatkozólag ugyanolyan átmérőt kívánt kiosztani?</translation>
+    </message>
+    <message>
+      <location line="+488"/>
       <location line="+236"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Válasszon egy vagy két vonalat a vázlatból. Vagy válasszon ki két élet és egy pontot.</translation>
@@ -2346,18 +2541,18 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Egyenlőség BGörbe élével jelenleg nem támogatott.</translation>
     </message>
     <message>
-      <location line="+606"/>
+      <location line="+618"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Válassza ki egy vonal két végpontját, amik sugarat fognak jelképezni, és egy élt ami a határvonal lesz. Az első kijelölt pontnak megfelel az index n1, a másodiknak az n2, és a méretadat állítja be az arányt n2/n1.</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location line="+15"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>A kijelölt tárgyak nem csak egy vázlat geometriái.</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location line="+9"/>
       <source>Number of selected objects is not 3 (is %1).</source>
       <translation>A kijelölt tárgyak száma nem 3 (az %1).</translation>
     </message>
@@ -2460,9 +2655,9 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Jelenleg csak az ellipszis vagy ellipszis íve belső geometriája támogatott. Az utolsó kiválasztott elemnek egy ellipszis vagy ellipszis ívnek kell lennie.</translation>
     </message>
     <message>
-      <location line="+53"/>
+      <location line="+55"/>
       <location line="+8"/>
-      <location line="+30"/>
+      <location line="+32"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="-31"/>
       <location line="+8"/>
       <location line="+24"/>
@@ -2474,7 +2669,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Két csomópont kiválasztása a vázlaton.</translation>
     </message>
     <message>
-      <location line="-4754"/>
+      <location line="-5348"/>
       <location line="+10"/>
       <source>Select two or more vertexes from the sketch.</source>
       <translation>Jelöljön ki két vagy több csomópontok a vázlatból.</translation>
@@ -2547,12 +2742,12 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     </message>
     <message>
       <location line="+13"/>
-      <location line="+2405"/>
+      <location line="+2983"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Válasszon ki legalább két  vonalat a vázlatból.</translation>
     </message>
     <message>
-      <location line="-2391"/>
+      <location line="-2969"/>
       <source>Select a valid line</source>
       <translation>Válasszon ki egy érvényes vonalat</translation>
     </message>
@@ -2591,13 +2786,13 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <location line="+465"/>
       <location line="+156"/>
       <location line="+454"/>
-      <location line="+1607"/>
+      <location line="+2197"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
     <message>
-      <location line="-2666"/>
+      <location line="-3256"/>
       <location line="+620"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
@@ -2668,7 +2863,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Nem lehet hozzáadni egy külső geometriához a szög illesztést!</translation>
     </message>
     <message>
-      <location line="+806"/>
+      <location line="+1384"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Nem lehet hozzáadni egy szög illesztést egy tengelyhez!</translation>
     </message>
@@ -2686,24 +2881,24 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Válasszon ki legalább két  vonalat a vázlatból.</translation>
     </message>
     <message>
-      <location line="+28"/>
-      <location line="+618"/>
+      <location line="+29"/>
+      <location line="+629"/>
       <source>Select two or more compatible edges</source>
       <translation>Két vagy több kompatibilis élt válasszon</translation>
     </message>
     <message>
-      <location line="-612"/>
+      <location line="-624"/>
       <source>Sketch axes cannot be used in equality constraints</source>
       <translation>Vázlat tengelyek nem használhatók egyenlőségi illesztéshez</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location line="+19"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Egyenlőség B-görbe élével jelenleg nem támogatott.</translation>
     </message>
     <message>
-      <location line="+16"/>
-      <location line="+9"/>
+      <location line="+20"/>
+      <location line="+14"/>
       <source>Select two or more edges of similar type</source>
       <translation>Jelöljön ki két vagy több hasonló élt</translation>
     </message>
@@ -2801,7 +2996,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>A vázlathoz, szükség van egy támogatott sík felületre!</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="+84"/>
+      <location filename="../../EditDatumDialog.cpp" line="+79"/>
       <source>Distance constraint</source>
       <translation>Távolság illesztés</translation>
     </message>
@@ -2811,10 +3006,12 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Nem megengedett, hogy módosítsa a datumot, mert a vázlat tartalmaz egymásnak ellentmondó illesztéseket</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-6155"/>
-      <location line="+5057"/>
+      <location filename="../../CommandConstraints.cpp" line="-6770"/>
+      <location line="+5082"/>
       <location line="+133"/>
-      <location filename="../../EditDatumDialog.cpp" line="+93"/>
+      <location line="+338"/>
+      <location line="+133"/>
+      <location filename="../../EditDatumDialog.cpp" line="+99"/>
       <source>Dimensional constraint</source>
       <translation>Méretezett illesztés</translation>
     </message>
@@ -2823,38 +3020,38 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Megjelenítés</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-138"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-139"/>
       <location line="+8"/>
-      <location line="+99"/>
+      <location line="+100"/>
       <location line="+8"/>
       <source>Select at least two edges from the sketch.</source>
       <translation>Jelöljön ki legalább két élet a vázlatból.</translation>
     </message>
     <message>
-      <location line="-75"/>
-      <location line="+99"/>
+      <location line="-76"/>
+      <location line="+100"/>
       <source>One selected edge is not connectable</source>
       <translation>Egy kiválasztott él nem csatlakoztatható</translation>
     </message>
     <message>
-      <location line="-89"/>
+      <location line="-90"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
       <translation>Pontosan két vonal kapcsolásával formált alakzatnak nincs értelme.</translation>
     </message>
     <message>
-      <location line="+140"/>
-      <location line="+424"/>
-      <location line="+98"/>
+      <location line="+142"/>
+      <location line="+532"/>
+      <location line="+99"/>
       <location line="+8"/>
-      <location line="+330"/>
+      <location line="+355"/>
       <location line="+8"/>
-      <location line="+454"/>
+      <location line="+525"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Válasszon ki elemeket egy egyedülálló vázlatból.</translation>
     </message>
     <message>
-      <location line="-941"/>
+      <location line="-1146"/>
       <source>No constraint selected</source>
       <translation>Nincs kényszerítés kiválasztva</translation>
     </message>
@@ -2864,7 +3061,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Legalább egy kényszerítést ki kell kiválasztani</translation>
     </message>
     <message>
-      <location line="+1065"/>
+      <location line="+1270"/>
       <source>Delete All Geometry</source>
       <translation>Töröl minden geometriát</translation>
     </message>
@@ -2874,11 +3071,21 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Biztos tényleg törli a geometriákat és a kényszerítéseket?</translation>
     </message>
     <message>
+      <location line="+65"/>
+      <source>Delete All Constraints</source>
+      <translation>Töröl minden kényszert</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Are you really sure you want to delete all the constraints?</source>
+      <translation>Biztos benne, hogy törli az összes kényszerítést?</translation>
+    </message>
+    <message>
       <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
       <translation>Jelenleg csak az ellipszis és ellipszis íve belső geometriája támogatott. Az utolsó kiválasztott elemnek egy ellipszis vagy ellipszis ívnek kell lennie.</translation>
     </message>
     <message>
-      <location line="-820"/>
+      <location line="-982"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>A szimmetrikus építési legalább két geometriai elemet igényel, az utoljára kiválasztott geometriai elem lesz a referencia a szimmetria építéséhez.</translation>
     </message>
@@ -2888,8 +3095,8 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Az utolsó elemnek egy pontnak vagy egy vonalnak kell lennie, ami szimmetria építésére szolgáló hivatkozás szolgálja.</translation>
     </message>
     <message>
-      <location line="+288"/>
-      <location line="+462"/>
+      <location line="+310"/>
+      <location line="+536"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Egy másolás legalább egy nem-külső geometriai elem kiválasztást igényel</translation>
     </message>
@@ -2946,41 +3153,47 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Vázlatkészítõ</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-319"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-337"/>
       <source>None of the selected elements is an edge.</source>
       <translation>A kiválasztott elemek közül egyik sem él.</translation>
     </message>
     <message>
-      <location line="+100"/>
-      <location line="+160"/>
+      <location line="+80"/>
+      <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
+      <translation>A kijelölt objektumok legalább egyike nem volt egy B-görbe, és figyelmen kívül lett hagyva.</translation>
+    </message>
+    <message>
+      <location line="+36"/>
+      <location line="+161"/>
       <source>Wrong OCE/OCC version</source>
       <translation>Nem megfelelő OCE/OCC verzió</translation>
     </message>
     <message>
-      <location line="-159"/>
-      <location line="+160"/>
+      <location line="-160"/>
+      <location line="+161"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
       <translation>Ez az OCE/OCC verzió nem támogatja a szög műveletet. 6.9.0 vagy magasabb verzió szükséges</translation>
     </message>
     <message>
       <location line="-142"/>
-      <location line="+160"/>
+      <location line="+161"/>
       <source>The selection comprises more than one item. Please select just one knot.</source>
       <translation>A kiválasztás magában foglal egynél több tételt. Kérem csak egy csomópontot válasszon.</translation>
     </message>
     <message>
-      <location line="-118"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-213"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-119"/>
       <source>CAD Kernel Error</source>
       <translation>CAD rendszermag hiba</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+8"/>
       <source>Input Error</source>
       <translation>Beviteli hiba</translation>
     </message>
     <message>
       <location line="+17"/>
-      <location line="+147"/>
+      <location line="+148"/>
       <source>None of the selected elements is a knot of a B-spline</source>
       <translation>Kiválasztott elemek közül egyik sem B-görbe csomópont</translation>
     </message>
@@ -3019,7 +3232,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+626"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+840"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Másolás körkörös függőséget teremthet.</translation>
     </message>
@@ -3036,6 +3249,11 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <location line="+3"/>
       <source>This object belongs to another body. Hold Ctrl to allow crossreferences.</source>
       <translation>Ez az objektum egy másik testhez tartozik. Tartsa lenyomva a Ctrl billentyűt, hogy lehetővé tegye a kereszthivatkozásokat.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>This object belongs to another body and it contains external geometry. Crossreference not allowed.</source>
+      <translation>Ez az objektum egy másik szervezetethez tartozik, és külső geometriát tartalmaz. Kereszthivatkozás nem megengedett.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3061,7 +3279,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="+419"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="+444"/>
       <source>Toggle to/from reference</source>
       <translation>Váltás a referenciához/-ról</translation>
     </message>
@@ -3114,8 +3332,8 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5254"/>
-      <location filename="../../EditDatumDialog.cpp" line="-77"/>
+      <location filename="../../CommandConstraints.cpp" line="-5756"/>
+      <location filename="../../EditDatumDialog.cpp" line="-83"/>
       <source>Insert angle</source>
       <translation>Szög beillesztése</translation>
     </message>
@@ -3134,6 +3352,20 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
     <message>
       <location line="+6"/>
       <location filename="../../EditDatumDialog.cpp" line="+6"/>
+      <source>Insert diameter</source>
+      <translation>Átmérő beszúrása</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <location line="+5558"/>
+      <location line="+145"/>
+      <location filename="../../EditDatumDialog.cpp" line="+2"/>
+      <source>Diameter:</source>
+      <translation>Átmérő:</translation>
+    </message>
+    <message>
+      <location line="-5699"/>
+      <location filename="../../EditDatumDialog.cpp" line="+4"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Refraktív index arány</translation>
@@ -3146,21 +3378,27 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Arány n2/n1:</translation>
     </message>
     <message>
-      <location line="+5056"/>
+      <location line="+5081"/>
       <location line="+145"/>
       <source>Change radius</source>
       <translation>Sugár módosítása</translation>
     </message>
     <message>
-      <location line="-5206"/>
-      <location line="+5062"/>
+      <location line="-5237"/>
+      <location line="+5093"/>
       <location line="+145"/>
-      <location filename="../../EditDatumDialog.cpp" line="-5"/>
+      <location filename="../../EditDatumDialog.cpp" line="-11"/>
       <source>Radius:</source>
       <translation>Sugár:</translation>
     </message>
     <message>
-      <location line="+1153"/>
+      <location line="+325"/>
+      <location line="+145"/>
+      <source>Change diameter</source>
+      <translation>Átmérő változtatása</translation>
+    </message>
+    <message>
+      <location line="+1273"/>
       <source>Refractive index ratio</source>
       <translation>Refraktív index arány</translation>
     </message>
@@ -3170,8 +3408,8 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Arány n2/n1:</translation>
     </message>
     <message>
-      <location line="-6352"/>
-      <location filename="../../EditDatumDialog.cpp" line="+9"/>
+      <location line="-6967"/>
+      <location filename="../../EditDatumDialog.cpp" line="+15"/>
       <source>Insert length</source>
       <translation>Hossz beillesztése</translation>
     </message>
@@ -3185,7 +3423,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+170"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+171"/>
       <source>Delete</source>
       <translation>Törlés</translation>
     </message>
@@ -3193,7 +3431,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-250"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-254"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Összekötése körkörös függőséget okoz.</translation>
     </message>
@@ -3238,8 +3476,8 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="+129"/>
-      <location line="+52"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="+130"/>
+      <location line="+53"/>
       <source>Unnamed</source>
       <translation>Névtelen</translation>
     </message>
@@ -3371,7 +3609,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::SketcherGeneralWidget</name>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+99"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="+100"/>
       <location line="+5"/>
       <location line="+5"/>
       <source>Normal Geometry</source>
@@ -3413,7 +3651,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="+192"/>
+      <location filename="../../SketcherSettings.cpp" line="+180"/>
       <source>Sketcher</source>
       <translation>Vázlatkészítõ</translation>
     </message>
@@ -3471,22 +3709,20 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Általános</translation>
     </message>
     <message>
-      <location line="+53"/>
       <source>Marker size</source>
       <translation>Jelölő mérete</translation>
     </message>
     <message>
-      <location line="+40"/>
+      <location line="+132"/>
       <source>Geometry Creation "Continue Mode"</source>
       <translation>Geometria létrehozása "Folyamatos mód"</translation>
     </message>
     <message>
-      <location line="+16"/>
       <source>Constraint Creation "Continue Mode" (Experimental)</source>
       <translation>Kényszerítés létrehozása "Folytatás mód" (kísérleti)</translation>
     </message>
     <message>
-      <location line="+43"/>
+      <location line="+59"/>
       <source>Visibility automation</source>
       <translation>Láthatóság automatizálás</translation>
     </message>
@@ -3546,7 +3782,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Alkalmazza a meglévő vázlatokhoz</translation>
     </message>
     <message>
-      <location line="+37"/>
+      <location line="-262"/>
       <source>Notifications</source>
       <translation>Értesítések</translation>
     </message>
@@ -3561,12 +3797,27 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Értesíti az automatikus kényszerítés helyettesítésekről</translation>
     </message>
     <message>
-      <location line="+19"/>
+      <location line="+100"/>
+      <source>Constraint Creation "Continue Mode"</source>
+      <translation type="unfinished">Constraint Creation "Continue Mode"</translation>
+    </message>
+    <message>
+      <location line="+163"/>
       <source>Segments per geometry</source>
       <translation>Geometriánkénti szakaszok</translation>
     </message>
     <message>
-      <location line="+26"/>
+      <location line="+23"/>
+      <source>Do not show base length units in sketches. Supports all unit systems except US Customary and Building US/Euro.</source>
+      <translation>Ne jelenjen meg alap hossz mértékegység a vázlatokban. Támogatja az összes mértékegység rendszert kivéve US szokásos és épület US/Euro.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Hide base length units for supported unit systems</source>
+      <translation>A támogatott mértékegység rendszerek alap mértékegységeinek elrejtése</translation>
+    </message>
+    <message>
+      <location line="+16"/>
       <source>Sketcher Solver</source>
       <translation>Vázlatkészítő megoldó</translation>
     </message>
@@ -3610,7 +3861,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Az alapértelmezett vonalvastagság új alakzatokhoz</translation>
     </message>
     <message>
-      <location line="-334"/>
+      <location line="-279"/>
       <source>px</source>
       <translation>px</translation>
     </message>
@@ -3639,17 +3890,17 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>A nem-megvezetett kényszerítések vas méretek színe szerkesztési módban</translation>
     </message>
     <message>
-      <location line="-19"/>
+      <location line="-74"/>
       <source>Sketch editing</source>
       <translation>Vázlat szerkesztése</translation>
     </message>
     <message>
-      <location line="+12"/>
+      <location line="+67"/>
       <source>Font size</source>
       <translation>Betűméret</translation>
     </message>
     <message>
-      <location line="+65"/>
+      <location line="+52"/>
       <source>Grid line pattern</source>
       <translation>Rács vonalminta</translation>
     </message>
@@ -3659,12 +3910,11 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>Távolság megkötés létrehozása után kérjen értéket</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="-51"/>
       <source>%1 px</source>
       <translation>%1 px</translation>
     </message>
     <message>
-      <location line="+48"/>
+      <location filename="../../SketcherSettings.cpp" line="-3"/>
       <source>Unexpected C++ exception</source>
       <translation>Váratlan C++ kivétel</translation>
     </message>
@@ -3839,7 +4089,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="+330"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="+139"/>
       <source>No missing coincidences</source>
       <translation>Nincsenek hiányzó egybeesések</translation>
     </message>
@@ -3859,7 +4109,7 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
       <translation>%1 hiányzó egybeesést talált</translation>
     </message>
     <message>
-      <location line="+66"/>
+      <location line="+36"/>
       <source>No invalid constraints</source>
       <translation>Nincs érvényes kényszerítés</translation>
     </message>
@@ -3895,9 +4145,9 @@ Elfogadott kombinációk: két görbe; egy végpont és egy görbe; két végpon
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
       <translation>%1 fordított külső-geometria ívek találhatók. Végpontjaik körberajzoltak 3D nézetben.
 
-%2 kényszerítések a végpontokhoz csatoltak. A kényszerítések felsoroltak a jelentés nézetben (Nézet menü-&gt; Nézetek -&gt; jelentés nézetben).
+%2 kényszerítések a végpontokhoz csatoltak. A kényszerítések felsoroltak a jelentés nézetben (Nézet menü -&gt; Panelek -&gt; jelentés nézetben).
 
-"Kényszerítés végpontjait cseréli fel" gombra kattintva a végpontokat újrarendezi. Csak egyszer végezze el a FreeCAD v0.15.???, vagy régebbi vázlatokkal.</translation>
+"Kényszerítés végpontjait cseréli fel" gombra kattintva a végpontokat újrarendezi. Csak egyszer végezze el a FreeCAD v0.15.???, vagy régebbi vázlatokkal.???</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -3927,12 +4177,12 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
     <message>
       <location line="-13"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-      <translation>Tájolás zárolás és újraszámítás volt engedélyezve a %1 kényszerítésen. A kényszerítés listázásra került a jelentés nézetben (Nézet menü -&gt; Nézetek -&gt; jelentés nézetben).</translation>
+      <translation>Tájolás zárolás és újraszámítás volt engedélyezve a %1 kényszerítésen. A kényszerítés listázásra került a jelentés nézetben (Nézet menü -&gt; Panelek -&gt; jelentés nézetben).</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-      <translation>Tájolás zár letiltásra került a %1 kényszerítésen. A kényszerítés listázásra került a jelentés nézetben (Nézet menü-&gt; Nézetek -&gt; jelentés nézetben). Vegye figyelembe, hogy minden jövőbeli kényszerítésen a zár alapértelmezett bekapcsolt.</translation>
+      <translation>Tájolás zár letiltásra került a %1 kényszerítésen. A kényszerítés listázásra került a jelentés nézetben (Nézet menü-&gt; Panelek -&gt; jelentés nézetben). Vegye figyelembe, hogy minden jövőbeli kényszerítésen a zár alapértelmezett bekapcsolt.</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -3990,6 +4240,15 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
     </message>
     <message>
       <location line="+10"/>
+      <source>Hide Internal Alignment</source>
+      <translation>Belső igazítás elrejtése</translation>
+    </message>
+    <message>
+      <location line="+16"/>
+      <source>Extended Information</source>
+      <translation>Részletes információk</translation>
+    </message>
+    <message>
       <source>Hide Internal Aligment</source>
       <translation>Belső igazítás elrejtése</translation>
     </message>
@@ -3999,7 +4258,7 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
       <translation>Megkötések</translation>
     </message>
     <message>
-      <location line="+199"/>
+      <location line="+207"/>
       <location line="+17"/>
       <source>Error</source>
       <translation>Hiba</translation>
@@ -4052,7 +4311,7 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: többszörös kijelölés&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: kapcsolás a következő érvényes típusra&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+68"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+69"/>
       <source>Elements</source>
       <translation>Elemek</translation>
     </message>
@@ -4273,7 +4532,7 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
       <translation>automatikus megkötések</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+59"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="+88"/>
       <source>Edit controls</source>
       <translation>Szerkesztés ellenőrzés</translation>
     </message>
@@ -4373,7 +4632,7 @@ Azonban, nem találhatók a végpontokhoz kötött kényszerítések.</translati
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+5270"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+5548"/>
       <source>Invalid sketch</source>
       <translation>Érvénytelen vázlat</translation>
     </message>
@@ -4409,7 +4668,7 @@ Use the sketch validation tool.</translation>
       <translation>A vázlat érvénytelen, és nem szerkeszthető.</translation>
     </message>
     <message>
-      <location line="+156"/>
+      <location line="+162"/>
       <source>Please remove the following constraint:</source>
       <translation>Kérjük, távolítsa el az alábbi ilesztést:</translation>
     </message>
@@ -4456,6 +4715,16 @@ Use the sketch validation tool.</translation>
       <translation>A vázlat felesleges kényszerítéseket tartalmaz </translation>
     </message>
     <message>
+      <location line="+16"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</source>
+      <translation>Kényszerített vázlaton ezzel &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;1 fokú&lt;/span&gt;&lt;/a&gt; a szabad kapcsolat</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</source>
+      <translation>Kényszerített vázlaton ezzel &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;%1 fokú&lt;/span&gt;&lt;/a&gt; a szabad kapcsolat</translation>
+    </message>
+    <message>
       <source>Over-constrained sketch</source>
       <translation>Túl sok zárolást tartalmazó vázlat</translation>
     </message>
@@ -4468,22 +4737,20 @@ Use the sketch validation tool.</translation>
       <translation>Vázlat felesleges illesztéseket tartalmaz</translation>
     </message>
     <message>
-      <location line="+11"/>
+      <location line="-7"/>
       <source>Fully constrained sketch</source>
       <translation>Teljesen zárolt vázlat</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Under-constrained sketch with 1 degree of freedom</source>
       <translation>Kevésbé zárolt vázlat 1 fokú szabad kötéssel</translation>
     </message>
     <message>
-      <location line="+2"/>
       <source>Under-constrained sketch with %1 degrees of freedom</source>
       <translation>Kevésbé zárolt vázlat %1 számú szabad kötéssel</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location line="+10"/>
       <source>Solved in %1 sec</source>
       <translation>Megoldva %1 másodperc alatt</translation>
     </message>
@@ -4496,7 +4763,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-416"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-435"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
       <translation>Kapcsoló az összes B-görbéhez a görbület fésű megjelenítéséhez és elrejtéséhez</translation>
@@ -4505,7 +4772,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location line="+544"/>
+      <location line="+563"/>
       <location line="+1"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>A kiválasztott B-görbe sokszöge sokszorozásának csökkentése</translation>
@@ -4514,7 +4781,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-      <location line="-554"/>
+      <location line="-573"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
       <translation>Kapcsoló az összes B-görbéhez a görbület fokok megjelenítéséhez és elrejtéséhez</translation>
@@ -4523,7 +4790,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location line="+548"/>
+      <location line="+567"/>
       <location line="+1"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>A kiválasztott B-görbe sokszöge sokszorozásának növelése</translation>
@@ -4532,7 +4799,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
-      <location line="-538"/>
+      <location line="-557"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
       <translation>Kapcsoló az összes B-görbéhez a sokszög megjelenítéséhez és elrejtéséhez</translation>
@@ -4550,7 +4817,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-275"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-280"/>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Létrehoz egy geometria klónt az utolsó kiválasztott pont, mint referencia pont, figyelembevételével</translation>
@@ -4568,11 +4835,34 @@ Use the sketch validation tool.</translation>
       <source>Copy</source>
       <translation>Másolás</translation>
     </message>
+    <message>
+      <location line="+4"/>
+      <source>Move</source>
+      <translation>Mozgat</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ConstrainDiameter</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="+5874"/>
+      <location line="+1"/>
+      <source>Fix the diameter of a circle or an arc</source>
+      <translation>Rögzíteni egy kör vagy egy ív átmérőjét</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ConstrainRadius</name>
+    <message>
+      <location line="-5"/>
+      <location line="+1"/>
+      <source>Fix the radius of a circle or an arc</source>
+      <translation>Sugár illesztése körre vagy ívre</translation>
+    </message>
   </context>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location line="+1"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-3"/>
       <location line="+1"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Egyszerű geometria másolatot hoz létre, az utolsó kiválasztott pont, mint referencia pont, figyelembevételével</translation>
@@ -4581,7 +4871,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4324"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4372"/>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Ívet hoz létre az ív végpontjaival és egy ív menti ponttal</translation>
@@ -4590,7 +4880,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location line="+3273"/>
+      <location line="+3290"/>
       <location line="+1"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Kört hoz létre 3 határoló ponttal</translation>
@@ -4599,7 +4889,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location line="-3279"/>
+      <location line="-3296"/>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Ívet hoz létre a középpontjával és a végpontokkal</translation>
@@ -4643,7 +4933,7 @@ Use the sketch validation tool.</translation>
       <translation>Létrehoz egy B-görbét ellenőrzési pontokkal vagy pólusokkal</translation>
     </message>
     <message>
-      <location line="+594"/>
+      <location line="+611"/>
       <source>B-spline by control points</source>
       <translation>B-görbe ellenőrzési pontokkal</translation>
     </message>
@@ -4666,7 +4956,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location line="-962"/>
+      <location line="-979"/>
       <location line="+1"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>Létrehoz egy ellipszist a peri apszis, apoapszis és mellék sugárból</translation>
@@ -4684,7 +4974,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location line="+3242"/>
+      <location line="+3294"/>
       <location line="+1"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Létrehoz egy hétszöget a középpontból és egy sarokból</translation>
@@ -4752,7 +5042,7 @@ Use the sketch validation tool.</translation>
       <translation>Létrehoz egy időszakos B-görbét ellenőrzési pontokkal vagy pólusokkal</translation>
     </message>
     <message>
-      <location line="-2613"/>
+      <location line="-2648"/>
       <source>Periodic B-spline by control points</source>
       <translation>Időszakos B-görbe ellenőrzési pontokkal</translation>
     </message>
@@ -4828,9 +5118,18 @@ Use the sketch validation tool.</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_Move</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+3"/>
+      <location line="+1"/>
+      <source>Moves the geometry taking as reference the last selected point</source>
+      <translation>Mozgatja a geometriát az utolsó kiválasztott pont, mint referencia pont, figyelembevételével</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location line="-406"/>
+      <location filename="../../Command.cpp" line="-406"/>
       <source>Sketch attachment</source>
       <translation>Vázlat melléklet</translation>
     </message>
@@ -4894,7 +5193,17 @@ Le akarja választani a támogatási felületről?</translation>
       <translation>Nem megoldott</translation>
     </message>
     <message>
-      <location line="+25"/>
+      <location line="+10"/>
+      <source>Automatically removes redundant constraints.</source>
+      <translation>Felesleges kényszerítések automatikus eltávolítása.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Auto Remove Redundants</source>
+      <translation>Feleslegesek automatikus eltávolítása</translation>
+    </message>
+    <message>
+      <location line="+31"/>
       <source>Executes a recompute of the active document after every command</source>
       <translation>Minden parancs után végrehajt egy újraszámítást az aktív dokumentumon</translation>
     </message>

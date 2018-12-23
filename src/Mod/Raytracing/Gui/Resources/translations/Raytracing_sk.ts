@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+496"/>
+      <location filename="../../Command.cpp" line="+519"/>
       <source>File</source>
       <translation>Súbor</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location line="+207"/>
+      <location line="+231"/>
       <source>Raytracing</source>
       <translation>Sledovanie lúča</translation>
     </message>
@@ -41,7 +41,7 @@
       <translation type="unfinished">Insert new Luxrender project into the document</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation type="unfinished">No template</translation>
     </message>
@@ -54,7 +54,7 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location line="-341"/>
+      <location line="-372"/>
       <source>Raytracing</source>
       <translation>Sledovanie lúča</translation>
     </message>
@@ -76,7 +76,7 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location line="-100"/>
+      <location line="-119"/>
       <source>Raytracing</source>
       <translation>Sledovanie lúča</translation>
     </message>
@@ -99,7 +99,7 @@
       <translation type="unfinished">Insert new POV-Ray project into the document</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation type="unfinished">No template</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location line="+196"/>
+      <location line="+212"/>
       <source>Raytracing</source>
       <translation>Sledovanie lúča</translation>
     </message>
@@ -130,7 +130,7 @@
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location line="+243"/>
+      <location line="+278"/>
       <source>Raytracing</source>
       <translation>Sledovanie lúča</translation>
     </message>
@@ -148,7 +148,7 @@
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <location line="-723"/>
+      <location line="-785"/>
       <source>Raytracing</source>
       <translation>Sledovanie lúča</translation>
     </message>
@@ -206,22 +206,22 @@
     <message>
       <location line="-79"/>
       <location line="+139"/>
-      <location line="+93"/>
-      <location line="+391"/>
+      <location line="+97"/>
+      <location line="+434"/>
       <source>No perspective camera</source>
       <translation type="unfinished">No perspective camera</translation>
     </message>
     <message>
-      <location line="-622"/>
+      <location line="-669"/>
       <location line="+139"/>
-      <location line="+93"/>
+      <location line="+97"/>
       <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation type="unfinished">The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</translation>
     </message>
     <message>
-      <location line="-109"/>
+      <location line="-113"/>
       <source>Export view to POV-Ray...</source>
       <translation type="unfinished">Export view to POV-Ray...</translation>
     </message>
@@ -231,13 +231,25 @@ Do you want to continue?</translation>
       <translation type="unfinished">Write the active 3D view with camera and all its content to a POV-Ray file</translation>
     </message>
     <message>
+      <location line="+126"/>
+      <location line="+434"/>
+      <source>No template</source>
+      <translation type="unfinished">No template</translation>
+    </message>
+    <message>
+      <location line="-433"/>
+      <location line="+434"/>
+      <source>Cannot create a project because there is no template installed.</source>
+      <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
+    </message>
+    <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation type="unfinished">The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</translation>
     </message>
     <message>
-      <location line="-2"/>
+      <location line="-563"/>
       <source>Raytracing</source>
       <translation>Sledovanie lúča</translation>
     </message>
@@ -250,7 +262,7 @@ Do you want to continue?</translation>
       <translation>Napíšte aktívne 3D zobrazenie s kamerou a všetok jej obsah do súboru povray</translation>
     </message>
     <message>
-      <location line="+501"/>
+      <location line="+548"/>
       <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
       <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
@@ -272,10 +284,10 @@ Do you want to continue?</translation>
       <translation>Všetky súbory (*.*)</translation>
     </message>
     <message>
-      <location line="-585"/>
+      <location line="-632"/>
       <location line="+51"/>
       <location line="+63"/>
-      <location line="+276"/>
+      <location line="+299"/>
       <source>Export page</source>
       <translation>Export stránky</translation>
     </message>
@@ -286,13 +298,13 @@ Do you want to continue?</translation>
     <message>
       <location line="-103"/>
       <location line="+87"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Wrong selection</source>
       <translation>Chybný výber</translation>
     </message>
     <message>
-      <location line="-392"/>
+      <location line="-431"/>
       <source>Select a Part object.</source>
       <translation>Vyberte časť objektu.</translation>
     </message>
@@ -314,18 +326,18 @@ Do you want to continue?</translation>
     </message>
     <message>
       <location line="+64"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Select one Raytracing project object.</source>
       <translation type="unfinished">Select one Raytracing project object.</translation>
     </message>
     <message>
-      <location line="-302"/>
+      <location line="-341"/>
       <source>Luxrender</source>
       <translation type="unfinished">Luxrender</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="+78"/>
       <location line="+6"/>
       <source>POV-Ray not found</source>
       <translation type="unfinished">POV-Ray not found</translation>
@@ -341,7 +353,7 @@ Do you want to continue?</translation>
       <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
     </message>
     <message>
-      <location line="+75"/>
+      <location line="+95"/>
       <source>Lux project file missing</source>
       <translation type="unfinished">Lux project file missing</translation>
     </message>
@@ -351,25 +363,25 @@ Do you want to continue?</translation>
       <translation type="unfinished">The Lux project file doesn't exist.</translation>
     </message>
     <message>
-      <location line="-69"/>
+      <location line="-89"/>
       <location line="+6"/>
       <source>Luxrender not found</source>
       <translation type="unfinished">Luxrender not found</translation>
     </message>
     <message>
-      <location line="-475"/>
+      <location line="-502"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+272"/>
+      <location line="+295"/>
       <source>POV-Ray</source>
       <translation type="unfinished">POV-Ray</translation>
     </message>
     <message>
-      <location line="-384"/>
+      <location line="-407"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+276"/>
-      <location line="+109"/>
+      <location line="+299"/>
+      <location line="+113"/>
       <source>All Files</source>
       <translation type="unfinished">All Files</translation>
     </message>
@@ -562,7 +574,7 @@ Do you want to continue?</translation>
       <translation type="unfinished">Edit LuxRender project</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>LuxRender template</source>
       <translation type="unfinished">LuxRender template</translation>
     </message>
@@ -575,12 +587,12 @@ Do you want to continue?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location line="+48"/>
+      <location line="+47"/>
       <source>Edit Povray project</source>
       <translation type="unfinished">Edit Povray project</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>Povray template</source>
       <translation type="unfinished">Povray template</translation>
     </message>

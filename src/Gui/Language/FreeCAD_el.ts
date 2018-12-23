@@ -21,7 +21,7 @@
     </message>
     <message>
       <source>Angle Snap</source>
-      <translation>Έλξη γωνίας</translation>
+      <translation>Προσκόλληση Γωνίας</translation>
     </message>
     <message utf8="true">
       <source>1 °</source>
@@ -60,15 +60,15 @@
     <name>App::Property</name>
     <message>
       <source>The displayed size of the origin</source>
-      <translation type="unfinished">The displayed size of the origin</translation>
+      <translation>Το απεικονιζόμενο μέγεθος του συστήματος αξόνων</translation>
     </message>
     <message>
       <source>Visual size of the feature</source>
-      <translation type="unfinished">Visual size of the feature</translation>
+      <translation>Οπτικό μέγεθος του χαρακτηριστικού</translation>
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation>&lt;κενό&gt;</translation>
+      <translation>&lt;empty&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -91,48 +91,48 @@
     <name>CmdTestConsoleOutput</name>
     <message>
       <source>Standard-Test</source>
-      <translation type="unfinished">Standard-Test</translation>
+      <translation>Έλεγχος Προτύπων</translation>
     </message>
     <message>
       <source>Test console output</source>
-      <translation>Εξαγωγή της κονσόλας δοκιμών</translation>
+      <translation>Έλεγχος εξόδου κονσόλας</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
       <source>Measure</source>
-      <translation>Μέτρηση</translation>
+      <translation>Μετρήστε</translation>
     </message>
     <message>
       <source>Clear measurement</source>
-      <translation>Εκκαθάριση της μέτρησης</translation>
+      <translation>Εκκαθάριση μέτρησης</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
       <source>Measure</source>
-      <translation>Μέτρηση</translation>
+      <translation>Μετρήστε</translation>
     </message>
     <message>
       <source>Toggle measurement</source>
-      <translation>Εναλλαγή της μέτρησης</translation>
+      <translation>Εναλλαγή μέτρησης</translation>
     </message>
   </context>
   <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation>Κίνηση σφαιρική</translation>
+      <translation>Κίνηση Σφαίρας Γραφικών</translation>
     </message>
     <message>
       <source>Dominant Mode</source>
-      <translation>Λειτουργία Κύριων Αξόνων</translation>
+      <translation>Λειτουργία Κυρίων Αξόνων</translation>
     </message>
     <message>
       <source>Flip Y/Z</source>
-      <translation>Αναποδογύρισμα κατά Y/Z</translation>
+      <translation>Αντιστρέψτε Υ/Ζ</translation>
     </message>
     <message>
       <source>Enable Translations</source>
@@ -140,15 +140,15 @@
     </message>
     <message>
       <source>Enable Rotations</source>
-      <translation>Ενεργοποίηση Εναλλαγών</translation>
+      <translation>Ενεργοποίηση Περιστροφών</translation>
     </message>
     <message>
       <source>Calibrate</source>
-      <translation>Βαθμονόμηση</translation>
+      <translation>Βαθμονομήστε</translation>
     </message>
     <message>
       <source>Default</source>
-      <translation>Προεπιλογή</translation>
+      <translation>Προεπιλεγμένο</translation>
     </message>
     <message>
       <source>Enable</source>
@@ -167,7 +167,7 @@
     <name>DlgExpressionInput</name>
     <message>
       <source>Formula editor</source>
-      <translation>Επεξεργαστής μαθηματικού τύπου</translation>
+      <translation>Πρόγραμμα επεξεργασίας μαθηματικών τύπων</translation>
     </message>
     <message>
       <source>Result:</source>
@@ -175,7 +175,7 @@
     </message>
     <message>
       <source>&amp;Discard</source>
-      <translation>&amp;Απόρριψη</translation>
+      <translation>Απόρριψη</translation>
     </message>
     <message>
       <source>Ok</source>
@@ -220,7 +220,7 @@
     </message>
     <message>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -235,7 +235,7 @@
     <name>Gui::AlignmentView</name>
     <message>
       <source>Movable object</source>
-      <translation>Κινούμενα αντικείμενα</translation>
+      <translation>Κινητό αντικείμενο</translation>
     </message>
     <message>
       <source>Fixed object</source>
@@ -250,64 +250,65 @@
     </message>
     <message>
       <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
-      <translation>Δεν βρέθηκαν %1 αρχεία βοήθειας (%2). Ίσως να θες να εγκαταστήσεις το πακέτο τεκμηρίωσης %1 .</translation>
+      <translation>%1 τα αρχεία βοηθείας δεν βρέθηκαν (%2). Ίσως χρειαστεί να εγκαταστήσετε το πακέτο τεκμηρίωσης %1.</translation>
     </message>
     <message>
       <source>Unable to launch Qt Assistant (%1)</source>
-      <translation>Αδυναμία φόρτωσης του Βοηθού ΚιουΤι (Qt Assistant) (%1)</translation>
+      <translation>Αδυναμία φόρτωσης του Βοηθού Qt (%1)</translation>
     </message>
   </context>
   <context>
     <name>Gui::AutoSaver</name>
     <message>
       <source>Please wait until the AutoRecovery file has been saved...</source>
-      <translation>Παρακαλώ, περίμενε, μέχρι να αποθηκευθεί το αρχείο ΑυτόματηςΑποκατάστασης...</translation>
+      <translation>Παρακαλώ περιμένετε μέχρι να ολοκληρωθεί η αποθήκευση του αρχείου ΑυτόματηΑνάκτηση...</translation>
     </message>
   </context>
   <context>
     <name>Gui::BlenderNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Πίεσε το αριστερό κουμπί του ποντικιού</translation>
+      <translation>Πιέστε το αριστερό πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Πατήστε SHIFT και το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το SHIFT και το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Πίεσε το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Κύλισε το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Κυλήστε το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
   </context>
   <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Πίεσε το αριστερό κουμπί του ποντικιού</translation>
+      <translation>Πιέστε το αριστερό πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Πίεσε το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press middle and left or right mouse button</source>
-      <translation>Πίεσε το μεσαίο και το αριστερό, ή το δεξί, πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το μεσαίο και το αριστερό ή το δεξί πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Ρολάρισε το μεσαίο πλήκτρο του ποντικιού, ή κράτα το μεσαίο πλήκτρο πιεσμένο, καθώς κάνεις δεξί ή αριστερό κλικ, και μετακίνησε το ποντίκι πάνω ή κάτω</translation>
+      <translation>Κυλήστε το μεσαίο πλήκτρο του ποντικιού ή κρατήστε το μεσαίο πλήκτρο πιεσμένο
+καθώς κάνετε αριστερό ή δεξί κλικ και μετακινήστε το ποντίκι πάνω ή κάτω</translation>
     </message>
   </context>
   <context>
     <name>Gui::Command</name>
     <message>
       <source>Standard</source>
-      <translation>Κανονικό</translation>
+      <translation>Καθιερωμένο</translation>
     </message>
   </context>
   <context>
@@ -318,14 +319,14 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>&amp;Cancel</source>
-      <translation>Άκυρο</translation>
+      <translation>Ακύρωση</translation>
     </message>
   </context>
   <context>
     <name>Gui::ControlSingleton</name>
     <message>
       <source>Task panel</source>
-      <translation>Πίνακας ανατεθειμένων εργασιών</translation>
+      <translation>Πίνακας εργασιών</translation>
     </message>
   </context>
   <context>
@@ -340,18 +341,18 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Finish editing</source>
-      <translation>Τερματισμός της επεξεργασίας</translation>
+      <translation>Ολοκλήρωση επεξεργασίας</translation>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Ολοκλήρωση τηε επεξεργασίας του αντικειμένου</translation>
+      <translation>Ολοκλήρωση επεξεργασίας του αντικειμένου</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
       <source>About</source>
-      <translation>Περί</translation>
+      <translation>Σχετικά με</translation>
     </message>
     <message>
       <source>Revision number</source>
@@ -363,7 +364,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>OK</source>
-      <translation>Εντάξει</translation>
+      <translation>ΟΚ</translation>
     </message>
     <message>
       <source/>
@@ -375,7 +376,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Copy to clipboard</source>
-      <translation>Αντιγραφή στο Πρόχειρο</translation>
+      <translation>Αντιγραφή στο πρόχειρο</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -383,15 +384,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Word size</source>
-      <translation>Μέγεθος της λέξης</translation>
+      <translation>Μέγεθος λέξης</translation>
     </message>
     <message>
       <source>Credits</source>
-      <translation>Εύσημα</translation>
+      <translation>Ονόματα Συντελεστών</translation>
     </message>
     <message>
       <source>FreeCAD would be nowhere without their efforts:</source>
-      <translation>https://crowdin. com/translate/freecad/549/en-el#6500102:</translation>
+      <translation>Το FreeCAD δεν θα υπήρχε δίχως τις προσπάθειές τους:</translation>
     </message>
     <message>
       <source>License</source>
@@ -402,11 +403,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Βιβλιοθήκες</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Αυτό το λογισμικό χρησιμοποιεί συνιστώσες ανοικτού κώδικα των οποίων η πνευματική ιδιοκτησία και τα δικαιώματα ιδιοκτησίας ανήκουν στους αντίστοιχους ιδιοκτήτες τους:</translation>
     </message>
     <message>
       <source>License</source>
@@ -417,42 +418,42 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
-      <translation>Κουμπί %1</translation>
+      <translation>Πλήκτρο %1</translation>
     </message>
     <message>
       <source>Out Of Range</source>
-      <translation>Εκτός σειράς</translation>
+      <translation>Εκτός Εύρους</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::Clipping</name>
     <message>
       <source>Clipping</source>
-      <translation>Ψαλίδισμα</translation>
+      <translation>Αποκοπή</translation>
     </message>
     <message>
       <source>Clipping X</source>
-      <translation>Ψαλίδισμα κατά Χ</translation>
+      <translation>Αποκοπή κατά Χ</translation>
     </message>
     <message>
       <source>Flip</source>
-      <translation>Αναστροφή</translation>
+      <translation>Αντιστρέψτε</translation>
     </message>
     <message>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Μετατοπίστε</translation>
     </message>
     <message>
       <source>Clipping Y</source>
-      <translation>Ψαλίδισμα κατά Υ</translation>
+      <translation>Αποκοπή κατά Υ</translation>
     </message>
     <message>
       <source>Clipping Z</source>
-      <translation>Ψαλίδισμα κατά Ζ</translation>
+      <translation>Αποκοπή κατά Ζ</translation>
     </message>
     <message>
       <source>Clipping custom direction</source>
-      <translation>Ψαλίδισμα κατά προσαρμοσμένη κατεύθυνση</translation>
+      <translation>Αποκοπή κατά προσαρμοσμένη κατεύθυνση</translation>
     </message>
     <message>
       <source>View</source>
@@ -478,7 +479,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DemoMode</name>
     <message>
       <source>View Turntable</source>
-      <translation>Προβολή περιστρεφόμενης βάσης</translation>
+      <translation>Προβολή Περιστρεφόμενης Βάσης</translation>
     </message>
     <message>
       <source>Speed</source>
@@ -498,7 +499,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Enable timer</source>
-      <translation>Ενεργοποίηση του χρονοδιακόπτη</translation>
+      <translation>Ενεργοποίηση χρονοδιακόπτη</translation>
     </message>
     <message>
       <source> s</source>
@@ -518,7 +519,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Play</source>
-      <translation>Εκκίνηση</translation>
+      <translation>Αναπαραγωγή</translation>
     </message>
     <message>
       <source>Stop</source>
@@ -533,7 +534,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgActivateWindow</name>
     <message>
       <source>Choose Window</source>
-      <translation>Επιλογή παραθύρου</translation>
+      <translation>Επιλέξτε Παράθυρο</translation>
     </message>
     <message>
       <source>&amp;Activate</source>
@@ -559,7 +560,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Password:</source>
-      <translation>Κωδικός:</translation>
+      <translation>Κωδικός Πρόσβασης:</translation>
     </message>
     <message>
       <source/>
@@ -571,7 +572,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Site:</source>
-      <translation>Ιστότοπος:</translation>
+      <translation>Ιστοσελίδα:</translation>
     </message>
     <message>
       <source>%1 at %2</source>
@@ -586,18 +587,18 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>Ετικέτα κειμένου</translation>
+      <translation>ΕτικέταΚειμένου</translation>
     </message>
     <message>
       <source>CheckBox</source>
-      <translation>ΚουτάκιΤσεκαρίσματος</translation>
+      <translation>ΚουτίΕπιλογής</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgChooseIcon</name>
     <message>
       <source>Choose Icon</source>
-      <translation>Επιλογή εικονιδίου</translation>
+      <translation>Επιλέξτε Εικονίδιο</translation>
     </message>
     <message>
       <source>Icon folders...</source>
@@ -612,7 +613,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Setup Custom Macros</source>
-      <translation>Ρύθμιση προσαρμοσμένων μακροεντολών</translation>
+      <translation>Ρυθμίστε Προσαρμοσμένες Μακροεντολές</translation>
     </message>
     <message>
       <source>Macro:</source>
@@ -624,11 +625,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Pixmap</source>
-      <translation>Pixmap</translation>
+      <translation>Μενού εικονιδίων</translation>
     </message>
     <message>
       <source>Accelerator:</source>
-      <translation>Πλήκτρα συντόμευσης:</translation>
+      <translation>Πλήκτρο συντόμευσης:</translation>
     </message>
     <message>
       <source>What's this:</source>
@@ -636,11 +637,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Status text:</source>
-      <translation>Περιγραφή κατάστασης:</translation>
+      <translation>Κείμενο κατάστασης:</translation>
     </message>
     <message>
       <source>Tool tip:</source>
-      <translation>Υπόδειξη:</translation>
+      <translation>Υπόδειξη εργαλείου:</translation>
     </message>
     <message>
       <source>Menu text:</source>
@@ -652,7 +653,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
       <source>Replace</source>
@@ -691,7 +692,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Please specify the macro first.</source>
-      <translation>Παρακαλούμε να προσδιορίστε την μακροεντολή πρώτα.</translation>
+      <translation>Παρακαλώ προσδιορίστε πρώτα την μακροεντολή.</translation>
     </message>
     <message>
       <source>Empty text</source>
@@ -699,15 +700,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Please specify the menu text first.</source>
-      <translation>Παρακαλούμε να προσδιορίστε το κείμενο του μενού πρώτα.</translation>
+      <translation>Παρακαλώ προσδιορίστε πρώτα το κείμενο μενού.</translation>
     </message>
     <message>
       <source>No item selected</source>
-      <translation>Δεν έχει επιλεγεί κανένα αντικείμενο</translation>
+      <translation>Δεν έχει επιλεχθεί κανένα αντικείμενο</translation>
     </message>
     <message>
       <source>Please select a macro item first.</source>
-      <translation>Παρακαλούμε επιλέξτε ένα αντικείμενο μακροεντολής πρώτα.</translation>
+      <translation>Παρακαλώ επιλέξτε πρώτα ένα αντικείμενο μακροεντολής.</translation>
     </message>
   </context>
   <context>
@@ -752,7 +753,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>C&amp;ommands:</source>
-      <translation>Εντολές:</translation>
+      <translation>Εντ&amp;ολές:</translation>
     </message>
     <message>
       <source>Current shortcut:</source>
@@ -760,15 +761,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Press &amp;new shortcut:</source>
-      <translation>Πληκτρολογήστε μία νέα συντόμευση:</translation>
+      <translation>Πληκτρολογήστε &amp;νέα συντόμευση:</translation>
     </message>
     <message>
       <source>Currently assigned to:</source>
-      <translation>Τώρα αντιστοιχεί σε:</translation>
+      <translation>Έχει ανατεθεί στο:</translation>
     </message>
     <message>
       <source>&amp;Assign</source>
-      <translation>Αντιστοίχιση</translation>
+      <translation>&amp;Ανάθεση</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -776,7 +777,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>&amp;Reset</source>
-      <translation>Επαναφορά</translation>
+      <translation>Επαναφο&amp;ρά</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -796,7 +797,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Καθαρισμός</translation>
+      <translation>Εκκαθάριση</translation>
     </message>
   </context>
   <context>
@@ -819,26 +820,26 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>The shortcut '%1' is defined more than once. This could result into unexpected behaviour.</source>
-      <translation>Η συντόμευση '%1' έχει οριστεί περισσότερες από μία φορές. Αυτό θα μπορούσε να οδηγήσει σε απρόβλεπτη συμπεριφορά.</translation>
+      <translation>Η συντόμευση '%1' έχει οριστεί πάνω από μια φορά. Αυτό θα μπορούσε να οδηγήσει σε απρόβλεπτη συμπεριφορά.</translation>
     </message>
     <message>
       <source>Already defined shortcut</source>
-      <translation>Συντόμευση που έχει ήδη ορισθεί</translation>
+      <translation>Ήδη ορισμένη συντόμευση</translation>
     </message>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
 Please define another shortcut.</source>
-      <translation>Η συντόμευση '%1' είναι ήδη αντιστοιχισμένη σε '%2'.
+      <translation>Η συντόμευση '%1' είναι ήδη ανατεθειμένη στο '%2'.
 
-Παρακαλείστε να επιλέξετε κάποια άλλη συντόμευση.</translation>
+Παρακαλώ ορίστε κάποια άλλη συντόμευση.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomToolBoxbarsImp</name>
     <message>
       <source>Toolbox bars</source>
-      <translation>Μπάρες εργαλειοθηκών</translation>
+      <translation>Γραμμές εργαλειοθηκών</translation>
     </message>
   </context>
   <context>
@@ -849,7 +850,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Σημείωση:&lt;/span&gt; Οι αλλαγές θα ενεργοποιηθούν την επόμενη φορά που θα φορτώσεις τον ανάλογο πάγκο εργασίας&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Σημείωση:&lt;/span&gt; Οι αλλαγές θα ενεργοποιηθούν την επόμενη φορά που θα φορτώσετε τον κατάλληλο πάγκο εργασίας&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -857,7 +858,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου ένα επίπεδο κάτω.&lt;/b&gt;&lt;p&gt;Θα επηρεαστεί επίσης το επίπεδο του αντικειμένου γονέα.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου ένα επίπεδο κάτω.&lt;/b&gt;&lt;p&gt;Αυτό θα αλλάξει και το επίπεδο του γονικού αντικειμένου.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
@@ -865,7 +866,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου ένα επίπεδο πάνω.&lt;/b&gt;&lt;p&gt;Θα επηρεαστεί επίσης το επίπεδο του αντικειμένου γονέα.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου ένα επίπεδο πάνω.&lt;/b&gt;&lt;p&gt;Αυτό θα αλλάξει και το επίπεδο του γονικού αντικειμένου.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -873,7 +874,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου κάτω.&lt;/b&gt;&lt;p&gt;Το αντικείμενο θα μετακινηθεί εντός του ίδιου ιεραρχικού επιπέδου.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου προς τα κάτω.&lt;/b&gt;&lt;p&gt;Το αντικείμενο θα μετακινηθεί εντός του ιδίου ιεραρχικού επιπέδου.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -881,7 +882,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου πάνω.&lt;/b&gt;&lt;p&gt;Το αντικείμενο θα μετακινηθεί εντός του ίδιου ιεραρχικού επιπέδου.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Μετακίνηση του επιλεγμένου αντικειμένου προς τα πάνω.&lt;/b&gt;&lt;p&gt;Το αντικείμενο θα μετακινηθεί εντός του ιδίου ιεραρχικού επιπέδου.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>New...</source>
@@ -913,11 +914,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Toolbar name:</source>
-      <translation>Όνομα γραμμής εντολών:</translation>
+      <translation>Όνομα γραμμής εργαλείων:</translation>
     </message>
     <message>
       <source>Duplicated name</source>
-      <translation>Διπλότυπο του ονόματος</translation>
+      <translation>Το όνομα υπάρχει ήδη</translation>
     </message>
     <message>
       <source>The toolbar name '%1' is already used</source>
@@ -940,60 +941,60 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgCustomizeImp</name>
     <message>
       <source>Customize</source>
-      <translation>Παραμετροποίηση</translation>
+      <translation>Προσαρμογή</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Βοήθεια</translation>
+      <translation>Βο&amp;ήθεια</translation>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Κλείσιμο</translation>
+      <translation>Κλείσιμο</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
       <source>Spaceball Motion</source>
-      <translation>Κίνηση σφαιρική</translation>
+      <translation>Κίνηση Σφαίρας Γραφικών</translation>
     </message>
     <message>
       <source>No Spaceball Present</source>
-      <translation>Μη σφαιρική παρουσία</translation>
+      <translation>Δεν Υπάρχει Σφαίρα Γραφικών</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
       <source>No Spaceball Present</source>
-      <translation>Μη σφαιρική παρουσία</translation>
+      <translation>Δεν Υπάρχει Σφαίρα Γραφικών</translation>
     </message>
     <message>
       <source>Buttons</source>
-      <translation>Κουμπιά</translation>
+      <translation>Πλήκτρα</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Καθαρισμός</translation>
+      <translation>Εκκαθάριση</translation>
     </message>
     <message>
       <source>Print Reference</source>
-      <translation>Αναφορά εκτύπωσης</translation>
+      <translation>Εκτυπώστε Αναφορά</translation>
     </message>
     <message>
       <source>Spaceball Buttons</source>
-      <translation>Πλήκτρα μπίλιας χειρισμού</translation>
+      <translation>Πλήκτρα Σφαίρας Γραφικών</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
       <source>Display properties</source>
-      <translation>Ιδιότητες προβολής</translation>
+      <translation>Απεικόνιση ιδιοτήτων</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Προβολή</translation>
+      <translation>Απεικόνιση</translation>
     </message>
     <message>
       <source>Transparency:</source>
@@ -1017,11 +1018,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Viewing mode</source>
-      <translation>Είδος προβολής</translation>
+      <translation>Λειτουργία προβολής</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Είδος εκτύπωσης σχεδίου:</translation>
+      <translation>Λειτουργία γραφήματος:</translation>
     </message>
     <message>
       <source/>
@@ -1029,7 +1030,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Line transparency:</source>
-      <translation>Διαφάνεια της γραμμής:</translation>
+      <translation>Διαφάνεια γραμμής:</translation>
     </message>
     <message>
       <source>Line color:</source>
@@ -1041,7 +1042,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Color plot:</source>
-      <translation>Χρώμα εκτύπωσης:</translation>
+      <translation>Χρωματισμός γραφήματος:</translation>
     </message>
     <message>
       <source>Document window:</source>
@@ -1052,7 +1053,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
     <message>
       <source>Default</source>
-      <translation>Προεπιλογή</translation>
+      <translation>Προεπιλεγμένο</translation>
     </message>
     <message>
       <source>Aluminium</source>
@@ -1080,7 +1081,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Gold</source>
-      <translation>Χρυσό</translation>
+      <translation>Χρυσός</translation>
     </message>
     <message>
       <source>Jade</source>
@@ -1100,7 +1101,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Obsidian</source>
-      <translation>Οψιδιανός</translation>
+      <translation>Οψιανός</translation>
     </message>
     <message>
       <source>Pewter</source>
@@ -1143,7 +1144,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
       <source>Editor</source>
-      <translation>Επεξεργαστής</translation>
+      <translation>Πρόγραμμα επεξεργασίας</translation>
     </message>
     <message>
       <source>Options</source>
@@ -1159,15 +1160,15 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Indentation</source>
-      <translation>Εσοχές</translation>
+      <translation>Εισαγωγή εσοχής</translation>
     </message>
     <message>
       <source>Insert spaces</source>
-      <translation>Εισαγωγή κενών</translation>
+      <translation>Εισάγετε κενά</translation>
     </message>
     <message>
       <source>Tab size:</source>
-      <translation>Μέγεθος Tab:</translation>
+      <translation>Μέγεθος καρτέλας:</translation>
     </message>
     <message>
       <source>Indent size:</source>
@@ -1175,11 +1176,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Keep tabs</source>
-      <translation>Διατήρηση των Tab</translation>
+      <translation>Διατηρήστε τις καρτέλες</translation>
     </message>
     <message>
       <source>Display Items</source>
-      <translation>Προβολή αντικειμένων</translation>
+      <translation>Εμφανίστε Αντικείμενα</translation>
     </message>
     <message>
       <source>Family:</source>
@@ -1202,7 +1203,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgGeneral</name>
     <message>
       <source>General</source>
-      <translation>Γενικά</translation>
+      <translation>Γενικές</translation>
     </message>
     <message>
       <source>Start up</source>
@@ -1214,11 +1215,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Switch to tab of report window:</source>
-      <translation>Αλλαγή στην καρτέλα του παραθύρου αναφοράς:</translation>
+      <translation>Μετάβαση στην καρτέλα παραθύρου αναφοράς:</translation>
     </message>
     <message>
       <source>Auto load module after start up:</source>
-      <translation>Αυτόματη φόρτωση αρθρωμάτων μετά την εκκίνηση:</translation>
+      <translation>Αυτόματη φόρτωση λειτουργικής μονάδας μετά την εκκίνηση:</translation>
     </message>
     <message>
       <source>Language</source>
@@ -1238,34 +1239,34 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Window style:</source>
-      <translation>Στυλ παραθύρου:</translation>
+      <translation>Τύπος μορφοποίησης παραθύρου:</translation>
     </message>
     <message>
       <source>Size of toolbar icons:</source>
-      <translation>Μέγεθος των εικονιδίων της γραμμής εργαλείων:</translation>
+      <translation>Μέγεθος των εικονιδίων γραμμής εργαλείων:</translation>
     </message>
     <message>
       <source>Enable tiled background</source>
-      <translation>Ενεργοποίηση πλακόστρωτου παρασκηνίου</translation>
+      <translation>Ενεργοποίηση πλακόστρωτου υποβάθρου</translation>
     </message>
     <message>
       <source>Style sheet:</source>
-      <translation>Φύλλο τεχνοτροπίας:</translation>
+      <translation>Φύλλο τύπων μορφοποίησης:</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Πίνακας χειρισμού της Πάιθον</translation>
+      <translation>Κονσόλα Python</translation>
     </message>
     <message>
       <source>Enable word wrap</source>
-      <translation>Ενεργοποίηση της αναδίπλωσης των λέξεων</translation>
+      <translation>Ενεργοποίηση της αναδίπλωσης λέξεων</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
       <source>No style sheet</source>
-      <translation>Χωρίς φύλλο τεχνοτροπίας</translation>
+      <translation>Χωρίς φύλλο τύπων μορφοποίησης</translation>
     </message>
     <message>
       <source>Small (%1px)</source>
@@ -1285,7 +1286,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Custom (%1px)</source>
-      <translation>Ιδιότυπο (%1px)</translation>
+      <translation>Προσαρμοσμένο (%1px)</translation>
     </message>
   </context>
   <context>
@@ -1303,7 +1304,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgInspector</name>
     <message>
       <source>Scene Inspector</source>
-      <translation>Επιθεωρητής σκηνής</translation>
+      <translation>Επιθεωρητής Σκηνής</translation>
     </message>
   </context>
   <context>
@@ -1326,7 +1327,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Create</source>
-      <translation>Δημιουργία</translation>
+      <translation>Δημιουργήστε</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -1346,11 +1347,19 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>User macros location:</source>
-      <translation>Τοποθεσία των μακροεντολών χρήστη:</translation>
+      <translation>Τοποθεσία μακροεντολών χρήστη:</translation>
     </message>
     <message>
       <source>Rename</source>
       <translation>Μετονομασία</translation>
+    </message>
+    <message>
+      <source>Duplicate</source>
+      <translation type="unfinished">Duplicate</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation type="unfinished">Addons...</translation>
     </message>
   </context>
   <context>
@@ -1365,7 +1374,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Enter a file name, please:</source>
-      <translation>Παρακαλείστε να εισάγετε ένα όνομα αρχείου:</translation>
+      <translation>Εισάγετε ένα όνομα αρχείου, παρακαλώ:</translation>
     </message>
     <message>
       <source>Existing file</source>
@@ -1383,11 +1392,11 @@ This file already exists.</source>
     </message>
     <message>
       <source>Do you really want to delete the macro '%1'?</source>
-      <translation>Επιθυμείτε πραγματικά να διαγράψετε την μακροεντολή '%1';</translation>
+      <translation>Θέλετε πραγματικά να διαγράψετε την μακροεντολή '%1';</translation>
     </message>
     <message>
       <source>Cannot create file</source>
-      <translation>Δεν μπορεί να δημιουργήθει αρχείο</translation>
+      <translation>Αδύνατη η δημιουργία αρχείου</translation>
     </message>
     <message>
       <source>Creation of file '%1' failed.</source>
@@ -1395,31 +1404,45 @@ This file already exists.</source>
     </message>
     <message>
       <source>Read-only</source>
-      <translation>Για-ανάγνωση-μόνο</translation>
+      <translation>Μόνο για ανάγνωση</translation>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation>Μετονομάζεται το Αρχείο Μακροεντολής</translation>
+      <translation>Πραγματοποιείται μετονομασία του Αρχείου Μακροεντολής</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation>Εισήγαγε νέο όνομα:</translation>
+      <translation>Εισάγετε νέο όνομα:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
       <translation>Το '%1'
-υπάρχει ήδη.</translation>
+ υπάρχει ήδη.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation>Αποτυχία της Μετονομασίας</translation>
+      <translation>Η Μετονομασία Απέτυχε</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Αποτυχία μετονομασίας σε '%1'.
-Μήπως, κάποιο σφάλμα αδειών αρχείου;</translation>
+Ίσως υπάρχει κάποιο σφάλμα άδειας αρχείου;</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation type="unfinished">Duplicate Macro</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation type="unfinished">Duplicate Failed</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation type="unfinished">Failed to duplicate to '%1'.
+Perhaps a file permission error?</translation>
     </message>
   </context>
   <context>
@@ -1438,7 +1461,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Άκυρο</translation>
+      <translation>Ακύρωση</translation>
     </message>
     <message>
       <source>Macro path:</source>
@@ -1450,7 +1473,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Record</source>
-      <translation>Εγγραφή</translation>
+      <translation>Καταγραφή</translation>
     </message>
   </context>
   <context>
@@ -1461,7 +1484,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Specify first a place to save.</source>
-      <translation>Καθορίστε μία τοποθεσία αποθήκευσης πρώτα.</translation>
+      <translation>Καθορίστε πρώτα μια τοποθεσία αποθήκευσης.</translation>
     </message>
     <message>
       <source>Existing macro</source>
@@ -1469,26 +1492,26 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>The macro '%1' already exists. Do you want to overwrite?</source>
-      <translation>Η μακροεντολή '%1' υπάρχει ήδη. Επιθυμείται να αντικατασταθεί;</translation>
+      <translation>Η μακροεντολή '%1' υπάρχει ήδη. Επιθυμείτε να αντικατασταθεί;</translation>
     </message>
     <message>
       <source>The macro directory doesn't exist. Please, choose another one.</source>
-      <translation>Ο κατάλογος μακροεντολής δεν υπάρχει. Παρακαλώ, επιλέξτε ένα άλλο.</translation>
+      <translation>Το ευρετήριο μακροεντολών δεν υπάρχει. Παρακαλώ, επιλέξτε κάποιο άλλο.</translation>
     </message>
     <message>
       <source>Choose macro directory</source>
-      <translation>Επιλέξτε κατάλογο μακροεντολής</translation>
+      <translation>Επιλέξτε ευρετήριο μακροεντολής</translation>
     </message>
     <message>
       <source>You have no write permission for the directory. Please, choose another one.</source>
-      <translation>Δεν έχεις δικαιώματα εγγραφής για τον κατάλογο. Παρακαλώ, επέλεξε κάποιον άλλο φάκελο.</translation>
+      <translation>Δεν έχετε δικαίωμα εγγραφής για τo ευρετήριο. Παρακαλώ, επιλέξτε κάποιο άλλο.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
       <source>Material properties</source>
-      <translation>Ιδιότητες ύλης</translation>
+      <translation>Ιδιότητες υλικών</translation>
     </message>
     <message>
       <source>Material</source>
@@ -1496,11 +1519,11 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Diffuse color:</source>
-      <translation>Βασικό χρώμα:</translation>
+      <translation>Χρώμα διάχυσης:</translation>
     </message>
     <message>
       <source>Specular color:</source>
-      <translation>Αντανακλαστικό χρώμα:</translation>
+      <translation>Χρώμα κατοπτρισμού:</translation>
     </message>
     <message>
       <source>Shininess:</source>
@@ -1512,7 +1535,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Ambient color:</source>
-      <translation>Χρώμα Περιβάλλοντος:</translation>
+      <translation>Χρώμα περιβάλλοντος:</translation>
     </message>
     <message>
       <source/>
@@ -1520,14 +1543,14 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Emissive color:</source>
-      <translation>Φωσφορίζον χρώμα:</translation>
+      <translation>Εκπεμπόμενο χρώμα:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgOnlineHelp</name>
     <message>
       <source>On-line help</source>
-      <translation>On-line Βοήθεια</translation>
+      <translation>On-line βοήθεια</translation>
     </message>
     <message>
       <source>Help viewer</source>
@@ -1535,7 +1558,7 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Location of start page</source>
-      <translation>Τοποθεσία της αρχικής σελίδας</translation>
+      <translation>Τοποθεσία αρχικής σελίδας</translation>
     </message>
   </context>
   <context>
@@ -1550,18 +1573,18 @@ Perhaps a file permission error?</source>
 Specify another directory, please.</source>
       <translation>Δεν επιτρέπεται η πρόσβαση στο '%1'
 
-Ορίσετε κάποιον διαφορετικό κατάλογο παρακαλώ.</translation>
+Ορίστε κάποιο άλλο ευρετήριο, παρακαλώ.</translation>
     </message>
     <message>
       <source>HTML files</source>
-      <translation>HTML αρχεία</translation>
+      <translation>Αρχεία HTML</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
       <source>Parameter Editor</source>
-      <translation>Επεξεργαστής παραμέτρων</translation>
+      <translation>Πρόγραμμα επεξεργασίας παραμέτρων</translation>
     </message>
     <message>
       <source>Save to disk</source>
@@ -1573,7 +1596,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Κλείσιμο</translation>
+      <translation>Κλείσιμο</translation>
     </message>
   </context>
   <context>
@@ -1588,7 +1611,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Type</source>
-      <translation>Είδος</translation>
+      <translation>Τύπος</translation>
     </message>
     <message>
       <source>Value</source>
@@ -1600,7 +1623,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Invalid input</source>
-      <translation>Μη έγκυρη καταχώρηση</translation>
+      <translation>Μη έγκυρη είσοδος</translation>
     </message>
     <message>
       <source>Invalid key name '%1'</source>
@@ -1630,15 +1653,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Clear user settings</source>
-      <translation>Καθάρισμα των ρυθμίσεων του χρήστη</translation>
+      <translation>Εκκαθάριση των ρυθμίσεων χρήστη</translation>
     </message>
     <message>
       <source>Do you want to clear all your user settings?</source>
-      <translation>Θέλεις να εκκαθαρίσεις όλες τις ρυθμίσεις σου, ως χρήστης;</translation>
+      <translation>Θέλετε να εκκαθαρίσετε όλες σας τις ρυθμίσεις χρήστη;</translation>
     </message>
     <message>
       <source>If you agree all your settings will be cleared.</source>
-      <translation>Αν συμφωνείς, θα εκκαθαριστούν όλες οι ρυθμίσεις σου.</translation>
+      <translation>Αν συμφωνήσετε θα εκκαθαριστούν όλες οι ρυθμίσεις σας.</translation>
     </message>
   </context>
   <context>
@@ -1653,11 +1676,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Name:</source>
-      <translation>Όνομα:</translation>
+      <translation>Ό&amp;νομα:</translation>
     </message>
     <message>
       <source>Commen&amp;t:</source>
-      <translation>&amp;Σχόλιο:</translation>
+      <translation>Σχόλιο:</translation>
     </message>
     <message>
       <source>Path:</source>
@@ -1665,23 +1688,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Last modified by:</source>
-      <translation>&amp;Τελευταία τροποποίηση από:</translation>
+      <translation>Τε&amp;λευταία τροποποίηση από:</translation>
     </message>
     <message>
       <source>Created &amp;by:</source>
-      <translation>&amp;Δημιουργήθηκε από:</translation>
+      <translation>Δημιουργήθηκε από:</translation>
     </message>
     <message>
       <source>Com&amp;pany:</source>
-      <translation>&amp;Εταιρεία:</translation>
+      <translation>Εταιρεία:</translation>
     </message>
     <message>
       <source>Last &amp;modification date:</source>
-      <translation>&amp;Ημερομηνία τελευταίας τροποποίησης:</translation>
+      <translation>Η&amp;μερομηνία τελευταίας τροποποίησης:</translation>
     </message>
     <message>
       <source>Creation &amp;date:</source>
-      <translation>&amp;Ημερομηνία δημιουργίας:</translation>
+      <translation>Ημερομηνία &amp;δημιουργίας:</translation>
     </message>
     <message>
       <source/>
@@ -1689,7 +1712,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>UUID:</source>
-      <translation>Ταυτότητα UUID:</translation>
+      <translation>UUID:</translation>
     </message>
     <message>
       <source>License information:</source>
@@ -1697,22 +1720,22 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>License URL</source>
-      <translation>Διαδικτυακή διεύθυνση της άδειας</translation>
+      <translation>Διεύθυνση URL της άδειας</translation>
     </message>
     <message>
       <source>Open in browser</source>
-      <translation>Άνοιγμα σε πλοηγό διαδικτύου</translation>
+      <translation>Ανοίξτε σε περιηγητή</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <source>Project utility</source>
-      <translation>Εργαλείο έργου</translation>
+      <translation>Βοηθητική εφαρμογή έργου</translation>
     </message>
     <message>
       <source>Extract project</source>
-      <translation>Αποσυμπίεση έργου</translation>
+      <translation>Εξαγωγή έργου</translation>
     </message>
     <message>
       <source>Source</source>
@@ -1724,27 +1747,27 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Extract</source>
-      <translation>Αποσυμπίεση</translation>
+      <translation>Εξαγωγή</translation>
     </message>
     <message>
       <source>Create project</source>
-      <translation>Δημιουργία έργου</translation>
+      <translation>Δημιουργήστε έργο</translation>
     </message>
     <message>
       <source>Create</source>
-      <translation>Δημιουργία</translation>
+      <translation>Δημιουργήστε</translation>
     </message>
     <message>
       <source>Load project file after creation</source>
-      <translation>Φόρτωση αρχείο έργου μετά τη δημιουργία</translation>
+      <translation>Φόρτωση αρχείου έργου μετά τη δημιουργία</translation>
     </message>
     <message>
       <source>Empty source</source>
-      <translation>Άδεια πηγή</translation>
+      <translation>Κενή πηγή</translation>
     </message>
     <message>
       <source>No source is defined.</source>
-      <translation>Δεν προσδιορίστηκε κάποια πηγή.</translation>
+      <translation>Δεν προσδιορίστηκε καμία πηγή.</translation>
     </message>
     <message>
       <source>Empty destination</source>
@@ -1752,22 +1775,22 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>No destination is defined.</source>
-      <translation>Δεν προσδιορίστηκε κάποιος προορισμός.</translation>
+      <translation>Δεν ορίστηκε κανένας προορισμός.</translation>
     </message>
     <message>
       <source>Project file</source>
-      <translation>Αρχείο εργασίας</translation>
+      <translation>Αρχείο έργου</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
       <source>Link</source>
-      <translation>Δεσμός</translation>
+      <translation>Σύνδεσμος</translation>
     </message>
     <message>
       <source>Show all object types</source>
-      <translation>Εμφάνιση όλων των ειδών των αντικειμένων</translation>
+      <translation>Εμφανίστε όλους τους τύπους αντικειμένων</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -1783,11 +1806,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>A search pattern to filter the results above</source>
-      <translation>Μια μήτρα αναζήτησης για το φιλτράρισμα των παραπάνω αποτελεσμάτων</translation>
+      <translation>Ένα μοτίβο αναζήτησης για το φιλτράρισμα των παραπάνω αποτελεσμάτων</translation>
     </message>
     <message>
       <source>None (Remove link)</source>
-      <translation>Κανένα (Απομάκρυνση του δεσμού)</translation>
+      <translation>Κανένα (Αφαίρεση συνδέσμου)</translation>
     </message>
   </context>
   <context>
@@ -1802,7 +1825,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Record log messages</source>
-      <translation>Καταγραφή μηνυμάτων</translation>
+      <translation>Καταχώρηση μηνυμάτων αρχείου καταγραφής</translation>
     </message>
     <message>
       <source>Record warnings</source>
@@ -1810,7 +1833,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Record error messages</source>
-      <translation>Καταγραφή σφαλμάτων</translation>
+      <translation>Καταγραφή μηνυμάτων σφάλματος</translation>
     </message>
     <message>
       <source>Colors</source>
@@ -1822,7 +1845,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Log messages:</source>
-      <translation>Μηνύματα καταγραφής:</translation>
+      <translation>Μηνύματα αρχείου καταγραφής:</translation>
     </message>
     <message>
       <source>Warnings:</source>
@@ -1838,15 +1861,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Redirect internal Python errors to report view</source>
-      <translation>Ανακατεύθυνση των εσωτερικών σφαλμάτων Πάιθον στην προβολή των αναφορών</translation>
+      <translation>Ανακατεύθυνση των εσωτερικών σφαλμάτων Python στην προβολή αναφορών</translation>
     </message>
     <message>
       <source>Redirect internal Python output to report view</source>
-      <translation>Ανακατεύθυνση της εσωτερικής εξόδου του Πάιθον στην προβολή των αναφορών</translation>
+      <translation>Ανακατεύθυνση της εσωτερικής εξόδου Python στην προβολή αναφορών</translation>
     </message>
     <message>
       <source>Python interpreter</source>
-      <translation>Ερμηνευτής της Πάιθον</translation>
+      <translation>Διερμηνέας Python</translation>
     </message>
   </context>
   <context>
@@ -1857,11 +1880,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>Ετικέτα κειμένου</translation>
+      <translation>ΕτικέταΚειμένου</translation>
     </message>
     <message>
       <source>Advanced &gt;&gt;</source>
-      <translation>Προχωρημένα &gt;&gt;</translation>
+      <translation>Προχωρημένες &gt;&gt;</translation>
     </message>
     <message>
       <source>...</source>
@@ -1869,15 +1892,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Accept changes</source>
-      <translation>Αποδοχή των αλλαγών</translation>
+      <translation>Αποδοχή αλλαγών</translation>
     </message>
     <message>
       <source>Discard changes</source>
-      <translation>Απόρριψη των αλλαγών</translation>
+      <translation>Απόρριψη αλλαγών</translation>
     </message>
     <message>
       <source>Abort program</source>
-      <translation>Εγκατάλειψη του προγράμματος</translation>
+      <translation>Διακοπή προγράμματος</translation>
     </message>
     <message>
       <source>Help</source>
@@ -1885,26 +1908,26 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Select a file</source>
-      <translation>Επέλεξε ένα αρχείο</translation>
+      <translation>Επιλέξτε ένα αρχείο</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DView</name>
     <message>
       <source>3D View</source>
-      <translation>Προβολή 3Δ</translation>
+      <translation>Τρισδιάστατη Προβολή</translation>
     </message>
     <message>
       <source>3D View settings</source>
-      <translation>Ρυθμίσεις προβολής 3Δ</translation>
+      <translation>Ρυθμίσεις τρισδιάστατης Προβολής</translation>
     </message>
     <message>
       <source>Show coordinate system in the corner</source>
-      <translation>Εμφάνιση του συστήματος συντεταγμένων στην γωνία</translation>
+      <translation>Εμφάνιση συστήματος συντεταγμένων στην γωνία</translation>
     </message>
     <message>
       <source>Show counter of frames per second</source>
-      <translation>Εμφάνιση μετρητή καρέ ανά δευτερόλεπτο</translation>
+      <translation>Εμφάνιση μετρητή των καρέ ανά δευτερόλεπτο</translation>
     </message>
     <message>
       <source>Enable animation</source>
@@ -1912,7 +1935,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes:</source>
-      <translation>Απόσταση μεταξύ των οφθαλμών για τη στερεοσκοπική προβολή:</translation>
+      <translation>Απόσταση μεταξύ των οφθαλμών για λειτουργίες στερεοσκοπικής προβολής:</translation>
     </message>
     <message>
       <source>Camera type</source>
@@ -1924,7 +1947,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>3D Navigation</source>
-      <translation>3D πλοήγηση</translation>
+      <translation>Τρισδιάστατη Πλοήγηση</translation>
     </message>
     <message>
       <source>Mouse...</source>
@@ -1932,31 +1955,31 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Intensity of backlight</source>
-      <translation>Έντασης του οπίσθιου φωτισμού</translation>
+      <translation>Ένταση οπίσθιου φωτισμού</translation>
     </message>
     <message>
       <source>Enable backlight color</source>
-      <translation>Ενεργοποίηση του χρώματος του οπίσθιου φωτισμού</translation>
+      <translation>Ενεργοποίηση χρώματος οπίσθιου φωτισμού</translation>
     </message>
     <message>
       <source>Orbit style</source>
-      <translation>Στύλ Τροχιάς</translation>
+      <translation>Τύπος μορφοποίησης τροχιάς</translation>
     </message>
     <message>
       <source>Turntable</source>
-      <translation>Στρεψόδισκος</translation>
+      <translation>Περιστρεφόμενη βάση</translation>
     </message>
     <message>
       <source>Trackball</source>
-      <translation>Οδηγόσφαιρα</translation>
+      <translation>Ιχνόσφαιρα</translation>
     </message>
     <message>
       <source>Invert zoom</source>
-      <translation>Αντιστροφή της εστίασης</translation>
+      <translation>Αντιστροφή εστίασης</translation>
     </message>
     <message>
       <source>Zoom at cursor</source>
-      <translation>Εστίαση στον δείκτη</translation>
+      <translation>Εστίαση στον κέρσορα</translation>
     </message>
     <message>
       <source>Zoom step</source>
@@ -1964,7 +1987,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Anti-Aliasing</source>
-      <translation>Αντισπασμοδικό</translation>
+      <translation>Anti-Aliasing</translation>
     </message>
     <message>
       <source>None</source>
@@ -1972,7 +1995,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Line Smoothing</source>
-      <translation>Απάλυνση γραμμών</translation>
+      <translation>Εξομάλυνση Γραμμής</translation>
     </message>
     <message>
       <source>MSAA 2x</source>
@@ -1988,26 +2011,90 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation type="unfinished">Or&amp;thographic rendering</translation>
+      <translation>Ορθογραφική απο&amp;τύπωση</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation type="unfinished">Perspective renderin&amp;g</translation>
+      <translation>Προοπτική αποτύπωση</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object (experimental)</translation>
+      <source>Show navigation cube</source>
+      <translation>Εμφανίστε τον κύβο πλοήγησης</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Γωνία</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Πάνω αριστερά</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Πάνω δεξιά</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Κάτω αριστερά</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Κάτω δεξιά</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation type="unfinished">Marker size:</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
       <source>Anti-aliasing</source>
-      <translation type="unfinished">Anti-aliasing</translation>
+      <translation>Anti-aliasing</translation>
     </message>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
-      <translation type="unfinished">Open a new viewer or restart %1 to apply anti-aliasing changes.</translation>
+      <translation>Ανοίξτε ένα νέο πρόγραμμα προβολής ή πραγματοποιήστε επανεκκίνηση %1 για να εφαρμόσετε τις αλλαγές anti-aliasing.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation type="unfinished">7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation type="unfinished">9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation type="unfinished">11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation type="unfinished">13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation type="unfinished">15px</translation>
     </message>
   </context>
   <context>
@@ -2018,7 +2105,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Gradient:</source>
-      <translation>&amp;Διαβάθμιση:</translation>
+      <translation>Διαβάθμιση:</translation>
     </message>
     <message>
       <source>red-yellow-green-cyan-blue</source>
@@ -2030,11 +2117,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>white-black</source>
-      <translation>άσπρο-μαύρο</translation>
+      <translation>λευκό-μαύρο</translation>
     </message>
     <message>
       <source>black-white</source>
-      <translation>μαύρο-άσπρο</translation>
+      <translation>μαύρο-λευκό</translation>
     </message>
     <message>
       <source>Visibility</source>
@@ -2042,7 +2129,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Out g&amp;rayed</source>
-      <translation>Το έξω γκριζαρισμένο</translation>
+      <translation>Χρήση γκ&amp;ρίζου χρώματος για τιμές εκτός εύρους</translation>
     </message>
     <message>
       <source>Alt+R</source>
@@ -2050,7 +2137,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Out &amp;invisible</source>
-      <translation>Το έξω αόρατο</translation>
+      <translation>Χρήση πλήρους δ&amp;ιαφάνειας για περιοχές εκτός εύρους</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2058,7 +2145,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Style</source>
-      <translation>Στυλ</translation>
+      <translation>Τύπος μορφοποίησης</translation>
     </message>
     <message>
       <source>&amp;Zero</source>
@@ -2094,7 +2181,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&amp;Decimals:</source>
-      <translation>Δεκαδικά:</translation>
+      <translation>&amp;Δεκαδικά:</translation>
     </message>
     <message>
       <source/>
@@ -2102,7 +2189,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Color-gradient settings</source>
-      <translation>Ρυθμίσεις των αποχρώσεων</translation>
+      <translation>Ρυθμίσεις χρωματικής διαβάθμισης</translation>
     </message>
   </context>
   <context>
@@ -2113,7 +2200,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>The maximum value must be higher than the minimum value.</source>
-      <translation>Η μέγιστη τιμή πρέπει να είναι υψηλότερη από την ελάχιστη.</translation>
+      <translation>Η μέγιστη τιμή πρέπει να είναι υψηλότερη από την ελάχιστη τιμή.</translation>
     </message>
   </context>
   <context>
@@ -2124,29 +2211,29 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>General</source>
-      <translation>Γενικά</translation>
+      <translation>Γενικές</translation>
     </message>
     <message>
       <source>Document save compression level
 (0 = none, 9 = highest, 3 = default)</source>
       <translation>Βαθμός συμπίεσης αποθηκευόμενων εγγράφων
-(0 = καμία, 9 = ύψιστη, 3 = προεπιλογή)</translation>
+(0 = καμία, 9 = ύψιστη, 3 = προεπιλεγμένη)</translation>
     </message>
     <message>
       <source>Create new document at start up</source>
-      <translation>Δημιουργία νέου εγγράφου κατά την έναρξη</translation>
+      <translation>Δημιουργήστε νέο έγγραφο κατά την έναρξη</translation>
     </message>
     <message>
       <source>Storage</source>
-      <translation>Αποθηκευτικά μέσα</translation>
+      <translation>Αποθήκευση</translation>
     </message>
     <message>
       <source>Saving transactions (Auto-save)</source>
-      <translation>Αποθήκευση συναλλαγών (Αυτόματη αποθήκευση)</translation>
+      <translation>Πραγματοποιείται αποθήκευση συναλλαγών (Αυτόματη αποθήκευση)</translation>
     </message>
     <message>
       <source>Discard saved transaction after saving document</source>
-      <translation>Απόρριψη των αποθηκευμένων συναλλαγής μετά την αποθήκευση του εγγράφου</translation>
+      <translation>Απόρριψη αποθηκευμένης συναλλαγής μετά την αποθήκευση του εγγράφου</translation>
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
@@ -2154,27 +2241,27 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation>Μέγιστο πλήθος, από αρχεία αντίγραφου ασφάλειας, που θα διατηρούνται, κατά την επανα-αποθήκευση του εγγράφου</translation>
+      <translation>Μέγιστο πλήθος αρχείων αντιγράφων ασφαλείας προς διατήρηση κατά την επαναποθήκευση εγγράφου</translation>
     </message>
     <message>
       <source>Document objects</source>
-      <translation>Αντικείμενα του εγγράφου</translation>
+      <translation>Αντικείμενα εγγράφου</translation>
     </message>
     <message>
       <source>Allow duplicate object labels in one document</source>
-      <translation>Να επιτρέπονται οι όμοιες ετικέτες αντικειμένων σε ένα έγγραφο</translation>
+      <translation>Να επιτρέπεται η χρήση ομοίων ετικετών αντικειμένων στο ίδιο έγγραφο</translation>
     </message>
     <message>
       <source>Maximum Undo/Redo steps</source>
-      <translation>Μέγιστο πλήθος βημάτων Αναίρεσης και Επαναφοράς</translation>
+      <translation>Μέγιστο πλήθος βημάτων Αναίρεσης/Επανάληψης</translation>
     </message>
     <message>
       <source>Using Undo/Redo on documents</source>
-      <translation>Χρήση Αναίρεσης και Επαναφοράς στα έγγραφα</translation>
+      <translation>Χρήση Αναίρεσης/Επανάληψης σε έγγραφα</translation>
     </message>
     <message>
       <source>Authoring and License</source>
-      <translation>Σύνταξη και Άδεια</translation>
+      <translation>Συγγραφή και Άδεια</translation>
     </message>
     <message>
       <source>Author name</source>
@@ -2182,11 +2269,12 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Το όνομα θα χρησιμοποιηθεί για τη δημιουργία εγγράφων.&lt;/p&gt; &lt;p&gt;Κρατήστε το κενό για ανώνυμο.&lt;/p&gt; &lt;p&gt;Μπορείτε επίσης να χρησιμοποιήσετε τη μορφή:&lt;/p&gt; &lt;p&gt;John Doe &amp;lt; john@doe.com &amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Το όνομα προς χρήση για δημιουργία εγγράφων.&lt;/p&gt;&lt;p&gt;Κρατήστε το κενό για ανώνυμα έγγραφα.&lt;/p&gt;&lt;p&gt;Μπορείτε επίσης να χρησιμοποιήσετε τη μορφή:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;
+&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>If this is checked, the "Last modified by" field will be set when saving the file</source>
-      <translation>Εάν αυτό είναι επιλεγμένο, το πεδίο "Τελευταία τροποποίηση από" θα οριστεί κατά την αποθήκευση του αρχείου</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, το πεδίο "Τελευταία τροποποίηση από" θα οριστεί κατά την αποθήκευση του αρχείου</translation>
     </message>
     <message>
       <source>Set on save</source>
@@ -2194,7 +2282,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Company</source>
-      <translation>Εταιρία</translation>
+      <translation>Εταιρεία</translation>
     </message>
     <message>
       <source>Default license</source>
@@ -2210,47 +2298,47 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>CreativeCommons Attribution</source>
-      <translation type="unfinished">CreativeCommons Attribution</translation>
+      <translation>Απόδοση CreativeCommons</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-ShareAlike</source>
-      <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
+      <translation>Απόδοση CreativeCommons-Χρήση Κοινής Άδειας Διανομής</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NoDerivatives</source>
-      <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
+      <translation>Απόδοση CreativeCommons-Χρήση Άδειας Απαγόρευσης Δημιουργίας Παραγώγων Έργων</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
+      <translation>Απόδοση CreativeCommons-Χρήση Άδειας Απαγόρευσης Κάθε Εμπορικής Χρήσης</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Απόδοση CreativeCommons-Χρήση Άδειας Απαγόρευσης Κάθε Εμπορικής Χρήσης-Χρήση Κοινής Άδειας Διανομής</translation>
     </message>
     <message>
       <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Απόδοση CreativeCommons-Χρήση Άδειας Απαγόρευσης Κάθε Εμπορικής Χρήσης-Χρήση Άδειας Απαγόρευσης Δημιουργίας Παραγώγων Έργων</translation>
     </message>
     <message>
       <source>Public Domain</source>
-      <translation type="unfinished">Public Domain</translation>
+      <translation>Public Domain</translation>
     </message>
     <message>
       <source>FreeArt</source>
-      <translation type="unfinished">FreeArt</translation>
+      <translation>FreeArt</translation>
     </message>
     <message>
       <source>Other</source>
-      <translation type="unfinished">Other</translation>
+      <translation>Άλλο</translation>
     </message>
     <message>
       <source>License URL</source>
-      <translation>Διαδικτυακή διεύθυνση της άδειας</translation>
+      <translation>Διεύθυνση URL της άδειας</translation>
     </message>
     <message>
       <source>The default company to use for new files</source>
-      <translation type="unfinished">The default company to use for new files</translation>
+      <translation>Το προεπιλεγμένο όνομα εταιρείας προς χρήση για νέα αρχεία</translation>
     </message>
     <message>
       <source>Run AutoRecovery at startup</source>
@@ -2258,15 +2346,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Save AutoRecovery information every</source>
-      <translation>Αποθήκευση των πληροφοριών ΑυτόματηςΑποκατάστασης κάθε</translation>
+      <translation>Αποθήκευση πληροφοριών ΑυτόματηςΑποκατάστασης κάθε</translation>
     </message>
     <message>
       <source>Add the program logo to the generated thumbnail</source>
-      <translation>Προσθήκη του λογότυπου του προγράμματος στη προς δημιουργία μικρογραφία</translation>
+      <translation>Προσθήκη του λογότυπου προγράμματος στην παραγόμενη μικρογραφία</translation>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation>Μία διεύθυνση URL όπου ο χρήστης θα μπορεί να βρει περισσότερες πληροφορίες για τη άδεια</translation>
+      <translation>Μία διεύθυνση URL όπου ο χρήστης θα μπορεί να βρει περισσότερες λεπτομέρειες για την άδεια</translation>
     </message>
   </context>
   <context>
@@ -2281,7 +2369,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Breakpoint</source>
-      <translation>Σημεία διακοπής</translation>
+      <translation>Σημείο Διακοπής</translation>
     </message>
     <message>
       <source>Keyword</source>
@@ -2293,7 +2381,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Block comment</source>
-      <translation>Μπλοκ σχόλιο</translation>
+      <translation>Σχόλιο του μπλοκ</translation>
     </message>
     <message>
       <source>Number</source>
@@ -2301,7 +2389,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>String</source>
-      <translation>Αλφαριθμητικό</translation>
+      <translation>Συμβολοσειρά</translation>
     </message>
     <message>
       <source>Character</source>
@@ -2309,11 +2397,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Class name</source>
-      <translation>Όνομα της κλάσης</translation>
+      <translation>Όνομα κλάσης</translation>
     </message>
     <message>
       <source>Define name</source>
-      <translation>Ορισμός ονόματος</translation>
+      <translation>Ορίστε όνομα</translation>
     </message>
     <message>
       <source>Operator</source>
@@ -2321,19 +2409,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Python output</source>
-      <translation>Αρχείο εξόδου Python</translation>
+      <translation>Έξοδος Python</translation>
     </message>
     <message>
       <source>Python error</source>
-      <translation>Αρχείο λαθών Python</translation>
+      <translation>Σφάλμα Python</translation>
     </message>
     <message>
       <source>Items</source>
-      <translation>Στοιχεία</translation>
+      <translation>Αντικείμενα</translation>
     </message>
     <message>
       <source>Current line highlight</source>
-      <translation>Στιγματισμός τωρινής γραμμής</translation>
+      <translation>Επισήμανση τρέχουσας γραμμής</translation>
     </message>
   </context>
   <context>
@@ -2348,7 +2436,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Back&amp;ground:</source>
-      <translation>Φόντο:</translation>
+      <translation>Υπόβαθρο:</translation>
     </message>
     <message>
       <source>Current</source>
@@ -2368,11 +2456,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Pixel</source>
-      <translation>Pixel</translation>
+      <translation>Εικονοστοιχείο</translation>
     </message>
     <message>
       <source>&amp;Width:</source>
-      <translation>&amp;Πλάτος:</translation>
+      <translation>Πλάτος:</translation>
     </message>
     <message>
       <source>Current screen</source>
@@ -2380,15 +2468,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Icon       32  x 32</source>
-      <translation>Εικονίδιο 32 x 32</translation>
+      <translation>Εικονίδιο       32 x 32</translation>
     </message>
     <message>
       <source>Icon       64 x 64</source>
-      <translation>Εικονίδιο 64 x 64</translation>
+      <translation>Εικονίδιο       64 x 64</translation>
     </message>
     <message>
       <source>Icon       128 x 128</source>
-      <translation>Εικονίδιο 128 x 128</translation>
+      <translation>Εικονίδιο       128 x 128</translation>
     </message>
     <message>
       <source>CGA       320 x 200</source>
@@ -2468,7 +2556,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Standard sizes:</source>
-      <translation>Τυποποιημένα μεγέθη:</translation>
+      <translation>Καθιερωμένα μεγέθη:</translation>
     </message>
     <message>
       <source>&amp;Height:</source>
@@ -2476,7 +2564,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Aspect ratio:</source>
-      <translation>Λόγος διαστάσεων:</translation>
+      <translation>Λόγος απεικόνισης:</translation>
     </message>
     <message>
       <source>&amp;Screen</source>
@@ -2516,11 +2604,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Insert MIBA</source>
-      <translation>Εισαγωγή MIBA</translation>
+      <translation>Εισάγετε MIBA</translation>
     </message>
     <message>
       <source>Insert comment</source>
-      <translation>Εισαγωγή σχολίου</translation>
+      <translation>Εισάγετε σχόλιο</translation>
     </message>
     <message>
       <source>Transparent</source>
@@ -2543,7 +2631,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Logging Commands</source>
-      <translation>Εντολές καταγραφών</translation>
+      <translation>Εντολές Καταγραφής</translation>
     </message>
     <message>
       <source>Show script commands in python console</source>
@@ -2551,7 +2639,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
-      <translation>Καταγραφή όλων των εντολών που προωθούνται από το μενού στο αρχείο:</translation>
+      <translation>Καταγραφή όλων των εντολών που εκδίδονται από μενού στο αρχείο:</translation>
     </message>
     <message>
       <source>FullScript.FCScript</source>
@@ -2559,11 +2647,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Gui commands</source>
-      <translation>Εντολές γραφικού περιβάλλοντος χρήστη</translation>
+      <translation>Εντολές Γραφικού Περιβάλλοντος Χρήστη</translation>
     </message>
     <message>
       <source>Recording GUI commands</source>
-      <translation>Καταγραφή των εντολών Γραφικού Περιβάλλοντος Χρήστη</translation>
+      <translation>Πραγματοποιείται καταγραφή εντολών Γραφικού Περιβάλλοντος Χρήστη</translation>
     </message>
     <message>
       <source>Record as comment</source>
@@ -2575,30 +2663,30 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>General macro settings</source>
-      <translation>Γενικές επιλογές μακροεντολών</translation>
+      <translation>Γενικές ρυθμίσεις μακροεντολών</translation>
     </message>
     <message>
       <source>Run macros in local environment</source>
-      <translation>Τρέξιμο των μακροεντολών σε τοπικό περιβάλλον</translation>
+      <translation>Εκτέλεση μακροεντολών σε τοπικό περιβάλλον</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsUnits</name>
     <message>
       <source>Units</source>
-      <translation>Μονάδες μέτρησης</translation>
+      <translation>Μονάδες</translation>
     </message>
     <message>
       <source>Units settings</source>
-      <translation>Ρυθμίσεις των μονάδων μέτρησης</translation>
+      <translation>Ρυθμίσεις μονάδων</translation>
     </message>
     <message>
       <source>Standard (mm/kg/s/degree)</source>
-      <translation>Τυπικό (mm/kg/s/degree)</translation>
+      <translation>Καθιερωμένο (χιλιοστά/κιλά/δευτερόλεπτα/μοίρες)</translation>
     </message>
     <message>
       <source>MKS (m/kg/s/degree)</source>
-      <translation>Μετρικό (μέτρα/κιλά/δευτ./μοίρες)</translation>
+      <translation>Μετρικό Σύστημα Μονάδων (μέτρα/κιλά/δευτερόλεπτα/μοίρες)</translation>
     </message>
     <message>
       <source>Magnitude</source>
@@ -2610,31 +2698,71 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>User system:</source>
-      <translation>Σύστημα του χρήστη:</translation>
+      <translation>Σύστημα χρήστη:</translation>
     </message>
     <message>
       <source>US customary (in/lb)</source>
-      <translation>ΗΠΑ συνήθη (ίντσες / λίβρες)</translation>
+      <translation>Συνήθεις μονάδες ΗΠΑ (ίντσες/λίβρες)</translation>
     </message>
     <message>
       <source>Number of decimals:</source>
-      <translation>Πλήθος δεκαδικών ψηφίων:</translation>
+      <translation>Πλήθος δεκαδικών:</translation>
     </message>
     <message>
       <source>Imperial decimal (in/lb)</source>
-      <translation>Αυτοκρατορικό δεκαδικό (ίντσες / λίβρες)</translation>
+      <translation>Δεκαδικό Αυτοκρατορικού Συστήματος Μονάδων (ίντσες/λίβρες)</translation>
     </message>
     <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
-      <translation>Χτίσιμο Ευρώπης (εκατοστά / τετ.μέτρα / κυβ.μέτρα)</translation>
+      <translation>Μονάδες Μέτρησης Γεωμετρικών Μεγεθών Ευρώπης (εκατοστά/τετραγωνικά μέτρα/κυβικά μέτρα)</translation>
     </message>
     <message>
       <source>Building US (ft-in/sqft/cuft)</source>
-      <translation>Χτίσιμο Η.Π.Α. (πόδια-ίντσες / τετ.πόδια / κυβ.πόδια)</translation>
+      <translation>Μονάδες Μέτρησης Γεωμετρικών Μεγεθών ΗΠΑ (πόδια-ίντσες/τετραγωνικά πόδια/κυβικά πόδια)</translation>
     </message>
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Μετρικά μικρά εξαρτήματα κ´ CNC ( χιλ. , χιλ/λεπ )</translation>
+      <translation>Μετρικό σύστημα μικρών εξαρτημάτων &amp; CNC (χιλιοστά, χιλιοστά/λεπτά)</translation>
+    </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation type="unfinished">Minimum fractional inch:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation type="unfinished">1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation type="unfinished">1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation type="unfinished">1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation type="unfinished">1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation type="unfinished">1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation type="unfinished">1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation type="unfinished">1/128"</translation>
     </message>
   </context>
   <context>
@@ -2653,15 +2781,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Enable preselection highlighting</source>
-      <translation>Ενεργοποίηση του χρωματικού τονισμού της προεπιλογής</translation>
+      <translation>Ενεργοποίηση επισήμανσης προεπιλογής</translation>
     </message>
     <message>
       <source>Background color</source>
-      <translation>Χρώμα φόντου</translation>
+      <translation>Χρώμα υποβάθρου</translation>
     </message>
     <message>
       <source>Middle color</source>
-      <translation>Μέσο χρώμα</translation>
+      <translation>Μεσαίο χρώμα</translation>
     </message>
     <message>
       <source>Color gradient</source>
@@ -2673,11 +2801,23 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Pick radius (px):</source>
-      <translation>Ακτίνα επιλογής (px):</translation>
+      <translation>Διαλέξτε ακτίνα (px):</translation>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Ορίζει την περιοχή σύγχυσης για τη διαλογή στοιχείων σε τρισδιάστατη προβολή. Η επιλογή μεγαλύτερης τιμής διευκολύνει την διαλογή, αλλά θα καταστήσει την επιλογή κάποιων μικρών χαρακτηριστικών αδύνατη.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Προβολή Δενδροδιαγράμματος</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Πραγματοποιείται επεξεργασία αντικειμένου</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Ενεργό δοχείο</translation>
     </message>
   </context>
   <context>
@@ -2691,7 +2831,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
       <source>Units calculator</source>
-      <translation>Υπολογιστής μονάδων μέτρησης</translation>
+      <translation>Υπολογιστής μονάδων</translation>
     </message>
     <message>
       <source>as:</source>
@@ -2726,7 +2866,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
       <source>Unit mismatch</source>
-      <translation>Ασυμβατότητα των μονάδων</translation>
+      <translation>Ασυμβατότητα μονάδων</translation>
     </message>
   </context>
   <context>
@@ -2749,7 +2889,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item down.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved down&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Μετακινήστε το επιλεγμένο αντικείμενο προς τα κάτω.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Το αντικείμενο θα μετακινηθεί προς τα κάτω&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
@@ -2757,7 +2897,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Remove the selected workbench from enabled workbenches&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Αφαιρέστε τον επιλεγμένο πάγκο εργασίας από τους ενεργοποιημένους πάγκους εργασίας&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -2765,15 +2905,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected workbench to enabled workbenches.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Μετακινήστε τον επιλεγμένο πάγκο εργασίας στους ενεργοποιημένους πάγκους εργασίας.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Sort enabled workbenches</source>
-      <translation>Ταξινόμηση των ενεργοποιημένων πάγκων εργασίας</translation>
+      <translation>Ταξινόμηση ενεργοποιημένων πάγκων εργασίας</translation>
     </message>
     <message>
       <source>&lt;b&gt;Sort enabled workbenches&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Ταξινόμηση των ενεργοποιημένων πάγκων εργασίας&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Ταξινόμηση ενεργοποιημένων πάγκων εργασίας&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -2781,22 +2921,22 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Move the selected item up.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;The item will be moved up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Μετακινήστε το επιλεγμένο αντικείμενο προς τα πάνω.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Το αντικείμενο θα μετακινηθεί προς τα πάνω.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Note:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt; The changes become active the next time you start FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:600;"&gt;Σημείωση:&lt;/span&gt;&lt;span style=" font-family:'MS Shell Dlg 2'; font-size:8pt;"&gt;Οι αλλαγές θα ενεργοποιηθούν την επόμενη φορά που θα εκκινήσετε το FreeCAD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Add all to enabled workbenches</source>
-      <translation>Προσθήκη όλων, στους ενεργοποιημένους πάγκους εργασίας</translation>
+      <translation>Προσθήκη όλων στους ενεργοποιημένους πάγκους εργασίας</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
       <source>Placement</source>
-      <translation>Μετάθεση</translation>
+      <translation>Τοποθέτηση</translation>
     </message>
   </context>
   <context>
@@ -2807,11 +2947,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Status of recovered documents:</source>
-      <translation>Κατάσταση των ανακτημένων εγγράφων:</translation>
+      <translation>Κατάσταση ανακτημένων εγγράφων:</translation>
     </message>
     <message>
       <source>Document Name</source>
-      <translation>Όνομα του Εγγράφου</translation>
+      <translation>Όνομα Εγγράφου</translation>
     </message>
     <message>
       <source>Status</source>
@@ -2823,15 +2963,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Not yet recovered</source>
-      <translation>Δεν έχει ανακτηθεί, ακόμη</translation>
+      <translation>Δεν έχει ανακτηθεί ακόμη</translation>
     </message>
     <message>
       <source>Unknown problem occurred</source>
-      <translation>Παρουσιάστηκε ένα άγνωστο πρόβλημα</translation>
+      <translation>Παρουσιάστηκε άγνωστο πρόβλημα</translation>
     </message>
     <message>
       <source>Failed to recover</source>
-      <translation>Αποτυχία της ανάκτησης</translation>
+      <translation>Αποτυχία ανάκτησης</translation>
     </message>
     <message>
       <source>Successfully recovered</source>
@@ -2839,7 +2979,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Finish</source>
-      <translation>Τελείωμα</translation>
+      <translation>Ολοκλήρωση</translation>
     </message>
     <message>
       <source>Cleanup...</source>
@@ -2855,19 +2995,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Are you sure you want to delete the selected transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete the selected transient directories?</translation>
+      <translation>Είστε βέβαιοι πως θέλετε να διαγράψετε τα επιλεγμένα προσωρινά ευρετήρια;</translation>
     </message>
     <message>
       <source>When deleting the selected transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>Όταν διαγράφετε το επιλεγμένο προσωρινό ευρετήριο δεν θα είστε σε θέση να ανακτήσετε κανένα αρχείο στη συνέχεια.</translation>
     </message>
     <message>
       <source>Are you sure you want to delete all transient directories?</source>
-      <translation type="unfinished">Are you sure you want to delete all transient directories?</translation>
+      <translation>Είστε βέβαιοι πως θέλετε να διαγράψετε όλα τα προσωρινά ευρετήρια;</translation>
     </message>
     <message>
       <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directory you won't be able to recover any files afterwards.</translation>
+      <translation>Όταν διαγράφετε όλα τα προσωρινά ευρετήρια δεν θα είστε σε θέση να ανακτήσετε κανένα αρχείο στη συνέχεια.</translation>
     </message>
     <message>
       <source>Finished</source>
@@ -2875,15 +3015,15 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Transient directories deleted.</source>
-      <translation type="unfinished">Transient directories deleted.</translation>
+      <translation>Τα προσωρινά ευρετήρια διαγράφηκαν.</translation>
     </message>
     <message>
       <source>Press 'Start Recovery' to start the recovery process of the document listed below.
 
 The 'Status' column shows whether the document could be recovered.</source>
-      <translation>Πίεσε την «Έναρξη της Ανάκτησης», για να εκκινήσεις τη διαδικασία ανάκτησης του εγγράφου, που αναφέρεται παρακάτω.
+      <translation>Πιέστε την επιλογή 'Εκκίνηση Ανάκτησης' για να εκκινήσετε τη διαδικασία ανάκτησης του εγγράφου που αναφέρεται παρακάτω.
 
-Η στήλη της «Κατάστασης» δείχνει αν ήταν δυνατή η ανάκτηση του εγγράφου.</translation>
+Η στήλη 'Κατάσταση' δείχνει αν ήταν δυνατή η ανάκτηση του εγγράφου.</translation>
     </message>
   </context>
   <context>
@@ -2894,11 +3034,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Download canceled: %1</source>
-      <translation>Η λήψη ακυρώθηκε: \n%1</translation>
+      <translation>Η λήψη ακυρώθηκε: %1</translation>
     </message>
     <message>
       <source>Open containing folder</source>
-      <translation>Άνοιγμα του φακέλου που το περιέχει</translation>
+      <translation>Άνοιγμα φακέλου που περιέχει το αρχείο</translation>
     </message>
     <message>
       <source>Error opening saved file: %1</source>
@@ -2906,11 +3046,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Error saving: %1</source>
-      <translation>Σφάλμα στη αποθήκευση: \n%1</translation>
+      <translation>Σφάλμα κατά την αποθήκευση: %1</translation>
     </message>
     <message>
       <source>Network Error: %1</source>
-      <translation>Σφάλμα Δικτύου: \n%1</translation>
+      <translation>Σφάλμα Δικτύου: %1</translation>
     </message>
     <message>
       <source>seconds</source>
@@ -2922,11 +3062,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>- %4 %5 remaining</source>
-      <translation>- %4 %5 απομένουν</translation>
+      <translation>Απομένουν - %4 %5</translation>
     </message>
     <message>
       <source>%1 of %2 (%3/sec) %4</source>
-      <translation>%1 από %2 (%3/δευτ.) %4</translation>
+      <translation>%1 από %2 (%3/δευτερόλεπτα) %4</translation>
     </message>
     <message>
       <source>?</source>
@@ -2934,19 +3074,19 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>%1 of %2 - Stopped</source>
-      <translation>%1 από %2 - Σταματημένο</translation>
+      <translation>%1 από %2 - Διεκόπη</translation>
     </message>
     <message>
       <source>bytes</source>
-      <translation>μπάιτια</translation>
+      <translation>bytes</translation>
     </message>
     <message>
       <source>kB</source>
-      <translation>χιλιομπάιτια</translation>
+      <translation>kB</translation>
     </message>
     <message>
       <source>MB</source>
-      <translation>μεγαμπάιτια</translation>
+      <translation>MB</translation>
     </message>
   </context>
   <context>
@@ -2957,11 +3097,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Clean up</source>
-      <translation>Ξεκαθάρισμα</translation>
+      <translation>Καθάρισμα</translation>
     </message>
     <message>
       <source>0 Items</source>
-      <translation>0 στοιχεία</translation>
+      <translation>0 αντικείμενα</translation>
     </message>
     <message>
       <source>Download Manager</source>
@@ -2991,7 +3131,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::IconFolders</name>
     <message>
       <source>Add or remove custom icon folders</source>
-      <translation>Προσθήκη, ή απομάκρυνση, προσαρμοσμένων εικονιδίων των φακέλων</translation>
+      <translation>Προσθήκη ή αφαίρεση προσαρμοσμένων φακέλων εικονιδίων</translation>
     </message>
     <message>
       <source>Remove folder</source>
@@ -2999,7 +3139,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Removing a folder only takes effect after an application restart.</source>
-      <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
+      <translation>Η αφαίρεση φακέλου τίθεται σε ισχύ μόνο μετά από επανεκκίνηση της εφαρμογής.</translation>
     </message>
   </context>
   <context>
@@ -3029,7 +3169,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::MouseButtons</name>
     <message>
       <source>Mouse buttons</source>
-      <translation>Πλήκτρα του ποντικιού</translation>
+      <translation>Πλήκτρα ποντικιού</translation>
     </message>
     <message>
       <source>Configuration</source>
@@ -3041,7 +3181,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Panning</source>
-      <translation>Πανοραμική οπτική γωνία</translation>
+      <translation>Μεταφορική κίνηση κάμερας</translation>
     </message>
     <message>
       <source>Rotation:</source>
@@ -3056,7 +3196,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::ParameterGroup</name>
     <message>
       <source>Expand</source>
-      <translation>Ανάπτυξη</translation>
+      <translation>Επέκταση</translation>
     </message>
     <message>
       <source>Add sub-group</source>
@@ -3064,7 +3204,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Remove group</source>
-      <translation>Απομάκρυνση ομάδας</translation>
+      <translation>Αφαίρεση ομάδας</translation>
     </message>
     <message>
       <source>Rename group</source>
@@ -3084,23 +3224,23 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Do really want to remove this parameter group?</source>
-      <translation>Επιθυμείτε πραγματικά να απομακρύνετε αυτή την ομάδα παραμέτρων;</translation>
+      <translation>Θέλετε πραγματικά να αφαιρέσετε αυτήν την ομάδα παραμέτρων;</translation>
     </message>
     <message>
       <source>Existing sub-group</source>
-      <translation>Ήδη υπάρχουσα υποομάδα</translation>
+      <translation>Υπάρχουσα υποομάδα</translation>
     </message>
     <message>
       <source>The sub-group '%1' already exists.</source>
-      <translation>Υπάρχει, ήδη, η υπομάδα '%1'.</translation>
+      <translation>Η υποομάδα '%1' υπάρχει ήδη.</translation>
     </message>
     <message>
       <source>Export parameter to file</source>
-      <translation>Εξαγωγή των παραμέτρων σε αρχείο</translation>
+      <translation>Εξαγωγή παραμέτρου σε αρχείο</translation>
     </message>
     <message>
       <source>Import parameter from file</source>
-      <translation>Εισαγωγή παραμέτρων από αρχείο</translation>
+      <translation>Εισαγωγή παραμέτρου από αρχείο</translation>
     </message>
     <message>
       <source>Import Error</source>
@@ -3108,18 +3248,18 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Reading from '%1' failed.</source>
-      <translation>Αποτυχία ανάγνωσης από το '%1'.</translation>
+      <translation>Η ανάγνωση από το '%1' απέτυχε.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::ParameterValue</name>
     <message>
       <source>Change value</source>
-      <translation>Αλλαγή της τιμής</translation>
+      <translation>Αλλαγή τιμής</translation>
     </message>
     <message>
       <source>Remove key</source>
-      <translation>Απομάκρυνση κλειδιού</translation>
+      <translation>Αφαίρεση κλειδιού</translation>
     </message>
     <message>
       <source>Rename key</source>
@@ -3131,11 +3271,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>New string item</source>
-      <translation>Στοιχείο νέου στίχου</translation>
+      <translation>Νέο αντικείμενο συμβολοσειράς</translation>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Νέο πλέον αντικείμενο</translation>
+      <translation>Νέο πραγματικό αντικείμενο</translation>
     </message>
     <message>
       <source>New integer item</source>
@@ -3147,26 +3287,26 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>Νέο Μπουλικής λογικής αντικείμενο</translation>
+      <translation>Νέο αντικείμενο άλγεβρας Boole</translation>
     </message>
     <message>
       <source>Existing item</source>
-      <translation>Υπάρχον στοιχείο</translation>
+      <translation>Υπάρχον αντικείμενο</translation>
     </message>
     <message>
       <source>The item '%1' already exists.</source>
-      <translation>Υπάρχει, ήδη, το στοιχείο '%1'.</translation>
+      <translation>Το αντικείμενο '%1' υπάρχει ήδη.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::Placement</name>
     <message>
       <source>Placement</source>
-      <translation>Μετάθεση</translation>
+      <translation>Τοποθέτηση</translation>
     </message>
     <message>
       <source>OK</source>
-      <translation>Εντάξει</translation>
+      <translation>ΟΚ</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -3214,15 +3354,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Rotation axis with angle</source>
-      <translation>Άξονας περιστροφή με γωνία</translation>
-    </message>
-    <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Άμεση εφαρμογή των αλλαγών στην μετάθεση</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Εφαρμογή σταδιακών αλλαγών στην μετάθεση του αντικειμένου</translation>
+      <translation>Άξονας περιστροφής με γωνία</translation>
     </message>
     <message>
       <source>Apply</source>
@@ -3238,19 +3370,43 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Incorrect quantity</source>
-      <translation type="unfinished">Incorrect quantity</translation>
+      <translation>Εσφαλμένη ποσότητα</translation>
     </message>
     <message>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
+      <translation>Υπάρχουν πεδία εισόδου με εσφαλμένη είσοδο, παρακαλώ βεβαιωθείτε πως χρησιμοποιείτε έγκυρες τιμές τοποθέτησης!</translation>
     </message>
     <message>
       <source>Euler angles (XY'Z'')</source>
-      <translation type="unfinished">Euler angles (XY'Z'')</translation>
+      <translation>Γωνίες Euler (ΧΥ'Ζ'')</translation>
     </message>
     <message>
       <source>Use center of mass</source>
-      <translation type="unfinished">Use center of mass</translation>
+      <translation>Χρήση του κέντρου μάζας</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation type="unfinished">Axial:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation type="unfinished">Apply axial</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation type="unfinished">Shift click for opposite direction</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation type="unfinished">Selected points</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation type="unfinished">Apply incremental changes</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation type="unfinished">Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
     </message>
   </context>
   <context>
@@ -3283,7 +3439,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::SceneModel</name>
     <message>
       <source>Inventor Tree</source>
-      <translation type="unfinished">Inventor Tree</translation>
+      <translation>Δενδροδιάγραμμα Inventor</translation>
     </message>
     <message>
       <source>Nodes</source>
@@ -3298,11 +3454,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::TextureMapping</name>
     <message>
       <source>Texture</source>
-      <translation>Ύφασμα</translation>
+      <translation>Υφή</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Χαρτογράφηση των υφασμάτων</translation>
+      <translation>Χαρτογράφηση υφής</translation>
     </message>
     <message>
       <source>Global</source>
@@ -3322,7 +3478,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>The specified file is not a valid image file.</source>
-      <translation>Το καθορισμένο αρχείο δεν είναι ένα έγκυρο αρχείο εικόνας.</translation>
+      <translation>Το καθορισμένο αρχείο δεν αποτελεί έγκυρο αρχείο εικόνας.</translation>
     </message>
     <message>
       <source>No 3d view</source>
@@ -3330,14 +3486,14 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>No active 3d view found.</source>
-      <translation>Δεν βρέθηκε ενεργή προβολή τριών διαστάσεων.</translation>
+      <translation>Δεν βρέθηκε ενεργή τρισδιάστατη προβολή.</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::Transform</name>
     <message>
       <source>Cancel</source>
-      <translation>Άκυρο</translation>
+      <translation>Ακύρωση</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -3352,7 +3508,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Items</source>
-      <translation>Στοιχεία</translation>
+      <translation>Αντικείμενα</translation>
     </message>
     <message>
       <source/>
@@ -3363,7 +3519,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::DockWnd::CombiView</name>
     <message>
       <source>CombiView</source>
-      <translation>Συνδυασμένη προβολή</translation>
+      <translation>Συνδυασμένη Προβολή</translation>
     </message>
     <message>
       <source>Tasks</source>
@@ -3371,14 +3527,14 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Model</source>
-      <translation>Υπόδειγμα</translation>
+      <translation>Μοντέλο</translation>
     </message>
   </context>
   <context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
       <source>Property View</source>
-      <translation>Προβολή Ιδιότητας</translation>
+      <translation>Προβολή Ιδιοτήτων</translation>
     </message>
   </context>
   <context>
@@ -3401,7 +3557,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Καθαρισμός</translation>
+      <translation>Εκκαθάριση</translation>
     </message>
     <message>
       <source>Save As...</source>
@@ -3409,7 +3565,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Save Report Output</source>
-      <translation>Αποθήκευση του Αποτελέσματος της Αναφοράς</translation>
+      <translation>Αποθήκευση Εξόδου Αναφοράς</translation>
     </message>
     <message>
       <source>Go to end</source>
@@ -3417,15 +3573,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Redirect Python output</source>
-      <translation>Ανακατεύθυνση της εξόδου Πάιθον</translation>
+      <translation>Ανακατεύθυνση εξόδου Python</translation>
     </message>
     <message>
       <source>Redirect Python errors</source>
-      <translation>Ανακατεύθυνση των σφαλμάτων Πάιθον</translation>
+      <translation>Ανακατεύθυνση σφαλμάτων Python</translation>
     </message>
     <message>
       <source>Plain Text Files</source>
-      <translation type="unfinished">Plain Text Files</translation>
+      <translation>Αρχεία Απλού Κειμένου</translation>
     </message>
   </context>
   <context>
@@ -3436,7 +3592,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Πίνακας χειρισμού της Πάιθον</translation>
+      <translation>Κονσόλα Python</translation>
     </message>
   </context>
   <context>
@@ -3447,11 +3603,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Searches object labels</source>
-      <translation type="unfinished">Searches object labels</translation>
+      <translation>Πραγματοποιεί αναζήτηση ετικετών αντικειμένων</translation>
     </message>
     <message>
       <source>Clears the search field</source>
-      <translation>Καθαρίζει το πεδίο αναζήτησης</translation>
+      <translation>Πραγματοποιεί εκκαθάριση του πεδίου αναζήτησης</translation>
     </message>
     <message>
       <source>Select only</source>
@@ -3467,15 +3623,15 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Deselects this object</source>
-      <translation type="unfinished">Deselects this object</translation>
+      <translation>Αναιρεί την επιλογή αυτού του αντικειμένου</translation>
     </message>
     <message>
       <source>Zoom fit</source>
-      <translation type="unfinished">Zoom fit</translation>
+      <translation>Προσαρμογή εστίασης</translation>
     </message>
     <message>
       <source>Selects and fits this object in the 3D window</source>
-      <translation>Επιλέγει και ταιριάζει αυτό το αντικείμενο στο παράθυρο 3D</translation>
+      <translation>Επιλέγει και προσαρμόζει αυτό το αντικείμενο στο παράθυρο τρισδιάστατης προβολής</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -3483,39 +3639,39 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selects and locates this object in the tree view</source>
-      <translation type="unfinished">Selects and locates this object in the tree view</translation>
+      <translation>Επιλέγει και εντοπίζει αυτό το αντικείμενο στην προβολή δενδροδιαγράμματος</translation>
     </message>
     <message>
       <source>To python console</source>
-      <translation type="unfinished">To python console</translation>
+      <translation>Στην κονσόλα Python</translation>
     </message>
     <message>
       <source>Reveals this object and its subelements in the python console.</source>
-      <translation type="unfinished">Reveals this object and its subelements in the python console.</translation>
+      <translation>Αποκαλύπτει αυτό το αντικείμενο και τα δευτερεύοντα στοιχεία του στην κονσόλα Python.</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>Επισημάνετε για επανεκτέλεση υπολογισμών</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>Επισημάνετε αυτό το αντικείμενο για επανεκτέλεση των υπολογισμών του</translation>
     </message>
     <message>
       <source>Selection View</source>
-      <translation type="unfinished">Selection View</translation>
+      <translation>Προβολή Επιλογής</translation>
     </message>
     <message>
       <source>The number of selected items</source>
-      <translation type="unfinished">The number of selected items</translation>
+      <translation>Ο αριθμός επιλεγμένων αντικειμένων</translation>
     </message>
     <message>
       <source>Duplicate subshape</source>
-      <translation type="unfinished">Duplicate subshape</translation>
+      <translation>Αντιγραφή δευτερεύοντος σχήματος</translation>
     </message>
     <message>
       <source>Creates a standalone copy of this subshape in the document</source>
-      <translation type="unfinished">Creates a standalone copy of this subshape in the document</translation>
+      <translation>Δημιουργεί ένα αυτόνομο αντίγραφο του εν λόγω δευτερεύοντος σχήματος στο έγγραφο</translation>
     </message>
   </context>
   <context>
@@ -3526,7 +3682,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Ετικέτες &amp; χαρακτηριστικά</translation>
+      <translation>Ετικέτες &amp; Χαρακτηριστικά</translation>
     </message>
   </context>
   <context>
@@ -3541,7 +3697,7 @@ The 'Status' column shows whether the document could be recovered.</source>
 This has been modified outside of the source editor. Do you want to reload it?</source>
       <translation>%1.
 
-Αυτό έχει τροποποιηθεί εκτός του επεξεργαστή της πηγής. \nΘέλεις να γίνει επαναφόρτωσή του;</translation>
+Αυτό έχει τροποποιηθεί εκτός του προγράμματος επεξεργασίας πηγής. Θέλετε να πραγματοποιήσετε επαναφόρτωση;</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -3551,7 +3707,7 @@ This has been modified outside of the source editor. Do you want to reload it?</
       <source>The document has been modified.
 Do you want to save your changes?</source>
       <translation>Το έγγραφο έχει τροποποιηθεί.
-Θέλεις να γίνει αποθήκευση των αλλαγών;</translation>
+Θέλετε να αποθηκεύσετε τις αλλαγές σας;</translation>
     </message>
     <message>
       <source>Export PDF</source>
@@ -3559,11 +3715,11 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>untitled[*]</source>
-      <translation>χωρίς_τίτλο[*]</translation>
+      <translation>χωρίς τίτλο[*]</translation>
     </message>
     <message>
       <source> - Editor</source>
-      <translation> - Επεξεργαστής</translation>
+      <translation> - Πρόγραμμα Επεξεργασίας</translation>
     </message>
     <message>
       <source>%1 chars removed</source>
@@ -3579,22 +3735,22 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>FreeCAD macro</source>
-      <translation type="unfinished">FreeCAD macro</translation>
+      <translation>Μακροεντολή FreeCAD</translation>
     </message>
     <message>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>Αρχείο PDF</translation>
     </message>
   </context>
   <context>
     <name>Gui::FileChooser</name>
     <message>
       <source>Select a file</source>
-      <translation>Επέλεξε ένα αρχείο</translation>
+      <translation>Επιλέξτε ένα αρχείο</translation>
     </message>
     <message>
       <source>Select a directory</source>
-      <translation>Επέλεξε έναν κατάλογο</translation>
+      <translation>Επιλέξτε ένα ευρετήριο</translation>
     </message>
   </context>
   <context>
@@ -3639,26 +3795,26 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
       <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <translation>Πιέστε εδώ. Ή κάντε κλικ με το αριστερό πλήκτρο του ποντικιού.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press right mouse button.</translation>
+      <translation>Σύρετε την οθόνη με τα δύο δάχτυλα. Ή πιέστε το δεξί πλήκτρο του ποντικιού.</translation>
     </message>
     <message>
       <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Σύρετε την οθόνη με το ένα δάχτυλο. Ή πιέστε το αριστερό πλήκτρο του ποντικιού. Σε λειτουργία επεξεργασίας Σκαριφημάτων και σε άλλες λειτουργίες επεξεργασίας, κρατήστε πιεσμένο και το Alt.</translation>
     </message>
     <message>
       <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</translation>
+      <translation>Τσιμπήστε (τοποθετήστε δύο δάχτυλα στην οθόνη και σύρετε τα απομακρύνοντας τα/φέρνοντας τα πιο κοντά). Η κυλήστε το μεσαίο πλήκτρο του ποντικιού. Ή πιέστε τα πλήκτρα PgUp/Pg/Down στο πληκτρολόγιο.</translation>
     </message>
   </context>
   <context>
@@ -3669,55 +3825,55 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>PNG format</source>
-      <translation type="unfinished">PNG format</translation>
+      <translation>Μορφή PNG</translation>
     </message>
     <message>
       <source>Bitmap format</source>
-      <translation type="unfinished">Bitmap format</translation>
+      <translation>Μορφή Bitmap</translation>
     </message>
     <message>
       <source>GIF format</source>
-      <translation type="unfinished">GIF format</translation>
+      <translation>Μορφή GIF</translation>
     </message>
     <message>
       <source>JPG format</source>
-      <translation type="unfinished">JPG format</translation>
+      <translation>Μορφή JPG</translation>
     </message>
     <message>
       <source>SVG format</source>
-      <translation type="unfinished">SVG format</translation>
+      <translation>Μορφή SVG</translation>
     </message>
     <message>
       <source>PDF format</source>
-      <translation type="unfinished">PDF format</translation>
+      <translation>Μορφή PDF</translation>
     </message>
     <message>
       <source>Graphviz not found</source>
-      <translation>Δεν βρέθηκε το ΓκραφΒίζ</translation>
+      <translation>Δεν βρέθηκε το λογισμικό Graphviz</translation>
     </message>
     <message>
       <source>Graphviz couldn't be found on your system.</source>
-      <translation type="unfinished">Graphviz couldn't be found on your system.</translation>
+      <translation>Αδύνατη η εύρεση του λογισμικού Graphviz στον υπολογιστή σας.</translation>
     </message>
     <message>
       <source>Read more about it here.</source>
-      <translation type="unfinished">Read more about it here.</translation>
+      <translation>Διαβάστε περισσότερα σχετικά με αυτό εδώ.</translation>
     </message>
     <message>
       <source>Do you want to specify its installation path if it's already installed?</source>
-      <translation type="unfinished">Do you want to specify its installation path if it's already installed?</translation>
+      <translation>Θέλετε να καθορίσετε τη διαδρομή εγκατάστασής του εφόσον είναι ήδη εγκατεστημένο;</translation>
     </message>
     <message>
       <source>Graphviz installation path</source>
-      <translation>Διαδρομή εγκατάστασης του ΓκραφΒίζ</translation>
+      <translation>Διαδρομή εγκατάστασης λογισμικού Graphviz</translation>
     </message>
     <message>
       <source>Graphviz failed</source>
-      <translation>Αποτυχία του ΓκραφΒίζ</translation>
+      <translation>Το λογισμικό Graphviz απέτυχε</translation>
     </message>
     <message>
       <source>Graphviz failed to create an image file</source>
-      <translation>Το ΓκραφΒίζ απέτυχε στη δημιουργία ενός αρχείου εικόνας</translation>
+      <translation>Το λογισμικό Graphviz απέτυχε στη δημιουργία αρχείου εικόνας</translation>
     </message>
   </context>
   <context>
@@ -3728,26 +3884,26 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Save value</source>
-      <translation>Αποθήκευση της τιμής</translation>
+      <translation>Αποθήκευση τιμής</translation>
     </message>
   </context>
   <context>
     <name>Gui::InventorNavigationStyle</name>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Πίεσε το CTRL και το αριστερό πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το CTRL και το αριστερό πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Πίεσε το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press left mouse button</source>
-      <translation>Πίεσε το αριστερό κουμπί του ποντικιού</translation>
+      <translation>Πιέστε το αριστερό πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Κύλισε το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Κυλήστε το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
   </context>
   <context>
@@ -3765,7 +3921,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Direction must not be the null vector</source>
-      <translation>Η κατεύθυνση δεν μπορεί να ορισθεί με το μηδενικό διάνυσμα</translation>
+      <translation>Η κατεύθυνση δεν πρέπει να ορίζεται από το μηδενικό διάνυσμα</translation>
     </message>
     <message>
       <source>X</source>
@@ -3781,7 +3937,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>User defined...</source>
-      <translation>Προσδιορισμένο από τον χρήστη...</translation>
+      <translation>Ορισμένο από τον χρήστη...</translation>
     </message>
   </context>
   <context>
@@ -3811,11 +3967,11 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Macro file doesn't exist</source>
-      <translation type="unfinished">Macro file doesn't exist</translation>
+      <translation>Το αρχείο μακροεντολής δεν υπάρχει</translation>
     </message>
     <message>
       <source>No such macro file: '%1'</source>
-      <translation type="unfinished">No such macro file: '%1'</translation>
+      <translation>Δεν υπάρχει τέτοιο αρχείο μακροεντολής: '%1'</translation>
     </message>
   </context>
   <context>
@@ -3830,11 +3986,11 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Toggles this toolbar</source>
-      <translation>Εμφάνιση/απόκρυψη αυτής της γραμμής εργαλείων</translation>
+      <translation>Εναλλάσσει την λειτουργία εμφάνισης/απόκρυψης αυτής της γραμμής εργαλείων</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
-      <translation>Εναλλάσσει αυτό το προσδέσιμο παράθυρο</translation>
+      <translation>Εναλλάσσει την λειτουργία εμφάνισης/απόκρυψης αυτού του προσδέσιμου παραθύρου</translation>
     </message>
     <message>
       <source>Close All</source>
@@ -3842,78 +3998,78 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Object dependencies</source>
-      <translation>Εξαρτήσεις του αντικειμένου</translation>
+      <translation>Εξαρτήσεις αντικειμένου</translation>
     </message>
     <message>
       <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
       <translation>Τα επιλεγμένα αντικείμενα έχουν μία εξάρτηση σε μη επιλεγμένα αντικείμενα.
-Να αντιγραφούν καί αυτά ;</translation>
+Θέλετε να αντιγραφούν και αυτά;</translation>
     </message>
   </context>
   <context>
     <name>Gui::ManualAlignment</name>
     <message>
       <source>Manual alignment</source>
-      <translation>Χειροκίνητη εναρμόνιση</translation>
+      <translation>Χειροκίνητη ευθυγράμμιση</translation>
     </message>
     <message>
       <source>The alignment is already in progress.</source>
-      <translation>Η εναρμόνιση βρίσκεται, ήδη, υπό εξέλιξη.</translation>
+      <translation>Η ευθυγράμμιση βρίσκεται ήδη σε εξέλιξη.</translation>
     </message>
     <message>
       <source>Alignment[*]</source>
-      <translation>Εναρμόνιση[*]</translation>
+      <translation>Ευθυγράμμιση[*]</translation>
     </message>
     <message>
       <source>Please, select at least one point in the left and the right view</source>
-      <translation>Παρακαλώ, επέλεξε τουλάχιστον ένα σημείο στην αριστερή και την δεξιά προβολή</translation>
+      <translation>Παρακαλώ, επιλέξτε τουλάχιστον ένα σημείο στην αριστερή και στην δεξιά προβολή</translation>
     </message>
     <message>
       <source>Please, select at least %1 points in the left and the right view</source>
-      <translation>Παρακαλώ, επέλεξε τουλάχιστον %1 σημεία στην αριστερή και την δεξιά προβολή</translation>
+      <translation>Παρακαλώ, επιλέξτε τουλάχιστον %1 σημεία στην αριστερή και στην δεξιά προβολή</translation>
     </message>
     <message>
       <source>Please pick points in the left and right view</source>
-      <translation>Παρακαλώ, επέλεξε σημεία στην αριστερή και την δεξιά προβολή</translation>
+      <translation>Παρακαλώ, επιλέξτε σημεία στην αριστερή και στην δεξιά προβολή</translation>
     </message>
     <message>
       <source>The alignment has finished</source>
-      <translation>Η εναρμόνιση έχει ολοκληρωθεί</translation>
+      <translation>Η ευθυγράμμιση ολοκληρώθηκε</translation>
     </message>
     <message>
       <source>The alignment has been canceled</source>
-      <translation>Η εναρμόνιση έχει ακυρωθεί</translation>
+      <translation>Η ευθυγράμμιση ακυρώθηκε</translation>
     </message>
     <message>
       <source>Too few points picked in the left view. At least %1 points are needed.</source>
-      <translation>Δεν επελέγησαν αρκετά σημεία στην αριστερή προβολή. Χρειάζονται τουλάχιστον %1 σημεία.</translation>
+      <translation>Δεν επιλέχθηκαν αρκετά σημεία στην αριστερή προβολή. Χρειάζονται τουλάχιστον %1 σημεία.</translation>
     </message>
     <message>
       <source>Too few points picked in the right view. At least %1 points are needed.</source>
-      <translation>Δεν επελέγησαν αρκετά σημεία στην δεξιά προβολή. Χρειάζονται τουλάχιστον %1 σημεία.</translation>
+      <translation>Δεν επιλέχθηκαν αρκετά σημεία στην δεξιά προβολή. Χρειάζονται τουλάχιστον %1 σημεία.</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-      <translation>Επιλέχτηκε διαφορετικό πλήθος σημείων στην αριστερή και στην δεξιά προβολή.
-Στην αριστερή, επιλέχτηκαν %1 σημεία·
-στη  δεξιά, επιλέχτηκαν %2 σημεία.</translation>
+      <translation>Επιλέχθηκε διαφορετικό πλήθος σημείων στην αριστερή και στην δεξιά προβολή.
+Στην αριστερή προβολή έχουν επιλεχθεί %1 σημεία,
+στην δεξιά προβολή έχουν επιλεχθεί %2 σημεία.</translation>
     </message>
     <message>
       <source>Try to align group of views</source>
-      <translation>Προσπάθησε να εναρμονίσεις ομάδες προβολών</translation>
+      <translation>Προσπαθήστε να ευθυγραμμίσετε την ομάδα προβολών</translation>
     </message>
     <message>
       <source>The alignment failed.
 How do you want to proceed?</source>
-      <translation>Η εναρμόνιση απέτυχε.
-Τι να γίνει στη συνέχεια;</translation>
+      <translation>Η ευθυγράμμιση απέτυχε.
+Πώς θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
       <source>Retry</source>
-      <translation>Ξανά προσπάθεια</translation>
+      <translation>Επανάληψη προσπάθειας</translation>
     </message>
     <message>
       <source>Ignore</source>
@@ -3921,42 +4077,42 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Abort</source>
-      <translation>Εγκατάλειψη</translation>
+      <translation>Διακοπή</translation>
     </message>
     <message>
       <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-      <translation>Επιλέχτηκε διαφορετικό πλήθος σημείων στην αριστερή και στην δεξιά προβολή. Στην αριστερή, επιλέχτηκαν %1 σημεία· στη  δεξιά, επιλέχτηκαν %2 σημεία.</translation>
+      <translation>Επιλέχθηκε διαφορετικό πλήθος σημείων στην αριστερή και στην δεξιά προβολή. Στην αριστερή προβολή έχουν επιλεχθεί %1 σημεία, στην δεξιά προβολή έχουν επιλεχθεί %2 σημεία.</translation>
     </message>
     <message>
       <source>Point picked at (%1,%2,%3)</source>
-      <translation>Επιλέχτηκε σημείο στο (%1,%2,%3)</translation>
+      <translation>Επιλέχθηκε σημείο στο (%1,%2,%3)</translation>
     </message>
     <message>
       <source>No point was picked</source>
-      <translation>Δεν επιλέχτηκε κάποιο σημείο</translation>
+      <translation>Δεν επιλέχθηκε κανένα σημείο</translation>
     </message>
     <message>
       <source>No point was found on model</source>
-      <translation>Δεν βρέθηκαν κάποιο σημείο στο μοντέλο</translation>
+      <translation>Δεν βρέθηκε κανένα σημείο στο μοντέλο</translation>
     </message>
   </context>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
       <source>Tap. Or click left mouse button.</source>
-      <translation type="unfinished">Tap. Or click left mouse button.</translation>
+      <translation>Πιέστε εδώ. Ή κάντε κλικ με το αριστερό πλήκτρο του ποντικιού.</translation>
     </message>
     <message>
       <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation type="unfinished">Drag screen with two fingers. Or press ALT + middle mouse button.</translation>
+      <translation>Σύρετε την οθόνη με τα δύο δάχτυλα. Ή πιέστε το ΑLT + το μεσαίο πλήκτρο του ποντικιού.</translation>
     </message>
     <message>
       <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation type="unfinished">Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
+      <translation>Σύρετε την οθόνη με το ένα δάχτυλο. Η πιέστε το ALT + το αριστερό πλήκτρο του ποντικιού. Σε λειτουργία επεξεργασίας Σκαριφημάτων και σε άλλες λειτουργίες επεξεργασίας, κρατήστε πιεσμένο και το Alt.</translation>
     </message>
     <message>
       <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation type="unfinished">Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</translation>
+      <translation>Τσιμπήστε (τοποθετήστε δύο δάχτυλα στην οθόνη και σύρετε τα απομακρύνοντας τα/φέρνοντας τα πιο κοντά). Η κυλήστε το μεσαίο πλήκτρο του ποντικιού. Ή πιέστε το ALT + το δεξί πλήκτρο του ποντικιού. Ή πιέστε τα πλήκτρα PgUp/Pg/Down στο πληκτρολόγιο.</translation>
     </message>
   </context>
   <context>
@@ -3971,19 +4127,19 @@ How do you want to proceed?</source>
     <name>Gui::OpenCascadeNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Πίεσε το αριστερό κουμπί του ποντικιού</translation>
+      <translation>Πιέστε το αριστερό πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press CTRL and middle mouse button</source>
-      <translation type="unfinished">Press CTRL and middle mouse button</translation>
+      <translation>Πιέστε το CTRL και το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press CTRL and right mouse button</source>
-      <translation type="unfinished">Press CTRL and right mouse button</translation>
+      <translation>Πιέστε το CTRL και το δεξί πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press CTRL and left mouse button</source>
-      <translation>Πίεσε το CTRL και το αριστερό πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το CTRL και το αριστερό πλήκτρο του ποντικιού</translation>
     </message>
   </context>
   <context>
@@ -3994,11 +4150,11 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Save value</source>
-      <translation>Αποθήκευση της τιμής</translation>
+      <translation>Αποθήκευση τιμής</translation>
     </message>
     <message>
       <source>Clear list</source>
-      <translation>Καθαρισμός λίστας</translation>
+      <translation>Εκκαθάριση λίστας</translation>
     </message>
   </context>
   <context>
@@ -4009,7 +4165,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Διακοπή</translation>
+      <translation>Πραγματοποιείται διακοπή</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
@@ -4024,7 +4180,7 @@ How do you want to proceed?</source>
     </message>
     <message>
       <source>Aborting</source>
-      <translation>Διακοπή</translation>
+      <translation>Πραγματοποιείται διακοπή</translation>
     </message>
     <message>
       <source>Do you really want to abort the operation?</source>
@@ -4035,14 +4191,21 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
       <source>Change the linked object</source>
-      <translation type="unfinished">Change the linked object</translation>
+      <translation>Αλλαγή του συνδεδεμένου αντικειμένου</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Αλλαγή των συνδεδεμένων αντικειμένων</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>Επεξεργασία του %1</translation>
     </message>
   </context>
   <context>
@@ -4071,56 +4234,56 @@ How do you want to proceed?</source>
     <name>Gui::PythonConsole</name>
     <message>
       <source>System exit</source>
-      <translation>Έξοδος του συστήματος</translation>
+      <translation>Έξοδος συστήματος</translation>
     </message>
     <message>
       <source>The application is still running.
 Do you want to exit without saving your data?</source>
-      <translation>Η εφαρμογή είναι ακόμη σε εξέλιξη. Επιθυμείτε να βγείτε χωρίς αποθήκευση των δεδομένων σας;</translation>
+      <translation>Η εφαρμογή εξακολουθεί να εκτελείται. Θέλετε να πραγματοποιήσετε έξοδο χωρίς να αποθηκεύσετε τα δεδομένα σας;</translation>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Πίνακας χειρισμού της Πάιθον</translation>
+      <translation>Κονσόλα Python</translation>
     </message>
     <message>
       <source>Unhandled PyCXX exception.</source>
-      <translation>Μη διαχειρίσιμη εξαίρεση PyCXX.</translation>
+      <translation>Μη επεξεργάσιμη εξαίρεση PyCXX.</translation>
     </message>
     <message>
       <source>Unhandled FreeCAD exception.</source>
-      <translation>Μη διαχειρίσιμη εξαίρεση ΦρειΚΑΝΤ.</translation>
+      <translation>Μη επεξεργάσιμη εξαίρεση FreeCAD.</translation>
     </message>
     <message>
       <source>Unhandled unknown C++ exception.</source>
-      <translation>Μη διαχειρίσιμη άγνωστη εξαίρεση C++ .</translation>
+      <translation>Άγνωστη μη διαχειρίσιμη εξαίρεση C++.</translation>
     </message>
     <message>
       <source>&amp;Copy command</source>
-      <translation>&amp;Αντιγραφή της εντολής</translation>
+      <translation>Αντιγραφή εντολής</translation>
     </message>
     <message>
       <source>&amp;Copy history</source>
-      <translation>&amp;Αντιγραφή του ιστορικού</translation>
+      <translation>Αντιγραφή ιστορικού</translation>
     </message>
     <message>
       <source>Save history as...</source>
-      <translation>Αποθήκευση του ιστορικού ως...</translation>
+      <translation>Αποθήκευση ιστορικού ως...</translation>
     </message>
     <message>
       <source>Insert file name...</source>
-      <translation>Εισαγωγή του ονόματος του αρχείου...</translation>
+      <translation>Εισάγετε όνομα αρχείου...</translation>
     </message>
     <message>
       <source>Save History</source>
-      <translation>Αποθήκευση του Ιστορικού</translation>
+      <translation>Αποθήκευση Ιστορικού</translation>
     </message>
     <message>
       <source>Insert file name</source>
-      <translation>Εισαγωγή του ονόματος του αρχείου</translation>
+      <translation>Εισάγετε όνομα αρχείου</translation>
     </message>
     <message>
       <source>Unhandled std C++ exception.</source>
-      <translation>Μη διαχειρίσιμη std εξαίρεση C++ .</translation>
+      <translation>Τυπική μη διαχειρίσιμη εξαίρεση C++.</translation>
     </message>
     <message>
       <source>Word wrap</source>
@@ -4128,7 +4291,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>&amp;Copy</source>
-      <translation>&amp;Αντιγραφή</translation>
+      <translation>Αντιγραφή</translation>
     </message>
     <message>
       <source>&amp;Paste</source>
@@ -4140,15 +4303,15 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Clear console</source>
-      <translation>Καθαρισμός της κονσόλας</translation>
+      <translation>Εκκαθάριση κονσόλας</translation>
     </message>
     <message>
       <source>Macro Files</source>
-      <translation type="unfinished">Macro Files</translation>
+      <translation>Αρχεία Μακροεντολών</translation>
     </message>
     <message>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Όλα τα Αρχεία</translation>
     </message>
   </context>
   <context>
@@ -4159,7 +4322,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Uncomment</source>
-      <translation>Άρση σχολίου</translation>
+      <translation>Διαγραφή σχολίου</translation>
     </message>
   </context>
   <context>
@@ -4174,41 +4337,41 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>The file '%1' cannot be opened.</source>
-      <translation>Αδυναμία ανοίγματος του αρχείου « %1 ».</translation>
+      <translation>Αδυναμία ανοίγματος του αρχείου '%1'.</translation>
     </message>
   </context>
   <context>
     <name>Gui::RevitNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Πίεσε το αριστερό κουμπί του ποντικιού</translation>
+      <translation>Πιέστε το αριστερό πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press middle mouse button</source>
-      <translation>Πίεσε το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press SHIFT and middle mouse button</source>
-      <translation>Πατήστε SHIFT και το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Πιέστε το SHIFT και το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Scroll middle mouse button</source>
-      <translation>Κύλισε το μεσαίο πλήκτρο του ποντικιού</translation>
+      <translation>Κυλήστε το μεσαίο πλήκτρο του ποντικιού</translation>
     </message>
   </context>
   <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
-      <translation>Επιλογή αρθρώματος</translation>
+      <translation>Επιλέξτε λειτουργική μονάδα</translation>
     </message>
     <message>
       <source>Open %1 as</source>
-      <translation>Άνοιγμα %1 ως</translation>
+      <translation>Ανοίξτε το %1 ως</translation>
     </message>
     <message>
       <source>Select</source>
-      <translation>Επιλογή</translation>
+      <translation>Επιλέξτε</translation>
     </message>
   </context>
   <context>
@@ -4219,7 +4382,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Des&amp;cription</source>
-      <translation>&amp;Περιγραφή</translation>
+      <translation>Περιγραφή</translation>
     </message>
     <message>
       <source>Long description of commands</source>
@@ -4234,39 +4397,39 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
       <source>Download online help</source>
-      <translation>Λήψη της βοήθειας από το Διαδίκτυο</translation>
+      <translation>Λήψη online βοήθειας</translation>
     </message>
     <message>
       <source>Download %1's online help</source>
-      <translation>Λήψη της βοήθειας του πάγκου εργασίας «%1» από το διαδίκτυο</translation>
+      <translation>Λήψη online βοήθειας του '%1'</translation>
     </message>
     <message>
       <source>Non-existing directory</source>
-      <translation>Μη υπάρχων κατάλογος</translation>
+      <translation>Μη υπάρχον ευρετήριο</translation>
     </message>
     <message>
       <source>The directory '%1' does not exist.
 
 Do you want to specify an existing directory?</source>
-      <translation>Δεν υπάρχει ο κατάλογος %1.
+      <translation>Το ευρετήριο '%1' δεν υπάρχει.
 
-Θέλεις να ορίσεις έναν υπάρχοντα κατάλογο;</translation>
+Θέλετε να ορίσετε ένα υπάρχον ευρετήριο;</translation>
     </message>
     <message>
       <source>Missing permission</source>
-      <translation>Λείπουν τα δικαιώματα</translation>
+      <translation>Απουσία δικαιωμάτων</translation>
     </message>
     <message>
       <source>You don't have write permission to '%1'
 
 Do you want to specify another directory?</source>
-      <translation>Δεν έχεις δικαιώματα εγγραφής στο « %1 ».
+      <translation>Δεν έχετε δικαίωμα εγγραφής στο '%1'.
 
-Θέλεις να ορίσεις έναν άλλο κατάλογο;</translation>
+Θέλετε να ορίσετε κάποιο άλλο ευρετήριο;</translation>
     </message>
     <message>
       <source>Stop downloading</source>
-      <translation>Διακοπή της λήψης</translation>
+      <translation>Διακοπή λήψης</translation>
     </message>
   </context>
   <context>
@@ -4277,11 +4440,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Automatic python modules documentation</source>
-      <translation>Τεκμηρίωση αυτόματων αρθρωμάτων πάιθον</translation>
+      <translation>Τεκμηρίωση αυτομάτων λειτουργικών μονάδων python</translation>
     </message>
     <message>
       <source>Opens a browser to show the Python modules documentation</source>
-      <translation>Ανοίγει ένα πλοηγό ο οποίος θα προβάλει την τεκμηρίωση των αρθρωμάτων Πάιθον</translation>
+      <translation>Ανοίγει έναν περιηγητή για την προβολή της τεκμηρίωσης λειτουργικών μονάδων Python</translation>
     </message>
   </context>
   <context>
@@ -4302,22 +4465,22 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskCSysDragger</name>
     <message>
       <source>Increments</source>
-      <translation type="unfinished">Increments</translation>
+      <translation>Προσαυξήσεις</translation>
     </message>
     <message>
       <source>Translation Increment: </source>
-      <translation type="unfinished">Translation Increment: </translation>
+      <translation>Προσαύξηση Μετάφρασης: </translation>
     </message>
     <message>
       <source>Rotation Increment: </source>
-      <translation type="unfinished">Rotation Increment: </translation>
+      <translation>Προσαύξηση Περιστροφής: </translation>
     </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
       <source>Plot mode:</source>
-      <translation>Είδος εκτύπωσης σχεδίου:</translation>
+      <translation>Λειτουργία γραφήματος:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -4366,22 +4529,22 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>edit selection</source>
-      <translation>επεξεργασία της επιλογής</translation>
+      <translation>επεξεργασία επιλογής</translation>
     </message>
   </context>
   <context>
     <name>Gui::TextDocumentEditorView</name>
     <message>
       <source>Text updated</source>
-      <translation type="unfinished">Text updated</translation>
+      <translation>Το κείμενο ενημερώθηκε</translation>
     </message>
     <message>
       <source>The text of the underlying object has changed. Discard changes and reload the text from the object?</source>
-      <translation type="unfinished">The text of the underlying object has changed. Discard changes and reload the text from the object?</translation>
+      <translation>Το κείμενο του υποκειμένου στοιχείου έχει αλλάξει. Να γίνει απόρριψη αλλαγών και επαναφόρτωση του κειμένου από το στοιχείο;</translation>
     </message>
     <message>
       <source>Yes, reload.</source>
-      <translation type="unfinished">Yes, reload.</translation>
+      <translation>Ναι, να γίνει επαναφόρτωση.</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -4389,48 +4552,55 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Do you want to save your changes before closing?</source>
-      <translation type="unfinished">Do you want to save your changes before closing?</translation>
+      <translation>Θέλετε να αποθηκεύσετε τις αλλαγές σας πριν το κλείσιμο;</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
-      <translation>Εάν δεν το αποθηκεύσετε, οι αλλαγές σας θα χαθούν.</translation>
+      <translation>Αν δεν κάνετε αποθήκευση, οι αλλαγές σας θα χαθούν.</translation>
     </message>
   </context>
   <context>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
-      <translation>Πίεσε το αριστερό κουμπί του ποντικιού</translation>
+      <translation>Πιέστε το αριστερό πλήκτρο του ποντικιού</translation>
     </message>
     <message>
       <source>Press SHIFT button</source>
-      <translation>Πίεσε το πλήκτρο SHIFT</translation>
+      <translation>Πιέστε το πλήκτρο SHIFT</translation>
     </message>
     <message>
       <source>Press ALT button</source>
-      <translation>Πίεσε το πλήκτρο ALT</translation>
+      <translation>Πιέστε το πλήκτρο ALT</translation>
     </message>
     <message>
       <source>Press CTRL and SHIFT buttons</source>
-      <translation>Πίεσε τα πλήκτρα CTRL και SHIFT</translation>
+      <translation>Πιέστε τα πλήκτρα CTRL και SHIFT</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Προβολή Δέντρου</translation>
+      <translation>Προβολή δενδροδιαγράμματος</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Αναζήτηση</translation>
     </message>
   </context>
   <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
-      <translation>Δημιουργία ομάδας...</translation>
+      <translation>Δημιουργήστε ομάδα...</translation>
     </message>
     <message>
       <source>Create a group</source>
-      <translation>Δημιουργία μίας ομάδας</translation>
+      <translation>Δημιουργήστε μια ομάδα</translation>
     </message>
     <message>
       <source>Group</source>
@@ -4446,7 +4616,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Labels &amp; Attributes</source>
-      <translation>Ετικέτες &amp; χαρακτηριστικά</translation>
+      <translation>Ετικέτες &amp; Χαρακτηριστικά</translation>
     </message>
     <message>
       <source>Application</source>
@@ -4454,15 +4624,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Finish editing</source>
-      <translation>Τερματισμός της επεξεργασίας</translation>
+      <translation>Ολοκλήρωση επεξεργασίας</translation>
     </message>
     <message>
       <source>Finish editing object</source>
-      <translation>Ολοκλήρωση τηε επεξεργασίας του αντικειμένου</translation>
+      <translation>Ολοκλήρωση επεξεργασίας του αντικειμένου</translation>
     </message>
     <message>
       <source>Activate document</source>
-      <translation>Ενεργό έγγραφο</translation>
+      <translation>Ενεργοποίηση εγγράφου</translation>
     </message>
     <message>
       <source>Activate document %1</source>
@@ -4470,23 +4640,31 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation type="unfinished">Skip recomputes</translation>
+      <translation>Παράλειψη επανεκτέλεσης υπoλογισμών</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
-      <translation type="unfinished">Enable or disable recomputations of document</translation>
+      <translation>Ενεργοποιήστε ή απενεργοποιήστε την επανεκτέλεση υπολογισμών του εγγράφου</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
-      <translation type="unfinished">Mark to recompute</translation>
+      <translation>Επισημάνετε για επανεκτέλεση υπολογισμών</translation>
     </message>
     <message>
       <source>Mark this object to be recomputed</source>
-      <translation type="unfinished">Mark this object to be recomputed</translation>
+      <translation>Επισημάνετε αυτό το αντικείμενο για επανεκτέλεση των υπολογισμών του</translation>
     </message>
     <message>
       <source>%1, Internal name: %2</source>
-      <translation type="unfinished">%1, Internal name: %2</translation>
+      <translation>%1, Εσωτερικό όνομα: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation type="unfinished">Search...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation type="unfinished">Search for objects</translation>
     </message>
   </context>
   <context>
@@ -4497,64 +4675,64 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>Αρχείο PDF</translation>
     </message>
     <message>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Αποτυχία ανοίγματος αρχείου</translation>
     </message>
     <message>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>Αδυναμία ανοίγματος αρχείου '%1' για εγγραφή.</translation>
     </message>
   </context>
   <context>
     <name>Gui::WorkbenchGroup</name>
     <message>
       <source>Select the '%1' workbench</source>
-      <translation>Επέλεξε τον πάγκο εργασίας '%1'</translation>
+      <translation>Επιλέξτε τον πάγκο εργασίας '%1'</translation>
     </message>
   </context>
   <context>
     <name>MAC_APPLICATION_MENU</name>
     <message>
       <source>Services</source>
-      <translation type="unfinished">Services</translation>
+      <translation>Υπηρεσίες</translation>
     </message>
     <message>
       <source>Hide %1</source>
-      <translation type="unfinished">Hide %1</translation>
+      <translation>Απόκρυψη του %1</translation>
     </message>
     <message>
       <source>Hide Others</source>
-      <translation type="unfinished">Hide Others</translation>
+      <translation>Απόκρυψη Υπολοίπων</translation>
     </message>
     <message>
       <source>Show All</source>
-      <translation type="unfinished">Show All</translation>
+      <translation>Εμφάνιση Όλων</translation>
     </message>
     <message>
       <source>Preferences...</source>
-      <translation type="unfinished">Preferences...</translation>
+      <translation>Προτιμήσεις...</translation>
     </message>
     <message>
       <source>Quit %1</source>
-      <translation type="unfinished">Quit %1</translation>
+      <translation>Εγκατάλειψη του %1</translation>
     </message>
     <message>
       <source>About %1</source>
-      <translation>Σχετικά με %1</translation>
+      <translation>Σχετικά με το %1</translation>
     </message>
   </context>
   <context>
     <name>NetworkAccessManager</name>
     <message>
       <source>&lt;qt&gt;Enter username and password for "%1" at %2&lt;/qt&gt;</source>
-      <translation>&lt;qt&gt;Εισήγαγε το όνομα χρήστη και το σύνθημα για το "%1" στο %2&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;Εισάγετε το όνομα χρήστη και τον κωδικό πρόσβασης για το ''%1'' στο %2&lt;/qt&gt;</translation>
     </message>
     <message>
       <source>&lt;qt&gt;Connect to proxy "%1" using:&lt;/qt&gt;</source>
-      <translation>&lt;qt&gt;Σύνδεση στον διαμεσολαβητή "%1" χρησιμοποιώντας:&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;Συνδεθείτε στον διαμεσολαβητή "%1" χρησιμοποιώντας το:&lt;/qt&gt;</translation>
     </message>
   </context>
   <context>
@@ -4629,18 +4807,18 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>5 m </source>
-      <translation>5 μ </translation>
+      <translation>5 μέτρα </translation>
     </message>
     <message>
       <source>Grid Snap in</source>
-      <translation>Προσκόλληση στο Πλέγμα</translation>
+      <translation>Προσκόλληση στον κάναβο</translation>
     </message>
   </context>
   <context>
     <name>PropertyListDialog</name>
     <message>
       <source>Invalid input</source>
-      <translation>Μη έγκυρη καταχώρηση</translation>
+      <translation>Μη έγκυρη είσοδος</translation>
     </message>
     <message>
       <source>Input in line %1 is not a number</source>
@@ -4651,23 +4829,23 @@ Do you want to specify another directory?</source>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Προβολή Δέντρου</translation>
+      <translation>Προβολή δενδροδιαγράμματος</translation>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Προβολή Ιδιοτήτων</translation>
+      <translation>Προβολή ιδιοτήτων</translation>
     </message>
     <message>
       <source>Selection view</source>
-      <translation>Προβολή Επιλογής</translation>
+      <translation>Προβολή επιλογής</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Προβολή Αναφοράς</translation>
+      <translation>Προβολή αναφοράς</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Προβολή Συνδιασμένη</translation>
+      <translation>Συνδυασμένη Προβολή</translation>
     </message>
     <message>
       <source>Toolbox</source>
@@ -4675,26 +4853,26 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Python console</source>
-      <translation>Πίνακας χειρισμού της Πάιθον</translation>
+      <translation>Κονσόλα Python</translation>
     </message>
     <message>
       <source>Display properties</source>
-      <translation>Ιδιότητες προβολής</translation>
+      <translation>Απεικόνιση ιδιοτήτων</translation>
     </message>
     <message>
       <source>DAG View</source>
-      <translation type="unfinished">DAG View</translation>
+      <translation>Προβολή Κατευθυνόμενου Ακυκλικού Γραφήματος</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>General</source>
-      <translation>Γενικά</translation>
+      <translation>Γενικές</translation>
     </message>
     <message>
       <source>Display</source>
-      <translation>Προβολή</translation>
+      <translation>Απεικόνιση</translation>
     </message>
     <message>
       <source>Unknown filetype</source>
@@ -4702,15 +4880,15 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Cannot open unknown filetype: %1</source>
-      <translation>Αδυναμία ανοίγματος αυτού του άγνωστου τύπου αρχείου: %1</translation>
+      <translation>Αδυναμία ανοίγματος του αγνώστου τύπου αρχείου: %1</translation>
     </message>
     <message>
       <source>Cannot save to unknown filetype: %1</source>
-      <translation>Αδυναμία αποθήκευσης αυτού του άγνωστου τύπου αρχείου: %1</translation>
+      <translation>Αδυναμία αποθήκευσης στον άγνωστο τύπο αρχείου: %1</translation>
     </message>
     <message>
       <source>Workbench failure</source>
-      <translation>Αποτυχία του πάγκου εργασίας</translation>
+      <translation>Αποτυχία πάγκου εργασίας</translation>
     </message>
     <message>
       <source>%1</source>
@@ -4734,7 +4912,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Printing...</source>
-      <translation>Εκτύπωση...</translation>
+      <translation>Πραγματοποιείται εκτύπωση...</translation>
     </message>
     <message>
       <source>Cannot load workbench</source>
@@ -4746,19 +4924,19 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Save views...</source>
-      <translation>Αποθήκευση των προβολών...</translation>
+      <translation>Αποθήκευση προβολών...</translation>
     </message>
     <message>
       <source>Load views...</source>
-      <translation>Φόρτωση των προβολών...</translation>
+      <translation>Φόρτωση προβολών...</translation>
     </message>
     <message>
       <source>Freeze view</source>
-      <translation>Πάγωμα της προβολής</translation>
+      <translation>Πάγωμα προβολής</translation>
     </message>
     <message>
       <source>Clear views</source>
-      <translation>Εκκαθάριση των προβολών</translation>
+      <translation>Εκκαθάριση προβολών</translation>
     </message>
     <message>
       <source>Restore view &amp;%1</source>
@@ -4766,22 +4944,22 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Save frozen views</source>
-      <translation>Αποθήκευση των παγωμένων προβολών</translation>
+      <translation>Αποθήκευση παγωμένων προβολών</translation>
     </message>
     <message>
       <source>Restore views</source>
-      <translation>Αποκατάσταση των προβολών</translation>
+      <translation>Αποκατάσταση προβολών</translation>
     </message>
     <message>
       <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-      <translation>Η εισαγωγή των αποκατεστημένων προβολών θα καθαρίσει τις ήδη υπάρχουσες προβολές.
+      <translation>Η εισαγωγή των αποκατεστημένων προβολών θα εκκαθαρίσει τις ήδη αποθηκευμένες προβολές.
 
-Να προχωρήσει η διαδικασία;</translation>
+Θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
       <source>Restore frozen views</source>
-      <translation>Αποκατάσταση των παγωμένων προβολών</translation>
+      <translation>Αποκατάσταση παγωμένων προβολών</translation>
     </message>
     <message>
       <source>Cannot open file '%1'.</source>
@@ -4797,7 +4975,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>New sub-group</source>
-      <translation>Νέα υπομάδα</translation>
+      <translation>Νέα υποομάδα</translation>
     </message>
     <message>
       <source>Enter the name:</source>
@@ -4809,7 +4987,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Enter your text:</source>
-      <translation>Εισήγαγε το κείμενο:</translation>
+      <translation>Εισάγετε το κείμενό σας:</translation>
     </message>
     <message>
       <source>New integer item</source>
@@ -4817,7 +4995,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Enter your number:</source>
-      <translation>Εισήγαγε τον αριθμό:</translation>
+      <translation>Εισάγετε τον αριθμό σας:</translation>
     </message>
     <message>
       <source>New unsigned item</source>
@@ -4825,15 +5003,15 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>New float item</source>
-      <translation>Νέο πλέον αντικείμενο</translation>
+      <translation>Νέο πραγματικό αντικείμενο</translation>
     </message>
     <message>
       <source>New Boolean item</source>
-      <translation>Νέο Μπουλικής λογικής αντικείμενο</translation>
+      <translation>Νέο αντικείμενο άλγεβρας Boole</translation>
     </message>
     <message>
       <source>Choose an item:</source>
-      <translation>Επέλεξε ένα αντικείμενο:</translation>
+      <translation>Διαλέξτε ένα αντικείμενο:</translation>
     </message>
     <message>
       <source>Rename group</source>
@@ -4841,7 +5019,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>The group '%1' cannot be renamed.</source>
-      <translation>Δεν είναι δυνατή η μετονομασία της ομάδας '%1' .</translation>
+      <translation>Αδυναμία μετονομασίας της ομάδας '%1'.</translation>
     </message>
     <message>
       <source>Existing group</source>
@@ -4849,19 +5027,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>The group '%1' already exists.</source>
-      <translation>Υπάρχει, ήδη, η ομάδα '%1' .</translation>
+      <translation>Η ομάδα '%1' υπάρχει ήδη.</translation>
     </message>
     <message>
       <source>Change value</source>
-      <translation>Αλλαγή της τιμής</translation>
+      <translation>Αλλαγή τιμής</translation>
     </message>
     <message>
       <source>Save document under new filename...</source>
-      <translation>Αποθήκευση του εγγράφου, με άλλο όνομα...</translation>
+      <translation>Αποθήκευση εγγράφου με άλλο όνομα αρχείου...</translation>
     </message>
     <message>
       <source>Saving aborted</source>
-      <translation>Εγκαταλείφθηκε η αποθήκευση</translation>
+      <translation>Η αποθήκευση διεκόπη</translation>
     </message>
     <message>
       <source>Unsaved document</source>
@@ -4873,15 +5051,15 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Finish</source>
-      <translation>Τελείωμα</translation>
+      <translation>Ολοκλήρωση</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Καθαρισμός</translation>
+      <translation>Εκκαθάριση</translation>
     </message>
     <message>
       <source>Cancel</source>
-      <translation>Άκυρο</translation>
+      <translation>Ακύρωση</translation>
     </message>
     <message>
       <source>Inner</source>
@@ -4893,17 +5071,15 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>No Browser</source>
-      <translation>Χωρίς Πλοηγό</translation>
+      <translation>Κανένας Περιηγητής</translation>
     </message>
     <message>
       <source>Unable to open your browser.
 
 Please open a browser window and type in: http://localhost:%1.</source>
-      <translation>Αδυναμία ανοίγματος του πλοηγού διαδικτύου.
+      <translation>Αδυναμία ανοίγματος του περιηγητή σας.
 
-Παρακαλώ, άνοιξε το παράθυρο ενός πλοηγού, \n
-και πληκτρολόγησε την διεύθυνση \n
- http://localhost:%1</translation>
+Παρακαλώ ανοίξτε ένα παράθυρο περιηγητή και πληκτρολογήστε: http://localhost:%1.</translation>
     </message>
     <message>
       <source>No Server</source>
@@ -4911,11 +5087,11 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <source>Unable to start the server to port %1: %2.</source>
-      <translation>Αδυναμία ανοίγματος του εξυπηρετητή, στη θύρα %1: %2.</translation>
+      <translation>Αδυναμία εκκίνησης του εξυπηρετητή στη θύρα %1: %2.</translation>
     </message>
     <message>
       <source>Unable to open your system browser.</source>
-      <translation>Αδυναμία ανοίγματος του πλοηγού διαδικτύου του συστήματός σου.</translation>
+      <translation>Αδυναμία ανοίγματος του εξυπηρετητή του υπολογιστή σας.</translation>
     </message>
     <message>
       <source>Options...</source>
@@ -4923,11 +5099,11 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <source>Out of memory</source>
-      <translation>Γέμισε η μνήμη</translation>
+      <translation>Μνήμη πλήρης</translation>
     </message>
     <message>
       <source>Not enough memory available to display the data.</source>
-      <translation>Δεν υπάρχει επαρκής μνήμη για την προβολή των δεδομένων.</translation>
+      <translation>Δεν υπάρχει αρκετή μνήμη διαθέσιμη για την προβολή των δεδομένων.</translation>
     </message>
     <message>
       <source>Cannot find file %1</source>
@@ -4935,31 +5111,31 @@ Please open a browser window and type in: http://localhost:%1.</source>
     </message>
     <message>
       <source>Cannot find file %1 neither in %2 nor in %3</source>
-      <translation>Δεν μπορεί να βρεθεί το αρχείο %1, ούτε στο %2, ούτε στο %3</translation>
+      <translation>Αδυναμία εύρεσης του αρχείου %1 τόσο στο %2 όσο και στο %3</translation>
     </message>
     <message>
       <source>Save %1 Document</source>
-      <translation>Αποθήκευση %1 Εγγράφου</translation>
+      <translation>Αποθήκευση Εγγράφου %1</translation>
     </message>
     <message>
       <source>%1 document (*.FCStd)</source>
-      <translation>%1 έγγραφο (*.FCStd)</translation>
+      <translation>έγγραφο %1 (*.FCStd)</translation>
     </message>
     <message>
       <source>Document not closable</source>
-      <translation>Το έγγραφο δεν μπορεί να κλειστεί</translation>
+      <translation>Το έγγραφο δεν κλείνει</translation>
     </message>
     <message>
       <source>The document is not closable for the moment.</source>
-      <translation>Για την ώρα, το έγγραφο δεν μπορεί να κλειστεί.</translation>
+      <translation>Το έγγραφο δεν κλείνει προς το παρόν.</translation>
     </message>
     <message>
       <source>No OpenGL</source>
-      <translation>Καμία Όπεν-ΤζιΈλ (OpenGL)</translation>
+      <translation>Καμία διεπαφή προγραμματισμού OpenGL</translation>
     </message>
     <message>
       <source>This system does not support OpenGL</source>
-      <translation>Αυτό το σύστημα δεν υποστηρίζει Όπεν-ΤζιΈλ</translation>
+      <translation>Αυτός ο υπολογιστής δεν υποστηρίζει διεπαφή προγραμματισμού OpenGL</translation>
     </message>
     <message>
       <source>Help</source>
@@ -4968,12 +5144,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Αδυναμία φόρτωσης της τεκμηρίωσης.
-Για να φορτωθεί, χρειάζεται η Qt 4.4, ή μεγαλύτερη.</translation>
+      <translation>Αδυναμία φόρτωσης τεκμηρίωσης.
+Προκειμένου να πραγματοποιήσετε φόρτωση απαιτείται η έκδοση 4.4 ή κάποια μεταγενέστερη του προγράμματος δημιουργίας Qt.</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
-      <translation>Εξάγεται το ΠιΝτιΈφ (PDF)...</translation>
+      <translation>Πραγματοποιείται εξαγωγή αρχείου PDF...</translation>
     </message>
     <message>
       <source>Wrong selection</source>
@@ -4982,27 +5158,26 @@ In order to load it Qt 4.4 or higher is required.</source>
     <message>
       <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Επιλέχτηκε μοναχά ένα αντικείμενο.
-Παρακαλώ επέλεξε δύο αντικείμενα.
-Έχε υπόψη σου, πως υπολογίζεται το σημείο όπου κάνεις κλικ.</translation>
+      <translation>Επιλέχθηκε μόνο ένα αντικείμενο. Παρακαλώ επιλέξτε δύο αντικείμενα.
+Έχετε υπόψη πως το σημείο στο οποίο κάνετε κλικ έχει σημασία.</translation>
     </message>
     <message>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Παρακαλώ, επέλεξε δύο αντικείμενα.
-Έχε υπόψη σου, πως υπολογίζεται το σημείο όπου κάνεις κλικ.</translation>
+      <translation>Παρακαλώ επιλέξτε δύο αντικείμενα.
+Έχετε υπόψη πως το σημείο στο οποίο κάνετε κλικ έχει σημασία.</translation>
     </message>
     <message>
       <source>New boolean item</source>
-      <translation>Νέο αντικείμενο Μπουλικής λογικής</translation>
+      <translation>Νέο αντικείμενο άλγεβρας Boole</translation>
     </message>
     <message>
       <source>Navigation styles</source>
-      <translation>Τεχνοτροπίες Πλοήγησης</translation>
+      <translation>Τύποι μορφοποίησης πλοήγησης</translation>
     </message>
     <message>
       <source>Move annotation</source>
-      <translation>Μετακίνηση της επισήμανσης</translation>
+      <translation>Μετακίνηση περιγραφής</translation>
     </message>
     <message>
       <source>Transform</source>
@@ -5014,23 +5189,23 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Do you want to save your changes to document '%1' before closing?</source>
-      <translation>Θέλετε να αποθηκεύσετε τις αλλαγές στο έγγραφο '%1' πριν το κλείσιμο;</translation>
+      <translation>Θέλετε να αποθηκεύσετε τις αλλαγές σας στο έγγραφο '%1' πριν το κλείσιμο;</translation>
     </message>
     <message>
       <source>If you don't save, your changes will be lost.</source>
-      <translation>Εάν δεν το αποθηκεύσετε, οι αλλαγές σας θα χαθούν.</translation>
+      <translation>Αν δεν κάνετε αποθήκευση, οι αλλαγές σας θα χαθούν.</translation>
     </message>
     <message>
       <source>Save a copy of the document under new filename...</source>
-      <translation type="unfinished">Save a copy of the document under new filename...</translation>
+      <translation>Αποθηκεύστε ένα αντίγραφο του εγγράφου με νέο όνομα αρχείου...</translation>
     </message>
     <message>
       <source>Frozen views</source>
-      <translation type="unfinished">Frozen views</translation>
+      <translation>Παγωμένες προβολές</translation>
     </message>
     <message>
       <source>Saving document failed</source>
-      <translation type="unfinished">Saving document failed</translation>
+      <translation>Αποτυχία αποθήκευσης εγγράφου</translation>
     </message>
     <message>
       <source>Document</source>
@@ -5042,57 +5217,69 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Not allowed to delete system-wide macros</source>
-      <translation type="unfinished">Not allowed to delete system-wide macros</translation>
+      <translation>Δεν επιτρέπεται να διαγράψετε μακροεντολές συστήματος</translation>
     </message>
     <message>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Σημείο Τομής Αξόνων</translation>
     </message>
     <message>
       <source> %1.%2.%3 </source>
-      <translation type="unfinished"> %1.%2.%3 </translation>
+      <translation> %1.%2.%3 </translation>
     </message>
     <message>
       <source>Translation: </source>
-      <translation type="unfinished">Translation: </translation>
+      <translation>Μετάφραση: </translation>
     </message>
     <message>
       <source>Rotation: </source>
-      <translation type="unfinished">Rotation: </translation>
+      <translation>Περιστροφή: </translation>
     </message>
     <message>
       <source>Delete group content?</source>
-      <translation type="unfinished">Delete group content?</translation>
+      <translation>Διαγραφή περιεχομένου ομάδας;</translation>
     </message>
     <message>
       <source>The %1 is not empty, delete its content as well?</source>
-      <translation type="unfinished">The %1 is not empty, delete its content as well?</translation>
+      <translation>Το %1 δεν είναι άδειο, να διαγραφεί και το περιεχόμενό του;</translation>
     </message>
     <message>
       <source>Export failed</source>
-      <translation type="unfinished">Export failed</translation>
+      <translation>Αποτυχία εξαγωγής</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation type="unfinished">Split</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation type="unfinished">Toggle active part</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation type="unfinished">Edit text</translation>
     </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
       <source>Not allowed:</source>
-      <translation type="unfinished">Not allowed:</translation>
+      <translation>Δεν επιτρέπεται:</translation>
     </message>
     <message>
       <source>Selection not allowed by filter</source>
-      <translation type="unfinished">Selection not allowed by filter</translation>
+      <translation>Η επιλογή δεν επιτρέπεται λόγω χρήσης φίλτρου</translation>
     </message>
   </context>
   <context>
     <name>StdBoxSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Box selection</source>
-      <translation>Επιλογή με πλαίσιο</translation>
+      <translation>Επιλογή με τη χρήση πλαισίου</translation>
     </message>
   </context>
   <context>
@@ -5103,11 +5290,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;About %1</source>
-      <translation>&amp;Σχετικά με %1</translation>
+      <translation>Σχετικ&amp;ά με το %1</translation>
     </message>
     <message>
       <source>About %1</source>
-      <translation>Σχετικά με %1</translation>
+      <translation>Σχετικά με το %1</translation>
     </message>
   </context>
   <context>
@@ -5118,11 +5305,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>About &amp;Qt</source>
-      <translation>Σχετικά με την &amp;Qt</translation>
+      <translation>Σχετικά με το πρόγραμμα δημιουργίας &amp;Qt</translation>
     </message>
     <message>
       <source>About Qt</source>
-      <translation>Σχετικά με την Qt</translation>
+      <translation>Σχετικά με το πρόγραμμα δημιουργίας Qt</translation>
     </message>
   </context>
   <context>
@@ -5133,7 +5320,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Ne&amp;xt</source>
-      <translation>Ε&amp;πόμενο</translation>
+      <translation>Επόμενο</translation>
     </message>
     <message>
       <source>Activate next window</source>
@@ -5148,11 +5335,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Pre&amp;vious</source>
-      <translation>Προη&amp;γούμενο</translation>
+      <translation>Προηγούμενο</translation>
     </message>
     <message>
       <source>Activate previous window</source>
-      <translation>Ενεργοποίηση του προηγούμενου παράθυρου</translation>
+      <translation>Ενεργοποίηση του προηγούμενου παραθύρου</translation>
     </message>
   </context>
   <context>
@@ -5163,11 +5350,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Alignment...</source>
-      <translation>Εναρμόνιση...</translation>
+      <translation>Ευθυγράμμιση...</translation>
     </message>
     <message>
       <source>Align the selected objects</source>
-      <translation>Στοίχιση των επιλεγμένων αντικειμένων</translation>
+      <translation>Ευθυγράμμιση των επιλεγμένων αντικειμένων</translation>
     </message>
   </context>
   <context>
@@ -5178,22 +5365,22 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Arrange &amp;Icons</source>
-      <translation>Διαρρύθμιση των &amp;Εικονοσυμβόλων</translation>
+      <translation>Διαρρύθμιση Ε%ικονιδίων</translation>
     </message>
     <message>
       <source>Arrange Icons</source>
-      <translation>Διαρρύθμιση των Εικονοσυμβόλων</translation>
+      <translation>Διαρρύθμιση Εικονιδίων</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Toggle axis cross</source>
-      <translation>Εναλλαγή του σταυρού των αξόνων</translation>
+      <translation>Εναλλαγή εμφάνισης/απόκρυψης του συστήματος αξόνων</translation>
     </message>
   </context>
   <context>
@@ -5204,11 +5391,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Cascade</source>
-      <translation>&amp;Αλληλουχία</translation>
+      <translation>Διάταξη με αλληλοεπικάλυ&amp;ψη</translation>
     </message>
     <message>
       <source>Tile pragmatic</source>
-      <translation>Πρακτική πλακόστρωση</translation>
+      <translation>Διάταξη χωρίς αλληλοεπικάλυψη</translation>
     </message>
   </context>
   <context>
@@ -5219,11 +5406,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Cl&amp;ose</source>
-      <translation>Κλ&amp;είσιμο</translation>
+      <translation>Κλείσιμ&amp;ο</translation>
     </message>
     <message>
       <source>Close active window</source>
-      <translation>Κλείσιμο του ενεργού παραθύρου</translation>
+      <translation>Κλείσιμο ενεργού παραθύρου</translation>
     </message>
   </context>
   <context>
@@ -5249,7 +5436,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Start command &amp;line...</source>
-      <translation>Εκκίνηση της γραμμής εντο&amp;λών...</translation>
+      <translation>Εκκίνηση γραμμής εντο&amp;λών...</translation>
     </message>
     <message>
       <source>Opens the command line in the console</source>
@@ -5264,11 +5451,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>C&amp;opy</source>
-      <translation>Αντ&amp;ιγραφή</translation>
+      <translation>Αντιγραφή</translation>
     </message>
     <message>
       <source>Copy operation</source>
-      <translation>Αντιγραφή του εγχειρήματος</translation>
+      <translation>Αντιγραφή λειτουργίας</translation>
     </message>
   </context>
   <context>
@@ -5279,11 +5466,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Cut</source>
-      <translation>Απο&amp;κοπή</translation>
+      <translation>Περικοπή</translation>
     </message>
     <message>
       <source>Cut out</source>
-      <translation>Αποκοπή</translation>
+      <translation>Περικοπή</translation>
     </message>
   </context>
   <context>
@@ -5305,15 +5492,15 @@ Be aware the point where you click matters.</source>
     <name>StdCmdDemoMode</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>View turntable...</source>
-      <translation>Προβολή της περιστρεφόμενης επιφάνειας...</translation>
+      <translation>Προβολή περιστρεφόμενης βάσης...</translation>
     </message>
     <message>
       <source>View turntable</source>
-      <translation>Προβολή της περιστρεφόμενης επιφάνειας</translation>
+      <translation>Προβολή περιστρεφόμενης βάσης</translation>
     </message>
   </context>
   <context>
@@ -5328,18 +5515,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Customize toolbars and command bars</source>
-      <translation>Προσαρμογή των  γραμμών εργαλείων και των γραμμών των εντολών</translation>
+      <translation>Προσαρμογή των γραμμών εργαλείων και των γραμμών εντολών</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecute</name>
     <message>
       <source>Macros ...</source>
-      <translation>Μακροεντολές...</translation>
+      <translation>Μακροεντολές ...</translation>
     </message>
     <message>
       <source>Opens a dialog to let you execute a recorded macro</source>
-      <translation>Ανοίξει ένα διάλογο που σου επιτρέπει να εκτελέσεις μια καταγεγραμμένη μακροεντολή</translation>
+      <translation>Ανοίγει ένα παράθυρο διαλόγου για να σας επιτρέψει να εκτελέσετε μια καταγεγραμμένη μακροεντολή</translation>
     </message>
     <message>
       <source>Macro</source>
@@ -5358,18 +5545,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Execute the macro in the editor</source>
-      <translation>Εκτέλεση της μακροεντολής στον επεξεργαστή</translation>
+      <translation>Εκτέλεση της μακροεντολής στο πρόγραμμα επεξεργασίας</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgMacroRecord</name>
     <message>
       <source>&amp;Macro recording ...</source>
-      <translation>Καταγραφή της &amp;μακροεντολής...</translation>
+      <translation>Καταγραφή &amp;μακροεντολών ...</translation>
     </message>
     <message>
       <source>Opens a dialog to record a macro</source>
-      <translation>Ανοίγει ένα διάλογο  για την καταγραφή της μακροεντολής</translation>
+      <translation>Ανοίγει ένα παράθυρο διαλόγου για την καταγραφή μιας μακροεντολής</translation>
     </message>
     <message>
       <source>Macro</source>
@@ -5384,11 +5571,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>E&amp;dit parameters ...</source>
-      <translation>Ε&amp;πεξεργασία των παραμέτρων ...</translation>
+      <translation>Επεξεργασία παραμέτρων ...</translation>
     </message>
     <message>
       <source>Opens a Dialog to edit the parameters</source>
-      <translation>Ανοίγει ένα Διάλογο για την επεξεργασία των παραμέτρων</translation>
+      <translation>Ανοίγει ένα Παράθυρο Διαλόγου για την επεξεργασία των παραμέτρων</translation>
     </message>
   </context>
   <context>
@@ -5403,7 +5590,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Opens a Dialog to edit the preferences</source>
-      <translation>Ανοίγει ένα Διάλογο για την επεξεργασία των προτιμήσεων</translation>
+      <translation>Ανοίγει ένα Παράθυρο Διαλόγου για την επεξεργασία των προτιμήσεων</translation>
     </message>
   </context>
   <context>
@@ -5418,18 +5605,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>List of available dock panels</source>
-      <translation type="unfinished">List of available dock panels</translation>
+      <translation>Λίστα διαθέσιμων προσδέσιμων πάνελ</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Draw style</source>
-      <translation>Τεχνοτροπία σχεδίασης</translation>
+      <translation>Τύπος μορφοποίησης σχεδίασης</translation>
     </message>
   </context>
   <context>
@@ -5440,11 +5627,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Duplicate selection</source>
-      <translation>Διπλοτυπία της επιλογής</translation>
+      <translation>Αντιγραφή επιλογής</translation>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Τοποθέτηση στο ενεργό έγγραφο διπλοτυπιών των επιλεγμένων αντικειμένων</translation>
+      <translation>Τοποθετήστε αντίγραφα των επιλεγμένων αντικειμένων στο ενεργό έγγραφο</translation>
     </message>
   </context>
   <context>
@@ -5459,11 +5646,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles the selected object's edit mode</source>
-      <translation>Εναλλάσσει την κατάσταση λειτουργίας επεξεργασίας των επιλεγμένων αντικειμένων</translation>
+      <translation>Εναλλάσσει την λειτουργία επεξεργασίας των επιλεγμένων αντικειμένων</translation>
     </message>
     <message>
       <source>Enters or leaves the selected object's edit mode</source>
-      <translation>Εισέρχεται ή εγκαταλείπει την λειτουργία επεξεργασίας του επιλεγμένου αντικειμένου</translation>
+      <translation>Ενεργοποιεί ή εγκαταλείπει την λειτουργία επεξεργασίας του επιλεγμένου αντικειμένου</translation>
     </message>
   </context>
   <context>
@@ -5478,7 +5665,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Εξαγωγή ενός αντικειμένου από το ενεργό έγγραφο</translation>
+      <translation>Πραγματοποιήστε εξαγωγή ενός αντικειμένου στο ενεργό έγγραφο</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -5486,7 +5673,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Please select first the objects you want to export.</source>
-      <translation>Παρακαλώ, επέλεξε, πρώτα το αντικείμενο που θα ήθελες να εξάγεις.</translation>
+      <translation>Παρακαλώ επιλέξτε πρώτα τα αντικείμενα που θέλετε να εξαγάγετε.</translation>
     </message>
   </context>
   <context>
@@ -5501,7 +5688,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Προβολή του γραφήματος των εξαρτήσεων των αντικειμένων στο ενεργό έγγραφο</translation>
+      <translation>Εμφάνιση του γραφήματος εξαρτήσεων των αντικειμένων στο ενεργό έγγραφο</translation>
     </message>
   </context>
   <context>
@@ -5512,11 +5699,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Recompute</source>
-      <translation>Επανυπ&amp;ολογισμός</translation>
+      <translation>Επανεκτέλεση υπολογισμών</translation>
     </message>
     <message>
       <source>Recompute feature or document</source>
-      <translation>Επανυπολογισμός ενός χαρακτηριστικό ή ενός αντικειμένου</translation>
+      <translation>Επανεκτέλεση υπολογισμών χαρακτηριστικού ή εγγράφου</translation>
     </message>
   </context>
   <context>
@@ -5527,11 +5714,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>FreeCAD FAQ</source>
-      <translation>Συχνές Ερωτήσεις του ΦρειΚΑΝΤ</translation>
+      <translation>Συχνές Ερωτήσεις σχετικά με το FreeCAD</translation>
     </message>
     <message>
       <source>Frequently Asked Questions on the FreeCAD website</source>
-      <translation>Συχνά ερωτώμενα ζητήματα, στον ιστότοπο του ΦρειΚΑΝΤ</translation>
+      <translation>Συχνές Ερωτήσεις στην ιστοσελίδα του FreeCAD</translation>
     </message>
     <message>
       <source>Frequently Asked Questions</source>
@@ -5546,15 +5733,15 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>FreeCAD Forum</source>
-      <translation>Χώρος Συζήτησης του ΦρειΚΑΝΤ</translation>
+      <translation>Forum του FreeCAD</translation>
     </message>
     <message>
       <source>The FreeCAD forum, where you can find help from other users</source>
-      <translation>Το φόρουμ του ΦρειΚΑΝΤ, όπου μπορείς να βρεις βοήθεια, από άλλους χρήστες</translation>
+      <translation>Το forum του FreeCAD, όπου μπορείτε να βρείτε βοήθεια από άλλους χρήστες</translation>
     </message>
     <message>
       <source>The FreeCAD Forum</source>
-      <translation>Ο χώρος συζήτησης του ΦρειΚΑΝΤ</translation>
+      <translation>Το Forum του FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -5565,15 +5752,15 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Python scripting documentation</source>
-      <translation>Κείμενα αναφοράς για τα σενάρια Πάιθον</translation>
+      <translation>Τεκμηρίωση σεναρίων Python</translation>
     </message>
     <message>
       <source>Python scripting documentation on the FreeCAD website</source>
-      <translation>Κείμενα αναφοράς για τα σενάρια Πάιθον, στον ιστότοπο του ΦρειΚΑΝΤ</translation>
+      <translation>Τεκμηρίωση σεναρίων Python στην ιστοσελίδα του FreeCAD</translation>
     </message>
     <message>
       <source>PowerUsers documentation</source>
-      <translation>Κείμενα βοήθειας για «δυνατούς» χρήστες</translation>
+      <translation>Τεκμηρίωση για Προχωρημένους Χρήστες</translation>
     </message>
   </context>
   <context>
@@ -5584,11 +5771,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Users documentation</source>
-      <translation>Έγγραφα βοήθειας για τους χρήστες</translation>
+      <translation>Τεκμηρίωση για χρήστες</translation>
     </message>
     <message>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation>Κείμενα βοήθειας για τους χρήστες, στον ιστότοπο του ΦρειΚΑΝΤ</translation>
+      <translation>Τεκμηρίωση για χρήστες στην ιστοσελίδα του FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -5599,48 +5786,48 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>FreeCAD Website</source>
-      <translation>Ιστότοπος του ΦρειΚΑΝΤ</translation>
+      <translation>Ιστοσελίδα του FreeCAD</translation>
     </message>
     <message>
       <source>The FreeCAD website</source>
-      <translation>Ο ιστότοπος του ΦρειΚΑΝΤ</translation>
+      <translation>Η ιστοσελίδα του FreeCAD</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Freeze display</source>
-      <translation>Πάγωμα προβολής</translation>
+      <translation>Πάγωμα εμφάνισης</translation>
     </message>
     <message>
       <source>Freezes the current view position</source>
-      <translation>Παγώνει την τωρινή θέση προβολής</translation>
+      <translation>Παγώνει την τρέχουσα θέση προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdGroup</name>
     <message>
       <source>Structure</source>
-      <translation type="unfinished">Structure</translation>
+      <translation>Κατασκευή</translation>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Δημιουργήστε ομάδα</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Δημιουργήστε μια νέα ομάδα για διάταξη αντικειμένων</translation>
     </message>
   </context>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Hide all objects</source>
@@ -5655,11 +5842,11 @@ Be aware the point where you click matters.</source>
     <name>StdCmdHideSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Hide selection</source>
-      <translation>Απόκρυψη της επιλογής</translation>
+      <translation>Απόκρυψη επιλογής</translation>
     </message>
     <message>
       <source>Hide all selected objects</source>
@@ -5678,7 +5865,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Import a file in the active document</source>
-      <translation>Εισαγωγή ενός αρχείου στο ενεργό έγγραφο</translation>
+      <translation>Εισαγωγή αρχείου στο ενεργό έγγραφο</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -5697,11 +5884,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Debug macro</source>
-      <translation>Αποσφαλμάτωση των μακροεντολών</translation>
+      <translation>Αποσφαλμάτωση μακροεντολής</translation>
     </message>
     <message>
       <source>Start debugging of macro</source>
-      <translation>Εκκίνησης  της αποσφαλμάτωσης των μακροεντολών</translation>
+      <translation>Εκκίνηση αποσφαλμάτωσης της μακροεντολής</translation>
     </message>
   </context>
   <context>
@@ -5712,7 +5899,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Step into</source>
-      <translation type="unfinished">Step into</translation>
+      <translation>Είσοδος</translation>
     </message>
   </context>
   <context>
@@ -5723,7 +5910,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Step over</source>
-      <translation type="unfinished">Step over</translation>
+      <translation>Υπέρθεση</translation>
     </message>
   </context>
   <context>
@@ -5734,11 +5921,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Stop debugging</source>
-      <translation>Σταμάτημα της αποσφαλμάτωσης</translation>
+      <translation>Διακοπή αποσφαλμάτωσης</translation>
     </message>
     <message>
       <source>Stop debugging of macro</source>
-      <translation>Σταμάτημα της αποσφαλμάτωσης των μακροεντολών</translation>
+      <translation>Διακοπή αποσφαλμάτωσης της μακροεντολής</translation>
     </message>
   </context>
   <context>
@@ -5749,11 +5936,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>S&amp;top macro recording</source>
-      <translation>Σ&amp;ταμάτημα της καταγραφής των μακροεντολών</translation>
+      <translation>Διακοπή καταγραφής &amp;των μακροεντολών</translation>
     </message>
     <message>
       <source>Stop the macro recording session</source>
-      <translation>Σταμάτημα της συνεδρίας καταγραφής των μακροεντολών</translation>
+      <translation>Διακοπή της συνεδρίας καταγραφής μακροεντολών</translation>
     </message>
   </context>
   <context>
@@ -5764,7 +5951,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Measure distance</source>
-      <translation>Μέτρημα της απόστασης</translation>
+      <translation>Μετρήστε απόσταση</translation>
     </message>
   </context>
   <context>
@@ -5775,11 +5962,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Measures distance between two selected objects</source>
-      <translation>Μέτρημα της απόστασης μεταξύ δύο επιλεγμένων αντικειμένων</translation>
+      <translation>Μετρά την απόσταση μεταξύ δύο επιλεγμένων αντικειμένων</translation>
     </message>
     <message>
       <source>Measure distance</source>
-      <translation>Μέτρημα της απόστασης</translation>
+      <translation>Μετρήστε απόσταση</translation>
     </message>
   </context>
   <context>
@@ -5790,11 +5977,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Merge project...</source>
-      <translation>Συγχώνευση της εργασίας...</translation>
+      <translation>Συγχώνευση έργου...</translation>
     </message>
     <message>
       <source>Merge project</source>
-      <translation>Συγχώνευση της εργασίας</translation>
+      <translation>Συγχώνευση έργου</translation>
     </message>
     <message>
       <source>%1 document (*.fcstd)</source>
@@ -5802,7 +5989,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
-      <translation>Δεν μπορεί να συγχωνευτεί η εργασία με τον εαυτό της.</translation>
+      <translation>Αδυναμία συγχώνευσης του έργου με το ίδιο έργο.</translation>
     </message>
   </context>
   <context>
@@ -5817,7 +6004,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>Δημιουργία ενός νέου, κενού, εγγράφου</translation>
+      <translation>Δημιουργήστε ένα νέο κενό έγγραφο</translation>
     </message>
     <message>
       <source>Unnamed</source>
@@ -5832,7 +6019,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Show help to the application</source>
-      <translation>Εμφάνιση της βοήθειας στην εφαρμογή</translation>
+      <translation>Εμφάνιση βοήθειας στην εφαρμογή</translation>
     </message>
   </context>
   <context>
@@ -5843,11 +6030,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Help Website</source>
-      <translation>Ιστότοπος Βοήθειας</translation>
+      <translation>Ιστοσελίδα Βοήθειας</translation>
     </message>
     <message>
       <source>The website where the help is maintained</source>
-      <translation>Ο ιστότοπος, όπου διατηρείται η βοήθεια</translation>
+      <translation>Η ιστοσελίδα όπου διατηρείται η βοήθεια</translation>
     </message>
   </context>
   <context>
@@ -5862,7 +6049,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Open a document or import files</source>
-      <translation>Άνοιγμα ενός εγγράφου, ή εισαγωγή αρχείων</translation>
+      <translation>Άνοιγμα ενός εγγράφου ή εισαγωγή αρχείων</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -5874,7 +6061,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Cannot open file</source>
-      <translation>Δεν είναι δυνατό το άνοιγμα του αρχείου</translation>
+      <translation>Αδυναμία ανοίγματος του αρχείου</translation>
     </message>
     <message>
       <source>Loading the file %1 is not supported</source>
@@ -5885,15 +6072,15 @@ Be aware the point where you click matters.</source>
     <name>StdCmdPart</name>
     <message>
       <source>Structure</source>
-      <translation type="unfinished">Structure</translation>
+      <translation>Κατασκευή</translation>
     </message>
     <message>
       <source>Create part</source>
-      <translation type="unfinished">Create part</translation>
+      <translation>Δημιουργήστε εξάρτημα</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation type="unfinished">Create a new part and make it active</translation>
+      <translation>Δημιουργήστε ένα νέο εξάρτημα και ενεργοποιήστε το</translation>
     </message>
   </context>
   <context>
@@ -5919,11 +6106,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Placement...</source>
-      <translation>Μετάθεση...</translation>
+      <translation>Τοποθέτηση...</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
-      <translation>Μετάθεση των επιλεγμένων αντικειμένων</translation>
+      <translation>Τοποθετήστε τα επιλεγμένα αντικείμενα</translation>
     </message>
   </context>
   <context>
@@ -5938,7 +6125,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Εκτύπωση του εγγράφου</translation>
+      <translation>Εκτυπώστε το έγγραφο</translation>
     </message>
   </context>
   <context>
@@ -5953,7 +6140,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export the document as PDF</source>
-      <translation>Εξαγωγή του εγγράφου ως ΠιΝτιΈφ</translation>
+      <translation>Εξαγωγή του εγγράφου ως PDF</translation>
     </message>
   </context>
   <context>
@@ -5964,15 +6151,15 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Print preview...</source>
-      <translation>&amp;Προεπισκόπιση της εκτύπωσης...</translation>
+      <translation>&amp;Προεπισκόπηση εκτύπωσης...</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Εκτύπωση του εγγράφου</translation>
+      <translation>Εκτυπώστε το έγγραφο</translation>
     </message>
     <message>
       <source>Print preview</source>
-      <translation>Προεπισκόπιση της εκτύπωσης</translation>
+      <translation>Προεπισκόπηση εκτύπωσης</translation>
     </message>
   </context>
   <context>
@@ -5983,11 +6170,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Project i&amp;nformation...</source>
-      <translation>Π&amp;ληροφορίες της Εργασίας...</translation>
+      <translation>Πληροφορίες Έργου...</translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Εμφάνιση πληροφοριών για την εργασία που είναι ενεργή αυτή τη στιγμή</translation>
+      <translation>Εμφανίστε λεπτομέρειες του τρέχοντος ενεργού έργου</translation>
     </message>
   </context>
   <context>
@@ -5998,11 +6185,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Project utility...</source>
-      <translation>Εφαρμογή Εργασιών...</translation>
+      <translation>Βοηθητική εφαρμογή έργου...</translation>
     </message>
     <message>
       <source>Utility to extract or create project files</source>
-      <translation>Εφαρμογή για την εξαγωγή, ή τη δημιουργία, αρχείων εργασίας</translation>
+      <translation>Βοηθητική εφαρμογή για να εξαγάγετε ή να δημιουργήσετε αρχεία έργου</translation>
     </message>
   </context>
   <context>
@@ -6013,11 +6200,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Python Website</source>
-      <translation>Ιστότοπος Πάιθον</translation>
+      <translation>Ιστοσελίδα της Python</translation>
     </message>
     <message>
       <source>The official Python website</source>
-      <translation>Ο επίσημος ιστότοπος της Πάιθον</translation>
+      <translation>Η επίσημη ιστοσελίδα της Python</translation>
     </message>
   </context>
   <context>
@@ -6028,11 +6215,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>E&amp;xit</source>
-      <translation>Έ&amp;ξοδος</translation>
+      <translation>Έξοδος</translation>
     </message>
     <message>
       <source>Quits the application</source>
-      <translation>τερματίζει την εφαρμογή</translation>
+      <translation>Εγκαταλείπει την εφαρμογή</translation>
     </message>
   </context>
   <context>
@@ -6069,11 +6256,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Redo</source>
-      <translation>Επαναφο&amp;ρά</translation>
+      <translation>Επανάληψη</translation>
     </message>
     <message>
       <source>Redoes a previously undone action</source>
-      <translation>Επαναφέρει μία ενέργεια που είχε αναιρεθεί</translation>
+      <translation>Επαναλαμβάνει μια ενέργεια που είχε προηγουμένως αναιρεθεί</translation>
     </message>
   </context>
   <context>
@@ -6084,11 +6271,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Refresh</source>
-      <translation>Ανανέω&amp;ση</translation>
+      <translation>Ανανέωση</translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation>Επανυπολογίζει το έγγραφο που είναι ενεργό αυτή τη στιγμή</translation>
+      <translation>Πραγματοποιεί επανεκτέλεση υπολογισμών για το τρέχον ενεργό έγγραφο</translation>
     </message>
   </context>
   <context>
@@ -6099,11 +6286,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Revert</source>
-      <translation type="unfinished">Revert</translation>
+      <translation>Επαναφορά</translation>
     </message>
     <message>
       <source>Reverts to the saved version of this file</source>
-      <translation type="unfinished">Reverts to the saved version of this file</translation>
+      <translation>Πραγματοποιεί επαναφορά στην αποθηκευμένη έκδοση αυτού του αρχείου</translation>
     </message>
   </context>
   <context>
@@ -6129,11 +6316,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save &amp;As...</source>
-      <translation>Αποθήκευση &amp;Ως...</translation>
+      <translation>&amp;Αποθήκευση Ως...</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
-      <translation>Αποθήκευση του ενεργού εγγράφου με ένα νέο όνομα αρχείου</translation>
+      <translation>Αποθήκευση του ενεργού εγγράφου με νέο όνομα αρχείου</translation>
     </message>
   </context>
   <context>
@@ -6144,11 +6331,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save a &amp;Copy...</source>
-      <translation type="unfinished">Save a &amp;Copy...</translation>
+      <translation>Αποθήκευση ενός Αντιγράφου...</translation>
     </message>
     <message>
       <source>Save a copy of the active document under a new file name</source>
-      <translation type="unfinished">Save a copy of the active document under a new file name</translation>
+      <translation>Αποθήκευση ενός αντιγράφου του ενεργού εγγράφου με νέο όνομα αρχείου</translation>
     </message>
   </context>
   <context>
@@ -6174,7 +6361,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Select &amp;All</source>
-      <translation>Επιλογή &amp;Όλων</translation>
+      <translation>Επιλογή Όλων</translation>
     </message>
     <message>
       <source>Select all</source>
@@ -6185,22 +6372,22 @@ Be aware the point where you click matters.</source>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Select visible objects</source>
-      <translation type="unfinished">Select visible objects</translation>
+      <translation>Επιλέξτε ορατά αντικείμενα</translation>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation type="unfinished">Select visible objects in the active document</translation>
+      <translation>Επιλέξτε ορατά αντικείμενα στο ενεργό έγγραφο</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Appearance...</source>
@@ -6215,7 +6402,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdShowObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Show all objects</source>
@@ -6230,11 +6417,11 @@ Be aware the point where you click matters.</source>
     <name>StdCmdShowSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Show selection</source>
-      <translation>Εμφάνιση της επιλογής</translation>
+      <translation>Εμφάνιση επιλογής</translation>
     </message>
     <message>
       <source>Show all selected objects</source>
@@ -6253,7 +6440,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Εναλλάσσει τη γραμμή κατάστασης</translation>
+      <translation>Εναλλάσσει την λειτουργία εμφάνισης/απόκρυψης της γραμμής κατάστασης</translation>
     </message>
   </context>
   <context>
@@ -6264,11 +6451,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Texture mapping...</source>
-      <translation>Χαρτογράφηση των υφασμάτων...</translation>
+      <translation>Χαρτογράφηση υφής...</translation>
     </message>
     <message>
       <source>Texture mapping</source>
-      <translation>Χαρτογράφηση των υφασμάτων</translation>
+      <translation>Χαρτογράφηση υφής</translation>
     </message>
   </context>
   <context>
@@ -6279,11 +6466,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Tile</source>
-      <translation>&amp;Πλακόστρωτο</translation>
+      <translation>Διά&amp;ταξη χωρίς αλληλοεπικάλυψη</translation>
     </message>
     <message>
       <source>Tile the windows</source>
-      <translation>Πλακόστρωση των παράθυρων</translation>
+      <translation>Διάταξη των παραθύρων χωρίς αλληλοεπικάλυψη</translation>
     </message>
   </context>
   <context>
@@ -6294,78 +6481,78 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Toggle breakpoint</source>
-      <translation>Σημείο διακοπής</translation>
+      <translation>Εναλλαγή σημείου διακοπής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Clipping plane</source>
-      <translation>Επιφάνεια τομής</translation>
+      <translation>Επίπεδο αποκοπής</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Εναλλάσσει την επιφάνεια προβολής τομής, για την ενεργή προβολή</translation>
+      <translation>Εναλλάσσει το επίπεδο αποκοπής για την ενεργή προβολή</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
-      <translation>Εναλλαγή Πλοήγησης / Λειτουργίας Επεξεργασίας</translation>
+      <translation>Εναλλαγή λειτουργίας Πλοήγησης/Επεξεργασίας</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation>Εναλλαγή μεταξύ της Πλοήγησης και της Κατάστασης Λειτουργίας Επεξεργασίας</translation>
+      <translation>Εναλλαγή μεταξύ της λειτουργίας πλοήγησης και της λειτουργίας επεξεργασίας</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Toggle all objects</source>
-      <translation>Εναλλαγή όλων των αντικειμένων</translation>
+      <translation>Εναλλαγή εμφάνισης/απόκρυψης όλων των αντικειμένων</translation>
     </message>
     <message>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>Εναλλάσσει την εμφάνιση όλων των αντικειμένων στο ενεργό έγγραφο</translation>
+      <translation>Εναλλάσσει την ορατότητα όλων των αντικειμένων στο ενεργό έγγραφο</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Toggle selectability</source>
-      <translation>Εναλλαγή της επιλεξιμότητας</translation>
+      <translation>Εναλλαγή επιλεξιμότητας</translation>
     </message>
     <message>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Εναλλάσσει την ιδιότητα των αντικειμένων να επιλεγούν στην τρισδιάστατη προβολή</translation>
+      <translation>Εναλλάσσει την ιδιότητα των αντικειμένων να επιλέγονται στην Τρισδιάστατη Προβολή</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Toggle visibility</source>
-      <translation>Εναλλαγή της ορατότητας</translation>
+      <translation>Εναλλαγή ορατότητας</translation>
     </message>
     <message>
       <source>Toggles visibility</source>
@@ -6380,11 +6567,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Tool&amp;bars</source>
-      <translation>Γραμμές &amp;Εργαλείων</translation>
+      <translation>Γραμμές εργαλείων</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Εναλλάσσει αυτό το παράθυρο</translation>
+      <translation>Εναλλάσσει την λειτουργία εμφάνισης/απόκρυψης αυτού του παραθύρου</translation>
     </message>
   </context>
   <context>
@@ -6395,11 +6582,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform...</source>
-      <translation>Μετμόρφωση...</translation>
+      <translation>Μετασχηματισμός...</translation>
     </message>
     <message>
       <source>Transform the geometry of selected objects</source>
-      <translation>Μεταμόρφωση της γεωμετρίας των επιλεγμένων αντικειμένων</translation>
+      <translation>Μετασχηματισμός της γεωμετρίας των επιλεγμένων αντικειμένων</translation>
     </message>
   </context>
   <context>
@@ -6414,7 +6601,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
-      <translation>Μεταμόρφωση του επιλεγμένου αντικείμενου στην τρισδιάστατη προβολή</translation>
+      <translation>Μετασχηματισμός του επιλεγμένου αντικειμένου στην τρισδιάστατη προβολή</translation>
     </message>
   </context>
   <context>
@@ -6429,7 +6616,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Scroll to first selected item</source>
-      <translation>Κύλιση στο πρώτο επιλεγμένο στοιχείο</translation>
+      <translation>Κύλιση στο πρώτο επιλεγμένο αντικείμενο</translation>
     </message>
   </context>
   <context>
@@ -6440,11 +6627,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Undo</source>
-      <translation>&amp;Αναίρεση</translation>
+      <translation>Αναίρεση</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Αναίρεση ακριβώς μίας πράξης</translation>
+      <translation>Αναίρεση ακριβώς μιας πράξης</translation>
     </message>
   </context>
   <context>
@@ -6455,7 +6642,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Units calculator...</source>
-      <translation>&amp;Υπολογιστής μονάδων...</translation>
+      <translation>Υπολογιστής μονάδων...</translation>
     </message>
     <message>
       <source>Start the units calculator</source>
@@ -6470,33 +6657,33 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Dock views</source>
-      <translation>Πρόσδεση των προβολών</translation>
+      <translation>Πρόσδεση προβολών</translation>
     </message>
     <message>
       <source>Dock all top-level views</source>
-      <translation>Πρόσδεση όλων των προβολών πρώτου επιπέδου</translation>
+      <translation>Πρόσδεση όλων των προβολών ανωτάτου επιπέδου</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewAxo</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Axonometric</source>
-      <translation type="unfinished">Axonometric</translation>
+      <translation>Αξονομετρική</translation>
     </message>
     <message>
       <source>Set to axonometric view</source>
-      <translation type="unfinished">Set to axonometric view</translation>
+      <translation>Ορισμός αξονομετρικής προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Bottom</source>
@@ -6504,209 +6691,209 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to bottom view</source>
-      <translation>Εμφάνιση της κάτω όψης</translation>
+      <translation>Ορισμός κάτω προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Create new view</source>
-      <translation>Δημιουργία νέας προβολής</translation>
+      <translation>Δημιουργήστε νέα προβολή</translation>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation type="unfinished">Creates a new view window for the active document</translation>
+      <translation>Δημιουργεί ένα νέο παράθυρο προβολής για το ενεργό έγγραφο</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Inventor example #1</source>
-      <translation type="unfinished">Inventor example #1</translation>
+      <translation>Παράδειγμα Inventor #1</translation>
     </message>
     <message>
       <source>Shows a 3D texture with manipulator</source>
-      <translation type="unfinished">Shows a 3D texture with manipulator</translation>
+      <translation>Εμφανίζει μια τρισδιάστατη υφή με χρήση του πάγκου εργασίας παραποίησης</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Inventor example #2</source>
-      <translation type="unfinished">Inventor example #2</translation>
+      <translation>Παράδειγμα Inventor #2</translation>
     </message>
     <message>
       <source>Shows spheres and drag-lights</source>
-      <translation type="unfinished">Shows spheres and drag-lights</translation>
+      <translation>Εμφανίζει σφαίρες και μετακινούμενες πηγές φωτός</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Inventor example #3</source>
-      <translation type="unfinished">Inventor example #3</translation>
+      <translation>Παράδειγμα Inventor #3</translation>
     </message>
     <message>
       <source>Shows a animated texture</source>
-      <translation>Εμφάνιση ενός κινούμενου υφάσματος</translation>
+      <translation>Εμφανίζει μια κινούμενη υφή</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Fit all</source>
-      <translation>Ταίριασμα όλων</translation>
+      <translation>Προσαρμογή όλων</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Ταιριάζει όλα τα περιεχόμενα στην οθόνη</translation>
+      <translation>Προσαρμόζει όλα τα περιεχόμενα στην οθόνη</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Fit selection</source>
-      <translation>Ταίριασμα της επιλογής</translation>
+      <translation>Προσαρμογή επιλογής</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation>Ταιριάζει τα επιλεγμένα περιεχόμενα στην οθόνη</translation>
+      <translation>Προσαρμόζει τα επιλεγμένα περιεχόμενα στην οθόνη</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFront</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Front</source>
-      <translation>Πρόσωψη</translation>
+      <translation>Εμπρόσθια</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Προβάλει την πρόσοψη</translation>
+      <translation>Ορισμός εμπρόσθιας προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Issue camera position</source>
-      <translation>Απομνημόνευση της οπτικής γωνίας</translation>
+      <translation>Καταγραφή θέσης κάμερας</translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Καταγραφή της θέσης της κάμερας στην κονσόλα και σε μια μακροεντολή, ώστε να είναι εύκολα διαθέσιμη</translation>
+      <translation>Καταγράψτε την θέση της κάμερας στην κονσόλα και σε μια μακροεντολή, ώστε να θυμάστε αυτήν την θέση με ευκολία</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Stereo Interleaved Columns</source>
-      <translation>Διαπλεκόμενες Στήλες</translation>
+      <translation>Παρεμβαλλόμενες Στήλες Στερεοσκοπικής Προβολής</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Μεταβολή της στερεοσκόπησης  σε Διαπλεκόμενων Στηλών</translation>
+      <translation>Μεταβολή στερεοσκοπικής προβολής σε Παρεμβαλλόμενων Στηλών</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Stereo Interleaved Rows</source>
-      <translation>Διαπλεκόμενες Γραμμές</translation>
+      <translation>Παρεμβαλλόμενες Σειρές Στερεοσκοπικής Προβολής</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Μεταβολή της στερεοσκόπησης  σε Διαπλεκόμενων Γραμμών</translation>
+      <translation>Μεταβολή στερεοσκοπικής προβολής σε Παρεμβαλλόμενων Σειρών</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Stereo Off</source>
-      <translation>Απενεργοποιημένη η Στερεοσκόπηση</translation>
+      <translation>Απενεργοποιημένη η Στερεοσκοπική Προβολή</translation>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Απενεργοποίηση της στερεοσκοπικής προβολής</translation>
+      <translation>Απενεργοποίηση στερεοσκοπικής προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Stereo quad buffer</source>
-      <translation>Τετραπλής Μικροαποθήκευσης</translation>
+      <translation>Στερεοσκοπική προβολή τεσσάρων ρυθμιστών</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Μεταβολή της στερεοσκόπησης σε τετραπλής μικροαποθήκευσης</translation>
+      <translation>Μεταβολή στερεοσκοπικής προβολής σε τεσσάρων ρυθμιστών</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Stereo red/cyan</source>
-      <translation type="unfinished">Stereo red/cyan</translation>
+      <translation>Στερεοσκοπική προβολή κόκκινο/κυανό</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/cyan</source>
-      <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
+      <translation>Μεταβολή στερεοσκοπικής προβολής σε κόκκινο/κυανό</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Left</source>
@@ -6714,29 +6901,29 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Να εμφανιστεί η αριστερή όψη</translation>
+      <translation>Ορισμός αριστερής προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRear</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Rear</source>
-      <translation>Πίσω</translation>
+      <translation>Οπίσθια</translation>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>Να εμφανιστεί η πίσω όψη</translation>
+      <translation>Ορισμός οπίσθιας προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRight</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Right</source>
@@ -6744,67 +6931,67 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>Να εμφανιστεί η δεξιά όψη</translation>
+      <translation>Ορισμός δεξιά προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Rotate Left</source>
-      <translation>Αριστεροστροφή</translation>
+      <translation>Περιστροφή προς τα Αριστερά</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° counter-clockwise</source>
-      <translation>Περιστροφή της προβολής αντίθετα των δεικτών του ρολογιού, κατά 90Â°</translation>
+      <translation>Περιστροφή της προβολής αντιωρολογιακά κατά 90Â°</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Rotate Right</source>
-      <translation>Δεξιοστροφή</translation>
+      <translation>Περιστροφή προς τα Δεξιά</translation>
     </message>
     <message>
       <source>Rotate the view by 90Â° clockwise</source>
-      <translation>Περιστροφή της προβολής κατά τους δείκτες του ρολογιού, κατά 90Â°</translation>
+      <translation>Περιστροφή της προβολής ωρολογιακά κατά 90Â°</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewTop</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Top</source>
-      <translation>Κορυφή</translation>
+      <translation>Πάνω</translation>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>Να εμφανιστεί η επάνω όψη</translation>
+      <translation>Ορισμός πάνω προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>FreeCAD-VR</source>
-      <translation type="unfinished">FreeCAD-VR</translation>
+      <translation>FREECAD-VR</translation>
     </message>
     <message>
       <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-      <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
+      <translation>Επέκταση του Τρισδιάστατου Παραθύρου FreeCAD σε σύστημα εικονικής πραγματικότητας Oculus Rift</translation>
     </message>
   </context>
   <context>
@@ -6815,7 +7002,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;What's This?</source>
-      <translation>&amp;Τι Είναι Αυτό;</translation>
+      <translation>Τι Είναι Αυτό;</translation>
     </message>
     <message>
       <source>What's This</source>
@@ -6830,11 +7017,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Windows...</source>
-      <translation>&amp;Παράθυρα...</translation>
+      <translation>Παράθυρα...</translation>
     </message>
     <message>
       <source>Windows list</source>
-      <translation>Κατάστιχο παραθύρων</translation>
+      <translation>Λίστα παραθύρων</translation>
     </message>
   </context>
   <context>
@@ -6856,18 +7043,18 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Workbench</source>
-      <translation>Πάγκος Εργασίας</translation>
+      <translation>Πάγκος εργασίας</translation>
     </message>
     <message>
       <source>Switch between workbenches</source>
-      <translation>Εναλλαγή μεταξύ των πάγκων εργασίας</translation>
+      <translation>Εναλλαγή μεταξύ πάγκων εργασίας</translation>
     </message>
   </context>
   <context>
     <name>StdMainFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -6875,14 +7062,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Απεικόνιση του κύριου παραθύρου σε λειτουργία πλήρους οθόνης</translation>
     </message>
   </context>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Orthographic view</source>
@@ -6890,14 +7077,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Αλλάζει σε ορθογραφική κατάσταση προβολής</translation>
+      <translation>Μεταβαίνει σε λειτουργία ορθογραφικής προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Perspective view</source>
@@ -6905,25 +7092,85 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>Αλλάζει σε προοπτική κατάσταση προβολής</translation>
+      <translation>Μεταβαίνει σε λειτουργία προοπτικής προβολής</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Προβολή</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation type="unfinished">Collapse/Expand</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation type="unfinished">Expand active document and collapse all others</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Προβολή</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation type="unfinished">Multi Document</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation type="unfinished">Display all documents in the tree view</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Προβολή</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation type="unfinished">Single Document</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation type="unfinished">Only display the active document in the tree view</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Προβολή</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation type="unfinished">Document Tree</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation type="unfinished">Set visibility of inactive documents in tree view</translation>
     </message>
   </context>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Box zoom</source>
-      <translation>Εστίαση σε πλαίσιο</translation>
+      <translation>Εστίαση με τη χρήση πλαισίου</translation>
     </message>
   </context>
   <context>
     <name>StdViewDock</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Docked</source>
@@ -6931,14 +7178,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
+      <translation>Απεικόνιση της ενεργής όψης είτε σε πλήρη οθόνη, είτε σε λειτουργία ανεξάρτητων παραθύρων είτε σε λειτουργία προσδέσιμων παραθύρων</translation>
     </message>
   </context>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Document window</source>
@@ -6946,14 +7193,14 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
+      <translation>Απεικόνιση της ενεργής όψης είτε σε πλήρη οθόνη, είτε σε λειτουργία ανεξάρτητων παραθύρων είτε σε λειτουργία προσδέσιμων παραθύρων</translation>
     </message>
   </context>
   <context>
     <name>StdViewFullscreen</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Fullscreen</source>
@@ -6961,78 +7208,90 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
+      <translation>Απεικόνιση της ενεργής όψης είτε σε πλήρη οθόνη, είτε σε λειτουργία ανεξάρτητων παραθύρων είτε σε λειτουργία προσδέσιμων παραθύρων</translation>
     </message>
   </context>
   <context>
     <name>StdViewScreenShot</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Save picture...</source>
-      <translation>Αποθήκευση της εικόνας...</translation>
+      <translation>Αποθήκευση εικόνας...</translation>
     </message>
     <message>
       <source>Creates a screenshot of the active view</source>
-      <translation>Δημιουργεί ένα φωτογραφικό στιγμιότυπο της ενεργής προβολής</translation>
+      <translation>Δημιουργεί ένα στιγμιότυπο οθόνης της ενεργής προβολής</translation>
     </message>
   </context>
   <context>
     <name>StdViewUndock</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Undocked</source>
-      <translation>Αποπροσκολλημένο</translation>
+      <translation>Ανεξάρτητα</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Προβολή της ενεργούς όψης είτε σε πλήρη οθόνη, είτε σε ανεξάρτητο, είτε σε ενσωματωμένο παράθυρο</translation>
+      <translation>Απεικόνιση της ενεργής όψης είτε σε πλήρη οθόνη, είτε σε λειτουργία ανεξάρτητων παραθύρων είτε σε λειτουργία προσδέσιμων παραθύρων</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomIn</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Zoom In</source>
-      <translation>Εστίαση</translation>
+      <translation>Μεγέθυνση</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
     <message>
       <source>Standard-View</source>
-      <translation>Προκαθορισμένη προβολή</translation>
+      <translation>Καθιερωμένη Προβολή</translation>
     </message>
     <message>
       <source>Zoom Out</source>
-      <translation>Αποεστίαση</translation>
+      <translation>Σμίκρυνση</translation>
     </message>
   </context>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Εξαρτήσεις του αντικειμένου</translation>
-    </message>
-    <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
+      <source>These items are linked to items selected for deletion and might break.
 
 </source>
-      <translation type="unfinished">The following, referencing objects might break.
-
-Are you sure you want to continue?
+      <translation>Αυτά τα αντικείμενα συνδέονται με αντικείμενα που έχουν επιλεχθεί για διαγραφή και ενδέχεται να σπάσουν.
 
 </translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document. 
+
+</source>
+      <translation>Αυτά τα αντικείμενα έχουν επιλεχθεί για διαγραφή, αλλά δεν βρίσκονται στο ενεργό έγγραφο. 
+
+</translation>
+    </message>
+    <message>
+      <source>
+
+Are you sure you want to continue?</source>
+      <translation>
+
+Είστε βέβαιοι ότι θέλετε να συνεχίσετε;</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Διαγραφή Καταγραφών Επιλογής</translation>
     </message>
   </context>
   <context>
@@ -7047,15 +7306,15 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Wireframe</source>
-      <translation>Συρμάτινα</translation>
+      <translation>Σκελετός</translation>
     </message>
     <message>
       <source>Wireframe mode</source>
-      <translation>Λειτουργία σαν από σύρμα</translation>
+      <translation>Λειτουργία σκελετού</translation>
     </message>
     <message>
       <source>Flat lines</source>
-      <translation>Επίπεδα</translation>
+      <translation>Επίπεδες γραμμές</translation>
     </message>
     <message>
       <source>Flat lines mode</source>
@@ -7063,11 +7322,11 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Shaded</source>
-      <translation>Σκιάσεις</translation>
+      <translation>Σκιασμένη</translation>
     </message>
     <message>
       <source>Shaded mode</source>
-      <translation>Κατάσταση λειτουργία σκιάσεων</translation>
+      <translation>Λειτουργία σκίασης</translation>
     </message>
     <message>
       <source>Points</source>
@@ -7075,44 +7334,43 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>Points mode</source>
-      <translation>Κατάσταση λειτουργίας σημείων</translation>
+      <translation>Λειτουργία σημείων</translation>
     </message>
     <message>
       <source>Hidden line</source>
-      <translation type="unfinished">Hidden line</translation>
+      <translation>Κρυφή γραμμή</translation>
     </message>
     <message>
       <source>Hidden line mode</source>
-      <translation type="unfinished">Hidden line mode</translation>
+      <translation>Λειτουργία κρυφής γραμμής</translation>
     </message>
     <message>
       <source>No shading</source>
-      <translation type="unfinished">No shading</translation>
+      <translation>Χωρίς σκίαση</translation>
     </message>
     <message>
       <source>No shading mode</source>
-      <translation type="unfinished">No shading mode</translation>
+      <translation>Λειτουργία μη χρήσης σκίασης</translation>
     </message>
   </context>
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
       <source>Object dependencies</source>
-      <translation>Εξαρτήσεις του αντικειμένου</translation>
+      <translation>Εξαρτήσεις αντικειμένου</translation>
     </message>
     <message>
       <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-      <translation>Τα επιλεγμένα αντικείμενα έχουν μία εξάρτηση σε μη επιλεγμένα αντικείμενα.\n
-\n
-Να διπλοτυπωθούν καί αυτά ;</translation>
+      <translation>Τα επιλεγμένα αντικείμενα έχουν μια εξάρτηση σε μη επιλεγμένα αντικείμενα.
+Θέλετε να δημιουργήσετε αντίγραφα και αυτών;</translation>
     </message>
   </context>
   <context>
     <name>Std_ExportGraphviz</name>
     <message>
       <source>Dependency graph</source>
-      <translation>Γράφημα εξέρτησης</translation>
+      <translation>Γράφημα εξάρτησης</translation>
     </message>
   </context>
   <context>
@@ -7126,22 +7384,66 @@ Do you want to duplicate them, too?</source>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
-      <translation type="unfinished">This will discard all the changes since last file save.</translation>
+      <translation>Αυτό θα πραγματοποιήσει απόρριψη όλων των αλλαγών από την τελευταία αποθήκευση αρχείου.</translation>
     </message>
     <message>
       <source>Revert document</source>
-      <translation type="unfinished">Revert document</translation>
+      <translation>Επαναφορά εγγράφου</translation>
     </message>
     <message>
       <source>Do you want to continue?</source>
-      <translation type="unfinished">Do you want to continue?</translation>
+      <translation>Θέλετε να συνεχίσετε;</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Ισομετρική</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Ορισμός χειριστή NaviCube σε Ισομετρική λειτουργία</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ορθογραφική</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Ορισμός Προβολής σε Ορθογραφική λειτουργία</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Προοπτική</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Ορισμός Προβολής σε Προοπτική λειτουργία</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Εστίαση για προσαρμογή</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Εστίαση ώστε το μοντέλο να γεμίζει την προβολή</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
-      <translation>&amp;Αρχείο</translation>
+      <translation>Αρχείο</translation>
     </message>
     <message>
       <source>&amp;Edit</source>
@@ -7149,15 +7451,15 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Standard views</source>
-      <translation>Προκαθορισμένες όψεις</translation>
+      <translation>Καθιερωμένες προβολές</translation>
     </message>
     <message>
       <source>&amp;Stereo</source>
-      <translation>&amp;Στερεοσκόπηση</translation>
+      <translation>&amp;Στερεοσκοπική Προβολή</translation>
     </message>
     <message>
       <source>&amp;Zoom</source>
-      <translation>&amp;Μεγέθυνση</translation>
+      <translation>Μεγέθυνση</translation>
     </message>
     <message>
       <source>Visibility</source>
@@ -7165,11 +7467,11 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>&amp;View</source>
-      <translation>&amp;Προβολή</translation>
+      <translation>Προβολή</translation>
     </message>
     <message>
       <source>&amp;Tools</source>
-      <translation>&amp;Εργαλεία</translation>
+      <translation>Εργαλεία</translation>
     </message>
     <message>
       <source>&amp;Macro</source>
@@ -7177,15 +7479,15 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>&amp;Windows</source>
-      <translation>&amp;Παράθυρα</translation>
+      <translation>Παράθυρα</translation>
     </message>
     <message>
       <source>&amp;On-line help</source>
-      <translation>&amp;Βοήθεια στο Διαδίκτυο</translation>
+      <translation>&amp;On-line βοήθεια</translation>
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Βοήθεια</translation>
+      <translation>Βο&amp;ήθεια</translation>
     </message>
     <message>
       <source>File</source>
@@ -7201,7 +7503,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Special Ops</source>
-      <translation>Ειδικές Επιχειρήσεις</translation>
+      <translation>Ειδικές Λειτουργίες</translation>
     </message>
   </context>
   <context>
@@ -7222,19 +7524,19 @@ p, li { white-space: pre-wrap; }
       <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;Πίνακας Εργασιών iis&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Δημιουργήθηκε για την έκδοση 4.3.x του προγράμματος επεξεργασίας Qt&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Choose the style of the Task Panel</source>
-      <translation>Επέλεξε την τεχνοτροπία του Πίνακα των Ανατεθειμένων Εργασιών</translation>
+      <translation>Διαλέξτε τον τύπο μορφοποίησης του Πίνακα Εργασιών</translation>
     </message>
     <message>
       <source>Default</source>
-      <translation>Προεπιλογή</translation>
+      <translation>Προεπιλεγμένο</translation>
     </message>
     <message>
       <source>Windows XP</source>

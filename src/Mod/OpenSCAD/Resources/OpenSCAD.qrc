@@ -48,5 +48,7 @@
         <file>translations/OpenSCAD_id.qm</file>
         <file>translations/OpenSCAD_lt.qm</file>
         <file>translations/OpenSCAD_val-ES.qm</file>
+        <file>translations/OpenSCAD_ar.qm</file>
+        <file>translations/OpenSCAD_vi.qm</file>
     </qresource>
 </RCC>

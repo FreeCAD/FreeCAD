@@ -110,5 +110,23 @@ Double click on an error in the tree view to see more information about it,inclu
 
 Dobbeltklikk på en feil i treet for å se mer informasjon om den, inkludert stabelsporing.</translation>
     </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation type="unfinished">Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+    </message>
   </context>
 </TS>

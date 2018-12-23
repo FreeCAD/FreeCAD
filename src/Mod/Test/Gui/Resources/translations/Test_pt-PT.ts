@@ -106,5 +106,18 @@ FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modu
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
       <translation>Digite o nome de um objeto invocável que quando chamado, irá retornar um TestCase. Clique 'Iniciar' e o teste produzido será executado. Dê um duplo clique sobre um erro na exibição em árvore para ver mais informações sobre ele, incluindo a pilha de rastreamento.</translation>
     </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Digite o nome de um objeto invocável que quando chamado, irá retornar um TestCase. Clique 'Iniciar' e o teste produzido será executado. Dê um duplo clique sobre um erro na exibição em árvore para ver mais informações sobre ele, incluindo a pilha de rastreamento.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Copyright (c) Werner Mayer FreeCAD UnitTest é parte do FreeCAD e suporta escrever testes de unidade para os próprios módulos.</translation>
+    </message>
   </context>
 </TS>

@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Patikrinti ir pataisyti tinklą...</translation>
     </message>
   </context>
   <context>
@@ -177,7 +177,7 @@
     </message>
     <message>
       <source>Close holes interactively</source>
-      <translation>Užaklinti skyles sąveikaujant</translation>
+      <translation>Užaklinti skyles perklausiant</translation>
     </message>
   </context>
   <context>
@@ -447,6 +447,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -595,7 +610,7 @@
     </message>
     <message>
       <source>Orientation</source>
-      <translation>Kryptis</translation>
+      <translation>Kapminė padėtis</translation>
     </message>
     <message>
       <source>Degenerated faces</source>
@@ -607,7 +622,7 @@
     </message>
     <message>
       <source>Number of faces:</source>
-      <translation>Daugiakampių kiekis:</translation>
+      <translation>Sienų kiekis:</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
@@ -722,7 +737,7 @@
     </message>
     <message>
       <source>Orientation</source>
-      <translation>Kryptis</translation>
+      <translation>Kapminė padėtis</translation>
     </message>
     <message>
       <source>Indices</source>
@@ -892,7 +907,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>No active document</source>
-      <translation type="unfinished">No active document</translation>
+      <translation>Nėra taisytino dokumento</translation>
     </message>
   </context>
   <context>
@@ -974,7 +989,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Default line color</source>
-      <translation>Numatytoji linijos spalva</translation>
+      <translation>Numatytoji brūkšnio spalva</translation>
     </message>
     <message>
       <source>Mesh transparency</source>
@@ -1056,6 +1071,45 @@ Please run the command to repair folds first</source>
     <message>
       <source>Finish</source>
       <translation>Užbaigti</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation type="unfinished">Surface fit</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Dydžiai</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Atranka</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Sritis</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Trikampis</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Išvalyti</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation type="unfinished">Compute</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Niekas nepasirinkta</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation type="unfinished">Before fitting the surface select an area.</translation>
     </message>
   </context>
   <context>
@@ -1163,6 +1217,73 @@ Please run the command to repair folds first</source>
       <source>Sphere</source>
       <translation>Rutulys</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation type="unfinished">Curvature</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation type="unfinished">Freeform</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation type="unfinished">Max. Curvature</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation type="unfinished">Min. Curvature</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Tinklo skaidymas</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Rutulys</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Leidžiamoji nuokrypa</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Mažiausias daugiakampių kiekis</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plokštuma</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Ritinys</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Pagrindas</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Įprastiniai</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation type="unfinished">Axis</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Spindulys</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Vidurys</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1204,6 +1325,13 @@ Please run the command to repair folds first</source>
     <message>
       <source>Invert</source>
       <translation>Apgręžti</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation type="unfinished">Boundings of %1:</translation>
     </message>
   </context>
   <context>
@@ -1470,6 +1598,10 @@ Daugiausia=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Įveskite mastelį:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation type="unfinished">Simple Model Format</translation>
     </message>
   </context>
   <context>

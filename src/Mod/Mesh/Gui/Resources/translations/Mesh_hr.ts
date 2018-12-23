@@ -76,7 +76,7 @@
     </message>
     <message>
       <source>Face info</source>
-      <translation>Informacije površine</translation>
+      <translation>Informacije Lice</translation>
     </message>
     <message>
       <source>Information about face</source>
@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Procijena i popravak mreže...</translation>
     </message>
   </context>
   <context>
@@ -289,11 +289,11 @@
     </message>
     <message>
       <source>Merge</source>
-      <translation type="unfinished">Merge</translation>
+      <translation>Spoji</translation>
     </message>
     <message>
       <source>Merges selected meshes into one</source>
-      <translation type="unfinished">Merges selected meshes into one</translation>
+      <translation>Spaja odabrane mreže u jednu</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Skaliranje odabranih mreža</translation>
     </message>
   </context>
   <context>
@@ -424,11 +424,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Stvori presjek iz mreže i ravnine</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>Presjek iz mreže i ravnine</translation>
     </message>
   </context>
   <context>
@@ -444,6 +444,21 @@
     <message>
       <source>Create mesh segments</source>
       <translation>Kreiraj segmente mesh-a</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mreža</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
     </message>
   </context>
   <context>
@@ -499,11 +514,11 @@
     </message>
     <message>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Obrezivanje mreže s ravninom</translation>
     </message>
     <message>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Obrezuje mrežu s ravninom</translation>
     </message>
   </context>
   <context>
@@ -772,14 +787,14 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     </message>
     <message>
       <source>Settings...</source>
-      <translation type="unfinished">Settings...</translation>
+      <translation>Postavke...</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <source>Evaluation settings</source>
-      <translation type="unfinished">Evaluation settings</translation>
+      <translation>Procjena postavke</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -787,15 +802,15 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation type="unfinished">Check for non-manifold points</translation>
+      <translation>Provjeri za ne-razdjelne točke</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation type="unfinished">Enable check for folds on surface</translation>
+      <translation>Omogući provjeru savijanja na površini</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
-      <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+      <translation>Samo trokute bez sadržaja smatrati degeneriranim</translation>
     </message>
   </context>
   <context>
@@ -900,7 +915,7 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
       <source>Mesh Formats</source>
-      <translation type="unfinished">Mesh Formats</translation>
+      <translation>Mreža Formati</translation>
     </message>
     <message>
       <source>Export</source>
@@ -916,7 +931,7 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
-      <translation type="unfinished">Maximum mesh deviation</translation>
+      <translation>Max odstupanje mreže</translation>
     </message>
     <message>
       <source>mm</source>
@@ -924,7 +939,7 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     </message>
     <message>
       <source>Export AMF files using compression</source>
-      <translation type="unfinished">Export AMF files using compression</translation>
+      <translation>Izvoz AMF datoteke pomoću kompresije</translation>
     </message>
   </context>
   <context>
@@ -1030,7 +1045,7 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     </message>
     <message>
       <source>Only selection</source>
-      <translation type="unfinished">Only selection</translation>
+      <translation>Samo odabir</translation>
     </message>
   </context>
   <context>
@@ -1057,6 +1072,45 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     <message>
       <source>Finish</source>
       <translation>Završiti</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Prilagođavanje površine</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parametara</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Izbor</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Regija</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Trokut</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Brisanje</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Izračunati</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Nema odabira</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Prije prilagođavanja površine odaberite jedno područje.</translation>
     </message>
   </context>
   <context>
@@ -1164,6 +1218,73 @@ Molimo pokrenite naredbu za popravak nabora</translation>
       <source>Sphere</source>
       <translation>Kugla</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Zakrivljenost</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Slobodna forma</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Max. Zakrivljenost</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Min. Zakrivljenost</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentiranje mesh-a</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Kugla</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerancija</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimalan broj ploha</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametara...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Površina</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Valjak</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Baza</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normalno</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Osi</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Radijus</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Središte</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1189,11 +1310,11 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     </message>
     <message>
       <source>Use a brush tool to select the area</source>
-      <translation type="unfinished">Use a brush tool to select the area</translation>
+      <translation>Koristiti kist alat za odabir područja</translation>
     </message>
     <message>
       <source>Clears completely the selected area</source>
-      <translation type="unfinished">Clears completely the selected area</translation>
+      <translation>Potpuno Briše odabrano područje</translation>
     </message>
   </context>
   <context>
@@ -1208,35 +1329,42 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     </message>
   </context>
   <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>Ograničenje od %1:</translation>
+    </message>
+  </context>
+  <context>
     <name>Mesh_TrimByPlane</name>
     <message>
       <source>Select plane</source>
-      <translation type="unfinished">Select plane</translation>
+      <translation>Odaberite ravninu</translation>
     </message>
     <message>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+      <translation>Molimo odaberite ravninu na kojoj se skraćuje mreža.</translation>
     </message>
   </context>
   <context>
     <name>Mesh_Union</name>
     <message>
       <source>OpenSCAD</source>
-      <translation type="unfinished">OpenSCAD</translation>
+      <translation>OpenSCAD</translation>
     </message>
     <message>
       <source>Unknwon error occured while running OpenSCAD.</source>
-      <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+      <translation>Pojavila se nepoznata pogreška pri izvršavanju OpenSCAD-a.</translation>
     </message>
     <message>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</translation>
+      <translation>OpenSCAD nije moguće pronaći na vašem sustavu. 
+Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translation>
     </message>
     <message>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
+      <translation>Pojavila se nepoznata pogreška pri izvršavanju OpenSCAD-a.</translation>
     </message>
   </context>
   <context>
@@ -1398,39 +1526,39 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Display components</source>
-      <translation type="unfinished">Display components</translation>
+      <translation>Prikaz komponenti</translation>
     </message>
     <message>
       <source>All Mesh Files</source>
-      <translation type="unfinished">All Mesh Files</translation>
+      <translation>Sve datoteke mreže</translation>
     </message>
     <message>
       <source>Binary STL</source>
-      <translation type="unfinished">Binary STL</translation>
+      <translation>Binarno STL</translation>
     </message>
     <message>
       <source>ASCII STL</source>
-      <translation type="unfinished">ASCII STL</translation>
+      <translation>ASCII STL</translation>
     </message>
     <message>
       <source>Binary Mesh</source>
-      <translation type="unfinished">Binary Mesh</translation>
+      <translation>Binarno Mreža</translation>
     </message>
     <message>
       <source>Alias Mesh</source>
-      <translation type="unfinished">Alias Mesh</translation>
+      <translation>Nadimak mreže</translation>
     </message>
     <message>
       <source>Object File Format</source>
-      <translation type="unfinished">Object File Format</translation>
+      <translation>Format Datoteke Objekta</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii</source>
-      <translation type="unfinished">Inventor V2.1 ascii</translation>
+      <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
-      <translation type="unfinished">Stanford Polygon</translation>
+      <translation>Stanford poligon</translation>
     </message>
     <message>
       <source>All Files</source>
@@ -1438,27 +1566,27 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>X3D Extensible 3D</source>
-      <translation type="unfinished">X3D Extensible 3D</translation>
+      <translation>X3D Proširena 3D</translation>
     </message>
     <message>
       <source>VRML V2.0</source>
-      <translation type="unfinished">VRML V2.0</translation>
+      <translation>VRML V2.0</translation>
     </message>
     <message>
       <source>Compressed VRML 2.0</source>
-      <translation type="unfinished">Compressed VRML 2.0</translation>
+      <translation>Komprimirani VRML 2.0</translation>
     </message>
     <message>
       <source>Nastran</source>
-      <translation type="unfinished">Nastran</translation>
+      <translation>Nastran finite element analysis (FEA)</translation>
     </message>
     <message>
       <source>Python module def</source>
-      <translation type="unfinished">Python module def</translation>
+      <translation>Python modul def</translation>
     </message>
     <message>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+      <translation>[Točke: %1, Rubovi: %2, Lica: %3]</translation>
     </message>
     <message>
       <source>Import-Export</source>
@@ -1466,11 +1594,15 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Skaliranje</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Unesite faktor skaliranja:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Jednostavan Model Format</translation>
     </message>
   </context>
   <context>

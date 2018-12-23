@@ -503,6 +503,11 @@
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Por favor visite o %1 e copie os ficheiros para %2</translation>
     </message>
+    <message>
+      <location filename="../../ViewProviderTrajectory.cpp" line="+164"/>
+      <source>Modify</source>
+      <translation>Modificar</translation>
+    </message>
   </context>
   <context>
     <name>RobotGui::DlgTrajectorySimulate</name>
@@ -585,7 +590,7 @@
     <message>
       <location filename="../../TaskRobot6Axis.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -659,7 +664,7 @@
     <message>
       <location filename="../../TaskTrajectory.ui" line="+20"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+38"/>
@@ -770,7 +775,7 @@
     <message>
       <location filename="../../TaskEdge2TracParameter.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -814,7 +819,7 @@
     <message>
       <location filename="../../TaskRobotControl.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+23"/>
@@ -936,7 +941,7 @@
     <message>
       <location filename="../../TaskRobotMessages.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -960,7 +965,7 @@
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+6"/>

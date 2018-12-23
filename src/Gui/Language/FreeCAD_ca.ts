@@ -402,11 +402,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Biblioteques</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Aquest programari utilitza components de codi obert que el copyright i altres drets de propietat pertanyen als seus respectius propietaris:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1350,6 +1350,14 @@ Please define another shortcut.</source>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Duplica</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Afegits...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1417,6 +1425,20 @@ ja existeix.</translation>
 Perhaps a file permission error?</source>
       <translation>No ha pogut canviar el nom per '%1'.
 Pot ser un problema de permisos d'arxiu</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Duplicar macro</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Duplicació fallida</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>No s'ha pogut duplicar "%1".
+Potser per un error de permís d'arxiu?</translation>
     </message>
   </context>
   <context>
@@ -1990,8 +2012,48 @@ Specify another directory, please.</source>
       <translation>&amp;Renderització en perspectiva</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>Utilitza OpenGL Vertex Buffer Object (experimental)</translation>
+      <source>Show navigation cube</source>
+      <translation>Mostra el cub de navegació</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Cantonada</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Superior esquerra</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Superior dreta</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Inferior esquerra</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Inferior dreta</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Arrossegueu al cursor</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>Mida del marcador:</translation>
     </message>
   </context>
   <context>
@@ -2003,6 +2065,30 @@ Specify another directory, please.</source>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Obriu un visualitzador nou o reinicieu %1 perquè s'apliquen els canvis d'antialiàsing</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px fins</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2630,6 +2716,46 @@ Specify another directory, please.</source>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Mètrica per a peces menudes i CNC (mm, mm/min)</translation>
     </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Fracció de polzada mínima:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Fracció de polzada mínima a mostrar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2671,7 +2797,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Estableix l'àrea de confusió per a triar elements en la vista 3D. Un valor elevat facilita la selecció, però fa que sigui impossible seleccionar algunes característiques menors.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Vista d'arbre</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Objecte que s'està editant</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Contenidor actiu</translation>
     </message>
   </context>
   <context>
@@ -3210,14 +3348,6 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Eix de rotació i angle</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Aplica els canvis de posició immediatament</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Aplica els canvis incrementals a la posició de l'objecte</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation type="unfinished">Apply</translation>
     </message>
@@ -3244,6 +3374,30 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
     <message>
       <source>Use center of mass</source>
       <translation>Utilitza el centre de massa</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Axial:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Aplicar axial</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Majúscules clic per a la direcció oposada</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Punts escollits</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Aplicar canvis incrementals</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Seleccioneu 1, 2 o 3 punts abans de fer clic a aquest botó.  Un punt pot ser a un vèrtex, cara o vora.  Si esteu a una cara o vora el punt utilitzat serà el punt a la cara o vora a la posició del ratolí.  Si 1 punt és seleccionat serà utilitzat com a centre de rotació.  Si se seleccionen 2 punts el punt mig entre ells serà el centre de rotació i un nou eix personalitzat es crearà, si és necessari.  Si 3 punts se seleccionen el primer punt es converteix en el centre de rotació i es troba en el vector que és normal al pla definit per 3 punts.  Alguns detalls de distància i angle és proporcionen a la visualització d'informe, que pot ser útil per alinear objectes.  Per la seva comoditat quan faci Majúscules + clic s'utilitza la distància adequada o l'angle es copia al porta-retalls.</translation>
     </message>
   </context>
   <context>
@@ -4032,6 +4186,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>Editar %1</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
@@ -4405,6 +4566,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Cerca</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
@@ -4469,6 +4637,14 @@ Do you want to specify another directory?</source>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>%1, nom intern: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Cerca...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Cerca objectes</translation>
     </message>
   </context>
   <context>
@@ -5043,6 +5219,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Export failed</source>
       <translation>Exportació fallida</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Dividir</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Canvia la part activa</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Edita el text</translation>
     </message>
   </context>
   <context>
@@ -6881,6 +7069,66 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Veure</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Contreu/Expandeix</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Expandeix el document actiu i contreu tots els altres</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Veure</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Multi Document</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Mostrar tots els documents en la vista d'arbre</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Veure</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Document únic</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Mostrar només el document actiu a la vista d'arbre</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Veure</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Arbre del document</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Establir la visibilitat dels documents inactius en la vista d'arbre</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -6991,16 +7239,32 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Dependències de l'objecte</translation>
-    </message>
-    <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
+      <source>These items are linked to items selected for deletion and might break.
 
 </source>
-      <translation>El següent fa referència a objectes que es poden trencar. Voleu continuar? </translation>
+      <translation>Aquests elements estan vinculats a elements seleccionats per a la supressió i podrien trencar-se.
+
+</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document. 
+
+</source>
+      <translation>Aquests elements són seleccionats per suprimir-los, però no estan en el document actiu. 
+
+</translation>
+    </message>
+    <message>
+      <source>
+
+Are you sure you want to continue?</source>
+      <translation>
+
+Està segur que vol continuar?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Suprimeix la selecció de problemes</translation>
     </message>
   </context>
   <context>
@@ -7101,6 +7365,50 @@ Do you want to duplicate them, too?</source>
     <message>
       <source>Do you want to continue?</source>
       <translation>Voleu continuar?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Isomètrica</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Estableix NaviCube al mode isomètric</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ortogràfic</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Estableix la visualització al mode Ortogràfic</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspectiva</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Estableix la visualització al mode Perspectiva</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Zoom per encabir</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Zoom perquè el model omple la visualització</translation>
     </message>
   </context>
   <context>

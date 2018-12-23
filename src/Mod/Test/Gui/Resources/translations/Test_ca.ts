@@ -5,7 +5,7 @@
     <name>TestGui::UnitTest</name>
     <message>
       <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD UniTest</translation>
+      <translation>FreeCAD UnitTest</translation>
     </message>
     <message>
       <source>Failures and errors</source>
@@ -106,9 +106,27 @@ FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modu
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Introduïu el nom d'un objecte cridable, quan es cridi retornarà un TestCase. Clicar 'Començar' i s'executarà el test d'aquest procediment. 
+      <translation>Introduïu el nom d'un objecte cridable que quan es cridi retorni un TestCase. Feu clic a 'Començar' i s'executarà el test anteriorment produït. 
 
-Fer doble clic a un error a la vista en arbre per veure més informació sobre ell, incloent-hi el rastreig de pila.</translation>
+Feu doble clic a un error a la vista d'arbre per veure'n més informació, incloent-hi la traça de pila.</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Introduïu el nom d'un objecte cridable que quan es cridi retorni un TestCase.
+Feu clic a 'Començar' i s'executarà el test anteriorment produït. 
+
+Feu doble clic a un error a la vista d'arbre per veure'n més informació, incloent-hi la traça de pila.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest és part de FreeCAD i permet escriure Unit Tests per a mòduls propis.</translation>
     </message>
   </context>
 </TS>

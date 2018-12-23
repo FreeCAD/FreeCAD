@@ -29,16 +29,16 @@
     <message>
       <location line="+1"/>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Aproximează o suprafață de B-spline...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Aproximează o suprafaţă de B-spline</translation>
     </message>
     <message>
       <source>Approximate B-Spline surface...</source>
-      <translation type="unfinished">Approximate B-Spline surface...</translation>
+      <translation>Aproximează o suprafață de B-spline...</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
@@ -59,12 +59,12 @@
     <message>
       <location line="+1"/>
       <source>Poisson...</source>
-      <translation type="unfinished">Poisson...</translation>
+      <translation>Poisson...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Poisson surface reconstruction</source>
-      <translation type="unfinished">Poisson surface reconstruction</translation>
+      <translation>Reconstrucţia suprafaţă Poisson</translation>
     </message>
   </context>
   <context>
@@ -77,13 +77,13 @@
     <message>
       <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>Nor de puncte structurate</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>Triangulaţie structurii norului de puncte</translation>
     </message>
     <message>
       <source>View triangulation</source>
@@ -94,34 +94,34 @@
     <name>ReenGui::FitBSplineSurface</name>
     <message>
       <source>Fit B-Spline surface</source>
-      <translation type="unfinished">Fit B-Spline surface</translation>
+      <translation>Adaptați o suprafata de B-Spline</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Adaptați o suprafata de B-Spline</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>direcția U</translation>
     </message>
     <message>
       <location line="+6"/>
       <location line="+67"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>Grad</translation>
     </message>
     <message>
       <location line="-38"/>
       <location line="+67"/>
       <source>Control points</source>
-      <translation type="unfinished">Control points</translation>
+      <translation>Puncte de control</translation>
     </message>
     <message>
       <location line="-35"/>
       <source>v-Direction</source>
-      <translation type="unfinished">v-Direction</translation>
+      <translation>direcția V</translation>
     </message>
     <message>
       <location line="+67"/>
@@ -131,12 +131,12 @@
     <message>
       <location line="+6"/>
       <source>Iterations</source>
-      <translation type="unfinished">Iterations</translation>
+      <translation>Iteraţii</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Size factor</source>
-      <translation type="unfinished">Size factor</translation>
+      <translation>Factor de dimensiune</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -146,27 +146,27 @@
     <message>
       <location line="+9"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>Greutatea totală</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>Lungimea degradeului</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Energiea de îndoire</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Variaţie de curbură</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>Direcții u/v personalizate</translation>
     </message>
   </context>
   <context>
@@ -179,7 +179,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>Vă rugăm să selectaţi un obiect unic de plasare pentru a obţine orientarea locală.</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -192,27 +192,27 @@
     <message>
       <location filename="../../Poisson.ui" line="+14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>Poisson</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Parametrii</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Adâncimea unui arbore [octree] în care fiecare nod are exact 8 copii</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>Diviziuni ale rezolvitorului</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Eșantioane pe nod</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="+109"/>
@@ -232,7 +232,7 @@
       <location line="-134"/>
       <location line="+135"/>
       <source>Please select a single point cloud.</source>
-      <translation type="unfinished">Please select a single point cloud.</translation>
+      <translation>Va rugam selectati un singur nor de puncte.</translation>
     </message>
   </context>
   <context>
@@ -240,7 +240,7 @@
     <message>
       <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Eroarea la vederea de triangulație</translation>
     </message>
   </context>
   <context>

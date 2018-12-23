@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Web</source>
-      <translation>Сеть</translation>
+      <translation>Интернет</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="105"/>
       <source>Web</source>
-      <translation>Сеть</translation>
+      <translation>Интернет</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -42,13 +42,13 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Web</source>
-      <translation>Сеть</translation>
+      <translation>Интернет</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <location filename="../../Command.cpp" line="136"/>
       <source>Refresh web page</source>
-      <translation>Обновить веб-страницу</translation>
+      <translation>Обновить страницу</translation>
     </message>
   </context>
   <context>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../Command.cpp" line="162"/>
       <source>Web</source>
-      <translation>Сеть</translation>
+      <translation>Интернет</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
@@ -74,7 +74,7 @@
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Web</source>
-      <translation>Сеть</translation>
+      <translation>Интернет</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -92,7 +92,7 @@
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Web</source>
-      <translation>Сеть</translation>
+      <translation>Интернет</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Web</source>
-      <translation>Сеть</translation>
+      <translation>Интернет</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="51"/>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Opens a website in FreeCAD</source>
-      <translation>Открывает веб-сайт в FreeCAD</translation>
+      <translation>Открывает сайт в FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
       <source>Private</source>
-      <translation>Частный</translation>
+      <translation>Приватный</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
       <source>OBJ + MTL (Arch exporter)</source>
-      <translation>OBJ + MTL (Arch exporter)</translation>
+      <translation>OBJ + MTL (Arch экспортер)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
@@ -198,7 +198,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
       <source>IGES (shapes only)</source>
-      <translation>IGES (только формы)</translation>
+      <translation>IGES (только формы фигур)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
       <source>Sketchfab API token</source>
-      <translation>Маркер Sketchfab API</translation>
+      <translation>Ключ(токен) к API Sketchfab</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
@@ -228,19 +228,19 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
       <source>Success! View uploaded online</source>
-      <translation>Успех! Просмотр загруженных онлайн</translation>
+      <translation>Успех! Вид выложен в онлайн</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="412"/>
+      <location filename="../../BrowserView.cpp" line="440"/>
       <source>Browser</source>
       <translation>Браузер</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="309"/>
+      <location filename="../../BrowserView.cpp" line="337"/>
       <source>File does not exist!</source>
       <translation>Файл не существует!</translation>
     </message>
@@ -248,12 +248,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="329"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
       <source>Error</source>
       <translation>Ошибки</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="383"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Произошли ошибки при загрузке файла. Возможно, некоторые данные были изменены или не восстановлены. Посмотрите в окно отчета для более конкретной информации о затронутых объектах.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="411"/>
       <source>Loading %1...</source>
       <translation>Загрузка %1...</translation>
     </message>
@@ -261,12 +267,12 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="181"/>
+      <location filename="../../BrowserView.cpp" line="185"/>
       <source>Open in External Browser</source>
       <translation>Открыть во внешнем браузере</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="185"/>
+      <location filename="../../BrowserView.cpp" line="189"/>
       <source>Open in new window</source>
       <translation>Открыть в новом окне</translation>
     </message>

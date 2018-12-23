@@ -4,62 +4,62 @@
   <context>
     <name>BoundarySelector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="122"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Επιλέξτε Όψεις/Ακμές/Κορυφές</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="123"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation type="unfinished">To add references select them in the 3D view and then click "Add".</translation>
+      <translation>Για να προσθέστε αναφορές επιλέξτε τες στην τρισδιάστατη προβολή και στη συνέχεια κάντε κλικ στην επιλογή ''Προσθήκη''.</translation>
     </message>
   </context>
   <context>
     <name>ControlWidget</name>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="212"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="213"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Έλεγχος Επιλυτή</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="223"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Ευρετήριο Εργασίας</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="302"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Εγγραφή</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
       <source>Edit</source>
       <translation>Επεξεργασία</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="242"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Χρόνος που παρήλθε:</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="308"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Εκτέλεση</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="310"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Επανεγγραφή</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Επανεκτέλεση</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="314"/>
+      <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
       <source>Abort</source>
-      <translation>Εγκατάλειψη</translation>
+      <translation>Διακοπή</translation>
     </message>
   </context>
   <context>
@@ -67,64 +67,85 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Δοχείο ανάλυσης</translation>
     </message>
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Δημιουργεί ένα δοχείο ανάλυσης με τυπικό επιλυτή CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="37"/>
+      <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Δημιουργεί ένα δοχείο ανάλυσης με τυπικό επιλυτή CalculiX</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneAdd</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="60"/>
+      <source>Clipping plane on face</source>
+      <translation>Επίπεδο αποκοπής σε όψη</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="62"/>
+      <source>Add a clipping plane on a selected face</source>
+      <translation>Προσθέστε ένα επίπεδο αποκοπής σε μια επιλεγμένη όψη</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ClippingPlaneRemoveAll</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="96"/>
+      <source>Remove all clipping planes</source>
+      <translation type="unfinished">Remove all clipping planes</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="57"/>
+      <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>Περιορισμός πηγής θερμότητας σώματος</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="60"/>
+      <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>Δημιουργεί ένα περιορισμό FEM για την πηγή θερμότητας σώματος</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="77"/>
-      <source>Constraint Potential</source>
-      <translation type="unfinished">Constraint Potential</translation>
+      <location filename="../../../femcommands/commands.py" line="136"/>
+      <source>Constraint electrostatic potential</source>
+      <translation type="unfinished">Constraint electrostatic potential</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="80"/>
+      <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Δημιουργεί έναν περιορισμό FEM ηλεκτροστατικού δυναμικού</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="97"/>
-      <source>Constraint Flow Velocity</source>
-      <translation type="unfinished">Constraint Flow Velocity</translation>
+      <location filename="../../../femcommands/commands.py" line="159"/>
+      <source>Constraint flow velocity</source>
+      <translation type="unfinished">Constraint flow velocity</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="100"/>
+      <location filename="../../../femcommands/commands.py" line="162"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Δημιουργεί έναν περιορισμό FEM ταχύτητας ροής</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="117"/>
-      <source>Constraint Initial Flow Velocity</source>
-      <translation type="unfinished">Constraint Initial Flow Velocity</translation>
+      <location filename="../../../femcommands/commands.py" line="182"/>
+      <source>Constraint initial flow velocity</source>
+      <translation type="unfinished">Constraint initial flow velocity</translation>
     </message>
   </context>
   <context>
@@ -132,12 +153,12 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>Περιορισμός επιτάχυνσης βαρύτητας</translation>
     </message>
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Δημιουργεί έναν περιορισμό FEM επιτάχυνσης βαρύτητας</translation>
     </message>
   </context>
   <context>
@@ -145,12 +166,12 @@
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Τμήμα ρευστών για μονοδιάστατη ροή</translation>
     </message>
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Δημιουργεί ένα τμήμα Ρευστών FEM για μονοδιάστατη ροή</translation>
     </message>
   </context>
   <context>
@@ -158,12 +179,12 @@
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Ορθογώνια διατομή δοκού</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Δημιουργεί μια ορθογώνια διατομή δοκού FEM</translation>
     </message>
   </context>
   <context>
@@ -171,87 +192,87 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Πάχος πλάκας κελύφους</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Δημιουργεί ένα πάχος πλάκας κελύφους FEM</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="184"/>
+      <location filename="../../../femcommands/commands.py" line="259"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Πάχος πλάκας κελύφους</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="186"/>
+      <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Δημιουργεί ένα πάχος πλάκας κελύφους FEM</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="200"/>
+      <location filename="../../../femcommands/commands.py" line="278"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Περιστροφή Δοκού</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="202"/>
+      <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Δημιουργεί μια περιστροφή δοκού FEM</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElasticity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="232"/>
+      <location filename="../../../femcommands/commands.py" line="314"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Εξίσωση ελαστικότητας</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="233"/>
+      <location filename="../../../femcommands/commands.py" line="315"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity</translation>
+      <translation>Δημιουργεί μια εξίσωση FEM για την ελαστικότητα</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="216"/>
+      <location filename="../../../femcommands/commands.py" line="297"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Εξίσωση ηλεκτροστατικού πεδίου</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="217"/>
+      <location filename="../../../femcommands/commands.py" line="298"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Δημιουργεί μια εξίσωση FEM για το ηλεκτροστατικό πεδίο</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationFlow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="248"/>
+      <location filename="../../../femcommands/commands.py" line="331"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Εξίσωση ροής</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="249"/>
+      <location filename="../../../femcommands/commands.py" line="332"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Δημιουργεί μια εξίσωση FEM για τη ροή</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationFluxsolver</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="264"/>
+      <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Fluxsolver equation</source>
-      <translation type="unfinished">Fluxsolver equation</translation>
+      <translation>Εξίσωση επιλυτή ροής</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="265"/>
+      <location filename="../../../femcommands/commands.py" line="349"/>
       <source>Creates a FEM equation for fluxsolver</source>
-      <translation type="unfinished">Creates a FEM equation for fluxsolver</translation>
+      <translation>Δημιουργεί μια εξίσωση FEM για τον επιλυτή ροής</translation>
     </message>
   </context>
   <context>
@@ -259,22 +280,22 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Από πλέγμα FEM σε πλέγμα</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Μετατρέψτε την επιφάνεια ενός πλέγματος FEM σε πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="366"/>
+      <location filename="../../../femcommands/commands.py" line="470"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Από πλέγμα FEM σε πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="367"/>
+      <location filename="../../../femcommands/commands.py" line="471"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Μετατρέψτε την επιφάνεια ενός πλέγματος FEM σε πλέγμα</translation>
     </message>
   </context>
   <context>
@@ -282,25 +303,30 @@
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Μη γραμμικό μηχανικό υλικό</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Δημιουργεί ένα μη γραμμικό μηχανικό υλικό</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="415"/>
+      <source>Nonlinear mechanical material</source>
+      <translation>Μη γραμμικό μηχανικό υλικό</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="_CommandFemMaterialSolid.py" line="42"/>
-      <source>FEM material for solid</source>
-      <translation type="unfinished">FEM material for solid</translation>
-    </message>
-    <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
       <translation type="unfinished">Creates a FEM material for solid</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMaterialSolid.py" line="42"/>
+      <source>FEM material for solid</source>
+      <translation>Υλικό FEM για στερεά</translation>
     </message>
   </context>
   <context>
@@ -308,12 +334,12 @@
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>Στρώμα ορίου πλέγματος FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>Δημιουργεί ένα στρώμα ορίου πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -321,35 +347,30 @@
     <message>
       <location filename="_CommandFemMeshClear.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Καθαρίστε το πλέγμα FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshClear.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Καθαρίστε το Πλέγμα ενός πλέγματος FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="518"/>
+      <source>Clear FEM mesh</source>
+      <translation>Καθαρίστε το πλέγμα FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="520"/>
+      <source>Clear the Mesh of a FEM mesh object</source>
+      <translation>Καθαρίστε το Πλέγμα ενός πλέγματος FEM</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshFromShape</name>
+    <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
-    </message>
-    <message>
-      <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
-      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="472"/>
-      <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="473"/>
-      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+      <location filename="../../../femcommands/commands.py" line="538"/>
+      <source>Display FEM mesh info</source>
+      <translation type="unfinished">Display FEM mesh info</translation>
     </message>
   </context>
   <context>
@@ -357,20 +378,22 @@
     <message>
       <location filename="_CommandFemMeshGroup.py" line="41"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>Ομάδα πλεγμάτων FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>Δημιουργεί μια ομάδα πλεγμάτων FEM</translation>
     </message>
-  </context>
-  <context>
-    <name>FEM_MeshPrintInfo</name>
     <message>
-      <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
-      <source>Print FEM mesh info</source>
-      <translation type="unfinished">Print FEM mesh info</translation>
+      <location filename="../../../femcommands/commands.py" line="584"/>
+      <source>FEM mesh group</source>
+      <translation>Ομάδα πλεγμάτων FEM</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="586"/>
+      <source>Creates a FEM mesh group</source>
+      <translation>Δημιουργεί μια ομάδα πλεγμάτων FEM</translation>
     </message>
   </context>
   <context>
@@ -378,12 +401,12 @@
     <message>
       <location filename="_CommandFemMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Περιοχή πλέγματος FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Δημιουργεί μια περιοχή πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -391,12 +414,12 @@
     <message>
       <location filename="_CommandFemResultShow.py" line="41"/>
       <source>Show result</source>
-      <translation>Εμφάνιση αποτελέσματος</translation>
+      <translation>Εμφανίστε το αποτέλεσμα</translation>
     </message>
     <message>
       <location filename="_CommandFemResultShow.py" line="43"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Εμφανίζει και οπτικοποιεί επιλεγμένα αποτελέσματα</translation>
     </message>
   </context>
   <context>
@@ -404,35 +427,35 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="41"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Διαγράψτε τα αποτελέσματα</translation>
     </message>
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Διαγράφει όλα τα αποτελέσματα από την ενεργή ανάλυση</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="548"/>
+      <location filename="../../../femcommands/commands.py" line="664"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Διαγράψτε τα αποτελέσματα</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="550"/>
+      <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Διαγράφει όλα τα αποτελέσματα από την ενεργή ανάλυση</translation>
     </message>
   </context>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="592"/>
+      <location filename="../../../femcommands/commands.py" line="708"/>
       <source>Solver CalculiX (experimental)</source>
-      <translation type="unfinished">Solver CalculiX (experimental)</translation>
+      <translation>Επιλυτής CalculiX (πειραματικός)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="594"/>
+      <location filename="../../../femcommands/commands.py" line="710"/>
       <source>Creates a FEM solver CalculiX (experimental)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX (experimental)</translation>
+      <translation>Δημιουργεί έναν επιλυτή CalculiX FEM (πειραματικός)</translation>
     </message>
   </context>
   <context>
@@ -440,22 +463,22 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Έλεγχος εργασίας επιλυτή</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Αλλάζει τα χαρακτηριστικά του επιλυτή και εκτελεί τους υπολογισμούς για τον επιλεγμένο επιλυτή</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="610"/>
+      <location filename="../../../femcommands/commands.py" line="726"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Έλεγχος εργασίας επιλυτή</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="612"/>
+      <location filename="../../../femcommands/commands.py" line="728"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Αλλάζει τα χαρακτηριστικά του επιλυτή και εκτελεί τους υπολογισμούς για τον επιλεγμένο επιλυτή</translation>
     </message>
   </context>
   <context>
@@ -463,12 +486,12 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Εκτέλεση υπολογισμών επιλυτή</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Εκτελεί τους υπολογισμούς για τον επιλεγμένο επιλυτή</translation>
     </message>
   </context>
   <context>
@@ -476,12 +499,12 @@
     <message>
       <location filename="_CommandFemSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Επιλυτής Z88</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Δημιουργεί έναν επιλυτή Z88 FEM</translation>
     </message>
   </context>
   <context>
@@ -489,48 +512,89 @@
     <message>
       <location filename="FemCommands.py" line="39"/>
       <source>Default Fem Command MenuText</source>
-      <translation>Προεπιλεγμένη εντολή Fem MenuText</translation>
+      <translation>Προεπιλεγμένη Εντολή Fem MenuText</translation>
     </message>
     <message>
       <location filename="FemCommands.py" line="41"/>
       <source>Default Fem Command ToolTip</source>
-      <translation>Προεπιλεγμένη εντολή Fem ToolTip</translation>
+      <translation>Προεπιλεγμένη Εντολή Fem ToolTip</translation>
     </message>
     <message>
       <location filename="../../../femcommands/manager.py" line="41"/>
       <source>Default Fem Command MenuText</source>
-      <translation>Προεπιλεγμένη εντολή Fem MenuText</translation>
+      <translation>Προεπιλεγμένη Εντολή Fem MenuText</translation>
     </message>
     <message>
       <location filename="../../../femcommands/manager.py" line="43"/>
       <source>Default Fem Command ToolTip</source>
-      <translation>Προεπιλεγμένη εντολή Fem ToolTip</translation>
+      <translation>Προεπιλεγμένη Εντολή Fem ToolTip</translation>
+    </message>
+  </context>
+  <context>
+    <name>GeometryElementsSelection</name>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
+      <source>Geometry reference selector for a </source>
+      <translation>Επιλογέας γεωμετρίας αναφοράς για ένα </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
+      <source>Add</source>
+      <translation>Προσθήκη</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
+      <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
+      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
+      <source>Selection mode</source>
+      <translation>Λειτουργία επιλογής</translation>
+    </message>
+    <message>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
+      <source>Solid</source>
+      <translation>Στερεό</translation>
+    </message>
+  </context>
+  <context>
+    <name>Material_Editor</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="382"/>
+      <source>Material editor</source>
+      <translation type="unfinished">Material editor</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="384"/>
+      <source>Opens the FreeCAD material editor</source>
+      <translation type="unfinished">Opens the FreeCAD material editor</translation>
     </message>
   </context>
   <context>
     <name>SolidSelector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="140"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation type="unfinished">Select Solids</translation>
+      <translation>Επιλέξτε Στερεά</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="141"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
       <source>Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</source>
-      <translation type="unfinished">Select elements part of the solid that shall be added to the list. To than add the solid click "Add".</translation>
+      <translation>Επιλέξτε στοιχεία που είναι τμήματα του στερεού που θα προστεθεί στη λίστα. Για να προσθέσετε στη συνέχεια το στερεό κάντε κλικ στην επιλογή ''Προσθήκη''.</translation>
     </message>
   </context>
   <context>
     <name>_Selector</name>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="42"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="49"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
     </message>
     <message>
-      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="43"/>
+      <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
@@ -538,12 +602,25 @@
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="42"/>
       <source>FEM material for Fluid</source>
-      <translation type="unfinished">FEM material for Fluid</translation>
+      <translation>Υλικό FEM για Ρευστά</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialFluid.py" line="44"/>
       <source>Creates a FEM material for Fluid</source>
-      <translation type="unfinished">Creates a FEM material for Fluid</translation>
+      <translation>Δημιουργεί ένα υλικό FEM για Ρευστά</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshFromShape</name>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
+      <source>FEM mesh from shape by Netgen</source>
+      <translation>Πλέγμα FEM από σχήμα με τη χρήση Netgen</translation>
+    </message>
+    <message>
+      <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
+      <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation>Δημιουργήστε ένα πλέγμα όγκου FEM από ένα στερεό ή από ένα σχήμα όψης με τη χρήση του εσωτερικού πλεγματοποιητή Netgen</translation>
     </message>
   </context>
   <context>
@@ -551,12 +628,20 @@
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+      <translation>Πλέγμα FEM από σχήμα με τη χρήση GMSH</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+      <translation>Δημιουργήστε ένα πλέγμα FEM από ένα σχήμα με τη χρήση του πλεγματοποιητή GMSH</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshPrintInfo</name>
+    <message>
+      <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
+      <source>Print FEM mesh info</source>
+      <translation>Εκτυπώστε τις πληροφορίες πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -564,12 +649,12 @@
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Επιλυτής Calculix</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Δημιουργεί έναν επιλυτή CalculiX FEM</translation>
     </message>
   </context>
   <context>
@@ -577,12 +662,12 @@
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Ορθογώνια διατομή δοκού</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Δημιουργεί μια ορθογώνια διατομή δοκού FEM</translation>
     </message>
   </context>
   <context>
@@ -590,12 +675,12 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="42"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Τμήμα ρευστών για μονοδιάστατη ροή</translation>
     </message>
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Δημιουργεί ένα τμήμα Ρευστών FEM για μονοδιάστατη ροή</translation>
     </message>
   </context>
   <context>
@@ -603,12 +688,12 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Πάχος πλάκας κελύφους</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Δημιουργεί ένα πάχος πλάκας κελύφους FEM</translation>
     </message>
   </context>
   <context>
@@ -616,12 +701,12 @@
     <message>
       <location filename="_CommandAnalysis.py" line="41"/>
       <source>Analysis container</source>
-      <translation type="unfinished">Analysis container</translation>
+      <translation>Δοχείο ανάλυσης</translation>
     </message>
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Δημιουργεί ένα δοχείο ανάλυσης με τυπικό επιλυτή CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
@@ -631,7 +716,7 @@
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
+      <translation>Δημιουργήστε μια νέα μηχανική ανάλυση</translation>
     </message>
   </context>
   <context>
@@ -639,22 +724,22 @@
     <message>
       <location filename="_CommandBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Ορθογώνια διατομή δοκού</translation>
     </message>
     <message>
       <location filename="_CommandBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Δημιουργεί μια ορθογώνια διατομή δοκού FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>FEM Beam Cross Section Definition ...</source>
-      <translation>FEM δοκού διατομής ορισμό...</translation>
+      <translation>Ορισμός Ορθογώνιας Διατομής Δοκού FEM ...</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM Beam Cross Section</source>
-      <translation>Δημιουργεί ένα FEM δοκού διατομής</translation>
+      <translation>Δημιουργεί μια Ορθογώνια Διατομή Δοκού FEM</translation>
     </message>
   </context>
   <context>
@@ -662,12 +747,12 @@
     <message>
       <location filename="_CommandClearMesh.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Καθαρίστε το πλέγμα FEM</translation>
     </message>
     <message>
       <location filename="_CommandClearMesh.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Καθαρίστε το Πλέγμα ενός πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -675,12 +760,12 @@
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="41"/>
       <source>Constraint self weigt</source>
-      <translation type="unfinished">Constraint self weigt</translation>
+      <translation>Περιορισμός επιτάχυνσης της βαρύτητας</translation>
     </message>
     <message>
       <location filename="_CommandConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weigt</source>
-      <translation type="unfinished">Creates a FEM constraint self weigt</translation>
+      <translation>Δημιουργεί έναν περιορισμό FEM επιτάχυνσης της βαρύτητας</translation>
     </message>
   </context>
   <context>
@@ -688,12 +773,12 @@
     <message>
       <location filename="_CommandControlSolver.py" line="40"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Έλεγχος εργασίας επιλυτή</translation>
     </message>
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
+      <translation>Αλλάζει τα χαρακτηριστικά του επιλυτή και εκτελεί τους υπολογισμούς για τον επιλεγμένο επιλυτή</translation>
     </message>
   </context>
   <context>
@@ -701,12 +786,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>Από πλέγμα FEM σε πλέγμα</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Μετατρέψτε την επιφάνεια ενός πλέγματος FEM σε πλέγμα</translation>
     </message>
   </context>
   <context>
@@ -714,12 +799,12 @@
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="42"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Μη γραμμικό μηχανικό υλικό</translation>
     </message>
     <message>
       <location filename="_CommandMaterialMechanicalNonlinear.py" line="44"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Δημιουργεί ένα μη γραμμικό μηχανικό υλικό</translation>
     </message>
   </context>
   <context>
@@ -727,22 +812,22 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material</source>
-      <translation type="unfinished">Mechanical material</translation>
+      <translation>Μηχανικό υλικό</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Μηχανικό υλικό...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates a mechanical material</source>
-      <translation type="unfinished">Creates a mechanical material</translation>
+      <translation>Δημιουργεί ένα μηχανικό υλικό</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Δημιουργεί ή επεξεργάζεται τον ορισμό του μηχανικού υλικού.</translation>
     </message>
   </context>
   <context>
@@ -750,12 +835,12 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>Πλέγμα FEM από σχήμα με τη χρήση Netgen</translation>
     </message>
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Δημιουργήστε ένα πλέγμα όγκου FEM από ένα στερεό ή από ένα σχήμα όψης με τη χρήση του εσωτερικού πλεγματοποιητή Netgen</translation>
     </message>
   </context>
   <context>
@@ -763,12 +848,12 @@
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation type="unfinished">FEM mesh from shape by GMSH</translation>
+      <translation>Πλέγμα FEM από σχήμα με τη χρήση GMSH</translation>
     </message>
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by GMSH mesher</translation>
+      <translation>Δημιουργήστε ένα πλέγμα FEM από ένα σχήμα με τη χρήση του πλεγματοποιητή GMSH</translation>
     </message>
   </context>
   <context>
@@ -776,12 +861,12 @@
     <message>
       <location filename="_CommandMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Περιοχή πλέγματος FEM</translation>
     </message>
     <message>
       <location filename="_CommandMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Δημιουργεί μια περιοχή πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -789,7 +874,7 @@
     <message>
       <location filename="_CommandPrintMeshInfo.py" line="44"/>
       <source>Print FEM mesh info</source>
-      <translation type="unfinished">Print FEM mesh info</translation>
+      <translation>Εκτυπώστε τις πληροφορίες πλέγματος FEM</translation>
     </message>
   </context>
   <context>
@@ -797,17 +882,17 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="40"/>
       <source>Purge results</source>
-      <translation type="unfinished">Purge results</translation>
+      <translation>Διαγράψτε τα αποτελέσματα</translation>
     </message>
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
       <source>Purge results from an analysis</source>
-      <translation type="unfinished">Purge results from an analysis</translation>
+      <translation>Διαγράψτε τα αποτελέσματα από μια ανάλυση</translation>
     </message>
     <message>
       <location filename="_CommandPurgeResults.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Διαγράφει όλα τα αποτελέσματα από την ενεργή ανάλυση</translation>
     </message>
   </context>
   <context>
@@ -815,12 +900,12 @@
     <message>
       <location filename="_CommandRunSolver.py" line="40"/>
       <source>Run solver calculations</source>
-      <translation type="unfinished">Run solver calculations</translation>
+      <translation>Εκτέλεση υπολογισμών επιλυτή</translation>
     </message>
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation type="unfinished">Runs the calculations for the selected solver</translation>
+      <translation>Εκτελεί τους υπολογισμούς για τον επιλεγμένο επιλυτή</translation>
     </message>
   </context>
   <context>
@@ -828,22 +913,22 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Πάχος πλάκας κελύφους</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Δημιουργεί ένα πάχος πλάκας κελύφους FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>FEM Shell Plate Thickness Definition ...</source>
-      <translation type="unfinished">FEM Shell Plate Thickness Definition ...</translation>
+      <translation>Ορισμός Πάχους Πλάκας Κελύφους FEM ...</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation type="unfinished">Creates a FEM Shell Thickness</translation>
+      <translation>Δημιουργεί ένα Πάχος Πλάκας Κελύφους FEM</translation>
     </message>
   </context>
   <context>
@@ -851,17 +936,17 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
       <source>Show result</source>
-      <translation>Εμφάνιση αποτελέσματος</translation>
+      <translation>Εμφανίστε το αποτέλεσμα</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
+      <translation>Εμφανίστε τις πληροφορίες αποτελεσμάτων μιας ανάλυσης</translation>
     </message>
     <message>
       <location filename="_CommandShowResult.py" line="42"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Εμφανίζει και οπτικοποιεί επιλεγμένα αποτελέσματα</translation>
     </message>
   </context>
   <context>
@@ -869,22 +954,22 @@
     <message>
       <location filename="_CommandSolverCalculix.py" line="42"/>
       <source>Solver CalculiX</source>
-      <translation type="unfinished">Solver CalculiX</translation>
+      <translation>Επιλυτής Calculix</translation>
     </message>
     <message>
       <location filename="_CommandSolverCalculix.py" line="44"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX</translation>
+      <translation>Δημιουργεί έναν επιλυτή CalculiX FEM</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="41"/>
       <source>Create FEM Solver CalculiX ...</source>
-      <translation>Δημιουργία FEM Solver Καλκυλιξ...</translation>
+      <translation>Δημιουργήστε Επιλυτή CalculiX FEM ...</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverCalculix.py" line="43"/>
       <source>Creates FEM Solver CalculiX</source>
-      <translation>Δημιουργεί FEM Solver Καλκυλιξ</translation>
+      <translation>Δημιουργεί Επιλυτή CalculiX FEM</translation>
     </message>
   </context>
   <context>
@@ -892,12 +977,12 @@
     <message>
       <location filename="_CommandSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Επιλυτής Z88</translation>
     </message>
     <message>
       <location filename="_CommandSolverZ88.py" line="43"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>Δημιουργεί έναν επιλυτή Z88 FEM</translation>
     </message>
   </context>
   <context>
@@ -923,7 +1008,7 @@
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="42"/>
       <source>Create a new mechanical analysis</source>
-      <translation type="unfinished">Create a new mechanical analysis</translation>
+      <translation>Δημιουργήστε μια νέα μηχανική ανάλυση</translation>
     </message>
   </context>
   <context>
@@ -931,12 +1016,12 @@
     <message>
       <location filename="_CommandQuickAnalysis.py" line="40"/>
       <source>Run CalculiX ccx</source>
-      <translation type="unfinished">Run CalculiX ccx</translation>
+      <translation>Εκτέλεση CalculiX ccx</translation>
     </message>
     <message>
       <location filename="_CommandQuickAnalysis.py" line="42"/>
       <source>Write .inp file and run CalculiX ccx</source>
-      <translation type="unfinished">Write .inp file and run CalculiX ccx</translation>
+      <translation>Εγγραφή αρχείου .inp και εκτέλεση CalculiX ccx</translation>
     </message>
   </context>
   <context>
@@ -944,12 +1029,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Έναρξη ελέγχου εργασίας επιλυτή</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+      <translation>Παράθυρο διαλόγου για εκκίνηση του υπολογισμού του επιλεγμένου επιλυτή</translation>
     </message>
   </context>
   <context>
@@ -957,12 +1042,12 @@
     <message>
       <location filename="_CommandSolverJobControl.py" line="40"/>
       <source>Start solver job control</source>
-      <translation type="unfinished">Start solver job control</translation>
+      <translation>Έναρξη ελέγχου εργασίας επιλυτή</translation>
     </message>
     <message>
       <location filename="_CommandSolverJobControl.py" line="42"/>
       <source>Dialog to start the calculation of the selected solver</source>
-      <translation type="unfinished">Dialog to start the calculation of the selected solver</translation>
+      <translation>Παράθυρο διαλόγου για εκκίνηση του υπολογισμού του επιλεγμένου επιλυτή</translation>
     </message>
   </context>
   <context>
@@ -970,12 +1055,12 @@
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="42"/>
       <source>Mechanical material...</source>
-      <translation type="unfinished">Mechanical material...</translation>
+      <translation>Μηχανικό υλικό...</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalMaterial.py" line="44"/>
       <source>Creates or edit the mechanical material definition.</source>
-      <translation type="unfinished">Creates or edit the mechanical material definition.</translation>
+      <translation>Δημιουργεί ή επεξεργάζεται τον ορισμό του μηχανικού υλικού.</translation>
     </message>
   </context>
   <context>
@@ -983,12 +1068,12 @@
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="40"/>
       <source>Show result</source>
-      <translation>Εμφάνιση αποτελέσματος</translation>
+      <translation>Εμφανίστε το αποτέλεσμα</translation>
     </message>
     <message>
       <location filename="_CommandMechanicalShowResult.py" line="42"/>
       <source>Show result information of an analysis</source>
-      <translation type="unfinished">Show result information of an analysis</translation>
+      <translation>Εμφανίστε τις πληροφορίες αποτελεσμάτων μιας ανάλυσης</translation>
     </message>
   </context>
   <context>
@@ -1002,7 +1087,7 @@
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="167"/>
       <source>Add a part to the Analysis</source>
-      <translation>Προσθήκη ενός εξαρτήματος στην ανάλυση</translation>
+      <translation>Προσθέστε ένα εξάρτημα στην Ανάλυση</translation>
     </message>
   </context>
   <context>
@@ -1015,12 +1100,12 @@
     <message>
       <location filename="../../Command.cpp" line="274"/>
       <source>Create FEM bearing constraint</source>
-      <translation type="unfinished">Create FEM bearing constraint</translation>
+      <translation>Δημιουργήστε περιορισμό υποστηρίγματος άξονος FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation type="unfinished">Create FEM constraint for a bearing</translation>
+      <translation>Δημιουργήστε περιορισμό FEM για ένα υποστήριγμα άξονος</translation>
     </message>
   </context>
   <context>
@@ -1033,12 +1118,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation type="unfinished">Create FEM displacement constraint</translation>
+      <translation>Δημιουργήστε περιορισμό μετακίνησης FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a displacement acting on a face</translation>
+      <translation>Δημιουργήστε περιορισμό FEM για μια μετακίνηση όψης</translation>
     </message>
   </context>
   <context>
@@ -1051,12 +1136,12 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation type="unfinished">Create FEM fixed constraint</translation>
+      <translation>Δημιουργήστε σταθερό περιορισμό FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation type="unfinished">Create FEM constraint for a fixed geometric entity</translation>
+      <translation>Δημιουργήστε περιορισμό FEM για μια σταθερή γεωμετρική οντότητα</translation>
     </message>
   </context>
   <context>
@@ -1069,12 +1154,12 @@
     <message>
       <location filename="../../Command.cpp" line="357"/>
       <source>Create FEM force constraint</source>
-      <translation type="unfinished">Create FEM force constraint</translation>
+      <translation>Δημιουργήστε περιορισμό δύναμης FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Create FEM constraint for a force acting on a geometric entity</source>
-      <translation type="unfinished">Create FEM constraint for a force acting on a geometric entity</translation>
+      <translation>Δημιουργήστε περιορισμό FEM για μια δύναμη που ασκείται σε μια γεωμετρική οντότητα</translation>
     </message>
   </context>
   <context>
@@ -1087,12 +1172,12 @@
     <message>
       <location filename="../../Command.cpp" line="446"/>
       <source>Create FEM gear constraint</source>
-      <translation type="unfinished">Create FEM gear constraint</translation>
+      <translation>Δημιουργήστε περιορισμό γραναζιού FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation type="unfinished">Create FEM constraint for a gear</translation>
+      <translation>Δημιουργήστε περιορισμό FEM για ένα γρανάζι</translation>
     </message>
   </context>
   <context>
@@ -1105,12 +1190,12 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Create FEM pressure constraint</source>
-      <translation type="unfinished">Create FEM pressure constraint</translation>
+      <translation>Δημιουργήστε περιορισμό πίεσης FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="402"/>
       <source>Create FEM constraint for a pressure acting on a face</source>
-      <translation type="unfinished">Create FEM constraint for a pressure acting on a face</translation>
+      <translation>Δημιουργήστε περιορισμό FEM για μια πίεση που ασκείται σε μια όψη</translation>
     </message>
   </context>
   <context>
@@ -1123,12 +1208,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation type="unfinished">Create FEM pulley constraint</translation>
+      <translation>Δημιουργήστε περιορισμό τροχαλίας FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation type="unfinished">Create FEM constraint for a pulley</translation>
+      <translation>Δημιουργήστε περιορισμό FEM για μια τροχαλία</translation>
     </message>
   </context>
   <context>
@@ -1142,7 +1227,7 @@
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="105"/>
       <source>Create a FEM analysis</source>
-      <translation type="unfinished">Create a FEM analysis</translation>
+      <translation>Δημιουργήστε μια ανάλυση FEM</translation>
     </message>
   </context>
   <context>
@@ -1181,7 +1266,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set, please.</translation>
+      <translation>Επιλέξτε ένα μεμονωμένο πλέγμα FEM ή σύνολο κόμβων, παρακαλώ.</translation>
     </message>
   </context>
   <context>
@@ -1195,7 +1280,7 @@
       <location filename="../../Command.cpp" line="229"/>
       <location filename="../../Command.cpp" line="230"/>
       <source>Add a solver to the Analysis</source>
-      <translation type="unfinished">Add a solver to the Analysis</translation>
+      <translation>Προσθέστε έναν επιλυτή στην Ανάλυση</translation>
     </message>
   </context>
   <context>
@@ -1210,7 +1295,7 @@
       <location filename="../../Command.cpp" line="664"/>
       <location filename="../../Command.cpp" line="666"/>
       <source>Create node set by Poly</source>
-      <translation type="unfinished">Create node set by Poly</translation>
+      <translation>Δημιουργήστε ένα σύνολο κόμβων με τη χρήση Πολυγώνων</translation>
     </message>
   </context>
   <context>
@@ -1218,108 +1303,108 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="14"/>
       <source>FEM</source>
-      <translation type="unfinished">FEM</translation>
+      <translation>FEM (Μέθοδος Πεπερασμένων Στοιχείων)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="37"/>
       <source>CalculiX</source>
-      <translation type="unfinished">CalculiX</translation>
+      <translation>CalculiX</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="51"/>
       <source>Use internal editor for .inp files</source>
-      <translation type="unfinished">Use internal editor for .inp files</translation>
+      <translation>Χρησιμοποιήστε το εσωτερικό πρόγραμμα επεξεργασίας για αρχεία .inp</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="78"/>
       <source>External editor:</source>
-      <translation type="unfinished">External editor:</translation>
+      <translation>Εξωτερικό πρόγραμμα επεξεργασίας:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation type="unfinished">Leave blank to use default CalculiX ccx binary file</translation>
+      <translation>Αφήστε αυτό το πεδίο κενό για να χρησιμοποιήσετε το προεπιλεγμένο δυαδικό αρχείο CalculiX ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
       <source>ccx binary</source>
-      <translation type="unfinished">ccx binary</translation>
+      <translation>δυαδικό ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="157"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Ευρετήριο εργασίας</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="199"/>
       <source>Default analysis settings</source>
-      <translation type="unfinished">Default analysis settings</translation>
+      <translation>Προεπιλεγμένες ρυθμίσεις ανάλυσης</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="213"/>
       <source>Default type on analysis</source>
-      <translation type="unfinished">Default type on analysis</translation>
+      <translation>Προεπιλεγμένος τύπος ανάλυσης</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="223"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Στατική</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="232"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Συχνότητα</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="244"/>
       <source>Eigenmode number</source>
-      <translation type="unfinished">Eigenmode number</translation>
+      <translation>Αριθμός Eigenmode</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="251"/>
       <source>Type</source>
-      <translation>Είδος</translation>
+      <translation>Τύπος</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation type="unfinished">High frequency limit</translation>
+      <translation>Όριο υψηλής συχνότητας</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation type="unfinished">Low frequency limit</translation>
+      <translation>Όριο χαμηλής συχνότητας</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
       <location filename="../../DlgSettingsFem.ui" line="342"/>
       <source>Hz</source>
-      <translation type="unfinished">Hz</translation>
+      <translation>Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="354"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Υλικά</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="362"/>
       <source>Use built-in materials</source>
-      <translation type="unfinished">Use built-in materials</translation>
+      <translation>Χρησιμοποιήστε ενδογενή υλικά</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="378"/>
       <source>Use materials from .FreeCAD/Materials directory</source>
-      <translation type="unfinished">Use materials from .FreeCAD/Materials directory</translation>
+      <translation>Χρησιμοποιήστε υλικά από το ευρετήριο .FreeCAD/Υλικά</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Χρησιμοποιήστε υλικά από ευρετήριο ορισμένο από τον χρήστη</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
+      <translation>Ευρετήριο χρήστη</translation>
     </message>
   </context>
   <context>
@@ -1372,7 +1457,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="195"/>
       <source>You must specify at least one reference</source>
-      <translation type="unfinished">You must specify at least one reference</translation>
+      <translation>Πρέπει να καθορίσετε τουλάχιστον μια αναφορά</translation>
     </message>
   </context>
   <context>
@@ -1402,7 +1487,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="358"/>
       <source>Please specify a force greater than 0</source>
-      <translation type="unfinished">Please specify a force greater than 0</translation>
+      <translation>Παρακαλώ καθορίστε μια δύναμη μεγαλύτερη του 0</translation>
     </message>
   </context>
   <context>
@@ -1424,7 +1509,7 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="257"/>
       <source>Please specify a pressure greater than 0</source>
-      <translation type="unfinished">Please specify a pressure greater than 0</translation>
+      <translation>Παρακαλώ καθορίστε μια πίεση μεγαλύτερη του 0</translation>
     </message>
   </context>
   <context>
@@ -1440,12 +1525,12 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>Επεξεργασία πλέγματος FEM</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Αποτυχία πλεγματοποίησης</translation>
     </message>
   </context>
   <context>
@@ -1461,7 +1546,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation type="unfinished">FEM constraint parameters</translation>
+      <translation>Παράμετροι περιορισμού FEM</translation>
     </message>
   </context>
   <context>
@@ -1479,22 +1564,22 @@
       <location filename="../../TaskFemConstraintBearing.cpp" line="207"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="212"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Σφάλμα επιλογής</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Please use only a single reference for bearing constraint</translation>
+      <translation>Παρακαλώ χρησιμοποιήστε μόνο μια μεμονωμένη αναφορά για τον περιορισμό υποστηρίγματος άξονος</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
       <source>Only faces can be picked</source>
-      <translation type="unfinished">Only faces can be picked</translation>
+      <translation>Μόνο όψεις μπορούν να επιλεχθούν</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="185"/>
       <source>Only cylindrical faces can be picked</source>
-      <translation type="unfinished">Only cylindrical faces can be picked</translation>
+      <translation>Μόνο κυλινδρικές όψεις μπορούν να επιλεχθούν</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="201"/>
@@ -1525,19 +1610,19 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Σφάλμα επιλογής</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation type="unfinished">Nothing selected!</translation>
+      <translation>Τίποτα δεν επιλέχθηκε!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Το επιλεγμένο αντικείμενο δεν είναι εξάρτημα!</translation>
     </message>
   </context>
   <context>
@@ -1551,17 +1636,17 @@
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Σφάλμα επιλογής</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+      <translation>Δεν είναι δυνατή η δημιουργία μεικτών τύπων σχημάτων. Χρησιμοποιήστε έναν δεύτερο περιορισμό εναλλακτικά</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+      <translation>Μόνο όψεις, ακμές και κορυφές μπορούν να επιλεχθούν</translation>
     </message>
   </context>
   <context>
@@ -1579,12 +1664,12 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>Line load</source>
-      <translation type="unfinished">Line load</translation>
+      <translation>Γραμμικό φορτίο</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="146"/>
       <source>Area load</source>
-      <translation type="unfinished">Area load</translation>
+      <translation>Επιφανειακό φορτίο</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
@@ -1593,17 +1678,17 @@
       <location filename="../../TaskFemConstraintForce.cpp" line="219"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="224"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Σφάλμα επιλογής</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+      <translation>Δεν είναι δυνατή η δημιουργία μεικτών τύπων σχημάτων. Χρησιμοποιήστε έναν δεύτερο περιορισμό εναλλακτικά</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+      <translation>Μόνο όψεις, ακμές και κορυφές μπορούν να επιλεχθούν</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
@@ -1640,7 +1725,7 @@
       <location filename="../../TaskFemConstraintGear.cpp" line="160"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Σφάλμα επιλογής</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="154"/>
@@ -1668,12 +1753,12 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Σφάλμα επιλογής</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
       <source>Only faces can be picked</source>
-      <translation type="unfinished">Only faces can be picked</translation>
+      <translation>Μόνο όψεις μπορούν να επιλεχθούν</translation>
     </message>
   </context>
   <context>
@@ -1694,7 +1779,7 @@
     <message>
       <location filename="../../TaskObjectName.cpp" line="48"/>
       <source>TaskObjectName</source>
-      <translation type="unfinished">TaskObjectName</translation>
+      <translation>ΌνομαΑντικειμένουΕργασίας</translation>
     </message>
   </context>
   <context>
@@ -1702,7 +1787,7 @@
     <message>
       <location filename="../../TaskTetParameter.cpp" line="52"/>
       <source>Tet Parameter</source>
-      <translation type="unfinished">Tet Parameter</translation>
+      <translation>Παράμετρος Tet</translation>
     </message>
   </context>
   <context>
@@ -1710,7 +1795,7 @@
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="84"/>
       <source>Activate analysis</source>
-      <translation type="unfinished">Activate analysis</translation>
+      <translation>Ενεργοποίηση ανάλυσης</translation>
     </message>
   </context>
   <context>
@@ -1718,12 +1803,12 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Αποτυχία πλεγματοποίησης</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+      <translation>Η λειτουργική μονάδα FEM έχει δημιουργηθεί χωρίς υποστήριξη NETGEN. Η πλεγματοποίηση δεν θα λειτουργήσει!!!</translation>
     </message>
   </context>
   <context>
@@ -1737,36 +1822,36 @@
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="26"/>
       <source>Cross Section</source>
-      <translation type="unfinished">Cross Section</translation>
+      <translation>Ορθογώνια Διατομή</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="32"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="32"/>
       <source>Use FreeCAD Property Editor</source>
-      <translation type="unfinished">Use FreeCAD Property Editor</translation>
+      <translation>Χρησιμοποιήστε το Πρόγραμμα Επεξεργασίας Ιδιοτήτων του FreeCAD</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="39"/>
       <source>to edit the cross section values</source>
-      <translation type="unfinished">to edit the cross section values</translation>
+      <translation>για να επεξεργαστείτε τις τιμές ορθογώνιας διατομής</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="49"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="49"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Αναφορές</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="55"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Αφήστε τις αναφορές κενές </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="62"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>για να επιλέξετε όλα τα εναπομείναντα σχήματα</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="72"/>
@@ -1782,7 +1867,7 @@
     <message>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="39"/>
       <source>to edit the thickness value</source>
-      <translation type="unfinished">to edit the thickness value</translation>
+      <translation>για να επεξεργαστείτε την τιμή πάχους</translation>
     </message>
   </context>
   <context>
@@ -1795,7 +1880,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="20"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Ευρετήριο εργασίας</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="45"/>
@@ -1805,32 +1890,32 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Τύπος ανάλυσης</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Στατική</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
       <source>Frequency</source>
-      <translation type="unfinished">Frequency</translation>
+      <translation>Συχνότητα</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation type="unfinished">Write .inp file</translation>
+      <translation>Εγγραφή αρχείου .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
       <source>Edit .inp file</source>
-      <translation type="unfinished">Edit .inp file</translation>
+      <translation>Επεξεργασία αρχείου .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="109"/>
       <source>Run Calculix</source>
-      <translation type="unfinished">Run Calculix</translation>
+      <translation>Εκτέλεση Calculix</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="130"/>
@@ -1848,7 +1933,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
-      <translation type="unfinished">Mechanical material</translation>
+      <translation>Μηχανικό υλικό</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="26"/>
@@ -1863,22 +1948,22 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
       <source>Material Description</source>
-      <translation type="unfinished">Material Description</translation>
+      <translation>Περιγραφή Υλικού</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="54"/>
       <source>References</source>
-      <translation type="unfinished">References</translation>
+      <translation>Αναφορές</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Αφήστε τις αναφορές κενές </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
       <source>to choose all remaining shapes</source>
-      <translation type="unfinished">to choose all remaining shapes</translation>
+      <translation>για να επιλέξετε όλα τα εναπομείναντα σχήματα</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
@@ -1888,17 +1973,17 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Ιδιότητες</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="107"/>
       <source>Young's Modulus:</source>
-      <translation type="unfinished">Young's Modulus:</translation>
+      <translation>Μέτρο Ελαστικότητας Young:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="148"/>
       <source>Poisson Ratio:</source>
-      <translation type="unfinished">Poisson Ratio:</translation>
+      <translation>Λόγος Poisson:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="186"/>
@@ -1908,12 +1993,12 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="241"/>
       <source>External material resources</source>
-      <translation type="unfinished">External material resources</translation>
+      <translation>Εξωτερικοί υλικοί πόροι</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="247"/>
       <source>MatWeb database...</source>
-      <translation type="unfinished">MatWeb database...</translation>
+      <translation>Βάση δεδομένων MatWeb...</translation>
     </message>
     <message>
       <source>0 kg/m^3</source>
@@ -1929,12 +2014,12 @@
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>No active Analysis</source>
-      <translation>Χωρίς ενεργή ανάλυση</translation>
+      <translation>Καμία ενεργή Ανάλυση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="72"/>
       <source>You need to create or activate a Analysis</source>
-      <translation>Χρειάζεστε για να δημιουργήσετε ή να ενεργοποιήσετε μια ανάλυση</translation>
+      <translation>Πρέπει να δημιουργήσετε ή να ενεργοποιήσετε μια Ανάλυση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -1950,7 +2035,7 @@
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation type="unfinished">Your FreeCAD is build without NETGEN support. Meshing will not work....</translation>
+      <translation>Το FreeCAD σας έχει δημιουργηθεί χωρίς υποστήριξη NETGEN. Η πλεγματοποίηση δεν θα λειτουργήσει....</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -1978,7 +2063,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="84"/>
       <source>Cancel</source>
-      <translation>Άκυρο</translation>
+      <translation>Ακύρωση</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
@@ -1987,7 +2072,7 @@
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Προβολή Συνδιασμένη</translation>
+      <translation>Συνδυασμένη Προβολή</translation>
     </message>
     <message>
       <source>combiTab</source>
@@ -2026,23 +2111,23 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Πλεγματοποίηση</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
       <source>Constraint force</source>
-      <translation type="unfinished">Constraint force</translation>
+      <translation>Περιορισμός δύναμης</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation type="unfinished">Constraint normal stress</translation>
+      <translation>Περιορισμός ισοδύναμης τάσης</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
       <source>[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</source>
-      <translation type="unfinished">[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]</translation>
+      <translation>[Κόμβοι: %1, Ακμές: %2, Όψεις: %3, Πολύγωνα: %4, Όγκοι: %5, Πολύεδρα: %6]</translation>
     </message>
   </context>
   <context>
@@ -2050,27 +2135,27 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="14"/>
       <source>Show result</source>
-      <translation>Εμφάνιση αποτελέσματος</translation>
+      <translation>Εμφανίστε το αποτέλεσμα</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="22"/>
       <source>Result type</source>
-      <translation type="unfinished">Result type</translation>
+      <translation>Τύπος αποτελέσματος</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation type="unfinished">Y displacement</translation>
+      <translation>Μετακίνηση Y</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation type="unfinished">X displacement</translation>
+      <translation>Μετακίνηση X</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation type="unfinished">Z displacement</translation>
+      <translation>Μετακίνηση Ζ</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -2080,17 +2165,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="61"/>
       <source>Von Mises stress</source>
-      <translation type="unfinished">Von Mises stress</translation>
+      <translation>Τάση Von Mises</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="68"/>
       <source>Abs displacement</source>
-      <translation type="unfinished">Abs displacement</translation>
+      <translation>Μετακίνηση υλικού abs</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="79"/>
       <source>Avg:</source>
-      <translation type="unfinished">Avg:</translation>
+      <translation>Μέσος Όρος:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="96"/>
@@ -2105,7 +2190,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="135"/>
       <source>Displacement</source>
-      <translation>Μετατόπιση</translation>
+      <translation>Εκτόπισμα</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="143"/>
@@ -2120,7 +2205,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
-      <translation type="unfinished">Slider max:</translation>
+      <translation>Μέγιστο του ολισθητή:</translation>
     </message>
     <message>
       <source>Colors</source>
@@ -2128,7 +2213,7 @@
     </message>
     <message>
       <source>mm</source>
-      <translation>χιλ.</translation>
+      <translation>χιλιοστά</translation>
     </message>
   </context>
   <context>
@@ -2141,7 +2226,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes:</source>
-      <translation type="unfinished">Meshes:</translation>
+      <translation>Πλέγματα:</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
@@ -2159,7 +2244,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="27"/>
       <source>Volume</source>
-      <translation type="unfinished">Volume</translation>
+      <translation>Όγκος</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="32"/>
@@ -2169,12 +2254,12 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="49"/>
       <source>Nodes: 0</source>
-      <translation type="unfinished">Nodes: 0</translation>
+      <translation>Κόμβοι: 0</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
       <source>Poly</source>
-      <translation type="unfinished">Poly</translation>
+      <translation>Πολύγωνο</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
@@ -2194,17 +2279,17 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-search</source>
-      <translation type="unfinished">Angle-search</translation>
+      <translation>Αναζήτηση γωνίας</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
       <source>Collect adjancent nodes</source>
-      <translation type="unfinished">Collect adjancent nodes</translation>
+      <translation>Συλλέξτε τους παρακείμενους κόμβους</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle:</source>
-      <translation type="unfinished">Stop angle:</translation>
+      <translation>Γωνία διακοπής:</translation>
     </message>
   </context>
   <context>
@@ -2283,12 +2368,12 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
       <source>Gear diameter</source>
-      <translation type="unfinished">Gear diameter</translation>
+      <translation>Διάμετρος γραναζιού</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
       <source>Other pulley dia</source>
-      <translation type="unfinished">Other pulley dia</translation>
+      <translation>Άλλη διάμετρος τροχαλίας</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
@@ -2308,17 +2393,17 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="156"/>
       <source>Driven pulley</source>
-      <translation type="unfinished">Driven pulley</translation>
+      <translation>Οδηγούμενη τροχαλία</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="165"/>
       <source>Force location [deg]</source>
-      <translation type="unfinished">Force location [deg]</translation>
+      <translation>Θέση δύναμης [deg]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="192"/>
       <source>Force Direction</source>
-      <translation>Κατεύθυνση της δύναμης</translation>
+      <translation>Κατεύθυνση δύναμης</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="204"/>
@@ -2328,7 +2413,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="211"/>
       <source>Axial free</source>
-      <translation type="unfinished">Axial free</translation>
+      <translation>Χωρίς αξονική εξάρτηση κίνησης</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
@@ -2346,12 +2431,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation type="unfinished">Prescribed Displacement</translation>
+      <translation>Υπαγορευθείσα Μετακίνηση</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation type="unfinished">Select multiple face(s), click Add or Remove</translation>
+      <translation>Επιλέξτε πολλαπλή όψη(εις), κάντε κλικ στην επιλογή ''Προσθήκη'' ή ''Αφαίρεση''</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="59"/>
@@ -2361,12 +2446,12 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="66"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation type="unfinished">Displacement x</translation>
+      <translation>Μετακίνηση x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2376,7 +2461,7 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="288"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="330"/>
       <source>Free</source>
-      <translation type="unfinished">Free</translation>
+      <translation>Ελεύθερο</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="111"/>
@@ -2386,37 +2471,37 @@
       <location filename="../../TaskFemConstraintDisplacement.ui" line="295"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="340"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Σταθερό</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation type="unfinished">Displacement y</translation>
+      <translation>Μετακίνηση y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation type="unfinished">Displacement z</translation>
+      <translation>Μετακίνηση z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation type="unfinished">Rotations are only valid for Beam and Shell elements.</translation>
+      <translation>Οι περιστροφές είναι έγκυρες μόνο για Δοκούς και Κελύφη.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation type="unfinished">Rotation x</translation>
+      <translation>Περιστροφή x</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation type="unfinished">Rotation y</translation>
+      <translation>Περιστροφή y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation type="unfinished">Rotation z</translation>
+      <translation>Περιστροφή z</translation>
     </message>
   </context>
   <context>
@@ -2475,12 +2560,12 @@
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="32"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Πίεση</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="39"/>
       <source>1 MPa</source>
-      <translation type="unfinished">1 MPa</translation>
+      <translation>1 MPa</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="51"/>
@@ -2506,12 +2591,12 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Max. Size:</source>
-      <translation type="unfinished">Max. Size:</translation>
+      <translation>Μέγιστο Μέγεθος:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="44"/>
       <source>Second order</source>
-      <translation type="unfinished">Second order</translation>
+      <translation>Δεύτερης τάξης</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="53"/>
@@ -2521,17 +2606,17 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="64"/>
       <source>VeryCoarse</source>
-      <translation type="unfinished">VeryCoarse</translation>
+      <translation>ΠολύΤραχύ</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="69"/>
       <source>Coarse</source>
-      <translation>Χοντρό</translation>
+      <translation>Τραχύ</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="74"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Μέτριο</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="79"/>
@@ -2546,7 +2631,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="89"/>
       <source>UserDefined</source>
-      <translation type="unfinished">UserDefined</translation>
+      <translation>ΟρισμένοΑπόΤονΧρήστη</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
@@ -2556,32 +2641,32 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="111"/>
       <source>Nbr. Segs per Edge:</source>
-      <translation type="unfinished">Nbr. Segs per Edge:</translation>
+      <translation>Αριθμός Τμημάτων ανά Ακμή:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="128"/>
       <source>Nbr. Segs per Radius:</source>
-      <translation type="unfinished">Nbr. Segs per Radius:</translation>
+      <translation>Αριθμός Τμημάτων ανά Ακτίνα:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="144"/>
       <source>Optimize</source>
-      <translation>Βελτιστοποίηση</translation>
+      <translation>Βελτιστοποιήστε</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation type="unfinished">Node count: </translation>
+      <translation>Καταμέτρηση κόμβων: </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>
       <source>Triangle count:</source>
-      <translation type="unfinished">Triangle count:</translation>
+      <translation>Καταμέτρηση τριγώνων:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="194"/>
       <source>Tetraeder count:</source>
-      <translation type="unfinished">Tetraeder count:</translation>
+      <translation>Καταμέτρηση τετραέδρων:</translation>
     </message>
   </context>
   <context>
@@ -2589,12 +2674,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
       <source>FEM</source>
-      <translation type="unfinished">FEM</translation>
+      <translation>FEM (Μέθοδος Πεπερασμένων Στοιχείων)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>&amp;FEM</source>
-      <translation type="unfinished">&amp;FEM</translation>
+      <translation>&amp;FEM</translation>
     </message>
   </context>
 </TS>

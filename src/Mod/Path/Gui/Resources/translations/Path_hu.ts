@@ -9,9 +9,39 @@
       <translation>Az elérési út létrehozásához használt könyvtár</translation>
     </message>
     <message>
-      <location filename="PathSurface.py" line="69"/>
-      <source>The Sample Interval.  Small values cause long wait</source>
-      <translation>A Mintavételezési időköz.  Kisebb értékek hosszú várakozást okoznak</translation>
+      <location filename="../../../PathScripts/PathSurface.py" line="73"/>
+      <source>The direction along which dropcutter lines are created</source>
+      <translation>Az stancoló egyenesei mentén az irányok létrehozva</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="74"/>
+      <source>Should the operation be limited by the stock object or by the bounding box of the base object</source>
+      <translation>A műveletet korlátozza az alaptest állomány objektum vagy az alap objektum határolókerete</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="75"/>
+      <source>Additional offset to the selected bounding box</source>
+      <translation>További eltolás a kiválasztott határolókerethez</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="76"/>
+      <source>Step over percentage of the drop cutter path</source>
+      <translation>Átléptetési százalék a stancoló útvonalán</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="77"/>
+      <source>Z-axis offset from the surface of the object</source>
+      <translation>Z-tengely eltolása a tárgy felületétől</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="78"/>
+      <source>The Sample Interval. Small values cause long wait times</source>
+      <translation>A Mintavételezési időköz. Kisebb értékek hosszú várakozást okoznak</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="79"/>
+      <source>Enable optimization which removes unnecessary points from G-Code output</source>
+      <translation>Engedélyezi az optimalizálást, amely eltávolítja a szükségtelen pontokat a G-kód kimenetéről</translation>
     </message>
     <message>
       <location filename="PathCopy.py" line="45"/>
@@ -89,24 +119,29 @@
       <translation>A megközelítés hossza vagy sugara</translation>
     </message>
     <message>
-      <location filename="PathCustom.py" line="46"/>
-      <source>The gcode to be inserted</source>
-      <translation>A beillesztendő gcode</translation>
-    </message>
-    <message>
       <location filename="PathDressupRampEntry.py" line="51"/>
       <source>Ramping Method</source>
       <translation>Futtatási módszer</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathCustom.py" line="40"/>
-      <source>The gcode to be inserted</source>
-      <translation>A beillesztendő gcode</translation>
+      <location filename="../../../PathScripts/PathToolLenOffset.py" line="41"/>
+      <source>Make False, to prevent operation from generating code</source>
+      <translation>Állítsa hamisra annak megakadályozására, hogy a művelet, kódot generálhasson</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="51"/>
       <source>Ramping Method</source>
       <translation>Futtatási módszer</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="52"/>
+      <source>Which feed rate to use for ramping</source>
+      <translation>Futtatáshoz használt adagolási ráta</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="53"/>
+      <source>Custom feedrate</source>
+      <translation>Egyéni előtolás</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="57"/>
@@ -126,7 +161,7 @@
     <message>
       <location filename="PathDrilling.py" line="70"/>
       <source>Enable/disable status of the holes</source>
-      <translation>Lyukak állapotának Be-/Ki kapcsolása</translation>
+      <translation type="unfinished">Enable/disable status of the holes</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="71"/>
@@ -139,9 +174,9 @@
       <translation>Anyag tetejének tisztításához használt magasság</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="53"/>
-      <source>Custom feedrate</source>
-      <translation>Egyéni előtolás</translation>
+      <location filename="../../../PathScripts/PathDressupRampEntry.py" line="55"/>
+      <source>The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</source>
+      <translation>A mélység, ahol a rámpa felépítés engedélyezve van. E felett a rámpák nem lesznek létrehozva, de mozgás parancsok áthaladnak.</translation>
     </message>
     <message>
       <location filename="PathPlane.py" line="44"/>
@@ -152,6 +187,11 @@
       <location filename="../../../PathScripts/PathDrilling.py" line="65"/>
       <source>Enable pecking</source>
       <translation>Vagdosás engedélyezése</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDrilling.py" line="66"/>
+      <source>The time to dwell between peck cycles</source>
+      <translation>Vagdosási ciklusok közti pihentetési időszakok</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="99"/>
@@ -171,7 +211,7 @@
     <message>
       <location filename="PathCollision.py" line="64"/>
       <source>The base object this collision refers to</source>
-      <translation>Az alap objektum mely erre az ütközésre hivatkozik</translation>
+      <translation type="unfinished">The base object this collision refers to</translation>
     </message>
     <message>
       <location filename="PathProfileEdges.py" line="56"/>
@@ -214,6 +254,11 @@
       <translation>Extra eltolása a művelethez. Iránya a függ a művelettől.</translation>
     </message>
     <message>
+      <location filename="PathPocketBase.py" line="66"/>
+      <source>clearing pattern to use</source>
+      <translation type="unfinished">clearing pattern to use</translation>
+    </message>
+    <message>
       <location filename="PathPocket.py" line="78"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Zseb létrehozása a határvonal közepénél</translation>
@@ -229,19 +274,14 @@
       <translation>Cikk-cakk minta szöge</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="66"/>
-      <source>clearing pattern to use</source>
-      <translation>felhasznált tisztázó minta</translation>
+      <location filename="../../../PathScripts/PathProfileBase.py" line="61"/>
+      <source>Extra value to stay away from final profile- good for roughing toolpath</source>
+      <translation>Extra érték ami távol tart a záró profiltól- jó a nagyoló szerszámmozgáshoz</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="62"/>
       <source>Controls how tool moves around corners. Default=Round</source>
       <translation>Szabályozza az eszköz mozgását a sarkoknál. Alapértelmezett=Kerekített</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileBase.py" line="64"/>
-      <source>Maximum distance before a miter join is truncated</source>
-      <translation>Maximális távolság, mielőtt a ferde illesztés csonkul</translation>
     </message>
     <message>
       <location filename="PathStop.py" line="43"/>
@@ -304,6 +344,41 @@
       <translation>Gyors ütem a vízszintes előtoláshoz</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathToolController.py" line="73"/>
+      <source>The active tool</source>
+      <translation>Aktív szerszám</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolController.py" line="75"/>
+      <source>The tool used by this controller</source>
+      <translation>Ehhez a vezérlőhöz használt eszköz</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolController.py" line="82"/>
+      <source>Rapid rate for vertical moves in Z</source>
+      <translation>Gyors ütem a függőleges Z tengely előtoláshoz</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathToolController.py" line="83"/>
+      <source>Rapid rate for horizontal moves</source>
+      <translation>Gyors ütem a vízszintes előtoláshoz</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="69"/>
+      <source>The Sample Interval.  Small values cause long wait</source>
+      <translation>A Mintavételezési időköz.  Kisebb értékek hosszú várakozást okoznak</translation>
+    </message>
+    <message>
+      <location filename="PathCustom.py" line="46"/>
+      <source>The gcode to be inserted</source>
+      <translation>A beillesztendő gcode</translation>
+    </message>
+    <message>
+      <location filename="PathMillFace.py" line="79"/>
+      <source>How far the cutter should extend past the boundary</source>
+      <translation>Meddig mozoghat ki a maró, a határvonalon túl</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="53"/>
       <source>The NC output file for this project</source>
       <translation>Ennek a projekt témának a kimeneti NC fájlja</translation>
@@ -329,14 +404,39 @@
       <translation>CNC program által használt szerszámlista</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="99"/>
-      <source>An optional description for this job</source>
-      <translation>Egy lehetséges leírás ehhez a feladathoz</translation>
+      <location filename="PathJob.py" line="80"/>
+      <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
+      <translation>Útvonalak számításához; kevésbé növeli a pontosságot, de lelassítja a számítást</translation>
     </message>
     <message>
-      <location filename="PathMillFace.py" line="79"/>
-      <source>How far the cutter should extend past the boundary</source>
-      <translation>Meddig mozoghat ki a maró, a határvonalon túl</translation>
+      <location filename="PathEngrave.py" line="50"/>
+      <source>The base geometry of this object</source>
+      <translation>Ennek a tárgynak az alapgeometriája</translation>
+    </message>
+    <message>
+      <location filename="PathEngrave.py" line="55"/>
+      <source>The library or Algorithm used to generate the path</source>
+      <translation>Az elérési út létrehozásához használt könyvtár vagy algoritmus</translation>
+    </message>
+    <message>
+      <location filename="PathEngrave.py" line="59"/>
+      <source>The tool controller to use</source>
+      <translation>Az eszköz vezérlő használata</translation>
+    </message>
+    <message>
+      <location filename="PathEngrave.py" line="65"/>
+      <source>The description of the tool </source>
+      <translation>Az eszköz leírása </translation>
+    </message>
+    <message>
+      <location filename="PathEngrave.py" line="70"/>
+      <source>Rapid Safety Height between locations.</source>
+      <translation>Gyorsmenet biztonsági magassága a helyek között.</translation>
+    </message>
+    <message>
+      <location filename="PathEngrave.py" line="72"/>
+      <source>The vertex index to start the path from</source>
+      <translation>Az útvonal indulási pontjától a végpont index</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="95"/>
@@ -452,11 +552,9 @@
       <translation>Szülő feladat %s nem rendelkezik alap objektummal</translation>
     </message>
     <message>
-      <location filename="PathPocket.py" line="153"/>
-      <source>this object already in the list
-</source>
-      <translation>ez az elem már a listában van
-</translation>
+      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
+      <source>%s is not a Base Model object of the job %s</source>
+      <translation>%s nem egy alap modell objektuma ennek a feladatnak: %s</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="514"/>
@@ -489,14 +587,24 @@
       <translation>A %s.%s funkciót nem lehet feldolgozni kör alakú mélyedésként - távolítsa el az alap geometriai listából.</translation>
     </message>
     <message>
-      <location filename="PathEngrave.py" line="112"/>
-      <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
-      <translation>A művelet feladatobjektumának nincs begravírozható  eleme.  Gravírozás művelet eredménytelen lesz.</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="337"/>
+      <source>Parent job %s doesn't have a base object</source>
+      <translation>Szülő feladat %s nem rendelkezik alap objektummal</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="503"/>
+      <source>Base object %s.%s already in the list</source>
+      <translation>Alap objektum %s.%s már szerepel a listában</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
       <source>Project Setup</source>
       <translation>Projekt telepítő beállító</translation>
+    </message>
+    <message>
+      <location filename="InitGui.py" line="86"/>
+      <source>Partial Commands</source>
+      <translation type="unfinished">Partial Commands</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="97"/>
@@ -509,9 +617,9 @@
       <translation>Új művelet</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="488"/>
-      <source>Didn't find job %s</source>
-      <translation>Nem találja a %s feladatot</translation>
+      <location filename="../../../PathScripts/PathOpGui.py" line="592"/>
+      <source>Heights</source>
+      <translation>Magasságok</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="101"/>
@@ -529,19 +637,56 @@
       <translation>Szerszámpálya felépítés</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="86"/>
-      <source>Partial Commands</source>
-      <translation>Kiegészítő parancsok</translation>
+      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="71"/>
+      <source>List of disabled features</source>
+      <translation>Kikapcsolt funkciók listája</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="123"/>
+      <location filename="../../../InitGui.py" line="100"/>
+      <source>3D Operations</source>
+      <translation>3D műveletek</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="105"/>
+      <source>Project Setup</source>
+      <translation>Projekt telepítő beállító</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="106"/>
+      <source>Tool Commands</source>
+      <translation>Eszköz parancsok</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="107"/>
       <source>New Operations</source>
       <translation>Új művelet</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="133"/>
+      <location filename="../../../InitGui.py" line="117"/>
       <source>Path Modification</source>
       <translation>Szerszámpálya módosítása</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="110"/>
+      <source>Helpful Tools</source>
+      <translation>Hasznos eszközök</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="120"/>
+      <source>&amp;Path</source>
+      <translation>Szerszámpálya</translation>
+    </message>
+    <message>
+      <location filename="PathPocket.py" line="153"/>
+      <source>this object already in the list
+</source>
+      <translation>ez az elem már a listában van
+</translation>
+    </message>
+    <message>
+      <location filename="PathEngrave.py" line="112"/>
+      <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
+      <translation>A művelet feladatobjektumának nincs begravírozható  eleme.  Gravírozás művelet eredménytelen lesz.</translation>
     </message>
     <message>
       <location filename="PathContour.py" line="396"/>
@@ -575,6 +720,11 @@
     </message>
     <message>
       <location filename="PathAreaOp.py" line="88"/>
+      <source>no job for op %s found.</source>
+      <translation>%s művelethez nem található feladat.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathAreaOp.py" line="98"/>
       <source>no job for op %s found.</source>
       <translation>%s művelethez nem található feladat.</translation>
     </message>
@@ -646,6 +796,11 @@
       <source>Creates a Path Drilling object from a features of a base object</source>
       <translation>Fúrási útvonalat hoz létre az alap objektum egy jellegzetességéből</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathDrillingGui.py" line="109"/>
+      <source>Drilling</source>
+      <translation>Fúrás</translation>
+    </message>
   </context>
   <context>
     <name>PathEngrave</name>
@@ -661,6 +816,27 @@
     </message>
   </context>
   <context>
+    <name>PathCustom</name>
+    <message>
+      <location filename="../../../PathScripts/PathCustom.py" line="40"/>
+      <source>The gcode to be inserted</source>
+      <translation>A beillesztendő gcode</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathCustom.py" line="41"/>
+      <source>The tool controller that will be used to calculate the path</source>
+      <translation>Útvonal kiszámításához használt eszköz vezérlő</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathDeburr</name>
+    <message>
+      <location filename="../../../PathScripts/PathDeburr.py" line="70"/>
+      <source>The desired width of the chamfer</source>
+      <translation>A letörés kívánt szélessége</translation>
+    </message>
+  </context>
+  <context>
     <name>PathFace</name>
     <message>
       <location filename="PathMillFace.py" line="350"/>
@@ -670,12 +846,22 @@
     <message>
       <location filename="PathMillFace.py" line="352"/>
       <source>Create a Facing Operation from a model or face</source>
-      <translation>Létrehoz egy felület műveletet egy modellről vagy felületről</translation>
+      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="367"/>
       <source>Create Face</source>
-      <translation>Felület létrehozás</translation>
+      <translation type="unfinished">Create Face</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="45"/>
+      <source>Face</source>
+      <translation>Felület</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathMillFaceGui.py" line="45"/>
+      <source>Create a Facing Operation from a model or face</source>
+      <translation type="unfinished">Create a Facing Operation from a model or face</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="171"/>
@@ -713,19 +899,37 @@
       <translation>%s felületet nem kezeli, feltételezve, hogy nem függőleges</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="162"/>
+      <location filename="../../../PathScripts/PathGeom.py" line="163"/>
       <source>edge %s not handled, assuming not vertical</source>
       <translation>%s élt nem kezeli, feltételezve, hogy nem függőleges</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="164"/>
+      <location filename="../../../PathScripts/PathGeom.py" line="166"/>
       <source>isVertical(%s) not supported</source>
       <translation>isVertical(%s) nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="188"/>
+      <location filename="../../../PathScripts/PathGeom.py" line="194"/>
       <source>isHorizontal(%s) not supported</source>
       <translation>isHorizontal(%s) nem támogatott</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathGeom.py" line="514"/>
+      <source>%s not support for flipping</source>
+      <translation>%s nem támogatott az átfordításhoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>PathGui</name>
+    <message>
+      <location filename="../../../PathScripts/PathGui.py" line="56"/>
+      <source>%s has no property %s (%s))</source>
+      <translation>%s még nincs tulajdonsága %s (%s))</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathGui.py" line="115"/>
+      <source>Cannot find property %s of %s</source>
+      <translation>Nem található %s tulajdonsága ennek: %s</translation>
     </message>
   </context>
   <context>
@@ -756,28 +960,28 @@
       <translation>Rádiusz-növekmény (szerszám átmérőnél kisebbnek kell lennie)</translation>
     </message>
     <message>
-      <location filename="PathHelix.py" line="449"/>
-      <source>PathHelix</source>
-      <translation>SpirálalakúCsigavonal</translation>
+      <location filename="PathHelix.py" line="464"/>
+      <source>Create a helix cut</source>
+      <translation type="unfinished">Create a helix cut</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelix.py" line="51"/>
+      <source>The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)</source>
+      <translation>Körkivágás iránya, óramutató járásával megegyező irányban (CW), vagy az óramutató járásával ellentétes irányban (CCW)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelix.py" line="54"/>
+      <source>Start cutting from the inside or outside</source>
+      <translation>Kivágás kezdése belülről vagy kívülről</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelix.py" line="57"/>
+      <source>Radius increment (must be smaller than tool diameter)</source>
+      <translation>Rádiusz-növekmény (szerszám átmérőnél kisebbnek kell lennie)</translation>
     </message>
   </context>
   <context>
     <name>PathJob</name>
-    <message>
-      <location filename="../../../PathScripts/PathJobCmd.py" line="152"/>
-      <source>Box: %.2f x %.2f x %.2f</source>
-      <translation>Négyzet: %.2f x %.2f x %.2f</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobCmd.py" line="154"/>
-      <source>Cylinder: %.2f x %.2f</source>
-      <translation>Henger: %.2f x %.2f</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobCmd.py" line="157"/>
-      <source>Unsupported stock type</source>
-      <translation>Nem támogatott alaptest típus</translation>
-    </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="286"/>
       <source>Stock not from Base bound box!</source>
@@ -787,26 +991,6 @@
       <location filename="../../../PathScripts/PathJobGui.py" line="356"/>
       <source>Stock not a box!</source>
       <translation>Alaptest nem egy téglatest!</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="388"/>
-      <source>Stock not a cylinder!</source>
-      <translation>Alaptest nem egy henger!</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="887"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Nem támogatott alaptest tárgy %s</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="900"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Nem támogatott alaptest típus %s (%d)</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="102"/>
-      <source>The base object for all operations</source>
-      <translation>Az alap objektum az összes művelethez</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="103"/>
@@ -829,9 +1013,29 @@
       <translation>Ehhez a munkához tartozó beállításokat tartalmazó beállítólap</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="244"/>
-      <source>Unsupported PathJob template version %s</source>
-      <translation>Nem támogatott munka-útvonal sablon változat %s</translation>
+      <location filename="../../../PathScripts/PathJobGui.py" line="331"/>
+      <source>Stock not from Base bound box!</source>
+      <translation>Alaptest nem az alapértelmezetthez kötött listából!</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="388"/>
+      <source>Stock not a cylinder!</source>
+      <translation>Alaptest nem egy henger!</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="408"/>
+      <source>Stock not a box!</source>
+      <translation>Alaptest nem egy téglatest!</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="887"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Nem támogatott alaptest tárgy %s</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="900"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Nem támogatott alaptest típus %s (%d)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobCmd.py" line="149"/>
@@ -854,39 +1058,74 @@
       <translation>Nem támogatott alaptest típus</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="286"/>
-      <source>Stock not from Base bound box!</source>
-      <translation>Alaptest nem az alapértelmezetthez kötött listából!</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="100"/>
+      <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
+      <translation>Útvonalak számításához; kevésbé növeli a pontosságot, de lelassítja a számítást</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="356"/>
-      <source>Stock not a box!</source>
-      <translation>Alaptest nem egy téglatest!</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="388"/>
-      <source>Stock not a cylinder!</source>
-      <translation>Alaptest nem egy henger!</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="887"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Nem támogatott alaptest tárgy %s</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="900"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Nem támogatott alaptest típus %s (%d)</translation>
+      <location filename="../../../PathScripts/PathJob.py" line="102"/>
+      <source>Solid object to be used as stock.</source>
+      <translation>Alaptestként használt szilárd test.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJob.py" line="102"/>
       <source>The base object for all operations</source>
-      <translation>Az alap objektum az összes művelethez</translation>
+      <translation type="unfinished">The base object for all operations</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="105"/>
+      <location filename="../../../PathScripts/PathJob.py" line="103"/>
+      <source>Compound path of all operations in the order they are processed.</source>
+      <translation>Összes művelet összetett sorrendje a feldolgozáshoz.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="104"/>
       <source>Collection of tool controllers available for this job.</source>
       <translation>Ehhez a munkához elérhető eszköz vezérlők gyűjteménye.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="144"/>
+      <source>SetupSheet holding the settings for this job</source>
+      <translation>Ehhez a munkához tartozó beállításokat tartalmazó beállítólap</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="244"/>
+      <source>Unsupported PathJob template version %s</source>
+      <translation>Nem támogatott munka-útvonal sablon változat %s</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="52"/>
+      <source>Solids</source>
+      <translation>Szilárd testek</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="53"/>
+      <source>2D</source>
+      <translation>2D</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="54"/>
+      <source>Jobs</source>
+      <translation>Feladatok</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="220"/>
+      <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
+      <translation>Kiindulás -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="223"/>
+      <source>Box: %.2f x %.2f x %.2f</source>
+      <translation>Négyzet: %.2f x %.2f x %.2f</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="225"/>
+      <source>Cylinder: %.2f x %.2f</source>
+      <translation>Henger: %.2f x %.2f</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobDlg.py" line="228"/>
+      <source>Unsupported stock type</source>
+      <translation>Nem támogatott alaptest típus</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="341"/>
@@ -912,6 +1151,56 @@
       <translation>Megtartja a végső-mélység számított értékét</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="115"/>
+      <source>User Assigned Label</source>
+      <translation>Felhasználó által hozzárendelt címke</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="123"/>
+      <source>Base locations for this operation</source>
+      <translation>Kiinduló hely ehhez a művelethez</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="99"/>
+      <source>The base geometry for this operation</source>
+      <translation>Alap geometria ehhez a művelethez</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="103"/>
+      <source>Holds the calculated value for the StartDepth</source>
+      <translation>Megtartja a kiindulási-mélység számított értékét</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="106"/>
+      <source>Holds the calculated value for the FinalDepth</source>
+      <translation>Megtartja a végső-mélység számított értékét</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="291"/>
+      <source>Base Geometry</source>
+      <translation>Alap geometria</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="420"/>
+      <source>Base Location</source>
+      <translation>Alap helyzet</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOp.py" line="114"/>
+      <source>Holds the min Z value of Stock</source>
+      <translation>Tartja az alaptest min Z értékét</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="545"/>
+      <source>Depths</source>
+      <translation>Mélység</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="616"/>
+      <source>Operation</source>
+      <translation>Művelet</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="107"/>
       <source>Holds the diameter of the tool</source>
       <translation>Megtartja a szerszám ármérőjét</translation>
@@ -927,94 +1216,37 @@
       <translation>Választható megjegyzés ehhez a művelethez</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="115"/>
+      <location filename="../../../PathScripts/PathOp.py" line="122"/>
       <source>User Assigned Label</source>
       <translation>Felhasználó által hozzárendelt címke</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="123"/>
+      <location filename="../../../PathScripts/PathOp.py" line="130"/>
       <source>Base locations for this operation</source>
       <translation>Kiinduló hely ehhez a művelethez</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="291"/>
-      <source>Base Geometry</source>
-      <translation>Alap geometria</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="138"/>
+      <source>Final Depth of Tool- lowest value in Z</source>
+      <translation>Vég-fúrásmélység a Z tengelyen</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="420"/>
-      <source>Base Location</source>
-      <translation>Alap helyzet</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="144"/>
+      <source>Starting Depth internal use only for derived values</source>
+      <translation>Kezdeti mélység belső használatára, csak származtatott értékekhez használja</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="545"/>
+      <location filename="../../../PathScripts/PathOp.py" line="157"/>
+      <source>Rapid Safety Height between locations.</source>
+      <translation>Gyorsmenet biztonsági magassága a helyek között.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="660"/>
       <source>Depths</source>
       <translation>Mélység</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="616"/>
-      <source>Operation</source>
-      <translation>Művelet</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="97"/>
-      <source>The base geometry for this operation</source>
-      <translation>Alap geometria ehhez a művelethez</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="101"/>
-      <source>Holds the calculated value for the StartDepth</source>
-      <translation>Megtartja a kiindulási-mélység számított értékét</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="104"/>
-      <source>Holds the calculated value for the FinalDepth</source>
-      <translation>Megtartja a végső-mélység számított értékét</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="107"/>
-      <source>Holds the diameter of the tool</source>
-      <translation>Megtartja a szerszám ármérőjét</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="115"/>
-      <source>User Assigned Label</source>
-      <translation>Felhasználó által hozzárendelt címke</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="123"/>
-      <source>Base locations for this operation</source>
-      <translation>Kiinduló hely ehhez a művelethez</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="137"/>
-      <source>Incremental Step Down of Tool</source>
-      <translation>Visszaléptetés növekménye ehhez szerszámhoz</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="342"/>
-      <source>Base Geometry</source>
-      <translation>Alap geometria</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="478"/>
-      <source>Base Location</source>
-      <translation>Alap helyzet</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="609"/>
-      <source>FinalDepth cannot be modified for this operation.
-If it is necessary to set the FinalDepth manually please select a different operation.</source>
-      <translation>Végleges-Mélység nem módosítható ehhez a művelethez.
-Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy másik műveletet.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="627"/>
-      <source>Depths</source>
-      <translation>Mélység</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="753"/>
+      <location filename="../../../PathScripts/PathOpGui.py" line="792"/>
       <source>Operation</source>
       <translation>Művelet</translation>
     </message>
@@ -1042,22 +1274,27 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Létrehoz egy szerszámpálya 3D zseb útvonal objektumot egy felületből vagy felületekből</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="94"/>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="100"/>
       <source>Pocket does not support shape %s.%s</source>
       <translation>Zseb nem támogatja ezt az alakzatot %s.%s</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketShape.py" line="103"/>
+      <location filename="../../../PathScripts/PathPocketShape.py" line="109"/>
       <source>Vertical faces do not form a loop - ignoring</source>
       <translation>Függőleges felületek nem alkotnak egy ismétlést - figyelmen kívül hagyva</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketBaseGui.py" line="68"/>
+      <location filename="../../../PathScripts/PathAdaptiveGui.py" line="223"/>
+      <source>Adaptive clearing and profiling</source>
+      <translation>Alkalmazkodó tisztázás és profilírozás (profilkialakítás)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPocketBaseGui.py" line="70"/>
       <source>Pass Extension</source>
       <translation>Áthalad a meghosszabbításon</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPocketBaseGui.py" line="69"/>
+      <location filename="../../../PathScripts/PathPocketBaseGui.py" line="71"/>
       <source>The distance the facing operation will extend beyond the boundary shape.</source>
       <translation>A távolság a szemben állók műveletére túlnyúlik az alakzat határán.</translation>
     </message>
@@ -1107,9 +1344,14 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Él profil</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
+      <source>Profile based on edges</source>
+      <translation>Éleken alapuló felület</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
-      <source>Profile based on face or faces</source>
-      <translation>A felületen vagy felületeken alapuló profil</translation>
+      <source>Face Profile</source>
+      <translation>Felület profil</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
@@ -1136,8 +1378,8 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
     <message>
       <location filename="../../../PathScripts/PathProfileContourGui.py" line="44"/>
-      <source>Contour</source>
-      <translation>Kontúr</translation>
+      <source>Creates a Contour Path for the Base Object </source>
+      <translation>Létrehoz egy szerszámpálya kontúrt az alap objektumhoz </translation>
     </message>
   </context>
   <context>
@@ -1156,6 +1398,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathOpGui.py" line="349"/>
       <source>Faces are not supported</source>
       <translation>Felületek nem támogatottak</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathOpGui.py" line="400"/>
+      <source>Vertexes are not supported</source>
+      <translation>Csomópontok nem támogatottak</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="587"/>
@@ -1306,62 +1553,47 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Nem támogatott AlaptestUtvonal sablon változat {}</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="138"/>
-      <source>Length of this stock box</source>
-      <translation>Ennek az alaptest mezőnek a hossza</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathStock.py" line="139"/>
-      <source>Width of this stock box</source>
-      <translation>Ennek az alaptest mezőnek a szélessége</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathStock.py" line="140"/>
-      <source>Height of this stock box</source>
-      <translation>Ennek az alaptest mezőnek a magassága</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathStock.py" line="173"/>
+      <location filename="../../../PathScripts/PathStock.py" line="188"/>
       <source>Radius of this stock cylinder</source>
       <translation>Ennek az alaptest hengernek a sugara</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="174"/>
+      <location filename="../../../PathScripts/PathStock.py" line="189"/>
       <source>Height of this stock cylinder</source>
       <translation>Ennek az alaptest hengernek a magassága</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="202"/>
+      <location filename="../../../PathScripts/PathStock.py" line="218"/>
       <source>Internal representation of stock type</source>
       <translation>Alaptest típusának belső ábrázolása</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="326"/>
+      <location filename="../../../PathScripts/PathStock.py" line="353"/>
       <source>Corrupted or incomplete placement information in template - ignoring</source>
       <translation>Sérült vagy hiányos elhelyezés információ a sablonban - figyelmen kívül hagyva</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="341"/>
+      <location filename="../../../PathScripts/PathStock.py" line="368"/>
       <source>Corrupted or incomplete specification for creating stock from base - ignoring extent</source>
       <translation>Sérült vagy hiányos specifikáció az alap tárgyból alaptest létrehozása alatt - határértékeket figyelmen kívül hagyva</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="352"/>
+      <location filename="../../../PathScripts/PathStock.py" line="381"/>
       <source>Corrupted or incomplete size for creating a stock box - ignoring size</source>
       <translation>Sérült vagy hiányos méret az alaptest mező létrehozásához - méreteket figyelmen kívül hagyva</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="363"/>
+      <location filename="../../../PathScripts/PathStock.py" line="394"/>
       <source>Corrupted or incomplete size for creating a stock cylinder - ignoring size</source>
       <translation>Sérült vagy hiányos méret az alaptest henger létrehozásához - méreteket figyelmen kívül hagyva</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="366"/>
+      <location filename="../../../PathScripts/PathStock.py" line="397"/>
       <source>Unsupported stock type named {}</source>
       <translation>Nem támogatott alaptest típus név {}</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathStock.py" line="368"/>
+      <location filename="../../../PathScripts/PathStock.py" line="399"/>
       <source>Unsupported PathStock template version {}</source>
       <translation>Nem támogatott AlaptestUtvonal sablon változat {}</translation>
     </message>
@@ -1389,12 +1621,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Frissítési hiba TC: %s</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="113"/>
+      <location filename="../../../PathScripts/PathToolController.py" line="117"/>
       <source>Unsupported PathToolController template version %s</source>
       <translation>Nem támogatott eszköz vezérlő útvonal sablon változat %s</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="361"/>
+      <location filename="../../../PathScripts/PathToolController.py" line="335"/>
       <source>Error updating TC: %s</source>
       <translation>Frissítési hiba TC: %s</translation>
     </message>
@@ -1407,7 +1639,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Nem támogatott szerszámlista útvonal sablon változat %s</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="172"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="171"/>
       <source>Unsupported Path tooltable template version %s</source>
       <translation>Nem támogatott szerszámlista útvonal sablon változat %s</translation>
     </message>
@@ -1420,7 +1652,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Probléma meghatározza a fúrhatóságot: {}</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="195"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="201"/>
       <source>Issue determine drillability: {}</source>
       <translation>Probléma meghatározza a fúrhatóságot: {}</translation>
     </message>
@@ -1456,10 +1688,8 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
     <message>
       <location filename="../../../PathScripts/PathArray.py" line="262"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Kérem, pontosan egy szerszámpálya útvonalat jelöljön ki
-</translation>
+      <source>Please select exactly one path object</source>
+      <translation>Kérem, pontosan egy szerszámpálya objektumot jelöljön ki</translation>
     </message>
   </context>
   <context>
@@ -1541,75 +1771,164 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Egyedi G-kódon alapuló szerszámpálya útvonal objektumot hoz létre</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathCustom.py" line="64"/>
+      <location filename="../../../PathScripts/PathCustom.py" line="65"/>
       <source>Custom</source>
       <translation>Egyéni</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathCustom.py" line="65"/>
+      <location filename="../../../PathScripts/PathCustom.py" line="66"/>
       <source>Creates a path object based on custom G-code</source>
       <translation>Egyedi G-kódon alapuló szerszámpálya útvonal objektumot hoz létre</translation>
     </message>
   </context>
   <context>
-    <name>Path_DressupDogbone</name>
+    <name>Path_Dressup</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="377"/>
+      <location filename="PathDressup.py" line="110"/>
+      <source>Please select one path object
+</source>
+      <translation>Jelöljön ki egy pálya objektumot
+</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="113"/>
+      <source>The selected object is not a path
+</source>
+      <translation>A kijelölt objektum nem pálya útvonal
+</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="116"/>
+      <source>Please select a Path object</source>
+      <translation>Kérem válasszon egy pályaútvonal objektumot</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="120"/>
+      <source>Create Dress-up</source>
+      <translation>Változtatást hoz létre</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="194"/>
+      <source>Please select one path object
+</source>
+      <translation>Jelöljön ki egy pálya objektumot
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="197"/>
+      <source>The selected object is not a path
+</source>
+      <translation>A kijelölt objektum nem pálya útvonal
+</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="200"/>
+      <source>Please select a Path object</source>
+      <translation>Kérem válasszon egy pályaútvonal objektumot</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="98"/>
+      <source>Dress-up</source>
+      <translation>Megváltoztatás</translation>
+    </message>
+    <message>
+      <location filename="PathDressup.py" line="100"/>
+      <source>Creates a Path Dess-up object from a selected path</source>
+      <translation>Szerszámpálya módosító objektumot hoz létre a kiválasztott útvonalból</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_DressupAxisMap</name>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="48"/>
       <source>The base path to modify</source>
       <translation>A megváltoztatni kívánt alap pálya útvonal</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="378"/>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="49"/>
+      <source>The input mapping axis</source>
+      <translation>A bemeneti leképezés-tengelye</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="50"/>
+      <source>The radius of the wrapped axis</source>
+      <translation>A törött tengelyek sugara</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="178"/>
+      <source>Axis Map Dress-up</source>
+      <translation>Tengely leképzés megváltoztatás</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="180"/>
+      <source>Remap one axis to another.</source>
+      <translation>Áthoz egy tengelyt a másikra.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupAxisMap.py" line="204"/>
+      <source>Create Dress-up</source>
+      <translation>Változtatást hoz létre</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_DressupDogbone</name>
+    <message>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="380"/>
+      <source>The base path to modify</source>
+      <translation>A megváltoztatni kívánt alap pálya útvonal</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="381"/>
       <source>The side of path to insert bones</source>
       <translation>A szerszámpálya oldala a halszálkák beillesztéséhez</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="381"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="384"/>
       <source>The style of bones</source>
       <translation>Halszálkák stílusa</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="384"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="387"/>
       <source>Bones that aren't dressed up</source>
       <translation>Halszálkák melyek nincsenek felépítve</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="387"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="390"/>
       <source>The algorithm to determine the bone length</source>
       <translation>Algoritmus a halszálka hosszának meghatározásához</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="390"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="393"/>
       <source>Dressup length if Incision == custom</source>
       <translation>Felépítés hossza ha metszéssel == egyéni</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="851"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="864"/>
       <source>Edit Dogbone Dress-up</source>
       <translation>Kutyacsont felépítés szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1036"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1049"/>
       <source>Dogbone Dress-up</source>
       <translation>Kutyacsont felépítés</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1037"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1050"/>
       <source>Creates a Dogbone Dress-up object from a selected path</source>
       <translation>Létrehoz egy kutyacsont felépítésű objektumot a kiválasztott útvonalból</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1051"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1064"/>
       <source>Please select one path object</source>
       <translation>Kérem jelöljön ki egy pálya objektumot</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1055"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1068"/>
       <source>The selected object is not a path</source>
       <translation>A kijelölt objektum nem pálya útvonal</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1059"/>
+      <location filename="../../../PathScripts/PathDressupDogbone.py" line="1072"/>
       <source>Create Dogbone Dress-up</source>
       <translation>Kutyacsont felépítés létrehozása</translation>
     </message>
@@ -1617,36 +1936,32 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="469"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
       <source>DragKnife Dress-up</source>
       <translation>DragKnife felépítés</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Módosít egy szerszámpályát egy dragknife sarok művelet hozzáadásával</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="484"/>
-      <source>Please select one path object
-</source>
-      <translation>Jelöljön ki egy pálya objektumot
-</translation>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
+      <source>Please select one path object</source>
+      <translation>Kérem jelöljön ki egy pálya objektumot</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="488"/>
-      <source>The selected object is not a path
-</source>
-      <translation>A kijelölt objektum nem pálya útvonal
-</translation>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
+      <source>The selected object is not a path</source>
+      <translation>A kijelölt objektum nem pálya útvonal</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
       <source>Please select a Path object</source>
       <translation>Kérem válasszon egy pályaútvonal objektumot</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="497"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
       <source>Create Dress-up</source>
       <translation>Változtatást hoz létre</translation>
     </message>
@@ -1668,6 +1983,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <source>The Mode of Point Radiusoffset or Center</source>
       <translation>Sugár eltolási pont vagy középponti mód</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="338"/>
+      <source>LeadInOut Dressup</source>
+      <translation>LeadInOut felépítés</translation>
+    </message>
   </context>
   <context>
     <name>Path_Fixture</name>
@@ -1683,6 +2003,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
     <message>
       <location filename="PathFixture.py" line="127"/>
+      <source>Create a Fixture Offset</source>
+      <translation>Nullapont eltolás létrehozása</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathFixture.py" line="125"/>
       <source>Create a Fixture Offset</source>
       <translation>Nullapont eltolás létrehozása</translation>
     </message>
@@ -1729,11 +2054,9 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Gyorsmenet beszúrása a visszahúzási síkra</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathHop.py" line="111"/>
-      <source>Please select one path object
-</source>
-      <translation>Jelöljön ki egy pálya objektumot
-</translation>
+      <location filename="../../../PathScripts/PathHop.py" line="119"/>
+      <source>Create Hop</source>
+      <translation>Visszahúzási útszakasz hozzáadása</translation>
     </message>
   </context>
   <context>
@@ -1761,11 +2084,14 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
 </translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathInspect.py" line="220"/>
+      <source>Inspects the G-code contents of a path</source>
+      <translation>Ellenőrzi a szerszámpálya útvonal G-kód tartalmát</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathInspect.py" line="237"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Kérem, pontosan egy szerszámpálya útvonalat jelöljön ki
-</translation>
+      <source>Please select exactly one path object</source>
+      <translation>Kérem, pontosan egy szerszámpálya objektumot jelöljön ki</translation>
     </message>
   </context>
   <context>
@@ -1791,6 +2117,11 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Munka-útvonal exportja sablonként, felhasználható más munkákhoz</translation>
     </message>
     <message>
+      <location filename="PathJob.py" line="197"/>
+      <source>Create Job</source>
+      <translation>Feladat létrehozás</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="223"/>
       <source>Edit Job</source>
       <translation>Feladat szerkesztés</translation>
@@ -1811,14 +2142,17 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Minden fájl (*.*)</translation>
     </message>
     <message>
-      <location filename="PathJob.py" line="197"/>
-      <source>Create Job</source>
-      <translation>Feladat létrehozás</translation>
+      <location filename="../../../PathScripts/PathJobCmd.py" line="93"/>
+      <source>Export Template</source>
+      <translation>Sablon exportálás</translation>
     </message>
+  </context>
+  <context>
+    <name>Path_DressupTag</name>
     <message>
-      <location filename="../../../PathScripts/PathJobCmd.py" line="109"/>
-      <source>Job</source>
-      <translation>Feladat</translation>
+      <location filename="../../../PathScripts/PathDressupTagGui.py" line="506"/>
+      <source>Tag Dress-up</source>
+      <translation>Címke megváltoztatás</translation>
     </message>
   </context>
   <context>
@@ -1859,11 +2193,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <source>Post Process the Selected path(s)</source>
       <translation>Utómunka eljárások a kiválasztott szerszámút(ak) hoz</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathPost.py" line="200"/>
-      <source>Post Process the Selected path(s)</source>
-      <translation>Utómunka eljárások a kiválasztott szerszámút(ak) hoz</translation>
-    </message>
   </context>
   <context>
     <name>Path_PreferencesPathDressup</name>
@@ -1873,7 +2202,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Felépítések</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathPreferencesPathDressup.py" line="42"/>
+      <location filename="../../../PathScripts/PathPreferencesPathDressup.py" line="43"/>
       <source>Dressups</source>
       <translation>Felépítések</translation>
     </message>
@@ -1894,21 +2223,21 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathSanity.py" line="93"/>
       <source>Please select a path Project to check
 </source>
-      <translation>Kérem válasszon ki egy szerszámpálya projektet ellenőrzésre
+      <translation type="unfinished">Please select a path Project to check
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="96"/>
       <source>Please select a path project to check
 </source>
-      <translation>Kérem válasszon ki egy szerszámpálya projektet ellenőrzésre
+      <translation type="unfinished">Please select a path project to check
 </translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="151"/>
       <source>The Job has no selected Base object.
 </source>
-      <translation>A munkának nincs kijelölt alap objektuma.
+      <translation type="unfinished">The Job has no selected Base object.
 </translation>
     </message>
     <message>
@@ -2006,6 +2335,13 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
   <context>
     <name>Path_SimpleCopy</name>
     <message>
+      <location filename="PathSimpleCopy.py" line="59"/>
+      <source>Please select exactly one path object
+</source>
+      <translation>Kérem, pontosan egy szerszámpálya útvonalat jelöljön ki
+</translation>
+    </message>
+    <message>
       <location filename="PathSimpleCopy.py" line="62"/>
       <source>Simple Copy</source>
       <translation>Egyszerű másolás</translation>
@@ -2014,13 +2350,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathSimpleCopy.py" line="47"/>
       <source>Creates a non-parametric copy of another path</source>
       <translation>Másik szerszámpálya útvonalról egy nem-paraméteres másolatot készít</translation>
-    </message>
-    <message>
-      <location filename="PathSimpleCopy.py" line="59"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Kérem, pontosan egy szerszámpálya útvonalat jelöljön ki
-</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="65"/>
@@ -2034,10 +2363,8 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
     <message>
       <location filename="../../../PathScripts/PathSimpleCopy.py" line="61"/>
-      <source>Please select exactly one path object
-</source>
-      <translation>Kérem, pontosan egy szerszámpálya útvonalat jelöljön ki
-</translation>
+      <source>Please select exactly one path object</source>
+      <translation>Kérem, pontosan egy szerszámpálya objektumot jelöljön ki</translation>
     </message>
   </context>
   <context>
@@ -2064,23 +2391,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
   </context>
   <context>
-    <name>Path_Surface</name>
-    <message>
-      <location filename="PathSurface.py" line="272"/>
-      <source>Hold on.  This might take a minute.
-</source>
-      <translation>Várjon.  Egy percig is eltarthat.
-</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathSurface.py" line="100"/>
-      <source>This operation requires OpenCamLib to be installed.
-</source>
-      <translation>Ehhez a művelethez OpenCamLib kell telepíteni.
-</translation>
-    </message>
-  </context>
-  <context>
     <name>Path_ToolController</name>
     <message>
       <location filename="PathToolController.py" line="132"/>
@@ -2093,12 +2403,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Eszköz vezérlő hozzáadása a munkához</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="257"/>
+      <location filename="../../../PathScripts/PathToolController.py" line="275"/>
       <source>Add Tool Controller to the Job</source>
       <translation>Eszköz vezérlő hozzáadása a munkához</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="258"/>
+      <location filename="../../../PathScripts/PathToolController.py" line="276"/>
       <source>Add Tool Controller</source>
       <translation>Eszköz vezérlő hozzáadása</translation>
     </message>
@@ -2121,17 +2431,17 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Megmunkálási sík létrehozása</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="123"/>
+      <location filename="../../../PathScripts/PathToolLenOffset.py" line="125"/>
       <source>Tool Length Offset</source>
       <translation>Szerszám hossz eltolás</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="124"/>
+      <location filename="../../../PathScripts/PathToolLenOffset.py" line="126"/>
       <source>Create a Tool Length Offset object</source>
       <translation>Szerszámhossz-korrekció bekapcsolása</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="134"/>
+      <location filename="../../../PathScripts/PathToolLenOffset.py" line="136"/>
       <source>Create a Selection Plane object</source>
       <translation>Megmunkálási sík létrehozása</translation>
     </message>
@@ -2144,7 +2454,7 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Eszköz kezelő</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="664"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="620"/>
       <source>Tool Manager</source>
       <translation>Eszköz kezelő</translation>
     </message>
@@ -2167,12 +2477,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Hozzon létre egy 3D-s felület műveletet egy modellből</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurfaceGui.py" line="63"/>
+      <location filename="../../../PathScripts/PathSurfaceGui.py" line="129"/>
       <source>3D Surface</source>
       <translation>3D felület</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSurfaceGui.py" line="63"/>
+      <location filename="../../../PathScripts/PathSurfaceGui.py" line="129"/>
       <source>Create a 3D Surface Operation from a model</source>
       <translation>Hozzon létre egy 3D-s felület műveletet egy modellből</translation>
     </message>
@@ -2217,12 +2527,12 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     <message>
       <location filename="TooltableEditor.py" line="391"/>
       <source>Export...</source>
-      <translation>Fájlba...</translation>
+      <translation type="unfinished">Export...</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="392"/>
       <source>Slot</source>
-      <translation>Szerszám száma</translation>
+      <translation type="unfinished">Slot</translation>
     </message>
     <message>
       <location filename="TooltableEditor.py" line="393"/>
@@ -2440,32 +2750,32 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Objektum nem rendelkezik szerszámlista tulajdonsággal</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="146"/>
       <source>Tooltable JSON (*.json)</source>
       <translation>Szerszámlista JSON (*.json)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="148"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="147"/>
       <source>Tooltable XML (*.xml)</source>
       <translation>Szerszámlista XML (*.xml)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="148"/>
       <source>HeeksCAD tooltable (*.tooltable)</source>
       <translation>HeeksCAD szerszámlista (*.tooltable)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="150"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="149"/>
       <source>LinuxCNC tooltable (*.tbl)</source>
       <translation>LinuxCNC szerszámlista (*.tbl)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="556"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="512"/>
       <source>Open tooltable</source>
       <translation>Szerszámlista megnyitása</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="565"/>
+      <location filename="../../../PathScripts/PathToolLibraryManager.py" line="521"/>
       <source>Save tooltable</source>
       <translation>Szerszámlista mentése</translation>
     </message>
@@ -2476,16 +2786,60 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
     </message>
   </context>
   <context>
+    <name>Path_SetupSheet</name>
+    <message>
+      <location filename="../../../PathScripts/PathSetupSheetGui.py" line="345"/>
+      <source>Edit SetupSheet</source>
+      <translation>Beállítólap szerkesztése</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Simulator</name>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="545"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="563"/>
       <source>CAM Simulator</source>
       <translation>CAM szimulátor</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathSimulatorGui.py" line="547"/>
+      <location filename="../../../PathScripts/PathSimulatorGui.py" line="565"/>
       <source>Simulate Path G-Code on stock</source>
       <translation>Szimulálni G-kód állomány útvonalát</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_Surface</name>
+    <message>
+      <location filename="../../../PathScripts/PathSurface.py" line="111"/>
+      <source>This operation requires OpenCamLib to be installed.</source>
+      <translation>Ehhez a művelethez OpenCamLib kell telepíteni.</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="272"/>
+      <source>Hold on.  This might take a minute.
+</source>
+      <translation>Várjon.  Egy percig is eltarthat.
+</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="312"/>
+      <source>This operation requires OpenCamLib to be installed.
+</source>
+      <translation>Ehhez a művelethez OpenCamLib kell telepíteni.
+</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="545"/>
+      <source>Please select a single solid object from the project tree
+</source>
+      <translation>A projekt fában válasszon ki egyetlen szilárd testet
+</translation>
+    </message>
+    <message>
+      <location filename="PathSurface.py" line="562"/>
+      <source>Cannot work with this object
+</source>
+      <translation>Ezzel az objektummal nem tud dolgozni
+</translation>
     </message>
   </context>
   <context>
@@ -2728,61 +3082,6 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <location filename="PathDressupTagGui.py" line="650"/>
       <source>Create Tag Dress-up</source>
       <translation>Címke megváltoztatás létrehozás</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathGui</name>
-    <message>
-      <location filename="../../../PathScripts/PathGui.py" line="56"/>
-      <source>%s has no property %s (%s))</source>
-      <translation>%s még nincs tulajdonsága %s (%s))</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathGui.py" line="115"/>
-      <source>Cannot find property %s of %s</source>
-      <translation>Nem található %s tulajdonsága ennek: %s</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_Dressup</name>
-    <message>
-      <location filename="PathDressup.py" line="98"/>
-      <source>Dress-up</source>
-      <translation>Megváltoztatás</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="100"/>
-      <source>Creates a Path Dess-up object from a selected path</source>
-      <translation>Szerszámpálya módosító objektumot hoz létre a kiválasztott útvonalból</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="110"/>
-      <source>Please select one path object
-</source>
-      <translation>Jelöljön ki egy pálya objektumot
-</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="113"/>
-      <source>The selected object is not a path
-</source>
-      <translation>A kijelölt objektum nem pálya útvonal
-</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="114"/>
-      <source>Creates a Path Dress-up object from a selected path</source>
-      <translation>Szerszámpálya módosító objektumot hoz létre a kiválasztott útvonalból</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="116"/>
-      <source>Please select a Path object</source>
-      <translation>Kérem válasszon egy pályaútvonal objektumot</translation>
-    </message>
-    <message>
-      <location filename="PathDressup.py" line="120"/>
-      <source>Create Dress-up</source>
-      <translation>Változtatást hoz létre</translation>
     </message>
   </context>
   <context>

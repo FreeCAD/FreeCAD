@@ -9,7 +9,7 @@
     </message>
     <message>
       <source>Failures and errors</source>
-      <translation>Kusular ve hatalar</translation>
+      <translation>Başarısızlıklar ve hatalar</translation>
     </message>
     <message>
       <source>Description</source>
@@ -108,7 +108,25 @@ FreeCAD Birim Denetimi bir FreeCAD ürünüdür. Modülleriniz için Birim Denet
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
       <translation>Çalıştırılabilir bir nesne ismi girerek, DenetimBirimini başlatabilirsiniz. Lütfen önce 'Başlat', a basın, bu şekilde sınama süreci başlatılacaktır.
 
-Lütfen hata ağacı bölümünden varolan bir hata üzerine tıklayarak bu hataya neden olan sorunları da içerecek şekilde bilgi sahibi olun.</translation>
+Lütfen unsur ağacı bölümünden varolan bir hata üzerine tıklayarak bu hataya neden olan sorunları da içerecek şekilde bilgi sahibi olun.</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Çağırılabilir bir nesnenin adını girin; çağırıldığında TestDurumu'na geri gönecektir.
+'Başlat'a tıklayın ve böylece oluşturulmuş test başlatılacaktır.
+
+Yığın iz dahil, hata hakkında daha fazla bilgi almak için unsur ağacında hatanın üzerine çift tıklayın.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Telif hakkı (c) Werner Mayer
+
+FreeCAS BirimTest FreeCAD'in bir parçasıdır ve kişileirn kendi modüllerine test birimleri yazmasını destekler.</translation>
     </message>
   </context>
 </TS>

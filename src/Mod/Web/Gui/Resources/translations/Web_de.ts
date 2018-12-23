@@ -235,12 +235,12 @@
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="412"/>
+      <location filename="../../BrowserView.cpp" line="440"/>
       <source>Browser</source>
       <translation>Browser</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="309"/>
+      <location filename="../../BrowserView.cpp" line="337"/>
       <source>File does not exist!</source>
       <translation>Datei nicht vorhanden!</translation>
     </message>
@@ -248,12 +248,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="329"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
       <source>Error</source>
       <translation>Fehlermeldungen</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="383"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Beim Laden der Datei sind Fehler aufgetreten. Einige Daten wurden möglicherweise geändert oder gar nicht wiederhergestellt. In der Berichtansicht finden Sie genauere Informationen zu den betroffenen Objekten.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="411"/>
       <source>Loading %1...</source>
       <translation>%1 wird geladen...</translation>
     </message>
@@ -261,12 +267,12 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="181"/>
+      <location filename="../../BrowserView.cpp" line="185"/>
       <source>Open in External Browser</source>
       <translation>In externem Browser öffnen</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="185"/>
+      <location filename="../../BrowserView.cpp" line="189"/>
       <source>Open in new window</source>
       <translation>In neuem Fenster öffnen</translation>
     </message>
