@@ -131,12 +131,12 @@
     <message>
       <location line="+6"/>
       <source>Iterations</source>
-      <translation>迭代</translation>
+      <translation>迭代次数</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Size factor</source>
-      <translation>尺寸因数</translation>
+      <translation>尺寸系数</translation>
     </message>
     <message>
       <location line="+29"/>

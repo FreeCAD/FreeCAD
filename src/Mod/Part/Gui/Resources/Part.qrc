@@ -107,5 +107,7 @@
         <file>translations/Part_id.qm</file>
         <file>translations/Part_lt.qm</file>
         <file>translations/Part_val-ES.qm</file>
+        <file>translations/Part_ar.qm</file>
+        <file>translations/Part_vi.qm</file>
     </qresource>
 </RCC> 

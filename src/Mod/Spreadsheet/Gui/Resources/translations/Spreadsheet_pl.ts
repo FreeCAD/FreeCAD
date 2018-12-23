@@ -340,19 +340,19 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Ustaw kolor pierwszego planu komórki (komórek)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Ustawia kolor pierwszego planu komórki(ek) Arkusza kalkulacyjnego</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Ustaw kolor tła komórki(ek)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Ustawia kolor tła komórki(ek) Arkusza kalkulacyjnego</translation>
     </message>
   </context>
   <context>

@@ -38,7 +38,25 @@
     <message>
       <location line="+1"/>
       <source>Open image view</source>
-      <translation>Open afbeelding weergave</translation>
+      <translation>Afbeeldingsweergave openen</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdImageScaling</name>
+    <message>
+      <location line="+120"/>
+      <source>Image</source>
+      <translation>Afbeelding</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Scale...</source>
+      <translation>Schaal...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Image Scaling</source>
+      <translation>Afbeelding schalen</translation>
     </message>
   </context>
   <context>
@@ -99,12 +117,12 @@
     <message>
       <location filename="../../ImageView.cpp" line="+107"/>
       <source>&amp;Fit image</source>
-      <translation>&amp;Passend</translation>
+      <translation>&amp;Pas afbeelding</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Stretch the image to fit the view</source>
-      <translation>Uitrekken tot grootte weergave venster</translation>
+      <translation>Rek het beeld uit zodat het in de weergave past</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -182,10 +200,10 @@
       <translation>Afbeeldingen(*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="+20"/>
+      <location filename="../../Command.cpp" line="-102"/>
       <location line="+47"/>
       <source>Choose an image file to open</source>
-      <translation>Kies een te openen afbeeldingsbestand</translation>
+      <translation>Kies een afbeeldingsbestand om te openen</translation>
     </message>
     <message>
       <location line="-54"/>
@@ -202,7 +220,7 @@
     <message>
       <location line="+8"/>
       <source>Error opening image</source>
-      <translation>Fout bij openen van afbeelding</translation>
+      <translation>Fout bij openen van de afbeelding</translation>
     </message>
     <message>
       <location line="+1"/>

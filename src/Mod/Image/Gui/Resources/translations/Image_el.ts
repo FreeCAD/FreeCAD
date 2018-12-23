@@ -11,12 +11,12 @@
     <message>
       <location line="+1"/>
       <source>Create image plane...</source>
-      <translation>Δημιουργία επιπέδου εικόνας...</translation>
+      <translation>Δημιουργήστε επίπεδο εικόνας...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Δημιουργήστε μια επίπεδη εικόνα στο τρισδιάστατο χώρο</translation>
+      <translation>Δημιουργήστε μια επίπεδη εικόνα στον τρισδιάστατο χώρο</translation>
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
@@ -38,7 +38,25 @@
     <message>
       <location line="+1"/>
       <source>Open image view</source>
-      <translation>Άνοιγμα εικόνας προβολή</translation>
+      <translation>Άνοιγμα προβολής εικόνας</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdImageScaling</name>
+    <message>
+      <location line="+120"/>
+      <source>Image</source>
+      <translation>Εικόνα</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Scale...</source>
+      <translation>Κλιμακοποίηση...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Image Scaling</source>
+      <translation type="unfinished">Image Scaling</translation>
     </message>
   </context>
   <context>
@@ -47,13 +65,13 @@
       <location filename="../../GLImageBox.cpp" line="+333"/>
       <location filename="../../OpenGLImageBox.cpp" line="+385"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Μη ορισμός χρωματικού περιβάλλοντος για την προβολή της εικόνας</translation>
+      <translation>Απροσδιόριστος τύπος χρωματικού χώρου για την προβολή εικόνων</translation>
     </message>
     <message>
       <location line="-1"/>
       <location filename="../../OpenGLImageBox.cpp" line="-1"/>
       <source>Image pixel format</source>
-      <translation>Μορφή pixel εικόνας</translation>
+      <translation>Μορφή εικονοστοιχείου εικόνας</translation>
     </message>
   </context>
   <context>
@@ -66,7 +84,7 @@
     <message>
       <location line="+6"/>
       <source>Image plane</source>
-      <translation type="unfinished">Image plane</translation>
+      <translation>Επίπεδο εικόνας</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -99,22 +117,22 @@
     <message>
       <location filename="../../ImageView.cpp" line="+107"/>
       <source>&amp;Fit image</source>
-      <translation type="unfinished">&amp;Fit image</translation>
+      <translation>Προσαρμογή εικόνας</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Stretch the image to fit the view</source>
-      <translation type="unfinished">Stretch the image to fit the view</translation>
+      <translation>Εκτείνετε την εικόνα ώστε να προσαρμόζεται στην προβολή</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>&amp;1:1 scale</source>
-      <translation>&amp; κλίμακας 1:1</translation>
+      <translation>κλίμακα &amp;1:1</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Display the image at a 1:1 scale</source>
-      <translation>Εμφάνιση της εικόνας σε κλίμακα 1:1</translation>
+      <translation>Απεικόνιση της εικόνας σε κλίμακα 1:1</translation>
     </message>
     <message>
       <source>&amp;Original color</source>
@@ -135,7 +153,7 @@
     <message>
       <location line="+9"/>
       <source>Standard</source>
-      <translation>Κανονικό</translation>
+      <translation>Καθιερωμένο</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -159,7 +177,7 @@
       <location line="+11"/>
       <location line="+5"/>
       <source>zoom</source>
-      <translation type="unfinished">zoom</translation>
+      <translation>εστίαση</translation>
     </message>
     <message>
       <location line="-62"/>
@@ -168,7 +186,7 @@
       <location line="+16"/>
       <location line="+16"/>
       <source>outside image</source>
-      <translation type="unfinished">outside image</translation>
+      <translation>εξωτερική εικόνα</translation>
     </message>
   </context>
   <context>
@@ -182,7 +200,7 @@
       <translation type="unfinished">Images (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="+20"/>
+      <location filename="../../Command.cpp" line="-102"/>
       <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>Επιλέξτε ένα αρχείο εικόνας για άνοιγμα</translation>
@@ -202,16 +220,16 @@
     <message>
       <location line="+8"/>
       <source>Error opening image</source>
-      <translation type="unfinished">Error opening image</translation>
+      <translation>Σφάλμα κατά το άνοιγμα της εικόνας</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Could not load the chosen image</source>
-      <translation type="unfinished">Could not load the chosen image</translation>
+      <translation>Αδυναμία φόρτωσης της επιλεγμένης εικόνας</translation>
     </message>
     <message>
       <source>Error open image</source>
-      <translation>Σφάλμα ανοίγματος εικόνας</translation>
+      <translation>Σφάλμα κατά το άνοιγμα της εικόνας</translation>
     </message>
     <message>
       <source>Could not load the choosen image</source>

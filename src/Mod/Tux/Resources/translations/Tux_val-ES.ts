@@ -16,7 +16,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>
       <source>Rotate</source>
-      <translation>Rotate</translation>
+      <translation>Gira</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="65"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Navigation style</source>
-      <translation type="unfinished">Navigation style</translation>
+      <translation>Estil de navegació</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>

@@ -103,5 +103,7 @@
         <file>translations/Tux_id.qm</file>
         <file>translations/Tux_lt.qm</file>
         <file>translations/Tux_val-ES.qm</file>
+        <file>translations/Tux_ar.qm</file>
+        <file>translations/Tux_vi.qm</file>
     </qresource>
 </RCC>

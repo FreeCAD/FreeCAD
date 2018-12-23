@@ -4,7 +4,7 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+187"/>
+      <location filename="../../Command.cpp" line="+188"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
@@ -36,7 +36,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Exports a point cloud</source>
-      <translation>Εξάγει ένα σύννεφο σημείο</translation>
+      <translation>Πραγματοποιεί εξαγωγή ενός νέφους σημείων</translation>
     </message>
   </context>
   <context>
@@ -55,26 +55,26 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Imports a point cloud</source>
-      <translation>Εισάγει ένα σύννεφο σημείο</translation>
+      <translation>Πραγματοποιεί εισαγωγή ενός νέφους σημείων</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+245"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>Συγχώνευση νεφών σημείων</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>Συγχώνευση διαφόρων νεφών σημείων σε ένα</translation>
     </message>
   </context>
   <context>
@@ -87,19 +87,19 @@
     <message>
       <location line="+1"/>
       <source>Cut point cloud</source>
-      <translation>Κόψτε το νέφος σημείων</translation>
+      <translation>Περικοπή νέφους σημείων</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Cuts a point cloud with a picked polygon</source>
-      <translation type="unfinished">Cuts a point cloud with a picked polygon</translation>
+      <translation>Περικόπτει ένα νέφος σημείων με ένα επιλεγμένο πολύγωνο</translation>
     </message>
   </context>
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-122"/>
+      <location line="-126"/>
       <source>Points</source>
       <translation>Σημεία</translation>
     </message>
@@ -112,7 +112,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Test to transform a point cloud</source>
-      <translation type="unfinished">Test to transform a point cloud</translation>
+      <translation>Δοκιμή μετασχηματισμού ενός νέφους σημείων</translation>
     </message>
   </context>
   <context>
@@ -145,12 +145,12 @@
     <message>
       <location line="-21"/>
       <source>Cluster by lines starting with:</source>
-      <translation>Σύμπλεγμα από τις γραμμές που αρχίζουν με:</translation>
+      <translation>Σύμπλεγμα από γραμμές που αρχίζουν με:</translation>
     </message>
     <message>
       <location line="-7"/>
       <source>Ignore lines starting with:</source>
-      <translation>Αγνοήστε τις γραμμές που αρχίζουν με:</translation>
+      <translation>Αγνοήστε γραμμές που αρχίζουν με:</translation>
     </message>
     <message>
       <location line="+54"/>
@@ -182,7 +182,7 @@
     <message>
       <location line="+5"/>
       <source>;</source>
-      <translation>;</translation>
+      <translation>·</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -216,28 +216,28 @@
       <location line="+29"/>
       <location line="+57"/>
       <source>I,J,K (normal vector)</source>
-      <translation type="unfinished">I,J,K (normal vector)</translation>
+      <translation>I,J,K (κάθετο διάνυσμα)</translation>
     </message>
     <message>
       <location line="-81"/>
       <location line="+29"/>
       <location line="+57"/>
       <source>I,K (normal vector 2D)</source>
-      <translation type="unfinished">I,K (normal vector 2D)</translation>
+      <translation>I,K (κάθετο διάνυσμα στον Δισδιάστατο Χώρο)</translation>
     </message>
     <message>
       <location line="-81"/>
       <location line="+29"/>
       <location line="+57"/>
       <source>R,G,B (color)</source>
-      <translation>R, G, B (χρώμα)</translation>
+      <translation>R,G,B (χρώμα)</translation>
     </message>
     <message>
       <location line="-81"/>
       <location line="+29"/>
       <location line="+57"/>
       <source>I (Gray value)</source>
-      <translation type="unfinished">I (Gray value)</translation>
+      <translation>I (Τιμή του γκρι)</translation>
     </message>
     <message>
       <location line="+61"/>
@@ -257,7 +257,7 @@
     <message>
       <location line="+231"/>
       <source>Number of previewed lines:</source>
-      <translation type="unfinished">Number of previewed lines:</translation>
+      <translation>Αριθμός των απεικονιζόμενων γραμμών:</translation>
     </message>
   </context>
   <context>
@@ -268,19 +268,19 @@
     </message>
     <message>
       <source>Ascii Points</source>
-      <translation type="unfinished">Ascii Points</translation>
+      <translation>Σημεία Ascii</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-76"/>
       <location line="+50"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Όλα τα Αρχεία</translation>
     </message>
     <message>
       <location line="-50"/>
       <location line="+50"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Μορφές σημείων</translation>
     </message>
     <message>
       <location line="+71"/>
@@ -290,7 +290,7 @@
     <message>
       <location line="+1"/>
       <source>Enter maximum distance:</source>
-      <translation type="unfinished">Enter maximum distance:</translation>
+      <translation>Εισαγωγή μέγιστης απόστασης:</translation>
     </message>
   </context>
   <context>
@@ -303,7 +303,7 @@
     <message>
       <location line="+1"/>
       <source>&amp;Points</source>
-      <translation type="unfinished">&amp;Points</translation>
+      <translation>Σημεία</translation>
     </message>
   </context>
 </TS>

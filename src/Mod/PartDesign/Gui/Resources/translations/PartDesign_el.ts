@@ -11,16 +11,16 @@
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation type="unfinished">Additive loft</translation>
+      <translation>Πρόσθετη παρεμβολή ορθογώνιων διατομών</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>Παρεμβολή ορθογώνιων διατομών ενός επιλεγμένου προφίλ μέσω άλλων τομών προφίλ</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Σάρωση ενός επιλεγμένου σκαριφήματος κατά μήκος μιας διαδρομής ή σε άλλα προφίλ</translation>
     </message>
   </context>
   <context>
@@ -33,12 +33,12 @@
     <message>
       <location line="+1"/>
       <source>Additive pipe</source>
-      <translation type="unfinished">Additive pipe</translation>
+      <translation>Πρόσθετο αντικείμενο χωρίς πάτωμα και οροφή</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Σάρωση ενός επιλεγμένου σκαριφήματος κατά μήκος μιας διαδρομής ή σε άλλα προφίλ</translation>
     </message>
   </context>
   <context>
@@ -51,12 +51,12 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation type="unfinished">Create body</translation>
+      <translation>Δημιουργήστε σώμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation type="unfinished">Create a new body and make it active</translation>
+      <translation>Δημιουργήστε ένα νέο σώμα και ενεργοποιήστε το</translation>
     </message>
   </context>
   <context>
@@ -69,12 +69,12 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation</source>
-      <translation>Μπουλική επιχείρηση</translation>
+      <translation>Πράξη Άλγεβρας Boole</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation type="unfinished">Boolean operation with two or more bodies</translation>
+      <translation>Εκτέλεση πράξης άλγεβρας Boole με δύο ή περισσότερα σώματα</translation>
     </message>
   </context>
   <context>
@@ -113,12 +113,12 @@
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Δημιουργήστε κλώνο</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Δημιουργήστε έναν νέο κλώνο</translation>
     </message>
   </context>
   <context>
@@ -131,12 +131,12 @@
     <message>
       <location line="+1"/>
       <source>Draft</source>
-      <translation>Πρόχειρο</translation>
+      <translation>Βύθισμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Make a draft on a face</source>
-      <translation>Δημιουργία ενός προσχεδίου σε μία όψη</translation>
+      <translation>Δημιουργήστε ένα προσχέδιο σε μία όψη</translation>
     </message>
   </context>
   <context>
@@ -149,12 +149,12 @@
     <message>
       <location line="+1"/>
       <source>Duplicate selected object</source>
-      <translation type="unfinished">Duplicate selected object</translation>
+      <translation>Δημιουργία αντιγράφου του επιλεγμένου αντικειμένου</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation type="unfinished">Duplicates the selected object and adds it to the active body</translation>
+      <translation>Δημιουργεί αντίγραφο του επιλεγμένου αντικειμένου και το προσθέτει στο ενεργό σώμα</translation>
     </message>
   </context>
   <context>
@@ -167,12 +167,12 @@
     <message>
       <location line="+1"/>
       <source>Fillet</source>
-      <translation>Στρογγύλεμα ακμών</translation>
+      <translation>Στρογγύλεμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Στρογγύλεμα σε μία ακμή, όψη ή σώμα</translation>
+      <translation>Δημιουργία στρογγυλέματος σε μια ακμή, σε μια όψη ή σε ένα σώμα</translation>
     </message>
   </context>
   <context>
@@ -185,12 +185,12 @@
     <message>
       <location line="+1"/>
       <source>Groove</source>
-      <translation>Αυλάκωση</translation>
+      <translation>Ράβδωση</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Groove a selected sketch</source>
-      <translation>Αυλάκωση ενός επιλεγμένου σκίτσου</translation>
+      <translation>Δημιουργία ραβδώσεων σε ένα επιλεγμένο σκαρίφημα</translation>
     </message>
   </context>
   <context>
@@ -203,12 +203,12 @@
     <message>
       <location line="+1"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Οπή</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>Δημιουργήστε μια οπή με το επιλεγμένο σκαρίφημα</translation>
     </message>
   </context>
   <context>
@@ -221,12 +221,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation type="unfinished">Create a datum line</translation>
+      <translation>Δημιουργήστε μια γραμμή αναφοράς</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation type="unfinished">Create a new datum line</translation>
+      <translation>Δημιουργήστε μια νέα γραμμή αναφοράς</translation>
     </message>
   </context>
   <context>
@@ -244,7 +244,7 @@
     <message>
       <location line="+1"/>
       <source>Create a linear pattern feature</source>
-      <translation type="unfinished">Create a linear pattern feature</translation>
+      <translation>Δημιουργήστε ένα χαρακτηριστικό γραμμικού μοτίβου</translation>
     </message>
     <message>
       <source>create a linear pattern feature</source>
@@ -261,16 +261,16 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Μετεγκατάσταση</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Μετεγκατάσταση εγγράφου στη σύγχρονη ροή εργασιών ΣχεδίασηςΕξαρτήματος</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern partdesign workflow</translation>
+      <translation>Μετεγκατάσταση εγγράφου στη σύγχρονη ροή εργασιών ΣχεδίασηςΕξαρτήματος</translation>
     </message>
   </context>
   <context>
@@ -283,16 +283,16 @@
     <message>
       <location line="+1"/>
       <source>Mirrored</source>
-      <translation>Καθρεφτισμός</translation>
+      <translation>Κατοπτρισμένο</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>Δημιουργήστε ένα κατοπτρισμένο χαρακτηριστικό</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
-      <translation>δημιουργία καθρεπτισμού ενός χαρακτηριστικού</translation>
+      <translation>δημιουργήστε ένα κατοπτρισμένο χαρακτηριστικό</translation>
     </message>
   </context>
   <context>
@@ -305,12 +305,12 @@
     <message>
       <location line="+1"/>
       <source>Move object to other body</source>
-      <translation type="unfinished">Move object to other body</translation>
+      <translation>Μετακινήστε το αντικείμενο σε άλλο σώμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object to another body</source>
-      <translation type="unfinished">Moves the selected object to another body</translation>
+      <translation>Μετακινεί το επιλεγμένο αντικείμενο σε ένα άλλο σώμα</translation>
     </message>
   </context>
   <context>
@@ -323,12 +323,12 @@
     <message>
       <location line="+1"/>
       <source>Move object after other object</source>
-      <translation type="unfinished">Move object after other object</translation>
+      <translation>Μετακίνηση του αντικειμένου μετά από άλλο αντικείμενο</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation type="unfinished">Moves the selected object and insert it after another object</translation>
+      <translation>Μετακινεί το επιλεγμένο αντικείμενο και το εισάγει μετά από κάποιο άλλο αντικείμενο</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation type="unfinished">Set tip</translation>
+      <translation>Ορίστε άκρο</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Move the tip of the body</source>
-      <translation type="unfinished">Move the tip of the body</translation>
+      <translation>Μετακινήστε το άκρο του σώματος</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location line="+1"/>
       <source>Create MultiTransform</source>
-      <translation type="unfinished">Create MultiTransform</translation>
+      <translation>Δημιουργήστε Πολλαπλό Μετασχηματισμό</translation>
     </message>
     <message>
       <source>MultiTransform</source>
@@ -368,7 +368,7 @@
     <message>
       <location line="+1"/>
       <source>Create a multitransform feature</source>
-      <translation type="unfinished">Create a multitransform feature</translation>
+      <translation>Δημιουργήστε ένα χαρακτηριστικό πολλαπλού μετασχηματισμού</translation>
     </message>
     <message>
       <source>create a multitransform feature</source>
@@ -385,7 +385,7 @@
     <message>
       <location line="+1"/>
       <source>Create sketch</source>
-      <translation>Δημιουργία σκίτσου</translation>
+      <translation>Δημιουργία σκαριφήματος</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -408,7 +408,7 @@
     <message>
       <location line="+1"/>
       <source>Pad a selected sketch</source>
-      <translation>Ανάπτυξη ενός σκίτσου</translation>
+      <translation>Χάραξη στερεού με τη χρήση επιλεγμένου σκαριφήματος</translation>
     </message>
   </context>
   <context>
@@ -419,11 +419,11 @@
     </message>
     <message>
       <source>Create part</source>
-      <translation type="unfinished">Create part</translation>
+      <translation>Δημιουργήστε εξάρτημα</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation type="unfinished">Create a new part and make it active</translation>
+      <translation>Δημιουργήστε ένα νέο εξάρτημα και ενεργοποιήστε το</translation>
     </message>
   </context>
   <context>
@@ -436,12 +436,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum plane</source>
-      <translation type="unfinished">Create a datum plane</translation>
+      <translation>Δημιουργήστε ένα επίπεδο αναφοράς</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum plane</source>
-      <translation type="unfinished">Create a new datum plane</translation>
+      <translation>Δημιουργήστε ένα νέο επίπεδο αναφοράς</translation>
     </message>
   </context>
   <context>
@@ -454,12 +454,12 @@
     <message>
       <location line="+1"/>
       <source>Pocket</source>
-      <translation>Εσοχή</translation>
+      <translation>Δημιουργία οπής σε στερεό</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation type="unfinished">Create a pocket with the selected sketch</translation>
+      <translation>Δημιουργήστε μια οπή με τη χρήση του επιλεγμένου σκαριφήματος</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
@@ -476,12 +476,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum point</source>
-      <translation type="unfinished">Create a datum point</translation>
+      <translation>Δημιουργήστε ένα σημείο αναφοράς</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum point</source>
-      <translation type="unfinished">Create a new datum point</translation>
+      <translation>Δημιουργήστε ένα νέο σημείο αναφοράς</translation>
     </message>
   </context>
   <context>
@@ -499,7 +499,7 @@
     <message>
       <location line="+1"/>
       <source>Create a polar pattern feature</source>
-      <translation type="unfinished">Create a polar pattern feature</translation>
+      <translation>Δημιουργήστε ένα χαρακτηριστικό πολικού μοτίβου</translation>
     </message>
     <message>
       <source>create a polar pattern feature</source>
@@ -516,12 +516,12 @@
     <message>
       <location line="+1"/>
       <source>Revolution</source>
-      <translation>Περιστροφή</translation>
+      <translation>Περιφορά</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Revolve a selected sketch</source>
-      <translation>Περιστροφή ενός επιλεγμένου σκίτσου</translation>
+      <translation>Περιφορά ενός επιλεγμένου σκαριφήματος</translation>
     </message>
   </context>
   <context>
@@ -534,12 +534,12 @@
     <message>
       <location line="+1"/>
       <source>Scaled</source>
-      <translation>Κλιμάκωση</translation>
+      <translation>Υπό κλίμακα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a scaled feature</source>
-      <translation type="unfinished">Create a scaled feature</translation>
+      <translation>Δημιουργήστε ένα χαρακτηριστικό υπό κλίμακα</translation>
     </message>
     <message>
       <source>create a scaled feature</source>
@@ -556,12 +556,12 @@
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>Δημιουργήστε ένα αντικείμενο σύνδεσης σχημάτων</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>Δημιουργήστε ένα νέο αντικείμενο σύνδεσης σχημάτων</translation>
     </message>
   </context>
   <context>
@@ -574,16 +574,16 @@
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>Αφαιρετική παρεμβολή ορθογώνιων διατομών</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>Παρεμβολή ορθογώνιων διατομών ενός επιλεγμένου προφίλ μέσω άλλων τομών προφίλ και απομάκρυνση του από το σώμα</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>Σάρωση ενός επιλεγμένου σκαριφήματος κατά μήκος μιας διαδρομής ή σε άλλα προφίλ και απομάκρυνση του από το σώμα</translation>
     </message>
   </context>
   <context>
@@ -596,12 +596,12 @@
     <message>
       <location line="+1"/>
       <source>Subtractive pipe</source>
-      <translation type="unfinished">Subtractive pipe</translation>
+      <translation>Αφαιρετικό αντικείμενο χωρίς πάτωμα και οροφή</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>Σάρωση ενός επιλεγμένου σκαριφήματος κατά μήκος μιας διαδρομής ή σε άλλα προφίλ και απομάκρυνση του από το σώμα</translation>
     </message>
   </context>
   <context>
@@ -619,7 +619,7 @@
     <message>
       <location line="+1"/>
       <source>Make a thick solid</source>
-      <translation type="unfinished">Make a thick solid</translation>
+      <translation>Δημιουργήστε ένα συμπαγές στερεό</translation>
     </message>
   </context>
   <context>
@@ -633,47 +633,47 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation type="unfinished">Create an additive primitive</translation>
+      <translation>Δημιουργήστε ένα πρόσθετο θεμελιακό στοιχείο</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Πρόσθετο Κιβώτιο</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cylinder</source>
-      <translation type="unfinished">Additive Cylinder</translation>
+      <translation>Πρόσθετος Κύλινδρος</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Sphere</source>
-      <translation type="unfinished">Additive Sphere</translation>
+      <translation>Πρόσθετη Σφαίρα</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>Πρόσθετος Κώνος</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Ellipsoid</source>
-      <translation type="unfinished">Additive Ellipsoid</translation>
+      <translation>Πρόσθετο Ελλειψοειδές</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Torus</source>
-      <translation type="unfinished">Additive Torus</translation>
+      <translation>Πρόσθετος Τόρος</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Prism</source>
-      <translation type="unfinished">Additive Prism</translation>
+      <translation>Πρόσθετο Πρίσμα</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation type="unfinished">Additive Wedge</translation>
+      <translation>Πρόσθετη Σφήνα</translation>
     </message>
   </context>
   <context>
@@ -685,53 +685,53 @@
     </message>
     <message>
       <source>Create an subtractive primitive</source>
-      <translation type="unfinished">Create an subtractive primitive</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό θεμελιακό στοιχείο</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό θεμελιακό στοιχείο</translation>
     </message>
     <message>
       <location line="+111"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Αφαιρετικό Κιβώτιο</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cylinder</source>
-      <translation type="unfinished">Subtractive Cylinder</translation>
+      <translation>Αφαιρετικός Κύλινδρος</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Sphere</source>
-      <translation type="unfinished">Subtractive Sphere</translation>
+      <translation>Αφαιρετική Σφαίρα</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cone</source>
-      <translation type="unfinished">Subtractive Cone</translation>
+      <translation>Αφαιρετικός Κώνος</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Ellipsoid</source>
-      <translation type="unfinished">Subtractive Ellipsoid</translation>
+      <translation>Αφαιρετικό Ελλειψοειδές</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Torus</source>
-      <translation type="unfinished">Subtractive Torus</translation>
+      <translation>Αφαιρετικός Τόρος</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Prism</source>
-      <translation type="unfinished">Subtractive Prism</translation>
+      <translation>Αφαιρετικό Πρίσμα</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Wedge</source>
-      <translation type="unfinished">Subtractive Wedge</translation>
+      <translation>Αφαιρετική Σφήνα</translation>
     </message>
   </context>
   <context>
@@ -744,22 +744,22 @@
     <message>
       <location line="+6"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</translation>
+      <translation>Επιλέξατε γεωμετρικές οντότητες που δεν ανήκουν στο ενεργό σώμα. Παρακαλώ καθορίστε το πώς θα θέλατε να διαχειριστείτε αυτές τις επιλογές. Αν δεν θέλετε να επιλέξετε τα εν λόγω αντικείμενα αναφοράς ακυρώστε την εντολή.</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Δημιουργία εξαρτημένου αντιγράφου (συνιστάται)</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Δημιουργία εξαρτημένου αντιγράφου</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Δημιουργήστε στοιχείο παραπομπής</translation>
     </message>
   </context>
   <context>
@@ -767,37 +767,37 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="+45"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Έγκυρο</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Μη έγκυρο σχήμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Κανένα σύρμα στο σκαρίφημα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Το σκαρίφημα χρησιμοποιείται ήδη από άλλο χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation type="unfinished">Sketch belongs to another Body feature</translation>
+      <translation>Το σκαρίφημα ανήκει σε κάποιο άλλο χαρακτηριστικό Σώματος</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Επίπεδο βάσης</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation type="unfinished">Feature is located after the Tip feature</translation>
+      <translation>Το χαρακτηριστικό βρίσκεται δίπλα από το χαρακτηριστικό του άκρου</translation>
     </message>
   </context>
   <context>
@@ -810,12 +810,12 @@
     <message>
       <location line="+1"/>
       <source>Sketch tools</source>
-      <translation>Εργαλεία Σκίτσου</translation>
+      <translation>Εργαλεία Σκαριφήματος</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create Geometry</source>
-      <translation>Δημιουργία Γεωμετρίας</translation>
+      <translation>Δημιουργία Γεωμετρικής Οντότητας</translation>
     </message>
   </context>
   <context>
@@ -823,17 +823,17 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
       <source>Involute parameter</source>
-      <translation>Ενελιγμένη παράμετρος</translation>
+      <translation>Παράμετρος ενειλιγμένης</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Number of teeth:</source>
-      <translation>Πλήθος δοντιών:</translation>
+      <translation>Αριθμός δοντιών:</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Modules:</source>
-      <translation>Αρθρώματα:</translation>
+      <translation>Μονάδα:</translation>
     </message>
     <message>
       <location line="+85"/>
@@ -855,7 +855,7 @@
     <message>
       <location line="-19"/>
       <source>External gear:</source>
-      <translation type="unfinished">External gear:</translation>
+      <translation>Εξωτερικό γρανάζι:</translation>
     </message>
     <message>
       <location line="-68"/>
@@ -887,17 +887,17 @@
     </message>
     <message>
       <source>No shape selected</source>
-      <translation>Δεν επιλέγει κάποιο σχήμα</translation>
+      <translation>Δεν έχει επιλεχθεί κανένα σχήμα</translation>
     </message>
     <message>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>Δεν επιλέχτηκε κάποιο έγκυρο σχήμα.
-Παρακαλώ, επέλεξε, πρώτα, ένα έγκυρο σχήμα στο αναπτυσσόμενο πλαίσιο.</translation>
+      <translation>Δεν έχει επιλεχθεί κανένα έγκυρο σχήμα.
+Παρακαλώ επιλέξτε πρώτα ένα έγκυρο σχήμα στο αναπτυσσόμενο πλαίσιο.</translation>
     </message>
     <message>
       <source>No edge selected</source>
-      <translation>Δεν επιλέχτηκε κάποια ακμή</translation>
+      <translation>Δεν έχει επιλεχθεί καμία ακμή</translation>
     </message>
     <message>
       <source>No edge entity is checked to chamfer.
@@ -911,7 +911,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="+14"/>
       <source>Geometric Primitives</source>
-      <translation type="unfinished">Geometric Primitives</translation>
+      <translation>Γεωμετρικά Θεμελιακά Στοιχεία</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -973,7 +973,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-184"/>
       <source>V parameters:</source>
-      <translation>Παράμετρη V:</translation>
+      <translation>Παράμετροι V:</translation>
     </message>
     <message>
       <location line="+137"/>
@@ -1001,32 +1001,32 @@ Please check one or more edge entities first.</translation>
       <location line="-862"/>
       <location line="+882"/>
       <source>Circumradius:</source>
-      <translation type="unfinished">Circumradius:</translation>
+      <translation>Ακτίνα πολυγώνου:</translation>
     </message>
     <message>
       <location line="-831"/>
       <source>X min/max:</source>
-      <translation>X ελαχ./μέγ.:</translation>
+      <translation>X ελάχιστο/μέγιστο:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Y min/max:</source>
-      <translation>Y ελαχ./μέγ.:</translation>
+      <translation>Υ ελάχιστο/μέγιστο:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Z min/max:</source>
-      <translation>Z ελαχ./μέγ.:</translation>
+      <translation>Ζ ελάχιστο/μέγιστο:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>X2 min/max:</source>
-      <translation>X2 ελαχ./μέγ.:</translation>
+      <translation>X2 ελάχιστο/μέγιστο:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Z2 min/max:</source>
-      <translation>Z2 ελαχ./μέγ.:</translation>
+      <translation>Z2 ελάχιστο/μέγιστο:</translation>
     </message>
     <message>
       <location line="+160"/>
@@ -1041,12 +1041,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Right-handed</source>
-      <translation>Δεξιόχειρο</translation>
+      <translation>Δεξιόστροφο</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Left-handed</source>
-      <translation>Αριστερόχειρο</translation>
+      <translation>Αριστερόστροφο</translation>
     </message>
     <message>
       <location line="+88"/>
@@ -1056,7 +1056,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+7"/>
       <source>Number of rotations:</source>
-      <translation>Πλήθος περιστροφών:</translation>
+      <translation>Αριθμός περιστροφών:</translation>
     </message>
     <message>
       <location line="+58"/>
@@ -1083,7 +1083,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+7"/>
       <source>Minor radius:</source>
-      <translation>Ελάσσων ακτίνα:</translation>
+      <translation>Μικρή ακτίνα:</translation>
     </message>
     <message>
       <location line="+82"/>
@@ -1109,7 +1109,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-37"/>
       <source>End point</source>
-      <translation>Σημείο τερματισμού</translation>
+      <translation>Σημείο τέλους</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1129,7 +1129,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="+182"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation type="unfinished">Selecting this will cause circular dependency.</translation>
+      <translation>Αυτή η επιλογή θα προκαλέσει κυκλική εξάρτηση.</translation>
     </message>
   </context>
   <context>
@@ -1142,41 +1142,41 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add body</source>
-      <translation type="unfinished">Add body</translation>
+      <translation>Προσθέστε σώμα</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove body</source>
-      <translation type="unfinished">Remove body</translation>
+      <translation>Αφαιρέστε σώμα</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Συγχώνευση</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Cut</source>
-      <translation>Αποκοπή</translation>
+      <translation>Περικοπή</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Τομή</translation>
     </message>
     <message>
       <source>Section</source>
-      <translation>Τμήμα</translation>
+      <translation>Τομή</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
       <source>Boolean parameters</source>
-      <translation type="unfinished">Boolean parameters</translation>
+      <translation>Παράμετροι Boole</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
@@ -1184,12 +1184,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
       <source>Primitive parameters</source>
-      <translation type="unfinished">Primitive parameters</translation>
+      <translation>Παράμετροι θεμελιακών στοιχείων</translation>
     </message>
     <message>
       <location line="+593"/>
       <source>Create primitive</source>
-      <translation type="unfinished">Create primitive</translation>
+      <translation>Δημιουργήστε θεμελιακό στοιχείο</translation>
     </message>
   </context>
   <context>
@@ -1249,12 +1249,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Προσθέστε αναφορά</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Αφαιρέστε αναφορά</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -1268,7 +1268,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="+86"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
@@ -1276,7 +1276,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+72"/>
       <source> parameters</source>
-      <translation type="unfinished"> parameters</translation>
+      <translation> παράμετροι</translation>
     </message>
   </context>
   <context>
@@ -1284,17 +1284,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Κενή λίστα σωμάτων</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Η λίστα σωμάτων δεν δύναται να είναι κενή</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
-      <translation type="unfinished">Boolean: Accept: Input error</translation>
+      <translation>Χρήση Λειτουργιών Boole: Αποδοχή: Σφάλμα εισαγωγής</translation>
     </message>
   </context>
   <context>
@@ -1309,12 +1309,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+49"/>
       <source>Incompatible reference set</source>
-      <translation type="unfinished">Incompatible reference set</translation>
+      <translation>Μη συμβατό σύνολο σημείων αναφοράς</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation type="unfinished">There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</translation>
+      <translation>Δεν υπάρχει λειτουργία συνημμένων που να ταιριάζει με το τρέχον σύνολο σημείων αναφοράς. Αν επιλέξετε να συνεχίσετε, το χαρακτηριστικό θα παραμείνει εκεί που είναι τώρα και δεν θα μετακινηθεί καθώς αλλάζουν τα σημεία αναφοράς. Θέλετε να συνεχίσετε;</translation>
     </message>
   </context>
   <context>
@@ -1425,7 +1425,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add face</source>
-      <translation>Προσθήκη όψης</translation>
+      <translation>Προσθέστε όψη</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1435,12 +1435,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+17"/>
       <source>Draft angle</source>
-      <translation>Γωνία προσχεδίασης</translation>
+      <translation>Γωνία προσχεδίου</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Neutral plane</source>
-      <translation>Ουδέτερη επιφάνεια</translation>
+      <translation>Ουδέτερο επίπεδο</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1459,7 +1459,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="+96"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
@@ -1472,91 +1472,91 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+9"/>
       <source>Allow used features</source>
-      <translation type="unfinished">Allow used features</translation>
+      <translation>Να επιτρέπονται τα χρησιμοποιημένα χαρακτηριστικά</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Allow external features</source>
-      <translation type="unfinished">Allow external features</translation>
+      <translation>Να επιτρέπονται τα εξωτερικά χαρακτηριστικά</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>From  other bodies of the same part</source>
-      <translation type="unfinished">From  other bodies of the same part</translation>
+      <translation>Από άλλα σώματα του ιδίου εξαρτήματος</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>From different parts or free features</source>
-      <translation type="unfinished">From different parts or free features</translation>
+      <translation>Από διαφορετικά εξαρτήματα ή ελεύθερα χαρακτηριστικά</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Δημιουργία εξαρτημένου αντιγράφου (συνιστάται)</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Δημιουργία εξαρτημένου αντιγράφου</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Δημιουργήστε στοιχείο παραπομπής</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="+65"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Έγκυρο</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Μη έγκυρο σχήμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Κανένα σύρμα στο σκαρίφημα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Το σκαρίφημα χρησιμοποιείται ήδη από άλλο χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Belongs to another body</source>
-      <translation type="unfinished">Belongs to another body</translation>
+      <translation>Ανήκει σε κάποιο άλλο σώμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Belongs to another part</source>
-      <translation type="unfinished">Belongs to another part</translation>
+      <translation>Ανήκει σε κάποιο άλλο εξάρτημα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Doesn't belong to any body</source>
-      <translation type="unfinished">Doesn't belong to any body</translation>
+      <translation>Δεν ανήκει σε κανένα σώμα</translation>
     </message>
     <message>
       <source>Doesn't belongs to any body</source>
-      <translation type="unfinished">Doesn't belongs to any body</translation>
+      <translation>Δεν ανήκει σε κανένα σώμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Επίπεδο βάσης</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation type="unfinished">Feature is located after the tip feature</translation>
+      <translation>Το χαρακτηριστικό βρίσκεται δίπλα από το χαρακτηριστικό του άκρου</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Επιλέξτε χαρακτηριστικό</translation>
     </message>
   </context>
   <context>
@@ -1569,12 +1569,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Προσθέστε αναφορά</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Αφαιρέστε αναφορά</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1588,7 +1588,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+86"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
@@ -1623,7 +1623,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <source>Groove parameters</source>
@@ -1658,12 +1658,12 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>TaskHoleParameters</source>
-      <translation>ΠαράμετροιΔημιουργίαςΟπής</translation>
+      <translation>Παράμετροι Οπών Εργασίας</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+48"/>
       <source>Hole parameters</source>
-      <translation type="unfinished">Hole parameters</translation>
+      <translation>Παράμετροι Οπών</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -1673,27 +1673,27 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+1"/>
       <source>ISO metric coarse profile</source>
-      <translation type="unfinished">ISO metric coarse profile</translation>
+      <translation>Μετρικό σύστημα προτύπου ISO για τραχύ προφίλ</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>ISO metric fine profile</source>
-      <translation type="unfinished">ISO metric fine profile</translation>
+      <translation>Μετρικό σύστημα προτύπου ISO για λείο προφίλ</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS coarse profile</source>
-      <translation type="unfinished">UTS coarse profile</translation>
+      <translation>Τραχύ προφίλ UTS</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS fine profile</source>
-      <translation type="unfinished">UTS fine profile</translation>
+      <translation>Λείο προφίλ UTS</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS extra fine profile</source>
-      <translation type="unfinished">UTS extra fine profile</translation>
+      <translation>Έξτρα λείο προφίλ UTS</translation>
     </message>
   </context>
   <context>
@@ -1727,12 +1727,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Προσθέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Αφαιρέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -1747,17 +1747,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+21"/>
       <source>Occurrences</source>
-      <translation>Στιγμές</translation>
+      <translation>Επαναλήψεις</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>OK</source>
-      <translation>Εντάξει</translation>
+      <translation>ΟΚ</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <source>Select an edge or a face</source>
@@ -1770,7 +1770,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="+113"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
       <location line="+211"/>
@@ -1788,7 +1788,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+6"/>
       <source>Ruled surface</source>
-      <translation>Επιφάνεια με ευθείες</translation>
+      <translation>Ευθειογενής επιφάνεια</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -1798,22 +1798,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+12"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Προσθέστε Τομή</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Αφαιρέστε Τομή</translation>
     </message>
     <message>
       <location line="+35"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
       <source>Loft parameters</source>
-      <translation type="unfinished">Loft parameters</translation>
+      <translation>Παράμετροι παρεμβολής ορθογώνιων διατομών</translation>
     </message>
   </context>
   <context>
@@ -1829,7 +1829,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>XY</source>
-      <translation>ΧΨ</translation>
+      <translation>XY</translation>
     </message>
     <message>
       <source>XZ</source>
@@ -1842,7 +1842,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+35"/>
       <source>Plane</source>
-      <translation>Επιφάνεια</translation>
+      <translation>Επίπεδο</translation>
     </message>
     <message>
       <source>Horizontal sketch axis</source>
@@ -1859,22 +1859,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Προσθέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Αφαιρέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+31"/>
       <source>OK</source>
-      <translation>Εντάξει</translation>
+      <translation>ΟΚ</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <source>Select a plane</source>
@@ -1891,7 +1891,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="+110"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
       <location line="+134"/>
@@ -1913,27 +1913,27 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Προσθέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Αφαιρέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Transformations</source>
-      <translation>Μεταμορφώσεις</translation>
+      <translation>Μετασχηματισμοί</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="+75"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -1948,22 +1948,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+4"/>
       <source>Add mirrored transformation</source>
-      <translation>Προσθήκη καθρεπτισμένης μεταμόρφωσης</translation>
+      <translation>Προσθέστε μετασχηματισμό κατοπτρικής συμμετρίας</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Add linear pattern</source>
-      <translation>Προσθήκη γραμμικού μοτίβου</translation>
+      <translation>Προσθέστε γραμμικό μοτίβο</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Add polar pattern</source>
-      <translation>Προσθήκη πολικού μοτίβου</translation>
+      <translation>Προσθέστε πολικό μοτίβο</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Add scaled transformation</source>
-      <translation>Προσθήκη κλιμακούμενης μεταμόρφωσης</translation>
+      <translation>Προσθέστε μετασχηματισμό κλίμακας</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1991,7 +1991,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Type</source>
-      <translation>Είδος</translation>
+      <translation>Τύπος</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -2001,7 +2001,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+18"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Μετατοπίστε</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2023,7 +2023,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+19"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -2055,7 +2055,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Είδος εκτύπωσης σχεδίου:</translation>
+      <translation>Λειτουργία γραφήματος:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -2076,13 +2076,13 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
-      <translation>Παράμετροι Ανάπτυξης</translation>
+      <translation>Παράμετροι χάραξης στερεού με τη χρήση σκαριφήματος</translation>
     </message>
     <message>
       <location line="+7"/>
       <location line="+357"/>
       <source>No face selected</source>
-      <translation>Δεν επελέγη κάποια όψη</translation>
+      <translation>Δεν επιλέχθηκε καμία όψη</translation>
     </message>
     <message>
       <location line="-295"/>
@@ -2150,45 +2150,45 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Orientation mode</source>
-      <translation type="unfinished">Orientation mode</translation>
+      <translation>Λειτουργία προσανατολισμού</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Standard</source>
-      <translation>Κανονικό</translation>
+      <translation>Καθιερωμένο</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Σταθερό</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Frenet</source>
-      <translation type="unfinished">Frenet</translation>
+      <translation>Frenet</translation>
     </message>
     <message>
       <source>Auxillery</source>
-      <translation type="unfinished">Auxillery</translation>
+      <translation>Βοηθητική</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Binormal</source>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Διορθόθετο διάνυσμα</translation>
     </message>
     <message>
       <source>Curvelinear equivalenz</source>
-      <translation type="unfinished">Curvelinear equivalenz</translation>
+      <translation>Καμπυλόγραμμη ισοδυναμία</translation>
     </message>
     <message>
       <location line="-5"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Βοηθητική</translation>
     </message>
     <message>
       <location line="+25"/>
       <source>Curvelinear equivalence</source>
-      <translation type="unfinished">Curvelinear equivalence</translation>
+      <translation>Καμπυλόγραμμη ισοδυναμία</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2198,22 +2198,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Αντικείμενο</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Προσθέστε Ακμή</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Αφαιρέστε Ακμή</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>Ορίστε το σταθερό διορθόθετο διάνυσμα που θα χρησιμοποιηθεί για τον υπολογισμό του προσανατολισμού των προφίλ</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -2233,7 +2233,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
-      <translation type="unfinished">Section orientation</translation>
+      <translation>Προσανατολισμός τομής</translation>
     </message>
   </context>
   <context>
@@ -2246,22 +2246,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+11"/>
       <source>Corner Transition</source>
-      <translation type="unfinished">Corner Transition</translation>
+      <translation>Μετάβαση Γωνίας</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Transformed</source>
-      <translation type="unfinished">Transformed</translation>
+      <translation>Μετασχηματισμένο</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Right Corner</source>
-      <translation type="unfinished">Right Corner</translation>
+      <translation>Ορθή Γωνία</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Round Corner</source>
-      <translation type="unfinished">Round Corner</translation>
+      <translation>Στρογγυλή γωνία</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -2271,22 +2271,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Αντικείμενο</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Προσθέστε Ακμή</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Αφαιρέστε Ακμή</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-222"/>
       <source>Pipe parameters</source>
-      <translation type="unfinished">Pipe parameters</translation>
+      <translation>Παράμετροι αντικειμένων χωρίς πάτωμα και οροφή</translation>
     </message>
   </context>
   <context>
@@ -2299,32 +2299,32 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Transform mode</source>
-      <translation type="unfinished">Transform mode</translation>
+      <translation>Λειτουργία μετασχηματισμού</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>Σταθερά</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Multisection</source>
-      <translation type="unfinished">Multisection</translation>
+      <translation>Χρήση πολλαπλών τομών</translation>
     </message>
     <message>
       <location line="+23"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Προσθέστε Τομή</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Αφαιρέστε Τομή</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
-      <translation type="unfinished">Section transformation</translation>
+      <translation>Μετασχηματισμός τομής</translation>
     </message>
   </context>
   <context>
@@ -2341,7 +2341,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Type</source>
-      <translation>Είδος</translation>
+      <translation>Τύπος</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2353,7 +2353,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+30"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Μετατοπίστε</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2380,7 +2380,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+19"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <location line="-86"/>
@@ -2390,7 +2390,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
-      <translation>Παράμετροι Εσοχής</translation>
+      <translation>Παράμετροι δημιουργίας οπής σε στερεό</translation>
     </message>
     <message>
       <source>To last</source>
@@ -2424,7 +2424,7 @@ Please check one or more edge entities first.</translation>
       <location line="-379"/>
       <location line="+383"/>
       <source>No face selected</source>
-      <translation>Δεν επελέγη κάποια όψη</translation>
+      <translation>Δεν επιλέχθηκε καμία όψη</translation>
     </message>
   </context>
   <context>
@@ -2470,12 +2470,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Προσθέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Αφαιρέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -2490,17 +2490,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+27"/>
       <source>Occurrences</source>
-      <translation>Στιγμές</translation>
+      <translation>Επαναλήψεις</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>OK</source>
-      <translation>Εντάξει</translation>
+      <translation>ΟΚ</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <source>Select an edge</source>
@@ -2509,7 +2509,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="+111"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
       <location line="+206"/>
@@ -2543,19 +2543,19 @@ Please check one or more edge entities first.</translation>
       <location line="-15"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+181"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Άξονας X βάσης</translation>
     </message>
     <message>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Άξονας Y βάσης</translation>
     </message>
     <message>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Άξονας Z βάσης</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2576,7 +2576,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+14"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <source>Vertical</source>
@@ -2594,7 +2594,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="-129"/>
       <source>Revolution parameters</source>
-      <translation>Παράμετροι Περιστροφής</translation>
+      <translation>Παράμετροι Περιφοράς</translation>
     </message>
     <message>
       <source>Undefined</source>
@@ -2615,12 +2615,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Προσθέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Αφαιρέστε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2630,22 +2630,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+14"/>
       <source>Occurrences</source>
-      <translation>Στιγμές</translation>
+      <translation>Επαναλήψεις</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>OK</source>
-      <translation>Εντάξει</translation>
+      <translation>ΟΚ</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Update view</source>
-      <translation>Ανανέωση της προβολής</translation>
+      <translation>Ανανέωση προβολής</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="+97"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
@@ -2658,22 +2658,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Αντικείμενο</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Geometry</source>
-      <translation type="unfinished">Add Geometry</translation>
+      <translation>Προσθέστε Γεωμετρική Οντότητα</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Geometry</source>
-      <translation type="unfinished">Remove Geometry</translation>
+      <translation>Αφαιρέστε Γεωμετρική Οντότητα</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
       <source>Datum shape parameters</source>
-      <translation type="unfinished">Datum shape parameters</translation>
+      <translation>Παράμετροι σχήματος αναφοράς</translation>
     </message>
   </context>
   <context>
@@ -2685,7 +2685,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>No face selected</source>
-      <translation>Δεν επελέγη κάποια όψη</translation>
+      <translation>Δεν επιλέχθηκε καμία όψη</translation>
     </message>
   </context>
   <context>
@@ -2698,7 +2698,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add face</source>
-      <translation>Προσθήκη όψης</translation>
+      <translation>Προσθέστε όψη</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -2707,7 +2707,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Thikness</source>
-      <translation type="unfinished">Thikness</translation>
+      <translation>Πάχος</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2717,27 +2717,27 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+26"/>
       <source>Mode</source>
-      <translation>Κατάσταση Λειτουργίας</translation>
+      <translation>Λειτουργία</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Join Type</source>
-      <translation type="unfinished">Join Type</translation>
+      <translation>Τύπος Ένωσης</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Skin</source>
-      <translation>Δέρμα</translation>
+      <translation>Δημιουργία αντικειμένου με πάτωμα αλλά χωρίς οροφή</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Pipe</source>
-      <translation type="unfinished">Pipe</translation>
+      <translation>Δημιουργία αντικειμένου χωρίς πάτωμα και οροφή</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Recto Verso</source>
-      <translation type="unfinished">Recto Verso</translation>
+      <translation>Και στις δύο όψεις του φύλλου</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -2747,17 +2747,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+5"/>
       <source>Intersection</source>
-      <translation>Διασταύρωση</translation>
+      <translation>Σημείο τομής</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Make thickness inwards</source>
-      <translation type="unfinished">Make thickness inwards</translation>
+      <translation>Δημιουργία πάχους προς τα μέσα</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
   </context>
   <context>
@@ -2765,7 +2765,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
       <source>Transformed feature messages</source>
-      <translation>Μηνύματα μεταμορφωμένου χαρακτηριστικού</translation>
+      <translation>Μηνύματα μετασχηματισμένου χαρακτηριστικού</translation>
     </message>
   </context>
   <context>
@@ -2789,22 +2789,22 @@ Please check one or more edge entities first.</translation>
       <location line="+2"/>
       <location line="+36"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Γραμμή κατασκευής %1</translation>
     </message>
     <message>
       <location line="-22"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Άξονας X βάσης</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Άξονας Y βάσης</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Άξονας Z βάσης</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2815,17 +2815,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-9"/>
       <source>Base XY plane</source>
-      <translation type="unfinished">Base XY plane</translation>
+      <translation>Επίπεδο XY βάσης</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base YZ plane</source>
-      <translation type="unfinished">Base YZ plane</translation>
+      <translation>Επίπεδο YZ βάσης</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base XZ plane</source>
-      <translation type="unfinished">Base XZ plane</translation>
+      <translation>Επίπεδο XZ βάσης</translation>
     </message>
   </context>
   <context>
@@ -2833,141 +2833,141 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../ViewProviderBody.cpp" line="+137"/>
       <source>Toggle active body</source>
-      <translation type="unfinished">Toggle active body</translation>
+      <translation>Εναλλαγή ενεργού σώματος</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <source>Create an additive box by its with, height and length</source>
-      <translation type="unfinished">Create an additive box by its with, height and length</translation>
+      <translation>Δημιουργήστε ένα πρόσθετο κιβώτιο εισάγοντας το πλάτος, το ύψος και το μήκος του</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-180"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height and angle</translation>
+      <translation>Δημιουργήστε έναν πρόσθετο κύλινδρο εισάγοντας την ακτίνα, το ύψος του και την γωνία κοπής</translation>
     </message>
     <message>
       <source>Create an additive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and varius angles</translation>
+      <translation>Δημιουργήστε μια πρόσθετη σφαίρα εισάγοντας την ακτίνα της και διάφορες γωνίες κοπής</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Δημιουργήστε ένα πρόσθετο κιβώτιο εισάγοντας το πλάτος, το ύψος και το μήκος του</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Δημιουργήστε μια πρόσθετη σφαίρα εισάγοντας την ακτίνα της και διάφορες γωνίες κοπής</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive cone</source>
-      <translation type="unfinished">Create an additive cone</translation>
+      <translation>Δημιουργήστε έναν πρόσθετο κώνο</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive ellipsoid</source>
-      <translation type="unfinished">Create an additive ellipsoid</translation>
+      <translation>Δημιουργήστε ένα πρόσθετο ελλειψοειδές</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive torus</source>
-      <translation type="unfinished">Create an additive torus</translation>
+      <translation>Δημιουργήστε έναν πρόσθετο τόρο</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive prism</source>
-      <translation type="unfinished">Create an additive prism</translation>
+      <translation>Δημιουργήστε ένα πρόσθετο πρίσμα</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive wedge</source>
-      <translation type="unfinished">Create an additive wedge</translation>
+      <translation>Δημιουργήστε μια πρόσθετη σφήνα</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
       <source>Create an subtractive box by its with, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό κιβώτιο εισάγοντας το πλάτος, το ύψος και το μήκος του</translation>
     </message>
     <message>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an subtractive cylinder by its radius, height and angle</translation>
+      <translation>Δημιουργήστε έναν αφαιρετικό κύλινδρο εισάγοντας την ακτίνα, το ύψος του και την γωνία κοπής</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and varius angles</translation>
+      <translation>Δημιουργήστε μια αφαιρετική σφαίρα εισάγοντας την ακτίνα της και διάφορες γωνίες κοπής</translation>
     </message>
     <message>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό κιβώτιο εισάγοντας το πλάτος, το ύψος και το μήκος του</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
+      <translation>Δημιουργήστε μια αφαιρετική σφαίρα εισάγοντας την ακτίνα της και διάφορες γωνίες κοπής</translation>
     </message>
     <message>
       <source>Create an subtractive cone</source>
-      <translation type="unfinished">Create an subtractive cone</translation>
+      <translation>Δημιουργήστε έναν αφαιρετικό κώνο</translation>
     </message>
     <message>
       <source>Create an subtractive ellipsoid</source>
-      <translation type="unfinished">Create an subtractive ellipsoid</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό ελλειψοειδές</translation>
     </message>
     <message>
       <source>Create an subtractive torus</source>
-      <translation type="unfinished">Create an subtractive torus</translation>
+      <translation>Δημιουργήστε έναν αφαιρετικό τόρο</translation>
     </message>
     <message>
       <source>Create an subtractive prism</source>
-      <translation type="unfinished">Create an subtractive prism</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό πρισμα</translation>
     </message>
     <message>
       <source>Create an subtractive wedge</source>
-      <translation type="unfinished">Create an subtractive wedge</translation>
+      <translation>Δημιουργήστε μια αφαιρετική σφήνα</translation>
     </message>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό κιβώτιο εισάγοντας το πλάτος, το ύψος και το μήκος του</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Δημιουργήστε έναν αφαιρετικό κύλινδρο εισάγοντας την ακτίνα, το ύψος του και την γωνία κοπής</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Δημιουργήστε μια αφαιρετική σφαίρα εισάγοντας την ακτίνα της και διάφορες γωνίες κοπής</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Δημιουργήστε έναν αφαιρετικό κώνο</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό ελλειψοειδές</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Δημιουργήστε έναν αφαιρετικό τόρο</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Δημιουργήστε ένα αφαιρετικό πρίσμα</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Δημιουργήστε μια αφαιρετική σφήνα</translation>
     </message>
   </context>
   <context>
@@ -2975,12 +2975,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="+201"/>
       <source>Select body</source>
-      <translation type="unfinished">Select body</translation>
+      <translation>Επιλέξτε σώμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a body from the list</source>
-      <translation type="unfinished">Select a body from the list</translation>
+      <translation>Επιλέξτε ένα σώμα από τη λίστα</translation>
     </message>
   </context>
   <context>
@@ -2988,12 +2988,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+150"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Επιλέξτε χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a feature from the list</source>
-      <translation type="unfinished">Select a feature from the list</translation>
+      <translation>Επιλέξτε ένα χαρακτηριστικό από τη λίστα</translation>
     </message>
   </context>
   <context>
@@ -3074,7 +3074,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+310"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation type="unfinished">Please create a subtractive or additive feature first.</translation>
+      <translation>Παρακαλώ δημιουργήστε πρώτα ένα αφαιρετικό ή πρόσθετο χαρακτηριστικό.</translation>
     </message>
     <message>
       <source>No chamfer possible on selected faces/edges</source>
@@ -3118,7 +3118,7 @@ Create the sketch on a face.</translation>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="+54"/>
       <source>Edit pad</source>
-      <translation>Επεξεργασία ανάπτυξης</translation>
+      <translation>Επεξεργασία χάραξης στερεού με τη χρήση επιλεγμένου σκαριφήματος</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="+53"/>
@@ -3132,16 +3132,16 @@ Create the sketch on a face.</translation>
     <message>
       <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
-      <translation type="unfinished">Invalid selection</translation>
+      <translation>Μη έγκυρη επιλογή</translation>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit seleted objects. Select something else.</translation>
+      <translation>Δεν υπάρχουν λειτουργίες συνημμένων που να ταιριάζουν στα επιλεγμένα αντικείμενα. Επιλέξτε κάτι άλλο.</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>Δεν υπάρχουν λειτουργίες συνημμένων που να ταιριάζουν στα επιλεγμένα αντικείμενα. Επιλέξτε κάτι άλλο.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3153,7 +3153,7 @@ Create the sketch on a face.</translation>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Δεν υπάρχει ενεργό σώμα. Παρακαλώ ενεργοποιήστε κάποιο σώμα πριν εισάγετε κάποια οντότητα αναφοράς.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3188,12 +3188,12 @@ Create the sketch on a face.</translation>
     <message>
       <location line="+180"/>
       <source>No valid planes in this document</source>
-      <translation type="unfinished">No valid planes in this document</translation>
+      <translation>Δεν υπάρχουν έγκυρα επίπεδα σε αυτό το έγγραφο</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Please create a plane first or select a face to sketch on</translation>
+      <translation>Παρακαλώ δημιουργήστε πρώτα ένα επίπεδο ή επιλέξτε την όψη πάνω στην οποία θα δημιουργήσετε σκαρίφημα</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3224,68 +3224,68 @@ Create the sketch on a face.</translation>
     <message>
       <location line="-913"/>
       <source>No sketch to work on</source>
-      <translation type="unfinished">No sketch to work on</translation>
+      <translation>Δεν υπάρχει σκαρίφημα για να εργαστείτε</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No sketch is available in the document</source>
-      <translation type="unfinished">No sketch is available in the document</translation>
+      <translation>Δεν υπάρχει διαθέσιμο σκαρίφημα στο έγγραφο</translation>
     </message>
     <message>
       <location line="+600"/>
       <source>Select an edge, face or body.</source>
-      <translation type="unfinished">Select an edge, face or body.</translation>
+      <translation>Επιλέξτε μια ακμή, μια όψη ή ένα σώμα.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face or body from a single body.</translation>
+      <translation>Επιλέξτε μια ακμή, μια όψη ή ένα σώμα από ένα μεμονωμένο σώμα.</translation>
     </message>
     <message>
       <location line="+4"/>
       <location line="+333"/>
       <source>Selection is not in Active Body</source>
-      <translation type="unfinished">Selection is not in Active Body</translation>
+      <translation>Η επιλογή δεν βρίσκεται στο Ενεργό Σώμα</translation>
     </message>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face or body from an active body.</translation>
+      <translation>Επιλέξτε μια ακμή, μια όψη ή ένα σώμα από ένα ενεργό σώμα.</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>%1 works only on parts.</source>
-      <translation type="unfinished">%1 works only on parts.</translation>
+      <translation>Το %1 λειτουργεί μόνο σε εξαρτήματα.</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Shape of the selected Part is empty</source>
-      <translation type="unfinished">Shape of the selected Part is empty</translation>
+      <translation>Το σχήμα του επιλεγμένου Εξαρτήματος είναι κενό</translation>
     </message>
     <message>
       <location line="+12"/>
       <source> not possible on selected faces/edges.</source>
-      <translation type="unfinished"> not possible on selected faces/edges.</translation>
+      <translation> δεν είναι εφικτό στις επιλεγμένες όψεις/ακμές.</translation>
     </message>
     <message>
       <location line="+292"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>Επιλέχθηκαν Πολλαπλά Χαρακτηριστικά</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>Παρακαλώ επιλέξτε πρώτα μόνο ένα αφαιρετικό ή πρόσθετο χαρακτηριστικό.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>Παρακαλώ επιλέξτε μόνο ένα αφαιρετικό ή πρόσθετο χαρακτηριστικό σε ένα ενεργό σώμα.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
       <source>Edit revolution</source>
-      <translation>Επεξεργασία περιστροφής</translation>
+      <translation>Επεξεργασία περιφοράς</translation>
     </message>
     <message>
       <source>Edit Groove</source>
@@ -3302,12 +3302,12 @@ Create the sketch on a face.</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="+203"/>
       <source>Missing neutral plane</source>
-      <translation>Λείπει η ουδέτερη επιφάνεια</translation>
+      <translation>Δεν υπάρχει ουδέτερο επίπεδο</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select a plane or an edge plus a pull direction</source>
-      <translation>Παρακαλώ, επέλεξε μία επιφάνεια, ή ακμή, και μία κατεύθυνση έλξης</translation>
+      <translation>Παρακαλώ επιλέξτε ένα επίπεδο ή μια ακμή και μια κατεύθυνση έλξης</translation>
     </message>
     <message>
       <source>Edit draft</source>
@@ -3320,22 +3320,22 @@ Create the sketch on a face.</translation>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="+151"/>
       <source>One transformed shape does not intersect support</source>
-      <translation>Ένα μεταμορφωμένο σχήμα δεν εφάπτεται σε υποστήριγμα</translation>
+      <translation>Ένα μετασχηματισμένο σχήμα δεν εφάπτεται σε υποστήριγμα</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>%1 transformed shapes do not intersect support</source>
-      <translation>%1 μεταμορφωμένα σχήματα δεν εφάπτονται σε υποστηρίγματα</translation>
+      <translation>%1 μετασχηματισμένα σχήματα δεν εφάπτονται σε υποστηρίγματα</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Transformation succeeded</source>
-      <translation>Η μεταμόρφωση ήταν επιτυχής</translation>
+      <translation>Ο μετασχηματισμός ολοκληρώθηκε με επιτυχία</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="+51"/>
       <source>Edit groove</source>
-      <translation>Επεξεργασία αυλάκωσης</translation>
+      <translation>Επεξεργασία ράβδωσης</translation>
     </message>
     <message>
       <source>Edit revolve</source>
@@ -3344,12 +3344,12 @@ Create the sketch on a face.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
-      <translation type="unfinished">Part creation failed</translation>
+      <translation>Η δημιουργία εξαρτήματος απέτυχε</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Failed to create a part object.</source>
-      <translation type="unfinished">Failed to create a part object.</translation>
+      <translation>Αποτυχία δημιουργίας εξαρτήματος.</translation>
     </message>
     <message>
       <location line="+48"/>
@@ -3358,93 +3358,93 @@ Create the sketch on a face.</translation>
       <location line="+8"/>
       <location line="+49"/>
       <source>Bad base feature</source>
-      <translation type="unfinished">Bad base feature</translation>
+      <translation>Ακατάλληλο χαρακτηριστικό βάσης</translation>
     </message>
     <message>
       <location line="-68"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation type="unfinished">Body can't be based on a PartDesign feature.</translation>
+      <translation>Το σώμα δεν μπορεί να βασίζεται σε κάποιο χαρακτηριστικό ΣχεδίασηςΕξαρτήματος.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body, can't use it as base feature for another body.</translation>
+      <translation>Το %1 ανήκει ήδη σε ένα σώμα, δεν μπορείτε να το χρησιμοποιήσετε ως χαρακτηριστικό βάσης για κάποιο άλλο σώμα.</translation>
     </message>
     <message>
       <source>Body can't be based on annother body.</source>
-      <translation type="unfinished">Body can't be based on annother body.</translation>
+      <translation>Το σώμα δεν μπορεί να βασίζεται σε κάποιο άλλο σώμα.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Body can't be based on another body.</source>
-      <translation type="unfinished">Body can't be based on another body.</translation>
+      <translation>Το σώμα δεν μπορεί να βασίζεται σε κάποιο άλλο σώμα.</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+      <translation>Το χαρακτηριστικό βάσης (%1) ανήκει σε άλλο εξάρτημα.</translation>
     </message>
     <message>
       <source>Body may be based no more than on one feature.</source>
-      <translation type="unfinished">Body may be based no more than on one feature.</translation>
+      <translation>Το σώμα δεν μπορεί να βασίζεται σε περισσότερα από ένα χαρακτηριστικά.</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>Το επιλεγμένο σχήμα αποτελείται από πολλαπλά στερεά.
+Αυτό μπορεί να οδηγήσει σε απρόσμενα αποτελέσματα.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>Το επιλεγμένο σχήμα αποτελείται από πολλαπλά κελύφη.
+Αυτό μπορεί να οδηγήσει σε απρόσμενα αποτελέσματα.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>Το επιλεγμένο σχήμα αποτελείται μόνο από ένα κέλυφος.
+Αυτό μπορεί να οδηγήσει σε απρόσμενα αποτελέσματα.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>Το επιλεγμένο σχήμα αποτελείται από πολλαπλά στερεά ή κελύφη.
+Αυτό μπορεί να οδηγήσει σε απρόσμενα αποτελέσματα.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Χαρακτηριστικό βάσης</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation type="unfinished">Body may be based on no more than one feature.</translation>
+      <translation>Το σώμα δεν μπορεί να βασίζεται σε περισσότερα από ένα χαρακτηριστικά.</translation>
     </message>
     <message>
       <location line="+176"/>
       <source>Nothing to migrate</source>
-      <translation type="unfinished">Nothing to migrate</translation>
+      <translation>Δεν υπάρχει τίποτα για μετεγκατάσταση</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No PartDesign features which doesn't belong to a body found. Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features which doesn't belong to a body found. Nothing to migrate.</translation>
+      <translation>Δεν υπάρχουν χαρακτηριστικά ΣχεδίασηςΕξαρτήματος που να μην ανήκουν σε κάποιο σώμα. Δεν υπάρχει τίποτα για μετεγκατάσταση.</translation>
     </message>
     <message>
       <location line="+148"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation type="unfinished">Sketch plane cannot be migrated</translation>
+      <translation>Δεν είναι δυνατή η μετεγκατάσταση του επιπέδου σκαριφήματος</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation type="unfinished">Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</translation>
+      <translation>Παρακαλώ πραγματοποιήστε επεξεργασία του '%1' και επαναπροσδιορίστε το ώστε να χρησιμοποιήσετε ένα επίπεδο Βάσης ή ένα επίπεδο Αναφοράς ως το επίπεδο σκαριφήματος.</translation>
     </message>
     <message>
       <location line="+62"/>
@@ -3453,73 +3453,73 @@ This may lead to unexpected results.</translation>
       <location line="+289"/>
       <location line="+7"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Σφάλμα επιλογής</translation>
     </message>
     <message>
       <location line="-304"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation type="unfinished">Select exactly one PartDesign feature or a body.</translation>
+      <translation>Επιλέξτε ακριβώς ένα χαρακτηριστικό ΣχεδίασηςΕξαρτήματος ή ένα σώμα.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determine a body for the selected feature '%s'.</translation>
+      <translation>Αδύνατος ο καθορισμός ενός σώματος για το επιλεγμένο χαρακτηριστικό '%s'.</translation>
     </message>
     <message>
       <source>Couldn't determin a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determin a body for the selected feature '%s'.</translation>
+      <translation>Αδύνατος ο καθορισμός ενός σώματος για το επιλεγμένο χαρακτηριστικό '%s'.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation type="unfinished">Only a solid feature can be the tip of a body.</translation>
+      <translation>Μόνο κάποιο στερεό χαρακτηριστικό μπορεί να είναι η άκρη ενός σώματος.</translation>
     </message>
     <message>
       <location line="+116"/>
       <location line="+22"/>
       <location line="+15"/>
       <source>Features cannot be moved</source>
-      <translation type="unfinished">Features cannot be moved</translation>
+      <translation>Τα χαρακτηριστικά δεν μπορούν να μετακινηθούν</translation>
     </message>
     <message>
       <location line="-36"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation type="unfinished">Some of the selected features have dependencies in the source body</translation>
+      <translation>Κάποια από τα επιλεγμένα χαρακτηριστικά έχουν εξαρτήσεις στο πηγαίο σώμα</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>Μόνο τα χαρακτηριστικά ενός μεμονωμένου πηγαίου Σώματος μπορούν να μετακινηθούν</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>There are no other bodies to move to</source>
-      <translation type="unfinished">There are no other bodies to move to</translation>
+      <translation>Δεν υπάρχουν άλλα σώματα για μετακίνηση</translation>
     </message>
     <message>
       <location line="+135"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation type="unfinished">Impossible to move the base feature of a body.</translation>
+      <translation>Αδύνατη η μετακίνηση του χαρακτηριστικού βάσης ενός σώματος.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Select one or more features from the same body.</source>
-      <translation type="unfinished">Select one or more features from the same body.</translation>
+      <translation>Επιλέξτε ένα ή περισσότερα χαρακτηριστικά από το ίδιο σώμα.</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Beginning of the body</source>
-      <translation type="unfinished">Beginning of the body</translation>
+      <translation>Αρχή του σώματος</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-116"/>
       <source>No previous feature found</source>
-      <translation type="unfinished">No previous feature found</translation>
+      <translation>Δεν βρέθηκε κανένα παλαιότερο χαρακτηριστικό</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
+      <translation>Δεν είναι εφικτό να δημιουργήσετε αφαιρετικό χαρακτηριστικό χωρίς κάποιο διαθέσιμο χαρακτηριστικό βάσης</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+103"/>
@@ -3536,7 +3536,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+2"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Γραμμή κατασκευής %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
@@ -3546,61 +3546,61 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../Utils.cpp" line="+88"/>
       <source>No active Body</source>
-      <translation type="unfinished">No active Body</translation>
+      <translation>Κανένα ενεργό σώμα</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>Προκειμένου να χρησιμοποιήσετε την ΣχεδίασηΕξαρτήματος θα χρειαστείτε ένα ενεργό Σώμα στο έγγραφο. Παρακαλώ ενεργοποιήστε κάποιο (κάνοντας διπλό κλικ) ή δημιουργήστε ένα. Αν έχετε κάποιο έγγραφο παλαιού τύπου που περιέχει αντικείμενα ΣχεδιάσηςΕξαρτήματος χωρίς Σώμα, χρησιμοποιήστε την λειτουργία μεταφοράς στη ΣχεδίασηΕξαρτήματος για να τα τοποθετήσετε σε κάποιο σώμα.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Προκειμένου να χρησιμοποιήσετε την ΣχεδίασηΕξαρτήματος θα χρειαστείτε ένα ενεργό Σώμα στο έγγραφο. Παρακαλώ ενεργοποιήστε κάποιο (κάνοντας διπλό κλικ) ή δημιουργήστε ένα.
 
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+Αν έχετε κάποιο έγγραφο παλαιού τύπου που περιέχει αντικείμενα ΣχεδιάσηςΕξαρτήματος χωρίς Σώμα, χρησιμοποιήστε την λειτουργία μεταφοράς στη ΣχεδίασηΕξαρτήματος για να τα τοποθετήσετε σε κάποιο σώμα.</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Active Body Required</source>
-      <translation type="unfinished">Active Body Required</translation>
+      <translation>Απαιτείται Ενεργό Σώμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>Για να δημιουργήσετε ένα νέο αντικείμενο ΣχεδίασηςΕξαρτήματος, θα πρέπει να υπάρχει ένα ενεργό Σώμα στο έγγραφο. Παρακαλώ ενεργοποιήστε κάποιο (κάνοντας διπλό κλικ) ή δημιουργήστε ένα νέο Σώμα.</translation>
     </message>
     <message>
       <location line="+36"/>
       <source>Feature is not in a body</source>
-      <translation type="unfinished">Feature is not in a body</translation>
+      <translation>Το χαρακτηριστικό δεν βρίσκεται σε κάποιο σώμα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a body object in the document.</translation>
+      <translation>Προκειμένου να χρησιμοποιήσετε αυτό το χαρακτηριστικό θα πρέπει να ανήκει σε κάποιο σώμα που βρίσκεται στο έγγραφο.</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>Feature is not in a part</source>
-      <translation type="unfinished">Feature is not in a part</translation>
+      <translation>Το χαρακτηριστικό δεν βρίσκεται σε κάποιο εξάρτημα</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
+      <translation>Προκειμένου να χρησιμοποιήσετε αυτό το χαρακτηριστικό θα πρέπει να ανήκει σε κάποιο εξάρτημα που βρίσκεται στο έγγραφο.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
       <source>Edit boolean</source>
-      <translation type="unfinished">Edit boolean</translation>
+      <translation>Επεξεργασία λειτουργίας Boole</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="-131"/>
       <location line="+90"/>
       <source>Plane</source>
-      <translation>Επιφάνεια</translation>
+      <translation>Επίπεδο</translation>
     </message>
     <message>
       <location line="-86"/>
@@ -3617,109 +3617,109 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="-82"/>
       <source>Coordinate System</source>
-      <translation type="unfinished">Coordinate System</translation>
+      <translation>Σύστημα Συντεταγμένων</translation>
     </message>
     <message>
       <location line="+99"/>
       <source>Edit datum</source>
-      <translation type="unfinished">Edit datum</translation>
+      <translation>Επεξεργασία αναφοράς</translation>
     </message>
     <message>
       <source>CoordinateSystem</source>
-      <translation type="unfinished">CoordinateSystem</translation>
+      <translation>ΣύστημαΣυντεταγμένων</translation>
     </message>
     <message>
       <source>Edit datum </source>
-      <translation type="unfinished">Edit datum </translation>
+      <translation>Επεξεργασία αναφοράς </translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Επεξεργασία του %1</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Feature error</source>
-      <translation type="unfinished">Feature error</translation>
+      <translation>Σφάλμα χαρακτηριστικού</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and can't be edited.</translation>
+      <translation>Το %1 χρειάζεται ένα χαρακτηριστικό βάσης.
+Αυτό το χαρακτηριστικό είναι κατεστραμμένο και δεν γίνεται να τροποποιηθεί.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
       <source>Edit loft</source>
-      <translation type="unfinished">Edit loft</translation>
+      <translation>Επεξεργασία παρεμβολής ορθογώνιων διατομών</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="+80"/>
       <source>Edit pipe</source>
-      <translation type="unfinished">Edit pipe</translation>
+      <translation>Επεξεργασία αντικειμένου χωρίς πάτωμα και οροφή</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation type="unfinished">Edit shape binder</translation>
+      <translation>Επεξεργασία αντικειμένου σύνδεσης σχημάτων</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was design with old version of PartDesign workbench.</translation>
+      <translation>Το έγγραφο ''%1'' που επεξεργάζεστε έχει σχεδιαστεί με τη χρήση παλαιότερης έκδοσης πάγκου εργασίας της ΣχεδίασηςΕξαρτήματος.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="+144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of PartDesign workbench.</translation>
+      <translation>Το έγγραφο ''%1'' που επεξεργάζεστε έχει σχεδιαστεί με τη χρήση κάποιας παλαιότερης έκδοσης πάγκου εργασίας της ΣχεδίασηςΕξαρτήματος.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
+      <translation>Θέλετε να πραγματοποιήσετε μετεγκατάσταση ώστε να χρησιμοποιήσετε τα σύγχρονα χαρακτηριστικά ΣχεδίασηςΕξαρτήματος;</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
+      <translation>Το έγγραφο ''%1'' φαίνεται να βρίσκεται στη μέση της διαδικασίας μετεγκατάστασης από παλαιού τύπου ΣχεδίασηΕξαρτήματος ή να έχει μια ελαφρώς χαλασμένη δομή.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation type="unfinished">Do you want to make the migration automatically?</translation>
+      <translation>Θέλετε να πραγματοποιήσετε μετεγκατάσταση αυτόματα;</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Σημείωση: Αν επιλέξετε να πραγματοποιήσετε μετεγκατάσταση δεν θα μπορείτε να επεξεργαστείτε το αρχείο με την χρήση παλαιότερων εκδόσεων FreeCAD.
+Αν δεν πραγματοποιήσετε μετεγκατάσταση δεν θα μπορείτε να χρησιμοποιήσετε νέα χαρακτηριστικά ΣχεδίασηςΕξαρτήματος όπως Σώματα και Εξαρτήματα. Κατά συνέπεια δεν θα μπορείτε ούτε να χρησιμοποιήσετε τα εξαρτήματά σας στον πάγκο εργασίας συναρμολόγησης.
+Ωστόσο θα μπορείτε να πραγματοποιήσετε μετεγκατάσταση οποιαδήποτε στιγμή στο μέλλον επιλέγοντας ''Σχεδίαση Εξαρτήματος-&gt;Μετεγκατάσταση...'.</translation>
     </message>
     <message>
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Σημείωση: Αν επιλέξετε να πραγματοποιήσετε μετεγκατάσταση δεν θα μπορείτε να επεξεργαστείτε το αρχείο με την χρήση παλαιότερων εκδόσεων FreeCAD.
+Αν δεν πραγματοποιήσετε μετεγκατάσταση δεν θα μπορείτε να χρησιμοποιήσετε νέα χαρακτηριστικά ΣχεδίασηςΕξαρτήματος όπως Σώματα και Εξαρτήματα. Κατά συνέπεια δεν θα μπορείτε ούτε να χρησιμοποιήσετε τα εξαρτήματά σας στον πάγκο εργασίας συναρμολόγησης.
+Ωστόσο θα μπορείτε να πραγματοποιήσετε μετεγκατάσταση οποιαδήποτε στιγμή στο μέλλον επιλέγοντας ''Σχεδίαση Εξαρτήματος-&gt;Μετεγκατάσταση...'.</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Migrate manually</source>
-      <translation type="unfinished">Migrate manually</translation>
+      <translation>Πραγματοποιήστε μετεγκατάσταση χειροκίνητα</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
       <source>Edit hole</source>
-      <translation type="unfinished">Edit hole</translation>
+      <translation>Επεξεργασία οπής</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Επεξεργασία θεμελιακού στοιχείου</translation>
     </message>
   </context>
   <context>
@@ -3754,48 +3754,48 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+36"/>
       <source>Type</source>
-      <translation>Είδος</translation>
+      <translation>Τύπος</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Through</source>
-      <translation type="unfinished">Through</translation>
+      <translation>Μέσα από</translation>
     </message>
     <message>
       <location line="+7"/>
       <location line="+340"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Βάθος</translation>
     </message>
     <message>
       <location line="-331"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Με σπείρωμα</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Countersink</source>
-      <translation type="unfinished">Countersink</translation>
+      <translation>Κωνική διεύρυνση οπής</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Counterbore</source>
-      <translation type="unfinished">Counterbore</translation>
+      <translation>Κυλινδρική διεύρυνση οπής</translation>
     </message>
     <message>
       <location line="+21"/>
       <source>Hole norm</source>
-      <translation type="unfinished">Hole norm</translation>
+      <translation>Πρότυπο οπής</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Custom dimensions</source>
-      <translation type="unfinished">Custom dimensions</translation>
+      <translation>Προσαρμοσμένες διαστάσεις</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Tolerance</source>
-      <translation>Ανοχές</translation>
+      <translation>Ανοχή</translation>
     </message>
     <message>
       <location line="+31"/>
@@ -3807,23 +3807,23 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="-194"/>
       <source>Bolt/Washer</source>
-      <translation type="unfinished">Bolt/Washer</translation>
+      <translation>Μπουλόνι/Ροδέλα</translation>
     </message>
     <message>
       <location line="+49"/>
       <location line="+8"/>
       <source>Thread norm</source>
-      <translation type="unfinished">Thread norm</translation>
+      <translation>Πρότυπο σπειρώματος</translation>
     </message>
     <message>
       <location line="+62"/>
       <source> Custom thread length</source>
-      <translation type="unfinished"> Custom thread length</translation>
+      <translation> Προσαρμοσμένο μήκος σπειρώματος</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Finish depth</source>
-      <translation type="unfinished">Finish depth</translation>
+      <translation>Τελικό βάθος</translation>
     </message>
     <message>
       <location line="+43"/>
@@ -3833,22 +3833,22 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+44"/>
       <source>Counterbore/sink dia</source>
-      <translation type="unfinished">Counterbore/sink dia</translation>
+      <translation>Διάμετρος κυλινδρικής/κωνικής διεύρυνσης οπής</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Counterbore depth</source>
-      <translation type="unfinished">Counterbore depth</translation>
+      <translation>Βάθος κυλινδρικής διεύρυνσης οπής</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Countersink angle</source>
-      <translation type="unfinished">Countersink angle</translation>
+      <translation>Γωνία κωνικής διεύρυνσης οπής</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Thread length</source>
-      <translation type="unfinished">Thread length</translation>
+      <translation>Μήκος σπειρώματος</translation>
     </message>
   </context>
   <context>
@@ -3856,13 +3856,13 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>Παράμετροι Οπών Εργασίας</translation>
     </message>
     <message>
       <location line="+15"/>
       <location line="+251"/>
       <source>Type</source>
-      <translation>Είδος</translation>
+      <translation>Τύπος</translation>
     </message>
     <message>
       <location line="-244"/>
@@ -3874,22 +3874,22 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location line="-253"/>
       <location line="+269"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Βάθος</translation>
     </message>
     <message>
       <location line="-259"/>
       <source>Cutoff inner</source>
-      <translation type="unfinished">Cutoff inner</translation>
+      <translation>Εσωτερική αποκοπή</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Class</source>
-      <translation type="unfinished">Class</translation>
+      <translation>Κλάση</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Tapered</source>
-      <translation type="unfinished">Tapered</translation>
+      <translation>Κωνικό</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3899,42 +3899,42 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Προσαρμογή</translation>
     </message>
     <message>
       <location line="+40"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>Επίπεδο</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Angled</source>
-      <translation type="unfinished">Angled</translation>
+      <translation>Υπό γωνία</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Βήμα</translation>
     </message>
     <message>
       <location line="+25"/>
       <source>Right hand</source>
-      <translation type="unfinished">Right hand</translation>
+      <translation>Δεξιόστροφο</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Left hand</source>
-      <translation type="unfinished">Left hand</translation>
+      <translation>Αριστερόστροφο</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Model actual thread</source>
-      <translation type="unfinished">Model actual thread</translation>
+      <translation>Μοντελοποίηση πραγματικού σπειρώματος</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Με σπείρωμα</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -3949,7 +3949,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+10"/>
       <source>Countersink angle</source>
-      <translation type="unfinished">Countersink angle</translation>
+      <translation>Γωνία κωνικής διεύρυνσης οπής</translation>
     </message>
     <message>
       <location line="+56"/>
@@ -3969,37 +3969,37 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Standard fit</source>
-      <translation type="unfinished">Standard fit</translation>
+      <translation>Καθιερωμένη προσαρμογή</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Close fit</source>
-      <translation type="unfinished">Close fit</translation>
+      <translation>Κοντινή προσαρμογή</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>Εξωτερική αποκοπή</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Πυθμένας οπής&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Misc&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Διάφορα&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Hole cut&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Περικοπή οπής&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading and size&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Σπείρωμα και μέγεθος&lt;/b&gt;</translation>
     </message>
   </context>
   <context>

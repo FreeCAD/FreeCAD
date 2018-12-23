@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Desplegando un perfil seleccionado a través de otras secciones de perfil</translation>
+      <translation>Interpola un perfil seleccionado a través de otras secciones de perfil</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -190,7 +190,7 @@
     <message>
       <location line="+1"/>
       <source>Groove a selected sketch</source>
-      <translation>Ranura un dibujo seleccionado</translation>
+      <translation>Ranura generada mediante revolución de un croquis seleccionado</translation>
     </message>
   </context>
   <context>

@@ -4,7 +4,7 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="+474"/>
+      <location filename="../../Command.cpp" line="+478"/>
       <source>Drawing</source>
       <translation>Desen</translation>
     </message>
@@ -42,26 +42,26 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location line="+185"/>
+      <location line="+193"/>
       <source>Drawing</source>
       <translation>Desen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Draft View</source>
-      <translation type="unfinished">&amp;Draft View</translation>
+      <translation>Vue &amp;Draft</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
+      <translation>Insère une vue brouillon des objets sélectionnés dans le dessin actif</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location line="-92"/>
+      <location line="-96"/>
       <source>File</source>
       <translation>Fişier</translation>
     </message>
@@ -80,7 +80,7 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location line="-359"/>
+      <location line="-363"/>
       <source>Drawing</source>
       <translation>Desen</translation>
     </message>
@@ -126,7 +126,7 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location line="-250"/>
+      <location line="-254"/>
       <source>Drawing</source>
       <translation>Desen</translation>
     </message>
@@ -144,7 +144,7 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location line="+375"/>
+      <location line="+379"/>
       <source>Drawing</source>
       <translation>Desen</translation>
     </message>
@@ -170,18 +170,18 @@
     <message>
       <location line="+1"/>
       <source>Insert orthographic views</source>
-      <translation>Inserați vederi ortografice</translation>
+      <translation>Inserați vederi ortogonale</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Inseraţi o proiecţie ortografică a unei componente in desenul activ</translation>
+      <translation>Inseraţi o proiecţie ortogonală a unei componente în desenul activ</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location line="+287"/>
+      <location line="+295"/>
       <source>Drawing</source>
       <translation>Desen</translation>
     </message>
@@ -194,7 +194,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Proiectază forma pe un plan definit de utilizator</translation>
+      <translation>Proiectează forma pe un plan definit de către utilizator</translation>
     </message>
   </context>
   <context>
@@ -207,19 +207,19 @@
     <message>
       <location line="+1"/>
       <source>&amp;Spreadsheet View</source>
-      <translation type="unfinished">&amp;Spreadsheet View</translation>
+      <translation>Vedere &amp; Foaie de calcul</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation type="unfinished">Inserts a view of a selected spreadsheet in the active drawing</translation>
+      <translation>Introduceți o vedere cu o foaie de calcul selectată într-un desen activ</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location line="-179"/>
+      <location line="-187"/>
       <source>Drawing</source>
       <translation>Desen</translation>
     </message>
@@ -291,8 +291,7 @@
       <location line="+110"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation than the drawing.
-Do you want to continue?</translation>
+      <translation>Imprimanta utilizează o orientare diferită a hârtiei decât desenul. Doriţi să continuaţi?</translation>
     </message>
     <message>
       <source>PDF file (*.pdf)</source>
@@ -301,7 +300,7 @@ Do you want to continue?</translation>
     <message>
       <location line="-109"/>
       <source>PDF file</source>
-      <translation type="unfinished">PDF file</translation>
+      <translation>Fişier PDF</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -364,12 +363,12 @@ Do you want to continue?</source>
     <message>
       <location line="+11"/>
       <source>Opening file failed</source>
-      <translation type="unfinished">Opening file failed</translation>
+      <translation>Deschiderea fișierului a eșuat</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation type="unfinished">Can't open file '%1' for writing.</translation>
+      <translation>Fișierul r '%1' nu acceptă scrierea.</translation>
     </message>
   </context>
   <context>
@@ -377,7 +376,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="+26"/>
       <source>Orthographic Projection</source>
-      <translation>Proiecţie Ortografică</translation>
+      <translation>Proiecţie Ortogonală</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -406,7 +405,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source> Axis out and right</source>
-      <translation> Axa afară și dreaptă</translation>
+      <translation> Sensul axei spre dreapta</translation>
     </message>
     <message>
       <source> Vertical tilt</source>
@@ -415,17 +414,17 @@ Do you want to continue?</source>
     <message>
       <location line="+48"/>
       <source>Spacing dx / dy</source>
-      <translation type="unfinished">Spacing dx / dy</translation>
+      <translation>Distanțează dx / dy</translation>
     </message>
     <message>
       <location line="+71"/>
       <source>Axis out and right</source>
-      <translation type="unfinished">Axis out and right</translation>
+      <translation>Sensul axei spre dreapta</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Vertical tilt</source>
-      <translation type="unfinished">Vertical tilt</translation>
+      <translation>Înclinare verticală</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -516,12 +515,12 @@ Do you want to continue?</source>
     <message>
       <location line="+11"/>
       <source>Third Angle</source>
-      <translation>Al treilea unghi</translation>
+      <translation>Convenția/proiecția americană</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>First Angle</source>
-      <translation>Primul unghi</translation>
+      <translation>Convenția/proiecția europeană</translation>
     </message>
     <message>
       <location line="+19"/>
@@ -539,7 +538,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Front</source>
-      <translation>Fata</translation>
+      <translation>Din față</translation>
     </message>
     <message>
       <source>Right</source>
@@ -580,12 +579,12 @@ Do you want to continue?</source>
     <message>
       <location line="-514"/>
       <source>Primary view</source>
-      <translation>Vizualizare primară</translation>
+      <translation>Vederea principală</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Secondary Views</source>
-      <translation>Vizualizare secundară</translation>
+      <translation>Vederi secundare</translation>
     </message>
     <message>
       <location line="+72"/>
@@ -613,12 +612,12 @@ Do you want to continue?</source>
     <message>
       <location line="+125"/>
       <source>Show hidden lines</source>
-      <translation type="unfinished">Show hidden lines</translation>
+      <translation>Afișează liniile ascunse</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Show smooth lines</source>
-      <translation type="unfinished">Show smooth lines</translation>
+      <translation>Se afişează liniile subțiri</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -691,17 +690,17 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation type="unfinished">There is currently no active document to complete the operation</translation>
+      <translation>Nu este nici un document activ pentru a termina operațiunea</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>No active view</source>
-      <translation type="unfinished">No active view</translation>
+      <translation>Nici o vedere activă</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation type="unfinished">There is currently no active view to complete the operation</translation>
+      <translation>Acum nu este nici o vedere activă pentru a termina operațiunea</translation>
     </message>
   </context>
   <context>
@@ -762,7 +761,7 @@ Do you want to continue?</source>
     <message>
       <location line="+2"/>
       <source>Portrait</source>
-      <translation>Portret</translation>
+      <translation>Orientare tip portret</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -788,8 +787,8 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location line="-169"/>
-      <location line="+517"/>
+      <location line="-173"/>
+      <location line="+521"/>
       <source>Choose an SVG file to open</source>
       <translation>Alegeţi un fişier SVG pentru deschidere</translation>
     </message>
@@ -805,13 +804,13 @@ Do you want to continue?</source>
       <location line="-268"/>
       <location line="+79"/>
       <location line="+50"/>
-      <location line="+187"/>
-      <location line="+119"/>
+      <location line="+191"/>
+      <location line="+123"/>
       <source>Wrong selection</source>
       <translation>Selecție greșită</translation>
     </message>
     <message>
-      <location line="-434"/>
+      <location line="-442"/>
       <source>Select a Part object.</source>
       <translation>Selecteaza un obiect tip piesă</translation>
     </message>
@@ -828,52 +827,52 @@ Do you want to continue?</source>
       <translation>Creați o pagină pentru a insera vizualizările.</translation>
     </message>
     <message>
-      <location line="-249"/>
-      <location line="+517"/>
-      <location line="+53"/>
+      <location line="-253"/>
+      <location line="+521"/>
+      <location line="+57"/>
       <source>Scalable Vector Graphic</source>
-      <translation type="unfinished">Scalable Vector Graphic</translation>
+      <translation>Vector Grafic Scalabil (Svg)</translation>
     </message>
     <message>
-      <location line="-313"/>
+      <location line="-317"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>No page found</source>
       <translation>Pagină negăsită</translation>
     </message>
     <message>
-      <location line="-431"/>
+      <location line="-439"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>Create a page first.</source>
-      <translation>Creați o pagină în primul rând.</translation>
+      <translation>Creați /selectați o pagină mai întâi.</translation>
     </message>
     <message>
-      <location line="-362"/>
+      <location line="-370"/>
       <source>Select exactly one Part object.</source>
-      <translation>Selectați un obiect cu exact o parte.</translation>
+      <translation>Selectați doar un singur obiect tip Piesă.</translation>
     </message>
     <message>
       <location line="+50"/>
-      <location line="+187"/>
+      <location line="+191"/>
       <source>Select one Page object.</source>
       <translation>Selectează un obiect pagină</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Toate fișierele</translation>
     </message>
     <message>
-      <location line="+113"/>
+      <location line="+117"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation type="unfinished">Select exactly one Spreadsheet object.</translation>
+      <translation>Selectați doar un singur obiect tip foaie de calcul Spreadsheet.</translation>
     </message>
     <message>
       <source>SVG (*.svg)</source>
@@ -888,7 +887,7 @@ Do you want to continue?</source>
       <translation>Toate fișierele (*.*)</translation>
     </message>
     <message>
-      <location line="-111"/>
+      <location line="-115"/>
       <source>Export page</source>
       <translation>Exportă pagina</translation>
     </message>
@@ -899,7 +898,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Front</source>
-      <translation>Fata</translation>
+      <translation>Din față</translation>
     </message>
     <message>
       <source>Back</source>
@@ -923,21 +922,21 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="+51"/>
-      <location line="+926"/>
+      <location line="+930"/>
       <source>Make axonometric...</source>
-      <translation>Fă axonometric...</translation>
+      <translation>Fă-l axonometric...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Edit axonometric settings...</source>
       <translation>Editare configurări axonometrice...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Make orthographic</source>
-      <translation>Fă ortografic</translation>
+      <translation>Fă-l ortogonal</translation>
     </message>
   </context>
   <context>

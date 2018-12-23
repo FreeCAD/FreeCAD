@@ -68,7 +68,7 @@
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation>&lt;відсутнє&gt;</translation>
+      <translation>&lt;empty&gt;</translation>
     </message>
     <message>
       <source>Angle</source>
@@ -406,7 +406,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Це програмне забезпечення використовує компоненти відкритим вихідним кодом, чиї права та інші права власності належать їх власникам:</translation>
     </message>
     <message>
       <source>License</source>
@@ -1352,6 +1352,14 @@ Please define another shortcut.</source>
       <source>Rename</source>
       <translation>Перейменувати</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Дублювати</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Доповнення...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1419,6 +1427,20 @@ This file already exists.</source>
 Perhaps a file permission error?</source>
       <translation>Не вдалося перейменувати '%1'.
 Можливо, помилка дозволу на файл?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Дублювати макрос</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Дублювання не вдалося</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Не вдалося здублювати в '%1'.
+Можливо помилка доступу до файлу?</translation>
     </message>
   </context>
   <context>
@@ -1993,8 +2015,48 @@ Specify another directory, please.</source>
       <translation>Пе&amp;рспективна візуалізація</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>Використовувати об'єкт OpenGL Vertex Buffer (експериментально)</translation>
+      <source>Show navigation cube</source>
+      <translation>Показати навігаційний куб</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Кут</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Вгорі ліворуч</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Вгорі праворуч</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Внизу ліворуч</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Внизу праворуч</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation type="unfinished">Drag at cursor</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>Розмір маркера:</translation>
     </message>
   </context>
   <context>
@@ -2006,6 +2068,30 @@ Specify another directory, please.</source>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Відкрити новий переглядач або перезапустити %1 для застосування змін згладжування.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2634,6 +2720,46 @@ Specify another directory, please.</source>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Метричні дрібні деталі та ЧПК (мм, мм/хв)</translation>
     </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation type="unfinished">Minimum fractional inch:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2675,7 +2801,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Встановлює зону невизначеності для вибору елементів у 3D-виді. Більше значення дає змогу легше обирати елементи, але деякі маленькі елементи обрати буде неможливо.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Деревовидно</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Об'єкт був відредагований</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Активні контейнер</translation>
     </message>
   </context>
   <context>
@@ -3215,14 +3353,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Повернути вісь на кут</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Застосувати зміни розміщення негайно</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Застосувати поступові зміни до місцезнаходження об'єкту</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation>Застосувати</translation>
     </message>
@@ -3249,6 +3379,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Use center of mass</source>
       <translation>Використовувати центр мас</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation type="unfinished">Axial:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation type="unfinished">Apply axial</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation type="unfinished">Shift click for opposite direction</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Обрані точки</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation type="unfinished">Apply incremental changes</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation type="unfinished">Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
     </message>
   </context>
   <context>
@@ -4041,6 +4195,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>Редагувати %1</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
@@ -4419,6 +4580,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Пошук</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
@@ -4483,6 +4651,14 @@ Do you want to specify another directory?</source>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>%1, внутрішнє ім'я: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Пошук...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Пошук об'єктів</translation>
     </message>
   </context>
   <context>
@@ -5061,6 +5237,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Export failed</source>
       <translation>Експорт не вдався</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Розділити</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation type="unfinished">Toggle active part</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Редагувати текст</translation>
     </message>
   </context>
   <context>
@@ -6899,6 +7087,66 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Вигляд</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Згорнути/Розгорнути</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Разгорнути активный документ та згорнути усі інші</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Вигляд</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation type="unfinished">Multi Document</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Відображення усіх документів у вигляді дерева</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Вигляд</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Єдиний документ</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Відображати тільки активний документ в дерева перегляду</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Вигляд</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Дерево документів</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Встановити видимість неактивних документів у дереві перегляду</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -7009,20 +7257,32 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Залежності об'єктів</translation>
-    </message>
-    <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
+      <source>These items are linked to items selected for deletion and might break.
 
 </source>
-      <translation>Наступні, посилання на об'єкти можуть зламатися.
-
-Ви впевнені, що хочете продовжити?
+      <translation>Ці елементи зв'язані з елементами, що вибрані для видалення і можуть стати зіпсованими.
 
 </translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document. 
+
+</source>
+      <translation>Ці елементи обрані для видалення, але вони знаходяться не в активному документі.
+
+</translation>
+    </message>
+    <message>
+      <source>
+
+Are you sure you want to continue?</source>
+      <translation>
+
+Ви впевнені, що хочете продовжити?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Видалити обрані зауваження</translation>
     </message>
   </context>
   <context>
@@ -7123,6 +7383,50 @@ Do you want to duplicate them, too?</source>
     <message>
       <source>Do you want to continue?</source>
       <translation>Бажаєте продовжити?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Ізометричний</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Встановити NaviCube в ізометричний режим перегляду</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ортогональний</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Встановити ортогональний режим перегляду</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Перспектива</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Встановити перспективний режим перегляду</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Масштаб за розміром</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Показати модель повністю</translation>
     </message>
   </context>
   <context>

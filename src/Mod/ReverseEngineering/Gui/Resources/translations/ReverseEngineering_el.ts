@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="+93"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>Αντίστροφη Μηχανική</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate plane...</source>
-      <translation>Πλάνο κατά προσέγγιση...</translation>
+      <translation>Προσέγγιση επιπέδου...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate a plane</source>
-      <translation>Πλάνο κατά προσέγγιση</translation>
+      <translation>Προσέγγιση ενός επιπέδου</translation>
     </message>
   </context>
   <context>
@@ -24,21 +24,21 @@
     <message>
       <location line="-37"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>Αντίστροφη Μηχανική</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Προσέγγιση επιφάνειας B-spline...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Προσέγγιση μιας επιφάνειας B-spline</translation>
     </message>
     <message>
       <source>Approximate B-Spline surface...</source>
-      <translation>Κατά προσέγγιση επιφάνεια B-Spline...</translation>
+      <translation>Προσέγγιση επιφάνειας B-Spline...</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
@@ -46,7 +46,7 @@
     </message>
     <message>
       <source>Approximate a B-Spline surface</source>
-      <translation>Κατά προσέγγιση ένα B-Spline επιφάνεια</translation>
+      <translation>Προσέγγιση μιας επιφάνειας B-Spline</translation>
     </message>
   </context>
   <context>
@@ -54,7 +54,7 @@
     <message>
       <location line="+134"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>Αντίστροφη Μηχανική</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -64,7 +64,7 @@
     <message>
       <location line="+1"/>
       <source>Poisson surface reconstruction</source>
-      <translation>Poisson επιφάνειας ανασυγκρότησης</translation>
+      <translation>Ανακατασκευή επιφάνειας Poisson</translation>
     </message>
   </context>
   <context>
@@ -72,18 +72,18 @@
     <message>
       <location line="+32"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>Αντίστροφη Μηχανική</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>Δομημένα νέφη σημείων</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>Τριγωνισμός των δομημένων νεφών σημείων</translation>
     </message>
     <message>
       <source>View triangulation</source>
@@ -94,23 +94,23 @@
     <name>ReenGui::FitBSplineSurface</name>
     <message>
       <source>Fit B-Spline surface</source>
-      <translation type="unfinished">Fit B-Spline surface</translation>
+      <translation>Προσαρμογή στην επιφάνεια B-Spline</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Προσαρμογή στην επιφάνεια B-spline</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>Διεύθυνση u</translation>
     </message>
     <message>
       <location line="+6"/>
       <location line="+67"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>Βαθμός</translation>
     </message>
     <message>
       <location line="-38"/>
@@ -121,7 +121,7 @@
     <message>
       <location line="-35"/>
       <source>v-Direction</source>
-      <translation>v-κατεύθυνση</translation>
+      <translation>Διεύθυνση v</translation>
     </message>
     <message>
       <location line="+67"/>
@@ -136,7 +136,7 @@
     <message>
       <location line="+29"/>
       <source>Size factor</source>
-      <translation>Μέγεθος παράγοντας</translation>
+      <translation>Παράγοντας μεγέθους</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -146,27 +146,27 @@
     <message>
       <location line="+9"/>
       <source>Total Weight</source>
-      <translation type="unfinished">Total Weight</translation>
+      <translation>Συνολικό Βάρος</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Length of gradient</source>
-      <translation type="unfinished">Length of gradient</translation>
+      <translation>Μήκος βαθμίδας</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Bending energy</source>
-      <translation type="unfinished">Bending energy</translation>
+      <translation>Ενέργεια κάμψης</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Μεταβολή καμπυλότητας</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>Κατευθύνσεις u/v ορισμένες από τον χρήστη</translation>
     </message>
   </context>
   <context>
@@ -179,7 +179,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>Παρακαλώ επιλέξτε ένα αντικείμενο τοποθέτησης για να έχετε τον τοπικό προσανατολισμό.</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -192,27 +192,27 @@
     <message>
       <location filename="../../Poisson.ui" line="+14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>Poisson</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Παράμετροι</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Βάθος οκταδικού δένδρου</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>Διαίρεση του επιλυτή</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Samples per node</source>
-      <translation type="unfinished">Samples per node</translation>
+      <translation>Δείγματα ανά κόμβο</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="+109"/>
@@ -232,7 +232,7 @@
       <location line="-134"/>
       <location line="+135"/>
       <source>Please select a single point cloud.</source>
-      <translation type="unfinished">Please select a single point cloud.</translation>
+      <translation>Παρακαλώ επιλέξτε ένα νέφος σημείων.</translation>
     </message>
   </context>
   <context>
@@ -240,7 +240,7 @@
     <message>
       <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Η προβολή τριγωνισμού απέτυχε</translation>
     </message>
   </context>
   <context>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>Αντίστροφη Μηχανική</translation>
     </message>
   </context>
 </TS>

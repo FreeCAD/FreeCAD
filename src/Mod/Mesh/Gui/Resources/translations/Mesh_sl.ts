@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Ovrednoti in popravi mrežo...</translation>
     </message>
   </context>
   <context>
@@ -409,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Povečava...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Skaliraj izbrane mreže</translation>
     </message>
   </context>
   <context>
@@ -424,11 +424,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Ustvari prerez iz mreže in ravnine</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>Prerez iz mreže in ravnine</translation>
     </message>
   </context>
   <context>
@@ -444,6 +444,21 @@
     <message>
       <source>Create mesh segments</source>
       <translation>Ustvari mrežne odseke</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation>Ustvari segmente mreže iz najboljše prilegajočih se površin...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation>Ustvari segmente mreže iz najboljše prilegajočih se površin</translation>
     </message>
   </context>
   <context>
@@ -779,7 +794,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <source>Evaluation settings</source>
-      <translation type="unfinished">Evaluation settings</translation>
+      <translation>Nastavitve ovrednotenja</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -787,15 +802,15 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation type="unfinished">Check for non-manifold points</translation>
+      <translation>Preglej za ne-manifoldne točke</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation type="unfinished">Enable check for folds on surface</translation>
+      <translation>Omogoči kontrolo gub na površini</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
-      <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+      <translation>Samo ploskve z nično površino privzemi kot degenerirane</translation>
     </message>
   </context>
   <context>
@@ -924,7 +939,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Export AMF files using compression</source>
-      <translation type="unfinished">Export AMF files using compression</translation>
+      <translation>Izvozi dadoteke AMF z uporabo kompresije</translation>
     </message>
   </context>
   <context>
@@ -1060,6 +1075,45 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Prileganje površine</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parametri</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Izbira</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Območje</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Trikotnik</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Počisti</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Izračunaj</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Brez izbora</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Pred prilagajanjem površine izbreri območje.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1164,6 +1218,73 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
       <source>Sphere</source>
       <translation>Krogla</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Ukrivljenost</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Prostoročno</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Maks. Ukrivljenost</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Min. Ukrivljenost</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Razčlenitev mreže</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Krogla</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Toleranca</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Najmanjše št. ploskev</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametri...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Ravnina</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Valj</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Osnova</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Običajno</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Os</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Polmer</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Središče</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1205,6 +1326,13 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     <message>
       <source>Invert</source>
       <translation>Obrni</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>Meje %1:</translation>
     </message>
   </context>
   <context>
@@ -1466,11 +1594,15 @@ Najv. = &lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Skaliranje</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Vnesite skalirni faktor:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Oblika preprostega modela</translation>
     </message>
   </context>
   <context>

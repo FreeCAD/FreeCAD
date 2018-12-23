@@ -447,6 +447,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation>Háló szegmensek létrehozása a legjobban illeszkedő felületekből...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation>Háló szegmensek létrehozása a legjobban illeszkedő felületekből</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -1060,6 +1075,45 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Felület illesztés</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Paraméterek</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Kijelölés</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Régió</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Háromszög</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Törlés</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Kiszámítás</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Nincs kijelölés</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Felület illesztése előtt jelöljön ki egy területet.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1164,6 +1218,73 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
       <source>Sphere</source>
       <translation>Gömb</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Görbület</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Szabad formájú</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Max. görbület</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Min. görbület</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Háló szegmentálás</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Gömb</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tűrés</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Felületek minimum száma</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Paraméterek...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Sík</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Henger</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Alap</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normál</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Tengely</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Sugár</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Középre</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1205,6 +1326,13 @@ Kérjük először futtassa a hajlítás javítása parancsot</translation>
     <message>
       <source>Invert</source>
       <translation>Invertálás</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>%1 kötései:</translation>
     </message>
   </context>
   <context>
@@ -1470,6 +1598,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Adja meg a skálafaktort:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Egyszerű modell formátum</translation>
     </message>
   </context>
   <context>

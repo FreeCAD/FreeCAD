@@ -4,20 +4,20 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+187"/>
+      <location filename="../../Command.cpp" line="+188"/>
       <source>Points</source>
       <translation>Puncte</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Convert to points...</source>
-      <translation type="unfinished">Convert to points...</translation>
+      <translation>Conversia în puncte...</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Convert to points</source>
-      <translation type="unfinished">Convert to points</translation>
+      <translation>Conversia în puncte</translation>
     </message>
   </context>
   <context>
@@ -61,20 +61,20 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+245"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Puncte</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>Îmbinare a norilor de puncte</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>Îmbina mai mulți nori de punct într-unul singur</translation>
     </message>
   </context>
   <context>
@@ -99,7 +99,7 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-122"/>
+      <location line="-126"/>
       <source>Points</source>
       <translation>Puncte</translation>
     </message>
@@ -268,19 +268,19 @@
     </message>
     <message>
       <source>Ascii Points</source>
-      <translation type="unfinished">Ascii Points</translation>
+      <translation>Ascii puncte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-76"/>
       <location line="+50"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Toate fișierele</translation>
     </message>
     <message>
       <location line="-50"/>
       <location line="+50"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Formate de puncte</translation>
     </message>
     <message>
       <location line="+71"/>
@@ -290,7 +290,7 @@
     <message>
       <location line="+1"/>
       <source>Enter maximum distance:</source>
-      <translation type="unfinished">Enter maximum distance:</translation>
+      <translation>Introduceţi distanţa maximă:</translation>
     </message>
   </context>
   <context>

@@ -381,7 +381,7 @@
     <message>
       <location line="-177"/>
       <source>Select one Robot to set home position</source>
-      <translation type="unfinished">Select one Robot to set home position</translation>
+      <translation>Selecteer een robot om de beginpositie in te stellen</translation>
     </message>
     <message>
       <location line="+149"/>
@@ -502,6 +502,11 @@
       <location line="+1"/>
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Bezoek %1 en kopieer de bestanden naar %2</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderTrajectory.cpp" line="+164"/>
+      <source>Modify</source>
+      <translation>Modificeer</translation>
     </message>
   </context>
   <context>

@@ -244,7 +244,7 @@
     <message>
       <location line="+1"/>
       <source>Create a linear pattern feature</source>
-      <translation>创建线性特征</translation>
+      <translation>创建线性阵列特征</translation>
     </message>
     <message>
       <source>create a linear pattern feature</source>
@@ -266,7 +266,7 @@
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>将文档迁移到当前PartDesign 工作流</translation>
+      <translation>将文档迁移到当前零件设计工作流</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
@@ -341,12 +341,12 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation>设定尖点</translation>
+      <translation>设置标记</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Move the tip of the body</source>
-      <translation>移动实体尖点</translation>
+      <translation>移动实体的标记</translation>
     </message>
   </context>
   <context>
@@ -419,7 +419,7 @@
     </message>
     <message>
       <source>Create part</source>
-      <translation>创建部件</translation>
+      <translation>创建零件</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
@@ -556,12 +556,12 @@
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation>创建形状粘合剂</translation>
+      <translation>创建图形面</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation>创建新的形状粘合剂</translation>
+      <translation>创建新图形面</translation>
     </message>
   </context>
   <context>
@@ -633,7 +633,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>创建增料楔形体</translation>
+      <translation>创建增料图元</translation>
     </message>
     <message>
       <location line="+113"/>
@@ -685,13 +685,13 @@
     </message>
     <message>
       <source>Create an subtractive primitive</source>
-      <translation>创建减料棱柱体特征</translation>
+      <translation>创建减料图元</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation>创建减料棱柱体特征</translation>
+      <translation>创建减料图元</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -797,7 +797,7 @@
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>特征位于尖点特征之后</translation>
+      <translation>特征位于标记特征之后</translation>
     </message>
   </context>
   <context>
@@ -844,13 +844,13 @@
       <location line="+14"/>
       <location line="+27"/>
       <source>True</source>
-      <translation>正确</translation>
+      <translation>是</translation>
     </message>
     <message>
       <location line="-22"/>
       <location line="+27"/>
       <source>False</source>
-      <translation>错误</translation>
+      <translation>否</translation>
     </message>
     <message>
       <location line="-19"/>
@@ -1182,7 +1182,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
       <source>Primitive parameters</source>
-      <translation>原始参数</translation>
+      <translation>图元参数</translation>
     </message>
     <message>
       <location line="+593"/>
@@ -1485,7 +1485,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+7"/>
       <source>From different parts or free features</source>
-      <translation>从不同的部分或自由特征</translation>
+      <translation>来自不同的零件或自由特征</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1530,7 +1530,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Belongs to another part</source>
-      <translation>属于另一个部件</translation>
+      <translation>属于另一个零件</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1549,7 +1549,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation>特征位于尖点特征之后</translation>
+      <translation>特征位于标记特征之后</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1648,7 +1648,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Up to first</source>
-      <translation>直到第一个</translation>
+      <translation>到起始位置</translation>
     </message>
     <message>
       <source>Size:</source>
@@ -2080,7 +2080,7 @@ Please check one or more edge entities first.</source>
       <location line="+7"/>
       <location line="+357"/>
       <source>No face selected</source>
-      <translation>未选择任何面</translation>
+      <translation>未选择面</translation>
     </message>
     <message>
       <location line="-295"/>
@@ -2422,7 +2422,7 @@ Please check one or more edge entities first.</source>
       <location line="-379"/>
       <location line="+383"/>
       <source>No face selected</source>
-      <translation>未选择任何面</translation>
+      <translation>未选择面</translation>
     </message>
   </context>
   <context>
@@ -2661,17 +2661,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+26"/>
       <source>Add Geometry</source>
-      <translation>添加几何体</translation>
+      <translation>添加几何图形</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Geometry</source>
-      <translation>删除几何体</translation>
+      <translation>移除几何图形</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
       <source>Datum shape parameters</source>
-      <translation>基准形状参数</translation>
+      <translation>基准图形参数</translation>
     </message>
   </context>
   <context>
@@ -2683,7 +2683,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>No face selected</source>
-      <translation>未选择任何面</translation>
+      <translation>未选择面</translation>
     </message>
   </context>
   <context>
@@ -3361,7 +3361,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-68"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>实体不能基于PartDesign特征</translation>
+      <translation>实体不能基于零件设计工作台特征</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -3432,7 +3432,7 @@ This may lead to unexpected results.</source>
     <message>
       <location line="+1"/>
       <source>No PartDesign features which doesn't belong to a body found. Nothing to migrate.</source>
-      <translation>没有找到隶属于一实体的PartDesign 特征。没有可迁移对象。</translation>
+      <translation>没有找到隶属于一实体的零件设计工作台特征。没有可迁移对象。</translation>
     </message>
     <message>
       <location line="+148"/>
@@ -3470,7 +3470,7 @@ This may lead to unexpected results.</source>
     <message>
       <location line="+5"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>只有实体特征才能成为实体的尖点。</translation>
+      <translation>只有实体特征才能成为实体的标记特征。</translation>
     </message>
     <message>
       <location line="+116"/>
@@ -3661,7 +3661,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation>编辑形状粘合剂</translation>
+      <translation>编辑图形面</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
@@ -3680,7 +3680,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>文档 "%1" 似乎是在从旧版PartDesign迁移过程中, 或是有一个稍微破碎的结构。</translation>
+      <translation>文档 "%1" 似乎正处于从旧版零件设计工作台迁移的过程中, 或有一个轻微的破碎结构。</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3713,7 +3713,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation>编辑基元</translation>
+      <translation>编辑图元</translation>
     </message>
   </context>
   <context>
@@ -3978,7 +3978,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt; 钻取点 &lt;/b&gt;</translation>
+      <translation>&lt;b&gt;钻点&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>

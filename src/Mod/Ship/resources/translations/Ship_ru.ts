@@ -41,12 +41,12 @@
     <message>
       <location filename="../../Instance.py" line="87"/>
       <source>Set of weight instances</source>
-      <translation>Набор веса экземпляров</translation>
+      <translation>Набор экземпляров веса</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="95"/>
       <source>Set of tank instances</source>
-      <translation>Набор экземпляров цистерн</translation>
+      <translation>Набор экземпляров баков</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="103"/>
@@ -172,7 +172,7 @@
     <message>
       <location filename="../../ShipGui.py" line="165"/>
       <source>Plot the tank capacity curve (level-volume curve)</source>
-      <translation>Участок кривой емкости бака (кривой уровня громкости)</translation>
+      <translation>Участок кривой емкости бака (кривой уровня объёма)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="156"/>
@@ -195,7 +195,7 @@
     <message>
       <location filename="../../shipCreateShip/TaskPanel.py" line="151"/>
       <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation>Объекты судна могут быть созданы в верхней части  геометрии корпуса (не найдено моделей среди выделенных объектов)</translation>
+      <translation>Объекты судна могут быть созданы в верхней части геометрии корпуса (не найдено твердотельных объектов среди выделенного)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="94"/>
@@ -225,7 +225,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="197"/>
       <source>A ship instance must be selected before using this tool (no objects selected)</source>
-      <translation>Экземпляр корабля должен быть выбран перед использованием этого средства (объекты не выбраны)</translation>
+      <translation>Перед использованием этого инструмента должен быть выбран экземпляр корабля (объекты не выбраны)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="213"/>
@@ -235,7 +235,7 @@
     <message>
       <location filename="../../shipHydrostatics/TaskPanel.py" line="223"/>
       <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
-      <translation>Экземпляр корабля должен быть выбран перед использованием этого инструмента (не подходящий корабль для выбранных объектов)</translation>
+      <translation>Перед использованием этого инструмента должен быть выбран экземпляр корабля(подходящих кораблей не обнаружено в выбранных объектах)</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/PlotAux.py" line="57"/>
@@ -245,7 +245,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="192"/>
       <source>A ship instance must be selected before use this tool (no objects selected)</source>
-      <translation>Экземпляр корабля должен быть выбран перед использованием этого инструмента (объекты не выбраны)</translation>
+      <translation>Перед использованием этого инструмента должен быть выбран экземпляр корабля(объекты не выбраны)</translation>
     </message>
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="210"/>
@@ -255,7 +255,7 @@
     <message>
       <location filename="../../shipOutlineDraw/TaskPanel.py" line="220"/>
       <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
-      <translation>Экземпляр корабля должен быть выбран прежде чем использовать этот инструмент (Обнаружен неподходящий корабль для выбранных объектов)</translation>
+      <translation>Прежде чем использовать этот инструмент необходимо выбрать экземпляр корабля (подходящих кораблей не обнаружено в выбранных объектах)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="41"/>
@@ -270,47 +270,47 @@
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="118"/>
       <source>A tank instance must be selected before using this tool (no objects selected)</source>
-      <translation>Экземпляр корабля должен быть выбран перед использованием этого средства (объекты не выбраны)</translation>
+      <translation>Перед использованием этого инструмента должен быть выбран экземпляр бака(объекты не выбраны)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="134"/>
       <source>More than one tank have been selected (the extra tanks will be ignored)</source>
-      <translation type="unfinished">More than one tank have been selected (the extra tanks will be ignored)</translation>
+      <translation>Был выбран более чем один бак (дополнительные баки будут проигнорированы)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="143"/>
       <source>A tank instance must be selected before using this tool (no valid tank found at the selected objects)</source>
-      <translation type="unfinished">A tank instance must be selected before using this tool (no valid tank found at the selected objects)</translation>
+      <translation>Перед использованием этого инструмента должен быть выбран экземпляр бака (не найдено подходящего объекта типа бак в выбранных объектах)</translation>
     </message>
     <message>
       <location filename="../../TankInstance.py" line="128"/>
       <source>Tank volume operation failed. The tool is retrying that slightly moving the free surface position</source>
-      <translation type="unfinished">Tank volume operation failed. The tool is retrying that slightly moving the free surface position</translation>
+      <translation>Сбой операции объем бака. Инструмент сделает повторную попытку, слегка переместив позицию волнения</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="133"/>
       <source>A loading condition instance must be selected before using this tool (no objects selected)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no objects selected)</translation>
+      <translation>Перед использованием этого инструмента должен быть выбран экземпляр состояния нагрузки (объекты не выбраны)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="196"/>
       <source>Wrong Ship label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Ship label! (no instances labeled as'{}' found)</translation>
+      <translation>Неправильная метка корабля! (экземпляры помеченные как «{}» не найдены)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="204"/>
       <source>Ambiguous Ship label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Ship label! ({} instances labeled as'{}' found)</translation>
+      <translation>Неоднозначная метка корабля! ({} экземпляров помеченных как «{}» найдено)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="182"/>
       <source>More than one loading condition have been selected (the extra loading conditions will be ignored)</source>
-      <translation type="unfinished">More than one loading condition have been selected (the extra loading conditions will be ignored)</translation>
+      <translation>Выбрано более одного состояния нагрузки (лишнее состояние нагрузки будет проигнорировано)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="192"/>
       <source>A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</source>
-      <translation type="unfinished">A loading condition instance must be selected before using this tool (no valid loading condition found at the selected objects)</translation>
+      <translation>Перед использованием этого инструмента должен быть выбран экземпляр состояния нагрузки (подходящих экземпляров состояния нагрузки не обнаружено в выбранных объектах)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="117"/>
@@ -320,72 +320,72 @@
     <message>
       <location filename="../../shipGZ/Tools.py" line="229"/>
       <source>Wrong Weight label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Weight label! (no instances labeled as'{}' found)</translation>
+      <translation>Неправильная метка веса! (экземпляры помеченные как «{}» не найдены)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="237"/>
       <source>Ambiguous Weight label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Weight label! ({} instances labeled as'{}' found)</translation>
+      <translation>Неоднозначная метка веса! ({} экземпляров помеченных как «{}» найдено)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="249"/>
       <source>Invalid Weight! (the object labeled as'{}' is not a weight)</source>
-      <translation type="unfinished">Invalid Weight! (the object labeled as'{}' is not a weight)</translation>
+      <translation>Недопустимый вес! (объект помечены как «{}» не является весом)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="274"/>
       <source>Wrong Tank label! (no instances labeled as'{}' found)</source>
-      <translation type="unfinished">Wrong Tank label! (no instances labeled as'{}' found)</translation>
+      <translation>Неправильная метка бака! (экземпляры помеченные как «{}» не найдены)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="282"/>
       <source>Ambiguous Tank label! ({} instances labeled as'{}' found)</source>
-      <translation type="unfinished">Ambiguous Tank label! ({} instances labeled as'{}' found)</translation>
+      <translation>Неоднозначная метка бака! ({} экземпляров помеченных как «{}» найдено)</translation>
     </message>
     <message>
       <location filename="../../shipGZ/Tools.py" line="294"/>
       <source>Invalid Tank! (the object labeled as'{}' is not a tank)</source>
-      <translation type="unfinished">Invalid Tank! (the object labeled as'{}' is not a tank)</translation>
+      <translation>Недопустимый бак! (объект помечены как «{}» не является баком)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/Tools.py" line="49"/>
       <source>Computing capacity curves</source>
-      <translation type="unfinished">Computing capacity curves</translation>
+      <translation>Вычисление кривых вместимости</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="122"/>
       <source>Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</source>
-      <translation type="unfinished">Boolean operation failed when trying to get the underwater side. The tool is retrying such operation slightly moving the free surface position</translation>
+      <translation>Сбой логической операции при попытке получить подводную часть. Инструмент выполнит повторное выполнение этой операции, слегка переместив позицию волнения</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="197"/>
       <source>Part.OCCError: Transversal area computation failed</source>
-      <translation type="unfinished">Part.OCCError: Transversal area computation failed</translation>
+      <translation>Part.OCCError: Ошибка вычисления поперечной области</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="273"/>
       <source>ZeroDivisionError: Null volume found during the displacement computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null volume found during the displacement computation!</translation>
+      <translation>Ошибка деления на ноль: во время вычисления водоизмещения обнаружен нулевой объем!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="374"/>
       <source>Part.OCCError: Floating area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Floating area cannot be computed</translation>
+      <translation>Part.OCCError: Плавающая область не может быть вычислена</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="386"/>
       <source>ZeroDivisionError: Null area found during the floating area computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the floating area computation!</translation>
+      <translation>Ошибка деления на ноль: во время вычисления плавающей области обнаружена нулевая область!</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="461"/>
       <source>Part.OCCError: Main frame area cannot be computed</source>
-      <translation type="unfinished">Part.OCCError: Main frame area cannot be computed</translation>
+      <translation>Part.OCCError: Площадь главного каркаса не может быть вычислена</translation>
     </message>
     <message>
       <location filename="../../shipHydrostatics/Tools.py" line="474"/>
       <source>ZeroDivisionError: Null area found during the main frame area coefficient computation!</source>
-      <translation type="unfinished">ZeroDivisionError: Null area found during the main frame area coefficient computation!</translation>
+      <translation>Ошибка деления на ноль: во время вычисления коэффициента площади основного каркаса обнаружена нулевая область!</translation>
     </message>
   </context>
   <context>
@@ -441,12 +441,12 @@
     <message>
       <location filename="../../ShipGui.py" line="196"/>
       <source>GZ curve computation</source>
-      <translation type="unfinished">GZ curve computation</translation>
+      <translation>Вычисление кривой GZ</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="239"/>
       <source>Plot the GZ curve</source>
-      <translation type="unfinished">Plot the GZ curve</translation>
+      <translation>Создать график GZ кривой</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="243"/>
@@ -461,27 +461,27 @@
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="253"/>
       <source>Variable trim</source>
-      <translation type="unfinished">Variable trim</translation>
+      <translation>Переменная обрезка</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="258"/>
       <source>The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</source>
-      <translation type="unfinished">The ship will be rotated to the equilibrium trim angle for each roll angle. It will significantly increase the required computing time</translation>
+      <translation>Корабль будет поворачиваться на равновесный угол для каждого угла крена. Это значительно увеличит требуемое время вычислений</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="284"/>
       <source>GZ curve tool angle selected [deg]</source>
-      <translation type="unfinished">GZ curve tool angle selected [deg]</translation>
+      <translation>GZ кривой угол инструмента выбран [deg]</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="299"/>
       <source>GZ curve tool number of points selected</source>
-      <translation type="unfinished">GZ curve tool number of points selected</translation>
+      <translation>GZ кривой инструментом количество точек выбранного</translation>
     </message>
     <message>
       <location filename="../../shipGZ/TaskPanel.py" line="314"/>
       <source>GZ curve tool variable trim angle selection</source>
-      <translation type="unfinished">GZ curve tool variable trim angle selection</translation>
+      <translation>Инструмент кривой GZ - выбор переменного угла резания</translation>
     </message>
   </context>
   <context>
@@ -550,12 +550,12 @@
     <message>
       <location filename="../../ShipGui.py" line="179"/>
       <source>Create a new loading condition</source>
-      <translation type="unfinished">Create a new loading condition</translation>
+      <translation>Создайте новое состояние нагрузки</translation>
     </message>
     <message>
       <location filename="../../ShipGui.py" line="182"/>
       <source>Create a new load condition spreadsheet</source>
-      <translation type="unfinished">Create a new load condition spreadsheet</translation>
+      <translation>Создать новую электронную таблицу состояния нагрузки</translation>
     </message>
   </context>
   <context>
@@ -616,7 +616,7 @@
     <message>
       <location filename="../../TankInstance.py" line="50"/>
       <source>True if it is a valid tank instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid tank instance, False otherwise</translation>
+      <translation>Истина — если правильный экземпляр бака, Ложь — в противном случае</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="160"/>
@@ -626,17 +626,17 @@
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="109"/>
       <source>Tanks objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Tanks objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Объекты баков могут быть созданы только на вершине его геометрия (нет выбранных объектов)</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="122"/>
       <source>No solids found in the selected objects</source>
-      <translation type="unfinished">No solids found in the selected objects</translation>
+      <translation>Не найдено твердых тел в выбранных объектах</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="139"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation type="unfinished">There are not ship objects to create weights into them</translation>
+      <translation>Нет объектов корабля для добавления к ним веса</translation>
     </message>
     <message>
       <location filename="../../shipCreateTank/TaskPanel.py" line="164"/>
@@ -649,12 +649,12 @@
     <message>
       <location filename="../../ShipGui.py" line="131"/>
       <source>Create a new ship weight</source>
-      <translation type="unfinished">Create a new ship weight</translation>
+      <translation>Создайте новый вес корабля</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="46"/>
       <source>True if it is a valid weight instance, False otherwise</source>
-      <translation type="unfinished">True if it is a valid weight instance, False otherwise</translation>
+      <translation>Истина — если правильный экземпляр судна, Ложь — в противном случае</translation>
     </message>
     <message>
       <location filename="../../WeightInstance.py" line="55"/>
@@ -674,17 +674,17 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="113"/>
       <source>Weight objects can only be created on top of its geometry (no objects selected)</source>
-      <translation type="unfinished">Weight objects can only be created on top of its geometry (no objects selected)</translation>
+      <translation>Объекты веса могут быть созданы только на вершине его геометрия (нет выбранных объектов)</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="126"/>
       <source>No geometrical shapes found in the selected objects</source>
-      <translation type="unfinished">No geometrical shapes found in the selected objects</translation>
+      <translation>Нет геометрических форм, в выбранных объектах</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="179"/>
       <source>There are not ship objects to create weights into them</source>
-      <translation type="unfinished">There are not ship objects to create weights into them</translation>
+      <translation>Нет объектов корабля для добавления к ним веса</translation>
     </message>
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="213"/>
@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation type="unfinished">Unknown object shapes selected</translation>
+      <translation>Выбраны неизвестные фигуры объекта,</translation>
     </message>
   </context>
 </TS>

@@ -409,7 +409,7 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Schaal...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
@@ -444,6 +444,21 @@
     <message>
       <source>Create mesh segments</source>
       <translation>Gaassegmenten aanmaken</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
     </message>
   </context>
   <context>
@@ -686,11 +701,11 @@
     </message>
     <message>
       <source>No non-manifolds</source>
-      <translation type="unfinished">No non-manifolds</translation>
+      <translation>Geen niet-spruitstukken</translation>
     </message>
     <message>
       <source>%1 non-manifolds</source>
-      <translation type="unfinished">%1 non-manifolds</translation>
+      <translation>%1 niet-spruitstukken</translation>
     </message>
     <message>
       <source>No invalid indices</source>
@@ -772,7 +787,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Settings...</source>
-      <translation type="unfinished">Settings...</translation>
+      <translation>Instellingen...</translation>
     </message>
   </context>
   <context>
@@ -900,7 +915,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
       <source>Mesh Formats</source>
-      <translation type="unfinished">Mesh Formats</translation>
+      <translation>Mesh formaten</translation>
     </message>
     <message>
       <source>Export</source>
@@ -1060,6 +1075,45 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation type="unfinished">Surface fit</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parameters</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Selectie</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Sectie</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Driehoek</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Wissen</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation type="unfinished">Compute</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Geen selectie</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation type="unfinished">Before fitting the surface select an area.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1164,6 +1218,73 @@ Please run the command to repair folds first</source>
       <source>Sphere</source>
       <translation>Bol</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation type="unfinished">Curvature</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation type="unfinished">Freeform</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation type="unfinished">Max. Curvature</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation type="unfinished">Min. Curvature</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation type="unfinished">Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Bol</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerantie</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum aantal vlakken</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Vlak</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cilinder</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Basis</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normaal</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>As</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Straal</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Middelpunt</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1205,6 +1326,13 @@ Please run the command to repair folds first</source>
     <message>
       <source>Invert</source>
       <translation>Omkeren</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation type="unfinished">Boundings of %1:</translation>
     </message>
   </context>
   <context>
@@ -1258,7 +1386,7 @@ Please visit http://www.openscad.org/index.html to install it.</translation>
     </message>
     <message>
       <source>Solid Mesh</source>
-      <translation type="unfinished">Solid Mesh</translation>
+      <translation>Solid Mesh</translation>
     </message>
     <message>
       <source>Boundings</source>
@@ -1402,35 +1530,35 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>All Mesh Files</source>
-      <translation type="unfinished">All Mesh Files</translation>
+      <translation>Alle mesh bestanden</translation>
     </message>
     <message>
       <source>Binary STL</source>
-      <translation type="unfinished">Binary STL</translation>
+      <translation>Binair STL</translation>
     </message>
     <message>
       <source>ASCII STL</source>
-      <translation type="unfinished">ASCII STL</translation>
+      <translation>ASCII STL</translation>
     </message>
     <message>
       <source>Binary Mesh</source>
-      <translation type="unfinished">Binary Mesh</translation>
+      <translation>Binaire mesh</translation>
     </message>
     <message>
       <source>Alias Mesh</source>
-      <translation type="unfinished">Alias Mesh</translation>
+      <translation>Alias mesh</translation>
     </message>
     <message>
       <source>Object File Format</source>
-      <translation type="unfinished">Object File Format</translation>
+      <translation>Object Bestandsformaat</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii</source>
-      <translation type="unfinished">Inventor V2.1 ascii</translation>
+      <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
-      <translation type="unfinished">Stanford Polygon</translation>
+      <translation>Stanford Polygoon</translation>
     </message>
     <message>
       <source>All Files</source>
@@ -1438,39 +1566,43 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>X3D Extensible 3D</source>
-      <translation type="unfinished">X3D Extensible 3D</translation>
+      <translation>X3D Extensible 3D</translation>
     </message>
     <message>
       <source>VRML V2.0</source>
-      <translation type="unfinished">VRML V2.0</translation>
+      <translation>VRML V2.0</translation>
     </message>
     <message>
       <source>Compressed VRML 2.0</source>
-      <translation type="unfinished">Compressed VRML 2.0</translation>
+      <translation>Compressed VRML 2.0</translation>
     </message>
     <message>
       <source>Nastran</source>
-      <translation type="unfinished">Nastran</translation>
+      <translation>Nastran</translation>
     </message>
     <message>
       <source>Python module def</source>
-      <translation type="unfinished">Python module def</translation>
+      <translation>Python module def</translation>
     </message>
     <message>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+      <translation>[Punten: %1, randen: %2, gezichten: %3]</translation>
     </message>
     <message>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Importeren-Exporteren</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Schalen</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Geef schaal factor:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation type="unfinished">Simple Model Format</translation>
     </message>
   </context>
   <context>

@@ -108,5 +108,23 @@ Double click on an error in the tree view to see more information about it,inclu
       <translation>輸入可調用物件名稱，調用時將彈出一個測試案例。點擊“開始”，由此產生的測試將被執行。
 雙擊在樹狀視圖中的錯誤以查看詳細的信息，包括堆棧追踪。</translation>
     </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation type="unfinished">Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+    </message>
   </context>
 </TS>

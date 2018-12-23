@@ -4,20 +4,20 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+187"/>
+      <location filename="../../Command.cpp" line="+188"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Convert to points...</source>
-      <translation>Zu Punkten konvertieren...</translation>
+      <translation>In Punkte konvertieren...</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Convert to points</source>
-      <translation>Zu Punkten konvertieren</translation>
+      <translation>In Punkte konvertieren</translation>
     </message>
   </context>
   <context>
@@ -61,20 +61,20 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+245"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Merge point clouds</source>
-      <translation>Zusammenführen von Punktwolken</translation>
+      <translation>Punktwolken zusammenführen</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Merge several point clouds into one</source>
-      <translation>Zusammenführen von mehreren Punktwolken in eine</translation>
+      <translation>Mehrere Punktwolken in eine zusammenführen</translation>
     </message>
   </context>
   <context>
@@ -99,7 +99,7 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-122"/>
+      <location line="-126"/>
       <source>Points</source>
       <translation>Punkte</translation>
     </message>
@@ -290,7 +290,7 @@
     <message>
       <location line="+1"/>
       <source>Enter maximum distance:</source>
-      <translation>Eingabe der maximalen Entfernung:</translation>
+      <translation>Maximale Entfernung eingeben:</translation>
     </message>
   </context>
   <context>

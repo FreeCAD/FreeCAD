@@ -42,6 +42,24 @@
     </message>
   </context>
   <context>
+    <name>CmdImageScaling</name>
+    <message>
+      <location line="+120"/>
+      <source>Image</source>
+      <translation>Imagem</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Scale...</source>
+      <translation>Escala...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Image Scaling</source>
+      <translation>Dimensionar a imagem</translation>
+    </message>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
       <location filename="../../GLImageBox.cpp" line="+333"/>
@@ -182,7 +200,7 @@
       <translation>Imagens (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="+20"/>
+      <location filename="../../Command.cpp" line="-102"/>
       <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>Escolha um ficheiro de imagem para abrir</translation>

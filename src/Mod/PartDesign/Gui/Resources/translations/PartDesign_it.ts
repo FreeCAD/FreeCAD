@@ -1673,27 +1673,27 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
       <location line="+1"/>
       <source>ISO metric coarse profile</source>
-      <translation>Profilo grezzo metrico (ISO)</translation>
+      <translation>Filettatura metrica passo grosso ISO</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>ISO metric fine profile</source>
-      <translation>Profilo rifinito metrico (ISO)</translation>
+      <translation>Filettatura metrica passo fine ISO</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS coarse profile</source>
-      <translation>Profilo grezzo UTS</translation>
+      <translation>Filettatura passo grosso UTS</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS fine profile</source>
-      <translation>Profilo rifinito UTS</translation>
+      <translation>Filettatura passo fine UTS</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS extra fine profile</source>
-      <translation>Profilo extra-rifinito UTS</translation>
+      <translation>Filettatura passo extra fine UTS</translation>
     </message>
   </context>
   <context>

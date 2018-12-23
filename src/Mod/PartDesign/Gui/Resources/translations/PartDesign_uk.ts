@@ -638,7 +638,7 @@
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Паралелепіпед, який додається</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1527,21 +1527,21 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Belongs to another body</source>
-      <translation type="unfinished">Belongs to another body</translation>
+      <translation>Належить до іншого тіла</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Belongs to another part</source>
-      <translation type="unfinished">Belongs to another part</translation>
+      <translation>Належить до іншої деталі</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Doesn't belong to any body</source>
-      <translation type="unfinished">Doesn't belong to any body</translation>
+      <translation>Не належить до жодного тіла</translation>
     </message>
     <message>
       <source>Doesn't belongs to any body</source>
-      <translation type="unfinished">Doesn't belongs to any body</translation>
+      <translation>Не належить до жодного тіла</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2165,7 +2165,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Frenet</source>
-      <translation type="unfinished">Frenet</translation>
+      <translation>Френе</translation>
     </message>
     <message>
       <source>Auxillery</source>
@@ -2203,12 +2203,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Додати ребро</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Видалити ребро</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -2276,12 +2276,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Додати ребро</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Видалити ребро</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-222"/>
@@ -2304,7 +2304,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+14"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>Константа</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2727,7 +2727,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+8"/>
       <source>Skin</source>
-      <translation type="unfinished">Skin</translation>
+      <translation>Тема оформлення</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2789,7 +2789,7 @@ Please check one or more edge entities first.</source>
       <location line="+2"/>
       <location line="+36"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Допоміжна лінія %1</translation>
     </message>
     <message>
       <location line="-22"/>
@@ -3535,7 +3535,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+2"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>Допоміжна лінія %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
@@ -3545,7 +3545,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../Utils.cpp" line="+88"/>
       <source>No active Body</source>
-      <translation type="unfinished">No active Body</translation>
+      <translation>Відсутнє активне тіло</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
@@ -3769,17 +3769,17 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="-331"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>З різьбою</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Countersink</source>
-      <translation type="unfinished">Countersink</translation>
+      <translation>Зенківка</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Counterbore</source>
-      <translation type="unfinished">Counterbore</translation>
+      <translation>Цековка</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -3847,7 +3847,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+18"/>
       <source>Thread length</source>
-      <translation type="unfinished">Thread length</translation>
+      <translation>Довжина різьби</translation>
     </message>
   </context>
   <context>
@@ -3903,7 +3903,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+40"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>Плоский</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3933,7 +3933,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+7"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>З різьбою</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -3978,27 +3978,27 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+11"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>Зовнішній відрізок</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Точка свердління&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Misc&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Різне&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Hole cut&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Отвір, що вирізується&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading and size&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Різьба та розміри&lt;/b&gt;</translation>
     </message>
   </context>
   <context>
