@@ -244,6 +244,7 @@ std::vector<std::string> ViewProviderPoints::getDisplayModes(void) const
     StrList.push_back("Points");
     StrList.push_back("Color");
     StrList.push_back("Shaded");
+    StrList.push_back("Intensity");
 
     // if (pcObject) {
         // std::map<std::string,App::Property*> Map;
