@@ -265,7 +265,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Središte</translation>
     </message>
     <message>
       <source>Right</source>
@@ -445,7 +445,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Neimenovano</translation>
     </message>
   </context>
   <context>

@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Gauti apytikslį B-splaininį paviršių...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Gauti apytikslį B-splaininį paviršių</translation>
     </message>
     <message>
       <source>Approximate B-Spline surface...</source>
@@ -99,7 +99,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Priderinti B-splaininį paviršių</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -151,7 +151,7 @@
     <message>
       <location line="+29"/>
       <source>Length of gradient</source>
-      <translation>Gradiento ilgis</translation>
+      <translation>Perėjimo ilgis</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -179,7 +179,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Prašome pasirinkti vieną padėjimo objektą gauti vietos orientacijai.</translation>
+      <translation>Prašome pasirinkti vieną dėstymo objektą gauti vietos orientacijai.</translation>
     </message>
     <message>
       <location line="+28"/>

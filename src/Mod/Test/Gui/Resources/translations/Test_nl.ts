@@ -53,7 +53,7 @@
     </message>
     <message>
       <source>Progress</source>
-      <translation>Voortgang</translation>
+      <translation>Vooruitgang</translation>
     </message>
     <message>
       <source>&lt;font color="#0000ff"&gt;0&lt;/font&gt;</source>
@@ -81,7 +81,7 @@
     </message>
     <message>
       <source>Select test name:</source>
-      <translation>Selecteer Testnaam:</translation>
+      <translation>Selecteer testnaam:</translation>
     </message>
   </context>
   <context>
@@ -108,6 +108,24 @@ FreeCAD unittest is onderdeel van FreeCAD en ondersteunt het schrijven van unit 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
       <translation>Voer de naam in van het oproepbare object welke, indien opgeroepen, een TestCase zal teruggeven. Druk op 'start', en de aldus geproduceerde test zal worden uitgevoerd.
 Dubbel klik op een fout in de boomstructuur om meer informatie te zien, inclusief de stack trace.</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Voer de naam in van een opvraagbaar object dat, wanneer het wordt opgeroepen, een TestCase retourneert.
+Klik op 'start' en de aldus geproduceerde test wordt uitgevoerd.
+
+Dubbelklik op een fout in de structuurweergave om meer informatie erover te zien, inclusief de stacktracering.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is onderdeel van FreeCAD en ondersteunt het schrijven van eenheidstests voor de eigen modules.</translation>
     </message>
   </context>
 </TS>

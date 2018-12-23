@@ -447,6 +447,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Netz</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation>Erstelle Netzsegmente aus angenäherten Oberflächen...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation>Erstelle Netzsegmente aus angenäherten Oberflächen</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -1060,6 +1075,45 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Oberflächen Annäherung</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parameter</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Auswahl</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Bereich</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Dreieck</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Löschen</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Berechnen</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Keine Auswahl</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Bevor Sie die Oberfläche annähern, wählen Sie einen Bereich aus.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1164,6 +1218,73 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
       <source>Sphere</source>
       <translation>Kugel</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Krümmung</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Freiform</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Max. Krümmung</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Min. Krümmung</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Netz Segmentierung</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Kugel</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Toleranz</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimale Anzahl von Dreiecken</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parameter...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Ebene</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Zylinder</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Basis</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Achse</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Radius</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Mittelpunkt</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1205,6 +1326,13 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     <message>
       <source>Invert</source>
       <translation>Umkehren</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>Grenzen von %1:</translation>
     </message>
   </context>
   <context>
@@ -1471,6 +1599,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Geben Sie den Skalierungsfaktor an:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Einfaches Modellformat</translation>
     </message>
   </context>
   <context>

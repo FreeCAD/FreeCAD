@@ -447,6 +447,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -1060,6 +1075,45 @@ Najprv spustite príkaz na opravu záhybov</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation type="unfinished">Surface fit</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation type="unfinished">Parameters</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Výber</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Región</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Trojuholník</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Vyčistiť</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation type="unfinished">Compute</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>bez výberu</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation type="unfinished">Before fitting the surface select an area.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1164,6 +1218,73 @@ Najprv spustite príkaz na opravu záhybov</translation>
       <source>Sphere</source>
       <translation>Guľa</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation type="unfinished">Curvature</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation type="unfinished">Freeform</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation type="unfinished">Max. Curvature</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation type="unfinished">Min. Curvature</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation type="unfinished">Mesh segmentation</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Guľa</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerancia</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation type="unfinished">Minimum number of faces</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Rovina</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Valec</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Základňa</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normálny</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Os</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Polomer</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation type="unfinished">Center</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1205,6 +1326,13 @@ Najprv spustite príkaz na opravu záhybov</translation>
     <message>
       <source>Invert</source>
       <translation>Invertovať</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation type="unfinished">Boundings of %1:</translation>
     </message>
   </context>
   <context>
@@ -1462,7 +1590,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Import/Export</translation>
     </message>
     <message>
       <source>Scaling</source>
@@ -1471,6 +1599,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Enter scaling factor:</source>
       <translation type="unfinished">Enter scaling factor:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation type="unfinished">Simple Model Format</translation>
     </message>
   </context>
   <context>

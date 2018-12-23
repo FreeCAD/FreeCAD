@@ -5,7 +5,7 @@
     <name>TestGui::UnitTest</name>
     <message>
       <source>FreeCAD UnitTest</source>
-      <translation>UnitTest του FreeCAD</translation>
+      <translation>Έλεγχος Μονάδων του FreeCAD</translation>
     </message>
     <message>
       <source>Failures and errors</source>
@@ -17,7 +17,7 @@
     </message>
     <message>
       <source>&amp;Start</source>
-      <translation>&amp; Έναρξη</translation>
+      <translation>Έναρξη</translation>
     </message>
     <message>
       <source>Alt+S</source>
@@ -25,7 +25,7 @@
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>&amp;Βοήθεια</translation>
+      <translation>Βο&amp;ήθεια</translation>
     </message>
     <message>
       <source>F1</source>
@@ -33,7 +33,7 @@
     </message>
     <message>
       <source>&amp;About</source>
-      <translation>&amp; Περί</translation>
+      <translation>Σχετικές Πληροφορίες</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -41,7 +41,7 @@
     </message>
     <message>
       <source>&amp;Close</source>
-      <translation>&amp;Κλείσιμο</translation>
+      <translation>Κλείσιμο</translation>
     </message>
     <message>
       <source>Alt+C</source>
@@ -77,11 +77,11 @@
     </message>
     <message>
       <source>Test</source>
-      <translation>Δοκιμή</translation>
+      <translation>Έλεγχος</translation>
     </message>
     <message>
       <source>Select test name:</source>
-      <translation>Επιλέξτε όνομα δοκιμής :</translation>
+      <translation>Επιλέξτε όνομα ελέγχου:</translation>
     </message>
   </context>
   <context>
@@ -92,7 +92,7 @@
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
-      <translation>Σχετικά με το FreeCAD UnitTest</translation>
+      <translation>Σχετικά με τον Έλεγχο Μονάδων του Freecad</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer
@@ -100,13 +100,33 @@
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
       <translation>Πνευματικά δικαιώματα (c) Werner Mayer
 
-Το FreeCAD UnitTest είναι μέρος του FreeCAD και υποστηρίζει μονάδα για δικές του ενότητες.</translation>
+Ο Έλεγχος Μονάδων του FreeCAD είναι μέρος του λογισμικού FreeCAD και υποστηρίζει την εγγραφή Ελέγχων Μονάδων για τις λειτουργικές μας μονάδες.</translation>
     </message>
     <message>
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Πληκτρολογήστε το όνομα του ένα προσφωνήσιμη αγαθό που, όταν κάλεσε, θα επιστρέψει ένα TestCase.Click 'Έναρξη', και η δοκιμή προκληθέντων θα εκτελεστεί.  Κάντε διπλό κλικ στο σφάλμα στην ιεραρχημένη προβολή για να δείτε περισσότερες πληροφορίες σχετικά με αυτό, καθώς και το ίχνος στοίβας.</translation>
+      <translation>Εισάγετε το όνομα ενός αντικειμένου που δύναται να κληθεί, το οποίο όταν κληθεί, επιστρέφει μια Περίπτωση Ελέγχου. Κάντε κλικ στην επιλογή 'έναρξη' και ο έλεγχος που δημιουργήθηκε θα εκτελεστεί.
+
+Κάντε διπλό κλικ σε οποιοδήποτε σφάλμα στο δενδροδιάγραμμα για να δείτε περισσότερες πληροφορίες, συμπεριλαμβανομένου του ίχνους της στοίβας.</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Εισάγετε το όνομα ενός αντικειμένου που δύναται να κληθεί, το οποίο όταν κληθεί, επιστρέφει μια Περίπτωση Ελέγχου.
+Κάντε κλικ στην επιλογή 'έναρξη' και ο έλεγχος που δημιουργήθηκε θα εκτελεστεί.
+
+Κάντε διπλό κλικ σε οποιοδήποτε σφάλμα στο δενδροδιάγραμμα για να δείτε περισσότερες πληροφορίες, συμπεριλαμβανομένου του ίχνους της στοίβας.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Πνευματικά δικαιώματα (c) Werner Mayer
+
+Ο Έλεγχος Μονάδων του FreeCAD είναι μέρος του λογισμικού FreeCAD και υποστηρίζει την εγγραφή Ελέγχων Μονάδων για τις λειτουργικές μονάδες του εκάστοτε χρήστη.</translation>
     </message>
   </context>
 </TS>

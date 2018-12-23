@@ -128,12 +128,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
       <source>Sketchfab exporter</source>
-      <translation type="unfinished">Sketchfab exporter</translation>
+      <translation>Exportator de Sketchfab</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
       <source>What to upload?</source>
-      <translation type="unfinished">What to upload?</translation>
+      <translation>Ce să încărcaţi?</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
@@ -143,17 +143,17 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
       <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
+      <translation>Toate obiectele vizibile</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
       <source>Model name</source>
-      <translation type="unfinished">Model name</translation>
+      <translation>Numele Modelului</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
       <source>Private</source>
-      <translation type="unfinished">Private</translation>
+      <translation>Privat</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
@@ -163,84 +163,84 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="110"/>
       <source>Tags (separated by commas)</source>
-      <translation type="unfinished">Tags (separated by commas)</translation>
+      <translation>Tag-uri (separate prin virgulă)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
       <source>FreeCAD,</source>
-      <translation type="unfinished">FreeCAD,</translation>
+      <translation>FreeCAD,</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>Formatul</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
       <source>OBJ + MTL (Arch exporter)</source>
-      <translation type="unfinished">OBJ + MTL (Arch exporter)</translation>
+      <translation>OBJ + MTL (exportator Arch)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
       <source>OBJ (standard Mesh exporter)</source>
-      <translation type="unfinished">OBJ (standard Mesh exporter)</translation>
+      <translation>OBJ (exportator de plasă standard)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
       <source>DAE (Collada)</source>
-      <translation type="unfinished">DAE (Collada)</translation>
+      <translation>DAE (Collada)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
       <source>STL</source>
-      <translation type="unfinished">STL</translation>
+      <translation>STL</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
       <source>IGES (shapes only)</source>
-      <translation type="unfinished">IGES (shapes only)</translation>
+      <translation>IGES (numai forme)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
       <source>IV</source>
-      <translation type="unfinished">IV</translation>
+      <translation>IV</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
       <source>Sketchfab API token</source>
-      <translation type="unfinished">Sketchfab API token</translation>
+      <translation>Sketchfab API token</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
       <source>Obtain</source>
-      <translation type="unfinished">Obtain</translation>
+      <translation>Obţine</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
       <source>Upload</source>
-      <translation type="unfinished">Upload</translation>
+      <translation>Încărcaţi</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
       <source>uploading</source>
-      <translation type="unfinished">uploading</translation>
+      <translation>încărcarea</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
       <source>Success! View uploaded online</source>
-      <translation type="unfinished">Success! View uploaded online</translation>
+      <translation>Succes! Vezi încărcat online</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="412"/>
+      <location filename="../../BrowserView.cpp" line="440"/>
       <source>Browser</source>
       <translation>Navigator</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="309"/>
+      <location filename="../../BrowserView.cpp" line="337"/>
       <source>File does not exist!</source>
       <translation>Fișierul nu există!</translation>
     </message>
@@ -248,12 +248,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="329"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
       <source>Error</source>
       <translation>Eroare</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="383"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Au existat erori în timpul încărcării fişierului. Unele date s-ar putea să fi fost modificate sau să se nu recupereze deloc. Uitați-vă în raportul vizualizării pentru mai multe informaţii specifice despre obiectele implicate.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="411"/>
       <source>Loading %1...</source>
       <translation>Se încarcă %1...</translation>
     </message>
@@ -261,12 +267,12 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="181"/>
+      <location filename="../../BrowserView.cpp" line="185"/>
       <source>Open in External Browser</source>
       <translation>Deschide în navigator extern</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="185"/>
+      <location filename="../../BrowserView.cpp" line="189"/>
       <source>Open in new window</source>
       <translation>Deschide intr-o fereastra noua</translation>
     </message>

@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Create a planar image in the 3D space</source>
-      <translation>Создать двухмерное изображение в 3D-пространстве</translation>
+      <translation>Создать двухмерное изображение в трёхмерном пространстве</translation>
     </message>
     <message>
       <source>create a planar image in the 3D space</source>
@@ -38,7 +38,25 @@
     <message>
       <location line="+1"/>
       <source>Open image view</source>
-      <translation>Просмотр открытых изображений</translation>
+      <translation>Открыть изображение</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdImageScaling</name>
+    <message>
+      <location line="+120"/>
+      <source>Image</source>
+      <translation>Изображение</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Scale...</source>
+      <translation>Масштаб...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Image Scaling</source>
+      <translation>Масштабирование изображения</translation>
     </message>
   </context>
   <context>
@@ -47,7 +65,7 @@
       <location filename="../../GLImageBox.cpp" line="+333"/>
       <location filename="../../OpenGLImageBox.cpp" line="+385"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Неопределенный тип цвета пространства для просмотра изображений</translation>
+      <translation>Неопределенный тип цветового пространства для просмотра изображений</translation>
     </message>
     <message>
       <location line="-1"/>
@@ -182,7 +200,7 @@
       <translation>Изображения (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="+20"/>
+      <location filename="../../Command.cpp" line="-102"/>
       <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>Выберите файл изображения, чтобы открыть</translation>
@@ -211,7 +229,7 @@
     </message>
     <message>
       <source>Error open image</source>
-      <translation>Ошибка при открытии изображения</translation>
+      <translation>Ошибка открытия изображения</translation>
     </message>
     <message>
       <source>Could not load the choosen image</source>

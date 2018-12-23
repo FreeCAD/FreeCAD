@@ -77,13 +77,13 @@
     <message>
       <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>Strukturalne chmury punktów</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>Triangulacja strukturalnych chmur punktów</translation>
     </message>
     <message>
       <source>View triangulation</source>
@@ -202,12 +202,12 @@
     <message>
       <location line="+6"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Głębokość drzewa ósemkowego</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>Podział solvera</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -240,7 +240,7 @@
     <message>
       <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Triangulacja widoku nie powiodła się</translation>
     </message>
   </context>
   <context>

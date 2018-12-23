@@ -390,7 +390,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new sketch</source>
-      <translation>Criar um Novo Desenho</translation>
+      <translation>Criar um Novo Esboço</translation>
     </message>
   </context>
   <context>
@@ -1136,7 +1136,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -1243,7 +1243,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -1419,7 +1419,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -1466,7 +1466,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -1563,7 +1563,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -1594,7 +1594,7 @@ Please check one or more edge entities first.</translation>
     <name>PartDesignGui::TaskGrooveParameters</name>
     <message>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Axis:</source>
@@ -1633,7 +1633,7 @@ Please check one or more edge entities first.</translation>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -1641,7 +1641,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Dimension</source>
-      <translation>Dimensão</translation>
+      <translation>Cotagem</translation>
     </message>
     <message>
       <source>Up to last</source>
@@ -1700,7 +1700,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Original feature</source>
@@ -1782,7 +1782,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -1820,7 +1820,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Original feature</source>
@@ -1903,7 +1903,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Original feature</source>
@@ -1985,7 +1985,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2000,7 +2000,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+18"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Deslocamento paralelo</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2033,7 +2033,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../TaskPadParameters.cpp" line="-311"/>
       <location line="+288"/>
       <source>Dimension</source>
-      <translation>Dimensão</translation>
+      <translation>Cotagem</translation>
     </message>
     <message>
       <source>Length:</source>
@@ -2112,7 +2112,7 @@ Please check one or more edge entities first.</translation>
     <name>PartDesignGui::TaskPatternRectangularParameters</name>
     <message>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Spacing1:</source>
@@ -2144,7 +2144,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2240,7 +2240,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -2293,7 +2293,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2331,7 +2331,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Type:</source>
@@ -2347,12 +2347,12 @@ Please check one or more edge entities first.</translation>
       <location filename="../../TaskPocketParameters.cpp" line="+119"/>
       <location line="+320"/>
       <source>Dimension</source>
-      <translation>Dimensão</translation>
+      <translation>Cotagem</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Deslocamento paralelo</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2431,7 +2431,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Original feature</source>
@@ -2521,7 +2521,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2605,7 +2605,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>Original feature</source>
@@ -2652,7 +2652,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2692,7 +2692,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -3714,7 +3714,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -3941,7 +3941,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+56"/>
       <source>Dimension</source>
-      <translation>Dimensão</translation>
+      <translation>Cotagem</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -3994,7 +3994,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskTransformedMessages.ui" line="+14"/>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <location line="+12"/>

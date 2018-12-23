@@ -230,7 +230,7 @@
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom</source>
-      <translation>色の編集</translation>
+      <translation>カスタム設定</translation>
     </message>
   </context>
   <context>

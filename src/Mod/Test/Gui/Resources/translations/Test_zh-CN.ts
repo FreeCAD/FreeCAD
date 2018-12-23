@@ -98,7 +98,7 @@
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-      <translation>版权所有(c) Werner Mayer
+      <translation>版权所有(c) Werner Mayer（翻译：刘亚龙）
 FreeCAD 单元测试是 FreeCAD 的一部分，并支持为自身模块编写单元测试。</translation>
     </message>
     <message>
@@ -107,6 +107,20 @@ FreeCAD 单元测试是 FreeCAD 的一部分，并支持为自身模块编写单
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
       <translation>请输入一个可调用对象的名字，其在被调用时将返回一个测试用例。点击‘开始’，将会运行新产生的测试。
 双击树视图中的错误可以查看与其有关的更多内容，包括堆栈跟踪信息。</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>输入可调用对象的名称, 当调用时, 将返回测试用例。单击 "开始", 将运行由此生成的测试。双击树视图中的一个错误, 查看有关它的更多信息, 包括堆栈跟踪。</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>版权所有 (c) Werner Mayer
+FreeCAD 单元测试是 FreeCAD 的一部分, 支持为自己的模块编写单元测试。</translation>
     </message>
   </context>
 </TS>

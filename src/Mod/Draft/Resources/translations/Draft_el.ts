@@ -4,682 +4,722 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../Draft.py" line="3755"/>
+      <location filename="../../Draft.py" line="3275"/>
       <source>Defines a hatch pattern</source>
-      <translation type="unfinished">Defines a hatch pattern</translation>
+      <translation>Καθορίζει ένα μοτίβο διαγράμμισης επιφάνειας</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3756"/>
+      <location filename="../../Draft.py" line="3276"/>
       <source>Sets the size of the pattern</source>
-      <translation type="unfinished">Sets the size of the pattern</translation>
+      <translation>Ορίζει το μέγεθος του μοτίβου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3899"/>
+      <location filename="../../Draft.py" line="3419"/>
       <source>Startpoint of dimension</source>
-      <translation type="unfinished">Startpoint of dimension</translation>
+      <translation>Σημείο εκκίνησης της διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3900"/>
+      <location filename="../../Draft.py" line="3420"/>
       <source>Endpoint of dimension</source>
-      <translation type="unfinished">Endpoint of dimension</translation>
+      <translation>Τελικό σημείο διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3902"/>
-      <source>the normal direction of this dimension</source>
-      <translation type="unfinished">the normal direction of this dimension</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4340"/>
+      <location filename="../../Draft.py" line="3948"/>
       <source>Point through which the dimension line passes</source>
-      <translation type="unfinished">Point through which the dimension line passes</translation>
+      <translation>Σημείο μέσω του οποίου περνάει η γραμμή διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4343"/>
+      <location filename="../../Draft.py" line="3951"/>
       <source>The object measured by this dimension</source>
-      <translation type="unfinished">The object measured by this dimension</translation>
+      <translation>Το αντικείμενο που μετριέται από αυτήν την διάσταση</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4344"/>
+      <location filename="../../Draft.py" line="3952"/>
       <source>The geometry this dimension is linked to</source>
-      <translation type="unfinished">The geometry this dimension is linked to</translation>
+      <translation>Η γεωμετρία στην οποία συνδέεται αυτή η διάσταση</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4345"/>
+      <location filename="../../Draft.py" line="3953"/>
       <source>The measurement of this dimension</source>
-      <translation type="unfinished">The measurement of this dimension</translation>
+      <translation>Η μέτρηση αυτής της διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3907"/>
+      <location filename="../../Draft.py" line="3427"/>
       <source>For arc/circle measurements, false = radius, true = diameter</source>
-      <translation type="unfinished">For arc/circle measurements, false = radius, true = diameter</translation>
+      <translation>Για μετρήσεις τόξου/κύκλου, ψευδές = ακτίνα, αληθές = διάμετρος</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4366"/>
+      <location filename="../../Draft.py" line="3975"/>
       <source>Font size</source>
       <translation>Μέγεθος γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4367"/>
+      <location filename="../../Draft.py" line="3976"/>
       <source>The number of decimals to show</source>
-      <translation type="unfinished">The number of decimals to show</translation>
+      <translation>Ο αριθμός των δεκαδικών προς εμφάνιση</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4996"/>
+      <location filename="../../Draft.py" line="4605"/>
       <source>Arrow size</source>
-      <translation type="unfinished">Arrow size</translation>
+      <translation>Μέγεθος βέλους</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4370"/>
+      <location filename="../../Draft.py" line="3979"/>
       <source>The spacing between the text and the dimension line</source>
-      <translation type="unfinished">The spacing between the text and the dimension line</translation>
+      <translation>Η απόσταση μεταξύ του κειμένου και της γραμμής διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4997"/>
+      <location filename="../../Draft.py" line="4606"/>
       <source>Arrow type</source>
-      <translation type="unfinished">Arrow type</translation>
+      <translation>Τύπος βέλους</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4368"/>
+      <location filename="../../Draft.py" line="3977"/>
       <source>Font name</source>
-      <translation type="unfinished">Font name</translation>
+      <translation>Όνομα γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6654"/>
+      <location filename="../../Draft.py" line="6353"/>
       <source>Line width</source>
-      <translation>Πλάτος Γραμμής</translation>
+      <translation>Πλάτος γραμμής</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6655"/>
+      <location filename="../../Draft.py" line="6354"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>Χρώμα γραμμής</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3509"/>
+      <source>Length of the extension lines</source>
+      <translation>Μήκος των γραμμών επέκτασης</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3983"/>
-      <source>Length of the extension lines</source>
-      <translation type="unfinished">Length of the extension lines</translation>
+      <source>Rotate the dimension arrows 180 degrees</source>
+      <translation>Περιστρέψτε τα βέλη διάστασης κατά 180 μοίρες</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4374"/>
-      <source>Rotate the dimension arrows 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension arrows 180 degrees</translation>
+      <location filename="../../Draft.py" line="3513"/>
+      <source>Rotate the dimension text 180 degrees</source>
+      <translation>Περιστρέψτε το κείμενο διάστασης κατά 180 μοίρες</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3984"/>
+      <source>Show the unit suffix</source>
+      <translation>Εμφανίστε την κατάληξη μονάδας</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3985"/>
-      <source>Rotate the dimension text 180 degrees</source>
-      <translation type="unfinished">Rotate the dimension text 180 degrees</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4375"/>
-      <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4376"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
-      <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
+      <translation>Η θέση του κειμένου. Κρατήστε το (0,0,0) για αυτόματη τοποθέτηση</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3988"/>
+      <location filename="../../Draft.py" line="3516"/>
       <source>Text override. Use $dim to insert the dimension length</source>
-      <translation type="unfinished">Text override. Use $dim to insert the dimension length</translation>
+      <translation>Αντικατάσταση κειμένου. Χρησιμοποιήστε $dim για να εισαγάγετε το μήκος διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3989"/>
+      <location filename="../../Draft.py" line="3517"/>
       <source>A unit to express the measurement. Leave blank for system default</source>
-      <translation type="unfinished">A unit to express the measurement. Leave blank for system default</translation>
+      <translation>Μια μονάδα για να εκφράσετε τη μέτρηση. Αφήστε το κενό για προεπιλογή συστήματος</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4338"/>
+      <location filename="../../Draft.py" line="3946"/>
       <source>Start angle of the dimension</source>
-      <translation type="unfinished">Start angle of the dimension</translation>
+      <translation>Γωνία εκκίνησης της διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4339"/>
+      <location filename="../../Draft.py" line="3947"/>
       <source>End angle of the dimension</source>
-      <translation type="unfinished">End angle of the dimension</translation>
+      <translation>Τελική γωνία της διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4341"/>
+      <location filename="../../Draft.py" line="3949"/>
       <source>The center point of this dimension</source>
-      <translation type="unfinished">The center point of this dimension</translation>
+      <translation>Το κεντρικό σημείο αυτής της διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4342"/>
+      <location filename="../../Draft.py" line="3950"/>
       <source>The normal direction of this dimension</source>
-      <translation type="unfinished">The normal direction of this dimension</translation>
+      <translation>Η κανονική κατεύθυνση αυτής της διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4377"/>
+      <location filename="../../Draft.py" line="3986"/>
       <source>Text override. Use 'dim' to insert the dimension length</source>
-      <translation type="unfinished">Text override. Use 'dim' to insert the dimension length</translation>
+      <translation>Αντικατάσταση κειμένου. Χρησιμοποιήστε 'dim' για να εισαγάγετε το μήκος διάστασης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4680"/>
+      <location filename="../../Draft.py" line="4289"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>Μήκος του ορθογωνίου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5073"/>
+      <location filename="../../Draft.py" line="4705"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>Ακτίνα προς χρήση για το στρογγύλεμα των γωνιών</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5074"/>
+      <location filename="../../Draft.py" line="4706"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>Μέγεθος της λοξότμησης που θα δοθεί στις γωνίες</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5075"/>
+      <location filename="../../Draft.py" line="4707"/>
       <source>Create a face</source>
-      <translation type="unfinished">Create a face</translation>
+      <translation>Δημιουργήστε μια όψη</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4762"/>
+      <location filename="../../Draft.py" line="4371"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
-      <translation type="unfinished">Defines a texture image (overrides hatch patterns)</translation>
+      <translation>Καθορίζει μια εικόνα υφής (αντικαθιστά τα μοτίβα διαγράμμισης επιφάνειας)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4795"/>
+      <location filename="../../Draft.py" line="4404"/>
       <source>Start angle of the arc</source>
-      <translation type="unfinished">Start angle of the arc</translation>
+      <translation>Γωνία εκκίνησης του τόξου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4796"/>
+      <location filename="../../Draft.py" line="4405"/>
       <source>End angle of the arc (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, give it same value as First Angle)</translation>
+      <translation>Τελική γωνία του τόξου (για πλήρη κύκλο, δώστε την ίδια τιμή με την Πρώτη Γωνία)</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4771"/>
+      <location filename="../../Draft.py" line="4380"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Ακτίνα του κύκλου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4797"/>
+      <location filename="../../Draft.py" line="4406"/>
       <source>The minor radius of the ellipse</source>
-      <translation type="unfinished">The minor radius of the ellipse</translation>
+      <translation>Η μικρή ακτίνα της έλλειψης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4798"/>
+      <location filename="../../Draft.py" line="4407"/>
       <source>The major radius of the ellipse</source>
-      <translation type="unfinished">The major radius of the ellipse</translation>
+      <translation>Η μεγάλη ακτίνα της έλλειψης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4832"/>
+      <location filename="../../Draft.py" line="4441"/>
       <source>The vertices of the wire</source>
-      <translation type="unfinished">The vertices of the wire</translation>
+      <translation>Οι κορυφές του σύρματος</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4833"/>
+      <location filename="../../Draft.py" line="4442"/>
       <source>If the wire is closed or not</source>
-      <translation type="unfinished">If the wire is closed or not</translation>
+      <translation>Αν το σύρμα είναι κλειστό ή όχι</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4836"/>
+      <location filename="../../Draft.py" line="4445"/>
       <source>The start point of this line</source>
-      <translation type="unfinished">The start point of this line</translation>
+      <translation>Το σημείο εκκίνησης αυτής της γραμμής</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4837"/>
+      <location filename="../../Draft.py" line="4446"/>
       <source>The end point of this line</source>
-      <translation type="unfinished">The end point of this line</translation>
+      <translation>Το τελικό σημείο αυτής της γραμμής</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4838"/>
+      <location filename="../../Draft.py" line="4447"/>
       <source>The length of this line</source>
-      <translation type="unfinished">The length of this line</translation>
+      <translation>Το μήκος αυτής της γραμμής</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4841"/>
+      <location filename="../../Draft.py" line="4450"/>
       <source>Create a face if this object is closed</source>
-      <translation type="unfinished">Create a face if this object is closed</translation>
+      <translation>Δημιουργήστε μια όψη αν αυτό το αντικείμενο είναι κλειστό</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4842"/>
+      <location filename="../../Draft.py" line="4451"/>
       <source>The number of subdivisions of each edge</source>
-      <translation type="unfinished">The number of subdivisions of each edge</translation>
+      <translation>Ο αριθμός των υποδιαιρέσεων κάθε ακμής</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="4995"/>
+      <location filename="../../Draft.py" line="4604"/>
       <source>Displays a dim symbol at the end of the wire</source>
-      <translation type="unfinished">Displays a dim symbol at the end of the wire</translation>
+      <translation>Εμφανίζει ένα σύμβολο διάστασης στο τέλος του σύρματος</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5070"/>
+      <location filename="../../Draft.py" line="4702"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Αριθμός όψεων</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5071"/>
+      <location filename="../../Draft.py" line="4703"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Ακτίνα του κύκλου ελέγχου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5072"/>
+      <location filename="../../Draft.py" line="4704"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Πώς πρέπει να σχεδιαστεί το πολύγωνο από τον κύκλο ελέγχου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5120"/>
+      <location filename="../../Draft.py" line="4752"/>
       <source>Projection direction</source>
-      <translation type="unfinished">Projection direction</translation>
+      <translation>Κατεύθυνση προβολής</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5121"/>
+      <location filename="../../Draft.py" line="4753"/>
       <source>The width of the lines inside this object</source>
-      <translation type="unfinished">The width of the lines inside this object</translation>
+      <translation>Το πλάτος των γραμμών μέσα σε αυτό το αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5122"/>
+      <location filename="../../Draft.py" line="4754"/>
       <source>The size of the texts inside this object</source>
-      <translation type="unfinished">The size of the texts inside this object</translation>
+      <translation>Το μέγεθος των κειμένων μέσα σε αυτό το αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5123"/>
+      <location filename="../../Draft.py" line="4755"/>
       <source>The spacing between lines of text</source>
-      <translation type="unfinished">The spacing between lines of text</translation>
+      <translation>Η απόσταση μεταξύ των γραμμών του κειμένου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5124"/>
+      <location filename="../../Draft.py" line="4756"/>
       <source>The color of the projected objects</source>
-      <translation type="unfinished">The color of the projected objects</translation>
+      <translation>Το χρώμα των προβεβλημένων αντικειμένων</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5125"/>
+      <location filename="../../Draft.py" line="4757"/>
       <source>The linked object</source>
-      <translation type="unfinished">The linked object</translation>
+      <translation>Το συνδεδεμένο αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5126"/>
+      <location filename="../../Draft.py" line="4758"/>
       <source>Shape Fill Style</source>
-      <translation type="unfinished">Shape Fill Style</translation>
+      <translation>Τύπος Μορφοποίησης Γεμίσματος Σχήματος</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5127"/>
+      <location filename="../../Draft.py" line="4759"/>
       <source>Line Style</source>
-      <translation type="unfinished">Line Style</translation>
+      <translation>Τύπος Μορφοποίησης Γραμμής</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5128"/>
+      <location filename="../../Draft.py" line="4760"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation type="unfinished">If checked, source objects are displayed regardless of being visible in the 3D model</translation>
+      <translation>Εάν επιλεχθούν, τα πηγαία αντικείμενα εμφανίζονται ανεξάρτητα από το αν είναι ορατά στο τρισδιάστατο μοντέλο</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5187"/>
+      <location filename="../../Draft.py" line="4819"/>
       <source>Create a face if this spline is closed</source>
-      <translation type="unfinished">Create a face if this spline is closed</translation>
+      <translation>Δημιουργήστε μια όψη αν αυτή η καμπύλη συνάρτησης spline είναι κλειστή</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5195"/>
+      <location filename="../../Draft.py" line="4827"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Παράγοντας παραμετροποίησης</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5260"/>
+      <location filename="../../Draft.py" line="4892"/>
       <source>The points of the Bezier curve</source>
-      <translation type="unfinished">The points of the Bezier curve</translation>
+      <translation>Τα σημεία της καμπύλης Bezier</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5261"/>
+      <location filename="../../Draft.py" line="4893"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>Ο βαθμός της συνάρτησης Bezier</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5262"/>
+      <location filename="../../Draft.py" line="4894"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>Συνέχεια</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5263"/>
+      <location filename="../../Draft.py" line="4895"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation type="unfinished">If the Bezier curve should be closed or not</translation>
+      <translation>Αν η καμπύλη Bezier θα πρέπει να είναι κλειστή ή όχι</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5264"/>
+      <location filename="../../Draft.py" line="4896"/>
       <source>Create a face if this curve is closed</source>
-      <translation type="unfinished">Create a face if this curve is closed</translation>
+      <translation>Δημιουργήστε μια όψη αν αυτή η καμπύλη είναι κλειστή</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5384"/>
+      <location filename="../../Draft.py" line="5016"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>Τα στοιχεία αυτού του μπλοκ</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5402"/>
+      <location filename="../../Draft.py" line="5034"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>Το αντικείμενο βάσης που θα πρέπει να απεικονίζει αυτή η δισδιάστατη προβολή</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5403"/>
+      <location filename="../../Draft.py" line="5035"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>Το διάνυσμα προβολής αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5404"/>
+      <location filename="../../Draft.py" line="5036"/>
       <source>The way the viewed object must be projected</source>
-      <translation type="unfinished">The way the viewed object must be projected</translation>
+      <translation>Ο τρόπος κατά τον οποίο θα πρέπει να προβληθεί το απεικονιζόμενο αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5405"/>
+      <location filename="../../Draft.py" line="5037"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>Οι δείκτες των όψεων που θα προβληθούν σε λειτουργία Μεμονωμένων Επιφανειών</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5406"/>
+      <location filename="../../Draft.py" line="5038"/>
       <source>Show hidden lines</source>
-      <translation type="unfinished">Show hidden lines</translation>
+      <translation>Εμφανίστε τις κρυφές γραμμές</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5654"/>
+      <location filename="../../Draft.py" line="5285"/>
       <source>The base object that must be duplicated</source>
-      <translation type="unfinished">The base object that must be duplicated</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5553"/>
-      <source>The type of array to create</source>
-      <translation type="unfinished">The type of array to create</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5554"/>
-      <source>The axis direction</source>
-      <translation type="unfinished">The axis direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5555"/>
-      <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5556"/>
-      <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5557"/>
-      <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5657"/>
-      <source>Number of copies</source>
-      <translation type="unfinished">Number of copies</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5559"/>
-      <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5560"/>
-      <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5561"/>
-      <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5562"/>
-      <source>Distance and orientation of intervals in Axis direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Axis direction</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5563"/>
-      <source>Center point</source>
-      <translation type="unfinished">Center point</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5564"/>
-      <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5565"/>
-      <source>Specifies if copies must be fused (slower)</source>
-      <translation type="unfinished">Specifies if copies must be fused (slower)</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5655"/>
-      <source>The path object along which to distribute objects</source>
-      <translation type="unfinished">The path object along which to distribute objects</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5656"/>
-      <source>Selected subobjects (edges) of PathObj</source>
-      <translation type="unfinished">Selected subobjects (edges) of PathObj</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5658"/>
-      <source>Optional translation vector</source>
-      <translation type="unfinished">Optional translation vector</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5659"/>
-      <source>Orientation of Base along path</source>
-      <translation type="unfinished">Orientation of Base along path</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5818"/>
-      <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5819"/>
-      <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5820"/>
-      <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6019"/>
-      <source>Text string</source>
-      <translation type="unfinished">Text string</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6020"/>
-      <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6021"/>
-      <source>Height of text</source>
-      <translation>Ύψος του κειμένου</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6022"/>
-      <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6160"/>
-      <source>Linked faces</source>
-      <translation type="unfinished">Linked faces</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6161"/>
-      <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6162"/>
-      <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4681"/>
-      <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4685"/>
-      <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4686"/>
-      <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6566"/>
-      <source>The placement of this object</source>
-      <translation type="unfinished">The placement of this object</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6365"/>
-      <source>The display length of this section plane</source>
-      <translation type="unfinished">The display length of this section plane</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6366"/>
-      <source>The size of the arrows of this section plane</source>
-      <translation type="unfinished">The size of the arrows of this section plane</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5408"/>
-      <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, this leaves the faces at the cut location</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4834"/>
-      <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="4835"/>
-      <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6567"/>
-      <source>The length of the straight segment</source>
-      <translation type="unfinished">The length of the straight segment</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6568"/>
-      <source>The point indicated by this label</source>
-      <translation type="unfinished">The point indicated by this label</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6569"/>
-      <source>The points defining the label polyline</source>
-      <translation type="unfinished">The points defining the label polyline</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6570"/>
-      <source>The direction of the straight segment</source>
-      <translation type="unfinished">The direction of the straight segment</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6571"/>
-      <source>The type of information shown by this label</source>
-      <translation type="unfinished">The type of information shown by this label</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6572"/>
-      <source>The target object of this label</source>
-      <translation type="unfinished">The target object of this label</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6573"/>
-      <source>The text to display when type is set to custom</source>
-      <translation type="unfinished">The text to display when type is set to custom</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6574"/>
-      <source>The text displayed by this label</source>
-      <translation type="unfinished">The text displayed by this label</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6648"/>
-      <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6649"/>
-      <source>The font of the text</source>
-      <translation type="unfinished">The font of the text</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6650"/>
-      <source>The size of the arrow</source>
-      <translation type="unfinished">The size of the arrow</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6651"/>
-      <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6652"/>
-      <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6653"/>
-      <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6656"/>
-      <source>Text color</source>
-      <translation type="unfinished">Text color</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="6657"/>
-      <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
+      <translation>Το αντικείμενο βάσης που πρέπει να αντιγραφεί</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5185"/>
-      <source>The points of the B-spline</source>
-      <translation type="unfinished">The points of the B-spline</translation>
+      <source>The type of array to create</source>
+      <translation>Ο τύπος διάταξης προς δημιουργία</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5186"/>
+      <source>The axis direction</source>
+      <translation>Η διεύθυνση του άξονα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5187"/>
+      <source>Number of copies in X direction</source>
+      <translation>Αριθμός αντιγράφων στην διεύθυνση Χ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5188"/>
+      <source>Number of copies in Y direction</source>
+      <translation>Αριθμός αντιγράφων στην διεύθυνση Υ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5189"/>
+      <source>Number of copies in Z direction</source>
+      <translation>Αριθμός αντιγράφων στην διεύθυνση Ζ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5288"/>
+      <source>Number of copies</source>
+      <translation>Αριθμός αντιγράφων</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5191"/>
+      <source>Distance and orientation of intervals in X direction</source>
+      <translation>Απόσταση και προσανατολισμός των διαστημάτων στην διεύθυνση Χ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5192"/>
+      <source>Distance and orientation of intervals in Y direction</source>
+      <translation>Απόσταση και προσανατολισμός των διαστημάτων στην διεύθυνση Υ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5193"/>
+      <source>Distance and orientation of intervals in Z direction</source>
+      <translation>Απόσταση και προσανατολισμός των διαστημάτων στην διεύθυνση Ζ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5194"/>
+      <source>Distance and orientation of intervals in Axis direction</source>
+      <translation>Απόσταση και προσανατολισμός των διαστημάτων στην διεύθυνση του άξονα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5195"/>
+      <source>Center point</source>
+      <translation>Κεντρικό σημείο</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5196"/>
+      <source>Angle to cover with copies</source>
+      <translation>Γωνία προς κάλυψη με αντίγραφα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5197"/>
+      <source>Specifies if copies must be fused (slower)</source>
+      <translation>Καθορίζει αν τα αντίγραφα θα πρέπει να συγχωνευθούν (πιο αργό)</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5286"/>
+      <source>The path object along which to distribute objects</source>
+      <translation>To στοιχείο διαδρομής κατά το οποίο να διανεμηθούν αντικείμενα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5287"/>
+      <source>Selected subobjects (edges) of PathObj</source>
+      <translation>Επιλεγμένα εμφωλευμένα στοιχεία (ακμές) του στοιχείου διαδρομής</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5289"/>
+      <source>Optional translation vector</source>
+      <translation>Προαιρετικό διάνυσμα μετάφρασης</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5290"/>
+      <source>Orientation of Base along path</source>
+      <translation>Προσανατολισμός της βάσης κατά μήκος της διαδρομής</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5500"/>
+      <source>X Location</source>
+      <translation>Θέση Χ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5501"/>
+      <source>Y Location</source>
+      <translation>Θέση Υ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5502"/>
+      <source>Z Location</source>
+      <translation>Θέση Ζ</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5705"/>
+      <source>Text string</source>
+      <translation>Συμβολοσειρά κειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5706"/>
+      <source>Font file name</source>
+      <translation>Όνομα αρχείου γραμματοσειράς</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5707"/>
+      <source>Height of text</source>
+      <translation>Ύψος κειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5708"/>
+      <source>Inter-character spacing</source>
+      <translation>Κενό μεταξύ των χαρακτήρων</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5850"/>
+      <source>Linked faces</source>
+      <translation>Συνδεδεμένες όψεις</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5851"/>
+      <source>Specifies if splitter lines must be removed</source>
+      <translation>Καθορίζει αν θα πρέπει να αφαιρεθούν οι διαχωριστικές γραμμές</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5852"/>
+      <source>An optional extrusion value to be applied to all faces</source>
+      <translation>Μια προαιρετική τιμή επέκτασης προς εφαρμογή σε όλες τις όψεις</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="4290"/>
+      <source>Height of the rectangle</source>
+      <translation>Ύψος του ορθογωνίου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="4294"/>
+      <source>Horizontal subdivisions of this rectangle</source>
+      <translation>Οριζόντιες υποδιαιρέσεις αυτού του ορθογωνίου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="4295"/>
+      <source>Vertical subdivisions of this rectangle</source>
+      <translation>Κάθετες υποδιαιρέσεις αυτού του ορθογωνίου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6570"/>
+      <source>The placement of this object</source>
+      <translation>Η τοποθέτηση αυτού του αντικειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6064"/>
+      <source>The display length of this section plane</source>
+      <translation>Το μήκος εμφάνισης αυτού του επιπέδου τομής</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6065"/>
+      <source>The size of the arrows of this section plane</source>
+      <translation>Το μέγεθος των βελών αυτού του επιπέδου τομής</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5040"/>
+      <source>For Cutlines and Cutfaces modes, this leaves the faces at the cut location</source>
+      <translation>Για λειτουργίες Περικοπτόμενων Γραμμών και Όψεων, αυτό αφήνει τις όψεις στην θέση περικοπής</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="4443"/>
+      <source>The base object is the wire, it's formed from 2 objects</source>
+      <translation>Το αντικείμενο βάσης είναι το σύρμα, έχει σχηματιστεί από 2 αντικείμενα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="4444"/>
+      <source>The tool object is the wire, it's formed from 2 objects</source>
+      <translation>Το αντικείμενο-εργαλείο είναι το σύρμα, έχει σχηματιστεί από 2 αντικείμενα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6265"/>
+      <source>The length of the straight segment</source>
+      <translation>Το μήκος του ευθύγραμμου τμήματος</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6266"/>
+      <source>The point indicated by this label</source>
+      <translation>Το σημείο που υποδεικνύεται από αυτήν την ετικέτα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6267"/>
+      <source>The points defining the label polyline</source>
+      <translation>Τα σημεία που ορίζουν την πολυγραμμή της ετικέτας</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6268"/>
+      <source>The direction of the straight segment</source>
+      <translation>Η διεύθυνση του ευθύγραμμου τμήματος</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6269"/>
+      <source>The type of information shown by this label</source>
+      <translation>O τύπος των πληροφοριών που προβάλλονται από αυτήν την ετικέτα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6270"/>
+      <source>The target object of this label</source>
+      <translation>Το αντικείμενο που περιγράφεται από αυτήν την ετικέτα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6271"/>
+      <source>The text to display when type is set to custom</source>
+      <translation>Το κείμενο προς εμφάνιση όταν ο τύπος έχει οριστεί ως προσαρμοσμένος</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6272"/>
+      <source>The text displayed by this label</source>
+      <translation>Το κείμενο που εμφανίζει αυτή η ετικέτα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6583"/>
+      <source>The size of the text</source>
+      <translation>Το μέγεθος του κειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6584"/>
+      <source>The font of the text</source>
+      <translation>Η γραμματοσειρά του κειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6348"/>
+      <source>The size of the arrow</source>
+      <translation>Το μέγεθος του βέλους</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6585"/>
+      <source>The vertical alignment of the text</source>
+      <translation>Η κατακόρυφη ευθυγράμμιση του κειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6350"/>
+      <source>The type of arrow of this label</source>
+      <translation>Ο τύπος βέλους αυτής της ετικέτας</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6351"/>
+      <source>The type of frame around the text of this object</source>
+      <translation>Ο τύπος πλαισίου γύρω από το κείμενο αυτού του αντικειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6586"/>
+      <source>Text color</source>
+      <translation>Χρώμα κειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6356"/>
+      <source>The maximum number of characters on each line of the text box</source>
+      <translation>Ο μέγιστος αριθμός χαρακτήρων για κάθε γραμμή του πλαισίου κειμένου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3510"/>
+      <source>The distance the dimension line is extended past the extension lines</source>
+      <translation>Η απόσταση κατά την οποία επεκτείνεται η γραμμή διάστασης πέρα από τις γραμμές επέκτασης</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3511"/>
+      <source>Length of the extension line above the dimension line</source>
+      <translation>Μήκος της γραμμής επέκτασης που υπερβαίνει την γραμμή διάστασης</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="4817"/>
+      <source>The points of the B-spline</source>
+      <translation>Τα σημεία της Καμπύλης βασικής συνάρτησης B-spline</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="4818"/>
       <source>If the B-spline is closed or not</source>
-      <translation type="unfinished">If the B-spline is closed or not</translation>
+      <translation>Αν η Καμπύλη βασικής συνάρτησης B-spline είναι κλειστή ή όχι</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5407"/>
+      <location filename="../../Draft.py" line="5039"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
+      <translation>Ψηφίδωση Ελλείψεων και Καμπύλων βασικής συνάρτησης B-spline σε γραμμικά τμήματα</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5409"/>
+      <location filename="../../Draft.py" line="5041"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
+      <translation>Μήκος ευθυγράμμων τμημάτων αν γίνεται ψηφίδωση Ελλείψεων ή Καμπύλων βασικής συνάρτησης B-spline σε γραμμικά τμήματα</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5410"/>
+      <location filename="../../Draft.py" line="5042"/>
       <source>If this is True, this object will be recomputed only if it is visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is visible</translation>
+      <translation>Αν αυτό είναι Αληθές, αυτό το αντικείμενο θα επανυπολογίζεται μόνο αν είναι ορατό</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5856"/>
+      <location filename="../../Draft.py" line="5450"/>
+      <source>Base</source>
+      <translation>Βάση</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5451"/>
+      <source>PointList</source>
+      <translation type="unfinished">PointList</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5452"/>
+      <source>Count</source>
+      <translation>Αρίθμηση</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5538"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>Τα αντικείμενα που περιλαμβάνονται σε αυτόν τον κλώνο</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5857"/>
+      <location filename="../../Draft.py" line="5539"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>Ο συντελεστής κλίμακας αυτού του κλώνου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="5858"/>
+      <location filename="../../Draft.py" line="5540"/>
       <source>If this clones several objects, this specifies if the result is a fusion or a compound</source>
-      <translation type="unfinished">If this clones several objects, this specifies if the result is a fusion or a compound</translation>
+      <translation>Αν αυτό κλωνοποιεί διάφορα στοιχεία, αυτό καθορίζει αν το αποτέλεσμα είναι συγχώνευση ή σύνθετο σχήμα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5853"/>
+      <source>This specifies if the shapes sew</source>
+      <translation>Αυτό καθορίζει εάν τα σχήματα ενώνονται</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6352"/>
+      <source>Display a leader line or not</source>
+      <translation type="unfinished">Display a leader line or not</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6571"/>
+      <source>The text displayed by this object</source>
+      <translation>Το κείμενο που εμφανίζει αυτό το αντικείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="6587"/>
+      <source>Line spacing (relative to font size)</source>
+      <translation>Απόσταση γραμμών (σχετικά με το μέγεθος γραμματοσειράς)</translation>
     </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../DraftTools.py" line="5135"/>
+      <location filename="../../DraftTools.py" line="5329"/>
       <source>Slope</source>
-      <translation type="unfinished">Slope</translation>
+      <translation>Κλίση</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="95"/>
@@ -687,225 +727,283 @@
 Please download and install them manually.
 See complete instructions at
 http://www.freecadweb.org/wiki/Dxf_Importer_Install</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please download and install them manually.
-See complete instructions at
+      <translation>Η λήψη των βιβλιοθηκών dxf απέτυχε.
+Παρακαλώ κατεβάστε και εγκαταστήστε χειροκίνητα.
+Δείτε πλήρεις οδηγίες στο
 http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2239"/>
+      <location filename="../../DraftGui.py" line="2345"/>
       <source>Scale</source>
       <translation>Κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6405"/>
+      <location filename="../../Draft.py" line="6105"/>
       <source>Writing camera position</source>
-      <translation type="unfinished">Writing camera position</translation>
+      <translation>Θέση κάμερας εγγραφής</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6422"/>
+      <location filename="../../Draft.py" line="6122"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Κατάσταση εμφάνισης/απόκρυψης αντικειμένων εγγραφής</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2240"/>
+      <location filename="../../DraftGui.py" line="2346"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>Παράγοντας Χ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2241"/>
+      <location filename="../../DraftGui.py" line="2347"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Παράγοντας Υ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2242"/>
+      <location filename="../../DraftGui.py" line="2348"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Παράγοντας Ζ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2243"/>
+      <location filename="../../DraftGui.py" line="2349"/>
       <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <translation>Ενιαία κλιμακοποίηση</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2244"/>
+      <location filename="../../DraftGui.py" line="2350"/>
       <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <translation>Προσανατολισμός επιπέδου εργασίας</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2245"/>
+      <location filename="../../DraftGui.py" line="2351"/>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Αποτέλεσμα</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2246"/>
+      <location filename="../../DraftGui.py" line="2352"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Δημιουργήστε κλώνο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2247"/>
+      <location filename="../../DraftGui.py" line="2353"/>
       <source>Modify original</source>
-      <translation type="unfinished">Modify original</translation>
+      <translation>Τροποποιήστε το πρωτότυπο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2248"/>
+      <location filename="../../DraftGui.py" line="2354"/>
       <source>Create a copy</source>
-      <translation type="unfinished">Create a copy</translation>
+      <translation>Δημιουργήστε αντίγραφο</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="91"/>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>Η λήψη των βιβλιοθηκών dxf απέτυχε.
+Παρακαλώ εγκαταστήστε την προσθήκη Βιβλιοθήκης dxf χειροκίνητα
+από τα Εργαλεία μενού -&gt; Διαχειριστής Προσθηκών</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5141"/>
+      <location filename="../../Draft.py" line="4695"/>
+      <source>This Wire is already flat</source>
+      <translation>Το Σύρμα είναι ήδη επίπεδο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="2355"/>
+      <source>Pick from/to points</source>
+      <translation>Διαλέξτε σημεία από και προς</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5335"/>
       <source>Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</source>
-      <translation type="unfinished">Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</translation>
+      <translation>Η κλίση που θα δοθεί στα επιλεγμένα Σύρματα/Γραμμές: 0 = οριζόντια, 1 = 45μοίρες πάνω, -1 = 45μοίρες κάτω</translation>
+    </message>
+  </context>
+  <context>
+    <name>DraftShapeStringGui</name>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="26"/>
+      <source>ShapeString</source>
+      <translation>Πλαίσιο Συμβολοσειράς Κειμένου</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="46"/>
+      <source>Text to be made into ShapeString</source>
+      <translation type="unfinished">Text to be made into ShapeString</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="53"/>
+      <source>String</source>
+      <translation>Συμβολοσειρά</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="64"/>
+      <source>Height</source>
+      <translation>Ύψος</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="71"/>
+      <source>Height of the result</source>
+      <translation type="unfinished">Height of the result</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="118"/>
+      <source>X</source>
+      <translation>X</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="132"/>
+      <source>Y</source>
+      <translation>Y</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="139"/>
+      <source>Z</source>
+      <translation>Z</translation>
+    </message>
+    <message>
+      <location filename="../ui/TaskShapeString.ui" line="150"/>
+      <source>Font file</source>
+      <translation type="unfinished">Font file</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="../../DraftTools.py" line="5377"/>
+      <location filename="../../DraftTools.py" line="5571"/>
       <source>Add to Construction group</source>
-      <translation type="unfinished">Add to Construction group</translation>
+      <translation>Προσθήκη στην ομάδα Κατασκευής</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5378"/>
+      <location filename="../../DraftTools.py" line="5572"/>
       <source>Adds the selected objects to the Construction group</source>
-      <translation type="unfinished">Adds the selected objects to the Construction group</translation>
+      <translation>Προσθέτει τα επιλεγμένα αντικείμενα στην ομάδα Κατασκευής</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4473"/>
+      <location filename="../../DraftTools.py" line="4624"/>
       <source>Add Point</source>
-      <translation>Προσθήκη σημείου</translation>
+      <translation>Προσθέστε σημείο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4474"/>
+      <location filename="../../DraftTools.py" line="4625"/>
       <source>Adds a point to an existing Wire or B-spline</source>
-      <translation type="unfinished">Adds a point to an existing Wire or B-spline</translation>
+      <translation>Προσθέτει ένα σημείο σε ένα υπάρχον Σύρμα ή μια υπάρχουσα Καμπύλη βασικής συνάρτησης B-spline</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4426"/>
+      <location filename="../../DraftTools.py" line="4577"/>
       <source>Move to group...</source>
-      <translation type="unfinished">Move to group...</translation>
+      <translation>Μετακίνηση σε ομάδα...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4427"/>
+      <location filename="../../DraftTools.py" line="4578"/>
       <source>Moves the selected object(s) to an existing group</source>
-      <translation type="unfinished">Moves the selected object(s) to an existing group</translation>
+      <translation>Μετακινεί το επιλεγμένο αντικείμενο(-α) σε μια υπάρχουσα ομάδα</translation>
     </message>
   </context>
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="../../DraftTools.py" line="2431"/>
+      <location filename="../../DraftTools.py" line="2475"/>
       <source>Apply Current Style</source>
-      <translation>Εφαρμογή της τωρινής τεχνοτροπίας</translation>
+      <translation>Εφαρμογή του Τρέχοντος Τύπου Μορφοποίησης</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2432"/>
+      <location filename="../../DraftTools.py" line="2476"/>
       <source>Applies current line width and color to selected objects</source>
-      <translation>Εφαρμόζει το τωρινό πάχος των γραμμών και το χρώμα τους στα επιλεγμένα αντικείμενα</translation>
+      <translation>Εφαρμόζει το τρέχον πάχος και χρώμα γραμμών στα επιλεγμένα αντικείμενα</translation>
     </message>
   </context>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="../../DraftTools.py" line="1134"/>
+      <location filename="../../DraftTools.py" line="1170"/>
       <source>Arc</source>
       <translation>Τόξο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1135"/>
+      <location filename="../../DraftTools.py" line="1171"/>
       <source>Creates an arc. CTRL to snap, SHIFT to constrain</source>
-      <translation>Δημιουργεί ένα τόξο. CTRL για προσκόλληση, Shift για περιορισμό</translation>
+      <translation>Δημιουργεί ένα τόξο. CTRL για προσκόλληση, SHIFT για περιορισμό</translation>
     </message>
   </context>
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="../../DraftTools.py" line="4695"/>
+      <location filename="../../DraftTools.py" line="4846"/>
       <source>Array</source>
-      <translation type="unfinished">Array</translation>
+      <translation>Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4696"/>
+      <location filename="../../DraftTools.py" line="4847"/>
       <source>Creates a polar or rectangular array from a selected object</source>
-      <translation>Δημιουργεί μία πολική ή ορθογώνια διάταξη από ένα επιλεγμένο αντικείμενο</translation>
+      <translation>Δημιουργεί μια πολική ή ορθογώνια διάταξη από ένα επιλεγμένο αντικείμενο</translation>
     </message>
   </context>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5176"/>
+      <location filename="../../DraftTools.py" line="5370"/>
       <source>AutoGroup</source>
-      <translation type="unfinished">AutoGroup</translation>
+      <translation>Αυτόματη Ομαδοποίηση</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5177"/>
+      <location filename="../../DraftTools.py" line="5371"/>
       <source>Select a group to automatically add all Draft &amp; Arch objects to</source>
-      <translation type="unfinished">Select a group to automatically add all Draft &amp; Arch objects to</translation>
+      <translation>Επιλέξτε μια ομάδα στην οποία θα προστεθούν αυτόματα όλα τα Προσχέδια &amp; Αρχιτεκτονικά στοιχεία</translation>
     </message>
   </context>
   <context>
     <name>Draft_BSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="754"/>
+      <location filename="../../DraftTools.py" line="790"/>
       <source>B-spline</source>
-      <translation type="unfinished">B-spline</translation>
+      <translation>Καμπύλη βασικής συνάρτησης B-spline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="755"/>
+      <location filename="../../DraftTools.py" line="791"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain</translation>
+      <translation>Δημιουργεί μια καμπύλη βασικής συνάρτησης B-spline πολλαπλών σημείων. CTRL για προσκόλληση, SHIFT για περιορισμό</translation>
     </message>
   </context>
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../DraftTools.py" line="853"/>
+      <location filename="../../DraftTools.py" line="889"/>
       <source>BezCurve</source>
-      <translation type="unfinished">BezCurve</translation>
+      <translation>Καμπύλη Bezier</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="854"/>
+      <location filename="../../DraftTools.py" line="890"/>
       <source>Creates a Bezier curve. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a Bezier curve. CTRL to snap, SHIFT to constrain</translation>
+      <translation>Δημιουργεί μια καμπύλη Bezier. CTRL για προσκόλληση, SHIFT για περιορισμό</translation>
     </message>
   </context>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1449"/>
+      <location filename="../../DraftTools.py" line="1485"/>
       <source>Circle</source>
       <translation>Κύκλος</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1450"/>
+      <location filename="../../DraftTools.py" line="1486"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
-      <translation type="unfinished">Creates a circle. CTRL to snap, ALT to select tangent objects</translation>
+      <translation>Δημιουργεί έναν κύκλο. CTRL για προσκόλληση, ALT για να επιλέξετε εφαπτόμενα αντικείμενα</translation>
     </message>
   </context>
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="../../DraftTools.py" line="4852"/>
+      <location filename="../../DraftTools.py" line="5038"/>
       <source>Clone</source>
-      <translation>Κλώνος</translation>
+      <translation>Κλωνοποιήστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4853"/>
+      <location filename="../../DraftTools.py" line="5039"/>
       <source>Clones the selected object(s)</source>
       <translation>Κλωνοποιεί τα επιλεγμένα αντικείμενα</translation>
     </message>
@@ -913,181 +1011,181 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_CloseLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="980"/>
+      <location filename="../../DraftTools.py" line="1016"/>
       <source>Close Line</source>
-      <translation>Κλείσιμο γραμμής</translation>
+      <translation>Κλείστε Γραμμή</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="981"/>
+      <location filename="../../DraftTools.py" line="1017"/>
       <source>Closes the line being drawn</source>
-      <translation>Κλείνει η γραμμή στο στάδιο της επεξεργασίας</translation>
+      <translation>Κλείνει τη γραμμή που σχεδιάζεται</translation>
     </message>
   </context>
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4498"/>
+      <location filename="../../DraftTools.py" line="4649"/>
       <source>Remove Point</source>
-      <translation>Απομάκρυνση του σημείου</translation>
+      <translation>Αφαιρέστε Σημείο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4499"/>
+      <location filename="../../DraftTools.py" line="4650"/>
       <source>Removes a point from an existing Wire or B-spline</source>
-      <translation type="unfinished">Removes a point from an existing Wire or B-spline</translation>
+      <translation>Αφαιρεί ένα σημείο από ένα υπάρχον σύρμα ή μια υπάρχουσα Καμπύλη βασικής συνάρτησης B-spline</translation>
     </message>
   </context>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="1843"/>
+      <location filename="../../DraftTools.py" line="1882"/>
       <source>Dimension</source>
       <translation>Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1844"/>
+      <location filename="../../DraftTools.py" line="1883"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
-      <translation type="unfinished">Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</translation>
+      <translation>Δημιουργεί μια διάσταση. CTRL για προσκόλληση, SHIFT για περιορισμό, ALT για επιλογή ενός τμήματος</translation>
     </message>
   </context>
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3137"/>
+      <location filename="../../DraftTools.py" line="3249"/>
       <source>Downgrade</source>
-      <translation>Υποβάθμιση</translation>
+      <translation>Υποβαθμίστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3138"/>
+      <location filename="../../DraftTools.py" line="3250"/>
       <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
-      <translation type="unfinished">Explodes the selected objects into simpler objects, or subtracts faces</translation>
+      <translation>Κατακερματίζει τα επιλεγμένα αντικείμενα σε μικρότερα αντικείμενα, ή αφαιρεί όψεις</translation>
     </message>
   </context>
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="../../DraftTools.py" line="4637"/>
+      <location filename="../../DraftTools.py" line="4788"/>
       <source>Draft to Sketch</source>
-      <translation>Από Προσχέδιο σε Σκίτσο</translation>
+      <translation>Από Προσχέδιο σε Σκαρίφημα</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4638"/>
+      <location filename="../../DraftTools.py" line="4789"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
-      <translation type="unfinished">Convert bidirectionally between Draft and Sketch objects</translation>
+      <translation>Αμφίδρομη μετατροπή μεταξύ Προσχεδίων και Σκαριφημάτων</translation>
     </message>
   </context>
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="../../DraftTools.py" line="3718"/>
+      <location filename="../../DraftTools.py" line="3854"/>
       <source>Drawing</source>
       <translation>Σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3719"/>
+      <location filename="../../DraftTools.py" line="3855"/>
       <source>Puts the selected objects on a Drawing sheet</source>
-      <translation type="unfinished">Puts the selected objects on a Drawing sheet</translation>
+      <translation>Τοποθετεί τα επιλεγμένα αντικείμενα σε ένα φύλλο Σχεδίασης</translation>
     </message>
   </context>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="../../DraftTools.py" line="3823"/>
+      <location filename="../../DraftTools.py" line="3959"/>
       <source>Edit</source>
       <translation>Επεξεργασία</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3824"/>
+      <location filename="../../DraftTools.py" line="3960"/>
       <source>Edits the active object</source>
-      <translation>Επεξεργασία των επιλεγμένων αντικειμένων</translation>
+      <translation>Επεξεργάζεται το ενεργό αντικείμενο</translation>
     </message>
   </context>
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="../../DraftTools.py" line="1644"/>
+      <location filename="../../DraftTools.py" line="1680"/>
       <source>Ellipse</source>
       <translation>Έλλειψη</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1645"/>
+      <location filename="../../DraftTools.py" line="1681"/>
       <source>Creates an ellipse. CTRL to snap</source>
-      <translation>Δημιουργεί μια έλλειψη. Πλήκτρο CTRL για προσκόλληση</translation>
+      <translation>Δημιουργεί μια έλλειψη. CTRL για προσκόλληση</translation>
     </message>
   </context>
   <context>
     <name>Draft_Facebinder</name>
     <message>
-      <location filename="../../DraftTools.py" line="4929"/>
+      <location filename="../../DraftTools.py" line="5123"/>
       <source>Facebinder</source>
       <translation>Σύνθεση όψεων</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4930"/>
+      <location filename="../../DraftTools.py" line="5124"/>
       <source>Creates a facebinder object from selected face(s)</source>
-      <translation>Δημιουργεί μία Σύνθεση όψεων, από επιλεγμένες όψεις(s)</translation>
+      <translation>Δημιουργεί μία σύνθεση όψεων από επιλεγμένη όψη(εις)</translation>
     </message>
   </context>
   <context>
     <name>Draft_FinishLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="960"/>
+      <location filename="../../DraftTools.py" line="996"/>
       <source>Finish line</source>
-      <translation>Ολοκλήρωση γραμμής</translation>
+      <translation>Ολοκληρώστε γραμμή</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="961"/>
+      <location filename="../../DraftTools.py" line="997"/>
       <source>Finishes a line without closing it</source>
-      <translation>Τελειώνει μια γραμμή χωρίς το κλείσιμο της</translation>
+      <translation>Ολοκληρώνει μια γραμμή χωρίς να την κλείνει</translation>
     </message>
   </context>
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="4958"/>
+      <location filename="../../DraftTools.py" line="5152"/>
       <source>Flip Dimension</source>
-      <translation>Αντιστροφή της Διάστασης</translation>
+      <translation>Αντιστρέψτε Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4959"/>
+      <location filename="../../DraftTools.py" line="5153"/>
       <source>Flip the normal direction of a dimension</source>
-      <translation>Αντιστροφή της κανονικής κατεύθυνσης μιας διάστασης</translation>
+      <translation>Αντιστρέψτε την κανονική κατεύθυνση μιας διάστασης</translation>
     </message>
   </context>
   <context>
     <name>Draft_Heal</name>
     <message>
-      <location filename="../../DraftTools.py" line="4910"/>
+      <location filename="../../DraftTools.py" line="5104"/>
       <source>Heal</source>
-      <translation>Επισκευή</translation>
+      <translation>Επισκευάστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4911"/>
+      <location filename="../../DraftTools.py" line="5105"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
-      <translation>Επισκευή ελαττωματικών αντικειμένων της Προσχεδίασης από παλαιότερη έκδοση του FreeCAD</translation>
+      <translation>Επισκευάστε τα ελαττωματικά Προσχέδια που έχουν αποθηκευτεί από παλαιότερη έκδοση του FreeCAD</translation>
     </message>
   </context>
   <context>
     <name>Draft_Label</name>
     <message>
-      <location filename="../../DraftTools.py" line="5244"/>
+      <location filename="../../DraftTools.py" line="5438"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Ετικέτα</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5245"/>
+      <location filename="../../DraftTools.py" line="5439"/>
       <source>Creates a label, optionally attached to a selected object or element</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or element</translation>
+      <translation>Δημιουργεί μια ετικέτα, η οποία επισυνάπτεται προαιρετικά σε κάποιο επιλεγμένο αντικείμενο ή στοιχείο</translation>
     </message>
   </context>
   <context>
     <name>Draft_Line</name>
     <message>
-      <location filename="../../DraftTools.py" line="532"/>
+      <location filename="../../DraftTools.py" line="551"/>
       <source>Line</source>
       <translation>Γραμμή</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="533"/>
+      <location filename="../../DraftTools.py" line="552"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain</source>
       <translation>Δημιουργεί μια γραμμή από 2 σημεία. CTRL για προσκόλληση, SHIFT για περιορισμό</translation>
     </message>
@@ -1095,77 +1193,90 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../DraftTools.py" line="4999"/>
+      <location filename="../../DraftTools.py" line="5193"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Κατοπτρίστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5000"/>
+      <location filename="../../DraftTools.py" line="5194"/>
       <source>Mirrors the selected objects along a line defined by two points</source>
-      <translation type="unfinished">Mirrors the selected objects along a line defined by two points</translation>
+      <translation>Κατοπτρίζει τα επιλεγμένα αντικείμενα κατά μήκος μιας γραμμής που ορίζεται από δύο σημεία</translation>
     </message>
   </context>
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="../../DraftTools.py" line="2307"/>
+      <location filename="../../DraftTools.py" line="2356"/>
       <source>Move</source>
-      <translation>Μετακίνηση</translation>
+      <translation>Μετακινήστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2308"/>
+      <location filename="../../DraftTools.py" line="2357"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation type="unfinished">Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</translation>
+      <translation>Μετακινεί τα επιλεγμένα αντικείμενα μεταξύ 2 σημείων. CTRL για προσκόλληση, SHIFT για περιορισμό, ALT για αντιγραφή</translation>
     </message>
   </context>
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="../../DraftTools.py" line="2653"/>
+      <location filename="../../DraftTools.py" line="2697"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Μετατοπίστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2654"/>
+      <location filename="../../DraftTools.py" line="2698"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation type="unfinished">Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</translation>
+      <translation>Μετατοπίζει το ενεργό αντικείμενο. CTRL για προσκόλληση, ALT για αντιγραφή</translation>
     </message>
   </context>
   <context>
     <name>Draft_PathArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="4725"/>
+      <location filename="../../DraftTools.py" line="4876"/>
       <source>PathArray</source>
-      <translation type="unfinished">PathArray</translation>
+      <translation>Διάταξη κατά επιλεγμένη διαδρομή</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4726"/>
+      <location filename="../../DraftTools.py" line="4877"/>
       <source>Creates copies of a selected object along a selected path.</source>
-      <translation>Δημιουργεί αντίγραφα των επιλεγμένων αντικειμένων κατά μήκος μιας επιλεγμένης διαδρομής.</translation>
+      <translation>Δημιουργεί αντίγραφα ενός επιλεγμένου αντικειμένου κατά μήκος μιας επιλεγμένης διαδρομής.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="../../DraftTools.py" line="4761"/>
+      <location filename="../../DraftTools.py" line="4943"/>
       <source>Point</source>
       <translation>Σημείο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4762"/>
+      <location filename="../../DraftTools.py" line="4944"/>
       <source>Creates a point object</source>
-      <translation>Δημιουργεί ένα αντικείμενο σημείων</translation>
+      <translation>Δημιουργεί ένα σημειακό στοιχείο</translation>
+    </message>
+  </context>
+  <context>
+    <name>Draft_PointArray</name>
+    <message>
+      <location filename="../../DraftTools.py" line="4912"/>
+      <source>PointArray</source>
+      <translation type="unfinished">PointArray</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4913"/>
+      <source>Creates copies of a selected object on the position of points.</source>
+      <translation type="unfinished">Creates copies of a selected object on the position of points.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="../../DraftTools.py" line="1459"/>
+      <location filename="../../DraftTools.py" line="1495"/>
       <source>Polygon</source>
       <translation>Πολύγωνο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1460"/>
+      <location filename="../../DraftTools.py" line="1496"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
       <translation>Δημιουργεί ένα κανονικό πολύγωνο. CTRL για προσκόλληση, SHIFT για περιορισμό</translation>
     </message>
@@ -1173,12 +1284,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Rectangle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1016"/>
+      <location filename="../../DraftTools.py" line="1052"/>
       <source>Rectangle</source>
       <translation>Ορθογώνιο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1017"/>
+      <location filename="../../DraftTools.py" line="1053"/>
       <source>Creates a 2-point rectangle. CTRL to snap</source>
       <translation>Δημιουργεί ένα ορθογώνιο από 2 σημεία. CTRL για προσκόλληση</translation>
     </message>
@@ -1186,90 +1297,90 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="../../DraftTools.py" line="2469"/>
+      <location filename="../../DraftTools.py" line="2513"/>
       <source>Rotate</source>
-      <translation>Περιστροφή</translation>
+      <translation>Περιστρέψτε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2470"/>
+      <location filename="../../DraftTools.py" line="2514"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
-      <translation>Περιστρέφει τα επιλεγμένα αντικείμενα. CTRL για προσκόλληση, SHIFT για περιορισμό, το ALT δημιουργία αντιγράφου</translation>
+      <translation>Περιστρέφει τα επιλεγμένα αντικείμενα. CTRL για προσκόλληση, SHIFT για περιορισμό, ALT για δημιουργία αντιγράφου</translation>
     </message>
   </context>
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="../../DraftTools.py" line="3588"/>
+      <location filename="../../DraftTools.py" line="3700"/>
       <source>Scale</source>
       <translation>Κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3589"/>
+      <location filename="../../DraftTools.py" line="3701"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
-      <translation>Κλιμακώνει τα επιλεγμένα αντικείμενα από ένα σημείο βάσης. CTRL για προσκόλληση, SHIFT για περιορισμό, ALT για αντιγραφή</translation>
+      <translation>Κλιμακoποιεί τα επιλεγμένα αντικείμενα από ένα σημείο βάσης. CTRL για προσκόλληση, SHIFT για περιορισμό, ALT για αντιγραφή</translation>
     </message>
   </context>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4565"/>
+      <location filename="../../DraftTools.py" line="4716"/>
       <source>Select group</source>
-      <translation>Επιλογή μίας ομάδας</translation>
+      <translation>Επιλέξτε ομάδα</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4566"/>
+      <location filename="../../DraftTools.py" line="4717"/>
       <source>Selects all objects with the same parents as this group</source>
-      <translation type="unfinished">Selects all objects with the same parents as this group</translation>
+      <translation>Επιλέγει όλα τα αντικείμενα που έχουν τα ίδια γονικά στοιχεία με αυτήν την ομάδα</translation>
     </message>
   </context>
   <context>
     <name>Draft_SelectPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="320"/>
+      <location filename="../../DraftTools.py" line="322"/>
       <source>SelectPlane</source>
-      <translation>Επιλογή μιας επιφάνειας</translation>
+      <translation>Επιλέξτε Επίπεδο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="321"/>
+      <location filename="../../DraftTools.py" line="323"/>
       <source>Select a working plane for geometry creation</source>
-      <translation>Επιλογή μιας επιφάνειας εργασίας για τη δημιουργία γεωμετρίας</translation>
+      <translation>Επιλέξτε ένα επίπεδο εργασίας για τη δημιουργία γεωμετρίας</translation>
     </message>
   </context>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
     <message>
-      <location filename="../../DraftTools.py" line="5221"/>
+      <location filename="../../DraftTools.py" line="5415"/>
       <source>Creates a proxy object from the current working plane</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane</translation>
+      <translation>Δημιουργεί ένα στοιχείο μεσολάβησης από το τρέχον επίπεδο εργασίας</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5220"/>
+      <location filename="../../DraftTools.py" line="5414"/>
       <source>Create Working Plane Proxy</source>
-      <translation type="unfinished">Create Working Plane Proxy</translation>
+      <translation>Δημιουργία Στοιχείου Μεσολάβησης Επιπέδου Εργασίας</translation>
     </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../DraftTools.py" line="4597"/>
+      <location filename="../../DraftTools.py" line="4748"/>
       <source>Shape 2D view</source>
-      <translation type="unfinished">Shape 2D view</translation>
+      <translation>Δισδιάστατη προβολή σχήματος</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4598"/>
+      <location filename="../../DraftTools.py" line="4749"/>
       <source>Creates Shape 2D views of selected objects</source>
-      <translation type="unfinished">Creates Shape 2D views of selected objects</translation>
+      <translation>Δημιουργεί δισδιάστατες προβολές Σχήματος επιλεγμένων αντικειμένων</translation>
     </message>
   </context>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="../../DraftTools.py" line="2184"/>
+      <location filename="../../DraftTools.py" line="2223"/>
       <source>Shape from text...</source>
       <translation>Σχήμα από κείμενο...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2185"/>
+      <location filename="../../DraftTools.py" line="2224"/>
       <source>Creates text string in shapes.</source>
       <translation>Δημιουργεί συμβολοσειρά κειμένου σε σχήματα.</translation>
     </message>
@@ -1277,393 +1388,393 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="../../DraftTools.py" line="4838"/>
+      <location filename="../../DraftTools.py" line="5020"/>
       <source>Show Snap Bar</source>
-      <translation>Εμφάνιση της Γραμμής Εργαλείων Προσκόλλησης</translation>
+      <translation>Εμφανίστε τη Γραμμή Εργαλείων Προσκόλλησης</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4839"/>
+      <location filename="../../DraftTools.py" line="5021"/>
       <source>Shows Draft snap toolbar</source>
-      <translation>Εμφανίζει την Γραμμή Εργαλείων Προσκόλλησης της Προσχεδίασης</translation>
+      <translation>Εμφανίζει την Γραμμή Εργαλείων Προσκόλλησης Προσχεδίου</translation>
     </message>
   </context>
   <context>
     <name>Draft_Slope</name>
     <message>
-      <location filename="../../DraftTools.py" line="5121"/>
+      <location filename="../../DraftTools.py" line="5315"/>
       <source>Set Slope</source>
-      <translation type="unfinished">Set Slope</translation>
+      <translation>Ορίστε Κλίση</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5122"/>
+      <location filename="../../DraftTools.py" line="5316"/>
       <source>Sets the slope of a selected Line or Wire</source>
-      <translation type="unfinished">Sets the slope of a selected Line or Wire</translation>
+      <translation>Ορίζει την κλίση μιας επιλεγμένης γραμμής ή ενός επιλεγμένου σύρματος</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="../../DraftTools.py" line="5494"/>
+      <location filename="../../DraftTools.py" line="5688"/>
       <source>Angles</source>
       <translation>Γωνίες</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5495"/>
+      <location filename="../../DraftTools.py" line="5689"/>
       <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
-      <translation>Προσκολλά στα σημεία των 45 και 90 μοιρών στα τόξα και στους κύκλους</translation>
+      <translation>Προσκόλληση στα σημεία των 45 και 90 μοιρών σε τόξα και κύκλους</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="../../DraftTools.py" line="5506"/>
+      <location filename="../../DraftTools.py" line="5700"/>
       <source>Center</source>
       <translation>Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5507"/>
+      <location filename="../../DraftTools.py" line="5701"/>
       <source>Snaps to center of circles and arcs</source>
-      <translation>Προσκολλά στο κέντρο κύκλων ή τόξων</translation>
+      <translation>Προσκόλληση στο κέντρο κύκλων και τόξων</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="../../DraftTools.py" line="5566"/>
+      <location filename="../../DraftTools.py" line="5760"/>
       <source>Dimensions</source>
       <translation>Διαστάσεις</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5567"/>
+      <location filename="../../DraftTools.py" line="5761"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
-      <translation>Εμφανίζει τις προσωρινές διαστάσεις όταν προσκολλά σε αντικείμενα Αρχιτεκτονικής</translation>
+      <translation>Εμφανίζει τις προσωρινές διαστάσεις όταν προσκολλά σε Αρχιτεκτονικά στοιχεία</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5482"/>
+      <location filename="../../DraftTools.py" line="5676"/>
       <source>Endpoint</source>
       <translation>Τελικό σημείο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5483"/>
+      <location filename="../../DraftTools.py" line="5677"/>
       <source>Snaps to endpoints of edges</source>
-      <translation>Προσκολλά στο τελικό σημείο των ακμών</translation>
+      <translation>Προσκόλληση στα τελικά σημεία των ακμών</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5518"/>
+      <location filename="../../DraftTools.py" line="5712"/>
       <source>Extension</source>
       <translation>Επέκταση</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5519"/>
+      <location filename="../../DraftTools.py" line="5713"/>
       <source>Snaps to extension of edges</source>
-      <translation>Προσκολλά στην επέκταση των ακμών</translation>
+      <translation>Προσκόλληση στην επέκταση των ακμών</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5446"/>
+      <location filename="../../DraftTools.py" line="5640"/>
       <source>Grid</source>
-      <translation>Πλέγμα</translation>
+      <translation>Κάναβος</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5447"/>
+      <location filename="../../DraftTools.py" line="5641"/>
       <source>Snaps to grid points</source>
-      <translation>Προσκολλά στα σημεία του πλέγματος</translation>
+      <translation>Προσκόλληση στα σημεία του κανάβου</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="../../DraftTools.py" line="5458"/>
+      <location filename="../../DraftTools.py" line="5652"/>
       <source>Intersection</source>
-      <translation>Διασταύρωση</translation>
+      <translation>Σημείο τομής</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5459"/>
+      <location filename="../../DraftTools.py" line="5653"/>
       <source>Snaps to edges intersections</source>
-      <translation>Προσκολλά στις διασταυρώσεις των ακμών</translation>
+      <translation>Προσκόλληση στα σημεία τομής των ακμών</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="../../DraftTools.py" line="5412"/>
+      <location filename="../../DraftTools.py" line="5606"/>
       <source>Toggle On/Off</source>
       <translation>Εναλλαγή Ενεργοποίησης/Απενεργοποίησης</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5413"/>
+      <location filename="../../DraftTools.py" line="5607"/>
       <source>Activates/deactivates all snap tools at once</source>
-      <translation>Ενεργοποιεί ή απενεργοποιεί όλα μαζί τα εργαλεία προσκόλλησης</translation>
+      <translation>Ενεργοποιεί/απενεργοποιεί όλα τα εργαλεία προσκόλλησης ταυτόχρονα</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1212"/>
+      <location filename="../../DraftSnap.py" line="1259"/>
       <source>Lock</source>
-      <translation type="unfinished">Lock</translation>
+      <translation>Κλειδώστε</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5422"/>
+      <location filename="../../DraftTools.py" line="5616"/>
       <source>Midpoint</source>
-      <translation>Μεσαίο σημείο</translation>
+      <translation>Μέσο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5423"/>
+      <location filename="../../DraftTools.py" line="5617"/>
       <source>Snaps to midpoints of edges</source>
-      <translation>Προσκολλά στο μεσαίο σημείο στις ακμές</translation>
+      <translation>Προσκόλληση στα μέσα των ακμών</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="../../DraftTools.py" line="5530"/>
+      <location filename="../../DraftTools.py" line="5724"/>
       <source>Nearest</source>
-      <translation>Πλησιέστερο</translation>
+      <translation>Εγγύτερο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5531"/>
+      <location filename="../../DraftTools.py" line="5725"/>
       <source>Snaps to nearest point on edges</source>
-      <translation>Προσκολλά στο κοντινότερο σημείο στις ακμές</translation>
+      <translation>Προσκόλληση στο εγγύτερο σημείο στις ακμές</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="../../DraftTools.py" line="5542"/>
+      <location filename="../../DraftTools.py" line="5736"/>
       <source>Ortho</source>
-      <translation>Ορθό</translation>
+      <translation>Ορθογώνιο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5543"/>
+      <location filename="../../DraftTools.py" line="5737"/>
       <source>Snaps to orthogonal and 45 degrees directions</source>
-      <translation>Προσκολλά στις κατευθύνσεις που είναι ορθογώνιες ή 45 μοιρών</translation>
+      <translation>Προσκόλληση στις ορθογώνιες και 45 μοιρών κατευθύνσεις</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="../../DraftTools.py" line="5470"/>
+      <location filename="../../DraftTools.py" line="5664"/>
       <source>Parallel</source>
       <translation>Παράλληλο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5471"/>
+      <location filename="../../DraftTools.py" line="5665"/>
       <source>Snaps to parallel directions of edges</source>
-      <translation>Προσκολλά στις παράλληλες κατευθύνσεις των ακμών</translation>
+      <translation>Προσκόλληση στις παράλληλες κατευθύνσεις των ακμών</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="../../DraftTools.py" line="5434"/>
+      <location filename="../../DraftTools.py" line="5628"/>
       <source>Perpendicular</source>
       <translation>Κάθετο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5435"/>
+      <location filename="../../DraftTools.py" line="5629"/>
       <source>Snaps to perpendicular points on edges</source>
-      <translation>Προσκολλά στα κάθετα σημεία στις ακμές</translation>
+      <translation>Προσκόλληση στα κάθετα σημεία στις ακμές</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="../../DraftTools.py" line="5554"/>
+      <location filename="../../DraftTools.py" line="5748"/>
       <source>Special</source>
       <translation type="unfinished">Special</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5555"/>
+      <location filename="../../DraftTools.py" line="5749"/>
       <source>Snaps to special locations of objects</source>
-      <translation type="unfinished">Snaps to special locations of objects</translation>
+      <translation>Προσκόλληση στις ειδικές θέσεις των αντικειμένων</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="5578"/>
+      <location filename="../../DraftTools.py" line="5772"/>
       <source>Working Plane</source>
-      <translation>Επιφάνεια Εργασίας</translation>
+      <translation>Επίπεδο Εργασίας</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5579"/>
+      <location filename="../../DraftTools.py" line="5773"/>
       <source>Restricts the snapped point to the current working plane</source>
-      <translation>Περιορίζει το προσκολλημένο σημείο στην τωρινή επιφάνεια εργασίας</translation>
+      <translation>Περιορίζει το προσκολλημένο σημείο στο τρέχον επίπεδο εργασίας</translation>
     </message>
   </context>
   <context>
     <name>Draft_Stretch</name>
     <message>
-      <location filename="../../DraftTools.py" line="2844"/>
+      <location filename="../../DraftTools.py" line="2888"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2845"/>
+      <location filename="../../DraftTools.py" line="2889"/>
       <source>Stretches the selected objects</source>
-      <translation type="unfinished">Stretches the selected objects</translation>
+      <translation>Εκτείνει τα επιλεγμένα αντικείμενα</translation>
     </message>
   </context>
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="../../DraftTools.py" line="1761"/>
+      <location filename="../../DraftTools.py" line="1797"/>
       <source>Text</source>
       <translation>Κείμενο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1762"/>
+      <location filename="../../DraftTools.py" line="1798"/>
       <source>Creates an annotation. CTRL to snap</source>
-      <translation>Δημιουργεί ένα σχόλιο ( πλήκτρο CTRL για προσκόλληση )</translation>
+      <translation>Δημιουργεί μια περιγραφή. CTRL για προσκόλληση</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3694"/>
+      <location filename="../../DraftTools.py" line="3830"/>
       <source>Toggles the Construction Mode for next objects.</source>
-      <translation>Εναλλαγή της Κατάστασης Λειτουργίας Κατασκευής για τα επόμενα αντικείμενα.</translation>
+      <translation>Εναλλαγή της Λειτουργίας Κατασκευής για τα επόμενα αντικείμενα.</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3692"/>
+      <location filename="../../DraftTools.py" line="3828"/>
       <source>Toggle Construction Mode</source>
-      <translation type="unfinished">Toggle Construction Mode</translation>
+      <translation>Εναλλαγή Λειτουργίας Κατασκευής</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3705"/>
+      <location filename="../../DraftTools.py" line="3841"/>
       <source>Toggle Continue Mode</source>
-      <translation>Εναλλαγή της Λειτουργίας Συνέχισης</translation>
+      <translation>Εναλλαγή Λειτουργίας Συνέχισης</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3706"/>
+      <location filename="../../DraftTools.py" line="3842"/>
       <source>Toggles the Continue Mode for next commands.</source>
-      <translation>Εναλλάσσει την Κατάσταση Λειτουργίας Συνέχισης για τις επόμενες εντολές.</translation>
+      <translation>Εναλλάσσει την Λειτουργία Συνέχισης για τις επόμενες εντολές.</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3789"/>
+      <location filename="../../DraftTools.py" line="3925"/>
       <source>Toggle display mode</source>
-      <translation>Εναλλαγή της Λειτουργίας Προβολής</translation>
+      <translation>Εναλλαγή λειτουργίας προβολής</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3790"/>
+      <location filename="../../DraftTools.py" line="3926"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
-      <translation>Εναλλάσσει την κατάσταση λειτουργίας προβολής των επιλεγμένων αντικειμένων μεταξύ συρμάτινων και επίπεδων γραμμών</translation>
+      <translation>Εναλλάσσει την λειτουργία προβολής επιλεγμένων αντικειμένων μεταξύ σκελετού και επίπεδων γραμμών</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="../../DraftTools.py" line="4888"/>
+      <location filename="../../DraftTools.py" line="5082"/>
       <source>Toggle Grid</source>
-      <translation>Εναλλαγή του Πλέγματος</translation>
+      <translation>Εναλλαγή Κανάβου</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4889"/>
+      <location filename="../../DraftTools.py" line="5083"/>
       <source>Toggles the Draft grid on/off</source>
-      <translation type="unfinished">Toggles the Draft grid on/off</translation>
+      <translation>Ενεργοποιεί/απενεργοποιεί τον κάναβο Προσχεδίου</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1203"/>
+      <location filename="../../DraftSnap.py" line="1250"/>
       <source>Grid</source>
-      <translation>Πλέγμα</translation>
+      <translation>Κάναβος</translation>
     </message>
     <message>
-      <location filename="../../DraftSnap.py" line="1204"/>
+      <location filename="../../DraftSnap.py" line="1251"/>
       <source>Toggles the Draft grid On/Off</source>
-      <translation type="unfinished">Toggles the Draft grid On/Off</translation>
+      <translation>Ενεργοποιεί/Απενεργοποιεί τον κάναβο Προσχεδίου</translation>
     </message>
   </context>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../DraftTools.py" line="3170"/>
+      <location filename="../../DraftTools.py" line="3282"/>
       <source>Trimex</source>
-      <translation type="unfinished">Trimex</translation>
+      <translation>Περικοπή ή Επέκταση γραμμών</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3171"/>
+      <location filename="../../DraftTools.py" line="3283"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
-      <translation type="unfinished">Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</translation>
+      <translation>Περικόπτει ή επεκτείνει το επιλεγμένο αντικείμενο, ή επεκτείνει μεμονωμένες όψεις. CTRL για προσκόλληση, SHIFT για περιορισμό στο τρέχον τμήμα ή στο κανονικό, ALT για αντιστροφή</translation>
     </message>
   </context>
   <context>
     <name>Draft_UndoLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="1000"/>
+      <location filename="../../DraftTools.py" line="1036"/>
       <source>Undo last segment</source>
-      <translation>Αναίρεση τελευταίου τμήματος</translation>
+      <translation>Αναιρέστε το τελευταίο τμήμα</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1001"/>
+      <location filename="../../DraftTools.py" line="1037"/>
       <source>Undoes the last drawn segment of the line being drawn</source>
-      <translation>Αναιρεί το τελευταίο τμήμα της γραμμής στο στάδιο της επεξεργασίας</translation>
+      <translation>Αναιρεί το τελευταίο σχεδιασμένο τμήμα της γραμμής που σχεδιάζεται</translation>
     </message>
   </context>
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3107"/>
+      <location filename="../../DraftTools.py" line="3219"/>
       <source>Upgrade</source>
-      <translation>Αναβάθμιση</translation>
+      <translation>Αναβαθμίστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3108"/>
+      <location filename="../../DraftTools.py" line="3220"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</source>
-      <translation type="unfinished">Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</translation>
+      <translation>Ενώνει τα επιλεγμένα αντικείμενα σε ένα, ή μετατρέπει τα κλειστά σύρματα σε γεμάτες όψεις, ή ενώνει όψεις</translation>
     </message>
   </context>
   <context>
     <name>Draft_VisGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4973"/>
+      <location filename="../../DraftTools.py" line="5167"/>
       <source>VisGroup</source>
-      <translation type="unfinished">VisGroup</translation>
+      <translation>VisGroup</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4974"/>
+      <location filename="../../DraftTools.py" line="5168"/>
       <source>Adds a VisGroup</source>
-      <translation type="unfinished">Adds a VisGroup</translation>
+      <translation>Προσθέτει ένα VisGroup</translation>
     </message>
   </context>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../DraftTools.py" line="714"/>
+      <location filename="../../DraftTools.py" line="750"/>
       <source>DWire</source>
-      <translation>DWire</translation>
+      <translation>Σύρμα προσχεδίου</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="715"/>
+      <location filename="../../DraftTools.py" line="751"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</translation>
+      <translation>Δημιουργεί ένα σύρμα προσχεδίου (DWire) πολλαπλών σημείων. CTRL για προσκόλληση, SHIFT για περιορισμό</translation>
     </message>
   </context>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="4523"/>
+      <location filename="../../DraftTools.py" line="4674"/>
       <source>Wire to B-spline</source>
-      <translation type="unfinished">Wire to B-spline</translation>
+      <translation>Από σύρμα σε Καμπύλη βασικής συνάρτησης B-spline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4524"/>
+      <location filename="../../DraftTools.py" line="4675"/>
       <source>Converts between Wire and B-spline</source>
-      <translation type="unfinished">Converts between Wire and B-spline</translation>
+      <translation>Μετατρέπει από Σύρμα σε Καμπύλη βασικής συνάρτησης B-spline και αντίστροφα</translation>
     </message>
   </context>
   <context>
@@ -1671,72 +1782,72 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="26"/>
       <source>General Draft Settings</source>
-      <translation>Γενικές Ρυθμίσεις του Προσχεδίου</translation>
+      <translation>Γενικές Ρυθμίσεις Προσχεδίου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="423"/>
+      <location filename="../ui/preferences-draft.ui" line="422"/>
       <source>This is the default color for objects being drawn while in construction mode.</source>
-      <translation>Αυτό είναι το προεπιλεγμένο χρώμα για τα αντικείμενα τα οποία σχεδιάζονται κατά την κατάσταση λειτουργίας κατασκευής.</translation>
+      <translation>Αυτό είναι το προεπιλεγμένο χρώμα για τα αντικείμενα που σχεδιάζονται ενώ βρίσκεστε σε λειτουργία κατασκευής.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="383"/>
+      <location filename="../ui/preferences-draft.ui" line="382"/>
       <source>This is the default group name for construction geometry</source>
-      <translation>Αυτό είναι το προεπιλεγμένο όνομα της ομάδας για την γεωμετρία κατασκευής.</translation>
+      <translation>Αυτό είναι το προεπιλεγμένο όνομα ομάδας για την κατασκευαστική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="386"/>
+      <location filename="../ui/preferences-draft.ui" line="385"/>
       <source>Construction</source>
       <translation>Κατασκευή</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="198"/>
       <source>Save current color and linewidth across sessions</source>
-      <translation>Αποθήκευση του τωρινού χρώματος και του πάχους των γραμμών για όλες τις συνεδρίες</translation>
+      <translation>Αποθήκευση του τρέχοντος χρώματος και πλάτους γραμμών για όλες τις συνεδρίες</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="87"/>
+      <location filename="../ui/preferences-draft.ui" line="104"/>
       <source>If this is checked, copy mode will be kept across command, otherwise commands will always start in no-copy mode</source>
-      <translation>Αν αυτό τσεκαριστεί, η κατάσταση λειτουργίας αντιγραφής θα διατηρηθεί για όλες τις εντολές. Διαφορετικά, οι εντολές θα ξεκινούν, πάντα, σε λειτουργία μη αντιγραφής.</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, η λειτουργία αντιγραφής θα διατηρείται για όλες τις εντολές, διαφορετικά οι εντολές θα ξεκινούν πάντα σε λειτουργία μη αντιγραφής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="90"/>
+      <location filename="../ui/preferences-draft.ui" line="107"/>
       <source>Global copy mode</source>
-      <translation>Καθολική Λειτουργία Αντιγραφής</translation>
+      <translation>Καθολική λειτουργία αντιγραφής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="130"/>
+      <location filename="../ui/preferences-draft.ui" line="141"/>
       <source>Default working plane</source>
-      <translation>Προεπιλεγμένη επιφάνεια εργασίας</translation>
+      <translation>Προεπιλεγμένο επίπεδο εργασίας</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="157"/>
+      <location filename="../ui/preferences-draft.ui" line="168"/>
       <source>None</source>
       <translation>Κανένα</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="162"/>
+      <location filename="../ui/preferences-draft.ui" line="173"/>
       <source>XY (Top)</source>
-      <translation>XY (Σκεπή)</translation>
+      <translation>XY (Οροφή)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="167"/>
+      <location filename="../ui/preferences-draft.ui" line="178"/>
       <source>XZ (Front)</source>
       <translation>XZ (Πρόσοψη)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="172"/>
+      <location filename="../ui/preferences-draft.ui" line="183"/>
       <source>YZ (Side)</source>
       <translation>YZ (Πλευρά)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="210"/>
+      <location filename="../ui/preferences-draft.ui" line="221"/>
       <source>The number of decimals in internal coordinates operations (for ex. 3 = 0.001)</source>
-      <translation>Το πλήθος των δεκαδικών ψηφίων στις λειτουργίες των εσωτερικών συντεταγμένων ( πχ, 3 = 0,001 )</translation>
+      <translation>Ο αριθμός των δεκαδικών ψηφίων στις λειτουργίες εσωτερικών συντεταγμένων (π.χ. 3 = 0.001)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="89"/>
       <source>Default height for texts and dimensions</source>
-      <translation>Προεπιλεγμένο ύψος για τα κείμενα και τις διαστάσεις</translation>
+      <translation>Προεπιλεγμένο ύψος για κείμενα και διαστάσεις</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="47"/>
@@ -1744,56 +1855,54 @@ from menu Tools -&gt; Addon Manager</translation>
 It can be a font name such as "Arial", a default style such as "sans", "serif"
 or "mono", or a family such as "Arial,Helvetica,sans" or a name with a style
 such as "Arial:Bold"</source>
-      <translation>Αυτό είναι το προεπιλεγμένο όνομα γραμματοσειράς, για όλα τα κείμενα και τις διαστάσεις της Προσχεδίασης. 
-Μπορεί να είναι ένα όνομα γραμματοσειράς, όπως, για παράδειγμα, «Arial», 
-ή ένας προεπιλεγμένος τύπος, όπως «sans», «serif», «mono», 
-ή μια οικογένεια, όπως «Arial,Helvetica,sans» 
-ή ένα όνομα ακολουθούμενο από μορφοποίηση, όπως «Arial:Bold».</translation>
+      <translation>Αυτό είναι το προεπιλεγμένο όνομα γραμματοσειράς για όλα τα κείμενα και τις διαστάσεις Προσχεδίου.
+Μπορεί να είναι ένα όνομα γραμματοσειράς όπως ''Arial'', ένας προεπιλεγμένος τύπος όπως ''sans'',''serif'' ή ''mono'', ή μια οικογένεια όπως ''Arial,Helvetica,sans'' 
+ή ένα όνομα ακολουθούμενο από έναν τύπο μορφοποίησης όπως ''Arial:Bold''</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="235"/>
       <source>Default template sheet</source>
-      <translation>Φύλλο προεπιλεγμένου πρότυπου</translation>
+      <translation>Προεπιλεγμένο φύλλο προτύπου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="261"/>
       <source>The default template to use when creating a new drawing sheet</source>
-      <translation>Το προεπιλεγμένο πρότυπο, το οποίο θα χρησιμοποιείται κατά τη δημιουργία ενός φύλλου σχεδίου.</translation>
+      <translation>Το προεπιλεγμένο πρότυπο προς χρήση όταν δημιουργείτε ένα νέο φύλλο σχεδίασης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="40"/>
       <source>Import style</source>
-      <translation>Εισαγωγή τεχνοτροπίας</translation>
+      <translation>Εισαγωγή τύπου μορφοποίησης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="60"/>
       <source>None (fastest)</source>
-      <translation>Κανένα (γρηγορότερο)</translation>
+      <translation>Κανένα (ταχύτερο)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="65"/>
       <source>Use default color and linewidth</source>
-      <translation>Χρήση του προεπιλεγμένου χρώματος και του πλάτους των γραμμών</translation>
+      <translation>Χρήση προεπιλεγμένου χρώματος και πλάτους γραμμών</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="70"/>
       <source>Original color and linewidth</source>
-      <translation>Ιδιαίτερο χρώμα και πλάτος γραμμών</translation>
+      <translation>Αρχικό χρώμα και πλάτος γραμμών</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="475"/>
       <source>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</source>
-      <translation type="unfinished">When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</translation>
+      <translation>Όταν εξάγετε καμπύλες spline σε DXF, μετατρέπονται σε πολυγραμμές. Αυτή η τιμή είναι το μέγιστο μήκος για κάθε τμήμα της πολυγραμμής. Αν είναι 0, τότε ολόκληρη η καμπύλη spline αντιμετωπίζεται ως ευθύγραμμο τμήμα.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Check this if you want the areas (3D faces) to be imported too.</source>
-      <translation>Τσέκαρέ το αν θες να εισάγονται καί οι περιοχές (προσόψεις 3Δ)</translation>
+      <translation>Επιλέξτε αυτό αν θέλετε να εισαχθούν και οι περιοχές (τρισδιάστατες όψεις).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
       <source>Import OCA areas</source>
-      <translation>Εισαγωγή περιοχών OCA</translation>
+      <translation>Εισάγετε περιοχές OCA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="14"/>
@@ -1801,51 +1910,51 @@ such as "Arial:Bold"</source>
       <translation>Γενικές ρυθμίσεις</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="376"/>
+      <location filename="../ui/preferences-draft.ui" line="375"/>
       <source>Construction group name</source>
-      <translation>Όνομα της ομάδας κατασκευής</translation>
+      <translation>Όνομα ομάδας κατασκευής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="230"/>
+      <location filename="../ui/preferences-draft.ui" line="241"/>
       <source>Tolerance</source>
-      <translation>Ανοχές</translation>
+      <translation>Ανοχή</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="256"/>
+      <location filename="../ui/preferences-draft.ui" line="267"/>
       <source>This is the value used by functions that use a tolerance.
 Values with differences below this value will be treated as same.</source>
-      <translation>Αυτή είναι η τιμή, η οποία θα χρησιμοποιείται από τις λειτουργίες, που χρησιμοποιούν κάποιες σχετικές ανοχές. 
-Οι τιμές, με διαφορές κάτω από αυτή την τιμή,  θα θεωρούνται ως να είναι ίδιες.</translation>
+      <translation>Αυτή είναι η τιμή που χρησιμοποιείται από τις λειτουργίες που χρησιμοποιούν κάποια ανοχή.
+Οι τιμές με διαφορές κάτω από αυτή την τιμή θα αντιμετωπίζονται ως ίδιες.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="160"/>
       <source>Check this if you want the non-named blocks (beginning with a *) to be imported too</source>
-      <translation>Τσεκέρισέ το, αν θες να εισάγονται καί τα μη ονομασμένα τμήματα ( αυτά που ξεκινούν με αστερίσκο « * » ) </translation>
+      <translation>Επιλέξτε αυτό αν θέλετε να εισαχθούν και τα μη ονομασμένα μπλοκ (που ξεκινούν με ένα *)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="316"/>
       <source>Join geometry</source>
-      <translation>Ένωση γεωμετρίας</translation>
+      <translation>Ενώστε γεωμετρία</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="278"/>
       <source>Alternate SVG Patterns location</source>
-      <translation>Εναλλακτική  τοποθεσία των μοτίβων SVG</translation>
+      <translation>Τοποθεσία Εναλλακτικών Μοτίβων SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="304"/>
       <source>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</source>
-      <translation type="unfinished">Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</translation>
+      <translation>Εδώ μπορείτε να καθορίσετε έναν κατάλογο που περιέχει αρχεία SVG που περιέχουν &lt;pattern&gt; ορισμούς οι οποίοι μπορούν να προστεθούν στα καθιερωμένα μοτίβα διαγράμμισης επιφάνειας Προσχεδίου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="34"/>
       <source>Draft interface mode</source>
-      <translation>Λειτουργία διεπαφής Προσχεδίασης</translation>
+      <translation>Λειτουργία διεπαφής Προσχεδίου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="57"/>
       <source>This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</source>
-      <translation type="unfinished">This is the UI mode in which the Draft module will work: Toolbar mode will place all Draft settings in a separate toolbar, while taskbar mode will use the FreeCAD Taskview system for all its user interaction</translation>
+      <translation>Αυτή είναι η λειτουργία διεπαφής χρήστη στην οποία θα λειτουργήσει η λειτουργική μονάδα Προσχεδίου: Η λειτουργία γραμμής εργαλείων θα τοποθετήσει όλες τις ρυθμίσεις Προσχεδίου σε ξεχωριστή γραμμή εργαλείων, ενώ η λειτουργία γραμμής εργασιών θα χρησιμοποιήσει το σύστημα Προβολής Εργασιών FreeCAD για αλληλεπίδραση με το χρήστη</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="70"/>
@@ -1855,62 +1964,62 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="75"/>
       <source>Taskview</source>
-      <translation type="unfinished">Taskview</translation>
+      <translation>Προβολή Εργασιών</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="57"/>
       <source>Constrain mod</source>
-      <translation type="unfinished">Constrain mod</translation>
+      <translation>Λειτουργία περιορισμού</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="77"/>
       <source>The Constraining modifier key</source>
-      <translation type="unfinished">The Constraining modifier key</translation>
+      <translation>Το πλήκτρο τροποποίησης Περιορισμού</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="109"/>
       <source>Snap mod</source>
-      <translation>Λειτουργία Προσκόλλησης</translation>
+      <translation>Λειτουργία προσκόλλησης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="129"/>
       <source>The snap modifier key</source>
-      <translation type="unfinished">The snap modifier key</translation>
+      <translation>Το πλήκτρο τροποποίησης προσκόλλησης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="164"/>
       <source>Alt mod</source>
-      <translation type="unfinished">Alt mod</translation>
+      <translation>Πλήκτρο τροποποίησης Alt</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="110"/>
+      <location filename="../ui/preferences-draft.ui" line="123"/>
       <source>Normally, after copying objects, the copies get selected. If this option is checked, the base objects will be selected instead.</source>
-      <translation>Κανονικά, μετά την αντιγραφή ενός αντικειμένου, επιλέγονται τα αντίγραφα. Αντίθετα, αν τσεκαριστεί αυτή η προτίμηση, θα επιλέγονται τα αρχικά αντικείμενα.</translation>
+      <translation>Κανονικά, μετά την αντιγραφή των αντικειμένων, επιλέγονται τα αντίγραφα. Αν αυτό έχει επιλεχθεί, αντί αυτών θα επιλέγονται τα αντικείμενα βάσης.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="113"/>
+      <location filename="../ui/preferences-draft.ui" line="126"/>
       <source>Select base objects after copying</source>
-      <translation>Επιλογή του αρχικού αντικειμένου μετά από την αντιγραφή</translation>
+      <translation>Επιλογή αντικειμένων βάσης μετά από την αντιγραφή</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="271"/>
       <source>If checked, a grid will appear when drawing</source>
-      <translation>Αν τσεκαριστεί, το πλέγμα θα εμφανίζεται κατά την σχεδίαση</translation>
+      <translation>Αν έχει επιλεχθεί, θα εμφανίζεται ένας κάναβος κατά την σχεδίαση</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="274"/>
       <source>Use grid</source>
-      <translation>Χρήση του πλέγματος</translation>
+      <translation>Χρησιμοποιήστε κάναβο</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="372"/>
       <source>Grid spacing</source>
-      <translation>Αποστάσεις του πλέγματος</translation>
+      <translation>Αποστάσεις του κανάβου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="395"/>
       <source>The spacing between each grid line</source>
-      <translation>Οι αποστάσεις μεταξύ των γραμμών του πλέγματος</translation>
+      <translation>Η απόσταση μεταξύ των γραμμών του κανάβου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="323"/>
@@ -1920,107 +2029,107 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="346"/>
       <source>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</source>
-      <translation>Οι κύριες γραμμές θα εμφανίζονται παχύτερες. Όρισε, εδώ, πόσα τετράγωνα θα υπάρχουν ανάμεσά τους.</translation>
+      <translation>Οι κύριες γραμμές θα σχεδιαστούν παχύτερες. Ορίστε εδώ πόσα τετράγωνα θα υπάρχουν μεταξύ των κυρίων γραμμών.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="184"/>
+      <location filename="../ui/preferences-draft.ui" line="195"/>
       <source>Internal precision level</source>
-      <translation>Εσωτερικό επίπεδο ακρίβειας</translation>
+      <translation>Επίπεδο εσωτερικής ακρίβειας</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="323"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="395"/>
       <source>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</source>
-      <translation>Αυτός είναι ο προσανατολισμός του κειμένου των διαστάσεων, όταν αυτές οι διαστάσεις είναι κάθετες. Η προεπιλογή είναι «αριστερά», όπως και κατά ISO.</translation>
+      <translation>Αυτός είναι ο προσανατολισμός των κειμένων διαστάσεων όταν αυτές οι διαστάσεις είναι κάθετες. Η προεπιλογή είναι αριστερά, που είναι και το πρότυπο ISO.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="333"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="405"/>
       <source>Left (ISO standard)</source>
-      <translation>Αριστερά ( προεπιλογή ISO )</translation>
+      <translation>Αριστερά (πρότυπο ISO)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="338"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="410"/>
       <source>Right</source>
       <translation>Δεξιά</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="336"/>
       <source>Group layers into blocks</source>
-      <translation>Ομαδοποίηση των στρωμάτων σε τμήματα</translation>
+      <translation>Ομαδοποίηση των στρωμάτων σε μπλοκ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="513"/>
       <source>If this is checked, all objects containing faces will be exported as 3d polyfaces</source>
-      <translation type="unfinished">If this is checked, all objects containing faces will be exported as 3d polyfaces</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, όλα τα αντικείμενα που περιέχουν επιφάνειες θα εξαχθούν ως τρισδιάστατα στοιχεία πολλαπλών επιφανειών</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="516"/>
       <source>Export 3D objects as polyface meshes</source>
-      <translation type="unfinished">Export 3D objects as polyface meshes</translation>
+      <translation>Εξαγάγετε τρισδιάστατα αντικείμενα ως πλέγματα πολλαπλών όψεων</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="219"/>
       <source>If checked, the Snap toolbar will be shown whenever you use snapping</source>
-      <translation>Αν τσεκαριστεί, η γραμμή εργαλείων Προσκόλλησης θα εμφανίζεται κάθε φορά που χρησιμοποιείς την προσκόλληση</translation>
+      <translation>Αν έχει επιλεχθεί, η γραμμή εργαλείων Προσκόλλησης θα εμφανίζεται κάθε φορά που χρησιμοποιείτε την προσκόλληση</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="222"/>
       <source>Show Draft Snap toolbar</source>
-      <translation>Εμφάνιση των εργαλείων Προσκόλλησης της Προσχεδίασης</translation>
+      <translation>Εμφανίστε την γραμμή εργαλείων Προσκόλλησης Προσχεδίου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="242"/>
       <source>Hide Draft snap toolbar after use</source>
-      <translation>Απόκρυψη των εργαλείων Προσκόλλησης της Προσχεδίασης, μετά την χρήση</translation>
+      <translation>Αποκρύψτε την γραμμή εργαλείων Προσκόλλησης Προσχεδίου μετά την χρήση</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="218"/>
       <source>Show Working Plane tracker</source>
-      <translation type="unfinished">Show Working Plane tracker</translation>
+      <translation>Εμφανίστε τον ανιχνευτή Επιπέδου Εργασίας</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="297"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation>Αν επιλεγεί, το πλέγμα της Προσχεδίασης θα είναι πάντοτε εμφανές, όταν επιλέγεται ο πάγκος εργασίας της Προσχεδίασης. Διαφορετικά, θα εμφανίζεται μόνο όταν χρησιμοποιείται μια εντολή.</translation>
+      <translation>Αν έχει επιλεχθεί, ο κάναβος Προσχεδίου θα είναι πάντα ορατός όταν ο πάγκος εργασίας Προσχεδίου είναι ενεργός. Διαφορετικά θα εμφανίζεται μόνο όταν χρησιμοποιείται κάποια εντολή</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</source>
-      <translation>Αν αυτό τσεκαριστεί, τα εισηγμένα κείμενα θα έχουν το προεπιλεγμένο μέγεθος κειμένου της Προσχεδίασης, καί όχι το μέγεθος από το αρχείο DXF</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, τα εισηγμένα κείμενα θα έχουν το καθιερωμένο μέγεθος κειμένου Προσχεδίου, αντί του μεγέθους που έχουν στο έγγραφο DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="356"/>
       <source>Use standard font size for texts</source>
-      <translation>Χρήση του προκαθορισμένου μεγέθους για τα κείμενα</translation>
+      <translation>Χρησιμοποιήστε το καθιερωμένο μέγεθος γραμματοσειράς για κείμενα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="393"/>
       <source>If this is checked, hatches will be converted into simple wires</source>
-      <translation type="unfinished">If this is checked, hatches will be converted into simple wires</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, οι διαγραμμίσεις επιφάνειας θα μετατραπούν σε σύρματα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="396"/>
       <source>Import hatch boundaries as wires</source>
-      <translation type="unfinished">Import hatch boundaries as wires</translation>
+      <translation>Εισάγετε τα όρια διαγράμμισης επιφάνειας ως σύρματα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="413"/>
       <source>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</source>
-      <translation type="unfinished">If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, όταν το πλάτος των πολυγραμμών έχει οριστεί, θα αποτυπώνονται ως σύρματα με το σωστό πλάτος</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="416"/>
       <source>Render polylines with width</source>
-      <translation type="unfinished">Render polylines with width</translation>
+      <translation>Αποτυπώστε τις πολυγραμμές με πλάτος</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="127"/>
       <source>Style of SVG file to write when exporting a Sketch.</source>
-      <translation>Τεχνοτροπία του αρχείου SVG όταν γίνεται εξαγωγή ενός Σκίτσου.</translation>
+      <translation>Τύπος μορφοποίησης του αρχείου SVG προς εγγραφή όταν γίνεται εξαγωγή ενός Σκαριφήματος.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
       <source>Translated (for print &amp; display)</source>
-      <translation>Μεταμόρφωση (για εκτύπωση κ´ προβολή)</translation>
+      <translation>Μεταφρασμένο (για εκτύπωση &amp; προβολή)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="145"/>
@@ -2030,22 +2139,22 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="157"/>
       <source>When exporting SVG views, make all white linework appear in black, for better readability against white backgrounds</source>
-      <translation>Όταν γίνεται εξαγωγή σε εμφάνιση SVG, κάνε όλες τις λευκές γραμμές να εμφανίζονται σε μαύρο, για καλύτερη προβολή σε λευκά χρώματα φόντου</translation>
+      <translation>Όταν εξάγετε προβολές SVG, κάντε όλες τις λευκές γραμμές να εμφανίζονται μαύρες, για καλύτερη ευκρίνεια σε λευκά υπόβαθρα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="160"/>
       <source>Translate white line color to black</source>
-      <translation>Μεταμόρφωση το λευκό χρώμα των γραμμών σε μαύρο</translation>
+      <translation>Μεταφράστε το λευκό χρώμα γραμμής σε μαύρο</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="283"/>
+      <location filename="../ui/preferences-draft.ui" line="292"/>
       <source>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</source>
-      <translation type="unfinished">When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</translation>
+      <translation>Όταν αυτό έχει επιλεχθεί, τα εργαλεία Προσχεδίου θα δημιουργούν θεμελιακά στοιχεία εξαρτημάτων αντί για στοιχεία Προσχεδίου, όταν διατίθενται.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="286"/>
+      <location filename="../ui/preferences-draft.ui" line="295"/>
       <source>Use Part Primitives when available</source>
-      <translation type="unfinished">Use Part Primitives when available</translation>
+      <translation>Χρησιμοποιήστε Θεμελιακά Στοιχεία Εξαρτημάτων όταν διατίθενται</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
@@ -2055,27 +2164,27 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="34"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation type="unfinished">If this is checked, snapping is activated without the need to press the snap mod key</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, η προσκόλληση ενεργοποιείται χωρίς να χρειάζεται να πιέσετε το πλήκτρο λειτουργίας προσκόλλησης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
-      <translation type="unfinished">Always snap (disable snap mod)</translation>
+      <translation>Προσκόλληση πάντα (απενεργοποιήστε την λειτουργία προσκόλλησης)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="368"/>
+      <location filename="../ui/preferences-draft.ui" line="367"/>
       <source>Construction geometry</source>
-      <translation type="unfinished">Construction geometry</translation>
+      <translation>Κατασκευαστική γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="403"/>
+      <location filename="../ui/preferences-draft.ui" line="402"/>
       <source>Construction geometry color</source>
-      <translation type="unfinished">Construction geometry color</translation>
+      <translation>Χρώμα κατασκευαστικής γεωμετρίας</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="108"/>
       <source>Import</source>
-      <translation>Εισαγωγή</translation>
+      <translation>Εισάγετε</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="118"/>
@@ -2090,37 +2199,27 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="147"/>
       <source>layouts</source>
-      <translation type="unfinished">layouts</translation>
+      <translation>διατάξεις</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="163"/>
       <source>*blocks</source>
-      <translation>*τμήματα</translation>
+      <translation>*μπλοκ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="556"/>
       <source>If this is checked, the exported objects will be projected to reflect the current view direction</source>
-      <translation>Αν αυτό τσεκαριστεί, τα εξαγμένα αντικείμενα θα προβάλλονται ώστε να αντικατοπτρίζουν την τωρινή κατεύθυνση της προβολής</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, τα εξαγόμενα αντικείμενα θα προβάλλονται ώστε να αντικατοπτρίζουν την τρέχουσα διεύθυνση προβολής</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="559"/>
       <source>Project exported objects along current view direction</source>
-      <translation>Προβολή των εξαγμένων αντικειμένων κατά την τωρινή κατεύθυνση προβολής</translation>
+      <translation>Προβάλετε τα εξαγόμενα αντικείμενα κατά την τρέχουσα διεύθυνση προβολής</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="433"/>
       <source>Ellipse export is badly supported. Use this to export them as polylines instead.</source>
-      <translation type="unfinished">Ellipse export is badly supported. Use this to export them as polylines instead.</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dwg.ui" line="34"/>
-      <source>Path to Teigha File Converter</source>
-      <translation>Διαδρομή για τον Μετατροπέα Αρχείων Teigha</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dwg.ui" line="41"/>
-      <source>The path to your Teigha File Converter executable</source>
-      <translation>Εκεί που βρίσκεται η εντολή του Μετατροπέα Αρχείων Teigha</translation>
+      <translation>Η εξαγωγή έλλειψης δεν υποστηρίζεται επαρκώς. Χρησιμοποιήστε αυτό ώστε να τις εξαγάγετε ως πολυγραμμές εναλλακτικά.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
@@ -2145,17 +2244,17 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="118"/>
       <source>Snap symbols style</source>
-      <translation>Τεχνοτροπία των συμβόλων Προσκόλλησης</translation>
+      <translation>Τύπος μορφοποίησης των συμβόλων Προσκόλλησης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="138"/>
       <source>Draft classic style</source>
-      <translation>Κλασσική τεχνοτροπία της Προσχεδίασης</translation>
+      <translation>Κλασσικός τύπος μορφοποίησης Προσχεδίου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="143"/>
       <source>Bitsnpieces style</source>
-      <translation type="unfinished">Bitsnpieces style</translation>
+      <translation>Τύπος μορφοποίησης Bitsnpieces</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="164"/>
@@ -2165,17 +2264,17 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="321"/>
       <source>Hatch patterns resolution</source>
-      <translation type="unfinished">Hatch patterns resolution</translation>
+      <translation>Ανάλυση μοτίβων διαγράμμισης επιφάνειας</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="263"/>
       <source>Grid</source>
-      <translation>Πλέγμα</translation>
+      <translation>Κάναβος</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="300"/>
       <source>Always show the grid</source>
-      <translation>Πάντοτε εμφάνιση του πλέγματος</translation>
+      <translation>Να εμφανίζεται πάντα ο κάναβος</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -2188,135 +2287,135 @@ Values with differences below this value will be treated as same.</source>
       <translation>Εσωτερική γραμματοσειρά</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="251"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="323"/>
       <source>Dot</source>
-      <translation>Κουκίδα</translation>
+      <translation>Τελεία</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="256"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="328"/>
       <source>Circle</source>
       <translation>Κύκλος</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="261"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="333"/>
       <source>Arrow</source>
       <translation>Βέλος</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="290"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="362"/>
       <source>The default size of arrows</source>
-      <translation>Το προεπιλεγμένο μέγεθος των βελών</translation>
+      <translation>Το προεπιλεγμένο μέγεθος βελών</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="208"/>
       <source>The default size of dimensions extension lines</source>
-      <translation>Το προεπιλεγμένο μέγεθος των γραμμών επέκτασης των διαστάσεων</translation>
+      <translation>Το προεπιλεγμένο μέγεθος γραμμών επέκτασης των διαστάσεων</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="357"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="429"/>
       <source>The space between the dimension line and the dimension text</source>
-      <translation>Το διάστημα μεταξύ της γραμμής της διάστασης και του κειμένου της διάστασης</translation>
+      <translation>Το διάστημα μεταξύ της γραμμής διάστασης και του κειμένου διάστασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="425"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="497"/>
       <source>Select a font file</source>
-      <translation>Επιλογή ενός αρχείου γραμματοσειράς</translation>
+      <translation>Επιλέξτε ένα αρχείο γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="306"/>
+      <location filename="../ui/preferences-draft.ui" line="311"/>
       <source>Fill objects with faces whenever possible</source>
-      <translation>Γέμισμα των αντικειμένων με όψεις όποτε είναι δυνατόν</translation>
+      <translation>Γέμισμα των αντικειμένων με όψεις όποτε είναι εφικτό</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="180"/>
       <source>Create</source>
-      <translation>Δημιουργία</translation>
+      <translation>Δημιουργήστε</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>simple Part shapes</source>
-      <translation type="unfinished">simple Part shapes</translation>
+      <translation>απλά σχήματα Εξαρτημάτων</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>If this is checked, parametric Draft objects will be created whenever possible</source>
-      <translation>Αν αυτό τσεκαριστεί, θα δημιουργούνται παραμετρικά αντικείμενα Προσχεδίασης, όταν αυτό είναι εφικτό</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, θα δημιουργούνται παραμετρικά Προσχέδια όταν είναι εφικτό</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="209"/>
       <source>Draft objects</source>
-      <translation>Αντικείμενα Προσχεδίασης</translation>
+      <translation>Προσχέδια</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="222"/>
       <source>If this is checked, sketches will be created whenever possible</source>
-      <translation>Αν αυτό τσεκαριστεί, θα δημιουργούνται σκίτσα, όταν αυτό είναι εφικτό</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, θα δημιουργούνται σκαριφήματα όταν είναι εφικτό</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="225"/>
       <source>Sketches</source>
-      <translation>Σκίτσα</translation>
+      <translation>Σκαριφήματα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="293"/>
       <source>If this is checked, colors will be retrieved from the DXF objects whenever possible. Otherwise default colors will be applied.</source>
-      <translation>Αν αυτό τσεκαριστεί, θα λαμβάνονται τα χρώματα από τα αντικείμενα DXF, όταν αυτό είναι εφικτό.
-Διαφορετικά θα χρησιμοποιούνται τα προεπιλεγμένα χρώματα.</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, θα ανακτώνται τα χρώματα από τα αντικείμενα DXF όταν είναι εφικτό.
+Διαφορετικά θα χρησιμοποιούνται προεπιλεγμένα χρώματα.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="296"/>
       <source>Get original colors from the DXF file</source>
-      <translation>Χρήση  των αρχικών χρωμάτων από τα αρχεία DXF</translation>
+      <translation>Λάβετε τα αρχικά χρώματα από το αρχείο DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="436"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation type="unfinished">Treat ellipses and splines as polylines</translation>
+      <translation>Αντιμετωπίστε τις ελλείψεις και τις καμπύλες spline ως πολυγραμμές</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
       <source>Export style</source>
-      <translation>Τεχνοτροπία εξαγωγής</translation>
+      <translation>Τύπος μορφοποίησης εξαγωγής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="383"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="455"/>
       <source>Show the unit suffix in dimensions</source>
-      <translation>Εμφάνιση, στις διαστάσεις, των συμβόλων των μονάδων</translation>
+      <translation>Εμφάνιση την κατάληξη μονάδας στις διαστάσεις</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Τσεκάροντας αυτό, θα επιτρέψεις στο ΦρειΚΑΝΤ να λάβει και να ανανεώσει&lt;/p&gt;&lt;p&gt;τα απαραίτητα στοιχεία για την εισαγωγή και την εξαγωγή των αρχείων DXF. Αυτό μπορεί να το κάνεις και χειρωνακτικά&lt;/p&gt;&lt;p&gt;επισκεπτόμενος το https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Επιλέγοντας αυτό, θα επιτρέψετε στο FreeCAD να κατεβάσει και να ανανεώσει τα&lt;/p&gt;&lt;p&gt;απαραίτητα στοιχεία για την εισαγωγή και την εξαγωγή αρχείων DXF. Αυτό μπορείτε να το κάνετε και&lt;/p&gt;&lt;p&gt;χειροκίνητα, κάνοντας κλικ στο https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>Να επιτρέπεται στο ΦρειΚΑΝΤ να λαμβάνει και ανανεώνει, αυτόματα, τις βιβλιοθήκες DXF</translation>
+      <translation>Να επιτρέπεται στο FreeCAD να κατεβάζει και ανανεώνει αυτόματα τις βιβλιοθήκες DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If this is checked, only standard Part objects will be created (fastest)</source>
-      <translation>Αν αυτό επιλεγεί, μόνο «κανονικά» αντικείμενα θα επιλέγονται στο Εξάρτημα (γρηγορότερο)</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, μόνο καθιερωμένα Εξαρτήματα θα δημιουργούνται (ταχύτερο)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>If this is checked, DXF layers will be imported as Draft VisGroups</source>
-      <translation>Αν αυτό επιλεγεί,  τα στρώματα DXF θα εισάγονται ως Draft VisGroups</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, τα στρώματα DXF θα εισάγονται ως VisGroups Προσχεδίου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="376"/>
       <source>Use VisGroups</source>
-      <translation>Χρήση των VisGroups</translation>
+      <translation>Χρησιμοποιήστε VisGroups</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="206"/>
       <source>mm</source>
-      <translation>χιλ.</translation>
+      <translation>χιλιοστά</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="427"/>
       <source>Grid size</source>
-      <translation>Μέγεθος του πλέγματος</translation>
+      <translation>Μέγεθος κανάβου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="453"/>
@@ -2326,57 +2425,57 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="144"/>
       <source>text above (2D)</source>
-      <translation>κείμενο από πάνω (2Δ)</translation>
+      <translation>κείμενο από πάνω (δισδιάστατο)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source> text inside (3D)</source>
-      <translation> το κείμενο εντός (3Δ)</translation>
+      <translation> κείμενο εντός (τρισδιάστατο)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="370"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="410"/>
       <source>Dashed line definition</source>
-      <translation>Προσδιορισμός της διακεκομμένης γραμμής</translation>
+      <translation>Προσδιορισμός διακεκομμένης γραμμής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="393"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="433"/>
       <source>0.09,0.05</source>
       <translation>0.09,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="413"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="453"/>
       <source>Dashdot line definition</source>
-      <translation>Προσδιορισμός της διακεκομμένης με κουκίδες γραμμής</translation>
+      <translation>Προσδιορισμός της διακεκομμένης γραμμής από τελείες και παύλες</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="436"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="476"/>
       <source>0.09,0.05,0.02,0.05</source>
       <translation>0.09,0.05,0.02,0.05</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="456"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="496"/>
       <source>Dotted line definition</source>
-      <translation>Προσδιορισμός της στιγματικής γραμμής</translation>
+      <translation>Προσδιορισμός της διακεκομμένης γραμμής από τελείες</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="479"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="519"/>
       <source>0.02,0.02</source>
       <translation>0.02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
       <source>Grid and snapping</source>
-      <translation type="unfinished">Grid and snapping</translation>
+      <translation>Κάναβος και προσκόλληση</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Text settings</source>
-      <translation type="unfinished">Text settings</translation>
+      <translation>Ρυθμίσεις κειμένου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="34"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Οικογένεια γραμματοσειράς</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="76"/>
@@ -2386,87 +2485,82 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="116"/>
       <source>Dimension settings</source>
-      <translation type="unfinished">Dimension settings</translation>
+      <translation>Ρυθμίσεις διάστασης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="124"/>
       <source>Display mode</source>
-      <translation type="unfinished">Display mode</translation>
+      <translation>Λειτουργία προβολής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="201"/>
-      <source>Extension lines  size</source>
-      <translation type="unfinished">Extension lines  size</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="237"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="309"/>
       <source>Arrows style</source>
-      <translation type="unfinished">Arrows style</translation>
+      <translation>Τύπος μορφοποίησης βελών</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="283"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="355"/>
       <source>Arrows size</source>
-      <translation type="unfinished">Arrows size</translation>
+      <translation>Μέγεθος βελών</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="316"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="388"/>
       <source>Text orientation</source>
-      <translation type="unfinished">Text orientation</translation>
+      <translation>Προσανατολισμός κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="350"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="422"/>
       <source>Text spacing</source>
-      <translation type="unfinished">Text spacing</translation>
+      <translation>Αποστάσεις κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="404"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="476"/>
       <source>ShapeString settings</source>
-      <translation type="unfinished">ShapeString settings</translation>
+      <translation>Ρυθμίσεις Πλαισίου Συμβολοσειράς Κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="412"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="484"/>
       <source>Default ShapeString font file</source>
-      <translation type="unfinished">Default ShapeString font file</translation>
+      <translation>Προεπιλεγμένο αρχείο γραμματοσειράς Πλαισίου Συμβολοσειράς Κειμένου</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="362"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="402"/>
       <source>Drawing view line definitions</source>
-      <translation type="unfinished">Drawing view line definitions</translation>
+      <translation>Ορισμοί γραμμής προβολής σχεδίασης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
       <source>DWG</source>
-      <translation type="unfinished">DWG</translation>
+      <translation>DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="26"/>
       <source>DWG conversion</source>
-      <translation type="unfinished">DWG conversion</translation>
+      <translation>Μετατροπή DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Σημείωση:&lt;/span&gt;Οι επιλογές DXF εφαρμόζονται και στα αρχεία DWG.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="14"/>
       <source>DXF</source>
-      <translation type="unfinished">DXF</translation>
+      <translation>DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
       <source>Import options</source>
-      <translation type="unfinished">Import options</translation>
+      <translation>Επιλογές εισαγωγής</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="39"/>
       <source>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</source>
-      <translation type="unfinished">If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, χρησιμοποιείται ο παλιός εισαγωγέας python, διαφορετικά χρησιμοποιείται ο καινούριος εισαγωγέας C++ (ταχύτερος, αλλά δεν περιλαμβάνει τόσα πολλά χαρακτηριστικά ακόμα)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="42"/>
       <source>Use legacy python importer</source>
-      <translation type="unfinished">Use legacy python importer</translation>
+      <translation>Χρήση εισαγωγέα python παλαιού τύπου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="106"/>
@@ -2476,1620 +2570,943 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-oca.ui" line="14"/>
       <source>OCA</source>
-      <translation type="unfinished">OCA</translation>
+      <translation>OCA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="14"/>
       <source>SVG</source>
-      <translation type="unfinished">SVG</translation>
+      <translation>SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If this is checked, no units conversion will occur. One unit in the SVG file will translate as one millimeter.</source>
-      <translation type="unfinished">If this is checked, no units conversion will occur. One unit in the SVG file will translate as one millimeter.</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, δεν θα προκύψει καμία μετατροπή μονάδων. Μια μονάδα στο αρχείο SVG θα μεταφράζεται ως ένα χιλιοστό.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="85"/>
       <source>Disable units scaling</source>
-      <translation type="unfinished">Disable units scaling</translation>
+      <translation>Απενεργοποιήστε την κλιμακοποίηση μονάδων</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</source>
-      <translation type="unfinished">If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, οι Προβολές Σχεδίασης θα εξαχθούν ως μπλοκ. Αυτό ίσως αποτύχει για πρότυπα μεταγενέστερα των προτύπων R12.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="536"/>
       <source>Export Drawing Views as blocks</source>
-      <translation type="unfinished">Export Drawing Views as blocks</translation>
+      <translation>Εξαγάγετε τις Προβολές Σχεδίασης ως μπλοκ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="99"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation type="unfinished">Note: Not all the options below are used by the new importer yet</translation>
+      <translation>Σημείωση: Δεν χρησιμοποιούνται ακόμα όλες οι παρακάτω επιλογές από τον νέο εισαγωγέα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>Show this dialog when importing and exporting</source>
-      <translation type="unfinished">Show this dialog when importing and exporting</translation>
+      <translation>Εμφανίστε αυτό το παράθυρο διαλόγου κατά την εισαγωγή και εξαγωγή</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="58"/>
       <source>Automatic update (legacy importer only)</source>
-      <translation type="unfinished">Automatic update (legacy importer only)</translation>
+      <translation>Αυτόματη αναβάθμιση (μόνο για εισαγωγέα παλαιού τύπου)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="343"/>
+      <location filename="../ui/preferences-draft.ui" line="342"/>
       <source>Prefix labels of Clones with:</source>
-      <translation type="unfinished">Prefix labels of Clones with:</translation>
+      <translation>Οι ετικέτες των κλώνων θα έχουν το πρόθεμα:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="245"/>
       <source>Scale factor to apply to imported files</source>
-      <translation type="unfinished">Scale factor to apply to imported files</translation>
+      <translation>Συντελεστής κλίμακας προς εφαρμογή στα εισηγμένα αρχεία</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="265"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>Συντελεστής κλίμακας προς εφαρμογή στα αρχεία DXF κατά την εισαγωγή.
+Ο συντελεστής είναι η μετατροπή από τη μονάδα του DXF αρχείου σας σε χιλιοστά. 
+Παράδειγμα: για αρχεία σε χιλιοστά: 1, σε εκατοστά: 10, σε μέτρα: 1000, σε ίντσες: 25.4, σε πόδια: 304.8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="180"/>
       <source>Max segment length for discretized arcs</source>
-      <translation type="unfinished">Max segment length for discretized arcs</translation>
+      <translation>Μέγιστο μήκος τμήματος για τόξα αποτελούμενα από ευθύγραμμα τμήματα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="203"/>
       <source>When arcs are projected, if your version of OpenCasCade doesn't support arc projection, these arcs will be discretized into small line segments. This value is the maximum segment length.</source>
-      <translation type="unfinished">When arcs are projected, if your version of OpenCasCade doesn't support arc projection, these arcs will be discretized into small line segments. This value is the maximum segment length.</translation>
+      <translation>Όταν προβάλλονται τόξα, αν η έκδοση του OpenCasCade σας δεν υποστηρίζει την προβολή τόξων, τα εν λόγω τόξα θα αναλύονται σε μικρά γραμμικά τμήματα. Αυτή η τιμή είναι το μέγιστο μήκος τμήματος.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
       <source>Number of decimals</source>
-      <translation type="unfinished">Number of decimals</translation>
+      <translation>Αριθμός δεκαδικών</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>This is the method chosen for importing SVG object color into FreeCAD.</source>
-      <translation type="unfinished">This is the method chosen for importing SVG object color into FreeCAD.</translation>
+      <translation>Αυτή είναι η επιλεγμένη μέθοδος για την εισαγωγή χρώματος στοιχείου SVG στο FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="303"/>
+      <location filename="../ui/preferences-draft.ui" line="308"/>
       <source>If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, τα αντικείμενα θα εμφανίζονται ως γεμάτα κατά προεπιλογή. Διαφορετικά, θα εμφανίζονται ως σκελετός</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="197"/>
       <source>Shift</source>
-      <translation type="unfinished">Shift</translation>
+      <translation>Shift</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="202"/>
       <source>Ctrl</source>
-      <translation type="unfinished">Ctrl</translation>
+      <translation>Ctrl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="207"/>
       <source>Alt</source>
-      <translation type="unfinished">Alt</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="184"/>
       <source>The Alt modifier key</source>
-      <translation type="unfinished">The Alt modifier key</translation>
+      <translation>To πλήκτρο τροποποίησης Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="447"/>
       <source>The number of horizontal or vertical lines of the grid</source>
-      <translation type="unfinished">The number of horizontal or vertical lines of the grid</translation>
+      <translation>Ο αριθμός των οριζόντιων ή κάθετων γραμμών του κανάβου</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="54"/>
       <source>The default color for new objects</source>
-      <translation type="unfinished">The default color for new objects</translation>
+      <translation>Το προεπιλεγμένο χρώμα για νέα αντικείμενα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="98"/>
       <source>The default linewidth for new objects</source>
-      <translation type="unfinished">The default linewidth for new objects</translation>
+      <translation>Το προεπιλεγμένο πλάτος γραμμής για νέα αντικείμενα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="171"/>
       <source>The default color for snap symbols</source>
-      <translation type="unfinished">The default color for snap symbols</translation>
+      <translation>Το προεπιλεγμένο χρώμα για σύμβολα προσκόλλησης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="195"/>
       <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation type="unfinished">Check this if you want to use the color/linewidth from the toolbar as default</translation>
+      <translation>Επιλέξτε αυτό αν θέλετε να χρησιμοποιήσετε το χρώμα/πάχος γραμμής από την γραμμή εργαλείων ως προεπιλογή</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="215"/>
       <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation type="unfinished">If checked, a widget indicating the current working plane orientation appears during drawing operations</translation>
+      <translation>Αν έχει επιλεχθεί, εμφανίζεται ένα εργαλείο που υποδεικνύει τον προσανατολισμό του τρέχοντος επιπέδου εργασίας κατά τη διάρκεια λειτουργιών σχεδίασης</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draftvisual.ui" line="476"/>
+      <location filename="../ui/preferences-draftvisual.ui" line="516"/>
       <source>An SVG linestyle definition</source>
-      <translation type="unfinished">An SVG linestyle definition</translation>
+      <translation>Ένας ορισμός τύπου μορφοποίησης γραμμών SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="115"/>
       <source>If this is unchecked, texts/mtexts won't be imported</source>
-      <translation type="unfinished">If this is unchecked, texts/mtexts won't be imported</translation>
+      <translation>Αν αυτό δεν έχει επιλεχθεί, δεν θα εισάγονται κείμενα/κείμενα πολλαπλών γραμμών</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="144"/>
       <source>If this is checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If this is checked, paper space objects will be imported too</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, θα εισαχθούν και στοιχεία περιβάλλοντος εκτύπωσης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="313"/>
       <source>If checked, FreeCAD will try to join coincident objects into wires. Beware, this can take a while...</source>
-      <translation type="unfinished">If checked, FreeCAD will try to join coincident objects into wires. Beware, this can take a while...</translation>
+      <translation>Αν έχει επιλεχθεί, το FreeCAD θα επιχειρήσει να ενώσει συμπίπτοντα αντικείμενα σε σύρματα. Προσοχή, αυτό μπορεί να πάρει λίγο χρόνο...</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="333"/>
       <source>If this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</source>
-      <translation type="unfinished">If this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</translation>
+      <translation>Αν αυτό έχει επιλεχθεί, αντικείμενα του ίδιου στρώματος θα ενώνονται σε Μπλοκ Προσχεδίου, κάνοντας την προβολή ταχύτερη, αλλά δυσχεραίνοντας την επεξεργασία τους</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-draft.ui" line="326"/>
+      <location filename="../ui/preferences-draft.ui" line="85"/>
+      <source>If this is checked, step-by-step instructions will be displayed in the Output Window when running Draft commands</source>
+      <translation type="unfinished">If this is checked, step-by-step instructions will be displayed in the Output Window when running Draft commands</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="88"/>
+      <source>Verbose command line mode</source>
+      <translation type="unfinished">Verbose command line mode</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draft.ui" line="327"/>
       <source>When drawing lines, set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate</translation>
+      <translation>Όταν σχεδιάζετε γραμμές, ορίστε την εστίαση στο Μήκος αντί της συντεταγμένης Χ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="266"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="201"/>
+      <source>Extension lines size</source>
+      <translation>Μέγεθος γραμμών επέκτασης</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="237"/>
+      <source>Extension line overshoot</source>
+      <translation>Υπέρβαση γραμμής επέκτασης</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="244"/>
+      <source>The default length of extension line above dimension line</source>
+      <translation>Το προεπιλεγμένο μήκος γραμμής επέκτασης πάνω από τη γραμμή διάστασης</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="273"/>
+      <source>Dimension line overshoot</source>
+      <translation>Υπέρβαση γραμμής διάστασης</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="280"/>
+      <source>The default distance the dimension line is extended past extension lines</source>
+      <translation>Η προεπιλεγμένη απόσταση κατά την οποία επεκτείνεται η γραμμή διάστασης πέρα από τις γραμμές επέκτασης</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-drafttexts.ui" line="338"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Σημειώστε</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="271"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="343"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>Σημειώστε-2</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="361"/>
+      <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
+      <translation type="unfinished">Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="364"/>
+      <source>Preserve colors of faces during downgrade/upgrade</source>
+      <translation type="unfinished">Preserve colors of faces during downgrade/upgrade</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="381"/>
+      <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
+      <translation type="unfinished">Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-draftvisual.ui" line="384"/>
+      <source>Preserve names of faces during downgrade/upgrade</source>
+      <translation type="unfinished">Preserve names of faces during downgrade/upgrade</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="34"/>
+      <source>Path to ODA (formerly Teigha) File Converter</source>
+      <translation type="unfinished">Path to ODA (formerly Teigha) File Converter</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dwg.ui" line="41"/>
+      <source>The path to your ODA (formerly Teigha) File Converter executable</source>
+      <translation type="unfinished">The path to your ODA (formerly Teigha) File Converter executable</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Max Spline Segment:</source>
-      <translation type="unfinished">Max Spline Segment:</translation>
+      <translation>Μέγιστο Τμήμα Καμπύλης Spline:</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../DraftSnap.py" line="1198"/>
+      <location filename="../../DraftSnap.py" line="1245"/>
       <source>Draft Snap</source>
-      <translation>Προσκόλληση Προσχεδίασης</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="92"/>
-      <source>Draft creation tools</source>
-      <translation>Εργαλείο δημιουργίας της Προσχεδίασης</translation>
+      <translation>Προσκόλληση Προσχεδίου</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="93"/>
+      <source>Draft creation tools</source>
+      <translation>Εργαλεία δημιουργίας Προσχεδίου</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="94"/>
       <source>Draft modification tools</source>
-      <translation>Εργαλείο μετατροπής της Προσχεδίασης</translation>
+      <translation>Εργαλεία τροποποίησης Προσχεδίου</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="96"/>
+      <source>Utilities</source>
+      <translation>Βοηθήματα</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="97"/>
+      <source>Wire tools</source>
+      <translation>Εργαλεία σύρματος</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="98"/>
+      <source>Snapping</source>
+      <translation>Προσκόλληση</translation>
     </message>
   </context>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../Draft.py" line="909"/>
-      <source>Draft.makeBSpline: not enough points
-</source>
-      <translation type="unfinished">Draft.makeBSpline: not enough points
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="915"/>
-      <source>Draft.makeBSpline: Equal endpoints forced Closed
-</source>
-      <translation type="unfinished">Draft.makeBSpline: Equal endpoints forced Closed
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="917"/>
-      <source>Draft.makeBSpline: Invalid pointslist
-</source>
-      <translation type="unfinished">Draft.makeBSpline: Invalid pointslist
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="2678"/>
+      <location filename="../../Draft.py" line="2136"/>
       <source>not shape found</source>
-      <translation type="unfinished">not shape found</translation>
+      <translation>δεν βρέθηκε σχήμα</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2683"/>
+      <location filename="../../Draft.py" line="2141"/>
       <source>All Shapes must be co-planar</source>
-      <translation type="unfinished">All Shapes must be co-planar</translation>
+      <translation>Όλα τα Σχήματα πρέπει να είναι συνεπίπεδα</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2811"/>
+      <location filename="../../Draft.py" line="2269"/>
       <source>The given object is not planar and cannot be converted into a sketch.</source>
-      <translation type="unfinished">The given object is not planar and cannot be converted into a sketch.</translation>
+      <translation>Το δεδομένο αντικείμενο δεν είναι επίπεδο και δεν μπορεί να μετατραπεί σε σκαρίφημα.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="2819"/>
+      <location filename="../../Draft.py" line="2277"/>
       <source>Unable to guess the normal direction of this object</source>
-      <translation type="unfinished">Unable to guess the normal direction of this object</translation>
+      <translation>Αδυναμία πρόβλεψης της κανονικής διεύθυνσης αυτού του αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="3037"/>
-      <source>No object given
-</source>
-      <translation type="unfinished">No object given
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3040"/>
-      <source>The two points are coincident
-</source>
-      <translation type="unfinished">The two points are coincident
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3417"/>
-      <source>Found groups: closing each open object inside
-</source>
-      <translation>Βρέθηκαν ομάδες: κλείνουν όλα τα ανοιχτά αντικείμενα εντός
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3422"/>
-      <source>Found mesh(es): turning into Part shapes
-</source>
-      <translation type="unfinished">Found mesh(es): turning into Part shapes
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3430"/>
-      <source>Found 1 solidificable object: solidifying it
-</source>
-      <translation type="unfinished">Found 1 solidificable object: solidifying it
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3435"/>
-      <source>Found 2 objects: fusing them
-</source>
-      <translation>Βρέθηκαν 2 αντικείμενα: συμπτύσσονται
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3440"/>
-      <source>Found several objects: creating a shell
-</source>
-      <translation type="unfinished">Found several objects: creating a shell
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3445"/>
-      <source>Found several coplanar objects or faces: creating one face
-</source>
-      <translation type="unfinished">Found several coplanar objects or faces: creating one face
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3450"/>
-      <source>Found 1 non-parametric objects: draftifying it
-</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3471"/>
-      <source>Found 1 closed sketch object: creating a face from it
-</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3463"/>
-      <source>Found 1 linear object: converting to line
-</source>
-      <translation>Βρέθηκε 1 γραμμικό αντικείμενο: μετατροπή σε γραμμή
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3476"/>
-      <source>Found closed wires: creating faces
-</source>
-      <translation type="unfinished">Found closed wires: creating faces
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3481"/>
-      <source>Found 1 open wire: closing it
-</source>
-      <translation>Βρέθηκε ένα ανοιχτό σύρμα: το κλείνω
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3486"/>
-      <source>Found several open wires: joining them
-</source>
-      <translation>Βρέθηκαν πολλαπλά ανοιχτά σύρματα: τα ενώνω
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3491"/>
-      <source>Found several edges: wiring them
-</source>
-      <translation>Βρέθηκαν πολλές ακμές: τις ενώνω με σύρμα
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3496"/>
-      <source>Found several non-treatable objects: creating compound
-</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3500"/>
-      <source>Unable to upgrade these objects.
-</source>
-      <translation>Αδυναμία αναβάθμισης αυτών των αντικειμένων.
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3656"/>
-      <source>Found 1 block: exploding it
-</source>
-      <translation>Βρέθηκε 1 τμήμα: το κατακερματίζω
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3662"/>
-      <source>Found 1 multi-solids compound: exploding it
-</source>
-      <translation>Βρέθηκε 1 σύνθετο πολλών στερεών: το κατακερματίζω
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3668"/>
-      <source>Found 1 parametric object: breaking its dependencies
-</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3675"/>
-      <source>Found 2 objects: subtracting them
-</source>
-      <translation>Βρέθηκαν 2 αντικείμενα: γίνεται αφαίρεση
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3682"/>
-      <source>Found several faces: splitting them
-</source>
-      <translation>Βρέθηκαν πολλές επιφάνειες: διαχωρίζονται
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3687"/>
-      <source>Found several objects: subtracting them from the first one
-</source>
-      <translation>Βρέθηκαν πολλά αντικείμενα: αφαιρούνται από το πρώτο
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3692"/>
-      <source>Found 1 face: extracting its wires
-</source>
-      <translation>Βρέθηκε 1 επιφάνεια: εξάγονται τα σύρματά της
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3697"/>
-      <source>Found only wires: extracting their edges
-</source>
-      <translation>Βρέθηκαν μόνο σύρματα: εξάγονται οι ακμές τους
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="3701"/>
-      <source>No more downgrade possible
-</source>
-      <translation>Δεν είναι δυνατή η περαιτέρω υποβάθμιση
-</translation>
-    </message>
-    <message>
-      <location filename="../../Draft.py" line="5228"/>
-      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
-</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="344"/>
+      <location filename="../../DraftGui.py" line="382"/>
       <source>Draft Command Bar</source>
-      <translation>Γραμμή εντολών της Προσχεδίασης</translation>
+      <translation>Γραμμή Εντολών Προσχεδίου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="677"/>
+      <location filename="../../DraftGui.py" line="715"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Εναλλαγή λειτουργίας κατασκευής</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="678"/>
+      <location filename="../../DraftGui.py" line="716"/>
       <source>Current line color</source>
-      <translation type="unfinished">Current line color</translation>
+      <translation>Τρέχον χρώμα γραμμής</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="679"/>
+      <location filename="../../DraftGui.py" line="717"/>
       <source>Current face color</source>
-      <translation type="unfinished">Current face color</translation>
+      <translation>Τρέχον χρώμα όψης</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="680"/>
+      <location filename="../../DraftGui.py" line="718"/>
       <source>Current line width</source>
-      <translation type="unfinished">Current line width</translation>
+      <translation>Τρέχον πλάτος γραμμής</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="681"/>
+      <location filename="../../DraftGui.py" line="719"/>
       <source>Current font size</source>
-      <translation type="unfinished">Current font size</translation>
+      <translation>Τρέχον μέγεθος γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="682"/>
+      <location filename="../../DraftGui.py" line="720"/>
       <source>Apply to selected objects</source>
-      <translation>Εφαρμογή σε επιλεγμένα αντικείμενα</translation>
+      <translation>Εφαρμόστε στα επιλεγμένα αντικείμενα</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1889"/>
+      <location filename="../../DraftGui.py" line="1991"/>
       <source>Autogroup off</source>
-      <translation type="unfinished">Autogroup off</translation>
+      <translation>Απενεργοποίηση Αυτόματης Ομαδοποίησης</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="711"/>
+      <location filename="../../DraftGui.py" line="749"/>
       <source>active command:</source>
       <translation>ενεργή εντολή:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="997"/>
+      <location filename="../../DraftGui.py" line="1036"/>
       <source>None</source>
       <translation>Κανένα</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="713"/>
+      <location filename="../../DraftGui.py" line="751"/>
       <source>Active Draft command</source>
-      <translation>Ενεργό εντολή σχεδίασης</translation>
+      <translation>Ενεργή εντολή Προσχεδίου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="714"/>
+      <location filename="../../DraftGui.py" line="752"/>
       <source>X coordinate of next point</source>
       <translation>Συντεταγμένη X του επόμενου σημείου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="998"/>
+      <location filename="../../DraftGui.py" line="1037"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="716"/>
+      <location filename="../../DraftGui.py" line="754"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="717"/>
+      <location filename="../../DraftGui.py" line="755"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="718"/>
+      <location filename="../../DraftGui.py" line="756"/>
       <source>Y coordinate of next point</source>
       <translation>Συντεταγμένη Y του επόμενου σημείου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="719"/>
+      <location filename="../../DraftGui.py" line="757"/>
       <source>Z coordinate of next point</source>
       <translation>Συντεταγμένη Ζ του επόμενου σημείου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="720"/>
+      <location filename="../../DraftGui.py" line="758"/>
       <source>Enter point</source>
-      <translation type="unfinished">Enter point</translation>
+      <translation>Εισάγετε σημείο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="721"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Enter a new point with the given coordinates</source>
-      <translation type="unfinished">Enter a new point with the given coordinates</translation>
+      <translation>Εισάγετε ένα νέο σημείο με τις δεδομένες συντεταγμένες</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="722"/>
+      <location filename="../../DraftGui.py" line="760"/>
       <source>Length</source>
       <translation>Μήκος</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="723"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Angle</source>
       <translation>Γωνία</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="724"/>
+      <location filename="../../DraftGui.py" line="762"/>
       <source>Length of current segment</source>
       <translation>Μήκος του τρέχοντος τμήματος</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="725"/>
+      <location filename="../../DraftGui.py" line="763"/>
       <source>Angle of current segment</source>
       <translation>Γωνία του τρέχοντος τμήματος</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="727"/>
-      <source>Check this to lock the current angle (l)</source>
-      <translation>Τσεκάρισε αυτό, για να κλειδώσεις την τωρινή γωνία (l)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="1053"/>
+      <location filename="../../DraftGui.py" line="1092"/>
       <source>Radius</source>
       <translation>Ακτίνα</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="729"/>
+      <location filename="../../DraftGui.py" line="767"/>
       <source>Radius of Circle</source>
-      <translation>Ακτίνα κύκλου</translation>
+      <translation>Ακτίνα Κύκλου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="730"/>
-      <source>&amp;Relative</source>
-      <translation>&amp;Σχετικό</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="731"/>
-      <source>Coordinates relative to last point or absolute (SPACE)</source>
-      <translation>Συντεταγμένες σε σχέση με το τελευταίο σημείο ή απόλυτες (ΚΕΝΟ)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="732"/>
-      <source>F&amp;illed</source>
-      <translation>Γεμ&amp;ισμένο</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="733"/>
-      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe (i)</source>
-      <translation>Τσεκάρισέ το για να εμφανίζεται το αντικείμενο «γεμάτο». Αλλιώς θα εμφανίζεται σαν από σύρμα (ι)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="734"/>
-      <source>&amp;Finish</source>
-      <translation>&amp;Ολοκλήρωση</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="735"/>
-      <source>Finishes the current drawing or editing operation (F)</source>
-      <translation>Τελειώνει το τωρινό προσχέδιο ή την επιχείρηση επεξεργασίας (Φ)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="736"/>
+      <location filename="../../DraftGui.py" line="774"/>
       <source>If checked, command will not finish until you press the command button again</source>
-      <translation>Αν τσεκαριστεί, η εντολή δεν θα τελειώσει, μέχρις ότου ξαναπατήσεις το πλήκτρο της εντολής</translation>
+      <translation>Αν έχει επιλεχθεί, η εντολή δεν θα ολοκληρωθεί έως ότου πιέσετε ξανά το πλήκτρο εντολής</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="737"/>
-      <source>Co&amp;ntinue</source>
-      <translation type="unfinished">Co&amp;ntinue</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="738"/>
+      <location filename="../../DraftGui.py" line="776"/>
       <source>If checked, an OCC-style offset will be performed instead of the classic offset</source>
-      <translation type="unfinished">If checked, an OCC-style offset will be performed instead of the classic offset</translation>
+      <translation>Αν έχει επιλεχθεί, μια μετατόπιση τύπου μορφοποίησης OCC θα εκτελεστεί αντί της κλασσικής μετατόπισης</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="739"/>
+      <location filename="../../DraftGui.py" line="777"/>
       <source>&amp;OCC-style offset</source>
-      <translation type="unfinished">&amp;OCC-style offset</translation>
+      <translation>Μετατόπιση τύπου μορφοποίησης &amp;OCC</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="740"/>
+      <location filename="../../DraftGui.py" line="778"/>
       <source>Add points to the current object</source>
-      <translation>Προσθήκη σημείων στο τωρινό αντικείμενο</translation>
+      <translation>Προσθέστε σημεία στο τρέχον αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="741"/>
+      <location filename="../../DraftGui.py" line="779"/>
       <source>Remove points from the current object</source>
-      <translation>Αφαίρεση σημείων από το τωρινό αντικείμενο</translation>
+      <translation>Αφαιρέστε σημεία από το τρέχον αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="742"/>
+      <location filename="../../DraftGui.py" line="780"/>
       <source>Make Bezier node sharp</source>
-      <translation type="unfinished">Make Bezier node sharp</translation>
+      <translation>Κάντε τον κόμβο καμπύλης Bezier αιχμηρό</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="743"/>
+      <location filename="../../DraftGui.py" line="781"/>
       <source>Make Bezier node tangent</source>
-      <translation type="unfinished">Make Bezier node tangent</translation>
+      <translation>Κάντε τον κόμβο καμπύλης Bezier εφαπτόμενο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="744"/>
+      <location filename="../../DraftGui.py" line="782"/>
       <source>Make Bezier node symmetric</source>
-      <translation type="unfinished">Make Bezier node symmetric</translation>
+      <translation>Κάντε τον κόμβο καμπύλης Bezier συμμετρικό</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="745"/>
-      <source>&amp;Undo</source>
-      <translation>&amp;Αναίρεση</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="746"/>
-      <source>Undo the last segment (CTRL+Z)</source>
-      <translation>Αναίρεση του τελευταίου τμήματος (CTRL + Z)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="747"/>
-      <source>Cl&amp;ose</source>
-      <translation>Κλ&amp;είσιμο</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="748"/>
-      <source>Finishes and closes the current line (C)</source>
-      <translation>Ολοκλήρωση και κλείνει την τρέχουσα γραμμή (C)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="749"/>
-      <source>&amp;Wipe</source>
-      <translation>&amp;Απομάκρυνση</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="750"/>
-      <source>Wipes the existing segments of this line and starts again from the last point (W)</source>
-      <translation>Απαλλάσσει τα υπάρχοντα τμήματα από αυτή τη γραμμή, και ξαναρχίζει από το τελευταίο σημείο (ς)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="751"/>
-      <source>&amp;Set WP</source>
-      <translation type="unfinished">&amp;Set WP</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="752"/>
-      <source>Reorients the working plane on the last segment (S)</source>
-      <translation type="unfinished">Reorients the working plane on the last segment (S)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="753"/>
-      <source>&amp;Select edge</source>
-      <translation>&amp;Επιλογή ακμής</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="754"/>
-      <source>Selects an existing edge to be measured by this dimension (E)</source>
-      <translation>Επιλέγει μια υπάρχουσα ακμή για να μετρηθεί από την αυτή διάσταση (E)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="755"/>
+      <location filename="../../DraftGui.py" line="793"/>
       <source>Sides</source>
       <translation>Πλευρές</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="756"/>
+      <location filename="../../DraftGui.py" line="794"/>
       <source>Number of sides</source>
-      <translation>Πλήθος πλευρών</translation>
+      <translation>Αριθμός πλευρών</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2832"/>
+      <location filename="../../DraftTools.py" line="2876"/>
       <source>Offset</source>
-      <translation type="unfinished">Offset</translation>
+      <translation>Μετατοπίστε</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="758"/>
+      <location filename="../../DraftGui.py" line="796"/>
       <source>XY (top)</source>
-      <translation type="unfinished">XY (top)</translation>
+      <translation>XY (οροφή)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="759"/>
+      <location filename="../../DraftGui.py" line="797"/>
       <source>Select XY plane</source>
-      <translation>Επιλέξτε επίπεδο XΨ</translation>
+      <translation>Επιλέξτε επίπεδο XY</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="760"/>
+      <location filename="../../DraftGui.py" line="798"/>
       <source>XZ (front)</source>
-      <translation type="unfinished">XZ (front)</translation>
+      <translation>XZ (πρόσοψη)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="761"/>
+      <location filename="../../DraftGui.py" line="799"/>
       <source>Select XZ plane</source>
       <translation>Επιλέξτε επίπεδο XΖ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="762"/>
+      <location filename="../../DraftGui.py" line="800"/>
       <source>YZ (side)</source>
-      <translation type="unfinished">YZ (side)</translation>
+      <translation>YZ (πλευρά)</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="763"/>
+      <location filename="../../DraftGui.py" line="801"/>
       <source>Select YZ plane</source>
-      <translation>Επιλέξτε επίπεδο ΥΖ</translation>
+      <translation>Επιλέξτε επίπεδο YZ</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="764"/>
+      <location filename="../../DraftGui.py" line="802"/>
       <source>View</source>
       <translation>Προβολή</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="765"/>
+      <location filename="../../DraftGui.py" line="803"/>
       <source>Select plane perpendicular to the current view</source>
       <translation>Επιλέξτε επίπεδο κάθετο προς την τρέχουσα προβολή</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="766"/>
+      <location filename="../../DraftGui.py" line="804"/>
       <source>Auto</source>
       <translation>Αυτόματο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="767"/>
+      <location filename="../../DraftGui.py" line="805"/>
       <source>Do not project points to a drawing plane</source>
       <translation>Μην προβάλετε σημεία πάνω σε ένα επίπεδο σχεδίασης</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="768"/>
-      <source>C&amp;opy</source>
-      <translation>Αντ&amp;ιγραφή</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="769"/>
-      <source>If checked, objects will be copied instead of moved (O)</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved (O)</translation>
-    </message>
-    <message>
-      <location filename="../../DraftGui.py" line="770"/>
+      <location filename="../../DraftGui.py" line="808"/>
       <source>Text string to draw</source>
-      <translation>Στίχος κειμένου που θα σχεδιαστεί</translation>
+      <translation>Συμβολοσειρά κειμένου σχεδίασης</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="771"/>
+      <location filename="../../DraftGui.py" line="809"/>
       <source>String</source>
-      <translation>Αλφαριθμητικό</translation>
+      <translation>Συμβολοσειρά</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="772"/>
+      <location filename="../../DraftGui.py" line="810"/>
       <source>Height of text</source>
-      <translation>Ύψος του κειμένου</translation>
+      <translation>Ύψος κειμένου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="773"/>
+      <location filename="../../DraftGui.py" line="811"/>
       <source>Height</source>
       <translation>Ύψος</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="774"/>
+      <location filename="../../DraftGui.py" line="812"/>
       <source>Intercharacter spacing</source>
       <translation>Κενό μεταξύ των χαρακτήρων</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="775"/>
+      <location filename="../../DraftGui.py" line="813"/>
       <source>Tracking</source>
-      <translation>Βηματισμός</translation>
+      <translation>Απόσταση Γραμμάτων</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="776"/>
+      <location filename="../../DraftGui.py" line="814"/>
       <source>Full path to font file:</source>
       <translation>Πλήρης διαδρομή για το αρχείο γραμματοσειράς:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="777"/>
+      <location filename="../../DraftGui.py" line="815"/>
       <source>Open a FileChooser for font file</source>
-      <translation>Άνοιγμα ενός Επιλογέα Αρχείων για την επιλογή γραμματοσειράς</translation>
+      <translation>Άνοιγμα ενός Επιλογέα Αρχείων για το αρχείο γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="778"/>
+      <location filename="../../DraftGui.py" line="816"/>
       <source>Grid spacing</source>
-      <translation>Αποστάσεις του πλέγματος</translation>
+      <translation>Αποστάσεις του κανάβου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="779"/>
+      <location filename="../../DraftGui.py" line="817"/>
       <source>The spacing between the grid lines</source>
-      <translation type="unfinished">The spacing between the grid lines</translation>
+      <translation>Η απόσταση μεταξύ των γραμμών κανάβου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="780"/>
+      <location filename="../../DraftGui.py" line="818"/>
       <source>Main line every</source>
-      <translation type="unfinished">Main line every</translation>
+      <translation>Κύρια γραμμή κάθε</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="781"/>
+      <location filename="../../DraftGui.py" line="819"/>
       <source>The number of lines between main lines</source>
-      <translation type="unfinished">The number of lines between main lines</translation>
+      <translation>Ο αριθμός γραμμών μεταξύ των κυρίων γραμμών</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="782"/>
+      <location filename="../../DraftGui.py" line="820"/>
       <source>Center plane on view</source>
-      <translation type="unfinished">Center plane on view</translation>
+      <translation>Κεντρικό επίπεδο στην προβολή</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="856"/>
+      <location filename="../../DraftGui.py" line="894"/>
       <source>Select Plane</source>
       <translation>Επιλέξτε επίπεδο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="535"/>
+      <location filename="../../DraftTools.py" line="554"/>
       <source>Line</source>
       <translation>Γραμμή</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="742"/>
+      <location filename="../../DraftTools.py" line="778"/>
       <source>DWire</source>
-      <translation>DWire</translation>
+      <translation>Σύρμα προσχεδίου</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="927"/>
+      <location filename="../../DraftGui.py" line="965"/>
       <source>Circle</source>
       <translation>Κύκλος</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="934"/>
+      <location filename="../../DraftGui.py" line="972"/>
       <source>Center X</source>
       <translation>Κέντρο X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="933"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Arc</source>
       <translation>Τόξο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="937"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <source>Point</source>
       <translation>Σημείο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="962"/>
+      <location filename="../../DraftGui.py" line="1001"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Ετικέτα</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1046"/>
+      <location filename="../../DraftGui.py" line="1085"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1043"/>
+      <location filename="../../DraftGui.py" line="1082"/>
       <source>Trim</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1135"/>
+      <location filename="../../DraftGui.py" line="1174"/>
       <source>Pick Object</source>
-      <translation>Επιλέξτε Αντικείμενο</translation>
+      <translation>Διαλέξτε Αντικείμενο</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1140"/>
+      <location filename="../../DraftGui.py" line="1179"/>
       <source>Edit</source>
       <translation>Επεξεργασία</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1177"/>
+      <location filename="../../DraftGui.py" line="1236"/>
       <source>Global X</source>
       <translation>Καθολικό X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1178"/>
+      <location filename="../../DraftGui.py" line="1237"/>
       <source>Global Y</source>
       <translation>Καθολικό Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1179"/>
+      <location filename="../../DraftGui.py" line="1238"/>
       <source>Global Z</source>
       <translation>Καθολικό Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1182"/>
+      <location filename="../../DraftGui.py" line="1241"/>
       <source>Local X</source>
       <translation>Τοπικό X</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1183"/>
+      <location filename="../../DraftGui.py" line="1242"/>
       <source>Local Y</source>
       <translation>Τοπικό Y</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1184"/>
+      <location filename="../../DraftGui.py" line="1243"/>
       <source>Local Z</source>
       <translation>Τοπικό Z</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1414"/>
+      <location filename="../../DraftGui.py" line="1481"/>
       <source>Invalid Size value. Using 200.0.</source>
-      <translation>Μη αποδεκτή τιμή Μεγέθους. Θα χρησιμοποιηθεί η 200.0.</translation>
+      <translation>Μη έγκυρη τιμή Μεγέθους. Θα χρησιμοποιηθεί η τιμή 200.0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1422"/>
+      <location filename="../../DraftGui.py" line="1489"/>
       <source>Invalid Tracking value. Using 0.</source>
-      <translation>Μη αποδεκτή τιμή Βηματισμού. Θα χρησιμοποιηθεί η 0.</translation>
+      <translation>Μη έγκυρη τιμή Απόστασης Γραμμάτων. Θα χρησιμοποιηθεί η τιμή 0.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1436"/>
+      <location filename="../../DraftGui.py" line="1503"/>
       <source>Please enter a text string.</source>
-      <translation>Παρακαλώ, εισήγαγε ένα στίχο κειμένου.</translation>
+      <translation>Παρακαλώ εισάγετε μια συμβολοσειρά κειμένου.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1444"/>
+      <location filename="../../DraftGui.py" line="1511"/>
       <source>Select a Font file</source>
-      <translation>Επέλεξε ένα αρχείο γραμματοσειράς</translation>
+      <translation>Επιλέξτε ένα αρχείο Γραμματοσειράς</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1475"/>
+      <location filename="../../DraftGui.py" line="1542"/>
       <source>Please enter a font file.</source>
-      <translation>Παρακαλώ, εισήγαγε ένα αρχείο γραμματοσειράς.</translation>
+      <translation>Παρακαλώ εισάγετε ένα αρχείο γραμματοσειράς.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1883"/>
+      <location filename="../../DraftGui.py" line="1985"/>
       <source>Autogroup: </source>
-      <translation type="unfinished">Autogroup: </translation>
+      <translation>Αυτόματη Ομαδοποίηση: </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2177"/>
+      <location filename="../../DraftGui.py" line="2280"/>
       <source>Faces</source>
       <translation>Όψεις</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2178"/>
+      <location filename="../../DraftGui.py" line="2281"/>
       <source>Remove</source>
-      <translation>Απομάκρυνση</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2179"/>
+      <location filename="../../DraftGui.py" line="2282"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2180"/>
+      <location filename="../../DraftGui.py" line="2283"/>
       <source>Facebinder elements</source>
-      <translation type="unfinished">Facebinder elements</translation>
+      <translation>Στοιχεία σύνθεσης όψεων</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="413"/>
-      <source>Pick a face to define the drawing plane
-</source>
-      <translation type="unfinished">Pick a face to define the drawing plane
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1878"/>
-      <source>Pick first point:
-</source>
-      <translation>Επιλέξτε το πρώτο σημείο:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="576"/>
+      <location filename="../../DraftTools.py" line="601"/>
       <source>Create Line</source>
-      <translation>Δημιουργία Γραμμής</translation>
+      <translation>Δημιουργήστε Γραμμή</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="589"/>
-      <source>Create DWire</source>
-      <translation type="unfinished">Create DWire</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="628"/>
-      <source>DWire has been closed
-</source>
-      <translation type="unfinished">DWire has been closed
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="902"/>
-      <source>Last point has been removed
-</source>
-      <translation>Αφαιρέθηκε το τελευταίο σημείο
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="909"/>
+      <location filename="../../DraftTools.py" line="945"/>
       <source>Pick next point:
 </source>
-      <translation>Επέλεξε το επόμενο σημείο:
+      <translation>Διαλέξτε επόμενο σημείο:
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="912"/>
-      <source>Pick next point, or Finish (shift-F) or close (o):
-</source>
-      <translation type="unfinished">Pick next point, or Finish (shift-F) or close (o):
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="732"/>
-      <source>Unable to create a Wire from selected objects
-</source>
-      <translation type="unfinished">Unable to create a Wire from selected objects
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="738"/>
+      <location filename="../../DraftTools.py" line="774"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="758"/>
-      <source>BSpline</source>
-      <translation type="unfinished">BSpline</translation>
+      <translation>Μετατρέψτε σε Σύρμα</translation>
     </message>
     <message>
       <location filename="../../DraftTools.py" line="794"/>
-      <source>Spline has been closed
-</source>
-      <translation type="unfinished">Spline has been closed
-</translation>
+      <source>BSpline</source>
+      <translation>Καμπύλη Βασικής Συνάρτησης BSpline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="857"/>
+      <location filename="../../DraftTools.py" line="893"/>
       <source>BezCurve</source>
-      <translation type="unfinished">BezCurve</translation>
+      <translation>Καμπύλη Bezier</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="894"/>
-      <source>Bezier curve has been closed
-</source>
-      <translation type="unfinished">Bezier curve has been closed
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="939"/>
+      <location filename="../../DraftTools.py" line="975"/>
       <source>Create BezCurve</source>
-      <translation type="unfinished">Create BezCurve</translation>
+      <translation>Δημιουργήστε Καμπύλη Bezier</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1020"/>
+      <location filename="../../DraftTools.py" line="1056"/>
       <source>Rectangle</source>
       <translation>Ορθογώνιο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1063"/>
+      <location filename="../../DraftTools.py" line="1099"/>
       <source>Create Plane</source>
-      <translation>Δημιουργία Επιφάνειας</translation>
+      <translation>Δημιουργήστε Επίπεδο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1074"/>
+      <location filename="../../DraftTools.py" line="1110"/>
       <source>Create Rectangle</source>
-      <translation>Δημιουργία Ορθογώνιου</translation>
+      <translation>Δημιουργήστε Ορθογώνιο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1747"/>
-      <source>Pick opposite point:
-</source>
-      <translation>Επέλεξε αντίπερα σημείο:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1479"/>
-      <source>Pick center point:
-</source>
-      <translation>Επέλεξε κεντρικό σημείο:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1618"/>
-      <source>Pick radius:
-</source>
-      <translation>Επέλεξε ακτίνα:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1420"/>
-      <source>Pick start angle:
-</source>
-      <translation>Επέλεξε γωνία αρχής:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1315"/>
-      <source>Pick aperture:
-</source>
-      <translation type="unfinished">Pick aperture:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1338"/>
+      <location filename="../../DraftTools.py" line="1374"/>
       <source>Create Circle</source>
-      <translation>Δημιουργία Κύκλου</translation>
+      <translation>Δημιουργήστε Κύκλο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1373"/>
+      <location filename="../../DraftTools.py" line="1409"/>
       <source>Create Arc</source>
-      <translation>Δημιουργία Τόξου</translation>
+      <translation>Δημιουργήστε Τόξο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1415"/>
+      <location filename="../../DraftTools.py" line="1451"/>
       <source>Start Angle</source>
-      <translation>Γωνία Αρχής</translation>
+      <translation>Γωνία Έναρξης</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1422"/>
+      <location filename="../../DraftTools.py" line="1458"/>
       <source>Aperture</source>
-      <translation type="unfinished">Aperture</translation>
+      <translation>Άνοιγμα</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1431"/>
-      <source>Aperture angle:
-</source>
-      <translation type="unfinished">Aperture angle:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1463"/>
+      <location filename="../../DraftTools.py" line="1499"/>
       <source>Polygon</source>
       <translation>Πολύγωνο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1600"/>
+      <location filename="../../DraftTools.py" line="1636"/>
       <source>Create Polygon</source>
-      <translation>Δημιουργία Πολύγονου</translation>
+      <translation>Δημιουργήστε Πολύγωνο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1648"/>
+      <location filename="../../DraftTools.py" line="1684"/>
       <source>Ellipse</source>
       <translation>Έλλειψη</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1705"/>
+      <location filename="../../DraftTools.py" line="1741"/>
       <source>Create Ellipse</source>
-      <translation>Δημιουργία Έλλειψης</translation>
+      <translation>Δημιουργήστε Έλλειψη</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1765"/>
+      <location filename="../../DraftTools.py" line="1801"/>
       <source>Text</source>
       <translation>Κείμενο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1777"/>
-      <source>Pick location point:
-</source>
-      <translation>Επέλεξε σημείο τοποθεσίας:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="1799"/>
+      <location filename="../../DraftTools.py" line="1837"/>
       <source>Create Text</source>
-      <translation>Δημιουργία Κειμένου</translation>
+      <translation>Δημιουργήστε Κέιμενο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1847"/>
+      <location filename="../../DraftTools.py" line="1886"/>
       <source>Dimension</source>
       <translation>Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1971"/>
+      <location filename="../../DraftTools.py" line="2010"/>
       <source>Create Dimension</source>
-      <translation>Δημιουργία Διάστασης</translation>
+      <translation>Δημιουργήστε Διάσταση</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2131"/>
-      <source>Edges don't intersect!
-</source>
-      <translation>Οι Ακμές δεν τέμνονται.
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2188"/>
+      <location filename="../../DraftTools.py" line="2227"/>
       <source>ShapeString</source>
-      <translation type="unfinished">ShapeString</translation>
+      <translation>Πλαίσιο Συμβολοσειράς Κειμένου</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2202"/>
-      <source>Pick ShapeString location point:
-</source>
-      <translation type="unfinished">Pick ShapeString location point:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2223"/>
+      <location filename="../../DraftTools.py" line="2268"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Create ShapeString</translation>
+      <translation>Δημιουργήστε Πλαίσιο Συμβολοσειράς Κειμένου</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2317"/>
-      <source>Select an object to move
-</source>
-      <translation>Επέλεξε ένα αντικείμενο για να το μετακινήσεις
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2339"/>
-      <source>Pick start point:
-</source>
-      <translation>Επέλεξε σημείο εκκίνησης:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3641"/>
+      <location filename="../../DraftTools.py" line="3763"/>
       <source>Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2363"/>
+      <location filename="../../DraftTools.py" line="2407"/>
       <source>Move</source>
-      <translation>Μετακίνηση</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2416"/>
-      <source>Pick end point:
-</source>
-      <translation>Επέλεξε σημείο τερματισμού:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2452"/>
-      <source>Change Style</source>
-      <translation>Αλλαγή Τεχνοτροπίας</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2479"/>
-      <source>Select an object to rotate
-</source>
-      <translation>Επέλεξε ένα αντικείμενο για να το περιστρέψεις
-</translation>
+      <translation>Μετακινήστε</translation>
     </message>
     <message>
       <location filename="../../DraftTools.py" line="2496"/>
-      <source>Pick rotation center:
-</source>
-      <translation>Επέλεξε κέντρο περιστροφής:
-</translation>
+      <source>Change Style</source>
+      <translation>Αλλαγή Τύπου Μορφοποίησης</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2524"/>
+      <location filename="../../DraftTools.py" line="2568"/>
       <source>Rotate</source>
-      <translation>Περιστροφή</translation>
+      <translation>Περιστρέψτε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2629"/>
-      <source>Pick base angle:
-</source>
-      <translation>Επέλεξε γωνία βάσης:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2641"/>
-      <source>Pick rotation angle:
-</source>
-      <translation>Επέλεξε γωνία περιστροφής:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2665"/>
-      <source>Select an object to offset
-</source>
-      <translation type="unfinished">Select an object to offset
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2668"/>
-      <source>Offset only works on one object at a time
-</source>
-      <translation type="unfinished">Offset only works on one object at a time
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2676"/>
+      <location filename="../../DraftTools.py" line="2720"/>
       <source>Cannot offset this object type
 </source>
-      <translation type="unfinished">Cannot offset this object type
+      <translation>Δεν μπορεί να μετατοπίσει αυτόν τον τύπο αντικειμένου
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2699"/>
-      <source>Sorry, offset of Bezier curves is currently still not supported
-</source>
-      <translation type="unfinished">Sorry, offset of Bezier curves is currently still not supported
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3255"/>
-      <source>Pick distance:
-</source>
-      <translation>Επέλεξε απόσταση:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2852"/>
-      <source>Select an object to stretch
-</source>
-      <translation type="unfinished">Select an object to stretch
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2870"/>
-      <source>Pick first point of selection rectangle:
-</source>
-      <translation type="unfinished">Pick first point of selection rectangle:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2894"/>
-      <source>Pick opposite point of selection rectangle:
-</source>
-      <translation type="unfinished">Pick opposite point of selection rectangle:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2903"/>
-      <source>Pick start point of displacement:
-</source>
-      <translation type="unfinished">Pick start point of displacement:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="2948"/>
-      <source>Pick end point of displacement:
-</source>
-      <translation type="unfinished">Pick end point of displacement:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3080"/>
-      <source>Turning one Rectangle into a WireÂ 
-</source>
-      <translation type="unfinished">Turning one Rectangle into a WireÂ 
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3097"/>
+      <location filename="../../DraftTools.py" line="3209"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3145"/>
-      <source>Select an object to upgrade
-</source>
-      <translation>Επέλεξε ένα αντικείμενο για να το αναβαθμίσεις
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3125"/>
+      <location filename="../../DraftTools.py" line="3237"/>
       <source>Upgrade</source>
-      <translation>Αναβάθμιση</translation>
+      <translation>Αναβαθμίστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3155"/>
+      <location filename="../../DraftTools.py" line="3267"/>
       <source>Downgrade</source>
-      <translation>Υποβάθμιση</translation>
+      <translation>Υποβαθμίστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3184"/>
-      <source>Select object(s) to trim/extend
-</source>
-      <translation>Επέλεξε αντικείμενα για περιτομή ή επέκταση
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3496"/>
-      <source>Unable to trim these objects, only Draft wires and arcs are supported
-</source>
-      <translation>Αδυναμία περιτομής αυτών των αντικειμένων. Μοναχά τα σύρματα της προσχεδίασης και τα τόξα υποστηρίζονται.
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3499"/>
-      <source>Unable to trim these objects, too many wires
-</source>
-      <translation>Αδυναμία περιτομής αυτών των αντικειμένων. Υπερπληθή σύρματα
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3516"/>
-      <source>These objects don't intersect
-</source>
-      <translation>Αυτά τα αντικείμενα δεν τέμνονται
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3519"/>
-      <source>Too many intersection points
-</source>
-      <translation>Υπεράριθμα σημεία διασταύρωσης
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3598"/>
-      <source>Select an object to scale
-</source>
-      <translation>Επέλεξε ένα αντικείμενο για να το κλιμακώσεις
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3613"/>
-      <source>Pick base point:
-</source>
-      <translation>Επέλεξε σημείο βάσης:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4605"/>
-      <source>Select an object to project
-</source>
-      <translation>Επέλεξε ένα αντικείμενο για να το προβάλεις
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3980"/>
-      <source>This object type is not editable
-</source>
-      <translation>Αυτός ο τύπος αντικειμένου δεν είναι επεξεργάσιμος
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3853"/>
-      <source>Please select only one object
-</source>
-      <translation type="unfinished">Please select only one object
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="3858"/>
-      <source>Select a Draft object to edit
-</source>
-      <translation>Επέλεξε ένα αντικείμενο Προσχεδίασης για να το επεξεργαστείς
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4294"/>
-      <source>Active object must have more than two points/nodes
-</source>
-      <translation>Το ενεργό αντικείμενο πρέπει να έχει περισσότερα από δύο σημεία ή κόμβους
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4342"/>
+      <location filename="../../DraftTools.py" line="4493"/>
       <source>Selection is not a Knot
 </source>
-      <translation>Η επιλογή δεν είναι Κόμπος
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4367"/>
-      <source>Endpoint of BezCurve can't be smoothed
-</source>
-      <translation type="unfinished">Endpoint of BezCurve can't be smoothed
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4645"/>
-      <source>Select an object to convert
-</source>
-      <translation>Επέλεξε ένα αντικείμενο για να το μετατρέψεις
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4669"/>
-      <source>Convert to Sketch</source>
-      <translation>Μετατροπή σε Σκίτσο</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4673"/>
-      <source>Convert to Draft</source>
-      <translation>Μετατροπή σε προσχέδιο</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4685"/>
-      <source>Convert</source>
-      <translation>Μετατροπή</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4703"/>
-      <source>Select an object to array
-</source>
-      <translation type="unfinished">Select an object to array
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4714"/>
-      <source>Array</source>
-      <translation type="unfinished">Array</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4733"/>
-      <source>Please select base and path objects
-</source>
-      <translation>Παρακαλώ, επέλεξε αντικείμενα βάσης και διαδρομής
+      <translation>Η επιλογή δεν είναι Κόμβος
 </translation>
     </message>
     <message>
       <location filename="../../DraftTools.py" line="4820"/>
+      <source>Convert to Sketch</source>
+      <translation>Μετατρέψτε σε Σκαρίφημα</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4824"/>
+      <source>Convert to Draft</source>
+      <translation>Μετατρέψτε σε Προσχέδιο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4836"/>
+      <source>Convert</source>
+      <translation>Μετατρέψτε</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4865"/>
+      <source>Array</source>
+      <translation>Διάταξη</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5002"/>
       <source>Create Point</source>
-      <translation>Δημιουργία Σημείου</translation>
+      <translation>Δημιουργήστε Σημείο</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4860"/>
-      <source>Select an object to clone
-</source>
-      <translation>Επέλεξε ένα αντικείμενο για να το κλωνοποιήσεις
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="4937"/>
-      <source>Select face(s) on existing object(s)
-</source>
-      <translation>Επέλεξε όψη(εις) από υπάρχοντα αντικείμενα(s)
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5009"/>
-      <source>Select an object to mirror
-</source>
-      <translation type="unfinished">Select an object to mirror
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5023"/>
-      <source>Pick start point of mirror line:
-</source>
-      <translation type="unfinished">Pick start point of mirror line:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5044"/>
+      <location filename="../../DraftTools.py" line="5238"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Κατοπτρίστε</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5107"/>
-      <source>Pick end point of mirror line:
-</source>
-      <translation type="unfinished">Pick end point of mirror line:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5129"/>
-      <source>This tool only works with Wires and Lines
-</source>
-      <translation type="unfinished">This tool only works with Wires and Lines
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5260"/>
-      <source>Pick target point:
-</source>
-      <translation type="unfinished">Pick target point:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5356"/>
-      <source>Pick endpoint of leader line:
-</source>
-      <translation type="unfinished">Pick endpoint of leader line:
-</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="5366"/>
-      <source>Pick text position:
-</source>
-      <translation type="unfinished">Pick text position:
-</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="97"/>
+      <location filename="../../InitGui.py" line="98"/>
       <source>&amp;Draft</source>
-      <translation>&amp;Προσχεδίαση</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="95"/>
-      <source>Utilities</source>
-      <translation>Βοηθήματα</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="96"/>
-      <source>Wire tools</source>
-      <translation>Εργαλεία Συρμάτων</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="97"/>
-      <source>Snapping</source>
-      <translation>Προσκόλληση</translation>
-    </message>
-    <message>
-      <location filename="../../importDWG.py" line="90"/>
-      <source>Teigha File Converter not found, DWG support is disabled.
-</source>
-      <translation>Ο Μετατροπέας Αρχείων Teigha δεν βρέθηκε. Η υποστήριξη DWG είναι απενεργοποιημένη.
-</translation>
+      <translation>&amp;Προσχέδιο</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="114"/>
@@ -4101,14 +3518,14 @@ Please either enable FreeCAD to download these libraries:
 Or install the libraries manually by installing the dxf-Library addon
 from menu Tools -&gt; Addon Manager.
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or install the libraries manually by installing the dxf-Library addon
-from menu Tools -&gt; Addon Manager.
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+      <translation>Οι βιβλιοθήκες εισαγωγής/εξαγωγής DXF που χρειάζεται το FreeCAD για να διαχειριστεί
+τη μορφή αρχείων DXF δεν βρέθηκαν σε αυτόν τον υπολογιστή.
+Παρακαλώ ή επιτρέψτε στο FreeCAD να κατεβάσει τις εν λόγω βιβλιοθήκες:
+ 1 - Φορτώστε τον πάγκο εργασίας Προσχεδίου
+ 2 - Μενού Επεξεργασία &gt; Προτιμήσεις &gt; Εισαγωγή-Εξαγωγή &gt; DXF &gt; Ενεργοποίηση λήψεων
+Ή εγκαταστήστε τις βιβλιοθήκες χειροκίνητα εγκαθιστώντας την προσθήκη Βιβλιοθήκη-dxf
+από τo μενού Εργαλεία -&gt; Διαχειριστής Προσθηκών.
+Για να επιτρέψετε στο FreeCAD να κατεβάσει αυτές τις βιβλιοθήκες, απαντήστε Ναι.</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="123"/>
@@ -4120,26 +3537,688 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
+      <translation>Οι βιβλιοθήκες εισαγωγής/εξαγωγής DXF που χρειάζεται το FreeCAD για να διαχειριστεί
+τη μορφή αρχείων DXF δεν βρέθηκαν σε αυτόν τον υπολογιστή.
+Παρακαλώ ή επιτρέψτε στο FreeCAD να κατεβάσει τις εν λόγω βιβλιοθήκες:
+ 1 - Φορτώστε τον πάγκο εργασίας Προσχεδίου
+ 2 - Μενού Επεξεργασία &gt; Προτιμήσεις &gt; Εισαγωγή-Εξαγωγή &gt; DXF &gt; Ενεργοποίηση λήψεων
+Ή κατεβάστε τις εν λόγω βιβλιοθήκες χειροκίνητα, όπως περιγράφεται στο
 https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+Για να επιτρέψετε στο FreeCAD να κατεβάσει αυτές τις βιβλιοθήκες, απαντήστε Ναι.</translation>
     </message>
     <message>
-      <location filename="../../Draft.py" line="6038"/>
-      <source>ShapeString: string has no wires
+      <location filename="../../Draft.py" line="972"/>
+      <source>Draft.makeBSpline: not enough points</source>
+      <translation>Προσχέδιο.δημιουργίαΚαμπύληςΒασικήςΣυνάρτησηςBSpline: δεν υπάρχουν αρκετά σημεία</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="978"/>
+      <source>Draft.makeBSpline: Equal endpoints forced Closed</source>
+      <translation>Προσχέδιο.δημιουργίαΚαμπύληςΒασικήςΣυνάρτησηςBSpline: Αναγκαστικό Κλείσιμο ισοδύναμων τελικών σημείων</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="980"/>
+      <source>Draft.makeBSpline: Invalid pointslist</source>
+      <translation>Προσχέδιο.δημιουργίαΚαμπύληςΒασικήςΣυνάρτησηςBSpline: Μη έγκυρη λίστα σημείων</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2509"/>
+      <source>No object given</source>
+      <translation>Δεν έχει δοθεί κανένα αντικείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2512"/>
+      <source>The two points are coincident</source>
+      <translation>Τα δύο σημεία είναι συμπίπτοντα</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2922"/>
+      <source>Found groups: closing each open object inside</source>
+      <translation>Βρέθηκαν ομάδες: κλείσιμο κάθε ανοικτού αντικειμένου εντός</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2927"/>
+      <source>Found mesh(es): turning into Part shapes</source>
+      <translation>Βρέθηκε πλέγμα(τα): μετατροπή σε σχήματα Εξαρτημάτων</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2935"/>
+      <source>Found 1 solidificable object: solidifying it</source>
+      <translation>Βρέθηκε 1 σταθεροποιήσιμο αντικείμενο: πραγματοποιείται σταθεροποίηση</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2940"/>
+      <source>Found 2 objects: fusing them</source>
+      <translation>Βρέθηκαν 2 αντικείμενα: πραγματοποιείται συγχώνευση</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2945"/>
+      <source>Found several objects: creating a shell</source>
+      <translation>Βρέθηκαν διάφορα αντικείμενα: πραγματοποιείται δημιουργία ενός κελύφους</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2950"/>
+      <source>Found several coplanar objects or faces: creating one face</source>
+      <translation>Βρέθηκαν διάφορα συνεπίπεδα αντικείμενα ή όψεις: πραγματοποιείται δημιουργία μιας όψης</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2955"/>
+      <source>Found 1 non-parametric objects: draftifying it</source>
+      <translation>Βρέθηκε ένα μη παραμετρικό αντικείμενο: πραγματοποιείται δημιουργία προσχεδίου</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2976"/>
+      <source>Found 1 closed sketch object: creating a face from it</source>
+      <translation>Βρέθηκε ένα κλειστό σκαρίφημα: πραγματοποιείται δημιουργία όψης από αυτό</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2968"/>
+      <source>Found 1 linear object: converting to line</source>
+      <translation>Βρέθηκε 1 γραμμικό αντικείμενο: πραγματοποιείται μετατροπή σε γραμμή</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2981"/>
+      <source>Found closed wires: creating faces</source>
+      <translation>Βρέθηκαν κλειστά σύρματα: πραγματοποιείται δημιουργία όψεων</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2986"/>
+      <source>Found 1 open wire: closing it</source>
+      <translation>Βρέθηκε 1 ανοικτό σύρμα: πραγματοποιείται κλείσιμο</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2991"/>
+      <source>Found several open wires: joining them</source>
+      <translation>Βρέθηκαν διάφορα ανοικτά σύρματα: πραγματοποιείται ένωση αυτών</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="2996"/>
+      <source>Found several edges: wiring them</source>
+      <translation>Βρέθηκαν διάφορες ακμές; πραγματοποιείται ψηφιοποίηση αυτών με τη χρήση σύρματος</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3001"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Βρέθηκαν διάφορα μη επισκευάσιμα αντικείμενα: πραγματοποιείται δημιουργία σύνθετου σχήματος</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3005"/>
+      <source>Unable to upgrade these objects.</source>
+      <translation>Αδυναμία αναβάθμισης αυτών των αντικειμένων.</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3175"/>
+      <source>Found 1 block: exploding it</source>
+      <translation>Βρέθηκε 1 μπλοκ: πραγματοποιείται κατακερματισμός</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3181"/>
+      <source>Found 1 multi-solids compound: exploding it</source>
+      <translation>Βρέθηκε 1 σύνθετο σχήμα πολλαπλών στερεών: πραγματοποιείται κατακερματισμός</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3187"/>
+      <source>Found 1 parametric object: breaking its dependencies</source>
+      <translation>Βρέθηκε 1 παραμετρικό αντικείμενο: πραγματοποιείται άρση εξαρτήσεων</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3194"/>
+      <source>Found 2 objects: subtracting them</source>
+      <translation>Βρέθηκαν 2 αντικείμενα: πραγματοποιείται αφαίρεση</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3201"/>
+      <source>Found several faces: splitting them</source>
+      <translation>Βρέθηκαν διάφορες όψεις: πραγματοποιείται διαχωρισμός</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3206"/>
+      <source>Found several objects: subtracting them from the first one</source>
+      <translation>Βρέθηκα διάφορα αντικείμενα: πραγματοποιείται αφαίρεσή τους από το πρώτο</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3211"/>
+      <source>Found 1 face: extracting its wires</source>
+      <translation>Βρέθηκε 1 όψη: πραγματοποιείται εξαγωγή των συρμάτων της</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3216"/>
+      <source>Found only wires: extracting their edges</source>
+      <translation>Βρέθηκαν μόνο σύρματα: πραγματοποιείται εξαγωγή των ακμών τους</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="3220"/>
+      <source>No more downgrade possible</source>
+      <translation>Δεν είναι δυνατή η περαιτέρω υποβάθμιση</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="4860"/>
+      <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
+      <translation>_ΚαμπύληςΒασικήςΣυνάρτησηςBSpline.δημιουργίαΓεωμετρίας: Κλειστή με ίδιο πρώτο/τελευταίο Σημείο. Η γεωμετρία δεν ενημερώθηκε.</translation>
+    </message>
+    <message>
+      <location filename="../../Draft.py" line="5493"/>
+      <source>No point found
 </source>
-      <translation type="unfinished">ShapeString: string has no wires
+      <translation type="unfinished">No point found
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="833"/>
+      <location filename="../../Draft.py" line="5726"/>
+      <source>ShapeString: string has no wires</source>
+      <translation>Πλαίσιο Συμβολοσειράς Κειμένου: η συμβολοσειρά δεν έχει σύρματα</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="768"/>
+      <source>Relative</source>
+      <translation>Σχετικό</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="775"/>
+      <source>Continue</source>
+      <translation>Συνεχίστε</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="785"/>
+      <source>Close</source>
+      <translation>Κλείσιμο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="113"/>
+      <source>Fill</source>
+      <translation>Γεμίστε</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="114"/>
+      <source>Exit</source>
+      <translation>Έξοδος</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="115"/>
+      <source>Snap On/Off</source>
+      <translation>Ενεργοποίηση/Απενεργοποίηση Προσκόλλησης</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="116"/>
+      <source>Increase snap radius</source>
+      <translation>Αυξήστε την ακτίνα προσκόλλησης</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="117"/>
+      <source>Decrease snap radius</source>
+      <translation>Ελαττώστε την ακτίνα προσκόλλησης</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="118"/>
+      <source>Restrict X</source>
+      <translation>Περιορίστε X</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="119"/>
+      <source>Restrict Y</source>
+      <translation>Περιορίστε Y</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="120"/>
+      <source>Restrict Z</source>
+      <translation>Περιορίστε Z</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="791"/>
+      <source>Select edge</source>
+      <translation>Επιλέξτε ακμή</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="122"/>
+      <source>Add custom snap point</source>
+      <translation>Προσθέστε προσαρμοσμένο σημείο προσκόλλησης</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="123"/>
+      <source>Length mode</source>
+      <translation>Λειτουργία μήκους</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="787"/>
+      <source>Wipe</source>
+      <translation>Εκκαθαρίστε</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="125"/>
+      <source>Set Working Plane</source>
+      <translation>Ορίστε Επίπεδο Εργασίας</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="765"/>
+      <source>Check this to lock the current angle</source>
+      <translation>Επιλέξτε αυτό για να κλειδώσετε την τρέχουσα γωνία</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="769"/>
+      <source>Coordinates relative to last point or absolute</source>
+      <translation>Συντεταγμένες σχετικές με το τελευταίο σημείο ή απόλυτες</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="770"/>
+      <source>Filled</source>
+      <translation>Γεμάτο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="771"/>
+      <source>Check this if the object should appear as filled, otherwise it will appear as wireframe</source>
+      <translation>Επιλέξτε αυτό αν το αντικείμενο θα έπρεπε να εμφανίζεται ως γεμάτο, διαφορετικά θα εμφανίζεται ως σκελετός</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="772"/>
+      <source>Finish</source>
+      <translation>Ολοκλήρωση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="773"/>
+      <source>Finishes the current drawing or editing operation</source>
+      <translation>Ολοκληρώνει την τρέχουσα σχεδίαση ή λειτουργία επεξεργασίας</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="783"/>
+      <source>&amp;Undo (CTRL+Z)</source>
+      <translation>%Αναίρεση (CTRL+Z)</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="784"/>
+      <source>Undo the last segment</source>
+      <translation>Αναιρέστε το τελευταίο τμήμα</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="786"/>
+      <source>Finishes and closes the current line</source>
+      <translation>Ολοκληρώνει και κλείνει την τρέχουσα γραμμή</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="788"/>
+      <source>Wipes the existing segments of this line and starts again from the last point</source>
+      <translation>Εκκαθαρίζει τα υπάρχοντα τμήματα αυτής της γραμμής και ξαναρχίζει από το τελευταίο σημείο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="789"/>
+      <source>Set WP</source>
+      <translation>Ορίστε WP</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="790"/>
+      <source>Reorients the working plane on the last segment</source>
+      <translation>Αναπροσανατολίζει το επίπεδο εργασίας στο τελευταίο τμήμα</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="792"/>
+      <source>Selects an existing edge to be measured by this dimension</source>
+      <translation>Επιλέγει μια υπάρχουσα ακμή για να μετρηθεί από αυτήν την διάσταση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="807"/>
+      <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
+      <translation type="unfinished">If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="1216"/>
+      <source>options</source>
+      <translation>επιλογές</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="2442"/>
+      <source>Default</source>
+      <translation>Προεπιλεγμένο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="432"/>
+      <source>Pick a face to define the drawing plane</source>
+      <translation>Διαλέξτε μια όψη που θα καθορίσει το επίπεδο σχεδίασης</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="571"/>
+      <source>First point:</source>
+      <translation>Πρώτο σημείο:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="578"/>
+      <source>Closing</source>
+      <translation>Κλείσιμο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="614"/>
+      <source>Create Wire</source>
+      <translation type="unfinished">Create Wire</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="671"/>
+      <source>Removing last point</source>
+      <translation>Αφαίρεση τελευταίου σημείου</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="711"/>
+      <source>Next point:</source>
+      <translation>Επόμενο σημείο:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="710"/>
+      <source>Restarting from</source>
+      <translation>Επανεκκίνηση από</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="768"/>
+      <source>Unable to create a Wire from selected objects</source>
+      <translation>Αδυναμία δημιουργίας Σύρματος από τα επιλεγμένα αντικείμενα</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="830"/>
+      <source>Spline has been closed</source>
+      <translation>Η καμπύλη spline έχει κλείσει</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="938"/>
+      <source>Last point has been removed</source>
+      <translation>Αφαιρέθηκε το τελευταίο σημείο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="948"/>
+      <source>Pick next point, or Finish (shift-F) or close (o):</source>
+      <translation>Διαλέξτε επόμενο σημείο, ή Ολοκληρώστε (shift-F) ή κλείστε (ο):</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="869"/>
       <source>Create B-spline</source>
-      <translation type="unfinished">Create B-spline</translation>
+      <translation>Δημιουργία καμπύλης B-spline</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="930"/>
+      <source>Bezier curve has been closed</source>
+      <translation>Η καμπύλη Bezier έχει κλείσει</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="1917"/>
+      <source>Pick first point:</source>
+      <translation>Διαλέξτε πρώτο σημείο:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="1783"/>
+      <source>Pick opposite point:</source>
+      <translation>Διαλέξτε αντίθετο σημείο:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="1515"/>
+      <source>Pick center point:</source>
+      <translation>Διαλέξτε κεντρικό σημείο:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="1654"/>
+      <source>Pick radius:</source>
+      <translation>Διαλέξτε ακτίνα:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="1456"/>
+      <source>Pick start angle:</source>
+      <translation>Διαλέξτε γωνία εκκίνησης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="1351"/>
+      <source>Pick aperture:</source>
+      <translation>Διαλέξτε άνοιγμα:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="1467"/>
+      <source>Aperture angle:</source>
+      <translation>Γωνία ανοίγματος:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="1813"/>
+      <source>Pick location point:</source>
+      <translation>Διαλέξτε σημείο τοποθεσίας:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2170"/>
+      <source>Edges don't intersect!</source>
+      <translation>Οι ακμές δεν τέμνονται!</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2247"/>
+      <source>Pick ShapeString location point:</source>
+      <translation>Διαλέξτε σημείο τοποθεσίας Πλαισίου Συμβολοσειράς Κειμένου:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2366"/>
+      <source>Select an object to move</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς μετακίνηση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2383"/>
+      <source>Pick start point:</source>
+      <translation>Διαλέξτε σημείο εκκίνησης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2460"/>
+      <source>Pick end point:</source>
+      <translation>Διαλέξτε τελικό σημείο:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2523"/>
+      <source>Select an object to rotate</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς περιστροφή</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2540"/>
+      <source>Pick rotation center:</source>
+      <translation>Διαλέξτε κέντρο περιστροφής:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2673"/>
+      <source>Pick base angle:</source>
+      <translation>Διαλέξτε γωνία βάσης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2685"/>
+      <source>Pick rotation angle:</source>
+      <translation>Διαλέξτε γωνία περιστροφής:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2709"/>
+      <source>Select an object to offset</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς μετατόπιση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2712"/>
+      <source>Offset only works on one object at a time</source>
+      <translation>Η μετατόπιση λειτουργεί σε ένα αντικείμενο τη φορά</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2743"/>
+      <source>Sorry, offset of Bezier curves is currently still not supported</source>
+      <translation>Λυπούμαστε, η μετατόπιση των καμπύλων Bezier εξακολουθεί να μην υποστηρίζεται</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3367"/>
+      <source>Pick distance:</source>
+      <translation>Διαλέξτε απόσταση:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2896"/>
+      <source>Select an object to stretch</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς έκταση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2941"/>
+      <source>Pick first point of selection rectangle:</source>
+      <translation>Διαλέξτε το πρώτο σημείο του ορθογωνίου επιλογής:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2965"/>
+      <source>Pick opposite point of selection rectangle:</source>
+      <translation>Διαλέξτε το αντίθετο σημείο του ορθογωνίου επιλογής:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="2974"/>
+      <source>Pick start point of displacement:</source>
+      <translation>Διαλέξτε το σημείο εκκίνησης της μετακίνησης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3037"/>
+      <source>Pick end point of displacement:</source>
+      <translation>Διαλέξτε το τελικό σημείο της μετακίνησης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3189"/>
+      <source>Turning one Rectangle into a Wire</source>
+      <translation>Πραγματοποιείται μετατροπή Ορθογωνίου σε Σύρμα</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3257"/>
+      <source>Select an object to upgrade</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς αναβάθμιση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3296"/>
+      <source>Select object(s) to trim/extend</source>
+      <translation>Επιλέξτε αντικείμενο(α) προς περικοπή/επέκταση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3608"/>
+      <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
+      <translation>Αδυναμία περικοπής αυτών των αντικειμένων, μόνο σύρματα Προσχεδίου και τόξα υποστηρίζονται</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3611"/>
+      <source>Unable to trim these objects, too many wires</source>
+      <translation>Αδυναμία περικοπής αυτών των αντικειμένων, πάρα πολλά σύρματα</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3628"/>
+      <source>These objects don't intersect</source>
+      <translation>Αυτά τα αντικείμενα δεν τέμνονται</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3631"/>
+      <source>Too many intersection points</source>
+      <translation>Πάρα πολλά σημεία τομής</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3710"/>
+      <source>Select an object to scale</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς κλιμακοποίηση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3728"/>
+      <source>Pick base point:</source>
+      <translation>Διαλέξτε σημείο βάσης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3734"/>
+      <source>Pick reference distance from base point:</source>
+      <translation>Διαλέξτε απόσταση αναφοράς από το σημείο βάσης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3809"/>
+      <source>Pick new distance from base point:</source>
+      <translation>Διαλέξτε νέα απόσταση από το σημείο βάσης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4756"/>
+      <source>Select an object to project</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς προβολή</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4116"/>
+      <source>This object type is not editable</source>
+      <translation>Αυτός ο τύπος αντικειμένου δεν είναι επεξεργάσιμος</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3989"/>
+      <source>Please select only one object</source>
+      <translation>Παρακαλώ επιλέξτε μόνο ένα αντικείμενο</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="3994"/>
+      <source>Select a Draft object to edit</source>
+      <translation>Επιλέξτε ένα Προσχέδιο προς επεξεργασία</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4446"/>
+      <source>Active object must have more than two points/nodes</source>
+      <translation>Το ενεργό αντικείμενο θα πρέπει να έχει πάνω από δύο σημεία/κόμβους</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4518"/>
+      <source>Endpoint of BezCurve can't be smoothed</source>
+      <translation>Το τελικό σημείο της Καμπύλης Bezier δεν μπορεί να εξομαλυνθεί</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4796"/>
+      <source>Select an object to convert</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς μετατροπή</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4854"/>
+      <source>Select an object to array</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς διάταξη</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4884"/>
+      <source>Please select base and path objects</source>
+      <translation>Παρακαλώ επιλέξτε αντικείμενα βάσης και στοιχεία διαδρομής</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="4920"/>
+      <source>Please select base and pointlist objects
+</source>
+      <translation type="unfinished">Please select base and pointlist objects
+</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5046"/>
+      <source>Select an object to clone</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς κλωνοποίηση</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5131"/>
+      <source>Select face(s) on existing object(s)</source>
+      <translation>Επιλέξτε όψη(εις) σε υπάρχον αντικείμενο(α)</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5203"/>
+      <source>Select an object to mirror</source>
+      <translation>Επιλέξτε ένα αντικείμενο προς κατοπτρισμό</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5217"/>
+      <source>Pick start point of mirror line:</source>
+      <translation>Διαλέξτε το σημείο εκκίνησης της γραμμής κατοπτρισμού:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5301"/>
+      <source>Pick end point of mirror line:</source>
+      <translation>Διαλέξτε το τελικό σημείο της γραμμής κατοπτρισμού:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5323"/>
+      <source>This tool only works with Wires and Lines</source>
+      <translation>Αυτό το εργαλείο λειτουργεί μόνο με Σύρματα και Γραμμές</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5454"/>
+      <source>Pick target point:</source>
+      <translation>Διαλέξτε σημείο στόχου:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5550"/>
+      <source>Pick endpoint of leader line:</source>
+      <translation>Διαλέξτε το τελικό σημείο της γραμμής καθοδήγησης:</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="5560"/>
+      <source>Pick text position:</source>
+      <translation>Διαλέξτε θέση κειμένου:</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="91"/>
+      <source>ODA (formerly Teigha) File Converter not found, DWG support is disabled</source>
+      <translation type="unfinished">ODA (formerly Teigha) File Converter not found, DWG support is disabled</translation>
     </message>
   </context>
 </TS>

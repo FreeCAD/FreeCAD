@@ -98,7 +98,9 @@
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-      <translation>Copyright (c) Werner Mayer FreeCAD UnitTest je součástí FreeCAD a podporuje psaní Unit testů pro vlastní moduly.</translation>
+      <translation>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest je součástí FreeCAD a podporuje psaní Unit testů pro vlastní moduly.</translation>
     </message>
     <message>
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
@@ -107,6 +109,24 @@ Double click on an error in the tree view to see more information about it,inclu
       <translation>Zadejte název volatelného objektu, který při volání, vrátí TestCase. Klikněte 'start' a takto vytvořeny test bude spuštěn.
 
 Poklepáním na chybu ve stromovém zobrazení zobrazíte další informace o chybě, včetně zásobníku.</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation type="unfinished">Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
     </message>
   </context>
 </TS>

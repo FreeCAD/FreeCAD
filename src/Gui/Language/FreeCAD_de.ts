@@ -1351,6 +1351,14 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
       <source>Rename</source>
       <translation>Umbenennen</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Kopieren</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Add-ons...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1418,6 +1426,19 @@ ist bereits vorhanden.</translation>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Umbenennen nach '%1' fehlgeschlagen. Möglicherweise ein Dateizugriffsfehler?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Makro kopieren</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Kopieren fehlgeschlagen</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>Fehler beim kopieren nach '%1'. Vielleicht ein Dateiberechtigungsfehler?</translation>
     </message>
   </context>
   <context>
@@ -1993,8 +2014,48 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
       <translation>Perspektivische Darstellun&amp;g</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>Verwende OpenGL Vertex Pufferobjekt (experimentell)</translation>
+      <source>Show navigation cube</source>
+      <translation>Navigationskubus anzeigen</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Ecke</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Oben links</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Oben rechts</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Unten links</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Unten rechts</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation>Verwende OpenGL Vertex Buffer-Objekt</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation>Verhindert das Neigen der Ansicht beim Zoomen mit zwei Fingern. Betrifft nur Gestennavigationsstil. Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Deaktiviere die Touchscreen Neige Geste</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Ziehen/Rotieren an Cursorposition</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>Größe der Hervorhebung:</translation>
     </message>
   </context>
   <context>
@@ -2006,6 +2067,30 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Öffnen Sie ein neues Fenster oder starten Sie %1 neu, um Änderungen an der Kantenglättung zu übernehmen.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2634,6 +2719,46 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Metrische Kleinteile &amp; CNC (mm, mm/min)</translation>
     </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation>Imperial Zivil (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Kleinster Bruch bei Inch/Zoll:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kleinster Bruch bei Inch/Zoll.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2676,6 +2801,18 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
       <translation>Legt den Bereich für die Auswahl von Elementen in der 3D-Ansicht fest. Ein größerer Wert erleichtert das Auswählen von Objekten, macht jedoch die Auswahl einiger kleiner Objekte unmöglich.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Baumstrukturansicht</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Das zu bearbeitende Objekt</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Aktiver Container</translation>
     </message>
   </context>
   <context>
@@ -3213,14 +3350,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Rotationsachse mit Winkel</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Änderungen sofort übernehmen</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Änderungen an Objektplacement inkrementell übernehmen</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation>Übernehmen</translation>
     </message>
@@ -3247,6 +3376,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Use center of mass</source>
       <translation>Verwende das Zentrum der Masse</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Axial:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Axial anwenden</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Umschalttaste + klick für entgegengesetzte Richtung</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Ausgewählte Punkte</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Wende inkrementelle Änderungen an</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Bitte wählen Sie 1, 2 oder 3 Punkte, bevor Sie auf diese Schaltfläche klicken. Ein Punkt kann sich auf einem Scheitelpunkt, einer Fläche oder einer Kante befinden. Der verwendete Punkt auf einer Fläche oder Kante ist derjenige Punkt, der sich an der Mausposition entlang der Fläche oder Kante befindet. Wenn 1 Punkt ausgewählt ist, wird dieser als Drehpunkt verwendet. Wenn zwei Punkte ausgewählt werden, ist der Mittelpunkt zwischen ihnen der Drehpunkt und falls erforderlich, wird eine neue benutzerdefinierte Achse erstellt. Wenn 3 Punkte ausgewählt werden, wird der erste Punkt zum Drehpunkt und liegt auf dem Vektor, der senkrecht zu der durch die 3 Punkte definierten Ebene liegt. In der Berichtansicht werden einige Entfernungs- und Winkelinformationen bereitgestellt, die beim Ausrichten von Objekten hilfreich sein können. Wenn Sie bei gedrückter Umschalttaste + klicken, wird der entsprechende Abstand oder Winkel in die Zwischenablage kopiert.</translation>
     </message>
   </context>
   <context>
@@ -4042,6 +4195,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>%1 bearbeiten</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
@@ -4299,15 +4459,15 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <name>Gui::TaskCSysDragger</name>
     <message>
       <source>Increments</source>
-      <translation>Steigerung</translation>
+      <translation>Schrittweiten</translation>
     </message>
     <message>
       <source>Translation Increment: </source>
-      <translation>Bewegungs-Erhöhung: </translation>
+      <translation>Bewegungs Schrittweite: </translation>
     </message>
     <message>
       <source>Rotation Increment: </source>
-      <translation>Drehung Erhöhung: </translation>
+      <translation>Drehung Schrittweite: </translation>
     </message>
   </context>
   <context>
@@ -4420,6 +4580,13 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Suche</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
@@ -4484,6 +4651,14 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>%1, Interner Name:%2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Suche...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Suche nach Objekten</translation>
     </message>
   </context>
   <context>
@@ -5064,6 +5239,18 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     <message>
       <source>Export failed</source>
       <translation>Fehler beim Exportieren</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Teilen</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Aktiven Körper umschalten</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Text bearbeiten</translation>
     </message>
   </context>
   <context>
@@ -6902,6 +7089,66 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Ansicht</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Reduzieren/Erweitern</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Erweitere alle aktiven Dokumente und reduziere die anderen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Ansicht</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Mehrere Dokumente</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Zeige alle Dokumente in der Baumansicht</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Ansicht</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Einzelnes Dokument</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Nur das aktive Dokument in der Baumansicht anzeigen</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Ansicht</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Dokument Baum</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Festlegen der Sichtbarkeit inaktiver Dokumente in der Baumansicht</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -7012,20 +7259,32 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Objektabhängigkeiten</translation>
-    </message>
-    <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
+      <source>These items are linked to items selected for deletion and might break.
 
 </source>
-      <translation>Die folgenden, referenzierenden Objekte können kaputt gehen.
-
-Bist du dir sicher, dass du weitermachen willst?
+      <translation>Diese Elemente sind verknüpft mit Elementen die zum Löschen markiert wurden und könnten deswegen kaputt gehen.
 
 </translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document. 
+
+</source>
+      <translation>Diese Elemente sind zum Löschen ausgewählt obwohl sie nicht im aktiven Dokument sind.
+
+</translation>
+    </message>
+    <message>
+      <source>
+
+Are you sure you want to continue?</source>
+      <translation>
+
+Sind Sie sicher, dass Sie fortfahren möchten?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Lösche Probleme der Auswahl</translation>
     </message>
   </context>
   <context>
@@ -7127,6 +7386,50 @@ Möchten sie diese ebenfalls kopieren?</translation>
     <message>
       <source>Do you want to continue?</source>
       <translation>Möchten Sie fortfahren?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisch</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Setze NaviCube in den isometrische Modus</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Orthographisch</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Setze die Ansicht auf den orthographischen Modus</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspektive</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Setze Ansicht auf perspektivische Darstellung</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Bild an Fenster anpassen</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Ansicht auf Modellgrenzen einstellen</translation>
     </message>
   </context>
   <context>

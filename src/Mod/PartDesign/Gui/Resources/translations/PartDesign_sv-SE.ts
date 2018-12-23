@@ -113,7 +113,7 @@
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Skapa en klon</translation>
     </message>
     <message>
       <location line="+1"/>

@@ -403,7 +403,7 @@
     <message>
       <location line="+1"/>
       <source>Pad</source>
-      <translation>Block</translation>
+      <translation>Aufpolsterung</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2390,7 +2390,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="-406"/>
       <source>Pocket parameters</source>
-      <translation>Parameter der Tasche</translation>
+      <translation>Parameter der Vertiefung</translation>
     </message>
     <message>
       <source>To last</source>

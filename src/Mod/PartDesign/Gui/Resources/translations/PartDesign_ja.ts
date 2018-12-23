@@ -20,7 +20,7 @@
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>パス、または他のプロファイルに沿って選択したスケッチをスイープ</translation>
+      <translation>選択したスケッチを、パスやプロファイルに沿ってスイープ</translation>
     </message>
   </context>
   <context>
@@ -38,7 +38,7 @@
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>パス、または他のプロファイルに沿って選択したスケッチをスイープ</translation>
+      <translation>選択したスケッチを、パスやプロファイルに沿ってスイープ</translation>
     </message>
   </context>
   <context>
@@ -69,7 +69,7 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation</source>
-      <translation>論理演算</translation>
+      <translation>ブーリアン演算</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -131,7 +131,7 @@
     <message>
       <location line="+1"/>
       <source>Draft</source>
-      <translation>喫水</translation>
+      <translation>抜き勾配</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -208,7 +208,7 @@
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation>選択されたスケッチを使ってホールを作成</translation>
+      <translation>選択されたスケッチでホールを作成</translation>
     </message>
   </context>
   <context>
@@ -283,16 +283,16 @@
     <message>
       <location line="+1"/>
       <source>Mirrored</source>
-      <translation>ミラー</translation>
+      <translation>鏡像</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation>ミラー形状を作成</translation>
+      <translation>鏡像を作成</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
-      <translation>ミラー形状を作成</translation>
+      <translation>鏡像を作成</translation>
     </message>
   </context>
   <context>
@@ -310,7 +310,7 @@
     <message>
       <location line="+1"/>
       <source>Moves the selected object to another body</source>
-      <translation>選択されたオブジェクトを他のボディーへ移動</translation>
+      <translation>選択したオブジェクトを他のボディーへ移動</translation>
     </message>
   </context>
   <context>
@@ -328,7 +328,7 @@
     <message>
       <location line="+1"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>選択されたオブジェクトを移動し、他のオブジェクトの後ろへ挿入</translation>
+      <translation>選択したオブジェクトを移動し、他のオブジェクトの後ろへ挿入</translation>
     </message>
   </context>
   <context>
@@ -403,7 +403,7 @@
     <message>
       <location line="+1"/>
       <source>Pad</source>
-      <translation>押し出し</translation>
+      <translation>パッド</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -423,7 +423,7 @@
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation>新しいパーツを作成してそれをアクティブ化</translation>
+      <translation>新しいパーツを作成しアクティブ化</translation>
     </message>
   </context>
   <context>
@@ -459,11 +459,11 @@
     <message>
       <location line="+1"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>選択されたスケッチを使ってポケットを作成</translation>
+      <translation>選択されたスケッチでポケットを作成</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
-      <translation>選択したスケッチからポケットを作成</translation>
+      <translation>選択されたスケッチでポケットを作成</translation>
     </message>
   </context>
   <context>
@@ -516,12 +516,12 @@
     <message>
       <location line="+1"/>
       <source>Revolution</source>
-      <translation>回転体</translation>
+      <translation>レボリューション</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Revolve a selected sketch</source>
-      <translation>選択したスケッチを回転体にする</translation>
+      <translation>選択されたスケッチを回転押し出し</translation>
     </message>
   </context>
   <context>
@@ -556,12 +556,12 @@
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation>形状バインダーを作成</translation>
+      <translation>シェイプバインダーを作成</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation>新しい形状バインダーを作成</translation>
+      <translation>新しいシェイプバインダーを作成</translation>
     </message>
   </context>
   <context>
@@ -767,7 +767,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="+45"/>
       <source>Valid</source>
-      <translation>有効です。</translation>
+      <translation>有効</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -838,7 +838,7 @@
     <message>
       <location line="+85"/>
       <source>High precision:</source>
-      <translation>高精度：</translation>
+      <translation>高精度:</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -855,12 +855,12 @@
     <message>
       <location line="-19"/>
       <source>External gear:</source>
-      <translation>外歯車：</translation>
+      <translation>外歯車:</translation>
     </message>
     <message>
       <location line="-68"/>
       <source>Pressure angle:</source>
-      <translation>基準圧力角:</translation>
+      <translation>圧力角:</translation>
     </message>
   </context>
   <context>
@@ -1021,12 +1021,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+7"/>
       <source>X2 min/max:</source>
-      <translation>X2の最小値/最大値:</translation>
+      <translation>X2 の最小値/最大値:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Z2 min/max:</source>
-      <translation>Z2の最小値/最大値:</translation>
+      <translation>Z2 の最小値/最大値:</translation>
     </message>
     <message>
       <location line="+160"/>
@@ -1507,7 +1507,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="+65"/>
       <source>Valid</source>
-      <translation>有効です。</translation>
+      <translation>有効</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1747,7 +1747,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+21"/>
       <source>Occurrences</source>
-      <translation>開始位置</translation>
+      <translation>回数</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2059,7 +2059,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Point size:</source>
-      <translation>点の大きさ：</translation>
+      <translation>点サイズ:</translation>
     </message>
     <message>
       <source>Line width:</source>
@@ -2076,7 +2076,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
-      <translation>押し出しパラメーター</translation>
+      <translation>パッドパラメーター</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2088,7 +2088,7 @@ Please check one or more edge entities first.</translation>
       <location line="-295"/>
       <location line="+288"/>
       <source>To last</source>
-      <translation type="unfinished">To last</translation>
+      <translation>最後まで</translation>
     </message>
     <message>
       <location line="-287"/>
@@ -2394,7 +2394,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>To last</source>
-      <translation type="unfinished">To last</translation>
+      <translation>最後まで</translation>
     </message>
     <message>
       <location line="+65"/>
@@ -2490,7 +2490,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+27"/>
       <source>Occurrences</source>
-      <translation>開始位置</translation>
+      <translation>回数</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2630,7 +2630,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+14"/>
       <source>Occurrences</source>
-      <translation>開始位置</translation>
+      <translation>回数</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -3656,7 +3656,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation>形状バインダーを編集</translation>
+      <translation>シェイプバインダーを編集</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>

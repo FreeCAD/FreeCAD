@@ -42,6 +42,24 @@
     </message>
   </context>
   <context>
+    <name>CmdImageScaling</name>
+    <message>
+      <location line="+120"/>
+      <source>Image</source>
+      <translation>Imagine</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Scale...</source>
+      <translation>Scară...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Image Scaling</source>
+      <translation>Scalarea imaginii</translation>
+    </message>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
       <location filename="../../GLImageBox.cpp" line="+333"/>
@@ -182,7 +200,7 @@
       <translation>Imagini (*.png *.XPM *.jpg *.bmp)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="+20"/>
+      <location filename="../../Command.cpp" line="-102"/>
       <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>Alegeți un fișier imagine pentru deschidere</translation>
@@ -202,12 +220,12 @@
     <message>
       <location line="+8"/>
       <source>Error opening image</source>
-      <translation type="unfinished">Error opening image</translation>
+      <translation>Eroare la deschiderea imaginii</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Could not load the chosen image</source>
-      <translation type="unfinished">Could not load the chosen image</translation>
+      <translation>Imposibil de încărcat imaginea aleasă</translation>
     </message>
     <message>
       <source>Error open image</source>
