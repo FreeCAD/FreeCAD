@@ -70,23 +70,28 @@ def includesPoint(p, pts):
             return True
     return False
 
+def selectOffsetWire(wire, wires, offset):
+    startPoint = endPoints(wire)[0] + offset;
+    closest = None
+    for w in wires:
+        for ep in endPoints(w):
+            dist = (startPoint - ep).Length
+            if closest is None or dist < closest[0]:
+                closest = (dist, w)
+    if not closest is None:
+        return closest[1]
+    return None
+
+d = []
+
 def extendWire(wire, length, direction):
-    if type(direction) == FreeCAD.Vector:
-        direction = PathGeom.getAngle(direction)
+    global d
+    d = []
     off2D = wire.makeOffset2D(length)
     endPts = endPoints(wire)
     edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]
     wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
-    direct = None
-    for w in wires:
-        a = 0
-        for ep in endPoints(w):
-            angles = [math.fabs(PathGeom.getAngle(ep - p)) for p in endPts]
-            a = a + sum(angles) / len(angles)
-        a = math.fabs(a / len(ep) - direction)
-        if direct is None or direct[0] > a:
-            direct = (a, w)
-    offset = direct[1]
+    offset = selectOffsetWire(wire, wires, direction * length)
     ePts = endPoints(offset)
     l0 = (ePts[0] - endPts[0]).Length
     l1 = (ePts[1] - endPts[0]).Length
