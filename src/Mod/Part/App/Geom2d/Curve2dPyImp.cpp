@@ -1045,22 +1045,22 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
                 // No intersection
                 return Py::new_reference_to(Py::List());
             }
-
-            Py::List points;
             Py::List result;
-            Py::List segments;
             Py::Module module("__FreeCADBase__");
             Py::Callable method(module.getAttr("Vector2d"));
             Py::Tuple arg(2);
             if (intersector.NbPoints() > 0) {
+                Py::List points;
                 for (int i = 1; i <= intersector.NbPoints(); i++) {
                     gp_Pnt2d p1 = intersector.Point(i);
                     arg.setItem(0, Py::Float(p1.X()));
                     arg.setItem(1, Py::Float(p1.Y()));
                     points.append(method.apply(arg));
                 }
+                result.append(points);
             }
             if (intersector.NbSegments() > 0) {
+                Py::List segments;
                 Handle(Geom2d_Curve) c1, c2;
                 gp_Pnt2d p1,p2;
                 for (int i = 1; i <= intersector.NbSegments(); i++) {
@@ -1070,9 +1070,8 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
                     pair.append(makeGeometryCurve2dPy(c2));
                     segments.append(pair);
                 }
+                result.append(segments);
             }
-            result.append(points);
-            result.append(segments);
             return Py::new_reference_to(result);
         }
     }
