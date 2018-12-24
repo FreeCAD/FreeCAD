@@ -2684,11 +2684,7 @@ StdTreeSelection::StdTreeSelection()
 void StdTreeSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QList<TreeWidget*> tree = Gui::getMainWindow()->findChildren<TreeWidget*>();
-    for (QList<TreeWidget*>::iterator it = tree.begin(); it != tree.end(); ++it) {
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        (*it)->scrollItemToTop(doc);
-    }
+    TreeWidget::scrollItemToTop();
 }
 
 //===========================================================================

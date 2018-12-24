@@ -74,7 +74,7 @@ public:
     TreeWidget(const char *name, QWidget* parent=0);
     ~TreeWidget();
 
-    void scrollItemToTop(Gui::Document*);
+    static void scrollItemToTop();
     void selectAllInstances(const ViewProviderDocumentObject &vpd);
     void selectLinkedObject(App::DocumentObject *linked); 
     void selectAllLinks(App::DocumentObject *obj); 
@@ -100,14 +100,20 @@ public:
 
     static bool isObjectShowable(App::DocumentObject *obj);
 
+    // Check if obj can be considered as a top level object
+    static void checkTopParent(App::DocumentObject *&obj, std::string &subname);
+
     DocumentItem *getDocumentItem(const Gui::Document *) const;
 
     void startDragging();
 
+    void resetItemSearch();
+    void startItemSearch();
+    void itemSearch(const QString &text, bool select);
+
 protected:
     /// Observer message from the Selection
     void onSelectionChanged(const SelectionChanges& msg);
-    void syncSelection(const char *pDocName=0);
     void contextMenuEvent (QContextMenuEvent * e);
     void drawRow(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const;
     /** @name Drag and drop */
@@ -146,6 +152,7 @@ protected Q_SLOTS:
     void onMarkRecompute();
     void onRecomputeObject();
     void onPreSelectTimer();
+    void onSelectTimer();
     void onShowHidden();
     void onHideInTree();
     void onSearchObjects();
@@ -188,11 +195,15 @@ private:
     QAction* hideInTreeAction;
     QAction* reloadDocAction;
     QAction* searchObjectsAction;
-    QTreeWidgetItem* contextItem;
+    QTreeWidgetItem *contextItem;
+    App::DocumentObject *searchObject;
+    Gui::Document *searchDoc;
+    Gui::Document *searchContextDoc;
     DocumentObjectItem *editingItem;
     DocumentItem *currentDocItem;
     QTreeWidgetItem* rootItem;
     QTimer* statusTimer;
+    QTimer* selectTimer;
     QTimer* preselectTimer;
     QTime preselectTime;
     static std::unique_ptr<QPixmap> documentPixmap;
@@ -201,6 +212,8 @@ private:
     std::map<App::DocumentObject*,std::set<DocumentObjectDataPtr> > ObjectTable;
     bool fromOutside;
     int statusUpdateDelay;
+
+    static std::set<TreeWidget*> Instances;
 
     std::string myName; // for debugging purpose
 
@@ -218,7 +231,7 @@ public:
     DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent);
     ~DocumentItem();
 
-    const Gui::Document* document() const;
+    Gui::Document* document() const;
     void clearSelection(DocumentObjectItem *exclude=0);
     void updateSelection(QTreeWidgetItem *, bool unselect=false);
     void updateSelection();
@@ -267,15 +280,19 @@ protected:
                     QTreeWidgetItem *parent=0, int index=-1, 
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
-    DocumentObjectItem *findItem(bool sync, App::DocumentObject *obj, const char *subname);
+    DocumentObjectItem *findItemByObject(bool sync, 
+            App::DocumentObject *obj, const char *subname, bool select=false);
+
     DocumentObjectItem *findItem(bool sync, DocumentObjectItem *item, const char *subname, bool select=true);
+
+    App::DocumentObject *getTopParent(App::DocumentObject *obj, std::string &subname);
 
     typedef std::map<const ViewProvider *, std::vector<ViewProviderDocumentObject*> > ViewParentMap;
     void populateParents(const ViewProvider *vp, ViewParentMap &);
 
 private:
     const char *treeName; // for debugging purpose
-    const Gui::Document* pDocument;
+    Gui::Document* pDocument;
     std::map<App::DocumentObject*,DocumentObjectDataPtr> ObjectMap;
     std::map<App::DocumentObject*, std::set<App::DocumentObject*> > _ParentMap;
     std::vector<long> TransactingObjects;
@@ -316,6 +333,8 @@ public:
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant & value);
     bool isChildOfItem(DocumentObjectItem*);
+
+    void restoreBackground();
 
     // Get the parent document (where the object is stored) of this item
     DocumentItem *getParentDocument() const;
@@ -359,6 +378,7 @@ public:
     TreeWidget *getTree() const;
 
 private:
+    QBrush bgBrush;
     DocumentItem *myOwner;
     DocumentObjectDataPtr myData;
     std::vector<std::string> mySubs;
@@ -385,16 +405,11 @@ private Q_SLOTS:
     void accept();
     void showEditor();
     void hideEditor();
-    void findMatchingItems(const QString&);
-
-private:
-    void searchTreeItem(QTreeWidgetItem* item, const QString& text);
-    void selectTreeItem(QTreeWidgetItem* item, const QString& text);
-    void resetBackground(QTreeWidgetItem* item);
+    void itemSearch(const QString &text);
 
 private:
     QLineEdit* searchBox;
-    QTreeWidget* treeWidget;
+    TreeWidget* treeWidget;
 };
 
 /**
