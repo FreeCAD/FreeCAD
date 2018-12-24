@@ -96,15 +96,20 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     pickList->setVisible(false);
     vLayout->addWidget(pickList);
 
+#if QT_VERSION >= 0x040200
+    selectionView->setMouseTracking(true); // needed for itemEntered() to work
+    pickList->setMouseTracking(true);
+#endif
+
     resize(200, 200);
 
     connect(clearButton, SIGNAL(clicked()), searchBox, SLOT(clear()));
     connect(searchBox, SIGNAL(textChanged(QString)), this, SLOT(search(QString)));
     connect(searchBox, SIGNAL(editingFinished()), this, SLOT(validateSearch()));
     connect(selectionView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(toggleSelect(QListWidgetItem*)));
-    connect(selectionView, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
+    connect(selectionView, SIGNAL(itemEntered(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
     connect(pickList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(toggleSelect(QListWidgetItem*)));
-    connect(pickList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
+    connect(pickList, SIGNAL(itemEntered(QListWidgetItem*)), this, SLOT(preselect(QListWidgetItem*)));
     connect(selectionView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onItemContextMenu(QPoint)));
     connect(enablePickList, SIGNAL(stateChanged(int)), this, SLOT(onEnablePickList()));
 
@@ -127,7 +132,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 
         // insert the selection as item
         str << Reason.pDocName;
-        str << ".";
+        str << "#";
         str << Reason.pObjectName;
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
@@ -152,7 +157,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
         }else{
             // build name
             str << Reason.pDocName;
-            str << ".";
+            str << "#";
             // remove all items
             for(auto item : selectionView->findItems(selObject,Qt::MatchStartsWith))
                 delete item;
@@ -161,7 +166,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
     else if (Reason.Type == SelectionChanges::RmvSelection) {
         // build name
         str << Reason.pDocName;
-        str << ".";
+        str << "#";
         str << Reason.pObjectName;
         if (Reason.pSubName[0] != 0) {
             str << ".";
@@ -187,7 +192,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 
             // build name
             str << it->DocName;
-            str << ".";
+            str << "#";
             str << it->FeatName;
             App::Document* doc = App::GetApplication().getDocument(it->DocName);
             App::DocumentObject* obj = doc->getObject(it->FeatName);
@@ -223,7 +228,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
                 QString selObject;
                 QTextStream str(&selObject);
                 str << sel.DocName;
-                str << ".";
+                str << "#";
                 str << sel.FeatName;
                 if (sel.SubName[0] != 0 ) {
                     str << ".";
@@ -269,7 +274,7 @@ void SelectionView::search(const QString& text)
                     list << QString::fromLatin1((*it)->getNameInDocument());
                     // build name
                     str << doc->getName();
-                    str << ".";
+                    str << "#";
                     str << (*it)->getNameInDocument();
                     str << " (";
                     str << label;
@@ -332,7 +337,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     if (!item) return;
     std::string name = item->text().toLatin1().constData();
     char *docname = &name.at(0);
-    char *objname = std::strchr(docname,'.');
+    char *objname = std::strchr(docname,'#');
     if(!objname) return;
     *objname++ = 0;
     char *subname = std::strchr(objname,'.');
@@ -363,7 +368,7 @@ void SelectionView::preselect(QListWidgetItem* item)
     if (!item) return;
     std::string name = item->text().toLatin1().constData();
     char *docname = &name.at(0);
-    char *objname = std::strchr(docname,'.');
+    char *objname = std::strchr(docname,'#');
     if(!objname) return;
     *objname++ = 0;
     char *subname = std::strchr(objname,'.');
