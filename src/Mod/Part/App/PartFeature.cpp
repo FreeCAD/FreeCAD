@@ -417,7 +417,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     Base::Matrix4D linkMat;
     linked = owner->getLinkedObject(true,&linkMat,false);
     if(pmat) {
-        if(resolveLink)
+        if(resolveLink && obj!=owner)
             *pmat = mat * linkMat;
         else
             *pmat = mat;
@@ -477,7 +477,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
             shape.Tag = 0;
             shape.Hasher.reset();
         }
-        shape.transformShape(linkMat,false,true);
+        shape.transformShape(owner==obj?mat:linkMat,false,true);
         if(!noElementMap) {
             shape.reTagElementMap(tag,hasher);
             _ShapeCache.setShape(owner,shape);
@@ -486,7 +486,8 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
                 _ShapeCache.setShape(obj,shape);
             }
         }
-        shape.transformShape(mat,false,true);
+        if(owner!=obj)
+            shape.transformShape(mat,false,true);
         return shape;
     }
 
@@ -500,7 +501,6 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
     if(link && link->getElementCountValue()) {
         linked = link->getTrueLinkedObject(false);
         if(linked && linked!=owner) {
-            Base::Matrix4D linkMat;
             baseShape = getTopoShape(linked,0,false,0,0,false,false);
             if(!link->getShowElementValue())
                 baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
