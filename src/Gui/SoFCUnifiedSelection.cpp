@@ -1540,12 +1540,14 @@ SoFCPathAnnotation::SoFCPathAnnotation()
 {
     SO_NODE_CONSTRUCTOR(SoFCPathAnnotation);
     path = 0;
+    tmpPath = 0;
     det = 0;
 }
 
 SoFCPathAnnotation::~SoFCPathAnnotation()
 {
     if(path) path->unref();
+    if(tmpPath) tmpPath->unref();
     delete det;
 }
 
@@ -1576,8 +1578,27 @@ void SoFCPathAnnotation::GLRender(SoGLRenderAction * action)
 
 void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
-    if(!path || path->getLength()!=pathLength)
+    if(!path || !path->getLength() || !tmpPath || !tmpPath->getLength())
         return;
+
+    if(path->getLength() != tmpPath->getLength()) {
+        // The auditing SoPath may be truncated due to harmless things such as
+        // fliping a SoSwitch sibling node. So we keep an unauditing SoTempPath
+        // around to try to restore the path.
+        for(int i=path->getLength()-1;i<tmpPath->getLength()-1;++i) {
+            auto children = path->getNode(i)->getChildren();
+            if(children) {
+                int idx = children->find(tmpPath->getNode(i+1));
+                if(idx >= 0) {
+                    path->append(idx);
+                    continue;
+                }
+            }
+            tmpPath->unref();
+            tmpPath = 0;
+            return;
+        }
+    }
 
     SoState * state = action->getState();
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
@@ -1615,13 +1636,20 @@ void SoFCPathAnnotation::setPath(SoPath *newPath) {
         path->unref();
         removeAllChildren();
         path = 0;
+        if(tmpPath) {
+            tmpPath->unref();
+            tmpPath = 0;
+        }
     }
     if(!newPath || !newPath->getLength())
         return;
 
+    tmpPath = new SoTempPath(newPath->getLength());
+    tmpPath->ref();
+    for(int i=0;i<newPath->getLength();++i)
+        tmpPath->append(newPath->getNode(i));
     path = newPath->copy();
     path->ref();
-    pathLength = path->getLength();
     addChild(path->getNode(0));
 }
 

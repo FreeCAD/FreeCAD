@@ -170,8 +170,8 @@ protected:
 
 protected:
     SoPath *path;
+    SoTempPath *tmpPath;
     SoDetail *det;
-    int pathLength;
 };
 
 class GuiExport SoFCSeparator : public SoSeparator {
