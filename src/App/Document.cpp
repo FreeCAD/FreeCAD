@@ -3977,12 +3977,16 @@ std::string Document::getStandardObjectName(const char *Name, int d) const
     return Base::Tools::getUniqueName(Name, labels, d);
 }
 
-std::vector<DocumentObject*> Document::getObjects(bool includeExternal) const
+std::vector<DocumentObject*> Document::getDependingObjects() const
 {
-    if(includeExternal)
-        return getDependencyList(d->objectArray);
+    return getDependencyList(d->objectArray);
+}
+
+const std::vector<DocumentObject*> &Document::getObjects() const
+{
     return d->objectArray;
 }
+
 
 std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
 {
