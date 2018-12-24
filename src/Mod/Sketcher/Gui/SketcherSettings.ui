@@ -159,7 +159,7 @@
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="text">
-         <string>Constraint Creation &quot;Continue Mode&quot; (Experimental)</string>
+         <string>Constraint Creation &quot;Continue Mode&quot;</string>
         </property>
         <property name="checked">
          <bool>true</bool>

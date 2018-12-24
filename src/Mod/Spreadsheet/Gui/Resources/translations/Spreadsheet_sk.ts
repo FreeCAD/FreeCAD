@@ -445,7 +445,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation type="unfinished">Unnamed</translation>
+      <translation>Nepomenovaný</translation>
     </message>
   </context>
   <context>

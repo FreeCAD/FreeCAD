@@ -70,7 +70,7 @@ class Prepare(run.Prepare):
             self.directory)
         path = w.write_calculix_input_file()
         # report to user if task succeeded
-        if path is not None:
+        if path != "":
             self.pushStatus("Write completed!")
         else:
             self.pushStatus("Writing CalculiX input file failed!")
@@ -80,6 +80,9 @@ class Prepare(run.Prepare):
 class Solve(run.Solve):
 
     def run(self):
+        if not _inputFileName:
+            # TODO do not run solver, do not try to read results in a smarter way than an Exception
+            raise Exception('Error on writing CalculiX input file.\n')
         self.pushStatus("Executing solver...\n")
         binary = settings.getBinary("Calculix")
         self._process = subprocess.Popen(
@@ -95,23 +98,13 @@ class Solve(run.Solve):
         #     self._updateOutput(output)
         del output   # get flake8 quiet
 
-    def _observeSolver(self, process):
-        output = ""
-        line = process.stdout.readline()
-        self.pushStatus(line)
-        output += line
-        line = process.stdout.readline()
-        while line:
-            line = "\n%s" % line.rstrip()
-            self.pushStatus(line)
-            output += line
-            line = process.stdout.readline()
-        return output
-
 
 class Results(run.Results):
 
     def run(self):
+        if not _inputFileName:
+            # TODO do not run solver, do not try to read results in a smarter way than an Exception
+            raise Exception('Error on writing CalculiX input file.\n')
         prefs = App.ParamGet(
             "User parameter:BaseApp/Preferences/Mod/Fem/General")
         if not prefs.GetBool("KeepResultsOnReRun", False):

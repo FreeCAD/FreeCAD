@@ -4,7 +4,7 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="+474"/>
+      <location filename="../../Command.cpp" line="+478"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
@@ -17,7 +17,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Įterpia aprašo/pastabos vaizdą į aktyvųjį brėžinį</translation>
+      <translation>Įterpti aprašą į rengiamą techninį brėžinį</translation>
     </message>
   </context>
   <context>
@@ -36,13 +36,13 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Įterpia papildomo vaizdo grupę į aktyvųjį brėžinį</translation>
+      <translation>Įterpti papildomo vaizdo grupę į rengiamą techninį brėžinį</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location line="+185"/>
+      <location line="+193"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
@@ -55,13 +55,13 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Įterpia pasirinkto(-ų) objekto(-ų) brėžinį į aktyvųjį techninį brėžinį</translation>
+      <translation>Įterpti pasirinkto(-ų) daikto(-ų) braižinį į rengiamą techninį brėžinį</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location line="-92"/>
+      <location line="-96"/>
       <source>File</source>
       <translation>Failas</translation>
     </message>
@@ -80,7 +80,7 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location line="-359"/>
+      <location line="-363"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
@@ -120,13 +120,13 @@
     <message>
       <location line="+1"/>
       <source>Insert a new View of a Part in the active drawing</source>
-      <translation>Įterpti naują detalės vaizdą į aktyvųjį brėžinį</translation>
+      <translation>Įterpti naują detalės vaizdą į rengiamą techninį brėžinį</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location line="-250"/>
+      <location line="-254"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
@@ -144,7 +144,7 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location line="+375"/>
+      <location line="+379"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
@@ -175,13 +175,13 @@
     <message>
       <location line="+1"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Įterpti ortografinę detalės projekciją į aktyvųjį brėžinį</translation>
+      <translation>Įterpti ortografinę detalės projekciją į rengiamą techninį brėžinį</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location line="+287"/>
+      <location line="+295"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
@@ -213,13 +213,13 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation>Įterpia vaizdą iš pasirinktos skaičiuoklės į aktyvųjį brėžinį</translation>
+      <translation>Įterpti vaizdą iš pasirinktos skaičiuoklės į rengiamą techninį brėžinį</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location line="-179"/>
+      <location line="-187"/>
       <source>Drawing</source>
       <translation>Techninis brėžinys</translation>
     </message>
@@ -232,7 +232,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Įterpia ženklą iš svg failo į aktyvųjį brėžinį</translation>
+      <translation>Įterpti ženklą iš svg failo į rengiamą techninį brėžinį</translation>
     </message>
   </context>
   <context>
@@ -595,7 +595,7 @@ Do you want to continue?</source>
     <message>
       <location line="+9"/>
       <source>Auto scale / position</source>
-      <translation>Automatinis priartinimas / vieta</translation>
+      <translation>Automatinis priartinimas / padėtis</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -686,22 +686,22 @@ Do you want to continue?</source>
     <message>
       <location line="+14"/>
       <source>No active document</source>
-      <translation type="unfinished">No active document</translation>
+      <translation>Nėra taisytino dokumento</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>Šiuo metu nėra aktyvaus dokumento veiksmui užbaigti</translation>
+      <translation>Nėra rengiamo dokumento veiksmui užbaigti</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>No active view</source>
-      <translation>Nėra aktyvių rodinių</translation>
+      <translation>Nėra pasirinktų rodinių</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>Šiuo metu nėra aktyvaus rodinio veiksmui užbaigti</translation>
+      <translation>Šiuo metu nėra pasirinktas rodinys veiksmui užbaigti</translation>
     </message>
   </context>
   <context>
@@ -788,8 +788,8 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location line="-169"/>
-      <location line="+517"/>
+      <location line="-173"/>
+      <location line="+521"/>
       <source>Choose an SVG file to open</source>
       <translation>Pasirinkite SVG failą atvėrimui</translation>
     </message>
@@ -805,13 +805,13 @@ Do you want to continue?</source>
       <location line="-268"/>
       <location line="+79"/>
       <location line="+50"/>
-      <location line="+187"/>
-      <location line="+119"/>
+      <location line="+191"/>
+      <location line="+123"/>
       <source>Wrong selection</source>
       <translation>Netinkama pasirinktis</translation>
     </message>
     <message>
-      <location line="-434"/>
+      <location line="-442"/>
       <source>Select a Part object.</source>
       <translation>Pasirinkite detalę.</translation>
     </message>
@@ -828,40 +828,40 @@ Do you want to continue?</source>
       <translation type="unfinished">Create a page to insert views into.</translation>
     </message>
     <message>
-      <location line="-249"/>
-      <location line="+517"/>
-      <location line="+53"/>
+      <location line="-253"/>
+      <location line="+521"/>
+      <location line="+57"/>
       <source>Scalable Vector Graphic</source>
       <translation>SVG vektorinis grafikas</translation>
     </message>
     <message>
-      <location line="-313"/>
+      <location line="-317"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>No page found</source>
       <translation>Nerasta puslapių</translation>
     </message>
     <message>
-      <location line="-431"/>
+      <location line="-439"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>Create a page first.</source>
       <translation>Pirmiausia sukurkite puslapį.</translation>
     </message>
     <message>
-      <location line="-362"/>
+      <location line="-370"/>
       <source>Select exactly one Part object.</source>
       <translation>Pasirinkite tik vieną detalę.</translation>
     </message>
     <message>
       <location line="+50"/>
-      <location line="+187"/>
+      <location line="+191"/>
       <source>Select one Page object.</source>
       <translation>Pasirinkite puslapį.</translation>
     </message>
@@ -871,7 +871,7 @@ Do you want to continue?</source>
       <translation>Visi failai</translation>
     </message>
     <message>
-      <location line="+113"/>
+      <location line="+117"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Pasirinkite tik vieną skaičiuoklės objektą.</translation>
     </message>
@@ -888,7 +888,7 @@ Do you want to continue?</source>
       <translation type="unfinished">All Files (*.*)</translation>
     </message>
     <message>
-      <location line="-111"/>
+      <location line="-115"/>
       <source>Export page</source>
       <translation>Eksportuoti puslapį</translation>
     </message>
@@ -923,19 +923,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="+51"/>
-      <location line="+926"/>
+      <location line="+930"/>
       <source>Make axonometric...</source>
       <translation>Daryti aksonometrinį...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Edit axonometric settings...</source>
       <translation>Keisti aksonometrinio vaizdo nustatymus...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Make orthographic</source>
       <translation>Daryti ortografinį</translation>
     </message>

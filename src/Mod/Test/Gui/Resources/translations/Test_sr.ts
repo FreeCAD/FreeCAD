@@ -106,9 +106,27 @@ FreeCAD UnitTest је део FreeCAD програма, и подржава пи�
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Унесите име објекта за звање који,када је позван,вратиће TestCase.Клик 'старт',и тест на тај начин произведен ће се покренути. 
+      <translation>Унесите име објекта који се може позвати, који ће онда вратити TestCase.Клик 'старт', и ће се покренути. 
 
-Дупли клик на грешке у приказу стабла да би сте видели више информација о томе,укључујући и стог траг.</translation>
+За више информација кликните двапут на грешку у приказу стабла.</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation type="unfinished">Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
     </message>
   </context>
 </TS>

@@ -118,7 +118,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Vytvoriť nový klon</translation>
     </message>
   </context>
   <context>
@@ -203,7 +203,7 @@
     <message>
       <location line="+1"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Otvor</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -221,12 +221,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation>Vytvoriť údajovú kótu</translation>
+      <translation>Vytvoriť pracovnú os</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation>Vytvoriť novú údajovú kótu</translation>
+      <translation>Vytvoriť novú pracovnú os</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation type="unfinished">Set tip</translation>
+      <translation>Nastaviť vrchol</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Move the tip of the body</source>
-      <translation type="unfinished">Move the tip of the body</translation>
+      <translation>Presunúť vrchol tela</translation>
     </message>
   </context>
   <context>
@@ -436,12 +436,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum plane</source>
-      <translation type="unfinished">Create a datum plane</translation>
+      <translation>Vytvoriť pracovnú rovinu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum plane</source>
-      <translation type="unfinished">Create a new datum plane</translation>
+      <translation>Vytvoriť novú pracovnú rovinu</translation>
     </message>
   </context>
   <context>
@@ -476,12 +476,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum point</source>
-      <translation type="unfinished">Create a datum point</translation>
+      <translation>Vytvoriť pracovný bod</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum point</source>
-      <translation type="unfinished">Create a new datum point</translation>
+      <translation>Vytvoriť nový pracovný bod</translation>
     </message>
   </context>
   <context>
@@ -968,28 +968,28 @@ Please check one or more edge entities first.</translation>
       <location line="-377"/>
       <location line="+191"/>
       <source>U parameter:</source>
-      <translation type="unfinished">U parameter:</translation>
+      <translation>Parameter U:</translation>
     </message>
     <message>
       <location line="-184"/>
       <source>V parameters:</source>
-      <translation type="unfinished">V parameters:</translation>
+      <translation>Parametre V:</translation>
     </message>
     <message>
       <location line="+137"/>
       <source>Radius 3:</source>
-      <translation type="unfinished">Radius 3:</translation>
+      <translation>Polomer 3:</translation>
     </message>
     <message>
       <location line="+70"/>
       <location line="+90"/>
       <source>V parameter:</source>
-      <translation type="unfinished">V parameter:</translation>
+      <translation>Parameter V:</translation>
     </message>
     <message>
       <location line="-23"/>
       <source>U Parameter:</source>
-      <translation type="unfinished">U Parameter:</translation>
+      <translation>Parameter U:</translation>
     </message>
     <message>
       <location line="+150"/>
@@ -1078,12 +1078,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+28"/>
       <source>Major radius:</source>
-      <translation type="unfinished">Major radius:</translation>
+      <translation>Hlavný polomer:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Minor radius:</source>
-      <translation type="unfinished">Minor radius:</translation>
+      <translation>Vedľajší polomer:</translation>
     </message>
     <message>
       <location line="+82"/>
@@ -1142,17 +1142,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add body</source>
-      <translation type="unfinished">Add body</translation>
+      <translation>Pridať telo</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove body</source>
-      <translation type="unfinished">Remove body</translation>
+      <translation>Odstrániť telo</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Zlúčiť</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -1171,7 +1171,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
       <source>Boolean parameters</source>
-      <translation type="unfinished">Boolean parameters</translation>
+      <translation>Booleovské parametre</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -1276,7 +1276,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+72"/>
       <source> parameters</source>
-      <translation type="unfinished"> parameters</translation>
+      <translation> parametre</translation>
     </message>
   </context>
   <context>
@@ -2707,7 +2707,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Thikness</source>
-      <translation type="unfinished">Thikness</translation>
+      <translation>Hrúbka</translation>
     </message>
     <message>
       <location line="+17"/>

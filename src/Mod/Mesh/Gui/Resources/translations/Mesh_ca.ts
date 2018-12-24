@@ -9,11 +9,11 @@
     </message>
     <message>
       <source>Add triangle</source>
-      <translation>Afig un triangle</translation>
+      <translation>Afegeix un triangle</translation>
     </message>
     <message>
       <source>Add triangle manually to a mesh</source>
-      <translation>Afig un triangle manualment a malla</translation>
+      <translation>Afegeix manualment un triangle a una malla</translation>
     </message>
   </context>
   <context>
@@ -91,7 +91,7 @@
     </message>
     <message>
       <source>Check solid mesh</source>
-      <translation>Comprova el sòlid malla</translation>
+      <translation>Comprova la malla sòlida</translation>
     </message>
     <message>
       <source>Checks whether the mesh is a solid</source>
@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Avalua i repara la malla...</translation>
     </message>
   </context>
   <context>
@@ -444,6 +444,21 @@
     <message>
       <source>Create mesh segments</source>
       <translation>Crea segments de malla</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
     </message>
   </context>
   <context>
@@ -1036,7 +1051,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <source>Add triangle</source>
-      <translation>Afig un triangle</translation>
+      <translation>Afegeix un triangle</translation>
     </message>
     <message>
       <source>Flip normal</source>
@@ -1056,6 +1071,45 @@ Please run the command to repair folds first</source>
     <message>
       <source>Finish</source>
       <translation>Finalitza</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation type="unfinished">Surface fit</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Paràmetres</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Selecció</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Regió</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Triangle</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Neteja</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation type="unfinished">Compute</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>No s'ha seleccionat</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation type="unfinished">Before fitting the surface select an area.</translation>
     </message>
   </context>
   <context>
@@ -1163,6 +1217,73 @@ Please run the command to repair folds first</source>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation type="unfinished">Curvature</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation type="unfinished">Freeform</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation type="unfinished">Max. Curvature</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation type="unfinished">Min. Curvature</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentació de malla</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Esfera</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerància</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Nombre mínim de cares</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Pla</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cilindre</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Base</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Eix</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Radi</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Centre</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1204,6 +1325,13 @@ Please run the command to repair folds first</source>
     <message>
       <source>Invert</source>
       <translation>Inverteix</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>Vincles de %1:</translation>
     </message>
   </context>
   <context>
@@ -1467,6 +1595,10 @@ Max=&lt;%4,%5,%6&gt;</source>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Introduïu el factor d'escala:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Format de Model Únic</translation>
     </message>
   </context>
   <context>

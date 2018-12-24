@@ -622,7 +622,7 @@ bool DlgExtrusion::validate()
     }
     if (this->getDirMode() == Part::Extrusion::dmEdge && !hasValidAxisLink){
         if (errmsg.length() > 0)
-            QMessageBox::critical(this, windowTitle(), tr("Revolution axis link is invalid.\n\n%1").arg(errmsg));
+            QMessageBox::critical(this, windowTitle(), tr("Extrusion direction link is invalid.\n\n%1").arg(errmsg));
         else
             QMessageBox::critical(this, windowTitle(), tr("Direction mode is to use an edge, but no edge is linked."));
         ui->txtLink->setFocus();

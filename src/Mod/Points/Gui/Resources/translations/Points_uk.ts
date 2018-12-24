@@ -4,7 +4,7 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+187"/>
+      <location filename="../../Command.cpp" line="+188"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
@@ -61,20 +61,20 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+245"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Merge point clouds</source>
-      <translation type="unfinished">Merge point clouds</translation>
+      <translation>Об'єднання хмарки точок</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Merge several point clouds into one</source>
-      <translation type="unfinished">Merge several point clouds into one</translation>
+      <translation>Об'єднати декілька груп точок в одну</translation>
     </message>
   </context>
   <context>
@@ -99,7 +99,7 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-122"/>
+      <location line="-126"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
@@ -268,7 +268,7 @@
     </message>
     <message>
       <source>Ascii Points</source>
-      <translation type="unfinished">Ascii Points</translation>
+      <translation>Ascii точки</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-76"/>
@@ -280,7 +280,7 @@
       <location line="-50"/>
       <location line="+50"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Формат точок</translation>
     </message>
     <message>
       <location line="+71"/>
@@ -290,7 +290,7 @@
     <message>
       <location line="+1"/>
       <source>Enter maximum distance:</source>
-      <translation type="unfinished">Enter maximum distance:</translation>
+      <translation>Введіть максимальну відстань:</translation>
     </message>
   </context>
   <context>

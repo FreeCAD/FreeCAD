@@ -27,14 +27,15 @@ import FreeCAD
 import ObjectsFem
 import femsolver.run
 import unittest
-from . import testtools
-from .testtools import fcc_print
+from . import utilstest as testtools
+from .utilstest import fcc_print
 
 
-class SolverFrameWorkTest(unittest.TestCase):
+class TestSolverFrameWork(unittest.TestCase):
+    fcc_print('import TestSolverFrameWork')
 
     def setUp(self):
-        self.doc_name = "TestsFemSolverFrameWork"
+        self.doc_name = "TestSolverFrameWork"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
         except:

@@ -128,7 +128,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
       <source>Sketchfab exporter</source>
-      <translation type="unfinished">Sketchfab exporter</translation>
+      <translation>Sketchfab експортер</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
@@ -163,7 +163,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="110"/>
       <source>Tags (separated by commas)</source>
-      <translation type="unfinished">Tags (separated by commas)</translation>
+      <translation>Теги (розділені комами)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
@@ -178,12 +178,12 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
       <source>OBJ + MTL (Arch exporter)</source>
-      <translation type="unfinished">OBJ + MTL (Arch exporter)</translation>
+      <translation>OBJ + MTL (Arch експортер)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
       <source>OBJ (standard Mesh exporter)</source>
-      <translation type="unfinished">OBJ (standard Mesh exporter)</translation>
+      <translation>OBJ (стандартний експортер Mesh)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
@@ -198,7 +198,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
       <source>IGES (shapes only)</source>
-      <translation type="unfinished">IGES (shapes only)</translation>
+      <translation>IGES (тільки форми)</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
       <source>Sketchfab API token</source>
-      <translation type="unfinished">Sketchfab API token</translation>
+      <translation>Sketchfab API маркер</translation>
     </message>
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
@@ -228,19 +228,19 @@
     <message>
       <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
       <source>Success! View uploaded online</source>
-      <translation type="unfinished">Success! View uploaded online</translation>
+      <translation>Успіх! Перегляд завантажений в мережу</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="412"/>
+      <location filename="../../BrowserView.cpp" line="440"/>
       <source>Browser</source>
       <translation>Браузер</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="309"/>
+      <location filename="../../BrowserView.cpp" line="337"/>
       <source>File does not exist!</source>
       <translation>Файл не існує!</translation>
     </message>
@@ -248,12 +248,18 @@
   <context>
     <name>WebGui::BrowserView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="304"/>
+      <location filename="../../BrowserView.cpp" line="329"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
       <source>Error</source>
       <translation>Помилка</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="383"/>
+      <location filename="../../BrowserView.cpp" line="333"/>
+      <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
+      <translation>Відбулися помилки при завантаженні файлу. Можливо, деякі дані були змінені або не відновлені. Подивіться у вікно звіту для більш конкретної інформації про порушених об'єктах.</translation>
+    </message>
+    <message>
+      <location filename="../../BrowserView.cpp" line="411"/>
       <source>Loading %1...</source>
       <translation>Завантаження %1...</translation>
     </message>
@@ -261,12 +267,12 @@
   <context>
     <name>WebGui::WebView</name>
     <message>
-      <location filename="../../BrowserView.cpp" line="181"/>
+      <location filename="../../BrowserView.cpp" line="185"/>
       <source>Open in External Browser</source>
       <translation>Відкрити у зовнішньому браузері</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="185"/>
+      <location filename="../../BrowserView.cpp" line="189"/>
       <source>Open in new window</source>
       <translation>Відкрити у новому вікні</translation>
     </message>

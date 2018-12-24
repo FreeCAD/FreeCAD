@@ -38,6 +38,7 @@ from DraftGeomUtils import vec
 
 DEBUG = False # Set to True to see debug messages. Otherwise, totally silent
 ADDDEFAULTSTOREY = False # If True, an exported file will ALWAYS have at least one storey
+ZOOMOUT = True # Set to False to not zoom extents after import
 
 if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
@@ -804,7 +805,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             pass
                     if ptype == "IfcBuildingStorey":
                         if product.Elevation:
-                            obj.Placement.Base.z = product.Elevation * 1000
+                            obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
 
                     # setting IFC role
 
@@ -853,7 +854,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if ptype == "IfcBuildingStorey":
                             if product.Elevation:
-                                obj.Placement.Base.z = product.Elevation * 1000
+                                obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
 
@@ -867,7 +868,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if ptype == "IfcBuildingStorey":
                             if product.Elevation:
-                                obj.Placement.Base.z = product.Elevation * 1000
+                                obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
@@ -990,7 +991,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             if product.is_a("IfcSite"):
                 if product.RefElevation:
-                    obj.Elevation = product.RefElevation*1000
+                    obj.Elevation = product.RefElevation * getScaling(ifcfile)
                 if product.RefLatitude:
                     obj.Latitude = dms2dd(*product.RefLatitude)
                 if product.RefLongitude:
@@ -1248,7 +1249,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             for rep in annotation.Representation.Representations:
                 if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
                     sh = setRepresentation(rep,scaling)
-                    if sh in FreeCAD.ActiveDocument.Objects: 
+                    if sh in FreeCAD.ActiveDocument.Objects:
                         # dirty hack: setRepresentation might return an object directly if non-shape based (texts for ex)
                         anno = sh
                     else:
@@ -1319,7 +1320,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     FreeCAD.ActiveDocument.recompute()
 
-    if FreeCAD.GuiUp:
+    if ZOOMOUT and FreeCAD.GuiUp:
         import FreeCADGui
         FreeCADGui.SendMsgToActiveView("ViewFit")
     print("Finished importing.")
@@ -2885,31 +2886,30 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
         # set surface style
         if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
-            # only set a surface style if the object has no material.
-            # apparently not needed, no harm in having both.
-            # but they must have the same name for revit to see them
-            #m = False
-            #if hasattr(obj,"Material"):
-            #    if obj.Material:
-            #        if "Color" in obj.Material.Material:
-            #            m = True
-            #if not m:
+            # every object gets a surface style. If the obj has a material, the surfstyle
+            # is named after it. Revit will treat surfacestyles as materials (and discard
+            # actual ifcmaterial)
+            key = None
             rgb = obj.ViewObject.ShapeColor[:3]
-            if rgb in surfstyles:
-                psa = surfstyles[rgb]
+            if hasattr(obj,"Material"):
+                if obj.Material:
+                    key = obj.Material.Name
+            if not key:
+                key = rgb
+            if key in surfstyles:
+                psa = surfstyles[key]
             else:
                 m = None
                 if hasattr(obj,"Material"):
                     if obj.Material:
-                        if obj.Material.isDerivedFrom("App::MaterialObject"):
-                            m = obj.Material.Label
-                            if sys.version_info.major < 3:
-                                m = m.encode("utf8")
+                        m = obj.Material.Label
+                        if sys.version_info.major < 3:
+                            m = m.encode("utf8")
                 col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
                 ssr = ifcbin.createIfcSurfaceStyleRendering(col)
                 iss = ifcfile.createIfcSurfaceStyle(m,"BOTH",[ssr])
                 psa = ifcfile.createIfcPresentationStyleAssignment([iss])
-                surfstyles[rgb] = psa
+                surfstyles[key] = psa
             for shape in shapes:
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 

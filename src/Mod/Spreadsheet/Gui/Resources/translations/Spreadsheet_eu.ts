@@ -281,7 +281,7 @@
     </message>
     <message>
       <source>Bottom</source>
-      <translation>Azpia</translation>
+      <translation>Azpikoa</translation>
     </message>
     <message>
       <source>&amp;Style</source>

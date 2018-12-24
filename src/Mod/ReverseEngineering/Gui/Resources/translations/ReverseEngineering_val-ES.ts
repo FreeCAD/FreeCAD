@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Superfície B-Spline aproximada...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Aproxima una superfície B-spline</translation>
     </message>
     <message>
       <source>Approximate B-Spline surface...</source>
@@ -99,7 +99,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Ajusta una superfície B-Spline</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -207,7 +207,7 @@
     <message>
       <location line="+20"/>
       <source>Solver divide</source>
-      <translation>Divisions del solucionador</translation>
+      <translation>Divisions del sistema de resolució</translation>
     </message>
     <message>
       <location line="+20"/>

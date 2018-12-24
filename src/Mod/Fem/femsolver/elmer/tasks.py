@@ -109,23 +109,10 @@ class Solve(run.Solve):
             self.report.error("ElmerSolver executable not found.")
             self.fail()
 
-    def _observeSolver(self, process):
-        output = b""
-        line = process.stdout.readline()
-        self.pushStatus(line)
-        output += line
-        line = process.stdout.readline()
-        while line:
-            line = b"\n%s" % line.rstrip()
-            self.pushStatus(line)
-            output += line
-            line = process.stdout.readline()
-        return output
-
     def _updateOutput(self, output):
         if self.solver.ElmerOutput is None:
             self._createOutput()
-        self.solver.ElmerOutput.Text = output
+        self.solver.ElmerOutput.Text = output.decode("utf-8")
 
     def _createOutput(self):
         self.solver.ElmerOutput = self.analysis.Document.addObject(

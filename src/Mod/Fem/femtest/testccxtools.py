@@ -28,14 +28,15 @@ from femtools import ccxtools
 import FreeCAD
 import ObjectsFem
 import unittest
-from . import testtools
-from .testtools import fcc_print
+from . import utilstest as testtools
+from .utilstest import fcc_print
 
 
-class FemCcxAnalysisTest(unittest.TestCase):
+class TestCcxTools(unittest.TestCase):
+    fcc_print('import TestCcxTools')
 
     def setUp(self):
-        self.doc_name = "TestsFemCcxTools"
+        self.doc_name = "TestCcxTools"
         try:
             FreeCAD.setActiveDocument(self.doc_name)
         except:
@@ -775,7 +776,7 @@ def create_test_results():
     thermomech_analysis_dir = temp_dir + 'FEM_ccx_thermomech/'
     Flow1D_thermomech_analysis_dir = temp_dir + 'FEM_ccx_Flow1D_thermomech/'
 
-    # run unit test from tests classes from this module
+    # run all unit tests from this module
     import Test
     import sys
     current_module = sys.modules[__name__]

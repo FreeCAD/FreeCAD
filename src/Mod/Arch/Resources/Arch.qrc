@@ -141,5 +141,7 @@
         <file>translations/Arch_id.qm</file>
         <file>translations/Arch_lt.qm</file>
         <file>translations/Arch_val-ES.qm</file>
+        <file>translations/Arch_ar.qm</file>
+        <file>translations/Arch_vi.qm</file>
     </qresource>
 </RCC> 

@@ -27,6 +27,7 @@ __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
+import sys
 import FreeCAD
 import FreeCAD as App
 
@@ -166,3 +167,10 @@ def get_refshape_type(fem_doc_object):
     else:
         FreeCAD.Console.PrintMessage(fem_doc_object.Name + ' has empty References.\n')
         return ''
+
+
+def pydecode(bytestring):
+    if sys.version_info.major < 3:
+        return bytestring
+    else:
+        return bytestring.decode("utf-8")

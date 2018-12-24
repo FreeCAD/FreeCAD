@@ -230,14 +230,14 @@
     <name>ColorPickerPopup</name>
     <message>
       <source>Custom</source>
-      <translation>Keičiamas</translation>
+      <translation>Pasirinktinė</translation>
     </message>
   </context>
   <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
-      <translation>Langelio ypatybės</translation>
+      <translation>Langelio savybės</translation>
     </message>
     <message>
       <source>&amp;Color</source>
@@ -245,7 +245,7 @@
     </message>
     <message>
       <source>Text</source>
-      <translation type="unfinished">Text</translation>
+      <translation>Tekstas</translation>
     </message>
     <message>
       <source>Background</source>
@@ -427,7 +427,7 @@
     </message>
     <message>
       <source>Custom</source>
-      <translation>Keičiamas</translation>
+      <translation>Pasirinktinė</translation>
     </message>
   </context>
   <context>
@@ -468,7 +468,7 @@
     </message>
     <message>
       <source>Properties...</source>
-      <translation>Ypatybės...</translation>
+      <translation>Savybės...</translation>
     </message>
   </context>
   <context>

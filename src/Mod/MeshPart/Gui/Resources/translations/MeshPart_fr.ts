@@ -4,7 +4,7 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="+245"/>
+      <location filename="../../Command.cpp" line="+290"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
@@ -22,7 +22,7 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location line="-191"/>
+      <location line="-235"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
@@ -40,7 +40,7 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location line="+106"/>
+      <location line="+150"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
@@ -58,7 +58,7 @@
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Mesh</source>
       <translation>Maillage</translation>
     </message>
@@ -122,7 +122,7 @@
     <message>
       <location line="+6"/>
       <source>Snap tolerance to vertexes</source>
-      <translation>Tolerance d'accrochage aux sommets</translation>
+      <translation>Tolérance d'accrochage aux sommets</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -296,7 +296,7 @@
       <translation>Longueur maximale d'arête :</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+225"/>
+      <location filename="../../Tessellation.cpp" line="+226"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Sélectionner d'abord une forme pour le maillage.</translation>
     </message>
@@ -309,7 +309,7 @@
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
+      <location filename="../../Command.cpp" line="+137"/>
       <source>Select plane</source>
       <translation>Sélectionnez un plan</translation>
     </message>
@@ -322,7 +322,7 @@
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Select plane</source>
       <translation>Sélectionnez un plan</translation>
     </message>
@@ -330,6 +330,31 @@
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>Veuillez sélectionner un plan à partir duquel ajuster le maillage.</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>Trim by plane</source>
+      <translation>Coupé par un plan</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select the side you want to keep.</source>
+      <translation>Sélectionnez le coté que vous souhaitez conserver.</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Inner</source>
+      <translation>Intérieur</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Outer</source>
+      <translation>Extérieur</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Split</source>
+      <translation>Scinder</translation>
     </message>
   </context>
   <context>

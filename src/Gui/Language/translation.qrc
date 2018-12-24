@@ -46,5 +46,7 @@
         <file>FreeCAD_id.qm</file>
         <file>FreeCAD_lt.qm</file>
         <file>FreeCAD_val-ES.qm</file>
+        <file>FreeCAD_ar.qm</file>
+        <file>FreeCAD_vi.qm</file>
     </qresource>
 </RCC> 

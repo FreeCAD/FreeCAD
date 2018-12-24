@@ -6,21 +6,21 @@
     <message>
       <location filename="../../Command.cpp" line="+1349"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation type="unfinished">Additive loft</translation>
+      <translation>Pridedamasis tiesiškasis paviršius</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>Sukurti tiesiškąjį paviršių turintį kūną pasirinkus kelis jo skerspjūvius</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Pratempti pasirinktą brėžinį nurodytu keliu ar skerspjūviais</translation>
     </message>
   </context>
   <context>
@@ -28,17 +28,17 @@
     <message>
       <location line="-102"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Additive pipe</source>
-      <translation type="unfinished">Additive pipe</translation>
+      <translation>Pridedamasis vamzdis</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Pratempti pasirinktą brėžinį nurodytu keliu ar skerspjūviais</translation>
     </message>
   </context>
   <context>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="+91"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -56,7 +56,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation type="unfinished">Create a new body and make it active</translation>
+      <translation>Sukurti naują kūną ir jį taisyti</translation>
     </message>
   </context>
   <context>
@@ -64,7 +64,7 @@
     <message>
       <location filename="../../Command.cpp" line="+921"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -90,7 +90,7 @@
     <message>
       <location line="-593"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -108,7 +108,7 @@
     <message>
       <location line="-1272"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -126,12 +126,12 @@
     <message>
       <location line="+1297"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Draft</source>
-      <translation>Grimzlė</translation>
+      <translation>Pratempti</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -144,7 +144,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="+539"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -154,7 +154,7 @@
     <message>
       <location line="+1"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation type="unfinished">Duplicates the selected object and adds it to the active body</translation>
+      <translation>Klonuoti pasirinktą daiktą ir įtraukti jį į rengiamą kūną</translation>
     </message>
   </context>
   <context>
@@ -162,7 +162,7 @@
     <message>
       <location filename="../../Command.cpp" line="-59"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -180,7 +180,7 @@
     <message>
       <location line="-374"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -198,7 +198,7 @@
     <message>
       <location line="-108"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -216,7 +216,7 @@
     <message>
       <location line="-891"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -234,7 +234,7 @@
     <message>
       <location line="+1699"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="-296"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -266,11 +266,11 @@
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Perkelti dokumento turinį į atnaujintą detalių kūrybos veiksmų seką</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern partdesign workflow</translation>
+      <translation>Perkelti dokumento turinį į atnaujintą detalių kūrybos veiksmų seką</translation>
     </message>
   </context>
   <context>
@@ -278,7 +278,7 @@
     <message>
       <location filename="../../Command.cpp" line="-66"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -300,7 +300,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="+348"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -318,7 +318,7 @@
     <message>
       <location line="+161"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -336,7 +336,7 @@
     <message>
       <location line="-301"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Command.cpp" line="+235"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -380,7 +380,7 @@
     <message>
       <location line="-1707"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -398,7 +398,7 @@
     <message>
       <location line="+620"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -415,7 +415,7 @@
     <name>CmdPartDesignPart</name>
     <message>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <source>Create part</source>
@@ -423,7 +423,7 @@
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation type="unfinished">Create a new part and make it active</translation>
+      <translation>Sukurti naują detalę ir ją taisyti</translation>
     </message>
   </context>
   <context>
@@ -431,7 +431,7 @@
     <message>
       <location line="-821"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -471,7 +471,7 @@
     <message>
       <location line="-816"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -489,7 +489,7 @@
     <message>
       <location line="+1737"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -511,7 +511,7 @@
     <message>
       <location line="-834"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -529,7 +529,7 @@
     <message>
       <location line="+897"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -551,7 +551,7 @@
     <message>
       <location line="-1776"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -569,21 +569,21 @@
     <message>
       <location line="+1151"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>Atimantis tiesiškasis paviršius</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>Sukurti tiesiškąjį paviršių turintį kūną pasirinkus kelis jo skerspjūvius ir atimti jį iš kūno tūrio</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>Pratempti pasirinktą brėžinį nurodytu keliu ar skerspjūviu ir atimti jį iš kūno tūrio</translation>
     </message>
   </context>
   <context>
@@ -591,17 +591,17 @@
     <message>
       <location line="-102"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Subtractive pipe</source>
-      <translation type="unfinished">Subtractive pipe</translation>
+      <translation>Atimantis vamzdis</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>Pratempti pasirinktą brėžinį nurodytu keliu ar skerspjūviu ir atimti jį iš kūno tūrio</translation>
     </message>
   </context>
   <context>
@@ -609,7 +609,7 @@
     <message>
       <location line="+366"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -627,53 +627,53 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="+68"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>Sukurti prilipdomą paprastą geometrinį kūną</translation>
+      <translation>Sukurti pridedamąjį paprastą geometrinį kūną</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Pridedamasis stačiakampis gretasienis</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cylinder</source>
-      <translation type="unfinished">Additive Cylinder</translation>
+      <translation>Pridedamasis ritinys</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Sphere</source>
-      <translation type="unfinished">Additive Sphere</translation>
+      <translation>Pridedamasis rutulys</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>Pridedamasis kūgis</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Ellipsoid</source>
-      <translation type="unfinished">Additive Ellipsoid</translation>
+      <translation>Pridedamasis elipsoidas</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Torus</source>
-      <translation type="unfinished">Additive Torus</translation>
+      <translation>Pridedamasis žiedas</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Prism</source>
-      <translation type="unfinished">Additive Prism</translation>
+      <translation>Pridedamoji prizmė</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation type="unfinished">Additive Wedge</translation>
+      <translation>Pridedamasis pleištas</translation>
     </message>
   </context>
   <context>
@@ -681,57 +681,57 @@
     <message>
       <location line="+16"/>
       <source>PartDesign</source>
-      <translation>Detalės projektavimas</translation>
+      <translation>Detalių kūryba</translation>
     </message>
     <message>
       <source>Create an subtractive primitive</source>
-      <translation type="unfinished">Create an subtractive primitive</translation>
+      <translation>Sukurti atimantį paprastąjį geometrinį kūną</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Sukurti atimantį paprastąjį geometrinį kūną</translation>
     </message>
     <message>
       <location line="+111"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Atimantis stačiakampis gretasienis</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cylinder</source>
-      <translation type="unfinished">Subtractive Cylinder</translation>
+      <translation>Atimantis ritinys</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Sphere</source>
-      <translation type="unfinished">Subtractive Sphere</translation>
+      <translation>Atimantis rutulys</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cone</source>
-      <translation type="unfinished">Subtractive Cone</translation>
+      <translation>Atimantis kūgis</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Ellipsoid</source>
-      <translation type="unfinished">Subtractive Ellipsoid</translation>
+      <translation>Atimantis elipsoidas</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Torus</source>
-      <translation type="unfinished">Subtractive Torus</translation>
+      <translation>Atimantis žiedas</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Prism</source>
-      <translation type="unfinished">Subtractive Prism</translation>
+      <translation>Atimanti prizmė</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Wedge</source>
-      <translation type="unfinished">Subtractive Wedge</translation>
+      <translation>Atimantis pleištas</translation>
     </message>
   </context>
   <context>
@@ -744,7 +744,7 @@
     <message>
       <location line="+6"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</translation>
+      <translation>Pasirinkote daiktus, nesančius rengiamo daikto dalimi. Prašom nurodyti kaip elgtis su šiuo pasirinkimu. Jei jūsų netenkina esamas pasirinkimas, atšaukite veiksmą.</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -844,13 +844,13 @@
       <location line="+14"/>
       <location line="+27"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>Tiesa</translation>
     </message>
     <message>
       <location line="-22"/>
       <location line="+27"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>Netiesta</translation>
     </message>
     <message>
       <location line="-19"/>
@@ -939,7 +939,7 @@ Please check one or more edge entities first.</translation>
       <location line="+107"/>
       <location line="+854"/>
       <source>Angle:</source>
-      <translation>Kampas:</translation>
+      <translation>Posūkio kampas:</translation>
     </message>
     <message>
       <location line="-908"/>
@@ -1599,7 +1599,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Axis:</source>
-      <translation>Ašis:</translation>
+      <translation>Sukimosi ašis:</translation>
     </message>
     <message>
       <source>Vertical sketch axis</source>
@@ -1611,7 +1611,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Angle:</source>
-      <translation>Kampas:</translation>
+      <translation>Posūkio kampas:</translation>
     </message>
     <message>
       <source>Symmetric to plane</source>
@@ -2055,7 +2055,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Plot mode:</source>
-      <translation>Braižymo būdas:</translation>
+      <translation>Atvaizdavimo būdas:</translation>
     </message>
     <message>
       <source>Point size:</source>
@@ -2067,7 +2067,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Transparency:</source>
-      <translation>Permatomumas:</translation>
+      <translation>Paviršiaus permatomumas:</translation>
     </message>
     <message>
       <source>TaskPadParameters</source>
@@ -2233,7 +2233,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
-      <translation type="unfinished">Section orientation</translation>
+      <translation>Pjūvio kampinė padėtis</translation>
     </message>
   </context>
   <context>
@@ -2527,7 +2527,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Axis:</source>
-      <translation>Ašis:</translation>
+      <translation>Sukimosi ašis:</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -2589,7 +2589,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-52"/>
       <source>Angle:</source>
-      <translation>Kampas:</translation>
+      <translation>Posūkio kampas:</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="-129"/>
@@ -2833,141 +2833,141 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../ViewProviderBody.cpp" line="+137"/>
       <source>Toggle active body</source>
-      <translation type="unfinished">Toggle active body</translation>
+      <translation>Įgalinti daiktą taisai</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <source>Create an additive box by its with, height and length</source>
-      <translation type="unfinished">Create an additive box by its with, height and length</translation>
+      <translation>Sukurti pridedamąjį stačiakampį gretasienį, nurodant jo plotį, aukštį ir ilgį</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-180"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height and angle</translation>
+      <translation>Sukurti pridedamąjį ritinį, nurodant jo spindulį, aukštį ir kampą</translation>
     </message>
     <message>
       <source>Create an additive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and varius angles</translation>
+      <translation>Sukurti pridedamąjį rutulį, nurodant jo spindulį ir kampus</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Sukurti pridedamąjį stačiakampį gretasienį, nurodant jo plotį, aukštį ir ilgį</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Sukurti pridedamąjį rutulį, nurodant jo spindulį ir kampus</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive cone</source>
-      <translation type="unfinished">Create an additive cone</translation>
+      <translation>Sukurti pridedamąjį kūgį</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive ellipsoid</source>
-      <translation type="unfinished">Create an additive ellipsoid</translation>
+      <translation>Sukurti pridedamąjį elipsoidą</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive torus</source>
-      <translation type="unfinished">Create an additive torus</translation>
+      <translation>Sukurti pridedamąjį žiedą</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive prism</source>
-      <translation type="unfinished">Create an additive prism</translation>
+      <translation>Sukurti pridedamąją prizmę</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive wedge</source>
-      <translation type="unfinished">Create an additive wedge</translation>
+      <translation>Sukurti pridedamąjį pleištą</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
       <source>Create an subtractive box by its with, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
+      <translation>Sukurti atimantį stačiakampį gretasienį, nurodant jo plotį, aukštį ir ilgį</translation>
     </message>
     <message>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an subtractive cylinder by its radius, height and angle</translation>
+      <translation>Sukurti atimantį ritinį, nurodant jo spindulį, aukštį ir kampą</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and varius angles</translation>
+      <translation>Sukurti atimantį rutulį, nurodant jo spindulį ir kampus</translation>
     </message>
     <message>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
+      <translation>Sukurti atimantį stačiakampį gretasienį, nurodant jo plotį, aukštį ir ilgį</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
+      <translation>Sukurti atimantį rutulį, nurodant jo spindulį ir kampus</translation>
     </message>
     <message>
       <source>Create an subtractive cone</source>
-      <translation type="unfinished">Create an subtractive cone</translation>
+      <translation>Sukurti atimantį kūgį</translation>
     </message>
     <message>
       <source>Create an subtractive ellipsoid</source>
-      <translation type="unfinished">Create an subtractive ellipsoid</translation>
+      <translation>Sukurti atimantį elipsoidą</translation>
     </message>
     <message>
       <source>Create an subtractive torus</source>
-      <translation type="unfinished">Create an subtractive torus</translation>
+      <translation>Sukurti atimantį žiedą</translation>
     </message>
     <message>
       <source>Create an subtractive prism</source>
-      <translation type="unfinished">Create an subtractive prism</translation>
+      <translation>Sukurti atimančią prizmę</translation>
     </message>
     <message>
       <source>Create an subtractive wedge</source>
-      <translation type="unfinished">Create an subtractive wedge</translation>
+      <translation>Sukurti atimantį pleištą</translation>
     </message>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Sukurti atimantį stačiakampį gretasienį, nurodant jo plotį, aukštį ir ilgį</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Sukurti atimantį ritinį, nurodant jo spindulį, aukštį ir kampą</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Sukurti atimantį rutulį, nurodant jo spindulį ir kampus</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Sukurti atimantį kūgį</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Sukurti atimantį elipsoidą</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Sukurti atimantį žiedą</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Sukurti atimančią prizmę</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Sukurti atimantį pleištą</translation>
     </message>
   </context>
   <context>
@@ -3074,7 +3074,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+310"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation type="unfinished">Please create a subtractive or additive feature first.</translation>
+      <translation>Pirma reikia sukurti atimantį ar pridedantį daiktą.</translation>
     </message>
     <message>
       <source>No chamfer possible on selected faces/edges</source>
@@ -3153,7 +3153,7 @@ Sukurkite brėžinį vienoje iš kūno sienų.</translation>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Nėra veikiamų daiktų. Pirma reikia pasirinkti daiktą, o tik po to įvesti duomenis.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3245,12 +3245,12 @@ Sukurkite brėžinį vienoje iš kūno sienų.</translation>
       <location line="+4"/>
       <location line="+333"/>
       <source>Selection is not in Active Body</source>
-      <translation type="unfinished">Selection is not in Active Body</translation>
+      <translation>Atrankoje nėra nieko iš veikiamojo daikto</translation>
     </message>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face or body from an active body.</translation>
+      <translation>Pasirinkite kraštinę, sieną ar veikiamojo kūno sudedamąjį kūną.</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -3275,12 +3275,12 @@ Sukurkite brėžinį vienoje iš kūno sienų.</translation>
     <message>
       <location line="+1"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>Pirma reikia sukurti tik vieną atimantį ar pridedantį daiktą.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>Pirma reikia sukurti tik vieną atimantį ar pridedantį kūną veikiamajame kūne.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
@@ -3519,7 +3519,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+1"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
+      <translation>Neįmanoma sukurti atimančio kūno nesant pagrindinio</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+103"/>
@@ -3546,30 +3546,30 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../Utils.cpp" line="+88"/>
       <source>No active Body</source>
-      <translation type="unfinished">No active Body</translation>
+      <translation>Nėra pasirinkto kūno</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>Kad pasinaudoti detalių kūryba, dokumente turi būti pasirinktas veikiamasis kūnas. Prašome pasirinkti esamą kūną (dukart spustelėjus), arba jį sukurti. Jei turite senesnės laidos dokumentą, kuriame detalių sudėtinės dalys nelaikomos kūnais, pasinaudokite perkėlimo priemone, kad paversti tai kūnu.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Kad pasinaudoti detalių kūryba, dokumente turi būti pasirinktas veikiamasis kūnas. Prašome pasirinkti esamą kūną (dukart spustelėjus), arba jį sukurti.
 
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+Jei turite senesnės laidos dokumentą, kuriame detalių sudėtinės dalys nelaikomos kūnais, pasinaudokite perkėlimo priemone, kad paversti tai kūnu.</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Active Body Required</source>
-      <translation type="unfinished">Active Body Required</translation>
+      <translation>Reikia pasirinkti kūną</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>Kad sukurti naują detalę, dokumente turi būti pasirinktas veikiamasis kūnas. Prašome pasirinkti esamą kūną (dukart spustelėjus), arba jį sukurti.</translation>
     </message>
     <message>
       <location line="+36"/>

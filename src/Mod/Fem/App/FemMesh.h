@@ -152,10 +152,13 @@ public:
     void read(const char *FileName);
     void write(const char *FileName) const;
     void writeABAQUS(const std::string &Filename, int elemParam, bool groupParam) const;
+    void writeZ88(const std::string &FileName) const;
 
 private:
     void copyMeshData(const FemMesh&);
     void readNastran(const std::string &Filename);
+    void readZ88(const std::string &Filename);
+    void readAbaqus(const std::string &Filename);
 
 private:
     /// positioning matrix

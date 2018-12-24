@@ -86,6 +86,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
         span = max(x_span, y_span, z_span)
 
         number_of_increments = len(m['Results'])
+        FreeCAD.Console.PrintLog('Increments: ' + str(number_of_increments) + '\n')
         if len(m['Results']) > 0:
             for result_set in m['Results']:
                 if 'number' in result_set:
@@ -156,6 +157,8 @@ def readResult(frd_input):
     elements_seg3 = {}
     results = []
     mode_results = {}
+    mode_results['number'] = float('NaN')
+    mode_results['time'] = float('NaN')
     mode_disp = {}
     mode_stress = {}
     mode_stressv = {}
@@ -396,6 +399,7 @@ def readResult(frd_input):
             mode_time_found = True
         if mode_time_found and (line[2:7] == "100CL"):
             # we found the new time step line
+            # !!! be careful here, there is timetemp and timestep! TODO: use more differ names
             timetemp = float(line[13:25])
             if timetemp > timestep:
                 timestep = timetemp
@@ -573,6 +577,8 @@ def readResult(frd_input):
             # append mode_results to results and reset mode_result
             results.append(mode_results)
             mode_results = {}
+            mode_results['number'] = float('NaN')  # https://forum.freecadweb.org/viewtopic.php?f=18&t=32649&start=10#p274686
+            mode_results['time'] = float('NaN')
             end_of_section_found = False
 
         # on changed --> write changed values in mode_result --> will be the first to do on an empty mode_result

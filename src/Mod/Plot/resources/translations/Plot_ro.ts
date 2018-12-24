@@ -37,7 +37,7 @@
     <message>
       <location filename="../../PlotGui.py" line="112"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation>Afisare/Ascundere grila pe desenul selectat</translation>
+      <translation>Afisare/Ascundere grila pe graficul selectat</translation>
     </message>
   </context>
   <context>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../PlotGui.py" line="138"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation>Afisare/Ascundere legenda in desenul selectat</translation>
+      <translation>Afisare/Ascundere legenda in graficul selectat</translation>
     </message>
   </context>
   <context>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../PlotGui.py" line="172"/>
       <source>Set labels and legend positions and sizes</source>
-      <translation>Seteaza pozitia si dimensiunile pentru etichete si legenda</translation>
+      <translation>Definiți etichetele, poziția și dimensiunea legendei</translation>
     </message>
   </context>
   <context>
@@ -84,12 +84,12 @@
     <message>
       <location filename="../../PlotGui.py" line="45"/>
       <source>Save plot</source>
-      <translation>Salvati desenul</translation>
+      <translation>Salvați graficul</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation>Salvează schița ca un fișier imagine</translation>
+      <translation>Salvează graficul ca un fișier imagine</translation>
     </message>
   </context>
   <context>
@@ -97,7 +97,7 @@
     <message>
       <location filename="../../PlotGui.py" line="81"/>
       <source>Configure series</source>
-      <translation>Configrare serie</translation>
+      <translation>Configurarea seriilor</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="84"/>
@@ -200,17 +200,17 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="271"/>
       <source>Outward offset of Y axis</source>
-      <translation>Deplasare spre interior pe axa x</translation>
+      <translation>Deplasare spre interior pe axa Y</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="276"/>
       <source>X axis scale autoselection</source>
-      <translation>Autoslectare scara pentru axa X</translation>
+      <translation>Selecție automată pentru scara axei X</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="281"/>
       <source>Y axis scale autoselection</source>
-      <translation>Autoslectare scara pentru axa Y</translation>
+      <translation>Selecție automată pentru scara axei Y</translation>
     </message>
   </context>
   <context>
@@ -218,17 +218,17 @@
     <message>
       <location filename="../../Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation>matplotlib nu a fost gait, astfel ca modulul Plot nu poate fi incarcat</translation>
+      <translation>matplotlib nu a fost găsit, astfel că modulul Plot nu poate fi încărcat</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="54"/>
       <source>matplotlib not found, Plot module will be disabled</source>
-      <translation>matplotlib nu a fost gait, astfel ca modulul Plot va fi dezactivat</translation>
+      <translation>matplotlib nu a fost găsit, astfel că modulul Plot va fi dezactivat</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="42"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation>Documentul de printat trebuie selectat pentru a-l salva</translation>
+      <translation>Pentru a fi salvat, documentul Plot trebuie să fie selectat</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="340"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="157"/>
       <source>Title (associated to active axes)</source>
-      <translation>Titlu (asociat cu axa activa)</translation>
+      <translation>Titlu (asociat cu axele active)</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="162"/>
@@ -357,12 +357,12 @@
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="131"/>
       <source>Inches</source>
-      <translation>Toli</translation>
+      <translation>Țoli</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="136"/>
       <source>Dots per Inch</source>
-      <translation>Puncte pe Tol</translation>
+      <translation>Puncte pe Țol</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="141"/>
@@ -387,7 +387,7 @@
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="161"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation>puncte pe pixel si dimensiunea vor defini rezolutia imagini</translation>
+      <translation>Puncte pe pixel, cu care se vor defini rezoluția imaginii de ieșire</translation>
     </message>
   </context>
   <context>
@@ -410,7 +410,7 @@
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="149"/>
       <source>Configure series</source>
-      <translation>Configrare serie</translation>
+      <translation>Configurarea seriilor</translation>
     </message>
     <message>
       <location filename="../../plotSeries/TaskPanel.py" line="173"/>

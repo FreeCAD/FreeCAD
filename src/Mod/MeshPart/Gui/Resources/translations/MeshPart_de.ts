@@ -4,7 +4,7 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="+245"/>
+      <location filename="../../Command.cpp" line="+290"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
@@ -22,7 +22,7 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location line="-191"/>
+      <location line="-235"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
@@ -40,7 +40,7 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location line="+106"/>
+      <location line="+150"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
@@ -58,7 +58,7 @@
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Mesh</source>
       <translation>Netz</translation>
     </message>
@@ -117,7 +117,7 @@
     <message>
       <location line="+6"/>
       <source>Wire</source>
-      <translation>Draht</translation>
+      <translation>Kantenzug</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -296,7 +296,7 @@
       <translation>Max. Kantenlänge:</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+225"/>
+      <location filename="../../Tessellation.cpp" line="+226"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Wählen Sie zuerst eine Form für die Vernetzung.</translation>
     </message>
@@ -309,7 +309,7 @@
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
+      <location filename="../../Command.cpp" line="+137"/>
       <source>Select plane</source>
       <translation>Ebene auswählen</translation>
     </message>
@@ -322,7 +322,7 @@
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Select plane</source>
       <translation>Ebene auswählen</translation>
     </message>
@@ -330,6 +330,31 @@
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>Bitte wählen Sie eine Ebene, mit welcher Sie das Netz trimmen.</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>Trim by plane</source>
+      <translation>Beschneiden durch eine Ebene</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select the side you want to keep.</source>
+      <translation>Wählen Sie die Seite, die Sie behalten möchten.</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Inner</source>
+      <translation>Innen</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Outer</source>
+      <translation>Außen</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Split</source>
+      <translation>Teilen</translation>
     </message>
   </context>
   <context>

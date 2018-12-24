@@ -57,9 +57,9 @@ class _CommandFemClippingPlaneAdd(CommandManager):
     def __init__(self):
         super(_CommandFemClippingPlaneAdd, self).__init__()
         self.resources = {'Pixmap': 'fem-clipping-plane-add',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Clipping plane on face"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Clipping plane on face"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Add a clipping plane on a selected face")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Add a clipping plane on a selected face")}
         self.is_active = 'with_document'
 
     def Activated(self):
@@ -91,9 +91,9 @@ class _CommandFemClippingPlaneRemoveAll(CommandManager):
     def __init__(self):
         super(_CommandFemClippingPlaneRemoveAll, self).__init__()
         self.resources = {'Pixmap': 'fem-clipping-plane-remove-all',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Remove all clipping planes"),
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneRemoveAll", "Remove all clipping planes"),
                           # 'Accel': "Z, Z",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Clipping Plane", "Remove all clipping planes")}
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_ClippingPlaneRemoveAll", "Remove all clipping planes")}
         self.is_active = 'with_document'
 
     def Activated(self):
@@ -600,8 +600,8 @@ class _CommandFemMeshNetgenFromShape(CommandManager):
     def __init__(self):
         super(_CommandFemMeshNetgenFromShape, self).__init__()
         self.resources = {'Pixmap': 'fem-femmesh-netgen-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "FEM mesh from shape by Netgen"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM_MeshNetgenFromShape", "FEM mesh from shape by Netgen"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM_MeshNetgenFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
         self.is_active = 'with_part_feature'
 
     def Activated(self):

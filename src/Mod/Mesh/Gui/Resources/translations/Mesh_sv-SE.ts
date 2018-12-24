@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Utvärdera och reparera nät...</translation>
     </message>
   </context>
   <context>
@@ -409,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Skala...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Skala valda nät</translation>
     </message>
   </context>
   <context>
@@ -424,11 +424,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Skapa urval från nät och plan</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>Urval från nät och plan</translation>
     </message>
   </context>
   <context>
@@ -444,6 +444,21 @@
     <message>
       <source>Create mesh segments</source>
       <translation>Skapa nät segment</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Nät</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
     </message>
   </context>
   <context>
@@ -923,7 +938,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Export AMF files using compression</source>
-      <translation type="unfinished">Export AMF files using compression</translation>
+      <translation>Exportera AMF-filer med komprimering</translation>
     </message>
   </context>
   <context>
@@ -1059,6 +1074,45 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation type="unfinished">Surface fit</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation type="unfinished">Parameters</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Markering</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Område</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Triangel</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Rensa</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation type="unfinished">Compute</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Inget val</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation type="unfinished">Before fitting the surface select an area.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1163,6 +1217,73 @@ Please run the command to repair folds first</source>
       <source>Sphere</source>
       <translation>Sfär</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation type="unfinished">Curvature</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation type="unfinished">Freeform</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation type="unfinished">Max. Curvature</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation type="unfinished">Min. Curvature</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Nätsegmentering</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfär</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerans</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minsta antal ytor</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cylinder</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Bas</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Axel</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Radie</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Mitten</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1207,6 +1328,13 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation type="unfinished">Boundings of %1:</translation>
+    </message>
+  </context>
+  <context>
     <name>Mesh_TrimByPlane</name>
     <message>
       <source>Select plane</source>
@@ -1235,7 +1363,7 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
     </message>
     <message>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
+      <translation>Ett okänt fel inträffade under körningen av OpenSCAD.</translation>
     </message>
   </context>
   <context>
@@ -1465,11 +1593,15 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Skalning</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Ange skalfaktor:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation type="unfinished">Simple Model Format</translation>
     </message>
   </context>
   <context>

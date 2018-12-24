@@ -758,6 +758,11 @@ class ViewProviderComponent:
                             if obj.ViewObject:
                                 if obj.ViewObject.ShapeColor != c:
                                     obj.ViewObject.ShapeColor = c
+                    if 'Transparency' in obj.Material.Material:
+                            t = int(obj.Material.Material['Transparency'])
+                            if obj.ViewObject:
+                                if obj.ViewObject.Transparency != t:
+                                    obj.ViewObject.Transparency = t
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):

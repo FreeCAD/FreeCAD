@@ -28,7 +28,9 @@ __url__ = "http://www.freecadweb.org"
 ## \addtogroup FEM
 #  @{
 
+import os
 import sys
+import subprocess
 import FreeCAD
 import femtools.femutils as femutils
 from PySide import QtCore
@@ -76,8 +78,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             else:
                 raise Exception('FEM: No solver found!')
             if test_mode:
+                self.test_mode = True
                 self.ccx_binary_present = True
             else:
+                self.test_mode = False
                 self.ccx_binary_present = False
                 self.setup_ccx()
             self.result_object = None
@@ -182,7 +186,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
         found_solver_for_use = False
         for m in self.analysis.Group:
-            if m.isDerivedFrom("Fem::FemSolverObjectPython"):
+            if femutils.is_of_type(m, "Fem::FemSolverCalculixCcxTools"):
+                # we gone check for exlicit for the ccx tools solver type only,
+                # thus it is possible to have lots of frame work solver inside the analysis anyway
                 # for some methods no solver is needed (purge_results) --> solver could be none
                 # analysis has one solver and no solver was set --> use the one solver
                 # analysis has more than one solver and no solver was set --> use solver none
@@ -213,7 +219,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             message += "No active Analysis\n"
         if not self.working_dir:
             message += "Working directory not set\n"
-        import os
         if not (os.path.isdir(self.working_dir)):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
         # solver
@@ -290,6 +295,10 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
                 if 'SpecificHeat' not in mat_map:
                     message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
+        if len(self.materials_linear) == 1:
+            mobj = self.materials_linear[0]['Object']
+            if hasattr(mobj, 'References') and mobj.References:
+                FreeCAD.Console.PrintError('Only one material object, but this one has a reference shape. The reference shape will be ignored.\n')
         for m in self.materials_linear:
             has_nonlinear_material = False
             for nlm in self.materials_nonlinear:
@@ -442,7 +451,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     #  @param self The python object self
     #  @working_dir directory to be used for writing solver input file or files and executing solver
     def setup_working_dir(self, working_dir=None):
-        import os
         if working_dir is not None:
             self.working_dir = working_dir
         else:
@@ -478,7 +486,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def write_inp_file(self):
         import femsolver.calculix.writer as iw
-        import sys
         self.inp_file_name = ""
         try:
             inp_writer = iw.FemInputWriterCcx(
@@ -510,7 +517,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString("ccxBinaryPath", ccx_path)
                 self.ccx_binary = ccx_path
             elif system() == "Linux":
-                import subprocess
                 p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
                 if p1.wait() == 0:
                     if sys.version_info.major >= 3:
@@ -541,7 +547,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     raise Exception(error_message)
             self.ccx_binary = ccx_binary
 
-        import subprocess
         startup_info = None
         if system() == "Windows":
             # Windows workaround to avoid blinking terminal window
@@ -584,8 +589,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def start_ccx(self):
         import multiprocessing
-        import os
-        import subprocess
         self.ccx_stdout = ""
         self.ccx_stderr = ""
         if self.inp_file_name != "" and self.ccx_binary_present:
@@ -614,7 +617,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def get_ccx_version(self):
         import re
-        import subprocess
         from platform import system
         startup_info = None
         if system() == "Windows":
@@ -631,36 +633,85 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
         return (int(m.group(1)), int(m.group(2)))
 
-    def run(self):
+    def ccx_run(self):
+        if self.test_mode:
+            FreeCAD.Console.PrintError("CalculiX can not be run if test_mode is True.\n")
+            return
         ret_code = 0
+        progress_bar = FreeCAD.Base.ProgressIndicator()
+        progress_bar.start("Running CalculiX ccx...", 0)
+        ret_code = self.start_ccx()
+        self.finished.emit(ret_code)
+        progress_bar.stop()
+        if ret_code or self.ccx_stderr:
+            if ret_code == 201 and self.solver.AnalysisType == 'check':
+                FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
+            else:
+                FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
+                FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
+                FreeCAD.Console.PrintMessage(self.ccx_stderr)
+                FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
+                FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
+                FreeCAD.Console.PrintMessage(self.ccx_stdout)
+                FreeCAD.Console.PrintMessage("\n--------end of stdout---------\n")
+                FreeCAD.Console.PrintMessage("--------start problems---------\n")
+                self.has_no_material_assigned()
+                self.has_nonpositive_jacobians()
+                FreeCAD.Console.PrintMessage("\n--------end problems---------\n")
+        else:
+            FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
+
+    def run(self):
         message = self.check_prerequisites()
         if not message:
             self.write_inp_file()
-            from FreeCAD import Base
-            progress_bar = Base.ProgressIndicator()
-            progress_bar.start("Running CalculiX ccx...", 0)
-            ret_code = self.start_ccx()
-            self.finished.emit(ret_code)
-            progress_bar.stop()
-            if ret_code or self.ccx_stderr:
-                if ret_code == 201 and self.solver.AnalysisType == 'check':
-                    FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
-                else:
-                    FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
-                    FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
-                    FreeCAD.Console.PrintMessage(self.ccx_stderr)
-                    FreeCAD.Console.PrintMessage("--------end of stderr---------\n")
-                    FreeCAD.Console.PrintMessage("--------start of stdout-------\n")
-                    FreeCAD.Console.PrintMessage(self.ccx_stdout)
-                    self.has_for_nonpositive_jacobians()
-                    FreeCAD.Console.PrintMessage("--------end of stdout---------\n")
+            if self.inp_file_name != "":
+                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed!\n")
             else:
-                FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
+                # TODO do not run solver, do not try to read results in a smarter way than an Exception
+                raise Exception('Error on writing CalculiX input file.\n')
+            self.ccx_run()
         else:
             FreeCAD.Console.PrintError("CalculiX was not started due to missing prerequisites:\n{}\n".format(message))
             # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
+        self.load_results()
 
-    def has_for_nonpositive_jacobians(self):
+    def has_no_material_assigned(self):
+        if ' *ERROR in calinput: no material was assigned' in self.ccx_stdout:
+            without_material_elements = []
+            without_material_elemnodes = []
+            for line in self.ccx_stdout.splitlines():
+                if 'to element' in line:
+                    # print(line)
+                    # print(line.split())
+                    non_mat_ele = int(line.split()[2])
+                    # print(non_mat_ele)
+                    if non_mat_ele not in without_material_elements:
+                        without_material_elements.append(non_mat_ele)
+            for e in without_material_elements:
+                for n in self.mesh.FemMesh.getElementNodes(e):
+                    without_material_elemnodes.append(n)
+            without_material_elements = sorted(without_material_elements)
+            without_material_elemnodes = sorted(without_material_elemnodes)
+            command_for_withoutmatnodes = 'without_material_elemnodes = ' + str(without_material_elemnodes)
+            command_to_highlight = "Gui.ActiveDocument." + self.mesh.Name + ".HighlightedNodes = without_material_elemnodes"
+            # some output for the user
+            FreeCAD.Console.PrintError('\n\nCalculiX returned an error due to elements without materials.\n')
+            FreeCAD.Console.PrintMessage('without_material_elements = {}\n'.format(without_material_elements))
+            FreeCAD.Console.PrintMessage(command_for_withoutmatnodes + '\n')
+            if FreeCAD.GuiUp:
+                import FreeCADGui
+                FreeCADGui.doCommand(command_for_withoutmatnodes)  # with this the list without_material_elemnodes will be available for further user interaction
+                FreeCAD.Console.PrintMessage('\n')
+                FreeCADGui.doCommand(command_to_highlight)
+            FreeCAD.Console.PrintMessage('\nFollowing some commands to copy which highlight the elements without materials or to reset the highlighted nodes:\n')
+            FreeCAD.Console.PrintMessage(command_to_highlight + '\n')
+            FreeCAD.Console.PrintMessage('Gui.ActiveDocument.' + self.mesh.Name + '.HighlightedNodes = []\n\n')  # command to reset the Highlighted Nodes
+            return True
+        else:
+            return False
+
+    def has_nonpositive_jacobians(self):
         if '*ERROR in e_c3d: nonpositive jacobian' in self.ccx_stdout:
             nonpositive_jacobian_elements = []
             nonpositive_jacobian_elenodes = []
@@ -703,7 +754,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     ## Load results of ccx calculations from .frd file.
     #  @param self The python object self
     def load_results_ccxfrd(self):
-        import os
         import feminout.importCcxFrdResults as importCcxFrdResults
         frd_result_file = os.path.splitext(self.inp_file_name)[0] + '.frd'
         if os.path.isfile(frd_result_file):
@@ -727,7 +777,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
     ## Load results of ccx calculations from .dat file.
     #  @param self The python object self
     def load_results_ccxdat(self):
-        import os
         import feminout.importCcxDatResults as importCcxDatResults
         dat_result_file = os.path.splitext(self.inp_file_name)[0] + '.dat'
         if os.path.isfile(dat_result_file):

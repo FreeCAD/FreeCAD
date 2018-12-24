@@ -41,11 +41,14 @@
 #endif
 # include <BRepExtrema_SupportType.hxx>
 # include <BRepBndLib.hxx>
+# include <BRep_Tool.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pnt.hxx>
 # include <gp_Trsf.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <Poly_Triangulation.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Iterator.hxx>
@@ -1605,7 +1608,11 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
                         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+#if OCC_VERSION_HEX > 0x070300
+                        mkChamfer.Add(radius, radius, TopoDS::Edge(edge), face);
+#else
                         mkChamfer.Add(radius, TopoDS::Edge(edge), face);
+#endif
                     }
                 }
             }

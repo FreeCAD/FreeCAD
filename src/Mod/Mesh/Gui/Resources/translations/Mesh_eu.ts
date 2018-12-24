@@ -447,6 +447,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Sarea</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -1060,6 +1075,45 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation type="unfinished">Surface fit</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parametroak</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Hautapena</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Eskualdea</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Triangelua</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Garbitu</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Kalkulatu</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Hautapenik ez</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation type="unfinished">Before fitting the surface select an area.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1164,6 +1218,73 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
       <source>Sphere</source>
       <translation>Esfera</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Kurbadura</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Forma librea</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Kurbadura maximoa</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Kurbadura minimoa</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Sare-segmentazioa</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Esfera</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerantzia</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Aurpegien kopuru minimoa</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametroak...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Planoa</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Zilindroa</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Oinarria</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normala</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Ardatza</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Erradioa</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Erdia</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1205,6 +1326,13 @@ Exekutatu tolesturak zuzentzeko komandoa</translation>
     <message>
       <source>Invert</source>
       <translation>Alderantzikatu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation type="unfinished">Boundings of %1:</translation>
     </message>
   </context>
   <context>
@@ -1471,6 +1599,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Sartu eskalatze-faktorea:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation type="unfinished">Simple Model Format</translation>
     </message>
   </context>
   <context>

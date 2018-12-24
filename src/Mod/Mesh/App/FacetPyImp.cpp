@@ -146,6 +146,25 @@ PyObject*  FacetPy::isDegenerated(PyObject *args)
     return Py::new_reference_to(Py::Boolean(tria.IsDegenerated(fEpsilon)));
 }
 
+PyObject*  FacetPy::isDeformed(PyObject *args)
+{
+    float fMinAngle;
+    float fMaxAngle;
+    if (!PyArg_ParseTuple(args, "ff", &fMinAngle, &fMaxAngle))
+        return NULL;
+
+    FacetPy::PointerType face = this->getFacetPtr();
+    if (!face->isBound()) {
+        throw Py::RuntimeError("Unbound facet");
+    }
+
+    float fCosOfMinAngle = cos(fMinAngle);
+    float fCosOfMaxAngle = cos(fMaxAngle);
+    const MeshCore::MeshKernel& kernel = face->Mesh->getKernel();
+    MeshCore::MeshGeomFacet tria = kernel.GetFacet(face->Index);
+    return Py::new_reference_to(Py::Boolean(tria.IsDeformed(fCosOfMinAngle, fCosOfMaxAngle)));
+}
+
 Py::List FacetPy::getPoints(void) const
 {
     FacetPy::PointerType face = this->getFacetPtr();

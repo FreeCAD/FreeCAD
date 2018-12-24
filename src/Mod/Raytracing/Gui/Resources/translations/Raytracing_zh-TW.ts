@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+496"/>
+      <location filename="../../Command.cpp" line="+519"/>
       <source>File</source>
       <translation>檔案</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location line="+207"/>
+      <location line="+231"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
@@ -41,7 +41,7 @@
       <translation>加入新的Luxrender專案至文件中</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>無範本</translation>
     </message>
@@ -54,7 +54,7 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location line="-341"/>
+      <location line="-372"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
@@ -76,7 +76,7 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location line="-100"/>
+      <location line="-119"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
@@ -99,7 +99,7 @@
       <translation>於檔案中新增 POV-Ray 專案</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>無範本</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location line="+196"/>
+      <location line="+212"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
@@ -130,7 +130,7 @@
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location line="+243"/>
+      <location line="+278"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
@@ -148,7 +148,7 @@
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <location line="-723"/>
+      <location line="-785"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
@@ -160,7 +160,7 @@
     <message>
       <location line="+1"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation type="unfinished">Export the camera position of the active 3D view in POV-Ray format to a file</translation>
+      <translation>以POV-Ray格式儲存目前3D視圖之相機位置至檔案</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
@@ -206,21 +206,21 @@
     <message>
       <location line="-79"/>
       <location line="+139"/>
-      <location line="+93"/>
-      <location line="+391"/>
+      <location line="+97"/>
+      <location line="+434"/>
       <source>No perspective camera</source>
       <translation>無透視鏡頭</translation>
     </message>
     <message>
-      <location line="-622"/>
+      <location line="-669"/>
       <location line="+139"/>
-      <location line="+93"/>
+      <location line="+97"/>
       <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>目前視圖相機並非設定為透視，因此 POV-Ray 影像輸出結果可能與您預期的不同。您是否要繼續？</translation>
     </message>
     <message>
-      <location line="-109"/>
+      <location line="-113"/>
       <source>Export view to POV-Ray...</source>
       <translation>匯出視圖至 POV-Ray ...</translation>
     </message>
@@ -230,12 +230,24 @@ Do you want to continue?</source>
       <translation>將目前3D視圖中相機及所有內容存為 POV-Ray 檔</translation>
     </message>
     <message>
+      <location line="+126"/>
+      <location line="+434"/>
+      <source>No template</source>
+      <translation>無範本</translation>
+    </message>
+    <message>
+      <location line="-433"/>
+      <location line="+434"/>
+      <source>Cannot create a project because there is no template installed.</source>
+      <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
+    </message>
+    <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>目前視圖非透視鏡頭,並可能導至povray影像與您預期不同,是否繼續?</translation>
     </message>
     <message>
-      <location line="-2"/>
+      <location line="-563"/>
       <source>Raytracing</source>
       <translation>光線追蹤</translation>
     </message>
@@ -248,7 +260,7 @@ Do you want to continue?</source>
       <translation>將目前之3D視圖(含攝影機)與所有內容寫入povray檔</translation>
     </message>
     <message>
-      <location line="+501"/>
+      <location line="+548"/>
       <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>目前視圖中攝影機並非透視設定,將會使luxrender影像結果可能與您預期的不同
@@ -270,10 +282,10 @@ Do you want to continue?</source>
       <translation>所有檔 (*.*)</translation>
     </message>
     <message>
-      <location line="-585"/>
+      <location line="-632"/>
       <location line="+51"/>
       <location line="+63"/>
-      <location line="+276"/>
+      <location line="+299"/>
       <source>Export page</source>
       <translation>匯出頁面</translation>
     </message>
@@ -284,13 +296,13 @@ Do you want to continue?</source>
     <message>
       <location line="-103"/>
       <location line="+87"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
     <message>
-      <location line="-392"/>
+      <location line="-431"/>
       <source>Select a Part object.</source>
       <translation>選取零件物件。</translation>
     </message>
@@ -312,18 +324,18 @@ Do you want to continue?</source>
     </message>
     <message>
       <location line="+64"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Select one Raytracing project object.</source>
       <translation>選擇一個光線追蹤專案物件</translation>
     </message>
     <message>
-      <location line="-302"/>
+      <location line="-341"/>
       <source>Luxrender</source>
       <translation>Luxrender</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="+78"/>
       <location line="+6"/>
       <source>POV-Ray not found</source>
       <translation>未發現POV-Ray</translation>
@@ -339,7 +351,7 @@ Do you want to continue?</source>
       <translation>請於偏好設定中更新 POV-Ray 執行檔之路徑</translation>
     </message>
     <message>
-      <location line="+75"/>
+      <location line="+95"/>
       <source>Lux project file missing</source>
       <translation>無 Lux 檔</translation>
     </message>
@@ -349,25 +361,25 @@ Do you want to continue?</source>
       <translation>無 Lux 專案檔</translation>
     </message>
     <message>
-      <location line="-69"/>
+      <location line="-89"/>
       <location line="+6"/>
       <source>Luxrender not found</source>
       <translation>無Luxrender</translation>
     </message>
     <message>
-      <location line="-475"/>
+      <location line="-502"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+272"/>
+      <location line="+295"/>
       <source>POV-Ray</source>
       <translation>POV-Ray</translation>
     </message>
     <message>
-      <location line="-384"/>
+      <location line="-407"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+276"/>
-      <location line="+109"/>
+      <location line="+299"/>
+      <location line="+113"/>
       <source>All Files</source>
       <translation>所有檔案</translation>
     </message>
@@ -560,7 +572,7 @@ Do you want to continue?</source>
       <translation>編輯LuxRender專案</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>LuxRender template</source>
       <translation>LuxRender範本</translation>
     </message>
@@ -573,12 +585,12 @@ Do you want to continue?</source>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location line="+48"/>
+      <location line="+47"/>
       <source>Edit Povray project</source>
       <translation>編輯Povray專案</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>Povray template</source>
       <translation>Povray範本</translation>
     </message>

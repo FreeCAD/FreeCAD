@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport
+        Father="ViewProviderDocumentObjectPy"
+        Name="ViewProviderMeshPy"
+        Twin="ViewProviderMesh"
+        TwinPointer="ViewProviderMesh"
+        Include="Mod/Mesh/Gui/ViewProvider.h"
+        Namespace="MeshGui"
+        FatherInclude="Gui/ViewProviderDocumentObjectPy.h"
+        FatherNamespace="Gui">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+            <UserDocu>This is the ViewProvider base class</UserDocu>
+        </Documentation>
+        <Methode Name="setSelection">
+            <Documentation>
+                <UserDocu>Select list of facets</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addSelection">
+            <Documentation>
+                <UserDocu>Add list of facets to selection</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeSelection">
+            <Documentation>
+                <UserDocu>Remove list of facets from selection</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="invertSelection">
+            <Documentation>
+                <UserDocu>Invert the selection</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="clearSelection">
+            <Documentation>
+                <UserDocu>Clear the selection</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
+</GenerateModel>

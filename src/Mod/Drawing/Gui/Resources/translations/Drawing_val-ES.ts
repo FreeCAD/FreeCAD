@@ -4,7 +4,7 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="+474"/>
+      <location filename="../../Command.cpp" line="+478"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
@@ -42,7 +42,7 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location line="+185"/>
+      <location line="+193"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
@@ -55,13 +55,13 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Insereix una vista d'esborrany dels objetes seleccionats en el dibuix actiu</translation>
+      <translation>Insereix una vista d'esborrany dels objectes seleccionats en el dibuix actiu</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location line="-92"/>
+      <location line="-96"/>
       <source>File</source>
       <translation>Fitxer</translation>
     </message>
@@ -80,7 +80,7 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location line="-359"/>
+      <location line="-363"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
@@ -126,7 +126,7 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location line="-250"/>
+      <location line="-254"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
@@ -144,7 +144,7 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location line="+375"/>
+      <location line="+379"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
@@ -181,7 +181,7 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location line="+287"/>
+      <location line="+295"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
@@ -219,7 +219,7 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location line="-179"/>
+      <location line="-187"/>
       <source>Drawing</source>
       <translation>Dibuix</translation>
     </message>
@@ -291,8 +291,7 @@
       <location line="+110"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation type="unfinished">The printer uses a different orientation than the drawing.
-Do you want to continue?</translation>
+      <translation>La impressora utilitza una orientació diferent de la del dibuix. Voleu continuar?</translation>
     </message>
     <message>
       <source>PDF file (*.pdf)</source>
@@ -415,17 +414,17 @@ Do you want to continue?</source>
     <message>
       <location line="+48"/>
       <source>Spacing dx / dy</source>
-      <translation type="unfinished">Spacing dx / dy</translation>
+      <translation>Espaiat dx / dy</translation>
     </message>
     <message>
       <location line="+71"/>
       <source>Axis out and right</source>
-      <translation type="unfinished">Axis out and right</translation>
+      <translation>Eix orientat cap a l'exterior i cap a la dreta</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Vertical tilt</source>
-      <translation type="unfinished">Vertical tilt</translation>
+      <translation>Inclinació vertical</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -600,7 +599,7 @@ Do you want to continue?</source>
     <message>
       <location line="+15"/>
       <source>Scale</source>
-      <translation>Scale</translation>
+      <translation>Redimensiona</translation>
     </message>
     <message>
       <source>Primary x / y</source>
@@ -788,8 +787,8 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location line="-169"/>
-      <location line="+517"/>
+      <location line="-173"/>
+      <location line="+521"/>
       <source>Choose an SVG file to open</source>
       <translation>Trieu un fitxer SVG per a obrir-lo</translation>
     </message>
@@ -805,13 +804,13 @@ Do you want to continue?</source>
       <location line="-268"/>
       <location line="+79"/>
       <location line="+50"/>
-      <location line="+187"/>
-      <location line="+119"/>
+      <location line="+191"/>
+      <location line="+123"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location line="-434"/>
+      <location line="-442"/>
       <source>Select a Part object.</source>
       <translation>Seleccioneu un objecte peça</translation>
     </message>
@@ -828,40 +827,40 @@ Do you want to continue?</source>
       <translation type="unfinished">Create a page to insert views into.</translation>
     </message>
     <message>
-      <location line="-249"/>
-      <location line="+517"/>
-      <location line="+53"/>
+      <location line="-253"/>
+      <location line="+521"/>
+      <location line="+57"/>
       <source>Scalable Vector Graphic</source>
       <translation>Gràfic vectorial escalable</translation>
     </message>
     <message>
-      <location line="-313"/>
+      <location line="-317"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>No page found</source>
       <translation>No s'ha trobat cap pàgina.</translation>
     </message>
     <message>
-      <location line="-431"/>
+      <location line="-439"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>Create a page first.</source>
       <translation>Creeu una pàgina primer</translation>
     </message>
     <message>
-      <location line="-362"/>
+      <location line="-370"/>
       <source>Select exactly one Part object.</source>
       <translation>Seleccioneu exactament un únic objecte peça</translation>
     </message>
     <message>
       <location line="+50"/>
-      <location line="+187"/>
+      <location line="+191"/>
       <source>Select one Page object.</source>
       <translation>Seleccioneu un objecte pàgina</translation>
     </message>
@@ -871,7 +870,7 @@ Do you want to continue?</source>
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location line="+113"/>
+      <location line="+117"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Seleccioneu exactament un sol objecte full de càlcul.</translation>
     </message>
@@ -888,7 +887,7 @@ Do you want to continue?</source>
       <translation type="unfinished">All Files (*.*)</translation>
     </message>
     <message>
-      <location line="-111"/>
+      <location line="-115"/>
       <source>Export page</source>
       <translation>Exporta la pàgina</translation>
     </message>
@@ -923,19 +922,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="+51"/>
-      <location line="+926"/>
+      <location line="+930"/>
       <source>Make axonometric...</source>
       <translation>Fes axonomètrica...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Edit axonometric settings...</source>
       <translation>Edita la configuració axonomètrica...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Make orthographic</source>
       <translation>Fes ortogràfica</translation>
     </message>

@@ -42,6 +42,24 @@
     </message>
   </context>
   <context>
+    <name>CmdImageScaling</name>
+    <message>
+      <location line="+120"/>
+      <source>Image</source>
+      <translation>画像</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Scale...</source>
+      <translation>拡大縮小...</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Image Scaling</source>
+      <translation>イメージの拡大縮小</translation>
+    </message>
+  </context>
+  <context>
     <name>ImageGui::GLImageBox</name>
     <message>
       <location filename="../../GLImageBox.cpp" line="+333"/>
@@ -71,7 +89,7 @@
     <message>
       <location line="+6"/>
       <source>XY-Plane</source>
-      <translation>xy平面</translation>
+      <translation>XY 平面</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -182,7 +200,7 @@
       <translation>画像（*.png, *.xpm, *.JPG, *.BMP）</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="+20"/>
+      <location filename="../../Command.cpp" line="-102"/>
       <location line="+47"/>
       <source>Choose an image file to open</source>
       <translation>開く画像ファイルを選択</translation>

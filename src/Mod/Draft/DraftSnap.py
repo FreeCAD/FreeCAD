@@ -854,9 +854,18 @@ class Snapper:
                 if obj:
                     if obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis"):
                         if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
+                            import Part
                             for e in obj.Shape.Edges:
                                 # get the intersection points
-                                pt = DraftGeomUtils.findIntersection(e,shape)
+                                if self.isEnabled("WorkingPlane") and hasattr(e,"Curve") and isinstance(e.Curve,(Part.Line,Part.LineSegment)) and hasattr(shape,"Curve") and isinstance(shape.Curve,(Part.Line,Part.LineSegment)):
+                                    # get apparent intersection (lines projected on WP)
+                                    p1 = self.toWP(e.Vertexes[0].Point)
+                                    p2 = self.toWP(e.Vertexes[-1].Point)
+                                    p3 = self.toWP(shape.Vertexes[0].Point)
+                                    p4 = self.toWP(shape.Vertexes[-1].Point)
+                                    pt = DraftGeomUtils.findIntersection(p1,p2,p3,p4,True,True)
+                                else:
+                                    pt = DraftGeomUtils.findIntersection(e,shape)
                                 if pt:
                                     for p in pt:
                                         snaps.append([p,'intersection',self.toWP(p)])
@@ -880,11 +889,11 @@ class Snapper:
         p = Vector(info['x'],info['y'],info['z'])
         if active:
             if self.isEnabled("passive"):
-                return [p,'endpoint',p]
+                return [p,'endpoint',self.toWP(p)]
             else:
                 return []
         elif self.isEnabled("passive"):
-            return [p,'passive',p]
+            return [p,'passive',self.toWP(p)]
         else:
             return []
             
@@ -1423,7 +1432,7 @@ class Snapper:
             self.grid.set()
             
     def addHoldPoint(self):
-        if self.spoint:
+        if self.spoint and not(self.spoint in self.holdPoints):
             if self.holdTracker:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()

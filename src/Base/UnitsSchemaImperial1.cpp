@@ -363,12 +363,12 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
     // this schema expresses angles in degrees + minutes + seconds
     else if (unit == Unit::Angle) {
         unitString = QString::fromUtf8("deg");
-        QString degreeString = QString::fromUtf8("\xC2\xB0");
-        QString minuteString = QString::fromUtf8("M");
-        QString secondString = QString::fromUtf8("S");
+        QString degreeString = QString::fromUtf8("\xC2\xB0");          //degree symbol
+        QString minuteString = QString::fromUtf8("\xE2\x80\xB2");      //prime symbol
+        QString secondString = QString::fromUtf8("\xE2\x80\xB3");      //double prime symbol
         factor = 1.0;                                  //1deg = 1"\xC2\xB0 "
 
-        double totalDegrees = std::abs(quant.getValue())/factor;
+        double totalDegrees = quant.getValue()/factor;
         double wholeDegrees = std::floor(totalDegrees);
         double sumMinutes = totalDegrees * 60.0;            //quant as minutes
         double rawMinutes = sumMinutes - wholeDegrees * 60.0;
@@ -385,10 +385,10 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
         std::stringstream output;
         output << outDeg << degreeString.toUtf8().constData();
         if ((outMin > 0) || (outSec > 0)) {
-            output << outMin << minuteString.toStdString();
+            output << outMin << minuteString.toUtf8().constData();
         }
         if (outSec > 0) {
-            output << outSec << secondString.toStdString();
+            output << outSec << secondString.toUtf8().constData();
         }
 // uncomment this for decimals on seconds
 //        if (remainSeconds < (1.0 * pow(10.0,-Base::UnitsApi::getDecimals())) ) {

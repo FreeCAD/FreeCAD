@@ -1284,12 +1284,12 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Gorputzen zerrenda hutsik</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Gorputzen zerrenda ezin da hutsik egon</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -2117,7 +2117,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     </message>
     <message>
       <source>Spacing1:</source>
-      <translation type="unfinished">Spacing1:</translation>
+      <translation>Tartea1:</translation>
     </message>
     <message>
       <source>Number1:</source>
@@ -2129,7 +2129,7 @@ Markatu ertz-entitate bat edo gehiago.</translation>
     </message>
     <message>
       <source>Spacing2:</source>
-      <translation type="unfinished">Spacing2:</translation>
+      <translation>Tartea2:</translation>
     </message>
     <message>
       <source>Number2:</source>

@@ -4,7 +4,7 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="+245"/>
+      <location filename="../../Command.cpp" line="+290"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
@@ -22,7 +22,7 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location line="-191"/>
+      <location line="-235"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
@@ -40,7 +40,7 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location line="+106"/>
+      <location line="+150"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
@@ -58,7 +58,7 @@
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Mesh</source>
       <translation>网格</translation>
     </message>
@@ -132,7 +132,7 @@
     <message>
       <location line="+10"/>
       <source>Split threshold</source>
-      <translation>打印阈值</translation>
+      <translation>拆分阈值</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -200,7 +200,7 @@
     <message>
       <location line="-7"/>
       <source>Apply face colors to mesh</source>
-      <translation>将面颜色应用于网布上</translation>
+      <translation>将面颜色应用于网格上</translation>
     </message>
     <message>
       <location line="-35"/>
@@ -296,7 +296,7 @@
       <translation>最大边长:</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+225"/>
+      <location filename="../../Tessellation.cpp" line="+226"/>
       <source>Select a shape for meshing, first.</source>
       <translation>请先选择需要网格化的形状.</translation>
     </message>
@@ -309,7 +309,7 @@
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
+      <location filename="../../Command.cpp" line="+137"/>
       <source>Select plane</source>
       <translation>选取平面</translation>
     </message>
@@ -322,7 +322,7 @@
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Select plane</source>
       <translation>选取平面</translation>
     </message>
@@ -330,6 +330,31 @@
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>请选取一个您修剪网格的平面</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>Trim by plane</source>
+      <translation>平面修剪</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select the side you want to keep.</source>
+      <translation>选择要保留的一侧。</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Inner</source>
+      <translation>内部</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Outer</source>
+      <translation>外部</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Split</source>
+      <translation>分割</translation>
     </message>
   </context>
   <context>

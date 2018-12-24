@@ -51,6 +51,9 @@ BuildRequires:  libspnav
 BuildRequires:  libspnav-devel
 BuildRequires:  Inventor-devel
 BuildRequires:  mesa-libGLU-devel
+%if 0%{?fedora} > 28
+BuildRequires:  mesa-libEGL-devel
+%endif
 BuildRequires:  netgen-mesher-devel
 BuildRequires:  netgen-mesher-devel-private
 BuildRequires:  pyside-tools

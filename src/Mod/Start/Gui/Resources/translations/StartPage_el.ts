@@ -4,359 +4,217 @@
   <context>
     <name>StartPage</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
-      <source>FreeCAD Start Center</source>
-      <translation>Κέντρο έναρξης του FreeCAD</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
+      <source>Start</source>
+      <translation>Εκκίνηση</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
-      <source>Start a new project</source>
-      <translation>Δημιουργία νέου έργου</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
+      <source>Documents</source>
+      <translation>Έγγραφα</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
-      <source>Recent Files</source>
+      <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
+      <source>Help</source>
+      <translation>Βοήθεια</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
+      <source>Activity</source>
+      <translation>Δραστηριότητα</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
+      <source>Recent files</source>
       <translation>Πρόσφατα αρχεία</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="96"/>
-      <source>Tutorials</source>
-      <translation>Επιδείξεις</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
+      <source>Tip</source>
+      <translation>Συμβουλή</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
-      <source>FreeCAD Homepage</source>
-      <translation>Αρχική σελίδα του FreeCAD</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
+      <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
+      <translation>Προσαρμόστε τον αριθμό των προσφάτων αρχείων που εμφανίζονται εδώ, από το μενού Επεξεργασία-&gt;Προτιμήσεις-&gt;Γενικά-&gt;Μέγεθος λίστας προσφάτων αρχείων</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
-      <source>Example projects</source>
-      <translation>Έργα παραδείγματα</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
+      <source>Examples</source>
+      <translation>Παραδείγματα</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
-      <source>Schenkel STEP file</source>
-      <translation>Αρχείο Schenkel STEP</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
+      <source>General documentation</source>
+      <translation>Γενική τεκμηρίωση</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
-      <source>Load a PartDesign example</source>
-      <translation>Φορτώσετε ένα παράδειγμα PartDesign</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
+      <source>User hub</source>
+      <translation>Ενότητα Χρηστών</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
-      <source>Load a Drawing extraction</source>
-      <translation>Φορτώσετε ένα σχέδιο εξόρυξης</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
+      <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
+      <translation>Αυτή η ενότητα περιλαμβάνει τεκμηρίωση χρήσιμη για τους χρήστες του FreeCAD, γενικά: μια λίστα με όλες τις εργαλειοθήκες, αναλυτικές οδηγίες για την εγκατάσταση και χρήση του FreeCAD, γρήγορα μαθήματα, και όλα όσα χρειάζεστε για να ξεκινήσετε.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
-      <source>Load a Robot simulation example</source>
-      <translation>Φορτώστε ένα παράδειγμα προσομοίωσης ρομπότ</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
+      <source>Power users hub</source>
+      <translation>Ενότητα Προχωρημένων Χρηστών</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
-      <source>Projects from the Web</source>
-      <translation>Έργα από τον ιστό</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
+      <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
+      <translation>Η ενότητα αυτή περιλαμβάνει τεκμηρίωση για προχωρημένους χρήστες και άτομα που ενδιαφέρονται για την σύνταξη python scripts. Επίσης θα βρείτε μια συλλογή μακροεντολών, οδηγίες πώς να τις εγκαταστήσετε και περισσότερες πληροφορίες για να προσαρμόσετε το FreeCAD στις δικές σας ανάγκες.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>Schenkel STEP</source>
-      <translation>Schenkel STEP</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>Developers hub</source>
+      <translation>Ενότητα Προγραμματιστών</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
-      <source>Complex Part</source>
-      <translation>Σύνθετο εξάρτημα</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</source>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
-      <source>Close this window after opening or creating a file</source>
-      <translation>Κλείσιμο αυτού του παραθύρου μετά το άνοιγμα ή τη δημιουργία ενός αρχείου</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
+      <source>Manual</source>
+      <translation>Εγχειρίδιο Χρήσης</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
-      <source>Don't show me this window again next time</source>
-      <translation>Να μην εμφανιστεί αυτό το παράθυρο πάλι την επόμενη φορά</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
+      <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
+      <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
-      <source>Designing parts</source>
-      <translation>Σχεδιασμός εξαρτημάτων</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
+      <source>Workbenches documentation</source>
+      <translation>Τεκμηρίωση Εργαλειοθηκών</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
-      <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation type="unfinished">The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
-      <source>Example workflow</source>
-      <translation>Παράδειγμα ροής εργασίας</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
-      <source>Part Design</source>
-      <translation>Σχεδίαση Εξαρτήματος</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
-      <source>Designing architectural elements</source>
-      <translation>Σχεδίαση αρχιτεκτονικών στοιχείων</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
-      <source>Working with Meshes</source>
-      <translation>Εργασία με πλέγματα</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
-      <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>Το &lt;b&gt;Πλέγμα πάγκος εργασίας&lt;/b&gt; χρησιμοποιείται για να εργαστείτε με αντικείμενα δικτυώματος. Πλέγματα είναι απλούστερη αντικείμενα 3D από αντικείμενα μέρος, αλλά είναι συχνά ευκολότερο εισαγωγής και εξαγωγής προς/από άλλες εφαρμογές.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="85"/>
-      <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation type="unfinished">FreeCAD offers you several tools to convert between Mesh and Part objects.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="86"/>
-      <source>Work with Meshes</source>
-      <translation type="unfinished">Work with Meshes</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
-      <source>The complete workbench</source>
-      <translation>Ο πλήρης πάγκος εργασίας</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
-      <source>FreeCAD Complete workbench</source>
-      <translation>Πλήρης πάγκος εργασίας FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="90"/>
-      <source>file size:</source>
-      <translation>μέγεθος αρχείου:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="91"/>
-      <source>creation time:</source>
-      <translation>χρόνος δημιουργίας:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
-      <source>last modified:</source>
-      <translation>τροποποιήθηκε για τελευταία φορά:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
-      <source>populated with some of the most commonly used tools.</source>
-      <translation type="unfinished">populated with some of the most commonly used tools.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
+      <source>These are the help pages of all the workbenches currently installed on this computer.</source>
+      <translation type="unfinished">These are the help pages of all the workbenches currently installed on this computer.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
-      <source>Latest videos</source>
-      <translation>Τελευταία βίντεο</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
-      <source>On the web</source>
-      <translation>Στον ιστό</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
-      <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation type="unfinished">This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
-      <source>location:</source>
-      <translation>τοποθεσία:</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="94"/>
-      <source>User manual</source>
-      <translation>Εγχειρίδιο χρήστη</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
-      <source>Python resources</source>
-      <translation>Πόροι Python</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>File not found</source>
-      <translation>Το αρχείο δεν βρέθηκε</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="99"/>
-      <source>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</source>
-      <translation>από το &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="100"/>
-      <source>The FreeCAD-tutorial blog</source>
-      <translation type="unfinished">The FreeCAD-tutorial blog</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="101"/>
-      <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
-      <translation>από  το &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;κανάλι FreeCADNews&lt;/a&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
-      <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>Αυτό είναι το επίσημο εγχειρίδιο χρήσης του ΦρειΚΑΝΤ, συντίθεται, ανανεώνεται και μεταφράζεται από την κοινότητα του ΦρειΚΑΝΤ.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="103"/>
-      <source>The tutorials section on the FreeCAD website</source>
-      <translation type="unfinished">The tutorials section on the FreeCAD website</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="105"/>
-      <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>Ένα blog αφιερωμένο στην εκμάθηση του FreeCAD, συντηρείται από μέλη της Κοινότητας του FreeCAD</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
-      <source>Getting started</source>
-      <translation>Ξεκινώντας</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
-      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation type="unfinished">The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="109"/>
-      <source>Ship Design</source>
-      <translation>Σχέδιο Πλοίου</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
-      <source>Designing and calculating ships</source>
-      <translation>Σχεδιασμός και υπολογισμός πλοίων</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
-      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation type="unfinished">The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="112"/>
-      <source>Load an Architectural example model</source>
-      <translation type="unfinished">Load an Architectural example model</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
-      <source>Architectural Design</source>
-      <translation>Αρχιτεκτονική Σχεδίαση</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="104"/>
-      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
-      <source>Your version of FreeCAD is up to date.</source>
-      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="116"/>
-      <source>There is a new release of FreeCAD available.</source>
-      <translation>Υπάρχει μια νέα έκδοση του FreeCAD διαθέσιμη.</translation>
+      <source>Getting help from the community</source>
+      <translation>Λήψη βοήθειας από την κοινότητα</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
-      <source>Latest commits</source>
-      <translation type="unfinished">Latest commits</translation>
+      <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation type="unfinished">The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="118"/>
-      <source>Obtain a development version</source>
-      <translation type="unfinished">Obtain a development version</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
+      <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
+      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
-      <source>&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</source>
-      <translation type="unfinished">&lt;b&gt;Development versions&lt;/b&gt; are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
+      <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
+      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
-      <source>See all commits</source>
-      <translation type="unfinished">See all commits</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
+      <source>Available addons</source>
+      <translation>Διαθέσιμα πρόσθετα</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="117"/>
-      <source>Load an FEM 3D example analysis</source>
-      <translation type="unfinished">Load an FEM 3D example analysis</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
+      <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
+      <translation type="unfinished">Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="121"/>
-      <source>Load an FEM 2D example analysis</source>
-      <translation type="unfinished">Load an FEM 2D example analysis</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
+      <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
+      <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="95"/>
-      <source>http://www.freecadweb.org/wiki/Online_Help_Toc</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Online_Help_Toc</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
+      <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
+      <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="113"/>
-      <source>http://www.freecadweb.org/wiki/Tutorials</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Tutorials</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
+      <source>Recent commits</source>
+      <translation>Πρόσφατες προσθήκες</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="114"/>
-      <source>http://www.freecadweb.org/wiki/Power_users_hub</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Power_users_hub</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
+      <translation>Παρακάτω βρίσκονται οι πρόσφατες αλλαγές που προστέθηκαν στον &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;πηγαίο κώδικα του FreeCAD&lt;/a&gt;. Αυτές οι αλλαγές μπορει να μην έχουν περαστεί ακόμα στην έκδοση που χρησιμοποιείτε. Ελέγξτε στις &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;διαθέσιμες επιλογές λήψης&lt;/a&gt; αν θέλετε να λάβετε μια υπό ανάπτυξη έκδοση.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="122"/>
-      <source>FreeCAD Standard File</source>
-      <translation type="unfinished">FreeCAD Standard File</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
+      <source>See all commits on github</source>
+      <translation>Δείτε όλες τις προσθήκες στο github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
-      <source>Author</source>
-      <translation>Συγγραφέας</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
+      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Custom folder</source>
+      <translation>Μπορείτε να ρυθμίσετε έναν δικό σας φάκελο να προβάλλεται σε αυτό το σημείο, στο μενού Επεξεργασία-&gt;Προτιμήσεις-&gt;Αρχική-&gt;Προσαρμοσμένος φάκελος</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
-      <source>Company</source>
-      <translation>Εταιρία</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
+      <source>version</source>
+      <translation>έκδοση</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
-      <source>License</source>
-      <translation>Άδεια</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
+      <source>build</source>
+      <translation>κατασκευή</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="75"/>
+      <source>Create new...</source>
+      <translation>Δημιουργία νέου...</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="76"/>
+      <source>Unknown</source>
+      <translation>Άγνωστο</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
+      <source>Forum</source>
+      <translation>Forum</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
+      <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
+      <translation>Οι τελευταίες δημοσιεύσεις στο &lt;a href="https://forum.freecadweb.org"&gt;forum του FreeCAD&lt;/a&gt;:</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
+      <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
+      <translation type="unfinished">To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="80"/>
+      <source>Creation date</source>
+      <translation>Ημερομηνία δημιουργίας</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
-      <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</source>
-      <translation type="unfinished">The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architectural objects.</translation>
+      <source>Last modification</source>
+      <translation>Τελευταία τροποποίηση</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="108"/>
-      <source>http://www.freecadweb.org/wiki/Getting_started</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/Getting_started</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
+      <source>Notes</source>
+      <translation>Σημειώσεις</translation>
     </message>
+  </context>
+  <context>
+    <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="126"/>
-      <source>Load an FEM 3D new solver example analysis</source>
-      <translation type="unfinished">Load an FEM 3D new solver example analysis</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="127"/>
-      <source>Click here</source>
-      <translation type="unfinished">Click here</translation>
-    </message>
-    <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
-      <source>to allow FreeCAD to access the internet</source>
-      <translation type="unfinished">to allow FreeCAD to access the internet</translation>
+      <location filename="../../../StartPage/StartPage.py" line="543"/>
+      <source>Start page</source>
+      <translation>Αρχική σελίδα</translation>
     </message>
   </context>
 </TS>

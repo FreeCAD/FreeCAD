@@ -21,7 +21,7 @@
     </message>
     <message>
       <source>Angle Snap</source>
-      <translation>Açı Yapış</translation>
+      <translation>Açı Yakala</translation>
     </message>
     <message utf8="true">
       <source>1 °</source>
@@ -587,7 +587,7 @@ sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</tran
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>MetinEtiket</translation>
+      <translation>MetinEtiketi</translation>
     </message>
     <message>
       <source>CheckBox</source>
@@ -1059,7 +1059,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Brass</source>
-      <translation>Bulgur</translation>
+      <translation>Pirinç</translation>
     </message>
     <message>
       <source>Bronze</source>
@@ -1071,7 +1071,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Chrome</source>
-      <translation>Chrome</translation>
+      <translation>Krom</translation>
     </message>
     <message>
       <source>Emerald</source>
@@ -1351,6 +1351,14 @@ Please define another shortcut.</source>
       <source>Rename</source>
       <translation>Yeniden Adlandır</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Çoğalt</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Eklentiler...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1417,6 +1425,20 @@ Bu dosya zaten var.</translation>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>'%1' yeniden adlandıramadı. Belki de bir dosya yetki hatası?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Makroyu Kopyala</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Kopyalama Başarısız</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>'%1'olarak çoğaltılamadı. 
+Belki bir dosya izni hatası vardır?</translation>
     </message>
   </context>
   <context>
@@ -1854,7 +1876,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
       <source>TextLabel</source>
-      <translation>MetinEtiket</translation>
+      <translation>MetinEtiketi</translation>
     </message>
     <message>
       <source>Advanced &gt;&gt;</source>
@@ -1992,8 +2014,48 @@ Lütfen başka bir dizin belirtin.</translation>
       <translation>Perspektif işleme</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>OpenGL Vertex Arabellek Nesnesi'ni kullanın (deneysel)</translation>
+      <source>Show navigation cube</source>
+      <translation>Dolaşma kübünü göster</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Köşe</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Sol üst</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Sağ üst</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Alt sol</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Sağ alt</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation>OpenGL Tepe Arabellek Nesnesini Kullan</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation>Pinch yakınlaştırma yaparken görüntünün eğilmesini önler. Sadece Gesture tarzı gezinmeyi etkiler. Fare eğmek bu ayar tarafından devre dışı bırakılmaz.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>DokunmatikEkran eğim hareketini devre dışı bırak</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>İmleci sürükleyin</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>İşaretci boyutu:</translation>
     </message>
   </context>
   <context>
@@ -2006,6 +2068,30 @@ Lütfen başka bir dizin belirtin.</translation>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>92/5000
 Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici açın veya% 1'i yeniden başlatın.</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2620,7 +2706,7 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     </message>
     <message>
       <source>Imperial decimal (in/lb)</source>
-      <translation>İmparatorluk ondalığı (in / lb)</translation>
+      <translation>Kraliyet (İngiliz sistemi) ondalığı (in / lb)</translation>
     </message>
     <message utf8="true">
       <source>Building Euro (cm/m²/m³)</source>
@@ -2633,6 +2719,46 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     <message>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Metrik küçük parçalar ve CNC (mm, mm/min)</translation>
+    </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation>Kraliyet (İngiliz) Ölçü Sistemi (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>En küçük kesirli inç:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gösterilecek en küçük kesirli inç.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
     </message>
   </context>
   <context>
@@ -2676,6 +2802,18 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
       <translation>3D görünümünde öğeleri seçmek için karışıklık alanını ayarlar. Bu değerin arttırılması öğelerin seçimini kolaylaştırır, fakat diğer taraftan bazı küçük unsurların seçimini imkansız hale getirir.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Unsur Ağacı</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Nesne düzenleniyor</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Etkin taşıyıcı</translation>
     </message>
   </context>
   <context>
@@ -2794,7 +2932,7 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     <name>Gui::Dialog::DockablePlacement</name>
     <message>
       <source>Placement</source>
-      <translation>Yerleştirme</translation>
+      <translation>Yerleşim</translation>
     </message>
   </context>
   <context>
@@ -3070,11 +3208,11 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Export parameter</source>
-      <translation>Parametreyi dışa ver</translation>
+      <translation>Parametreyi dışa aktar</translation>
     </message>
     <message>
       <source>Import parameter</source>
-      <translation>içeri Parametre aktar</translation>
+      <translation>Parametreyi içe aktar</translation>
     </message>
     <message>
       <source>Collapse</source>
@@ -3098,7 +3236,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Import parameter from file</source>
-      <translation>Dosyadan önemli değişkeni içeri aktar</translation>
+      <translation>Parametreyi dosyadan içeri aktar</translation>
     </message>
     <message>
       <source>Import Error</source>
@@ -3160,7 +3298,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::Dialog::Placement</name>
     <message>
       <source>Placement</source>
-      <translation>Yerleştirme</translation>
+      <translation>Yerleşim</translation>
     </message>
     <message>
       <source>OK</source>
@@ -3215,14 +3353,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Açılı dönme ekseni</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Yerleştirme değişikliklerini hemen uygula</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Nesne yerleştirme için artımlı değişiklikleri Uygula</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation>Uygula</translation>
     </message>
@@ -3249,6 +3379,30 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>Use center of mass</source>
       <translation>Kitlesel merkez kullanın</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Eksensel:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Eksenel uygula</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Ters yöne dönmek için Shift'e tıklayın</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Seçili noktalar</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Artımlı değişiklikleri Uygula</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Bu tuşa basmadan önce lütfen 1, 2 veya 3 nokta seçin. Bir nokta, yüzey veya kenarda bir nokta olabilir. Bir yüzey veya kenarda kullanılan nokta, yüzey veya kenar boyunca fare konumunda bulunan nokta olacaktır. 1 nokta seçilirse, dönüş merkezi olarak kullanılacaktır. 2 nokta seçilirse, aralarındaki orta nokta, dönme merkezi olacak ve gerekirse yeni bir özel eksen oluşturulacaktır. 3 nokta seçilirse, ilk nokta dönme merkezi olur ve 3 nokta tarafından tanımlanan düzlemde normal olan vektör üzerinde bulunur. Nesneleri hizalarken faydalı olabilecek, rapor görünümünde bazı mesafe ve açı bilgileri sağlanır. Shift + tıklama kullanıldığında kolaylık için uygun mesafe veya açı panoya kopyalanır.</translation>
     </message>
   </context>
   <context>
@@ -3473,7 +3627,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selects and fits this object in the 3D window</source>
-      <translation>Bu nesneyi ağaç görünümünde seçer ve bulur</translation>
+      <translation>Bu nesneyi seçer ve 3B Penceresine sığdırır</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -3481,7 +3635,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selects and locates this object in the tree view</source>
-      <translation>Bu nesneyi ağaç görünümünde seçer ve bulur</translation>
+      <translation>Bu nesneyi unsur ağacında bulur ve seçer</translation>
     </message>
     <message>
       <source>To python console</source>
@@ -3550,7 +3704,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
       <source>Export PDF</source>
-      <translation>pdf oluştur</translation>
+      <translation>PDF olarak dışa aktar</translation>
     </message>
     <message>
       <source>untitled[*]</source>
@@ -3660,7 +3814,7 @@ Do you want to save your changes?</source>
     <name>Gui::GraphvizView</name>
     <message>
       <source>Export graph</source>
-      <translation>İhracat grafik</translation>
+      <translation>Grafiği dışa aktar</translation>
     </message>
     <message>
       <source>PNG format</source>
@@ -4041,6 +4195,13 @@ sağ görünümde %2 nokta seçili.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>%1'i düzenle</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
     <message>
       <source>Property</source>
@@ -4414,7 +4575,14 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Ağaç görünümü</translation>
+      <translation>Unsur Ağacı</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Ara</translation>
     </message>
   </context>
   <context>
@@ -4483,12 +4651,20 @@ Başka bir dizin belirlemek ister misiniz?</translation>
       <source>%1, Internal name: %2</source>
       <translation>% 1, Dahili adı:% 2</translation>
     </message>
+    <message>
+      <source>Search...</source>
+      <translation>Ara...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Nesneleri ara</translation>
+    </message>
   </context>
   <context>
     <name>Gui::View3DInventor</name>
     <message>
       <source>Export PDF</source>
-      <translation>pdf oluştur</translation>
+      <translation>PDF olarak dışa aktar</translation>
     </message>
     <message>
       <source>PDF file</source>
@@ -4628,7 +4804,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Grid Snap in</source>
-      <translation>Izgaraya yapışma</translation>
+      <translation>Izgarayı yakala</translation>
     </message>
   </context>
   <context>
@@ -4646,7 +4822,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Ağaç görünümü</translation>
+      <translation>Unsur Ağacı</translation>
     </message>
     <message>
       <source>Property view</source>
@@ -4725,7 +4901,7 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
     <message>
       <source>Export file</source>
-      <translation>dosyayı dışa aktar</translation>
+      <translation>Dosyayı Dışarı Aktar</translation>
     </message>
     <message>
       <source>Printing...</source>
@@ -4961,7 +5137,7 @@ In order to load it Qt 4.4 or higher is required.</source>
     </message>
     <message>
       <source>Exporting PDF...</source>
-      <translation>pdf dışa aktarma...</translation>
+      <translation>PDF dışa aktarılıyor...</translation>
     </message>
     <message>
       <source>Wrong selection</source>
@@ -5055,7 +5231,19 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export failed</source>
-      <translation>Dışa aktarılamadı</translation>
+      <translation>Dışa aktarma başarısız oldu</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Ayır</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Aktif parçası ayarla</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Metni düzenle</translation>
     </message>
   </context>
   <context>
@@ -5463,7 +5651,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Aktif dökümandaki bir nesneyi dışa çıkart</translation>
+      <translation>Aktif belgedeki bir nesneyi dışa aktar</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -5471,7 +5659,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Please select first the objects you want to export.</source>
-      <translation>Lütfen önce ihraç etmek istediğiniz nesneleri seçin.</translation>
+      <translation>Lütfen önce dışa aktarmak istediğiniz nesneleri seçin.</translation>
     </message>
   </context>
   <context>
@@ -5659,7 +5847,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Import...</source>
-      <translation>&amp; Al...</translation>
+      <translation>&amp; İçe Aktar...</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
@@ -5847,7 +6035,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Open a document or import files</source>
-      <translation>Bir belge aç veya dosya içe aktar</translation>
+      <translation>Bir belge aç veya dosyaları içe aktar</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -5904,7 +6092,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Placement...</source>
-      <translation>Yerleştirme...</translation>
+      <translation>Yerleşim...</translation>
     </message>
     <message>
       <source>Place the selected objects</source>
@@ -5934,7 +6122,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>&amp;Export PDF...</source>
-      <translation>&amp;pdf oluştur...</translation>
+      <translation>&amp;PDF olarak dışa aktar...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
@@ -6894,6 +7082,66 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Görünüm</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Daralt/Genişlet</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Aktif belgeyi genişlet ve diğerlerini daralt</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Görünüm</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Çoklu Belge</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Unsur ağacındaki tüm belgeleri görüntüle</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Görünüm</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Tek Belge</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Unsur ağacında yalnız aktif belgeyi görüntüle</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Görünüm</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Belge Ağacı</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Unsur ağacında etkin olmayan belgelerin görünürlüğünü ayarlayın</translation>
+    </message>
+  </context>
+  <context>
     <name>StdViewBoxZoom</name>
     <message>
       <source>Standard-View</source>
@@ -6901,7 +7149,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Box zoom</source>
-      <translation>Kutu Yakınlaştır</translation>
+      <translation>Kutuya Yakınlaş</translation>
     </message>
   </context>
   <context>
@@ -7004,20 +7252,32 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Nesne bağımlılıkları</translation>
-    </message>
-    <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
+      <source>These items are linked to items selected for deletion and might break.
 
 </source>
-      <translation>Aşağıdakiler, nesneleri referans alarak kopabilir.
-
-Devam etmek istediğine emin misin?
+      <translation>Bu nesneler silinmek için seçilen nesnelere bağlı ve hata çıkarabilir.
 
 </translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document. 
+
+</source>
+      <translation>Bu nesneler silmek için seçildi; ama etkin dokümanda yoklar.
+
+</translation>
+    </message>
+    <message>
+      <source>
+
+Are you sure you want to continue?</source>
+      <translation>
+
+Devam etmek istediğinize emin misiniz?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Seçim sorunlarını sil</translation>
     </message>
   </context>
   <context>
@@ -7119,6 +7379,50 @@ Onları çoğaltmak mı istiyorsun?</translation>
     <message>
       <source>Do you want to continue?</source>
       <translation>Devam etmek istiyor musunuz?</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>İzometrik</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>NaviKüp'ü izometrik moda ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ortografik</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Görüntüyü ortografik moda ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspektif</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Görüntüyü perspektif moduna ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Sığacak şekilde yakınlaştır</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Modeli görünümü dolduracak şekilde yakınlaştır</translation>
     </message>
   </context>
   <context>

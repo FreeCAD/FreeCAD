@@ -2902,19 +2902,30 @@ class Stretch(Modifier):
         self.sel = []
         for obj in FreeCADGui.Selection.getSelection():
             if Draft.getType(obj) in supported:
-                self.sel.append(obj)
+                self.sel.append([obj,FreeCAD.Placement()])
             elif hasattr(obj,"Base"):
                 if obj.Base:
                     if Draft.getType(obj.Base) in supported:
-                        self.sel.append(obj.Base)
-                    elif Draft.getType(obj.Base) == "Offset2D":
-                        if obj.Base.Source:
-                            if Draft.getType(obj.Base.Source) in supported:
-                                self.sel.append(obj.Base.Source)
-            elif Draft.getType(obj) == "Offset2D":
-                if obj.Source:
-                    if Draft.getType(obj.Source) in supported:
-                        self.sel.append(obj.Source)
+                        self.sel.append([obj.Base,obj.Placement])
+                        
+                    elif Draft.getType(obj.Base) in ["Offset2D","Array"]:
+                        base = None
+                        if hasattr(obj.Base,"Source") and obj.Base.Source:
+                            base = obj.Base.Source
+                        elif hasattr(obj.Base,"Base") and obj.Base.Base:
+                            base = obj.Base.Base
+                        if base:
+                            if Draft.getType(base) in supported:
+                                self.sel.append([base,obj.Placement.multiply(obj.Base.Placement)])
+            elif Draft.getType(obj) in ["Offset2D","Array"]:
+                base = None
+                if hasattr(obj,"Source") and obj.Source:
+                    base = obj.Source
+                elif hasattr(obj,"Base") and obj.Base:
+                    base = obj.Base
+                if base:
+                    if Draft.getType(base) in supported:
+                        self.sel.append([base,obj.Placement])
         if self.ui and self.sel:
             self.step = 1
             self.refpoint = None
@@ -2961,13 +2972,16 @@ class Stretch(Modifier):
             self.rectracker.off()
             nodes = []
             self.ops = []
-            for o in self.sel:
+            for sel in self.sel:
+                o = sel[0]
+                vispla = sel[1]
                 tp = Draft.getType(o)
                 if tp in ["Wire","BSpline","BezCurve"]:
                     np = []
                     iso = False
                     for p in o.Points:
                         p = o.Placement.multVec(p)
+                        p = vispla.multVec(p)
                         isi = self.rectracker.isInside(p)
                         np.append(isi)
                         if isi:
@@ -2984,6 +2998,7 @@ class Stretch(Modifier):
                     iso = False
                     for p in [p1,p2,p3,p4]:
                         p = o.Placement.multVec(p)
+                        p = vispla.multVec(p)
                         isi = self.rectracker.isInside(p)
                         np.append(isi)
                         if isi:
@@ -2995,7 +3010,7 @@ class Stretch(Modifier):
                     np = []
                     iso = False
                     for p in o.Shape.Vertexes:
-                        p = o.Placement.multVec(p.Point)
+                        p = vispla.multVec(p.Point)
                         isi = self.rectracker.isInside(p)
                         np.append(isi)
                         if isi:
@@ -3004,9 +3019,11 @@ class Stretch(Modifier):
                     if iso:
                         self.ops.append([o,np])
                 else:
-                    if self.rectracker.isInside(o.Placement.Base):
+                    p = o.Placement.Base
+                    p = vispla.multVec(p)
+                    if self.rectracker.isInside(p):
                         self.ops.append([o])
-                        nodes.append(o.Placement.Base)
+                        nodes.append(p)
             for n in nodes:
                 nt = editTracker(n,inactive=True)
                 nt.on()
@@ -3058,6 +3075,7 @@ class Stretch(Modifier):
                         pts = str(pts).replace("Vector","FreeCAD.Vector")
                         commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Points="+pts)
                     elif tp in ["Sketch"]:
+                        baseverts = [ops[0].Shape.Vertexes[i].Point for i in range(len(ops[1])) if ops[1][i]]
                         for i in range(ops[0].GeometryCount):
                             j = 0
                             while True:
@@ -3067,8 +3085,14 @@ class Stretch(Modifier):
                                     break
                                 else:
                                     p = ops[0].Placement.multVec(p)
-                                    if p in ops[1]:
-                                        commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".movePoint("+str(i)+","+str(j)+",FreeCAD."+str(localdisp)+",True)")
+                                    r = None
+                                    for bv in baseverts:
+                                        if DraftVecUtils.isNull(p.sub(bv)):
+                                            commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".movePoint("+str(i)+","+str(j)+",FreeCAD."+str(localdisp)+",True)")
+                                            r = bv
+                                            break
+                                    if r:
+                                        baseverts.remove(r)
                                     j += 1
                     elif tp in ["Rectangle"]:
                         p1 = Vector(0,0,0)
@@ -3167,7 +3191,7 @@ class Stretch(Modifier):
                                     pts.append(opts[i])
                                 else:
                                     pts.append(opts[i].add(self.displacement))
-                            pts = str([pts]).replace("Vector","FreeCAD.Vector")
+                            pts = str(pts).replace("Vector","FreeCAD.Vector")
                             commitops.append("w = Draft.makeWire("+pts+",closed=True)")
                             commitops.append("Draft.formatObject(w,FreeCAD.ActiveDocument."+ops[0].Name+")")
                             commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".ViewObject.hide()")

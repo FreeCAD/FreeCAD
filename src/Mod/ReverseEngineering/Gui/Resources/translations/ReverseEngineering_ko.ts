@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="+93"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>리버스 엔지니어링</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -24,7 +24,7 @@
     <message>
       <location line="-37"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>리버스 엔지니어링</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -54,7 +54,7 @@
     <message>
       <location line="+134"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>리버스 엔지니어링</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -72,7 +72,7 @@
     <message>
       <location line="+32"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>리버스 엔지니어링</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -248,7 +248,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Reverse Engineering</source>
-      <translation type="unfinished">Reverse Engineering</translation>
+      <translation>리버스 엔지니어링</translation>
     </message>
   </context>
 </TS>

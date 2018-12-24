@@ -4,7 +4,7 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="+474"/>
+      <location filename="../../Command.cpp" line="+478"/>
       <source>Drawing</source>
       <translation>Рисунок</translation>
     </message>
@@ -42,7 +42,7 @@
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location line="+185"/>
+      <location line="+193"/>
       <source>Drawing</source>
       <translation>Рисунок</translation>
     </message>
@@ -61,7 +61,7 @@
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location line="-92"/>
+      <location line="-96"/>
       <source>File</source>
       <translation>Файл</translation>
     </message>
@@ -80,7 +80,7 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location line="-359"/>
+      <location line="-363"/>
       <source>Drawing</source>
       <translation>Рисунок</translation>
     </message>
@@ -126,7 +126,7 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location line="-250"/>
+      <location line="-254"/>
       <source>Drawing</source>
       <translation>Рисунок</translation>
     </message>
@@ -144,7 +144,7 @@
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location line="+375"/>
+      <location line="+379"/>
       <source>Drawing</source>
       <translation>Рисунок</translation>
     </message>
@@ -181,7 +181,7 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location line="+287"/>
+      <location line="+295"/>
       <source>Drawing</source>
       <translation>Рисунок</translation>
     </message>
@@ -219,7 +219,7 @@
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location line="-179"/>
+      <location line="-187"/>
       <source>Drawing</source>
       <translation>Рисунок</translation>
     </message>
@@ -788,8 +788,8 @@ Do you want to continue?</source>
   <context>
     <name>QObject</name>
     <message>
-      <location line="-169"/>
-      <location line="+517"/>
+      <location line="-173"/>
+      <location line="+521"/>
       <source>Choose an SVG file to open</source>
       <translation>Виберіть файл SVG для відкриття</translation>
     </message>
@@ -805,13 +805,13 @@ Do you want to continue?</source>
       <location line="-268"/>
       <location line="+79"/>
       <location line="+50"/>
-      <location line="+187"/>
-      <location line="+119"/>
+      <location line="+191"/>
+      <location line="+123"/>
       <source>Wrong selection</source>
       <translation>Невірний вибір</translation>
     </message>
     <message>
-      <location line="-434"/>
+      <location line="-442"/>
       <source>Select a Part object.</source>
       <translation>Виберіть об'єкт деталі.</translation>
     </message>
@@ -828,40 +828,40 @@ Do you want to continue?</source>
       <translation>Створити сторінку для вставлення переглядів.</translation>
     </message>
     <message>
-      <location line="-249"/>
-      <location line="+517"/>
-      <location line="+53"/>
+      <location line="-253"/>
+      <location line="+521"/>
+      <location line="+57"/>
       <source>Scalable Vector Graphic</source>
       <translation>Масштабована Векторна графіка</translation>
     </message>
     <message>
-      <location line="-313"/>
+      <location line="-317"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>No page found</source>
       <translation>Сторінка не знайдена</translation>
     </message>
     <message>
-      <location line="-431"/>
+      <location line="-439"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>Create a page first.</source>
       <translation>Спочатку створіть сторінку.</translation>
     </message>
     <message>
-      <location line="-362"/>
+      <location line="-370"/>
       <source>Select exactly one Part object.</source>
       <translation>Виберіть лише одну деталь.</translation>
     </message>
     <message>
       <location line="+50"/>
-      <location line="+187"/>
+      <location line="+191"/>
       <source>Select one Page object.</source>
       <translation>Оберіть один об'єкт сторінки.</translation>
     </message>
@@ -871,7 +871,7 @@ Do you want to continue?</source>
       <translation>Всі файли</translation>
     </message>
     <message>
-      <location line="+113"/>
+      <location line="+117"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Виберіть саме один об'єкт електронної таблиці.</translation>
     </message>
@@ -888,7 +888,7 @@ Do you want to continue?</source>
       <translation>Всі файли (*.*)</translation>
     </message>
     <message>
-      <location line="-111"/>
+      <location line="-115"/>
       <source>Export page</source>
       <translation>Експорт сторінки</translation>
     </message>
@@ -923,19 +923,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="+51"/>
-      <location line="+926"/>
+      <location line="+930"/>
       <source>Make axonometric...</source>
       <translation>Зробити аксонометрію...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Edit axonometric settings...</source>
       <translation>Редагувати налаштування аксонометрії...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Make orthographic</source>
       <translation>Зробити ортогональну проекцію</translation>
     </message>

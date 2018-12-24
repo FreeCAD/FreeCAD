@@ -1283,12 +1283,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Test listájának ürítése</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Test listája nem lehet üres</translation>
     </message>
     <message>
       <location line="+11"/>

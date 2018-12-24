@@ -93,9 +93,9 @@ class DraftWorkbench (Workbench):
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
         self.appendMenu(QT_TRANSLATE_NOOP("draft","&Draft"),self.cmdList+self.modList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Utilities")],self.utils+self.treecmdList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Wire tools")],self.lineList)
-        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Snapping")],self.snapList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("Workbench","Utilities")],self.utils+self.treecmdList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("Workbench","Wire tools")],self.lineList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("Workbench","Snapping")],self.snapList)
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui","Draft")

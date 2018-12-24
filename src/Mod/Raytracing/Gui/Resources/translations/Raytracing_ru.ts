@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+496"/>
+      <location filename="../../Command.cpp" line="+519"/>
       <source>File</source>
       <translation>Файл</translation>
     </message>
@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Export a Raytracing project to a file</source>
-      <translation>Экспорт проекта Raytracing в файл</translation>
+      <translation>Экспорт проекта трассировки лучей в файл</translation>
     </message>
     <message>
       <source>Export the Povray project file</source>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location line="+207"/>
+      <location line="+231"/>
       <source>Raytracing</source>
       <translation>Трасcировщик лучей</translation>
     </message>
@@ -41,9 +41,9 @@
       <translation>Вставка в документ нового проекта Luxrender</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
-      <translation>Без шаблона</translation>
+      <translation>Нет шаблона</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -54,7 +54,7 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location line="-341"/>
+      <location line="-372"/>
       <source>Raytracing</source>
       <translation>Трасcировщик лучей</translation>
     </message>
@@ -66,7 +66,7 @@
     <message>
       <location line="+1"/>
       <source>Insert a new part object into a Raytracing project</source>
-      <translation>Вставить новую часть объекта в проект Raytracing</translation>
+      <translation>Вставить новый объект типа деталь в проект трассировки лучей</translation>
     </message>
     <message>
       <source>Insert a new part object into a Povray project</source>
@@ -76,7 +76,7 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location line="-100"/>
+      <location line="-119"/>
       <source>Raytracing</source>
       <translation>Трасcировщик лучей</translation>
     </message>
@@ -99,9 +99,9 @@
       <translation>Вставить новый POV-Ray проект в документ</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
-      <translation>Без шаблона</translation>
+      <translation>Нет шаблона</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -112,44 +112,43 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location line="+196"/>
+      <location line="+212"/>
       <source>Raytracing</source>
       <translation>Трасcировщик лучей</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Render</source>
-      <translation>C визуализацией</translation>
+      <translation>Визуализировать</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Renders the current raytracing project with an external renderer</source>
-      <translation>Визуализирует текущий проект raytracing c помощью внешнего рендера</translation>
+      <translation>Визуализирует текущий проект трассировки лучей с помощью внешнего визуализатора</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location line="+243"/>
+      <location line="+278"/>
       <source>Raytracing</source>
       <translation>Трасcировщик лучей</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Reset Camera</source>
-      <translation>Со сбросом настроек камеры</translation>
+      <translation>&amp;Сброс камеры</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sets the camera of the selected Raytracing project to match the current view</source>
-      <translation>Устанавливает камеру в выбранном проекте Raytracing для соответствия текущему изображению
-</translation>
+      <translation>Устанавливает камеру в выбранном проекте трассировки лучей для соответствия текущему изображению</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <location line="-723"/>
+      <location line="-785"/>
       <source>Raytracing</source>
       <translation>Трасcировщик лучей</translation>
     </message>
@@ -161,11 +160,11 @@
     <message>
       <location line="+1"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation>Экспорт позиции камеры из активного 3D-вида в POV-Ray формате в файл</translation>
+      <translation>Экспорт позиции камеры из активного 3D-вида в файл формата POV-Ray</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-      <translation>Экспорт позиции камеры из активного 3D-вида в POV-Ray формате в файл</translation>
+      <translation>Экспорт позиции камеры из активного 3D-вида в файл формата POV-Ray</translation>
     </message>
     <message>
       <source>Export camera to povray...</source>
@@ -191,7 +190,7 @@
     <message>
       <location line="+1"/>
       <source>Write the selected Part (object) as a POV-Ray file</source>
-      <translation>Записать выбранную деталь (объект) как файл POV-Ray</translation>
+      <translation>Записать выбранную деталь (объект) как файл POV-Ray файл</translation>
     </message>
     <message>
       <source>Export part to povray...</source>
@@ -207,21 +206,21 @@
     <message>
       <location line="-79"/>
       <location line="+139"/>
-      <location line="+93"/>
-      <location line="+391"/>
+      <location line="+97"/>
+      <location line="+434"/>
       <source>No perspective camera</source>
       <translation>Вид не в перспективе </translation>
     </message>
     <message>
-      <location line="-622"/>
+      <location line="-669"/>
       <location line="+139"/>
-      <location line="+93"/>
+      <location line="+97"/>
       <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation>Текущий вид камеры не является перспективным и таким образом итоговое POV-Ray изображение позже может выглядеть иначе, чем вы ожидаете. Вы хотите продолжить?</translation>
+      <translation>Текущий вид камеры не является перспективным таким образом итоговое POV-Ray изображение позже может выглядеть иначе, чем вы ожидаете. Хотите продолжить?</translation>
     </message>
     <message>
-      <location line="-109"/>
+      <location line="-113"/>
       <source>Export view to POV-Ray...</source>
       <translation>Экспорт вида в POV-Ray...</translation>
     </message>
@@ -231,12 +230,24 @@ Do you want to continue?</source>
       <translation>Запись активного 3D вида с камерой и всем его содержимым в POV-Ray файл</translation>
     </message>
     <message>
+      <location line="+126"/>
+      <location line="+434"/>
+      <source>No template</source>
+      <translation>Нет шаблона</translation>
+    </message>
+    <message>
+      <location line="-433"/>
+      <location line="+434"/>
+      <source>Cannot create a project because there is no template installed.</source>
+      <translation>Не удается создать проект, потому что нет установленного шаблона.</translation>
+    </message>
+    <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>Текущий вид находится не в перспективе и как результат, изображение с данной точки может получится отличной от ваших ожиданий.  Вы хотите продолжить? </translation>
     </message>
     <message>
-      <location line="-2"/>
+      <location line="-563"/>
       <source>Raytracing</source>
       <translation>Трасcировщик лучей</translation>
     </message>
@@ -249,10 +260,10 @@ Do you want to continue?</source>
       <translation>Записать текущий 3D-вид камеры и ее содержимого в файл POV-Ray</translation>
     </message>
     <message>
-      <location line="+501"/>
+      <location line="+548"/>
       <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation>Текущий вид камеры не является перспективным и таким образом результат luxrender изображения позже может выглядеть иначе, чем вы ожидаете. Вы хотите продолжить?</translation>
+      <translation>Текущий вид камеры не является перспективным таким образом итоговое luxrender изображение позже может выглядеть иначе, чем вы ожидаете. Хотите продолжить?</translation>
     </message>
   </context>
   <context>
@@ -270,10 +281,10 @@ Do you want to continue?</source>
       <translation>Все файлы (*.*)</translation>
     </message>
     <message>
-      <location line="-585"/>
+      <location line="-632"/>
       <location line="+51"/>
       <location line="+63"/>
-      <location line="+276"/>
+      <location line="+299"/>
       <source>Export page</source>
       <translation>Экспорт страницы</translation>
     </message>
@@ -284,13 +295,13 @@ Do you want to continue?</source>
     <message>
       <location line="-103"/>
       <location line="+87"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Wrong selection</source>
       <translation>Неправильное выделение</translation>
     </message>
     <message>
-      <location line="-392"/>
+      <location line="-431"/>
       <source>Select a Part object.</source>
       <translation>Выберите часть.</translation>
     </message>
@@ -298,32 +309,32 @@ Do you want to continue?</source>
       <location line="+10"/>
       <location line="+12"/>
       <source>No Raytracing project to insert</source>
-      <translation>Ни одного проекта Raytracing для вставки</translation>
+      <translation>Нет ни одного проекта трассировки лучей для вставки</translation>
     </message>
     <message>
       <location line="-11"/>
       <source>Create a Raytracing project to insert a view.</source>
-      <translation>Создать проект Raytracing, чтобы вставить изображение.</translation>
+      <translation>Создать проект трассировки лучей, чтобы вставить вид.</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>Select a Raytracing project to insert the view.</source>
-      <translation>Выбрать проект Raytracing чтобы вставить изображение.</translation>
+      <translation>Выбрать проект трассировки лучей чтобы вставить вид.</translation>
     </message>
     <message>
       <location line="+64"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Select one Raytracing project object.</source>
-      <translation>Выбрать один объект проекта Raytracing.</translation>
+      <translation>Выбрать один объект проекта трассировки лучей.</translation>
     </message>
     <message>
-      <location line="-302"/>
+      <location line="-341"/>
       <source>Luxrender</source>
       <translation>Luxrender</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="+78"/>
       <location line="+6"/>
       <source>POV-Ray not found</source>
       <translation>POV-Ray не найден</translation>
@@ -339,7 +350,7 @@ Do you want to continue?</source>
       <translation>Исправьте путь к исполняемому файлу POV-Ray в настройках.</translation>
     </message>
     <message>
-      <location line="+75"/>
+      <location line="+95"/>
       <source>Lux project file missing</source>
       <translation>Отсутствует файл проекта Lux</translation>
     </message>
@@ -349,37 +360,37 @@ Do you want to continue?</source>
       <translation>Файл проекта Lux не существует.</translation>
     </message>
     <message>
-      <location line="-69"/>
+      <location line="-89"/>
       <location line="+6"/>
       <source>Luxrender not found</source>
       <translation>Luxrender не найден</translation>
     </message>
     <message>
-      <location line="-475"/>
+      <location line="-502"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+272"/>
+      <location line="+295"/>
       <source>POV-Ray</source>
       <translation>POV-Ray</translation>
     </message>
     <message>
-      <location line="-384"/>
+      <location line="-407"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+276"/>
-      <location line="+109"/>
+      <location line="+299"/>
+      <location line="+113"/>
       <source>All Files</source>
       <translation>Все файлы</translation>
     </message>
     <message>
       <location line="-29"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Пожалуйста задайте находящийся в списке предпочтений путь в luxrender или luxconsole.</translation>
+      <translation>Задайте путь к папке luxrender или к исполняемому файлу luxconsole в настройках.</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation>Пожалуйста скорректируйте находящийся в списке предпочтений путь в luxrender или luxconsole.</translation>
+      <translation>Исправьте путь к папке luxrender или к исполняемому файлу luxconsole в настройках.</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -404,7 +415,7 @@ Do you want to continue?</source>
       <location line="+2"/>
       <location line="+3"/>
       <source>Rendered image</source>
-      <translation>Визуализированного изображение</translation>
+      <translation>Визуализированное изображение</translation>
     </message>
     <message>
       <source>No Povray project to insert</source>
@@ -448,7 +459,7 @@ Do you want to continue?</source>
     <message>
       <location line="+9"/>
       <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation>Параметры POV-Ray, которые должны быть переданы рендеру.</translation>
+      <translation>Параметры POV-Ray, которые должны быть переданы визуализатору.</translation>
     </message>
     <message>
       <location line="+95"/>
@@ -458,17 +469,17 @@ Do you want to continue?</source>
     <message>
       <location line="+53"/>
       <source>Default Project dir:</source>
-      <translation>По умолчанию каталог проекта:</translation>
+      <translation>Каталог проекта по умолчанию:</translation>
     </message>
     <message>
       <location line="-26"/>
       <source>Camera file name:</source>
-      <translation>Название фото-файла:</translation>
+      <translation>Имя файла камеры:</translation>
     </message>
     <message>
       <location line="-216"/>
       <source>Max mesh deviation:</source>
-      <translation>Максимальное отклонение сетки:</translation>
+      <translation>Максимальное отклонение полигональной сетки:</translation>
     </message>
     <message>
       <location line="+57"/>
@@ -508,7 +519,7 @@ Do you want to continue?</source>
     <message>
       <location line="+7"/>
       <source>The path to the luxrender (or luxconsole) executable</source>
-      <translation>Исполняемый путь в luxrender (или luxconsole)</translation>
+      <translation>Путь к исполняемому файлу luxrender (или luxconsole)</translation>
     </message>
     <message>
       <location line="+38"/>
@@ -535,7 +546,7 @@ Do you want to continue?</source>
     <message>
       <location line="-294"/>
       <source>Mesh export settings</source>
-      <translation>Экспорт настроек сетки</translation>
+      <translation>Экспорт настроек полигональной сетки</translation>
     </message>
     <message>
       <source>max mesh deviation:</source>
@@ -544,12 +555,12 @@ Do you want to continue?</source>
     <message>
       <location line="+54"/>
       <source>Do not calculate vertex normals</source>
-      <translation>Не вычислять нормалей вершины</translation>
+      <translation>Не вычислять нормали вершины</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Write u,v coordinates</source>
-      <translation>Написать u, v координаты</translation>
+      <translation>Записать u, v координаты</translation>
     </message>
   </context>
   <context>
@@ -560,7 +571,7 @@ Do you want to continue?</source>
       <translation>Редактировать проект LuxRender</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>LuxRender template</source>
       <translation>Шаблон Luxrender</translation>
     </message>
@@ -573,12 +584,12 @@ Do you want to continue?</source>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location line="+48"/>
+      <location line="+47"/>
       <source>Edit Povray project</source>
       <translation>Редактировать проект Povray</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>Povray template</source>
       <translation>Шаблон Povray</translation>
     </message>

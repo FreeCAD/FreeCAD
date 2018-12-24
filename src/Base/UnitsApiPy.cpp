@@ -84,6 +84,10 @@ PyMethodDef UnitsApi::Methods[] = {
      "getSchema() -> int\n\n"
      "The int is the position of the tuple returned by listSchemas"
     },
+    {"setSchema",  (PyCFunction) UnitsApi::sSetSchema, METH_VARARGS,
+     "setSchema(int) -> None\n\n"
+     "Sets the current schema to the given number, if possible"
+    },
     {"schemaTranslate",  (PyCFunction) UnitsApi::sSchemaTranslate, METH_VARARGS,
      "schemaTranslate(Quantity, int) -> tuple\n\n"
      "Translate a quantity to a given schema"
@@ -196,6 +200,21 @@ PyObject* UnitsApi::sGetSchema(PyObject * /*self*/, PyObject *args)
         return NULL;
 
     return Py_BuildValue("i", static_cast<int>(actSystem));
+}
+
+PyObject* UnitsApi::sSetSchema(PyObject * /*self*/, PyObject *args)
+{
+    PyErr_Clear();
+    int index;
+    if (PyArg_ParseTuple(args, "i", &index)) {
+        int num = NumUnitSystemTypes;
+        if (index < 0 || index >= num) {
+            PyErr_SetString(PyExc_ValueError, "invalid schema value");
+            return 0;
+        }
+        setSchema((UnitSystem)index);
+    }
+    Py_Return;
 }
 
 PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)

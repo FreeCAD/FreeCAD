@@ -106,5 +106,23 @@ FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modu
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
       <translation>Masukkan nama objek yang dapat dipanggil yang, ketika dipanggil, akan mengembalikan TestCase. Click 'start', dan tes yang dihasilkan akan dijalankan. Double klik pada kesalahan pada tampilan struktur pohon untuk melihat lebih banyak informasi tentang itu, termasuk jejak stack.</translation>
     </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation type="unfinished">Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+    </message>
   </context>
 </TS>
