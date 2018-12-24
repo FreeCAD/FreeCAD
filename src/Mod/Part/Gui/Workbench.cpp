@@ -92,6 +92,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* compound = new Gui::MenuItem;
     compound->setCommand("Compound");
     *compound << "Part_Compound"
+              << "Part_ExplodeCompound"
               << "Part_CompoundFilter";
 
     Gui::MenuItem* part = new Gui::MenuItem;
@@ -188,7 +189,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
-    *boolop << "Part_Boolean"
+    *boolop << "Part_CompCompoundTools"
+            << "Part_Boolean"
             << "Part_Cut"
             << "Part_Fuse"
             << "Part_Common"
