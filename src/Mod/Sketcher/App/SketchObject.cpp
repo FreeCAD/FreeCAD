@@ -7266,9 +7266,9 @@ void SketchObject::onChanged(const App::Property* prop)
         std::vector<std::string> originalRefs;
         std::map<std::string,std::string> refMap;
         if(updateGeoRef) {
+            assert(externalGeoRef.size() == objs.size());
             updateGeoRef = false;
             originalRefs = std::move(externalGeoRef);
-            assert(externalGeoRef.size() == objs.size());
         }
         externalGeoRef.clear();
         for(int i=0;i<(int)objs.size();++i) {
