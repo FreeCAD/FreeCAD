@@ -17,6 +17,7 @@
         <file>icons/Part_CreatePrimitives.svg</file>
         <file>icons/Part_Cylinder.svg</file>
         <file>icons/Part_Extrude.svg</file>
+        <file>icons/Part_ExplodeCompound.svg</file>
         <file>icons/Part_Fillet.svg</file>
         <file>icons/Part_Fuse.svg</file>
         <file>icons/Part_Import.svg</file>
