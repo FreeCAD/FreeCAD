@@ -67,8 +67,6 @@
 #include "PlanePy.h"
 #include "PointPy.h"
 #include "BSplineCurvePy.h"
-#include "BezierCurvePy.h"
-// #include "TrimmedCurvePy.h"
 
 #include "OCCError.h"
 #include "TopoShape.h"
