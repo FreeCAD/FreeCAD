@@ -288,8 +288,6 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
     task_group g;
 #endif
 
-    App::Color color(0.8f,0.8f,0.8f);
-    std::vector<App::Color> colors;
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0, ctVertices = 0, ctEdges = 0;
@@ -376,6 +374,8 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
                     part->Shape.setValue(comp);
                 part->Label.setValue(name);
                 lValue.push_back(part);
+
+                loadColors(part, aShape);
             }
         }
         else {
@@ -433,6 +433,11 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
     part->Label.setValue(name);
     lvalue.push_back(part);
 
+    loadColors(part, aShape);
+}
+
+void ImportOCAF::loadColors(Part::Feature* part, const TopoDS_Shape& aShape)
+{
     Quantity_Color aColor;
     App::Color color(0.8f,0.8f,0.8f);
     if (aColorTool->GetColor(aShape, XCAFDoc_ColorGen, aColor) ||
