@@ -51,6 +51,7 @@
 #include <App/GeoFeature.h>
 #include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
+#include "Tree.h"
 #include "ViewProviderDocumentObject.h"
 #include "Macro.h"
 
@@ -790,14 +791,14 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
 
     if(Chng.Type==SelectionChanges::SetPreselect) {
         CurrentPreselection = Chng;
-        FC_TRACE("preselect"<<DocName<<'.'<<FeatName<<'.'<<SubName);
+        FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
     }else
-        FC_TRACE("preselect signal "<<DocName<<'.'<<FeatName<<'.'<<SubName);
+        FC_TRACE("preselect signal "<<DocName<<'#'<<FeatName<<'.'<<SubName);
 
     notify(Chng);
 
     if(signal==1 && DocName.size()) {
-        FC_TRACE("preselect"<<DocName<<'.'<<FeatName<<'.'<<SubName);
+        FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
         Chng.Type = SelectionChanges::SetPreselect;
         CurrentPreselection = Chng;
         notify(std::move(Chng));
@@ -1006,7 +1007,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     SelectionChanges Chng(SelectionChanges::AddSelection,
             temp.DocName,temp.FeatName,temp.SubName,temp.TypeName, x,y,z);
 
-    FC_LOG("Add Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName
+    FC_LOG("Add Selection "<<Chng.DocName<<'#'<<Chng.ObjName<<'.'<<Chng.SubName
             << " (" << x << ", " << y << ", " << z << ')');
 
     notify(std::move(Chng));
@@ -1151,7 +1152,7 @@ bool SelectionSingleton::addSelections(const char* pDocName, const char* pObject
         SelectionChanges Chng(SelectionChanges::AddSelection,
                 temp.DocName,temp.FeatName,temp.SubName,temp.TypeName);
 
-        FC_LOG("Add Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
+        FC_LOG("Add Selection "<<Chng.DocName<<'#'<<Chng.ObjName<<'.'<<Chng.SubName);
 
         notify(std::move(Chng));
         update = true;
@@ -1186,7 +1187,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
     SelectionChanges Chng(show?SelectionChanges::ShowSelection:SelectionChanges::HideSelection,
             pDocName,pObjectName,pSubName,pObject->getTypeId().getName());
 
-    FC_LOG("Update Selection "<<Chng.DocName << '.' << Chng.ObjName << '.' <<Chng.SubName);
+    FC_LOG("Update Selection "<<Chng.DocName << '#' << Chng.ObjName << '.' <<Chng.SubName);
 
     notify(std::move(Chng));
     return true;
@@ -1279,7 +1280,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
     // So, the notification is done after the loop, see also #0003469
     if(changes.size()) {
         for(auto &Chng : changes) {
-            FC_LOG("Rmv Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
+            FC_LOG("Rmv Selection "<<Chng.DocName<<'#'<<Chng.ObjName<<'.'<<Chng.SubName);
             notify(std::move(Chng));
         }
         getMainWindow()->updateActions();
@@ -1506,19 +1507,22 @@ int SelectionSingleton::checkSelection(const char *pDocName, const char *pObject
     pDocName = sel.pDoc->getName();
     sel.DocName = pDocName;
 
-    if(pObjectName) {
-        sel.FeatName = pObjectName;
+    if(pObjectName)
         sel.pObject = sel.pDoc->getObject(pObjectName);
-    } else
+    else
         sel.pObject = 0;
     if (!sel.pObject) {
         if(!selList)
             FC_ERR("Object not found");
         return -1;
     }
-    sel.TypeName = sel.pObject->getTypeId().getName();
     if(pSubName)
        sel.SubName = pSubName;
+    if(!resolve)
+        TreeWidget::checkTopParent(sel.pObject,sel.SubName);
+    pSubName = sel.SubName.size()?sel.SubName.c_str():0;
+    sel.FeatName = sel.pObject->getNameInDocument();
+    sel.TypeName = sel.pObject->getTypeId().getName();
     const char *element = 0;
     sel.pResolvedObject = App::GeoFeature::resolveElement(sel.pObject,
             pSubName,sel.elementName,false,App::GeoFeature::Normal,0,&element);
@@ -1602,7 +1606,7 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
     }
     if(changes.size()) {
         for(auto &Chng : changes) {
-            FC_LOG("Rmv Selection "<<Chng.DocName<<'.'<<Chng.ObjName<<'.'<<Chng.SubName);
+            FC_LOG("Rmv Selection "<<Chng.DocName<<'#'<<Chng.ObjName<<'.'<<Chng.SubName);
             notify(std::move(Chng));
         }
         getMainWindow()->updateActions();
