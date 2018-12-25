@@ -178,6 +178,8 @@ struct DocumentP
     std::map<DocumentObject*,Vertex> VertexObjectList;
     std::map<Vertex,DocumentObject*> vertexMap;
 #endif //USE_OLD_DAG
+    std::multimap<const App::DocumentObject*, 
+        std::unique_ptr<App::DocumentObjectExecReturn> > _RecomputeLog;
 
     DocumentP() {
         static std::random_device _RD;
@@ -198,6 +200,37 @@ struct DocumentP
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
+    }
+
+    void addRecomputeLog(const char *why, App::DocumentObject *obj) {
+        addRecomputeLog(new DocumentObjectExecReturn(why,obj));
+    }
+
+    void addRecomputeLog(const std::string &why, App::DocumentObject *obj) {
+        addRecomputeLog(new DocumentObjectExecReturn(why,obj));
+    }
+
+    void addRecomputeLog(DocumentObjectExecReturn *returnCode) {
+        if(!returnCode->Which) {
+            delete returnCode;
+            return;
+        }
+        _RecomputeLog.emplace(returnCode->Which, std::unique_ptr<DocumentObjectExecReturn>(returnCode));
+        returnCode->Which->setStatus(ObjectStatus::Error,true);
+    }
+
+    void clearRecomputeLog(const App::DocumentObject *obj=0) {
+        if(!obj)
+            _RecomputeLog.clear();
+        else
+            _RecomputeLog.erase(obj);
+    }
+
+    const char *findRecomputeLog(const App::DocumentObject *obj) {
+        auto range = _RecomputeLog.equal_range(obj);
+        if(range.first == range.second)
+            return 0;
+        return (--range.second)->second->Why.c_str();
     }
 
     static
@@ -1812,8 +1845,12 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
         // See DocumentObjectPy::getState
         if ((*it)->testStatus(ObjectStatus::Touch))
             writer.Stream() << "Touched=\"1\" ";
-        if ((*it)->testStatus(ObjectStatus::Error))
+        if ((*it)->testStatus(ObjectStatus::Error)) {
             writer.Stream() << "Invalid=\"1\" ";
+            auto desc = getErrorDescription(*it);
+            if(desc) 
+                writer.Stream() << "Error=\"" << Property::encodeAttribute(desc) << "\" ";
+        }
         writer.Stream() << "/>" << endl;
     }
 
@@ -1984,8 +2021,11 @@ Document::readObjects(Base::XMLReader& reader)
                     if(reader.getAttributeAsInteger("Touched") != 0)
                         d->touchedObjs.insert(obj);
                 }
-                if (reader.hasAttribute("Invalid"))
+                if (reader.hasAttribute("Invalid")) {
                     obj->setStatus(ObjectStatus::Error, reader.getAttributeAsInteger("Invalid") != 0);
+                    if(obj->isError() && reader.hasAttribute("Error")) 
+                        d->addRecomputeLog(reader.getAttribute("Error"),obj);
+                }
             }
         }
         catch (const Base::Exception& e) {
@@ -2332,6 +2372,7 @@ void Document::restore (bool delaySignal, const std::set<std::string> &objNames)
 
     setStatus(Document::PartialDoc,false);
 
+    d->clearRecomputeLog();
     d->objectArray.clear();
     d->objectMap.clear();
     d->objectIdMap.clear();
@@ -2430,18 +2471,21 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
         try {
             auto returnCode = obj->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteTransient);
             if(returnCode!=DocumentObject::StdReturn) {
-                FC_ERR("Failed to restore " << obj->getFullName() << ": " << returnCode->Why);
-                delete returnCode;
+                FC_ERR("Expression engine failed to restore " << obj->getFullName() << ": " << returnCode->Why);
+                d->addRecomputeLog(returnCode);
             }
             obj->onDocumentRestored();
         }
         catch (const Base::Exception& e) {
+            d->addRecomputeLog(e.what(),obj);
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
         }
         catch (std::exception &e) {
+            d->addRecomputeLog(e.what(),obj);
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
         }
         catch (...) {
+            d->addRecomputeLog("Unknown exception on restore",obj);
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << "unknown exception");
         }
         if(checkXLink && !d->touchedObjs.count(obj)) {
@@ -2450,9 +2494,16 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
                 int res;
                 if(link && (res=link->checkRestore())) {
                     d->touchedObjs.insert(obj);
-                    FC_WARN("'" << obj->getFullName() 
-                        << "' xlink property '" << prop->getName() 
-                        << (res==1?"' time stamp changed":"' not restored"));
+                    if(res==1)
+                        FC_WARN("'" << obj->getFullName() << "' xlink property '" 
+                                << prop->getName() << "' time stamp changed");
+                    else {
+                        std::ostringstream ss;
+                        ss << prop->getName() << " not restored";
+                        d->addRecomputeLog(ss.str(),obj);
+                        FC_WARN("'" << obj->getFullName() << "' xlink property '" 
+                                << prop->getName() << "' not restored");
+                    }
                     break;
                 }
             }
@@ -2787,9 +2838,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
     // delete recompute log
-    for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
-        delete *it;
-    _RecomputeLog.clear();
+    d->clearRecomputeLog();
 
     // updates the dependency graph
     _rebuildDependencyList(objs);
@@ -2926,9 +2975,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
 
     // delete recompute log
-    for (auto LogEntry: _RecomputeLog)
-        delete LogEntry;
-    _RecomputeLog.clear();
+    d->clearRecomputeLog();
 
     //do we have anything to do?
     if(d->objectMap.empty())
@@ -3194,10 +3241,7 @@ std::vector<App::DocumentObject*> Document::topologicalSort() const
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
 {
-    for (std::vector<App::DocumentObjectExecReturn*>::const_iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
-        if ((*it)->Which == Obj)
-            return (*it)->Why.c_str();
-    return 0;
+    return d->findRecomputeLog(Obj);
 }
 
 // call the recompute of the Feature and handle the exceptions and errors.
@@ -3216,33 +3260,28 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
     }
     catch(Base::AbortException &e){
         e.ReportException();
-        _RecomputeLog.push_back(new DocumentObjectExecReturn("User abort",Feat));
-        Feat->setError();
+        d->addRecomputeLog("User abort",Feat);
         return true;
     }
     catch (const Base::MemoryException& e) {
         FC_ERR("Memory exception in " << Feat->getFullName() << " thrown: " << e.what());
-        _RecomputeLog.push_back(new DocumentObjectExecReturn("Out of memory exception",Feat));
-        Feat->setError();
+        d->addRecomputeLog("Out of memory exception",Feat);
         return true;
     }
     catch (Base::Exception &e) {
         e.ReportException();
-        _RecomputeLog.push_back(new DocumentObjectExecReturn(e.what(),Feat));
-        Feat->setError();
+        d->addRecomputeLog(e.what(),Feat);
         return true;
     }
     catch (std::exception &e) {
         FC_ERR("exception in " << Feat->getFullName() << " thrown: " << e.what());
-        _RecomputeLog.push_back(new DocumentObjectExecReturn(e.what(),Feat));
-        Feat->setError();
+        d->addRecomputeLog(e.what(),Feat);
         return true;
     }
 #ifndef FC_DEBUG
     catch (...) {
         FC_ERR("Unknown exception in " << Feat->getFullName() << " thrown");
-        _RecomputeLog.push_back(new DocumentObjectExecReturn("Unknown exception!"));
-        Feat->setError();
+        d->addRecomputeLog("Unknown exception!",Feat);
         return true;
     }
 #endif
@@ -3251,13 +3290,12 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         Feat->resetError();
     }else{
         returnCode->Which = Feat;
-        _RecomputeLog.push_back(returnCode);
+        d->addRecomputeLog(returnCode);
 #ifdef FC_DEBUG
         FC_ERR("Failed to recompute " << Feat->getFullName() << ": " << returnCode->Why);
 #else
         FC_LOG("Failed to recompute " << Feat->getFullName() << ": " << returnCode->Why);
 #endif
-        Feat->setError();
         return true;
     }
     return false;
@@ -3265,10 +3303,8 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 
 void Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 {
-     // delete recompute log
-    for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
-        delete *it;
-    _RecomputeLog.clear();
+    // delete recompute log
+    d->clearRecomputeLog(Feat);
 
     // verify that the feature is (active) part of the document
     if (Feat->getNameInDocument()) {

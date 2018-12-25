@@ -333,8 +333,6 @@ public:
     int recompute(const std::vector<App::DocumentObject*> &objs={},bool force=false);
     /// Recompute only one feature
     void recomputeFeature(DocumentObject* Feat,bool recursive=false);
-    /// get the error log from the recompute run
-    const std::vector<App::DocumentObjectExecReturn*> &getRecomputeLog(void)const{return _RecomputeLog;}
     /// get the text of the error of a specified object
     const char* getErrorDescription(const App::DocumentObject*) const;
     /// return the status bits
@@ -568,8 +566,6 @@ private:
     std::map<int,Transaction*> mUndoMap;
     std::list<Transaction*> mRedoTransactions;
     std::map<int,Transaction*> mRedoMap;
-    // recompute log
-    std::vector<App::DocumentObjectExecReturn*> _RecomputeLog;
 
     // pointer to the python class
     Py::Object DocumentPythonObject;

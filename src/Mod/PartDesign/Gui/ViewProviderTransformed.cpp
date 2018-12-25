@@ -140,7 +140,6 @@ void ViewProviderTransformed::recomputeFeature(void)
 {
     PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
     pcTransformed->getDocument()->recomputeFeature(pcTransformed);
-    const std::vector<App::DocumentObjectExecReturn*> log = pcTransformed->getDocument()->getRecomputeLog();
     PartDesign::Transformed::rejectedMap rejected_trsf = pcTransformed->getRejectedTransformations();
     unsigned rejected = 0;
     for (PartDesign::Transformed::rejectedMap::const_iterator r = rejected_trsf.begin(); r != rejected_trsf.end(); r++)
@@ -155,9 +154,10 @@ void ViewProviderTransformed::recomputeFeature(void)
             msg = msg.arg(rejected);
         }
     }
-    if (log.size() > 0) {
+    auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
+    if (error) {
         msg = msg.arg(QString::fromLatin1("<font color='red'>%1<br/></font>"));
-        msg = msg.arg(QString::fromStdString(log.back()->Why));
+        msg = msg.arg(QString::fromUtf8(error));
     } else {
         msg = msg.arg(QString::fromLatin1("<font color='green'>%1<br/></font>"));
         msg = msg.arg(QObject::tr("Transformation succeeded"));
