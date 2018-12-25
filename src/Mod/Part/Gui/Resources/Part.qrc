@@ -34,6 +34,7 @@
         <file>icons/Part_Shapebuilder.png</file>
         <file>icons/Part_ShapeInfo.svg</file>
         <file>icons/Part_Slice.svg</file>
+        <file>icons/Part_SliceApart.svg</file>
         <file>icons/Part_Sphere.svg</file>
         <file>icons/Part_Sweep.svg</file>
         <file>icons/Part_Thickness.svg</file>
