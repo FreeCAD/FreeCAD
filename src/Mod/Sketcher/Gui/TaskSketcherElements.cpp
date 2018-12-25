@@ -694,7 +694,10 @@ void TaskSketcherElements::on_elementsWidget_itemEntered(QTreeWidgetItem *item)
     {
     case 0:
         {
-            ss << "Edge" << it->ElementNbr + 1;
+            if(it->ElementNbr>=0)
+                ss << "Edge" << it->ElementNbr + 1;
+            else
+                ss << "ExternalEdge" << -it->ElementNbr - 1;
             Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
         break;
