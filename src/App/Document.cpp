@@ -901,11 +901,10 @@ bool Document::undo(int id)
         // redo
         d->activeUndoTransaction = new Transaction(mUndoTransactions.back()->getID());
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
-        {
-            Base::FlagToggler<bool> flag(d->undoing);
-            // applying the undo
-            mUndoTransactions.back()->apply(*this,false);
-        }
+
+        Base::FlagToggler<bool> flag(d->undoing);
+        // applying the undo
+        mUndoTransactions.back()->apply(*this,false);
 
         // save the redo
         mRedoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
@@ -944,10 +943,9 @@ bool Document::redo(int id)
         d->activeUndoTransaction->Name = mRedoTransactions.back()->Name;
 
         // do the redo
-        {
-            Base::FlagToggler<bool> flag(d->undoing);
-            mRedoTransactions.back()->apply(*this,true);
-        }
+        Base::FlagToggler<bool> flag(d->undoing);
+        mRedoTransactions.back()->apply(*this,true);
+
         mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
@@ -1055,7 +1053,7 @@ int Document::_openTransaction(const char* name, int id)
 void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What, int line)
 {
     // if the undo is active but no transaction open, open one!
-    if (d->iUndoMode) {
+    if (d->iUndoMode && !isPerformingTransaction()) {
         if (!d->activeUndoTransaction) {
             if(!testStatus(Restoring) || testStatus(Importing)) {
                 int tid=0;
