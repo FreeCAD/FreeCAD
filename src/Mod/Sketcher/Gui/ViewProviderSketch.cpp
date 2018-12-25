@@ -848,6 +848,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         }
                         edit->PreselectConstraintSet = edit->DragConstraintSet;
                         edit->DragConstraintSet.clear();
+                        getDocument()->commitCommand();
                     }
                     Mode = STATUS_NONE;
                     return true;
