@@ -305,7 +305,7 @@ void TreeWidgetEditDelegate::editorClosed(QWidget *editor) {
 TreeWidget::TreeWidget(const char *name, QWidget* parent)
     : QTreeWidget(parent), SelectionObserver(false,0), contextItem(0)
     , searchObject(0), searchDoc(0), searchContextDoc(0)
-    , editingItem(0), currentDocItem(0),fromOutside(false)
+    , editingItem(0), errItem(0), currentDocItem(0),fromOutside(false)
     ,statusUpdateDelay(0),myName(name)
 {
     Instances.insert(this);
@@ -376,8 +376,10 @@ TreeWidget::TreeWidget(const char *name, QWidget* parent)
     Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, _1));
     Application::Instance->signalRelabelDocument.connect(boost::bind(&TreeWidget::slotRelabelDocument, this, _1));
     Application::Instance->signalShowHidden.connect(boost::bind(&TreeWidget::slotShowHidden, this, _1));
-    App::GetApplication().signalStartOpenDocument.connect(boost::bind(&TreeWidget::setVisible,this,false));
-    App::GetApplication().signalFinishOpenDocument.connect(boost::bind(&TreeWidget::setVisible,this,true));
+    App::GetApplication().signalStartOpenDocument.connect(
+            boost::bind(&TreeWidget::slotStartOpenDocument,this));
+    App::GetApplication().signalFinishOpenDocument.connect(
+            boost::bind(&TreeWidget::slotFinishOpenDocument,this));
 
     App::GetApplication().signalFinishRestoreDocument.connect
         (boost::bind(&TreeWidget::slotFinishRestoreDocument, this, _1));
@@ -1711,6 +1713,19 @@ void TreeWidget::slotNewDocument(const Gui::Document& Doc)
     DocumentMap[ &Doc ] = item;
 }
 
+void TreeWidget::slotStartOpenDocument() {
+    errItem = 0;
+    setVisible(false);
+}
+
+void TreeWidget::slotFinishOpenDocument() {
+    if(errItem) {
+        scrollToItem(errItem);
+        errItem = 0;
+    }
+    setVisible(true);
+}
+
 void TreeWidget::onReloadDoc() {
     if (!this->contextItem || this->contextItem->type() != DocumentType)
         return;
@@ -2470,10 +2485,23 @@ void TreeWidget::slotFinishRestoreDocument(const App::Document& Doc)
         {
            v.second->viewObject->hide();
         }
+        if(v.first->isError()
+                && v.second->items.size() 
+                && !Doc.testStatus(App::Document::PartialDoc))
+        {
+            auto item = v.second->rootItem;
+            if(!item) {
+                item = *v.second->items.begin();
+                docItem->showItem(item,false,true);
+            }
+            if(!errItem)
+                errItem = item;
+        }
     }
 
     if(!Doc.testStatus(App::Document::PartialDoc))
         return;
+
     auto item = it->second;
     this->collapseItem(item);
 
@@ -3159,8 +3187,8 @@ DocumentObjectItem *DocumentItem::findItemByObject(
 DocumentObjectItem *DocumentItem::findItem(
         bool sync, DocumentObjectItem *item, const char *subname, bool select) 
 {
-    if(item->isHidden())
-        return 0;
+    if(item->isHidden()) 
+        item->setHidden(false);
 
     if(!subname || *subname==0) {
         if(select) {
