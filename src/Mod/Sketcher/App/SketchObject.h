@@ -473,6 +473,8 @@ protected:
 
     void delExternalPrivate(const std::set<long> &ids, bool removeReference);
 
+    void updateGeometryRefs();
+
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to
     bool allowOtherBody;

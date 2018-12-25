@@ -6070,7 +6070,10 @@ void SketchObject::rebuildExternalGeometry(bool defining)
     BRepBuilderAPI_MakeFace mkFace(sketchPlane);
     TopoDS_Shape aProjFace = mkFace.Shape();
 
-    std::map<std::string, std::vector<std::unique_ptr<Part::Geometry> > > newGeos;
+    std::set<std::string> refSet;
+    // We use a vector here to keep the order (roughly) the same as ExternalGeometry
+    std::vector<std::vector<std::unique_ptr<Part::Geometry> > > newGeos;
+    newGeos.reserve(Objects.size());
 
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
@@ -6091,7 +6094,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
             }
         }
         if(frozen && !sync) {
-            newGeos[key];
+            refSet.insert(std::move(key));
             continue;
         }
 
@@ -6418,8 +6421,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
         if(geos.empty())
             continue;
 
-        auto &entry = newGeos[key];
-        if(entry.size()) {
+        if(!refSet.emplace(key).second) {
             FC_WARN("Duplicated external reference in " << getFullName() << ": " << key);
             continue;
         }
@@ -6427,34 +6429,32 @@ void SketchObject::rebuildExternalGeometry(bool defining)
             for(auto &geo : geos)
                 geo->setFlag(Part::Geometry::Defining);
         }
-        entry = std::move(geos);
+        for(auto &geo : geos)
+            geo->Ref = key;
+        newGeos.push_back(std::move(geos));
     }
 
     // allocate unique geometry id
-    for(auto &v : newGeos) {
-        if(v.second.empty())
-            continue;
-        auto &refs = externalGeoRefMap[v.first];
-        while(refs.size() < v.second.size()) 
+    for(auto &geos : newGeos) {
+        auto &refs = externalGeoRefMap[geos.front()->Ref];
+        while(refs.size() < geos.size()) 
             refs.push_back(++geoLastId);
 
         // In case a projection reduces output geometries, delete them
         std::set<long> geoIds;
-        geoIds.insert(refs.begin()+v.second.size(),refs.end());
+        geoIds.insert(refs.begin()+geos.size(),refs.end());
         delExternalPrivate(geoIds,false);
 
         // Sync id and ref of the new geometries
         int i = 0;
-        for(auto &geo : v.second) {
+        for(auto &geo : geos)
             geo->Id = refs[i++];
-            geo->Ref = v.first;
-        }
     }
 
     // now update the geometries
     auto geoms = ExternalGeo.getValues();
-    for(auto &v : newGeos) {
-        for(auto &geo : v.second) {
+    for(auto &geos : newGeos) {
+        for(auto &geo : geos) {
             auto it = externalGeoMap.find(geo->Id);
             if(it == externalGeoMap.end()) {
                 // This is a new geometries.
@@ -6473,7 +6473,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
         geo->setFlag(Part::Geometry::Sync,false);
         if(geo->Ref.empty())
             continue;
-        if(!newGeos.count(geo->Ref)) {
+        if(!refSet.count(geo->Ref)) {
             FC_ERR( "External geometry " << getFullName() << ".e" << geo->Id
                     << " missing reference: " << geo->Ref);
             hasError = true;
@@ -6487,13 +6487,13 @@ void SketchObject::rebuildExternalGeometry(bool defining)
     rebuildVertexIndex();
 
     // clean up geometry reference
-    if(newGeos.size() < externalGeoRef.size()) {
+    if(refSet.size() < externalGeoRef.size()) {
         auto objs = ExternalGeometry.getValues();
         auto itObj = objs.begin();
         auto subs = ExternalGeometry.getSubValues();
         auto itSub = subs.begin();
         for(auto &ref : externalGeoRef) {
-            if(!newGeos.count(ref)) {
+            if(!refSet.count(ref)) {
                 itObj = objs.erase(itObj);
                 itSub = subs.erase(itSub);
             }else {
@@ -6506,7 +6506,6 @@ void SketchObject::rebuildExternalGeometry(bool defining)
 
     solverNeedsUpdate=true;
     Constraints.acceptGeometry(getCompleteGeometry());
-    rebuildVertexIndex();
 
     if(hasError) 
         throw Base::RuntimeError("Missing external geometry reference");
@@ -7268,52 +7267,10 @@ void SketchObject::onChanged(const App::Property* prop)
             ExternalGeometry.setValues(objs,subs);
         }
     } else if( prop == &ExternalGeometry ) {
-        const auto &objs = ExternalGeometry.getValues();
-        const auto &subs = ExternalGeometry.getSubValues();
-        const auto &shadows = ExternalGeometry.getShadowSubs();
-        assert(subs.size() == shadows.size());
-        std::vector<std::string> originalRefs;
-        std::map<std::string,std::string> refMap;
-        if(updateGeoRef) {
-            assert(externalGeoRef.size() == objs.size());
-            updateGeoRef = false;
-            originalRefs = std::move(externalGeoRef);
-        }
-        externalGeoRef.clear();
-        for(int i=0;i<(int)objs.size();++i) {
-            auto obj = objs[i];
-            const std::string &sub=shadows[i].first.size()?shadows[i].first:subs[i];        
-            externalGeoRef.emplace_back(obj->getNameInDocument());
-            auto &key = externalGeoRef.back();
-            key += '.';
-
-            if (!obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) &&
-                 obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) 
-            {
-                key += Data::ComplexGeoData::newElementName(sub.c_str());
-            }
-            if(originalRefs.size() && originalRefs[i]!=key)
-                refMap[originalRefs[i]] = key;
-        }
-        if(refMap.size()) {
-            auto geos = ExternalGeo.getValues();
-            bool touched = false;
-            for(auto &v : refMap) {
-                auto it = externalGeoRefMap.find(v.first);
-                if(it != externalGeoRefMap.end())
-                    continue;
-                for(long id : it->second) {
-                    auto iter = externalGeoMap.find(id);
-                    if(iter!=externalGeoMap.end()) {
-                        auto &geo = geos[iter->second];
-                        geo = geo->clone();
-                        geo->Ref = v.second;
-                        touched = true;
-                    }
-                }
-            }
-            if(touched)
-                ExternalGeo.setValues(std::move(geos));
+        if(!isRestoring()) {
+            // must wait till onDocumentRestored() when shadow references are
+            // fully restored
+            updateGeometryRefs();
         }
     }
     Part::Part2DObject::onChanged(prop);
@@ -7324,30 +7281,84 @@ void SketchObject::onUpdateElementReference(const App::Property *prop) {
         updateGeoRef = true;
 }
 
+void SketchObject::updateGeometryRefs() {
+    const auto &objs = ExternalGeometry.getValues();
+    const auto &subs = ExternalGeometry.getSubValues();
+    const auto &shadows = ExternalGeometry.getShadowSubs();
+    assert(subs.size() == shadows.size());
+    std::vector<std::string> originalRefs;
+    std::map<std::string,std::string> refMap;
+    if(updateGeoRef) {
+        assert(externalGeoRef.size() == objs.size());
+        updateGeoRef = false;
+        originalRefs = std::move(externalGeoRef);
+    }
+    externalGeoRef.clear();
+    for(int i=0;i<(int)objs.size();++i) {
+        auto obj = objs[i];
+        const std::string &sub=shadows[i].first.size()?shadows[i].first:subs[i];        
+        externalGeoRef.emplace_back(obj->getNameInDocument());
+        auto &key = externalGeoRef.back();
+        key += '.';
+
+        if (!obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) &&
+                obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) 
+        {
+            key += Data::ComplexGeoData::newElementName(sub.c_str());
+        }
+        if(originalRefs.size() && originalRefs[i]!=key)
+            refMap[originalRefs[i]] = key;
+    }
+    if(refMap.size()) {
+        auto geos = ExternalGeo.getValues();
+        bool touched = false;
+        for(auto &v : refMap) {
+            auto it = externalGeoRefMap.find(v.first);
+            if(it == externalGeoRefMap.end())
+                continue;
+            for(long id : it->second) {
+                auto iter = externalGeoMap.find(id);
+                if(iter!=externalGeoMap.end()) {
+                    auto &geo = geos[iter->second];
+                    geo = geo->clone();
+                    geo->Ref = v.second;
+                    touched = true;
+                }
+            }
+        }
+        if(touched)
+            ExternalGeo.setValues(std::move(geos));
+    }
+}
+
 void SketchObject::onDocumentRestored()
 {
-    try {
-        if(ExternalGeo.getSize()<=2) {
-            for(auto &key : externalGeoRef) {
-                long id = getDocument()->Hasher->getID(key.c_str())->value();
-                if(geoLastId < id)
-                    geoLastId = id;
-                externalGeoRefMap[key].push_back(id);
-            }
-            rebuildExternalGeometry();
-        }else
-            acceptGeometry();
-
-        // this may happen when saving a sketch directly in edit mode
-        // but never performed a recompute before
-        if (Shape.getValue().IsNull() && hasConflicts() == 0) {
-            if (this->solve(true) == 0)
-                buildShape();
+    bool migrate = false;
+    updateGeometryRefs();
+    if(ExternalGeo.getSize()<=2) {
+        migrate = true;
+        for(auto &key : externalGeoRef) {
+            long id = getDocument()->Hasher->getID(key.c_str())->value();
+            if(geoLastId < id)
+                geoLastId = id;
+            externalGeoRefMap[key].push_back(id);
         }
+        rebuildExternalGeometry();
+    }else
+        acceptGeometry();
 
-        Part::Part2DObject::onDocumentRestored();
+    // this may happen when saving a sketch directly in edit mode
+    // but never performed a recompute before
+    if (Shape.getValue().IsNull() && hasConflicts() == 0) {
+        if (this->solve(true) == 0)
+            buildShape();
     }
-    catch (...) {
+
+    Part::Part2DObject::onDocumentRestored();
+
+    if(migrate && ExternalGeometry.getSize()+2!=ExternalGeo.getSize()) {
+        delConstraintsToExternal();
+        throw Base::RuntimeError("Failed to restore external geometry");
     }
 }
 
