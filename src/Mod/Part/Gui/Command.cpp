@@ -671,8 +671,10 @@ void CmdPartCompSplitFeatures::activated(int iMsg)
     if (iMsg==0)
         rcCmdMgr.runCommandByName("Part_BooleanFragments");
     else if (iMsg==1)
-        rcCmdMgr.runCommandByName("Part_Slice");
+        rcCmdMgr.runCommandByName("Part_SliceApart");
     else if (iMsg==2)
+        rcCmdMgr.runCommandByName("Part_Slice");
+    else if (iMsg==3)
         rcCmdMgr.runCommandByName("Part_XOR");
     else
         return;
@@ -695,9 +697,11 @@ Gui::Action * CmdPartCompSplitFeatures::createAction(void)
     QAction* cmd0 = pcAction->addAction(QString());
     cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_BooleanFragments"));
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_Slice"));
+    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_SliceApart"));
     QAction* cmd2 = pcAction->addAction(QString());
-    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_XOR"));
+    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_Slice"));
+    QAction* cmd3 = pcAction->addAction(QString());
+    cmd3->setIcon(Gui::BitmapFactory().pixmap("Part_XOR"));
 
     _pcAction = pcAction;
     languageChange();
@@ -729,9 +733,17 @@ void CmdPartCompSplitFeatures::languageChange()
         cmd0->setStatusTip(QApplication::translate("Part_SplitFeatures", splitBoolFragments->getStatusTip()));
     }
 
+    Gui::Command* splitSliceApart = rcCmdMgr.getCommandByName("Part_SliceApart");
+    if (splitSliceApart) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("Part_SplitFeatures", splitSliceApart->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("Part_SplitFeatures", splitSliceApart->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("Part_SplitFeatures", splitSliceApart->getStatusTip()));
+    }
+
     Gui::Command* splitSlice = rcCmdMgr.getCommandByName("Part_Slice");
     if (splitSlice) {
-        QAction* cmd1 = a[1];
+        QAction* cmd1 = a[2];
         cmd1->setText(QApplication::translate("Part_SplitFeatures", splitSlice->getMenuText()));
         cmd1->setToolTip(QApplication::translate("Part_SplitFeatures", splitSlice->getToolTipText()));
         cmd1->setStatusTip(QApplication::translate("Part_SplitFeatures", splitSlice->getStatusTip()));
@@ -739,7 +751,7 @@ void CmdPartCompSplitFeatures::languageChange()
 
     Gui::Command* splitXOR = rcCmdMgr.getCommandByName("Part_XOR");
     if (splitXOR) {
-        QAction* cmd2 = a[2];
+        QAction* cmd2 = a[3];
         cmd2->setText(QApplication::translate("Part_SplitFeatures", splitXOR->getMenuText()));
         cmd2->setToolTip(QApplication::translate("Part_SplitFeatures", splitXOR->getToolTipText()));
         cmd2->setStatusTip(QApplication::translate("Part_SplitFeatures", splitXOR->getStatusTip()));
