@@ -176,9 +176,9 @@ void SketchObject::initExternalGeo() {
     std::vector<Part::Geometry *> geos;
     Part::GeomLineSegment *HLine = new Part::GeomLineSegment();
     Part::GeomLineSegment *VLine = new Part::GeomLineSegment();
-    HLine->Id = 1;
+    HLine->Id = -1;
     HLine->setPoints(Base::Vector3d(0,0,0),Base::Vector3d(1,0,0));
-    VLine->Id = 2;
+    VLine->Id = -2;
     VLine->setPoints(Base::Vector3d(0,0,0),Base::Vector3d(0,1,0));
     HLine->Construction = true;
     VLine->Construction = true;
@@ -7175,6 +7175,15 @@ void SketchObject::Restore(XMLReader &reader)
 {
     // read the father classes
     Part::Part2DObject::Restore(reader);
+}
+
+void SketchObject::handleChangedPropertyType(Base::XMLReader &reader, 
+        const char *TypeName, App::Property *prop)
+{
+    if (prop == &Exports) {
+        if(strcmp(TypeName, "App::PropertyLinkList") == 0)
+            Exports.Restore(reader);
+    }
 }
 
 void SketchObject::onChanged(const App::Property* prop)

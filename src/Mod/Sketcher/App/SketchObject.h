@@ -312,6 +312,7 @@ public:
     virtual unsigned int getMemSize(void) const;
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
+    virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
 
     /// returns the number of construction lines (to be used as axes)
     virtual int getAxisCount(void) const;
