@@ -533,14 +533,15 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     }
     if(idx <= 0) {
         if(!silent)
-            FC_THROWM(Base::CADKernelError,"Invalid shape index");
+            FC_THROWM(Base::CADKernelError,"Invalid shape index " << idx);
         return TopoShape();
     }
     INIT_SHAPE_CACHE();
     auto &info = _Cache->getInfo(type);
     if(idx > info.shapes.Extent()) {
         if(!silent)
-            FC_THROWM(Base::CADKernelError,"Shape index out of bound");
+            FC_THROWM(Base::CADKernelError,"Shape index " << idx
+                    << " out of bound "  << info.shapes.Extent());
         return TopoShape();
     }
 
