@@ -43,7 +43,7 @@ __doc__ = "Pocket Shape operation page controller and command implementation."
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -56,20 +56,23 @@ def createExtensionSoSwitch(ext):
     crd = coin.SoCoordinate3()
     fce = coin.SoFaceSet()
 
-    wire =  ext.getWire()
-    if wire:
-        polygon = []
-        for p in wire.discretize(Deflection=0.01):
-            polygon.append((p.x, p.y, p.z))
-        crd.point.setValues(polygon)
+    if not ext is None:
+        wire =  ext.getWire()
+        if wire:
+            polygon = []
+            for p in wire.discretize(Deflection=0.01):
+                polygon.append((p.x, p.y, p.z))
+            crd.point.setValues(polygon)
+        else:
+            return None
 
-    mat.diffuseColor = (1.0, 0.0, 0.0)
-    mat.transparency = 0.5
+        mat.diffuseColor = (1.0, 0.0, 0.0)
+        mat.transparency = 0.5
 
-    sep.addChild(pos)
-    sep.addChild(mat)
-    sep.addChild(crd)
-    sep.addChild(fce)
+        sep.addChild(pos)
+        sep.addChild(mat)
+        sep.addChild(crd)
+        sep.addChild(fce)
 
     switch = coin.SoSwitch()
     switch.addChild(sep)
@@ -78,11 +81,21 @@ def createExtensionSoSwitch(ext):
     return switch
 
 class _Extension(object):
-    def __init__(self, ext):
-        self.ext = ext
-        self.switch = createExtensionSoSwitch(ext)
+    def __init__(self, obj, base, face, edge):
+        self.base = base
+        self.face = face
+        self.edge = edge
+        if edge is None:
+            self.ext = None
+        else:
+            self.ext  = obj.Proxy.createExtension(obj, base, edge)
+        self.switch = createExtensionSoSwitch(self.ext)
         self.root = self.switch
 
+    def isValid(self):
+        return not self.root is None
+
+Page = None
 
 class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     DataObject = QtCore.Qt.ItemDataRole.UserRole
@@ -95,7 +108,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             }
 
     def initPage(self, obj):
-        self.setTitle("Pocket Extensions")
+        self.setTitle("Extensions")
         self.extensions = obj.Proxy.getExtensions(obj)
 
         self.defaultLength = PathGui.QuantitySpinBox(self.form.defaultLength, obj, 'ExtensionLengthDefault')
@@ -107,132 +120,166 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.obj.ViewObject.RootNode.addChild(self.switch)
         self.switch.whichChild = coin.SO_SWITCH_ALL
 
+        self.model = QtGui.QStandardItemModel(self.form.extensions)
+        self.model.setHorizontalHeaderLabels(['Base', 'Extension'])
+
+        global Page
+        Page = self
+
     def cleanupPage(self, obj):
         self.obj.ViewObject.RootNode.removeChild(self.switch)
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
 
+    def forAllItemsCall(self, cb):
+        for modelRow in range(self.model.rowCount()):
+            model = self.model.item(modelRow, 0)
+            for featureRow in range(model.rowCount()):
+                feature = model.child(featureRow, 0);
+                for edgeRow in range(feature.rowCount()):
+                    cb(feature.child(edgeRow, 0))
+
     def getFields(self, obj):
-        PathLog.track(obj.Label)
+        PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
         self.defaultLength.updateProperty()
-        exts = []
-        for row in range(self.form.extensions.rowCount()):
-            item = self.form.extensions.item(row, 0)
-            exts.append(item.data(self.DataObject).ext)
-        obj.Proxy.setExtensions(obj, exts)
+        extensions = []
+
+        def extractExtension(item):
+            ext = item.data(self.DataObject)
+            if ext and ext.edge and item.checkState() == QtCore.Qt.Checked:
+                extensions.append(ext.ext)
+
+        self.forAllItemsCall(extractExtension)
+
+        self.extensions = extensions
+        obj.Proxy.setExtensions(obj, extensions)
 
     def setFields(self, obj):
         PathLog.track(obj.Label)
         self.defaultLength.updateSpinBox()
         self.setExtensions(self.extensions)
 
+    def createItemForBaseModel(self, base, sub, edges, extensions):
+        ext = _Extension(self.obj, base, sub, None)
+        self.switch.addChild(ext.root)
+        item = QtGui.QStandardItem()
+        item.setData(sub, QtCore.Qt.EditRole)
+        item.setData(ext, self.DataObject)
+        item.setSelectable(False)
+
+        for edge in base.Shape.getElement(sub).Edges:
+            for (e, label) in edges:
+                if edge.isSame(e):
+                    ext0 = _Extension(self.obj, base, sub, label)
+                    if ext0.isValid():
+                        self.switch.addChild(ext0.root)
+                        item0 = QtGui.QStandardItem()
+                        item0.setData(label, QtCore.Qt.EditRole)
+                        item0.setData(ext0, self.DataObject)
+                        item0.setCheckable(True)
+                        for e in extensions:
+                            PathLog.debug("%s.%s vs %s.%s" % (base.Label, label, e.obj.Label, e.sub))
+                            if e.obj == base and e.sub == label:
+                                item0.setCheckState(QtCore.Qt.Checked)
+                                break
+                        item.appendRow([item0])
+                    break
+
+        return item
+
     def setExtensions(self, extensions):
         self.form.extensions.blockSignals(True)
-        for row in range(self.form.extensions.rowCount()):
-            self.switch.removeChild(self.form.extensions.item(row, 0).data(self.DataObject).root)
 
-        self.form.extensions.clearContents()
-        self.form.extensions.setRowCount(0)
-        for row, ext in enumerate(extensions):
-            PathLog.info("{}.{}".format(ext.obj.Label, ext.sub))
-            self.form.extensions.insertRow(row)
+        self.forAllItemsCall(lambda item: self.switch.removeChild(item.data(self.DataObject).root))
+        self.model.clear()
 
-            _ext = _Extension(ext)
+        for base in self.obj.Base:
+            edges = [(edge, "Edge%d" % (i + 1)) for i, edge in enumerate(base[0].Shape.Edges)]
+            baseItem = QtGui.QStandardItem()
+            baseItem.setData(base[0].Label, QtCore.Qt.EditRole)
+            baseItem.setSelectable(False)
+            for sub in sorted(base[1]):
+                baseItem.appendRow(self.createItemForBaseModel(base[0], sub, edges, extensions))
+            self.model.appendRow(baseItem)
 
-            item0 = QtGui.QTableWidgetItem("{}.{}".format(ext.obj.Label, ext.sub))
-            item0.setData(self.DataObject, _ext)
-            self.form.extensions.setItem(row, 0, item0)
-
-            item1 = QtGui.QTableWidgetItem("{}".format(ext.length))
-            item1.setData(self.DataObject, _ext)
-            item1.setFlags(item1.flags() & ~QtCore.Qt.ItemIsEnabled)
-            self.form.extensions.setItem(row, 1, item1)
-
-            item2 = QtGui.QTableWidgetItem("{}".format(self.Direction[ext.direction]))
-            item2.setData(self.DataObject, _ext)
-            item2.setFlags(item2.flags() & ~QtCore.Qt.ItemIsEnabled)
-            self.form.extensions.setItem(row, 2, item2)
-
-            self.switch.addChild(_ext.root)
-
-        self.form.extensions.resizeColumnsToContents()
-        self.form.extensions.blockSignals(False)
-        self.extensions = extensions
+        self.form.extensions.setModel(self.model)
+        self.form.extensions.expandAll()
+        self.form.extensions.resizeColumnToContents(0)
 
     def updateData(self, obj, prop):
         if prop in ['ExtensionLengthDefault']:
             pass
         if prop in ['ExtensionFeature']:
+            pass
+        if prop in ['Base']:
             self.setExtensions(obj.Proxy.getExtensions(obj))
 
-    def updateSelection(self, obj, sel):
-        if sel and sel[0].SubElementNames:
-            self.form.buttonAdd.setEnabled(True)
-        else:
-            self.form.buttonAdd.setEnabled(False)
-
-    def itemSelectionChanged(self):
-        if 0 == self.form.extensions.rowCount():
+    def selectionChanged(self):
+        if 0 == self.model.rowCount():
+            PathLog.track('-')
             self.form.buttonClear.setEnabled(False)
-            self.form.buttonRemove.setEnabled(False)
+            self.form.buttonDisable.setEnabled(False)
+            self.form.buttonEnable.setEnabled(False)
         else:
             self.form.buttonClear.setEnabled(True)
-            if self.form.extensions.selectedItems():
-                self.form.buttonRemove.setEnabled(True)
+
+            if self.selectionModel.selectedIndexes():
+                self.form.buttonDisable.setEnabled(True)
+                self.form.buttonEnable.setEnabled(True)
             else:
-                self.form.buttonRemove.setEnabled(False)
+                self.form.buttonDisable.setEnabled(False)
+                self.form.buttonEnable.setEnabled(False)
 
             FreeCADGui.Selection.clearSelection()
-            print("rowCount = %s" % self.form.extensions.rowCount())
 
-            for row in range(self.form.extensions.rowCount()):
-                item = self.form.extensions.item(row, 0)
+            for row in range(self.model.rowCount()):
+                item = self.model.item(row, 0)
                 ext = item.data(self.DataObject)
-                ext.switch.whichChild = coin.SO_SWITCH_NONE
+                if not ext is None:
+                    ext.switch.whichChild = coin.SO_SWITCH_NONE
 
-            processed = []
-            for item in self.form.extensions.selectedItems():
+            for index in self.selectionModel.selectedIndexes():
+                item = self.model.itemFromIndex(index)
                 ext = item.data(self.DataObject)
-                if not ext in processed:
-                    FreeCADGui.Selection.addSelection(ext.ext.obj, ext.ext.sub)
+                if not ext.face is None:
+                    FreeCADGui.Selection.addSelection(ext.base, ext.face)
+                if not ext.edge is None:
+                    PathLog.track(ext.base.Label, ext.edge)
                     ext.switch.whichChild = coin.SO_SWITCH_ALL
-                    processed.append(ext)
-
-    def extensionsAdd(self):
-        extensions = self.extensions
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            for subname in sel.SubElementNames:
-                row = self.form.extensions.rowCount()
-                extensions.append(self.obj.Proxy.createExtension(self.obj, sel.Object, subname))
-        self.obj.Proxy.setExtensions(self.obj, extensions)
-        self.setDirty()
 
     def extensionsClear(self):
-        self.obj.Proxy.setExtensions(self.obj, [])
+        self.forAllItemsCall(lambda item: item.setCheckState(QtCore.Qt.Unchecked))
         self.setDirty()
 
-    def extensionsRemove(self):
-        extensions = self.extensions
-        for item in self.form.extensions.selectedItems():
-            ext = item.data(self.DataObject).ext
-            if ext in extensions:
-                extensions.remove(ext)
-        self.obj.Proxy.setExtensions(self.obj, extensions)
+    def _extensionsSetState(self, state):
+        for index in self.selectionModel.selectedIndexes():
+            item = self.model.itemFromIndex(index)
+            ext = item.data(self.DataObject)
+            if ext.edge:
+                item.setCheckState(state)
         self.setDirty()
+
+    def extensionsDisable(self):
+        self._extensionsSetState(QtCore.Qt.Unchecked)
+
+    def extensionsEnable(self):
+        self._extensionsSetState(QtCore.Qt.Checked)
+
 
     def getSignalsForUpdate(self, obj):
         PathLog.track(obj.Label)
         return [self.form.defaultLength.editingFinished]
 
     def registerSignalHandlers(self, obj):
-        self.form.buttonAdd.clicked.connect(self.extensionsAdd)
         self.form.buttonClear.clicked.connect(self.extensionsClear)
-        self.form.buttonRemove.clicked.connect(self.extensionsRemove)
+        self.form.buttonDisable.clicked.connect(self.extensionsDisable)
+        self.form.buttonEnable.clicked.connect(self.extensionsEnable)
 
-        self.updateSelection(self.obj, FreeCADGui.Selection.getSelectionEx())
-        self.form.extensions.itemSelectionChanged.connect(self.itemSelectionChanged)
-        self.itemSelectionChanged()
+        self.model.itemChanged.connect(lambda x: self.setDirty())
+
+        self.selectionModel = self.form.extensions.selectionModel()
+        self.selectionModel.selectionChanged.connect(self.selectionChanged)
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
     '''Page controller class for Pocket operation'''
@@ -242,7 +289,8 @@ class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
         return PathPocketBaseGui.FeaturePocket | PathPocketBaseGui.FeatureOutline
 
     def taskPanelBaseLocationPage(self, obj, features):
-        self.extensionsPanel = TaskPanelExtensionPage(obj, features)
+        if not hasattr(self, 'extensionsPanel'):
+            self.extensionsPanel = TaskPanelExtensionPage(obj, features)
         return self.extensionsPanel
 
     def pageRegisterSignalHandlers(self):

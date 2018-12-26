@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>381</width>
-    <height>552</height>
+    <height>617</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,41 +50,38 @@
        </widget>
       </item>
       <item>
-       <widget class="QTableWidget" name="extensions">
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
+       <widget class="QTreeView" name="extensions">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="tabKeyNavigation">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::MultiSelection</enum>
+        </property>
+        <property name="headerHidden">
+         <bool>true</bool>
+        </property>
+        <attribute name="headerHighlightSections">
+         <bool>true</bool>
         </attribute>
-        <column>
-         <property name="text">
-          <string>Feature</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Length</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Direction</string>
-         </property>
-        </column>
        </widget>
       </item>
       <item>
        <widget class="QWidget" name="widget" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QPushButton" name="buttonAdd">
+          <widget class="QPushButton" name="buttonEnable">
            <property name="text">
-            <string>Add</string>
+            <string>Enable</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonRemove">
+          <widget class="QPushButton" name="buttonDisable">
            <property name="text">
-            <string>Remove</string>
+            <string>Disable</string>
            </property>
           </widget>
          </item>
