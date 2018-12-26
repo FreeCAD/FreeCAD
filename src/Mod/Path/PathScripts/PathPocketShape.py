@@ -41,7 +41,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of shape based Pocket operation."
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -52,6 +52,7 @@ def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 def endPoints(edgeOrWire):
+    '''endPoints(edgeOrWire) ... return the first and last point of the wire or the edge, assuming the argument is not a closed wire.'''
     if Part.Wire == type(edgeOrWire):
         edges = edgeOrWire.Edges
         pts = [e.valueAt(e.FirstParameter) for e in edgeOrWire.Edges]
@@ -65,12 +66,14 @@ def endPoints(edgeOrWire):
     return [e.valueAt(edgeOrWire.FirstParameter), e.valueAt(edgeOrWire.LastParameter)]
 
 def includesPoint(p, pts):
+    '''includesPoint(p, pts) ... answer True if the collection of pts includes the point p'''
     for pt in pts:
         if PathGeom.pointsCoincide(p, pt):
             return True
     return False
 
 def selectOffsetWire(wire, wires, offset):
+    '''selectOffsetWire(wire, wires, offset) ... returns the Wire in wires which most likely is wire offset by offset'''
     startPoint = endPoints(wire)[0] + offset;
     closest = None
     for w in wires:
@@ -82,11 +85,9 @@ def selectOffsetWire(wire, wires, offset):
         return closest[1]
     return None
 
-d = []
 
 def extendWire(wire, length, direction):
-    global d
-    d = []
+    '''extendWire(wire, length, direction) ... return a closed Wire which extends wire by length into direction'''
     off2D = wire.makeOffset2D(length)
     endPts = endPoints(wire)
     edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]
@@ -163,7 +164,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.UseOutline = False
         if not hasattr(obj, 'ExtensionLengthDefault'):
             obj.addProperty('App::PropertyDistance', 'ExtensionLengthDefault', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Default length of extensions.'))
-        if not hasattr(obj, 'ExtensionFeatures'):
+        if not hasattr(obj, 'ExtensionFeature'):
             obj.addProperty('App::PropertyLinkSubListGlobal', 'ExtensionFeature', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of features to extend.'))
         if not hasattr(obj, 'ExtensionLength'):
             obj.addProperty('App::PropertyFloatList', 'ExtensionLength', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of extension lenght of corresponding feature.'))
@@ -297,6 +298,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return extensions
 
     def setExtensions(self, obj, extensions):
+        PathLog.track(obj.Label, len(extensions))
         features = {}
         for ext in extensions:
             subs = features.get(ext.obj, [])
