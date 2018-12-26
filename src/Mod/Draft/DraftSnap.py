@@ -1304,7 +1304,12 @@ class Snapper:
             c = 0
             for b in [self.masterbutton]+self.toolbarButtons:
                 if len(t) > c:
-                    b.setChecked(bool(int(t[c])))
+                    state = bool(int(t[c]))
+                    b.setChecked(state)
+                    if state:
+                        b.setToolTip(b.toolTip()+" (ON)")
+                    else:
+                        b.setToolTip(b.toolTip()+" (OFF)")
                     c += 1
         if not Draft.getParam("showSnapBar",True):
             self.toolbar.hide()
@@ -1317,6 +1322,10 @@ class Snapper:
         t = ''
         for b in [self.masterbutton]+self.toolbarButtons:
             t += str(int(b.isChecked()))
+            if b.isChecked():
+                b.setToolTip(b.toolTip().replace("OFF","ON"))
+            else:
+                b.setToolTip(b.toolTip().replace("ON","OFF"))
         Draft.setParam("snapModes",t)
 
     def toggle(self,checked=None):
