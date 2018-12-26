@@ -45,6 +45,18 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+class _ItemDelegate(QtGui.QStyledItemDelegate):
+
+    def __init__(self, controller, parent):
+        self.controller = controller
+        QtGui.QStyledItemDelegate.__init__(self, parent)
+
+    def createEditor(self, parent, option, index):
+        editor = QtGui.QStyledItemDelegate.createEditor(self, parent, option, index)
+        if index.column() == 1:
+            self.controller.setupColumnEditor(index, editor)
+        return editor
+
 class JobCreate:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
 
@@ -84,15 +96,16 @@ class JobCreate:
                 item0.setCheckable(True)
                 item0.setEditable(False)
 
+                item1.setEnabled(True)
+                item1.setEditable(True)
+
                 if base.Label in preSelected:
                     itemSelected = True
                     item0.setCheckState(QtCore.Qt.CheckState.Checked)
-                    item1.setEnabled(True)
                     item1.setData(preSelected[base.Label], QtCore.Qt.EditRole)
                 else:
                     itemSelected = False
                     item0.setCheckState(QtCore.Qt.CheckState.Unchecked)
-                    item1.setEnabled(False)
                     item1.setData(0, QtCore.Qt.EditRole)
 
                 if PathUtil.isSolid(base):
@@ -111,22 +124,23 @@ class JobCreate:
 
                 item0.setData(j.Label, QtCore.Qt.EditRole)
                 item0.setData(j, self.DataObject)
-
                 item0.setCheckable(True)
                 item0.setEditable(False)
+
+                item1.setEnabled(True)
+                item1.setEditable(True)
 
                 if j.Label in preSelected:
                     expandJobs = True
                     item0.setCheckState(QtCore.Qt.CheckState.Checked)
-                    item1.setEnabled(True)
                     item1.setData(preSelected[j.Label], QtCore.Qt.EditRole)
                 else:
                     item0.setCheckState(QtCore.Qt.CheckState.Unchecked)
-                    item1.setEnabled(False)
                     item1.setData(0, QtCore.Qt.EditRole)
 
                 self.itemsJob.appendRow([item0, item1])
 
+        self.delegate = _ItemDelegate(self, self.dialog.modelTree)
         self.model = QtGui.QStandardItemModel(self.dialog)
         self.model.setHorizontalHeaderLabels(['Model', 'Count'])
 
@@ -141,6 +155,7 @@ class JobCreate:
             self.model.appendRow(self.itemsJob)
 
         self.dialog.modelTree.setModel(self.model)
+        self.dialog.modelTree.setItemDelegate(self.delegate)
         self.dialog.modelTree.expandAll()
         self.dialog.modelTree.resizeColumnToContents(0)
         self.dialog.modelTree.resizeColumnToContents(1)
@@ -164,13 +179,31 @@ class JobCreate:
             item0 = self.model.itemFromIndex(topLeft)
             item1 = self.model.itemFromIndex(topLeft.sibling(topLeft.row(), 1))
             if item0.checkState() == QtCore.Qt.Checked:
-                item1.setEnabled(True)
-                item1.setEditable(True)
-                item1.setData(1, QtCore.Qt.EditRole)
+                if item1.data(QtCore.Qt.EditRole) == 0:
+                    item1.setData(1, QtCore.Qt.EditRole)
             else:
-                item1.setEnabled(False)
-                item1.setEditable(False)
                 item1.setData(0, QtCore.Qt.EditRole)
+
+        if topLeft.column() == bottomRight.column() == 1:
+            item0 = self.model.itemFromIndex(topLeft.sibling(topLeft.row(), 0))
+            item1 = self.model.itemFromIndex(topLeft)
+            if item1.data(QtCore.Qt.EditRole) == 0:
+                item0.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            else:
+                item0.setCheckState(QtCore.Qt.CheckState.Checked)
+
+    def item1ValueChanged(self, v):
+        item0 = self.model.itemFromIndex(self.index.sibling(self.index.row(), 0))
+        if 0 == v:
+            item0.setCheckState(QtCore.Qt.CheckState.Unchecked)
+        else:
+            item0.setCheckState(QtCore.Qt.CheckState.Checked)
+
+    def setupColumnEditor(self, index, editor):
+        editor.setMinimum(0)
+        editor.setMaximum(999999)
+        self.index = index
+        editor.valueChanged.connect(self.item1ValueChanged)
 
     def setupTemplate(self):
         templateFiles = []
