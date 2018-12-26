@@ -71,7 +71,7 @@ class Side:
         Determine the side of pt in relation to ptRef.
         If both Points are viewed as vectors with their origin in (0,0,0)
         then the two vectors either form a straight line (On) or pt
-        lies in the left or right hemishpere in regards to ptRef."""
+        lies in the left or right hemisphere in regards to ptRef."""
         d = -ptRef.x*pt.y + ptRef.y*pt.x
         if d < 0:
             return cls.Left
@@ -111,8 +111,8 @@ def edgeConnectsTo(edge, vector, error=Tolerance):
 def getAngle(vector):
     """(vector)
     Returns the angle [-pi,pi] of a vector using the X-axis as the reference.
-    Positive angles for vertexes in the upper hemishpere (positive y values)
-    and negative angles for the lower hemishpere."""
+    Positive angles for vertexes in the upper hemisphere (positive y values)
+    and negative angles for the lower hemisphere."""
     a = vector.getAngle(Vector(1,0,0))
     if vector.y < 0:
         return -a
