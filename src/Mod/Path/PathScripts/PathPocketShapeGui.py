@@ -43,7 +43,7 @@ __doc__ = "Pocket Shape operation page controller and command implementation."
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -133,6 +133,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
 
     def forAllItemsCall(self, cb):
+        PathLog.track()
         for modelRow in range(self.model.rowCount()):
             model = self.model.item(modelRow, 0)
             for featureRow in range(model.rowCount()):
@@ -161,8 +162,8 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.setExtensions(self.extensions)
 
     def createItemForBaseModel(self, base, sub, edges, extensions):
+        PathLog.track()
         ext = _Extension(self.obj, base, sub, None)
-        self.switch.addChild(ext.root)
         item = QtGui.QStandardItem()
         item.setData(sub, QtCore.Qt.EditRole)
         item.setData(ext, self.DataObject)
@@ -179,7 +180,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                         item0.setData(ext0, self.DataObject)
                         item0.setCheckable(True)
                         for e in extensions:
-                            PathLog.debug("%s.%s vs %s.%s" % (base.Label, label, e.obj.Label, e.sub))
                             if e.obj == base and e.sub == label:
                                 item0.setCheckState(QtCore.Qt.Checked)
                                 break
@@ -189,9 +189,15 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         return item
 
     def setExtensions(self, extensions):
+        PathLog.track(len(extensions))
         self.form.extensions.blockSignals(True)
 
-        self.forAllItemsCall(lambda item: self.switch.removeChild(item.data(self.DataObject).root))
+        def removeItemSwitch(item):
+            ext = item.data(self.DataObject)
+            ext.switch.whichChild = coin.SO_SWITCH_NONE
+            self.switch.removeChild(ext.root)
+
+        self.forAllItemsCall(removeItemSwitch)
         self.model.clear()
 
         for base in self.obj.Base:
@@ -208,14 +214,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.extensions.resizeColumnToContents(0)
 
     def updateData(self, obj, prop):
-        if prop in ['ExtensionLengthDefault']:
-            pass
-        if prop in ['ExtensionFeature']:
-            pass
-        if prop in ['Base']:
+        if prop in ['Base', 'ExtensionLengthDefault']:
             self.setExtensions(obj.Proxy.getExtensions(obj))
 
     def selectionChanged(self):
+        PathLog.track()
         if 0 == self.model.rowCount():
             PathLog.track('-')
             self.form.buttonClear.setEnabled(False)
@@ -233,20 +236,14 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
             FreeCADGui.Selection.clearSelection()
 
-            for row in range(self.model.rowCount()):
-                item = self.model.item(row, 0)
+            def setSelectionVisuals(item):
                 ext = item.data(self.DataObject)
-                if not ext is None:
-                    ext.switch.whichChild = coin.SO_SWITCH_NONE
-
-            for index in self.selectionModel.selectedIndexes():
-                item = self.model.itemFromIndex(index)
-                ext = item.data(self.DataObject)
-                if not ext.face is None:
+                if self.selectionModel.isSelected(item.index()):
                     FreeCADGui.Selection.addSelection(ext.base, ext.face)
-                if not ext.edge is None:
-                    PathLog.track(ext.base.Label, ext.edge)
                     ext.switch.whichChild = coin.SO_SWITCH_ALL
+                else:
+                    ext.switch.whichChild = coin.SO_SWITCH_NONE
+            self.forAllItemsCall(setSelectionVisuals)
 
     def extensionsClear(self):
         self.forAllItemsCall(lambda item: item.setCheckState(QtCore.Qt.Unchecked))
