@@ -192,14 +192,21 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         PathLog.track(len(extensions))
         self.form.extensions.blockSignals(True)
 
+        # remember current visual state
+        if hasattr(self, 'selectionModel'):
+            selectedExtensions = [self.model.itemFromIndex(index).data(self.DataObject).ext for index in self.selectionModel.selectedIndexes()]
+        else:
+            selectedExtensions = []
+
+        # remove current extensions and all their visuals
         def removeItemSwitch(item):
             ext = item.data(self.DataObject)
             ext.switch.whichChild = coin.SO_SWITCH_NONE
             self.switch.removeChild(ext.root)
-
         self.forAllItemsCall(removeItemSwitch)
         self.model.clear()
 
+        # create extensions for model and given argument
         for base in self.obj.Base:
             edges = [(edge, "Edge%d" % (i + 1)) for i, edge in enumerate(base[0].Shape.Edges)]
             baseItem = QtGui.QStandardItem()
@@ -213,11 +220,15 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.extensions.expandAll()
         self.form.extensions.resizeColumnToContents(0)
 
+        # restore previous state - at least the parts that are still valid
+        if hasattr(self, 'selectionModel') and selectedExtensions:
+            self.restoreSelection(selectedExtensions)
+
     def updateData(self, obj, prop):
         if prop in ['Base', 'ExtensionLengthDefault']:
             self.setExtensions(obj.Proxy.getExtensions(obj))
 
-    def selectionChanged(self):
+    def restoreSelection(self, selection):
         PathLog.track()
         if 0 == self.model.rowCount():
             PathLog.track('-')
@@ -227,7 +238,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         else:
             self.form.buttonClear.setEnabled(True)
 
-            if self.selectionModel.selectedIndexes():
+            if selection or self.selectionModel.selectedIndexes():
                 self.form.buttonDisable.setEnabled(True)
                 self.form.buttonEnable.setEnabled(True)
             else:
@@ -236,14 +247,25 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
             FreeCADGui.Selection.clearSelection()
 
+            def selectItem(item, ext):
+                for sel in selection:
+                    if ext.base == sel.obj and ext.edge == sel.sub:
+                        return True
+                return False
+
             def setSelectionVisuals(item):
                 ext = item.data(self.DataObject)
+                if selectItem(item, ext):
+                    self.selectionModel.select(item.index(), QtGui.QItemSelectionModel.Select)
                 if self.selectionModel.isSelected(item.index()):
                     FreeCADGui.Selection.addSelection(ext.base, ext.face)
                     ext.switch.whichChild = coin.SO_SWITCH_ALL
                 else:
                     ext.switch.whichChild = coin.SO_SWITCH_NONE
             self.forAllItemsCall(setSelectionVisuals)
+
+    def selectionChanged(self):
+        self.restoreSelection([])
 
     def extensionsClear(self):
         self.forAllItemsCall(lambda item: item.setCheckState(QtCore.Qt.Unchecked))
