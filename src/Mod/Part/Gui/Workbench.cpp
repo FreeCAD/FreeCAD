@@ -40,6 +40,10 @@ using namespace PartGui;
     qApp->translate("Workbench", "Solids");
     qApp->translate("Workbench", "Part tools");
     qApp->translate("Workbench", "Boolean");
+    qApp->translate("Workbench", "Primitives");
+    qApp->translate("Workbench", "Join");
+    qApp->translate("Workbench", "Split");
+    qApp->translate("Workbench", "Compound");
 #endif
 
 /// @namespace PartGui @class Workbench
