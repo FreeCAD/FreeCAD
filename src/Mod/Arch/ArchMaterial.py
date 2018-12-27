@@ -383,6 +383,8 @@ class _ViewProviderArchMaterial:
     def setEdit(self,vobj,mode):
         self.taskd = _ArchMaterialTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(self.taskd)
+        self.taskd.form.FieldName.setFocus()
+        self.taskd.form.FieldName.selectAll()
         return True
 
     def unsetEdit(self,vobj,mode):
