@@ -197,6 +197,17 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             selectedExtensions = [self.model.itemFromIndex(index).data(self.DataObject).ext for index in self.selectionModel.selectedIndexes()]
         else:
             selectedExtensions = []
+        collapsedModels = []
+        collapsedFeatures = []
+        for modelRow in range(self.model.rowCount()):
+            model = self.model.item(modelRow, 0)
+            modelName = model.data(QtCore.Qt.EditRole)
+            if not self.form.extensions.isExpanded(model.index()):
+                collapsedModels.append(modelName)
+            for featureRow in range(model.rowCount()):
+                feature = model.child(featureRow, 0);
+                if not self.form.extensions.isExpanded(feature.index()):
+                    collapsedFeatures.append("%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole)))
 
         # remove current extensions and all their visuals
         def removeItemSwitch(item):
@@ -221,6 +232,16 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.extensions.resizeColumnToContents(0)
 
         # restore previous state - at least the parts that are still valid
+        for modelRow in range(self.model.rowCount()):
+            model = self.model.item(modelRow, 0)
+            modelName = model.data(QtCore.Qt.EditRole)
+            if modelName in collapsedModels:
+                self.form.extensions.setExpanded(model.index(), False)
+            for featureRow in range(model.rowCount()):
+                feature = model.child(featureRow, 0);
+                featureName =  "%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole))
+                if featureName in collapsedFeatures:
+                    self.form.extensions.setExpanded(feature.index(), False)
         if hasattr(self, 'selectionModel') and selectedExtensions:
             self.restoreSelection(selectedExtensions)
 
