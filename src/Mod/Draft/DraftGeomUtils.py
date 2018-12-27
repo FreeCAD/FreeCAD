@@ -1384,8 +1384,8 @@ def findClosestCircle(point,circles):
             closest = c
     return closest
 
-def isCoplanar(faces):
-    "checks if all faces in the given list are coplanar"
+def isCoplanar(faces,tolerance=0):
+    "isCoplanar(faces,[tolerance]): checks if all faces in the given list are coplanar. Tolerance is the max deviation to be considered coplanar"
     if len(faces) < 2:
         return True
     base =faces[0].normalAt(0,0)
@@ -1393,7 +1393,7 @@ def isCoplanar(faces):
         for v in faces[i].Vertexes:
             chord = v.Point.sub(faces[0].Vertexes[0].Point)
             dist = DraftVecUtils.project(chord,base)
-            if round(dist.Length,precision()) > 0:
+            if round(dist.Length,precision()) > tolerance:
                 return False
     return True
 
