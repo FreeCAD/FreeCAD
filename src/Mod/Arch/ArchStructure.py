@@ -620,7 +620,7 @@ class _Structure(ArchComponent.Component):
                     if obj.Base.Shape.Solids:
                         return None
                     elif obj.Base.Shape.Faces:
-                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces):
+                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tolerance=0.01):
                             return None
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
