@@ -105,7 +105,7 @@ inline uint16 readUint16 ( istream &is ) {
 }
 
 inline void writeUint16 ( uint16 host_val, ostream &os ) {
-  uint16 val = (uint16)htozl( reinterpret_cast< unsigned char * >( &host_val ) ) ;
+  uint16 val = htozs( reinterpret_cast< unsigned char * >( &host_val ) ) ;
   os.write( reinterpret_cast< char * >( &val ), sizeof( uint16 ) ) ;
 }
 
