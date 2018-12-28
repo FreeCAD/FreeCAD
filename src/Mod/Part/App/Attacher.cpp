@@ -771,7 +771,8 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
         if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            throw AttachEngineException("AttachEngine3D: link points to something that is not App::GeoFeature");
+            FC_THROWM(AttachEngineException,"AttachEngine3D: attched to a non App::GeoFeature '"
+                        << objs[i]->getNameInDocument() << "'");
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);
         geofs[i] = geof;
@@ -779,16 +780,24 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
         if (geof->isDerivedFrom(Part::Feature::getClassTypeId())){
             shape = &(static_cast<Part::Feature*>(geof)->Shape.getShape());
             if (shape->isNull()){
-                throw AttachEngineException("AttachEngine3D: Part has null shape");
+                FC_THROWM(AttachEngineException,"AttachEngine3D: Part has null shape " 
+                        << objs[i]->getNameInDocument());
             }
             if (sub[i].length()>0){
                 try{
                     storage.push_back(shape->getSubShape(sub[i].c_str()));
-                } catch (Standard_Failure&){
-                    throw AttachEngineException("AttachEngine3D: subshape not found");
+                } catch (Standard_Failure &e){
+                    FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
+                            << objs[i]->getNameInDocument() << '.' << sub[i] 
+                            << std::endl << e.GetMessageString());
+                } catch (Base::CADKernelError &e){
+                    FC_THROWM(AttachEngineException, "AttachEngine3D: subshape not found "
+                            << objs[i]->getNameInDocument() << '.' << sub[i] 
+                            << std::endl << e.what());
                 }
                 if(storage[storage.size()-1].IsNull())
-                    throw AttachEngineException("AttachEngine3D: null subshape");
+                    FC_THROWM(AttachEngineException, "AttachEngine3D: null subshape "
+                            << objs[i]->getNameInDocument() << '.' << sub[i]);
                 shapes[i] = &(storage[storage.size()-1]);
             } else {
                 shapes[i] = &(shape->getShape());
