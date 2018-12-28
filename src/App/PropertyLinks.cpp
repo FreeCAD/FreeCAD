@@ -1084,7 +1084,7 @@ static bool updateLinkReference(App::PropertyLinkBase *prop,
             subs[idx] = shadows[idx].first;
     }
     mapped.clear();
-    if(owner) 
+    if(owner && feature) 
         owner->onUpdateElementReference(prop);
     return true;
 }
@@ -1102,7 +1102,9 @@ void PropertyLinkSub::afterRestore() {
 }
 
 void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool reverse, bool notify) {
-    if(updateLinkReference(this,feature,reverse,notify,_pcLinkSub,_cSubList,_mapped,_ShadowSubList))
+    if(!updateLinkReference(this,feature,reverse,notify,_pcLinkSub,_cSubList,_mapped,_ShadowSubList))
+        return;
+    if(notify)
         hasSetValue();
 }
 
@@ -1933,7 +1935,7 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool r
         }
     }
     _mapped.swap(mapped);
-    if(owner) 
+    if(owner && feature) 
         owner->onUpdateElementReference(this);
     if(notify)
         hasSetValue();
@@ -2837,7 +2839,9 @@ void PropertyXLink::afterRestore() {
 }
 
 void PropertyXLink::updateElementReference(DocumentObject *feature,bool reverse,bool notify) {
-    if(updateLinkReference(this,feature,reverse,notify,_pcLink,_SubList,_mapped,_ShadowSubList))
+    if(!updateLinkReference(this,feature,reverse,notify,_pcLink,_SubList,_mapped,_ShadowSubList))
+        return;
+    if(notify)
         hasSetValue();
 }
 
