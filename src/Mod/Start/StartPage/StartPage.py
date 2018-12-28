@@ -271,39 +271,12 @@ def handle():
 
     # translate texts
 
-    HTML = HTML.replace("T_TITLE",TranslationTexts.T_TITLE)
-    HTML = HTML.replace("T_DOCUMENTS",TranslationTexts.T_DOCUMENTS)
-    HTML = HTML.replace("T_HELP",TranslationTexts.T_HELP)
-    HTML = HTML.replace("T_ACTIVITY",TranslationTexts.T_ACTIVITY)
-    HTML = HTML.replace("T_TIP",TranslationTexts.T_TIP)
-    HTML = HTML.replace("T_ADJUSTRECENT",TranslationTexts.T_ADJUSTRECENT)
-    HTML = HTML.replace("T_GENERALDOCUMENTATION",TranslationTexts.T_GENERALDOCUMENTATION)
-    HTML = HTML.replace("T_USERHUB",TranslationTexts.T_USERHUB)
-    HTML = HTML.replace("T_DESCR_USERHUB",TranslationTexts.T_DESCR_USERHUB)
-    HTML = HTML.replace("T_POWERHUB",TranslationTexts.T_POWERHUB)
-    HTML = HTML.replace("T_DESCR_POWERHUB",TranslationTexts.T_DESCR_POWERHUB)
-    HTML = HTML.replace("T_DEVHUB",TranslationTexts.T_DEVHUB)
-    HTML = HTML.replace("T_DESCR_DEVHUB",TranslationTexts.T_DESCR_DEVHUB)
-    HTML = HTML.replace("T_MANUAL",TranslationTexts.T_MANUAL)
-    HTML = HTML.replace("T_DESCR_MANUAL",TranslationTexts.T_DESCR_MANUAL)
-    HTML = HTML.replace("T_WBHELP",TranslationTexts.T_WBHELP)
-    HTML = HTML.replace("T_DESCR_WBHELP",TranslationTexts.T_DESCR_WBHELP)
-    HTML = HTML.replace("T_COMMUNITYHELP",TranslationTexts.T_COMMUNITYHELP)
-    HTML = HTML.replace("T_DESCR_COMMUNITYHELP1",TranslationTexts.T_DESCR_COMMUNITYHELP1)
-    HTML = HTML.replace("T_DESCR_COMMUNITYHELP2",TranslationTexts.T_DESCR_COMMUNITYHELP2)
-    HTML = HTML.replace("T_DESCR_COMMUNITYHELP3",TranslationTexts.T_DESCR_COMMUNITYHELP3)
-    HTML = HTML.replace("T_ADDONS",TranslationTexts.T_ADDONS)
-    HTML = HTML.replace("T_DESCR_ADDONS",TranslationTexts.T_DESCR_ADDONS)
-    HTML = HTML.replace("T_OFFLINEHELP",TranslationTexts.T_OFFLINEHELP)
-    HTML = HTML.replace("T_OFFLINEPLACEHOLDER",TranslationTexts.T_OFFLINEPLACEHOLDER)
-    HTML = HTML.replace("T_RECENTCOMMITS",TranslationTexts.T_RECENTCOMMITS)
-    HTML = HTML.replace("T_DESCR_RECENTCOMMITS",TranslationTexts.T_DESCR_RECENTCOMMITS)
-    HTML = HTML.replace("T_SEEONGITHUB",TranslationTexts.T_SEEONGITHUB)
-    HTML = HTML.replace("T_CUSTOM",TranslationTexts.T_CUSTOM)
-    HTML = HTML.replace("T_FORUM",TranslationTexts.T_FORUM)
-    HTML = HTML.replace("T_DESCR_FORUM",TranslationTexts.T_DESCR_FORUM)
-    HTML = HTML.replace("T_EXTERNALLINKS",TranslationTexts.T_EXTERNALLINKS)
-    HTML = HTML.replace("T_NOTES",TranslationTexts.T_NOTES)
+    texts = [t for t in dir(TranslationTexts) if t.startswith("T_")]
+    for text in texts:
+        if sys.version_info.major < 3:
+            HTML = HTML.replace(text,getattr(TranslationTexts,text).decode("utf8"))
+        else:
+            HTML = HTML.replace(text,getattr(TranslationTexts,text))
 
     # build a "create new" icon with the FreeCAD background color gradient
 
