@@ -626,12 +626,12 @@ bool BrowserView::onMsg(const char* pMsg,const char** )
         stop();
         return true;
     } else if (strcmp(pMsg,"ZoomIn")==0){
-        textSizeMultiplier += 0.2f;
-        view->setTextSizeMultiplier(textSizeMultiplier);
+        qreal factor = view->zoomFactor();
+        view->setZoomFactor(factor + 0.2);
         return true;
     } else if (strcmp(pMsg,"ZoomOut")==0){
-        textSizeMultiplier -= 0.2f;
-        view->setTextSizeMultiplier(textSizeMultiplier);
+        qreal factor = view->zoomFactor();
+        view->setZoomFactor(factor - 0.2);
         return true;
     }
 
