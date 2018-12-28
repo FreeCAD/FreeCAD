@@ -3180,6 +3180,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
         {
             get_line();
             if (!strcmp( m_str, "SECTION" )){
+              strcpy(m_section_name, "");
               get_line();
               get_line();
               if (strcmp( m_str, "ENTITIES" ))
