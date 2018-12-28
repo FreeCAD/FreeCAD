@@ -51,42 +51,10 @@ if True:
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-def createExtensionSoSwitch(ext):
-    sep = coin.SoSeparator()
-    pos = coin.SoTranslation()
-    mat = coin.SoMaterial()
-    crd = coin.SoCoordinate3()
-    fce = coin.SoFaceSet()
-    hnt = coin.SoShapeHints()
-
-    if not ext is None:
-        wire =  ext.getWire()
-        if wire:
-            poly = [p for p in wire.discretize(Deflection=0.01)][:-1]
-            polygon = [(p.x, p.y, p.z) for p in poly]
-            crd.point.setValues(polygon)
-        else:
-            return None
-
-        mat.diffuseColor = (1.0, 0.0, 0.0)
-        mat.transparency = 0.5
-
-        hnt.faceType = coin.SoShapeHints.UNKNOWN_FACE_TYPE
-        hnt.vertexOrdering = coin.SoShapeHints.CLOCKWISE
-
-        sep.addChild(pos)
-        sep.addChild(mat)
-        sep.addChild(hnt)
-        sep.addChild(crd)
-        sep.addChild(fce)
-
-    switch = coin.SoSwitch()
-    switch.addChild(sep)
-    switch.whichChild = coin.SO_SWITCH_NONE
-
-    return switch
-
 class _Extension(object):
+    ColourEnabled = (1.0,  .5, .5)
+    ColourDisabled = (1.0, 1.0, .5)
+
     def __init__(self, obj, base, face, edge):
         self.obj = obj
         self.base = base
@@ -96,26 +64,66 @@ class _Extension(object):
             self.ext = None
         else:
             self.ext  = obj.Proxy.createExtension(obj, base, face, edge)
-        self.switch = createExtensionSoSwitch(self.ext)
+        self.switch = self.createExtensionSoSwitch(self.ext)
         self.root = self.switch
+
+    def createExtensionSoSwitch(self, ext):
+        sep = coin.SoSeparator()
+        pos = coin.SoTranslation()
+        mat = coin.SoMaterial()
+        crd = coin.SoCoordinate3()
+        fce = coin.SoFaceSet()
+        hnt = coin.SoShapeHints()
+
+        if not ext is None:
+            wire =  ext.getWire()
+            if wire:
+                poly = [p for p in wire.discretize(Deflection=0.01)][:-1]
+                polygon = [(p.x, p.y, p.z) for p in poly]
+                crd.point.setValues(polygon)
+            else:
+                return None
+
+            mat.diffuseColor = self.ColourDisabled
+            mat.transparency = 0.5
+
+            hnt.faceType = coin.SoShapeHints.UNKNOWN_FACE_TYPE
+            hnt.vertexOrdering = coin.SoShapeHints.CLOCKWISE
+
+            sep.addChild(pos)
+            sep.addChild(mat)
+            sep.addChild(hnt)
+            sep.addChild(crd)
+            sep.addChild(fce)
+
+        switch = coin.SoSwitch()
+        switch.addChild(sep)
+        switch.whichChild = coin.SO_SWITCH_NONE
+
+        self.material = mat
+
+        return switch
+
+    def _setColour(r, g, b):
+        self.material.diffuseColor = (r, g, b)
 
     def isValid(self):
         return not self.root is None
-
-    def getEdgeNumbers(self):
-        return self.ext.getEdgeNumbers()
-
-    def getEdges(self):
-        return self.ext.getEdges()
-
-    def isWire(self):
-        return 1 == len(self.getEdgeNumbers())
 
     def show(self):
         self.switch.whichChild = coin.SO_SWITCH_ALL
 
     def hide(self):
         self.switch.whichChild = coin.SO_SWITCH_NONE
+
+    def enable(self, ena = True):
+        if ena:
+            self.material.diffuseColor = self.ColourEnabled
+        else:
+            self.disable()
+
+    def disable(self):
+        self.material.diffuseColor = self.ColourDisabled
 
 Page = None
 
@@ -206,6 +214,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             for e in extensions:
                 if e.obj == base and e.sub == label:
                     item0.setCheckState(QtCore.Qt.Checked)
+                    ext0.enable()
                     break
             item.appendRow([item0])
 
@@ -329,6 +338,8 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 if self.selectionModel.isSelected(item.index()):
                     FreeCADGui.Selection.addSelection(ext.base, ext.face)
                     ext.show()
+                elif item.checkState() == QtCore.Qt.Checked:
+                    ext.show()
                 else:
                     ext.hide()
             self.forAllItemsCall(setSelectionVisuals)
@@ -337,7 +348,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.restoreSelection([])
 
     def extensionsClear(self):
-        self.forAllItemsCall(lambda item: item.setCheckState(QtCore.Qt.Unchecked))
+        def disableItem(item):
+            item.setCheckState(QtCore.Qt.Unchecked)
+            item.data(self.DataObject).disable()
+
+        self.forAllItemsCall(disableItem)
         self.setDirty()
 
     def _extensionsSetState(self, state):
@@ -346,6 +361,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             ext = item.data(self.DataObject)
             if ext.edge:
                 item.setCheckState(state)
+                ext.enable(state == QtCore.Qt.Checked)
         self.setDirty()
 
     def extensionsDisable(self):
@@ -354,6 +370,16 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     def extensionsEnable(self):
         self._extensionsSetState(QtCore.Qt.Checked)
 
+    def updateItemEnabled(self, item):
+        ext = item.data(self.DataObject)
+        if item.checkState() == QtCore.Qt.Checked:
+            ext.show()
+            ext.enable()
+        else:
+            ext.disable()
+            if not self.selectionModel.isSelected(item.index()):
+                ext.hide()
+        self.setDirty()
 
     def getSignalsForUpdate(self, obj):
         PathLog.track(obj.Label)
@@ -367,7 +393,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.buttonDisable.clicked.connect(self.extensionsDisable)
         self.form.buttonEnable.clicked.connect(self.extensionsEnable)
 
-        self.model.itemChanged.connect(lambda x: self.setDirty())
+        self.model.itemChanged.connect(self.updateItemEnabled)
 
         self.selectionModel = self.form.extensionTree.selectionModel()
         self.selectionModel.selectionChanged.connect(self.selectionChanged)
