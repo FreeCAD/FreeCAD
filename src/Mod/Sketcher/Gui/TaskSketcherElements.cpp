@@ -280,9 +280,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
            << "Separator"
     
            << "Sketcher_ToggleConstruction"
-           << "Sketcher_ToggleFreeze"
-           << "Sketcher_Detach"
-           << "Sketcher_Attach"
+           << "Sketcher_ExternalCmds"
 
            << "Separator"
        
@@ -611,7 +609,10 @@ void TaskSketcherElements::on_elementsWidget_itemSelectionChanged(void)
         int vertex;
 
         if (ite->isLineSelected) {
-            ss << "Edge" << ite->ElementNbr + 1;
+            if(ite->ElementNbr>=0)
+                ss << "Edge" << ite->ElementNbr + 1;
+            else
+                ss << "ExternalEdge" << -ite->ElementNbr - 2;
             Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
 
@@ -697,7 +698,7 @@ void TaskSketcherElements::on_elementsWidget_itemEntered(QTreeWidgetItem *item)
             if(it->ElementNbr>=0)
                 ss << "Edge" << it->ElementNbr + 1;
             else
-                ss << "ExternalEdge" << -it->ElementNbr - 1;
+                ss << "ExternalEdge" << -it->ElementNbr - 2;
             Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
         }
         break;

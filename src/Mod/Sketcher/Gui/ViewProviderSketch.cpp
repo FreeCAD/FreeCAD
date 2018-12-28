@@ -1613,6 +1613,18 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         if (edit->sketchHandler)
                             edit->sketchHandler->applyCursor();
                         this->updateColor();
+                    } 
+                    else if (shapetype.size() > 12 && shapetype.substr(0,12) == "ExternalEdge") {
+                        int GeoId = std::atoi(&shapetype[12]) - 1;
+                        GeoId = -GeoId - 3;
+                        resetPreselectPoint();
+                        edit->PreselectCurve = GeoId;
+                        edit->PreselectCross = -1;
+                        edit->PreselectConstraintSet.clear();
+
+                        if (edit->sketchHandler)
+                            edit->sketchHandler->applyCursor();
+                        this->updateColor();
                     }
                     else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex") {
                         int PtIndex = std::atoi(&shapetype[6]) - 1;
