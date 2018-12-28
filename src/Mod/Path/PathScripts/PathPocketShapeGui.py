@@ -24,6 +24,8 @@
 
 import FreeCAD
 import FreeCADGui
+import Part
+import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
@@ -55,13 +57,13 @@ def createExtensionSoSwitch(ext):
     mat = coin.SoMaterial()
     crd = coin.SoCoordinate3()
     fce = coin.SoFaceSet()
+    hnt = coin.SoShapeHints()
 
     if not ext is None:
         wire =  ext.getWire()
         if wire:
-            polygon = []
-            for p in wire.discretize(Deflection=0.01):
-                polygon.append((p.x, p.y, p.z))
+            poly = [p for p in wire.discretize(Deflection=0.01)][:-1]
+            polygon = [(p.x, p.y, p.z) for p in poly]
             crd.point.setValues(polygon)
         else:
             return None
@@ -69,8 +71,12 @@ def createExtensionSoSwitch(ext):
         mat.diffuseColor = (1.0, 0.0, 0.0)
         mat.transparency = 0.5
 
+        hnt.faceType = coin.SoShapeHints.UNKNOWN_FACE_TYPE
+        hnt.vertexOrdering = coin.SoShapeHints.CLOCKWISE
+
         sep.addChild(pos)
         sep.addChild(mat)
+        sep.addChild(hnt)
         sep.addChild(crd)
         sep.addChild(fce)
 
@@ -82,18 +88,29 @@ def createExtensionSoSwitch(ext):
 
 class _Extension(object):
     def __init__(self, obj, base, face, edge):
+        self.obj = obj
         self.base = base
         self.face = face
         self.edge = edge
         if edge is None:
             self.ext = None
         else:
-            self.ext  = obj.Proxy.createExtension(obj, base, edge)
+            self.ext  = obj.Proxy.createExtension(obj, base, face, edge)
         self.switch = createExtensionSoSwitch(self.ext)
         self.root = self.switch
 
     def isValid(self):
         return not self.root is None
+
+    def getEdgeNumbers(self):
+        return self.ext.getEdgeNumbers()
+
+    def getEdges(self):
+        return self.ext.getEdges()
+
+    def isWire(self):
+        return 1 == len(self.getEdgeNumbers())
+
 
 Page = None
 
@@ -113,14 +130,14 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.defaultLength = PathGui.QuantitySpinBox(self.form.defaultLength, obj, 'ExtensionLengthDefault')
 
-        self.form.extensions.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.form.extensions.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.form.extensionTree.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.form.extensionTree.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
 
         self.switch = coin.SoSwitch()
         self.obj.ViewObject.RootNode.addChild(self.switch)
         self.switch.whichChild = coin.SO_SWITCH_ALL
 
-        self.model = QtGui.QStandardItemModel(self.form.extensions)
+        self.model = QtGui.QStandardItemModel(self.form.extensionTree)
         self.model.setHorizontalHeaderLabels(['Base', 'Extension'])
 
         global Page
@@ -143,7 +160,9 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
+
         self.defaultLength.updateProperty()
+
         extensions = []
 
         def extractExtension(item):
@@ -158,7 +177,9 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         PathLog.track(obj.Label)
+
         self.defaultLength.updateSpinBox()
+        self.extensions = obj.Proxy.getExtensions(obj)
         self.setExtensions(self.extensions)
 
     def createItemForBaseModel(self, base, sub, edges, extensions):
@@ -169,28 +190,50 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         item.setData(ext, self.DataObject)
         item.setSelectable(False)
 
+        extendCorners = self.form.extendCorners.isChecked()
+
+        def createSubItem(label, ext0):
+            self.switch.addChild(ext0.root)
+            item0 = QtGui.QStandardItem()
+            item0.setData(label, QtCore.Qt.EditRole)
+            item0.setData(ext0, self.DataObject)
+            item0.setCheckable(True)
+            for e in extensions:
+                if e.obj == base and e.sub == label:
+                    item0.setCheckState(QtCore.Qt.Checked)
+                    break
+            item.appendRow([item0])
+
+        extensionEdges = {}
         for edge in base.Shape.getElement(sub).Edges:
             for (e, label) in edges:
                 if edge.isSame(e):
                     ext0 = _Extension(self.obj, base, sub, label)
                     if ext0.isValid():
-                        self.switch.addChild(ext0.root)
-                        item0 = QtGui.QStandardItem()
-                        item0.setData(label, QtCore.Qt.EditRole)
-                        item0.setData(ext0, self.DataObject)
-                        item0.setCheckable(True)
-                        for e in extensions:
-                            if e.obj == base and e.sub == label:
-                                item0.setCheckState(QtCore.Qt.Checked)
-                                break
-                        item.appendRow([item0])
+                        extensionEdges[e] = label[4:]
+                        if not extendCorners:
+                            createSubItem(label, ext0)
                     break
+
+        if extendCorners:
+            def edgesMatchShape(e0, e1):
+                return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, PathGeom.flipEdge(e1))
+
+            self.extensionEdges = extensionEdges
+            for edgeList in Part.sortEdges(extensionEdges.keys()):
+                self.edgeList = edgeList
+                if len(edgeList) == 1:
+                    label = "Edge%s" % [extensionEdges[keyEdge] for keyEdge in extensionEdges.keys() if edgesMatchShape(keyEdge, edgeList[0])][0]
+                else:
+                    label = "Wire(%s)" % ','.join(sorted([extensionEdges[keyEdge] for e in edgeList for keyEdge in extensionEdges.keys() if edgesMatchShape(e, keyEdge)], key=lambda s: int(s)))
+                ext0 = _Extension(self.obj, base, sub, label)
+                createSubItem(label, ext0)
 
         return item
 
     def setExtensions(self, extensions):
         PathLog.track(len(extensions))
-        self.form.extensions.blockSignals(True)
+        self.form.extensionTree.blockSignals(True)
 
         # remember current visual state
         if hasattr(self, 'selectionModel'):
@@ -202,11 +245,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         for modelRow in range(self.model.rowCount()):
             model = self.model.item(modelRow, 0)
             modelName = model.data(QtCore.Qt.EditRole)
-            if not self.form.extensions.isExpanded(model.index()):
+            if not self.form.extensionTree.isExpanded(model.index()):
                 collapsedModels.append(modelName)
             for featureRow in range(model.rowCount()):
                 feature = model.child(featureRow, 0);
-                if not self.form.extensions.isExpanded(feature.index()):
+                if not self.form.extensionTree.isExpanded(feature.index()):
                     collapsedFeatures.append("%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole)))
 
         # remove current extensions and all their visuals
@@ -227,21 +270,21 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 baseItem.appendRow(self.createItemForBaseModel(base[0], sub, edges, extensions))
             self.model.appendRow(baseItem)
 
-        self.form.extensions.setModel(self.model)
-        self.form.extensions.expandAll()
-        self.form.extensions.resizeColumnToContents(0)
+        self.form.extensionTree.setModel(self.model)
+        self.form.extensionTree.expandAll()
+        self.form.extensionTree.resizeColumnToContents(0)
 
         # restore previous state - at least the parts that are still valid
         for modelRow in range(self.model.rowCount()):
             model = self.model.item(modelRow, 0)
             modelName = model.data(QtCore.Qt.EditRole)
             if modelName in collapsedModels:
-                self.form.extensions.setExpanded(model.index(), False)
+                self.form.extensionTree.setExpanded(model.index(), False)
             for featureRow in range(model.rowCount()):
                 feature = model.child(featureRow, 0);
                 featureName =  "%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole))
                 if featureName in collapsedFeatures:
-                    self.form.extensions.setExpanded(feature.index(), False)
+                    self.form.extensionTree.setExpanded(feature.index(), False)
         if hasattr(self, 'selectionModel') and selectedExtensions:
             self.restoreSelection(selectedExtensions)
 
@@ -309,16 +352,19 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         PathLog.track(obj.Label)
-        return [self.form.defaultLength.editingFinished]
+        signals = []
+        signals.append(self.form.defaultLength.editingFinished)
+        return signals
 
     def registerSignalHandlers(self, obj):
+        self.form.extendCorners.clicked.connect(lambda : self.setExtensions(obj.Proxy.getExtensions(obj)))
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonDisable.clicked.connect(self.extensionsDisable)
         self.form.buttonEnable.clicked.connect(self.extensionsEnable)
 
         self.model.itemChanged.connect(lambda x: self.setDirty())
 
-        self.selectionModel = self.form.extensions.selectionModel()
+        self.selectionModel = self.form.extensionTree.selectionModel()
         self.selectionModel.selectionChanged.connect(self.selectionChanged)
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
