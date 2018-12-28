@@ -28,26 +28,40 @@
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
 
-#if QT_VERSION >= 0x040400
+#if QT_VERSION >= 0x050700 and defined(QTWEBENGINE)
+#include <QWebEngineView>
+namespace WebGui {
+class WebEngineUrlRequestInterceptor;
+};
+#elif QT_VERSION >= 0x040400 and defined(QTWEBKIT)
 #include <QWebView>
 #endif
 
-class QWebView;
 class QUrl;
 class QNetworkRequest;
 class QNetworkReply;
 
 namespace WebGui {
 
+#ifdef QTWEBENGINE
+class WebGuiExport WebView : public QWebEngineView
+#else
 class WebGuiExport WebView : public QWebView
+#endif
 {
     Q_OBJECT
 
 public:
     WebView(QWidget *parent = 0);
+#ifdef QTWEBENGINE
+    // reimplement setTextSizeMultiplier
+    void setTextSizeMultiplier(qreal factor);
+#endif
 
 protected:
+#ifdef QTWEBKIT
     void mousePressEvent(QMouseEvent *event);
+#endif
     void wheelEvent(QWheelEvent *event);
     void contextMenuEvent(QContextMenuEvent *event);
 
@@ -55,8 +69,11 @@ private Q_SLOTS:
     void triggerContextMenuAction(int);
 
 Q_SIGNALS:
-    void openLinkInExternalBrowser(const QUrl& url);
+    void openLinkInExternalBrowser(const QUrl&);
     void openLinkInNewWindow(const QUrl&);
+#ifdef QTWEBENGINE
+    void viewSource(const QUrl&);
+#endif
 };
 
 /**
@@ -87,14 +104,25 @@ public:
 
     bool canClose(void);
 
+#ifdef QTWEBENGINE
+public Q_SLOTS:
+    void acceptRequestUrl(const QUrl &url, bool &blockRequest);
+#endif
+
 protected Q_SLOTS:
     void onLoadStarted();
     void onLoadProgress(int);
     void onLoadFinished(bool);
-    void onLinkClicked (const QUrl& url);
     bool chckHostAllowed(const QString& host);
+#ifdef QTWEBENGINE
+    void onDownloadRequested(QWebEngineDownloadItem *request);
+    void setWindowIcon(const QIcon &icon);
+    void onViewSource(const QUrl &url);
+#else
+    void onLinkClicked (const QUrl& url);
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
+#endif
     void onOpenLinkInExternalBrowser(const QUrl& url);
     void onOpenLinkInNewWindow(const QUrl&);
 
@@ -102,6 +130,9 @@ private:
     WebView* view;
     bool isLoading;
     float textSizeMultiplier;
+#ifdef QTWEBENGINE
+    WebEngineUrlRequestInterceptor *interceptLinks;
+#endif
 };
 
 } // namespace WebGui
