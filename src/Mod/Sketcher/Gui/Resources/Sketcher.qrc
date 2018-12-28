@@ -156,6 +156,7 @@
         <file>icons/Sketcher_Attach.svg</file>
         <file>icons/Sketcher_ToggleFreeze.svg</file>
         <file>icons/Sketcher_Sync.svg</file>
+        <file>icons/Sketcher_FixExternal.svg</file>
         <file>icons/Sketcher_Hyperbolic_Arc.svg</file>
         <file>icons/Sketcher_Hyperbolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_LeaveSketch.svg</file>

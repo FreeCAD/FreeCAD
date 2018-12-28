@@ -6038,10 +6038,36 @@ bool SketchObject::evaluateSupport(void)
 void SketchObject::rebuildExternalGeometry(bool defining)
 {
     // get the actual lists of the externals
-    const auto &Objects     = ExternalGeometry.getValues();
-    const auto &SubElements = ExternalGeometry.getSubValues();
+    auto Objects     = ExternalGeometry.getValues();
+    auto SubElements = ExternalGeometry.getSubValues();
     assert(externalGeoRef.size() == Objects.size());
+    auto keys = externalGeoRef;
 
+    auto geoms = ExternalGeo.getValues();
+    // re-check for any missing geometry element. The code here has a side
+    // effect that the linked external geometry will continue to work even if
+    // ExternalGeometry is wiped out.
+    for(auto &geo : geoms) {
+        if(geo->Ref.size() && geo->testFlag(Part::Geometry::Missing)) {
+            auto pos = geo->Ref.find('.');
+            if(pos == std::string::npos)
+                continue;
+            std::string objName = geo->Ref.substr(0,pos);
+            auto obj = getDocument()->getObject(objName.c_str());
+            if(!obj)
+                continue;
+            std::pair<std::string,std::string> elementName;
+            App::GeoFeature::resolveElement(obj,geo->Ref.c_str()+pos+1,elementName);
+            if(elementName.second.size() 
+                    && !App::GeoFeature::hasMissingElement(elementName.second.c_str())) 
+            {
+                Objects.push_back(obj);
+                SubElements.push_back(elementName.second);
+                keys.push_back(geo->Ref);
+            }
+        }
+    }
+    
     Base::Placement Plm = Placement.getValue();
     Base::Vector3d Pos = Plm.getPosition();
     Base::Rotation Rot = Plm.getRotation();
@@ -6078,7 +6104,7 @@ void SketchObject::rebuildExternalGeometry(bool defining)
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
         const std::string &SubElement=SubElements[i];        
-        const std::string &key = externalGeoRef[i];
+        const std::string &key = keys[i];
 
         // Skip frozen geometries
         bool frozen = false;
@@ -6452,7 +6478,6 @@ void SketchObject::rebuildExternalGeometry(bool defining)
     }
 
     // now update the geometries
-    auto geoms = ExternalGeo.getValues();
     for(auto &geos : newGeos) {
         for(auto &geo : geos) {
             auto it = externalGeoMap.find(geo->Id);
@@ -6487,21 +6512,21 @@ void SketchObject::rebuildExternalGeometry(bool defining)
     rebuildVertexIndex();
 
     // clean up geometry reference
-    if(refSet.size() < externalGeoRef.size()) {
-        auto objs = ExternalGeometry.getValues();
-        auto itObj = objs.begin();
-        auto subs = ExternalGeometry.getSubValues();
-        auto itSub = subs.begin();
-        for(auto &ref : externalGeoRef) {
-            if(!refSet.count(ref)) {
-                itObj = objs.erase(itObj);
-                itSub = subs.erase(itSub);
-            }else {
-                ++itObj;
-                ++itSub;
+    if(refSet.size() != (size_t)ExternalGeometry.getSize()) {
+        if(refSet.size() < keys.size()) {
+            auto itObj = Objects.begin();
+            auto itSub = SubElements.begin();
+            for(auto &ref : keys) {
+                if(!refSet.count(ref)) {
+                    itObj = Objects.erase(itObj);
+                    itSub = SubElements.erase(itSub);
+                }else {
+                    ++itObj;
+                    ++itSub;
+                }
             }
         }
-        ExternalGeometry.setValues(objs,subs);
+        ExternalGeometry.setValues(Objects,SubElements);
     }
 
     solverNeedsUpdate=true;
@@ -6509,6 +6534,53 @@ void SketchObject::rebuildExternalGeometry(bool defining)
 
     if(hasError) 
         throw Base::RuntimeError("Missing external geometry reference");
+}
+
+void SketchObject::fixExternalGeometry(const std::vector<int> &geoIds) {
+    std::set<int> idSet(geoIds.begin(),geoIds.end());
+    auto geos = ExternalGeo.getValues();
+    auto objs = ExternalGeometry.getValues();
+    auto subs = ExternalGeometry.getSubValues();
+    bool touched = false;
+    for(int i=2;i<(int)geos.size();++i) {
+        auto &geo = geos[i];
+        int GeoId = -i-1;
+        if(geo->Ref.empty() 
+                || !geo->testFlag(Part::Geometry::Missing) 
+                || (idSet.size() && !idSet.count(GeoId)))
+            continue;
+        auto pos = geo->Ref.find('.');
+        if(pos == std::string::npos) {
+            FC_ERR("Invalid geometry reference " << geo->Ref);
+            continue;
+        }
+        std::string objName = geo->Ref.substr(0,pos);
+        auto obj = getDocument()->getObject(objName.c_str());
+        if(!obj) {
+            FC_ERR("Cannot find object in reference " << geo->Ref);
+            continue;
+        }
+        
+        auto elements = Part::Feature::getRelatedElements(obj,geo->Ref.c_str()+pos+1);
+        if(elements.empty()) {
+            FC_ERR("No related reference found for " << geo->Ref);
+            continue;
+        }
+
+        geo = geo->clone();
+        geo->setFlag(Part::Geometry::Missing,false);
+        geo->Ref = objName + "." 
+            + Data::ComplexGeoData::elementMapPrefix() + elements.front().first;
+        objs.push_back(obj);
+        subs.push_back(elements.front().second);
+        touched = true;
+    }
+
+    if(touched) {
+        ExternalGeo.setValues(geos);
+        ExternalGeometry.setValues(objs,subs);
+        rebuildExternalGeometry();
+    }
 }
 
 std::vector<Part::Geometry*> SketchObject::getCompleteGeometry(void) const

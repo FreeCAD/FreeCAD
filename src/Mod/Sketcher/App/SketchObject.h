@@ -161,6 +161,8 @@ public:
     void rebuildExternalGeometry(bool defining=false);
     /// returns the number of external Geometry entities
     int getExternalGeometryCount(void) const { return ExternalGeo.getSize(); }
+    /// auto fix external geometry references
+    void fixExternalGeometry(const std::vector<int> &geoIds = {});
 
     /// retrieves a vector containing both normal and external Geometry (including the sketch axes)
     std::vector<Part::Geometry*> getCompleteGeometry(void) const;

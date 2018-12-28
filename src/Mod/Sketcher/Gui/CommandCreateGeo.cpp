@@ -6695,7 +6695,7 @@ CmdSketcherDefining::CmdSketcherDefining()
     eType           = ForEdit;
 }
 
-static Sketcher::SketchObject *getExternalSelection(std::vector<int> *sels=0) {
+static Sketcher::SketchObject *getExternalSelection(std::vector<int> *sels=0, bool force=false) {
     auto doc = Gui::Application::Instance->editDocument();
     if(!doc)
         return 0;
@@ -6713,7 +6713,7 @@ static Sketcher::SketchObject *getExternalSelection(std::vector<int> *sels=0) {
             return sketch;
         sels->push_back(geoId);
     }
-    if(!sels || sels->empty())
+    if(!force && (!sels || sels->empty()))
         return 0;
     return sketch;
 }
@@ -6883,6 +6883,47 @@ bool CmdSketcherSync::isActive(void)
     return getExternalSelection(0)!=0;
 }
 
+
+DEF_STD_CMD_A(CmdSketcherFixExternal);
+
+CmdSketcherFixExternal::CmdSketcherFixExternal()
+  : Command("Sketcher_FixExternal")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Fix reference");
+    sToolTipText    = QT_TR_NOOP("Fix external geometry by guessing its geometry reference");
+    sWhatsThis      = "Sketcher_FixExternal";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_FixExternal";
+    sAccel          = "X, R";
+    eType           = ForEdit;
+}
+
+void CmdSketcherFixExternal::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> sels;
+    auto sketch = getExternalSelection(&sels,true);
+    if(!sketch)
+        return;
+    
+    openCommand("Fix external geometry");
+    try {
+        sketch->fixExternalGeometry(sels);
+        tryAutoRecomputeIfNotSolve(sketch);
+    } catch(Base::Exception &e) {
+        e.ReportException();
+    }
+    commitCommand();
+}
+
+bool CmdSketcherFixExternal::isActive(void)
+{
+    return true;
+}
+
+
 class CmdSketcherExternalCmds : public Gui::Command
 {
 public:
@@ -6896,7 +6937,7 @@ public:
         bCanLog       = false;
 
         Gui::CommandManager &mgr = Gui::Application::Instance->commandManager();
-        cmds.reserve(6);
+        cmds.reserve(7);
         cmds.emplace_back(new CmdSketcherExternal(),cmds.size());
         mgr.addCommand(cmds.back().first);
         cmds.emplace_back(new CmdSketcherDefining(),cmds.size());
@@ -6908,6 +6949,8 @@ public:
         cmds.emplace_back(new CmdSketcherToggleFreeze(),cmds.size());
         mgr.addCommand(cmds.back().first);
         cmds.emplace_back(new CmdSketcherSync(),cmds.size());
+        mgr.addCommand(cmds.back().first);
+        cmds.emplace_back(new CmdSketcherFixExternal(),cmds.size());
         mgr.addCommand(cmds.back().first);
     }
 
