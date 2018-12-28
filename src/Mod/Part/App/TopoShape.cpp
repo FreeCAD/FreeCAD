@@ -366,8 +366,11 @@ TopAbs_ShapeEnum TopoShape::shapeType(const char *type, bool silent) {
                 return v.first;
         }
     }
-    if(!silent)
+    if(!silent) {
+        if(Data::ComplexGeoData::hasMissingElement(type))
+            FC_THROWM(Base::CADKernelError,"missing shape element: " << (type?type:"?"));
         FC_THROWM(Base::CADKernelError,"invalid shape type: " << (type?type:"?"));
+    }
     return TopAbs_SHAPE;
 }
 

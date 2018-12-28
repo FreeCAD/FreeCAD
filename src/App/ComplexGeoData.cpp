@@ -538,6 +538,20 @@ const std::string &ComplexGeoData::indexPostfix() {
     return postfix;
 }
 
+const std::string &ComplexGeoData::missingPrefix() {
+    static std::string prefix("?");
+    return prefix;
+}
+
+bool ComplexGeoData::hasMissingElement(const char *subname) {
+    if(!subname)
+        return false;
+    auto dot = strrchr(subname,'.');
+    if(dot)
+        subname = dot+1;
+    return boost::starts_with(subname,missingPrefix());
+}
+
 size_t ComplexGeoData::findTagInElementName(const std::string &name, 
         long *tag, size_t *len, std::string *postfix, char *type) 
 {

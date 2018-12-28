@@ -118,7 +118,7 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
             if(dot) {
                 // deliberately mangle the old style element name to signal a
                 // missing reference
-                ret.second = '?';
+                ret.second = Data::ComplexGeoData::missingPrefix();
                 ret.second += dot+1;
             }
         }
@@ -181,6 +181,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
 }
 
 bool GeoFeature::hasMissingElement(const char *subname) {
+    return Data::ComplexGeoData::hasMissingElement(subname);
     if(!subname)
         return false;
     auto dot = strrchr(subname,'.');
