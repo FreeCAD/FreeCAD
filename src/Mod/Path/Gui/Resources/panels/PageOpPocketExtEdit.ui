@@ -22,14 +22,21 @@
       </property>
       <item>
        <widget class="QWidget" name="widget_2" native="true">
-        <layout class="QFormLayout" name="formLayout">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
+        <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>Default Length</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="extendCorners">
+           <property name="text">
+            <string>Extend Corners</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -41,16 +48,13 @@
            <property name="maximum">
             <double>999999999.000000000000000</double>
            </property>
-           <property name="value">
-            <double>1.000000000000000</double>
-           </property>
           </widget>
          </item>
         </layout>
        </widget>
       </item>
       <item>
-       <widget class="QTreeView" name="extensions">
+       <widget class="QTreeView" name="extensionTree">
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
