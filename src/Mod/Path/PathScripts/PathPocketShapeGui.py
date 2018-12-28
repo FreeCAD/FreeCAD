@@ -111,6 +111,11 @@ class _Extension(object):
     def isWire(self):
         return 1 == len(self.getEdgeNumbers())
 
+    def show(self):
+        self.switch.whichChild = coin.SO_SWITCH_ALL
+
+    def hide(self):
+        self.switch.whichChild = coin.SO_SWITCH_NONE
 
 Page = None
 
@@ -255,7 +260,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         # remove current extensions and all their visuals
         def removeItemSwitch(item):
             ext = item.data(self.DataObject)
-            ext.switch.whichChild = coin.SO_SWITCH_NONE
+            ext.hide()
             self.switch.removeChild(ext.root)
         self.forAllItemsCall(removeItemSwitch)
         self.model.clear()
@@ -323,9 +328,9 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                     self.selectionModel.select(item.index(), QtGui.QItemSelectionModel.Select)
                 if self.selectionModel.isSelected(item.index()):
                     FreeCADGui.Selection.addSelection(ext.base, ext.face)
-                    ext.switch.whichChild = coin.SO_SWITCH_ALL
+                    ext.show()
                 else:
-                    ext.switch.whichChild = coin.SO_SWITCH_NONE
+                    ext.hide()
             self.forAllItemsCall(setSelectionVisuals)
 
     def selectionChanged(self):
