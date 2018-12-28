@@ -72,27 +72,25 @@ def includesPoint(p, pts):
             return True
     return False
 
-def selectOffsetWire(wire, wires, offset):
-    '''selectOffsetWire(wire, wires, offset) ... returns the Wire in wires which most likely is wire offset by offset'''
-    startPoint = endPoints(wire)[0] + offset;
+def selectOffsetWire(feature, wires):
+    '''selectOffsetWire(feature, wires) ... returns the Wire in wires which is does not intersect with feature'''
     closest = None
     for w in wires:
-        for ep in endPoints(w):
-            dist = (startPoint - ep).Length
-            if closest is None or dist < closest[0]:
-                closest = (dist, w)
+        dist = feature.distToShape(w)[0]
+        if closest is None or dist > closest[0]:
+            closest = (dist, w)
     if not closest is None:
         return closest[1]
     return None
 
 
-def extendWire(wire, length, direction):
-    '''extendWire(wire, length, direction) ... return a closed Wire which extends wire by length into direction'''
+def extendWire(feature, wire, length):
+    '''extendWire(wire, length) ... return a closed Wire which extends wire by length'''
     off2D = wire.makeOffset2D(length)
     endPts = endPoints(wire)
     edges = [e for e in off2D.Edges if Part.Circle != type(e.Curve) or not includesPoint(e.Curve.Center, endPts)]
     wires = [Part.Wire(e) for e in Part.sortEdges(edges)]
-    offset = selectOffsetWire(wire, wires, direction * length)
+    offset = selectOffsetWire(feature, wires)
     ePts = endPoints(offset)
     l0 = (ePts[0] - endPts[0]).Length
     l1 = (ePts[1] - endPts[0]).Length
@@ -112,13 +110,17 @@ class Extension(object):
     DirectionX         = 1
     DirectionY         = 2
 
-    def __init__(self, obj, sub, length, direction):
+    def __init__(self, obj, feature, sub, length, direction):
         self.obj = obj
+        self.feature = feature
         self.sub = sub
         self.length = length
         self.direction = direction
 
-    def extendEdge(self, e0, direction):
+    def getSubLink(self):
+        return "%s:%s" % (self.feature, self.sub)
+
+    def extendEdge(self, feature, e0, direction):
         if Part.Line == type(e0.Curve) or Part.LineSegment == type(e0.Curve):
             e2 = e0.copy()
             off = self.length.Value * direction
@@ -129,26 +131,46 @@ class Extension(object):
             wire = Part.Wire([e0, e1, e2, e3])
             self.wire = wire
             return wire
-        return extendWire(Part.Wire([e0]), self.length.Value, direction)
+        return extendWire(feature, Part.Wire([e0]), self.length.Value)
+
+    def getEdgeNumbers(self):
+        if 'Wire' in self.sub:
+            return [nr for nr in self.sub[5:-1].split(',')]
+        return [self.sub[4:]]
+
+    def getEdgeNames(self):
+        return ["Edge%s" % nr for nr in self.getEdgeNumbers()]
+
+    def getEdges(self):
+        return [self.obj.Shape.getElement(sub) for sub in self.getEdgeNames()]
+
+    def getDirection(self, wire):
+        e0 = wire.Edges[0]
+        midparam = e0.FirstParameter + 0.5 * (e0.LastParameter - e0.FirstParameter)
+        tangent = e0.tangentAt(midparam)
+        normal = tangent.cross(FreeCAD.Vector(0, 0, 1)).normalize()
+        poffPlus  = e0.valueAt(midparam) + 0.01 * normal
+        poffMinus = e0.valueAt(midparam) - 0.01 * normal
+        if not self.obj.Shape.isInside(poffPlus, 0.005, True):
+            return normal
+        if not self.obj.Shape.isInside(poffMinus, 0.005, True):
+            return normal.negative()
+        return None
 
     def getWire(self):
-        if PathGeom.isRoughly(0, self.length.Value):
+        if PathGeom.isRoughly(0, self.length.Value) or not self.sub:
             return None
 
-        feature = self.obj.Shape.getElement(self.sub)
-        if Part.Edge == type(feature):
-            e0 = feature
-            midparam = e0.FirstParameter + 0.5 * (e0.LastParameter - e0.FirstParameter)
-            tangent = e0.tangentAt(midparam)
-            normal = tangent.cross(FreeCAD.Vector(0, 0, 1)).normalize()
-            poffPlus  = e0.valueAt(midparam) + 0.01 * normal
-            poffMinus = e0.valueAt(midparam) - 0.01 * normal
-            if not self.obj.Shape.isInside(poffPlus, 0.005, True):
-                return self.extendEdge(e0, normal)
-            if not self.obj.Shape.isInside(poffMinus, 0.005, True):
-                return self.extendEdge(e0, normal.negative())
-        else:
-            PathLog.warning("getWire does not support %s" % type(feature))
+        feature = self.obj.Shape.getElement(self.feature)
+        edges = self.getEdges()
+        sub = Part.Wire(edges)
+
+        if 1 == len(edges):
+            direction = self.getDirection(sub)
+            if direction is None:
+                return None
+            return self.extendEdge(feature, edges[0], direction)
+        return extendWire(feature, sub, self.length.Value)
 
 
 class ObjectPocket(PathPocketBase.ObjectPocket):
@@ -166,14 +188,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.addProperty('App::PropertyDistance', 'ExtensionLengthDefault', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Default length of extensions.'))
         if not hasattr(obj, 'ExtensionFeature'):
             obj.addProperty('App::PropertyLinkSubListGlobal', 'ExtensionFeature', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of features to extend.'))
-        if not hasattr(obj, 'ExtensionLength'):
-            obj.addProperty('App::PropertyFloatList', 'ExtensionLength', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of extension lenght of corresponding feature.'))
-        if not hasattr(obj, 'ExtensionDirection'):
-            obj.addProperty('App::PropertyIntegerList', 'ExtensionDirection', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of extension direction of corresponding feature.'))
 
         obj.setEditorMode('ExtensionFeature', 2)
-        obj.setEditorMode('ExtensionLength', 2)
-        obj.setEditorMode('ExtensionDirection', 2)
 
     def opOnDocumentRestored(self, obj):
         '''opOnDocumentRestored(obj) ... adds the UseOutline property if it doesn't exist.'''
@@ -285,26 +301,22 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.OpStartDepth = bb.ZMax
         obj.ExtensionLengthDefault = obj.OpToolDiameter / 2
 
-    def createExtension(self, obj, extObj, extSub):
-        return Extension(extObj, extSub, obj.ExtensionLengthDefault, Extension.DirectionNormal)
+    def createExtension(self, obj, extObj, extFeature, extSub):
+        return Extension(extObj, extFeature, extSub, obj.ExtensionLengthDefault, Extension.DirectionNormal)
 
     def getExtensions(self, obj):
         extensions = []
         i = 0
         for extObj,features in obj.ExtensionFeature:
-            for extSub in features:
-                extensions.append(self.createExtension(obj, extObj, extSub))
+            for sub in features:
+                extFeature, extSub = sub.split(':')
+                extensions.append(self.createExtension(obj, extObj, extFeature, extSub))
                 i = i + 1
         return extensions
 
     def setExtensions(self, obj, extensions):
         PathLog.track(obj.Label, len(extensions))
-        features = {}
-        for ext in extensions:
-            subs = features.get(ext.obj, [])
-            subs.append(ext.sub)
-            features[ext.obj] = subs
-        obj.ExtensionFeature = [(ext.obj, ext.sub) for ext in extensions]
+        obj.ExtensionFeature = [(ext.obj, ext.getSubLink()) for ext in extensions]
 
 def SetupProperties():
     return PathPocketBase.SetupProperties() + [ 'UseOutline' ]
