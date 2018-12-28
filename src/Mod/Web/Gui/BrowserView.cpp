@@ -645,8 +645,10 @@ bool BrowserView::onMsg(const char* pMsg,const char** )
  */
 bool BrowserView::onHasMsg(const char* pMsg) const
 {
-    if (strcmp(pMsg,"Back")==0)  return true;
-    if (strcmp(pMsg,"Next")==0)  return true;
+    if (strcmp(pMsg,"Back")==0)
+        return view->page()->action(QWEBPAGE::Back)->isEnabled();
+    if (strcmp(pMsg,"Next")==0)
+        return view->page()->action(QWEBPAGE::Forward)->isEnabled();
     if (strcmp(pMsg,"Refresh")==0) return !isLoading;
     if (strcmp(pMsg,"Stop")==0) return isLoading;
     if (strcmp(pMsg,"ZoomIn")==0) return true;
