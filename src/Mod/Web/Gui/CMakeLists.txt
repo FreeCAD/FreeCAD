@@ -40,8 +40,8 @@ SET(WebGui_SRCS
     Workbench.h
     BrowserView.h
     BrowserView.cpp
-    CookieJar.cpp
-    CookieJar.h
+    CookieJar.cpp   # QWebkit only
+    CookieJar.h     # QWebkit only
 )
 
 set(WebGui_MOC_HDRS
