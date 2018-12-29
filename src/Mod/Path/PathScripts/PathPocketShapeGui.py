@@ -45,7 +45,7 @@ __doc__ = "Pocket Shape operation page controller and command implementation."
 def translate(context, text, disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -53,7 +53,10 @@ else:
 
 class _Extension(object):
     ColourEnabled = (1.0,  .5, .5)
-    ColourDisabled = (1.0, 1.0, .5)
+    #ColourDisabled = (1.0, 1.0, .5)
+    ColourDisabled = (.5, .5, .5)
+    TransparencySelected = 0.0
+    TransparencyDeselected = 0.7
 
     def __init__(self, obj, base, face, edge):
         self.obj = obj
@@ -85,7 +88,7 @@ class _Extension(object):
                 return None
 
             mat.diffuseColor = self.ColourDisabled
-            mat.transparency = 0.5
+            mat.transparency = self.TransparencyDeselected
 
             hnt.faceType = coin.SoShapeHints.UNKNOWN_FACE_TYPE
             hnt.vertexOrdering = coin.SoShapeHints.CLOCKWISE
@@ -125,6 +128,12 @@ class _Extension(object):
     def disable(self):
         self.material.diffuseColor = self.ColourDisabled
 
+    def select(self):
+        self.material.transparency = self.TransparencySelected
+
+    def deselect(self):
+        self.material.transparency = self.TransparencyDeselected
+
 Page = None
 
 class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
@@ -153,6 +162,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.model = QtGui.QStandardItemModel(self.form.extensionTree)
         self.model.setHorizontalHeaderLabels(['Base', 'Extension'])
 
+        if 0 < len(obj.ExtensionFeature):
+            self.form.showExtensions.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.showExtensions.setCheckState(QtCore.Qt.Unchecked)
+
         global Page
         Page = self
 
@@ -169,7 +183,9 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             for featureRow in range(model.rowCount()):
                 feature = model.child(featureRow, 0);
                 for edgeRow in range(feature.rowCount()):
-                    cb(feature.child(edgeRow, 0))
+                    item = feature.child(edgeRow, 0)
+                    ext = item.data(self.DataObject)
+                    cb(item, ext)
 
     def getFields(self, obj):
         PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
@@ -178,8 +194,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         extensions = []
 
-        def extractExtension(item):
-            ext = item.data(self.DataObject)
+        def extractExtension(item, ext):
             if ext and ext.edge and item.checkState() == QtCore.Qt.Checked:
                 extensions.append(ext.ext)
 
@@ -267,8 +282,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                     collapsedFeatures.append("%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole)))
 
         # remove current extensions and all their visuals
-        def removeItemSwitch(item):
-            ext = item.data(self.DataObject)
+        def removeItemSwitch(item, ext):
             ext.hide()
             self.switch.removeChild(ext.root)
         self.forAllItemsCall(removeItemSwitch)
@@ -331,14 +345,18 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                         return True
                 return False
 
-            def setSelectionVisuals(item):
-                ext = item.data(self.DataObject)
+            def setSelectionVisuals(item, ext):
                 if selectItem(item, ext):
                     self.selectionModel.select(item.index(), QtGui.QItemSelectionModel.Select)
-                if self.selectionModel.isSelected(item.index()):
+
+                selected = self.selectionModel.isSelected(item.index())
+                if selected:
                     FreeCADGui.Selection.addSelection(ext.base, ext.face)
-                    ext.show()
-                elif item.checkState() == QtCore.Qt.Checked:
+                    ext.select()
+                else:
+                    ext.deselect()
+
+                if self.form.showExtensions.isChecked() or self.selectionModel.isSelected(item.index()):
                     ext.show()
                 else:
                     ext.hide()
@@ -348,9 +366,9 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.restoreSelection([])
 
     def extensionsClear(self):
-        def disableItem(item):
+        def disableItem(item, ext):
             item.setCheckState(QtCore.Qt.Unchecked)
-            item.data(self.DataObject).disable()
+            ext.disable()
 
         self.forAllItemsCall(disableItem)
         self.setDirty()
@@ -373,13 +391,23 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     def updateItemEnabled(self, item):
         ext = item.data(self.DataObject)
         if item.checkState() == QtCore.Qt.Checked:
-            ext.show()
             ext.enable()
         else:
             ext.disable()
-            if not self.selectionModel.isSelected(item.index()):
-                ext.hide()
         self.setDirty()
+
+    def showHideExtension(self):
+        if self.form.showExtensions.isChecked():
+            def enableExtensionEdit(item, ext):
+                ext.show()
+            self.forAllItemsCall(enableExtensionEdit)
+        else:
+            def disableExtensionEdit(item, ext):
+                #item.setCheckState(QtCore.Qt.Unchecked)
+                #ext.disable()
+                ext.hide()
+            self.forAllItemsCall(disableExtensionEdit)
+        #self.setDirty()
 
     def getSignalsForUpdate(self, obj):
         PathLog.track(obj.Label)
@@ -388,6 +416,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         return signals
 
     def registerSignalHandlers(self, obj):
+        self.form.showExtensions.clicked.connect(self.showHideExtension)
         self.form.extendCorners.clicked.connect(lambda : self.setExtensions(obj.Proxy.getExtensions(obj)))
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonDisable.clicked.connect(self.extensionsDisable)
@@ -397,6 +426,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.selectionModel = self.form.extensionTree.selectionModel()
         self.selectionModel.selectionChanged.connect(self.selectionChanged)
+        self.selectionChanged()
 
 class TaskPanelOpPage(PathPocketBaseGui.TaskPanelOpPage):
     '''Page controller class for Pocket operation'''
