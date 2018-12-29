@@ -190,6 +190,8 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     def getFields(self, obj):
         PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
 
+        if obj.ExtensionCorners != self.form.extendCorners.isChecked():
+            obj.ExtensionCorners = self.form.extendCorners.isChecked()
         self.defaultLength.updateProperty()
 
         extensions = []
@@ -206,6 +208,8 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     def setFields(self, obj):
         PathLog.track(obj.Label)
 
+        if obj.ExtensionCorners != self.form.extendCorners.isChecked():
+            self.form.extendCorners.toggle()
         self.defaultLength.updateSpinBox()
         self.extensions = obj.Proxy.getExtensions(obj)
         self.setExtensions(self.extensions)
@@ -409,6 +413,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             self.forAllItemsCall(disableExtensionEdit)
         #self.setDirty()
 
+    def toggleExtensionCorners(self):
+        self.setExtensions(self.obj.Proxy.getExtensions(self.obj))
+        self.selectionChanged()
+        self.setDirty()
+
     def getSignalsForUpdate(self, obj):
         PathLog.track(obj.Label)
         signals = []
@@ -417,7 +426,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def registerSignalHandlers(self, obj):
         self.form.showExtensions.clicked.connect(self.showHideExtension)
-        self.form.extendCorners.clicked.connect(lambda : self.setExtensions(obj.Proxy.getExtensions(obj)))
+        self.form.extendCorners.clicked.connect(self.toggleExtensionCorners)
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonDisable.clicked.connect(self.extensionsDisable)
         self.form.buttonEnable.clicked.connect(self.extensionsEnable)
