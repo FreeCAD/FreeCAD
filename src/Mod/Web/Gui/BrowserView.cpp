@@ -52,21 +52,21 @@
 
 
 #if QT_VERSION >= 0x050700 and defined(QTWEBENGINE)
-#include <QWebEnginePage>
-#include <QWebEngineView>
-#include <QWebEngineSettings>
-#include <QWebEngineProfile>
-#include <QWebEngineContextMenuData>
-#include <QWebEngineUrlRequestInterceptor>
-#include <QWebEngineUrlRequestInfo>
-#define QWEBVIEW QWebEngineView
-#define QWEBPAGE QWebEnginePage
+# include <QWebEnginePage>
+# include <QWebEngineView>
+# include <QWebEngineSettings>
+# include <QWebEngineProfile>
+# include <QWebEngineContextMenuData>
+# include <QWebEngineUrlRequestInterceptor>
+# include <QWebEngineUrlRequestInfo>
+# define QWEBVIEW QWebEngineView
+# define QWEBPAGE QWebEnginePage
 #elif QT_VERSION >= 0x040400 and defined(QTWEBKIT)
-#include <QWebFrame>
-#include <QWebView>
-#include <QWebSettings>
-#define QWEBVIEW QWebView
-#define QWEBPAGE QWebPage
+# include <QWebFrame>
+# include <QWebView>
+# include <QWebSettings>
+# define QWEBVIEW QWebView
+# define QWEBPAGE QWebPage
 #endif
 
 #include "BrowserView.h"
@@ -258,13 +258,13 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     }
 #if QT_VERSION >= 0x050800 and defined(QTWEBENGINE)
     else { // for view source
+        // QWebEngine caches standardContextMenu, guard so we only add signlmapper once
         static bool firstRun = true;
         if (firstRun) {
             firstRun = false;
             QMenu *menu = page()->createStandardContextMenu();
             QList<QAction *> actions = menu->actions();
             for(QAction *ac : actions) {
-                //qDebug() << ac->text() << QLatin1String(":") << ac->data().toString() << endl;
                 if (ac->data().toInt() == QWEBPAGE::ViewSource) {
                     QSignalMapper* signalMapper = new QSignalMapper (this);
                     signalMapper->setProperty("url", QVariant(r.linkUrl()));
@@ -284,10 +284,9 @@ void WebView::triggerContextMenuAction(int id)
 {
     QObject* s = sender();
     QUrl url = s->property("url").toUrl();
-    const QWEBPAGE::WebAction openLink = static_cast<QWEBPAGE::WebAction>(WebAction::OpenLink);
 
     switch (id) {
-    case openLink:
+    case WebAction::OpenLink:
         openLinkInExternalBrowser(url);
         break;
     case QWEBPAGE::OpenLinkInNewWindow:
@@ -314,14 +313,15 @@ void WebView::triggerContextMenuAction(int id)
 BrowserView::BrowserView(QWidget* parent)
     : MDIView(0,parent,0),
       WindowParameter( "Browser" ),
-      isLoading(false),
-      textSizeMultiplier(1.0)
+      isLoading(false)
 {
     view = new WebView(this);
     setCentralWidget(view);
+    view->setAttribute(Qt::WA_OpaquePaintEvent, true);
 
-#ifdef QTWEBKIT // QWebEngine doesn't support direct access to network
-                // nor rendering access
+#ifdef QTWEBKIT
+    textSizeMultiplier = 1.0;
+
     view->page()->setLinkDelegationPolicy(QWebView::DelegateAllLinks);
     view->page()->setForwardUnsupportedContent(true);
 
@@ -338,7 +338,17 @@ BrowserView::BrowserView(QWidget* parent)
     QPalette palette = view->palette();
     palette.setBrush(QPalette::Base, Qt::white);
     view->page()->setPalette(palette);
+
+    connect(view, SIGNAL(linkClicked(const QUrl &)),
+            this, SLOT(onLinkClicked(const QUrl &)));
+    connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
+            this, SLOT(onDownloadRequested(const QNetworkRequest &)));
+    connect(view->page(), SIGNAL(unsupportedContent(QNetworkReply*)),
+            this, SLOT(onUnsupportedContent(QNetworkReply*)));
+
 #else // QTWEBENGINE
+    // QWebEngine doesn't support direct access to network
+    // nor rendering access
     QWebEngineProfile *profile = view->page()->profile();
     QString basePath = QLatin1String(App::Application::getUserAppDataDir().c_str()) + QLatin1String("webdata");
     profile->setPersistentStoragePath(basePath + QLatin1String("persistent"));
@@ -349,8 +359,13 @@ BrowserView::BrowserView(QWidget* parent)
 
     view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
 
+    connect(view->page()->profile(), SIGNAL(downloadRequested(QWebEngineDownloadItem*)),
+            this, SLOT(onDownloadRequested(QWebEngineDownloadItem*)));
+    connect(view->page(), SIGNAL(iconChanged(const QIcon &)),
+            this, SLOT(setWindowIcon(const QIcon &)));
+    connect(view, SIGNAL(viewSource(const QUrl&)),
+            this, SLOT(onViewSource(const QUrl&)));
 #endif
-    view->setAttribute(Qt::WA_OpaquePaintEvent, true);
 
     connect(view, SIGNAL(loadStarted()),
             this, SLOT(onLoadStarted()));
@@ -362,22 +377,6 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onOpenLinkInExternalBrowser(const QUrl &)));
     connect(view, SIGNAL(openLinkInNewWindow(const QUrl &)),
             this, SLOT(onOpenLinkInNewWindow(const QUrl &)));
-#ifdef QTWEBKIT
-    connect(view, SIGNAL(linkClicked(const QUrl &)),
-            this, SLOT(onLinkClicked(const QUrl &)));
-    connect(view->page(), SIGNAL(downloadRequested(const QNetworkRequest &)),
-            this, SLOT(onDownloadRequested(const QNetworkRequest &)));
-    connect(view->page(), SIGNAL(unsupportedContent(QNetworkReply*)),
-            this, SLOT(onUnsupportedContent(QNetworkReply*)));
-
-#else // QTWEBENGINE
-    connect(view->page()->profile(), SIGNAL(downloadRequested(QWebEngineDownloadItem*)),
-            this, SLOT(onDownloadRequested(QWebEngineDownloadItem*)));
-    connect(view->page(), SIGNAL(iconChanged(const QIcon &)),
-            this, SLOT(setWindowIcon(const QIcon &)));
-    connect(view, SIGNAL(viewSource(const QUrl&)),
-            this, SLOT(onViewSource(const QUrl&)));
-#endif
 }
 
 /** Destroys the object and frees any allocated resources */

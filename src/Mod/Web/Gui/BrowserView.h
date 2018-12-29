@@ -125,9 +125,10 @@ protected Q_SLOTS:
 private:
     WebView* view;
     bool isLoading;
-    float textSizeMultiplier;
 #ifdef QTWEBENGINE
     WebEngineUrlRequestInterceptor *interceptLinks;
+#else
+    float textSizeMultiplier;
 #endif
 };
 
