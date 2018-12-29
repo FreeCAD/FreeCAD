@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>381</width>
+    <width>430</width>
     <height>617</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
       <item>
        <widget class="QWidget" name="widget_2" native="true">
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>Default Length</string>
@@ -31,6 +31,16 @@
           </widget>
          </item>
          <item row="1" column="1">
+          <widget class="Gui::QuantitySpinBox" name="defaultLength">
+           <property name="minimum">
+            <double>-999999999.000000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>999999999.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
           <widget class="QCheckBox" name="extendCorners">
            <property name="text">
             <string>Extend Corners</string>
@@ -40,13 +50,10 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="Gui::QuantitySpinBox" name="defaultLength">
-           <property name="minimum">
-            <double>-999999999.000000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>999999999.000000000000000</double>
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="showExtensions">
+           <property name="text">
+            <string>Show All</string>
            </property>
           </widget>
          </item>
@@ -60,9 +67,6 @@
         </property>
         <property name="tabKeyNavigation">
          <bool>true</bool>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::MultiSelection</enum>
         </property>
         <property name="headerHidden">
          <bool>true</bool>
