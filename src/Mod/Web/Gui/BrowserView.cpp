@@ -104,9 +104,10 @@ public:
     void interceptRequest(QWebEngineUrlRequestInfo &info)
     {
         if (info.navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink) {
-            bool blockRequest = false;
-            m_parent->acceptRequestUrl(info.requestUrl(), blockRequest);
-            info.block(blockRequest);
+            // invoke thread safe.
+            QMetaObject::invokeMethod(m_parent, "onLinkClicked",
+                                      Q_ARG(QUrl, info.requestUrl()));
+
         }
     }
 
@@ -385,14 +386,8 @@ BrowserView::~BrowserView()
     delete view;
 }
 
-#ifdef QTWEBENGINE
-void BrowserView::acceptRequestUrl(const QUrl &url, bool &blockRequest)
-{
-#else
 void BrowserView::onLinkClicked (const QUrl & url)
 {
-    bool blockRequest;
-#endif
     QString scheme   = url.scheme();
     QString host     = url.host();
     //QString username = url.userName();
@@ -413,24 +408,22 @@ void BrowserView::onLinkClicked (const QUrl & url)
 
     //QString fragment = url.	fragment();
 
+#ifdef QTWEBKIT
     if (scheme==QString::fromLatin1("http") || scheme==QString::fromLatin1("https")) {
-#ifdef QTWEBENGINE
-        blockRequest = false;
-#else
         load(url);
-#endif
     }
+#endif
     // Small trick to force opening a link in an external browser: use exthttp or exthttps
     // Write your URL as exthttp://www.example.com
     else if (scheme==QString::fromLatin1("exthttp")) {
         exturl.setScheme(QString::fromLatin1("http"));
         QDesktopServices::openUrl(exturl);
-        blockRequest = true;
+        stop();// stop qwebengine, should do nothing in qwebkit at this point
     }
     else if (scheme==QString::fromLatin1("exthttps")) {
         exturl.setScheme(QString::fromLatin1("https"));
         QDesktopServices::openUrl(exturl);
-        blockRequest = true;
+        stop();// stop qwebengine, should do nothing in qwebkit at this point
     }
     // run scripts if not from somewhere else!
     if ((scheme.size() < 2 || scheme==QString::fromLatin1("file"))&& host.isEmpty()) {
@@ -438,7 +431,8 @@ void BrowserView::onLinkClicked (const QUrl & url)
         if (fi.exists()) {
             QString ext = fi.completeSuffix();
             if (ext == QString::fromLatin1("py")) {
-                blockRequest = true;
+                stop(); // stop qwebengine, should do nothing in qwebkit at this point
+
                 try {
                     if (!q.isEmpty()) {
                         // encapsulate the value in quotes
@@ -462,7 +456,6 @@ void BrowserView::onLinkClicked (const QUrl & url)
         else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("File does not exist!"),
             fi.absoluteFilePath ());
-            blockRequest = true;
         }
     }
 }

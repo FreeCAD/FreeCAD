@@ -104,22 +104,17 @@ public:
 
     bool canClose(void);
 
-#ifdef QTWEBENGINE
-public Q_SLOTS:
-    void acceptRequestUrl(const QUrl &url, bool &blockRequest);
-#endif
-
 protected Q_SLOTS:
     void onLoadStarted();
     void onLoadProgress(int);
     void onLoadFinished(bool);
+    void onLinkClicked (const QUrl& url);
     bool chckHostAllowed(const QString& host);
 #ifdef QTWEBENGINE
     void onDownloadRequested(QWebEngineDownloadItem *request);
     void setWindowIcon(const QIcon &icon);
     void onViewSource(const QUrl &url);
 #else
-    void onLinkClicked (const QUrl& url);
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
 #endif
