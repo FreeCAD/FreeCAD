@@ -190,7 +190,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.addProperty('App::PropertyLinkSubListGlobal', 'ExtensionFeature', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of features to extend.'))
         if not hasattr(obj, 'ExtensionCorners'):
             obj.addProperty('App::PropertyBool', 'ExtensionCorners', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'When enabled connected extension edges are combined to wires.'))
-            obj.UseOutline = True
+            obj.ExtensionCorners = True
 
         obj.setEditorMode('ExtensionFeature', 2)
 
@@ -322,7 +322,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.ExtensionFeature = [(ext.obj, ext.getSubLink()) for ext in extensions]
 
 def SetupProperties():
-    return PathPocketBase.SetupProperties() + [ 'UseOutline' ]
+    return PathPocketBase.SetupProperties() + [ 'UseOutline', 'ExtensionCorners' ]
 
 def Create(name, obj = None):
     '''Create(name) ... Creates and returns a Pocket operation.'''
