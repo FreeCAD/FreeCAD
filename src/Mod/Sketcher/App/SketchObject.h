@@ -403,6 +403,7 @@ protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
     virtual void onDocumentRestored();
+    virtual void restoreFinished();
 
     virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment = 0);
 

@@ -6614,6 +6614,21 @@ void SketchObject::onDocumentRestored()
     }
 }
 
+void SketchObject::restoreFinished()
+{
+    try {
+        Constraints.acceptGeometry(getCompleteGeometry());
+        // this may happen when saving a sketch directly in edit mode
+        // but never performed a recompute before
+        if (Shape.getValue().IsNull() && hasConflicts() == 0) {
+            if (this->solve(true) == 0)
+                Shape.setValue(solvedSketch.toShape());
+        }
+    }
+    catch (...) {
+    }
+}
+
 void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const
 {
     if (VertexId < 0 || VertexId >= int(VertexId2GeoId.size())) {
