@@ -108,15 +108,16 @@ protected Q_SLOTS:
     void onLoadStarted();
     void onLoadProgress(int);
     void onLoadFinished(bool);
-    void onLinkClicked (const QUrl& url);
     bool chckHostAllowed(const QString& host);
 #ifdef QTWEBENGINE
     void onDownloadRequested(QWebEngineDownloadItem *request);
     void setWindowIcon(const QIcon &icon);
+    void urlFilter(const QUrl &url);
     void onViewSource(const QUrl &url);
 #else
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
+    void onLinkClicked (const QUrl& url);
 #endif
     void onOpenLinkInExternalBrowser(const QUrl& url);
     void onOpenLinkInNewWindow(const QUrl&);

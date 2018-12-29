@@ -105,7 +105,7 @@ public:
     {
         if (info.navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink) {
             // invoke thread safe.
-            QMetaObject::invokeMethod(m_parent, "onLinkClicked",
+            QMetaObject::invokeMethod(m_parent, "urlFilter",
                                       Q_ARG(QUrl, info.requestUrl()));
 
         }
@@ -346,6 +346,9 @@ BrowserView::BrowserView(QWidget* parent)
 
     interceptLinks = new WebEngineUrlRequestInterceptor(this);
     profile->setRequestInterceptor(interceptLinks);
+
+    view->settings()->setAttribute(QWebEngineSettings::AutoLoadIconsForPage, true);
+
 #endif
     view->setAttribute(Qt::WA_OpaquePaintEvent, true);
 
@@ -386,7 +389,11 @@ BrowserView::~BrowserView()
     delete view;
 }
 
+#ifdef QTWEBENGINE
+void BrowserView::urlFilter(const QUrl &url)
+#else
 void BrowserView::onLinkClicked (const QUrl & url)
+#endif
 {
     QString scheme   = url.scheme();
     QString host     = url.host();
