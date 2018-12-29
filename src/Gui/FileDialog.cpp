@@ -83,7 +83,7 @@ void FileDialog::onSelectedFilter(const QString& /*filter*/)
     QString suf = selectedNameFilter();
     if (rx.indexIn(suf) >= 0) {
         suf = rx.cap(1);
-        setDefaultSuffix(suf.toLower());
+        setDefaultSuffix(suf);
     }
 }
 
