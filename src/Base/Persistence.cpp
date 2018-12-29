@@ -129,4 +129,5 @@ void Persistence::restoreFromStream(std::istream& stream)
     reader.readElement("Content");
     Restore(reader);
     reader.readFiles(zipstream);
+    restoreFinished();
 }
