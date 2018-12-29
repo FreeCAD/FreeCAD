@@ -95,7 +95,10 @@ def read(filename):
             if not line[0] in ";#[":
                 k = line.split("=")
                 if len(k) == 2:
-                    d[k[0].strip()] = k[1].strip().decode('utf-8')
+                    v = k[1].strip()
+                    if hasattr(v,"decode"):
+                        v = v.decode('utf-8')
+                    d[k[0].strip()] = v
         l += 1
     return d
 
