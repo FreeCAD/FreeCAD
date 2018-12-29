@@ -24,8 +24,6 @@
 from __future__ import print_function
 import FreeCAD
 import FreeCADGui
-from Units import Unit
-from Units import Quantity
 from Material import getMaterialAttributeStructure
 import os
 from PySide import QtCore, QtGui
@@ -234,10 +232,11 @@ class MaterialEditor:
         self.getMaterialResources()
         self.cards = {}
         for p in self.resources:
-            for f in os.listdir(p):
-                b, e = os.path.splitext(f)
-                if e.upper() == ".FCMAT":
-                    self.cards[b] = p + os.sep + f
+            if os.path.exists(p):
+                for f in os.listdir(p):
+                    b, e = os.path.splitext(f)
+                    if e.upper() == ".FCMAT":
+                        self.cards[b] = p + os.sep + f
         # self.outputCards()
         if self.cards:
             self.widget.ComboMaterial.clear()
@@ -568,9 +567,9 @@ def matProperWidget(parent=None, Type="String", Units=None, Value=None,
         widget = ui.createWidget("Gui::InputField")
         if Units:
             vv = string2tuple(Units)
-            unit = Unit(vv[0], vv[1], vv[2], vv[3],
+            unit = FreeCAD.Units.Unit(vv[0], vv[1], vv[2], vv[3],
                         vv[4], vv[5], vv[6], vv[7])
-            quantity = Quantity(1, unit)
+            quantity = FreeCAD.Units.Quantity(1, unit)
             widget.setProperty('unit', quantity.getUserPreferred()[2])
 
     elif Type == "Integer":
