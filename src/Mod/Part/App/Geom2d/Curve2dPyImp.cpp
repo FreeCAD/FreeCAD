@@ -882,31 +882,42 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
             if (!PyArg_ParseTuple(args, "O!|d", &(Part::Curve2dPy::Type), &p, &prec))
                 return 0;
             Handle(Geom2d_Curve) curve2 = Handle(Geom2d_Curve)::DownCast(static_cast<Geometry2dPy*>(p)->getGeometry2dPtr()->handle());
-            Geom2dAPI_ExtremaCurveCurve intersector(curve1, curve2,
-                                                    curve1->FirstParameter(),
-                                                    curve1->LastParameter(),
-                                                    curve2->FirstParameter(),
-                                                    curve2->LastParameter());
-            if (intersector.LowerDistance() > Precision::Confusion()) {
-                // No intersection
-                return Py::new_reference_to(Py::List());
-            }
-
             Py::List points;
             Py::Module module("__FreeCADBase__");
             Py::Callable method(module.getAttr("Vector2d"));
             Py::Tuple arg(2);
-            for (int i = 1; i <= intersector.NbExtrema(); i++) {
-                if (intersector.Distance(i) > Precision::Confusion())
-                    continue;
-                gp_Pnt2d p1, p2;
-                intersector.Points(i, p1, p2);
-
-                arg.setItem(0, Py::Float(p1.X()));
-                arg.setItem(1, Py::Float(p1.Y()));
-                points.append(method.apply(arg));
+            Geom2dAPI_InterCurveCurve intersector(curve1, curve2, prec);
+            if ((intersector.NbPoints() == 0) && (intersector.NbSegments() == 0)) {
+                // No intersection
+                return Py::new_reference_to(Py::List());
             }
+            if (intersector.NbPoints() > 0) {
+                // Cross intersections
+                for (int i = 1; i <= intersector.NbPoints(); i++) {
+                    gp_Pnt2d p1 = intersector.Point(i);
+                    arg.setItem(0, Py::Float(p1.X()));
+                    arg.setItem(1, Py::Float(p1.Y()));
+                    points.append(method.apply(arg));
+                }
+            }
+            if (intersector.NbSegments() > 0) {
+                // Tangential intersections
+                Geom2dAPI_ExtremaCurveCurve intersector2(curve1, curve2,
+                                                        curve1->FirstParameter(),
+                                                        curve1->LastParameter(),
+                                                        curve2->FirstParameter(),
+                                                        curve2->LastParameter());
+                for (int i = 1; i <= intersector2.NbExtrema(); i++) {
+                    if (intersector2.Distance(i) > prec)
+                        continue;
+                    gp_Pnt2d p1, p2;
+                    intersector2.Points(i, p1, p2);
 
+                    arg.setItem(0, Py::Float(p1.X()));
+                    arg.setItem(1, Py::Float(p1.Y()));
+                    points.append(method.apply(arg));
+                }
+            }
             return Py::new_reference_to(points);
         }
     }
