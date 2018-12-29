@@ -299,7 +299,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             bb = job.Stock.Shape.BoundBox
             obj.OpFinalDepth = bb.ZMin
             obj.OpStartDepth = bb.ZMax
-        obj.ExtensionLengthDefault = obj.OpToolDiameter / 2
+        obj.setExpression('ExtensionLengthDefault', 'OpToolDiameter / 2')
 
     def createExtension(self, obj, extObj, extFeature, extSub):
         return Extension(extObj, extFeature, extSub, obj.ExtensionLengthDefault, Extension.DirectionNormal)
