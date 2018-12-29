@@ -188,6 +188,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             obj.addProperty('App::PropertyDistance', 'ExtensionLengthDefault', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'Default length of extensions.'))
         if not hasattr(obj, 'ExtensionFeature'):
             obj.addProperty('App::PropertyLinkSubListGlobal', 'ExtensionFeature', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'List of features to extend.'))
+        if not hasattr(obj, 'ExtensionCorners'):
+            obj.addProperty('App::PropertyBool', 'ExtensionCorners', 'Extension', QtCore.QT_TRANSLATE_NOOP('PathPocketShape', 'When enabled connected extension edges are combined to wires.'))
+            obj.UseOutline = True
 
         obj.setEditorMode('ExtensionFeature', 2)
 
