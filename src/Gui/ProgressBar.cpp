@@ -132,19 +132,14 @@ void Sequencer::startStep()
     if (thr != currentThread) {
         d->guiThread = false;
         d->bar->setRange(0, (int)nTotalSteps);
-        if (nTotalSteps == 0) {
-            d->progressTime.start();
-        }
+        d->progressTime.start();
         d->measureTime.start();
         QMetaObject::invokeMethod(d->bar, "aboutToShow", Qt::QueuedConnection);
     }
     else {
         d->guiThread = true;
         d->bar->setRange(0, (int)nTotalSteps);
-        if (nTotalSteps == 0) {
-            d->progressTime.start();
-        }
-
+        d->progressTime.start();
         d->measureTime.start();
         d->waitCursor = new Gui::WaitCursor;
         d->bar->enterControlEvents();
@@ -194,8 +189,8 @@ void Sequencer::setValue(int step)
     // if number of total steps is unknown then increment only by one
     if (nTotalSteps == 0) {
         int elapsed = d->progressTime.elapsed();
-        // allow an update every 500 milliseconds only
-        if (elapsed > 500) {
+        // allow an update every 100 milliseconds only
+        if (elapsed > 100) {
             d->progressTime.restart();
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
@@ -208,13 +203,10 @@ void Sequencer::setValue(int step)
         }
     }
     else {
-        // FIXME: This check causes the progress bar
-        // to never appear when loading a STEP file
-#if 1
         int elapsed = d->progressTime.elapsed();
+        // allow an update every 100 milliseconds only
         if (elapsed > 100) {
             d->progressTime.restart();
-#endif
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
                 QGenericReturnArgument(), Q_ARG(int,step));
@@ -228,9 +220,7 @@ void Sequencer::setValue(int step)
                 d->bar->resetObserveEventFilter();
                 qApp->processEvents();
             }
-#if 1
         }
-#endif
     }
 }
 
