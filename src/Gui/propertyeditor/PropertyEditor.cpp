@@ -220,7 +220,7 @@ void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int en
     for (int i=start; i<=end; i++) {
         QModelIndex item = propertyModel->index(i, column, parent);
         PropertyItem* propItem = static_cast<PropertyItem*>(item.internalPointer());
-        if (propItem && propItem->testStatus(App::Property::Hidden)) {
+        if (!PropertyView::showAll() && propItem && propItem->testStatus(App::Property::Hidden)) {
             setRowHidden (i, parent, true);
         }
         if (propItem && propItem->isSeparator()) {
@@ -237,7 +237,7 @@ void PropertyEditor::updateEditorMode(const App::Property& prop)
     if (!PropertyView::showAll() && editor.empty())
         return;
 
-    bool hidden = prop.testStatus(App::Property::Hidden);
+    bool hidden = PropertyView::isPropertyHidden(&prop);
     bool readOnly = prop.testStatus(App::Property::ReadOnly);
 
     int column = 1;
