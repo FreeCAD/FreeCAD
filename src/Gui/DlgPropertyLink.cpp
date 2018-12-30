@@ -67,8 +67,8 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
     else {
         std::string linkDoc = qPrintable(link[0]);
         for(auto doc : App::GetApplication().getDocuments()) {
-            QString name(QString::fromUtf8(doc->getName()));
-            ui->comboBox->addItem(name);
+            QString name(QString::fromUtf8(doc->Label.getValue()));
+            ui->comboBox->addItem(name,QVariant(QString::fromLatin1(doc->getName())));
             if(linkDoc == doc->getName())
                 ui->comboBox->setCurrentIndex(ui->comboBox->count()-1);
         }
@@ -296,9 +296,9 @@ void DlgPropertyLink::on_searchBox_textChanged(const QString& /*search*/)
     findObjects(on);
 }
 
-void DlgPropertyLink::on_comboBox_currentIndexChanged(const QString& text)
+void DlgPropertyLink::on_comboBox_currentIndexChanged(int index)
 {
-    link[0] = text;
+    link[0] = ui->comboBox->itemData(index).toString();
     bool on = ui->checkObjectType->isChecked();
     findObjects(on);
 }
