@@ -48,7 +48,7 @@ public:
 private Q_SLOTS:
     void on_checkObjectType_toggled(bool);
     void on_searchBox_textChanged(const QString&);
-    void on_comboBox_currentIndexChanged(const QString&);
+    void on_comboBox_currentIndexChanged(int);
     void onItemExpanded(QTreeWidgetItem * item);
 
 private:

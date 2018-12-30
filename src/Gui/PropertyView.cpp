@@ -57,9 +57,10 @@ using namespace Gui::PropertyEditor;
 
 static ParameterGrp::handle _GetParam() {
     static ParameterGrp::handle hGrp;
-    if(!hGrp)
+    if(!hGrp) {
         hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/PropertyView");
+    }
     return hGrp;
 }
 
@@ -97,7 +98,6 @@ PropertyView::PropertyView(QWidget *parent)
     propertyEditorData->setAutomaticDocumentUpdate(true);
     tabs->addTab(propertyEditorData, tr("Data"));
 
-    _GetParam()->Attach(this);
     int preferredTab = _GetParam()->GetInt("LastTabIndex", 1);
 
     if ( preferredTab > 0 && preferredTab < tabs->count() )
@@ -134,7 +134,6 @@ PropertyView::PropertyView(QWidget *parent)
 
 PropertyView::~PropertyView()
 {
-    _GetParam()->Detach(this);
     this->connectPropData.disconnect();
     this->connectPropView.disconnect();
     this->connectPropAppend.disconnect();
@@ -145,17 +144,14 @@ PropertyView::~PropertyView()
     this->connectActiveDoc.disconnect();
 }
 
-void PropertyView::OnChange(Base::Subject<const char*> &, const char* sReason) {
-    if(strcmp(sReason,"ShowAll")==0)
-        onTimer();
-}
+static bool _ShowAll;
 
 bool PropertyView::showAll() {
-    return _GetParam()->GetBool("ShowAll",false);
+    return _ShowAll;
 }
 
 void PropertyView::setShowAll(bool enable) {
-    _GetParam()->SetBool("ShowAll",enable);
+    _ShowAll = enable;
 }
 
 void PropertyView::hideEvent(QHideEvent *ev) {
@@ -204,8 +200,8 @@ void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::P
     propertyEditorView->updateProperty(prop);
 }
 
-static inline bool isPropertyHidden(const App::Property *prop) {
-    return !PropertyView::showAll() &&
+bool PropertyView::isPropertyHidden(const App::Property *prop) {
+    return prop && !showAll() &&
         ((prop->getType() & App::Prop_Hidden) || prop->testStatus(App::Property::Hidden));
 }
 
@@ -432,9 +428,7 @@ void PropertyView::onTimer() {
                     continue;
                 std::string name(prop->getName());
                 auto it = propMap.find(name);
-                if(it!=propMap.end() && 
-                   !it->second->testStatus(App::Property::Hidden) &&
-                   !obj->isHidden(it->second))
+                if(it!=propMap.end() && !isPropertyHidden(it->second))
                     continue;
                 std::vector<App::Property*> v(1,prop);
                 dataProps.push_back(std::make_pair(name, v));
@@ -450,9 +444,7 @@ void PropertyView::onTimer() {
                         continue;
                     std::string name(prop->getName());
                     auto it = propMap.find(name);
-                    if(it!=propMap.end() && 
-                       !it->second->testStatus(App::Property::Hidden) &&
-                       !vpLast->isHidden(it->second))
+                    if(it!=propMap.end() && !isPropertyHidden(it->second))
                         continue;
                     std::vector<App::Property*> v(1,prop);
                     viewProps.push_back(std::make_pair(name, v));

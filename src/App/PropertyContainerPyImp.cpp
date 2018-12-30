@@ -30,6 +30,7 @@
 
 #include "PropertyContainer.h"
 #include "Property.h"
+#include "PropertyLinks.h"
 #include "Application.h"
 
 #include <boost/iostreams/device/array.hpp>
@@ -211,6 +212,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
         PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", name);
         return 0;
     }
+    auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
 
     std::map<int,bool> status;
     size_t count = 1;
@@ -235,6 +237,10 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
             }
             auto it = statusMap.find(v);
             if(it == statusMap.end()) {
+                if(linkProp && v == "AllowPartial") {
+                    linkProp->setAllowPartial(value);
+                    continue;
+                }
                 PyErr_Format(PyExc_ValueError, "Unknown property status '%s'", v.c_str());
                 return 0;
             }

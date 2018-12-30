@@ -467,6 +467,8 @@ public:
         return _Flags.test((std::size_t)flag);
     }
 
+    virtual void setAllowPartial(bool enable) { (void)enable; }
+
 protected:
     virtual void hasSetValue() override;
 
@@ -1014,7 +1016,7 @@ public:
     std::vector<std::string> getSubValues(bool newStyle) const;
     std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle=false) const;
 
-    void setAllowPartial(bool enable);
+    virtual void setAllowPartial(bool enable) override;
 
 protected:
     void unlink();
@@ -1172,7 +1174,7 @@ public:
 
     virtual int checkRestore() const override;
 
-    void setAllowPartial(bool enable);
+    virtual void setAllowPartial(bool enable) override;
 
 protected:
     std::list<PropertyXLinkSub> _Links;

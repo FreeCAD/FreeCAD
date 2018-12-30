@@ -864,7 +864,7 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
     // The above mentioned problem can be fixed by sending ChildRemoved event instead.
     //
     auto subwindow = qobject_cast<QMdiSubWindow*>(parent);
-    if(subwindow && subwindow->parentWidget() == d->mdiArea) {
+    if(subwindow && d->mdiArea->subWindowList().contains(subwindow)) {
         QChildEvent childRemoved(QEvent::ChildRemoved, subwindow);
         QApplication::sendEvent(d->mdiArea, &childRemoved);
         subwindow->setParent(0);

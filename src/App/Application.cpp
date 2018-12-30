@@ -560,8 +560,10 @@ public:
         flag = true;
     }
     ~DocOpenGuard() {
-        flag = false;
-        signal();
+        if(flag) {
+            flag = false;
+            signal();
+        }
     }
 };
 
@@ -636,6 +638,7 @@ Document* Application::openDocument(const char * FileName)
     }
     FC_TIME_LOG(t,"total");
 
+    _isRestoring = false;
     signalFinishOpenDocument();
     return newDocs.back().first;
 }

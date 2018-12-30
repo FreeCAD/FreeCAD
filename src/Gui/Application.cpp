@@ -523,13 +523,6 @@ void Application::open(const char* FileName, const char* Module)
             QString filename = QString::fromUtf8(File.filePath().c_str());
             getMainWindow()->appendRecentFile(filename);
             FileDialog::setWorkingDirectory(filename);
-
-            for(auto &v : d->documents) {
-                if(v.first->testStatus(App::Document::PartialDoc)) {
-                    for (auto view : v.second->getMDIViews())
-                        getMainWindow()->removeWindow(view,false);
-                }
-            }
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -699,7 +692,7 @@ void Application::slotNewDocument(const App::Document& Doc)
     // FIXME: Do we really need this further? Calling processEvents() mixes up order of execution in an
     // unpredicatable way. At least it seems that with Qt5 we don't need this any more.
 #if QT_VERSION < 0x050000
-    qApp->processEvents(); // make sure to show the window stuff on the right place
+    // qApp->processEvents(); // make sure to show the window stuff on the right place
 #endif
 }
 
