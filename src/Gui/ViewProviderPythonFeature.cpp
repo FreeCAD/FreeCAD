@@ -808,17 +808,14 @@ void ViewProviderPythonFeatureImp::finishRestoring()
 {
     Base::PyGILStateLocker lock;
     try {
-        if(!py_finishRestoring.isNone())
-            Base::pyCall(py_finishRestoring.ptr());
-        else {
-            App::Property* proxy = object->getPropertyByName("Proxy");
-            if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
-                Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
-                if (vp.isNone()) {
-                    object->show();
-                    static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
-                }
-            }
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.isNone()) {
+                object->show();
+                static_cast<App::PropertyPythonObject*>(proxy)->setValue(Py::Int(1));
+            }else if(!py_finishRestoring.isNone())
+                Base::pyCall(py_finishRestoring.ptr());
         }
     }catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
