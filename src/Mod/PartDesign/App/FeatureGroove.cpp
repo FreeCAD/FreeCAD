@@ -36,6 +36,7 @@
 # include <gp_Lin.hxx>
 #endif
 
+#include <QCoreApplication>
 #include <Base/Axis.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -49,6 +50,8 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
+
+/* TRANSLATOR PartDesign::Groove */
 
 PROPERTY_SOURCE(PartDesign::Groove, PartDesign::ProfileBased)
 
@@ -98,8 +101,13 @@ App::DocumentObjectExecReturn *Groove::execute(void)
     TopoDS_Shape base;
     try {
         base = getBaseShape();
-    } catch (const Base::Exception&) {
-        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the groove!");
+    }
+    catch (const Base::Exception&) {
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n\n"
+                                    "  \xe2\x80\xa2 the active Body does not contain a base shape, so there is no\n"
+                                    "  material to be removed;\n"
+                                    "  \xe2\x80\xa2 the selected sketch does not belong to the active Body."));
+        return new App::DocumentObjectExecReturn(text);
     }
 
     updateAxis();
