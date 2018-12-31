@@ -187,8 +187,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         found_solver_for_use = False
         for m in self.analysis.Group:
             if femutils.is_of_type(m, "Fem::FemSolverCalculixCcxTools"):
-                # we gone check for exlicit for the ccx tools solver type only,
-                # thus it is possible to have lots of frame work solver inside the analysis anyway
+                # we are going to explicitly check for the ccx tools solver type only,
+                # thus it is possible to have lots of framework solvers inside the analysis anyway
                 # for some methods no solver is needed (purge_results) --> solver could be none
                 # analysis has one solver and no solver was set --> use the one solver
                 # analysis has more than one solver and no solver was set --> use solver none
@@ -201,7 +201,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                     self.solver = None
                     # another solver was found --> We have more than one solver
                     # we do not know which one to use, so we use none !
-                    # FreeCAD.Console.PrintMessage('FEM: More than one solver in the analysis and no solver given to analys. No solver is set!\n')
+                    # FreeCAD.Console.PrintMessage('FEM: More than one solver in the analysis and no solver given to analyze. No solver is set!\n')
             elif m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m
