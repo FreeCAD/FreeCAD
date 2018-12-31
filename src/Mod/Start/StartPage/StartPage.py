@@ -503,7 +503,9 @@ def postStart():
     # switch workbench
     wb = param.GetString("AutoloadModule","")
     if wb:
-        FreeCADGui.activateWorkbench(wb)
+        # don't switch workbenches if we are not in Start anymore
+        if FreeCADGui.activeWorkbench() and (FreeCADGui.activeWorkbench().name() == "StartWorkbench"):
+            FreeCADGui.activateWorkbench(wb)
 
     # close start tab
     cl = param.GetBool("closeStart",False)
