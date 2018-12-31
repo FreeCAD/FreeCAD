@@ -872,11 +872,41 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
         if (vKnotsOne.Value(indexV) != vKnotsTwo.Value(indexV))
             return false;
 
+    //Formulas:
+    //Periodic:     knots=poles+2*degree-mult(1)+2
+    //Non-periodic: knots=poles+degree+1
+    auto getUKnotSequenceSize = [](Handle(Geom_BSplineSurface) surface) {
+        int uPoleCount(surface->NbUPoles());
+        int uDegree(surface->UDegree());
+        if (surface->IsUPeriodic()) {
+            int uMult1(surface->UMultiplicity(1));
+            int size = uPoleCount + 2*uDegree - uMult1 + 2;
+            return size;
+        }
+        else {
+            int size = uPoleCount + uDegree + 1;
+            return size;
+        }
+    };
+    auto getVKnotSequenceSize = [](Handle(Geom_BSplineSurface) surface) {
+        int vPoleCount(surface->NbVPoles());
+        int vDegree(surface->VDegree());
+        if (surface->IsVPeriodic()) {
+            int vMult1(surface->VMultiplicity(1));
+            int size = vPoleCount + 2*vDegree - vMult1 + 2;
+            return size;
+        }
+        else {
+            int size = vPoleCount + vDegree + 1;
+            return size;
+        }
+    };
+
     //knot sequence.
-    int uKnotSequenceOneCount(uPoleCountOne + surfaceOne->UDegree() + 1);
-    int vKnotSequenceOneCount(vPoleCountOne + surfaceOne->VDegree() + 1);
-    int uKnotSequenceTwoCount(uPoleCountTwo + surfaceTwo->UDegree() + 1);
-    int vKnotSequenceTwoCount(vPoleCountTwo + surfaceTwo->VDegree() + 1);
+    int uKnotSequenceOneCount(getUKnotSequenceSize(surfaceOne));
+    int vKnotSequenceOneCount(getVKnotSequenceSize(surfaceOne));
+    int uKnotSequenceTwoCount(getUKnotSequenceSize(surfaceTwo));
+    int vKnotSequenceTwoCount(getVKnotSequenceSize(surfaceTwo));
     if (uKnotSequenceOneCount != uKnotSequenceTwoCount || vKnotSequenceOneCount != vKnotSequenceTwoCount)
         return false;
     TColStd_Array1OfReal uKnotSequenceOne(1, uKnotSequenceOneCount);
