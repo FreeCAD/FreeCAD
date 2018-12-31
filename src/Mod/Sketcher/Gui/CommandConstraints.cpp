@@ -1995,7 +1995,7 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
     // Check that the solver does not report redundant/conflicting constraints
     if(Obj->getLastSolverStatus()!=GCS::Success || Obj->getLastHasConflicts() || Obj->getLastHasRedundancies()) {
       QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong solver status"),
-                           QObject::tr("A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints."));
+                           QObject::tr("A Block constraint cannot be added if the sketch is unsolved or there are redundant and/or conflicting constraints."));
       return;
     }
 
@@ -7092,7 +7092,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
         //a bunch of validity checks
         if (areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3) ) {
-            strError = QObject::tr("Can not create constraint with external geometry only!!", dmbg);
+            strError = QObject::tr("Cannot create constraint with external geometry only!!", dmbg);
             throw Base::ValueError("");
         }
 
@@ -7281,7 +7281,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         if(ellipseids.size()>1){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You can not internally constraint an ellipse on other ellipse. Select only one ellipse."));
+                QObject::tr("You cannot internally constraint an ellipse on other ellipse. Select only one ellipse."));
             return;
         }
 
@@ -7434,13 +7434,13 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         if(arcsofellipseids.size()>1){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse."));
+                QObject::tr("You cannot internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse."));
             return;
         }
 
         if(ellipseids.size()>0){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse."));
+                QObject::tr("You cannot internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse."));
             return;
         }
 
