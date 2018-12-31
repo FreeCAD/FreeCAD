@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QApplication>
 #include <QMessageBox>
 #endif
 
@@ -131,7 +132,12 @@ bool TaskDlgFeatureParameters::accept() {
         Gui::Command::commitCommand();
     } catch (const Base::Exception& e) {
         // Generally the only thing that should fail is feature->isValid() others should be fine
-        QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), QString::fromLatin1(e.what()));
+#if (QT_VERSION >= 0x050000)
+        QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what());
+#else
+        QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what(), 0, QApplication::UnicodeUTF8);
+#endif
+        QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
         return false;
     }
 
