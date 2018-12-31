@@ -165,7 +165,7 @@ class _TaskPanelFemMaterial:
             self.choose_material(index)  # fill input fields and set the current material in the cb widget
         else:
             # we found our exact material in self.materials dict :-)
-            FreeCAD.Console.PrintMessage("Previously used material card was found in material directories. We gone use this material.\n")
+            FreeCAD.Console.PrintMessage("Previously used material card was found in material directories. We will use this material.\n")
             index = self.parameterWidget.cb_materials.findData(self.card_path)
             # print(index)
             self.choose_material(index)  # fill input fields and set the current material in the cb widget
