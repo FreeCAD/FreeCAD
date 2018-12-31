@@ -879,14 +879,12 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
     int vKnotSequenceTwoCount(vPoleCountTwo + surfaceTwo->VDegree() + 1);
     if (uKnotSequenceOneCount != uKnotSequenceTwoCount || vKnotSequenceOneCount != vKnotSequenceTwoCount)
         return false;
-    TColStd_Array1OfReal uKnotSequenceOne(1, uKnotSequenceOneCount);
-    TColStd_Array1OfReal vKnotSequenceOne(1, vKnotSequenceOneCount);
-    TColStd_Array1OfReal uKnotSequenceTwo(1, uKnotSequenceTwoCount);
-    TColStd_Array1OfReal vKnotSequenceTwo(1, vKnotSequenceTwoCount);
-    surfaceOne->UKnotSequence(uKnotSequenceOne);
-    surfaceOne->VKnotSequence(vKnotSequenceOne);
-    surfaceTwo->UKnotSequence(uKnotSequenceTwo);
-    surfaceTwo->VKnotSequence(vKnotSequenceTwo);
+
+	TColStd_Array1OfReal uKnotSequenceOne = surfaceOne->UKnotSequence();
+	TColStd_Array1OfReal vKnotSequenceOne = surfaceOne->VKnotSequence();
+	TColStd_Array1OfReal uKnotSequenceTwo = surfaceTwo->UKnotSequence();
+	TColStd_Array1OfReal vKnotSequenceTwo = surfaceTwo->VKnotSequence();
+
     for (int indexU = 1; indexU <= uKnotSequenceOneCount; ++indexU)
         if (uKnotSequenceOne.Value(indexU) != uKnotSequenceTwo.Value(indexU))
             return false;
