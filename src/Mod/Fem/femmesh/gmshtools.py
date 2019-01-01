@@ -577,6 +577,9 @@ class GmshTools():
         try:
             p = subprocess.Popen(comandlist, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             output, error = p.communicate()
+            if sys.version_info.major >= 3:
+                output = output.decode('utf-8')
+                error = error.decode('utf-8')
             # print(output)  # stdout is still cut at some point but the warnings are in stderr and thus printed :-)
             # print(error)
         except:
