@@ -43,6 +43,7 @@
 
 #include "PropertyView.h"
 #include "Application.h"
+#include "MainWindow.h"
 #include "Document.h"
 #include "BitmapFactory.h"
 #include "ViewProvider.h"
@@ -151,7 +152,13 @@ bool PropertyView::showAll() {
 }
 
 void PropertyView::setShowAll(bool enable) {
-    _ShowAll = enable;
+    if(_ShowAll != enable) {
+        _ShowAll = enable;
+        for(auto view : getMainWindow()->findChildren<PropertyView*>()) {
+            if(view->isVisible())
+                view->onTimer();
+        }
+    }
 }
 
 void PropertyView::hideEvent(QHideEvent *ev) {
