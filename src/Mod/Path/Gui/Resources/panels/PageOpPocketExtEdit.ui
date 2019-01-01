@@ -68,6 +68,9 @@
         <property name="tabKeyNavigation">
          <bool>true</bool>
         </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::ExtendedSelection</enum>
+        </property>
         <property name="headerHidden">
          <bool>true</bool>
         </property>
