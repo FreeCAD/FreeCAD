@@ -56,6 +56,11 @@ Py::String DocumentObjectPy::getName(void) const
     return Py::String(std::string(internal));
 }
 
+Py::String DocumentObjectPy::getFullName(void) const
+{
+    return Py::String(getDocumentObjectPtr()->getFullName());
+}
+
 Py::Object DocumentObjectPy::getDocument(void) const
 {
     DocumentObject* object = this->getDocumentObjectPtr();

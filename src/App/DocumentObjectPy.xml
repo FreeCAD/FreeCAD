@@ -229,6 +229,12 @@ getElementMapVersion(property_name): return element map version of a given geome
       </Documentation>
       <Parameter Name="InListExRecursive" Type="List"/>
     </Attribute>
+    <Attribute Name="FullName" ReadOnly="true">
+        <Documentation>
+            <UserDocu>Return the document name and internal name of this object</UserDocu>
+        </Documentation>
+        <Parameter Name="FullName" Type="String"/>
+    </Attribute>
     <Attribute Name="Name" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Return the internal name of this object</UserDocu>
