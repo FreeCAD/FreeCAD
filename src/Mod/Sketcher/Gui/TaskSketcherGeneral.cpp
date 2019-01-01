@@ -229,17 +229,7 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
     );
 
     Gui::Selection().Attach(this);
-    QSignalBlocker block(widget);
     widget->loadSettings();
-
-    // only the widget knows the preset, view control disables the grid automatically
-    // when leaving edit mode. See bool ViewProviderSketch::setEdit(int ModNum)
-    onToggleGridView(widget->isGridViewChecked());
-
-    widget->setGridSize(sketchView->GridSize.getValue());
-    widget->checkGridView(sketchView->ShowGrid.getValue());
-    widget->checkGridSnap(sketchView->GridSnap.getValue());
-    widget->checkAutoconstraints(sketchView->Autoconstraints.getValue());
 
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(boost::bind
