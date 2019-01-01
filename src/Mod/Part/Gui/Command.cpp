@@ -1332,7 +1332,7 @@ CmdPartMakeFace::CmdPartMakeFace()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Make face from wires");
-    sToolTipText  = QT_TR_NOOP("Part_MakeFace: Make face from set of wires (e.g. from a sketch)");
+    sToolTipText  = QT_TR_NOOP("Make face from set of wires (e.g. from a sketch)");
     sWhatsThis    = "Part_MakeFace";
     sStatusTip    = sToolTipText;
 }
@@ -1621,7 +1621,7 @@ CmdPartOffset::CmdPartOffset()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("3D Offset...");
-    sToolTipText  = QT_TR_NOOP("Part_Offset: Utility to offset in 3D");
+    sToolTipText  = QT_TR_NOOP("Utility to offset in 3D");
     sWhatsThis    = "Part_Offset";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Offset";
@@ -1671,7 +1671,7 @@ CmdPartOffset2D::CmdPartOffset2D()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("2D Offset...");
-    sToolTipText  = QT_TR_NOOP("Part_Offset2D: Utility to offset planar shapes");
+    sToolTipText  = QT_TR_NOOP("Utility to offset planar shapes");
     sWhatsThis    = "Part_Offset2D";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Offset2D";
