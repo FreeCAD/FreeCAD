@@ -52,9 +52,9 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class _Extension(object):
-    ColourEnabled = (1.0,  .5, .5)
-    #ColourDisabled = (1.0, 1.0, .5)
-    ColourDisabled = (.5, .5, .5)
+    ColourEnabled = (1.0,  .5, 1.0)
+    ColourDisabled = (1.0, 1.0, .5)
+    #ColourDisabled = (.5, .5, .5)
     TransparencySelected = 0.0
     TransparencyDeselected = 0.7
 
@@ -360,7 +360,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 else:
                     ext.deselect()
 
-                if self.form.showExtensions.isChecked() or self.selectionModel.isSelected(item.index()):
+                if self.form.showExtensions.isChecked() or selected:
                     ext.show()
                 else:
                     ext.hide()
@@ -407,9 +407,8 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             self.forAllItemsCall(enableExtensionEdit)
         else:
             def disableExtensionEdit(item, ext):
-                #item.setCheckState(QtCore.Qt.Unchecked)
-                #ext.disable()
-                ext.hide()
+                if not self.selectionModel.isSelected(item.index()):
+                    ext.hide()
             self.forAllItemsCall(disableExtensionEdit)
         #self.setDirty()
 
