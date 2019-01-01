@@ -173,7 +173,7 @@ class CommandBooleanFragments:
         return {'Pixmap'  : getIconPath("Part_BooleanFragments.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean Fragments"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Part_BooleanFragments: split objects where they intersect")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Split objects where they intersect")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1 :
@@ -309,7 +309,7 @@ class CommandSlice:
         return {'Pixmap'  : getIconPath("Part_Slice.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice to compound"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Part_Slice: split object by intersections with other objects, and pack the pieces into a compound.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Split object by intersections with other objects, and pack the pieces into a compound.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1 :
@@ -333,7 +333,7 @@ class CommandSliceApart:
         return {'Pixmap'  : getIconPath("Part_SliceApart.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice apart"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Part_SliceApart: split object by intersections with other objects.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Split object by intersections with other objects.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1 :
@@ -467,7 +467,7 @@ class CommandXOR:
         return {'Pixmap'  : getIconPath("Part_XOR.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean XOR"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Part_XOR: remove intersection fragments")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Remove intersection fragments")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1 :

@@ -185,7 +185,7 @@ class CommandConnect:
         return {'Pixmap'  : getIconPath("Part_JoinConnect.svg"),
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Connect objects"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Part_JoinConnect: Fuses objects, taking care to preserve voids.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Fuses objects, taking care to preserve voids.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1 :
