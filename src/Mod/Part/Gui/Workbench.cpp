@@ -86,6 +86,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* split = new Gui::MenuItem;
     split->setCommand("Split");
     *split << "Part_BooleanFragments"
+           << "Part_SliceApart"
            << "Part_Slice"
            << "Part_XOR";
 
