@@ -3218,7 +3218,7 @@ DocumentObjectItem *DocumentItem::findItem(
     auto obj = item->object()->getObject();
     auto subObj = obj->getSubObject(name.c_str());
     if(!subObj || subObj==obj) {
-        if(!subObj && !getTree()->searchObject)
+        if(!subObj && !getTree()->searchDoc)
             TREE_WARN("sub object not found " << item->getName() << '.' << name.c_str());
         if(select) {
             item->selected += 2;
