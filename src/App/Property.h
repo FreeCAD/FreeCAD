@@ -144,7 +144,11 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
+    /// Called after begining of Document::afterRestore(). See comments there.
     virtual void afterRestore() {}
+
+    /// Called before calling DocumentObject::onDocumentRestored()
+    virtual void onContainerRestored() {}
 
     /** Property status handling
      */

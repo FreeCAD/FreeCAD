@@ -208,18 +208,26 @@ void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool rev
 static std::string propertyName(Property *prop) {
     if(!prop)
         return std::string();
-    auto obj = dynamic_cast<DocumentObject*>(prop->getContainer());
+    auto obj = Base::freecad_dynamic_cast<DocumentObject>(prop->getContainer());
     std::string name;
     if(obj) 
         name = obj->getFullName() + ".";
-    if(prop->getContainer())
-        name += prop->getName();
+    if(prop->getContainer()) {
+        auto n = prop->getName();
+        if(n) {
+            name += n;
+            return name;
+        }
+    }
+    auto xlink = Base::freecad_dynamic_cast<PropertyXLink>(prop);
+    if(xlink)
+        return propertyName(xlink->parent());
     return name;
 }
 
 void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::string &sub, ShadowSub &shadow)
 {
-    if(!obj || !obj->getNameInDocument()) 
+    if(!obj || !obj->getNameInDocument() || sub.empty())
         return;
     if(shadow.first.empty()) {
         _updateElementReference(0,obj,sub,shadow,false);
@@ -332,8 +340,8 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         if(reverse && shadow.first.size()) {
             // reverse means we are trying to either generate the element name for
             // the first time, or upgrade to a new map version. In case of
-            // upgrading, we still consult the old names in first try. Here means
-            // the first try failed. 
+            // upgrading, we still consult the original mapped name in first
+            // try. Here means the first try failed, so we try the non-mapped name
             ShadowSub shadowCopy;
             shadowCopy.second = shadow.second;
             bool res = _updateElementReference(feature,obj,sub,shadowCopy,reverse,notify);
@@ -1090,15 +1098,20 @@ static bool updateLinkReference(App::PropertyLinkBase *prop,
 }
 
 void PropertyLinkSub::afterRestore() {
+    _ShadowSubList.resize(_cSubList.size());
+    if(!testFlag(LinkRestoreLabel) ||!_pcLinkSub || !_pcLinkSub->getNameInDocument())
+        return;
+    setFlag(LinkRestoreLabel,false);
+    for(std::size_t i=0;i<_cSubList.size();++i)
+        restoreLabelReference(_pcLinkSub,_cSubList[i],&_ShadowSubList[i]);
+}
+
+void PropertyLinkSub::onContainerRestored() {
+    unregisterElementReference();
     if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
         return;
-    _ShadowSubList.resize(_cSubList.size());
-    for(std::size_t i=0;i<_cSubList.size();++i) {
-        if(testFlag(LinkRestoreLabel))
-            restoreLabelReference(_pcLinkSub,_cSubList[i],&_ShadowSubList[i]);
+    for(std::size_t i=0;i<_cSubList.size();++i)
         _registerElementReference(_pcLinkSub,_cSubList[i],_ShadowSubList[i]);
-    }
-    setFlag(LinkRestoreLabel,false);
 }
 
 void PropertyLinkSub::updateElementReference(DocumentObject *feature, bool reverse, bool notify) {
@@ -1910,12 +1923,17 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
 
 void PropertyLinkSubList::afterRestore() {
     assert(_lSubList.size() == _ShadowSubList.size());
-    for(size_t i=0;i<_lSubList.size();++i) {
-        if(testFlag(LinkRestoreLabel))
-            restoreLabelReference(_lValueList[i],_lSubList[i],&_ShadowSubList[i]);
-        _registerElementReference(_lValueList[i],_lSubList[i],_ShadowSubList[i]);
-    }
+    if(!testFlag(LinkRestoreLabel))
+        return;
     setFlag(LinkRestoreLabel,false);
+    for(size_t i=0;i<_lSubList.size();++i)
+        restoreLabelReference(_lValueList[i],_lSubList[i],&_ShadowSubList[i]);
+}
+
+void PropertyLinkSubList::onContainerRestored() {
+    unregisterElementReference();
+    for(size_t i=0;i<_lSubList.size();++i)
+        _registerElementReference(_lValueList[i],_lSubList[i],_ShadowSubList[i]);
 }
 
 void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool reverse, bool notify) {
@@ -2847,15 +2865,19 @@ int PropertyXLink::checkRestore() const {
 }
 
 void PropertyXLink::afterRestore() {
+    assert(_SubList.size() == _ShadowSubList.size());
+    if(!testFlag(LinkRestoreLabel) || !_pcLink || !_pcLink->getNameInDocument())
+        return;
+    setFlag(LinkRestoreLabel,false);
+    for(size_t i=0;i<_SubList.size();++i)
+        restoreLabelReference(_pcLink,_SubList[i],&_ShadowSubList[i]);
+}
+
+void PropertyXLink::onContainerRestored() {
     if(!_pcLink || !_pcLink->getNameInDocument())
         return;
-    assert(_SubList.size() == _ShadowSubList.size());
-    for(size_t i=0;i<_SubList.size();++i) {
-        if(testFlag(LinkRestoreLabel))
-            restoreLabelReference(_pcLink,_SubList[i],&_ShadowSubList[i]);
+    for(size_t i=0;i<_SubList.size();++i)
         _registerElementReference(_pcLink,_SubList[i],_ShadowSubList[i]);
-    }
-    setFlag(LinkRestoreLabel,false);
 }
 
 void PropertyXLink::updateElementReference(DocumentObject *feature,bool reverse,bool notify) {
@@ -3674,6 +3696,11 @@ void PropertyXLinkSubList::afterRestore() {
         l.afterRestore();
 }
 
+void PropertyXLinkSubList::onContainerRestored() {
+    for(auto &l : _Links) 
+        l.onContainerRestored();
+}
+
 void PropertyXLinkSubList::updateElementReference(DocumentObject *feature, bool reverse,bool notify) {
     for(auto &l : _Links)
         l.updateElementReference(feature,reverse,notify);
@@ -3948,6 +3975,14 @@ void PropertyXLinkSubList::setAllowPartial(bool enable) {
     setFlag(LinkAllowPartial,enable);
     for(auto &l : _Links)
         l.setAllowPartial(enable);
+}
+
+void PropertyXLinkSubList::hasSetChildValue(Property &) {
+    hasSetValue();
+}
+
+void PropertyXLinkSubList::aboutToSetChildValue(Property &) {
+    aboutToSetValue();
 }
 
 //**************************************************************************

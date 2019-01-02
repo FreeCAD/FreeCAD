@@ -27,6 +27,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include "Expression.h"
 #include "ExpressionVisitors.h"
 #include "PropertyExpressionEngine.h"
@@ -99,13 +100,13 @@ void PropertyExpressionEngine::hasSetValue()
 
     std::set<App::DocumentObject*> deps;
     std::vector<std::string> labels;
-    unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
     for(auto &e : expressions) {
         auto expr = e.second.expression;
         if(expr) {
             expr->getDepObjects(deps,&labels);
-            expr->visit(v);
+            if(!restoring)
+                expr->visit(v);
         }
     }
     registerLabelReferences(std::move(labels));
@@ -261,6 +262,7 @@ void PropertyExpressionEngine::afterRestore()
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(getContainer());
     if(restoredExpressions && docObj) {
+        Base::FlagToggler<bool> flag(restoring);
         AtomicPropertyChange signaller(*this);
         for(auto &info : *restoredExpressions) {
             ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
@@ -271,6 +273,16 @@ void PropertyExpressionEngine::afterRestore()
         signaller.tryInvoke();
     }
     restoredExpressions.reset();
+}
+
+void PropertyExpressionEngine::onContainerRestored() {
+    Base::FlagToggler<bool> flag(restoring);
+    UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
+    for(auto &e : expressions) {
+        auto expr = e.second.expression;
+        if(expr) 
+            expr->visit(v);
+    }
 }
 
 /**
@@ -729,7 +741,7 @@ void PropertyExpressionEngine::updateElementReference(
             v.reset();
         }
     }
-    if(v.changed()) {
+    if(feature && v.changed()) {
         auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
         if(owner)
             owner->onUpdateElementReference(this);

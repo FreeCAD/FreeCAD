@@ -154,6 +154,7 @@ public:
     boost::signals2::signal<void (const App::ObjectIdentifier &)> expressionChanged;
 
     virtual void afterRestore() override;
+    virtual void onContainerRestored() override;
 
     /* Python interface */
     PyObject *getPyObject(void);
@@ -179,6 +180,7 @@ private:
                 DiGraph &g, ExecuteOption option=ExecuteAll) const;
 
     bool running; /**< Boolean used to avoid loops */
+    bool restoring = false;
 
     ExpressionMap expressions; /**< Stored expressions */
 

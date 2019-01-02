@@ -36,6 +36,7 @@
 #include <App/Property.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Base/PyObjectBase.h>
 #include "PropertySheet.h"
 #include "Sheet.h"
@@ -1233,7 +1234,8 @@ void PropertySheet::hasSetValue()
         auto expr = d.second->expression.get();
         if(expr) {
             expr->getDepObjects(deps,&labels);
-            expr->visit(v);
+            if(!restoring)
+                expr->visit(v);
         }
     }
     registerLabelReferences(std::move(labels));
@@ -1261,6 +1263,7 @@ void PropertySheet::setPyObject(PyObject *obj) {
 
 void PropertySheet::afterRestore()
 {
+    Base::FlagToggler<bool> flag(restoring);
     AtomicPropertyChange signaller(*this);
     for(auto &d : data)
         d.second->afterRestore();
@@ -1277,6 +1280,16 @@ void PropertySheet::afterRestore()
         touch();
         for(const auto &address : iter->second)
             setDirty(address);
+    }
+}
+
+void PropertySheet::onContainerRestored() {
+    Base::FlagToggler<bool> flag(restoring);
+    UpdateElementReferenceExpressionVisitor<PropertySheet> v(*this);
+    for(auto &d : data) {
+        auto expr = d.second->expression.get();
+        if(expr)
+            expr->visit(v);
     }
 }
 
@@ -1327,7 +1340,7 @@ void PropertySheet::updateElementReference(
             continue;
         expr->visit(visitor);
     }
-    if(visitor.changed()) {
+    if(feature && visitor.changed()) {
         auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
         if(owner)
             owner->onUpdateElementReference(this);

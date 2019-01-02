@@ -58,6 +58,7 @@ public:
                         const std::string &ref, const char *newLabel) const override;
 
     virtual void afterRestore() override;
+    virtual void onContainerRestored() override;
 
     virtual Property *Copy(void) const;
 
@@ -253,6 +254,7 @@ private:
     std::map<const App::DocumentObject*, boost::signals2::scoped_connection> depConnections;
 
     int updateCount;
+    bool restoring = false;
 };
 
 }

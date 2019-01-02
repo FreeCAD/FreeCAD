@@ -2469,6 +2469,8 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
         if(objSet.find(obj)==objSet.end())
             continue;
         try {
+            for(auto prop : propMap[obj])
+                prop->onContainerRestored();
             auto returnCode = obj->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteTransient);
             if(returnCode!=DocumentObject::StdReturn) {
                 FC_ERR("Expression engine failed to restore " << obj->getFullName() << ": " << returnCode->Why);

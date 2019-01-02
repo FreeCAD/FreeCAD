@@ -701,6 +701,7 @@ public:
     virtual ~PropertyLinkSub();
 
     virtual void afterRestore() override;
+    virtual void onContainerRestored() override;
 
     /** Sets the property
      */
@@ -822,6 +823,7 @@ public:
     virtual ~PropertyLinkSubList();
 
     virtual void afterRestore() override;
+    virtual void onContainerRestored() override;
 
     int getSize(void) const;
     void setSize(int newSize);
@@ -953,7 +955,10 @@ public:
 
     virtual ~PropertyXLink();
 
+    PropertyLinkBase *parent() const { return parentProp; }
+
     virtual void afterRestore() override;
+    virtual void onContainerRestored() override;
 
     void setValue(App::DocumentObject *) override;
     void setValue(App::DocumentObject *, const char *subname);
@@ -1097,6 +1102,7 @@ public:
     virtual ~PropertyXLinkSubList();
 
     virtual void afterRestore() override;
+    virtual void onContainerRestored() override;
 
     int getSize(void) const;
 
@@ -1175,6 +1181,9 @@ public:
     virtual int checkRestore() const override;
 
     virtual void setAllowPartial(bool enable) override;
+
+    virtual void hasSetChildValue(Property &) override;
+    virtual void aboutToSetChildValue(Property &) override;
 
 protected:
     std::list<PropertyXLinkSub> _Links;
