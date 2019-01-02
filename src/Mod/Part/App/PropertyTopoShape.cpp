@@ -310,8 +310,13 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             if(ver!=_Ver && _Shape.getElementMapSize()) {
                 // version mismatch, signal for regenerating.
                 if(owner && owner->getNameInDocument()) {
-                    FC_WARN("geo element map version changed: " << owner->getFullName()
-                            << ", " << _Ver << " -> " << ver);
+                    static const char *warnedDoc=0;
+                    if(warnedDoc != owner->getDocument()->getName()) {
+                        warnedDoc = owner->getDocument()->getName();
+                        FC_WARN("Recomputation required for document '" << warnedDoc 
+                                << "' on geo element version change: " 
+                                << _Ver << " -> " << ver);
+                    }
                     owner->getDocument()->addRecomputeObject(owner);
                 }
             }else
