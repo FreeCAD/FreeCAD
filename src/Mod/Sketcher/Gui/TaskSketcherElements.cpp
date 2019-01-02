@@ -487,6 +487,8 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                 ite->setSelected(ite->isMidPointSelected);
                 break;
             }
+            if(select)
+                ui->elementsWidget->scrollToItem(ite);
             ui->elementsWidget->blockSignals(false);
         }
     }
