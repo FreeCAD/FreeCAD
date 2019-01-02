@@ -174,13 +174,38 @@ AttachEngine::AttachEngine()
 {
 }
 
+void AttachEngine::setReferences(const App::PropertyLinkSubList &references) {
+    std::string docname;
+    std::vector<std::string> names;
+    for(auto obj : references.getValues()) {
+        if(!obj->getNameInDocument())
+            throw AttachEngineException("AttachEngine::invalid object");
+        if(docname.empty())
+            docname = obj->getDocument()->getName();
+        else if(docname!=obj->getDocument()->getName())
+            throw AttachEngineException("AttachEngine::object from multiple document");
+        names.emplace_back(obj->getNameInDocument());
+    }
+    this->docName = docname;
+    this->objNames = std::move(names);
+    this->subnames.clear();
+    this->subnames.reserve(this->objNames.size());
+    this->shadowSubs.clear();
+    this->shadowSubs.reserve(this->objNames.size());
+    for(auto &shadow : references.getShadowSubs()) {
+        this->shadowSubs.push_back(shadow.first);
+        this->subnames.push_back(shadow.second);
+    }
+    assert(this->objNames.size() == this->subnames.size());
+}
+
 void AttachEngine::setUp(const App::PropertyLinkSubList &references,
                          eMapMode mapMode, bool mapReverse,
                          double attachParameter,
                          double surfU, double surfV,
                          const Base::Placement &attachmentOffset)
 {
-    this->references.Paste(references);
+    setReferences(references);
     this->mapMode = mapMode;
     this->mapReverse = mapReverse;
     this->attachParameter = attachParameter;
@@ -191,13 +216,16 @@ void AttachEngine::setUp(const App::PropertyLinkSubList &references,
 
 void AttachEngine::setUp(const AttachEngine &another)
 {
-    setUp(another.references,
-          another.mapMode,
-          another.mapReverse,
-          another.attachParameter,
-          another.surfU,
-          another.surfV,
-          another.attachmentOffset);
+    this->docName = another.docName;
+    this->objNames = another.objNames;
+    this->subnames = another.subnames;
+    this->shadowSubs = another.shadowSubs;
+    this->mapMode = another.mapMode;
+    this->mapReverse = another.mapReverse;
+    this->attachParameter = another.attachParameter;
+    this->surfU = another.surfU;
+    this->surfV = another.surfV;
+    this->attachmentOffset = another.attachmentOffset;
 }
 
 Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
@@ -326,7 +354,7 @@ void AttachEngine::suggestMapModes(SuggestResult &result) const
     std::vector<TopoDS_Shape> shapeStorage;
     std::vector<eRefType> typeStr;
     try{
-        readLinks(this->references, parts, shapes, shapeStorage, typeStr);
+        readLinks(getRefObjects(),subnames, parts, shapes, shapeStorage, typeStr);
     } catch (Base::Exception &err) {
         result.references_Types = typeStr;
         result.message = SuggestResult::srLinkBroken;
@@ -518,7 +546,7 @@ eRefType AttachEngine::getShapeType(const App::DocumentObject *obj, const std::s
     std::vector<const TopoDS_Shape*> shapes;
     std::vector<TopoDS_Shape> copiedShapeStorage;
     std::vector<eRefType> types;
-    readLinks(tmpLink, parts, shapes, copiedShapeStorage, types);
+    readLinks(tmpLink.getValues(),tmpLink.getSubValues(), parts, shapes, copiedShapeStorage, types);
 
     assert(types.size() == 1);
     return types[0];
@@ -756,15 +784,13 @@ GProp_GProps AttachEngine::getInertialPropsOfShape(const std::vector<const TopoD
  * \param storage is a buffer storing what some of the pointers in shapes point to. It is needed, since
  * subshapes are copied in the process (but copying a whole shape of an object can potentially be slow).
  */
-void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
+void AttachEngine::readLinks(const std::vector<App::DocumentObject*> &objs,
+                             const std::vector<std::string> &sub,
                              std::vector<App::GeoFeature*> &geofs,
                              std::vector<const TopoDS_Shape*> &shapes,
                              std::vector<TopoDS_Shape> &storage,
                              std::vector<eRefType> &types)
 {
-    verifyReferencesAreSafe(references);
-    const std::vector<App::DocumentObject*> &objs = references.getValues();
-    const std::vector<std::string> &sub = references.getSubValues();
     geofs.resize(objs.size());
     storage.reserve(objs.size());
     shapes.resize(objs.size());
@@ -855,21 +881,61 @@ void AttachEngine::throwWrongMode(eMapMode mmode)
     throw Base::ValueError(errmsg.str().c_str());
 }
 
-void AttachEngine::verifyReferencesAreSafe(const App::PropertyLinkSubList &references)
+std::vector<App::DocumentObject*> AttachEngine::getRefObjects() const 
 {
-    const std::vector<App::DocumentObject*> links =  references.getValues();
-    const std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    for(App::DocumentObject* lnk : links){
-        bool found = false;
-        for(App::Document* doc : docs){
-            if(doc->isIn(lnk)){
-                found = true;
-            }
-        }
-        if (!found){
-            throw AttachEngineException("AttachEngine: verifyReferencesAreSafe: references point to deleted object.");
+    std::vector<App::DocumentObject*> objs;
+    if(objNames.empty())
+        return objs;
+    auto doc = App::GetApplication().getDocument(docName.c_str());
+    if(!doc) 
+        FC_THROWM(AttachEngineException,"AttachEngine: document '" << docName << "' not found");
+    objs.reserve(objNames.size());
+    for(auto &name : objNames) {
+        objs.push_back(doc->getObject(name.c_str()));
+        if(!objs.back())
+            FC_THROWM(AttachEngineException,
+                    "AttachEngine: object '" << docName << "#" << name << "' not found");
+    }
+    return objs;
+}
+
+Base::Placement AttachEngine::calculateAttachedPlacement(
+        const Base::Placement &origPlacement, bool *subChanged)
+{
+    std::map<int,std::pair<std::string,std::string> > subChanges;
+    int i=-1;
+    auto objs = getRefObjects();
+    for(auto obj : objs) {
+        ++i;
+        auto &sub = subnames[i];
+        auto &shadow = shadowSubs[i];
+        if(shadow.empty() || !Data::ComplexGeoData::hasMissingElement(sub.c_str()))
+            continue;
+        auto related = Part::Feature::getRelatedElements(obj,shadow.c_str(),true,false);
+        if(related.size()) {
+            auto &res = subChanges[i];
+            res.first = Data::ComplexGeoData::elementMapPrefix() + related.front().first;
+            res.second = std::move(related.front().second);
         }
     }
+    if(subChanges.size()) {
+        // In case there is topological name changes, we only auto change the
+        // subname if the calculated placement stays the same. If not, just
+        // proceed as normal, which will throw exception and catch user's
+        // attention.
+        auto subs = subnames;
+        for(auto &v : subChanges)
+            subs[v.first] = v.second.second;
+        auto pla = _calculateAttachedPlacement(objs,subs,origPlacement);
+        if(pla == origPlacement) {
+            if(subChanged) *subChanged = true;
+            subnames = std::move(subs);
+            for(auto &v : subChanges)
+                shadowSubs[v.first] = v.second.first;
+            return pla;
+        }
+    }
+    return _calculateAttachedPlacement(objs,subnames,origPlacement);
 }
 
 
@@ -986,7 +1052,10 @@ AttachEngine3D* AttachEngine3D::copy() const
     return p;
 }
 
-Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEngine3D::_calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*>&objs, 
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const
 {
     const eMapMode mmode = this->mapMode;
     if (mmode == mmDeactivated)
@@ -995,11 +1064,10 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
     std::vector<const TopoDS_Shape*> shapes;
     std::vector<TopoDS_Shape> copiedShapeStorage;
     std::vector<eRefType> types;
-    readLinks(this->references, parts, shapes, copiedShapeStorage, types);
+    readLinks(objs,subs, parts, shapes, copiedShapeStorage, types);
 
     if (parts.size() == 0)
         throw ExceptionCancel();
-
 
     //common stuff for all map modes
     gp_Pnt refOrg (0.0,0.0,0.0);//origin of linked object
@@ -1636,13 +1704,16 @@ AttachEnginePlane *AttachEnginePlane::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePlane::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEnginePlane::_calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*>&objs, 
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const
 {
     //re-use Attacher3d
     Base::Placement plm;
     AttachEngine3D attacher3D;
     attacher3D.setUp(*this);
-    plm = attacher3D.calculateAttachedPlacement(origPlacement);
+    plm = attacher3D._calculateAttachedPlacement(objs,subs,origPlacement);
     return plm;
 }
 
@@ -1700,7 +1771,10 @@ AttachEngineLine *AttachEngineLine::copy() const
     return p;
 }
 
-Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEngineLine::_calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*>&objs, 
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -1750,7 +1824,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         std::vector<const TopoDS_Shape*> shapes;
         std::vector<TopoDS_Shape> copiedShapeStorage;
         std::vector<eRefType> types;
-        readLinks(this->references, parts, shapes, copiedShapeStorage, types);
+        readLinks(objs,subs, parts, shapes, copiedShapeStorage, types);
 
         if (parts.size() == 0)
             throw ExceptionCancel();
@@ -1918,7 +1992,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
         attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
-        plm = attacher3D.calculateAttachedPlacement(origPlacement);
+        plm = attacher3D._calculateAttachedPlacement(objs,subs,origPlacement);
         plm *= presuperPlacement;
     }
     plm *= this->attachmentOffset;
@@ -1969,7 +2043,10 @@ AttachEnginePoint *AttachEnginePoint::copy() const
     return p;
 }
 
-Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement origPlacement) const
+Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
+        const std::vector<App::DocumentObject*>&objs, 
+        const std::vector<std::string> &subs,
+        const Base::Placement &origPlacement) const
 {
     eMapMode mmode = this->mapMode;
 
@@ -1998,7 +2075,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
         std::vector<const TopoDS_Shape*> shapes;
         std::vector<TopoDS_Shape> copiedShapeStorage;
         std::vector<eRefType> types;
-        readLinks(this->references, parts, shapes, copiedShapeStorage, types);
+        readLinks(objs,subs, parts, shapes, copiedShapeStorage, types);
 
         if (parts.empty())
             throw ExceptionCancel();
@@ -2096,7 +2173,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
         attacher3D.setUp(*this);
         attacher3D.mapMode = mmode;
         attacher3D.attachmentOffset = Base::Placement(); //AttachmentOffset is applied separately here, afterwards. So we are resetting it in sub-attacher to avoid applying it twice!
-        plm = attacher3D.calculateAttachedPlacement(origPlacement);
+        plm = attacher3D._calculateAttachedPlacement(objs,subs,origPlacement);
     }
     plm *= this->attachmentOffset;
     return plm;
