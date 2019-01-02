@@ -453,6 +453,7 @@ class arcTracker(Tracker):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         self.sep = coin.SoSeparator()
+        self.autoinvert = True
         if normal:
             self.normal = normal
         else:
@@ -508,7 +509,7 @@ class arcTracker(Tracker):
 
     def setEndPoint(self,pt):
         "sets the end angle from a point"
-        self.setEndAngle(self.getAngle(pt))
+        self.setEndAngle(-self.getAngle(pt))
                 
     def setApertureAngle(self,ang):
         "sets the end angle by giving the aperture angle"
@@ -521,7 +522,7 @@ class arcTracker(Tracker):
         if self.circle: 
             self.sep.removeChild(self.circle)
         self.circle = None
-        if (self.endangle < self.startangle):
+        if (self.endangle < self.startangle) or not self.autoinvert:
             c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.endangle,self.startangle)
         else:
             c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.startangle,self.endangle)
