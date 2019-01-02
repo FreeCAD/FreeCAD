@@ -6729,7 +6729,8 @@ void CmdSketcherDefining::activated(int iMsg)
     else {
         Gui::Selection().clearSelection();
         openCommand("Toggle defining geometry");
-        sketch->toggleConstruction(sels);
+        sketch->toggleConstructions(sels);
+        tryAutoRecomputeIfNotSolve(sketch);
         commitCommand();
     }
 }

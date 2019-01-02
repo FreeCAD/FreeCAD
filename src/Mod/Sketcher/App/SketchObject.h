@@ -210,8 +210,8 @@ public:
     static Base::Vector3d getPoint(const Part::Geometry *geo, PointPos PosId);
 
     /// toggle geometry to draft line
-    int toggleConstruction(int GeoId) { return toggleConstruction({GeoId}); }
-    int toggleConstruction(const std::vector<int> &GeoIds);
+    int toggleConstruction(int GeoId) { return toggleConstructions({GeoId}); }
+    int toggleConstructions(const std::vector<int> &GeoIds);
     int setConstruction(int GeoId, bool on);
 
     int toggleFreeze(const std::vector<int> &);

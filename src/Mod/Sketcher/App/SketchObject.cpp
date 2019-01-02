@@ -1189,7 +1189,7 @@ int SketchObject::deleteAllConstraints()
     return 0;
 }
 
-int SketchObject::toggleConstruction(const std::vector<int> &GeoIds)
+int SketchObject::toggleConstructions(const std::vector<int> &GeoIds)
 {
     std::set<int> idSet(GeoIds.begin(),GeoIds.end());
     for(int GeoId : idSet) {
@@ -7378,7 +7378,7 @@ void SketchObject::updateGeometryRefs() {
         {
             key += Data::ComplexGeoData::newElementName(sub.c_str());
         }
-        if(originalRefs.size() && originalRefs[i]!=key)
+        if(originalRefs.size() && originalRefs[i]!=key) 
             refMap[originalRefs[i]] = key;
     }
     if(refMap.size()) {
@@ -7393,6 +7393,8 @@ void SketchObject::updateGeometryRefs() {
                 if(iter!=externalGeoMap.end()) {
                     auto &geo = geos[iter->second];
                     geo = geo->clone();
+                    FC_LOG(getFullName() << " ref change on ExternalEdge"
+                            << iter->second-1 << ' ' << geo->Ref << " -> " << v.second);
                     geo->Ref = v.second;
                     touched = true;
                 }
