@@ -345,7 +345,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject *feature,
         }
         if(notify)
             aboutToSetValue();
-        FC_ERR(propertyName(this) 
+        FC_WARN(propertyName(this) 
                 << " missing element reference " << ret->getFullName() << " "
                 << (elementName.first.size()?elementName.first:elementName.second));
         shadow.second.swap(elementName.second);
@@ -1068,7 +1068,7 @@ static bool updateLinkReference(App::PropertyLinkBase *prop,
     if(!link || !link->getNameInDocument())
         return false;
     auto owner = dynamic_cast<DocumentObject*>(prop->getContainer());
-    if(!owner || owner->isRestoring())
+    if(owner && owner->isRestoring())
         return false;
     int i=0;
     bool touched = false;
@@ -1221,7 +1221,8 @@ std::string PropertyLinkBase::tryImportSubName(const App::DocumentObject *obj, c
     return std::string();
 }
 
-#define ATTR_SHADOW "shadowed"
+#define ATTR_SHADOWED "shadowed"
+#define ATTR_SHADOW "shadow"
 #define ATTR_MAPPED "mapped"
 
 void PropertyLinkSub::Save (Base::Writer &writer) const
@@ -1252,10 +1253,16 @@ void PropertyLinkSub::Save (Base::Writer &writer) const
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
             writer.Stream() << sub;
-            if(_cSubList[i].size() && sub!=_cSubList[i]) {
-                // Stores the actual value that is shadowed. For new version FC,
-                // we will restore this shadowed value instead.
-                writer.Stream() << "\" " ATTR_SHADOW "=\"" << _cSubList[i];
+            if(_cSubList[i].size()) {
+                if(sub!=_cSubList[i]) {
+                    // Stores the actual value that is shadowed. For new version FC,
+                    // we will restore this shadowed value instead.
+                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << _cSubList[i];
+                }else if(shadow.first.size()){
+                    // Here means the user set value is old style element name.
+                    // We shall then store the shadow somewhere else.
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadow.first;
+                }
             }
         }
         writer.Stream()<<"\"/>" << endl;
@@ -1295,10 +1302,14 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
         shadows[i].second = importSubName(reader,reader.getAttribute("value"),restoreLabel);
-        if(reader.hasAttribute(ATTR_SHADOW)) 
-            values[i] = shadows[i].first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
-        else
+        if(reader.hasAttribute(ATTR_SHADOWED)) {
+            values[i] = shadows[i].first = 
+                importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
+        } else {
             values[i] = shadows[i].second;
+            if(reader.hasAttribute(ATTR_SHADOW))
+                shadows[i].first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+        }
         if(reader.hasAttribute(ATTR_MAPPED))
             mapped.push_back(i);
     }
@@ -1912,7 +1923,7 @@ void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool r
     if(!feature) _ShadowSubList.clear();
     _ShadowSubList.resize(_lSubList.size());
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
-    if(!owner || owner->isRestoring())
+    if(owner && owner->isRestoring())
         return;
     int i=0;
     bool touched = false;
@@ -1975,10 +1986,16 @@ void PropertyLinkSubList::Save (Base::Writer &writer) const
                 writer.Stream() << "\" " ATTR_MAPPED "=\"1";
         } else {
             writer.Stream() << sub;
-            if(_lSubList[i].size() && sub!=_lSubList[i]) {
-                // Stores the actual value that is shadowed. For new version FC,
-                // we will restore this shadowed value instead.
-                writer.Stream() << "\" " ATTR_SHADOW "=\"" << _lSubList[i];
+            if(_lSubList[i].size()) {
+                if(sub!=_lSubList[i]) {
+                    // Stores the actual value that is shadowed. For new version FC,
+                    // we will restore this shadowed value instead.
+                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << _lSubList[i];
+                }else if(shadow.first.size()) {
+                    // Here means the user set value is old style element name.
+                    // We shall then store the shadow somewhere else.
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadow.first;
+                }
             }
         }
         writer.Stream() << "\"/>" << endl;
@@ -2018,11 +2035,14 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
             shadows.emplace_back();
             auto &shadow = shadows.back();
             shadow.second = importSubName(reader,reader.getAttribute("sub"),restoreLabel);
-            if(reader.hasAttribute(ATTR_SHADOW)) {
-                shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+            if(reader.hasAttribute(ATTR_SHADOWED)) {
+                shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
                 SubNames.push_back(shadow.first);
-            }else
+            }else{
                 SubNames.push_back(shadow.second);
+                if(reader.hasAttribute(ATTR_SHADOW)) 
+                    shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+            }
             if(reader.hasAttribute(ATTR_MAPPED))
                 mapped.push_back(i);
         } else if (reader.isVerbose())
@@ -2899,9 +2919,19 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         const auto &subName = _SubList[0];
         const auto &shadowSub = _ShadowSubList[0];
         const auto &sub = shadowSub.second.empty()?subName:shadowSub.second;
-        writer.Stream() << "\" sub=\"" << exportSubName(_pcLink,sub.c_str());
-        if(shadowSub.second.size() && shadowSub.first==subName)
-            writer.Stream() << "\" " ATTR_MAPPED "=\"1";
+        if(exporting) {
+            writer.Stream() << "\" sub=\"" << exportSubName(_pcLink,sub.c_str());
+            if(shadowSub.second.size() && shadowSub.first==subName)
+                writer.Stream() << "\" " ATTR_MAPPED "=\"1";
+        }else{
+            writer.Stream() << "\" sub=\"" << sub;
+            if(sub.size()) {
+                if(sub!=subName)
+                    writer.Stream() << "\" " ATTR_SHADOWED "=\"" << subName;
+                else if(shadowSub.first.size())
+                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadowSub.first;
+            }
+        }
         writer.Stream() << "\"/>" << std::endl;
     }else {
         writer.Stream() <<"\" count=\"" << _SubList.size() << "\"/>" << std::endl;
@@ -2919,8 +2949,12 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                     writer.Stream() << "\" " ATTR_MAPPED "=\"1";
             } else {
                 writer.Stream() << sub;
-                if(_SubList[i].size() && sub!=_SubList[i])
-                    writer.Stream() << "\" " ATTR_SHADOW "=\"" << _SubList[i];
+                if(_SubList[i].size()) {
+                    if(sub!=_SubList[i])
+                        writer.Stream() << "\" " ATTR_SHADOWED "=\"" << _SubList[i];
+                    else if(shadow.first.size())
+                        writer.Stream() << "\" " ATTR_SHADOW "=\"" << shadow.first;
+                }
             }
             writer.Stream()<<"\"/>" << endl;
         }
@@ -2973,10 +3007,13 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         shadows.emplace_back();
         auto &shadow = shadows.back();
         shadow.second = importSubName(reader,reader.getAttribute("sub"),restoreLabel);
-        if(reader.hasAttribute(ATTR_SHADOW))
-            subname = shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
-        else
+        if(reader.hasAttribute(ATTR_SHADOWED))
+            subname = shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
+        else {
             subname = shadow.second;
+            if(reader.hasAttribute(ATTR_SHADOW))
+                shadow.first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+        }
     }else if(reader.hasAttribute("count")) {
         int count = reader.getAttributeAsInteger("count");
         subs.resize(count);
@@ -2984,10 +3021,14 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         for (int i = 0; i < count; i++) {
             reader.readElement("Sub");
             shadows[i].second = importSubName(reader,reader.getAttribute("value"),restoreLabel);
-            if(reader.hasAttribute(ATTR_SHADOW)) 
-                subs[i] = shadows[i].first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
-            else
+            if(reader.hasAttribute(ATTR_SHADOWED)) 
+                subs[i] = shadows[i].first = 
+                    importSubName(reader,reader.getAttribute(ATTR_SHADOWED),restoreLabel);
+            else {
                 subs[i] = shadows[i].second;
+                if(reader.hasAttribute(ATTR_SHADOW))
+                    shadows[i].first = importSubName(reader,reader.getAttribute(ATTR_SHADOW),restoreLabel);
+            }
             if(reader.hasAttribute(ATTR_MAPPED))
                 mapped.push_back(i);
         }
