@@ -263,6 +263,7 @@ void SubShapeBinder::update() {
     Part::TopoShape result;
     std::vector<Part::TopoShape> shapes;
 
+    std::string errMsg;
     for(auto &l : Support.getSubListValues()) {
         auto obj = l.getValue();
         if(!obj || !obj->getNameInDocument())
@@ -275,11 +276,27 @@ void SubShapeBinder::update() {
         else if(subs.size()>1)
             subs.erase(none);
         for(const auto &sub : subs) {
-            const auto &shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
-            if(!shape.isNull())
-                shapes.push_back(shape);
+            try {
+                const auto &shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
+                if(!shape.isNull())
+                    shapes.push_back(shape);
+            } catch(Base::Exception &e) {
+                e.ReportException();
+                FC_ERR(getFullName() << " failed to obtain shape from " 
+                        << obj->getFullName() << '.' << sub);
+                if(errMsg.empty()) {
+                    std::ostringstream ss;
+                    ss << "Failed to obtain shape " <<
+                        obj->getFullName() << '.' 
+                        << Data::ComplexGeoData::oldElementName(sub.c_str());
+                    errMsg = ss.str();
+                }
+            }
         }
     }
+    if(errMsg.size()) 
+        FC_THROWM(Base::RuntimeError, errMsg);
+
     if(shapes.empty())
         return;
 
