@@ -247,6 +247,11 @@ void DlgPreferencesImp::restoreDefaults()
 
 void DlgPreferencesImp::applyChanges()
 {
+    // Checks if any of the classes that represent several pages of settings
+    // (DlgSettings*.*) implement checkSettings() method.  If any of them do,
+    // call it to validate if user input is correct.  If something fails (i.e.,
+    // not correct), shows a messageBox and set this->invalidParameter = true to
+    // cancel further operation in other methods (like in accept()).
     try {
         for (int i=0; i<ui->tabWidgetStack->count(); i++) {
             QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
@@ -271,6 +276,8 @@ void DlgPreferencesImp::applyChanges()
         return;
     }
 
+    // If everything is ok (i.e., no validation problem), call method
+    // saveSettings() in every subpage (DlgSetting*) object.
     for (int i=0; i<ui->tabWidgetStack->count(); i++) {
         QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
         for (int j=0; j<tabWidget->count(); j++) {
