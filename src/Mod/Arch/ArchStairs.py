@@ -291,7 +291,7 @@ class _CommandStairs:
 
         #lenSelection = len(FreeCADGui.Selection.getSelection())
         #if lenSelection > 0:
-        elif False:
+        elif False: # TODO to be deleted ?
 
             if lenSelection > 1:
                 stairs.append(makeStairs(None, None, None, None, None))
@@ -509,7 +509,18 @@ class _Stairs(ArchComponent.Component):
 
                 elif (len(obj.Base.Shape.Edges) >= 1):
                       #if obj.NumberOfSteps == 1:
-                            edges = obj.Base.Shape.Edges
+                            # Sort the edges so each vertex tested of its tangent direction in order
+                            #edges = obj.Base.Shape.Edges
+
+                            print ("DEBUG - 2019.1.2")
+                            print ("obj.Base.Shape.Edges")
+                            print (obj.Base.Shape.Edges)
+
+                            ## TODO - Found Part.sortEdges() occasionally return less edges then 'input'
+                            edges = Part.sortEdges(obj.Base.Shape.Edges)[0]	## TODO - same result as edges = obj.Base.Shape.OrderedVertexes ?
+                            print ("edges = Part.sortEdges(obj.Base.Shape.Edges)[0]")
+                            print (edges)
+
                             self.makeMultiEdgesLanding(obj,edges)
 
             else:
@@ -548,7 +559,7 @@ class _Stairs(ArchComponent.Component):
 
         # compute step data
         #if obj.NumberOfSteps > 1:
-        if False:
+        if False: # TODO - To be deleted
             l = obj.Length.Value
             h = obj.Height.Value
             if obj.Base:
@@ -579,16 +590,30 @@ class _Stairs(ArchComponent.Component):
 
         "builds a 'multi-edges' landing from edges" # 'copying' from makeStraightLanding()
 
-        outline, outlineL, outlineR, vBase1, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding, obj.TreadThickness,
-                                                                                                                zeroMM, zeroMM, zeroMM, zeroMM, zeroMM, True)
-        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding,
-                                                                                                                               obj.TreadThickness, zeroMM, obj.RailingOffsetLeft, obj.RailingOffsetRight,
-                                                                                                                               obj.RailingHeightLeft, obj.RailingHeightRight, True)
+        outline, outlineL, outlineR, vBase1, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding, obj.TreadThickness,
+                                                                                                                      zeroMM, zeroMM, zeroMM, zeroMM, zeroMM, True)
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArcRail = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding,
+                                                                                                                                         obj.TreadThickness, zeroMM, obj.RailingOffsetLeft,
+                                                                                                                                         obj.RailingOffsetRight, obj.RailingHeightLeft, obj.RailingHeightRight,
+                                                                                                                                         True)
         obj.OutlineLeft = outlineRailL
         obj.OutlineRight = outlineRailR
         obj.AbsTop = vBase1[0]
 
-        stepFace = Part.Face(Part.makePolygon(outline))
+        if not any(pArc): # i.e. no arc ... though any([0, '', False]):- is False
+            stepFace = Part.Face(Part.makePolygon(outline))
+        else:
+            edges = []
+            enum_outline = enumerate(outline)
+            lenOutline = len(outline)
+            for k, a in enum_outline:
+                if k < (lenOutline-1): # iterate to last but 1: [k], [k+1] ... len() is +1 over index
+                    if pArc[k] is None:
+                        edges.append(Part.LineSegment(outline[k],outline[k+1]).toShape())
+                    else:
+                        edges.append(Part.Arc(outline[k],pArc[k],outline[k+1]).toShape())
+            w = Part.Wire(edges)
+            stepFace = Part.Face(w)
 
         if obj.TreadThickness.Value:
             step = stepFace.extrude(Vector(0,0,abs(obj.TreadThickness.Value)))
@@ -618,7 +643,7 @@ class _Stairs(ArchComponent.Component):
 
         v, vLength, vWidth, vBase = [], [], [], []
 
-        p1, p2, p3, p4 = [], [], [], []						# p1o, p2o - Not used
+        p1, p2, p3, p4, pArc, pArc1, pArc2 = [], [], [], [], [], [], []		# p1o, p2o - Not used
         outline, outlineP1P2, outlineP3P4, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered = [], [], [], [], [], []
 
         if not isinstance(edges, list):
@@ -627,9 +652,11 @@ class _Stairs(ArchComponent.Component):
         enum_edges = enumerate(edges)
         for i, edge in enum_edges:
 
+            isLine = isinstance(edge.Curve,(Part.Line, Part.LineSegment))
+            isArc = isinstance(edge.Curve,Part.Circle)				# why it is Part.Circle for an Arc Edge? - Not Part.ArcOfCircle?
 
             ''' (1) append v (vec) ''' 
-            v.append(DraftGeomUtils.vec(edge))
+            v.append(DraftGeomUtils.vec(edge))	# TODO check all function below ok with curve?
 
 
             ''' (2) get netWidthI ''' 
@@ -650,56 +677,134 @@ class _Stairs(ArchComponent.Component):
 
             ''' (3) append vBase ''' 
             vBase.append(edges[i].Vertexes[0].Point)
-
+            if isArc:
+                vBase1 = edge.Vertexes[1].Point
+                vBase2 = (edge.valueAt((edge.LastParameter+edge.FirstParameter)/2))
+                #vBase2vec = (vBase2-vBase[i]) # - would not be correct if Align is not Left
 
             ''' (1a) calc & append vLength - Need v (vec) ''' 
-            vLength.append(Vector(v[i].x,v[i].y,v[i].z)) # TODO vLength in this f() is 3d
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d 
 
 
             ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI ''' 
-            vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidthI))
 
+            #vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidthI))
+
+            if isLine:
+                dvec = vLength[i].cross(Vector(0,0,1))
+
+            elif isArc:
+                #dvec = edge.Vertexes[0].Point.sub(edge.Curve.Center)		# TODO - how to determine direction? - Reference from ArchWall; used tangentAt instead
+                #dvec1 = edge.Vertexes[1].Point.sub(edge.Curve.Center)
+                dvec = edge.tangentAt(edge.FirstParameter).cross(Vector(0,0,1))
+                dvec1 = edge.tangentAt(edge.LastParameter).cross(Vector(0,0,1))
+                dvec2 = edge.tangentAt((edge.LastParameter+edge.FirstParameter)/2).cross(Vector(0,0,1))
+
+            vWidth.append(DraftVecUtils.scaleTo(dvec,netWidthI))
+            if isArc:
+                vWidth1=DraftVecUtils.scaleTo(dvec1,netWidthI)
+                vWidth2=DraftVecUtils.scaleTo(dvec2,netWidthI)
 
             ''' (3a) alter vBase ''' 
             if stairsObj:
                 vBase[i] = stairsObj.Proxy.vbaseFollowLastSegment(stairsObj, vBase[i])
+                if isArc:
+                    vBase1 = stairsObj.Proxy.vbaseFollowLastSegment(stairsObj, vBase1)
+                    vBase2 = stairsObj.Proxy.vbaseFollowLastSegment(stairsObj, vBase2)
 
             vBase[i] = vBase[i].add(Vector(0,0,offsetVLeft.Value))
             vBase[i] = vBase[i].add(Vector(0,0,railStartRiser.Value))
-            vOffsetH = DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),offsetHLeft.Value)
+
+            if isArc:
+                vBase1 = vBase1.add(Vector(0,0,offsetVLeft.Value))
+                vBase1 = vBase1.add(Vector(0,0,railStartRiser.Value))
+                vBase2 = vBase2.add(Vector(0,0,offsetVLeft.Value))
+                vBase2 = vBase2.add(Vector(0,0,railStartRiser.Value))
+
+            vOffsetH = DraftVecUtils.scaleTo(dvec,offsetHLeft.Value)
+            if isArc:
+                vOffsetH1 = DraftVecUtils.scaleTo(dvec1,offsetHLeft.Value)
+                vOffsetH2 = DraftVecUtils.scaleTo(dvec2,offsetHLeft.Value)
 
             vBase[i] = _Stairs.align(vBase[i], "Right", -vOffsetH)
+            if isArc:
+                vBase1 = _Stairs.align(vBase1, "Right", -vOffsetH1)
+                vBase2 = _Stairs.align(vBase2, "Right", -vOffsetH2)
 
 
-            ''' (3b, 2b/1c) get + alter [p1, p2, p3, p4] - Need vBase ''' 
+            ''' (3b, 2b/1c) get + alter [p1, p2, p3, p4] - Need vBase '''
 
-            p1.append(_Stairs.align(vBase[i], align, vWidth[i]).add(Vector(0,0,-abs(treadThickness.Value))))
-            p2.append(p1[i].add(vLength[i]).add(Vector(0,0,-railStartRiser.Value)))
-            p3.append(p2[i].add(vWidth[i]).add(Vector(0,0,(offsetVRight-offsetVLeft).Value)))
-            p4.append(p3[i].add(DraftVecUtils.neg(vLength[i])).add(Vector(0,0,railStartRiser.Value)))
-
+            p1.append(_Stairs.align(vBase[i], align, vWidth[i]).add(Vector(0,0,-abs(treadThickness.Value)))) # vWidth already calculated above against arc geometry
+            if isLine:
+                p2.append(p1[i].add(vLength[i]).add(Vector(0,0,-railStartRiser.Value)))
+                p3.append(p2[i].add(vWidth[i]).add(Vector(0,0,(offsetVRight-offsetVLeft).Value)))
+                p4.append(p3[i].add(DraftVecUtils.neg(vLength[i])).add(Vector(0,0,railStartRiser.Value)))
+                pArc1.append(None)
+                pArc2.append(None)
+            elif isArc:
+                p2.append(_Stairs.align(vBase1, align, vWidth1).add(Vector(0,0,-abs(treadThickness.Value))).add(Vector(0,0,-railStartRiser.Value)))
+                p3.append(p2[i].add(vWidth1.add(Vector(0,0,(offsetVRight-offsetVLeft).Value))))
+                p4.append(p1[i].add(vWidth[i].add(Vector(0,0,(offsetVRight-offsetVLeft).Value))))
+                pArc1.append(_Stairs.align(vBase2, align, vWidth2).add(Vector(0,0,-abs(treadThickness.Value))).add(Vector(0,0,-railStartRiser.Value)))
+                pArc2.append(pArc1[i].add(vWidth2.add(Vector(0,0,(offsetVRight-offsetVLeft).Value))))
 
             ''' (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 ''' 
 
-            if True:
-
-                if i > 0:
+            if i > 0:
+                if isinstance(edges[i-1].Curve,(Part.Line, Part.LineSegment)) and isinstance(edge.Curve,(Part.Line, Part.LineSegment)):
                     intersection = DraftGeomUtils.findIntersection(p1[i-1],p2[i-1],p1[i],p2[i],True,True)
                     outlineP1P2.append(intersection[0])
-
                     intersection = DraftGeomUtils.findIntersection(p3[i-1],p4[i-1],p3[i],p4[i],True,True)
                     outlineP3P4.insert(0, intersection[0])
-
                 else:
+                    if isinstance(edges[i-1].Curve,(Part.Circle)):		# why it is Part.Circle for an Arc Edge? - Not Part.ArcOfCircle?
+                        edge1  = Part.Arc(p1[i-1],pArc1[i-1],p2[i-1]).toShape()
+                        edge1a = Part.Arc(p3[i-1],pArc2[i-1],p4[i-1]).toShape()
+                    else:
+                        edge1  = Part.LineSegment(p1[i-1],p2[i-1]).toShape()
+                        edge1a = Part.LineSegment(p3[i-1],p4[i-1]).toShape()
+
+                    if isinstance(edge.Curve,(Part.Circle)):			# why it is Part.Circle for an Arc Edge? - Not Part.ArcOfCircle?
+                        edge2  = Part.Arc(p1[i],pArc1[i],p2[i]).toShape()
+                        edge2a = Part.Arc(p3[i],pArc2[i],p4[i]).toShape()
+                    else:
+                        edge2  = Part.LineSegment(p1[i],p2[i]).toShape()
+                        edge2a = Part.LineSegment(p3[i],p4[i]).toShape()
+                    intersection = DraftGeomUtils.findIntersection(edge1, edge2, True,True)
+
+                    enum_intersection = enumerate(intersection)
+                    distList = []
+                    for n, intersectionI in enum_intersection:
+                        distList.append((intersectionI-p1[i]).Length)		# TODO just use p1[i] for test; may be p2[i-1]...?
+
+                    # TODO - To test and follow up if none intersection is found
+                    nearestIntersectionIndex = distList.index(min(distList))
+                    nearestIntersection = intersection[nearestIntersectionIndex]
+                    outlineP1P2.append(nearestIntersection)
+
+                    intersection = DraftGeomUtils.findIntersection(edge1a, edge2a, True,True)
+                    enum_intersection = enumerate(intersection)
+                    distList = []
+                    for n, intersectionI in enum_intersection:
+                        distList.append((intersectionI-p4[i]).Length)		# TODO just use p4[i] for test; may be p3[i-1]...?
+                    nearestIntersectionIndex = distList.index(min(distList))
+                    nearestIntersection = intersection[nearestIntersectionIndex]
+                    outlineP3P4.insert(0, nearestIntersection)
+            else:
                     outlineP1P2.append(p1[i])
                     outlineP3P4.insert(0, p4[i])
-
 
         # add back last/first 'missing' point(s)
         outlineP1P2.append(p2[i])
         outlineP3P4.insert(0, p3[i])
         outline = outlineP1P2 + outlineP3P4
         outline.append(p1[0])
+        pArcReverse = pArc2[::-1]
+        pArc.extend(pArc1)
+        pArc.append(None)
+        pArc.extend(pArcReverse)
+        pArc.append(None)
+        pArc.append(None)
 
         if mode in ["OrderedClose", "OrderedCloseAndOrderedOpen"]:
             outlineP1P2Closed = list(outlineP1P2)
@@ -726,10 +831,8 @@ class _Stairs(ArchComponent.Component):
 
                 ''' Further point of this line from intersection '''
                 if distFrom2ndParameter > distFrom1stParameter:
-                    print(edges[0].Vertexes[1].Point)
                     foundStart = edges[0].Vertexes[1].Point
                 else: # if distFrom2ndParameter = / < distFrom1stParameter (i.e. if equal, Vertexes[0].Point is taken ?)
-                    print(edges[0].Vertexes[0].Point)
                     foundStart = edges[0].Vertexes[0].Point
             except:
                 print('Intersection point Not on this edge')
@@ -741,10 +844,8 @@ class _Stairs(ArchComponent.Component):
                 distFrom1stParameter = l99.parameter(vx99)
                 distFrom2ndParameter = l99.length()-distFrom1stParameter
                 if distFrom2ndParameter > distFrom1stParameter:
-                    print(edges[i].Vertexes[1].Point)
                     foundEnd = edges[i].Vertexes[1].Point
                 else:
-                    print(edges[i].Vertexes[0].Point)
                     foundEnd = edges[i].Vertexes[0].Point
             except:
                 print('Intersection point Not on this edge')
@@ -752,7 +853,7 @@ class _Stairs(ArchComponent.Component):
             outlineP1P2Ordered[0] = foundStart
             outlineP1P2Ordered[i+1] = foundEnd
 
-        return outline, outlineP1P2, outlineP3P4, vBase, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered
+        return outline, outlineP1P2, outlineP3P4, vBase, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered, pArc
 
 
     @staticmethod
@@ -1188,9 +1289,9 @@ class _Stairs(ArchComponent.Component):
 
         edge = Part.LineSegment(p1,p2).toShape()
 
-        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU = self.returnOutlines(obj, edge, obj.Align, None, obj.Width, obj.WidthOfLanding,
-                                                                                                                               obj.TreadThickness, obj.RiserHeight, obj.RailingOffsetLeft,
-                                                                                                                               obj.RailingOffsetRight, obj.RailingHeightLeft, obj.RailingHeightRight, True)
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc = self.returnOutlines(obj, edge, obj.Align, None, obj.Width, obj.WidthOfLanding,
+                                                                                                                                     obj.TreadThickness, obj.RiserHeight, obj.RailingOffsetLeft,
+                                                                                                                                     obj.RailingOffsetRight, obj.RailingHeightLeft, obj.RailingHeightRight,True)
 
         self.connectRailingVector(obj,outlineRailL,outlineRailR)
 
