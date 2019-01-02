@@ -69,7 +69,7 @@ def searchforopenscadexe():
             if os.path.isfile(testpath):
                 return testpath
     elif sys.platform == 'darwin':
-        ascript = ('tell application "Finder"\n'
+        ascript = (b'tell application "Finder"\n'
         'POSIX path of (application file id "org.openscad.OpenSCAD"'
         'as alias)\n'
         'end tell')
