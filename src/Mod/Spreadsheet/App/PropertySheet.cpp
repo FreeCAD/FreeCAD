@@ -625,7 +625,13 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
 
         // Remove merged cell data
         splitCell(currPos);
-        
+
+        std::string alias;
+        if(cell->getAlias(alias)) {
+            owner->aliasRemoved(currPos, alias);
+            cell->setAlias("");
+        }
+
         // Remove from old
         removeDependencies(currPos);
         data.erase(currPos);
@@ -644,6 +650,10 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
             cell->setSpans(-1, -1);
 
         addDependencies(newPos);
+
+        if(alias.size())
+            cell->setAlias(alias);
+        
         setDirty(newPos);
 
         renames[ObjectIdentifier(owner, currPos.toString())] = ObjectIdentifier(owner, newPos.toString());
