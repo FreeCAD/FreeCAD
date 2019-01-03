@@ -572,7 +572,7 @@ void Cell::moveAbsolute(CellAddress newAddress)
   *
   */
 
-void Cell::restore(Base::XMLReader &reader)
+void Cell::restore(Base::XMLReader &reader, bool checkAlias)
 {
     const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
     const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
@@ -629,7 +629,7 @@ void Cell::restore(Base::XMLReader &reader)
     }
     if (displayUnit)
         setDisplayUnit(displayUnit);
-    if (alias)
+    if (alias && (!checkAlias || !owner->revAliasProp.count(alias)))
         setAlias(alias);
 
     if (rowSpan || colSpan) {

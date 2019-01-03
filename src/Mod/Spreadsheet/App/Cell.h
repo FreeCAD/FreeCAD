@@ -101,7 +101,7 @@ public:
 
     void moveAbsolute(App::CellAddress newAddress);
 
-    void restore(Base::XMLReader &reader);
+    void restore(Base::XMLReader &reader, bool checkAlias=false);
 
     void afterRestore();
 

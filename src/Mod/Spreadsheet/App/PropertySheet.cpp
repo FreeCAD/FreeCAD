@@ -390,7 +390,7 @@ void PropertySheet::pasteCells(XMLReader &reader, const CellAddress &addr) {
             CellAddress dst(src.row()+roffset, src.col()+coffset);
             auto cell = owner->getNewCell(dst);
             cell->setSpans(-1,-1);
-            cell->restore(reader);
+            cell->restore(reader,true);
             int rows, cols;
             if (cell->getSpans(rows, cols) && (rows > 1 || cols > 1)) 
                 mergeCells(dst, CellAddress(dst.row() + rows - 1, dst.col() + cols - 1));
