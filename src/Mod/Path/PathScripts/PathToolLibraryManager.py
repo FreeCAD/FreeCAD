@@ -328,7 +328,7 @@ class ToolLibraryManager():
             tt = Path.Tooltable()
         if position is None:
             tt.addTools(tool)
-            newID = tt.Tools.keys()[-1]
+            newID = list(tt.Tools)[-1]
         else:
             tt.setTool(position, tool)
             newID = position
