@@ -1285,6 +1285,7 @@ void PropertySheet::afterRestore()
 
 void PropertySheet::onContainerRestored() {
     Base::FlagToggler<bool> flag(restoring);
+    unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertySheet> v(*this);
     for(auto &d : data) {
         auto expr = d.second->expression.get();
@@ -1328,11 +1329,11 @@ bool PropertySheet::adjustLink(const std::set<DocumentObject*> &inList) {
     return !!signaler;
 }
 
-void PropertySheet::updateElementReference(
-        DocumentObject *feature,bool reverse,bool notify) 
+void PropertySheet::updateElementReference(DocumentObject *feature,bool reverse,bool notify) 
 {
     (void)notify;
-    unregisterElementReference();
+    if(!feature)
+        unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertySheet> visitor(*this,feature,reverse);
     for(auto &d : data) {
         auto expr = d.second->expression.get();

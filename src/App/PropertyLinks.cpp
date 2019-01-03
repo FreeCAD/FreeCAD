@@ -1070,8 +1070,10 @@ static bool updateLinkReference(App::PropertyLinkBase *prop,
         App::DocumentObject *link, std::vector<std::string> &subs, std::vector<int> &mapped,
         std::vector<PropertyLinkBase::ShadowSub> &shadows)
 {
-    prop->unregisterElementReference();
-    if(!feature) shadows.clear();
+    if(!feature) {
+        shadows.clear();
+        prop->unregisterElementReference();
+    }
     shadows.resize(subs.size());
     if(!link || !link->getNameInDocument())
         return false;
@@ -1937,10 +1939,12 @@ void PropertyLinkSubList::onContainerRestored() {
 }
 
 void PropertyLinkSubList::updateElementReference(DocumentObject *feature, bool reverse, bool notify) {
-    unregisterElementReference();
-    if(!feature) _ShadowSubList.clear();
+    if(!feature) {
+        _ShadowSubList.clear();
+        unregisterElementReference();
+    }
     _ShadowSubList.resize(_lSubList.size());
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_dynamic_cast<DocumentObject>(getContainer());
     if(owner && owner->isRestoring())
         return;
     int i=0;

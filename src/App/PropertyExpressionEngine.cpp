@@ -100,6 +100,7 @@ void PropertyExpressionEngine::hasSetValue()
 
     std::set<App::DocumentObject*> deps;
     std::vector<std::string> labels;
+    unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
     for(auto &e : expressions) {
         auto expr = e.second.expression;
@@ -277,6 +278,7 @@ void PropertyExpressionEngine::afterRestore()
 
 void PropertyExpressionEngine::onContainerRestored() {
     Base::FlagToggler<bool> flag(restoring);
+    unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
     for(auto &e : expressions) {
         auto expr = e.second.expression;
@@ -728,11 +730,11 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*> &inLis
     return true;
 }
 
-void PropertyExpressionEngine::updateElementReference(
-        DocumentObject *feature, bool reverse, bool notify) 
+void PropertyExpressionEngine::updateElementReference(DocumentObject *feature, bool reverse, bool notify) 
 {
     (void)notify;
-    unregisterElementReference();
+    if(!feature)
+        unregisterElementReference();
     UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this,feature,reverse);
     for(auto &e : expressions) {
         e.second.expression->visit(v);
