@@ -44,7 +44,7 @@ def cpall(dirFrom, dirTo):
                 cpfile(pathFrom, pathTo)
                 fcount = fcount+1
             except:
-                print('Error copying', pathFrom, to, pathTo, '--skipped')
+                print('Error copying', pathFrom, 'to', pathTo, '--skipped')
                 print(sys.exc_type, sys.exc_value)
         else:
             if verbose: print('copying dir', pathFrom, 'to', pathTo)
@@ -83,7 +83,7 @@ def cpallWithFilter(dirFrom, dirTo,MatchList):
                     cpfile(pathFrom, pathTo)
                     fcount = fcount+1
                 except:
-                    print('Error copying', pathFrom, to, pathTo, '--skipped')
+                    print('Error copying', pathFrom, 'to', pathTo, '--skipped')
                     print(sys.exc_type, sys.exc_value)
             else:
                 if verbose: print('copying dir', pathFrom, 'to', pathTo)
