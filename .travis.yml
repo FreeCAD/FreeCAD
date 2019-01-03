@@ -37,6 +37,8 @@ python:
 
 # Inject osx build into matrix - needed to specify image/dist
 matrix:
+    allow_failures:
+      - python: 3.7
     include:
       - os: linux
         dist: trusty
@@ -139,7 +141,7 @@ before_install:
                                swig                             \
                                libvtk6-dev                      \
                                libmed-dev                       \
-                               libmedc-dev			\
+                               libmedc-dev                      \
                                asciidoc
 
        # Make sure dpkg is upgraded for Ubuntu 14.04 (required for eigen3)
