@@ -58,6 +58,10 @@ matrix:
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=3
+        before_script:
+          - pip install flake8
+          # fail the build if there are Python syntax errors
+          - flake8 . --count --select=E901,E999,F822,F823 --show-source --statistics
 
 # This is commented out to stop permanently failing osx builds. Please check this thread for the details:
 # https://forum.freecadweb.org/viewtopic.php?f=10&t=32272
