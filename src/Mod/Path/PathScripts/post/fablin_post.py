@@ -1,7 +1,7 @@
 #***************************************************************************
-#*   (c) imarin 2017 				                           *
+#*   (c) imarin 2017                                                       *
 #*                                                                         *
-#*   heavily based on gbrl post-procesor by:                                                                      *
+#*   heavily based on gbrl post-procesor by:                               *
 #*   (c) sliptonic (shopinthewoods@gmail.com) 2014                         *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
@@ -116,22 +116,22 @@ def processArguments(argstring):
         elif arg == '--show-editor':
             SHOW_EDITOR = True
         elif arg == '--no-show-editor':
-	    SHOW_EDITOR = False
+            SHOW_EDITOR = False
 
-	params = arg.split('=')
+        params = arg.split('=')
 
         if params[0] == '--rapids-feedrate':
-	    RAPID_FEEDRATE = params[1]
+            RAPID_FEEDRATE = params[1]
 
 def export(objectslist,filename,argstring):
     processArguments(argstring)
     global UNITS
     for obj in objectslist:
         if not hasattr(obj,"Path"):
-            print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            print ("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
 
-    print "postprocessing..."
+    print ("postprocessing...")
     gcode = ""
 
     #Find the machine.
@@ -144,7 +144,7 @@ def export(objectslist,filename,argstring):
                 if p.Name == "Machine":
                     myMachine = p
     if myMachine is None:
-        print "No machine found in this project"
+        print ("No machine found in this project")
     else:
         if myMachine.MachineUnits == "Metric":
            UNITS = "G21"
@@ -195,7 +195,7 @@ def export(objectslist,filename,argstring):
     else:
         final = gcode
 
-    print "done postprocessing."
+    print ("done postprocessing.")
 
     gfile = pythonopen(filename,"wb")
     gfile.write(gcode)
@@ -232,13 +232,13 @@ def parse(pathobj):
             outstring = []
             command = c.Name
 
-	    # fablin does not support parenthesis syntax, so removing that (pocket) in the agnostic gcode
-	    if command[0] == '(':
-		if not OUTPUT_COMMENTS: pass
-	    else:
-	    	outstring.append(command)
+            # fablin does not support parenthesis syntax, so removing that (pocket) in the agnostic gcode
+            if command[0] == '(':
+                if not OUTPUT_COMMENTS: pass
+            else:
+                outstring.append(command)
 
-	    # if modal: only print the command if it is not the same as the last one
+            # if modal: only print the command if it is not the same as the last one
             if MODAL == True:
                 if command == lastcommand:
                     outstring.pop(0)
@@ -255,8 +255,8 @@ def parse(pathobj):
                     else:
                         outstring.append(param + format(c.Parameters[param], '.4f'))
 
-	    if command in RAPID_MOVES and command != lastcommand:
-		outstring.append('F' + format(RAPID_FEEDRATE))
+            if command in RAPID_MOVES and command != lastcommand:
+                outstring.append('F' + format(RAPID_FEEDRATE))
 
             # store the latest command
             lastcommand = command
@@ -292,5 +292,5 @@ def parse(pathobj):
         return out
 
 
-print __name__ + " gcode postprocessor loaded."
+print (__name__ + " gcode postprocessor loaded.")
 

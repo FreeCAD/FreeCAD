@@ -16,7 +16,7 @@ def deserializeVersionHeader(path):
     for l in dat:
         tokens = l.split()
         if len(tokens) > 1 and tokens[0].lower() == '#define':
-	   version[tokens[1]] = tokens[2].replace('"',"")
+            version[tokens[1]] = tokens[2].replace('"',"")
 
     return version
 
