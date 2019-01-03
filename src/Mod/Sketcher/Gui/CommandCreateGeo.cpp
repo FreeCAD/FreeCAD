@@ -6802,7 +6802,7 @@ void CmdSketcherDetach::activated(int iMsg)
         abortCommand();
         return;
     }
-    tryAutoRecompute(sketch);
+    tryAutoRecomputeIfNotSolve(sketch);
     commitCommand();
 }
 
@@ -6840,7 +6840,7 @@ void CmdSketcherToggleFreeze::activated(int iMsg)
         abortCommand();
         return;
     }
-    tryAutoRecompute(sketch);
+    tryAutoRecomputeIfNotSolve(sketch);
     commitCommand();
 }
 
@@ -6875,7 +6875,7 @@ void CmdSketcherSync::activated(int iMsg)
     Gui::Selection().clearSelection();
     openCommand("Sync frozen geometry");
     if(!sketch->syncGeometry(sels))
-        tryAutoRecompute(sketch);
+        tryAutoRecomputeIfNotSolve(sketch);
     commitCommand();
 }
 

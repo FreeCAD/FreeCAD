@@ -593,6 +593,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                             const Gui::View3DInventorViewer *viewer)
 {
     assert(edit);
+    Gui::Command::AutoCommit comitter;
 
     // Calculate 3d point to the mouse position
     SbLine line;
@@ -867,8 +868,9 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     draw(true,false);
                     Mode = STATUS_NONE;
                     return true;
-                case STATUS_SKETCH_UseHandler:
+                case STATUS_SKETCH_UseHandler: {
                     return edit->sketchHandler->releaseButton(Base::Vector2d(x,y));
+                }
                 case STATUS_NONE:
                 default:
                     return false;
@@ -1476,6 +1478,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         bool handled=false;
         if (Mode == STATUS_SKETCH_UseHandler) {
+            Gui::Command::AutoCommit committer;
             handled = edit->sketchHandler->onSelectionChanged(msg);
         }
         if (handled)
