@@ -59,7 +59,7 @@ matrix:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=3
         before_script:
-          - pip install flake8
+          - python3 -m pip install flake8
           # fail the build if there are Python syntax errors
           - flake8 . --count --select=E901,E999,F822,F823 --show-source --statistics
 
