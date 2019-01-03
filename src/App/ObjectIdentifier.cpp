@@ -130,7 +130,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
     if (_owner) {
         const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
         if (!docObj)
-            throw Base::RuntimeError("Property must be owned by a document object.");
+            FC_THROWM(Base::RuntimeError,"Property must be owned by a document object.");
         owner = const_cast<DocumentObject*>(docObj);
 
         if (property.size() > 0) {
@@ -150,7 +150,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, bool l
     if (_owner) {
         const DocumentObject * docObj = freecad_dynamic_cast<const DocumentObject>(_owner);
         if (!docObj)
-            throw Base::RuntimeError("Property must be owned by a document object.");
+            FC_THROWM(Base::RuntimeError,"Property must be owned by a document object.");
         owner = const_cast<DocumentObject*>(docObj);
     }
 }
@@ -169,7 +169,7 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
 
     if (!docObj)
-        throw Base::TypeError("Property must be owned by a document object.");
+        FC_THROWM(Base::TypeError,"Property must be owned by a document object.");
 
     owner = const_cast<DocumentObject*>(docObj);
 
@@ -291,11 +291,11 @@ bool ObjectIdentifier::verify(const App::Property &prop, bool silent) const {
     ResolveResults result(*this);
     if(components.size() - result.propertyIndex != 1) {
         if(silent) return false;
-        throw Base::ValueError("Invalid property path: single component expected");
+        FC_THROWM(Base::ValueError,"Invalid property path: single component expected");
     }
     if(!components[result.propertyIndex].isSimple()) {
         if(silent) return false;
-        throw Base::ValueError("Invalid property path: simple component expected");
+        FC_THROWM(Base::ValueError,"Invalid property path: simple component expected");
     }
     const std::string &name = components[result.propertyIndex].getName();
     CellAddress addr;
@@ -304,7 +304,7 @@ bool ObjectIdentifier::verify(const App::Property &prop, bool silent) const {
        (!isAddress && name!=prop.getName())) 
     {
         if(silent) return false;
-        throw Base::ValueError("Invalid property path: name mismatch");
+        FC_THROWM(Base::ValueError,"Invalid property path: name mismatch");
     }
     return true;
 }
@@ -1140,7 +1140,7 @@ ObjectIdentifier ObjectIdentifier::parse(const DocumentObject *docObj, const std
     if (v)
         return v->getPath();
     else
-        throw Base::RuntimeError("Invalid property specification.");
+        FC_THROWM(Base::RuntimeError,"Invalid property specification.");
 }
 
 std::string ObjectIdentifier::resolveErrorString() const
@@ -1328,7 +1328,7 @@ void ObjectIdentifier::setDocumentObjectName(const App::DocumentObject *obj, boo
         ObjectIdentifier::String &&subname, bool checkImport)
 {
     if(!owner || !obj || !obj->getNameInDocument() || !obj->getDocument())
-        throw Base::RuntimeError("invalid object");
+        FC_THROWM(Base::RuntimeError,"invalid object");
 
     if(checkImport) 
         subname.checkImport(owner,obj);
@@ -1420,10 +1420,8 @@ Py::Object ObjectIdentifier::access(const ResolveResults &result, Py::Object *va
     if(!result.resolvedDocumentObject || !result.resolvedProperty ||
        (subObjectName.getString().size() && !result.resolvedSubObject))
     {
-        std::ostringstream ss;
-        ss << result.resolveErrorString() << std::endl
-           << "in '" << toString() << "'";
-        throw RuntimeError(ss.str());
+        FC_THROWM(Base::RuntimeError, result.resolveErrorString() << std::endl
+           << "in '" << toString() << "'");
     }
 
     Py::Object pyobj;
@@ -1689,11 +1687,9 @@ bool ObjectIdentifier::adjustLinks(ExpressionVisitor &v, const std::set<App::Doc
     if(!result.resolvedDocumentObject)
         return false;
     if(!result.resolvedSubObject) {
-        if(inList.count(result.resolvedDocumentObject)) {
-            std::ostringstream ss;
-            ss << "cyclic reference to " << result.resolvedDocumentObject->getFullName();
-            THROWM(Base::RuntimeError,ss.str().c_str());
-        }
+        if(inList.count(result.resolvedDocumentObject))
+            FC_THROWM(Base::RuntimeError,"cyclic reference to " 
+                    << result.resolvedDocumentObject->getFullName());
     }else{
         PropertyLinkSub prop;
         prop.setValue(result.resolvedDocumentObject, {subObjectName.getString()});
