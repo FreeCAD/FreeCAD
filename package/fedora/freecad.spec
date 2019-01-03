@@ -76,6 +76,7 @@ BuildRequires:  smesh-devel
 BuildRequires:  swig
 BuildRequires:  tbb-devel
 BuildRequires:  vtk-devel
+BuildRequires:  med
 BuildRequires:  med-devel
 BuildRequires:  xerces-c
 BuildRequires:  xerces-c-devel
