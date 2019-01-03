@@ -38,7 +38,7 @@ def main():
 
     version = deserializeVersionHeader(sys.argv[1])
     if SHA:
-	version['FCRepositoryHash'] = SHA
+        version['FCRepositoryHash'] = SHA
 
     print('FreeCAD_{Major}.{Minor}-{RevCount}.{GitShortSHA}-{OS}-{Arch}'.format(
           Major=version['FCVersionMajor'],
@@ -50,4 +50,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
