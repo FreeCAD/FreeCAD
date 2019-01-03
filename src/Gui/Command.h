@@ -215,6 +215,35 @@ protected:
  */
 class GuiExport Command : public CommandBase
 {
+public:
+    /** Helper class to force commit after invoking the command
+    *
+    * The implementation uses a static count to keep track of potential
+    * recursive invoking of command. This class is expected to be declared on
+    * stack only. And if an instance is constructed by passing enable=true, it
+    * will increase the counter if there is no disabled AutoCommit instance
+    * declared in stack above. If an instance is constructed as disabled, it
+    * will make sure any future AutoCommit instance below the current stack has
+    * no effect. The counter is decreased in the destructor if it has been
+    * increased by the constructor. When the counter reaches zero, it will call
+    * Command::commitCommand(). 
+    *
+    * Note that Command::commitCommand() will check this static counter, and
+    * will only actually commit the command if the counter is not zero. This is
+    * because the purpose of this class is to fix premature command committing
+    * in many of the existing command implementation, which cause many
+    * non-undoable changes to the document.
+    */
+    class GuiExport AutoCommit {
+    public:
+        /** Constructor
+         * @param enable: whether to enable the AutoCommit function or not
+         */
+        AutoCommit(bool enable=true);
+        ~AutoCommit();
+    private:
+        bool enabled;
+    };
 protected:
     Command(const char* name);
     virtual ~Command();
@@ -244,7 +273,7 @@ public:
     /// Enables or disables the command
     void setEnabled(bool);
     /// get called by the QAction
-    void invoke (int); 
+    void invoke (int, bool autoCommit=true); 
     /// adds this command to arbitrary widgets
     void addTo(QWidget *);
     void addToGroup(ActionGroup *, bool checkable);

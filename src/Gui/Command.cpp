@@ -316,8 +316,9 @@ public:
     }
 };
 
-void Command::invoke(int i)
+void Command::invoke(int i, bool autoCommit)
 {
+    Command::AutoCommit committer(autoCommit);
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
@@ -520,22 +521,51 @@ void Command::openCommand(const char* sCmdName)
         Gui::Application::Instance->activeDocument()->openCommand("Command");
 }
 
+static int _CommitCount;
+Command::AutoCommit::AutoCommit(bool enable)
+    :enabled(enable)
+{
+    if(enabled) {
+        // When enabled, it is only effective if there is no existing disabled
+        // AutoCommit decleared in the stack above
+        if(_CommitCount>=0)
+            ++_CommitCount;
+    }else if(_CommitCount<=0) {
+        // When disabled, it disables any lower stack AutoCommit as well.
+        --_CommitCount;
+    }
+};
+
+Command::AutoCommit::~AutoCommit() 
+{
+    if(enabled) { 
+        if(_CommitCount>0) {
+            --_CommitCount;
+            Command::commitCommand();
+        }
+    }else if(_CommitCount<0)
+        ++_CommitCount;
+}
+
 void Command::commitCommand(void)
 {
-    assert(Gui::Application::Instance->activeDocument());
-    Gui::Application::Instance->activeDocument()->commitCommand();
+    if(_CommitCount)
+        return;
+    // if(Gui::Application::Instance->activeDocument())
+    if(hasPendingCommand())
+        Gui::Application::Instance->activeDocument()->commitCommand();
 }
 
 void Command::abortCommand(void)
 {
-    assert(Gui::Application::Instance->activeDocument());
-    Gui::Application::Instance->activeDocument()->abortCommand();
+    if(Gui::Application::Instance->activeDocument())
+        Gui::Application::Instance->activeDocument()->abortCommand();
 }
 
 bool Command::hasPendingCommand(void)
 {
-    assert(Gui::Application::Instance->activeDocument());
-    return Gui::Application::Instance->activeDocument()->hasPendingCommand();
+    auto gdoc = Gui::Application::Instance->activeDocument();
+    return gdoc && gdoc->hasPendingCommand();
 }
 
 bool Command::_blockCmd = false;
@@ -1649,7 +1679,7 @@ void CommandManager::runCommandByName (const char* sName) const
     Command* pCmd = getCommandByName(sName);
 
     if (pCmd)
-        pCmd->invoke(0);
+        pCmd->invoke(0, false);
 }
 
 void CommandManager::testActive(void)
