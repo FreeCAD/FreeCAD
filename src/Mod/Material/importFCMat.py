@@ -35,7 +35,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
 
@@ -85,21 +85,21 @@ def read(filename):
         filename = filename.encode(sys.getfilesystemencoding())
     f = pythonopen(filename)
     d = {}
-    l = 0
+    ln = 0
     for line in f:
-        if l == 0:
+        if ln == 0:
             d["CardName"] = line.split(";")[1].strip()
-        elif l == 1:
+        elif ln == 1:
             d["AuthorAndLicense"] = line.split(";")[1].strip()
         else:
             if not line[0] in ";#[":
                 k = line.split("=")
                 if len(k) == 2:
                     v = k[1].strip()
-                    if hasattr(v,"decode"):
+                    if hasattr(v, "decode"):
                         v = v.decode('utf-8')
                     d[k[0].strip()] = v
-        l += 1
+        ln += 1
     return d
 
 

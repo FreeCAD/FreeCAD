@@ -53,9 +53,9 @@ class MaterialEditor:
         self.groups = []
 
         # load the UI file from the same directory as this script
-        self.widget =\
-            FreeCADGui.PySideUic.loadUi(os.path.dirname(__file__) +
-                                        os.sep + "materials-editor.ui")
+        self.widget = FreeCADGui.PySideUic.loadUi(
+            os.path.dirname(__file__) + os.sep + "materials-editor.ui"
+        )
 
         # additional UI fixes and tweaks
         widget = self.widget
@@ -269,21 +269,21 @@ class MaterialEditor:
     def expandKey(self, key):
         "adds spaces before caps in a KeyName"
         nk = ""
-        for l in key:
-            if l.isupper():
+        for ln in key:
+            if ln.isupper():
                 if nk:
                     # this allows for series of caps, such as ProductURL
                     if not nk[-1].isupper():
                         nk += " "
-            nk += l
+            nk += ln
         return nk
 
     def collapseKey(self, key):
         "removes the spaces in a Key Name"
         nk = ""
-        for l in key:
-            if l != " ":
-                nk += l
+        for ln in key:
+            if ln != " ":
+                nk += ln
         return nk
 
     def addCustomProperty(self, key=None, value=None):
@@ -434,7 +434,7 @@ class MaterialEditor:
         it = group.child(item.row(), 1)
         name = it.text()
         if sys.version_info.major < 3:
-            if isinstance(name,unicode):
+            if isinstance(name, unicode):
                 name = name.encode("utf8")
         if not name:
             name = "Material"
@@ -567,8 +567,9 @@ def matProperWidget(parent=None, Type="String", Units=None, Value=None,
         widget = ui.createWidget("Gui::InputField")
         if Units:
             vv = string2tuple(Units)
-            unit = FreeCAD.Units.Unit(vv[0], vv[1], vv[2], vv[3],
-                        vv[4], vv[5], vv[6], vv[7])
+            unit = FreeCAD.Units.Unit(
+                vv[0], vv[1], vv[2], vv[3], vv[4], vv[5], vv[6], vv[7]
+            )
             quantity = FreeCAD.Units.Quantity(1, unit)
             widget.setProperty('unit', quantity.getUserPreferred()[2])
 
