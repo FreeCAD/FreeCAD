@@ -29,6 +29,9 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+import FreeCAD
+
+
 class PartDesignWorkbench ( Workbench ):
     "PartDesign workbench object"
     def __init__(self):

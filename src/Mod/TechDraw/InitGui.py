@@ -29,6 +29,7 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+import FreeCAD
 
 class TechDrawWorkbench (Workbench):
     "Technical Drawing workbench object"

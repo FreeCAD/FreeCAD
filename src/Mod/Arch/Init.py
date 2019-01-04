@@ -21,6 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
+import FreeCAD
+
 # add import/export types
 FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
 FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","importIFC")

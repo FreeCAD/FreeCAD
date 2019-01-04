@@ -20,9 +20,13 @@
 #*                                                                         *
 #***************************************************************************
 
-__title__="FreeCAD Draft Workbench - Init file"
+import FreeCAD
+import FreeCADGui
+
+__title__ = "FreeCAD Draft Workbench - Init file"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
+
 
 class DraftWorkbench (Workbench):
     "the Draft Workbench"

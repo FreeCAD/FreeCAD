@@ -25,6 +25,7 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+import FreeCAD
 
 #FreeCAD.addImportType("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Part")
 #FreeCAD.addExportType("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Part")

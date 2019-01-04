@@ -25,6 +25,8 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+import FreeCAD
+
 # Base system tests
 FreeCAD.__unit_test__ += [ "BaseTests",
                            "UnitTests",

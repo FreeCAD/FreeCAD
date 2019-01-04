@@ -26,6 +26,7 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+import FreeCAD
 
 
 class TestWorkbench ( Workbench ):

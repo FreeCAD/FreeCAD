@@ -21,6 +21,10 @@
 #*                                                                         *
 #***************************************************************************
 
+import FreeCAD
+import FreeCADGui
+
+
 class ArchWorkbench(Workbench):
     "Arch workbench object"
     def __init__(self):

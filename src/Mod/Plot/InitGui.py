@@ -21,6 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
+import FreeCAD
+
 
 class PlotWorkbench(Workbench):
     """Workbench of Plot module."""

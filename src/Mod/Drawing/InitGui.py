@@ -29,6 +29,8 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+import FreeCAD
+
 
 class DrawingWorkbench (Workbench):
     "Drawing workbench object"

@@ -21,6 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
+import FreeCAD
+
 
 class ShipWorkbench(Workbench):
     """Ships design workbench."""

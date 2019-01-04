@@ -25,6 +25,7 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+import FreeCAD
 
 
 # Append the open handler

@@ -30,6 +30,8 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
+import FreeCAD
+
 
 class SpreadsheetWorkbench ( Workbench ):
     "Spreadsheet workbench object"

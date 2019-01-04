@@ -24,9 +24,11 @@
 This macro is used in conjunction with the toolpathparams script to create an object that represents a tool for use in a CNC program. Create a group and then select it- then run the macro.
 You will have to edit the parameters inside the Data tab of the tool object.
 '''
+
+import FreeCAD
+import FreeCADGui
 import PathScripts
 import toolpathparams as tp
-
 
 tl = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Tools")
 

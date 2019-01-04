@@ -29,6 +29,8 @@
 #***************************************************************************/
 
 import FreeCAD
+import FreeCADGui
+
 param = FreeCAD.ParamGet(\
     "User parameter:BaseApp/Preferences/Mod/OpenSCAD")
 openscadfilename = param.GetString('openscadexecutable')

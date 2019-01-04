@@ -18,6 +18,8 @@
 
 """Tux module for FreeCAD."""
 
+import FreeCAD
+
 p = FreeCAD.ParamGet("User parameter:Tux")
 
 

@@ -29,6 +29,7 @@
 #*   Juergen Riegel 2009                                                   *
 #***************************************************************************/
 
+import FreeCAD
 
 
 class RobotWorkbench ( Workbench ):

@@ -21,6 +21,10 @@
 # *                                                                         *
 # ***************************************************************************/
 
+import FreeCAD
+import FreeCADGui
+
+
 class PathCommandGroup:
     def __init__(self, cmdlist, menu, tooltip = None):
         self.cmdlist = cmdlist

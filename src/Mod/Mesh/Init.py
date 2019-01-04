@@ -1,6 +1,8 @@
 # FreeCAD init script of the Mesh module
 # (c) 2004 Werner Mayer LGPL
 
+import FreeCAD
+
 # Append the open handler
 FreeCAD.addImportType("STL Mesh (*.stl *.ast)", "Mesh")
 FreeCAD.addImportType("Binary Mesh (*.bms)","Mesh")

@@ -29,6 +29,9 @@
 #*   Werner Mayer 2004                                                     *
 #***************************************************************************/
 
+import FreeCAD
+
+
 class MeshWorkbench (Workbench):
     "Mesh workbench object"
     def __init__(self):
