@@ -333,7 +333,8 @@ class ControlWidget(QtGui.QWidget):
             self._directoryGrp.setDisabled(False)
             self._writeBtt.setDisabled(False)
             self._editBtt.setDisabled(
-                not machine.solver.Proxy.editSupported() or
-                machine.state < femsolver.run.PREPARE)
+                not machine.solver.Proxy.editSupported()
+                or machine.state < femsolver.run.PREPARE
+            )
 
 ##  @}

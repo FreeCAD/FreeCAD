@@ -128,18 +128,18 @@ def make_femmesh(mesh_data):
     if ('Nodes' in m) and (len(m['Nodes']) > 0):
         FreeCAD.Console.PrintLog("Found: nodes\n")
         if (
-                ('Seg2Elem' in m) or
-                ('Seg3Elem' in m) or
-                ('Tria3Elem' in m) or
-                ('Tria6Elem' in m) or
-                ('Quad4Elem' in m) or
-                ('Quad8Elem' in m) or
-                ('Tetra4Elem' in m) or
-                ('Tetra10Elem' in m) or
-                ('Penta6Elem' in m) or
-                ('Penta15Elem' in m) or
-                ('Hexa8Elem' in m) or
-                ('Hexa20Elem' in m)
+            ('Seg2Elem' in m)
+            or ('Seg3Elem' in m)
+            or ('Tria3Elem' in m)
+            or ('Tria6Elem' in m)
+            or ('Quad4Elem' in m)
+            or ('Quad8Elem' in m)
+            or ('Tetra4Elem' in m)
+            or ('Tetra10Elem' in m)
+            or ('Penta6Elem' in m)
+            or ('Penta15Elem' in m)
+            or ('Hexa8Elem' in m)
+            or ('Hexa20Elem' in m)
         ):
 
             nds = m['Nodes']
