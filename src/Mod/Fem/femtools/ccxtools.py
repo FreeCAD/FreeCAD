@@ -666,18 +666,33 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def run(self):
         message = self.check_prerequisites()
-        if not message:
-            self.write_inp_file()
-            if self.inp_file_name != "":
-                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed!\n")
-            else:
-                # TODO do not run solver, do not try to read results in a smarter way than an Exception
-                raise Exception('Error on writing CalculiX input file.\n')
-            self.ccx_run()
+        if message:
+            error_message = "CalculiX was not started due to missing prerequisites:\n{}\n".format(message)
+            FreeCAD.Console.PrintError(error_message)
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, "Missing prerequisite", error_message)
+            return False
         else:
-            FreeCAD.Console.PrintError("CalculiX was not started due to missing prerequisites:\n{}\n".format(message))
-            # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
-        self.load_results()
+            self.write_inp_file()
+            if self.inp_file_name == "":
+                error_message = "Error on writing CalculiX input file.\n"
+                FreeCAD.Console.PrintError(error_message)
+                if FreeCAD.GuiUp:
+                    QtGui.QMessageBox.critical(None, "Error", error_message)
+                return False
+            else:
+                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed.\n")
+                ret_code = self.ccx_run()
+                if ret_code != 0:
+                    error_message = "CalculiX finished with error {}".format(ret_code)
+                    FreeCAD.Console.PrintError(error_message)
+                    if FreeCAD.GuiUp:
+                        QtGui.QMessageBox.critical(None, "Error", error_message)
+                    return False
+                else:
+                    self.load_results()
+                    # TODO: output an error message if there where problems reading the results
+        return True
 
     def has_no_material_assigned(self):
         if ' *ERROR in calinput: no material was assigned' in self.ccx_stdout:
