@@ -345,11 +345,18 @@ def read_z88_mesh(z88_mesh_input):
 # write z88 Mesh
 def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f):
     node_dimension = 3  # 2 for 2D not supported
-    if (z88_element_type == 4 or
-       z88_element_type == 17 or z88_element_type == 16 or
-       z88_element_type == 1 or z88_element_type == 10):
+    if (
+        z88_element_type == 4
+        or z88_element_type == 17
+        or z88_element_type == 16
+        or z88_element_type == 1
+        or z88_element_type == 10
+    ):
         node_dof = 3
-    elif z88_element_type == 23 or z88_element_type == 24:
+    elif (
+        z88_element_type == 23
+        or z88_element_type == 24
+    ):
         node_dof = 6  # schalenelemente
     else:
         print("Error: wrong z88_element_type")
