@@ -113,7 +113,7 @@ def toUnicode(string):
 
 def isString(string):
     '''isString(string) ... return True if string is a string, regardless of string type and python version.'''
-    return isinstance(string, six.text_type)
+    return isinstance(string, six.string_types)
 
 def keyValueIter(dictionary):
     '''keyValueIter(dict) ... return iterable object over dictionary's (key,value) tuples.'''
