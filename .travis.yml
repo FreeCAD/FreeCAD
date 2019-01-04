@@ -40,6 +40,7 @@ matrix:
     allow_failures:
       - python: 3.7
       - os: osx
+    fast_finish: true  # https://blog.travis-ci.com/2013-11-27-fast-finishing-builds
     include:
       - os: linux
         dist: trusty
