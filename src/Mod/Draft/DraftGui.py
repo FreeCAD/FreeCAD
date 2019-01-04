@@ -39,6 +39,8 @@ This is the GUI part of the Draft module.
 Report to Draft.py for info
 '''
 
+import six
+
 import FreeCAD, FreeCADGui, os, Draft, sys, DraftVecUtils, math
 
 try:
@@ -47,10 +49,7 @@ except ImportError:
     FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
 
 try:
-    if sys.version_info.major >= 3:
-        _encoding = None
-    else:
-        _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtGui.QApplication.UnicodeUTF8 if six.PY2 else None
     def translate(context, text, utf8_decode=True):
         """convenience function for Qt translator
             context: str
@@ -61,7 +60,7 @@ try:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version_info.major >= 3:
+        if six.PY3:
             return QtGui.QApplication.translate(context, text, None)
         elif utf8_decode:
             return QtGui.QApplication.translate(context, text, None, _encoding)
@@ -79,7 +78,7 @@ except AttributeError:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version_info.major >= 3:
+        if six.PY3:
             return QtGui.QApplication.translate(context, text, None)
         elif QtCore.qVersion() > "4":
             if utf8_decode:
@@ -153,12 +152,12 @@ class todo:
                     wrn = "[Draft.todo.tasks] Unexpected error:", sys.exc_info()[0], "in ", f, "(", arg, ")"
                     FreeCAD.Console.PrintWarning (wrn)
         except ReferenceError:
-            print ("Debug: DraftGui.todo.doTasks: queue contains a deleted object, skipping")
+            print("Debug: DraftGui.todo.doTasks: queue contains a deleted object, skipping")
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
-                if sys.version_info.major < 3:
-                    if isinstance(name,unicode):
+                if six.PY2:
+                    if isinstance(name,six.text_type):
                         name = name.encode("utf8")
                 #print("debug: committing ",str(name))
                 try:
