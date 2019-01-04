@@ -955,7 +955,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     if e.NominalValue.Unit:
                                         pvalue += e.NominalValue.Unit
                                 d[pname] = psetname+";;"+ptype+";;"+pvalue
-                                #print ("adding property: ",pname,ptype,pvalue," pset ",psetname)
+                                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
                     obj.IfcProperties = d
 
                 elif hasattr(obj,"IfcAttributes"):
@@ -1190,7 +1190,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     count = 0
 
     scaling = getScaling(ifcfile)
-    #print "scaling factor =",scaling
+    #print("scaling factor =",scaling)
     for annotation in annotations:
 
         anno = None
@@ -1280,8 +1280,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # Materials
 
     if DEBUG and materials: print("Creating materials...",end="")
-    #print "mattable:",mattable
-    #print "materials:",materials
+    #print("mattable:",mattable)
+    #print("materials:",materials)
     fcmats = {}
     for material in materials:
         name = "Material"
@@ -2290,7 +2290,7 @@ def export(exportList,filename):
         for g in sortedgroups:
             if g[0] in groups.keys():
                 del groups[g[0]]
-    #print "sorted groups:",sortedgroups
+    #print("sorted groups:",sortedgroups)
     containers = {}
     for g in sortedgroups:
         if g[1]:
@@ -2677,7 +2677,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 profiledefs[pstr] = profile
                         if profile and not(DraftVecUtils.isNull(evi)):
                             #ev = pl.Rotation.inverted().multVec(evi)
-                            #print "evi:",evi
+                            #print("evi:",evi)
                             if not tostore:
                                 # add the object placement to the profile placement. Otherwise it'll be done later at map insert
                                 pl2 = FreeCAD.Placement(obj.Placement)
@@ -2775,7 +2775,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             dataset = fcshape.Solids
                         else:
                             dataset = fcshape.Shells
-                            #if DEBUG: print "Warning! object contains no solids"
+                            #if DEBUG: print("Warning! object contains no solids")
 
                         # if this is a clone, place back the shapes in null position
                         if tostore:
@@ -2853,7 +2853,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                             bound = ifcfile.createIfcFaceBound(loop,True)
                                             loops.append(bound)
                                         else:
-                                            print ("Warning: wire with one/no vertex in ",obj.Label)
+                                            print("Warning: wire with one/no vertex in ", obj.Label)
                                 face =  ifcfile.createIfcFace(loops)
                                 faces.append(face)
 
