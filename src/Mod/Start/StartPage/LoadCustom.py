@@ -22,7 +22,7 @@
 
 import FreeCAD,FreeCADGui,os,sys
 if sys.version_info.major < 3:
-    from urrlib import unquote
+    from urllib import unquote
 else:
     from urllib.parse import unquote
 # filename will be given before this script is run
