@@ -64,15 +64,14 @@ matrix:
 
       - language: python
         python: 3.7
-        dist: xenial
+        dist: xenial  # required for Python >= 3.7 (travis-ci/travis-ci#9069)
         before_install: true
         install: python3 -m pip install flake8
-        # fail the build if there are Python syntax errors
-        script: flake8 . --count --select=E901,E999,F822,F823 --show-source --statistics
+        # fail the build if there are Python syntax errors or undefined names
+        script: flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics
 
-      # osx build is failing. See: https://forum.freecadweb.org/viewtopic.php?f=10&t=32272
+      # macOS build is failing. See: https://forum.freecadweb.org/viewtopic.php?f=10&t=32272
       - os: osx
-        osx_image: xcode7.3
         compiler: clang
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
