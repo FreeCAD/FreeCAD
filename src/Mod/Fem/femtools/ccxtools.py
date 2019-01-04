@@ -645,7 +645,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         progress_bar.stop()
         if ret_code or self.ccx_stderr:
             if ret_code == 201 and self.solver.AnalysisType == 'check':
-                FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
+                FreeCAD.Console.PrintMessage('It seams we run into NOANALYSIS problem, thus workaround for wrong exit code for *NOANALYSIS check.\n')
+                # https://forum.freecadweb.org/viewtopic.php?f=18&t=31303&start=10#p260743
             else:
                 FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
                 FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
@@ -659,7 +660,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.has_nonpositive_jacobians()
                 FreeCAD.Console.PrintMessage("\n--------end problems---------\n")
         else:
-            FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
+            FreeCAD.Console.PrintMessage("CalculiX finished without error.\n")
 
     def run(self):
         message = self.check_prerequisites()
@@ -747,6 +748,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             return False
 
     def load_results(self):
+        FreeCAD.Console.PrintMessage('We will load the ccx frd and dat result file.\n')
         self.results_present = False
         self.load_results_ccxfrd()
         self.load_results_ccxdat()
