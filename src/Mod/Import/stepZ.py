@@ -33,7 +33,7 @@ else:  # six.PY2
 
 def mkz_string(input):
     if six.PY3:
-        if not isinstance(input, str):
+        if isinstance(input, str):
             return input
         else:
             input = input.encode('utf-8')
