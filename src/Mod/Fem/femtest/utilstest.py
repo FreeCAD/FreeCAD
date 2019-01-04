@@ -154,10 +154,10 @@ def compare_stats(fea, stat_file=None, loc_stat_types=None, res_obj_name=None):
 
 def force_unix_line_ends(line_list):
     new_line_list = []
-    for l in line_list:
-        if l.endswith("\r\n"):
-            l = l[:-2] + '\n'
-        new_line_list.append(l)
+    for ln in line_list:
+        if ln.endswith("\r\n"):
+            ln = ln[:-2] + '\n'
+        new_line_list.append(ln)
     return new_line_list
 
 
