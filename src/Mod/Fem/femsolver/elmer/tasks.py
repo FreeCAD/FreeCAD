@@ -81,6 +81,7 @@ class Prepare(run.Prepare):
         except IOError as e:
             self.report.error("Can't access working directory.")
             self.fail()
+            del e  # get flake8 quit
 
     def checkHandled(self, w):
         handled = w.getHandledConstraints()

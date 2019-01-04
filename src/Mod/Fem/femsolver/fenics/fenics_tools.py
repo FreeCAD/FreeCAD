@@ -138,12 +138,11 @@ else:
 
             # TODO: python classes much slower than JIT compilation
 
-
-# ***********************************
-# * Sub classes due to value_shape method which is not of dynamical return type
-# * Also the assignment of values is to be done by reference. Therefore it has to be
-# * overloaded.
-# ***********************************
+    # ***********************************
+    # * Sub classes due to value_shape method which is not of dynamical return type
+    # * Also the assignment of values is to be done by reference. Therefore it has to be
+    # * overloaded.
+    # ***********************************
 
     class ScalarCellExpressionFromXDMF(fenics.Expression, CellExpressionFromXDMF):
 
