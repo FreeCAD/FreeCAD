@@ -120,10 +120,10 @@ class TestMeshCommon(unittest.TestCase):
 
         read_file = open(inp_file, 'r')
         read_node_line = 'line was not found'
-        for l in read_file:
-            l = l.strip()
-            if l.startswith('2, -5'):
-                read_node_line = l
+        for ln in read_file:
+            ln = ln.strip()
+            if ln.startswith('2, -5'):
+                read_node_line = ln
         read_file.close()
 
         #                  1234567  12345678901234567890  12345678901234567890
