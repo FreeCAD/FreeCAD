@@ -94,6 +94,7 @@ def exportFCMat(fileName, matDict):
         configfile.write(Preamble)
         Config.write(configfile)
 
+
 def getMaterialAttributeStructure(withSpaces=None):
 
     ''''''
