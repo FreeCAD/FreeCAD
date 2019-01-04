@@ -78,10 +78,9 @@ class Prepare(run.Prepare):
         except writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
-        except IOError as e:
+        except IOError:
             self.report.error("Can't access working directory.")
             self.fail()
-            del e  # get flake8 quit
 
     def checkHandled(self, w):
         handled = w.getHandledConstraints()
