@@ -645,8 +645,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         progress_bar.stop()
         if ret_code or self.ccx_stderr:
             if ret_code == 201 and self.solver.AnalysisType == 'check':
-                FreeCAD.Console.PrintMessage('It seams we run into NOANALYSIS problem, thus workaround for wrong exit code for *NOANALYSIS check.\n')
+                FreeCAD.Console.PrintMessage('It seams we run into NOANALYSIS problem, thus workaround for wrong exit code for *NOANALYSIS check and set ret_code to 0.\n')
                 # https://forum.freecadweb.org/viewtopic.php?f=18&t=31303&start=10#p260743
+                ret_code = 0
             else:
                 FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
                 FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
@@ -661,6 +662,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 FreeCAD.Console.PrintMessage("\n--------end problems---------\n")
         else:
             FreeCAD.Console.PrintMessage("CalculiX finished without error.\n")
+        return ret_code
 
     def run(self):
         message = self.check_prerequisites()
