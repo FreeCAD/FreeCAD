@@ -645,7 +645,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         progress_bar.stop()
         if ret_code or self.ccx_stderr:
             if ret_code == 201 and self.solver.AnalysisType == 'check':
-                FreeCAD.Console.PrintMessage('Workaround for wrong exit code for *NOANALYSIS check\n.')
+                FreeCAD.Console.PrintMessage('It seams we run into NOANALYSIS problem, thus workaround for wrong exit code for *NOANALYSIS check and set ret_code to 0.\n')
+                # https://forum.freecadweb.org/viewtopic.php?f=18&t=31303&start=10#p260743
+                ret_code = 0
             else:
                 FreeCAD.Console.PrintError("CalculiX failed with exit code {}\n".format(ret_code))
                 FreeCAD.Console.PrintMessage("--------start of stderr-------\n")
@@ -659,22 +661,38 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.has_nonpositive_jacobians()
                 FreeCAD.Console.PrintMessage("\n--------end problems---------\n")
         else:
-            FreeCAD.Console.PrintMessage("CalculiX finished without error\n")
+            FreeCAD.Console.PrintMessage("CalculiX finished without error.\n")
+        return ret_code
 
     def run(self):
         message = self.check_prerequisites()
-        if not message:
-            self.write_inp_file()
-            if self.inp_file_name != "":
-                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed!\n")
-            else:
-                # TODO do not run solver, do not try to read results in a smarter way than an Exception
-                raise Exception('Error on writing CalculiX input file.\n')
-            self.ccx_run()
+        if message:
+            error_message = "CalculiX was not started due to missing prerequisites:\n{}\n".format(message)
+            FreeCAD.Console.PrintError(error_message)
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, "Missing prerequisite", error_message)
+            return False
         else:
-            FreeCAD.Console.PrintError("CalculiX was not started due to missing prerequisites:\n{}\n".format(message))
-            # ATM it is not possible to start CalculiX if prerequisites are not fulfilled
-        self.load_results()
+            self.write_inp_file()
+            if self.inp_file_name == "":
+                error_message = "Error on writing CalculiX input file.\n"
+                FreeCAD.Console.PrintError(error_message)
+                if FreeCAD.GuiUp:
+                    QtGui.QMessageBox.critical(None, "Error", error_message)
+                return False
+            else:
+                FreeCAD.Console.PrintMessage("Writing CalculiX input file completed.\n")
+                ret_code = self.ccx_run()
+                if ret_code != 0:
+                    error_message = "CalculiX finished with error {}".format(ret_code)
+                    FreeCAD.Console.PrintError(error_message)
+                    if FreeCAD.GuiUp:
+                        QtGui.QMessageBox.critical(None, "Error", error_message)
+                    return False
+                else:
+                    self.load_results()
+                    # TODO: output an error message if there where problems reading the results
+        return True
 
     def has_no_material_assigned(self):
         if ' *ERROR in calinput: no material was assigned' in self.ccx_stdout:
@@ -747,6 +765,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             return False
 
     def load_results(self):
+        FreeCAD.Console.PrintMessage('We will load the ccx frd and dat result file.\n')
         self.results_present = False
         self.load_results_ccxfrd()
         self.load_results_ccxdat()

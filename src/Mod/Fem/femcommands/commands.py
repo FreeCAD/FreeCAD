@@ -764,29 +764,13 @@ class _CommandFemSolverRun(CommandManager):
         import femsolver.run
         from PySide import QtGui
 
-        def load_results(ret_code):
-            if ret_code == 0:
-                self.fea.load_results()
-            elif ret_code == 201:
-                if self.fea.solver.AnalysisType == 'check':
-                    print('We run into the NOANALYSIS problem!')
-                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=31303&start=10#p260743
-                    self.fea.load_results()
-            else:
-                print("CalculiX failed ccx finished with error {}".format(ret_code))
-
         self.solver = self.selobj
         if self.solver.Proxy.Type == 'Fem::FemSolverCalculixCcxTools':
             print('CalxuliX ccx tools solver!')
             from femtools import ccxtools
             self.fea = ccxtools.FemToolsCcx(None, self.solver)
             self.fea.reset_mesh_purge_results_checked()
-            message = self.fea.check_prerequisites()
-            if message:
-                QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
-                return
-            self.fea.finished.connect(load_results)
-            QtCore.QThreadPool.globalInstance().start(self.fea)
+            self.fea.run()
         else:
             print('Frame work solver!')
             try:

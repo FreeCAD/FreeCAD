@@ -578,6 +578,9 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
         QTextBlock inputBlock = inputLineBegin.block();              //< get the last paragraph's text
         QString    inputLine  = inputBlock.text();
         QString    inputStrg  = stripPromptFrom( inputLine );
+        if (this->_sourceDrain && !this->_sourceDrain->isEmpty()) {
+            inputStrg = inputLine.mid(this->_sourceDrain->length());
+        }
 
         switch (e->key())
         {
@@ -1047,15 +1050,18 @@ void PythonConsole::insertFromMimeData (const QMimeData * source)
     }
 }
 
-QTextCursor PythonConsole::inputBegin( void ) const
+QTextCursor PythonConsole::inputBegin(void) const
 {
-  // construct cursor at begin of input line ...
-  QTextCursor inputLineBegin( this->textCursor() );
-  inputLineBegin.movePosition( QTextCursor::End );
-  inputLineBegin.movePosition( QTextCursor::StartOfBlock );
-  // ... and move cursor right beyond the prompt.
-  inputLineBegin.movePosition( QTextCursor::Right, QTextCursor::MoveAnchor, promptLength( inputLineBegin.block().text() ) );
-  return inputLineBegin;
+    // construct cursor at begin of input line ...
+    QTextCursor inputLineBegin(this->textCursor());
+    inputLineBegin.movePosition(QTextCursor::End);
+    inputLineBegin.movePosition(QTextCursor::StartOfBlock);
+    // ... and move cursor right beyond the prompt.
+    int prompt = promptLength(inputLineBegin.block().text());
+    if (this->_sourceDrain && !this->_sourceDrain->isEmpty())
+        prompt = this->_sourceDrain->length();
+    inputLineBegin.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, prompt);
+    return inputLineBegin;
 }
 
 QMimeData * PythonConsole::createMimeDataFromSelection () const
@@ -1333,9 +1339,11 @@ void PythonConsole::onCopyCommand()
 QString PythonConsole::readline( void )
 {
     QEventLoop loop;
-    QString    inputBuffer;
+    // output is set to the current prompt which we need to extract
+    // the actual user input
+    QString    inputBuffer = d->output;
 
-    printPrompt( PythonConsole::Special );
+    printPrompt(PythonConsole::Special);
     this->_sourceDrain = &inputBuffer;     //< enable source drain ...
     // ... and wait until we get notified about pendingSource
     QObject::connect( this, SIGNAL(pendingSource()), &loop, SLOT(quit()) );

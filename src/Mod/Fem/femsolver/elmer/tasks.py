@@ -78,7 +78,7 @@ class Prepare(run.Prepare):
         except writer.WriteError as e:
             self.report.error(str(e))
             self.fail()
-        except IOError as e:
+        except IOError:
             self.report.error("Can't access working directory.")
             self.fail()
 
