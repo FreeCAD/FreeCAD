@@ -120,11 +120,11 @@ class Macro(object):
                     data = u2.read(block)
                     if not data:
                         break
+                    if sys.version_info.major >= 3 and isinstance(data, bytes):
+                        data = data.decode('utf-8')
                     response += data
                 if response:
                     code = response
-                if sys.version_info.major >= 3 and isinstance(code, bytes):
-                    code = code.decode('utf-8')
                 u2.close()
         if not code:
             code = re.findall('<pre>(.*?)<\/pre>', p.replace('\n', '--endl--'))
