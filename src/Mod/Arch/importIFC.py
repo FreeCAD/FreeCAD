@@ -2468,7 +2468,7 @@ def createCurve(ifcfile,wire):
     pol = None
     last = None
     if wire.ShapeType == "edge":
-        edges = [edge]
+        edges = [wire]
     else:
         edges = Part.__sortEdges__(wire.Edges)
     for e in edges:
