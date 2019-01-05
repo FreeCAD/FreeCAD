@@ -140,13 +140,19 @@ rm -rf build && mkdir build && cd build
 # Deal with cmake projects that tend to link excessively.
 #LDFLAGS='-Wl,--as-needed'; export LDFLAGS
 
+%if 0%{?fedora} > 28
+%define MEDFILE_INCLUDE_DIRS %{_includedir}/med/
+%else
+%define MEDFILE_INCLUDE_DIRS %{_includedir}/swig/
+%endif
+
 %cmake -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
        -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
        -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
        -DCMAKE_INSTALL_INCLUDEDIR=%{_includedir} \
        -DRESOURCEDIR=%{_datadir}/%{name} \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
-       -DMEDFILE_INCLUDE_DIRS=%{_includedir}/med/ \
+       -DMEDFILE_INCLUDE_DIRS=%{MEDFILE_INCLUDE_DIRS} \
        ../
 
 sed -i 's,FCRevision      \"Unknown\",FCRevision      \"%{release} (Git)\",' src/Build/Version.h
