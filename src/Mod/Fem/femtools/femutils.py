@@ -108,8 +108,7 @@ def is_derived_from(obj, t):
     '''returns True if an object or its inheritance chain is of a given TypeId (C++ objects) or Proxy.Type (Python objects)'''
     # returns true for all FEM objects if given t == 'App::DocumentObject' since this is a father of the given object
     # see https://forum.freecadweb.org/viewtopic.php?f=10&t=32625
-    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and
-            obj.Proxy.Type == t):
+    if (hasattr(obj, "Proxy") and hasattr(obj.Proxy, "Type") and obj.Proxy.Type == t):
         return True
     return obj.isDerivedFrom(t)
 

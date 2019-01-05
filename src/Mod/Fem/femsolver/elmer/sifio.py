@@ -184,11 +184,9 @@ class Builder(object):
                     for solverSection in eqSection[self._ACTIVE_SOLVERS]:
                         if solverSection not in allSections:
                             allSections.append(solverSection)
-            if (BODY_FORCE in section and
-                    section[BODY_FORCE] not in allSections):
+            if BODY_FORCE in section and section[BODY_FORCE] not in allSections:
                 allSections.append(section[BODY_FORCE])
-            if (INITIAL_CONDITION in section and
-                    section[INITIAL_CONDITION] not in allSections):
+            if INITIAL_CONDITION in section and section[INITIAL_CONDITION] not in allSections:
                 allSections.append(section[INITIAL_CONDITION])
         for name, section in self._boundaries.items():
             section["Name"] = name
@@ -337,8 +335,10 @@ class _Writer(object):
         return it.next()
 
     def _isCollection(self, data):
-        return (not isinstance(data, six.string_types) and
-                isinstance(data, collections.Iterable))
+        return (
+            not isinstance(data, six.string_types)
+            and isinstance(data, collections.Iterable)
+        )
 
     def _checkScalar(self, dataType):
         if issubclass(dataType, int):
