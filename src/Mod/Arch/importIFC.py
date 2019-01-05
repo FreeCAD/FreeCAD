@@ -982,7 +982,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 ptype = e.NominalValue.is_a()
                                 if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
                                     pvalue = e.NominalValue.wrappedValue
-                                    if six.py2:
+                                    if six.PY2:
                                         pvalue = pvalue.encode("utf8")
                                 else:
                                     pvalue = str(e.NominalValue.wrappedValue)
