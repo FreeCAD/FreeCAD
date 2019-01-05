@@ -1573,7 +1573,7 @@ def open(filename):
         getDXFlibs()
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
-            if six.py2:
+            if six.PY2:
                 if isinstance(docname,six.text_type): 
                     #workaround since newDocument currently can't handle unicode filenames
                     docname = docname.encode(sys.getfilesystemencoding())
