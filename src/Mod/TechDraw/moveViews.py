@@ -7,6 +7,7 @@
 #          (ie an SVG symbol)
 
 import FreeCAD
+import FreeCADGui
 import Part
 import Drawing
 import TechDraw
