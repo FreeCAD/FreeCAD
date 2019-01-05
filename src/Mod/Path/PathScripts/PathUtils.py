@@ -715,10 +715,10 @@ def sort_jobs(locations, keys, attractors=[]):
         keys: two-element list of keys for X and Y coordinates. for example ['x','y']
         originally written by m0n5t3r for PathHelix
     """
-    if sys.version_info.major < 3:
-        from Queue import PriorityQueue
-    else:
+    try:
         from queue import PriorityQueue
+    except ImportError:
+        from Queue import PriorityQueue
     from collections import defaultdict
 
     attractors = attractors or [keys[0]]
