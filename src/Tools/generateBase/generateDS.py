@@ -23,11 +23,6 @@
 ## TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 ## SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
-
-
-# from __future__ import generators   # only needed for Python 2.2
-
 import sys
 import os.path
 import time
@@ -36,6 +31,7 @@ import urllib2
 from xml.sax import handler, make_parser
 import xml.sax.xmlreader
 
+from six.moves import raw_input
 
 ##from IPython.Shell import IPShellEmbed
 ##args = ''
@@ -2549,7 +2545,7 @@ class SaxSelectorHandler(handler.ContentHandler):
 
 
 def parseSelect(inFileName):
-    infile = file(inFileName, 'r')
+    infile = open(inFileName, 'r')
     topElementName = None
     parser = make_parser()
     documentHandler = SaxSelectorHandler()
@@ -2758,7 +2754,7 @@ def get_impl_body(classBehavior, baseImplUrl, implUrl):
 ##            trylocal = 1
 ##        if trylocal:
 ##            try:
-##                implFile = file(implUrl)
+##                implFile = open(implUrl)
 ##                impl = implFile.read()
 ##                implFile.close()
 ##            except:
@@ -2888,7 +2884,7 @@ class SaxSelectorHandler(handler.ContentHandler):
 
 
 def parseSelect(inFileName):
-    infile = file(inFileName, 'r')
+    infile = open(inFileName, 'r')
     topElementName = None
     parser = make_parser()
     documentHandler = SaxSelectorHandler()
@@ -3146,9 +3142,9 @@ def makeFile(outFileName):
     if (not Force) and os.path.exists(outFileName):
         reply = raw_input('File %s exists.  Overwrite? (y/n): ' % outFileName)
         if reply == 'y':
-            outFile = file(outFileName, 'w')
+            outFile = open(outFileName, 'w')
     else:
-        outFile = file(outFileName, 'w')
+        outFile = open(outFileName, 'w')
     return outFile
 
 
