@@ -1875,7 +1875,7 @@ def export(exportList,filename):
                                 val = sheet.get('D'+str(n))
                             else:
                                 val = ''
-                            if six.py2 and isinstance(key, six.text_type):
+                            if six.PY2 and isinstance(key, six.text_type):
                                 key = key.encode("utf8")
                             else:
                                 key = str(key)
