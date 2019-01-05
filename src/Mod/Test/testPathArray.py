@@ -7,6 +7,7 @@
 # DWire, etc) then run this macro.
 
 import FreeCAD
+import FreeCADGui
 import Part
 import Draft
 
