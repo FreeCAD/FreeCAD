@@ -98,7 +98,7 @@ def read(filename):
                 verts.append([d_point[0],d_point[1],d_point[2]])
             meshdata = []
             for d_face in d_nobj.obj.faces.array:
-                meshdata.append([verts[int(d_face[i])] for i in xrange(3)])
+                meshdata.append([verts[int(d_face[i])] for i in range(3)])
             m = [tuple(r) for r in d_nobj.obj.matrix.array]
             m = m[0] + m[1] + m[2] + m[3]
             placement = FreeCAD.Placement(FreeCAD.Matrix(*m))

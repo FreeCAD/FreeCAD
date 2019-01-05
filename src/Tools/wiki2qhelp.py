@@ -242,8 +242,8 @@ def fetch_resources(uri, rel):
 
 def createpdf_pisa(pagename,folder=TMPFOLDER):
     "creates a pdf file from a saved page using pisa (python module)"
-    infile = file(folder + os.sep + pagename+'.html','ro')
-    outfile = file(folder + os.sep + pagename+'.pdf','wb')
+    infile = open(folder + os.sep + pagename+'.html','ro')
+    outfile = open(folder + os.sep + pagename+'.pdf','wb')
     if VERBOSE: print ("Converting " + pagename + " to pdf...")
     pdf = pisa.CreatePDF(infile,outfile,folder,link_callback=fetch_resources)
     outfile.close()
@@ -272,12 +272,12 @@ def joinpdf(folder=TMPFOLDER,startpage=INDEX,outputname='freecad.pdf'):
     for p in pages:
         if exists(p[:-5]):
             if VERBOSE: print ('Appending',p)
-            try: inputfile = PdfFileReader(file(folder+os.sep+p[:-5]+'.pdf','rb'))
+            try: inputfile = PdfFileReader(open(folder+os.sep+p[:-5]+'.pdf','rb'))
             except: print ('Unable to append',p)
             else:
                 for i in range(inputfile.getNumPages()):
                     result.addPage(inputfile.getPage(i))
-    outputfile = file(OUTPUTPATH + os.sep + outputname,'wb')
+    outputfile = open(OUTPUTPATH + os.sep + outputname,'wb')
     result.write(outputfile)
     outputfile.close()
     if VERBOSE: print ('Successfully created',OUTPUTPATH,os.sep,outputname)
