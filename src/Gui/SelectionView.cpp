@@ -311,11 +311,15 @@ void SelectionView::select(QListWidgetItem* item)
     if (elements.size() < 2)
         return;
 
-    //Gui::Selection().clearSelection();
-    Gui::Command::runCommand(Gui::Command::Gui,"Gui.Selection.clearSelection()");
-    //Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-    QString cmd = QString::fromLatin1("Gui.Selection.addSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+    try {
+        //Gui::Selection().clearSelection();
+        Gui::Command::runCommand(Gui::Command::Gui,"Gui.Selection.clearSelection()");
+        //Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
+        QString cmd = QString::fromLatin1("Gui.Selection.addSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
+        Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void SelectionView::deselect(void)
@@ -329,7 +333,11 @@ void SelectionView::deselect(void)
 
     //Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
     QString cmd = QString::fromLatin1("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+    try {
+        Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void SelectionView::toggleSelect(QListWidgetItem* item)
@@ -344,6 +352,9 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     if(subname) {
         *subname++ = 0;
         char *end = std::strchr(subname,' ');
+        if(end) *end = 0;
+    }else {
+        char *end = std::strchr(objname,' ');
         if(end) *end = 0;
     }
     QString cmd;
@@ -360,7 +371,11 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
             .arg(QString::fromLatin1(objname))
             .arg(QString::fromLatin1(subname))
             .arg(x).arg(y).arg(z);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+    try {
+        Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void SelectionView::preselect(QListWidgetItem* item)
@@ -376,6 +391,9 @@ void SelectionView::preselect(QListWidgetItem* item)
         *subname++ = 0;
         char *end = std::strchr(subname,' ');
         if(end) *end = 0;
+    }else {
+        char *end = std::strchr(objname,' ');
+        if(end) *end = 0;
     }
     QString cmd = QString::fromLatin1("Gui.Selection.preselect("
         "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)")
@@ -383,19 +401,31 @@ void SelectionView::preselect(QListWidgetItem* item)
         .arg(QString::fromLatin1(objname))
         .arg(QString::fromLatin1(subname))
         .arg(x).arg(y).arg(z);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+    try {
+        Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void SelectionView::zoom(void)
 {
     select();
-    Gui::Command::runCommand(Gui::Command::Gui,"Gui.SendMsgToActiveView(\"ViewSelection\")");
+    try {
+        Gui::Command::runCommand(Gui::Command::Gui,"Gui.SendMsgToActiveView(\"ViewSelection\")");
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void SelectionView::treeSelect(void)
 {
     select();
-    Gui::Command::runCommand(Gui::Command::Gui,"Gui.runCommand(\"Std_TreeSelection\")");
+    try {
+        Gui::Command::runCommand(Gui::Command::Gui,"Gui.runCommand(\"Std_TreeSelection\")");
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void SelectionView::touch(void)
@@ -407,7 +437,11 @@ void SelectionView::touch(void)
     if (elements.size() < 2)
         return;
     QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").touch()").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Doc,cmd.toLatin1());
+    try {
+        Gui::Command::runCommand(Gui::Command::Doc,cmd.toLatin1());
+    }catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void SelectionView::toPython(void)
