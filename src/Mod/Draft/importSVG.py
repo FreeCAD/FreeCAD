@@ -233,9 +233,9 @@ def getcolor(color):
     elif color.lower().startswith('rgb('):
         cvalues=color[3:].lstrip('(').rstrip(')').replace('%','').split(',')
         if '%' in color:
-            r,g,b = [int(cv)/100.0 for cv in cvalues]
+            r,g,b = [int(float(cv))/100.0 for cv in cvalues]
         else:
-            r,g,b = [int(cv)/255.0 for cv in cvalues]
+            r,g,b = [int(float(cv))/255.0 for cv in cvalues]
         return (r,g,b,0.0)
     else:
         v=svgcolorslower.get(color.lower())
