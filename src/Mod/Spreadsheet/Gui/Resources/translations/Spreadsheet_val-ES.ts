@@ -265,7 +265,7 @@
     </message>
     <message>
       <source>Center</source>
-      <translation>Center</translation>
+      <translation>Centre</translation>
     </message>
     <message>
       <source>Right</source>
@@ -340,19 +340,19 @@
     </message>
     <message>
       <source>Set cell(s) foreground color</source>
-      <translation type="unfinished">Set cell(s) foreground color</translation>
+      <translation>Estableix el color de primer pla de la cel·la(es)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) foreground color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) foreground color</translation>
+      <translation>Estableix el color de primer pla de la cel·la(es) del full de càlcul</translation>
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation type="unfinished">Set cell(s) background color</translation>
+      <translation>Estableix el color de fons de la cel·la(es)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation type="unfinished">Sets the Spreadsheet cell(s) background color</translation>
+      <translation>Estableix el color de fons de la cel·la(es) del full de càlcul</translation>
     </message>
   </context>
   <context>

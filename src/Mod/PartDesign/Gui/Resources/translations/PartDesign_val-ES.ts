@@ -113,12 +113,12 @@
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation>Create a clone</translation>
+      <translation>Crea un clon</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Crea un clon nou</translation>
     </message>
   </context>
   <context>
@@ -266,7 +266,7 @@
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Migra un document al modern flux de treball PartDesign</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
@@ -691,7 +691,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Crea una primitiva subtractiva</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -1219,7 +1219,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>None</source>
-      <translation>None</translation>
+      <translation>Cap</translation>
     </message>
     <message>
       <source>Chamfer type:</source>
@@ -1283,12 +1283,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>La llista de cossos està buida</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>La llista de cossos no pot estar buida</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -1641,7 +1641,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Dimensió</translation>
     </message>
     <message>
       <source>Up to last</source>
@@ -1667,7 +1667,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+21"/>
       <source>None</source>
-      <translation>None</translation>
+      <translation>Cap</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -2000,7 +2000,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+18"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Separació</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2033,7 +2033,7 @@ Please check one or more edge entities first.</translation>
       <location filename="../../TaskPadParameters.cpp" line="-311"/>
       <location line="+288"/>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Dimensió</translation>
     </message>
     <message>
       <source>Length:</source>
@@ -2347,12 +2347,12 @@ Please check one or more edge entities first.</translation>
       <location filename="../../TaskPocketParameters.cpp" line="+119"/>
       <location line="+320"/>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Dimensió</translation>
     </message>
     <message>
       <location line="+30"/>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Separació</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2931,42 +2931,42 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Crea un cub subtractiu donades l'amplària, la llargària i l'altura</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Crea un cilindre subtractiu donats el radi, l'altura i l'angle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Crea una esfera subtractiva donats diversos angles i el radi</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Crea un con subtractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Crea un el·lipsoide subtractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Crea un tor subtractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Crea un prisma subtractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Crea una falca subtractiva</translation>
     </message>
   </context>
   <context>
@@ -3391,34 +3391,32 @@ Create the sketch on a face.</translation>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>La forma seleccionada consisteix en múltiples sòlids. Açò pot portar a resultats inesperats.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>La forma seleccionada consisteix en múltiples closques. Açò pot portar a resultats inesperats.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>La forma seleccionada consta de només una closca. 
+Açò pot portar a resultats inesperats.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>La forma seleccionada consisteix en múltiples sòlids o closques. 
+Això pot portar a resultats inesperats.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Propietat base</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -3603,13 +3601,13 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location line="-86"/>
       <location line="+82"/>
       <source>Line</source>
-      <translation>Line</translation>
+      <translation>Línia</translation>
     </message>
     <message>
       <location line="-78"/>
       <location line="+86"/>
       <source>Point</source>
-      <translation>Point</translation>
+      <translation>Punt</translation>
     </message>
     <message>
       <location line="-82"/>
@@ -3633,7 +3631,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Edita %1</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3711,7 +3709,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Edita la primitiva</translation>
     </message>
   </context>
   <context>
@@ -3787,7 +3785,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+16"/>
       <source>Tolerance</source>
-      <translation>Tolerance</translation>
+      <translation>Tolerància</translation>
     </message>
     <message>
       <location line="+31"/>
@@ -3946,7 +3944,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+56"/>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Dimensió</translation>
     </message>
     <message>
       <location line="+5"/>

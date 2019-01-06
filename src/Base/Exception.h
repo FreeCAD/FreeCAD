@@ -469,6 +469,23 @@ public:
 };
 
 /**
+ * The BadGraphError can be used to indicate that a graph is e.g. not a DAG.
+ * @author Werner Mayer
+ */
+class BaseExport BadGraphError : public RuntimeError
+{
+public:
+  /// Construction
+  BadGraphError();
+  BadGraphError(const char * sMessage);
+  BadGraphError(const std::string& sMessage);
+  /// Construction
+  BadGraphError(const BadGraphError &inst);
+  /// Destruction
+  virtual ~BadGraphError() throw() {}
+};
+
+/**
  * The NotImplementedError can be used to indicate that an invoked function is not implemented.
  * @author Werner Mayer
  */

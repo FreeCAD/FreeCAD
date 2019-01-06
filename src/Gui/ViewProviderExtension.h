@@ -63,6 +63,7 @@ public:
     virtual bool extensionCanDropObjects() const { return false; }
     virtual bool extensionCanDropObject(App::DocumentObject*) const { return true; }
     virtual void extensionDropObject(App::DocumentObject*) { }
+    virtual void extensionReplaceObject(App::DocumentObject* /*oldValue*/, App::DocumentObject* /*newValue*/) { }
 
     /// Hides the view provider
     virtual void extensionHide(void) { }

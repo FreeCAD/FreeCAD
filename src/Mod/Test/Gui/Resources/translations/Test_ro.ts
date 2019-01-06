@@ -108,5 +108,21 @@ Double click on an error in the tree view to see more information about it,inclu
 
 Faceti dublu-click pe o eroare in vizualizarea arborescenta pentru mai multe informatii despre ea, incluzand istoria de apeluri.</translation>
     </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Introcuețăi numele obiectului care, atunci când este apelat, va întoarce un TestCase.
+Click 'start', și testul acestuia va rula
+
+Double click pe o eroare în arborele vederilor pentru a vedea mai multe informații despre aceasta, inclusiv stack trace.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>FreeCAD UnitTest este parte a FreeCAD și suportul scris al Unit Tests pentru unul dintre modulele proprii.</translation>
+    </message>
   </context>
 </TS>

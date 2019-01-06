@@ -434,7 +434,7 @@
     <name>Sheet</name>
     <message>
       <source>Form</source>
-      <translation>De</translation>
+      <translation>Formulário</translation>
     </message>
     <message>
       <source>&amp;Contents</source>

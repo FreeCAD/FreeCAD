@@ -776,7 +776,9 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
         Instance->activateWorkbench(psKey);
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        std::stringstream err;
+        err << psKey << ": " << e.what();
+        PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
         return 0;
     }
     catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
@@ -792,7 +794,9 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
         return 0;
     }
     catch (...) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Unknown C++ exception raised in activateWorkbench");
+        std::stringstream err;
+        err << "Unknown C++ exception raised in activateWorkbench('" << psKey << "')";
+        PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
         return 0;
     }
 

@@ -11,17 +11,17 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
-      <translation>Priartinti</translation>
+      <translation>Mastelio keitimas</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>
       <source>Rotate</source>
-      <translation>Pasukti</translation>
+      <translation>Vartyti</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="65"/>
       <source>Pan</source>
-      <translation>Sukti</translation>
+      <translation>Tampyti</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="66"/>
@@ -61,27 +61,27 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Nuostatos</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
       <source>Orbit style</source>
-      <translation>Orbitos rūšis</translation>
+      <translation>Vaizdo sukimo įrankis</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation>Glaustas</translation>
+      <translation>Rodyti tik naršymo būdo paveikslėlį</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation>Patarimas apie įrankį</translation>
+      <translation>Patarimai, kaip naudoti įrankį</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>
       <source>Turntable</source>
-      <translation>Sukamasis stalelis</translation>
+      <translation>Peržiūra sukant</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="296"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>Nežinomas</translation>
     </message>
   </context>
 </TS>

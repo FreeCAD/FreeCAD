@@ -25,7 +25,7 @@
     </message>
     <message>
       <source>&amp;Help</source>
-      <translation>ヘルプ (&amp;H)</translation>
+      <translation>ヘルプ(&amp;H)</translation>
     </message>
     <message>
       <source>F1</source>
@@ -33,7 +33,7 @@
     </message>
     <message>
       <source>&amp;About</source>
-      <translation>&amp;About</translation>
+      <translation>このプログラムについて &amp;A</translation>
     </message>
     <message>
       <source>Alt+A</source>
@@ -109,6 +109,21 @@ Double click on an error in the tree view to see more information about it,inclu
       <translation>呼び出し時にTestCase.Click 'start'を返す呼び出し可能なオブジェクトの名前を入力してください。入力するとそれに従って作成されたテストが実行されます。
 
 ツリービューのエラーをダブルクリックするとスタックトレースを含むより詳細な情報が確認できます。</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>呼び出し時にテストケースを返す呼び出し可能オブジェクトの名前を入力します。'開始'をクリックすると、作成されたテストが実行されます。
+
+ツリービューでエラーをダブルクリックすると、スタックトレースなどの詳細情報が表示されます。</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>FreeCAD 単体テストは FreeCAD の一部であり、独自のモジュールに対して単体テストの作成をサポートしています。</translation>
     </message>
   </context>
 </TS>

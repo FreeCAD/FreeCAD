@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>以其他輪廓外型放樣選定的外型</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -113,12 +113,12 @@
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>建立一個副本</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>建立一個副本</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
     <message>
       <location line="+1"/>
       <source>Draft</source>
-      <translation>吃水</translation>
+      <translation>拔模角</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -203,12 +203,12 @@
     <message>
       <location line="+1"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>孔</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>以選定的草圖產生凹陷</translation>
     </message>
   </context>
   <context>
@@ -266,7 +266,7 @@
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>移動文件至PartDesign工作區</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
@@ -288,7 +288,7 @@
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>建立一個鏡像特徵</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
@@ -419,7 +419,7 @@
     </message>
     <message>
       <source>Create part</source>
-      <translation>新增部位</translation>
+      <translation>新增零件</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
@@ -579,7 +579,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>以其他輪廓外型放樣選定的外型，並將其從實體刪除。</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
@@ -619,7 +619,7 @@
     <message>
       <location line="+1"/>
       <source>Make a thick solid</source>
-      <translation type="unfinished">Make a thick solid</translation>
+      <translation>建立薄殼</translation>
     </message>
   </context>
   <context>
@@ -633,12 +633,12 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>建立可添加的基本路徑</translation>
+      <translation>建立一個添加的基本物件</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation>添加方體</translation>
+      <translation>添加立方體</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -691,7 +691,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>建立一個刪減基本物件</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -754,7 +754,7 @@
     <message>
       <location line="+10"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>製作從屬副本</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -1142,17 +1142,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add body</source>
-      <translation type="unfinished">Add body</translation>
+      <translation>求和</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove body</source>
-      <translation type="unfinished">Remove body</translation>
+      <translation>求差</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>聯集</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -1162,7 +1162,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+5"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>交集</translation>
     </message>
     <message>
       <source>Section</source>
@@ -1184,7 +1184,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
       <source>Primitive parameters</source>
-      <translation type="unfinished">Primitive parameters</translation>
+      <translation>元件參數</translation>
     </message>
     <message>
       <location line="+593"/>
@@ -1497,7 +1497,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+13"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>製作從屬副本</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -2707,7 +2707,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Thikness</source>
-      <translation type="unfinished">Thikness</translation>
+      <translation>厚度</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2722,37 +2722,37 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+7"/>
       <source>Join Type</source>
-      <translation type="unfinished">Join Type</translation>
+      <translation>接合方式</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Skin</source>
-      <translation>外觀</translation>
+      <translation>單面</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Pipe</source>
-      <translation>管</translation>
+      <translation>貫穿</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Recto Verso</source>
-      <translation type="unfinished">Recto Verso</translation>
+      <translation>方向</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Arc</source>
-      <translation>弧</translation>
+      <translation>圓弧</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Intersection</source>
-      <translation>交集</translation>
+      <translation>直角</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Make thickness inwards</source>
-      <translation type="unfinished">Make thickness inwards</translation>
+      <translation>壁厚朝內</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
@@ -2840,26 +2840,26 @@ Please check one or more edge entities first.</translation>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <source>Create an additive box by its with, height and length</source>
-      <translation type="unfinished">Create an additive box by its with, height and length</translation>
+      <translation>依長、寬、高建立立方體</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-180"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height and angle</translation>
+      <translation>依半徑、高、角度建立圓柱體</translation>
     </message>
     <message>
       <source>Create an additive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and varius angles</translation>
+      <translation>依半徑及角度建立球體</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>依長、寬、高建立立方體</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>依半徑、高、角度建立圓柱體</translation>
     </message>
     <message>
       <location line="+4"/>

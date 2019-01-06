@@ -37,7 +37,7 @@ def translate(context,text):
     if sys.version_info.major < 3:
         u = u.encode("utf8")
 
-    return u.replace(chr(39), "\\'")
+    return u.replace(chr(39), "&rsquo;")
 
 T_TITLE = translate("StartPage", "Start")
 T_DOCUMENTS = translate("StartPage", "Documents")

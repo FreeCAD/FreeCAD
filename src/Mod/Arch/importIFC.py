@@ -38,48 +38,51 @@ from DraftGeomUtils import vec
 
 DEBUG = False # Set to True to see debug messages. Otherwise, totally silent
 ADDDEFAULTSTOREY = False # If True, an exported file will ALWAYS have at least one storey
+ZOOMOUT = True # Set to False to not zoom extents after import
 
 if open.__module__ in ['__builtin__','io']:
     pyopen = open # because we'll redefine open below
 
 # which IFC type must create which FreeCAD type
-typesmap = { "Site":         ["IfcSite"],
-             "Building":     ["IfcBuilding"],
-             "Floor":        ["IfcBuildingStorey"],
-             "Structure":    ["IfcBeam", "IfcBeamStandardCase", "IfcColumn", "IfcColumnStandardCase", "IfcSlab", "IfcFooting", "IfcPile", "IfcTendon"],
-             "Wall":         ["IfcWall", "IfcWallStandardCase", "IfcCurtainWall"],
-             "Window":       ["IfcWindow", "IfcWindowStandardCase", "IfcDoor", "IfcDoorStandardCase"],
-             "Roof":         ["IfcRoof"],
-             "Stairs":       ["IfcStair", "IfcStairFlight", "IfcRamp", "IfcRampFlight"],
-             "Space":        ["IfcSpace"],
-             "Rebar":        ["IfcReinforcingBar"],
-             "Panel":        ["IfcPlate"],
-             "Equipment":    ["IfcFurnishingElement","IfcSanitaryTerminal","IfcFlowTerminal","IfcElectricAppliance"],
-             "Pipe":         ["IfcPipeSegment"],
-             "PipeConnector":["IfcPipeFitting"],
-             "BuildingPart": ["IfcElementAssembly"]
-           }
+typesmap = {
+    "Site":         ["IfcSite"],
+    "Building":     ["IfcBuilding"],
+    "Floor":        ["IfcBuildingStorey"],
+    "Structure":    ["IfcBeam", "IfcBeamStandardCase", "IfcColumn", "IfcColumnStandardCase", "IfcSlab", "IfcFooting", "IfcPile", "IfcTendon"],
+    "Wall":         ["IfcWall", "IfcWallStandardCase", "IfcCurtainWall"],
+    "Window":       ["IfcWindow", "IfcWindowStandardCase", "IfcDoor", "IfcDoorStandardCase"],
+    "Roof":         ["IfcRoof"],
+    "Stairs":       ["IfcStair", "IfcStairFlight", "IfcRamp", "IfcRampFlight"],
+    "Space":        ["IfcSpace"],
+    "Rebar":        ["IfcReinforcingBar"],
+    "Panel":        ["IfcPlate"],
+    "Equipment":    ["IfcFurnishingElement","IfcSanitaryTerminal","IfcFlowTerminal","IfcElectricAppliance"],
+    "Pipe":         ["IfcPipeSegment"],
+    "PipeConnector":["IfcPipeFitting"],
+    "BuildingPart": ["IfcElementAssembly"]
+}
 
 # which IFC entity (product) is a structural object
 structuralifcobjects = (
-                       "IfcStructuralCurveMember", "IfcStructuralSurfaceMember",
-                       "IfcStructuralPointConnection", "IfcStructuralCurveConnection", "IfcStructuralSurfaceConnection",
-                       "IfcStructuralAction", "IfcStructuralPointAction",
-                       "IfcStructuralLinearAction", "IfcStructuralLinearActionVarying", "IfcStructuralPlanarAction"
-                       )
+    "IfcStructuralCurveMember", "IfcStructuralSurfaceMember",
+    "IfcStructuralPointConnection", "IfcStructuralCurveConnection", "IfcStructuralSurfaceConnection",
+    "IfcStructuralAction", "IfcStructuralPointAction",
+    "IfcStructuralLinearAction", "IfcStructuralLinearActionVarying", "IfcStructuralPlanarAction"
+)
 
 # specific FreeCAD <-> IFC slang translations
-translationtable = { "Foundation":"Footing",
-                     "Floor":"BuildingStorey",
-                     "Rebar":"ReinforcingBar",
-                     "HydroEquipment":"SanitaryTerminal",
-                     "ElectricEquipment":"ElectricAppliance",
-                     "Furniture":"FurnishingElement",
-                     "Stair Flight":"StairFlight",
-                     "Curtain Wall":"CurtainWall",
-                     "Pipe Segment":"PipeSegment",
-                     "Pipe Fitting":"PipeFitting"
-                   }
+translationtable = {
+    "Foundation":"Footing",
+    "Floor":"BuildingStorey",
+    "Rebar":"ReinforcingBar",
+    "HydroEquipment":"SanitaryTerminal",
+    "ElectricEquipment":"ElectricAppliance",
+    "Furniture":"FurnishingElement",
+    "Stair Flight":"StairFlight",
+    "Curtain Wall":"CurtainWall",
+    "Pipe Segment":"PipeSegment",
+    "Pipe Fitting":"PipeFitting"
+}
 
 # the base IFC template for export
 ifctemplate = """ISO-10303-21;
@@ -151,6 +154,7 @@ def dd2dms(dd):
     if dd < 0:
         degrees = -degrees
     return (int(degrees),int(minutes),int(seconds))
+
 
 def dms2dd(degrees, minutes, seconds, milliseconds=0):
 
@@ -625,7 +629,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             pass # IfcOpenShell will yield an error if a given product has no shape, but we don't care, we're brave enough
 
         if brep:
-            if DEBUG: print(" "+str(len(brep)/1000)+"k ",end="")
+            if DEBUG: print(" "+str(int(len(brep)/1000))+"k ",end="")
 
             shape = Part.Shape()
             shape.importBrepFromString(brep,False)
@@ -804,7 +808,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                             pass
                     if ptype == "IfcBuildingStorey":
                         if product.Elevation:
-                            obj.Placement.Base.z = product.Elevation * 1000
+                            obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
 
                     # setting IFC role
 
@@ -814,7 +818,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         else:
                             # pre-0.18 objects, only support a small subset of types
                             r = ptype[3:]
-                            tr = dict((v,k) for k, v in translationtable.iteritems())
+                            tr = dict((v,k) for k, v in translationtable.items())
                             if r in tr.keys():
                                 r = tr[r]
                             # remove the "StandardCase"
@@ -853,7 +857,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if ptype == "IfcBuildingStorey":
                             if product.Elevation:
-                                obj.Placement.Base.z = product.Elevation * 1000
+                                obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
 
@@ -867,7 +871,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if ptype == "IfcBuildingStorey":
                             if product.Elevation:
-                                obj.Placement.Base.z = product.Elevation * 1000
+                                obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape
@@ -954,7 +958,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     if e.NominalValue.Unit:
                                         pvalue += e.NominalValue.Unit
                                 d[pname] = psetname+";;"+ptype+";;"+pvalue
-                                #print ("adding property: ",pname,ptype,pvalue," pset ",psetname)
+                                #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
                     obj.IfcProperties = d
 
                 elif hasattr(obj,"IfcAttributes"):
@@ -990,7 +994,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             if product.is_a("IfcSite"):
                 if product.RefElevation:
-                    obj.Elevation = product.RefElevation*1000
+                    obj.Elevation = product.RefElevation * getScaling(ifcfile)
                 if product.RefLatitude:
                     obj.Latitude = dms2dd(*product.RefLatitude)
                 if product.RefLongitude:
@@ -1154,7 +1158,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 cobs = []
                 for child in children:
                     if child in objects.keys():
-                        if not child in swallowed: # don't add objects already in groups
+                        if child not in swallowed: # don't add objects already in groups
                             cobs.append(objects[child])
                 if cobs:
                     if DEBUG and first:
@@ -1189,7 +1193,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     count = 0
 
     scaling = getScaling(ifcfile)
-    #print "scaling factor =",scaling
+    #print("scaling factor =",scaling)
     for annotation in annotations:
 
         anno = None
@@ -1248,7 +1252,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             for rep in annotation.Representation.Representations:
                 if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
                     sh = setRepresentation(rep,scaling)
-                    if sh in FreeCAD.ActiveDocument.Objects: 
+                    if sh in FreeCAD.ActiveDocument.Objects:
                         # dirty hack: setRepresentation might return an object directly if non-shape based (texts for ex)
                         anno = sh
                     else:
@@ -1279,8 +1283,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # Materials
 
     if DEBUG and materials: print("Creating materials...",end="")
-    #print "mattable:",mattable
-    #print "materials:",materials
+    #print("mattable:",mattable)
+    #print("materials:",materials)
     fcmats = {}
     for material in materials:
         name = "Material"
@@ -1319,12 +1323,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
     FreeCAD.ActiveDocument.recompute()
 
-    if FreeCAD.GuiUp:
+    if ZOOMOUT and FreeCAD.GuiUp:
         import FreeCADGui
         FreeCADGui.SendMsgToActiveView("ViewFit")
     print("Finished importing.")
     return doc
-
 
 
 class recycler:
@@ -1481,7 +1484,6 @@ class recycler:
 
 
 def export(exportList,filename):
-
 
     "exports FreeCAD contents to an IFC file"
 
@@ -1778,7 +1780,6 @@ def export(exportList,filename):
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Addition','',product,[prod2])
 
-
         # subtractions
 
         guests = []
@@ -1786,7 +1787,7 @@ def export(exportList,filename):
             if hasattr(o,"Hosts"):
                 for co in o.Hosts:
                     if co == obj:
-                        if not o in guests:
+                        if o not in guests:
                             guests.append(o)
         if hasattr(obj,"Subtractions") and (shapetype in ["extrusion","no shape"]):
             for o in obj.Subtractions + guests:
@@ -2062,7 +2063,7 @@ def export(exportList,filename):
     # buildingParts can be exported as any "normal" IFC type. In that case, gather their elements first
 
     for bp in Draft.getObjectsOfType(objectslist,"BuildingPart"):
-        if not bp.IfcRole in ["Site","Building","Building Storey","Space","Undefined"]:
+        if bp.IfcRole not in ["Site","Building","Building Storey","Space","Undefined"]:
             if bp.Name in products:
                 subs = []
                 for c in bp.Group:
@@ -2289,7 +2290,7 @@ def export(exportList,filename):
         for g in sortedgroups:
             if g[0] in groups.keys():
                 del groups[g[0]]
-    #print "sorted groups:",sortedgroups
+    #print("sorted groups:",sortedgroups)
     containers = {}
     for g in sortedgroups:
         if g[1]:
@@ -2324,16 +2325,12 @@ def export(exportList,filename):
     # add remaining 2D objects to default host
 
     if annos:
-        remaining = [anno for anno in annos.values() if not anno in swallowed]
+        remaining = [anno for anno in annos.values() if anno not in swallowed]
         if remaining:
             if not defaulthost:
                 defaulthost = ifcfile.createIfcBuildingStorey(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"Default Storey",'',None,None,None,None,"ELEMENT",None)
                 ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'DefaultStoreyLink','',buildings[0],[defaulthost])
             ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'AnnotationsLink','',remaining,defaulthost)
-
-
-
-
 
     if DEBUG: print("writing ",filename,"...")
 
@@ -2357,7 +2354,6 @@ def export(exportList,filename):
 
 def buildAddress(obj,ifcfile):
 
-
     a = obj.Address or None
     p = obj.PostalCode or None
     t = obj.City or None
@@ -2379,6 +2375,7 @@ def buildAddress(obj,ifcfile):
     else:
         addr = None
     return addr
+
 
 def createFromProperties(propsets,ifcfile):
 
@@ -2467,7 +2464,7 @@ def createCurve(ifcfile,wire):
     pol = None
     last = None
     if wire.ShapeType == "edge":
-        edges = [edge]
+        edges = [wire]
     else:
         edges = Part.__sortEdges__(wire.Edges)
     for e in edges:
@@ -2513,6 +2510,7 @@ def createCurve(ifcfile,wire):
         pol = ifcfile.createIfcCompositeCurve(segments,False)
     return pol
 
+
 def getEdgesAngle(edge1, edge2):
     """ getEdgesAngle(edge1, edge2): returns a angle between two edges."""
     vec1 = vec(edge1)
@@ -2521,10 +2519,13 @@ def getEdgesAngle(edge1, edge2):
     angle = math.degrees(angle)
     return angle
 
+
 def checkRectangle(edges):
-    """ checkRectangle(edges=[]): This function checks whether the given form rectangle
-       or not. It will return True when edges form rectangular shape or return False
-       when edges not form a rectangular."""
+    """ checkRectangle(edges=[]): This function checks whether the given form is a rectangle
+       or not. It will return True when edges form a rectangular shape or return False
+       when edges do not form a rectangular shape."""
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("DisableIfcRectangleProfileDef",False):
+        return False
     if len(edges) != 4:
         return False
     angles = [round(getEdgesAngle(edges[0], edges[1])), round(getEdgesAngle(edges[0], edges[2])),
@@ -2532,6 +2533,7 @@ def checkRectangle(edges):
     if angles.count(90) == 2 and (angles.count(180) == 1 or angles.count(0) == 1):
         return True
     return False
+
 
 def getProfile(ifcfile,p):
 
@@ -2640,6 +2642,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             if hasattr(obj.Proxy,"getExtrusionData"):
                 extdata = obj.Proxy.getExtrusionData(obj)
                 if extdata:
+                    #print(extdata)
                     # convert to meters
                     p = extdata[0]
                     if not isinstance(p,list):
@@ -2654,14 +2657,14 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         pi = p[i]
                         pi.scale(0.001)
                         if i < len(ev):
-                            evi = ev[i]
+                            evi = FreeCAD.Vector(ev[i])
                         else:
-                            evi = ev[-1]
+                            evi = FreeCAD.Vector(ev[-1])
                         evi.multiply(0.001)
                         if i < len(pl):
-                            pli = pl[i]
+                            pli = pl[i].copy()
                         else:
-                            pli = pl[-1]
+                            pli = pl[-1].copy()
                         pli.Base = pli.Base.multiply(0.001)
                         pstr = str([v.Point for v in p[i].Vertexes])
                         if pstr in profiledefs:
@@ -2673,7 +2676,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 profiledefs[pstr] = profile
                         if profile and not(DraftVecUtils.isNull(evi)):
                             #ev = pl.Rotation.inverted().multVec(evi)
-                            #print "evi:",evi
+                            #print("evi:",evi)
                             if not tostore:
                                 # add the object placement to the profile placement. Otherwise it'll be done later at map insert
                                 pl2 = FreeCAD.Placement(obj.Placement)
@@ -2688,19 +2691,19 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             shapes.append(shape)
                             solidType = "SweptSolid"
                             shapetype = "extrusion"
-                elif hasattr(obj.Proxy,"getRebarData"):
-                    # export rebars as IfcSweptDiskSolid
-                    rdata = obj.Proxy.getRebarData(obj)
-                    if rdata:
-                        # convert to meters
-                        r = rdata[1] * 0.001
-                        for w in rdata[0]:
-                            w.scale(0.001)
-                            cur =       createCurve(ifcfile,w)
-                            shape =     ifcfile.createIfcSweptDiskSolid(cur,r)
-                            shapes.append(shape)
-                            solidType = "SweptSolid"
-                            shapetype = "extrusion"
+            elif hasattr(obj.Proxy,"getRebarData"):
+                # export rebars as IfcSweptDiskSolid
+                rdata = obj.Proxy.getRebarData(obj)
+                if rdata:
+                    # convert to meters
+                    r = rdata[1] * 0.001
+                    for w in rdata[0]:
+                        w.scale(0.001)
+                        cur =       createCurve(ifcfile,w)
+                        shape =     ifcfile.createIfcSweptDiskSolid(cur,r)
+                        shapes.append(shape)
+                        solidType = "SweptSolid"
+                        shapetype = "extrusion"
 
     if not shapes:
 
@@ -2771,7 +2774,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             dataset = fcshape.Solids
                         else:
                             dataset = fcshape.Shells
-                            #if DEBUG: print "Warning! object contains no solids"
+                            #if DEBUG: print("Warning! object contains no solids")
 
                         # if this is a clone, place back the shapes in null position
                         if tostore:
@@ -2849,7 +2852,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                             bound = ifcfile.createIfcFaceBound(loop,True)
                                             loops.append(bound)
                                         else:
-                                            print ("Warning: wire with one/no vertex in ",obj.Label)
+                                            print("Warning: wire with one/no vertex in ", obj.Label)
                                 face =  ifcfile.createIfcFace(loops)
                                 faces.append(face)
 
@@ -2882,31 +2885,30 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
         # set surface style
         if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
-            # only set a surface style if the object has no material.
-            # apparently not needed, no harm in having both.
-            # but they must have the same name for revit to see them
-            #m = False
-            #if hasattr(obj,"Material"):
-            #    if obj.Material:
-            #        if "Color" in obj.Material.Material:
-            #            m = True
-            #if not m:
+            # every object gets a surface style. If the obj has a material, the surfstyle
+            # is named after it. Revit will treat surfacestyles as materials (and discard
+            # actual ifcmaterial)
+            key = None
             rgb = obj.ViewObject.ShapeColor[:3]
-            if rgb in surfstyles:
-                psa = surfstyles[rgb]
+            if hasattr(obj,"Material"):
+                if obj.Material:
+                    key = obj.Material.Name
+            if not key:
+                key = rgb
+            if key in surfstyles:
+                psa = surfstyles[key]
             else:
                 m = None
                 if hasattr(obj,"Material"):
                     if obj.Material:
-                        if obj.Material.isDerivedFrom("App::MaterialObject"):
-                            m = obj.Material.Label
-                            if sys.version_info.major < 3:
-                                m = m.encode("utf8")
+                        m = obj.Material.Label
+                        if sys.version_info.major < 3:
+                            m = m.encode("utf8")
                 col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
                 ssr = ifcbin.createIfcSurfaceStyleRendering(col)
                 iss = ifcfile.createIfcSurfaceStyle(m,"BOTH",[ssr])
                 psa = ifcfile.createIfcPresentationStyleAssignment([iss])
-                surfstyles[rgb] = psa
+                surfstyles[key] = psa
             for shape in shapes:
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
 

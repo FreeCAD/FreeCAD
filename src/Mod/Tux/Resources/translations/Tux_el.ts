@@ -6,57 +6,57 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="62"/>
       <source>Select</source>
-      <translation>Επιλογή</translation>
+      <translation>Επιλέξτε</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="63"/>
       <source>Zoom</source>
-      <translation type="unfinished">Zoom</translation>
+      <translation>Εστίαση</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="64"/>
       <source>Rotate</source>
-      <translation>Περιστροφή</translation>
+      <translation>Περιστρέψτε</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="65"/>
       <source>Pan</source>
-      <translation type="unfinished">Pan</translation>
+      <translation>Μεταφορική Κίνηση Κάμερας</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="66"/>
       <source>Tilt</source>
-      <translation type="unfinished">Tilt</translation>
+      <translation>Ρύθμιση Κλίσης Κάμερας</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Navigation style</source>
-      <translation type="unfinished">Navigation style</translation>
+      <translation>Τύπος Πλοήγησης</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Page Up or Page Down key.</source>
-      <translation type="unfinished">Page Up or Page Down key.</translation>
+      <translation>Το πλήκτρο Μετακίνησης της Σελίδας προς τα Πάνω ή προς τα Κάτω.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotation focus</source>
-      <translation type="unfinished">Rotation focus</translation>
+      <translation>Άξονας περιστροφής</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or key H.</source>
-      <translation type="unfinished">Middle mouse button or key H.</translation>
+      <translation>Μεσαίο πλήκτρο του ποντικιού ή πλήκτρο H.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
-      <translation type="unfinished">Middle mouse button.</translation>
+      <translation>Μεσαίο πλήκτρο του ποντικιού.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Navigation style not recognized.</source>
-      <translation type="unfinished">Navigation style not recognized.</translation>
+      <translation>Ο τύπος πλοήγησης δεν αναγνωρίζεται.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="291"/>
@@ -66,27 +66,27 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="292"/>
       <source>Orbit style</source>
-      <translation>Στύλ Τροχιάς</translation>
+      <translation>Τύπος μορφοποίησης τροχιάς</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation type="unfinished">Compact</translation>
+      <translation>Συμπαγής</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>Επεξήγηση εργαλείου</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="295"/>
       <source>Turntable</source>
-      <translation>Στρεψόδισκος</translation>
+      <translation>Περιστρεφόμενη βάση</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="296"/>
       <source>Trackball</source>
-      <translation>Οδηγόσφαιρα</translation>
+      <translation>Ιχνόσφαιρα</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="297"/>

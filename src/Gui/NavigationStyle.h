@@ -412,6 +412,7 @@ protected:
 
     bool thisClickIsComplex;//a flag that becomes set when a complex clicking pattern is detected (i.e., two or more mouse buttons were down at the same time).
     bool inGesture; //a flag that is used to filter out mouse events during gestures.
+    bool enableGestureTilt = false; //fetched from settings
 };
 
 class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {

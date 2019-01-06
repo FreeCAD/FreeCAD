@@ -408,7 +408,7 @@
     <message>
       <location line="+1"/>
       <source>Pad a selected sketch</source>
-      <translation>Deska s předvybraným náčrtem</translation>
+      <translation>Přidat vysunutím vybranou skicou</translation>
     </message>
   </context>
   <context>
@@ -516,7 +516,7 @@
     <message>
       <location line="+1"/>
       <source>Revolution</source>
-      <translation>Rotace</translation>
+      <translation>Přidat rotací</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -619,7 +619,7 @@
     <message>
       <location line="+1"/>
       <source>Make a thick solid</source>
-      <translation>Vytvořit tlusté těleso</translation>
+      <translation>Vytvořit skořepinu</translation>
     </message>
   </context>
   <context>
@@ -2592,7 +2592,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="-129"/>
       <source>Revolution parameters</source>
-      <translation>Parametry rotace</translation>
+      <translation>Parametry přidání rotací</translation>
     </message>
     <message>
       <source>Undefined</source>
@@ -3691,17 +3691,17 @@ Tento prvek je rozbitý a nelze upravovat.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Poznámka: Vyberete-li migraci, tak nemude možné upravit soubor ve starých verzích FreeCADu.
-Pokud migraci odmítnete, tak nebude možné použít nové PartDesign prvky jako jsou těla a díly. Tím nebude možné použít díly ani v pracovním prostředí sestavy.
-Přesto můžete provést migraci kdykoliv později pomocí 'Part Design -&gt; Migrace...'.</translation>
+      <translation>Poznámka: Vyberete-li migraci, nebude možné upravit soubor ve starých verzích FreeCADu.
+Pokud migraci odmítnete, tak nebude možné použít nové prvky Tvorby dílu jako jsou těla a díly. Tím nebude možné použít díly ani v pracovním prostředí sestavy.
+Přesto můžete provést migraci kdykoliv později pomocí 'Návrh dílu -&gt; Migrace...'.</translation>
     </message>
     <message>
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Poznámka: Vyberete-li migraci, tak nemude možné upravit soubor ve starých verzích FreeCADu.
-Pokud migraci odmítnete, tak nebude možné použít nové PartDesign prvky jako jsou těla a díly. Tím nebude možné použít díly ani v pracovním prostředí sestavy.
-Přesto můžete provést migraci kdykoliv později pomocí 'Part Design -&gt; Migrace...'.</translation>
+      <translation>Uvědomte si, že pokud vyberete migraci, nebude možné upravit soubor ve starých verzích FreeCADu.
+Pokud migraci odmítnete, tak nebude možné použít nové prvky Tvorby dílu jako jsou těla a díly. Tím nebude možné použít díly ani v pracovním prostředí sestavy.
+Přesto můžete provést migraci kdykoliv později pomocí 'Návrh dílu -&gt; Migrace...'.</translation>
     </message>
     <message>
       <location line="+9"/>

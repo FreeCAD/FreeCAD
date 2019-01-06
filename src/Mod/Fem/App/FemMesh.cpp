@@ -42,6 +42,7 @@
 #include <Base/FileInfo.h>
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 
 #include <Mod/Mesh/App/Core/MeshKernel.h>
@@ -80,6 +81,7 @@
 # include <TopoDS_Shape.hxx>
 
 # include <ShapeAnalysis_ShapeTolerance.hxx>
+# include <FemMeshPy.h>
 
 //to simplify parsing input files we use the boost lib
 #include <boost/tokenizer.hpp>
@@ -1167,6 +1169,77 @@ void FemMesh::readNastran(const std::string &Filename)
 
 }
 
+void FemMesh::readAbaqus(const std::string &FileName)
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readAbaqus() =================================\n");
+
+    /*
+    Python command to read Abaqus inp mesh file from test suite:
+    from feminout.importInpMesh import read as read_inp
+    femmesh = read_inp(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/mesh/tetra10_mesh.inp')
+    */
+
+    PyObject* module = PyImport_ImportModule("feminout.importInpMesh");
+    if (!module)
+        return;
+    try {
+        Py::Module abaqusmod(module, true);
+        Py::Callable method(abaqusmod.getAttr("read"));
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(FileName));
+        Py::Object mesh(method.apply(args));
+        if (PyObject_TypeCheck(mesh.ptr(), &FemMeshPy::Type)) {
+            FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
+            FemMesh* fem = fempy->getFemMeshPtr();
+            *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
+                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+        }
+        else {
+            throw Base::FileException("Problems reading file");
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+}
+
+void FemMesh::readZ88(const std::string &FileName)
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::readZ88() =================================\n");
+
+    /*
+    Python command to read Z88 mesh file from test suite:
+    from feminout.importZ88Mesh import read as read_z88
+    femmesh = read_z88(FreeCAD.ConfigGet("AppHomePath") + 'Mod/Fem/femtest/testfiles/mesh/tetra10_mesh.z88')
+    */
+
+    PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
+    if (!module)
+        return;
+    try {
+        Py::Module z88mod(module, true);
+        Py::Callable method(z88mod.getAttr("read"));
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(FileName));
+        Py::Object mesh(method.apply(args));
+        if (PyObject_TypeCheck(mesh.ptr(), &FemMeshPy::Type)) {
+            FemMeshPy* fempy = static_cast<FemMeshPy*>(mesh.ptr());
+            FemMesh* fem = fempy->getFemMeshPtr();
+            *this = *fem; // the deep copy should be avoided, a pointer swap method could be implemented
+                          // see https://forum.freecadweb.org/viewtopic.php?f=10&t=31999&start=10#p274241
+        }
+        else {
+            throw Base::FileException("Problems reading file");
+        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
+}
 
 void FemMesh::read(const char *FileName)
 {
@@ -1184,6 +1257,10 @@ void FemMesh::read(const char *FileName)
     else if (File.hasExtension("med") ) {
         myMesh->MEDToMesh(File.filePath().c_str(),File.fileNamePure().c_str());
     }
+    else if (File.hasExtension("inp") ) {
+        // read Abaqus inp mesh file
+        readAbaqus(File.filePath());
+    }
     else if (File.hasExtension("stl") ) {
         // read brep-file
         myMesh->STLToMesh(File.filePath().c_str());
@@ -1191,7 +1268,7 @@ void FemMesh::read(const char *FileName)
 #if SMESH_VERSION_MAJOR < 7
     else if (File.hasExtension("dat") ) {
         // read brep-file
-    // vejmarie disable
+        // vejmarie disable
         myMesh->DATToMesh(File.filePath().c_str());
     }
 #endif
@@ -1205,6 +1282,10 @@ void FemMesh::read(const char *FileName)
         FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
     }
 #endif
+    else if (File.hasExtension("z88") ) {
+        // read Z88 mesh file
+        readZ88(File.filePath());
+    }
     else{
         throw Base::FileException("Unknown extension");
     }
@@ -1600,6 +1681,36 @@ void FemMesh::writeABAQUS(const std::string &Filename, int elemParam, bool group
     }
 }
 
+
+void FemMesh::writeZ88(const std::string &FileName) const
+{
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: FemMesh::writeZ88() =================================\n");
+
+    /*
+    Python command to export FemMesh from StartWB FEM 3D example:
+    import feminout.importZ88Mesh
+    feminout.importZ88Mesh.write(App.ActiveDocument.Box_Mesh.FemMesh, '/tmp/mesh.z88')
+    */
+
+    PyObject* module = PyImport_ImportModule("feminout.importZ88Mesh");
+    if (!module)
+        return;
+    try {
+        Py::Module z88mod(module, true);
+        Py::Object mesh = Py::asObject(new FemMeshPy(const_cast<FemMesh*>(this)));
+        Py::Callable method(z88mod.getAttr("write"));
+        Py::Tuple args(2);
+        args.setItem(0, mesh);
+        args.setItem(1, Py::String(FileName));
+        method.apply(args);
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
+}
+
+
 void FemMesh::write(const char *FileName) const
 {
     Base::FileInfo File(FileName);
@@ -1639,6 +1750,11 @@ void FemMesh::write(const char *FileName) const
         FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
     }
 #endif
+    else if (File.hasExtension("z88") ) {
+        Base::Console().Log("FEM mesh object will be exported to z88 format.\n");
+        // write z88 file
+        writeZ88(File.filePath());
+    }
     else{
         throw Base::FileException("An unknown file extension was added!");
     }

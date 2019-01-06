@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+496"/>
+      <location filename="../../Command.cpp" line="+519"/>
       <source>File</source>
       <translation>Fitxer</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location line="+207"/>
+      <location line="+231"/>
       <source>Raytracing</source>
       <translation>Traçat de raigs</translation>
     </message>
@@ -41,7 +41,7 @@
       <translation>Inseriu un nou projecte de LuxRender en el document</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>Cap plantilla</translation>
     </message>
@@ -54,7 +54,7 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location line="-341"/>
+      <location line="-372"/>
       <source>Raytracing</source>
       <translation>Traçat de raigs</translation>
     </message>
@@ -76,7 +76,7 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location line="-100"/>
+      <location line="-119"/>
       <source>Raytracing</source>
       <translation>Traçat de raigs</translation>
     </message>
@@ -99,7 +99,7 @@
       <translation>Inseriu un nou projecte de POV-Ray en el document</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>Cap plantilla</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location line="+196"/>
+      <location line="+212"/>
       <source>Raytracing</source>
       <translation>Traçat de raigs</translation>
     </message>
@@ -130,7 +130,7 @@
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location line="+243"/>
+      <location line="+278"/>
       <source>Raytracing</source>
       <translation>Traçat de raigs</translation>
     </message>
@@ -148,7 +148,7 @@
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <location line="-723"/>
+      <location line="-785"/>
       <source>Raytracing</source>
       <translation>Traçat de raigs</translation>
     </message>
@@ -206,21 +206,21 @@
     <message>
       <location line="-79"/>
       <location line="+139"/>
-      <location line="+93"/>
-      <location line="+391"/>
+      <location line="+97"/>
+      <location line="+434"/>
       <source>No perspective camera</source>
       <translation>No hi ha cap càmera de perspectiva.</translation>
     </message>
     <message>
-      <location line="-622"/>
+      <location line="-669"/>
       <location line="+139"/>
-      <location line="+93"/>
+      <location line="+97"/>
       <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>La càmera de la vista actual no és perspectiva i per tant el resultat de la imatge de POV-Ray podria ser diferent del previst. Voleu continuar?</translation>
     </message>
     <message>
-      <location line="-109"/>
+      <location line="-113"/>
       <source>Export view to POV-Ray...</source>
       <translation>Exporta la vista a POV-Ray...</translation>
     </message>
@@ -230,13 +230,25 @@ Do you want to continue?</source>
       <translation>Escriviu la vista 3D activa amb la càmera i tot el seu contingut en un fitxer POV-Ray</translation>
     </message>
     <message>
+      <location line="+126"/>
+      <location line="+434"/>
+      <source>No template</source>
+      <translation>Cap plantilla</translation>
+    </message>
+    <message>
+      <location line="-433"/>
+      <location line="+434"/>
+      <source>Cannot create a project because there is no template installed.</source>
+      <translation>No es pot crear un projecte perquè no hi ha cap plantilla instal·lada.</translation>
+    </message>
+    <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation type="unfinished">The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</translation>
     </message>
     <message>
-      <location line="-2"/>
+      <location line="-563"/>
       <source>Raytracing</source>
       <translation>Traçat de raigs</translation>
     </message>
@@ -249,7 +261,7 @@ Do you want to continue?</translation>
       <translation type="unfinished">Write the active 3D view with camera and all its content to a povray file</translation>
     </message>
     <message>
-      <location line="+501"/>
+      <location line="+548"/>
       <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>La càmera de la vista actual no és en perspectiva i per tant el resultat de la imatge de LuxRender podria ser diferent del previst. Voleu continuar?</translation>
@@ -270,10 +282,10 @@ Do you want to continue?</source>
       <translation type="unfinished">All Files (*.*)</translation>
     </message>
     <message>
-      <location line="-585"/>
+      <location line="-632"/>
       <location line="+51"/>
       <location line="+63"/>
-      <location line="+276"/>
+      <location line="+299"/>
       <source>Export page</source>
       <translation>Exporta la pàgina</translation>
     </message>
@@ -284,13 +296,13 @@ Do you want to continue?</source>
     <message>
       <location line="-103"/>
       <location line="+87"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Wrong selection</source>
       <translation>Selecció incorrecta</translation>
     </message>
     <message>
-      <location line="-392"/>
+      <location line="-431"/>
       <source>Select a Part object.</source>
       <translation>Seleccioneu un objecte peça</translation>
     </message>
@@ -312,18 +324,18 @@ Do you want to continue?</source>
     </message>
     <message>
       <location line="+64"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Select one Raytracing project object.</source>
       <translation>Seleccioneu un objecte projecte de traçat de raigs</translation>
     </message>
     <message>
-      <location line="-302"/>
+      <location line="-341"/>
       <source>Luxrender</source>
       <translation>LuxRender</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="+78"/>
       <location line="+6"/>
       <source>POV-Ray not found</source>
       <translation>No s'ha trobat POV-Ray.</translation>
@@ -339,7 +351,7 @@ Do you want to continue?</source>
       <translation>Corregiu el camí a l'executable del POV-Ray en les preferències</translation>
     </message>
     <message>
-      <location line="+75"/>
+      <location line="+95"/>
       <source>Lux project file missing</source>
       <translation>Falta el fitxer del projecte Lux.</translation>
     </message>
@@ -349,25 +361,25 @@ Do you want to continue?</source>
       <translation>No existeix el fitxer de projecte Lux.</translation>
     </message>
     <message>
-      <location line="-69"/>
+      <location line="-89"/>
       <location line="+6"/>
       <source>Luxrender not found</source>
       <translation>No s'ha trobat el LuxRender.</translation>
     </message>
     <message>
-      <location line="-475"/>
+      <location line="-502"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+272"/>
+      <location line="+295"/>
       <source>POV-Ray</source>
       <translation>POV-Ray</translation>
     </message>
     <message>
-      <location line="-384"/>
+      <location line="-407"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+276"/>
-      <location line="+109"/>
+      <location line="+299"/>
+      <location line="+113"/>
       <source>All Files</source>
       <translation>Tots els fitxers</translation>
     </message>
@@ -549,7 +561,7 @@ Do you want to continue?</source>
     <message>
       <location line="+13"/>
       <source>Write u,v coordinates</source>
-      <translation>Escriviu les coordenades (u,v</translation>
+      <translation>Escriviu les coordenades u,v</translation>
     </message>
   </context>
   <context>
@@ -560,7 +572,7 @@ Do you want to continue?</source>
       <translation>Edita el projecte de LuxRender</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>LuxRender template</source>
       <translation>Plantilla de LuxRender</translation>
     </message>
@@ -573,12 +585,12 @@ Do you want to continue?</source>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location line="+48"/>
+      <location line="+47"/>
       <source>Edit Povray project</source>
       <translation>Edita el projecte de POV-Ray</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>Povray template</source>
       <translation>Plantilla de POV-Ray</translation>
     </message>

@@ -29,6 +29,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
+# include <climits>
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
@@ -453,7 +454,7 @@ void SoFCIndexedFaceSet::initClass()
 }
 
 SoFCIndexedFaceSet::SoFCIndexedFaceSet()
-  : renderTriangleLimit(100000)
+  : renderTriangleLimit(UINT_MAX)
   , selectBuf(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCIndexedFaceSet);

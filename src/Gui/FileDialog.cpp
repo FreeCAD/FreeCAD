@@ -48,6 +48,21 @@
 
 using namespace Gui;
 
+namespace Gui {
+bool dontUseNativeDialog()
+{
+#if defined(USE_QT_FILEDIALOG)
+    bool notNativeDialog = true;
+#else
+    bool notNativeDialog = false;
+#endif
+
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
+    notNativeDialog = group->GetBool("DontUseNativeDialog", notNativeDialog);
+    return notNativeDialog;
+}
+}
 
 /* TRANSLATOR Gui::FileDialog */
 
@@ -68,7 +83,7 @@ void FileDialog::onSelectedFilter(const QString& /*filter*/)
     QString suf = selectedNameFilter();
     if (rx.indexIn(suf) >= 0) {
         suf = rx.cap(1);
-        setDefaultSuffix(suf.toLower());
+        setDefaultSuffix(suf);
     }
 }
 
@@ -147,55 +162,59 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
 #if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
+
     // NOTE: We must not change the specified file name afterwards as we may return the name of an already
     // existing file. Hence we must extract the first matching suffix from the filter list and append it 
     // before showing the file dialog.
-#if defined(USE_QT_FILEDIALOG)
-    QList<QUrl> urls;
+    QString file;
+    if (dontUseNativeDialog()) {
+        QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+        options |= QFileDialog::DontUseNativeDialog;
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
 #else
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
 #endif
-    urls << QUrl::fromLocalFile(getWorkingDirectory());
-    urls << QUrl::fromLocalFile(restoreLocation());
-    urls << QUrl::fromLocalFile(QDir::currentPath());
+        urls << QUrl::fromLocalFile(getWorkingDirectory());
+        urls << QUrl::fromLocalFile(restoreLocation());
+        urls << QUrl::fromLocalFile(QDir::currentPath());
 
-    QString file;
-    FileDialog dlg(parent);
-    dlg.setWindowTitle(windowTitle);
-    dlg.setSidebarUrls(urls);
-    dlg.setIconProvider(new FileIconProvider());
-    dlg.setFileMode(QFileDialog::AnyFile);
-    dlg.setAcceptMode(QFileDialog::AcceptSave);
-    dlg.setDirectory(dirName);
-    dlg.setOptions(options);
-    dlg.setNameFilters(filter.split(QLatin1String(";;")));
-    dlg.onSelectedFilter(dlg.selectedNameFilter());
-    dlg.setNameFilterDetailsVisible(true);
-    dlg.setConfirmOverwrite(true);
-    if (dlg.exec() == QDialog::Accepted) {
-        if (selectedFilter)
-            *selectedFilter = dlg.selectedNameFilter();
-        file = dlg.selectedFiles().front();
+        FileDialog dlg(parent);
+        dlg.setWindowTitle(windowTitle);
+        dlg.setSidebarUrls(urls);
+        dlg.setIconProvider(new FileIconProvider());
+        dlg.setFileMode(QFileDialog::AnyFile);
+        dlg.setAcceptMode(QFileDialog::AcceptSave);
+        dlg.setDirectory(dirName);
+        dlg.setOptions(options);
+        dlg.setNameFilters(filter.split(QLatin1String(";;")));
+        dlg.onSelectedFilter(dlg.selectedNameFilter());
+        dlg.setNameFilterDetailsVisible(true);
+        dlg.setConfirmOverwrite(true);
+        if (dlg.exec() == QDialog::Accepted) {
+            if (selectedFilter)
+                *selectedFilter = dlg.selectedNameFilter();
+            file = dlg.selectedFiles().front();
+        }
     }
-#else
-    QString file = QFileDialog::getSaveFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
+    else {
+        file = QFileDialog::getSaveFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
 #if QT_VERSION >= 0x040600
-    file = QDir::fromNativeSeparators(file);
+        file = QDir::fromNativeSeparators(file);
 #endif
-#endif
+    }
+
     if (!file.isEmpty()) {
         setWorkingDirectory(file);
         return file;
@@ -237,54 +256,58 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     QString windowTitle = caption;
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Open");
+
 #if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
-#if defined(USE_QT_FILEDIALOG)
-    QList<QUrl> urls;
+    QString file;
+    if (dontUseNativeDialog()) {
+        QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+        options |= QFileDialog::DontUseNativeDialog;
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
 #else
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
 #endif
-    urls << QUrl::fromLocalFile(getWorkingDirectory());
-    urls << QUrl::fromLocalFile(restoreLocation());
-    urls << QUrl::fromLocalFile(QDir::currentPath());
+        urls << QUrl::fromLocalFile(getWorkingDirectory());
+        urls << QUrl::fromLocalFile(restoreLocation());
+        urls << QUrl::fromLocalFile(QDir::currentPath());
 
-    QString file;
-    FileDialog dlg(parent);
-    dlg.setWindowTitle(windowTitle);
-    dlg.setSidebarUrls(urls);
-    dlg.setIconProvider(new FileIconProvider());
-    dlg.setFileMode(QFileDialog::ExistingFile);
-    dlg.setAcceptMode(QFileDialog::AcceptOpen);
-    dlg.setDirectory(dirName);
-    dlg.setOptions(options);
-    dlg.setNameFilters(filter.split(QLatin1String(";;")));
-    dlg.setNameFilterDetailsVisible(true);
-    if (dlg.exec() == QDialog::Accepted) {
-        if (selectedFilter)
-            *selectedFilter = dlg.selectedNameFilter();
-        file = dlg.selectedFiles().front();
+        FileDialog dlg(parent);
+        dlg.setWindowTitle(windowTitle);
+        dlg.setSidebarUrls(urls);
+        dlg.setIconProvider(new FileIconProvider());
+        dlg.setFileMode(QFileDialog::ExistingFile);
+        dlg.setAcceptMode(QFileDialog::AcceptOpen);
+        dlg.setDirectory(dirName);
+        dlg.setOptions(options);
+        dlg.setNameFilters(filter.split(QLatin1String(";;")));
+        dlg.setNameFilterDetailsVisible(true);
+        if (dlg.exec() == QDialog::Accepted) {
+            if (selectedFilter)
+                *selectedFilter = dlg.selectedNameFilter();
+            file = dlg.selectedFiles().front();
+        }
     }
-#else
-    QString file = QFileDialog::getOpenFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
+    else {
+        file = QFileDialog::getOpenFileName(parent, windowTitle, dirName, filter, selectedFilter, options);
 #if QT_VERSION >= 0x040600
-    file = QDir::fromNativeSeparators(file);
+        file = QDir::fromNativeSeparators(file);
 #endif
-#endif
+    }
+
     if (!file.isEmpty()) {
         setWorkingDirectory(file);
         return file;
@@ -307,60 +330,64 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     QString windowTitle = caption;
     if (windowTitle.isEmpty())
         windowTitle = FileDialog::tr("Open");
+
 #if QT_VERSION < 0x040800 && defined(FC_OS_MACOSX)
     options |= QFileDialog::DontUseNativeDialog;
 #endif
 
-#if defined(USE_QT_FILEDIALOG)
-    QList<QUrl> urls;
+    QStringList files;
+    if (dontUseNativeDialog()) {
+        QList<QUrl> urls;
 
 #if QT_VERSION >= 0x050000
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+        options |= QFileDialog::DontUseNativeDialog;
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+        urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
 #else
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
-    urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
+        urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
 #endif
-    urls << QUrl::fromLocalFile(getWorkingDirectory());
-    urls << QUrl::fromLocalFile(restoreLocation());
-    urls << QUrl::fromLocalFile(QDir::currentPath());
+        urls << QUrl::fromLocalFile(getWorkingDirectory());
+        urls << QUrl::fromLocalFile(restoreLocation());
+        urls << QUrl::fromLocalFile(QDir::currentPath());
 
-    QStringList files;
-    FileDialog dlg(parent);
-    dlg.setWindowTitle(windowTitle);
-    dlg.setSidebarUrls(urls);
-    dlg.setIconProvider(new FileIconProvider());
-    dlg.setFileMode(QFileDialog::ExistingFiles);
-    dlg.setAcceptMode(QFileDialog::AcceptOpen);
-    dlg.setDirectory(dirName);
-    dlg.setOptions(options);
-    dlg.setNameFilters(filter.split(QLatin1String(";;")));
-    dlg.setNameFilterDetailsVisible(true);
-    if (dlg.exec() == QDialog::Accepted) {
-        if (selectedFilter)
-            *selectedFilter = dlg.selectedNameFilter();
-        files = dlg.selectedFiles();
+        FileDialog dlg(parent);
+        dlg.setWindowTitle(windowTitle);
+        dlg.setSidebarUrls(urls);
+        dlg.setIconProvider(new FileIconProvider());
+        dlg.setFileMode(QFileDialog::ExistingFiles);
+        dlg.setAcceptMode(QFileDialog::AcceptOpen);
+        dlg.setDirectory(dirName);
+        dlg.setOptions(options);
+        dlg.setNameFilters(filter.split(QLatin1String(";;")));
+        dlg.setNameFilterDetailsVisible(true);
+        if (dlg.exec() == QDialog::Accepted) {
+            if (selectedFilter)
+                *selectedFilter = dlg.selectedNameFilter();
+            files = dlg.selectedFiles();
+        }
     }
-#else
-    QStringList files = QFileDialog::getOpenFileNames(parent, windowTitle, dirName, filter, selectedFilter, options);
+    else {
+        files = QFileDialog::getOpenFileNames(parent, windowTitle, dirName, filter, selectedFilter, options);
 #if QT_VERSION >= 0x040600
-    for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
-        *it = QDir::fromNativeSeparators(*it);
+        for (QStringList::iterator it = files.begin(); it != files.end(); ++it) {
+            *it = QDir::fromNativeSeparators(*it);
+        }
+#endif
     }
-#endif
-#endif
+
     if (!files.isEmpty()) {
         setWorkingDirectory(files.front());
     }
-    
+
     return files;
 }
 
@@ -670,11 +697,10 @@ void FileChooser::chooseFile()
         prechosenDirectory = FileDialog::getWorkingDirectory();
     }
 
-#if defined(USE_QT_FILEDIALOG)
-    QFileDialog::Options dlgOpt = QFileDialog::DontUseNativeDialog;
-#else
     QFileDialog::Options dlgOpt;
-#endif
+    if (dontUseNativeDialog()) {
+        dlgOpt = QFileDialog::DontUseNativeDialog;
+    }
 
     QString fn;
     if ( mode() == File ) {

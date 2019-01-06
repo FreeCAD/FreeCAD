@@ -46,6 +46,16 @@ Returns true if the facet is degenerated, otherwise false.
               </UserDocu>
           </Documentation>
       </Methode>
+      <Methode Name="isDeformed">
+          <Documentation>
+              <UserDocu>isDegenerated(MinAngle, MaxAngle) -> boolean
+Returns true if the facet is deformed, otherwise false.
+A triangle is considered deformed if an angle is less than MinAngle
+or higher than MaxAngle.
+The two angles are given in radian.
+              </UserDocu>
+          </Documentation>
+      </Methode>
       <Attribute Name="Index" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>The index of this facet in the MeshObject</UserDocu>

@@ -386,8 +386,11 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_tab
             if obj.Name == has_remaining_femelements:
                 fem_object['FEMElements'] = sorted(remaining_femelements)
     # check if all worked out well
-    if not femelements_count_ok(len(femelement_table), count_femelements):
+    if femelements_count_ok(len(femelement_table), count_femelements):
+        return True
+    else:
         FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok() failed!\n')
+        return False
 
 
 def get_femelement_direction1D_set(femmesh, femelement_table, beamrotation_objects, theshape=None):
@@ -545,7 +548,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
         return False
     else:
         return True
-    #print("")
+    # print("")
 
 
 def get_elset_short_name(obj, i):

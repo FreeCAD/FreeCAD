@@ -537,6 +537,10 @@ void Document::exportGraphviz(std::ostream& out) const
             //setup the origin if available
             if(cs->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
                 auto origin = cs->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
+                if (!origin) {
+                    std::cerr << "Origin feature not found" << std::endl;
+                    return;
+                }
                 auto& osub = sub.create_subgraph();
                 GraphList[origin] = &osub;
                 get_property(osub, graph_name) = getClusterName(origin);
@@ -2036,7 +2040,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         std::stringstream ss;
         ss << "Gathering all dependencies failed, probably due to circular dependencies. Error: ";
         ss << e.what();
-        throw Base::RuntimeError(ss.str().c_str());
+        throw Base::BadGraphError(ss.str().c_str());
     }
 
     std::set<Vertex> out;
@@ -2523,7 +2527,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
             returnCode->Which = Feat;
             _RecomputeLog.push_back(returnCode);
     #ifdef FC_DEBUG
-            Base::Console().Error("%s\n",returnCode->Why.c_str());
+            Base::Console().Error("Error in feature: %s\n%s\n",Feat->getNameInDocument(),returnCode->Why.c_str());
     #endif
             Feat->setError();
             return true;
@@ -2572,7 +2576,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         returnCode->Which = Feat;
         _RecomputeLog.push_back(returnCode);
 #ifdef FC_DEBUG
-        Base::Console().Error("%s\n",returnCode->Why.c_str());
+        Base::Console().Error("Error in feature: %s\n%s\n",Feat->getNameInDocument(),returnCode->Why.c_str());
 #endif
         Feat->setError();
     }

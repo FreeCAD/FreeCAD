@@ -31,14 +31,15 @@
 
 #include <QString>
 #include <QLocale>
+#include "Console.h"
 #include "Exception.h"
 #include "UnitsApi.h"
 #include "UnitsSchemaImperial1.h"
 #include <cmath>
+#include <iomanip>
+
 
 using namespace Base;
-
-
 
 //void UnitsSchemaImperial1::setSchemaUnits(void){
 //    // here you could change the constances used by the parser (defined in Quantity.cpp)
@@ -326,3 +327,84 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
 
     return toLocale(quant, factor, unitString);
 }
+
+QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
+{
+//    double UnitValue = std::abs(quant.getValue());
+    Unit unit = quant.getUnit();
+    // for imperial user/programmer mind; UnitValue is in internal system, that means
+    // mm/kg/s. And all combined units have to be calculated from there!
+
+    // now do special treatment on all cases seems necessary:
+    if (unit == Unit::Length) {  // Length handling ============================
+            unitString = QString::fromLatin1("ft");  //always ft
+            factor = 304.8;      //12 * 25.4
+    }
+    else if (unit == Unit::Area) {
+        unitString = QString::fromLatin1("ft^2");    //always sq.ft
+        factor = 92903.04;
+    }
+    else if (unit == Unit::Volume) {
+        unitString = QString::fromLatin1("ft^3");    //always cu. ft
+        factor = 28316846.592;
+    }
+    else if (unit == Unit::Mass) {
+        unitString = QString::fromLatin1("lb");     //always lbs. 
+        factor = 0.45359237;
+    }
+    else if (unit == Unit::Pressure) {
+            unitString = QString::fromLatin1("psi");
+            factor = 6.894744825494;
+    }
+    else if (unit == Unit::Velocity) {
+        unitString = QString::fromLatin1("mph");
+        factor =  0.002235598;                         //1mm/sec => mph
+    }
+    // this schema expresses angles in degrees + minutes + seconds
+    else if (unit == Unit::Angle) {
+        unitString = QString::fromUtf8("deg");
+        QString degreeString = QString::fromUtf8("\xC2\xB0");          //degree symbol
+        QString minuteString = QString::fromUtf8("\xE2\x80\xB2");      //prime symbol
+        QString secondString = QString::fromUtf8("\xE2\x80\xB3");      //double prime symbol
+        factor = 1.0;                                  //1deg = 1"\xC2\xB0 "
+
+        double totalDegrees = quant.getValue()/factor;
+        double wholeDegrees = std::floor(totalDegrees);
+        double sumMinutes = totalDegrees * 60.0;            //quant as minutes
+        double rawMinutes = sumMinutes - wholeDegrees * 60.0;
+        double wholeMinutes = std::floor(rawMinutes);
+        double sumSeconds = totalDegrees * 3600.0;          //quant as seconds
+        double rawSeconds = sumSeconds - (wholeDegrees * 3600.0) - (wholeMinutes * 60);
+//        double wholeSeconds = std::floor(rawSeconds);
+//        double remainSeconds = rawSeconds - wholeSeconds;
+
+        int outDeg = (int) wholeDegrees;
+        int outMin = (int) wholeMinutes;
+        int outSec = (int) std::round(rawSeconds);
+
+        std::stringstream output;
+        output << outDeg << degreeString.toUtf8().constData();
+        if ((outMin > 0) || (outSec > 0)) {
+            output << outMin << minuteString.toUtf8().constData();
+        }
+        if (outSec > 0) {
+            output << outSec << secondString.toUtf8().constData();
+        }
+// uncomment this for decimals on seconds
+//        if (remainSeconds < (1.0 * pow(10.0,-Base::UnitsApi::getDecimals())) ) {
+//            //NOP too small to display
+//        } else {
+//            output << std::setprecision(Base::UnitsApi::getDecimals()) << std::fixed <<
+//                      rawSeconds << secondString.toStdString();
+//        }
+        return QString::fromUtf8(output.str().c_str());
+    }
+    else {
+        // default action for all cases without special treatment:
+        unitString = quant.getUnit().getString();
+        factor = 1.0;
+    }
+
+    return toLocale(quant, factor, unitString);
+}
+

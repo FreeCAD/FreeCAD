@@ -748,6 +748,9 @@ void ColorButton::onChooseColor()
 #endif
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
+#if QT_VERSION >= 0x050000
+        cd.setOptions(QColorDialog::DontUseNativeDialog);
+#endif
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -771,6 +774,9 @@ void ColorButton::onChooseColor()
         if (d->cd.isNull()) {
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
+#if QT_VERSION >= 0x050000
+            d->cd->setOptions(QColorDialog::DontUseNativeDialog);
+#endif
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),
                     this, SLOT(onRejected()));
@@ -1297,8 +1303,6 @@ LabelEditor::LabelEditor (QWidget * parent)
     layout->addWidget(lineEdit);
 
     connect(lineEdit, SIGNAL(textChanged(const QString &)),
-            this, SIGNAL(textChanged(const QString &)));
-    connect(lineEdit, SIGNAL(textChanged(const QString &)),
             this, SLOT(validateText(const QString &)));
 
     button = new QPushButton(QLatin1String("..."), this);
@@ -1331,8 +1335,7 @@ void LabelEditor::setText(const QString& s)
 {
     this->plainText = s;
 
-    QStringList list = this->plainText.split(QString::fromLatin1("\n"));
-    QString text = QString::fromLatin1("[%1]").arg(list.join(QLatin1String(",")));
+    QString text = QString::fromLatin1("[%1]").arg(this->plainText);
     lineEdit->setText(text);
 }
 
@@ -1353,10 +1356,7 @@ void LabelEditor::changeText()
     connect(buttonBox, SIGNAL(rejected()), &dlg, SLOT(reject()));
     if (dlg.exec() == QDialog::Accepted) {
         QString inputText = edit->toPlainText();
-        this->plainText = inputText;
-
-        QStringList list = this->plainText.split(QString::fromLatin1("\n"));
-        QString text = QString::fromLatin1("[%1]").arg(list.join(QLatin1String(",")));
+        QString text = QString::fromLatin1("[%1]").arg(inputText);
         lineEdit->setText(text);
     }
 }
@@ -1364,10 +1364,12 @@ void LabelEditor::changeText()
 /**
  * Validates if the input of the lineedit is a valid list.
  */
-void LabelEditor::validateText(const QString& s)
+void LabelEditor::validateText(const QString& text)
 {
-    if ( s.startsWith(QLatin1String("[")) && s.endsWith(QLatin1String("]")) )
-        this->plainText = s.mid(1,s.size()-2).replace(QLatin1String(","),QLatin1String("\n"));
+    if (text.startsWith(QLatin1String("[")) && text.endsWith(QLatin1String("]"))) {
+        this->plainText = text.mid(1, text.size()-2);
+        Q_EMIT textChanged(this->plainText);
+    }
 }
 
 /**

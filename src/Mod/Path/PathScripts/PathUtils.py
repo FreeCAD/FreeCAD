@@ -24,13 +24,14 @@
 '''PathUtils -common functions used in PathScripts for filterig, sorting, and generating gcode toolpath data '''
 import FreeCAD
 import FreeCADGui
-import math
-import numpy
 import Part
 import Path
 import PathScripts
 import PathScripts.PathGeom as PathGeom
 import TechDraw
+import math
+import numpy
+import sys
 
 from DraftGeomUtils import geomType
 from FreeCAD import Vector
@@ -714,7 +715,10 @@ def sort_jobs(locations, keys, attractors=[]):
         keys: two-element list of keys for X and Y coordinates. for example ['x','y']
         originally written by m0n5t3r for PathHelix
     """
-    from Queue import PriorityQueue
+    try:
+        from queue import PriorityQueue
+    except ImportError:
+        from Queue import PriorityQueue
     from collections import defaultdict
 
     attractors = attractors or [keys[0]]

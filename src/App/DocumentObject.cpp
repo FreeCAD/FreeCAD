@@ -77,12 +77,13 @@ DocumentObject::~DocumentObject(void)
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     //check if the links are valid before making the recompute
-    if(!GeoFeatureGroupExtension::areLinksValid(this))
+    if(!GeoFeatureGroupExtension::areLinksValid(this)) {
 #if 1
-        Base::Console().Warning("%s: Links go out of the allowed scope\n", getTypeId().getName());
+        Base::Console().Warning("%s / %s: Links go out of the allowed scope\n", getTypeId().getName(), getNameInDocument());
 #else
         return new App::DocumentObjectExecReturn("Links go out of the allowed scope", this);
 #endif
+    }
 
     // set/unset the execution bit
     Base::ObjectStatusLocker<ObjectStatus, DocumentObject> exe(App::Recompute, this);
@@ -304,7 +305,7 @@ void _getInListRecursive(std::set<DocumentObject*>& objSet,
     for (const auto objIt : obj->getInList()) {
         // if the check object is in the recursive inList we have a cycle!
         if (objIt == checkObj || depth <= 0) {
-            throw Base::RuntimeError("DocumentObject::getInListRecursive(): cyclic dependency detected!");
+            throw Base::BadGraphError("DocumentObject::getInListRecursive(): cyclic dependency detected!");
         }
 
         // if the element was already in the set then there is no need to process it again
@@ -335,7 +336,7 @@ void _getOutListRecursive(std::set<DocumentObject*>& objSet,
     for (const auto objIt : obj->getOutList()) {
         // if the check object is in the recursive inList we have a cycle!
         if (objIt == checkObj || depth <= 0) {
-            throw Base::RuntimeError("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
+            throw Base::BadGraphError("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
         }
 
         // if the element was already in the set then there is no need to process it again
@@ -369,7 +370,7 @@ bool _isInInListRecursive(const DocumentObject* act,
             return true;
         // if we reach the depth limit we have a cycle!
         if (depth <= 0) {
-            throw Base::RuntimeError("DocumentObject::isInInListRecursive(): cyclic dependency detected!");
+            throw Base::BadGraphError("DocumentObject::isInInListRecursive(): cyclic dependency detected!");
         }
 
         if (_isInInListRecursive(obj, checkObj, depth - 1))
@@ -413,7 +414,7 @@ bool _isInOutListRecursive(const DocumentObject* act,
             return true;
         // if we reach the depth limit we have a cycle!
         if (depth <= 0) {
-            throw Base::RuntimeError("DocumentObject::isInOutListRecursive(): cyclic dependency detected!");
+            throw Base::BadGraphError("DocumentObject::isInOutListRecursive(): cyclic dependency detected!");
         }
 
         if (_isInOutListRecursive(obj, checkObj, depth - 1))

@@ -96,7 +96,9 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
             # don't set the length if we have a base object, otherwise the length X height calc
             # gets wrong
             obj.Length = p.GetFloat("StructureLength",100)
-    if obj.Height > obj.Length:
+    if not height and not length:
+        obj.IfcRole = "Undefined"
+    elif obj.Height > obj.Length:
         obj.IfcRole = "Column"
     return obj
 
@@ -526,17 +528,41 @@ class _Structure(ArchComponent.Component):
         pl = obj.Placement
         extdata = self.getExtrusionData(obj)
         if extdata:
-            base = extdata[0]
-            base.Placement = extdata[2].multiply(base.Placement)
-            extv = extdata[2].Rotation.multVec(extdata[1])
-            if obj.Tool:
-                try:
-                    base = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
-                except Part.OCCError:
-                    FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
-                    return
+            sh = extdata[0]
+            if not isinstance(sh,list):
+                sh = [sh]
+            ev = extdata[1]
+            if not isinstance(ev,list):
+                ev = [ev]
+            pla = extdata[2]
+            if not isinstance(pla,list):
+                pla = [pla]
+            base = []
+            for i in range(len(sh)):
+                shi = sh[i]
+                if i < len(ev):
+                    evi = ev[i]
+                else:
+                    evi = FreeCAD.Vector(ev[-1])
+                if i < len(pla):
+                    pli = pla[i]
+                else:
+                    pli = pla[-1].copy()
+                shi.Placement = pli.multiply(shi.Placement)
+                extv = pla[0].Rotation.multVec(evi)
+                if obj.Tool:
+                    try:
+                        shi = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
+                    except Part.OCCError:
+                        FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
+                        return
+                else:
+                    shi = shi.extrude(extv)
+                base.append(shi)
+            if len(base) == 1:
+                base = base[0]
             else:
-                base = base.extrude(extv)
+                base = Part.makeCompound(base)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
@@ -594,12 +620,23 @@ class _Structure(ArchComponent.Component):
                     if obj.Base.Shape.Solids:
                         return None
                     elif obj.Base.Shape.Faces:
-                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces):
+                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces,tolerance=0.01):
                             return None
                         else:
                             base,placement = self.rebase(obj.Base.Shape)
                             normal = obj.Base.Shape.Faces[0].normalAt(0,0)
                             normal = placement.inverse().Rotation.multVec(normal)
+                            if (len(obj.Shape.Solids) > 1) and (len(obj.Shape.Solids) == len(obj.Base.Shape.Faces)):
+                                # multiple extrusions
+                                b = []
+                                p = []
+                                hint = obj.Base.Shape.Faces[0].normalAt(0,0)
+                                for f in obj.Base.Shape.Faces:
+                                    bf,pf = self.rebase(f,hint)
+                                    b.append(bf)
+                                    p.append(pf)
+                                base = b
+                                placement = p
                     elif obj.Base.Shape.Wires:
                         baseface = None
                         if hasattr(obj,"FaceMaker"):
@@ -655,7 +692,10 @@ class _Structure(ArchComponent.Component):
         if base and placement:
             if obj.Normal.Length:
                 normal = Vector(obj.Normal)
-                normal = placement.inverse().Rotation.multVec(normal)
+                if isinstance(placement,list):
+                    normal = placement[0].inverse().Rotation.multVec(normal)
+                else:
+                    normal = placement.inverse().Rotation.multVec(normal)
             if not normal:
                 normal = Vector(0,0,1)
             if not normal.Length:
@@ -683,7 +723,7 @@ class _Structure(ArchComponent.Component):
             # ResetNodes is not a property but it allows us to use this function to force reset the nodes
             nodes = None
             extdata = self.getExtrusionData(obj)
-            if extdata:
+            if extdata and not isinstance(extdata[0],list):
                 nodes = extdata[0]
                 nodes.Placement = nodes.Placement.multiply(extdata[2])
                 if role not in ["Slab"]:

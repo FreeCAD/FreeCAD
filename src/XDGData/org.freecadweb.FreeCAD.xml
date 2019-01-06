@@ -4,5 +4,6 @@
     <!-- <sub-class-of type="application/zip"/> -->
     <comment>FreeCAD document files</comment>
     <glob pattern="*.fcstd"/>
+    <icon name="org.freecadweb.FreeCAD"/>
   </mime-type>
 </mime-info>

@@ -1176,7 +1176,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+26"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
   </context>
   <context>
@@ -1268,7 +1268,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="+86"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
   </context>
   <context>
@@ -1459,7 +1459,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="+96"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
   </context>
   <context>
@@ -1588,7 +1588,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+86"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
   </context>
   <context>
@@ -1770,7 +1770,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="+113"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
     <message>
       <location line="+211"/>
@@ -1891,7 +1891,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="+110"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
     <message>
       <location line="+134"/>
@@ -1933,7 +1933,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="+75"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -2485,7 +2485,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+9"/>
       <source>Angle</source>
-      <translation type="unfinished">Angle</translation>
+      <translation>각</translation>
     </message>
     <message>
       <location line="+27"/>
@@ -2509,7 +2509,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="+111"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
     <message>
       <location line="+206"/>
@@ -2645,7 +2645,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="+97"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
   </context>
   <context>
@@ -2757,7 +2757,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
       <source>Remove</source>
-      <translation type="unfinished">Remove</translation>
+      <translation>제거</translation>
     </message>
   </context>
   <context>
@@ -3939,7 +3939,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+10"/>
       <source>Angle</source>
-      <translation type="unfinished">Angle</translation>
+      <translation>각</translation>
     </message>
     <message>
       <location line="+26"/>

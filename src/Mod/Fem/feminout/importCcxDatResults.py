@@ -35,7 +35,7 @@ import os
 EIGENVALUE_OUTPUT_SECTION = "     E I G E N V A L U E   O U T P U T"
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -60,15 +60,16 @@ def insert(filename, docname):
     import_dat(filename)
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def import_dat(filename, Analysis=None):
     r = readResult(filename)
-    # print ("Results {}".format(r))
+    # print("Results {}".format(r))
     return r
 
 
 # read a calculix result file and extract the data
 def readResult(dat_input):
+    print('Read ccx results from dat file: ' + dat_input)
     dat_file = pyopen(dat_input, "r")
     eigenvalue_output_section_found = False
     mode_reading = False

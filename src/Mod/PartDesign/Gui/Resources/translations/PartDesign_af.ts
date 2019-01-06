@@ -2160,7 +2160,7 @@ Kies ten minste een kant.</translation>
     <message>
       <location line="+5"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Vaste</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -3452,7 +3452,7 @@ This may lead to unexpected results.</translation>
       <location line="+289"/>
       <location line="+7"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Seleksie fout</translation>
     </message>
     <message>
       <location line="-304"/>

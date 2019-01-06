@@ -11,7 +11,7 @@
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation>Additiu calaix</translation>
+      <translation>Calaix additiu</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -20,7 +20,7 @@
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Escombrar un esbós seleccionat per un camí o per altres perfils</translation>
+      <translation>Escombra un esbós seleccionat per un camí o per altres perfils</translation>
     </message>
   </context>
   <context>
@@ -33,12 +33,12 @@
     <message>
       <location line="+1"/>
       <source>Additive pipe</source>
-      <translation>Canonada additiu</translation>
+      <translation>Tub additiu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Escombrar un esbós seleccionat per un camí o per altres perfils</translation>
+      <translation>Escombra un esbós seleccionat per un camí o per altres perfils</translation>
     </message>
   </context>
   <context>
@@ -51,12 +51,12 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation>Crear el cos</translation>
+      <translation>Crear un cos</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation>Crear un nou cos i Activar</translation>
+      <translation>Crear un nou cos i activa'l</translation>
     </message>
   </context>
   <context>
@@ -74,14 +74,14 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation>Operació booleana amb dues o més entitats</translation>
+      <translation>Operació booleana amb dos o més cossos</translation>
     </message>
   </context>
   <context>
     <name>CmdPartDesignChamfer</name>
     <message>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Peça</translation>
     </message>
     <message>
       <source>Chamfer...</source>
@@ -100,7 +100,7 @@
     <message>
       <location line="+1"/>
       <source>Chamfer the selected edges of a shape</source>
-      <translation>Xamfranar les vores seleccionades</translation>
+      <translation>Crea un xamfrà a les vores seleccionades</translation>
     </message>
   </context>
   <context>
@@ -136,7 +136,7 @@
     <message>
       <location line="+1"/>
       <source>Make a draft on a face</source>
-      <translation>Fer una inclinació en una cara</translation>
+      <translation>Crea un croquis a una cara</translation>
     </message>
   </context>
   <context>
@@ -149,12 +149,12 @@
     <message>
       <location line="+1"/>
       <source>Duplicate selected object</source>
-      <translation>Duplicar L'objecte seleccionat</translation>
+      <translation>Duplica l'objecte seleccionat</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Duplica l'objecte seleccionat i afegeix</translation>
+      <translation>Duplica l'objecte seleccionat i l'afegeix al cos actiu</translation>
     </message>
   </context>
   <context>
@@ -190,7 +190,7 @@
     <message>
       <location line="+1"/>
       <source>Groove a selected sketch</source>
-      <translation>Ranura un croquis seleccionat</translation>
+      <translation>Crea una ranura a un croquis seleccionat</translation>
     </message>
   </context>
   <context>
@@ -221,12 +221,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation>Crear una línia datum</translation>
+      <translation>Crea una línia de referència</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation>Crear una nova línia datum</translation>
+      <translation>Crea una nova línia de referència</translation>
     </message>
   </context>
   <context>
@@ -244,7 +244,7 @@
     <message>
       <location line="+1"/>
       <source>Create a linear pattern feature</source>
-      <translation>Crear un patró lineal</translation>
+      <translation>Crea un patró lineal</translation>
     </message>
     <message>
       <source>create a linear pattern feature</source>
@@ -261,16 +261,16 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation>Migrar</translation>
+      <translation>Migra</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Migra el document al flux de treball modern PartDesign</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation>Document de migrar a la moderna partdesign de flux de treball</translation>
+      <translation>Migra el document al flux de treball modern PartDesign</translation>
     </message>
   </context>
   <context>
@@ -305,12 +305,12 @@
     <message>
       <location line="+1"/>
       <source>Move object to other body</source>
-      <translation>Moure l'objecte a altre cos</translation>
+      <translation>Mou l'objecte a un altre cos</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object to another body</source>
-      <translation>Es mou l'objecte seleccionat a un altre òrgan</translation>
+      <translation>Mou l'objecte seleccionat a un altre cos</translation>
     </message>
   </context>
   <context>
@@ -323,12 +323,12 @@
     <message>
       <location line="+1"/>
       <source>Move object after other object</source>
-      <translation>Moure l'objecte després de l altre objecte</translation>
+      <translation>Mou l'objecte després d'un altre objecte</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>Es mou l'objecte seleccionat i inserir-lo després d'un altre objecte</translation>
+      <translation>Mou l'objecte seleccionat i l'insereix després d'un altre objecte</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location line="+1"/>
       <source>Create MultiTransform</source>
-      <translation>Crear MultiTransform</translation>
+      <translation>Crea MultiTransform</translation>
     </message>
     <message>
       <source>MultiTransform</source>
@@ -368,7 +368,7 @@
     <message>
       <location line="+1"/>
       <source>Create a multitransform feature</source>
-      <translation>Crear un perfil multitransform</translation>
+      <translation>Crea un perfil multitransform</translation>
     </message>
     <message>
       <source>create a multitransform feature</source>
@@ -539,7 +539,7 @@
     <message>
       <location line="+1"/>
       <source>Create a scaled feature</source>
-      <translation>Crear un escalat</translation>
+      <translation>Crea una operació escalada</translation>
     </message>
     <message>
       <source>create a scaled feature</source>
@@ -556,12 +556,12 @@
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation>Crear una carpeta de forma</translation>
+      <translation>Crear una carpeta de formes</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation>Crear una nova carpeta de forma</translation>
+      <translation>Crea una nova carpeta de formes</translation>
     </message>
   </context>
   <context>
@@ -574,7 +574,7 @@
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation>Resta Calaix</translation>
+      <translation>Calaix substractiu</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -583,7 +583,7 @@
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Un esbós seleccionat per un camí o a altres perfils d'escombrar i eliminar-lo del cos</translation>
+      <translation>Escombra un esbós per una trajectòria o a altres perfils i treu-lo del cos</translation>
     </message>
   </context>
   <context>
@@ -601,7 +601,7 @@
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation>Un esbós seleccionat per un camí o a altres perfils d'escombrar i eliminar-lo del cos</translation>
+      <translation>Escombra un esbós per una trajectòria o a altres perfils i treu-lo del cos</translation>
     </message>
   </context>
   <context>
@@ -619,7 +619,7 @@
     <message>
       <location line="+1"/>
       <source>Make a thick solid</source>
-      <translation>Fer un gruixut sòlid</translation>
+      <translation>Fes un sòlid gruixut</translation>
     </message>
   </context>
   <context>
@@ -633,12 +633,12 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>Crear un additiu primitiu</translation>
+      <translation>Crear un primitiu additiu</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation>Caixa additiu</translation>
+      <translation>Caixa additiva</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -653,7 +653,7 @@
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation>Additiu con</translation>
+      <translation>Con additiu</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -673,7 +673,7 @@
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation>Falca additiu</translation>
+      <translation>Falca additiva</translation>
     </message>
   </context>
   <context>
@@ -685,28 +685,28 @@
     </message>
     <message>
       <source>Create an subtractive primitive</source>
-      <translation>Crear una primitiva substractiu</translation>
+      <translation>Crea un primitiu substractiu</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Crea un primitiu sustractiu</translation>
     </message>
     <message>
       <location line="+111"/>
       <source>Subtractive Box</source>
-      <translation>Caixa substractiu</translation>
+      <translation>Caixa substractiva</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cylinder</source>
-      <translation>Cilindre Sustractiu</translation>
+      <translation>Cilindre sustractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Sphere</source>
-      <translation>Esfera Sustractiva</translation>
+      <translation>Esfera sustractiva</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -744,22 +744,22 @@
     <message>
       <location line="+6"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation>Heu seleccionat geometries que no formen part del cos actiu. Si us plau definir com manejar les seleccions. Si no voleu que aquestes referències cancel·lar la comanda.</translation>
+      <translation>Heu seleccionat geometries que no formen part del cos actiu. Definiu com tractar aquestes seleccions. Si no voleu aquestes referències, cancel·leu l'ordre.</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Make independent copy (recommended)</source>
-      <translation>Fer còpia independent (recomanat)</translation>
+      <translation>Fes una còpia independent (recomanat)</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Make dependent copy</source>
-      <translation>Fer còpia dependent</translation>
+      <translation>Fes una còpia dependent</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Create cross-reference</source>
-      <translation>Crear referència creuada</translation>
+      <translation>Crea una referència creuada</translation>
     </message>
   </context>
   <context>
@@ -777,17 +777,17 @@
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>Sense fil en dibuix</translation>
+      <translation>No hi ha cap fil a l'esbós</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation>Esbós ja utilitzat per l'altre element</translation>
+      <translation>Esbós ja utilitzat per una altra operació</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Esbós pertany a un altre tret de cos</translation>
+      <translation>L'esbós pertany a una altra operació del Cos</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -815,7 +815,7 @@
     <message>
       <location line="+1"/>
       <source>Create Geometry</source>
-      <translation>Crear geometria</translation>
+      <translation>Crea geometria</translation>
     </message>
   </context>
   <context>
@@ -1128,7 +1128,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="+182"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation>Seleccionant això provocarà dependència circular.</translation>
+      <translation>Seleccionar això provocarà una dependència circular.</translation>
     </message>
   </context>
   <context>
@@ -1141,17 +1141,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add body</source>
-      <translation>Afegir el cos</translation>
+      <translation>Afegeix un cos</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove body</source>
-      <translation>Treure el cos</translation>
+      <translation>Elimina un cos</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Fuse</source>
-      <translation>Combinat</translation>
+      <translation>Combina</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -1170,7 +1170,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
       <source>Boolean parameters</source>
-      <translation>Paràmetres booleanes</translation>
+      <translation>Paràmetres booleans</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -1183,12 +1183,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
       <source>Primitive parameters</source>
-      <translation>Paràmetres Primitiva</translation>
+      <translation>Paràmetres primitius</translation>
     </message>
     <message>
       <location line="+593"/>
       <source>Create primitive</source>
-      <translation>Crear primitiva</translation>
+      <translation>Crea un primitiu</translation>
     </message>
   </context>
   <context>
@@ -1248,12 +1248,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation>Afegir ref</translation>
+      <translation>Afegeix ref</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation>Treure ref</translation>
+      <translation>Treu ref</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -1283,12 +1283,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>La llista de cossos és buida</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>La llista de cossos no pot ser buida</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -1308,7 +1308,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+49"/>
       <source>Incompatible reference set</source>
-      <translation>Conjunt de referència incompatible</translation>
+      <translation>Conjunt de referències incompatible</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1491,17 +1491,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+17"/>
       <source>Make independent copy (recommended)</source>
-      <translation>Fer còpia independent (recomanat)</translation>
+      <translation>Fes una còpia independent (recomanat)</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Make dependent copy</source>
-      <translation>Fer còpia dependent</translation>
+      <translation>Fes una còpia dependent</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Create cross-reference</source>
-      <translation>Crear referència creuada</translation>
+      <translation>Crea una referència creuada</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="+65"/>
@@ -1516,12 +1516,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>Sense fil en dibuix</translation>
+      <translation>No hi ha cap fil a l'esbós</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation>Esbós ja utilitzat per l'altre element</translation>
+      <translation>Esbós ja utilitzat per una altra operació</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1568,12 +1568,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation>Afegir ref</translation>
+      <translation>Afegeix ref</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation>Treure ref</translation>
+      <translation>Treu ref</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2931,42 +2931,42 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Crea una caixa substractiva a partir de la amplada, alçada i longitud</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Crea un cilindre substractiu a partir del radi, alçada i angle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Crea una esfera substractiva a partir del radi i diversos angles</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Crea un con substractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Crea un elipsoide substractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Crea un tor substractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Crea un prisma substractiu</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Crea una falca substractiva</translation>
     </message>
   </context>
   <context>

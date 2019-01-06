@@ -1,4 +1,5 @@
 #!/usr/bin/python
+
 # -*- coding: utf-8 -*-
 # (c) 2010 Werner Mayer LGPL
 
@@ -24,6 +25,7 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
 
 Usage = """updatets - update all .ts files found in the source directories
 
@@ -60,7 +62,11 @@ PyCommands = [["src/Mod/Draft",
               ["src/Mod/OpenSCAD",
                "pylupdate *.py Resources/ui/*.ui -ts Resources/translations/OpenSCAD.ts"],
               ["src/Mod/Start",
-               "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPage.ts"],
+               "pylupdate StartPage/*.py -ts Gui/Resources/translations/StartPagepy.ts"],
+              ["src/Mod/Start",
+               'lconvert -i Gui/Resources/translations/StartPagepy.ts Gui/Resources/translations/StartPage.ts -o Gui/Resources/translations/StartPage.ts'],
+              ["src/Mod/Start",
+               'rm Gui/Resources/translations/StartPagepy.ts'],
               ["src/Mod/Ship",
                'pylupdate `find ./ -name "*.py"` -ts resources/translations/Ship.ts'],
               ["src/Mod/Plot",
@@ -79,6 +85,18 @@ PyCommands = [["src/Mod/Draft",
                'rm Gui/Resources/translations/Fempy.ts'],
               ["src/Mod/Tux",
                'pylupdate `find ./ -name "*.py"` -ts Resources/translations/Tux.ts'],
+              ["src/Mod/Part",
+               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Partpy.ts'],
+              ["src/Mod/Part",
+               'lconvert -i Gui/Resources/translations/Partpy.ts Gui/Resources/translations/Part_de.ts -o Gui/Resources/translations/Part_de.ts'],
+              ["src/Mod/Part",
+               'rm Gui/Resources/translations/Partpy.ts'],
+              ["src/Mod/Image",
+               'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Imagepy.ts'],
+              ["src/Mod/Image",
+               'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image_de.ts -o Gui/Resources/translations/Image_de.ts'],
+              ["src/Mod/Image",
+               'rm Gui/Resources/translations/Imagepy.ts'],
                ]
 
 # add python folders to exclude list

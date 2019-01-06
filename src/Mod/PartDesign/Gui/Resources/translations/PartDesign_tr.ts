@@ -11,16 +11,16 @@
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation>Katkı çatısı</translation>
+      <translation>İlave Çatılama</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Seçili bir profili diğer profil bölümlerine dolaşmak</translation>
+      <translation>Seçili profili diğer profil bölümleri ile çatıla</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Seçilen bir eskizin yol boyunca veya diğer profillere kadar taranması</translation>
+      <translation>Seçili eskizi bir yol boyunca ya da diğer profillere kadar süpür</translation>
     </message>
   </context>
   <context>
@@ -38,7 +38,7 @@
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Seçilen bir eskizin yol boyunca veya diğer profillere kadar taranması</translation>
+      <translation>Seçili eskizi bir yol boyunca ya da diğer profillere kadar süpür</translation>
     </message>
   </context>
   <context>
@@ -51,12 +51,12 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation>Cisim oluştur</translation>
+      <translation>Gövde oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation>Yeni bir cisim oluştur ve etkinleştir</translation>
+      <translation>Yeni bir gövde oluştur ve etkinleştir</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation>İki ya da daha fazla cisim ile Boolean işlem uygula</translation>
+      <translation>İki ya da daha fazla gövdeli Boolean işlem uygula</translation>
     </message>
   </context>
   <context>
@@ -95,7 +95,7 @@
     <message>
       <location line="+1"/>
       <source>Chamfer</source>
-      <translation>Pah kırma</translation>
+      <translation>Pah kır</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -118,7 +118,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation>Yeni bir klon oluştur</translation>
+      <translation>Yeni bir kopya oluştur</translation>
     </message>
   </context>
   <context>
@@ -136,7 +136,7 @@
     <message>
       <location line="+1"/>
       <source>Make a draft on a face</source>
-      <translation>Yüzeye çekme açısı vermek</translation>
+      <translation>Bir yüze taslak oluştur</translation>
     </message>
   </context>
   <context>
@@ -167,12 +167,12 @@
     <message>
       <location line="+1"/>
       <source>Fillet</source>
-      <translation>Kavis</translation>
+      <translation>Yuvarla</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Bir kenar, yüzey yada gövdeye kavis vermek</translation>
+      <translation>Bir kenar, yüzey ya da gövdeyi yuvarla, kavis ver</translation>
     </message>
   </context>
   <context>
@@ -190,7 +190,7 @@
     <message>
       <location line="+1"/>
       <source>Groove a selected sketch</source>
-      <translation>Seçilmiş taslağı kullanarak oluk oluştur</translation>
+      <translation>Seçili bir eskizden oluk (yiv) oluştur</translation>
     </message>
   </context>
   <context>
@@ -208,7 +208,7 @@
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation>Seçili taslakta bir delik açma</translation>
+      <translation>Seçili eskiz ile bir delik oluştur</translation>
     </message>
   </context>
   <context>
@@ -261,16 +261,16 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation>Taşı</translation>
+      <translation>GeçişYap</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Belgeyi modern ParçaTasarım (PartDesign) iş akışına geçir</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation>Belgeyi modern parçalı tasarım iş akışına geçirin</translation>
+      <translation>Belgeyi modern parça tasarım iş akışına geçirin</translation>
     </message>
   </context>
   <context>
@@ -385,7 +385,7 @@
     <message>
       <location line="+1"/>
       <source>Create sketch</source>
-      <translation>Taslak oluştur</translation>
+      <translation>Eskiz oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -408,7 +408,7 @@
     <message>
       <location line="+1"/>
       <source>Pad a selected sketch</source>
-      <translation>Seçilen taslağa kalınlık ver</translation>
+      <translation>Seçilen bir eskize kalınlık ver</translation>
     </message>
   </context>
   <context>
@@ -459,7 +459,7 @@
     <message>
       <location line="+1"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>Seçili taslakta cebe çıkın</translation>
+      <translation>Seçili eskizde cep oluşturun</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
@@ -521,7 +521,7 @@
     <message>
       <location line="+1"/>
       <source>Revolve a selected sketch</source>
-      <translation>Seçili bir çizimi döndür</translation>
+      <translation>Seçili bir eskizi döndürerek katıla</translation>
     </message>
   </context>
   <context>
@@ -574,12 +574,12 @@
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation>Çıkarılabilir çatı</translation>
+      <translation>Çıkarılabilir çatılama</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Seçili bir profili diğer profil profilleri üzerinden sarın ve vücuttan çıkarın</translation>
+      <translation>Seçili bir profili diğer profil bölümleri ile çatılayın ve gövdeden çıkarın</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
@@ -633,7 +633,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>Katmanlı bir ilkel oluşturun</translation>
+      <translation>Katmanlı bir basit nesne oluştur</translation>
     </message>
     <message>
       <location line="+113"/>
@@ -685,13 +685,13 @@
     </message>
     <message>
       <source>Create an subtractive primitive</source>
-      <translation>Subtractive bir ilkel oluşturun</translation>
+      <translation>Çıkarılabilir bir temel nesne oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Çıkarılabilir bir temel öğe oluştur</translation>
     </message>
     <message>
       <location line="+111"/>
@@ -787,7 +787,7 @@
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Eskiz başka bir Body özelliğine ait</translation>
+      <translation>Eskiz başka bir Gövde özelliğine ait</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -810,7 +810,7 @@
     <message>
       <location line="+1"/>
       <source>Sketch tools</source>
-      <translation>Çizim araçları</translation>
+      <translation>Eskiz araçları</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1184,12 +1184,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
       <source>Primitive parameters</source>
-      <translation>İlkel parametreler</translation>
+      <translation>Basit nesne parametreleri</translation>
     </message>
     <message>
       <location line="+593"/>
       <source>Create primitive</source>
-      <translation>Ilkel yarat</translation>
+      <translation>Basit nesne oluştur</translation>
     </message>
   </context>
   <context>
@@ -1284,12 +1284,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Boş gövde listesi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Gövde listesi boş olamaz</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -1747,7 +1747,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+21"/>
       <source>Occurrences</source>
-      <translation>Geçtiği</translation>
+      <translation>Yineleme adedi</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -1813,7 +1813,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
       <source>Loft parameters</source>
-      <translation>Çatı parametreleri</translation>
+      <translation>Çatılama parametreleri</translation>
     </message>
   </context>
   <context>
@@ -2490,7 +2490,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+27"/>
       <source>Occurrences</source>
-      <translation>Geçtiği</translation>
+      <translation>Yineleme adedi</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2630,7 +2630,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+14"/>
       <source>Occurrences</source>
-      <translation>Geçtiği</translation>
+      <translation>Yineleme adedi</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2932,42 +2932,42 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Genişliği, yüksekliği ve uzunluğu belirtilen çıkarılabilir bir kutu oluştur</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Yarıçapı, yüksekliği ve açısı belirtilen çıkarılabilir bir silindir oluştur</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Yarıçapı ve çeşitli açıları belirtilen çıkarılabilir bir küre oluştur</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Çıkarılabilir bir koni oluştur</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Çıkarılabilir bir ellipsoid (yumurtamsı) oluştur</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Çıkarılabilir bir simit oluştur</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Çıkarılabilir bir prizma oluştur</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Çıkarılabilir bir kama oluştur</translation>
     </message>
   </context>
   <context>
@@ -3193,7 +3193,7 @@ Bir yüz üzerinde taslak oluşturun.</translation>
     <message>
       <location line="+1"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation>Lütfen önce bir düzlem oluşturun veya üzerine çizmek için bir yüz seçin</translation>
+      <translation>Lütfen önce bir düzlem oluşturun ya da bir eskiz yüzeyi seçin</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3224,12 +3224,12 @@ Bir yüz üzerinde taslak oluşturun.</translation>
     <message>
       <location line="-913"/>
       <source>No sketch to work on</source>
-      <translation>Üzerinde çalışmak için herhangi bir eskiz yok</translation>
+      <translation>Üzerinde çalışılacak bir eskiz yok</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No sketch is available in the document</source>
-      <translation>Belgede eskiz yok</translation>
+      <translation>Belgede mevcut bir eskiz yok</translation>
     </message>
     <message>
       <location line="+600"/>
@@ -3429,22 +3429,22 @@ Bu, beklenmedik sonuçlara neden olabilir.</translation>
     <message>
       <location line="+176"/>
       <source>Nothing to migrate</source>
-      <translation>Taşınacak hiçbir şey yok</translation>
+      <translation>Geçiş yapılacak hiçbir şey yok</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No PartDesign features which doesn't belong to a body found. Nothing to migrate.</source>
-      <translation>Bulunan bir ceset ait olmayan hiçbir PartDesign özelliği yoktur. Taşınacak hiçbir şey yok.</translation>
+      <translation>Gövdeye ait olmayan bir ParçaTasarımı (PartDesign) özelliği bulamıyorum. Geçiş yapılacak bir şey yok.</translation>
     </message>
     <message>
       <location line="+148"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation>Eskiz düzlemi taşınamıyor</translation>
+      <translation>Eskiz düzlemi geçişi yapılamadı</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Lütfen çizim düzlemi olarak bir Temel veya Veri düzlemi kullanmak için '% 1' düzenleyin ve yeniden tanımlayın.</translation>
+      <translation>Lütfen '%1' i düzenleyin ve eskiz düzlemi olarak bir Taban veya Kıyas düzlemi kullanmak için yeniden tanımlayın.</translation>
     </message>
     <message>
       <location line="+62"/>
@@ -3653,7 +3653,7 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
       <source>Edit loft</source>
-      <translation>Çatıyı düzenle</translation>
+      <translation>Çatılamayı düzenle</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="+80"/>
@@ -3677,7 +3677,7 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
     <message>
       <location line="+3"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation>Modern PartDesign özelliklerini kullanabilmek için taşımak istiyor musunuz?</translation>
+      <translation>Modern ParçaTasarımı (PartDesign) özelliklerini kullanabilmek için geçiş yapmak istiyor musunuz?</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3694,7 +3694,7 @@ Bu özellik bozuk ve düzenlenemiyor.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Not: Taşıma işlemini seçerseniz, dosyayı eski FreeCAD sürümleriyle düzenleyemezsiniz.
+      <translation>Not: Geçiş işlemini seçerseniz, dosyayı eski FreeCAD sürümleriyle düzenleyemezsiniz.
 Göç etmeyi reddederseniz, Bedenler ve Parçalar gibi yeni PartDesign özelliklerini kullanamazsınız. Sonuç olarak, parçalarınızı montaj tezgahında da kullanamazsınız.
 Her anınızı daha sonra 'Parça Tasarımı-&gt; Taşıma...' ile taşıyabilirsiniz,.</translation>
     </message>
@@ -3702,14 +3702,14 @@ Her anınızı daha sonra 'Parça Tasarımı-&gt; Taşıma...' ile taşıyabilir
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Not Geçiş yapmayı seçerseniz, eski FreeCAD sürümleriyle dosyayı düzenleyemezsiniz.
-Göç etmeyi reddederseniz, Bedenler ve Parçalar gibi yeni PartDesign özelliklerini kullanamazsınız. Sonuç olarak, parçalarınızı montaj tezgahında da kullanamazsınız.
-Her an ileride 'Parça Tasarımı-&gt; Taşıma...' ile göç edebileceksiniz.</translation>
+      <translation>Not Eğer Geçiş yapmayı seçerseniz, dosyayı eski FreeCAD sürümleriyle düzenleyemezsiniz.
+Geçiş yapmayı reddederseniz, Gövdeler ve Parçalar gibi yeni ParçaTasarımı (PartDesign) özelliklerini kullanamazsınız. Sonuç olarak, parçalarınızı Montaj Çalışma Tezgahında da kullanamazsınız.
+ileride, istediğiniz an 'ParçaTasarımı-&gt; GeçişYap...' menüsü ile geçiş yapabilirsiniz.</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Migrate manually</source>
-      <translation>El ile taşı</translation>
+      <translation>Manuel olarak geçiş yap</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
@@ -3719,7 +3719,7 @@ Her an ileride 'Parça Tasarımı-&gt; Taşıma...' ile göç edebileceksiniz.</
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation>Ilkel düzenle</translation>
+      <translation>Basit nesneyi düzenle</translation>
     </message>
   </context>
   <context>

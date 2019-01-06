@@ -503,6 +503,11 @@
       <source>Please visit %1 and copy the files to %2</source>
       <translation type="unfinished">Please visit %1 and copy the files to %2</translation>
     </message>
+    <message>
+      <location filename="../../ViewProviderTrajectory.cpp" line="+164"/>
+      <source>Modify</source>
+      <translation type="unfinished">Modify</translation>
+    </message>
   </context>
   <context>
     <name>RobotGui::DlgTrajectorySimulate</name>
@@ -630,7 +635,7 @@
     <message>
       <location line="+16"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../../TaskRobot6Axis.cpp" line="+52"/>
@@ -1011,7 +1016,7 @@
     <message>
       <location line="+13"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location line="+10"/>

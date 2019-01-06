@@ -305,9 +305,6 @@ class Snapper:
                     if Draft.getType(obj) == "Polygon":
                         # special snapping for polygons: add the center
                         snaps.extend(self.snapToPolygon(obj))
-                    elif Draft.getType(obj) == "BuildingPart":
-                        # special snapping for Arch building parts: add the location
-                        snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Pacement.Base)])
 
                     if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
                         if "Edge" in comp:
@@ -361,9 +358,13 @@ class Snapper:
                     # for points we only snap to points
                     snaps.extend(self.snapToEndpoints(obj.Points))
 
-                elif Draft.getType(obj) == "WorkingPlaneProxy":
-                    # snap to the center of WPProxies
+                elif Draft.getType(obj) in ["WorkingPlaneProxy","BuildingPart"]:
+                    # snap to the center of WPProxies and BuildingParts
                     snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Placement.Base)])
+
+                elif Draft.getType(obj) == "SectionPlane":
+                    # snap to corners of section planes
+                    snaps.extend(self.snapToEndpoints(obj.Shape))
 
             # updating last objects list
             if not self.lastObj[1]:
@@ -853,9 +854,18 @@ class Snapper:
                 if obj:
                     if obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis"):
                         if (not self.maxEdges) or (len(obj.Shape.Edges) <= self.maxEdges):
+                            import Part
                             for e in obj.Shape.Edges:
                                 # get the intersection points
-                                pt = DraftGeomUtils.findIntersection(e,shape)
+                                if self.isEnabled("WorkingPlane") and hasattr(e,"Curve") and isinstance(e.Curve,(Part.Line,Part.LineSegment)) and hasattr(shape,"Curve") and isinstance(shape.Curve,(Part.Line,Part.LineSegment)):
+                                    # get apparent intersection (lines projected on WP)
+                                    p1 = self.toWP(e.Vertexes[0].Point)
+                                    p2 = self.toWP(e.Vertexes[-1].Point)
+                                    p3 = self.toWP(shape.Vertexes[0].Point)
+                                    p4 = self.toWP(shape.Vertexes[-1].Point)
+                                    pt = DraftGeomUtils.findIntersection(p1,p2,p3,p4,True,True)
+                                else:
+                                    pt = DraftGeomUtils.findIntersection(e,shape)
                                 if pt:
                                     for p in pt:
                                         snaps.append([p,'intersection',self.toWP(p)])
@@ -879,11 +889,11 @@ class Snapper:
         p = Vector(info['x'],info['y'],info['z'])
         if active:
             if self.isEnabled("passive"):
-                return [p,'endpoint',p]
+                return [p,'endpoint',self.toWP(p)]
             else:
                 return []
         elif self.isEnabled("passive"):
-            return [p,'passive',p]
+            return [p,'passive',self.toWP(p)]
         else:
             return []
             
@@ -1022,6 +1032,7 @@ class Snapper:
         self.lastArchPoint = None
         self.selectMode = False
         self.running = False
+        self.holdPoints = []
         
     def setSelectMode(self,mode):
         "sets the snapper into select mode (hides snapping temporarily)"
@@ -1151,6 +1162,7 @@ class Snapper:
         
         self.pt = None
         self.lastSnappedObject = None
+        self.holdPoints = []
         self.ui = FreeCADGui.draftToolBar
         self.view = Draft.get3DView()
 
@@ -1292,7 +1304,12 @@ class Snapper:
             c = 0
             for b in [self.masterbutton]+self.toolbarButtons:
                 if len(t) > c:
-                    b.setChecked(bool(int(t[c])))
+                    state = bool(int(t[c]))
+                    b.setChecked(state)
+                    if state:
+                        b.setToolTip(b.toolTip()+" (ON)")
+                    else:
+                        b.setToolTip(b.toolTip()+" (OFF)")
                     c += 1
         if not Draft.getParam("showSnapBar",True):
             self.toolbar.hide()
@@ -1305,6 +1322,10 @@ class Snapper:
         t = ''
         for b in [self.masterbutton]+self.toolbarButtons:
             t += str(int(b.isChecked()))
+            if b.isChecked():
+                b.setToolTip(b.toolTip().replace("OFF","ON"))
+            else:
+                b.setToolTip(b.toolTip().replace("ON","OFF"))
         Draft.setParam("snapModes",t)
 
     def toggle(self,checked=None):
@@ -1420,7 +1441,7 @@ class Snapper:
             self.grid.set()
             
     def addHoldPoint(self):
-        if self.spoint:
+        if self.spoint and not(self.spoint in self.holdPoints):
             if self.holdTracker:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()

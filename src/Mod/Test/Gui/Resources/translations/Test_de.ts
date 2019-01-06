@@ -109,5 +109,23 @@ Double click on an error in the tree view to see more information about it,inclu
       <translation>Geben Sie den Namen eines Tests ein und klicken Sie auf 'Start', um diesen Test auszuführen.
 Doppelklicken Sie im Fehlerfall auf das Element in der Baumansicht, um mehr Informationen darüber zu erhalten.</translation>
     </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Geben Sie den Namen des aufrufbaren Objekts ein, das wenn aufgerufen einen TestCase zurückgibt.
+Drücken Sie 'start' und der somit erzeugte Test wird ausgeführt.
+
+Doppelklick auf eine Fehlermeldung in der Strukturansicht zeigt mehr Informationen, einschließlich eines Stacktrace.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest ist Teil von FreeCAD und untersützt Modultests für selbsterstellte Module.</translation>
+    </message>
   </context>
 </TS>

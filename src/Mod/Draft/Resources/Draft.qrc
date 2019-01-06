@@ -120,6 +120,8 @@
         <file>translations/Draft_id.qm</file>
         <file>translations/Draft_lt.qm</file>
         <file>translations/Draft_val-ES.qm</file>
+        <file>translations/Draft_ar.qm</file>
+        <file>translations/Draft_vi.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftsnap.ui</file>
         <file>ui/preferences-drafttexts.ui</file>
@@ -128,5 +130,6 @@
         <file>ui/preferences-dwg.ui</file>
         <file>ui/preferences-svg.ui</file>
         <file>ui/preferences-oca.ui</file>
+        <file>ui/TaskShapeString.ui</file>
     </qresource>
-</RCC> 
+</RCC>

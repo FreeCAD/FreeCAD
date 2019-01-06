@@ -37,6 +37,25 @@ using namespace FemGui;
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "FEM");
     qApp->translate("Workbench", "&FEM");
+    qApp->translate("Workbench", "Model");
+    qApp->translate("Workbench", "M&odel");
+    qApp->translate("Workbench", "Mechanical Constraints");
+    qApp->translate("Workbench", "&Mechanical Constraints");
+    qApp->translate("Workbench", "Thermal Constraints");
+    qApp->translate("Workbench", "&Thermal Constraints");
+    qApp->translate("Workbench", "Mesh");
+    qApp->translate("Workbench", "M&esh");
+    qApp->translate("Workbench", "Fluid Constraints");
+    qApp->translate("Workbench", "&Fluid Constraints");
+    qApp->translate("Workbench", "Electrostatic Constraints");
+    qApp->translate("Workbench", "&Electrostatic Constraints");
+    qApp->translate("Workbench", "Solve");
+    qApp->translate("Workbench", "&Solve");
+    qApp->translate("Workbench", "Results");
+    qApp->translate("Workbench", "&Results");
+    qApp->translate("Workbench", "Materials");
+    qApp->translate("Workbench", "&Element Geometry");
+    qApp->translate("Workbench", "Utilities");
 #endif
 
 /// @namespace FemGui @class Workbench

@@ -4,25 +4,25 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="+245"/>
+      <location filename="../../Command.cpp" line="+290"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Curve on mesh...</source>
-      <translation type="unfinished">Curve on mesh...</translation>
+      <translation>Krivulja na mreži...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Krivulja na mreži</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location line="-191"/>
+      <location line="-235"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
@@ -40,14 +40,14 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location line="+106"/>
+      <location line="+150"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Stvori presjek iz mreže i ravnine</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -58,20 +58,20 @@
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Obrezivanje mreže s ravninom</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Obrezuje mrežu s ravninom</translation>
     </message>
   </context>
   <context>
@@ -84,7 +84,7 @@
     <message>
       <location line="+2"/>
       <source>Close wire</source>
-      <translation type="unfinished">Close wire</translation>
+      <translation>Zatvori žicu</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -99,7 +99,7 @@
     <message>
       <location line="+208"/>
       <source>Wrong mesh picked</source>
-      <translation type="unfinished">Wrong mesh picked</translation>
+      <translation>Izabrana pogrešna mreža</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -112,7 +112,7 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
       <source>Curve on mesh</source>
-      <translation type="unfinished">Curve on mesh</translation>
+      <translation>Krivulja na mreži</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -122,7 +122,7 @@
     <message>
       <location line="+6"/>
       <source>Snap tolerance to vertexes</source>
-      <translation type="unfinished">Snap tolerance to vertexes</translation>
+      <translation>Tolerancija kod privuci na vrhove</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -132,7 +132,7 @@
     <message>
       <location line="+10"/>
       <source>Split threshold</source>
-      <translation type="unfinished">Split threshold</translation>
+      <translation>Granična vrijednost razdjeljivanja</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -142,17 +142,17 @@
     <message>
       <location line="+6"/>
       <source>Tolerance to mesh</source>
-      <translation type="unfinished">Tolerance to mesh</translation>
+      <translation>Odstupanje na mreži</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Continuity</source>
-      <translation type="unfinished">Continuity</translation>
+      <translation>Kontinuitet</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Maximum curve degree</source>
-      <translation type="unfinished">Maximum curve degree</translation>
+      <translation>Maksimalni Stupanj krivulje</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -175,7 +175,7 @@
     <message>
       <location line="+8"/>
       <source>Meshing options</source>
-      <translation type="unfinished">Meshing options</translation>
+      <translation>Opcije mreže</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -185,12 +185,12 @@
     <message>
       <location line="+7"/>
       <source>Mefisto</source>
-      <translation type="unfinished">Mefisto</translation>
+      <translation>Mefisto</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Netgen</source>
-      <translation type="unfinished">Netgen</translation>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location line="+81"/>
@@ -200,12 +200,12 @@
     <message>
       <location line="-7"/>
       <source>Apply face colors to mesh</source>
-      <translation type="unfinished">Apply face colors to mesh</translation>
+      <translation>Dodaje boju lica na mrežu</translation>
     </message>
     <message>
       <location line="-35"/>
       <source>Angular deviation:</source>
-      <translation type="unfinished">Angular deviation:</translation>
+      <translation>Kutna odstupanja:</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -255,32 +255,32 @@
     <message>
       <location line="+10"/>
       <source>Mesh size grading:</source>
-      <translation type="unfinished">Mesh size grading:</translation>
+      <translation>Veličina Mreže stupnjevanje:</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Elements per edge:</source>
-      <translation type="unfinished">Elements per edge:</translation>
+      <translation>Elemenata po rubu:</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Elements per curvature radius:</source>
-      <translation type="unfinished">Elements per curvature radius:</translation>
+      <translation>Elemenata po radijusu zakrivljenosti:</translation>
     </message>
     <message>
       <location line="+31"/>
       <source>Optimize surface</source>
-      <translation type="unfinished">Optimize surface</translation>
+      <translation>Optimizirati površinu</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Second order elements</source>
-      <translation type="unfinished">Second order elements</translation>
+      <translation>Drugi red elemenata</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Quad dominated</source>
-      <translation type="unfinished">Quad dominated</translation>
+      <translation>Quad dominira</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -296,7 +296,7 @@
       <translation>Max. duljina ruba:</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+225"/>
+      <location filename="../../Tessellation.cpp" line="+226"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Prvo daberite oblik za umrežavanje.</translation>
     </message>
@@ -309,27 +309,52 @@
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
+      <location filename="../../Command.cpp" line="+137"/>
       <source>Select plane</source>
-      <translation type="unfinished">Select plane</translation>
+      <translation>Odaberite ravninu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you section the mesh.</translation>
+      <translation>Molimo odaberite ravninu na kojoj se dijeli mreža.</translation>
     </message>
   </context>
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Select plane</source>
-      <translation type="unfinished">Select plane</translation>
+      <translation>Odaberite ravninu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+      <translation>Molimo odaberite ravninu na kojoj se skraćuje mreža.</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>Trim by plane</source>
+      <translation>Skraćivanje sa ravninom</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select the side you want to keep.</source>
+      <translation>Odaberite stranu koju želite zadržati.</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Inner</source>
+      <translation>Unutrašnji</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Outer</source>
+      <translation>Vanjski</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Split</source>
+      <translation>Razdjeli</translation>
     </message>
   </context>
   <context>

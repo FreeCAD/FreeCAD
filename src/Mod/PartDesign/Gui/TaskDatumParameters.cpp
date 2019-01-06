@@ -46,6 +46,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
@@ -109,7 +110,6 @@ bool TaskDlgDatumParameters::reject() {
 
 bool TaskDlgDatumParameters::accept() {
 
-    std::string name = ViewProvider->getObject()->getNameInDocument();
     Part::Datum* pcDatum = static_cast<Part::Datum*>(ViewProvider->getObject());
     auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
     auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
@@ -135,34 +135,34 @@ bool TaskDlgDatumParameters::accept() {
     //see what to do with external references
     //check the prerequisites for the selected objects
     //the user has to decide which option we should take if external references are used
-    bool ext = false;
-    for(App::DocumentObject* obj : pcDatum->Support.getValues()) {
-        if(!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
-            ext = true;
+    bool extReference = false;
+    for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
+        if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
+            extReference = true;
     }
-    if(ext) {
-        // TODO: rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
-        QDialog* dia = new QDialog;
-        Ui_Dialog dlg;
-        dlg.setupUi(dia);
-        dia->setModal(true);
-        int result = dia->exec();
-        if(result == QDialog::DialogCode::Rejected)
-            return false;
-        else if(!dlg.radioXRef->isChecked()) {
 
+    if(extReference) {
+        // TODO: rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
+        QDialog dia(Gui::getMainWindow());
+        PartDesignGui::Ui_DlgReference dlg;
+        dlg.setupUi(&dia);
+        dia.setModal(true);
+        int result = dia.exec();
+        if (result == QDialog::DialogCode::Rejected)
+            return false;
+        else if (!dlg.radioXRef->isChecked()) {
             std::vector<App::DocumentObject*> objs;
             std::vector<std::string> subs = pcDatum->Support.getSubValues();
             int index = 0;
-            for(App::DocumentObject* obj : pcDatum->Support.getValues()) {
-
-                if(!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
+            for (App::DocumentObject* obj : pcDatum->Support.getValues()) {
+                if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                     objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, subs[index], dlg.radioIndependent->isChecked()));
                     copies.push_back(objs.back());
                     subs[index] = "";
                 }
-                else
+                else {
                     objs.push_back(obj);
+                }
 
                 index++;
             }
@@ -170,18 +170,18 @@ bool TaskDlgDatumParameters::accept() {
             pcDatum->Support.setValues(objs, subs);
         }
     }
-    
-    if(!PartGui::TaskDlgAttacher::accept())
+
+    if (!PartGui::TaskDlgAttacher::accept())
         return false;
-    
+
     //we need to add the copied features to the body after the command action, as otherwise FreeCAD crashes unexplainably
     for(auto obj : copies) {
-        if(pcActiveBody)
+        if (pcActiveBody)
             pcActiveBody->addObject(obj);
         else if (pcActivePart)
             pcActivePart->addObject(obj);
     }
-    
+
     return true;
 }
 

@@ -87,9 +87,9 @@ void SketcherGeneralWidget::loadSettings()
     ui->gridSize->setToLastUsedValue();
     ui->checkBoxGridSnap->setChecked(hGrp->GetBool("GridSnap", ui->checkBoxGridSnap->isChecked()));
     ui->checkBoxAutoconstraints->setChecked(hGrp->GetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked()));
-    
+
     ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    
+
     // 1->Normal Geometry, 2->Construction, 3->External
     int topid = hGrpp->GetInt("TopRenderGeometryId",1);
     int midid = hGrpp->GetInt("MidRenderGeometryId",2);
@@ -133,8 +133,22 @@ void SketcherGeneralWidget::checkAutoconstraints(bool on)
     ui->checkBoxAutoconstraints->setChecked(on);
 }
 
+bool SketcherGeneralWidget::isGridViewChecked() const
+{
+    return ui->checkBoxShowGrid->isChecked();
+}
+
+void SketcherGeneralWidget::saveGridViewChecked()
+{
+    // only save this setting
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
+    hGrp->SetBool("ShowGrid", ui->checkBoxShowGrid->isChecked());
+}
+
 void SketcherGeneralWidget::onToggleGridView(bool on)
 {
+    checkGridView(on);
     ui->label->setEnabled(on);
     ui->gridSize->setEnabled(on);
     ui->checkBoxGridSnap->setEnabled(on);
@@ -215,12 +229,7 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
     );
 
     Gui::Selection().Attach(this);
-    QSignalBlocker block(widget);
     widget->loadSettings();
-    widget->setGridSize(sketchView->GridSize.getValue());
-    widget->checkGridView(sketchView->ShowGrid.getValue());
-    widget->checkGridSnap(sketchView->GridSnap.getValue());
-    widget->checkAutoconstraints(sketchView->Autoconstraints.getValue());
 
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(boost::bind
@@ -259,6 +268,7 @@ void TaskSketcherGeneral::onToggleGridView(bool on)
 {
     Base::ConnectionBlocker block(changedSketchView);
     sketchView->ShowGrid.setValue(on);
+    widget->saveGridViewChecked();
 }
 
 void TaskSketcherGeneral::onSetGridSize(double val)

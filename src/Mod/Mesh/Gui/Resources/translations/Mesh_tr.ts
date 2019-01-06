@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Değerlendir ve kafesi onar...</translation>
     </message>
   </context>
   <context>
@@ -162,7 +162,7 @@
     </message>
     <message>
       <source>Exports a mesh to file</source>
-      <translation>Kafes dosyasına dışa aktar</translation>
+      <translation>Bir Kafesi dosyaya (dışa) aktar</translation>
     </message>
   </context>
   <context>
@@ -444,6 +444,21 @@
     <message>
       <source>Create mesh segments</source>
       <translation>Kafes bölümleri oluştur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation>En uygun yüzeylerden kafes kesimleri oluşturun...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation>En uygun yüzeylerden kafes kesimleri oluşturun</translation>
     </message>
   </context>
   <context>
@@ -900,7 +915,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
       <source>Mesh Formats</source>
-      <translation>Örgü biçimleri</translation>
+      <translation>Kafes biçimleri</translation>
     </message>
     <message>
       <source>Export</source>
@@ -1060,6 +1075,45 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Uygun yüzey</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parametreler</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>seçim</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Bölge</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Üçgen</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Temizle</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Hesapla</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Seçim yok</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Yüzeye uydurmadan önce bir alan seçin.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1164,6 +1218,73 @@ Please run the command to repair folds first</source>
       <source>Sphere</source>
       <translation>Küre</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Eğrilik</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Serbest form</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>En fazla Eğrilik</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>En az Eğrilik</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Örgü bölütleme</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Küre</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolerans</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Minimum yüz sayısı</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametreler...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Düzlem</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Silindir</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Baz</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Olağan</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Eksen</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Yarıçap</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Ortala</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1205,6 +1326,13 @@ Please run the command to repair folds first</source>
     <message>
       <source>Invert</source>
       <translation>Evir</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>% 1'in limiti:</translation>
     </message>
   </context>
   <context>
@@ -1254,7 +1382,7 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     </message>
     <message>
       <source>Export mesh</source>
-      <translation>Örgü dışa aktar</translation>
+      <translation>Kafesi Dışa Aktar</translation>
     </message>
     <message>
       <source>Solid Mesh</source>
@@ -1462,7 +1590,7 @@ Maximum=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Import-Export</source>
-      <translation>İçe aktarım-Dışa aktarım</translation>
+      <translation>İçe-Dışa Aktar</translation>
     </message>
     <message>
       <source>Scaling</source>
@@ -1471,6 +1599,10 @@ Maximum=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Ölçeklendirme faktörünü girin:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Basit Model biçimi</translation>
     </message>
   </context>
   <context>

@@ -22,6 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
 
 '''
 This utility offers several commands to interact with the FreeCAD project on crowdin.

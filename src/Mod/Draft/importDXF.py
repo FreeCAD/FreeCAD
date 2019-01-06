@@ -46,7 +46,7 @@ texts, colors,layers (from groups)
 '''
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
-CURRENTDXFLIB = 1.39 # the minimal version of the dxfLibrary needed to run
+CURRENTDXFLIB = 1.40 # the minimal version of the dxfLibrary needed to run
 
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
@@ -74,7 +74,7 @@ def errorDXFLib(gui):
     dxfAllowDownload = p.GetBool("dxfAllowDownload",False)
     if dxfAllowDownload:
         files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
-        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+str(CURRENTDXFLIB)+"/"
+        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+'{0:.2f}'.format(CURRENTDXFLIB)+"/"
         import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
@@ -215,6 +215,9 @@ def deformat(text):
                     ns += ss.decode("latin1")
                 except UnicodeError:
                     print("unable to decode text: ",text)
+            except AttributeError:
+                # this is python3 (nothing to do)
+                ns += ss
     t = ns
     # replace degrees, diameters chars
     t = re.sub('%%d',u'°',t)
@@ -577,7 +580,7 @@ def drawFace(face):
         warn(face)
     return None
 
-def drawMesh(mesh):
+def drawMesh(mesh,forceShape=False):
     "returns a Mesh from a dxf mesh"
     md = []
     if mesh.flags == 16:
@@ -601,18 +604,26 @@ def drawMesh(mesh):
                 pts.append(p)
             elif p.flags == 128:
                 fcs.append(p)
+        #print("Creating polyface with",len(pts),"points and",len(fcs),"facets")
         for f in fcs:
-            p1 = pts[rawValue(f,71)-1]
-            p2 = pts[rawValue(f,72)-1]
-            p3 = pts[rawValue(f,73)-1]
+            p1 = pts[abs(rawValue(f,71))-1]
+            p2 = pts[abs(rawValue(f,72))-1]
+            p3 = pts[abs(rawValue(f,73))-1]
             md.append([p1,p2,p3])
             if rawValue(f,74) != None:
-                p4 = pts[rawValue(f,74)-1]
+                p4 = pts[abs(rawValue(f,74))-1]
                 md.append([p1,p3,p4])
     try:
-        return Mesh.Mesh(md)
+        m = Mesh.Mesh(md)
+        if forceShape:
+            s = Part.Shape()
+            s.makeShapeFromMesh(m.Topology,1)
+            s = s.removeSplitter()
+            m = s
     except FreeCAD.Base.FreeCADError:
         warn(mesh)
+    else:
+        return m
     return None
 
 def drawSolid(solid):
@@ -829,7 +840,10 @@ def drawBlock(blockref,num=None,createObject=False):
         s = drawLine(line,forceShape=True)
         if s: shapes.append(s)
     for polyline in blockref.entities.get_type('polyline'):
-        s = drawPolyline(polyline,forceShape=True)
+        if hasattr(polyline,"flags") and polyline.flags in [16,64]:
+            s = drawMesh(polyline,forceShape=True)
+        else:
+            s = drawPolyline(polyline,forceShape=True)
         if s: shapes.append(s)
     for polyline in blockref.entities.get_type('lwpolyline'):
         s = drawPolyline(polyline,forceShape=True)
@@ -905,9 +919,16 @@ def drawInsert(insert,num=None,clone=False):
             rot = math.radians(insert.rotation)
             scale = insert.scale
             tsf = FreeCAD.Matrix()
-            tsf.scale(scale[0],scale[1],0) # for some reason z must be 0 to work
+            #tsf.scale(scale[0],scale[1],0) # for some reason z must be 0 to work
             tsf.rotateZ(rot)
-            shape = shape.transformGeometry(tsf)
+            try:
+                shape = shape.transformGeometry(tsf)
+            except Part.OCCError:
+                tsf.scale(scale[0],scale[1],0)
+                try:
+                    shape = shape.transformGeometry(tsf)
+                except Part.OCCError:
+                    print("importDXF: unable to apply insert transform:",tsf)
             shape.translate(pos)
             return shape
     return None
@@ -977,10 +998,9 @@ def addText(text,attrib=False):
         hgt = vec(text.height)
     if val:
         if attrib:
-            newob = doc.addObject("App::Annotation","Attribute")
+            name = "Attribute"
         else:
-            newob = doc.addObject("App::Annotation","Text")
-        lay.addObject(newob)
+            name = "Text"
         val = deformat(val)
         # the following stores text as Latin1 in annotations, which
         # displays ok in coin texts, but causes errors later on.
@@ -992,6 +1012,8 @@ def addText(text,attrib=False):
         #        val = val.encode("latin1")
         #    except:
         #        pass
+        newob = Draft.makeText(val.split("\n"))
+        lay.addObject(newob)
         rx = rawValue(text,11)
         ry = rawValue(text,21)
         rz = rawValue(text,31)
@@ -1013,7 +1035,6 @@ def addText(text,attrib=False):
             attrot = rawValue(text,50)
             if attrot:
                 Draft.rotate(newob,attrot)
-        newob.LabelText = val.split("\n")
         if gui and draftui and dxfUseStandardSize:
             fsize = draftui.fontsize
         else:
@@ -1027,7 +1048,7 @@ def addText(text,attrib=False):
             elif text.alignment in [4,5,6]:
                 sup = DraftVecUtils.scaleTo(yv,fsize/(2*TEXTSCALING)).negative()
                 pos = pos.add(sup)
-        newob.Position = pos
+        newob.Placement.Base = pos
         if gui:
             newob.ViewObject.FontSize = fsize
             if hasattr(text,"alignment"):
@@ -1035,7 +1056,7 @@ def addText(text,attrib=False):
                     newob.ViewObject.Justification = "Center"
                 elif text.alignment in [3,6,9]:
                     newob.ViewObject.Justification = "Right"
-            newob.ViewObject.DisplayMode = "World"
+            #newob.ViewObject.DisplayMode = "World"
             formatObject(newob,text)
 
 def addToBlock(obj,layer):

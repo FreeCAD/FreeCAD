@@ -4,7 +4,7 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="+187"/>
+      <location filename="../../Command.cpp" line="+188"/>
       <source>Points</source>
       <translation>Puntuak</translation>
     </message>
@@ -61,7 +61,7 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location line="+245"/>
+      <location line="+249"/>
       <source>Points</source>
       <translation>Puntuak</translation>
     </message>
@@ -99,7 +99,7 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location line="-122"/>
+      <location line="-126"/>
       <source>Points</source>
       <translation>Puntuak</translation>
     </message>
@@ -280,7 +280,7 @@
       <location line="-50"/>
       <location line="+50"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Puntu-formatuak</translation>
     </message>
     <message>
       <location line="+71"/>

@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+496"/>
+      <location filename="../../Command.cpp" line="+519"/>
       <source>File</source>
       <translation>Datoteka</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location line="+207"/>
+      <location line="+231"/>
       <source>Raytracing</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -41,7 +41,7 @@
       <translation>Umetnite novi Luxrender projekt u dokument</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>Nema predložaka</translation>
     </message>
@@ -54,7 +54,7 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location line="-341"/>
+      <location line="-372"/>
       <source>Raytracing</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -76,7 +76,7 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location line="-100"/>
+      <location line="-119"/>
       <source>Raytracing</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -99,7 +99,7 @@
       <translation>Umetnite novi POV-Ray projekt u dokument</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>Nema predložaka</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location line="+196"/>
+      <location line="+212"/>
       <source>Raytracing</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -124,13 +124,13 @@
     <message>
       <location line="+1"/>
       <source>Renders the current raytracing project with an external renderer</source>
-      <translation type="unfinished">Renders the current raytracing project with an external renderer</translation>
+      <translation>Trenutni raytracing projekt iscrta sa vanjskim crtačem</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location line="+243"/>
+      <location line="+278"/>
       <source>Raytracing</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -142,29 +142,29 @@
     <message>
       <location line="+1"/>
       <source>Sets the camera of the selected Raytracing project to match the current view</source>
-      <translation type="unfinished">Sets the camera of the selected Raytracing project to match the current view</translation>
+      <translation>Postavlja kameru odabranoga Raytracing projekta da odgovara trenutnom prikazu</translation>
     </message>
   </context>
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <location line="-723"/>
+      <location line="-785"/>
       <source>Raytracing</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Export camera to POV-Ray...</source>
-      <translation type="unfinished">Export camera to POV-Ray...</translation>
+      <translation>Izvoz kamere u POV-Ray...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
-      <translation type="unfinished">Export the camera position of the active 3D view in POV-Ray format to a file</translation>
+      <translation>Izvesti položaj kamere aktivnog 3D prikaza u POV-Ray formatu u datoteku</translation>
     </message>
     <message>
       <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-      <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+      <translation>Izvesti položaj kamere aktivnog 3D prikaza u POV-Ray formatu u datoteku</translation>
     </message>
     <message>
       <source>Export camera to povray...</source>
@@ -185,12 +185,12 @@
     <message>
       <location line="+1"/>
       <source>Export part to POV-Ray...</source>
-      <translation type="unfinished">Export part to POV-Ray...</translation>
+      <translation>Izvesti dio u POV-Ray...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Write the selected Part (object) as a POV-Ray file</source>
-      <translation type="unfinished">Write the selected Part (object) as a POV-Ray file</translation>
+      <translation>Spremi odabrani dio (objekta) u datoteku POV-Ray</translation>
     </message>
     <message>
       <source>Export part to povray...</source>
@@ -206,29 +206,40 @@
     <message>
       <location line="-79"/>
       <location line="+139"/>
-      <location line="+93"/>
-      <location line="+391"/>
+      <location line="+97"/>
+      <location line="+434"/>
       <source>No perspective camera</source>
       <translation>Nema perspektivne kamere</translation>
     </message>
     <message>
-      <location line="-622"/>
+      <location line="-669"/>
       <location line="+139"/>
-      <location line="+93"/>
+      <location line="+97"/>
       <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
-Do you want to continue?</translation>
+      <translation>Trenutni prikaz kamere nije perspektiva i tako rezultat POV-Ray slike kasnije može izgledati drugačije od očekivanoga. Želite li nastaviti?</translation>
     </message>
     <message>
-      <location line="-109"/>
+      <location line="-113"/>
       <source>Export view to POV-Ray...</source>
-      <translation type="unfinished">Export view to POV-Ray...</translation>
+      <translation>Izvezite prikaz u POV-Ray...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-      <translation type="unfinished">Write the active 3D view with camera and all its content to a POV-Ray file</translation>
+      <translation>Spremi aktivni 3D prikaz s kamerom i svim njezinim sadržajem u datoteku POV-Ray</translation>
+    </message>
+    <message>
+      <location line="+126"/>
+      <location line="+434"/>
+      <source>No template</source>
+      <translation>Nema predložaka</translation>
+    </message>
+    <message>
+      <location line="-433"/>
+      <location line="+434"/>
+      <source>Cannot create a project because there is no template installed.</source>
+      <translation>Ne može se stvoriti projekt jer nema instaliranog predložka.</translation>
     </message>
     <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
@@ -237,7 +248,7 @@ Do you want to continue?</source>
 Želite li nastaviti?</translation>
     </message>
     <message>
-      <location line="-2"/>
+      <location line="-563"/>
       <source>Raytracing</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -250,11 +261,10 @@ Do you want to continue?</source>
       <translation>Napišite aktivni 3D prikaz s kamerom i sve njezine sadržaje u povray datoteke</translation>
     </message>
     <message>
-      <location line="+501"/>
+      <location line="+548"/>
       <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
-Do you want to continue?</translation>
+      <translation>Trenutni prikaz kamere nije perspektiva i takav rezultat luxrender-slike može kasnije izgledati drugačije od očekivanoga. Želite li nastaviti?</translation>
     </message>
   </context>
   <context>
@@ -272,10 +282,10 @@ Do you want to continue?</translation>
       <translation>Sve datoteke (*.*)</translation>
     </message>
     <message>
-      <location line="-585"/>
+      <location line="-632"/>
       <location line="+51"/>
       <location line="+63"/>
-      <location line="+276"/>
+      <location line="+299"/>
       <source>Export page</source>
       <translation>Izvezi stranicu</translation>
     </message>
@@ -286,13 +296,13 @@ Do you want to continue?</translation>
     <message>
       <location line="-103"/>
       <location line="+87"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location line="-392"/>
+      <location line="-431"/>
       <source>Select a Part object.</source>
       <translation>Odaberite dio objekta.</translation>
     </message>
@@ -300,98 +310,98 @@ Do you want to continue?</translation>
       <location line="+10"/>
       <location line="+12"/>
       <source>No Raytracing project to insert</source>
-      <translation type="unfinished">No Raytracing project to insert</translation>
+      <translation>Nema Raytracing projekta za umetanje</translation>
     </message>
     <message>
       <location line="-11"/>
       <source>Create a Raytracing project to insert a view.</source>
-      <translation type="unfinished">Create a Raytracing project to insert a view.</translation>
+      <translation>Stvaranje Raytracing projekta za umetanje pogleda.</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>Select a Raytracing project to insert the view.</source>
-      <translation type="unfinished">Select a Raytracing project to insert the view.</translation>
+      <translation>Odaberite Raytracing projekt za umetanje pogleda.</translation>
     </message>
     <message>
       <location line="+64"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Select one Raytracing project object.</source>
-      <translation type="unfinished">Select one Raytracing project object.</translation>
+      <translation>Odaberite jedan objekt Raytracing projekta.</translation>
     </message>
     <message>
-      <location line="-302"/>
+      <location line="-341"/>
       <source>Luxrender</source>
-      <translation type="unfinished">Luxrender</translation>
+      <translation>Luxrender</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="+78"/>
       <location line="+6"/>
       <source>POV-Ray not found</source>
-      <translation type="unfinished">POV-Ray not found</translation>
+      <translation>POV-Ray nije pronađen</translation>
     </message>
     <message>
       <location line="-5"/>
       <source>Please set the path to the POV-Ray executable in the preferences.</source>
-      <translation type="unfinished">Please set the path to the POV-Ray executable in the preferences.</translation>
+      <translation>Postavite put od POV-Ray executable u postavkama.</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-      <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
+      <translation>Korigirajte put od POV-Ray executable u postavkama.</translation>
     </message>
     <message>
-      <location line="+75"/>
+      <location line="+95"/>
       <source>Lux project file missing</source>
-      <translation type="unfinished">Lux project file missing</translation>
+      <translation>Lux-projekt datoteka nedostaje</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The Lux project file doesn't exist.</source>
-      <translation type="unfinished">The Lux project file doesn't exist.</translation>
+      <translation>Lux-projekt datoteka ne postoji.</translation>
     </message>
     <message>
-      <location line="-69"/>
+      <location line="-89"/>
       <location line="+6"/>
       <source>Luxrender not found</source>
-      <translation type="unfinished">Luxrender not found</translation>
+      <translation>Luxrender nije pronađen</translation>
     </message>
     <message>
-      <location line="-475"/>
+      <location line="-502"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+272"/>
+      <location line="+295"/>
       <source>POV-Ray</source>
       <translation>POV-Ray</translation>
     </message>
     <message>
-      <location line="-384"/>
+      <location line="-407"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+276"/>
-      <location line="+109"/>
+      <location line="+299"/>
+      <location line="+113"/>
       <source>All Files</source>
       <translation>Sve datoteke</translation>
     </message>
     <message>
       <location line="-29"/>
       <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
+      <translation>Postavite put do luxrender ili luxconsole executable u postavkama.</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-      <translation type="unfinished">Please correct the path to the luxrender or luxconsole executable in the preferences.</translation>
+      <translation>Korigirajte put do luxrender ili luxconsole executable u postavkama.</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>POV-Ray file missing</source>
-      <translation type="unfinished">POV-Ray file missing</translation>
+      <translation>POV-Ray datoteka nedostaje</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The POV-Ray project file doesn't exist.</source>
-      <translation type="unfinished">The POV-Ray project file doesn't exist.</translation>
+      <translation>POV-Ray projekt datoteka ne postoji.</translation>
     </message>
     <message>
       <source>Rendered image (*.bmp)</source>
@@ -406,7 +416,7 @@ Do you want to continue?</translation>
       <location line="+2"/>
       <location line="+3"/>
       <source>Rendered image</source>
-      <translation type="unfinished">Rendered image</translation>
+      <translation>Iscrtana slika</translation>
     </message>
     <message>
       <source>No Povray project to insert</source>
@@ -435,22 +445,22 @@ Do you want to continue?</translation>
     <message>
       <location line="+103"/>
       <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-      <translation type="unfinished">The path to the POV-Ray executable, if you want to render from FreeCAD</translation>
+      <translation>Put do POV-Ray izvršne datoteke, ako želite iscrtavati iz FreeCAD-a</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>POV-Ray executable:</source>
-      <translation type="unfinished">POV-Ray executable:</translation>
+      <translation>POV-Ray izvršnu datoteku:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>POV-Ray output parameters:</source>
-      <translation type="unfinished">POV-Ray output parameters:</translation>
+      <translation>POV-Ray izlazni parametari:</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation type="unfinished">The POV-Ray parameters to be passed to the render.</translation>
+      <translation>POV-Ray parametri koji se prosljeđuju za iscrtavanje.</translation>
     </message>
     <message>
       <location line="+95"/>
@@ -470,7 +480,7 @@ Do you want to continue?</translation>
     <message>
       <location line="-216"/>
       <source>Max mesh deviation:</source>
-      <translation type="unfinished">Max mesh deviation:</translation>
+      <translation>Max odstupanje mreže:</translation>
     </message>
     <message>
       <location line="+57"/>
@@ -490,7 +500,7 @@ Do you want to continue?</translation>
     <message>
       <location line="+7"/>
       <source>The width of the rendered image</source>
-      <translation type="unfinished">The width of the rendered image</translation>
+      <translation>Širina prikazanih slika</translation>
     </message>
     <message>
       <location line="+19"/>
@@ -500,17 +510,17 @@ Do you want to continue?</translation>
     <message>
       <location line="+7"/>
       <source>The height of the rendered image</source>
-      <translation type="unfinished">The height of the rendered image</translation>
+      <translation>Visina prikazanih slika</translation>
     </message>
     <message>
       <location line="+21"/>
       <source>Luxrender executable:</source>
-      <translation type="unfinished">Luxrender executable:</translation>
+      <translation>Luxrender izvršna datoteka:</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The path to the luxrender (or luxconsole) executable</source>
-      <translation type="unfinished">The path to the luxrender (or luxconsole) executable</translation>
+      <translation>Put do luxrender (ili luxconsole) izvršne datoteke</translation>
     </message>
     <message>
       <location line="+38"/>
@@ -522,7 +532,7 @@ Do you want to continue?</translation>
       <location line="+23"/>
       <location line="+16"/>
       <source>Used by utility tools</source>
-      <translation type="unfinished">Used by utility tools</translation>
+      <translation>Korišteno od alata uslužnih programa</translation>
     </message>
     <message>
       <location line="-13"/>
@@ -559,35 +569,35 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="+68"/>
       <source>Edit LuxRender project</source>
-      <translation type="unfinished">Edit LuxRender project</translation>
+      <translation>Uređivanje LuxRender projekta</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>LuxRender template</source>
-      <translation type="unfinished">LuxRender template</translation>
+      <translation>LuxRender predložak</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>Select a LuxRender template</source>
-      <translation type="unfinished">Select a LuxRender template</translation>
+      <translation>Odaberite LuxRender predložak</translation>
     </message>
   </context>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location line="+48"/>
+      <location line="+47"/>
       <source>Edit Povray project</source>
-      <translation type="unfinished">Edit Povray project</translation>
+      <translation>Uređivanje POV-Ray projekta</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>Povray template</source>
-      <translation type="unfinished">Povray template</translation>
+      <translation>POV-Ray predložak</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>Select a Povray template</source>
-      <translation type="unfinished">Select a Povray template</translation>
+      <translation>Odaberite POV-Ray predložak</translation>
     </message>
   </context>
   <context>

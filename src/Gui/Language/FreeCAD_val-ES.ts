@@ -160,7 +160,7 @@
     </message>
     <message>
       <source>Global Sensitivity:</source>
-      <translation type="unfinished">Global Sensitivity:</translation>
+      <translation>Sensibilitat global:</translation>
     </message>
   </context>
   <context>
@@ -402,11 +402,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::AboutDialog</name>
     <message>
       <source>Libraries</source>
-      <translation type="unfinished">Libraries</translation>
+      <translation>Biblioteques</translation>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation type="unfinished">This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</translation>
+      <translation>Aquest programari utilitza components de codi obert, el copyright i altres drets de propietat dels quals pertanyen als seus respectius propietaris:</translation>
     </message>
     <message>
       <source>License</source>
@@ -440,7 +440,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Offset</source>
-      <translation>Offset</translation>
+      <translation>Separació</translation>
     </message>
     <message>
       <source>Clipping Y</source>
@@ -456,7 +456,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Adjust to view direction</source>
@@ -1350,6 +1350,14 @@ Please define another shortcut.</source>
       <source>Rename</source>
       <translation>Reanomena</translation>
     </message>
+    <message>
+      <source>Duplicate</source>
+      <translation>Duplica</translation>
+    </message>
+    <message>
+      <source>Addons...</source>
+      <translation>Complements...</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
@@ -1396,27 +1404,41 @@ This file already exists.</source>
     </message>
     <message>
       <source>Renaming Macro File</source>
-      <translation type="unfinished">Renaming Macro File</translation>
+      <translation>S'està canviant el nom del fitxer de Macro</translation>
     </message>
     <message>
       <source>Enter new name:</source>
-      <translation type="unfinished">Enter new name:</translation>
+      <translation>Introduïu el nom nou:</translation>
     </message>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation type="unfinished">'%1'
- already exists.</translation>
+      <translation>'%1'
+ ja existeix.</translation>
     </message>
     <message>
       <source>Rename Failed</source>
-      <translation type="unfinished">Rename Failed</translation>
+      <translation>Error en canviar el nom</translation>
     </message>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to rename to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>No ha pogut canviar el nom per '%1'.
+Pot ser un problema de permisos d'arxiu?</translation>
+    </message>
+    <message>
+      <source>Duplicate Macro</source>
+      <translation>Duplica la macro</translation>
+    </message>
+    <message>
+      <source>Duplicate Failed</source>
+      <translation>Ha fallat el duplicat</translation>
+    </message>
+    <message>
+      <source>Failed to duplicate to '%1'.
+Perhaps a file permission error?</source>
+      <translation>No s'ha pogut duplicar "%1".
+Potser per un error de permís d'arxiu?</translation>
     </message>
   </context>
   <context>
@@ -1963,7 +1985,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>None</source>
-      <translation>None</translation>
+      <translation>Cap</translation>
     </message>
     <message>
       <source>Line Smoothing</source>
@@ -1990,8 +2012,48 @@ Specify another directory, please.</source>
       <translation>&amp;Renderització en perspectiva</translation>
     </message>
     <message>
-      <source>Use OpenGL Vertex Buffer Object (experimental)</source>
-      <translation>Utilitza OpenGL Vertex Buffer Object (experimental)</translation>
+      <source>Show navigation cube</source>
+      <translation>Mostra el cub de navegació</translation>
+    </message>
+    <message>
+      <source>Corner</source>
+      <translation>Cantonada</translation>
+    </message>
+    <message>
+      <source>Top left</source>
+      <translation>Superior esquerra</translation>
+    </message>
+    <message>
+      <source>Top right</source>
+      <translation>Superior dreta</translation>
+    </message>
+    <message>
+      <source>Bottom left</source>
+      <translation>Inferior esquerra</translation>
+    </message>
+    <message>
+      <source>Bottom right</source>
+      <translation>Inferior dreta</translation>
+    </message>
+    <message>
+      <source>Use OpenGL Vertex Buffer Object</source>
+      <translation>Utilitzeu l'objecte OpenGL Vertex Buffer</translation>
+    </message>
+    <message>
+      <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
+      <translation>Evita la inclinació de la vista quan s'està fent zoom amb els dits. Sols afecta l'estil Navegació amb gestos. Aquesta opció no desactiva la inclinació del ratolí.</translation>
+    </message>
+    <message>
+      <source>Disable touchscreen tilt gesture</source>
+      <translation>Desactiva el gest d'inclinació de la pantalla tàctil</translation>
+    </message>
+    <message>
+      <source>Drag at cursor</source>
+      <translation>Arrossegueu el cursor</translation>
+    </message>
+    <message>
+      <source>Marker size:</source>
+      <translation>Mida del marcador:</translation>
     </message>
   </context>
   <context>
@@ -2003,6 +2065,30 @@ Specify another directory, please.</source>
     <message>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Obriu un visualitzador nou o reinicieu %1 perquè s'apliquen els canvis d'antialiàsing</translation>
+    </message>
+    <message>
+      <source>5px</source>
+      <translation>5px</translation>
+    </message>
+    <message>
+      <source>7px</source>
+      <translation>7px</translation>
+    </message>
+    <message>
+      <source>9px</source>
+      <translation>9px</translation>
+    </message>
+    <message>
+      <source>11px</source>
+      <translation>11px</translation>
+    </message>
+    <message>
+      <source>13px</source>
+      <translation>13px</translation>
+    </message>
+    <message>
+      <source>15px</source>
+      <translation>15px</translation>
     </message>
   </context>
   <context>
@@ -2148,7 +2234,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
-      <translation type="unfinished">Maximum number of backup files to keep when resaving document</translation>
+      <translation>Nombre màxim de fitxers de còpia de seguretat que cal mantenir quan es torna a guardar el document</translation>
     </message>
     <message>
       <source>Document objects</source>
@@ -2260,7 +2346,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>A URL where the user can find more details about the license</source>
-      <translation type="unfinished">A URL where the user can find more details about the license</translation>
+      <translation>Un URL on l'usuari pot trobar més detalls sobre la llicència</translation>
     </message>
   </context>
   <context>
@@ -2630,6 +2716,46 @@ Specify another directory, please.</source>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Mètrica per a peces menudes i CNC (mm, mm/min)</translation>
     </message>
+    <message>
+      <source>Imperial Civil (ft/ft^2/ft^3)</source>
+      <translation>Imperial Civil (ft/ft^2/ft^3)</translation>
+    </message>
+    <message>
+      <source>Minimum fractional inch:</source>
+      <translation>Polzada fraccionària mínima:</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Polzada fraccionària mínima que cal mostrar.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>1/2"</source>
+      <translation>1/2"</translation>
+    </message>
+    <message>
+      <source>1/4"</source>
+      <translation>1/4"</translation>
+    </message>
+    <message>
+      <source>1/8"</source>
+      <translation>1/8"</translation>
+    </message>
+    <message>
+      <source>1/16"</source>
+      <translation>1/16"</translation>
+    </message>
+    <message>
+      <source>1/32"</source>
+      <translation>1/32"</translation>
+    </message>
+    <message>
+      <source>1/64"</source>
+      <translation>1/64"</translation>
+    </message>
+    <message>
+      <source>1/128"</source>
+      <translation>1/128"</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2671,7 +2797,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</source>
-      <translation type="unfinished">Sets the area of confusion for picking elements in 3D view. Larger value makes it easier to pick stuff, but will make some small features impossible to select.</translation>
+      <translation>Estableix l'àrea de confusió per a triar elements en la vista 3D. Un valor elevat facilita la selecció, però fa que sigua impossible seleccionar algunes característiques menors.</translation>
+    </message>
+    <message>
+      <source>Tree View</source>
+      <translation>Vista d'arbre</translation>
+    </message>
+    <message>
+      <source>Object being edited</source>
+      <translation>Objecte que s'està editant</translation>
+    </message>
+    <message>
+      <source>Active container</source>
+      <translation>Contenidor actiu</translation>
     </message>
   </context>
   <context>
@@ -3210,14 +3348,6 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
       <translation>Eix de rotació i angle</translation>
     </message>
     <message>
-      <source>Apply placement changes immediately</source>
-      <translation>Aplica els canvis de posició immediatament</translation>
-    </message>
-    <message>
-      <source>Apply incremental changes to object placement</source>
-      <translation>Aplica els canvis incrementals a la posició de l'objecte</translation>
-    </message>
-    <message>
       <source>Apply</source>
       <translation type="unfinished">Apply</translation>
     </message>
@@ -3244,6 +3374,30 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
     <message>
       <source>Use center of mass</source>
       <translation>Utilitza el centre de massa</translation>
+    </message>
+    <message>
+      <source>Axial:</source>
+      <translation>Axial:</translation>
+    </message>
+    <message>
+      <source>Apply axial</source>
+      <translation>Aplica axial</translation>
+    </message>
+    <message>
+      <source>Shift click for opposite direction</source>
+      <translation>Majúscules clic per a la direcció oposada</translation>
+    </message>
+    <message>
+      <source>Selected points</source>
+      <translation>Punts seleccionats</translation>
+    </message>
+    <message>
+      <source>Apply incremental changes</source>
+      <translation>Aplica els canvis incrementals</translation>
+    </message>
+    <message>
+      <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
+      <translation>Seleccioneu 1, 2 o 3 punts abans de fer clic a aquest botó.  Un punt pot ser a un vèrtex, cara o vora.  Si esteu en una cara o vora, el punt utilitzat serà el punt en la cara o vora en la posició del ratolí.  Si 1 punt és seleccionat serà utilitzat com a centre de rotació. Si se seleccionen 2 punts, el punt mig entre ells serà el centre de rotació i un nou eix personalitzat es crearà, si és necessari. Si se seleccionen 3 punts, el primer punt es converteix en el centre de rotació i es troba en el vector que és normal al pla definit per 3 punts. Alguns detalls de distància i angle es proporcionen a la visualització d'informe, que pot ser útil per a alinear objectes.  Per al a vostra comoditat, quan feu Majúscules + clic s'utilitza la distància adequada o l'angle es copia al porta-retalls.</translation>
     </message>
   </context>
   <context>
@@ -3472,7 +3626,7 @@ La columna 'Estat? mostra si el document es pot recuperar.</translation>
     </message>
     <message>
       <source>Go to selection</source>
-      <translation>Vés a la selecció</translation>
+      <translation>Ves a la selecció</translation>
     </message>
     <message>
       <source>Selects and locates this object in the tree view</source>
@@ -3812,7 +3966,7 @@ Do you want to save your changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Dimensió</translation>
     </message>
     <message>
       <source>Ready</source>
@@ -4028,7 +4182,14 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkListLabel</name>
     <message>
       <source>Change the linked objects</source>
-      <translation type="unfinished">Change the linked objects</translation>
+      <translation>Canvia els objectes enllaçats</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyEditor::PropertyEditor</name>
+    <message>
+      <source>Edit %1</source>
+      <translation>Edita %1</translation>
     </message>
   </context>
   <context>
@@ -4046,7 +4207,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Data</source>
@@ -4405,6 +4566,13 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TreePanel</name>
+    <message>
+      <source>Search</source>
+      <translation>Cerca</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TreeWidget</name>
     <message>
       <source>Create group...</source>
@@ -4469,6 +4637,14 @@ Do you want to specify another directory?</source>
     <message>
       <source>%1, Internal name: %2</source>
       <translation>%1, nom intern: %2</translation>
+    </message>
+    <message>
+      <source>Search...</source>
+      <translation>Cerca...</translation>
+    </message>
+    <message>
+      <source>Search for objects</source>
+      <translation>Cerca objectes</translation>
     </message>
   </context>
   <context>
@@ -5042,7 +5218,19 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Export failed</source>
-      <translation type="unfinished">Export failed</translation>
+      <translation>Exportació fallida</translation>
+    </message>
+    <message>
+      <source>Split</source>
+      <translation>Divideix</translation>
+    </message>
+    <message>
+      <source>Toggle active part</source>
+      <translation>Commuta la part activa</translation>
+    </message>
+    <message>
+      <source>Edit text</source>
+      <translation>Edita el text</translation>
     </message>
   </context>
   <context>
@@ -5382,7 +5570,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdDockViewMenu</name>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Panels</source>
@@ -5601,11 +5789,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Create group</source>
-      <translation type="unfinished">Create group</translation>
+      <translation>Crea un grup</translation>
     </message>
     <message>
       <source>Create a new group for ordering objects</source>
-      <translation type="unfinished">Create a new group for ordering objects</translation>
+      <translation>Crear un nou grup per a ordenar els objectes</translation>
     </message>
   </context>
   <context>
@@ -5732,7 +5920,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdMeasureDistance</name>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Measure distance</source>
@@ -5989,7 +6177,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>The official Python website</source>
-      <translation>El llloc web oficial del Python</translation>
+      <translation>El lloc web oficial del Python</translation>
     </message>
   </context>
   <context>
@@ -6217,7 +6405,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdStatusBar</name>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Status bar</source>
@@ -6348,7 +6536,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdToolBarMenu</name>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Tool&amp;bars</source>
@@ -6393,11 +6581,11 @@ Be aware the point where you click matters.</source>
     <name>StdCmdTreeSelection</name>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Go to selection</source>
-      <translation>Vés a la selecció</translation>
+      <translation>Ves a la selecció</translation>
     </message>
     <message>
       <source>Scroll to first selected item</source>
@@ -6438,7 +6626,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdUserInterface</name>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Dock views</source>
@@ -6491,7 +6679,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Creates a new view window for the active document</source>
-      <translation type="unfinished">Creates a new view window for the active document</translation>
+      <translation>Crea una nova finestra de visualització per al document actiu</translation>
     </message>
   </context>
   <context>
@@ -6824,7 +7012,7 @@ Be aware the point where you click matters.</source>
     <name>StdCmdWorkbench</name>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Workbench</source>
@@ -6847,7 +7035,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation type="unfinished">Display the main window in fullscreen mode</translation>
+      <translation>Mostrar la finestra principal en mode de pantalla completa</translation>
     </message>
   </context>
   <context>
@@ -6878,6 +7066,66 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Switches to perspective view mode</source>
       <translation>Canvia a mode de vista en perspectiva</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeCollapseDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Visualitza</translation>
+    </message>
+    <message>
+      <source>Collapse/Expand</source>
+      <translation>Contrau/Expandeix</translation>
+    </message>
+    <message>
+      <source>Expand active document and collapse all others</source>
+      <translation>Expandeix el document actiu i contrau tota la resta</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeMultiDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Visualitza</translation>
+    </message>
+    <message>
+      <source>Multi Document</source>
+      <translation>Multi-Document</translation>
+    </message>
+    <message>
+      <source>Display all documents in the tree view</source>
+      <translation>Mostra tots els documents en la vista d'arbre</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeSingleDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Visualitza</translation>
+    </message>
+    <message>
+      <source>Single Document</source>
+      <translation>Document únic</translation>
+    </message>
+    <message>
+      <source>Only display the active document in the tree view</source>
+      <translation>Mostra només el document actiu a la vista d'arbre</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdTreeViewDocument</name>
+    <message>
+      <source>View</source>
+      <translation>Visualitza</translation>
+    </message>
+    <message>
+      <source>Document Tree</source>
+      <translation>Arbre del document</translation>
+    </message>
+    <message>
+      <source>Set visibility of inactive documents in tree view</source>
+      <translation>Estableix la visibilitat dels documents inactius en la vista d'arbre</translation>
     </message>
   </context>
   <context>
@@ -6991,16 +7239,32 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>Object dependencies</source>
-      <translation>Dependències de l'objecte</translation>
-    </message>
-    <message>
-      <source>The following, referencing objects might break.
-
-Are you sure you want to continue?
+      <source>These items are linked to items selected for deletion and might break.
 
 </source>
-      <translation>El següent fa referència a objectes que es poden trencar. Voleu continuar? </translation>
+      <translation>Aquests elements estan vinculats a elements seleccionats per a la supressió i podrien trencar-se.
+
+</translation>
+    </message>
+    <message>
+      <source>These items are selected for deletion, but are not in the active document. 
+
+</source>
+      <translation>Aquests elements estan seleccionats per a suprimir-los, però no estan en el document actiu. 
+
+</translation>
+    </message>
+    <message>
+      <source>
+
+Are you sure you want to continue?</source>
+      <translation>
+
+Esteu segur que voleu continuar?</translation>
+    </message>
+    <message>
+      <source>Delete Selection Issues</source>
+      <translation>Suprimeix Problemes de selecció</translation>
     </message>
   </context>
   <context>
@@ -7104,6 +7368,50 @@ Do you want to duplicate them, too?</source>
     </message>
   </context>
   <context>
+    <name>ViewIsometricCmd</name>
+    <message>
+      <source>Isometric</source>
+      <translation>Isomètric</translation>
+    </message>
+    <message>
+      <source>Set NaviCube to Isometric mode</source>
+      <translation>Estableix NaviCube en el mode isomètric</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewOrthographicCmd</name>
+    <message>
+      <source>Orthographic</source>
+      <translation>Ortogonal</translation>
+    </message>
+    <message>
+      <source>Set View to Orthographic mode</source>
+      <translation>Estableix la visualització al mode ortogonal</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewPerspectiveCmd</name>
+    <message>
+      <source>Perspective</source>
+      <translation>Perspectiva</translation>
+    </message>
+    <message>
+      <source>Set View to Perspective mode</source>
+      <translation>Defineix la visualització en mode perspectiva</translation>
+    </message>
+  </context>
+  <context>
+    <name>ViewZoomToFitCmd</name>
+    <message>
+      <source>Zoom to fit</source>
+      <translation>Zoom per a encabir</translation>
+    </message>
+    <message>
+      <source>Zoom so that model fills the view</source>
+      <translation>Zoom perquè el model òmpliga la visualització</translation>
+    </message>
+  </context>
+  <context>
     <name>Workbench</name>
     <message>
       <source>&amp;File</source>
@@ -7163,7 +7471,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>View</source>
-      <translation>View</translation>
+      <translation>Visualitza</translation>
     </message>
     <message>
       <source>Special Ops</source>

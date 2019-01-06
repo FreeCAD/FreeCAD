@@ -60,9 +60,9 @@ class _CommandImageScaling:
     "Command to Scale an Image to an Image Plane"
     def GetResources(self):
         return {'Pixmap': ":/icons/image-scale.svg",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Image Scaling to an Image Plane"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scale image plane"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Image Scaling to an Image Plane")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scales an image plane by defining a distance between two points")}
 
     def Activated(self):
         cmdCreateImageScaling(name="ImageScaling")
@@ -131,7 +131,7 @@ def cmdCreateImageScaling(name):
             self.dialog.show()
     
         def retranslateUi(self, Dialog):
-            Dialog.setWindowTitle(_translate("Dialog", "Dialog", None))
+            Dialog.setWindowTitle(_translate("Dialog", "Scale image plane", None))
             self.label.setText(_translate("Dialog", "Distance", None))
             self.label1.setText(_translate("Dialog", "Select first point", None))
             

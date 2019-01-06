@@ -50,7 +50,7 @@ class WizardShaftTable:
               ]    
 
     def __init__(self, w, s):
-        for key in self.rowDict.iterkeys():
+        for key in iter(self.rowDict.keys()):
             self.rowDictReverse[self.rowDict[key]] = key
         # Set parent wizard (for connecting slots)
         self.wizard = w

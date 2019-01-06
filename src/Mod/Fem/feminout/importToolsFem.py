@@ -126,24 +126,24 @@ def make_femmesh(mesh_data):
     mesh = Fem.FemMesh()
     m = mesh_data
     if ('Nodes' in m) and (len(m['Nodes']) > 0):
-        print("Found: nodes")
+        FreeCAD.Console.PrintLog("Found: nodes\n")
         if (
-                ('Seg2Elem' in m) or
-                ('Seg3Elem' in m) or
-                ('Tria3Elem' in m) or
-                ('Tria6Elem' in m) or
-                ('Quad4Elem' in m) or
-                ('Quad8Elem' in m) or
-                ('Tetra4Elem' in m) or
-                ('Tetra10Elem' in m) or
-                ('Penta6Elem' in m) or
-                ('Penta15Elem' in m) or
-                ('Hexa8Elem' in m) or
-                ('Hexa20Elem' in m)
+            ('Seg2Elem' in m)
+            or ('Seg3Elem' in m)
+            or ('Tria3Elem' in m)
+            or ('Tria6Elem' in m)
+            or ('Quad4Elem' in m)
+            or ('Quad8Elem' in m)
+            or ('Tetra4Elem' in m)
+            or ('Tetra10Elem' in m)
+            or ('Penta6Elem' in m)
+            or ('Penta15Elem' in m)
+            or ('Hexa8Elem' in m)
+            or ('Hexa20Elem' in m)
         ):
 
             nds = m['Nodes']
-            print("Found: elements")
+            FreeCAD.Console.PrintLog("Found: elements\n")
             for i in nds:
                 n = nds[i]
                 mesh.addNode(n[0], n[1], n[2], i)
@@ -197,10 +197,12 @@ def make_femmesh(mesh_data):
             for i in elms_seg3:
                 e = elms_seg3[i]
                 mesh.addEdge([e[0], e[1], e[2]], i)
-            print("imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15".format(
-                  len(nds), len(elms_hexa8), len(elms_penta6), len(elms_tetra4), len(elms_tetra10), len(elms_penta15)))
-            print("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3".format(
-                  len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2), len(elms_seg3)))
+            FreeCAD.Console.PrintLog("imported mesh: {} nodes, {} HEXA8, {} PENTA6, {} TETRA4, {} TETRA10, {} PENTA15".format(
+                len(nds), len(elms_hexa8), len(elms_penta6), len(elms_tetra4), len(elms_tetra10), len(elms_penta15)
+            ))
+            FreeCAD.Console.PrintLog("imported mesh: {} HEXA20, {} TRIA3, {} TRIA6, {} QUAD4, {} QUAD8, {} SEG2, {} SEG3".format(
+                len(elms_hexa20), len(elms_tria3), len(elms_tria6), len(elms_quad4), len(elms_quad8), len(elms_seg2), len(elms_seg3)
+            ))
         else:
             FreeCAD.Console.PrintError("No Elements found!\n")
     else:
@@ -327,14 +329,19 @@ def fill_femresult_mechanical(results, result_set, span):
             results.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
             results.Time = step_time
 
+    # fill the stats list
+    fill_femresult_stats(results)
     return results
 
 
 def fill_femresult_stats(results):
-    ''' fills a FreeCAD FEM mechanical result object with stats data
     '''
-    # result stats, set stats values to 0, they may not exist
-    no_of_values = 1 # to avoid division by zero
+    fills a FreeCAD FEM mechanical result object with stats data
+    results: FreeCAD FEM result object
+    '''
+    FreeCAD.Console.PrintLog('Calculate stats list for result obj: ' + results.Name + '\n')
+    no_of_values = 1  # to avoid division by zero
+    # set stats values to 0, they may not exist in result obj results
     x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
     a_max = a_min = a_avg = s_max = s_min = s_avg = 0
     p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
@@ -403,12 +410,14 @@ def fill_femresult_stats(results):
                      npress_min, npress_avg, npress_max]
     # stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
     # len(stat_types) == 13*3 == 39
-    # do not forget to adapt the def get_stats in the following code:
+    # do not forget to adapt initialization of all Stats items in modules:
+    # - module femobjects/_FemResultMechanical.py
+    # do not forget to adapt the def get_stats in:
     # - module femresult/resulttools.py
     # - module femtest/testccxtools.py
     # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
 
-    print('Recalculated Stats.\n')
+    FreeCAD.Console.PrintLog('Stats list for result obj: ' + results.Name + ' calculated\n')
     return results
 
 
@@ -433,12 +442,16 @@ def calculate_principal_stress(i):
     sigma = np.array([[i[0], i[3], i[5]],
                       [i[3], i[1], i[4]],
                       [i[5], i[4], i[2]]])  # https://forum.freecadweb.org/viewtopic.php?f=18&t=24637&start=10#p240408
-    # compute principal stresses
-    eigvals = list(np.linalg.eigvalsh(sigma))
-    eigvals.sort()
-    eigvals.reverse()
-    maxshear = (eigvals[0] - eigvals[2]) / 2.0
-    return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+
+    try:  # it will fail if NaN is inside the array,
+        # compute principal stresses
+        eigvals = list(np.linalg.eigvalsh(sigma))
+        eigvals.sort()
+        eigvals.reverse()
+        maxshear = (eigvals[0] - eigvals[2]) / 2.0
+        return (eigvals[0], eigvals[1], eigvals[2], maxshear)
+    except:
+        return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
 
 
 def calculate_disp_abs(displacements):

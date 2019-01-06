@@ -61,12 +61,17 @@
         </Methode>
         <Methode Name="read">
             <Documentation>
-                <UserDocu>Read in a DAT, UNV, MED or STL file.</UserDocu>
+                <UserDocu>Read in a various FEM mesh file formats.
+                    read(file.endingToExportTo)
+                    supported formats: DAT, INP, MED, STL, UNV, VTK, Z88</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="write" Const="true">
             <Documentation>
-                <UserDocu>Write out a DAT, UNV, MED or STL file.</UserDocu>
+                <UserDocu>Write out various FEM mesh file formats.
+                    write(file.endingToExportTo)
+                    supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="writeABAQUS" Const="true">

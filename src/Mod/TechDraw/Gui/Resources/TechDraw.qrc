@@ -104,5 +104,7 @@
         <file>translations/TechDraw_id.qm</file>
         <file>translations/TechDraw_lt.qm</file>
         <file>translations/TechDraw_val-ES.qm</file>
+        <file>translations/TechDraw_ar.qm</file>
+        <file>translations/TechDraw_vi.qm</file>
     </qresource>
 </RCC>

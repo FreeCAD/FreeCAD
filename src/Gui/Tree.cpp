@@ -702,7 +702,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
         Gui::Document* gui = vpTarget->getDocument();
 
         if (da == Qt::LinkAction) {
-#if 0
             // Open command
             gui->openCommand("Drop object");
             for (QList<QTreeWidgetItem*>::Iterator it = items.begin(); it != items.end(); ++it) {
@@ -720,7 +719,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
 
             }
             gui->commitCommand();
-#endif
         }
         else {
             if (!vpTarget->canDropObjects()) {

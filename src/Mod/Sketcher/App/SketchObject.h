@@ -74,14 +74,14 @@ public:
         return "SketcherGui::ViewProviderSketch";
     }
     //@}
-    
+
     /** SketchObject can work in two modes: Recompute Mode and noRecomputes Mode
         - In Recompute Mode, a recompute is necessary after each geometry addition to update the solver DoF (default)
         - In NoRecomputes Mode, no recompute is necessary after a geometry addition. If a recompute is triggered
           it is just less efficient.
-          
+
         This flag does not regulate whether this object will recompute or not if execute() or a recompute() is actually executed,
-        it just regulates whether the solver is called or not (i.e. whether it relies on 
+        it just regulates whether the solver is called or not (i.e. whether it relies on
         the solve of execute for the calculation)
     */
     bool noRecomputes;
@@ -131,7 +131,7 @@ public:
      *  external geometry
      */
     int delExternal(int ExtGeoId);
-    
+
     /** deletes all external geometry */
     int delAllExternal();
 
@@ -156,7 +156,7 @@ public:
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void) const;
-    /** 
+    /**
      * sets the geometry of sketchObject as the solvedsketch geometry
      * returns the DoF of such a geometry.
      */
@@ -164,12 +164,12 @@ public:
 
     /** solves the sketch and updates the geometry, but not all the dependent features (does not recompute)
         When a recompute is necessary, recompute triggers execute() which solves the sketch and updates all dependent features
-        When a solve only is necessary (e.g. DoF changed), solve() solves the sketch and 
+        When a solve only is necessary (e.g. DoF changed), solve() solves the sketch and
         updates the geometry (if updateGeoAfterSolving==true), but does not trigger any recompute.
         @return 0 if no error, if error, the following codes in this order of priority: -4 if overconstrained,
                 -3 if conflicting, -1 if solver error, -2 if redundant constraints
     */
-    int solve(bool updateGeoAfterSolving=true);   
+    int solve(bool updateGeoAfterSolving=true);
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
     /// set the driving status of this constraint and solve
@@ -183,7 +183,7 @@ public:
     int setDatumsDriving(bool isdriving);
     /// Move Dimensional constraints at the end of the properties array
     int moveDatumsToEnd(void);
-    
+
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
     /// get the driving status of this constraint
@@ -235,7 +235,7 @@ public:
      \retval bool - returns true if the approximation succeeded, or false if it did not succeed.
      */
     bool convertToNURBS(int GeoId);
-    
+
     /*!
      \brief Increases the degree of a BSpline by degreeincrement, which defaults to 1
      \param GeoId - the geometry of type bspline to increase the degree
@@ -243,7 +243,7 @@ public:
      \retval bool - returns true if the increase in degree succeeded, or false if it did not succeed.
      */
     bool increaseBSplineDegree(int GeoId, int degreeincrement = 1);
-    
+
     /*!
      \brief Increases or Decreases the multiplicity of a BSpline knot by the multiplicityincr param, which defaults to 1, if the result is multiplicity zero, the knot is removed
      \param GeoId - the geometry of type bspline to increase the degree
@@ -258,11 +258,11 @@ public:
     int getHighestVertexIndex(void) const { return VertexId2GeoId.size() - 1; } // Most recently created
     int getHighestCurveIndex(void) const { return Geometry.getSize() - 1; }
     void rebuildVertexIndex(void);
-    
-    /// retrieves for a GeoId and PosId the Vertex number 
+
+    /// retrieves for a GeoId and PosId the Vertex number
     int getVertexIndexGeoPos(int GeoId, PointPos PosId) const;
 
-    // retrieves an array of maps, each map containing the points that are coincidence by virtue of 
+    // retrieves an array of maps, each map containing the points that are coincidence by virtue of
     // any number of direct or indirect coincidence constraints
     const std::vector< std::map<int, Sketcher::PointPos> > getCoincidenceGroups();
     // returns if the given geoId is fixed (coincident) with external geometry on any of the possible relevant points
@@ -270,7 +270,7 @@ public:
     // returns a map containing all the GeoIds that are coincident with the given point as keys, and the PosIds as values associated
     // with the keys.
     const std::map<int, Sketcher::PointPos> getAllCoincidentPoints(int GeoId, PointPos PosId);
-    
+
     /// retrieves for a Vertex number a list with all coincident points (sharing a single coincidence constraint)
     void getDirectlyCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
                              std::vector<PointPos> &PosIdList);
@@ -314,7 +314,7 @@ public:
     bool evaluateSupport(void);
     /// validate External Links (remove invalid external links)
     void validateExternalLinks(void);
-    
+
     /// gets DoF of last solver execution
     inline int getLastDoF() const {return lastDoF;}
     /// gets HasConflicts status of last solver execution
@@ -331,7 +331,7 @@ public:
     inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
-    
+
     /// returns the geometric elements/vertex which the solver detects as having dependent parameters.
     /// these parameters relate to not fully constraint edges/vertices.
     void getGeometryWithDependentParameters(std::vector<std::pair<int,PointPos>>& geometrymap);
@@ -367,40 +367,44 @@ public:
     /// Return true if this object is allowed as external geometry for the
     /// sketch. rsn argument receives the reason for disallowing.
     bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
-    
+
     bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
 public:
     // Analyser functions
     int autoConstraint(double precision = Precision::Confusion() * 1000, double angleprecision = M_PI/20, bool includeconstruction = true);
-    
+
     int detectMissingPointOnPointConstraints(double precision = Precision::Confusion() * 1000, bool includeconstruction = true);
     void analyseMissingPointOnPointCoincident(double angleprecision = M_PI/8);
     int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI/8);
     int detectMissingEqualityConstraints(double precision);
-    
+
     std::vector<ConstraintIds> &getMissingPointOnPointConstraints(void);
     std::vector<ConstraintIds> &getMissingVerticalHorizontalConstraints(void);
     std::vector<ConstraintIds> &getMissingLineEqualityConstraints(void);
     std::vector<ConstraintIds> &getMissingRadiusConstraints(void);
-    
+
     void setMissingRadiusConstraints(std::vector<ConstraintIds> &cl);
     void setMissingLineEqualityConstraints(std::vector<ConstraintIds>& cl);
     void setMissingVerticalHorizontalConstraints(std::vector<ConstraintIds>& cl);
     void setMissingPointOnPointConstraints(std::vector<ConstraintIds>& cl);
-    
+
     void makeMissingPointOnPointCoincident(bool onebyone = false);
     void makeMissingVerticalHorizontal(bool onebyone = false);
     void makeMissingEquality(bool onebyone = true);
-    
+
     // helper
     /// returns the number of redundant constraints detected
     int autoRemoveRedundants(bool updategeo = true);
-    
+
+    // Validation routines
+    std::vector<Base::Vector3d> getOpenVertices(void) const;
+
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
     virtual void onDocumentRestored();
-    
+    virtual void restoreFinished();
+
     virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment = 0);
 
     std::string validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr);
@@ -430,14 +434,14 @@ private:
 
     std::vector<int> VertexId2GeoId;
     std::vector<PointPos> VertexId2PosId;
-    
+
     Sketch solvedSketch;
-    
-    /** this internal flag indicate that an operation modifying the geometry, but not the DoF of the sketch took place (e.g. toggle construction), 
+
+    /** this internal flag indicate that an operation modifying the geometry, but not the DoF of the sketch took place (e.g. toggle construction),
         so if next action is a movement of a point (movePoint), the geometry must be updated first.
     */
     bool solverNeedsUpdate;
-    
+
     int lastDoF;
     bool lastHasConflict;
     bool lastHasRedundancies;

@@ -236,10 +236,13 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
     if (evIsGesture) {
         const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
         switch(gesture->state) {
-        case SoGestureEvent::SbGSStart:
+        case SoGestureEvent::SbGSStart:{
             //assert(!inGesture);//start of another gesture before the first finished? Happens all the time for Pan gesture... No idea why!  --DeepSOIC
             inGesture = true;
-        break;
+
+            enableGestureTilt = !(App::GetApplication().GetParameterGroupByPath
+                    ("User parameter:BaseApp/Preferences/View")->GetBool("DisableTouchTilt",true));
+        }break;
         case SoGestureEvent::SbGSUpdate:
             assert(inGesture);//gesture update without start?
             inGesture = true;
@@ -308,7 +311,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     //mode-independent spaceball/joystick handling
     if (evIsLoc3) {
-        const SoMotion3Event * const event = static_cast<const SoMotion3Event * const>(ev);
+        const SoMotion3Event * const event = static_cast<const SoMotion3Event *>(ev);
         if (event)
             this->processMotionEvent(event);
         processed = true;
@@ -544,19 +547,19 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 processed=true;
             } else if (gesture->state == SoGestureEvent::SbGSUpdate){
                 if(type.isDerivedFrom(SoGesturePinchEvent::getClassTypeId())){
-                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent* const>(ev);
+                    const SoGesturePinchEvent* const event = static_cast<const SoGesturePinchEvent*>(ev);
                     if (this->zoomAtCursor){
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                         SbVec2f panDist = this->normalizePixelPos(event->deltaCenter.getValue());
                         NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));
                     }
                     NavigationStyle::doZoom(viewer->getSoRenderManager()->getCamera(),-logf(event->deltaZoom),this->normalizePixelPos(event->curCenter));
-                    if (event->deltaAngle != 0)
+                    if (event->deltaAngle != 0 && enableGestureTilt)
                         NavigationStyle::doRotate(viewer->getSoRenderManager()->getCamera(),event->deltaAngle,this->normalizePixelPos(event->curCenter));
                     processed = true;
                 }
                 if(type.isDerivedFrom(SoGesturePanEvent::getClassTypeId())){
-                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent* const>(ev);
+                    const SoGesturePanEvent* const event = static_cast<const SoGesturePanEvent*>(ev);
                         //this is just dealing with the pan part of pinch gesture. Taking care of zooming to pos is done in doZoom.
                     SbVec2f panDist = this->normalizePixelPos(event->deltaOffset);
                     NavigationStyle::panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, panDist, SbVec2f(0,0));

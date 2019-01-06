@@ -44,5 +44,7 @@
         <file>translations/Plot_id.qm</file>
         <file>translations/Plot_lt.qm</file>
         <file>translations/Plot_val-ES.qm</file>
+        <file>translations/Plot_ar.qm</file>
+        <file>translations/Plot_vi.qm</file>
     </qresource>
 </RCC>

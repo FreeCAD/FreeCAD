@@ -269,7 +269,7 @@
     </message>
     <message>
       <source>Right</source>
-      <translation>右</translation>
+      <translation>右视</translation>
     </message>
     <message>
       <source>Vertical</source>
@@ -277,7 +277,7 @@
     </message>
     <message>
       <source>Top</source>
-      <translation>顶视</translation>
+      <translation>俯视</translation>
     </message>
     <message>
       <source>Bottom</source>

@@ -69,10 +69,10 @@ def searchforopenscadexe():
             if os.path.isfile(testpath):
                 return testpath
     elif sys.platform == 'darwin':
-        ascript = ('tell application "Finder"\n'
-        'POSIX path of (application file id "org.openscad.OpenSCAD"'
-        'as alias)\n'
-        'end tell')
+        ascript = (b'tell application "Finder"\n'
+        b'POSIX path of (application file id "org.openscad.OpenSCAD"'
+        b'as alias)\n'
+        b'end tell')
         p1=subprocess.Popen(['osascript','-'],stdin=subprocess.PIPE,\
                 stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         stdout,stderr = p1.communicate(ascript)

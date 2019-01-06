@@ -248,11 +248,11 @@ class GmshTools():
 
     def get_group_data(self):
         # TODO: solids, faces, edges and vertexes don't seem to work together in one group,
-        #       some print or make them work together
+        #       some output message or make them work together
 
         # mesh group objects
         if not self.mesh_obj.MeshGroupList:
-            # print ('  No mesh group objects.')
+            # print('  No mesh group objects.')
             pass
         else:
             print('  Mesh group objects, we need to get the elements.')
@@ -284,7 +284,7 @@ class GmshTools():
     def get_region_data(self):
         # mesh regions
         if not self.mesh_obj.MeshRegionList:
-            # print ('  No mesh regions.')
+            # print('  No mesh regions.')
             pass
         else:
             print('  Mesh regions, we need to get the elements.')
@@ -301,7 +301,7 @@ class GmshTools():
                             'It is strongly recommended to extract the shape to mesh from the Compound and use this one.'
                         )
                         FreeCAD.Console.PrintError(error_message + "\n")
-                        # TODO: no gui popup because FreeCAD will be in a endless print loop
+                        # TODO: no gui popup because FreeCAD will be in a endless output loop
                         #       as long as the pop up is on --> maybe find a better solution for
                         #       either of both --> thus the pop up is in task panel
             for mr_obj in self.mesh_obj.MeshRegionList:
@@ -349,7 +349,7 @@ class GmshTools():
         # currently only one boundary layer setting object is allowed, but multiple boundary can be selected
         # Mesh.CharacteristicLengthMin, must be zero, or a value less than first inflation layer height
         if not self.mesh_obj.MeshBoundaryLayerList:
-            # print ('  No mesh boundary layer setting document object.')
+            # print('  No mesh boundary layer setting document object.')
             pass
         else:
             print('  Mesh boundary layers, we need to get the elements.')
@@ -398,7 +398,7 @@ class GmshTools():
                         else:
                             setting['hfar'] = setting['thickness']  # set a value for safety, it may works as background mesh cell size
                         # from face name -> face id is done in geo file write up
-                        #TODO: fan angle setup is not implemented yet
+                        # TODO: fan angle setup is not implemented yet
                         if self.dimension == '2':
                             setting['EdgesList'] = belem_list
                         elif self.dimension == '3':
@@ -425,7 +425,7 @@ class GmshTools():
                     v = item[k]
                     if k in set(['EdgesList', 'FacesList']):
                         # the element name of FreeCAD which starts with 1 (example: 'Face1'), same as Gmsh
-                        #el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
+                        # el_id = int(el[4:])  # FIXME:  strip `face` or `edge` prefix
                         ele_nodes = (''.join((str(el[4:]) + ', ') for el in v)).rstrip(', ')
                         line = prefix + '.' + str(k) + ' = {' + ele_nodes + ' };\n'
                         geo.write(line)
@@ -577,6 +577,9 @@ class GmshTools():
         try:
             p = subprocess.Popen(comandlist, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             output, error = p.communicate()
+            if sys.version_info.major >= 3:
+                output = output.decode('utf-8')
+                error = error.decode('utf-8')
             # print(output)  # stdout is still cut at some point but the warnings are in stderr and thus printed :-)
             # print(error)
         except:

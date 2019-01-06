@@ -36,7 +36,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Sayfa Yukarı ve Sayfa Aşağı Tuşu.</translation>
+      <translation>Sayfa Yukarı veya Sayfa Aşağı Tuşu.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
-      <translation>Orta fare tuşu.</translation>
+      <translation>Fare orta düğmesi.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="74"/>

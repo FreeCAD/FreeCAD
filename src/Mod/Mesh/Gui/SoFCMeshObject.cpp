@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
+# include <climits>
 # ifdef FC_OS_WIN32
 # include <windows.h>
 # endif
@@ -589,7 +590,7 @@ void SoFCMeshObjectShape::initClass()
 }
 
 SoFCMeshObjectShape::SoFCMeshObjectShape()
-    : renderTriangleLimit(100000)
+    : renderTriangleLimit(UINT_MAX)
     , selectBuf(0)
     , updateGLArray(false)
 {
@@ -1260,7 +1261,7 @@ void SoFCMeshSegmentShape::initClass()
     SO_NODE_INIT_CLASS(SoFCMeshSegmentShape, SoShape, "Shape");
 }
 
-SoFCMeshSegmentShape::SoFCMeshSegmentShape() : renderTriangleLimit(100000)
+SoFCMeshSegmentShape::SoFCMeshSegmentShape() : renderTriangleLimit(UINT_MAX)
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshSegmentShape);
     SO_NODE_ADD_FIELD(index, (0));

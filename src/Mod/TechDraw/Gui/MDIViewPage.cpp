@@ -1064,7 +1064,6 @@ void MDIViewPage::setTreeToSceneSelect(void)
 
                 std::stringstream ss;
                 ss << "Vertex" << vert->getProjIndex();
-                                        ss.str().c_str();
                 //bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),

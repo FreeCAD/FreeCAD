@@ -79,6 +79,13 @@ struct MeshExport EdgeCollapse
   std::vector<unsigned long> _changeFacets;
 };
 
+struct MeshExport VertexCollapse
+{
+  unsigned long _point;
+  std::vector<unsigned long> _circumPoints;
+  std::vector<unsigned long> _circumFacets;
+};
+
 /**
  * The MeshPoint class represents a point in the mesh data structure. The class inherits from
  * Vector3f and provides some additional information such as flag state and property value.

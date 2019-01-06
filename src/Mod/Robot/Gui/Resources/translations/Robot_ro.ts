@@ -327,12 +327,12 @@
     <message>
       <location line="+1"/>
       <source>Dress-up trajectory...</source>
-      <translation type="unfinished">Dress-up trajectory...</translation>
+      <translation>Mise en forme de la trajectoire...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
+      <translation>Créarea unui objet de mise en forme care înlocuiește unele aspecte ale unei traiectorii</translation>
     </message>
     <message>
       <source>Dress up trajectory...</source>
@@ -381,7 +381,7 @@
     <message>
       <location line="-177"/>
       <source>Select one Robot to set home position</source>
-      <translation type="unfinished">Select one Robot to set home position</translation>
+      <translation>Selectaţi un Robot pentru a seta poziţia de origine</translation>
     </message>
     <message>
       <location line="+149"/>
@@ -414,13 +414,13 @@
       <location filename="../../CommandExport.cpp" line="-40"/>
       <location line="+62"/>
       <source>KRL file</source>
-      <translation type="unfinished">KRL file</translation>
+      <translation>KRL fişier</translation>
     </message>
     <message>
       <location line="-61"/>
       <location line="+62"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Toate fișierele</translation>
     </message>
     <message>
       <location line="-61"/>
@@ -502,6 +502,11 @@
       <location line="+1"/>
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Vă rugăm să vizitaţi %1 şi copiaţi fişierele în %2</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderTrajectory.cpp" line="+164"/>
+      <source>Modify</source>
+      <translation>Modifica</translation>
     </message>
   </context>
   <context>

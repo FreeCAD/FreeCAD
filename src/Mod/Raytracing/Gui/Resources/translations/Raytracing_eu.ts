@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+496"/>
+      <location filename="../../Command.cpp" line="+519"/>
       <source>File</source>
       <translation>Fitxategia</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location line="+207"/>
+      <location line="+231"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
@@ -41,7 +41,7 @@
       <translation>Txertatu Luxrender proiektu berria dokumentuan</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>Txantiloirik ez</translation>
     </message>
@@ -54,7 +54,7 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location line="-341"/>
+      <location line="-372"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
@@ -76,7 +76,7 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location line="-100"/>
+      <location line="-119"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
@@ -99,7 +99,7 @@
       <translation>Txertatu POV-Ray proiektu berria dokumentuan</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>Txantiloirik ez</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location line="+196"/>
+      <location line="+212"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
@@ -130,7 +130,7 @@
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location line="+243"/>
+      <location line="+278"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
@@ -148,7 +148,7 @@
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <location line="-723"/>
+      <location line="-785"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
@@ -206,22 +206,22 @@
     <message>
       <location line="-79"/>
       <location line="+139"/>
-      <location line="+93"/>
-      <location line="+391"/>
+      <location line="+97"/>
+      <location line="+434"/>
       <source>No perspective camera</source>
       <translation>Ez dago perspektiba-kamerarik</translation>
     </message>
     <message>
-      <location line="-622"/>
+      <location line="-669"/>
       <location line="+139"/>
-      <location line="+93"/>
+      <location line="+97"/>
       <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>Kameraren uneko bista ez da perspektiban eta, beraz, POV-Ray irudiaren emaitza zuk espero zenuenaren desberdina izan daiteke.
 Jarraitu?</translation>
     </message>
     <message>
-      <location line="-109"/>
+      <location line="-113"/>
       <source>Export view to POV-Ray...</source>
       <translation>Esportatu bista POV-Ray formatura...</translation>
     </message>
@@ -231,13 +231,25 @@ Jarraitu?</translation>
       <translation>Idatzi 3D bista aktiboa eta haren eduki guztiak POV-Ray fitxategi batera</translation>
     </message>
     <message>
+      <location line="+126"/>
+      <location line="+434"/>
+      <source>No template</source>
+      <translation>Txantiloirik ez</translation>
+    </message>
+    <message>
+      <location line="-433"/>
+      <location line="+434"/>
+      <source>Cannot create a project because there is no template installed.</source>
+      <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
+    </message>
+    <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>Kameraren uneko bista ez da perspektiban eta, beraz, Povray irudiaren emaitza zuk espero zenuenaren desberdina izan daiteke.
 Jarraitu?</translation>
     </message>
     <message>
-      <location line="-2"/>
+      <location line="-563"/>
       <source>Raytracing</source>
       <translation>Izpi-hedaketa</translation>
     </message>
@@ -250,7 +262,7 @@ Jarraitu?</translation>
       <translation>Idatzi 3D bista aktiboa eta haren eduki guztiak povray fitxategi batera</translation>
     </message>
     <message>
-      <location line="+501"/>
+      <location line="+548"/>
       <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>Kameraren uneko bista ez da perspektiban eta, beraz, luxrender irudiaren emaitza zuk espero zenuenaren desberdina izan daiteke.
@@ -272,10 +284,10 @@ Jarraitu?</translation>
       <translation>Fitxategi guztiak (*.*)</translation>
     </message>
     <message>
-      <location line="-585"/>
+      <location line="-632"/>
       <location line="+51"/>
       <location line="+63"/>
-      <location line="+276"/>
+      <location line="+299"/>
       <source>Export page</source>
       <translation>Esportatu orria</translation>
     </message>
@@ -286,13 +298,13 @@ Jarraitu?</translation>
     <message>
       <location line="-103"/>
       <location line="+87"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Wrong selection</source>
       <translation>Hautapen okerra</translation>
     </message>
     <message>
-      <location line="-392"/>
+      <location line="-431"/>
       <source>Select a Part object.</source>
       <translation>Hautatu objektu zati bat.</translation>
     </message>
@@ -314,18 +326,18 @@ Jarraitu?</translation>
     </message>
     <message>
       <location line="+64"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Select one Raytracing project object.</source>
       <translation>Hautatu izpi-hedaketako proiektu bateko objektu bat.</translation>
     </message>
     <message>
-      <location line="-302"/>
+      <location line="-341"/>
       <source>Luxrender</source>
       <translation>Luxrender</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="+78"/>
       <location line="+6"/>
       <source>POV-Ray not found</source>
       <translation>POV-Ray ez da aurkitu</translation>
@@ -341,7 +353,7 @@ Jarraitu?</translation>
       <translation>Zuzendu POV-Ray exekutagarriaren bidea hobespenetan.</translation>
     </message>
     <message>
-      <location line="+75"/>
+      <location line="+95"/>
       <source>Lux project file missing</source>
       <translation>Lux proiektuaren fitxategia falta da</translation>
     </message>
@@ -351,25 +363,25 @@ Jarraitu?</translation>
       <translation>Lux proiektu-fitxategia ez da existitzen.</translation>
     </message>
     <message>
-      <location line="-69"/>
+      <location line="-89"/>
       <location line="+6"/>
       <source>Luxrender not found</source>
       <translation>Ez da aurkitu luxrender</translation>
     </message>
     <message>
-      <location line="-475"/>
+      <location line="-502"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+272"/>
+      <location line="+295"/>
       <source>POV-Ray</source>
       <translation>POV-Ray</translation>
     </message>
     <message>
-      <location line="-384"/>
+      <location line="-407"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+276"/>
-      <location line="+109"/>
+      <location line="+299"/>
+      <location line="+113"/>
       <source>All Files</source>
       <translation>Fitxategi guztiak</translation>
     </message>
@@ -562,7 +574,7 @@ Jarraitu?</translation>
       <translation>Editatu Luxrender proiektua</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>LuxRender template</source>
       <translation>Luxrender txantiloia</translation>
     </message>
@@ -575,12 +587,12 @@ Jarraitu?</translation>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location line="+48"/>
+      <location line="+47"/>
       <source>Edit Povray project</source>
       <translation>Editatu Povray proiektua</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>Povray template</source>
       <translation>Povray txantiloia</translation>
     </message>

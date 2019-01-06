@@ -213,6 +213,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Mesh_RemoveComponents"
           << "Mesh_RemoveCompByHand"
           << "Mesh_Segmentation"
+          << "Mesh_SegmentationBestFit"
           << "Separator"
           << "Mesh_Smoothing"
           << "Mesh_Scale"

@@ -76,7 +76,7 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+6773"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+6866"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1474"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1234"/>
+      <location line="-1378"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -162,9 +162,37 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherCompConstrainRadDia</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="+5915"/>
+      <source>Sketcher</source>
+      <translation>Taslakçı</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain arc or circle</source>
+      <translation>Yay ya da çemberi kısıtla</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain an arc or a circle</source>
+      <translation>Bir yayı ya da bir çemberi kısıtla</translation>
+    </message>
+    <message>
+      <location line="+83"/>
+      <source>Constrain radius</source>
+      <translation>Sınır yarıçapı</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Constrain diameter</source>
+      <translation>Çapı kısıtla</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1450"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -182,7 +210,7 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4800"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4852"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -194,7 +222,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc in the sketcher</source>
-      <translation>Çizimcide bir ark oluştur</translation>
+      <translation>Sketcher içinde bir yay oluştur</translation>
     </message>
     <message>
       <location line="+77"/>
@@ -210,7 +238,7 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location line="+2831"/>
+      <location line="+2848"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -235,12 +263,12 @@
     <message>
       <location line="+1"/>
       <source>Create circle</source>
-      <translation>Daire oluştur</translation>
+      <translation>Çember oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a circle in the sketcher</source>
-      <translation>Çizimcide bir daire oluştur</translation>
+      <translation>Sketcher içinde bir çember oluştur</translation>
     </message>
     <message>
       <location line="+77"/>
@@ -256,14 +284,14 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location line="-1076"/>
+      <location line="-1093"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a conic</source>
-      <translation>Konik oluştur</translation>
+      <translation>Bir Konik oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -299,7 +327,7 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location line="+3091"/>
+      <location line="+3143"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -310,12 +338,12 @@
     </message>
     <message>
       <source>Create an regular polygon in the sketcher</source>
-      <translation>Taslakta normal çokgen oluşturma</translation>
+      <translation>Sketcher içinde bir düzenli çokgen oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation type="unfinished">Create a regular polygon in the sketcher</translation>
+      <translation>Sketcher içinde bir düzenli çokgen oluşturun</translation>
     </message>
     <message>
       <location line="+118"/>
@@ -356,7 +384,7 @@
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="+473"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+492"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -384,7 +412,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1346"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -402,7 +430,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5429"/>
+      <location filename="../../CommandConstraints.cpp" line="+29"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -420,19 +448,19 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location line="-3501"/>
+      <location line="-4079"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrain Block</source>
-      <translation type="unfinished">Constrain Block</translation>
+      <translation>Kısıtlama Bloğu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a Block constraint on the selected item</source>
-      <translation type="unfinished">Create a Block constraint on the selected item</translation>
+      <translation>Seçili öğe üzerinde bir blok kısıtlaması oluşturma</translation>
     </message>
   </context>
   <context>
@@ -450,13 +478,31 @@
     <message>
       <location line="+1"/>
       <source>Create a coincident constraint on the selected item</source>
-      <translation>Seçili öğede rastgele bir sınırlama oluştur</translation>
+      <translation>Seçili öğede bir çakışık sınırlama oluştur</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherConstrainDiameter</name>
+    <message>
+      <location line="+3188"/>
+      <source>Sketcher</source>
+      <translation>Taslakçı</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain diameter</source>
+      <translation>Çapı kısıtla</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Fix the diameter of a circle or an arc</source>
+      <translation>Bir çemberin veya bir yayın yarıçapını düzelt</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="+190"/>
+      <location line="-3000"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -518,7 +564,7 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+2689"/>
+      <location line="+3267"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -536,7 +582,7 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-4776"/>
+      <location line="-5354"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -554,7 +600,7 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location line="+5376"/>
+      <location line="+5966"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -572,7 +618,7 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="-4886"/>
+      <location line="-5476"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -642,7 +688,7 @@
     <message>
       <location line="+1"/>
       <source>Fix a point onto an object</source>
-      <translation>Bir nesneye bir nokta sabitleme</translation>
+      <translation>Teğetsel sınırlama oluştur</translation>
     </message>
   </context>
   <context>
@@ -666,7 +712,7 @@
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location line="+1433"/>
+      <location line="+2023"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -706,7 +752,7 @@
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-1774"/>
+      <location line="-2364"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -742,7 +788,7 @@
   <context>
     <name>CmdSketcherConvertToNURB</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-520"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-539"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -760,7 +806,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1222"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -778,7 +824,7 @@
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-5666"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-5718"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -796,7 +842,7 @@
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location line="+3272"/>
+      <location line="+3289"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -814,7 +860,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location line="-3588"/>
+      <location line="-3605"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -852,7 +898,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc of ellipse in the sketch</source>
-      <translation>Çizimde elips yay oluşturun</translation>
+      <translation>Eskizde bir elips yayı oluştur</translation>
     </message>
   </context>
   <context>
@@ -870,7 +916,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc of hyperbola in the sketch</source>
-      <translation>Eskortda bir hiperbola yay oluşturun</translation>
+      <translation>Eskizde bir hiperbol yayı oluştur</translation>
     </message>
   </context>
   <context>
@@ -894,7 +940,7 @@
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location line="+588"/>
+      <location line="+605"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -912,25 +958,25 @@
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location line="-2565"/>
+      <location line="-2582"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create circle</source>
-      <translation>Daire oluştur</translation>
+      <translation>Çember oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a circle in the sketch</source>
-      <translation>Taslak içerisinde daire oluştur</translation>
+      <translation>Eskizde bir çember oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location line="+3274"/>
+      <location line="+3291"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -942,13 +988,13 @@
     <message>
       <location line="+1"/>
       <source>Create a draft line in the sketch</source>
-      <translation>Taslak içerisinde taslak bir doğru oluştur</translation>
+      <translation>Eskizde bir taslak çizgisi oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location line="-2407"/>
+      <location line="-2424"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -960,7 +1006,7 @@
     <message>
       <location line="+1"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation>Çizimde 3 puanla elips oluşturun</translation>
+      <translation>Eskizde 3 noktadan geçen bir elips oluştur</translation>
     </message>
   </context>
   <context>
@@ -978,13 +1024,13 @@
     <message>
       <location line="+1"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>Eskizde merkez tarafından bir elips oluşturun</translation>
+      <translation>Eskizde merkez temelli bir elips oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location line="+2721"/>
+      <location line="+2769"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1006,7 +1052,7 @@
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location line="+1574"/>
+      <location line="+1578"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1018,7 +1064,7 @@
     <message>
       <location line="+1"/>
       <source>Create a heptagon in the sketch</source>
-      <translation>Eskizde bir heptagon oluşturun</translation>
+      <translation>Eskizde bir yedigen oluştur</translation>
     </message>
   </context>
   <context>
@@ -1042,7 +1088,7 @@
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location line="-6951"/>
+      <location line="-7042"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1054,13 +1100,13 @@
     <message>
       <location line="+1"/>
       <source>Create a line in the sketch</source>
-      <translation>Taslak içerisinde doğru oluştur</translation>
+      <translation>Eskizde bir çizgi oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location line="+6999"/>
+      <location line="+7090"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1096,7 +1142,7 @@
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location line="-2482"/>
+      <location line="-2517"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1126,13 +1172,13 @@
     <message>
       <location line="+1"/>
       <source>Create a point in the sketch</source>
-      <translation>Taslak içerisinde nokta oluştur</translation>
+      <translation>Eskizde bir nokta oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location line="-4122"/>
+      <location line="-4139"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1144,7 +1190,7 @@
     <message>
       <location line="+1"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Eskizde bir polyline yaratın. 'M' Anahtar döngüleri davranışı</translation>
+      <translation>Eskizde bir çokluçizgi oluştur. 'M' tuşu davranış dönüşümlerini ayarlar</translation>
     </message>
     <message>
       <source>Create a polyline in the sketch</source>
@@ -1154,7 +1200,7 @@
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location line="-697"/>
+      <location line="-736"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1166,13 +1212,13 @@
     <message>
       <location line="+1"/>
       <source>Create a rectangle in the sketch</source>
-      <translation>Taslak içerisinde kare oluştur</translation>
+      <translation>Eskizde bir dikdörtgen oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location line="+6786"/>
+      <location line="+6877"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1184,7 +1230,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation>Çizimde normal çokgen oluşturma</translation>
+      <translation>Eskizde düzenli bir çokgen oluştur</translation>
     </message>
   </context>
   <context>
@@ -1202,7 +1248,7 @@
     <message>
       <location line="+1"/>
       <source>Create a slot in the sketch</source>
-      <translation>Eskizde bir oyuk oluşturun</translation>
+      <translation>Eskizde bir yarık oluştur</translation>
     </message>
   </context>
   <context>
@@ -1226,7 +1272,7 @@
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location line="-1815"/>
+      <location line="-1850"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1238,13 +1284,13 @@
     <message>
       <location line="+1"/>
       <source>Create text in the sketch</source>
-      <translation>Taslak içerisinde yazı oluştur</translation>
+      <translation>Eskizde bir Metin oluştur</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location line="+1785"/>
+      <location line="+1820"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1262,7 +1308,7 @@
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="+302"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+320"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1278,9 +1324,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherDeleteAllConstraints</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+590"/>
+      <source>Sketcher</source>
+      <translation>Taslakçı</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Delete All Constraints</source>
+      <translation>Tüm Kısıtlamaları Sil</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Deletes all the constraints</source>
+      <translation>Tüm kısıtlamaları siler</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+453"/>
+      <location line="-68"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1310,13 +1374,13 @@
     <message>
       <location line="+1"/>
       <source>Edit the selected sketch</source>
-      <translation>Seçili çizimi düzenle</translation>
+      <translation>Seçili eskizi düzenle</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-954"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-958"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1334,7 +1398,7 @@
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location line="+223"/>
+      <location line="+224"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1352,7 +1416,7 @@
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-226"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-243"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1370,12 +1434,16 @@
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location line="+62"/>
+      <location line="+78"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Increase knot multiplicity</source>
+      <translation>Düğüm çokluğunu arttır</translation>
+    </message>
+    <message>
       <source>Increase degree</source>
       <translation>Derece artır</translation>
     </message>
@@ -1395,12 +1463,12 @@
     <message>
       <location line="+1"/>
       <source>Leave sketch</source>
-      <translation>Taslaktan çık</translation>
+      <translation>Eskizden çık</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Close the editing of the sketch</source>
-      <translation>Taslağı düzenlemeyi bırak</translation>
+      <translation>Eskiz düzenlemeyi kapat</translation>
     </message>
   </context>
   <context>
@@ -1413,17 +1481,17 @@
     <message>
       <location line="+1"/>
       <source>Map sketch to face...</source>
-      <translation>Kroki yüzle...</translation>
+      <translation>Eskizi Yüzeye Eşle...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Map a sketch to a face</source>
-      <translation>Bir eskiz yüze eşleme</translation>
+      <translation>Eskizi Yüzeye Eşle</translation>
     </message>
     <message>
       <location line="+50"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!</source>
-      <translation>Seçilen nesnelerden bazıları eşleştirilecek taslağa bağlı. Dairesel bağımlılıklara izin verilmiyor!</translation>
+      <translation>Seçilen nesnelerden bazıları eşleştirilecek eskize bağlı. Dairesel bağımlılıklara izin verilemez!</translation>
     </message>
   </context>
   <context>
@@ -1437,7 +1505,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Merge sketches</source>
-      <translation>Çizimleri birleştir</translation>
+      <translation>Eskizleri birleştir</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -1447,7 +1515,7 @@
     <message>
       <location line="+1"/>
       <source>Select at least two sketches, please.</source>
-      <translation>En azından iki eskiz seçin, lütfen.</translation>
+      <translation>En az iki eskiz seçin, lütfen.</translation>
     </message>
   </context>
   <context>
@@ -1461,7 +1529,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Mirror sketch</source>
-      <translation>Ayna kroki</translation>
+      <translation>Eskizi Aynala</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -1471,20 +1539,38 @@
     <message>
       <location line="+1"/>
       <source>Select one or more sketches, please.</source>
-      <translation>Bir ya da daha fazla kroki seçin, lütfen.</translation>
+      <translation>Bir ya da daha fazla eskiz seçin, lütfen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherMove</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="-441"/>
+      <source>Sketcher</source>
+      <translation>Taslakçı</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Move</source>
+      <translation>Taşı</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Moves the geometry taking as reference the last selected point</source>
+      <translation>Son seçilen noktayı referans alarak geometriyi hareket ettirir</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location line="-548"/>
+      <location filename="../../Command.cpp" line="-548"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create sketch</source>
-      <translation>Taslak oluştur</translation>
+      <translation>Eskiz oluştur</translation>
     </message>
     <message>
       <source>Create a new or edit the selected sketch</source>
@@ -1514,7 +1600,7 @@
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-140"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+298"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1539,18 +1625,18 @@
     <message>
       <location line="+1"/>
       <source>Reorient sketch...</source>
-      <translation>Kroki yeniden gözden geçir...</translation>
+      <translation>Eskizi yeniden yönlendir...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Reorient the selected sketch</source>
-      <translation>Seçili eskizin yönünü değiştirin</translation>
+      <translation>Seçili eskiz yeniden yönlendir</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-997"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1568,7 +1654,7 @@
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location line="-175"/>
+      <location line="-282"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1582,7 +1668,7 @@
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location line="-253"/>
+      <location line="-254"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1600,7 +1686,7 @@
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location line="+300"/>
+      <location line="+301"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1612,9 +1698,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherSelectElementsWithDoFs</name>
+    <message>
+      <location line="+120"/>
+      <source>Sketcher</source>
+      <translation>Taslakçı</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select solver DoFs</source>
+      <translation>DoFs çözücü seçin</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select elements where the solver still detects unconstrained degrees of freedom.</source>
+      <translation>Çözücünün sınırsız serbestlik derecelerini henüz tespit ettiği öğeleri seçin.</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location line="-149"/>
+      <location line="-271"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1689,18 +1793,18 @@
     <message>
       <location line="+1"/>
       <source>Switch virtual space</source>
-      <translation type="unfinished">Switch virtual space</translation>
+      <translation>Sanal Uzayı değiştir</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
-      <translation type="unfinished">Switches the selected constraints or the view to the other virtual space</translation>
+      <translation>Seçilen kısıtlamaları veya görünümü diğer sanal uzaya geçirir</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+517"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1744,7 +1848,7 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5545"/>
+      <location filename="../../CommandConstraints.cpp" line="+6135"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1762,7 +1866,7 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-583"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-584"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
@@ -1791,12 +1895,12 @@
     <message>
       <location line="+1"/>
       <source>Validate sketch...</source>
-      <translation>Çizimi onayla...</translation>
+      <translation>Eskizi doğrula...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Validate sketch</source>
-      <translation>Çizimi onayla</translation>
+      <translation>Eskizi doğrula</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -1806,35 +1910,62 @@
     <message>
       <location line="+1"/>
       <source>Select one sketch, please.</source>
-      <translation>Bir eskiz seçin lütfen.</translation>
+      <translation>Bir eskiz seçin, lütfen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherViewSection</name>
+    <message>
+      <location line="+209"/>
+      <source>Sketcher</source>
+      <translation>Taslakçı</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>View section</source>
+      <translation>Seçim Görünümü</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Switches between section and full view</source>
+      <translation>Seçim ve tam görünüm arasında geçiş yapar</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location line="-53"/>
+      <location line="-264"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>View sketch</source>
-      <translation>Çizimi göster</translation>
+      <translation>Eskizi göster</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>View sketch perpendicular to sketch plane</source>
-      <translation>Eskiz çizimini taslak düzlemine dikey olarak görüntüleyin</translation>
+      <translation>Eskizi, eskiz düzlemine dik olarak görüntüleyin</translation>
     </message>
   </context>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>OCE / OCC'nin bu sürümü düğüm çalışmasını desteklemez. 6.9.0 veya daha yenisine ihtiyacın var
 </translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="+1500"/>
+      <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
+      <translation>Eğrilerin kesişimini tahmin edemiyoruz. Dilimlemeyi planladığınız eğrilerin köşeleri arasında çakışan bir kısıtlama eklemeyi deneyin.</translation>
+    </message>
+    <message>
+      <location line="+3397"/>
+      <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
+      <translation>OCE/OCC'NİN bu sürümü düğüm işlemini desteklemez. 6.9.0 veya daha yüksek gerekir.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1871,6 +2002,55 @@
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC, maksimum tolerans dahilinde çokluğu azaltamıyor.</translation>
     </message>
+    <message>
+      <location filename="../../../App/SketchAnalysis.cpp" line="+376"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.
+</source>
+      <translation>Otomatik kısıtlama hatası: Çakışma kısıtlamaları uygulanırken eskiz çözülemez.
+</translation>
+    </message>
+    <message>
+      <location line="+79"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
+</source>
+      <translation>Otomatik kısıtlama hatası: Dikey / yatay kısıtlamalar uygulanırken eskiz çözülemez.
+</translation>
+    </message>
+    <message>
+      <location line="+195"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.
+</source>
+      <translation>Otomatik kısıtlama hatası: Eşitlik kısıtlamaları uygulanırken eskiz çözülemez.
+</translation>
+    </message>
+    <message>
+      <location line="+54"/>
+      <source>Autoconstrain error: Unsolvable sketch without constraints.
+</source>
+      <translation>Otomatik kısıtlama hatası: Kısıtlamalar olmaksızın eskiz çözülemez.
+</translation>
+    </message>
+    <message>
+      <location line="+37"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
+</source>
+      <translation>Otomatik kısıtlama hatası: Yatay ve dikey kısıtlamalar uyguladıktan sonra eskiz çözülemez.
+</translation>
+    </message>
+    <message>
+      <location line="+22"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
+</source>
+      <translation>Otomatik kısıtlama hatası: Nokta noktaya (çakışık) kısıtlamalar uygulandıktan sonra eskiz çözülemez.
+</translation>
+    </message>
+    <message>
+      <location line="+28"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.
+</source>
+      <translation>Otomatik kısıtlama hatası: Eşitlik kısıtlamaları uygulandıktan sonra eskiz çözülemez.
+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskSketcherCreateCommands</name>
@@ -1883,11 +2063,11 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="+45"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="+48"/>
       <location line="+8"/>
-      <location filename="../../CommandConstraints.cpp" line="-6737"/>
+      <location filename="../../CommandConstraints.cpp" line="-7352"/>
       <location line="+6"/>
-      <location line="+965"/>
+      <location line="+990"/>
       <location line="+247"/>
       <location line="+246"/>
       <location line="+23"/>
@@ -1949,17 +2129,21 @@
       <location line="+11"/>
       <location line="+51"/>
       <location line="+237"/>
-      <location line="+185"/>
+      <location line="+172"/>
+      <location line="+11"/>
+      <location line="+51"/>
+      <location line="+237"/>
+      <location line="+292"/>
       <location line="+12"/>
       <location line="+180"/>
       <location line="+56"/>
       <location line="+252"/>
       <location line="+13"/>
-      <location line="+15"/>
-      <location line="+6"/>
       <location line="+16"/>
-      <location line="+16"/>
-      <location line="+9"/>
+      <location line="+5"/>
+      <location line="+19"/>
+      <location line="+20"/>
+      <location line="+14"/>
       <location line="+111"/>
       <location line="+12"/>
       <location line="+24"/>
@@ -1982,29 +2166,30 @@
       <location line="+6"/>
       <location line="+6"/>
       <location line="+133"/>
-      <location line="+53"/>
+      <location line="+55"/>
       <location line="+8"/>
-      <location line="+30"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-88"/>
-      <location line="+119"/>
+      <location line="+32"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-104"/>
+      <location line="+80"/>
+      <location line="+56"/>
       <location line="+67"/>
-      <location line="+93"/>
+      <location line="+94"/>
       <location line="+54"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-696"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-806"/>
       <location line="+8"/>
       <location line="+42"/>
-      <location line="+57"/>
+      <location line="+58"/>
       <location line="+8"/>
-      <location line="+75"/>
-      <location line="+424"/>
-      <location line="+98"/>
+      <location line="+76"/>
+      <location line="+532"/>
+      <location line="+99"/>
       <location line="+8"/>
       <location line="+106"/>
       <location line="+6"/>
-      <location line="+218"/>
+      <location line="+243"/>
       <location line="+8"/>
-      <location line="+62"/>
-      <location line="+392"/>
+      <location line="+59"/>
+      <location line="+466"/>
       <location line="+8"/>
       <location line="+62"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="+23"/>
@@ -2020,7 +2205,7 @@
       <translation>Eskiden kenarları / kenarları seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5836"/>
+      <location filename="../../CommandConstraints.cpp" line="-6430"/>
       <location line="+247"/>
       <source>Select an edge from the sketch.</source>
       <translation>Taslaktan bir kenar seç</translation>
@@ -2059,23 +2244,23 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
-      <location line="+99"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1749"/>
+      <location line="+100"/>
       <source>Impossible constraint</source>
       <translation>İmkansız kısıt</translation>
     </message>
     <message>
-      <location line="-1356"/>
+      <location line="-1381"/>
       <source>Cannot add a constraint between two external geometries!</source>
       <translation>İki dış geometri arasında bir sınırlama eklenemez!</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <translation>İki sabit geometri arasında bir kısıtlama ekleyemezsiniz! Sabit geometriler, dış geometriyi, engellenmiş geometriyi veya B-spline düğüm noktaları olarak özel noktaları içerir.</translation>
     </message>
     <message>
-      <location line="+520"/>
+      <location line="+545"/>
       <location line="+11"/>
       <location line="+12"/>
       <source>Only sketch and its support is allowed to select</source>
@@ -2110,7 +2295,7 @@
       <location line="+416"/>
       <location line="+50"/>
       <source>The selected edge has already a Block constraint!</source>
-      <translation type="unfinished">The selected edge has already a Block constraint!</translation>
+      <translation>Seçilen kenarın zaten bir Blok kısıtlaması var!</translation>
     </message>
     <message>
       <location line="-787"/>
@@ -2121,7 +2306,7 @@
       <location line="+27"/>
       <location line="+246"/>
       <source>There are more than one fixed point selected. Select a maximum of one fixed point!</source>
-      <translation type="unfinished">There are more than one fixed point selected. Select a maximum of one fixed point!</translation>
+      <translation>Seçilen birden fazla sabit nokta vardır. En fazla bir sabit nokta seçin!</translation>
     </message>
     <message>
       <location line="-51"/>
@@ -2176,33 +2361,33 @@
     <message>
       <location line="+252"/>
       <source>Wrong solver status</source>
-      <translation type="unfinished">Wrong solver status</translation>
+      <translation>Yanlış çözücü durumu</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
-      <translation type="unfinished">A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</translation>
+      <translation>Eskiz çözülmemiş ya da gereksiz ve / veya çakışan kısıtlamaları varsa bir blok kısıtlaması eklenemez.</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Select one edge from the sketch.</source>
-      <translation type="unfinished">Select one edge from the sketch.</translation>
+      <translation>Eskizden bir kenar seçin.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select only edges from the sketch.</source>
-      <translation type="unfinished">Select only edges from the sketch.</translation>
+      <translation>Eskizden sadece kenarları seçin.</translation>
     </message>
     <message>
       <location line="+355"/>
       <location line="+2231"/>
       <source>Constraint Substitution</source>
-      <translation type="unfinished">Constraint Substitution</translation>
+      <translation>Kısıtlamayı değiştir</translation>
     </message>
     <message>
       <location line="-2230"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
-      <translation type="unfinished">Endpoint to endpoint tangency was applied instead.</translation>
+      <translation>Bunun yerine, uç noktalar arasında teğetsel bir kısıtlama uygulandı.</translation>
     </message>
     <message>
       <location line="+542"/>
@@ -2243,21 +2428,24 @@
     <message>
       <location line="-147"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
-      <translation type="unfinished">Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</translation>
+      <translation>Uç noktalar arasında teğetsel bir kısıtlama uygulandı. Çakışık kısıtlama dilindi.</translation>
     </message>
     <message>
       <location line="+422"/>
+      <location line="+51"/>
+      <location line="+420"/>
       <location line="+51"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Eskizden bir veya daha fazla yay veya daire seçin.</translation>
     </message>
     <message>
-      <location line="+52"/>
+      <location line="-419"/>
+      <location line="+471"/>
       <source>Constrain equal</source>
       <translation>Eşit tutmak</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-470"/>
       <source>Do you want to share the same radius for all selected elements?</source>
       <translation>Seçilen tüm öğeler için aynı yarıçapı paylaşmak ister misiniz?</translation>
     </message>
@@ -2286,7 +2474,8 @@
       <location line="+185"/>
       <location line="+249"/>
       <location line="+1706"/>
-      <location line="+484"/>
+      <location line="+471"/>
+      <location line="+591"/>
       <source>Select the right things from the sketch.</source>
       <translation>Eskiden eskizlerden birini seçin.</translation>
     </message>
@@ -2295,7 +2484,7 @@
       <translation>BSpline kenarındaki nokta şu anda desteklenmiyor.</translation>
     </message>
     <message>
-      <location line="-2294"/>
+      <location line="-2872"/>
       <location line="+247"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
       <translation>Bu kısıtlama sadece bir çizgi segmentinde veya bir çift nokta üzerinde mantıklı olur</translation>
@@ -2320,11 +2509,17 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     </message>
     <message>
       <location line="+913"/>
+      <location line="+471"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Kısıtlama yalnızca yaylar veya daireler için geçerlidir.</translation>
     </message>
     <message>
-      <location line="+197"/>
+      <location line="-184"/>
+      <source>Do you want to share the same diameter for all selected elements?</source>
+      <translation>Seçilen tüm elemanlar için aynı çapı paylaşmak ister misiniz?</translation>
+    </message>
+    <message>
+      <location line="+488"/>
       <location line="+236"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Çizimden bir veya iki çizgi seçin. Ya da iki kenar ve bir nokta seçin.</translation>
@@ -2346,18 +2541,18 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>BSpline kenarı için eşitlik şu anda desteklenmiyor.</translation>
     </message>
     <message>
-      <location line="+606"/>
+      <location line="+618"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Işınlar gibi davranacak çizgilerin uç noktalarını seçin ve kenarları bir sınırı temsil eden bir kenar seçin. İlk seçilen nokta, n1, ikinci - n2 indeksine, datum değeri de n2 / n1 oranına karşılık gelir.</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location line="+15"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Seçilen nesneler sadece bir taslaktaki geometri değildir.</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location line="+9"/>
       <source>Number of selected objects is not 3 (is %1).</source>
       <translation>Seçilen nesnelerin sayısı 3 değil (% 1).</translation>
     </message>
@@ -2460,9 +2655,9 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Şu anda iç geometri yalnızca elipsin veya elipsin yayı için desteklenir. Son seçilen eleman elips veya elips yay olmalıdır.</translation>
     </message>
     <message>
-      <location line="+53"/>
+      <location line="+55"/>
       <location line="+8"/>
-      <location line="+30"/>
+      <location line="+32"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="-31"/>
       <location line="+8"/>
       <location line="+24"/>
@@ -2474,7 +2669,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation type="unfinished">Select exactly two vertexes from the sketch.</translation>
     </message>
     <message>
-      <location line="-4754"/>
+      <location line="-5348"/>
       <location line="+10"/>
       <source>Select two or more vertexes from the sketch.</source>
       <translation>Eskizden iki veya daha fazla köşe seçin.</translation>
@@ -2547,12 +2742,12 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     </message>
     <message>
       <location line="+13"/>
-      <location line="+2405"/>
+      <location line="+2983"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Çizimden en az iki satır seçin.</translation>
     </message>
     <message>
-      <location line="-2391"/>
+      <location line="-2969"/>
       <source>Select a valid line</source>
       <translation>Geçerli bir satır seçin</translation>
     </message>
@@ -2591,13 +2786,13 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <location line="+465"/>
       <location line="+156"/>
       <location line="+454"/>
-      <location line="+1607"/>
+      <location line="+2197"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
     <message>
-      <location line="-2666"/>
+      <location line="-3256"/>
       <location line="+620"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
@@ -2668,7 +2863,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation type="unfinished">Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
-      <location line="+806"/>
+      <location line="+1384"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Bir eksene açı sınırlaması eklenemiyor!</translation>
     </message>
@@ -2686,24 +2881,24 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation type="unfinished">Select atleast two lines from the sketch.</translation>
     </message>
     <message>
-      <location line="+28"/>
-      <location line="+618"/>
+      <location line="+29"/>
+      <location line="+629"/>
       <source>Select two or more compatible edges</source>
       <translation>İki veya daha fazla uyumlu kenarı seçin</translation>
     </message>
     <message>
-      <location line="-612"/>
+      <location line="-624"/>
       <source>Sketch axes cannot be used in equality constraints</source>
       <translation>Eskiz ekseni eşitlik kısıtlamaları içinde kullanılamaz</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location line="+19"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>B-spline kenarı için eşitlik şu anda desteklenmiyor.</translation>
     </message>
     <message>
-      <location line="+16"/>
-      <location line="+9"/>
+      <location line="+20"/>
+      <location line="+14"/>
       <source>Select two or more edges of similar type</source>
       <translation>Benzer tipte iki veya daha fazla kenar seçin</translation>
     </message>
@@ -2801,7 +2996,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation type="unfinished">You need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="+84"/>
+      <location filename="../../EditDatumDialog.cpp" line="+79"/>
       <source>Distance constraint</source>
       <translation>Mesafe kısıtlaması</translation>
     </message>
@@ -2811,10 +3006,12 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Eskizden çelişkili kısıtlamalar içerdiğinden, verinin düzenlenmesine izin verilmez</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-6155"/>
-      <location line="+5057"/>
+      <location filename="../../CommandConstraints.cpp" line="-6770"/>
+      <location line="+5082"/>
       <location line="+133"/>
-      <location filename="../../EditDatumDialog.cpp" line="+93"/>
+      <location line="+338"/>
+      <location line="+133"/>
+      <location filename="../../EditDatumDialog.cpp" line="+99"/>
       <source>Dimensional constraint</source>
       <translation>Boyutsal kısıtlama</translation>
     </message>
@@ -2823,38 +3020,38 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Ekran</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-138"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-139"/>
       <location line="+8"/>
-      <location line="+99"/>
+      <location line="+100"/>
       <location line="+8"/>
       <source>Select at least two edges from the sketch.</source>
-      <translation>Eskiden en az iki kenar seçin.</translation>
+      <translation>Eskizden en az iki kenar seçin.</translation>
     </message>
     <message>
-      <location line="-75"/>
-      <location line="+99"/>
+      <location line="-76"/>
+      <location line="+100"/>
       <source>One selected edge is not connectable</source>
       <translation>Seçilen bir kenar bağlanamaz</translation>
     </message>
     <message>
-      <location line="-89"/>
+      <location line="-90"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
       <translation>Tam olarak iki çizgiden oluşan bir şeklin kapatılması mantıklı değil.</translation>
     </message>
     <message>
-      <location line="+140"/>
-      <location line="+424"/>
-      <location line="+98"/>
+      <location line="+142"/>
+      <location line="+532"/>
+      <location line="+99"/>
       <location line="+8"/>
-      <location line="+330"/>
+      <location line="+355"/>
       <location line="+8"/>
-      <location line="+454"/>
+      <location line="+525"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Tek bir eskizden elemanlar seçin.</translation>
     </message>
     <message>
-      <location line="-941"/>
+      <location line="-1146"/>
       <source>No constraint selected</source>
       <translation>Sınır seçilmedi</translation>
     </message>
@@ -2864,7 +3061,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>En az bir kısıtlama seçilmelidir</translation>
     </message>
     <message>
-      <location line="+1065"/>
+      <location line="+1270"/>
       <source>Delete All Geometry</source>
       <translation>Tüm Geometriyi Sil</translation>
     </message>
@@ -2874,11 +3071,21 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Tüm geometriyi ve kısıtlamaları silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
+      <location line="+65"/>
+      <source>Delete All Constraints</source>
+      <translation>Tüm Kısıtlamaları Sil</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Are you really sure you want to delete all the constraints?</source>
+      <translation>Bütün kısıtlamaları silmek istediğinden emin misin?</translation>
+    </message>
+    <message>
       <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
       <translation>Şu anda iç geometri yalnızca elips ve elips için desteklenmektedir. Son seçilen eleman elips veya elips yay olmalıdır.</translation>
     </message>
     <message>
-      <location line="-820"/>
+      <location line="-982"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Simetrik bir yapı, en azından iki geometrik elemana ihtiyaç duyar, son geometrik eleman simetri yapımında referans olur.</translation>
     </message>
@@ -2888,8 +3095,8 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Son öğe simetri yapımında referans olacak bir nokta veya bir çizgi olmalıdır.</translation>
     </message>
     <message>
-      <location line="+288"/>
-      <location line="+462"/>
+      <location line="+310"/>
+      <location line="+536"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Bir kopya, seçilen en az bir dış dış geometrik eleman gerektirir</translation>
     </message>
@@ -2946,41 +3153,47 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Taslakçı</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-319"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-337"/>
       <source>None of the selected elements is an edge.</source>
       <translation>Seçilen öğelerden hiçbiri kenar değildir.</translation>
     </message>
     <message>
-      <location line="+100"/>
-      <location line="+160"/>
+      <location line="+80"/>
+      <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
+      <translation>Seçilen nesnelerden en az biri, bir B-Spline değildi ve göz ardı edildi.</translation>
+    </message>
+    <message>
+      <location line="+36"/>
+      <location line="+161"/>
       <source>Wrong OCE/OCC version</source>
       <translation>Yanlış OCE/OCC sürümü</translation>
     </message>
     <message>
-      <location line="-159"/>
-      <location line="+160"/>
+      <location line="-160"/>
+      <location line="+161"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
       <translation>OCE/OCC'nin bu sürümü düğüm çalışmasını desteklemez. 6.9.0 veya daha yenisine ihtiyacın var</translation>
     </message>
     <message>
       <location line="-142"/>
-      <location line="+160"/>
+      <location line="+161"/>
       <source>The selection comprises more than one item. Please select just one knot.</source>
       <translation>Seçim birden fazla öğe içerir. Lütfen sadece bir düğüm seçin.</translation>
     </message>
     <message>
-      <location line="-118"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-213"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-119"/>
       <source>CAD Kernel Error</source>
       <translation>CAD Çekirdek Hatası</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+8"/>
       <source>Input Error</source>
       <translation>Giriş hatası</translation>
     </message>
     <message>
       <location line="+17"/>
-      <location line="+147"/>
+      <location line="+148"/>
       <source>None of the selected elements is a knot of a B-spline</source>
       <translation>Hiçbiri seçilmiş unsurları a, düğüm a, B-spline</translation>
     </message>
@@ -3019,7 +3232,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+626"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+840"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Karbon kopyası dairesel bağımlılığa neden olur.</translation>
     </message>
@@ -3039,29 +3252,34 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     </message>
     <message>
       <location line="+3"/>
+      <source>This object belongs to another body and it contains external geometry. Crossreference not allowed.</source>
+      <translation>Bu nesne başka bir gövdeye aittir ve harici geometri içerir. Çapraz referanslamaya izin verilmez.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
       <source>This object belongs to another part.</source>
       <translation>Bu nesne başka bir parçaya ait.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketchs.</source>
-      <translation>Seçilen çizim, bu paralel değildir kroki. Paralel olmayan taslaklara izin vermek için Ctrl + Alt tuşlarını basılı tutun.</translation>
+      <translation>Seçili eskiz, bu eskize paralel değil. Paralel olmayan eskizlere izin vermek için Ctrl+Alt tuşlarını basılı tutun.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>XY eksenleri arasında seçilen kroki bu aynı yönleri yoktur kroki. Yok saymak için Ctrl + Alt tuşlarını basılı tutun.</translation>
+      <translation>Seçili eskizin XY eksenleri, bu eskiz ile aynı doğrultuya sahip değil. Göz ardı etmek için Ctrl+Alt tuşlarını basılı tutun.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>Köken arasında seçilen kroki ile uyumlu değildir kökenli bu kroki. Yok saymak için Ctrl + Alt tuşlarını basılı tutun.</translation>
+      <translation>Seçili eskizin orijin noktası, b eskizin orijin noktası ile hizalı değil. Göz ardı etmek için Ctrl+Alt tuşlarını basılı tutun.</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="+419"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="+444"/>
       <source>Toggle to/from reference</source>
       <translation>Referansa / dan geçiş yapma</translation>
     </message>
@@ -3073,12 +3291,12 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location line="+8"/>
       <source>Show constraints</source>
-      <translation type="unfinished">Show constraints</translation>
+      <translation>Kısıtlamaları Göster</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Hide constraints</source>
-      <translation type="unfinished">Hide constraints</translation>
+      <translation>Kısıtlamaları Gizle</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3114,8 +3332,8 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5254"/>
-      <location filename="../../EditDatumDialog.cpp" line="-77"/>
+      <location filename="../../CommandConstraints.cpp" line="-5756"/>
+      <location filename="../../EditDatumDialog.cpp" line="-83"/>
       <source>Insert angle</source>
       <translation>Ekleme açısı</translation>
     </message>
@@ -3134,6 +3352,20 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location line="+6"/>
       <location filename="../../EditDatumDialog.cpp" line="+6"/>
+      <source>Insert diameter</source>
+      <translation>Çap Ekle</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <location line="+5558"/>
+      <location line="+145"/>
+      <location filename="../../EditDatumDialog.cpp" line="+2"/>
+      <source>Diameter:</source>
+      <translation>Çap:</translation>
+    </message>
+    <message>
+      <location line="-5699"/>
+      <location filename="../../EditDatumDialog.cpp" line="+4"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Refraktif indeks oranı</translation>
@@ -3146,21 +3378,27 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Oran n2/n1:</translation>
     </message>
     <message>
-      <location line="+5056"/>
+      <location line="+5081"/>
       <location line="+145"/>
       <source>Change radius</source>
       <translation>Yarıçapını değiştir</translation>
     </message>
     <message>
-      <location line="-5206"/>
-      <location line="+5062"/>
+      <location line="-5237"/>
+      <location line="+5093"/>
       <location line="+145"/>
-      <location filename="../../EditDatumDialog.cpp" line="-5"/>
+      <location filename="../../EditDatumDialog.cpp" line="-11"/>
       <source>Radius:</source>
       <translation>Yarıçapı:</translation>
     </message>
     <message>
-      <location line="+1153"/>
+      <location line="+325"/>
+      <location line="+145"/>
+      <source>Change diameter</source>
+      <translation>Çapı değiştir</translation>
+    </message>
+    <message>
+      <location line="+1273"/>
       <source>Refractive index ratio</source>
       <translation>Refraktif indeks oranı</translation>
     </message>
@@ -3170,10 +3408,10 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Oran n2/n1:</translation>
     </message>
     <message>
-      <location line="-6352"/>
-      <location filename="../../EditDatumDialog.cpp" line="+9"/>
+      <location line="-6967"/>
+      <location filename="../../EditDatumDialog.cpp" line="+15"/>
       <source>Insert length</source>
-      <translation>Yerleştirme uzunluğu</translation>
+      <translation>Uzunluk ekle</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -3185,7 +3423,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+170"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+171"/>
       <source>Delete</source>
       <translation>Sil</translation>
     </message>
@@ -3193,7 +3431,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-250"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-254"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Bağlamak dairesel bağımlılığa neden olacaktır.</translation>
     </message>
@@ -3238,8 +3476,8 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="+129"/>
-      <location line="+52"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="+130"/>
+      <location line="+53"/>
       <source>Unnamed</source>
       <translation>Adsız</translation>
     </message>
@@ -3371,7 +3609,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
   <context>
     <name>SketcherGui::SketcherGeneralWidget</name>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+99"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="+100"/>
       <location line="+5"/>
       <location line="+5"/>
       <source>Normal Geometry</source>
@@ -3413,13 +3651,13 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
   <context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="+192"/>
+      <location filename="../../SketcherSettings.cpp" line="+180"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
     <message>
       <source>Sketcher colors</source>
-      <translation>Eskizci renkleri</translation>
+      <translation>Sketcher renkleri</translation>
     </message>
     <message>
       <source>Default edge color</source>
@@ -3471,22 +3709,20 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Genel</translation>
     </message>
     <message>
-      <location line="+53"/>
       <source>Marker size</source>
       <translation>İşaretci boyutu</translation>
     </message>
     <message>
-      <location line="+40"/>
+      <location line="+132"/>
       <source>Geometry Creation "Continue Mode"</source>
       <translation>Geometri Oluşturma "Devam Etme Modu"</translation>
     </message>
     <message>
-      <location line="+16"/>
       <source>Constraint Creation "Continue Mode" (Experimental)</source>
       <translation>Kısıt Oluşturma "Devam Modu" (Deneysel)</translation>
     </message>
     <message>
-      <location line="+43"/>
+      <location line="+59"/>
       <source>Visibility automation</source>
       <translation>Görünürlük otomasyonu</translation>
     </message>
@@ -3498,12 +3734,12 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location line="+3"/>
       <source>Hide all objects that depend on the sketch</source>
-      <translation>Eskiz defterine bağımlı nesneleri gizle</translation>
+      <translation>Eskize bağlı tüm nesneleri gizle</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>When opening sketch, show sources for external geometry links.</source>
-      <translation>Eskiz açarken harici geometri bağlantıları için kaynakları gösterin.</translation>
+      <translation>Eskiz açılırken harici geometri bağlantıları için kaynakları göster.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3518,7 +3754,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location line="+3"/>
       <source>Show object(s) sketch is attached to</source>
-      <translation>Nesneleri göster kroki bağlı</translation>
+      <translation>Eskize eklenmiş nesneyi(leri) göster</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3546,29 +3782,44 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Mevcut eskizlere uygula</translation>
     </message>
     <message>
-      <location line="+37"/>
+      <location line="-262"/>
       <source>Notifications</source>
-      <translation type="unfinished">Notifications</translation>
+      <translation>Bildirimler</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Notify automatic constraint substitutions.</source>
-      <translation type="unfinished">Notify automatic constraint substitutions.</translation>
+      <translation>Otomatik kısıtlama değişimlerini bildir.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Notify automatic constraint substitutions</source>
-      <translation type="unfinished">Notify automatic constraint substitutions</translation>
+      <translation>Otomatik kısıtlama değişimlerini bildir</translation>
     </message>
     <message>
-      <location line="+19"/>
+      <location line="+100"/>
+      <source>Constraint Creation "Continue Mode"</source>
+      <translation>Kısıtlama Oluşturma "Devam Modu"</translation>
+    </message>
+    <message>
+      <location line="+163"/>
       <source>Segments per geometry</source>
       <translation>Geometri başına segmentler</translation>
     </message>
     <message>
-      <location line="+26"/>
+      <location line="+23"/>
+      <source>Do not show base length units in sketches. Supports all unit systems except US Customary and Building US/Euro.</source>
+      <translation>Temel uzunluk birimlerini eskizlerde gösterme. Geleneksel ABD ve ABD/Avrupa yapıları hariç tüm birim sistemlerini destekler.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Hide base length units for supported unit systems</source>
+      <translation>Desteklenen birim sistemleri için temel uzunluk birimleri gizle</translation>
+    </message>
+    <message>
+      <location line="+16"/>
       <source>Sketcher Solver</source>
-      <translation>Eskiz çözücü</translation>
+      <translation>Sketcher çözücü</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -3610,7 +3861,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Yeni şekiller için varsayılan çizgi kalınlığı</translation>
     </message>
     <message>
-      <location line="-334"/>
+      <location line="-279"/>
       <source>px</source>
       <translation>px</translation>
     </message>
@@ -3620,7 +3871,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     </message>
     <message>
       <source>Default line width</source>
-      <translation>Varsayılan çizgi genişliğini</translation>
+      <translation>Varsayılan çizgi kalınlığı</translation>
     </message>
     <message>
       <source>Cursor text color</source>
@@ -3639,17 +3890,17 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Düzenleme modunda sürüşü zorlamayan kısıtlamaların veya boyutların rengi</translation>
     </message>
     <message>
-      <location line="-19"/>
+      <location line="-74"/>
       <source>Sketch editing</source>
       <translation>Eskiz düzenleme</translation>
     </message>
     <message>
-      <location line="+12"/>
+      <location line="+67"/>
       <source>Font size</source>
       <translation>Yazı Boyutu</translation>
     </message>
     <message>
-      <location line="+65"/>
+      <location line="+52"/>
       <source>Grid line pattern</source>
       <translation>Izgara çizgisi deseni</translation>
     </message>
@@ -3659,12 +3910,11 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>Bir mesafe sınırlaması oluşturduktan sonra değer isteyin</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="-51"/>
       <source>%1 px</source>
       <translation>%1 piksel</translation>
     </message>
     <message>
-      <location line="+48"/>
+      <location filename="../../SketcherSettings.cpp" line="-3"/>
       <source>Unexpected C++ exception</source>
       <translation>Beklenmedik C ++ özel durumu</translation>
     </message>
@@ -3679,7 +3929,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location line="+6"/>
       <source>Sketcher colors</source>
-      <translation>Eskizci renkleri</translation>
+      <translation>Sketcher renkleri</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -3805,7 +4055,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     <message>
       <location line="-10"/>
       <source>Default line width</source>
-      <translation>Varsayılan çizgi genişliğini</translation>
+      <translation>Varsayılan çizgi kalınlığı</translation>
     </message>
     <message>
       <location line="+35"/>
@@ -3839,7 +4089,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="+330"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="+139"/>
       <source>No missing coincidences</source>
       <translation>Eksik raslantılar yok</translation>
     </message>
@@ -3859,7 +4109,7 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
       <translation>% 1 eksik tesadüf bulundu</translation>
     </message>
     <message>
-      <location line="+66"/>
+      <location line="+36"/>
       <source>No invalid constraints</source>
       <translation>Geçersiz kısıtlama yok</translation>
     </message>
@@ -3990,6 +4240,15 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
     </message>
     <message>
       <location line="+10"/>
+      <source>Hide Internal Alignment</source>
+      <translation>İç Hizalamayı Gizle</translation>
+    </message>
+    <message>
+      <location line="+16"/>
+      <source>Extended Information</source>
+      <translation>Genişletilmiş Bilgi</translation>
+    </message>
+    <message>
       <source>Hide Internal Aligment</source>
       <translation>Dahili Hizayı Gizle</translation>
     </message>
@@ -3999,7 +4258,7 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location line="+199"/>
+      <location line="+207"/>
       <location line="+17"/>
       <source>Error</source>
       <translation>Hata</translation>
@@ -4052,7 +4311,7 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
       <translation>&lt;html&gt; &lt;head /&gt; &lt;body&gt; &lt;p&gt; "Ctrl": çoklu seçim &lt;/ p&gt; &lt;p&gt; "Z": bir sonraki geçerli türe geçin &lt;/ p&gt; &lt;/ body&gt; &lt;/ html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+68"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+69"/>
       <source>Elements</source>
       <translation>Elementler</translation>
     </message>
@@ -4088,7 +4347,7 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
       <location line="+4"/>
       <location line="+4"/>
       <source>Construction</source>
-      <translation>İnşaat</translation>
+      <translation>İnşa</translation>
     </message>
     <message>
       <location line="-29"/>
@@ -4175,7 +4434,7 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
     <message>
       <location line="+34"/>
       <source>Grid snap</source>
-      <translation>Izgara kenarı</translation>
+      <translation>Izgarayı Yakala</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -4273,7 +4532,7 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
       <translation type="unfinished">auto constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+59"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="+88"/>
       <source>Edit controls</source>
       <translation>Denetimleri düzenle</translation>
     </message>
@@ -4299,7 +4558,7 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="+14"/>
       <source>Sketcher validation</source>
-      <translation>Çizici geçerliliği</translation>
+      <translation>Sketcher doğrulama</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -4324,7 +4583,7 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
     <message>
       <location line="+7"/>
       <source>Ignore construction geometry</source>
-      <translation type="unfinished">Ignore construction geometry</translation>
+      <translation>Yapı geometrisini görmezden gel</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -4373,9 +4632,9 @@ Bununla birlikte, bitiş noktalarına bağlanan herhangi bir kısıtlama bulunam
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+5270"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+5548"/>
       <source>Invalid sketch</source>
-      <translation>Geçersiz çizim</translation>
+      <translation>Geçersiz eskiz</translation>
     </message>
     <message>
       <source>The sketch is invalid and cannot be edited.
@@ -4409,7 +4668,7 @@ Use the sketch validation tool.</translation>
       <translation>Eskiz geçersizdir ve düzenlenemez.</translation>
     </message>
     <message>
-      <location line="+156"/>
+      <location line="+162"/>
       <source>Please remove the following constraint:</source>
       <translation>Lütfen aşağıdaki kısıtlamayı kaldırın:</translation>
     </message>
@@ -4431,12 +4690,12 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+19"/>
       <source>Empty sketch</source>
-      <translation>Boş taslak</translation>
+      <translation>Boş eskiz</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Over-constrained sketch </source>
-      <translation>Aşırı kısıtlı çizim </translation>
+      <translation>Aşırı kısıtlı eskiz </translation>
     </message>
     <message>
       <location line="+1"/>
@@ -4456,6 +4715,16 @@ Use the sketch validation tool.</translation>
       <translation>Eskiz, gereksiz kısıtlamaları içeriyor </translation>
     </message>
     <message>
+      <location line="+16"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</source>
+      <translation>Eskiz, &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;1 derece&lt;/span&gt;&lt;/a&gt; serbestlikle sınırlıdır</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</source>
+      <translation>Eskiz, &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;%1 derece&lt;/span&gt;&lt;/a&gt; serbestlikle sınırlıdır</translation>
+    </message>
+    <message>
       <source>Over-constrained sketch</source>
       <translation type="unfinished">Over-constrained sketch</translation>
     </message>
@@ -4468,22 +4737,20 @@ Use the sketch validation tool.</translation>
       <translation type="unfinished">Sketch contains redundant constraints</translation>
     </message>
     <message>
-      <location line="+11"/>
+      <location line="-7"/>
       <source>Fully constrained sketch</source>
-      <translation>Tamamen kısıtlanmış taslak</translation>
+      <translation>Tamamen kısıtlanmış eskiz</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Under-constrained sketch with 1 degree of freedom</source>
       <translation>1 serbestlik derecesine sahip kısıtlanmış eskiz</translation>
     </message>
     <message>
-      <location line="+2"/>
       <source>Under-constrained sketch with %1 degrees of freedom</source>
-      <translation>% 1 serbestlik derecesine sahip kısıtlanmış eskiz</translation>
+      <translation>%1 serbestlik derecesine sahip kısıtlanmış eskiz</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location line="+10"/>
       <source>Solved in %1 sec</source>
       <translation>% 1 sn'de çözüldü</translation>
     </message>
@@ -4496,7 +4763,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-416"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-435"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
       <translation>Tüm B-spline'lar için eğrilik tarağını gösterme ve gizleme arasında geçiş yapar</translation>
@@ -4505,7 +4772,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location line="+544"/>
+      <location line="+563"/>
       <location line="+1"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>Seçilen bir B-spline düğümünün çokluğunu azaltır</translation>
@@ -4514,7 +4781,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-      <location line="-554"/>
+      <location line="-573"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
       <translation>Tüm B-spline derecelerini gösterme ve gizleme arasında geçiş yapar</translation>
@@ -4523,7 +4790,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location line="+548"/>
+      <location line="+567"/>
       <location line="+1"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>Seçilen bir B-spline düğümünün çoğaltılmasını arttırır</translation>
@@ -4532,7 +4799,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
-      <location line="-538"/>
+      <location line="-557"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
       <translation>Tüm B-spline'lar için düğüm çokluğunu gösterme ve gizleme arasında geçiş yapar</translation>
@@ -4550,7 +4817,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-275"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-280"/>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometriye ait bir klon oluşturur</translation>
@@ -4568,11 +4835,34 @@ Use the sketch validation tool.</translation>
       <source>Copy</source>
       <translation>Kopyala</translation>
     </message>
+    <message>
+      <location line="+4"/>
+      <source>Move</source>
+      <translation>Taşı</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ConstrainDiameter</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="+5874"/>
+      <location line="+1"/>
+      <source>Fix the diameter of a circle or an arc</source>
+      <translation>Bir çemberin veya bir yayın yarıçapını düzelt</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ConstrainRadius</name>
+    <message>
+      <location line="-5"/>
+      <location line="+1"/>
+      <source>Fix the radius of a circle or an arc</source>
+      <translation>Bir dairenin veya bir yayın yarıçapını düzeltme</translation>
+    </message>
   </context>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location line="+1"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-3"/>
       <location line="+1"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometrinin basit bir kopyasını oluşturur</translation>
@@ -4581,7 +4871,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4324"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4372"/>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Uç noktaları ve yay boyunca bir nokta ile bir yay oluşturma</translation>
@@ -4590,7 +4880,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location line="+3273"/>
+      <location line="+3290"/>
       <location line="+1"/>
       <source>Create a circle by 3 rim points</source>
       <translation>3 kenar noktası ile bir daire oluşturun</translation>
@@ -4599,7 +4889,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location line="-3279"/>
+      <location line="-3296"/>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Merkezine ve bitiş noktalarına göre bir yay oluşturma</translation>
@@ -4643,7 +4933,7 @@ Use the sketch validation tool.</translation>
       <translation>Kontrol noktaları veya kutuplar yardımıyla bir B-spline oluşturma</translation>
     </message>
     <message>
-      <location line="+594"/>
+      <location line="+611"/>
       <source>B-spline by control points</source>
       <translation>Kontrol noktalarıyla B-spline</translation>
     </message>
@@ -4666,7 +4956,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location line="-962"/>
+      <location line="-979"/>
       <location line="+1"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>Periapsis, apoapsis ve minor radius ile elips oluşturun</translation>
@@ -4684,7 +4974,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location line="+3242"/>
+      <location line="+3294"/>
       <location line="+1"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Merkezinden ve bir köşeden bir heptagon oluşturun</translation>
@@ -4752,7 +5042,7 @@ Use the sketch validation tool.</translation>
       <translation>Kontrol noktaları veya kutuplar yardımıyla periyodik B-spline oluşturma</translation>
     </message>
     <message>
-      <location line="-2613"/>
+      <location line="-2648"/>
       <source>Periodic B-spline by control points</source>
       <translation>Kontrol noktalarıyla periyodik B-spline</translation>
     </message>
@@ -4773,12 +5063,12 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="+1"/>
       <source>The document doesn't have a sketch</source>
-      <translation>Dokümanda eskiz yok</translation>
+      <translation>Belgede bir eskiz yok</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Select sketch</source>
-      <translation>Taslak seçin</translation>
+      <translation>Eskiz seçin</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -4829,9 +5119,18 @@ Use the sketch validation tool.</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_Move</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+3"/>
+      <location line="+1"/>
+      <source>Moves the geometry taking as reference the last selected point</source>
+      <translation>Son seçilen noktayı referans alarak geometriyi hareket ettirir</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location line="-406"/>
+      <location filename="../../Command.cpp" line="-406"/>
       <source>Sketch attachment</source>
       <translation>Eskiz eki</translation>
     </message>
@@ -4894,7 +5193,17 @@ Do you want to detach it from the support?</source>
       <translation>Henüz çözülmedi</translation>
     </message>
     <message>
-      <location line="+25"/>
+      <location line="+10"/>
+      <source>Automatically removes redundant constraints.</source>
+      <translation>Gereksiz kısıtlarını otomatik olarak kaldırır.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Auto Remove Redundants</source>
+      <translation>Artıkları otomatik kaldır</translation>
+    </message>
+    <message>
+      <location line="+31"/>
       <source>Executes a recompute of the active document after every command</source>
       <translation>Her komuttan sonra etkin belgeyi yeniden hesaplar</translation>
     </message>
@@ -5164,17 +5473,17 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+1"/>
       <source>Sketcher geometries</source>
-      <translation>Eskizci geometrileri</translation>
+      <translation>Sketcher geometrileri</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Sketcher tools</source>
-      <translation>Çizici araçları</translation>
+      <translation>Sketcher araçları</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketcher virtual space</source>
-      <translation type="unfinished">Sketcher virtual space</translation>
+      <translation>Sketcher sanal alanı</translation>
     </message>
     <message>
       <source>Sketcher geoms</source>
@@ -5183,7 +5492,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="-2"/>
       <source>Sketcher constraints</source>
-      <translation>Çizici kısıtlamaları</translation>
+      <translation>Sketcher kısıtlamaları</translation>
     </message>
   </context>
 </TS>

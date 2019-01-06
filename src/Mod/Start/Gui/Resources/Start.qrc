@@ -37,5 +37,7 @@
         <file>translations/StartPage_id.qm</file>
         <file>translations/StartPage_lt.qm</file>
         <file>translations/StartPage_val-ES.qm</file>
+        <file>translations/StartPage_ar.qm</file>
+        <file>translations/StartPage_vi.qm</file>
     </qresource>
 </RCC>

@@ -242,7 +242,7 @@ def getcolor(color):
         if v:
             r,g,b = [float(vf)/255.0 for vf in v]
             return (r,g,b,0.0)
-        #for k,v in svgcolors.iteritems():
+        #for k,v in svgcolors.items():
         #    if (k.lower() == color.lower()): pass
 
 def transformCopyShape(shape,m):

@@ -452,7 +452,14 @@ In the worst case each triangle can be regarded as single
 plane if none of its neighours is coplanar.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getSegmentsByCurvature" Const="true">
+        <Methode Name="getSegmentsOfType" Const="true">
+            <Documentation>
+                <UserDocu>getSegmentsOfType(type, dev,[min faces=0]) -> list
+Get all segments of type.
+Type can be Plane, Cylinder or Sphere</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getSegmentsByCurvature" Const="true">
 			<Documentation>
 				<UserDocu>getSegmentsByCurvature(list) -> list
 The argument list gives a list if tuples where it defines the preferred maximum curvature,

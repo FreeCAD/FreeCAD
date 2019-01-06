@@ -328,7 +328,7 @@
     </message>
     <message>
       <source>Export file</source>
-      <translation>dosyayı dışa aktar</translation>
+      <translation>Dosyayı Dışarı Aktar</translation>
     </message>
     <message>
       <source>Cell contents</source>

@@ -40,7 +40,9 @@ set(BOPTools_Scripts
 set(CompoundTools_Scripts
     CompoundTools/__init__.py
     CompoundTools/_CommandCompoundFilter.py
+    CompoundTools/_CommandExplodeCompound.py
     CompoundTools/CompoundFilter.py
+    CompoundTools/Explode.py
 )
 
 add_custom_target(PartScripts ALL SOURCES
