@@ -22,8 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-from six.moves import xrange
-
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog

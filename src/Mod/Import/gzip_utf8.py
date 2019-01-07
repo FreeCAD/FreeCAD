@@ -16,10 +16,7 @@ but random access is not allowed."""
 import struct, sys, time, os
 import zlib
 import io
-
-from six.moves import xrange
-from six.moves.builtins import open as builtin_open
-
+from __builtin__ import open as builtin_open
 try:
     long
 except NameError:

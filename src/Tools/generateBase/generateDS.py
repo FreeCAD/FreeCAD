@@ -31,8 +31,6 @@ import urllib2
 from xml.sax import handler, make_parser
 import xml.sax.xmlreader
 
-from six.moves import raw_input
-
 ##from IPython.Shell import IPShellEmbed
 ##args = ''
 ##ipshell = IPShellEmbed(args,
