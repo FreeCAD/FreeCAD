@@ -40,7 +40,8 @@ __url__ = "http://www.freecadweb.org"
 
 import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
-from DraftGui import todo, QtCore, QtGui, translate, utf8_decode
+from PySide import QtCore,QtGui
+from DraftGui import todo, translate, utf8_decode
 from DraftSnap import *
 from DraftTrackers import *
 from pivy import coin
