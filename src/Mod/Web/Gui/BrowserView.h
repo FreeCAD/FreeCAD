@@ -28,12 +28,12 @@
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
 
-#if QT_VERSION >= 0x050700 and defined(QTWEBENGINE)
+#if QT_VERSION >= 0x050700 && defined(QTWEBENGINE)
 #include <QWebEngineView>
 namespace WebGui {
 class WebEngineUrlRequestInterceptor;
 };
-#elif QT_VERSION >= 0x040400 and defined(QTWEBKIT)
+#elif QT_VERSION >= 0x040400 && defined(QTWEBKIT)
 #include <QWebView>
 #endif
 
