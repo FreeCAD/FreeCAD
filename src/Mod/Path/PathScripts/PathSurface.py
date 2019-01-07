@@ -24,8 +24,6 @@
 
 from __future__ import print_function
 
-from six.moves import xrange
-
 import FreeCAD
 import MeshPart
 # import Part

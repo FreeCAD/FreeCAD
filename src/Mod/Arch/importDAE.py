@@ -21,8 +21,6 @@
 #*                                                                         *
 #***************************************************************************
 
-from six.moves import xrange
-
 import FreeCAD, Mesh, os, numpy, MeshPart, Arch, Draft
 if FreeCAD.GuiUp:
     from DraftTools import translate
