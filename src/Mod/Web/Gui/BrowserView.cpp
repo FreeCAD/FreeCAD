@@ -51,7 +51,7 @@
 #endif
 
 
-#if QT_VERSION >= 0x050700 and defined(QTWEBENGINE)
+#if QT_VERSION >= 0x050700 && defined(QTWEBENGINE)
 # include <QWebEnginePage>
 # include <QWebEngineView>
 # include <QWebEngineSettings>
@@ -61,7 +61,7 @@
 # include <QWebEngineUrlRequestInfo>
 # define QWEBVIEW QWebEngineView
 # define QWEBPAGE QWebEnginePage
-#elif QT_VERSION >= 0x040400 and defined(QTWEBKIT)
+#elif QT_VERSION >= 0x040400 && defined(QTWEBKIT)
 # include <QWebFrame>
 # include <QWebView>
 # include <QWebSettings>
@@ -69,6 +69,8 @@
 # define QWEBPAGE QWebPage
 #endif
 
+#include <QLatin1String>
+#include <QRegExp>
 #include "BrowserView.h"
 #include "CookieJar.h"
 #include <Gui/Application.h>
@@ -103,11 +105,18 @@ public:
 
     void interceptRequest(QWebEngineUrlRequestInfo &info)
     {
+        // do something with this resource, click or get img for example
         if (info.navigationType() == QWebEngineUrlRequestInfo::NavigationTypeLink) {
-            // invoke thread safe.
-            QMetaObject::invokeMethod(m_parent, "urlFilter",
-                                      Q_ARG(QUrl, info.requestUrl()));
+            // wash out windows file:///C:/something ->file://C:/something
+            QUrl url = info.requestUrl();
+            QRegExp re(QLatin1String("^/([a-zA-Z]\\:.*)")); // match & catch drive letter forward
 
+            if (url.host().isEmpty() && url.isLocalFile() && re.exactMatch(url.path()))
+                // clip / in file urs ie /C:/something -> C:/something
+                url.setPath(re.cap(1));
+
+            // invoke thread safe.
+            QMetaObject::invokeMethod(m_parent, "urlFilter", Q_ARG(QUrl, url));
         }
     }
 
@@ -256,7 +265,7 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         menu.exec(mapToGlobal(event->pos()));
         return;
     }
-#if QT_VERSION >= 0x050800 and defined(QTWEBENGINE)
+#if QT_VERSION >= 0x050800 && defined(QTWEBENGINE)
     else { // for view source
         // QWebEngine caches standardContextMenu, guard so we only add signlmapper once
         static bool firstRun = true;
@@ -671,6 +680,5 @@ PyObject* BrowserView::getPyObject(void)
 
     return new BrowserViewPy(this);
 }
-
 #include "moc_BrowserView.cpp"
 
