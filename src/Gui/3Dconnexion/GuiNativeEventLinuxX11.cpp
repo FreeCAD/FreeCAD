@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
 #include "SpaceballEvent.h"
 
 #include <QMainWindow>
@@ -27,7 +28,6 @@
 #include "GuiNativeEventLinuxX11.h"
 
 #include "GuiApplicationNativeEventAware.h"
-#include <FCConfig.h>
 #include <Base/Console.h>
 
 #include <QX11Info>

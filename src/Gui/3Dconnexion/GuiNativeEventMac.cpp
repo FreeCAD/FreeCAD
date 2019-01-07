@@ -29,11 +29,11 @@ Development tools and related technology provided under license from 3Dconnexion
 With special thanks to marcxs for making the first steps
  */
 
+#include <FCConfig.h>
 #include "GuiNativeEventMac.h"
 
 #include <unistd.h>
 #include "GuiApplicationNativeEventAware.h"
-#include <FCConfig.h>
 #include <Base/Console.h>
 
 UInt16 Gui::GuiNativeEvent::tdxClientID = 0;
