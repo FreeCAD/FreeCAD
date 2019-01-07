@@ -911,10 +911,16 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
     auto* pcActiveBody = PartDesignGui::getBody(false);
     if (pcActiveBody && !bNoSketchWasSelected && extReference) {
 
-        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, true);
-        // getPartFor() already has reported an error
-        if (!pcActivePart)
-            return;
+        // Hint: In an older version the function expected the body to be inside
+        // a Part container and if not an error was raised and the function aborted.
+        // First of all, for the user this wasn't obvious because the error message
+        // was quite confusing (and thus the user may have done the wrong thing since
+        // he may have assumed the that the sketch was meant) and second there is no need
+        // that the body must be inside a Part container.
+        // For more details see: https://forum.freecadweb.org/viewtopic.php?f=19&t=32164
+        // The function has been modified not to expect the body to be in the Part
+        // and it now directly invokes the 'makeCopy' dialog.
+        auto* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
 
         QDialog dia(Gui::getMainWindow());
         PartDesignGui::Ui_DlgReference dlg;
@@ -930,7 +936,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
             auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
             if (oBody)
                 pcActiveBody->addObject(copy);
-            else
+            else if (pcActivePart)
                 pcActivePart->addObject(copy);
 
             sketches[0] = copy;

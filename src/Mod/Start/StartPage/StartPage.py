@@ -307,24 +307,23 @@ def handle():
     SECTION_RECENTFILES = encode("")
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     rfcount = rf.GetInt("RecentFiles",0)
-    if rfcount:
-        SECTION_RECENTFILES = encode("<h2>"+TranslationTexts.T_RECENTFILES+"</h2>")
-        SECTION_RECENTFILES += "<ul>"
-        SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
-        SECTION_RECENTFILES += '<li class="icon">'
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
-            SECTION_RECENTFILES += '<img src="'+encode(iconbank["createimg"])+'">'
-        else:
-            SECTION_RECENTFILES += '<img src="images/new_file_thumbnail.svg">'
-        SECTION_RECENTFILES += '<div class="caption">'
-        SECTION_RECENTFILES += '<h4>'+encode(TranslationTexts.T_CREATENEW)+'</h4>'
-        SECTION_RECENTFILES += '</div>'
-        SECTION_RECENTFILES += '</li>'
-        SECTION_RECENTFILES += '</a>'
-        for i in range(rfcount):
-            filename = rf.GetString("MRU%d" % (i))
-            SECTION_RECENTFILES += encode(buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i)))
-        SECTION_RECENTFILES += '</ul>'
+    SECTION_RECENTFILES = encode("<h2>"+TranslationTexts.T_RECENTFILES+"</h2>")
+    SECTION_RECENTFILES += "<ul>"
+    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
+    SECTION_RECENTFILES += '<li class="icon">'
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
+        SECTION_RECENTFILES += '<img src="'+encode(iconbank["createimg"])+'">'
+    else:
+        SECTION_RECENTFILES += '<img src="images/new_file_thumbnail.svg">'
+    SECTION_RECENTFILES += '<div class="caption">'
+    SECTION_RECENTFILES += '<h4>'+encode(TranslationTexts.T_CREATENEW)+'</h4>'
+    SECTION_RECENTFILES += '</div>'
+    SECTION_RECENTFILES += '</li>'
+    SECTION_RECENTFILES += '</a>'
+    for i in range(rfcount):
+        filename = rf.GetString("MRU%d" % (i))
+        SECTION_RECENTFILES += encode(buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i)))
+    SECTION_RECENTFILES += '</ul>'
     HTML = HTML.replace("SECTION_RECENTFILES",SECTION_RECENTFILES)
 
     # build SECTION_EXAMPLES

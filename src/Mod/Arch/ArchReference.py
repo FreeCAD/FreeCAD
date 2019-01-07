@@ -147,7 +147,8 @@ class ArchReference:
                                 shapedata = shapedata.decode("utf8")
                             shape.importBrepFromString(shapedata)
                             obj.Shape = shape
-                            obj.Placement = obj.Shape.Placement.multiply(pl)
+                            if not pl.isIdentity():
+                                obj.Placement = pl
                         else:
                             print("Part not found in file")
             self.reload = False
