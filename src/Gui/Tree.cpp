@@ -2401,7 +2401,8 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
     item->setText(0, QString::fromUtf8(data->label.c_str()));
     if(data->label2.size())
         item->setText(1, QString::fromUtf8(data->label2.c_str()));
-    item->setHidden(!obj.showInTree() && !showHidden());
+    if(!obj.showInTree() && !showHidden())
+        item->setHidden(true);
     populateItem(item);
 
     // Not calling item testStatus below because there seems to have some delay
@@ -2651,9 +2652,12 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             found = true;
             if (j!=i) { // fix index if it is changed
                 childItem->setHighlight(false);
+                bool hidden = ci->isHidden();
                 item->removeChild(ci);
                 item->insertChild(i,ci);
                 assert(ci->parent()==item);
+                if(hidden)
+                    ci->setHidden(true);
             }
 
             // Check if the item just changed its policy of whether to remove
@@ -2699,9 +2703,12 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             }
             it->second->rootItem = 0;
             childItem->setHighlight(false);
+            bool hidden = childItem->isHidden();
             this->removeChild(childItem);
             item->insertChild(i,childItem);
             assert(childItem->parent()==item);
+            if(hidden)
+                childItem->setHidden(true);
         }
     }
 
@@ -2710,10 +2717,12 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         if (ci->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
             if(childItem->requiredAtRoot()) {
-                childItem->setHighlight(false);
+                bool hidden = childItem->isHidden();
                 item->removeChild(childItem);
                 this->addChild(childItem);
                 assert(childItem->parent()==this);
+                if(hidden)
+                    childItem->setHidden(true);
                 childItem->myData->rootItem = childItem;
                 continue;
             }
