@@ -36,13 +36,13 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 */
 
 #include "PreCompiled.h"
+#include <FCConfig.h>
 
 #include "GuiNativeEventWin32.h"
 
 #include <QGlobalStatic>
 #include <QMainWindow>
 #include <QWidget>
-#include <FCConfig.h>
 #include <Base/Console.h>
 #include "GuiApplicationNativeEventAware.h"
 #if QT_VERSION >= 0x050000

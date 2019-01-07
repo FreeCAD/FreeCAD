@@ -20,10 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
+
 #include "GuiNativeEventLinux.h"
 
 #include "GuiApplicationNativeEventAware.h"
-#include <FCConfig.h>
 #include <Base/Console.h>
 #include <QMainWindow>
 
