@@ -448,7 +448,7 @@ public:
    * This does actually the same as IntersectWithLine() with one additionally constraint that the angle 
    * between the direction of the line and the normal of the plane must not exceed \a fMaxAngle.
    */
-  bool Foraminate (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes, float fMaxAngle = F_PI) const;
+  bool Foraminate (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes, float fMaxAngle = Mathf::PI) const;
   /** Checks if the facet intersects with the plane defined by the base \a rclBase and the normal 
    * \a rclNormal and returns true if two points are found, false otherwise.
    */

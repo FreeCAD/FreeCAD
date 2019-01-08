@@ -641,7 +641,8 @@ bool MeshGeomFacet::Foraminate (const Base::Vector3f &P, const Base::Vector3f &d
 
     // check angle between facet normal and the line direction, FLOAT_MAX is
     // returned for degenerated facets
-    if (dir.GetAngle(n) > fMaxAngle)
+    float fAngle = dir.GetAngle(n);
+    if (fAngle > fMaxAngle)
         return false;
 
     float nn = n * n;
