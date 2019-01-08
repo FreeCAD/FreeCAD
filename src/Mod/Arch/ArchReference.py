@@ -392,6 +392,7 @@ class ViewProviderArchReference:
         if hasattr(self,"timer"):
             self.timer.stop()
             del self.timer
+            return True
 
     def setupContextMenu(self,vobj,menu):
 
@@ -463,6 +464,28 @@ class ArchReferenceTaskPanel:
         QtCore.QObject.connect(self.fileButton, QtCore.SIGNAL("clicked()"), self.chooseFile)
         QtCore.QObject.connect(self.openButton, QtCore.SIGNAL("clicked()"), self.openFile)
 
+    def accept(self):
+
+        if self.filename:
+            if self.filename != self.obj.File:
+                self.obj.File = self.filename
+                FreeCAD.ActiveDocument.recompute()
+        if self.partCombo.currentText():
+            i = self.partCombo.currentIndex()
+            if self.partCombo.itemData(i) != self.obj.Part:
+                self.obj.Part = self.partCombo.itemData(i)
+                if self.obj.Label == "External Reference":
+                    self.obj.Label = self.partCombo.itemText(i)
+                FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
     def chooseFile(self):
 
         loc = QtCore.QDir.homePath()
@@ -482,27 +505,11 @@ class ArchReferenceTaskPanel:
                         self.partCombo.setCurrentIndex(sorted(parts.keys()).index(self.obj.Part))
 
     def openFile(self):
+
         if self.obj.File:
             FreeCAD.openDocument(self.obj.File)
             FreeCADGui.Control.closeDialog()
             FreeCADGui.ActiveDocument.resetEdit()
-
-    def accept(self):
-
-        if self.filename:
-            if self.filename != self.obj.File:
-                self.obj.File = self.filename
-                FreeCAD.ActiveDocument.recompute()
-        if self.partCombo.currentText():
-            i = self.partCombo.currentIndex()
-            if self.partCombo.itemData(i) != self.obj.Part:
-                self.obj.Part = self.partCombo.itemData(i)
-                if self.obj.Label == "External Reference":
-                    self.obj.Label = self.partCombo.itemText(i)
-                FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
-
 
 
 class ArchReferenceCommand:
