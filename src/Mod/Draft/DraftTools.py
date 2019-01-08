@@ -514,7 +514,7 @@ class SelectPlane(DraftTool):
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
         self.ui.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.ui.wplabel.text())
-        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
+        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid(init=True)")
 
 #---------------------------------------------------------------------------
 # Geometry constructors
