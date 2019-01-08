@@ -316,9 +316,63 @@ public:
     }
 };
 
-void Command::invoke(int i, bool autoCommit)
+class CommandTrigger {
+public:
+    CommandTrigger(Command::TriggerSource &trigger, Command::TriggerSource source)
+        :trigger(trigger),saved(trigger)
+    {
+        trigger = source;
+    }
+
+    ~CommandTrigger() {
+        trigger = saved;
+    }
+private:
+    Command::TriggerSource &trigger;
+    Command::TriggerSource saved;
+};
+
+void Command::setupCheckable(int iMsg) {
+    QAction *action = 0;
+    Gui::ActionGroup* pcActionGroup = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    if(pcActionGroup) {
+        QList<QAction*> a = pcActionGroup->actions();
+        assert(iMsg < a.size());
+        action = a[iMsg];
+    }else
+        action = _pcAction->action();
+
+    if(!action)
+        return;
+
+    bool checkable = action->isCheckable();
+    _pcAction->setCheckable(checkable);
+    if(checkable) {
+        bool checked = false;
+        switch(triggerSource()) {
+        case TriggerNone:
+            checked = !action->isChecked();
+            break;
+        case TriggerAction:
+            checked = _pcAction->isChecked();
+            break;
+        case TriggerChildAction:
+            checked = action->isChecked();
+            break;
+        }
+        bool blocked = action->blockSignals(true);
+        action->setChecked(checked);
+        action->blockSignals(blocked);
+        if(action!=_pcAction->action())
+            _pcAction->setChecked(checked,true);
+    }
+
+}
+
+void Command::invoke(int i, bool autoCommit, TriggerSource trigger)
 {
-    Command::AutoCommit committer(autoCommit);
+    CommandTrigger cmdTrigger(_trigger,trigger);
+    AutoCommit committer(autoCommit);
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
@@ -414,6 +468,19 @@ void Command::testActive(void)
             (!Gui::Control().isAllowedAlterSelection() && eType & AlterSelection)) {
              _pcAction->setEnabled(false);
             return;
+        }
+    }
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    if(pcAction) {
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+        for(auto action : pcAction->actions()) {
+            auto name = action->property("CommandName").toByteArray();
+            if(!name.size())
+                continue;
+            Command* cmd = rcCmdMgr.getCommandByName(name);
+            if(cmd)
+                action->setEnabled(cmd->isActive());
         }
     }
 
@@ -1333,6 +1400,8 @@ void PythonGroupCommand::activated(int iMsg)
         assert(iMsg < a.size());
         QAction* act = a[iMsg];
 
+        setupCheckable(iMsg);
+
         Base::PyGILStateLocker lock;
         Py::Object cmd(_pcPyCommand);
         if (cmd.hasAttr("Activated")) {
@@ -1344,7 +1413,11 @@ void PythonGroupCommand::activated(int iMsg)
         // If the command group doesn't implement the 'Activated' method then invoke the command directly
         else {
             Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-            rcCmdMgr.runCommandByName(act->property("CommandName").toByteArray());
+            auto cmd = rcCmdMgr.getCommandByName(act->property("CommandName").toByteArray());
+            if(cmd) {
+                bool checked = act->isCheckable() && act->isChecked();
+                cmd->invoke(checked?1:0,true,TriggerAction);
+            }
         }
 
         // Since the default icon is reset when enabing/disabling the command we have
@@ -1364,6 +1437,7 @@ bool PythonGroupCommand::isActive(void)
     try {
         Base::PyGILStateLocker lock;
         Py::Object cmd(_pcPyCommand);
+
         if (cmd.hasAttr("IsActive")) {
             Py::Callable call(cmd.getAttr("IsActive"));
             Py::Tuple args;
@@ -1406,8 +1480,11 @@ Action * PythonGroupCommand::createAction(void)
             cmd->setProperty("CommandName", QByteArray(static_cast<std::string>(str).c_str()));
 
             PythonCommand* pycmd = dynamic_cast<PythonCommand*>(rcCmdMgr.getCommandByName(cmd->property("CommandName").toByteArray()));
-            if (pycmd) {
-                cmd->setCheckable(pycmd->isCheckable());
+            if (pycmd && pycmd->isCheckable()) {
+                cmd->setCheckable(true);
+                cmd->blockSignals(true);
+                cmd->setChecked(pycmd->isChecked());
+                cmd->blockSignals(false);
             }
         }
 
@@ -1417,15 +1494,18 @@ Action * PythonGroupCommand::createAction(void)
             defaultId = static_cast<int>(def);
         }
 
-        // if the command is 'exclusive' then activate the default action
-        if (pcAction->isExclusive()) {
-            QList<QAction*> a = pcAction->actions();
-            if (defaultId >= 0 && defaultId < a.size()) {
-                QAction* qtAction = a[defaultId];
-                if (qtAction->isCheckable()) {
+        QList<QAction*> a = pcAction->actions();
+        if (defaultId >= 0 && defaultId < a.size()) {
+            QAction* qtAction = a[defaultId];
+            if (qtAction->isCheckable()) {
+                // if the command is 'exclusive' then activate the default action
+                if (pcAction->isExclusive()) {
                     qtAction->blockSignals(true);
                     qtAction->setChecked(true);
                     qtAction->blockSignals(false);
+                }else if(qtAction->isCheckable()){
+                    pcAction->setCheckable(true);
+                    pcAction->setChecked(qtAction->isChecked(),true);
                 }
             }
         }

@@ -272,8 +272,19 @@ public:
     void testActive(void);
     /// Enables or disables the command
     void setEnabled(bool);
+    /// Command trigger source
+    enum TriggerSource {
+        /// No external trigger, e.g. invoked through Python
+        TriggerNone,
+        /// Command triggered by an action
+        TriggerAction,
+        /// Command triggered by a child action inside an action group
+        TriggerChildAction,
+    };
+    /// Return the current command trigger source
+    TriggerSource triggerSource() const {return _trigger;}
     /// get called by the QAction
-    void invoke (int, bool autoCommit=true); 
+    void invoke (int, bool autoCommit=true, TriggerSource trigger=TriggerNone); 
     /// adds this command to arbitrary widgets
     void addTo(QWidget *);
     void addToGroup(ActionGroup *, bool checkable);
@@ -332,6 +343,8 @@ public:
     void languageChange();
     /// Updates the QAction with respect to the passed mode.
     void updateAction(int mode);
+    /// Setup checkable actions based on current TriggerSource
+    void setupCheckable(int iMsg);
     //@}
 
     /** @name Helper methods for issuing commands to the Python interpreter */
@@ -448,6 +461,7 @@ private:
     static int _busy;
     bool bEnabled;
     static bool _blockCmd;
+    TriggerSource _trigger = TriggerNone;
 };
 
 /** The Python command class

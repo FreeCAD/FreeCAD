@@ -93,7 +93,7 @@ void Action::addTo(QWidget *w)
  */
 void Action::onActivated () 
 {
-    _pcCmd->invoke(0);
+    _pcCmd->invoke(0,true,Command::TriggerAction);
 }
 
 /**
@@ -101,11 +101,13 @@ void Action::onActivated ()
  */
 void Action::onToggled(bool b)
 {
-    _pcCmd->invoke( b ? 1 : 0 );
+    _pcCmd->invoke( b ? 1 : 0 , true, Command::TriggerAction);
 } 
 
 void Action::setCheckable(bool b)
 {
+    if(b == _action->isCheckable())
+        return;
     _action->setCheckable(b);
     if (b) {
         disconnect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
@@ -286,16 +288,6 @@ bool ActionGroup::isExclusive() const
     return _group->isExclusive();
 }
 
-bool ActionGroup::isExternalTriggered() const
-{
-    return _external;
-}
-
-bool ActionGroup::isToggled() const
-{
-    return _toggle;
-}
-
 void ActionGroup::setVisible( bool b )
 {
     Action::setVisible(b);
@@ -340,29 +332,19 @@ void ActionGroup::setCheckedAction(int i)
  */
 void ActionGroup::onActivated () 
 {
-    _pcCmd->invoke(this->property("defaultAction").toInt());
+    _pcCmd->invoke(this->property("defaultAction").toInt(), true, Command::TriggerAction);
 }
 
-void ActionGroup::onToggled(bool toggle)
+void ActionGroup::onToggled(bool)
 {
-    _toggle = toggle;
     onActivated();
 } 
 
 /**
  * Activates the command.
  */
-void ActionGroup::onActivated (int index)
-{
-    _pcCmd->invoke(index);
-}
-
-/**
- * Activates the command.
- */
 void ActionGroup::onActivated (QAction* a) 
 {
-    Base::FlagToggler<> flag(_external);
     int index = _group->actions().indexOf(a);
 
     QList<QWidget*> widgets = a->associatedWidgets();
@@ -377,7 +359,7 @@ void ActionGroup::onActivated (QAction* a)
         }
     }
 
-    _pcCmd->invoke(index);
+    _pcCmd->invoke(index, true, Command::TriggerChildAction);
 }
 
 void ActionGroup::onHovered (QAction *a) 

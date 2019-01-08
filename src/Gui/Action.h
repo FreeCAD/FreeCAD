@@ -70,6 +70,7 @@ public:
     void setWhatsThis (const QString &);
     QString whatsThis() const;
     void setMenuRole(QAction::MenuRole menuRole);
+    QAction *action() {return _action;};
 
 public Q_SLOTS:
     virtual void onActivated ();
@@ -103,8 +104,6 @@ public:
     void setExclusive (bool);
     bool isExclusive() const;
     void setVisible (bool);
-    bool isExternalTriggered() const;
-    bool isToggled() const;
 
     void setDropDownMenu(bool b) { _dropDown = b; }
     QAction* addAction(QAction*);
@@ -116,7 +115,6 @@ public:
 public Q_SLOTS:
     void onActivated ();
     void onToggled(bool);
-    void onActivated (int);
     void onActivated (QAction*);
     void onHovered   (QAction*);
 

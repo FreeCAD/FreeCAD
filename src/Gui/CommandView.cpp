@@ -3382,15 +3382,14 @@ void StdCmdTreeViewActions::activated(int iMsg)
     if(!v.first)
         return;
 
-    ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
-    if(!pcAction || !pcAction->isExternalTriggered())
-        v.first->invoke(pcAction&&pcAction->isToggled()?1:0);
+    if(triggerSource()!=TriggerChildAction)
+        v.first->invoke(0);
 
     Action* cmdAction = v.first->getAction();
-    if(pcAction && cmdAction) {
-        pcAction->setIcon(BitmapFactory().iconFromTheme(v.first->getPixmap()));
-        pcAction->setChecked(cmdAction->isChecked(),true);
-        pcAction->setProperty("defaultAction", QVariant((int)v.second));
+    if(_pcAction && cmdAction) {
+        _pcAction->setIcon(BitmapFactory().iconFromTheme(v.first->getPixmap()));
+        _pcAction->setChecked(cmdAction->isChecked(),true);
+        _pcAction->setProperty("defaultAction", QVariant((int)v.second));
     }
 }
 
