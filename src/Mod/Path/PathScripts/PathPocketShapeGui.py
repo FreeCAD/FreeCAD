@@ -253,7 +253,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, PathGeom.flipEdge(e1))
 
             self.extensionEdges = extensionEdges
-            for edgeList in Part.sortEdges(extensionEdges.keys()):
+            for edgeList in Part.sortEdges(list(extensionEdges.keys())):
                 self.edgeList = edgeList
                 if len(edgeList) == 1:
                     label = "Edge%s" % [extensionEdges[keyEdge] for keyEdge in extensionEdges.keys() if edgesMatchShape(keyEdge, edgeList[0])][0]
