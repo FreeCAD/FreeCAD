@@ -2122,7 +2122,7 @@ static void exportSketch(Gui::Command &cmd, bool compound)
                 FCMD_OBJ_DOC_CMD(Obj,"addObject('Sketcher::SketchExport','"<<FeatName<<"')");
                 Export = dynamic_cast<Sketcher::SketchExport*>(Obj->getDocument()->getObject(FeatName.c_str()));
                 if(!Export) return;
-                FCMD_OBJ_CMD(Export,"Base = '"<<Obj->getNameInDocument()<<"'");
+                FCMD_OBJ_CMD(Export,"Base = "<<cmd.getObjectCmd(Obj));
                 FCMD_OBJ_CMD(Obj,"Exports = {-1:"<<cmd.getObjectCmd(Export)<<"}");
                 FCMD_VOBJ_CMD(Obj,"TempoVis.hide("<<cmd.getObjectCmd(Export)<<")");
                 if(grp)
@@ -2145,7 +2145,7 @@ static void exportSketch(Gui::Command &cmd, bool compound)
                 FCMD_OBJ_DOC_CMD(Obj,"addObject('Sketcher::SketchExport','" << FeatName << "')");
                 Export = dynamic_cast<Sketcher::SketchExport*>(Obj->getDocument()->getObject(FeatName.c_str()));
                 if(!Export) continue;
-                FCMD_OBJ_CMD(Export,"Base = '"<<Obj->getNameInDocument()<<"'");
+                FCMD_OBJ_CMD(Export,"Base = "<<cmd.getObjectCmd(Obj));
                 FCMD_OBJ_CMD(Obj,"Exports = {-1:"<<cmd.getObjectCmd(Export)<<"}");
                 if(grp)
                     FCMD_OBJ_CMD(grp,"addObject("<<cmd.getObjectCmd(Export)<<")");
