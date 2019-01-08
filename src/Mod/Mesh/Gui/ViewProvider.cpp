@@ -349,7 +349,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pcPointStyle->pointSize = PointSize.getValue();
     }
     else if (prop == &CreaseAngle) {
-        pShapeHints->creaseAngle = (F_PI*CreaseAngle.getValue())/180.0;
+        pShapeHints->creaseAngle = Base::toRadians<float>(CreaseAngle.getValue());
     }
     else if (prop == &OpenEdges) {
         showOpenEdges(OpenEdges.getValue());
