@@ -237,6 +237,34 @@ bool CmdPartDesignPoint::isActive(void)
         return false;
 }
 
+DEF_STD_CMD_A(CmdPartDesignCS)
+
+CmdPartDesignCS::CmdPartDesignCS()
+  :Command("PartDesign_CoordinateSystem")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Create a local coordinate system");
+    sToolTipText    = QT_TR_NOOP("Create a new local coordinate system");
+    sWhatsThis      = "PartDesign_CoordinateSystem";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_CoordinateSystem";
+}
+
+void CmdPartDesignCS::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::CoordinateSystem"),"Local_CS");
+}
+
+bool CmdPartDesignCS::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
 //===========================================================================
 // PartDesign_ShapeBinder
 //===========================================================================
@@ -2380,6 +2408,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignPlane());
     rcCmdMgr.addCommand(new CmdPartDesignLine());
     rcCmdMgr.addCommand(new CmdPartDesignPoint());
+    rcCmdMgr.addCommand(new CmdPartDesignCS());
 
     rcCmdMgr.addCommand(new CmdPartDesignNewSketch());
 
