@@ -939,9 +939,8 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         if hasattr(self,"Object"):
             if self.Object.CloneOf:
                 return ":/icons/Arch_Wall_Clone.svg"
-            for o in self.Object.OutList:
-                if Draft.getType(o) == "Wall":
-                    return ":/icons/Arch_Wall_Tree_Assembly.svg"
+            elif (not self.Object.Base) and self.Object.Additions:
+                return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
     def attach(self,vobj):
