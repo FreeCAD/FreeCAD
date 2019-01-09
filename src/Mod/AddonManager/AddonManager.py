@@ -58,6 +58,7 @@ from addonmanager_utilities import urlopen
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
+OBSOLETE = ["assembly2"]
 
 if sys.version_info.major < 3:
     import StringIO as io
@@ -774,6 +775,8 @@ class ShowWorker(QtCore.QThread):
             desc = re.findall("<meta property=\"og:description\" content=\"(.*?)\"",p)
             if desc:
                 desc = desc[0]
+                if self.repos[self.idx][0] in OBSOLETE:
+                    desc += " <b>This add-on is marked as obsolete</b> - This usually means it is no longer maintained, and some more advanced add-on in this list provides the same functionality."
             else:
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)
