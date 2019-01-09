@@ -260,6 +260,46 @@ bool ViewProviderSubShapeBinder::doubleClicked() {
     return true;
 }
 
+void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) 
+{
+    QAction* act;
+    act = menu->addAction(QObject::tr("Syncrhonize"), receiver, member);
+    act->setData(QVariant((int)0));
+    act = menu->addAction(QObject::tr("Select bound object"), receiver, member);
+    act->setData(QVariant((int)1));
+}
+
+bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
+    
+    switch(ModNum) {
+    case 0:
+        updatePlacement(true);
+        break;
+    case 1: {
+        auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
+        if(!self || !self->Support.getValue())
+            break;
+
+        Gui::Selection().selStackPush();
+        Gui::Selection().clearSelection();
+        for(auto &link : self->Support.getSubListValues()) {
+            auto obj = link.getValue();
+            if(!obj || !obj->getNameInDocument())
+                continue;
+            const auto &subs = link.getSubValues();
+            if(subs.size())
+                Gui::Selection().addSelections(obj->getDocument()->getName(),
+                        obj->getNameInDocument(),subs);
+            else
+                Gui::Selection().addSelection(obj->getDocument()->getName(),
+                        obj->getNameInDocument());
+        }
+        Gui::Selection().selStackPush();
+        break;
+    }}
+    return false;
+}
+
 void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
     if(!self || !self->Support.getValue())
@@ -297,7 +337,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         return;
     }
 
-    App::GetApplication().setActiveTransaction("Refresh SubShapeBinder");
+    App::GetApplication().setActiveTransaction("Sync binder");
     try{
         if(relative)
             self->updatePlacement(mat);

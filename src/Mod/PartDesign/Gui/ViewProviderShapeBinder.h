@@ -69,6 +69,8 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void) const override;
 
     virtual bool doubleClicked() override;
+    virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+    virtual bool setEdit(int ModNum) override;
 
 private:
     void updatePlacement(bool transaction);
