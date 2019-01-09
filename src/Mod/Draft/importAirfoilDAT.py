@@ -42,13 +42,16 @@ useDraftWire = True
 def decodeName(name):
 	"decodes encoded strings"
 	try:
-		decodedName = (name.decode("utf8"))
+		decodedName = name
 	except UnicodeDecodeError:
 		try:
 			decodedName = (name.decode("latin1"))
 		except UnicodeDecodeError:
-			print("AirfoilDAT: error: couldn't determine character encoding")
-			decodedName = name
+			try:
+				decodedName = (name.decode("utf8"))
+			except UnicodeDecodeError:
+				print("AirfoilDAT: error: couldn't determine character encoding")
+				decodedName = name
 	return decodedName
 
 def open(filename):
