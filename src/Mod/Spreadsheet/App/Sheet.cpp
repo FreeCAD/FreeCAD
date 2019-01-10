@@ -89,6 +89,8 @@ Sheet::Sheet()
     ADD_PROPERTY_TYPE(cells, (), "Spreadsheet", (PropertyType)(Prop_Hidden), "Cell contents");
     ADD_PROPERTY_TYPE(columnWidths, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Column widths");
     ADD_PROPERTY_TYPE(rowHeights, (), "Spreadsheet", (PropertyType)(Prop_ReadOnly|Prop_Hidden|Prop_Output), "Row heights");
+    ADD_PROPERTY_TYPE(hiddenRows, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden rows");
+    ADD_PROPERTY_TYPE(hiddenColumns, (), "Spreadsheet", (PropertyType)(Prop_Hidden|Prop_Output), "Hidden columns");
 
     onRenamedDocumentConnection = GetApplication().signalRenameDocument.connect(boost::bind(&Spreadsheet::Sheet::onRenamedDocument, this, _1));
     onRelabledDocumentConnection = GetApplication().signalRelabelDocument.connect(boost::bind(&Spreadsheet::Sheet::onRelabledDocument, this, _1));
@@ -1043,8 +1045,17 @@ std::vector<std::string> Sheet::getUsedCells() const
 
 void Sheet::insertColumns(int col, int count)
 {
-
+    if(count<=0)
+        return;
     cells.insertColumns(col, count);
+    const auto &hidden = hiddenColumns.getValues();
+    auto it = hidden.lower_bound(col);
+    if(it != hidden.end()) {
+        std::set<long> newHidden(hidden.begin(),it);
+        for(;it!=hidden.end();++it)
+            newHidden.insert(*it + count);
+        hiddenColumns.setValues(newHidden);
+    }
 }
 
 /**
@@ -1070,7 +1081,17 @@ void Sheet::removeColumns(int col, int count)
 
 void Sheet::insertRows(int row, int count)
 {
+    if(count<=0)
+        return;
     cells.insertRows(row, count);
+    const auto &hidden = hiddenRows.getValues();
+    auto it = hidden.lower_bound(row);
+    if(it != hidden.end()) {
+        std::set<long> newHidden(hidden.begin(),it);
+        for(;it!=hidden.end();++it)
+            newHidden.insert(*it + count);
+        hiddenRows.setValues(newHidden);
+    }
 }
 
 /**

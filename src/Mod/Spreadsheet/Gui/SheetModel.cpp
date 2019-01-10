@@ -499,6 +499,10 @@ QVariant SheetModel::headerData(int section, Qt::Orientation orientation, int ro
         else {
             return QString::number(section + 1);
         }
+    } else if (role == Qt::TextColorRole) {
+        if((orientation == Qt::Horizontal && sheet->hiddenColumns.getValues().count(section)) ||
+           (orientation == Qt::Vertical && sheet->hiddenRows.getValues().count(section)))
+           return QColor(0,0,255);
     }
     return QVariant();
 }

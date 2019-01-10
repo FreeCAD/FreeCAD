@@ -60,8 +60,14 @@ SheetTableView::SheetTableView(QWidget *parent)
 {
     QAction * insertRows = new QAction(tr("Insert rows"), this);
     QAction * removeRows = new QAction(tr("Remove rows"), this);
+    QAction * hideRows = new QAction(tr("Toggle rows"), this);
+    actionShowRows = new QAction(tr("Show all rows"), this);
+    actionShowRows->setCheckable(true);
     QAction * insertColumns = new QAction(tr("Insert columns"), this);
     QAction * removeColumns = new QAction(tr("Remove columns"), this);
+    QAction * hideColumns = new QAction(tr("Toggle columns"), this);
+    actionShowColumns = new QAction(tr("Show all columns"), this);
+    actionShowColumns->setCheckable(true);
 
     setHorizontalHeader(new SheetViewHeader(Qt::Horizontal));
     setVerticalHeader(new SheetViewHeader(Qt::Vertical));
@@ -70,16 +76,24 @@ SheetTableView::SheetTableView(QWidget *parent)
 
     horizontalHeader()->addAction(insertColumns);
     horizontalHeader()->addAction(removeColumns);
+    horizontalHeader()->addAction(hideColumns);
+    horizontalHeader()->addAction(actionShowColumns);
     horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     verticalHeader()->addAction(insertRows);
     verticalHeader()->addAction(removeRows);
+    verticalHeader()->addAction(hideRows);
+    verticalHeader()->addAction(actionShowRows);
     verticalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     connect(insertRows, SIGNAL(triggered()), this, SLOT(insertRows()));
     connect(insertColumns, SIGNAL(triggered()), this, SLOT(insertColumns()));
+    connect(hideRows, SIGNAL(triggered()), this, SLOT(hideRows()));
+    connect(actionShowRows, SIGNAL(toggled(bool)), this, SLOT(showRows()));
     connect(removeRows, SIGNAL(triggered()), this, SLOT(removeRows()));
     connect(removeColumns, SIGNAL(triggered()), this, SLOT(removeColumns()));
+    connect(hideColumns, SIGNAL(triggered()), this, SLOT(hideColumns()));
+    connect(actionShowColumns, SIGNAL(toggled(bool)), this, SLOT(showColumns()));
 
     setTabKeyNavigation(false);
 
@@ -127,6 +141,34 @@ SheetTableView::SheetTableView(QWidget *parent)
     connect(actionPaste,SIGNAL(triggered()), this, SLOT(pasteClipboard()));
     actionDel = contextMenu->addAction(tr("Delete"));
     connect(actionDel,SIGNAL(triggered()), this, SLOT(deleteSelection()));
+}
+
+void SheetTableView::updateHiddenRows() {
+    bool showAll = actionShowRows->isChecked();
+    for(auto i : sheet->hiddenRows.getValues()) {
+        if(!hiddenRows.erase(i))
+            verticalHeader()->headerDataChanged(Qt::Vertical,i,i);
+        setRowHidden(i, !showAll);
+    }
+    for(auto i : hiddenRows) {
+        verticalHeader()->headerDataChanged(Qt::Vertical,i,i);
+        setRowHidden(i,false);
+    }
+    hiddenRows = sheet->hiddenRows.getValues();
+}
+
+void SheetTableView::updateHiddenColumns() {
+    bool showAll = actionShowColumns->isChecked();
+    for(auto i : sheet->hiddenColumns.getValues()) {
+        if(!hiddenColumns.erase(i))
+            horizontalHeader()->headerDataChanged(Qt::Horizontal,i,i);
+        setColumnHidden(i, !showAll);
+    }
+    for(auto i : hiddenColumns) {
+        horizontalHeader()->headerDataChanged(Qt::Horizontal,i,i);
+        setColumnHidden(i,false);
+    }
+    hiddenColumns = sheet->hiddenColumns.getValues();
 }
 
 void SheetTableView::editMode(QAction *action) {
@@ -316,6 +358,36 @@ void SheetTableView::removeColumns()
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
+void SheetTableView::showColumns()
+{
+    updateHiddenColumns();
+}
+
+void SheetTableView::hideColumns() {
+    auto hidden = sheet->hiddenColumns.getValues();
+    for(auto &idx : selectionModel()->selectedColumns()) {
+        auto res = hidden.insert(idx.column());
+        if(!res.second)
+            hidden.erase(res.first);
+    }
+    sheet->hiddenColumns.setValues(hidden);
+}
+
+void SheetTableView::showRows()
+{
+    updateHiddenRows();
+}
+
+void SheetTableView::hideRows() {
+    auto hidden = sheet->hiddenRows.getValues();
+    for(auto &idx : selectionModel()->selectedRows()) {
+        auto res = hidden.insert(idx.row());
+        if(!res.second)
+            hidden.erase(res.first);
+    }
+    sheet->hiddenRows.setValues(hidden);
+}
+
 SheetTableView::~SheetTableView()
 {
 
@@ -366,6 +438,8 @@ void SheetTableView::setSheet(Sheet * _sheet)
             setRowHeight(i->first, newSize);
     }
 
+    updateHiddenRows();
+    updateHiddenColumns();
 }
 
 void SheetTableView::commitData ( QWidget * editor )

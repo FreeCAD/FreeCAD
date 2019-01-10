@@ -384,4 +384,12 @@ void SheetView::deleteSelf()
     Gui::MDIView::deleteSelf();
 }
 
+void SheetView::updateHiddenRows() {
+    ui->cells->updateHiddenRows();
+}
+
+void SheetView::updateHiddenColumns() {
+    ui->cells->updateHiddenColumns();
+}
+
 #include "moc_SpreadsheetView.cpp"

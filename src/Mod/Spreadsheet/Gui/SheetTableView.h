@@ -58,6 +58,9 @@ public:
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
 
+    void updateHiddenRows();
+    void updateHiddenColumns();
+
 public Q_SLOTS:
     void deleteSelection();
     void copySelection();
@@ -69,8 +72,12 @@ protected Q_SLOTS:
     void updateCellSpan(App::CellAddress address);
     void insertRows();
     void removeRows();
+    void showRows();
+    void hideRows();
     void insertColumns();
     void removeColumns();
+    void showColumns();
+    void hideColumns();
     void cellProperties();
     void editMode(QAction *);
     void onRecompute();
@@ -91,11 +98,17 @@ protected:
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
 
+    std::set<long> hiddenRows;
+    std::set<long> hiddenColumns;
+
     QMenu *contextMenu;
     QAction *actionEditNormal;
     QAction *actionEditButton;
     QAction *actionEditCombo;
     QAction *actionEditLabel;
+
+    QAction *actionShowRows;
+    QAction *actionShowColumns;
 
     QAction *actionCopy;
     QAction *actionPaste;

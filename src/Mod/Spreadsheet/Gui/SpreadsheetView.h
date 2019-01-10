@@ -81,6 +81,9 @@ public:
 
     virtual void deleteSelf();
 
+    void updateHiddenRows();
+    void updateHiddenColumns();
+
 protected Q_SLOTS:
     void editingFinished();
     void currentChanged( const QModelIndex & current, const QModelIndex & previous );

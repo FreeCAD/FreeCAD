@@ -74,6 +74,9 @@ class SpreadsheetExport Sheet : public App::DocumentObject
     PROPERTY_HEADER(Spreadsheet::Sheet);
 
 public:
+    App::PropertyIntegerSet hiddenRows;
+    App::PropertyIntegerSet hiddenColumns;
+
 
     /// Constructor
     Sheet();

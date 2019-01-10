@@ -177,6 +177,17 @@ Gui::MDIView *ViewProviderSheet::getMDIView() {
 
 void ViewProviderSheet::updateData(const App::Property* prop)
 {
-    if (view)
-        view->updateCell(prop);
+    auto sheet = getSpreadsheetObject();
+    if(!sheet || !view)
+        return;
+    if(sheet) {
+        if(prop == &sheet->hiddenRows) {
+            view->updateHiddenRows();
+            return;
+        }else if(prop == &sheet->hiddenColumns) {
+            view->updateHiddenColumns();
+            return;
+        }
+    }
+    view->updateCell(prop);
 }
