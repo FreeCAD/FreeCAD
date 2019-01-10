@@ -56,6 +56,7 @@
 #include <gp_Vec.hxx>
 #include <list>
 #include <vector>
+#include <map>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -63,6 +64,20 @@
 #include <boost/uuid/uuid_generators.hpp>
 
 namespace Part {
+
+class PartExport GeometryExtension: public Base::Persistence
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual ~GeometryExtension();
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const = 0;
+    virtual void Save(Base::Writer &/*writer*/) const = 0;
+    virtual void Restore(Base::XMLReader &/*reader*/) = 0;
+
+    virtual PyObject *getPyObject(void) = 0;
+};
 
 class PartExport Geometry: public Base::Persistence
 {
@@ -93,6 +108,14 @@ public:
     bool Construction;
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
+
+    std::map<Base::Type, GeometryExtension *> &getExtensions();
+    void setExtensions(std::map<Base::Type, GeometryExtension *> exts);
+
+    bool hasExtension(Base::Type type) const;
+    GeometryExtension * getExtension(Base::Type type);
+    void setExtension(GeometryExtension *geo);
+
 protected:
     /// create a new tag for the geometry object
     void createNewTag();
@@ -104,6 +127,7 @@ protected:
 
 protected:
     boost::uuids::uuid tag;
+    std::map<Base::Type, GeometryExtension *> extensions;
 
 private:
     Geometry(const Geometry&);
