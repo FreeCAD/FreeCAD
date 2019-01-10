@@ -180,6 +180,16 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
     }
 }
 
+
+
+// ---------------------------------------------------------------
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::Persistence)
+
+
+GeometryExtension::~GeometryExtension()
+{
+}
+
 // ---------------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
@@ -202,21 +212,82 @@ unsigned int Geometry::getMemSize (void) const
 
 void Geometry::Save(Base::Writer &writer) const
 {
+    if( extensions.size()>0 ) {
+
+        writer.incInd();
+
+        writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">" << endl;
+
+        for(auto att:extensions) {
+            att.second->Save(writer);
+        }
+
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</GeoExtensions>" << endl;
+    }
+
     const char c = Construction?'1':'0';
     writer.Stream() << writer.ind() << "<Construction value=\"" <<  c << "\"/>" << endl;
 }
 
 void Geometry::Restore(Base::XMLReader &reader)
 {
-    // read my Element
-    reader.readElement("Construction");
-    // get the value of my Attribute
+    reader.readElement();
+
+    if(strcmp(reader.localName(),"GeoExtensions") == 0) {
+
+        int count = reader.getAttributeAsInteger("count");
+
+        for (int i = 0; i < count; i++) {
+            reader.readElement("GeoExtension");
+            const char* TypeName = reader.getAttribute("type");
+            Base::Type type = Base::Type::fromName(TypeName);
+            GeometryExtension *newE = (GeometryExtension *)type.createInstance();
+            newE->Restore(reader);
+
+            extensions[type] = newE;
+        }
+
+        reader.readEndElement("GeoExtensions");
+
+        reader.readElement("Construction"); // prepare for reading construction attribute
+    }
+    else if(strcmp(reader.localName(),"Construction") != 0) { // ignore anything not known
+        reader.readElement("Construction");
+    }
+
     Construction = (int)reader.getAttributeAsInteger("value")==0?false:true;
+
 }
 
 boost::uuids::uuid Geometry::getTag() const
 {
     return tag;
+}
+
+std::map<Base::Type, GeometryExtension *> & Geometry::getExtensions()
+{
+    return this->extensions;
+}
+
+void Geometry::setExtensions(std::map<Base::Type, GeometryExtension *> exts)
+{
+    this->extensions=exts;
+}
+
+bool Geometry::hasExtension(Base::Type type) const
+{
+    return this->extensions.find(type) != extensions.end();
+}
+
+GeometryExtension * Geometry::getExtension(Base::Type type)
+{
+    return this->extensions[type];
+}
+
+void Geometry::setExtension(GeometryExtension *geo)
+{
+    this->extensions[geo->getTypeId()]=geo;
 }
 
 void Geometry::createNewTag()
@@ -246,6 +317,7 @@ Geometry *Geometry::clone(void) const
 {
     Geometry* cpy = this->copy();
     cpy->tag = this->tag;
+    cpy->extensions = this->extensions;
     return cpy;
 }
 
