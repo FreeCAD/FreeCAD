@@ -41,6 +41,23 @@
 namespace Sketcher
 {
 
+class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual ~SketchGeometryExtension();
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+
+    virtual PyObject *getPyObject(void);
+
+public:
+    long int id;
+};
+
 struct SketcherExport GeoEnum
 {
     static const int RtPnt;
