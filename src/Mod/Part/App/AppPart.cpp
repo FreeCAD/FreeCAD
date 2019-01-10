@@ -477,6 +477,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Refine                ::init();
 
     // Geometry types
+    Part::GeometryExtension	  ::init();
     Part::Geometry                ::init();
     Part::GeomPoint               ::init();
     Part::GeomCurve               ::init();
