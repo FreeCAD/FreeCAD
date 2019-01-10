@@ -40,6 +40,7 @@
 #include "Exception.h"
 #include "PyObjectBase.h"
 #include <QCoreApplication>
+#include <frameobject.h>
 
 using namespace Base;
 
@@ -941,6 +942,17 @@ std::stringstream &LogLevel::prefix(std::stringstream &str, const char *src, int
     }
     if(print_tag) str << '<' << tag << "> ";
     if(print_src) {
+        if(print_src==2) {
+            PyFrameObject* frame = PyEval_GetFrame();
+            if(frame) {
+                line = PyFrame_GetLineNumber(frame);
+#if PY_MAJOR_VERSION >= 3
+                src = PyUnicode_AsUTF8(frame->f_code->co_filename);
+#else
+                src = PyString_AsString(frame->f_code->co_filename);
+#endif
+            }
+        }
 #ifdef FC_OS_WIN32
         const char *_f = std::strrchr(src, '\\');
 #else

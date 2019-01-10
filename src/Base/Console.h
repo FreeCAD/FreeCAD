@@ -123,7 +123,7 @@
  * shown blew along with their default values.
  *
  * \code{.c}
- * FC_LOG_LEVEL_INIT(tag, print_tag=true, print_src=false,
+ * FC_LOG_LEVEL_INIT(tag, print_tag=true, print_src=0,
  *          print_time=false, add_eol=true, refresh=false)
  * \endcode
  *
@@ -133,7 +133,11 @@
  *
  * \code{.c}
  * FC_LOG_INSTANCE.refresh = true; // print time for each log, default false.
- * FC_LOG_INSTANCE.print_src = true; // print file and line number, default false.
+ *
+ * // print file and line number, default 0, if set to 2 then print python
+ * // source from current call frame.
+ * FC_LOG_INSTANCE.print_src = 1; 
+ *
  * FC_LOG_INSTANCE.print_tag = false; // do not print tag, default true
  * FC_LOG_INSTANCE.add_eol = false; // do not add eol
  * FC_LOG_INSTANCE.refresh = true; // refresh GUI after each log
@@ -633,12 +637,12 @@ public:
     std::string tag;
     int &lvl;
     bool print_tag;
-    bool print_src;
+    int print_src;
     bool print_time;
     bool add_eol;
     bool refresh;
 
-    LogLevel(const char *tag, bool print_tag=true, bool print_src=false,
+    LogLevel(const char *tag, bool print_tag=true, int print_src=0,
             bool print_time=false, bool add_eol=true, bool refresh=false)
         :tag(tag),lvl(*Console().GetLogLevel(tag))
         ,print_tag(print_tag),print_src(print_src),print_time(print_time)
