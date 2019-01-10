@@ -1403,7 +1403,9 @@ class recycler:
             self.spared += 1
             return self.propertysinglevalues[key]
         else:
-            c = self.ifcfile.createIfcPropertySingleValue(key,None,ifcfile.create_entity(ptype,pvalue),None)
+            if isinstance(pvalue,float) and pvalue < 0.000000001: # remove the exp notation that some bim apps hate
+                pvalue = 0
+            c = self.ifcfile.createIfcPropertySingleValue(name,None,ifcfile.create_entity(ptype,pvalue),None)
             if self.compress:
                 self.propertysinglevalues[key] = c
             return c
