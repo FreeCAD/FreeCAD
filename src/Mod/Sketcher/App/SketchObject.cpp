@@ -88,6 +88,41 @@
 using namespace Sketcher;
 using namespace Base;
 
+//---------- Geometry Extension
+
+TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryExtension)
+
+SketchGeometryExtension::~SketchGeometryExtension()
+{
+}
+
+// Persistence implementer
+unsigned int SketchGeometryExtension::getMemSize (void) const
+{
+    return sizeof(long int);
+}
+
+void SketchGeometryExtension::Save(Base::Writer &writer) const
+{
+
+    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName()
+                    << "\" id=\"" << id << "\"/>" << endl;
+}
+
+void SketchGeometryExtension::Restore(Base::XMLReader &reader)
+{
+    id = reader.getAttributeAsInteger("id");
+}
+
+PyObject * SketchGeometryExtension::getPyObject(void)
+{
+    return 0;
+}
+
+
+//-------------- End Geometry Extension
+
+
 const int GeoEnum::RtPnt  = -1;
 const int GeoEnum::HAxis  = -1;
 const int GeoEnum::VAxis  = -2;
