@@ -2957,7 +2957,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 #else //ifdef USE_OLD_DAG
 
-int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force) {
+int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError) {
     int objectCount = 0;
 
     if (testStatus(Document::PartialDoc)) {
@@ -3029,6 +3029,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
                     // inListRecursive from the queue then proceed
                     obj->getInListEx(filter,true);
                     filter.insert(obj);
+                    if(hasError)
+                        *hasError = true;
                     continue;
                 }
                 signalRecomputedObject(*obj);
@@ -3303,20 +3305,24 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
     return false;
 }
 
-void Document::recomputeFeature(DocumentObject* Feat, bool recursive)
+bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
 {
     // delete recompute log
     d->clearRecomputeLog(Feat);
 
     // verify that the feature is (active) part of the document
     if (Feat->getNameInDocument()) {
-        if(recursive) 
-            recompute({Feat},true);
-        else {
+        if(recursive) {
+            bool hasError = false;
+            recompute({Feat},true,&hasError);
+            return !hasError;
+        } else {
             _recomputeFeature(Feat);
             signalRecomputedObject(*Feat);
+            return Feat->isValid();
         }
-    }
+    }else
+        return false;
 }
 
 DocumentObject * Document::addObject(const char* sType, const char* pObjectName, 

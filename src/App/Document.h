@@ -330,9 +330,9 @@ public:
      * @param objs: specify a sub set of objects to recompute. If empty, then
      * all object in this document is checked for recompute
      */
-    int recompute(const std::vector<App::DocumentObject*> &objs={},bool force=false);
+    int recompute(const std::vector<App::DocumentObject*> &objs={},bool force=false,bool *hasError=0);
     /// Recompute only one feature
-    void recomputeFeature(DocumentObject* Feat,bool recursive=false);
+    bool recomputeFeature(DocumentObject* Feat,bool recursive=false);
     /// get the text of the error of a specified object
     const char* getErrorDescription(const App::DocumentObject*) const;
     /// return the status bits

@@ -121,7 +121,7 @@ bool DocumentObject::recomputeFeature(bool recursive)
 {
     Document* doc = this->getDocument();
     if (doc)
-        doc->recomputeFeature(this,recursive);
+        return doc->recomputeFeature(this,recursive);
     return isValid();
 }
 
