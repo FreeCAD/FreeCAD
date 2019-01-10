@@ -2630,6 +2630,7 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
     }
 
     item->populated = true;
+    bool checkHidden = !showHidden();
 
     int i=-1;
     // iterate through the claimed children, and try to synchronize them with the 
@@ -2652,12 +2653,11 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             found = true;
             if (j!=i) { // fix index if it is changed
                 childItem->setHighlight(false);
-                bool hidden = ci->isHidden();
                 item->removeChild(ci);
                 item->insertChild(i,ci);
                 assert(ci->parent()==item);
-                if(hidden)
-                    ci->setHidden(true);
+                if(checkHidden)
+                    updateItemsVisibility(ci,false);
             }
 
             // Check if the item just changed its policy of whether to remove
@@ -2703,12 +2703,11 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
             }
             it->second->rootItem = 0;
             childItem->setHighlight(false);
-            bool hidden = childItem->isHidden();
             this->removeChild(childItem);
             item->insertChild(i,childItem);
             assert(childItem->parent()==item);
-            if(hidden)
-                childItem->setHidden(true);
+            if(checkHidden)
+                updateItemsVisibility(childItem,false);
         }
     }
 
@@ -2717,12 +2716,11 @@ void DocumentItem::populateItem(DocumentObjectItem *item, bool refresh)
         if (ci->type() == TreeWidget::ObjectType) {
             DocumentObjectItem* childItem = static_cast<DocumentObjectItem*>(ci);
             if(childItem->requiredAtRoot()) {
-                bool hidden = childItem->isHidden();
                 item->removeChild(childItem);
                 this->addChild(childItem);
                 assert(childItem->parent()==this);
-                if(hidden)
-                    childItem->setHidden(true);
+                if(checkHidden)
+                    updateItemsVisibility(childItem,false);
                 childItem->myData->rootItem = childItem;
                 continue;
             }
@@ -3405,13 +3403,12 @@ void DocumentItem::setItemVisibility(const ViewProviderDocumentObject &vpd) {
 }
 
 void DocumentItem::updateItemsVisibility(QTreeWidgetItem *item, bool show) {
-    for(int i=0;i<item->childCount();++i) {
-        auto child = item->child(i);
-        if(child->type()!=TreeWidget::ObjectType) continue;
-        auto childItem = static_cast<DocumentObjectItem*>(child);
-        childItem->setHidden(!show && !childItem->object()->showInTree());
-        updateItemsVisibility(childItem,show);
+    if(item->type() == TreeWidget::ObjectType) {
+        auto objitem = static_cast<DocumentObjectItem*>(item);
+        objitem->setHidden(!show && !objitem->object()->showInTree());
     }
+    for(int i=0;i<item->childCount();++i) 
+        updateItemsVisibility(item->child(i),show);
 }
 
 void DocumentItem::updateSelection() {
