@@ -476,6 +476,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Thickness             ::init();
 
     // Geometry types
+    Part::GeometryExtension	  ::init();
     Part::Geometry                ::init();
     Part::GeomPoint               ::init();
     Part::GeomCurve               ::init();
