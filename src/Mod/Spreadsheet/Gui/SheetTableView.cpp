@@ -54,6 +54,25 @@ void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
     resizeFinished();
 }
 
+bool SheetViewHeader::viewportEvent(QEvent *e) {
+    if(e->type() == QEvent::ContextMenu) {
+        auto *ce = static_cast<QContextMenuEvent*>(e);
+        int section = logicalIndexAt(ce->pos());
+        if(section>=0) {
+            if(orientation() == Qt::Horizontal) {
+                if(!owner->selectionModel()->isColumnSelected(section,owner->rootIndex())) {
+                    owner->clearSelection();
+                    owner->selectColumn(section);
+                }
+            }else if(!owner->selectionModel()->isRowSelected(section,owner->rootIndex())) {
+                owner->clearSelection();
+                owner->selectRow(section);
+            }
+        }
+    }
+    return QHeaderView::viewportEvent(e);
+}
+
 SheetTableView::SheetTableView(QWidget *parent)
     : QTableView(parent)
     , sheet(0)
@@ -69,8 +88,8 @@ SheetTableView::SheetTableView(QWidget *parent)
     actionShowColumns = new QAction(tr("Show all columns"), this);
     actionShowColumns->setCheckable(true);
 
-    setHorizontalHeader(new SheetViewHeader(Qt::Horizontal));
-    setVerticalHeader(new SheetViewHeader(Qt::Vertical));
+    setHorizontalHeader(new SheetViewHeader(this,Qt::Horizontal));
+    setVerticalHeader(new SheetViewHeader(this,Qt::Vertical));
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
 
