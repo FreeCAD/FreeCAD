@@ -249,6 +249,8 @@ public:
 
 protected:
 
+    void updateColumnsOrRows(bool horizontal, int section, int count) ;
+
     void providesTo(App::CellAddress address, std::set<App::CellAddress> & result) const;
 
     void onDocumentRestored();

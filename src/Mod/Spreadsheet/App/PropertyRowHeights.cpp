@@ -56,8 +56,11 @@ App::Property *PropertyRowHeights::Copy() const
 
 void PropertyRowHeights::Paste(const Property &from)
 {
+    setValues(static_cast<const PropertyRowHeights&>(from).getValues());
+}
+
+void PropertyRowHeights::setValues(const std::map<int,int> &values) {
     aboutToSetValue();
-    const PropertyRowHeights * fromprh = static_cast<const PropertyRowHeights*>(&from);
 
     std::map<int, int>::const_iterator i;
 
@@ -72,8 +75,8 @@ void PropertyRowHeights::Paste(const Property &from)
     clear();
 
     /* Copy new map from from */
-    i = fromprh->begin();
-    while (i != fromprh->end()) {
+    i = values.begin();
+    while (i != values.end()) {
         insert(*i);
         dirty.insert(i->first);
         ++i;

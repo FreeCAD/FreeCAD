@@ -265,6 +265,14 @@ void SheetTableView::insertRows()
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
 
+    bool updateHidden = false;
+    if(hiddenRows.size() && !actionShowRows->isChecked()) {
+        updateHidden = true;
+        actionShowRows->setChecked(true);
+        // To make sure the hidden rows are actually shown. Any better idea?
+        qApp->sendPostedEvents();
+    }
+
     /* Make sure rows are sorted in ascending order */
     for (QModelIndexList::const_iterator it = rows.begin(); it != rows.end(); ++it)
         sortedRows.push_back(it->row());
@@ -294,11 +302,22 @@ void SheetTableView::insertRows()
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+
+    if(updateHidden)
+        actionShowRows->setChecked(false);
 }
 
 void SheetTableView::removeRows()
 {
     assert(sheet != 0);
+
+    bool updateHidden = false;
+    if(hiddenRows.size() && !actionShowRows->isChecked()) {
+        updateHidden = true;
+        actionShowRows->setChecked(true);
+        // To make sure the hidden rows are actually shown. Any better idea?
+        qApp->sendPostedEvents();
+    }
 
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
@@ -316,6 +335,9 @@ void SheetTableView::removeRows()
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+
+    if(updateHidden)
+        actionShowRows->setChecked(false);
 }
 
 void SheetTableView::insertColumns()
@@ -324,6 +346,13 @@ void SheetTableView::insertColumns()
 
     QModelIndexList cols = selectionModel()->selectedColumns();
     std::vector<int> sortedColumns;
+
+    bool updateHidden = false;
+    if(hiddenColumns.size() && !actionShowColumns->isChecked()) {
+        updateHidden = true;
+        actionShowColumns->setChecked(true);
+        qApp->sendPostedEvents();
+    }
 
     /* Make sure rows are sorted in ascending order */
     for (QModelIndexList::const_iterator it = cols.begin(); it != cols.end(); ++it)
@@ -354,6 +383,9 @@ void SheetTableView::insertColumns()
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+
+    if(updateHidden)
+        actionShowColumns->setChecked(false);
 }
 
 void SheetTableView::removeColumns()
@@ -362,6 +394,13 @@ void SheetTableView::removeColumns()
 
     QModelIndexList cols = selectionModel()->selectedColumns();
     std::vector<int> sortedColumns;
+
+    bool updateHidden = false;
+    if(hiddenColumns.size() && !actionShowColumns->isChecked()) {
+        updateHidden = true;
+        actionShowColumns->setChecked(true);
+        qApp->sendPostedEvents();
+    }
 
     /* Make sure rows are sorted in descending order */
     for (QModelIndexList::const_iterator it = cols.begin(); it != cols.end(); ++it)
@@ -375,6 +414,9 @@ void SheetTableView::removeColumns()
                                 columnName(*it).c_str(), 1);
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+
+    if(updateHidden)
+        actionShowColumns->setChecked(false);
 }
 
 void SheetTableView::showColumns()
@@ -752,8 +794,9 @@ void SheetTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &
     do {
         auto address = *range;
         auto cell = sheet->getCell(address);
-        if(!cell)
-            closePersistentEditor(model()->index(address.row(),address.col()));
+        closePersistentEditor(model()->index(address.row(),address.col()));
+        if(cell && cell->getEditMode()==Cell::EditButton)
+            openPersistentEditor(model()->index(address.row(),address.col()));
     }while(range.next());
 
 #if QT_VERSION >= 0x050000

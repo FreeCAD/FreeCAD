@@ -215,7 +215,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
 
     // Get edit value by querying the sheet
     if (role == Qt::EditRole) {
-        auto contents = cell->getEditData();
+        auto contents = cell->getEditData(true);
         if(contents.empty())
             return QVariant();
         else if(contents.size()==1)

@@ -231,15 +231,14 @@ void PropertySheet::Paste(const Property &from)
 
         if (i != data.end()) {
             *(data[ifrom->first]) = *(ifrom->second); // Exists; assign cell directly
-            recomputeDependencies(ifrom->first);
         }
         else {
             data[ifrom->first] = new Cell(this, *(ifrom->second)); // Doesn't exist, copy using Cell's copy constructor
         }
+        recomputeDependencies(ifrom->first);
 
         /* Set dirty */
         setDirty(ifrom->first);
-
         ++ifrom;
     }
 
@@ -260,6 +259,7 @@ void PropertySheet::Paste(const Property &from)
     }
 
     mergedCells = froms->mergedCells;
+    signaller.tryInvoke();
 }
 
 void PropertySheet::Save(Base::Writer &writer) const
@@ -326,6 +326,7 @@ void PropertySheet::Restore(Base::XMLReader &reader)
         }
     }
     reader.readEndElement("Cells");
+    signaller.tryInvoke();
 }
 
 void PropertySheet::copyCells(Base::Writer &writer, const std::vector<Range> &ranges) const {
@@ -414,6 +415,7 @@ void PropertySheet::pasteCells(XMLReader &reader, const CellAddress &addr) {
             }while(range.next());
         }
     }
+    signaller.tryInvoke();
 }
 
 Cell * PropertySheet::cellAt(CellAddress address)
@@ -604,6 +606,7 @@ void PropertySheet::clear(CellAddress address)
 
     // Erase from internal struct
     data.erase(i);
+    signaller.tryInvoke();
 }
 
 void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> & renames)
@@ -658,6 +661,7 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos, std::map<A
 
         renames[ObjectIdentifier(owner, currPos.toString())] = ObjectIdentifier(owner, newPos.toString());
     }
+    signaller.tryInvoke();
 }
 
 void PropertySheet::insertRows(int row, int count)
@@ -696,6 +700,7 @@ void PropertySheet::insertRows(int row, int count)
 
     const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
     owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
+    signaller.tryInvoke();
 }
 
 /**
@@ -748,6 +753,7 @@ void PropertySheet::removeRows(int row, int count)
 
     const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
     owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
+    signaller.tryInvoke();
 }
 
 void PropertySheet::insertColumns(int col, int count)
@@ -786,6 +792,7 @@ void PropertySheet::insertColumns(int col, int count)
 
     const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
     owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; });
+    signaller.tryInvoke();
 }
 
 /**
@@ -838,6 +845,7 @@ void PropertySheet::removeColumns(int col, int count)
 
     const App::DocumentObject * docObj = static_cast<const App::DocumentObject*>(getContainer());
     owner->getDocument()->renameObjectIdentifiers(renames, [docObj](const App::DocumentObject * obj) { return obj != docObj; } );
+    signaller.tryInvoke();
 }
 
 unsigned int PropertySheet::getMemSize() const
@@ -872,6 +880,7 @@ bool PropertySheet::mergeCells(CellAddress from, CellAddress to)
         }
 
     setSpans(from, to.row() - from.row() + 1, to.col() - from.col() + 1);
+    signaller.tryInvoke();
 
     return true;
 }
@@ -895,6 +904,7 @@ void PropertySheet::splitCell(CellAddress address)
         }
 
     setSpans(anchor, -1, -1);
+    signaller.tryInvoke();
 }
 
 void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
@@ -1221,6 +1231,7 @@ void PropertySheet::recomputeDependencies(CellAddress key)
 
     removeDependencies(key);
     addDependencies(key);
+    signaller.tryInvoke();
 }
 
 void PropertySheet::hasSetValue()
@@ -1291,6 +1302,7 @@ void PropertySheet::afterRestore()
         for(const auto &address : iter->second)
             setDirty(address);
     }
+    signaller.tryInvoke();
 }
 
 void PropertySheet::onContainerRestored() {
@@ -1428,4 +1440,5 @@ void PropertySheet::setExpressions(
         else
             cell->setExpression(std::move(v.second));
     }
+    signaller.tryInvoke();
 }

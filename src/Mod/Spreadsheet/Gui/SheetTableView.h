@@ -43,6 +43,7 @@ public:
         setClickable(true);
 #endif
     }
+
 Q_SIGNALS:
     void resizeFinished();
 protected:

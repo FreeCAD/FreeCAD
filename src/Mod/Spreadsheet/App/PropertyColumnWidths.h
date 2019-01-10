@@ -39,6 +39,8 @@ public:
 
     void setValue(int col, int width);
 
+    void setValues(const std::map<int,int> &);
+
     std::map<int, int> getValues() const {
         return *this;
     }

@@ -1035,6 +1035,48 @@ std::vector<std::string> Sheet::getUsedCells() const
     return usedCells;
 }
 
+void Sheet::updateColumnsOrRows(bool horizontal, int section, int count) 
+{
+    auto &hiddenProp = horizontal?hiddenColumns:hiddenRows;
+    const auto &hidden = hiddenProp.getValues();
+    auto it = hidden.lower_bound(section);
+    if(it!=hidden.end()) {
+        std::set<long> newHidden(hidden.begin(),it);
+        if(count>0) {
+            for(;it!=hidden.end();++it)
+                newHidden.insert(*it + count);
+        } else {
+            it = hidden.lower_bound(section-count);
+            if(it!=hidden.end()) {
+                for(;it!=hidden.end();++it)
+                    newHidden.insert(*it+count);
+            }
+        }
+        hiddenProp.setValues(newHidden);
+    }
+
+    const auto &sizes = horizontal?columnWidths.getValues():rowHeights.getValues();
+    auto iter = sizes.lower_bound(section);
+    if(iter!=sizes.end()) {
+        std::map<int,int> newsizes(sizes.begin(),iter);
+        if(count>0) {
+            for(;iter!=sizes.end();++iter)
+                newsizes.emplace(iter->first + count, iter->second);
+        } else {
+            iter = sizes.lower_bound(section-count);
+            if(iter!=sizes.end()) {
+                for(;iter!=sizes.end();++iter)
+                    newsizes.emplace(iter->first+count, iter->second);
+            }
+        }
+        if(horizontal) {
+            columnWidths.setValues(newsizes);
+        } else {
+            rowHeights.setValues(newsizes);
+        }
+    }
+}
+
 /**
   * Insert \a count columns at before column \a col in the spreadsheet.
   *
@@ -1045,17 +1087,8 @@ std::vector<std::string> Sheet::getUsedCells() const
 
 void Sheet::insertColumns(int col, int count)
 {
-    if(count<=0)
-        return;
     cells.insertColumns(col, count);
-    const auto &hidden = hiddenColumns.getValues();
-    auto it = hidden.lower_bound(col);
-    if(it != hidden.end()) {
-        std::set<long> newHidden(hidden.begin(),it);
-        for(;it!=hidden.end();++it)
-            newHidden.insert(*it + count);
-        hiddenColumns.setValues(newHidden);
-    }
+    updateColumnsOrRows(true,col,count);
 }
 
 /**
@@ -1069,6 +1102,7 @@ void Sheet::insertColumns(int col, int count)
 void Sheet::removeColumns(int col, int count)
 {
     cells.removeColumns(col, count);
+    updateColumnsOrRows(true,col,-count);
 }
 
 /**
@@ -1081,17 +1115,8 @@ void Sheet::removeColumns(int col, int count)
 
 void Sheet::insertRows(int row, int count)
 {
-    if(count<=0)
-        return;
     cells.insertRows(row, count);
-    const auto &hidden = hiddenRows.getValues();
-    auto it = hidden.lower_bound(row);
-    if(it != hidden.end()) {
-        std::set<long> newHidden(hidden.begin(),it);
-        for(;it!=hidden.end();++it)
-            newHidden.insert(*it + count);
-        hiddenRows.setValues(newHidden);
-    }
+    updateColumnsOrRows(false,row,count);
 }
 
 /**
@@ -1105,6 +1130,7 @@ void Sheet::insertRows(int row, int count)
 void Sheet::removeRows(int row, int count)
 {
     cells.removeRows(row, count);
+    updateColumnsOrRows(false,row,-count);
 }
 
 /**
