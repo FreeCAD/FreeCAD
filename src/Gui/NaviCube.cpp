@@ -1315,8 +1315,16 @@ void ViewIsometricCmd::activated(int iMsg)
     //p2=App.Rotation(App.Vector(0,0,1),135)
     //p3=App.Rotation(App.Vector(-1,1,0),degrees(asin(-sqrt(1.0/3.0))))
     //p4=p3.multiply(p2).multiply(p1)
+    //
+    //Command::doCommand(Command::Gui,"Gui.activeDocument().activeView()."
+    //         "setCameraOrientation((0.17592, 0.424708, 0.820473, 0.339851))");
+    //from math import sqrt, degrees, asin
+    //p1=App.Rotation(App.Vector(1,0,0),90)
+    //p2=App.Rotation(App.Vector(0,0,1),45)
+    //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
+    //p4=p3.multiply(p2).multiply(p1)
     Command::doCommand(Command::Gui,"Gui.activeDocument().activeView()."
-             "setCameraOrientation((0.17592, 0.424708, 0.820473, 0.339851))");
+             "setCameraOrientation((0.424708, 0.17592, 0.339851, 0.820473))");
 }
 
 DEF_3DV_CMD(ViewOrthographicCmd)
