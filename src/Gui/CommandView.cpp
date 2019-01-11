@@ -1284,28 +1284,138 @@ void StdCmdViewTop::activated(int iMsg)
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewTop()");
 }
 
-//===========================================================================
-// Std_ViewAxo
-//===========================================================================
-DEF_3DV_CMD(StdCmdViewAxo)
+/**
+ Formulas to get quaternion for axonometric views:
 
-StdCmdViewAxo::StdCmdViewAxo()
-  : Command("Std_ViewAxo")
+ \code
+from math import sqrt, degrees, asin, atan
+p1=App.Rotation(App.Vector(1,0,0),90)
+p2=App.Rotation(App.Vector(0,0,1),alpha)
+p3=App.Rotation(p2.multVec(App.Vector(1,0,0)),beta)
+p4=p3.multiply(p2).multiply(p1)
+
+from pivy import coin
+c=Gui.ActiveDocument.ActiveView.getCameraNode()
+c.orientation.setValue(*p4.Q)
+ \endcode
+
+ The angles alpha and beta depend on the type of axonometry
+ Isometric:
+ \code
+alpha=45
+beta=degrees(asin(-sqrt(1.0/3.0)))
+ \endcode
+
+ Dimetric:
+ \code
+alpha=degrees(asin(sqrt(1.0/8.0)))
+beta=degrees(-asin(1.0/3.0))
+ \endcode
+
+ Trimetric:
+ \code
+alpha=30.0
+beta=-35.0
+ \endcode
+
+ Verification code that the axonomtries are correct:
+
+ \code
+from pivy import coin
+c=Gui.ActiveDocument.ActiveView.getCameraNode()
+vo=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,0)).getValue())
+vx=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(10,0,0)).getValue())
+vy=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,10,0)).getValue())
+vz=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,10)).getValue())
+(vx-vo).Length
+(vy-vo).Length
+(vz-vo).Length
+
+# Projection
+vo.z=0
+vx.z=0
+vy.z=0
+vz.z=0
+
+(vx-vo).Length
+(vy-vo).Length
+(vz-vo).Length
+ \endcode
+
+ See also:
+ http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_6_2_ger_web.html#1
+ http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/code_v2/Axonometric/qt/Axonometric.cpp
+ https://de.wikipedia.org/wiki/Arkussinus_und_Arkuskosinus
+*/
+
+//===========================================================================
+// Std_ViewIsometric
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewIsometric)
+
+StdCmdViewIsometric::StdCmdViewIsometric()
+  : Command("Std_ViewIsometric")
 {
     sGroup      = QT_TR_NOOP("Standard-View");
-    sMenuText   = QT_TR_NOOP("Axonometric");
-    sToolTipText= QT_TR_NOOP("Set to axonometric view");
-    sWhatsThis  = "Std_ViewAxo";
-    sStatusTip  = QT_TR_NOOP("Set to axonometric view");
+    sMenuText   = QT_TR_NOOP("Isometric");
+    sToolTipText= QT_TR_NOOP("Set to isometric view");
+    sWhatsThis  = "Std_ViewIsometric";
+    sStatusTip  = QT_TR_NOOP("Set to isometric view");
     sPixmap     = "view-axonometric";
     sAccel      = "0";
     eType         = Alter3DView;
 }
 
-void StdCmdViewAxo::activated(int iMsg)
+void StdCmdViewIsometric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewAxonometric()");
+}
+
+//===========================================================================
+// Std_ViewDimetric
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewDimetric)
+
+StdCmdViewDimetric::StdCmdViewDimetric()
+  : Command("Std_ViewDimetric")
+{
+    sGroup      = QT_TR_NOOP("Standard-View");
+    sMenuText   = QT_TR_NOOP("Dimetric");
+    sToolTipText= QT_TR_NOOP("Set to dimetric view");
+    sWhatsThis  = "Std_ViewDimetric";
+    sStatusTip  = QT_TR_NOOP("Set to dimetric view");
+    eType         = Alter3DView;
+}
+
+void StdCmdViewDimetric::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.activeDocument().activeView()."
+             "setCameraOrientation((0.567952, 0.103751, 0.146726, 0.803205))");
+}
+
+//===========================================================================
+// Std_ViewTrimetric
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewTrimetric)
+
+StdCmdViewTrimetric::StdCmdViewTrimetric()
+  : Command("Std_ViewTrimetric")
+{
+    sGroup      = QT_TR_NOOP("Standard-View");
+    sMenuText   = QT_TR_NOOP("Trimetric");
+    sToolTipText= QT_TR_NOOP("Set to trimetric view");
+    sWhatsThis  = "Std_ViewTrimetric";
+    sStatusTip  = QT_TR_NOOP("Set to trimetric view");
+    eType         = Alter3DView;
+}
+
+void StdCmdViewTrimetric::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.activeDocument().activeView()."
+             "setCameraOrientation((0.446015, 0.119509, 0.229575, 0.856787))");
 }
 
 //===========================================================================
@@ -2970,7 +3080,9 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdViewRear());
     rcCmdMgr.addCommand(new StdCmdViewRight());
     rcCmdMgr.addCommand(new StdCmdViewTop());
-    rcCmdMgr.addCommand(new StdCmdViewAxo());
+    rcCmdMgr.addCommand(new StdCmdViewIsometric());
+    rcCmdMgr.addCommand(new StdCmdViewDimetric());
+    rcCmdMgr.addCommand(new StdCmdViewTrimetric());
     rcCmdMgr.addCommand(new StdCmdViewFitAll());
     rcCmdMgr.addCommand(new StdCmdViewVR());
     rcCmdMgr.addCommand(new StdCmdViewFitSelection());
