@@ -202,6 +202,8 @@ Geometry::Geometry()
 
 Geometry::~Geometry()
 {
+    for(std::map<Base::Type, GeometryExtension *>::iterator it = extensions.begin(); it != extensions.end(); it++)
+        delete it->second;
 }
 
 // Persistence implementer
