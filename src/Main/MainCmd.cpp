@@ -53,6 +53,7 @@
 using Base::Console;
 using App::Application;
 
+/*
 const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2019\n"\
                        "  #####                 ####  ###   ####  \n" \
                        "  #                    #      # #   #   # \n" \
@@ -61,6 +62,26 @@ const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2
                        "  #     #   #### ####  #    #     # #   # \n" \
                        "  #     #   #    #     #    #     # #   #  ##  ##  ##\n" \
                        "  #     #   #### ####   ### #     # ####   ##  ##  ##\n\n" ;
+*/
+
+const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2018\n"\
+                       "   _____               ____    _    ____   \n" \
+                       "  |  ___| __ ___  ___ / ___|  / \\  |  _ \\   \n" \
+                       "  | |_ | '__/ _ \\/ _ \\ |     / _ \\ | | | | \n" \
+                       "  |  _|| | |  __/  __/ |___ / ___ \\| |_| |  _   _   _  \n" \
+                       "  |_|  |_|  \\___|\\___|\\____/_/   \\_\\____/  (_) (_) (_) \n\n" ;
+
+/*
+outputs:
+
+(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2018
+   _____               ____    _    ____   
+  |  ___| __ ___  ___ / ___|  / \  |  _ \   
+  | |_ | '__/ _ \/ _ \ |     / _ \ | | | | 
+  |  _|| | |  __/  __/ |___ / ___ \| |_| |  _   _   _  
+  |_|  |_|  \___|\___|\____/_/   \_\____/  (_) (_) (_)
+
+*/
 
 
 
