@@ -574,40 +574,37 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if(strcmp("ViewBottom",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0, -1, 0, 0));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Bottom));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewFront",pMsg) == 0 ) {
-        float root = (float)(sqrt(2.0)/2.0);
-        _viewer->setCameraOrientation(SbRotation(-root, 0, 0, -root));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Front));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewLeft",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(-0.5, 0.5, 0.5, -0.5));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Left));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewRear",pMsg) == 0 ) {
-        float root = (float)(sqrt(2.0)/2.0);
-        _viewer->setCameraOrientation(SbRotation(0, root, root, 0));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Rear));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewRight",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0.5, 0.5, 0.5, 0.5));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Right));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewTop",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation(0, 0, 0, 1));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Top));
         _viewer->viewAll();
         return true;
     }
     else if(strcmp("ViewAxo",pMsg) == 0 ) {
-        _viewer->setCameraOrientation(SbRotation
-            (-0.353553f, -0.146447f, -0.353553f, -0.853553f));
+        _viewer->setCameraOrientation(Camera::rotation(Camera::Isometric));
         _viewer->viewAll();
         return true;
     }
