@@ -88,8 +88,12 @@ void View3DInventorPy::init_type()
     add_varargs_method("viewRear",&View3DInventorPy::viewRear,"viewRear()");
     add_varargs_method("viewRight",&View3DInventorPy::viewRight,"viewRight()");
     add_varargs_method("viewTop",&View3DInventorPy::viewTop,"viewTop()");
-    add_varargs_method("viewAxometric",&View3DInventorPy::viewAxonometric,"viewAxonometric()"); // for backward compatibility
-    add_varargs_method("viewAxonometric",&View3DInventorPy::viewAxonometric,"viewAxonometric()");
+    add_varargs_method("viewAxometric",&View3DInventorPy::viewIsometric,"viewAxonometric()"); // for backward compatibility
+    add_varargs_method("viewAxonometric",&View3DInventorPy::viewIsometric,"viewAxonometric()");
+    add_varargs_method("viewIsometric",&View3DInventorPy::viewIsometric,"viewIsometric()");
+    add_varargs_method("viewDimetric",&View3DInventorPy::viewDimetric,"viewDimetric()");
+    add_varargs_method("viewTrimetric",&View3DInventorPy::viewTrimetric,"viewTrimetric()");
+    add_varargs_method("viewDefaultOrientation",&View3DInventorPy::viewDefaultOrientation,"viewDefaultOrientation()");
     add_varargs_method("viewRotateLeft",&View3DInventorPy::viewRotateLeft,"viewRotateLeft()");
     add_varargs_method("viewRotateRight",&View3DInventorPy::viewRotateRight,"viewRotateRight()");
     add_varargs_method("zoomIn",&View3DInventorPy::zoomIn,"zoomIn()");
@@ -320,13 +324,126 @@ Py::Object View3DInventorPy::boxZoom(const Py::Tuple& args, const Py::Dict& kwds
     return Py::None();
 }
 
+/**
+ Formulas to get quaternion for axonometric views:
+
+ \code
+from math import sqrt, degrees, asin, atan
+p1=App.Rotation(App.Vector(1,0,0),90)
+p2=App.Rotation(App.Vector(0,0,1),alpha)
+p3=App.Rotation(p2.multVec(App.Vector(1,0,0)),beta)
+p4=p3.multiply(p2).multiply(p1)
+
+from pivy import coin
+c=Gui.ActiveDocument.ActiveView.getCameraNode()
+c.orientation.setValue(*p4.Q)
+ \endcode
+
+ The angles alpha and beta depend on the type of axonometry
+ Isometric:
+ \code
+alpha=45
+beta=degrees(asin(-sqrt(1.0/3.0)))
+ \endcode
+
+ Dimetric:
+ \code
+alpha=degrees(asin(sqrt(1.0/8.0)))
+beta=degrees(-asin(1.0/3.0))
+ \endcode
+
+ Trimetric:
+ \code
+alpha=30.0
+beta=-35.0
+ \endcode
+
+ Verification code that the axonomtries are correct:
+
+ \code
+from pivy import coin
+c=Gui.ActiveDocument.ActiveView.getCameraNode()
+vo=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,0)).getValue())
+vx=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(10,0,0)).getValue())
+vy=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,10,0)).getValue())
+vz=App.Vector(c.getViewVolume().getMatrix().multVecMatrix(coin.SbVec3f(0,0,10)).getValue())
+(vx-vo).Length
+(vy-vo).Length
+(vz-vo).Length
+
+# Projection
+vo.z=0
+vx.z=0
+vy.z=0
+vz.z=0
+
+(vx-vo).Length
+(vy-vo).Length
+(vz-vo).Length
+ \endcode
+
+ See also:
+ http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_6_2_ger_web.html#1
+ http://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/code_v2/Axonometric/qt/Axonometric.cpp
+ https://de.wikipedia.org/wiki/Arkussinus_und_Arkuskosinus
+*/
+
+SbRotation Camera::rotation(Camera::Orientation view)
+{
+    switch (view) {
+    case Top:
+        return SbRotation(0, 0, 0, 1);
+    case Bottom:
+        return SbRotation(0, 1, 0, 0);
+    case Front: {
+        float root = (float)(sqrt(2.0)/2.0);
+        return SbRotation(root, 0, 0, root);
+    }
+    case Rear: {
+        float root = (float)(sqrt(2.0)/2.0);
+        return SbRotation(0, root, root, 0);
+    }
+    case Left:
+        return SbRotation(-0.5, 0.5, 0.5, -0.5);
+    case Right:
+        return SbRotation(0.5, 0.5, 0.5, 0.5);
+    case Isometric:
+        //from math import sqrt, degrees, asin
+        //p1=App.Rotation(App.Vector(1,0,0),45)
+        //p2=App.Rotation(App.Vector(0,0,1),-45)
+        //p3=p2.multiply(p1)
+        //return SbRotation(0.353553f, -0.146447f, -0.353553f, 0.853553f);
+
+        //from math import sqrt, degrees, asin
+        //p1=App.Rotation(App.Vector(1,0,0),90)
+        //p2=App.Rotation(App.Vector(0,0,1),135)
+        //p3=App.Rotation(App.Vector(-1,1,0),degrees(asin(-sqrt(1.0/3.0))))
+        //p4=p3.multiply(p2).multiply(p1)
+        //return SbRotation(0.17592, 0.424708, 0.820473, 0.339851);
+
+        //from math import sqrt, degrees, asin
+        //p1=App.Rotation(App.Vector(1,0,0),90)
+        //p2=App.Rotation(App.Vector(0,0,1),45)
+        //#p3=App.Rotation(App.Vector(1,1,0),45)
+        //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
+        //p4=p3.multiply(p2).multiply(p1)
+        return SbRotation(0.424708f, 0.17592f, 0.339851f, 0.820473f);
+    case Dimetric:
+        return SbRotation(0.567952f, 0.103751f, 0.146726f, 0.803205f);
+    case Trimetric:
+        return SbRotation(0.446015f, 0.119509f, 0.229575f, 0.856787f);
+    default:
+        return SbRotation(0, 0, 0, 1);
+    }
+}
+
 Py::Object View3DInventorPy::viewBottom(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(0, -1, 0, 0));
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Bottom));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -347,8 +464,7 @@ Py::Object View3DInventorPy::viewFront(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        float root = (float)(sqrt(2.0)/2.0);
-        _view->getViewer()->setCameraOrientation(SbRotation(-root, 0, 0, -root));
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Front));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -369,7 +485,7 @@ Py::Object View3DInventorPy::viewLeft(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(-0.5, 0.5, 0.5, -0.5));
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Left));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -390,8 +506,7 @@ Py::Object View3DInventorPy::viewRear(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        float root = (float)(sqrt(2.0)/2.0);
-        _view->getViewer()->setCameraOrientation(SbRotation(0, root, root, 0));
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Rear));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -412,7 +527,7 @@ Py::Object View3DInventorPy::viewRight(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(0.5, 0.5, 0.5, 0.5));
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Right));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -433,7 +548,7 @@ Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        _view->getViewer()->setCameraOrientation(SbRotation(0, 0, 0, 1));
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Top));
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -448,27 +563,115 @@ Py::Object View3DInventorPy::viewTop(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object View3DInventorPy::viewAxonometric(const Py::Tuple& args)
+Py::Object View3DInventorPy::viewIsometric(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
     try {
-        //from math import sqrt, degrees, asin
-        //p1=App.Rotation(App.Vector(1,0,0),45)
-        //p2=App.Rotation(App.Vector(0,0,1),-45)
-        //p3=p2.multiply(p1)
-        //_view->getViewer()->setCameraOrientation(SbRotation
-        //    (0.353553f, -0.146447f, -0.353553f, 0.853553f));
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Isometric));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
 
-        //from math import sqrt, degrees, asin
-        //p1=App.Rotation(App.Vector(1,0,0),90)
-        //p2=App.Rotation(App.Vector(0,0,1),45)
-        //p3=App.Rotation(App.Vector(1,1,0),45)
-        //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-        //p4=p3.multiply(p2).multiply(p1)
-        _view->getViewer()->setCameraOrientation(SbRotation
-             (0.424708f, 0.17592f, 0.339851f, 0.820473f));
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::viewDimetric(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Dimetric));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::viewTrimetric(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    try {
+        _view->getViewer()->setCameraOrientation(Camera::rotation(Camera::Trimetric));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    catch(...) {
+        throw Py::RuntimeError("Unknown C++ exception");
+    }
+
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::viewDefaultOrientation(const Py::Tuple& args)
+{
+    char* view = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "|s", &view))
+        throw Py::Exception();
+
+    try {
+        std::string newDocView;
+        SbRotation rot(0,0,0,1);
+        if (view) {
+            newDocView = view;
+        }
+        else {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+            newDocView = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
+        }
+
+        if (newDocView == "Top") {
+            rot = Camera::rotation(Camera::Top);
+        }
+        else if (newDocView == "Bottom") {
+            rot = Camera::rotation(Camera::Bottom);
+        }
+        else if (newDocView == "Front") {
+            rot = Camera::rotation(Camera::Front);
+        }
+        else if (newDocView == "Rear") {
+            rot = Camera::rotation(Camera::Rear);
+        }
+        else if (newDocView == "Left") {
+            rot = Camera::rotation(Camera::Left);
+        }
+        else if (newDocView == "Right") {
+            rot = Camera::rotation(Camera::Right);
+        }
+        else if (newDocView == "Isometric") {
+            rot = Camera::rotation(Camera::Isometric);
+        }
+        else if (newDocView == "Dimetric") {
+            rot = Camera::rotation(Camera::Dimetric);
+        }
+        else if (newDocView == "Trimetric") {
+            rot = Camera::rotation(Camera::Trimetric);
+        }
+
+        _view->getViewer()->setCameraOrientation(rot);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());

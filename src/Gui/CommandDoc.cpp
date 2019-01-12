@@ -416,6 +416,7 @@ void StdCmdNew::activated(int iMsg)
     cmd = QString::fromLatin1("App.newDocument(\"%1\")")
         .arg(qApp->translate("StdCmdNew","Unnamed"));
     runCommand(Command::Doc,cmd.toUtf8());
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
 }
 
 //===========================================================================
