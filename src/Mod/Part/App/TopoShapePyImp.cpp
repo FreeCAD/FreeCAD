@@ -74,6 +74,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
+#include <App/PropertyStandard.h>
 #include <CXX/Extensions.hxx>
 
 #include "TopoShape.h"
@@ -286,21 +287,32 @@ PyObject*  TopoShapePy::read(PyObject *args)
     Py_Return;
 }
 
-PyObject* TopoShapePy::writeInventor(PyObject * args)
+PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
 {
+    static char *kwlist[] = {"Mode", "Deviation", "Angle", "FaceColors", NULL};
+
     double dev=0.3, angle=0.4;
     int mode=2;
-    if (!PyArg_ParseTuple(args, "|idd", &mode,&dev,&angle))
+    PyObject* pylist=nullptr;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist,
+                                     &mode,&dev,&angle,&pylist))
         return NULL;
+
+    std::vector<App::Color> faceColors;
+    if (pylist) {
+        App::PropertyColorList prop;
+        prop.setPyObject(pylist);
+        faceColors = prop.getValues();
+    }
 
     std::stringstream result;
     BRepMesh_IncrementalMesh(getTopoShapePtr()->getShape(),dev);
     if (mode == 0)
-        getTopoShapePtr()->exportFaceSet(dev, angle, result);
+        getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
     else if (mode == 1)
         getTopoShapePtr()->exportLineSet(result);
     else {
-        getTopoShapePtr()->exportFaceSet(dev, angle, result);
+        getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
         getTopoShapePtr()->exportLineSet(result);
     }
     // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP

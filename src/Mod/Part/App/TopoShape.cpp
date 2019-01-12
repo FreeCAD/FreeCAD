@@ -184,7 +184,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
-
+#include <App/Material.h>
 
 #include "TopoShape.h"
 #include "CrossSection.h"
@@ -826,13 +826,22 @@ void TopoShape::exportStl(const char *filename, double deflection) const
     writer.Write(this->_Shape,encodeFilename(filename).c_str());
 }
 
-void TopoShape::exportFaceSet(double dev, double ca, std::ostream& str) const
+void TopoShape::exportFaceSet(double dev, double ca,
+                              const std::vector<App::Color>& colors,
+                              std::ostream& str) const
 {
     Base::InventorBuilder builder(str);
     TopExp_Explorer ex;
-
-    BRepMesh_IncrementalMesh MESH(this->_Shape,dev);
+    std::size_t numFaces = 0;
     for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next()) {
+        numFaces++;
+    }
+
+    bool supportFaceColors = (numFaces == colors.size());
+
+    std::size_t index=0;
+    BRepMesh_IncrementalMesh MESH(this->_Shape,dev);
+    for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next(), index++) {
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
         Standard_Integer nbNodesInFace,nbTriInFace;
@@ -898,6 +907,11 @@ void TopoShape::exportFaceSet(double dev, double ca, std::ostream& str) const
 
         builder.beginSeparator();
         builder.addShapeHints((float)ca);
+        if (supportFaceColors) {
+            App::Color c = colors[index];
+            builder.addMaterial(c.r, c.g, c.b, c.a);
+        }
+
         builder.beginPoints();
         builder.addPoints(vertices);
         builder.endPoints();
