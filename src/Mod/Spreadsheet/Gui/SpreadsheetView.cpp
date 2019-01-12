@@ -246,16 +246,8 @@ void SheetView::columnResizeFinished()
         return;
 
     blockSignals(true);
-    // Gui::Command::openCommand("Resize column");
-
-    QMap<int, int>::const_iterator i = newColumnSizes.begin();
-    while (i != newColumnSizes.end()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setColumnWidth('%s', %d)", sheet->getNameInDocument(),
-                                columnName(i.key()).c_str(), i.value());
-        ++i;
-    }
-    // Gui::Command::commitCommand();
-    // Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    for(auto &v : newColumnSizes)
+        sheet->setColumnWidth(v.first,v.second);
     blockSignals(false);
     newColumnSizes.clear();
 }
@@ -266,16 +258,8 @@ void SheetView::rowResizeFinished()
         return;
 
     blockSignals(true);
-    // Gui::Command::openCommand("Resize row");
-
-    QMap<int, int>::const_iterator i = newRowSizes.begin();
-    while (i != newRowSizes.end()) {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setRowHeight('%s', %d)", sheet->getNameInDocument(),
-                                rowName(i.key()).c_str(), i.value());
-        ++i;
-    }
-    // Gui::Command::commitCommand();
-    // Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    for(auto &v : newRowSizes)
+        sheet->setRowHeight(v.first,v.second);
     blockSignals(false);
     newRowSizes.clear();
 }

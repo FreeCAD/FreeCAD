@@ -107,8 +107,8 @@ protected:
     boost::signals2::scoped_connection rowHeightChangedConnection;
     boost::signals2::scoped_connection positionChangedConnection;
 
-    QMap<int, int> newColumnSizes;
-    QMap<int, int> newRowSizes;
+    std::map<int, int> newColumnSizes;
+    std::map<int, int> newRowSizes;
 };
 
 } // namespace SpreadsheetModGui

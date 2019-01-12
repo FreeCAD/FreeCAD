@@ -34,7 +34,7 @@
 
 using namespace Spreadsheet;
 
-const int PropertyRowHeights::defaultHeight = 20;
+const int PropertyRowHeights::defaultHeight = 30;
 
 TYPESYSTEM_SOURCE(Spreadsheet::PropertyRowHeights , App::Property);
 
