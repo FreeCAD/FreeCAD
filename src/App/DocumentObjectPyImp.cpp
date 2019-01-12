@@ -476,13 +476,14 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
                 return Py::new_reference_to(ret[0].pyObj);
             else if(retType==1 && pyMat==Py_None)
                 return Py::new_reference_to(ret[0].obj);
+            else if(!ret[0].sobj)
+                Py_Return;
             else if(retType==3)
                 return Py::new_reference_to(Py::Placement(Base::Placement(ret[0].mat)));
             else if(retType==4)
                 return Py::new_reference_to(Py::Matrix(ret[0].mat));
             else if(retType==5 || retType==6) {
-                if(ret[0].sobj)
-                    ret[0].sobj->getLinkedObject(true,&ret[0].mat,false);
+                ret[0].sobj->getLinkedObject(true,&ret[0].mat,false);
                 if(retType==5)
                     return Py::new_reference_to(Py::Placement(Base::Placement(ret[0].mat)));
                 else
@@ -501,13 +502,14 @@ PyObject*  DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
                 tuple.setItem(i,ret[i].pyObj);
             else if(retType==1 && pyMat==Py_None)
                 tuple.setItem(i,ret[i].obj);
+            else if(!ret[i].sobj)
+                tuple.setItem(i, Py::Object());
             else if(retType==3)
                 tuple.setItem(i,Py::Placement(Base::Placement(ret[0].mat)));
             else if(retType==4)
                 tuple.setItem(i,Py::Matrix(ret[0].mat));
             else if(retType==5 || retType==6) {
-                if(ret[i].sobj)
-                    ret[i].sobj->getLinkedObject(true,&ret[i].mat,false);
+                ret[i].sobj->getLinkedObject(true,&ret[i].mat,false);
                 if(retType==5)
                     tuple.setItem(i,Py::Placement(Base::Placement(ret[i].mat)));
                 else
