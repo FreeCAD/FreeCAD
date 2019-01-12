@@ -1156,7 +1156,15 @@ void StdCmdDelete::activated(int iMsg)
                         ViewProvider* vp = Application::Instance->getViewProvider(parent);
                         if (vp && !vp->canDelete(obj)) {
                             autoDeletion = false;
-                            affectedLabels.insert(QString::fromUtf8((parent)->Label.getValue()));
+                            QString label;
+                            if(parent->getDocument() != obj->getDocument())
+                                label = QLatin1String(parent->getFullName().c_str());
+                            else
+                                label = QLatin1String(parent->getNameInDocument());
+                            if(parent->Label.getStrValue() != parent->getNameInDocument())
+                                label += QString::fromLatin1(" (%1)").arg(
+                                        QString::fromUtf8(parent->Label.getValue()));
+                            affectedLabels.insert(label);
                         }
                     }
                 }
@@ -1202,7 +1210,7 @@ void StdCmdDelete::activated(int iMsg)
                 }
 #endif
 
-                int ret = QMessageBox::question(Gui::getMainWindow(),
+                int ret = QMessageBox::warning(Gui::getMainWindow(),
                     qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
                     QMessageBox::Yes, QMessageBox::No);
                 if (ret == QMessageBox::Yes)
