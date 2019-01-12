@@ -947,7 +947,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
       dimensionOriginPoint = extremaPoint1;
     else
     {
-      //find half way point in between extrema points for dimension origin.
+      //find halfway point in between extrema points for dimension origin.
       gp_Vec vec1(extremaPoint1.XYZ());
       gp_Vec vec2(extremaPoint2.XYZ());
       gp_Vec connection(vec2-vec1);
