@@ -327,6 +327,10 @@ void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex 
 void SheetView::updateCell(const App::Property *prop)
 {
     try {
+        if (sheet && prop == &sheet->Label) {
+            QString cap = QString::fromUtf8(sheet->Label.getValue());
+            setWindowTitle(cap);
+        }
         CellAddress address;
 
         sheet->getCellAddress(prop, address);
