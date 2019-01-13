@@ -84,7 +84,7 @@ of this B-Spline curve.</UserDocu>
 			</Documentation>
 			<Parameter Name="KnotSequence" Type="List"/>
 		</Attribute>
-		<Methode Name="isRational">
+        <Methode Name="isRational" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns true if this B-Spline curve is rational.
@@ -93,12 +93,12 @@ of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isPeriodic">
+        <Methode Name="isPeriodic" Const="true">
 			<Documentation>
 				<UserDocu>Returns true if this BSpline curve is periodic.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isClosed">
+        <Methode Name="isClosed" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns true if the distance between the start point and end point of
@@ -198,7 +198,7 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 				<UserDocu>Set a knot of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getKnot">
+        <Methode Name="getKnot" Const="true">
 			<Documentation>
 				<UserDocu>Get a knot of the B-Spline curve.</UserDocu>
 			</Documentation>
@@ -208,7 +208,7 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 				<UserDocu>Set knots of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getKnots">
+        <Methode Name="getKnots" Const="true">
 			<Documentation>
 				<UserDocu>Get all knots of the B-Spline curve.</UserDocu>
 			</Documentation>
@@ -219,12 +219,12 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 to the pole of index Index in the poles table.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPole">
+        <Methode Name="getPole" Const="true">
 			<Documentation>
 				<UserDocu>Get a pole of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPoles">
+        <Methode Name="getPoles" Const="true">
 			<Documentation>
 				<UserDocu>Get all poles of the B-Spline curve.</UserDocu>
 			</Documentation>
@@ -234,17 +234,17 @@ to the pole of index Index in the poles table.</UserDocu>
 				<UserDocu>Set a weight of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getWeight">
+        <Methode Name="getWeight" Const="true">
 			<Documentation>
 				<UserDocu>Get a weight of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getWeights">
+        <Methode Name="getWeights" Const="true">
 			<Documentation>
 				<UserDocu>Get all weights of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPolesAndWeights">
+        <Methode Name="getPolesAndWeights" Const="true">
 			<Documentation>
 				<UserDocu>Returns the table of poles and weights in homogenous ccordinates.</UserDocu>
 			</Documentation>
@@ -288,13 +288,13 @@ as the origin of this periodic B-Spline curve. As a consequence,
 the knots and poles tables are modified.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getMultiplicity">
+        <Methode Name="getMultiplicity" Const="true">
 			<Documentation>
 				<UserDocu>Returns the multiplicity of the knot of index 
 from the knots table of this B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getMultiplicities">
+        <Methode Name="getMultiplicities" Const="true">
 			<Documentation>
 				<UserDocu>
 					Returns the multiplicities table M of the knots of this B-Spline curve.
@@ -335,7 +335,7 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="getCardinalSplineTangents" Keyword="true">
+        <Methode Name="getCardinalSplineTangents" Keyword="true" Const="true">
             <Documentation>
                 <UserDocu>Compute the tangents for a Cardinal spline</UserDocu>
             </Documentation>
@@ -412,14 +412,14 @@ from the knots table of this B-Spline curve.</UserDocu>
 			</UserDocu>
 		</Documentation>
 	</Methode>
-		<Methode Name="toBezier">
+        <Methode Name="toBezier" Const="true">
 			<Documentation>
 				<UserDocu>
 					Build a list of Bezier splines.
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="toBiArcs">
+        <Methode Name="toBiArcs" Const="true">
 			<Documentation>
 				<UserDocu>
 					Build a list of arcs and lines to approximate the b-spline.
