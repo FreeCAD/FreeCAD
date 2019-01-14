@@ -52,6 +52,8 @@ public:
     virtual void Save(Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
 
+    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const;
+
     virtual PyObject *getPyObject(void);
 
 public:
