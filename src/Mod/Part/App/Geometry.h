@@ -63,6 +63,15 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
+namespace std {
+template<typename T, typename... Args>
+std::unique_ptr<T> make_unique(Args&&... args)
+{
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+}
+
+
 namespace Part {
 
 class PartExport GeometryExtension: public Base::Persistence
@@ -76,7 +85,11 @@ public:
     virtual void Save(Base::Writer &/*writer*/) const = 0;
     virtual void Restore(Base::XMLReader &/*reader*/) = 0;
 
+    virtual std::unique_ptr<GeometryExtension> copy(void) const = 0;
+
     virtual PyObject *getPyObject(void) = 0;
+protected:
+    GeometryExtension();
 };
 
 class PartExport Geometry: public Base::Persistence
@@ -109,12 +122,11 @@ public:
     /// returns the tag of the geometry object
     boost::uuids::uuid getTag() const;
 
-    std::map<Base::Type, GeometryExtension *> &getExtensions();
-    void setExtensions(std::map<Base::Type, GeometryExtension *> exts);
+    const std::vector<std::weak_ptr<GeometryExtension>> getExtensions() const;
 
     bool hasExtension(Base::Type type) const;
-    GeometryExtension * getExtension(Base::Type type);
-    void setExtension(GeometryExtension *geo);
+    const std::weak_ptr<GeometryExtension> getExtension(Base::Type type) const;
+    void setExtension(std::unique_ptr<GeometryExtension> geo);
 
 protected:
     /// create a new tag for the geometry object
@@ -127,7 +139,7 @@ protected:
 
 protected:
     boost::uuids::uuid tag;
-    std::map<Base::Type, GeometryExtension *> extensions;
+    std::vector<std::shared_ptr<GeometryExtension>> extensions;
 
 private:
     Geometry(const Geometry&);
