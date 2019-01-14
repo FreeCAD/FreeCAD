@@ -777,6 +777,16 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
     const Fem::FemResultObject* res = static_cast<const Fem::FemResultObject*>(result);
     const vtkIdType nPoints = grid->GetNumberOfPoints();
 
+    //we need the coresponding mesh to get the correct id for the result data (when the freecad mesh has gaps in the points
+    //vtk has more, as it does not support it. Than the mapping must be correct)
+    App::DocumentObject* meshObj = res->Mesh.getValue();
+    if (!meshObj || !meshObj->isDerivedFrom(FemMeshObject::getClassTypeId())) {
+        Base::Console().Error("Result object does not correctly link to mesh");
+        return;
+    }
+    SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(static_cast<FemMeshObject*>(meshObj)->FemMesh.getValue().getSMesh());
+    SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
+    
     // vectors
     for (std::vector<std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it ) {
         const int dim=3;  //Fixme, detect dim
@@ -786,19 +796,28 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
         else
             Base::Console().Error("    PropertyVectorList not found: %s\n", it->c_str());
         if (field && field->getSize() > 0) {
-            if (nPoints != field->getSize())
-                Base::Console().Error("Size of PropertyVectorList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
+            //if (nPoints != field->getSize())
+            //    Base::Console().Error("Size of PropertyVectorList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
             const std::vector<Base::Vector3d>& vel = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
             data->SetNumberOfComponents(dim);
-            data->SetNumberOfTuples(vel.size());
+            data->SetNumberOfTuples(nPoints);
             data->SetName(it->c_str());
 
-            vtkIdType i=0;
+            //we need to set values for the unused points. 
+            //TODO: ensure that the result bar does not include the used 0 if it is not part of the result (e.g. does the result bar show 0 as smallest value?)
+            if (nPoints != field->getSize()) {
+                double tuple[] = {0,0,0};
+                for (vtkIdType i=0; i<nPoints; ++i) {
+                    data->SetTuple(i, tuple);
+                }
+            }
+             
+            SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
             for (std::vector<Base::Vector3d>::const_iterator jt=vel.begin(); jt!=vel.end(); ++jt) {
+                const SMDS_MeshNode* node = aNodeIter->next();
                 double tuple[] = {jt->x, jt->y, jt->z};
-                data->SetTuple(i, tuple);
-                ++i;
+                data->SetTuple(node->GetID()-1, tuple);
             }
             grid->GetPointData()->AddArray(data);
             Base::Console().Message("    A PropertyVectorList was exported: %s\n", it->c_str());
@@ -815,15 +834,26 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
         else
             Base::Console().Error("PropertyFloatList %s not found \n", it->c_str());
         if (field && field->getSize() > 0) {
-            if (nPoints != field->getSize())
-                Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
+            //if (nPoints != field->getSize())
+            //    Base::Console().Error("Size of PropertyFloatList = %d, not equal to vtk mesh node count %d \n", field->getSize(), nPoints);
             const std::vector<double>& vec = field->getValues();
             vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
-            data->SetNumberOfValues(vec.size());
+            data->SetNumberOfValues(nPoints);
             data->SetName(it->c_str());
+            
+            //we need to set values for the unused points. 
+            //TODO: ensure that the result bar does not include the used 0 if it is not part of the result (e.g. does the result bar show 0 as smallest value?)
+            if (nPoints != field->getSize()) {
+                for (vtkIdType i=0; i<nPoints; ++i) {
+                    data->SetValue(i, 0);
+                }
+             }
 
-            for (size_t i=0; i<vec.size(); ++i)
-                data->SetValue(i, vec[i]);
+            SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
+            for (size_t i=0; i<vec.size(); ++i) {
+                const SMDS_MeshNode* node = aNodeIter->next();
+                data->SetValue(node->GetID()-1, vec[i]);
+            }
 
             grid->GetPointData()->AddArray(data);
             Base::Console().Message("    A PropertyFloatList was exported: %s\n", it->c_str(), it->c_str());
