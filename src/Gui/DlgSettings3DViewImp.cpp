@@ -383,10 +383,11 @@ void CameraDialog::on_currentView_clicked()
     View3DInventor* mdi = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (mdi) {
         SbRotation rot = mdi->getViewer()->getCameraOrientation();
-        sb0->setValue(rot[0]);
-        sb1->setValue(rot[1]);
-        sb2->setValue(rot[2]);
-        sb3->setValue(rot[3]);
+        const float* q = rot.getValue();
+        sb0->setValue(q[0]);
+        sb1->setValue(q[1]);
+        sb2->setValue(q[2]);
+        sb3->setValue(q[3]);
     }
 }
 
