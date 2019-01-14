@@ -169,6 +169,11 @@ GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
     zoomer->set_modifiers(Qt::NoModifier);
     view->show();
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+    bool on = hGrp->GetBool("InvertZoom", true);
+    zoomer->set_zoom_inverted(on);
+
     // Set central widget to view
     setCentralWidget(view);
 

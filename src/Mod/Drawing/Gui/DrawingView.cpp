@@ -260,7 +260,7 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/View");
-    bool on = hGrp->GetBool("InvertZoom", false);
+    bool on = hGrp->GetBool("InvertZoom", true);
     m_view->setZoomInverted(on);
 }
 
