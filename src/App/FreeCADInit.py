@@ -357,7 +357,7 @@ class FCADLogger(object):
             disabled.
         '''
         if self._isEnabledFor(0):
-            frame = kargs.get('frame',0)+1
+            frame = kargs.pop('frame',0)+1
             self._log(0,msg,frame,args,kargs)
 
     def warn(self,msg,*args,**kargs):
@@ -373,7 +373,7 @@ class FCADLogger(object):
             disabled.
         '''
         if self._isEnabledFor(1):
-            frame = kargs.get('frame',0)+1
+            frame = kargs.pop('frame',0)+1
             self._log(1,msg,frame,args,kargs)
 
     def msg(self,msg,*args,**kargs):
@@ -389,7 +389,7 @@ class FCADLogger(object):
             disabled.
         '''
         if self._isEnabledFor(2):
-            frame = kargs.get('frame',0)+1
+            frame = kargs.pop('frame',0)+1
             self._log(2,msg,frame,args,kargs)
 
     info = msg
@@ -407,7 +407,7 @@ class FCADLogger(object):
             disabled.
         '''
         if self._isEnabledFor(3):
-            frame = kargs.get('frame',0)+1
+            frame = kargs.pop('frame',0)+1
             self._log(3,msg,frame,args,kargs)
 
     debug = log
@@ -425,7 +425,7 @@ class FCADLogger(object):
             disabled.
         '''
         if self._isEnabledFor(4):
-            frame = kargs.get('frame',0)+1
+            frame = kargs.pop('frame',0)+1
             self._log(4,msg,frame,args,kargs)
 
     def _log(self,level,msg,frame=0,args=(),kargs=None):
@@ -448,7 +448,7 @@ class FCADLogger(object):
         '''
 
         if (args or kargs) and isinstance(msg,self.__class__._string_type):
-            if kargs is None:
+            if not kargs:
                 msg = msg.format(*args)
             else:
                 msg = msg.format(*args,**kargs)
