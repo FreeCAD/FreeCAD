@@ -2960,7 +2960,7 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         }
         writer.Stream() << "\"/>" << std::endl;
     }else {
-        writer.Stream() <<"\" count=\"" << _SubList.size() << "\"/>" << std::endl;
+        writer.Stream() <<"\" count=\"" << _SubList.size() << "\">" << std::endl;
         writer.incInd();
         for(unsigned int i = 0;i<_SubList.size(); i++) {
             const auto &shadow = _ShadowSubList[i];
@@ -3058,7 +3058,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
             if(reader.hasAttribute(ATTR_MAPPED))
                 mapped.push_back(i);
         }
-        reader.readEndElement("LinkSub");
+        reader.readEndElement("XLink");
     }
     setFlag(LinkRestoreLabel,restoreLabel);
 
