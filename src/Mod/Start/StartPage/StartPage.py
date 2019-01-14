@@ -215,7 +215,7 @@ def buildCard(filename,method,arg=None):
             if size:
                 result += '<a href="'+method+arg+'" title="'+infostring+'">'
                 result += '<li class="icon">'
-                result += '<img src="'+image+'">'
+                result += '<img src="file:///'+image+'">'
                 result += '<div class="caption">'
                 result += '<h4>'+basename+'</h4>'
                 result += '<p>'+size+'</p>'
@@ -312,9 +312,9 @@ def handle():
     SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
     SECTION_RECENTFILES += '<li class="icon">'
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
-        SECTION_RECENTFILES += '<img src="'+encode(iconbank["createimg"])+'">'
+        SECTION_RECENTFILES += '<img src="file:///'+encode(iconbank["createimg"])+'">'
     else:
-        SECTION_RECENTFILES += '<img src="images/new_file_thumbnail.svg">'
+        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg")+'">'
     SECTION_RECENTFILES += '<div class="caption">'
     SECTION_RECENTFILES += '<h4>'+encode(TranslationTexts.T_CREATENEW)+'</h4>'
     SECTION_RECENTFILES += '</div>'
@@ -352,6 +352,12 @@ def handle():
             SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="))
         SECTION_CUSTOM += "</ul>"
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
+
+	# build IMAGE_SRC paths
+    HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png'))
+    HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
+    HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))
+    HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png'))
 
     # build UL_WORKBENCHES
 
@@ -391,7 +397,7 @@ def handle():
                     img="images/freecad.png"
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
-        UL_WORKBENCHES += '<img src="'+iconbank[wb]+'">&nbsp;'
+        UL_WORKBENCHES += '<img src="file:///'+iconbank[wb]+'">&nbsp;'
         UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
