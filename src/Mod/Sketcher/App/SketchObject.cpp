@@ -114,6 +114,15 @@ void SketchGeometryExtension::Restore(Base::XMLReader &reader)
     id = reader.getAttributeAsInteger("id");
 }
 
+std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
+{
+    std::unique_ptr<SketchGeometryExtension> cpy = std::make_unique<SketchGeometryExtension>();
+
+    cpy->id = this->id;
+
+    return std::move(cpy);
+}
+
 PyObject * SketchGeometryExtension::getPyObject(void)
 {
     return 0;
