@@ -185,11 +185,13 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
 // ---------------------------------------------------------------
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::Persistence)
 
+GeometryExtension::GeometryExtension()
+{
+}
 
 GeometryExtension::~GeometryExtension()
 {
 }
-
 // ---------------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
@@ -202,8 +204,8 @@ Geometry::Geometry()
 
 Geometry::~Geometry()
 {
-    for(std::map<Base::Type, GeometryExtension *>::iterator it = extensions.begin(); it != extensions.end(); it++)
-        delete it->second;
+    for(std::vector<std::shared_ptr<GeometryExtension>>::iterator it = extensions.begin(); it != extensions.end(); it++)
+        (*it).reset();
 }
 
 // Persistence implementer
@@ -221,7 +223,7 @@ void Geometry::Save(Base::Writer &writer) const
         writer.Stream() << writer.ind() << "<GeoExtensions count=\"" << extensions.size() << "\">" << endl;
 
         for(auto att:extensions) {
-            att.second->Save(writer);
+            att->Save(writer);
         }
 
         writer.decInd();
@@ -247,7 +249,7 @@ void Geometry::Restore(Base::XMLReader &reader)
             GeometryExtension *newE = (GeometryExtension *)type.createInstance();
             newE->Restore(reader);
 
-            extensions[type] = newE;
+            extensions.push_back(std::shared_ptr<GeometryExtension>(newE));
         }
 
         reader.readEndElement("GeoExtensions");
@@ -267,30 +269,53 @@ boost::uuids::uuid Geometry::getTag() const
     return tag;
 }
 
-std::map<Base::Type, GeometryExtension *> & Geometry::getExtensions()
+const std::vector<std::weak_ptr<GeometryExtension>> Geometry::getExtensions() const
 {
-    return this->extensions;
-}
+    std::vector<std::weak_ptr<GeometryExtension>> wp;
 
-void Geometry::setExtensions(std::map<Base::Type, GeometryExtension *> exts)
-{
-    this->extensions=exts;
+    wp.reserve(extensions.size());
+
+    for(size_t i=0; i<extensions.size(); i++)
+        wp[i]=extensions[i];
+
+    return wp;
 }
 
 bool Geometry::hasExtension(Base::Type type) const
 {
-    return this->extensions.find(type) != extensions.end();
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == type)
+            return true;
+    }
+
+    return false;
 }
 
-GeometryExtension * Geometry::getExtension(Base::Type type)
+const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) const
 {
-    return this->extensions[type];
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == type)
+            return ext;
+    }
+
+    throw Base::ValueError("No geometry extension of the requested type.");
 }
 
-void Geometry::setExtension(GeometryExtension *geo)
+void Geometry::setExtension(std::unique_ptr<GeometryExtension> geo)
 {
-    this->extensions[geo->getTypeId()]=geo;
+    bool hasext=false;
+
+    for( auto ext : extensions) {
+        if(ext->getTypeId() == geo->getTypeId()){
+            ext = std::move(geo);
+            hasext = true;
+        }
+    }
+
+    if(!hasext)
+        extensions.push_back(std::move(geo));
 }
+
 
 void Geometry::createNewTag()
 {
@@ -319,7 +344,10 @@ Geometry *Geometry::clone(void) const
 {
     Geometry* cpy = this->copy();
     cpy->tag = this->tag;
-    cpy->extensions = this->extensions;
+
+    for(auto & ext: extensions)
+        cpy->extensions.push_back(std::move(ext->copy()));
+
     return cpy;
 }
 
