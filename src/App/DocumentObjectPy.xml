@@ -285,5 +285,11 @@ or None if the GUI is not up</UserDocu>
             </Documentation>
 			<Parameter Name="Parents" Type="List"/>
         </Attribute>
+        <Attribute Name="OldLabel" ReadOnly="true">
+            <Documentation>
+                <UserDocu>Contains the old label before change</UserDocu>
+            </Documentation>
+			<Parameter Name="OldLabel" Type="String"/>
+        </Attribute>
 	</PythonExport>
 </GenerateModel>

@@ -835,3 +835,7 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
                         PyObject_IsTrue(recursive)?&visited:nullptr)));
     }PY_CATCH
 }
+
+Py::String DocumentObjectPy::getOldLabel() const {
+    return Py::String(getDocumentObjectPtr()->getOldLabel());
+}
