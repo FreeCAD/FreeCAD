@@ -120,7 +120,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
     isSelectionBlocked = false;
 
-    setWindowTitle(tr("dummy[*]"));      //Yuck. prevents "QWidget::setWindowModified: The window title does not contain a '[*]' placeholder"
+    QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
+    tabText += QString::fromUtf8("[*]");
+    setWindowTitle(tabText);
     setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
 
     // Connect Signals and Slots
