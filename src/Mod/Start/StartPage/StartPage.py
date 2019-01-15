@@ -369,11 +369,30 @@ def handle():
             wn = wb[:-9]
         else:
             wn = wb
+        # fixes for non-standard names
         if wn == "flamingoTools":
             wn = "flamingo"
-        if wn == "Geodat":
+        elif wn == "Geodat":
             wn = "geodata"
-        if wn == "None":
+        elif wn == "a2p":
+            wn = "A2plus"
+        elif wn == "ArchTexture":
+            wn = "ArchTextures"
+        elif wn == "CadQuery":
+            wn = "cadquery_module"
+        elif wn == "DefeaturingWB":
+            wn = "Defeaturing"
+        elif wn == "ManipulatorWB":
+            wn = "Manipulator"
+        elif wn == "PartOMagic":
+            wn = "Part-o-magic"
+        elif wn == "SM":
+            wn = "sheetmetal"
+        elif wn == "gear":
+            wn = "FCGear"
+        elif wn == "frame_":
+            wn = "frame"
+        elif wn == "None":
             continue
         wblist.append(wn.lower())
         if wb in iconbank:
