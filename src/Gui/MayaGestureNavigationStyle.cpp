@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Victor Titov (DeepSOIC)                                 *
- *                                           (vv.titov@gmail.com) 2015     *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -107,13 +106,13 @@ const char* MayaGestureNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
-        return QT_TR_NOOP("Tap. Or click left mouse button.");
+        return QT_TR_NOOP("Tap OR click left mouse button.");
     case NavigationStyle::PANNING:
-        return QT_TR_NOOP("Drag screen with two fingers. Or press ALT + middle mouse button.");
+        return QT_TR_NOOP("Drag screen with two fingers OR press ALT + middle mouse button.");
     case NavigationStyle::DRAGGING:
-        return QT_TR_NOOP("Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
+        return QT_TR_NOOP("Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.");
     case NavigationStyle::ZOOMING:
-        return QT_TR_NOOP("Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.");
+        return QT_TR_NOOP("Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.");
     default:
         return "No description";
     }
@@ -413,7 +412,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 // starts PANNING mode
                 if(press & this->altdown){
                     setViewingMode(NavigationStyle::PANNING);
-                } else if(press){ 
+                } else if(press){
                     // if not PANNING then look at point
                     SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                     if(!ret){
@@ -612,4 +611,3 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 finalize:
     return processed;
 }
-

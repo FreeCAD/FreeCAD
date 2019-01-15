@@ -162,4 +162,3 @@ class CommandPathSanity:
 if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand('Path_Sanity',CommandPathSanity())
-
