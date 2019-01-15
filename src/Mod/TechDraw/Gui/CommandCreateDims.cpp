@@ -200,7 +200,7 @@ void CmdTechDrawNewDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr("Can't make a Dimension from this selection"));
+                                                   QObject::tr("Can not make a Dimension from this selection"));
         return;
     }
 
@@ -1079,7 +1079,7 @@ bool _checkDrawViewPart(Gui::Command* cmd) {
     if( !objFeat ) {
         QMessageBox::warning( Gui::getMainWindow(),
                               QObject::tr("Incorrect selection"),
-                              QObject::tr("No DrawViewPart in selection.") );
+                              QObject::tr("No View of a Part in selection.") );
         return false;
     }
     return true;
@@ -1096,7 +1096,7 @@ bool _checkPartFeature(Gui::Command* cmd) {
     }
     if(!result) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("No DrawViewPart in selection."));
+                             QObject::tr("No Feature with Shape in selection."));
     }
     return result;
 }
