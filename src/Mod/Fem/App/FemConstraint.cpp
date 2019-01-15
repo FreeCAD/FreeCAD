@@ -214,7 +214,8 @@ bool Constraint::getPoints(std::vector<Base::Vector3d> &points, std::vector<Base
             steps = steps>CONSTRAINTSTEPLIMIT?CONSTRAINTSTEPLIMIT:steps; //OvG: Place upper limit on number of steps
             double step = (lp - fp) / steps;
             for (int i = 0; i < steps + 1; i++) {
-                gp_Pnt p = curve.Value(i * step);
+                // Parameter values must be in the range [fp, lp] (#0003683)
+                gp_Pnt p = curve.Value(fp + i * step);
                 points.push_back(Base::Vector3d(p.X(), p.Y(), p.Z()));
                 normals.push_back(NormalDirection.getValue());
             }
