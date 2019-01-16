@@ -94,6 +94,7 @@ public:
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
     virtual std::string getElementMapVersion(bool restored=false) const override;
+    void resetElementMapVersion() {_Ver.clear();}
 
 private:
     TopoShape _Shape;

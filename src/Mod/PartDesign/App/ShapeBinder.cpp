@@ -297,8 +297,10 @@ void SubShapeBinder::update() {
     if(errMsg.size()) 
         FC_THROWM(Base::RuntimeError, errMsg);
 
-    if(shapes.empty())
+    if(shapes.empty()) {
+        Shape.resetElementMapVersion();
         return;
+    }
 
     result = Part::TopoShape(0,getDocument()->getStringHasher()).makECompound(shapes);
 
@@ -343,6 +345,8 @@ void SubShapeBinder::update() {
 App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
     if(BindMode.getValue()==0)
         update();
+    else
+        Shape.resetElementMapVersion();
     return inherited::execute();
 }
 
@@ -375,7 +379,7 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
 
 void SubShapeBinder::checkPropertyStatus() {
     Support.setAllowPartial(PartialLoad.getValue());
-    Shape.setStatus(App::Property::Transient, !PartialLoad.getValue() && BindMode.getValue()!=2);
+    Shape.setStatus(App::Property::Transient, !PartialLoad.getValue() && BindMode.getValue()==0);
 }
 
 void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::string> >&&values, bool reset)

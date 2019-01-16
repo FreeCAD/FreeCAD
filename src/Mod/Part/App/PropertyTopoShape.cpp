@@ -203,12 +203,17 @@ App::Property *PropertyPartShape::Copy(void) const
 {
     PropertyPartShape *prop = new PropertyPartShape();
     prop->_Shape = this->_Shape.makECopy();
+    prop->_Ver = this->_Ver;
     return prop;
 }
 
 void PropertyPartShape::Paste(const App::Property &from)
 {
-    setValue(dynamic_cast<const PropertyPartShape&>(from)._Shape);
+    auto prop = Base::freecad_dynamic_cast<const PropertyPartShape>(&from);
+    if(prop) {
+        setValue(prop->_Shape);
+        _Ver = prop->_Ver;
+    }
 }
 
 unsigned int PropertyPartShape::getMemSize (void) const
