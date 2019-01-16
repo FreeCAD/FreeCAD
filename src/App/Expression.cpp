@@ -107,6 +107,8 @@ FC_LOG_LEVEL_INIT("Expression",true,true)
     throw _e;\
 }while(0)
 
+#define EXPR_PY_THROW(_expr) _EXPR_PY_THROW("Failed to evaluate",_expr)
+
 #define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
 
 #define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
@@ -1323,7 +1325,7 @@ ExpressionPtr OperatorExpression::_calc(const Expression *e1) const {
         Py::Object o1 = _pyObjectFromAny(e1->getValueAsAny(),left.get());
         PyObject *res = op==OP_POS?PyNumber_Positive(o1.ptr()):PyNumber_Negative(o1.ptr());
         if(!res)
-            PyException::ThrowException();
+            EXPR_PY_THROW(this);
         return expressionFromAny(owner,pyObjectToAny(Py::Object(res,true)));
     }
     default:
@@ -1477,7 +1479,7 @@ App::any OperatorExpression::calc(const Expression *owner, int op,
     case OP_NOT_IN: {
         int res = PySequence_Contains(o1.ptr(),o2.ptr());
         if(res<0)
-            PyException::ThrowException();
+            EXPR_PY_THROW(owner);
         if(op==OP_NOT_IN)
             res = !res;
         return App::any(!!res);
@@ -1485,7 +1487,7 @@ App::any OperatorExpression::calc(const Expression *owner, int op,
 #define RICH_COMPARE(_op) \
     case OP_##_op: {\
         int res = PyObject_RichCompareBool(o1.ptr(),o2.ptr(),Py_##_op);\
-        if(res<0) PyException::ThrowException();\
+        if(res<0) EXPR_PY_THROW(owner);\
         return App::any(!!res);\
     }
     RICH_COMPARE(LT)
@@ -1498,7 +1500,7 @@ App::any OperatorExpression::calc(const Expression *owner, int op,
     case OP_##_op: {\
         PyObject *res = inplace?PyNumber_InPlace##_pyop(o1.ptr(),o2.ptr()):\
                        PyNumber_##_pyop(o1.ptr(),o2.ptr());\
-        if(!res) PyException::ThrowException();\
+        if(!res) EXPR_PY_THROW(owner);\
         return pyObjectToAny(Py::Object(res,true));\
     }
     BINARY_OP(ADD,Add)
@@ -1513,7 +1515,7 @@ App::any OperatorExpression::calc(const Expression *owner, int op,
             res = PyNumber_InPlacePower(o1.ptr(),o2.ptr(),Py::None().ptr());
         else
             res = PyNumber_Power(o1.ptr(),o2.ptr(),Py::None().ptr());
-        if(!res) PyException::ThrowException();
+        if(!res) EXPR_PY_THROW(owner);
         return pyObjectToAny(Py::Object(res,true));
     }
     case OP_MOD: {
@@ -1531,7 +1533,7 @@ App::any OperatorExpression::calc(const Expression *owner, int op,
             res = PyNumber_InPlaceRemainder(o1.ptr(),o2.ptr());
         else
             res = PyNumber_Remainder(o1.ptr(),o2.ptr());
-        if(!res) PyException::ThrowException();
+        if(!res) EXPR_PY_THROW(owner);
         return pyObjectToAny(Py::Object(res,true));
     }
     default:
@@ -2661,7 +2663,7 @@ public:
         }else
             set(PyObject_GetIter(obj.ptr()),true);
     }
-    bool next(Py::Object &obj) {
+    bool next(Py::Object &obj,Expression *expr) {
         if(i>=0) {
             if(i>=(int)PySequence_Fast_GET_SIZE(ptr()))
                 return false;
@@ -2671,7 +2673,7 @@ public:
         PyObject *item = PyIter_Next(ptr());
         if(!item) {
             if(PyErr_Occurred())
-                PyException::ThrowException();
+                EXPR_PY_THROW(expr);
             return false;
         }
         obj = Py::Object(item,true);
@@ -4300,7 +4302,7 @@ void ComprehensionExpression::_calc(Py::Object &res, CompForList::const_iterator
 
     PyIterable seq(_pyObjectFromAny(comp.expr->getValueAsAny(),comp.expr.get()),this,false);
     Py::Object item;
-    while(seq.next(item)) {
+    while(seq.next(item,comp.expr.get())) {
         pyexpr->setPyObject(item);
         AssignmentExpression::apply(this,comp.catchAll,comp.targets,pyexpr);
         bool proceed = true;
@@ -4388,7 +4390,7 @@ App::any ListExpression::_getValueAsAny() const {
         }
         PyIterable seq(pyvalue,this,false);
         Py::Object pyitem;
-        while(seq.next(pyitem))
+        while(seq.next(pyitem,item.get()))
             list.append(pyitem);
     }
     return pyObjectToAny(list,false);
@@ -5086,7 +5088,7 @@ ExpressionPtr ForStatement::_eval() const {
     auto pyexpr = static_cast<PyObjectExpression*>(tmp.get());
     PyIterable seq(_pyObjectFromAny(value->getValueAsAny(),value.get()),this,false);
     Py::Object item;
-    while(seq.next(item)) {
+    while(seq.next(item,value.get())) {
         pyexpr->setPyObject(item);
         AssignmentExpression::apply(this,catchAll,targets,pyexpr);
         expr = statement->eval();
