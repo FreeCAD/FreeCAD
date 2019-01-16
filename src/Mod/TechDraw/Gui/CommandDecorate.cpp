@@ -262,8 +262,8 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Turn View Frames on or off");
-    sToolTipText    = QT_TR_NOOP("Turn View Frames on or off");
+    sMenuText       = QT_TR_NOOP("Turn View Frames On/Off");
+    sToolTipText    = QT_TR_NOOP("Turn View Frames On/Off");
     sWhatsThis      = "TechDraw_Toggle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-toggleframe";
