@@ -296,6 +296,8 @@ class AddonsInstaller(QtGui.QDialog):
                     if not thread.isFinished():
                         oktoclose = False
         if oktoclose:
+            if hasattr(self,"install_worker"):
+                QtGui.QMessageBox.information(self, translate("AddonsInstaller","Addon manager"), translate("AddonsInstaller","Please restart FreeCAD for changes to take effect."))
             shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
             QtGui.QDialog.reject(self)
 
