@@ -975,6 +975,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
         for(auto &props : dep.second) {
             std::string propName = docObjName + "." + props.first;
+            FC_LOG("dep " << key.toString() << " -> " << propName);
 
             // Insert into maps
             propertyNameToCellMap[propName].insert(key);
@@ -986,6 +987,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
                 if (j != revAliasProp.end()) {
                     propName = docObjName + "." + j->second.toString();
+                    FC_LOG("dep " << key.toString() << " -> " << propName);
 
                     // Insert into maps
                     propertyNameToCellMap[propName].insert(key);

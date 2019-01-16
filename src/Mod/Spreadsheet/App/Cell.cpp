@@ -165,6 +165,7 @@ void Cell::setExpression(App::ExpressionPtr &&expr)
 
     /* Update dependencies */
     owner->addDependencies(address);
+    owner->setDirty(address);
 
     auto func = SimpleStatement::cast<FunctionStatement>(expression.get());
     if(func)

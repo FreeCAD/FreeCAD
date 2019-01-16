@@ -805,78 +805,116 @@ DocumentObjectExecReturn *Sheet::execute(void)
          dirtyCells.insert(*i);
     }
 
-    // Push dirty cells onto queue
-    for (std::set<CellAddress>::const_iterator i = dirtyCells.begin(); i != dirtyCells.end(); ++i) {
-        // Create queue and a graph structure to compute order of evaluation
-        std::deque<CellAddress> workQueue;
-        DependencyList graph;
-        std::map<CellAddress, Vertex> VertexList;
-        std::map<Vertex, CellAddress> VertexIndexList;
+    DependencyList graph;
+    std::map<CellAddress, Vertex> VertexList;
+    std::map<Vertex, CellAddress> VertexIndexList;
+    std::deque<CellAddress> workQueue(dirtyCells.begin(),dirtyCells.end());
+    while(workQueue.size()) {
+        CellAddress currPos = workQueue.front();
+        workQueue.pop_front();
 
-        workQueue.push_back(*i);
+        // Insert into map of CellPos -> Index, if it doesn't exist already
+        auto res = VertexList.emplace(currPos,Vertex());
+        if(res.second) {
+            res.first->second = add_vertex(graph);
+            VertexIndexList[res.first->second] = currPos;
+        }
 
-        while (workQueue.size() > 0) {
-            CellAddress currPos = workQueue.front();
-            std::set<CellAddress> s;
-
-            // Get other cells that depends on the current cell (currPos)
-            providesTo(currPos, s);
-            workQueue.pop_front();
-
-            // Insert into map of CellPos -> Index, if it doesn't exist already
-            if (VertexList.find(currPos) == VertexList.end()) {
-                VertexList[currPos] = add_vertex(graph);
-                VertexIndexList[VertexList[currPos]] = currPos;
+        // Process cells that depend on the current cell
+        for(auto &dep : providesTo(currPos)) {
+            auto resDep = VertexList.emplace(dep,Vertex());
+            if(resDep.second) {
+                resDep.first->second = add_vertex(graph);
+                VertexIndexList[resDep.first->second] = dep;
+                if(dirtyCells.insert(dep).second)
+                    workQueue.push_back(dep);
             }
+            // Add edge to graph to signal dependency
+            add_edge(res.first->second, resDep.first->second, graph);
+        }
+    }
+    // Compute cells
+    std::list<Vertex> make_order;
+    // Sort graph topologically to find evaluation order
+    try {
+        boost::topological_sort(graph, std::front_inserter(make_order));
+        // Recompute cells
+        for(auto &pos : make_order) {
+            const auto &addr = VertexIndexList[pos];
+            FC_LOG("recompute " << addr.toString());
+            recomputeCell(addr);
+        }
+    } catch (std::exception&) {
+        for(auto &v : VertexList) {
+            Cell * cell = cells.getValue(v.first);
+            // Mark as erroneous
+            cellErrors.insert(v.first);
+            if (cell)
+                cell->setException("Pending computation due to cyclic dependency");
+            updateProperty(v.first);
+            updateAlias(v.first);
+        }
 
-            // Process cells that depend on the current cell
-            std::set<CellAddress>::const_iterator i = s.begin();
-            while (i != s.end()) {
+        // Try to be more user friendly by finding individual loops
+        while(dirtyCells.size()) {
+
+            std::deque<CellAddress> workQueue;
+            DependencyList graph;
+            std::map<CellAddress, Vertex> VertexList;
+            std::map<Vertex, CellAddress> VertexIndexList;
+
+            CellAddress currentAddr = *dirtyCells.begin();
+            workQueue.push_back(currentAddr);
+            dirtyCells.erase(dirtyCells.begin());
+
+            while (workQueue.size() > 0) {
+                CellAddress currPos = workQueue.front();
+                workQueue.pop_front();
+
                 // Insert into map of CellPos -> Index, if it doesn't exist already
-                if (VertexList.find(*i) == VertexList.end()) {
-                    VertexList[*i] = add_vertex(graph);
-                    VertexIndexList[VertexList[*i]] = *i;
-                    workQueue.push_back(*i);
+                auto res = VertexList.emplace(currPos,Vertex());
+                if(res.second) {
+                    res.first->second = add_vertex(graph);
+                    VertexIndexList[res.first->second] = currPos;
                 }
-                // Add edge to graph to signal dependency
-                add_edge(VertexList[currPos], VertexList[*i], graph);
-                ++i;
+
+                // Process cells that depend on the current cell
+                for(auto &dep : providesTo(currPos)) {
+                    auto resDep = VertexList.emplace(dep,Vertex());
+                    if(resDep.second) {
+                        resDep.first->second = add_vertex(graph);
+                        VertexIndexList[resDep.first->second] = dep;
+                        workQueue.push_back(dep);
+                        dirtyCells.erase(dep);
+                    }
+                    // Add edge to graph to signal dependency
+                    add_edge(res.first->second, resDep.first->second, graph);
+                }
+            }
+
+            std::list<Vertex> make_order;
+            try {
+                boost::topological_sort(graph, std::front_inserter(make_order));
+            } catch (std::exception&) {
+                // Cycle detected; flag all with errors
+                std::ostringstream ss;
+                ss << "Cyclic dependency" << std::endl;
+                int count = 0;
+                for(auto &v : VertexList) {
+                    if(count==20)
+                        ss << std::endl;
+                    else
+                        ss << ", ";
+                    ss << v.first.toString();
+                }
+                std::string msg = ss.str();
+                for(auto &v : VertexList) {
+                    Cell * cell = cells.getValue(v.first);
+                    if (cell)
+                        cell->setException(msg.c_str());
+                }
             }
         }
-
-        // Compute cells
-        std::list<Vertex> make_order;
-
-        // Sort graph topologically to find evaluation order
-        try {
-            boost::topological_sort(graph, std::front_inserter(make_order));
-
-            // Recompute cells
-            std::list<Vertex>::const_iterator i = make_order.begin();
-            while (i != make_order.end()) {
-                recomputeCell(VertexIndexList[*i]);
-                ++i;
-            }
-        }
-        catch (std::exception&) {
-            // Cycle detected; flag all with errors
-
-            std::map<CellAddress, Vertex>::const_iterator i = VertexList.begin();
-            while (i != VertexList.end()) {
-                Cell * cell = cells.getValue(i->first);
-
-                // Mark as erroneous
-                cellErrors.insert(i->first);
-
-                if (cell)
-                    cell->setException("Circular dependency.");
-                updateProperty(i->first);
-                updateAlias(i->first);
-
-                ++i;
-            }
-        }
-
     }
 
     // Signal update of column widths
@@ -1334,12 +1372,12 @@ void Sheet::providesTo(CellAddress address, std::set<std::string> & result) cons
  * @param result Set of links.
  */
 
-void Sheet::providesTo(CellAddress address, std::set<CellAddress> & result) const
+std::set<CellAddress>  Sheet::providesTo(CellAddress address) const
 {
     const char * docName = getDocument()->Label.getValue();
     const char * docObjName = getNameInDocument();
     std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + address.toString();
-    result = cells.getDeps(fullName);
+    return cells.getDeps(fullName);
 }
 
 void Sheet::onDocumentRestored()
