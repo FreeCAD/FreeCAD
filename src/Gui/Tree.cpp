@@ -575,10 +575,17 @@ void TreeWidget::itemSearch(const QString &text, bool select) {
         }
         if(!parent) {
             parent = docItem->getTopParent(obj,subname);
-            if(!parent) {
-                // this shouldn't happen
-                FC_TRACE("Object " << txt << " not found in " << doc->getName());
-                return;
+            while(!parent) {
+                if(docItem->document()->getDocument() == obj->getDocument()) {
+                    // this shouldn't happen
+                    FC_LOG("Object " << txt << " not found in " << doc->getName());
+                    return;
+                }
+                auto it = DocumentMap.find(Application::Instance->getDocument(obj->getDocument()));
+                if(it==DocumentMap.end())
+                    return;
+                docItem = it->second;
+                parent = docItem->getTopParent(obj,subname);
             }
             obj = parent;
         }
