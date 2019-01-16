@@ -165,6 +165,7 @@ class ViewProviderFemMesh::Private
 {
 public:
     static const char *dm_face_wire;
+    static const char *dm_wire_node;
     static const char *dm_face_wire_node;
     static const char *dm_face;
     static const char *dm_node;
@@ -172,6 +173,7 @@ public:
 };
 
 const char * ViewProviderFemMesh::Private::dm_face_wire = "Faces & Wireframe";
+const char * ViewProviderFemMesh::Private::dm_wire_node = "Wireframe & Nodes";
 const char * ViewProviderFemMesh::Private::dm_face_wire_node = "Faces, Wireframe & Nodes";
 const char * ViewProviderFemMesh::Private::dm_face = "Faces";
 const char * ViewProviderFemMesh::Private::dm_node = "Nodes";
@@ -327,6 +329,12 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     //pcElemNodesRoot->addChild(offset);
     pcElemNodesRoot->addChild(pcFlatRoot);
     addDisplayMaskMode(pcElemNodesRoot, Private::dm_face_wire_node);
+
+    // Wireframe + Nodes
+    SoGroup* pcWireNodeRoot = new SoGroup();
+    pcWireNodeRoot->addChild(pcPointsRoot);
+    pcWireNodeRoot->addChild(pcWireRoot);
+    addDisplayMaskMode(pcWireNodeRoot, Private::dm_wire_node);
 }
 
 void ViewProviderFemMesh::setDisplayMode(const char* ModeName)
@@ -343,6 +351,7 @@ std::vector<std::string> ViewProviderFemMesh::getDisplayModes(void) const
     StrList.push_back(Private::dm_face);
     StrList.push_back(Private::dm_wire);
     StrList.push_back(Private::dm_node);
+    StrList.push_back(Private::dm_wire_node);
     return StrList;
 }
 
