@@ -1659,7 +1659,7 @@ bool Document::isLastView(void)
  *  This method checks if the document can be closed. It checks on
  *  the save state of the document and is able to abort the closing.
  */
-bool Document::canClose ()
+bool Document::canClose (bool checkModify)
 {
     if (d->_isClosing)
         return true;
@@ -1683,44 +1683,12 @@ bool Document::canClose ()
     //}
 
     bool ok = true;
-    if (isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
-        QMessageBox box(getActiveView());
-        box.setIcon(QMessageBox::Question);
-        box.setWindowTitle(QObject::tr("Unsaved document"));
-        box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
-                    .arg(QString::fromUtf8(getDocument()->Label.getValue())));
-        box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
-        box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
-        box.setDefaultButton(QMessageBox::Save);
-        box.setEscapeButton(QMessageBox::Cancel);
-
-        // add shortcuts
-        QAbstractButton* saveBtn = box.button(QMessageBox::Save);
-        if (saveBtn->shortcut().isEmpty()) {
-            QString text = saveBtn->text();
-            text.prepend(QLatin1Char('&'));
-            saveBtn->setShortcut(QKeySequence::mnemonic(text));
-        }
-
-        QAbstractButton* discardBtn = box.button(QMessageBox::Discard);
-        if (discardBtn->shortcut().isEmpty()) {
-            QString text = discardBtn->text();
-            text.prepend(QLatin1Char('&'));
-            discardBtn->setShortcut(QKeySequence::mnemonic(text));
-        }
-
-        switch (box.exec())
-        {
-        case QMessageBox::Save:
+    if (checkModify && isModified() && !getDocument()->testStatus(App::Document::PartialDoc)) {
+        int res = getMainWindow()->confirmSave(getDocument()->Label.getValue(),getActiveView());
+        if(res>0)
             ok = save();
-            break;
-        case QMessageBox::Discard:
-            ok = true;
-            break;
-        case QMessageBox::Cancel:
-            ok = false;
-            break;
-        }
+        else
+            ok = res<0;
     }
 
     if (ok) {

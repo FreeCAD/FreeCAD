@@ -1063,24 +1063,9 @@ void Application::updateActive(void)
 
 void Application::tryClose(QCloseEvent * e)
 {
-    if (d->documents.size() == 0) {
-        e->accept();
-    }
-    else {
-        // ask all documents if closable
-        std::map<const App::Document*, Gui::Document*>::iterator It;
-        for (It = d->documents.begin();It!=d->documents.end();++It) {
-            // a document may have several views attached, so ask it directly
-#if 0
-            MDIView* active = It->second->getActiveView();
-            e->setAccepted(active->canClose());
-#else
-            e->setAccepted(It->second->canClose());
-#endif
-            if (!e->isAccepted())
-                return;
-        }
-    }
+    e->setAccepted(getMainWindow()->closeAllDocuments(false));
+    if(!e->isAccepted())
+        return;
 
     // ask all passive views if closable
     for (std::list<Gui::BaseView*>::iterator It = d->passive.begin();It!=d->passive.end();++It) {

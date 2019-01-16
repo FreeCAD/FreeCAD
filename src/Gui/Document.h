@@ -282,7 +282,7 @@ public:
     //@}
 
     /// handles the application close event
-    bool canClose();
+    bool canClose(bool checkModify=true);
     bool isLastView(void);
 
     /// called by Application before being deleted

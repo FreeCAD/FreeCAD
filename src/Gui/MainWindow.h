@@ -202,11 +202,12 @@ public Q_SLOTS:
      */
     void closeActiveWindow ();
     /**
-     * Closes all child windows. 
-     * The windows are closed in random order. The operation stops
-     * if a window does not accept the close event.
+     * Closes all document window. 
      */
-    void closeAllWindows ();
+    bool closeAllDocuments (bool close=true);
+    /** Pop up a message box asking for saving document
+     */
+    int confirmSave(const char *docName, QWidget *parent=0, bool addCheckBox=false);
     /**
      * Activates the next window in the child window chain.
      */
