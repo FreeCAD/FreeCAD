@@ -31,8 +31,8 @@ import FreeCAD
 FreeCAD.addExportType("FEM mesh TetGen (*.poly)", "feminout.convert2TetGen")
 
 # see FemMesh::read() and FemMesh::write() methods in src/Mod/Fem/App/FemMesh.cpp
-FreeCAD.addImportType("FEM mesh formats (*.unv *.med *.dat *.bdf *.inp *.vtk *.vtu *.z88)", "Fem")
-FreeCAD.addExportType("FEM mesh formats (*.unv *.med *.stl *.dat *.inp *.vtk *.vtu *.z88)", "Fem")
+FreeCAD.addImportType("FEM mesh formats (*.bdf *.dat *.inp *.med *.unv *.vtk *.vtu *.z88)", "Fem")
+FreeCAD.addExportType("FEM mesh formats (*.dat *.inp *.med *.stl *.unv *.vtk *.vtu *.z88)", "Fem")
 
 FreeCAD.addImportType("FEM result CalculiX (*.frd)", "feminout.importCcxFrdResults")
 
