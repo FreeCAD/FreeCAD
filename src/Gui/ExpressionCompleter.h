@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QPlainTextEdit>
 #include <set>
+#include <memory>
 
 class QStandardItem;
 
@@ -14,6 +15,7 @@ class Document;
 class DocumentObject;
 class Property;
 class ObjectIdentifier;
+class DocumentObjectT;
 }
 
 namespace Gui {
@@ -26,7 +28,7 @@ class GuiExport ExpressionCompleter : public QCompleter
 {
     Q_OBJECT
 public:
-    ExpressionCompleter(const App::Document * currentDoc, const App::DocumentObject * currentDocObj, QObject *parent = 0);
+    ExpressionCompleter(const App::DocumentObject * currentDocObj, QObject *parent = 0);
 
     int getPrefixStart() const { return prefixStart; }
 
@@ -34,14 +36,12 @@ public Q_SLOTS:
     void slotUpdate(const QString &prefix);
 
 private:
-    void createModelForDocument(const App::Document * doc, QStandardItem * parent, const std::set<App::DocumentObject *> &forbidden);
-    void createModelForDocumentObject(const App::DocumentObject * docObj, QStandardItem * parent);
-    void createModelForPaths(const App::Property * prop, QStandardItem *docObjItem);
-
+    void init();
     virtual QString pathFromIndex ( const QModelIndex & index ) const;
     virtual QStringList splitPath ( const QString & path ) const;
 
     int prefixStart;
+    std::unique_ptr<App::DocumentObjectT> currentObj;
 
 };
 
@@ -57,6 +57,8 @@ Q_SIGNALS:
 public Q_SLOTS:
     void slotTextChanged(const QString & text);
     void slotCompleteText(const QString & completionPrefix);
+protected:
+    void keyPressEvent(QKeyEvent * event);
 private:
     ExpressionCompleter * completer;
     bool block;
@@ -69,6 +71,8 @@ public:
     void setDocumentObject(const App::DocumentObject *currentDocObj);
     bool completerActive() const;
     void hideCompleter();
+protected:
+    void keyPressEvent(QKeyEvent * event);
 Q_SIGNALS:
     void textChanged2(QString text);
 public Q_SLOTS:

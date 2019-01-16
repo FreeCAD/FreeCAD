@@ -1079,10 +1079,10 @@ std::vector<std::string> ObjectIdentifier::getStringList() const
 
     if(!result.resolvedProperty || result.resolvedDocumentObject != owner) {
         if (documentNameSet)
-            l.push_back(result.resolvedDocumentName.toString());
+            l.push_back(documentName.toString());
 
         if (documentObjectNameSet)
-            l.push_back(result.resolvedDocumentObjectName.toString());
+            l.push_back(documentObjectName.toString());
     }
     if(subObjectName.getString().size()) {
         l.back() += subObjectName.toString();
