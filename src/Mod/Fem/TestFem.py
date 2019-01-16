@@ -37,7 +37,7 @@ from femtest.testccxtools import TestCcxTools
 from femtest.testsolverframework import TestSolverFrameWork
 
 
-# For more information on how to run a specific test class or a test method see 
+# For more information on how to run a specific test class or a test method see
 # file src/Mod/Test/__init__ and forum https://forum.freecadweb.org/viewtopic.php?f=10&t=22190#p175546
 
 # It may be useful to temporary comment FreeCAD.closeDocument(self.doc_name) in tearDown method to not close the document
