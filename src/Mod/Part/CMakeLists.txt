@@ -26,6 +26,11 @@ set(AttachmentEditor_Scripts
     AttachmentEditor/TaskAttachmentEditor.ui
 )
 
+set(BasicShapes_Scripts
+    BasicShapes/__init__.py
+    BasicShapes/Shapes.py
+)
+
 set(BOPTools_Scripts
     BOPTools/__init__.py
     BOPTools/GeneralFuseResult.py
@@ -48,6 +53,7 @@ set(CompoundTools_Scripts
 add_custom_target(PartScripts ALL SOURCES
     ${Part_Scripts}
     ${AttachmentEditor_Scripts}
+    ${BasicShapes_Scripts}
     ${BOPTools_Scripts}
     ${CompoundTools_Scripts}
 )
@@ -57,6 +63,7 @@ fc_target_copy_resource(PartScripts
     ${CMAKE_BINARY_DIR}/Mod/Part
     ${Part_Scripts}
     ${AttachmentEditor_Scripts}
+    ${BasicShapes_Scripts}
     ${BOPTools_Scripts}
     ${CompoundTools_Scripts}
 )
@@ -73,6 +80,13 @@ INSTALL(
         ${AttachmentEditor_Scripts}
     DESTINATION
         Mod/Part/AttachmentEditor
+)
+
+INSTALL(
+    FILES
+        ${BasicShapes_Scripts}
+    DESTINATION
+        Mod/Part/BasicShapes
 )
 
 INSTALL(
