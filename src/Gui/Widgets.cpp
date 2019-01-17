@@ -365,8 +365,15 @@ void ActionSelector::on_downButton_clicked()
 AccelLineEdit::AccelLineEdit ( QWidget * parent )
   : QLineEdit(parent)
 {
-    setText(tr("none"));
+    noneStr = tr("none");
+    setText(noneStr);
     keyPressedCount = 0;
+}
+
+bool AccelLineEdit::isNone() const
+{
+    QString t = text();
+    return t.isEmpty() || t == noneStr;
 }
 
 /**
@@ -386,7 +393,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     case Qt::Key_Backspace:
         if (state == Qt::NoModifier) {
             keyPressedCount = 0;
-            setText(tr("none"));
+            setText(noneStr);
         }
     case Qt::Key_Control:
     case Qt::Key_Shift:
