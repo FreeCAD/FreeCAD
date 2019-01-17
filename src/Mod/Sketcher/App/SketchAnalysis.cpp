@@ -373,7 +373,7 @@ void SketchAnalysis::makeMissingPointOnPointCoincident(bool onebyone)
             }
 
             if(status) {
-                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying coincident constraints.\n"))
+                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying coincident constraints.")+"\n")
             }
         }
         else {
@@ -452,7 +452,7 @@ void SketchAnalysis::makeMissingVerticalHorizontal(bool onebyone)
             }
 
             if(status) {
-                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.\n"))
+                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.")+"\n")
             }
         }
         else {
@@ -647,7 +647,7 @@ void SketchAnalysis::makeMissingEquality(bool onebyone)
             }
 
             if(status) {
-                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying equality constraints.\n"))
+                THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch while applying equality constraints.")+"\n")
             }
         }
         else {
@@ -701,7 +701,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
     solvesketch(status,dofs,true);
 
     if(status) {// it should not be possible at this moment as we start from a clean situation
-        THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch without constraints.\n"))
+        THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch without constraints.")+"\n")
     }
 
     // STAGE 1: Vertical/Horizontal Line Segments
@@ -738,7 +738,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         }
 
         if(status) {
-            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.\n"))
+            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.")+"\n")
         }
     }
 
@@ -760,7 +760,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         }
 
         if(status) {
-            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.\n"))
+            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.")+"\n")
         }
     }
 
@@ -788,7 +788,7 @@ int SketchAnalysis::autoconstraint(double precision, double angleprecision, bool
         }
 
         if(status) {
-            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying equality constraints.\n"))
+            THROWMT(Base::RuntimeError, QT_TRANSLATE_NOOP("Exceptions", "Autoconstrain error: Unsolvable sketch after applying equality constraints.")+"\n")
         }
     }
 
