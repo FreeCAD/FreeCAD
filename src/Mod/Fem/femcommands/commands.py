@@ -781,7 +781,7 @@ class _CommandFemSolverRun(CommandManager):
                     "Can't start Solver",
                     "Please save the file before executing the solver. "
                     "This must be done because the location of the working "
-                    "directory is set to \"Beside .fcstd File\".")
+                    "directory is set to \"Beside .FCStd File\".")
                 return
             except femsolver.run.DirectoryDoesNotExist:
                 QtGui.QMessageBox.critical(

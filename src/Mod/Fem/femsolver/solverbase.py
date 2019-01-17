@@ -83,7 +83,7 @@ class ViewProxy(object):
                 "Can't open Task Panel",
                 "Please save the file before opening the task panel. "
                 "This must be done because the location of the working "
-                "directory is set to \"Beside .fcstd File\".")
+                "directory is set to \"Beside .FCStd File\".")
             return False
         except run.DirectoryDoesNotExist:
             QtGui.QMessageBox.critical(
