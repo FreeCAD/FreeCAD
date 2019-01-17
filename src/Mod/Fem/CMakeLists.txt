@@ -135,11 +135,13 @@ SET(FemTestsCcx_SRCS
     femtest/testfiles/ccx/cube_frequency.dat
     femtest/testfiles/ccx/cube_frequency.frd
     femtest/testfiles/ccx/cube_frequency_expected_values
+    femtest/testfiles/ccx/cube_frequency.FCStd
     femtest/testfiles/ccx/cube_static.inp
     femtest/testfiles/ccx/cube_static.dat
     femtest/testfiles/ccx/cube_static.frd
     femtest/testfiles/ccx/cube_static_expected_values
-    femtest/testfiles/ccx/cube.fcstd
+    femtest/testfiles/ccx/cube_static.FCStd
+    femtest/testfiles/ccx/cube.FCStd
     femtest/testfiles/ccx/multimat.inp
     femtest/testfiles/ccx/multimat_mesh.py
     femtest/testfiles/ccx/spine_mesh.py
@@ -147,14 +149,14 @@ SET(FemTestsCcx_SRCS
     femtest/testfiles/ccx/spine_thermomech.dat
     femtest/testfiles/ccx/spine_thermomech.frd
     femtest/testfiles/ccx/spine_thermomech_expected_values
-    femtest/testfiles/ccx/spine_thermomech.fcstd
+    femtest/testfiles/ccx/spine_thermomech.FCStd
     femtest/testfiles/ccx/Flow1D_mesh.py
     femtest/testfiles/ccx/Flow1D_thermomech.inp
     femtest/testfiles/ccx/Flow1D_thermomech.dat
     femtest/testfiles/ccx/Flow1D_thermomech.frd
     femtest/testfiles/ccx/Flow1D_thermomech_expected_values
     femtest/testfiles/ccx/Flow1D_thermomech_inout_nodes.txt
-    femtest/testfiles/ccx/Flow1D_thermomech.fcstd
+    femtest/testfiles/ccx/Flow1D_thermomech.FCStd
 )
 
 SET(FemTestsElmer_SRCS
