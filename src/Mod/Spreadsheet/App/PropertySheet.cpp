@@ -102,7 +102,9 @@ void PropertySheet::clear()
     mergedCells.clear();
 
     propertyNameToCellMap.clear();
+    cellToPropertyNameMap.clear();
     documentObjectToCellMap.clear();
+    cellToDocumentObjectMap.clear();
     docDeps.clear();
     aliasProp.clear();
     revAliasProp.clear();
@@ -1023,9 +1025,9 @@ void PropertySheet::removeDependencies(CellAddress key)
         while (j != i1->second.end()) {
             std::map<std::string, std::set< CellAddress > >::iterator k = propertyNameToCellMap.find(*j);
 
-            assert(k != propertyNameToCellMap.end());
-
-            k->second.erase(key);
+            //assert(k != propertyNameToCellMap.end());
+            if (k != propertyNameToCellMap.end())
+                k->second.erase(key);
             ++j;
         }
 
@@ -1042,12 +1044,13 @@ void PropertySheet::removeDependencies(CellAddress key)
         while (j != i2->second.end()) {
             std::map<std::string, std::set< CellAddress > >::iterator k = documentObjectToCellMap.find(*j);
 
-            assert(k != documentObjectToCellMap.end());
+            //assert(k != documentObjectToCellMap.end());
+            if (k != documentObjectToCellMap.end()) {
+                k->second.erase(key);
 
-            k->second.erase(key);
-
-            if (k->second.size() == 0)
-                documentObjectToCellMap.erase(*j);
+                if (k->second.size() == 0)
+                    documentObjectToCellMap.erase(*j);
+            }
 
             ++j;
         }
