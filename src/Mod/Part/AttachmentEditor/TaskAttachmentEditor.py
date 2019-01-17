@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
-from __future__ import absolute_import 
+from __future__ import absolute_import
 
 import FreeCAD as App
 import Part
@@ -77,18 +77,18 @@ def linkSubList_convertToOldStyle(references):
             # old style references, no conversion required
             result.append(tup)
     return result
-    
+
 
 def StrFromLink(feature, subname):
     return feature.Name+ ((':'+subname) if subname else '')
-    
+
 def LinkFromStr(strlink, document):
     if len(strlink) == 0:
         return None
     pieces = strlink.split(':')
-    
+
     feature = document.getObject(pieces[0])
-    
+
     subname = ''
     if feature is None:
         raise ValueError(_translate('AttachmentEditor',"No object named {name}",None).format(name= pieces[0]))
@@ -96,7 +96,7 @@ def LinkFromStr(strlink, document):
         subname = pieces[1]
     elif len(pieces) > 2:
         raise ValueError(_translate('AttachmentEditor',"Failed to parse link (more than one colon encountered)",None))
-    
+
     return (feature,str(subname)) #wrap in str to remove unicode, which confuses assignment to PropertyLinkSubList.
 
 def StrListFromRefs(references):
@@ -122,20 +122,20 @@ def GetSelectionAsLinkSubList():
         if len(selobj.SubElementNames) == 0:
             result.append((selobj.Object, ''))
     return result
-    
+
 
 def PlacementsFuzzyCompare(plm1, plm2):
     pos_eq = (plm1.Base - plm2.Base).Length < 1e-7   # 1e-7 is OCC's Precision::Confusion
-    
+
     q1 = plm1.Rotation.Q
     q2 = plm2.Rotation.Q
-    # rotations are equal if q1 == q2 or q1 == -q2. 
+    # rotations are equal if q1 == q2 or q1 == -q2.
     # Invert one of Q's if their scalar product is negative, before comparison.
     if q1[0]*q2[0] + q1[1]*q2[1] + q1[2]*q2[2] + q1[3]*q2[3] < 0:
         q2 = [-v for v in q2]
-    rot_eq = (  abs(q1[0]-q2[0]) + 
-                abs(q1[1]-q2[1]) + 
-                abs(q1[2]-q2[2]) + 
+    rot_eq = (  abs(q1[0]-q2[0]) +
+                abs(q1[1]-q2[1]) +
+                abs(q1[2]-q2[2]) +
                 abs(q1[3]-q2[3])  ) < 1e-12   # 1e-12 is OCC's Precision::Angular (in radians)
     return pos_eq and rot_eq
 
@@ -143,12 +143,12 @@ class CancelError(Exception):
     def __init__(self):
         self.message = 'Canceled by user'
         self.isCancelError = True
-        
+
 class AttachmentEditorTaskPanel(FrozenClass):
     '''The editmode TaskPanel for attachment editing'''
     KEYmode = QtCore.Qt.ItemDataRole.UserRole # Key to use in Item.data(key) to obtain a mode associated with list item
     KEYon = QtCore.Qt.ItemDataRole.UserRole + 1 # Key to use in Item.data(key) to obtain if the mode is valid
-    
+
     def __define_attributes(self):
         self.obj = None #feature being attached
         self.attacher = None #AttachEngine that is being actively used by the dialog. Its parameters are constantly and actively kept in sync with the dialog.
@@ -163,30 +163,30 @@ class AttachmentEditorTaskPanel(FrozenClass):
         self.attachmentOffsetEdits = [] #all edit boxes related to attachmentOffset
         self.i_active_ref = -1 #index of reference being selected (-1 means no reaction to selecting)
         self.auto_next = False #if true, references being selected are appended ('Selecting' state is automatically advanced to next button)
-        
+
         self.tv = None #TempoVis class instance
-        
+
         self.create_transaction = True # if false, dialog doesn't mess with transactions.
         self.callback_OK        = None
-        self.callback_Cancel    = None 
-        self.callback_Apply     = None 
+        self.callback_Cancel    = None
+        self.callback_Apply     = None
 
         self._freeze()
-    
+
     def __init__(self, obj_to_attach,
-                       take_selection = False, 
+                       take_selection = False,
                        create_transaction = True,
-                       callback_OK        = None, 
+                       callback_OK        = None,
                        callback_Cancel    = None,
                        callback_Apply     = None):
-        
+
         self.__define_attributes()
-        
+
         self.create_transaction = create_transaction
-        self.callback_OK        = callback_OK       
-        self.callback_Cancel    = callback_Cancel   
-        self.callback_Apply     = callback_Apply    
-        
+        self.callback_OK        = callback_OK
+        self.callback_Cancel    = callback_Cancel
+        self.callback_Apply     = callback_Apply
+
         self.obj = obj_to_attach
         if hasattr(obj_to_attach,'Attacher'):
             self.attacher = obj_to_attach.Attacher
@@ -203,10 +203,10 @@ class AttachmentEditorTaskPanel(FrozenClass):
                     self.callback_Cancel()
                 raise ValueError(_translate('AttachmentEditor',"Object {name} is neither movable nor attachable, can't edit attachment",None)
                                  .format(name= self.obj.Label))
-                
+
             self.obj_is_attachable = False
             self.attacher = Part.AttachEngine()
-            
+
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
             mb.setText(_translate('AttachmentEditor',
@@ -222,13 +222,13 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 if self.callback_Cancel:
                     self.callback_Cancel()
                 raise CancelError()
-        
+
         import os
         self.form=uic.loadUi(os.path.dirname(__file__) + os.path.sep + 'TaskAttachmentEditor.ui')
         self.form.setWindowIcon(QtGui.QIcon(':/icons/Part_Attachment.svg'))
         self.form.setWindowTitle(_translate('AttachmentEditor',"Attachment",None))
-        
-        self.refLines = [self.form.lineRef1, 
+
+        self.refLines = [self.form.lineRef1,
                          self.form.lineRef2,
                          self.form.lineRef3,
                          self.form.lineRef4]
@@ -242,29 +242,29 @@ class AttachmentEditorTaskPanel(FrozenClass):
                                     self.form.attachmentOffsetYaw,
                                     self.form.attachmentOffsetPitch,
                                     self.form.attachmentOffsetRoll]
-                           
+
         self.block = False
-                           
+
         for i in range(len(self.refLines)):
             QtCore.QObject.connect(self.refLines[i], QtCore.SIGNAL('textEdited(QString)'), lambda txt, i=i: self.lineRefChanged(i,txt))
 
         for i in range(len(self.refLines)):
             QtCore.QObject.connect(self.refButtons[i], QtCore.SIGNAL('clicked()'), lambda i=i: self.refButtonClicked(i))
-        
+
         for i in range(len(self.attachmentOffsetEdits)):
             QtCore.QObject.connect(self.attachmentOffsetEdits[i], QtCore.SIGNAL('valueChanged(double)'), lambda val, i=i: self.attachmentOffsetChanged(i,val))
-            
+
         QtCore.QObject.connect(self.form.checkBoxFlip, QtCore.SIGNAL('clicked()'), self.checkBoxFlipClicked)
-        
+
         QtCore.QObject.connect(self.form.listOfModes, QtCore.SIGNAL('itemSelectionChanged()'), self.modeSelected)
-        
+
         if self.create_transaction:
             self.obj.Document.openTransaction(_translate('AttachmentEditor',"Edit attachment of {feat}",None).format(feat= self.obj.Name))
-        
+
 
         self.readParameters()
 
-        
+
         if len(self.attacher.References) == 0 and take_selection:
             sel = GetSelectionAsLinkSubList()
             for i in range(len(sel))[::-1]:
@@ -273,7 +273,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.attacher.References = sel
             # need to update textboxes
             self.fillAllRefLines()
-        
+
         if len(self.attacher.References) == 0:
             self.i_active_ref = 0
             self.auto_next = True
@@ -285,7 +285,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
         self.updatePreview()
         self.updateRefButtons()
-        
+
         self.tv = TempoVis(self.obj.Document)
         if self.tv: # tv will still be None if Show module is unavailable
             self.tv.hide_all_dependent(self.obj)
@@ -293,11 +293,11 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.tv.setUnpickable(self.obj)
             self.tv.modifyVPProperty(self.obj, "Transparency", 70)
             self.tv.show([obj for (obj,subname) in self.attacher.References])
-    
+
     # task dialog handling
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)| int(QtGui.QDialogButtonBox.Apply)
-    
+
     def clicked(self,button):
         if button == QtGui.QDialogButtonBox.Apply:
             if self.obj_is_attachable:
@@ -315,7 +315,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
         Gui.Control.closeDialog()
         if self.callback_OK:
             self.callback_OK()
-        
+
     def reject(self):
         if self.create_transaction:
             self.obj.Document.abortTransaction()
@@ -358,7 +358,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 i += 1
         self.i_active_ref = i
         self.updateRefButtons()
-    
+
     # slots
 
     def attachmentOffsetChanged(self, index, value):
@@ -386,9 +386,9 @@ class AttachmentEditorTaskPanel(FrozenClass):
         if index >= 3  and  index <= 5:
             rot = App.Rotation(yaw,pitch,roll)
             plm.Rotation = rot
-        
+
         self.attacher.AttachmentOffset = plm
-        
+
         self.updatePreview()
 
     def checkBoxFlipClicked(self):
@@ -414,26 +414,26 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.i_active_ref = index
             self.auto_next = False
         self.updateRefButtons()
-    
+
     def modeSelected(self):
-        if self.block: 
+        if self.block:
             return
-        self.attacher.Mode = self.getCurrentMode()        
+        self.attacher.Mode = self.getCurrentMode()
         self.updatePreview()
-        
+
     #internal methods
     def writeParameters(self):
-        'Transfer from the dialog to the object' 
+        'Transfer from the dialog to the object'
         self.attacher.writeParametersToFeature(self.obj)
-        
+
     def readParameters(self):
         'Transfer from the object to the dialog'
         if self.obj_is_attachable:
             self.attacher.readParametersFromFeature(self.obj)
-        
+
         plm = self.attacher.AttachmentOffset
         try:
-            old_selfblock = self.block 
+            old_selfblock = self.block
             self.block = True
             self.form.attachmentOffsetX.setText    ((plm.Base.x * mm).UserString)
             self.form.attachmentOffsetY.setText    ((plm.Base.y * mm).UserString)
@@ -441,13 +441,13 @@ class AttachmentEditorTaskPanel(FrozenClass):
             self.form.attachmentOffsetYaw.setText  ((plm.Rotation.toEuler()[0] * deg).UserString)
             self.form.attachmentOffsetPitch.setText((plm.Rotation.toEuler()[1] * deg).UserString)
             self.form.attachmentOffsetRoll.setText ((plm.Rotation.toEuler()[2] * deg).UserString)
-            
+
             self.form.checkBoxFlip.setChecked(self.attacher.Reverse)
-            
+
             self.fillAllRefLines()
         finally:
             self.block = old_selfblock
-        
+
     def fillAllRefLines(self):
         old_block = self.block
         try:
@@ -459,21 +459,21 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 self.refLines[i].setText(strings[i])
         finally:
                 self.block = old_block
-    
+
     def parseAllRefLines(self):
         self.attacher.References = RefsFromStrList([le.text() for le in self.refLines], self.obj.Document)
-    
+
     def updateListOfModes(self):
         '''needs suggestor to have been called, and assigned to self.last_sugr'''
         try:
-            old_selfblock = self.block 
+            old_selfblock = self.block
             self.block = True
             list_widget = self.form.listOfModes
             list_widget.clear()
             sugr = self.last_sugr
             # always have the option to choose Deactivated mode
             valid_modes = ['Deactivated'] + sugr['allApplicableModes']
-            
+
             # add valid modes
             for m in valid_modes:
                 item = QtGui.QListWidgetItem()
@@ -494,7 +494,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 listlistrefs = sugr['reachableModes'][m]
                 if len(listlistrefs) == 1:
                     listrefs_userfriendly = [self.attacher.getRefTypeInfo(t)['UserFriendlyName'] for t in listlistrefs[0]]
-                    txt = _translate('AttachmentEditor',"{mode} (add {morerefs})",None).format(mode= txt, 
+                    txt = _translate('AttachmentEditor',"{mode} (add {morerefs})",None).format(mode= txt,
                                                            morerefs= u"+".join(listrefs_userfriendly))
                 else:
                     txt = _translate('AttachmentEditor',"{mode} (add more references)",None).format(mode= txt)
@@ -505,14 +505,14 @@ class AttachmentEditorTaskPanel(FrozenClass):
                     f = item.font()
                     f.setBold(True)
                     item.setFont(f)
-                
+
                 #disable this item
                 f = item.flags()
                 f = f & ~(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable)
                 item.setFlags(f)
-                
+
                 list_widget.addItem(item)
-            
+
             # re-scan the list to fill in tooltips
             for item in list_widget.findItems('', QtCore.Qt.MatchContains):
                 m = item.data(self.KEYmode)
@@ -523,20 +523,21 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 for refstr in mi['ReferenceCombinations']:
                     refstr_userfriendly = [self.attacher.getRefTypeInfo(t)['UserFriendlyName'] for t in refstr]
                     cmb.append(u", ".join(refstr_userfriendly))
-                
+
                 tip = mi['BriefDocu']
                 if (m != 'Deactivated'):
-                    tip += _translate('AttachmentEditor', "\n\nReference combinations:\n", None) + u"\n".join(cmb)
-                
+                    tip += QString::fromLatin1("\n\n")
+                    tip += _translate('AttachmentEditor', "Reference combinations:", None) + u"\n\n".join(cmb)
+
                 item.setToolTip(tip)
 
         finally:
             self.block = old_selfblock
 
-    
+
     def updateRefButtons(self):
         try:
-            old_selfblock = self.block 
+            old_selfblock = self.block
             self.block = True
             for i in range(len(self.refButtons)):
                 btn = self.refButtons[i]
@@ -550,7 +551,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 btn.setText(_translate('AttachmentEditor',"Selecting...",None) if self.i_active_ref == i else typ)
         finally:
             self.block = old_selfblock
-            
+
     def getCurrentMode(self):
         list_widget = self.form.listOfModes
         sel = list_widget.selectedItems()
@@ -563,33 +564,33 @@ class AttachmentEditorTaskPanel(FrozenClass):
                 return self.last_sugr['bestFitMode']
         # no suggested mode. Return current, so it doesn't change
         return self.attacher.Mode
-    
+
     def updatePreview(self):
         new_plm = None
-        
+
         try:
             self.parseAllRefLines()
             self.last_sugr = self.attacher.suggestModes()
             if self.last_sugr['message'] == 'LinkBroken':
                 raise ValueError(_translate('AttachmentEditor',"Failed to resolve links. {err}",None).format(err= self.last_sugr['error']))
-                
+
             self.updateListOfModes()
-            
+
             self.attacher.Mode = self.getCurrentMode()
-            
+
             new_plm = self.attacher.calculateAttachedPlacement(self.obj.Placement)
             if new_plm is None:
                 self.form.message.setText(_translate('AttachmentEditor',"Not attached",None))
             else:
                 self.form.message.setText(    _translate('AttachmentEditor',"Attached with mode {mode}",None)
                                               .format(  mode=   self.attacher.getModeInfo(self.getCurrentMode())['UserFriendlyName']  )    )
-                if PlacementsFuzzyCompare(self.obj.Placement, new_plm) == False: 
-                    # assign only if placement changed. this avoids touching the object 
+                if PlacementsFuzzyCompare(self.obj.Placement, new_plm) == False:
+                    # assign only if placement changed. this avoids touching the object
                     # when entering and extiting dialog without changing anything
                     self.obj.Placement = new_plm
         except Exception as err:
             self.form.message.setText(_translate('AttachmentEditor',"Error: {err}",None).format(err= str(err)))
-        
+
         if new_plm is not None:
             self.form.groupBox_AttachmentOffset.setTitle(_translate('AttachmentEditor',"Attachment Offset:",None))
             self.form.groupBox_AttachmentOffset.setEnabled(True)
