@@ -366,8 +366,8 @@ void CmdPartDesignMigrate::activated(int iMsg)
         } else {
             // Huh? nothing to migrate?
             QMessageBox::warning ( 0, QObject::tr ( "Nothing to migrate" ),
-                    QObject::tr ( "No PartDesign features which doesn't belong to a body found."
-                        " Nothing to migrate." ) );
+                    QObject::tr ( "No PartDesign features found that don't belong to a body."
+                        "Nothing to migrate." ) );
         }
         return;
     }
