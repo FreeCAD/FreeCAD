@@ -39,7 +39,7 @@
       <item>
        <widget class="QCheckBox" name="checkOtherBody">
         <property name="text">
-         <string>From  other bodies of the same part</string>
+         <string>From other bodies of the same part</string>
         </property>
        </widget>
       </item>
