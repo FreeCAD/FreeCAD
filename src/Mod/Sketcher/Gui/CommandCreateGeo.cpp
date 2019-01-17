@@ -6708,7 +6708,7 @@ namespace SketcherGui {
                         this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
                         break;
                     case Sketcher::SketchObject::rlNonParallel:
-                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketchs.");
+                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.");
                         break;
                     case Sketcher::SketchObject::rlAxesMisaligned:
                         this->notAllowedReason = QT_TR_NOOP("The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.");
