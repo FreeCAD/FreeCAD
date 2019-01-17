@@ -360,10 +360,11 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
 
     buttonAssign->setEnabled(true);
     QKeySequence ks(sc);
-    if (!ks.isEmpty()) {
+    if (!ks.isEmpty() && !editShortcut->isNone()) {
         int countAmbiguous = 0;
         QString ambiguousCommand;
         QString ambiguousMenu;
+        std::vector<Command*> ambiguousCommands;
 
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         std::vector<Command*> cmds = cCmdMgr.getAllCommands();
@@ -375,6 +376,7 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
                 for (QList<QAction*>::iterator jt = acts.begin(); jt != acts.end(); ++jt) {
                     if ((*jt)->shortcut() == ks) {
                         ++countAmbiguous;
+                        ambiguousCommands.push_back(*it);
                         ambiguousCommand = QString::fromLatin1((*it)->getName()); // store the last one
                         ambiguousMenu = qApp->translate((*it)->className(), (*it)->getMenuText());
 
@@ -399,16 +401,28 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
                                  tr("The shortcut '%1' is defined more than once. This could result into unexpected behaviour.").arg(sc) );
             editShortcut->setFocus();
             buttonAssign->setEnabled(false);
-        } else if (countAmbiguous == 1 && ambiguousCommand != QLatin1String(name)) {
-            QMessageBox::warning(this, tr("Already defined shortcut"),
-                                 tr("The shortcut '%1' is already assigned to '%2'.\n\nPlease define another shortcut.").arg(sc).arg(ambiguousMenu) );
-            editShortcut->setFocus();
-            buttonAssign->setEnabled(false);
-        } else {
+        }
+        else if (countAmbiguous == 1 && ambiguousCommand != QLatin1String(name)) {
+            int ret = QMessageBox::warning(this, tr("Already defined shortcut"),
+                                 tr("The shortcut '%1' is already assigned to '%2'.\n\nDo you want to override it?")
+                                 .arg(sc).arg(ambiguousMenu), QMessageBox::Yes | QMessageBox::No);
+            if (ret == QMessageBox::Yes) {
+                for (auto* cmd : ambiguousCommands) {
+                    Action* action = cmd->getAction();
+                    action->setShortcut(QString());
+                }
+            }
+            else {
+                editShortcut->setFocus();
+                buttonAssign->setEnabled(false);
+            }
+        }
+        else {
             if (cmd && cmd->getAction() && cmd->getAction()->shortcut() == ks)
                 buttonAssign->setEnabled(false);
         }
-    } else {
+    }
+    else {
         if (cmd && cmd->getAction() && cmd->getAction()->shortcut().isEmpty())
             buttonAssign->setEnabled(false); // both key sequences are empty
     }
