@@ -7281,7 +7281,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         if(ellipseids.size()>1){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You cannot internally constraint an ellipse on other ellipse. Select only one ellipse."));
+                QObject::tr("You cannot internally constrain an ellipse on other ellipse. Select only one ellipse."));
             return;
         }
 
@@ -7330,7 +7330,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         }
 
         if(major && minor && focus1 && focus2) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing to constraint"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing to constrain"),
             QObject::tr("Currently all internal geometry of the ellipse is already exposed."));
             return;
         }
@@ -7434,13 +7434,13 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         if(arcsofellipseids.size()>1){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You cannot internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse."));
+                QObject::tr("You cannot internally constrain an arc of ellipse on other arc of ellipse. Select only one arc of ellipse."));
             return;
         }
 
         if(ellipseids.size()>0){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You cannot internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse."));
+                QObject::tr("You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse."));
             return;
         }
 
@@ -7489,7 +7489,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         }
 
         if(major && minor && focus1 && focus2) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing to constraint"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing to constrain"),
             QObject::tr("Currently all internal geometry of the arc of ellipse is already exposed."));
             return;
         }
