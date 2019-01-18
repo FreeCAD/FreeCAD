@@ -2857,7 +2857,8 @@ int PropertyXLink::checkRestore() const {
     if(!docInfo) return 0;
     if(!_pcLink) {
         if(testFlag(LinkAllowPartial) && 
-           docInfo->pcDoc && docInfo->pcDoc->testStatus(App::Document::PartialDoc))
+           (!docInfo->pcDoc || 
+            docInfo->pcDoc->testStatus(App::Document::PartialDoc)))
         {
             return 0;
         }
