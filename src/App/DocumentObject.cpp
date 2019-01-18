@@ -598,7 +598,12 @@ void DocumentObject::onChanged(const Property* prop)
        getDocument() && 
        getDocument()->testStatus(Document::PartialDoc))
     {
-        FC_WARN("Changes to partial loaded document will not be saved");
+        static App::Document *warnedDoc;
+        if(warnedDoc != getDocument()) {
+            warnedDoc = getDocument();
+            FC_WARN("Changes to partial loaded document will not be saved: "
+                    << getFullName() << '.' << prop->getName());
+        }
     }
 
     // Delay signaling view provider until the document object has handled the
