@@ -115,11 +115,11 @@ TreeWidget::TreeWidget(QWidget* parent)
             this, SLOT(onSearchObjects()));
 
     // Setup connections
-    Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
-    Application::Instance->signalDeleteDocument.connect(boost::bind(&TreeWidget::slotDeleteDocument, this, _1));
-    Application::Instance->signalRenameDocument.connect(boost::bind(&TreeWidget::slotRenameDocument, this, _1));
-    Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, _1));
-    Application::Instance->signalRelabelDocument.connect(boost::bind(&TreeWidget::slotRelabelDocument, this, _1));
+    connectNewDocument = Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
+    connectDelDocument = Application::Instance->signalDeleteDocument.connect(boost::bind(&TreeWidget::slotDeleteDocument, this, _1));
+    connectRenDocument = Application::Instance->signalRenameDocument.connect(boost::bind(&TreeWidget::slotRenameDocument, this, _1));
+    connectActDocument = Application::Instance->signalActiveDocument.connect(boost::bind(&TreeWidget::slotActiveDocument, this, _1));
+    connectRelDocument = Application::Instance->signalRelabelDocument.connect(boost::bind(&TreeWidget::slotRelabelDocument, this, _1));
 
     QStringList labels;
     labels << tr("Labels & Attributes");
@@ -163,6 +163,11 @@ TreeWidget::TreeWidget(QWidget* parent)
 
 TreeWidget::~TreeWidget()
 {
+    connectNewDocument.disconnect();
+    connectDelDocument.disconnect();
+    connectRenDocument.disconnect();
+    connectActDocument.disconnect();
+    connectRelDocument.disconnect();
 }
 
 void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
