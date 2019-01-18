@@ -5724,7 +5724,7 @@ class Draft_Snap_Near():
         if hasattr(FreeCADGui,"Snapper"):
             if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
                 for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonnear":
+                    if b.objectName() == "SnapButtonpassive":
                         b.toggle()
 
 class Draft_Snap_Ortho():
