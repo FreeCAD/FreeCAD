@@ -105,6 +105,11 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
                 results.Mesh = result_mesh_object
                 results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
+                if not results.MassFlowRate:
+                    # only compact result if not Flow 1D results
+                    # compact result object, workaround for bug 2873, https://www.freecadweb.org/tracker/view.php?id=2873
+                    from femresult.resulttools import compact_result as rs
+                    results = rs(results)
                 if analysis:
                     analysis_object.addObject(results)
         else:

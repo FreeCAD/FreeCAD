@@ -1713,4 +1713,55 @@ def use_correct_fluidinout_ele_def(FluidInletoutlet_ele, fileName, fluid_inout_n
     f.close()
     inout_nodes_file.close()
 
+
+def compact_mesh(old_femmesh):
+    '''
+    removes all gaps in node and element ids, start ids with 1
+    returns a tuple (FemMesh, node_assignment_map, element_assignment_map)
+    '''
+    node_map = {}  # {old_node_id: new_node_id, ...}
+    elem_map = {}  # {old_elem_id: new_elem_id, ...}
+    old_nodes = old_femmesh.Nodes
+    import Fem
+    new_mesh = Fem.FemMesh()
+
+    if old_nodes:
+        for i, n in enumerate(old_nodes):
+            nid = i + 1
+            new_mesh.addNode(old_nodes[n].x, old_nodes[n].y, old_nodes[n].z, nid)
+            node_map[n] = nid
+
+    if old_femmesh.Edges:
+        for i, ed in enumerate(old_femmesh.Edges):
+            eid = i + 1
+            old_elem_nodes = old_femmesh.getElementNodes(ed)
+            new_elemnodes = []
+            for old_node_id in old_elem_nodes:
+                new_elemnodes.append(node_map[old_node_id])
+            new_mesh.addEdge(new_elemnodes, eid)
+            elem_map[ed] = eid
+
+    if old_femmesh.Faces:
+        for i, fa in enumerate(old_femmesh.Faces):
+            fid = i + 1
+            old_elem_nodes = old_femmesh.getElementNodes(fa)
+            new_elemnodes = []
+            for old_node_id in old_elem_nodes:
+                new_elemnodes.append(node_map[old_node_id])
+            new_mesh.addFace(new_elemnodes, fid)
+            elem_map[fa] = fid
+
+    if old_femmesh.Volumes:
+        for i, vo in enumerate(old_femmesh.Volumes):
+            vid = i + 1
+            old_elem_nodes = old_femmesh.getElementNodes(vo)
+            new_elemnodes = []
+            for old_node_id in old_elem_nodes:
+                new_elemnodes.append(node_map[old_node_id])
+            new_mesh.addVolume(new_elemnodes, vid)
+        elem_map[vo] = vid
+
+    # may be return another value if the mesh was compacted, just check last map entries
+    return (new_mesh, node_map, elem_map)
+
 ##  @}
