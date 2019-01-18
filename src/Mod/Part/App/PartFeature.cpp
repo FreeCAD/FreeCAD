@@ -146,7 +146,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
             ts.setShape(ts.getShape().Located(TopLoc_Location()),false);
             ts.initCache(1);
         }
-        if(subname && *subname)
+        if(subname && *subname && !ts.isNull())
             ts = ts.getSubTopoShape(subname);
         if(doTransform && !ts.isNull()) {
             static int sCopy = -1; 
