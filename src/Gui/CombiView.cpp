@@ -64,10 +64,7 @@ CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
     splitter->setOrientation(Qt::Vertical);
 
     // tree widget
-    tree =  new TreeWidget(this);
-    //tree->setRootIsDecorated(false);
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
-    tree->setIndentation(hGrp->GetInt("Indentation", tree->indentation()));
+    tree =  new TreePanel(this);
     splitter->addWidget(tree);
 
     // property view

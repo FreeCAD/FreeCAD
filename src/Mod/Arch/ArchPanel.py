@@ -448,6 +448,11 @@ class _Panel(ArchComponent.Component):
 
         import Part #, DraftGeomUtils
 
+        layers = []
+        length = 0
+        width = 0
+        thickness = 0
+
         # base tests
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -473,7 +478,6 @@ class _Panel(ArchComponent.Component):
             elif obj.Base.isDerivedFrom("Part::Feature"):
                 if not obj.Base.Shape.Solids:
                     return
-        layers = []
         if hasattr(obj,"Material"):
             if obj.Material:
                 if hasattr(obj.Material,"Materials"):
@@ -732,7 +736,7 @@ class _Panel(ArchComponent.Component):
                 base = self.vol.common(base)
                 base = base.removeSplitter()
                 if not base:
-                    FreeCAD.Console.PrintError(translate("Arch","Error computing shape of ")+obj.Label+"\n")
+                    FreeCAD.Console.PrintError(translate("Arch","Error computing shape of")+" "+obj.Label+"\n")
                     return False
 
         if base and (obj.Sheets > 1) and normal and thickness:

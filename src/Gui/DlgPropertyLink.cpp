@@ -158,7 +158,7 @@ void DlgPropertyLink::findObjects(bool on, const QString& searchText)
         std::vector<App::DocumentObject*> ignoreList;
         App::DocumentObject* par = doc->getObject((const char*)parName.toLatin1());
         App::Property* prop = par->getPropertyByName((const char*)proName.toLatin1());
-        if (par) {
+        if (prop) {
             // for multi-selection we need all objects
             if (isSingleSelection) {
                 ignoreList = par->getOutListOfProperty(prop);

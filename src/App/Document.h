@@ -68,7 +68,8 @@ public:
         KeepTrailingDigits = 1,
         Closable = 2,
         Restoring = 3,
-        Recomputing = 4
+        Recomputing = 4,
+        PartialRestore = 5
     };
 
     /** @name Properties */
@@ -303,6 +304,9 @@ public:
     void abortTransaction();
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
+    /// Check if a transaction is open and its list is empty.
+    /// If no transaction is open true is returned.
+    bool isTransactionEmpty() const;
     /// Set the Undo limit in Byte!
     void setUndoLimit(unsigned int UndoMemSize=0);
     /// Returns the actual memory consumption of the Undo redo stuff.

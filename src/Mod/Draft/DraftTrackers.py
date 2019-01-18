@@ -453,6 +453,7 @@ class arcTracker(Tracker):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         self.sep = coin.SoSeparator()
+        self.autoinvert = True
         if normal:
             self.normal = normal
         else:
@@ -508,7 +509,7 @@ class arcTracker(Tracker):
 
     def setEndPoint(self,pt):
         "sets the end angle from a point"
-        self.setEndAngle(self.getAngle(pt))
+        self.setEndAngle(-self.getAngle(pt))
                 
     def setApertureAngle(self,ang):
         "sets the end angle by giving the aperture angle"
@@ -521,7 +522,7 @@ class arcTracker(Tracker):
         if self.circle: 
             self.sep.removeChild(self.circle)
         self.circle = None
-        if (self.endangle < self.startangle):
+        if (self.endangle < self.startangle) or not self.autoinvert:
             c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.endangle,self.startangle)
         else:
             c = Part.makeCircle(1,Vector(0,0,0),self.normal,self.startangle,self.endangle)
@@ -560,7 +561,7 @@ class arcTracker(Tracker):
 class ghostTracker(Tracker):
     '''A Ghost tracker, that allows to copy whole object representations.
     You can pass it an object or a list of objects, or a shape.'''
-    def __init__(self,sel):
+    def __init__(self,sel,dotted=False,scolor=None,swidth=None):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
         self.children = [self.trans]
@@ -570,13 +571,13 @@ class ghostTracker(Tracker):
         for obj in sel:
             rootsep.addChild(self.getNode(obj))
         self.children.append(rootsep)        
-        Tracker.__init__(self,children=self.children,name="ghostTracker")
+        Tracker.__init__(self,dotted,scolor,swidth,children=self.children,name="ghostTracker")
 
     def update(self,obj):
         "recreates the ghost from a new object"
         obj.ViewObject.show()
         self.finalize()
-        sep = getNode(obj)
+        sep = self.getNode(obj)
         Tracker.__init__(self,children=[self.sep])
         self.on()
         obj.ViewObject.hide()
@@ -606,18 +607,18 @@ class ghostTracker(Tracker):
         else:
             return self.getNodeFull(obj)
 
-    def getNode(self,obj):
+    def getNodeFull(self,obj):
         "gets a coin node which is a full copy of the current representation"
         sep = coin.SoSeparator()
         try:
             sep.addChild(obj.ViewObject.RootNode.copy())
         except:
-            pass
+            print("ghostTracker: Error retrieving coin node (full)")
         return sep
 
     def getNodeLight(self,shape):
         "extract a lighter version directly from a shape"
-        # very error-prone, will be obsoleted ASAP
+        # error-prone
         sep = coin.SoSeparator()
         try:
             inputstr = coin.SoInput()
@@ -627,7 +628,7 @@ class ghostTracker(Tracker):
             sep.addChild(coinobj.getChildren()[1])
             # sep.addChild(coinobj)
         except:
-            print("Error retrieving coin node")
+            print("ghostTracker: Error retrieving coin node (light)")
         return sep
         
     def getMatrix(self):

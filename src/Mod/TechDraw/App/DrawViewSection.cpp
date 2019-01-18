@@ -250,6 +250,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return DrawView::execute();
     }
 
+    m_cutShape = rawShape;
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(rawShape,
@@ -390,7 +391,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
                                      const Base::Vector3d &direction)
 {
     if(face.IsNull()) {
-        throw Base::Exception("DrawViewSection::projectFace - input Face is NULL");
+        throw Base::ValueError("DrawViewSection::projectFace - input Face is NULL");
     }
 
     Base::Vector3d origin(faceCenter.X(),faceCenter.Y(),faceCenter.Z());

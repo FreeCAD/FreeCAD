@@ -5,7 +5,7 @@
     <name>TestGui::UnitTest</name>
     <message>
       <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD Unit-Тест</translation>
+      <translation>FreeCAD UnitTest</translation>
     </message>
     <message>
       <source>Failures and errors</source>
@@ -49,7 +49,7 @@
     </message>
     <message>
       <source>Idle</source>
-      <translation>Простой</translation>
+      <translation>В ожидании</translation>
     </message>
     <message>
       <source>Progress</source>
@@ -77,7 +77,7 @@
     </message>
     <message>
       <source>Test</source>
-      <translation>Тестировать</translation>
+      <translation>Тест</translation>
     </message>
     <message>
       <source>Select test name:</source>
@@ -92,7 +92,7 @@
     </message>
     <message>
       <source>About FreeCAD UnitTest</source>
-      <translation>О Unit-тесте FreeCAD</translation>
+      <translation>О FreeCAD UnitTest</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer
@@ -105,9 +105,27 @@ FreeCAD UnitTest является частью FreeCAD и поддерживае
       <source>Enter the name of a callable object which, when called, will return a TestCase.Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-      <translation>Введите имя вызываемого объекта при вызове которого, бедет возвтащаться TestCase. Кликните 'start' и, таким образом, проверка будет выполнена.
+      <translation>Введите имя вызываемого объекта при вызове которого, будет возвращаться TestCase. Кликните 'Запуск' и, тест будет запущен.
 
-Выполните двойной щелчок на ошибке в древовидном виджете для дополнительной информации о ней, включая  стек вызовов.</translation>
+Сделайте двойной щелчок на ошибке в древовидном списке для дополнительной информации о ней, включая стек вызовов.</translation>
+    </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Введите имя вызываемого объекта при вызове которого, будет возвращаться TestCase.
+Кликните 'Запуск' и, тест будет запущен.
+
+Сделайте двойной щелчок на ошибке в древовидном списке для дополнительной информации о ней, включая стек вызовов.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Copyright (C) Вернер Майер
+
+FreeCAD UnitTest является частью FreeCAD и поддерживает написание Unit тестов для собственных модулей.</translation>
     </message>
   </context>
 </TS>

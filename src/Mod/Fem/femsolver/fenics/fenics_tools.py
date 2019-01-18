@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2017 - Johannes Hartung <j.hartung@gmx.net>             *
+# *   Copyright (c) 2017 Johannes Hartung <j.hartung@gmx.net>               *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -19,12 +18,20 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
+
+__title__ = "FreeCAD FEM solver Fenics tools"
+__author__ = "Johannes Hartung"
+__url__ = "http://www.freecadweb.org"
+
+## @package Fenics
+#  \ingroup FEM
+
+import FreeCAD
 
 try:
     import fenics
 except:
-    print("No Fenics modules found, please install them.")
+    FreeCAD.Console.PrintError("No Fenics modules found, please install them.")
 else:
     import numpy as np
 
@@ -131,12 +138,11 @@ else:
 
             # TODO: python classes much slower than JIT compilation
 
-
-# ***********************************
-# * Sub classes due to value_shape method which is not of dynamical return type
-# * Also the assignment of values is to be done by reference. Therefore it has to be
-# * overloaded.
-# ***********************************
+    # ***********************************
+    # * Sub classes due to value_shape method which is not of dynamical return type
+    # * Also the assignment of values is to be done by reference. Therefore it has to be
+    # * overloaded.
+    # ***********************************
 
     class ScalarCellExpressionFromXDMF(fenics.Expression, CellExpressionFromXDMF):
 
@@ -209,3 +215,5 @@ else:
             return dbcs
         # TODO: write some functions to return integrals for Neumann and Robin
         # boundary conditions for the general case (i.e. vector, tensor)
+
+##  @}

@@ -29,6 +29,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
+# include <climits>
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
@@ -453,7 +454,7 @@ void SoFCIndexedFaceSet::initClass()
 }
 
 SoFCIndexedFaceSet::SoFCIndexedFaceSet()
-  : renderTriangleLimit(100000)
+  : renderTriangleLimit(UINT_MAX)
   , selectBuf(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCIndexedFaceSet);
@@ -728,7 +729,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
             // the nindices must have the length of numindices
             int32_t vertex = 0;
             int index = 0;
-            float t = transp[0];
+            float t = transp ? transp[0] : 0;
             for (std::size_t i=0; i<numTria; i++) {
                 const SbColor& c = pcolors[i];
                 for (int j=0; j<3; j++) {
@@ -766,7 +767,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
             // the nindices must have the length of numindices
             int32_t vertex = 0;
             int index = 0;
-            float t = transp[0];
+            float t = transp ? transp[0] : 0;
             for (std::size_t i=0; i<numTria; i++) {
                 for (int j=0; j<3; j++) {
                     const SbColor& c = pcolors[mindices[index]];

@@ -1,26 +1,26 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2015 - Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk> *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2015 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
-__title__ = "ViewProvider for FEM mechanical ResultObjectPython"
+__title__ = "FreeCAD result mechanical ViewProvider for the document object"
 __author__ = "Qingfeng Xia, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -380,11 +380,11 @@ class _TaskPanelFemResultShow:
 
     def set_result_stats(self, unit, minm, avg, maxm):
         self.form.le_min.setProperty("unit", unit)
-        self.form.le_min.setText("{:.6} {}".format(minm, unit))
+        self.form.le_min.setProperty("rawText", "{:.6} {}".format(minm, unit))
         self.form.le_avg.setProperty("unit", unit)
-        self.form.le_avg.setText("{:.6} {}".format(avg, unit))
+        self.form.le_avg.setProperty("rawText", "{:.6} {}".format(avg, unit))
         self.form.le_max.setProperty("unit", unit)
-        self.form.le_max.setText("{:.6} {}".format(maxm, unit))
+        self.form.le_max.setProperty("rawText", "{:.6} {}".format(maxm, unit))
 
     def update_displacement(self, factor=None):
         if factor is None:

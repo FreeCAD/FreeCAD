@@ -1901,7 +1901,7 @@ bool CDxfRead::ReadArc()
     double start_angle = 0.0;// in degrees
     double end_angle = 0.0;
     double radius = 0.0;
-    double c[3]; // centre
+    double c[3] = {0,0,0}; // centre
     double z_extrusion_dir = 1.0;
     bool hidden = false;
     
@@ -2182,7 +2182,7 @@ bool CDxfRead::ReadSpline()
 bool CDxfRead::ReadCircle()
 {
     double radius = 0.0;
-    double c[3]; // centre
+    double c[3] = {0,0,0}; // centre
     bool hidden = false;
 
     while(!((*m_ifs).eof()))
@@ -2340,8 +2340,8 @@ bool CDxfRead::ReadText()
 
 bool CDxfRead::ReadEllipse()
 {
-    double c[3]; // centre
-    double m[3]; //major axis point
+    double c[3] = {0,0,0}; // centre
+    double m[3] = {0,0,0}; //major axis point
     double ratio=0; //ratio of major to minor axis
     double start=0; //start of arc
     double end=0;  // end of arc
@@ -2714,7 +2714,7 @@ bool CDxfRead::ReadPolyLine()
                 get_line();
                 if (! strcmp(m_str,"VERTEX"))
                 {
-                    double vertex[3];
+                    double vertex[3] = {0,0,0};
                     if (CDxfRead::ReadVertex(vertex, &bulge_found, &bulge))
                     {
                         if(!first_vertex_section_found) {
@@ -2757,7 +2757,7 @@ bool CDxfRead::ReadPolyLine()
 }
 
 void CDxfRead::OnReadArc(double start_angle, double end_angle, double radius, const double* c, double z_extrusion_dir, bool hidden){
-    double s[3], e[3], temp[3] ;
+    double s[3] = {0,0,0}, e[3] = {0,0,0}, temp[3] = {0,0,0};
     if (z_extrusion_dir==1.0)
   {
     temp[0] =c[0];
@@ -2813,8 +2813,8 @@ void CDxfRead::OnReadEllipse(const double* c, const double* m, double ratio, dou
 
 bool CDxfRead::ReadInsert()
 {
-    double c[3]; // coordinate
-    double s[3]; // scale
+    double c[3] = {0,0,0}; // coordinate
+    double s[3] = {0,0,0}; // scale
     double rot = 0.0; // rotation
     char name[1024];
     s[0] = 1.0;
@@ -2908,9 +2908,9 @@ bool CDxfRead::ReadInsert()
 
 bool CDxfRead::ReadDimension()
 {
-    double s[3]; // startpoint
-    double e[3]; // endpoint
-    double p[3]; // dimpoint
+    double s[3] = {0,0,0}; // startpoint
+    double e[3] = {0,0,0}; // endpoint
+    double p[3] = {0,0,0}; // dimpoint
     double rot = -1.0; // rotation
 
     while(!((*m_ifs).eof()))
@@ -3180,6 +3180,7 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
         {
             get_line();
             if (!strcmp( m_str, "SECTION" )){
+              strcpy(m_section_name, "");
               get_line();
               get_line();
               if (strcmp( m_str, "ENTITIES" ))

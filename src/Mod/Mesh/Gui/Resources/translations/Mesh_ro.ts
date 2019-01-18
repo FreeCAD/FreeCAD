@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Add triangle manually to a mesh</source>
-      <translation>Adaugă manual un triunghi la rețea</translation>
+      <translation>Adaugă manual un triunghi la plasă (rețeaua de discretizare)</translation>
     </message>
   </context>
   <context>
@@ -28,7 +28,7 @@
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Afiseaza marginile retelei selectate</translation>
+      <translation>Afișează marginile plasei selectate</translation>
     </message>
   </context>
   <context>
@@ -91,11 +91,11 @@
     </message>
     <message>
       <source>Check solid mesh</source>
-      <translation>Verifica retea solida</translation>
+      <translation>Verifică dacă plasa formează un solid</translation>
     </message>
     <message>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Verifica daca reteaua este solida</translation>
+      <translation>Verifică dacă plasa formează un solid</translation>
     </message>
   </context>
   <context>
@@ -106,15 +106,15 @@
     </message>
     <message>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Deschide o caseta de dialog pentru analiza si repararea retelei</translation>
+      <translation>Deschide o casetă de dialog pentru analiza și repararea plasei</translation>
     </message>
     <message>
       <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Evalueaza &amp;&amp; repara reteaua...</translation>
+      <translation>Evaluează &amp;&amp; repară plasa...</translation>
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Evaluează şi reparară plasa...</translation>
     </message>
   </context>
   <context>
@@ -158,11 +158,11 @@
     </message>
     <message>
       <source>Export mesh...</source>
-      <translation>Exporta reteaua...</translation>
+      <translation>Exportă plasa...</translation>
     </message>
     <message>
       <source>Exports a mesh to file</source>
-      <translation>Exporta o retea intr-un fisier</translation>
+      <translation>Exportă o plasă într-un fișier</translation>
     </message>
   </context>
   <context>
@@ -192,7 +192,7 @@
     </message>
     <message>
       <source>Fill holes of the mesh</source>
-      <translation>Umple gaurile unei retele</translation>
+      <translation>Umple găurile unei plase</translation>
     </message>
   </context>
   <context>
@@ -203,11 +203,11 @@
     </message>
     <message>
       <source>Flip normals</source>
-      <translation>Comuta normalele</translation>
+      <translation>Inversează normalele</translation>
     </message>
     <message>
       <source>Flips the normals of the mesh</source>
-      <translation>Comuta normalele unei retele</translation>
+      <translation>Inversează normalele unei plase</translation>
     </message>
   </context>
   <context>
@@ -218,11 +218,11 @@
     </message>
     <message>
       <source>Create mesh from geometry...</source>
-      <translation>Creaza retea din geometrie...</translation>
+      <translation>Creează o plasă dintr-o geometrie...</translation>
     </message>
     <message>
       <source>Create mesh from the selected geometry</source>
-      <translation>Creaza o retea din geometria selectata</translation>
+      <translation>Creează o plasă din geometria selectată</translation>
     </message>
   </context>
   <context>
@@ -252,7 +252,7 @@
     </message>
     <message>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>Armonizeaza normalele retelei</translation>
+      <translation>Armonizează normalele plasei</translation>
     </message>
   </context>
   <context>
@@ -263,11 +263,11 @@
     </message>
     <message>
       <source>Import mesh...</source>
-      <translation>Import retea...</translation>
+      <translation>Importă plasa...</translation>
     </message>
     <message>
       <source>Imports a mesh from file</source>
-      <translation>Importa o retea dintr-un fisier</translation>
+      <translation>Importa o plasă dintr-un fișier</translation>
     </message>
   </context>
   <context>
@@ -289,11 +289,11 @@
     </message>
     <message>
       <source>Merge</source>
-      <translation type="unfinished">Merge</translation>
+      <translation>Fuziune</translation>
     </message>
     <message>
       <source>Merges selected meshes into one</source>
-      <translation type="unfinished">Merges selected meshes into one</translation>
+      <translation>Fuzionează plasele selectate într-o singură plasă</translation>
     </message>
   </context>
   <context>
@@ -304,11 +304,11 @@
     </message>
     <message>
       <source>Cut mesh</source>
-      <translation>Taie reteaua</translation>
+      <translation>Taie plasa</translation>
     </message>
     <message>
       <source>Cuts a mesh with a picked polygon</source>
-      <translation>Taie reteaua cu poligonul ales</translation>
+      <translation>Taie plasa cu poligonul ales</translation>
     </message>
   </context>
   <context>
@@ -319,11 +319,11 @@
     </message>
     <message>
       <source>Make segment</source>
-      <translation>Creaza segment</translation>
+      <translation>Creează segment</translation>
     </message>
     <message>
       <source>Creates a mesh segment</source>
-      <translation>Creaza un segment de retea</translation>
+      <translation>Creează un segment de plasă</translation>
     </message>
   </context>
   <context>
@@ -338,7 +338,7 @@
     </message>
     <message>
       <source>Select an area of the mesh</source>
-      <translation>Selecteaza o zona dintr-o retea</translation>
+      <translation>Selectează o zona dintr-o plasă</translation>
     </message>
   </context>
   <context>
@@ -349,11 +349,11 @@
     </message>
     <message>
       <source>Split mesh</source>
-      <translation>Divide reteaua</translation>
+      <translation>Divide plasa</translation>
     </message>
     <message>
       <source>Splits a mesh into two meshes</source>
-      <translation>Imparte o retea in doua retele</translation>
+      <translation>Imparte o plasă în două plase</translation>
     </message>
   </context>
   <context>
@@ -364,11 +364,11 @@
     </message>
     <message>
       <source>Trim mesh</source>
-      <translation>Taie reteaua</translation>
+      <translation>Taie plasa</translation>
     </message>
     <message>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Taie reteaua cu poligonul ales</translation>
+      <translation>Taie plasa cu un poligon ales</translation>
     </message>
   </context>
   <context>
@@ -383,7 +383,7 @@
     </message>
     <message>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Selecteaza componente pentru a fi sterse din retea</translation>
+      <translation>Selectează o componentă pentru a fi ștearsă din plasă</translation>
     </message>
   </context>
   <context>
@@ -398,7 +398,7 @@
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Elimina componentele topologic-independente dintr-o retea</translation>
+      <translation>Elimină componentele topologic-independente dintr-o plasă</translation>
     </message>
   </context>
   <context>
@@ -409,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Scară...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Mărește la scară plasele selectate</translation>
     </message>
   </context>
   <context>
@@ -424,11 +424,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Creează o secțiune plecând de la la o plasă şi un plan</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>Secțiune plecând de la la o plasă şi un plan</translation>
     </message>
   </context>
   <context>
@@ -439,11 +439,26 @@
     </message>
     <message>
       <source>Create mesh segments...</source>
-      <translation>Creaza segmente de retea...</translation>
+      <translation>Creează segmente de plasă...</translation>
     </message>
     <message>
       <source>Create mesh segments</source>
-      <translation>Creaza segmente de retea</translation>
+      <translation>Creează segmente de plasă</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation>Creaţi segmente ochiurilor de plasă din cele mai adecvate suprafețe...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation>Creaţi segmente ochiurilor de plasă din cele mai adecvate suprafețe</translation>
     </message>
   </context>
   <context>
@@ -458,7 +473,7 @@
     </message>
     <message>
       <source>Smooth the selected meshes</source>
-      <translation>Netezeste retelele selectate</translation>
+      <translation>Netezește plasele selectate</translation>
     </message>
   </context>
   <context>
@@ -469,11 +484,11 @@
     </message>
     <message>
       <source>Segment by tool mesh</source>
-      <translation>Segment in retea</translation>
+      <translation>Segmentat cu o unealtă de plasă</translation>
     </message>
     <message>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Creaza un segment din reteaua selectata</translation>
+      <translation>Creează un segment din plasa selectată</translation>
     </message>
   </context>
   <context>
@@ -484,11 +499,11 @@
     </message>
     <message>
       <source>Transform mesh</source>
-      <translation>Transforma reteaua</translation>
+      <translation>Transformă plasa</translation>
     </message>
     <message>
       <source>Rotate or move a mesh</source>
-      <translation>Roteste sau misca o retea</translation>
+      <translation>Rotește sau mișcă o plasă</translation>
     </message>
   </context>
   <context>
@@ -499,11 +514,11 @@
     </message>
     <message>
       <source>Trim mesh with a plane</source>
-      <translation type="unfinished">Trim mesh with a plane</translation>
+      <translation>Tăiaţi plasa cu un plan</translation>
     </message>
     <message>
       <source>Trims a mesh with a plane</source>
-      <translation type="unfinished">Trims a mesh with a plane</translation>
+      <translation>Tăie o plasă cu un plan</translation>
     </message>
   </context>
   <context>
@@ -525,7 +540,7 @@
     </message>
     <message>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Calculeaza curbura varfurilor unei retele</translation>
+      <translation>Calculează curbura vârfurilor unei plase</translation>
     </message>
     <message>
       <source>Curvature plot</source>
@@ -567,7 +582,7 @@
     </message>
     <message>
       <source>Mesh information</source>
-      <translation>Informatii despre retea</translation>
+      <translation>Informații despre plasă</translation>
     </message>
     <message>
       <source>No information</source>
@@ -599,19 +614,19 @@
     </message>
     <message>
       <source>Degenerated faces</source>
-      <translation>Fete degenerate</translation>
+      <translation>Fațete degenerate</translation>
     </message>
     <message>
       <source>Face indices</source>
-      <translation>Indicii fetelor</translation>
+      <translation>Indicii fațetelor</translation>
     </message>
     <message>
       <source>Number of faces:</source>
-      <translation>Numar de fete:</translation>
+      <translation>Număr de fațete:</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Fete duplicate</translation>
+      <translation>Fațete duplicate</translation>
     </message>
     <message>
       <source>Duplicated points</source>
@@ -619,11 +634,11 @@
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non-manifold</translation>
+      <translation>Obiecte ne-manufacturabile</translation>
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Intersectii cu sine</translation>
+      <translation>Coliziuni interne</translation>
     </message>
     <message>
       <source>All above tests together</source>
@@ -635,7 +650,7 @@
     </message>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evalueaza si repara reteaua</translation>
+      <translation>Evaluează și repară plasa</translation>
     </message>
     <message>
       <source>Folds on surface</source>
@@ -650,27 +665,27 @@
     </message>
     <message>
       <source>Invalid neighbour indices</source>
-      <translation>Indicele vecinului invalid</translation>
+      <translation>Indicii elementelor vecine sunt incorecți</translation>
     </message>
     <message>
       <source>Invalid face indices</source>
-      <translation>Indicele fatetei invalid</translation>
+      <translation>Indicii fațetei sunt incorecți</translation>
     </message>
     <message>
       <source>Invalid point indices</source>
-      <translation>Indicele punctului invalid</translation>
+      <translation>Indicii punctului incorecți</translation>
     </message>
     <message>
       <source>Multiple point indices</source>
-      <translation>Indici multipli de puncte</translation>
+      <translation>Indici multipli de punct</translation>
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non-manifold</translation>
+      <translation>Obiecte ne-manufacturabile</translation>
     </message>
     <message>
       <source>Cannot remove non-manifolds</source>
-      <translation>Nu pot sa inlatur non-manifolds</translation>
+      <translation>Obiect ne manufacturabil</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -686,11 +701,11 @@
     </message>
     <message>
       <source>No non-manifolds</source>
-      <translation>Nici un non-manifold</translation>
+      <translation>Obiecte manufacturabile</translation>
     </message>
     <message>
       <source>%1 non-manifolds</source>
-      <translation>%1 non-manifolds</translation>
+      <translation>%1 ne manufactuabil</translation>
     </message>
     <message>
       <source>No invalid indices</source>
@@ -706,11 +721,11 @@
     </message>
     <message>
       <source>No duplicated faces</source>
-      <translation>Nici o fata duplicata</translation>
+      <translation>Nici o fațetă duplicată</translation>
     </message>
     <message>
       <source>%1 duplicated faces</source>
-      <translation>%1 fete duplicate</translation>
+      <translation>%1 fațete duplicate</translation>
     </message>
     <message>
       <source>No duplicated points</source>
@@ -734,19 +749,19 @@
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Fete duplicate</translation>
+      <translation>Fațete duplicate</translation>
     </message>
     <message>
       <source>No self-intersections</source>
-      <translation>Nici o intersectie cu sine</translation>
+      <translation>Nici o coliziune internă</translation>
     </message>
     <message>
       <source>Self-intersections</source>
-      <translation>Intersectii cu sine</translation>
+      <translation>Coliziuni interne</translation>
     </message>
     <message>
       <source>Mesh repair</source>
-      <translation>Reparare retea</translation>
+      <translation>Reparare plasă</translation>
     </message>
     <message>
       <source>Flipped normals found</source>
@@ -772,14 +787,14 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Settings...</source>
-      <translation type="unfinished">Settings...</translation>
+      <translation>Configurări...</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <source>Evaluation settings</source>
-      <translation type="unfinished">Evaluation settings</translation>
+      <translation>Setările de evaluare</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -787,15 +802,15 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation type="unfinished">Check for non-manifold points</translation>
+      <translation>Verificaţi pentru puncte non-manifold</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation type="unfinished">Enable check for folds on surface</translation>
+      <translation>Activează controlul de pliuri pe suprafaţa</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
-      <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+      <translation>Ia în considerare numai fațetele de suprafață zero zona ca fiind degenerate</translation>
     </message>
   </context>
   <context>
@@ -900,7 +915,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
       <source>Mesh Formats</source>
-      <translation type="unfinished">Mesh Formats</translation>
+      <translation>Plase formate</translation>
     </message>
     <message>
       <source>Export</source>
@@ -916,7 +931,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
-      <translation type="unfinished">Maximum mesh deviation</translation>
+      <translation>Abaterea maximă a ochiurilor plasei</translation>
     </message>
     <message>
       <source>mm</source>
@@ -924,14 +939,14 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Export AMF files using compression</source>
-      <translation type="unfinished">Export AMF files using compression</translation>
+      <translation>Export fișiere AMF utilizând compresia</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
       <source>Mesh view</source>
-      <translation>Visualizare retea</translation>
+      <translation>Vizualizare plasei</translation>
     </message>
     <message>
       <source>Two-side rendering</source>
@@ -939,7 +954,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Backface color</source>
-      <translation>Culoarea fetei ascunse</translation>
+      <translation>Culoarea fațetei posterioare</translation>
     </message>
     <message>
       <source>Smoothing</source>
@@ -971,7 +986,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Default appearance for new meshes</source>
-      <translation>Aspectul implicit pentru retelele noi</translation>
+      <translation>Aspectul implicit pentru plasele noi</translation>
     </message>
     <message>
       <source>Default line color</source>
@@ -979,15 +994,15 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Mesh transparency</source>
-      <translation>Transparenta retelei</translation>
+      <translation>Transparența plasei</translation>
     </message>
     <message>
       <source>Default mesh color</source>
-      <translation>Culoarea implicita a retelei</translation>
+      <translation>Culoarea implicită a plasei</translation>
     </message>
     <message>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Afiseaza caseta de incadrare pentru reteaua selectata sau evidentiata</translation>
+      <translation>Afișează caseta de încadrare pentru plasa selectată sau evidențiată</translation>
     </message>
     <message>
       <source>Line transparency</source>
@@ -1006,11 +1021,11 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Taubin</source>
-      <translation>Taubin</translation>
+      <translation>Netezire Taubin</translation>
     </message>
     <message>
       <source>Laplace</source>
-      <translation>Laplace</translation>
+      <translation>Netezire Laplace</translation>
     </message>
     <message>
       <source>Parameter</source>
@@ -1026,7 +1041,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Mu:</source>
-      <translation>Mu:</translation>
+      <translation>Miu:</translation>
     </message>
     <message>
       <source>Only selection</source>
@@ -1045,7 +1060,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Eliberează</translation>
+      <translation>Șterge</translation>
     </message>
     <message>
       <source>Finish</source>
@@ -1057,6 +1072,45 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <message>
       <source>Finish</source>
       <translation>Terminare</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Suprafaţa se potrivesc</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parametrii</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Selecţie</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Regiune</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Triunghi</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Șterge</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Calculez</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Nici o selecţie</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Selectați o zonă înainte de a plasa suprafața.</translation>
     </message>
   </context>
   <context>
@@ -1079,7 +1133,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
-      <translation>&lt; fete decat</translation>
+      <translation>&lt; fațete decât</translation>
     </message>
     <message>
       <source>Region</source>
@@ -1103,7 +1157,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
-      <translation>&gt; fete decat</translation>
+      <translation>&gt; fațete decât</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1122,11 +1176,11 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <name>MeshGui::Segmentation</name>
     <message>
       <source>Mesh segmentation</source>
-      <translation>Segmentarea retelei</translation>
+      <translation>Segmentarea plasei</translation>
     </message>
     <message>
       <source>Smooth mesh</source>
-      <translation>Netezirea retelei</translation>
+      <translation>Netezirea plasei</translation>
     </message>
     <message>
       <source>Plane</source>
@@ -1164,6 +1218,73 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
       <source>Sphere</source>
       <translation>Sfera</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Curbura</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Formă liberă</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Curbura Max</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Curbura Min</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentarea plasei</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfera</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Toleranţă</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Numar maxim de fete</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametrii...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cilindru</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Bază</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normal</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Axele</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Raza</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Centru</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1177,7 +1298,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Clear</source>
-      <translation>Eliberează</translation>
+      <translation>Șterge</translation>
     </message>
     <message>
       <source>Respect only visible triangles</source>
@@ -1208,6 +1329,13 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
   </context>
   <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>Límite de %1:</translation>
+    </message>
+  </context>
+  <context>
     <name>Mesh_TrimByPlane</name>
     <message>
       <source>Select plane</source>
@@ -1215,7 +1343,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+      <translation>Vă rugăm să selectaţi un plan de la care să tăiaţi ochiurile de plasă.</translation>
     </message>
   </context>
   <context>
@@ -1236,29 +1364,29 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     </message>
     <message>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
+      <translation>A intervenit o eroare necunoscută în timpul rulării OpenSCAD.</translation>
     </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Evalueaza si repara reteaua</translation>
+      <translation>Evaluează și repară plasa</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>Import mesh</source>
-      <translation>Import retea</translation>
+      <translation>Import plasa</translation>
     </message>
     <message>
       <source>Export mesh</source>
-      <translation>Exporta reteaua</translation>
+      <translation>Exporta plasa</translation>
     </message>
     <message>
       <source>Solid Mesh</source>
-      <translation>Retea solida</translation>
+      <translation>Plasă solidă</translation>
     </message>
     <message>
       <source>Boundings</source>
@@ -1318,19 +1446,19 @@ Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     </message>
     <message>
       <source>Meshing Tolerance</source>
-      <translation>Toleranta retelei</translation>
+      <translation>Toleranta plasei</translation>
     </message>
     <message>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>Introduceţi toleranţa pentru geometria retelei:</translation>
+      <translation>Introduceţi toleranţa pentru geometria plasei:</translation>
     </message>
     <message>
       <source>The mesh '%1' is a solid.</source>
-      <translation>Reteaua %1 este un solid.</translation>
+      <translation>Plasa %1 este un solid.</translation>
     </message>
     <message>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>Reteaua %1 nu este un solid.</translation>
+      <translation>Plasa %1 nu este un solid.</translation>
     </message>
     <message>
       <source>Min=&lt;%1,%2,%3&gt;
@@ -1402,75 +1530,79 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>All Mesh Files</source>
-      <translation type="unfinished">All Mesh Files</translation>
+      <translation>Toate fişierele tip plasă</translation>
     </message>
     <message>
       <source>Binary STL</source>
-      <translation type="unfinished">Binary STL</translation>
+      <translation>Binar STL</translation>
     </message>
     <message>
       <source>ASCII STL</source>
-      <translation type="unfinished">ASCII STL</translation>
+      <translation>ASCII STL</translation>
     </message>
     <message>
       <source>Binary Mesh</source>
-      <translation type="unfinished">Binary Mesh</translation>
+      <translation>Ochiurilor de plasă binare</translation>
     </message>
     <message>
       <source>Alias Mesh</source>
-      <translation type="unfinished">Alias Mesh</translation>
+      <translation>Alias Plasă/Mesh</translation>
     </message>
     <message>
       <source>Object File Format</source>
-      <translation type="unfinished">Object File Format</translation>
+      <translation>Format de fişier obiect</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii</source>
-      <translation type="unfinished">Inventor V2.1 ascii</translation>
+      <translation>Inventatorul V2.1 ascii</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
-      <translation type="unfinished">Stanford Polygon</translation>
+      <translation>Stanford poligon</translation>
     </message>
     <message>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Toate fișierele</translation>
     </message>
     <message>
       <source>X3D Extensible 3D</source>
-      <translation type="unfinished">X3D Extensible 3D</translation>
+      <translation>X3D extensibil 3D</translation>
     </message>
     <message>
       <source>VRML V2.0</source>
-      <translation type="unfinished">VRML V2.0</translation>
+      <translation>VRML V2.0</translation>
     </message>
     <message>
       <source>Compressed VRML 2.0</source>
-      <translation type="unfinished">Compressed VRML 2.0</translation>
+      <translation>VRML 2.0 Comprimat</translation>
     </message>
     <message>
       <source>Nastran</source>
-      <translation type="unfinished">Nastran</translation>
+      <translation>Nastran</translation>
     </message>
     <message>
       <source>Python module def</source>
-      <translation type="unfinished">Python module def</translation>
+      <translation>Definiţie de modulul Python</translation>
     </message>
     <message>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+      <translation>[Puncte: %1, margini: %2, fațete: %3]</translation>
     </message>
     <message>
       <source>Import-Export</source>
-      <translation type="unfinished">Import-Export</translation>
+      <translation>Import/Export</translation>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Scalarea</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Introduce factorul de scalare:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Formatul Modelului Simplu</translation>
     </message>
   </context>
   <context>
@@ -1485,11 +1617,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>&amp;Meshes</source>
-      <translation>&amp;Retele</translation>
+      <translation>&amp;Plasele</translation>
     </message>
     <message>
       <source>Mesh tools</source>
-      <translation>Unelte pentru retea</translation>
+      <translation>Unelte pentru plasă</translation>
     </message>
   </context>
 </TS>

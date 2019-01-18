@@ -32,13 +32,13 @@
 
 #include "FaceMaker.h"
 
-#include <Base/Exception.h>
+#include "TopoShape.h"
 #include <memory>
 
 #include <QtGlobal>
 
-TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass);
-TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMakerPublic, Part::FaceMaker);
+TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMaker, Base::BaseClass)
+TYPESYSTEM_SOURCE_ABSTRACT(Part::FaceMakerPublic, Part::FaceMaker)
 
 void Part::FaceMaker::addWire(const TopoDS_Wire& w)
 {
@@ -78,7 +78,7 @@ const TopoDS_Face& Part::FaceMaker::Face()
 {
     const TopoDS_Shape &sh = this->Shape();
     if(sh.IsNull())
-        throw Base::Exception("Part::FaceMaker: result shape is null.");
+        throw NullShapeException("Part::FaceMaker: result shape is null.");
     if (sh.ShapeType() != TopAbs_FACE)
         throw Base::TypeError("Part::FaceMaker: return shape is not a single face.");
     return TopoDS::Face(sh);
@@ -164,7 +164,7 @@ void Part::FaceMaker::throwNotImplemented()
 
 //----------------------------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::FaceMakerSimple, Part::FaceMakerPublic);
+TYPESYSTEM_SOURCE(Part::FaceMakerSimple, Part::FaceMakerPublic)
 
 
 std::string Part::FaceMakerSimple::getUserFriendlyName() const

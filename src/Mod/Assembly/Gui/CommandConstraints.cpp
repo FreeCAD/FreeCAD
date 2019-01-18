@@ -89,7 +89,7 @@ bool getConstraintPrerequisits(Assembly::Product** Asm, Assembly::ConstraintGrou
     *ConstGrp = getConstraintGroup(*Asm);
 
     if(!*ConstGrp)
-        throw Base::Exception("Could not create Assembly::ConstraintGroup in active Assembly");
+        throw Base::RuntimeError("Could not create Assembly::ConstraintGroup in active Assembly");
 
     // return with no error
     return false;

@@ -483,7 +483,7 @@ Base::Vector2d Generic::apparentInter(Generic* g)
     // Line Intersetion (taken from ViewProviderSketch.cpp)
     double det = dir0.x*dir1.y - dir0.y*dir1.x;
     if ((det > 0 ? det : -det) < 1e-10)
-        throw Base::Exception("Invalid selection - Det = 0");
+        throw Base::ValueError("Invalid selection - Det = 0");
 
     double c0 = dir0.y*points.at(0).x - dir0.x*points.at(0).y;
     double c1 = dir1.y*g->points.at(1).x - dir1.x*g->points.at(1).y;
@@ -734,36 +734,61 @@ TopoDS_Edge BSpline::isCircle2(bool& arc)
     GeomAPI_ProjectPointOnCurve proj1;
     GeomAPI_ProjectPointOnCurve proj2;
     GeomAPI_ProjectPointOnCurve projm;
-    proj1.Init(p1, curve, f, l);
-    proj2.Init(p2, curve, f, l);
-    projm.Init(pm, curve, f, l);
+    try {
+        proj1.Init(p1, curve, f, l);
+        proj1.Perform(p1);
+        proj2.Init(p2, curve, f, l);
+        proj2.Perform(p2);
+        projm.Init(pm, curve, f, l);
+        projm.Perform(pm);
+    }
+    catch(const StdFail_NotDone &e) {
+        Base::Console().Log("Geometry::isCircle2 - init: %s\n",e.GetMessageString());
+        return result;
+    }
+    if ( (proj1.NbPoints() == 0) ||
+         (proj2.NbPoints() == 0) ||
+         (projm.NbPoints() == 0) ) {
+        return result;
+    }
+    gp_Pnt pc1, pc2, pcm;
 
     // get projected points
-    gp_Pnt pc1 = proj1.NearestPoint();
-    gp_Pnt pc2 = proj2.NearestPoint();
-    gp_Pnt pcm = projm.NearestPoint();
+    try {
+        pc1 = proj1.NearestPoint();
+        pc2 = proj2.NearestPoint();
+        pcm = projm.NearestPoint();
+    }
+    catch(const StdFail_NotDone &e) {
+        Base::Console().Log("Geometry::isCircle2 - nearPoint: %s\n",e.GetMessageString());
+        return result;
+    }
 
     // make 2 circles and find their radii
     gce_MakeCirc gce_circ1 = gce_MakeCirc(s,pc1,pcm);   //3 point circle
+    if (gce_circ1.Status() != gce_Done) {
+        return result;
+    }
     gp_Circ circle1 = gce_circ1.Value();
     double radius1 = circle1.Radius();
     gp_Pnt center1 = circle1.Location(); 
     Base::Vector3d vc1 = DrawUtil::gpPnt2V3(center1);
 
     gce_MakeCirc gce_circ2 = gce_MakeCirc(pcm,pc2,e);
+    if (gce_circ2.Status() != gce_Done) {
+        return result;
+    }
     gp_Circ circle2 = gce_circ2.Value();
     double radius2 = circle2.Radius();
     gp_Pnt center2 = circle2.Location();
     Base::Vector3d vc2 = DrawUtil::gpPnt2V3(center2);
 
-    // test circle creation and compare radii & centers
-    double allowError = 0.0008;          //trial and error 8/10,000mm printer resolution is 0.085mm
+    // compare radii & centers
+    double allowError = 0.001;           //mm^-3 good enough for printing
     double radius;
     Base::Vector3d center;
-    if ( (gce_circ1.Status() == gce_Done) && 
-         (gce_circ2.Status() == gce_Done) && 
-         (DrawUtil::fpCompare(radius2,radius1, allowError)) &&
-         (vc1.IsEqual(vc2,allowError))) {
+    if ( (DrawUtil::fpCompare(radius2,radius1, allowError)) &&
+         (vc1.IsEqual(vc2,allowError)) ) {
         if (arc) {
             GC_MakeArcOfCircle makeArc(s,pcm,e);
             Handle(Geom_TrimmedCurve) tCurve = makeArc.Value();

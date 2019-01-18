@@ -427,7 +427,7 @@ void Sheet::getCellAddress(const Property *prop, CellAddress & address)
     if (i != propAddress.end())
         address = i->second;
     else
-        throw Base::Exception("Property is not a cell");
+        throw Base::TypeError("Property is not a cell");
 }
 
 /**
@@ -1137,14 +1137,14 @@ void Sheet::setAlias(CellAddress address, const std::string &alias)
         if (existingAlias == address.toString()) // Same as old?
             return;
         else
-            throw Base::Exception("Alias already defined");
+            throw Base::ValueError("Alias already defined");
     }
     else if (alias.size() == 0) // Empty?
         cells.setAlias(address, "");
     else if (isValidAlias(alias)) // Valid?
         cells.setAlias(address, alias);
     else
-        throw Base::Exception("Invalid alias");
+        throw Base::ValueError("Invalid alias");
 }
 
 /**

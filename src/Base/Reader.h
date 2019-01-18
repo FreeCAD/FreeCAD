@@ -26,6 +26,7 @@
 
 #include <string>
 #include <map>
+#include <bitset>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>
@@ -47,14 +48,14 @@ namespace Base
 {
 
 
-/** The XML reader class 
+/** The XML reader class
  * This is an important helper class for the store and retrieval system
- * of objects in FreeCAD. These classes mainly inherit the App::Persitance 
+ * of objects in FreeCAD. These classes mainly inherit the App::Persitance
  * base class and implement the Restore() method.
  *  \par
- * The reader gets mainly initialized by the App::Document on retrieving a 
+ * The reader gets mainly initialized by the App::Document on retrieving a
  * document out of a file. From there subsequently the Restore() method will
- * by called on all object stored. 
+ * by called on all object stored.
  *  \par
  * A simple example is the Restore of App::PropertyString:
  *  \code
@@ -84,9 +85,9 @@ void PropertyContainer::Save (short indent,std::ostream &str)
     std::map<std::string,Property*>::iterator it;
     for(it = Map.begin(); it != Map.end(); ++it)
     {
-        str << ind(indent+1) << "<Property name=\"" << it->first << "\" type=\"" << it->second->getTypeId().getName() << "\">" ;    
+        str << ind(indent+1) << "<Property name=\"" << it->first << "\" type=\"" << it->second->getTypeId().getName() << "\">" ;
         it->second->Save(indent+2,str);
-        str << "</Property>" << endl;    
+        str << "</Property>" << endl;
     }
     str << ind(indent) << "</Properties>" << endl;
 }
@@ -115,6 +116,12 @@ void PropertyContainer::Restore(Base::Reader &reader)
 class BaseExport XMLReader : public XERCES_CPP_NAMESPACE_QUALIFIER DefaultHandler
 {
 public:
+    enum ReaderStatus {
+        PartialRestore = 0,                     // This bit indicates that a partial restore took place somewhere in this Document
+        PartialRestoreInDocumentObject = 1,     // This bit is local to the DocumentObject being read indicating a partial restore therein
+        PartialRestoreInProperty = 2,           // Local to the Property
+        PartialRestoreInObject = 3              // Local to the object partially restored itself
+    };
     /// open the file and read the first element
     XMLReader(const char* FileName, std::istream&);
     ~XMLReader();
@@ -172,6 +179,18 @@ public:
     std::string ProgramVersion;
     /// Version of the file format
     int FileVersion;
+
+    /// sets simultaneously the global and local PartialRestore bits
+    void setPartialRestore(bool on);
+
+    void clearPartialRestoreDocumentObject(void);
+    void clearPartialRestoreProperty(void);
+    void clearPartialRestoreObject(void);
+
+    /// return the status bits
+    bool testStatus(ReaderStatus pos) const;
+    /// set the status bits
+    void setStatus(ReaderStatus pos, bool on);
 
 protected:
     /// read the next element
@@ -252,6 +271,8 @@ protected:
     };
     std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
+
+    std::bitset<32> StatusBits;
 };
 
 class BaseExport Reader : public std::istream

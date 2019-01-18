@@ -20,13 +20,17 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,FreeCADGui,os,urllib
+import FreeCAD,FreeCADGui,os,sys
+if sys.version_info.major < 3:
+    from urllib import unquote
+else:
+    from urllib.parse import unquote
 # filename will be given before this script is run
 cfolder = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
 if cfolder:
     if not os.path.isdir(cfolder):
         cfolder = os.path.dirname(cfolder)
-    f = urllib.unquote(filename).replace("+"," ")
+    f = unquote(filename).replace("+"," ")
     FreeCAD.open(os.path.join(cfolder,f))
     FreeCADGui.activeDocument().sendMsgToViews("ViewFit")
 

@@ -96,7 +96,8 @@ public:
   App::PropertyInteger   TypeOutput;
   App::PropertyInteger   TypeAll;
   App::PropertyInteger   TypeTransient;
-  
+  App::PropertyInteger   TypeNoRecompute;
+
   App::PropertyQuantity  QuantityLength;
   App::PropertyQuantity  QuantityOther;
   //App::PropertyQuantity  QuantityMass;

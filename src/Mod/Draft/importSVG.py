@@ -233,16 +233,16 @@ def getcolor(color):
     elif color.lower().startswith('rgb('):
         cvalues=color[3:].lstrip('(').rstrip(')').replace('%','').split(',')
         if '%' in color:
-            r,g,b = [int(cv)/100.0 for cv in cvalues]
+            r,g,b = [int(float(cv))/100.0 for cv in cvalues]
         else:
-            r,g,b = [int(cv)/255.0 for cv in cvalues]
+            r,g,b = [int(float(cv))/255.0 for cv in cvalues]
         return (r,g,b,0.0)
     else:
         v=svgcolorslower.get(color.lower())
         if v:
             r,g,b = [float(vf)/255.0 for vf in v]
             return (r,g,b,0.0)
-        #for k,v in svgcolors.iteritems():
+        #for k,v in svgcolors.items():
         #    if (k.lower() == color.lower()): pass
 
 def transformCopyShape(shape,m):
@@ -1118,6 +1118,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 sy = argsplit[1] if len(argsplit) > 1 else sx
                                 m.scale(Vector(sx,sy,1))
                         elif transformation == 'rotate':
+                                cx = 0
+                                cy = 0
                                 angle = argsplit[0]
                                 if len(argsplit) >= 3:
                                         cx = argsplit[1]

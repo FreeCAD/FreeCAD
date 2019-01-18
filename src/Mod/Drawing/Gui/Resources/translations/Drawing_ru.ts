@@ -4,20 +4,20 @@
   <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-      <location filename="../../Command.cpp" line="+474"/>
+      <location filename="../../Command.cpp" line="+478"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Annotation</source>
-      <translation>&amp;Аннотация</translation>
+      <translation>&amp;Заметка</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Вставить аннотацию в активный документ</translation>
+      <translation>Вставить заметку в активный чертёж</translation>
     </message>
   </context>
   <context>
@@ -25,43 +25,43 @@
     <message>
       <location line="+44"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Clip</source>
-      <translation>&amp;Клип</translation>
+      <translation>&amp;Срез</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a clip group in the active drawing</source>
-      <translation>Вставить группу клипов в активный чертёж </translation>
+      <translation>Вставить группу срезов в активный чертёж</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingDraftView</name>
     <message>
-      <location line="+185"/>
+      <location line="+193"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Draft View</source>
-      <translation>&amp;Представление проекта</translation>
+      <translation>&amp;Эскизный вид</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Вставить представление проекта выбранного объекта(ов) в активный документ</translation>
+      <translation>Вставить эскиз выбранного объекта(ов) в активный чертёж</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingExportPage</name>
     <message>
-      <location line="-92"/>
+      <location line="-96"/>
       <source>File</source>
       <translation>Файл</translation>
     </message>
@@ -80,9 +80,9 @@
   <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-      <location line="-359"/>
+      <location line="-363"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -96,7 +96,7 @@
     <message>
       <location line="-179"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -110,7 +110,7 @@
     <message>
       <location line="+214"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -126,9 +126,9 @@
   <context>
     <name>CmdDrawingOpen</name>
     <message>
-      <location line="-250"/>
+      <location line="-254"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -138,26 +138,26 @@
     <message>
       <location line="+1"/>
       <source>Open a scalable vector graphic</source>
-      <translation>Открыть масштабируемую векторную графику</translation>
+      <translation>Открыть масштабируемую векторную графику (svg)</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-      <location line="+375"/>
+      <location line="+379"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Open &amp;browser view</source>
-      <translation>Открыть в &amp;браузере</translation>
+      <translation>Открыть в &amp;обозревателе</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Opens the selected page in a browser view</source>
-      <translation>Открыть выбранную страницу для просмотра в браузере</translation>
+      <translation>Открыть выбранную страницу для просмотра во встроенном обозревателе</translation>
     </message>
   </context>
   <context>
@@ -165,7 +165,7 @@
     <message>
       <location line="-54"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -181,9 +181,9 @@
   <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-      <location line="+287"/>
+      <location line="+295"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -194,7 +194,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Проекция фигуры на выбранную плоскость</translation>
+      <translation>Проекция фигуры на заданную плоскость</translation>
     </message>
   </context>
   <context>
@@ -202,26 +202,26 @@
     <message>
       <location line="+64"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>&amp;Spreadsheet View</source>
-      <translation>&amp;Представление таблицы</translation>
+      <translation>&amp;Вставка таблицы</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a view of a selected spreadsheet in the active drawing</source>
-      <translation>Вставить представление выбранной таблицы в активный документ</translation>
+      <translation>Вставить выбранную таблицу в активный чертёж</translation>
     </message>
   </context>
   <context>
     <name>CmdDrawingSymbol</name>
     <message>
-      <location line="-179"/>
+      <location line="-187"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -232,7 +232,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Вставить символы из файла svg в активный чертёж</translation>
+      <translation>Вставить символ из файла svg в активный чертёж</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location line="+6"/>
       <source>&amp;Native</source>
-      <translation>&amp;Собственный</translation>
+      <translation>&amp;Встроенный</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -265,7 +265,7 @@
     <message>
       <location line="+4"/>
       <source>&amp;High Quality Antialiasing</source>
-      <translation>&amp;Высокое качество сглаживания</translation>
+      <translation>&amp;Высококачественное сглаживания</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -275,7 +275,7 @@
     <message>
       <location line="+1"/>
       <source>Could not open file '%1'.</source>
-      <translation>Не удалось открыть файл '% 1'.</translation>
+      <translation>Не удалось открыть файл '%1'.</translation>
     </message>
     <message>
       <location line="+87"/>
@@ -291,7 +291,7 @@
       <location line="+110"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
-      <translation>Принтер использует другую ориентацию бумаги, чем чертёж.
+      <translation>Принтер использует отличающуюся от чертежа ориентацию бумаги.
 Хотите продолжить?</translation>
     </message>
     <message>
@@ -341,26 +341,26 @@ Do you want to continue?</source>
     <message>
       <location line="+81"/>
       <source>Different orientation</source>
-      <translation>Другая ориентация</translation>
+      <translation>Отличающаяся ориентация</translation>
     </message>
     <message>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-      <translation>Принтер использует другую ориентацию бумаги, чем чертёж.
+      <translation>Принтер использует отличающуюся от чертежа ориентацию бумаги.
 Хотите продолжить?</translation>
     </message>
     <message>
       <location line="+8"/>
       <location line="+8"/>
       <source>Different paper size</source>
-      <translation>Другой размер бумаги</translation>
+      <translation>Отличающийся формат листа</translation>
     </message>
     <message>
       <location line="-7"/>
       <location line="+8"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-      <translation>Принтер использует другой размер бумаги, чем чертёж.
+      <translation>Принтер использует отличающийся от чертежа формат листа.
 Хотите продолжить?</translation>
     </message>
     <message>
@@ -371,7 +371,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>Can't open file '%1' for writing.</source>
-      <translation>Не удается открыть файл '%1' для записи.</translation>
+      <translation>Не удается записать в файл '%1'.</translation>
     </message>
   </context>
   <context>
@@ -395,16 +395,16 @@ Do you want to continue?</source>
       <location line="+25"/>
       <location line="+60"/>
       <source>Right click for axonometric settings</source>
-      <translation>Правый щелчок мыши для установок аксонометрии</translation>
+      <translation>Правый щелчок мыши для настроек аксонометрии</translation>
     </message>
     <message>
       <location line="+106"/>
       <source>Top left x / y</source>
-      <translation>Вверх слева x / y</translation>
+      <translation>Cлева x / Сверху y</translation>
     </message>
     <message>
       <source>Spacing dx / dy   </source>
-      <translation>Интервал dx / dy   </translation>
+      <translation>Смещение dx / dy   </translation>
     </message>
     <message>
       <source> Axis out and right</source>
@@ -417,12 +417,12 @@ Do you want to continue?</source>
     <message>
       <location line="+48"/>
       <source>Spacing dx / dy</source>
-      <translation>Интервал dx / dy</translation>
+      <translation>Смещение dx / dy</translation>
     </message>
     <message>
       <location line="+71"/>
       <source>Axis out and right</source>
-      <translation>Оси наружу и вправо</translation>
+      <translation>Ось вне и справа</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -492,18 +492,18 @@ Do you want to continue?</source>
     <message>
       <location line="+7"/>
       <source> View projection   </source>
-      <translation>Просмотр проекции</translation>
+      <translation> Тип аксонометрии   </translation>
     </message>
     <message>
       <location line="+7"/>
       <source> Axis aligned up</source>
-      <translation>Ось выровнена вверх</translation>
+      <translation> Ось выравнивания вверх</translation>
     </message>
     <message>
       <location line="+41"/>
       <location line="+23"/>
       <source>Flip</source>
-      <translation>Вращать</translation>
+      <translation>Разворот</translation>
     </message>
     <message>
       <location line="-10"/>
@@ -643,7 +643,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>Visible sewn edges</source>
-      <translation>Показать сшитые края</translation>
+      <translation>Видимые сшитые края</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -653,7 +653,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>Visible isoparameters</source>
-      <translation>Видимые изопараметры</translation>
+      <translation>Параметры отображения изометрии</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -678,12 +678,12 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>Hidden isoparameters</source>
-      <translation>Скрытые изопараметры</translation>
+      <translation>Параметры скрытия изометрии</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Project shapes</source>
-      <translation>Проекция фигуры</translation>
+      <translation>Настройка проекции фигур</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -693,7 +693,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>There is currently no active document to complete the operation</source>
-      <translation>В настоящее время нет активного документа для завершения операции</translation>
+      <translation>В настоящее время нет активного документа для выполнения этой операции</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -703,7 +703,7 @@ Do you want to continue?</source>
     <message>
       <location line="+1"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>В настоящее время нет активного вида для завершения операции</translation>
+      <translation>В настоящее время нет активного вида для выполнения этой операции</translation>
     </message>
   </context>
   <context>
@@ -759,12 +759,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="-355"/>
       <source>Landscape</source>
-      <translation>Альбом</translation>
+      <translation>Альбомный</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Portrait</source>
-      <translation>Портрет</translation>
+      <translation>Портретный</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -774,7 +774,7 @@ Do you want to continue?</source>
     <message>
       <location line="+5"/>
       <source>Insert new %1%2 %3 drawing</source>
-      <translation>Вставить новый чертёж %1 %2 %3</translation>
+      <translation>Вставить новый чертёж %1 %2%3</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -784,14 +784,14 @@ Do you want to continue?</source>
     <message>
       <location line="+6"/>
       <source>Insert new %1%2 %3 (%4) drawing</source>
-      <translation>Вставить новый чертёж %1 %2 %3 (%4)</translation>
+      <translation>Вставить новый чертёж %1%2 %3 (%4)</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location line="-169"/>
-      <location line="+517"/>
+      <location line="-173"/>
+      <location line="+521"/>
       <source>Choose an SVG file to open</source>
       <translation>Выберите файл SVG для открытия</translation>
     </message>
@@ -807,15 +807,15 @@ Do you want to continue?</source>
       <location line="-268"/>
       <location line="+79"/>
       <location line="+50"/>
-      <location line="+187"/>
-      <location line="+119"/>
+      <location line="+191"/>
+      <location line="+123"/>
       <source>Wrong selection</source>
       <translation>Неправильный выбор</translation>
     </message>
     <message>
-      <location line="-434"/>
+      <location line="-442"/>
       <source>Select a Part object.</source>
-      <translation>Выберите объект Деталь.</translation>
+      <translation>Выберите объект типа Деталь.</translation>
     </message>
     <message>
       <source>No page to insert</source>
@@ -830,42 +830,42 @@ Do you want to continue?</source>
       <translation>Создайте страницу для вставки видов</translation>
     </message>
     <message>
-      <location line="-249"/>
-      <location line="+517"/>
-      <location line="+53"/>
+      <location line="-253"/>
+      <location line="+521"/>
+      <location line="+57"/>
       <source>Scalable Vector Graphic</source>
       <translation>Масштабируемая векторная графика</translation>
     </message>
     <message>
-      <location line="-313"/>
+      <location line="-317"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>No page found</source>
-      <translation>Страницы не найдены</translation>
+      <translation>Страниц не найдено</translation>
     </message>
     <message>
-      <location line="-431"/>
+      <location line="-439"/>
       <location line="+79"/>
       <location line="+81"/>
       <location line="+48"/>
       <location line="+45"/>
-      <location line="+179"/>
+      <location line="+187"/>
       <source>Create a page first.</source>
       <translation>Сначала создайте страницу.</translation>
     </message>
     <message>
-      <location line="-362"/>
+      <location line="-370"/>
       <source>Select exactly one Part object.</source>
       <translation>Выберите ровно один объект Детали.</translation>
     </message>
     <message>
       <location line="+50"/>
-      <location line="+187"/>
+      <location line="+191"/>
       <source>Select one Page object.</source>
-      <translation>Выберите один объект Страница.</translation>
+      <translation>Выберите один объект типа Страница.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -873,9 +873,9 @@ Do you want to continue?</source>
       <translation>Все файлы</translation>
     </message>
     <message>
-      <location line="+113"/>
+      <location line="+117"/>
       <source>Select exactly one Spreadsheet object.</source>
-      <translation>Выберите только один объект Таблица.</translation>
+      <translation>Выберите только один объект типа Таблица.</translation>
     </message>
     <message>
       <source>SVG (*.svg)</source>
@@ -890,7 +890,7 @@ Do you want to continue?</source>
       <translation>Все файлы (*.*)</translation>
     </message>
     <message>
-      <location line="-111"/>
+      <location line="-115"/>
       <source>Export page</source>
       <translation>Экспортировать страницу</translation>
     </message>
@@ -925,19 +925,19 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskOrthoViews.cpp" line="+51"/>
-      <location line="+926"/>
+      <location line="+930"/>
       <source>Make axonometric...</source>
       <translation>Сделать аксонометрическим...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Edit axonometric settings...</source>
-      <translation>Изменить аксонометрические настройки...</translation>
+      <translation>Изменить настройки аксонометрии...</translation>
     </message>
     <message>
-      <location line="-925"/>
-      <location line="+926"/>
+      <location line="-929"/>
+      <location line="+930"/>
       <source>Make orthographic</source>
       <translation>Сделать ортографическим</translation>
     </message>
@@ -947,7 +947,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="+37"/>
       <source>Drawing</source>
-      <translation>Чертеж</translation>
+      <translation>Чертёж</translation>
     </message>
   </context>
 </TS>

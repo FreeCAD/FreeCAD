@@ -141,6 +141,15 @@ std::vector< DocumentObject* > GroupExtension::removeObjects(std::vector< Docume
 
 void GroupExtension::removeObjectsFromDocument()
 {
+#if 1
+    while (Group.getSize() > 0) {
+        // Remove the objects step by step because it can happen
+        // that an object is part of several groups and thus a
+        // double destruction could be possible
+        const std::vector<DocumentObject*> & grp = Group.getValues();
+        removeObjectFromDocument(grp.front());
+    }
+#else
     const std::vector<DocumentObject*> & grp = Group.getValues();
     // Use set so iterate on each linked object exactly one time (in case of multiple links to the same document)
     std::set<DocumentObject*> grpSet (grp.begin(), grp.end());
@@ -148,10 +157,15 @@ void GroupExtension::removeObjectsFromDocument()
     for (std::set<DocumentObject*>::iterator it = grpSet.begin(); it != grpSet.end(); ++it) {
         removeObjectFromDocument(*it);
     }
+#endif
 }
 
 void GroupExtension::removeObjectFromDocument(DocumentObject* obj)
 {
+    // check that object is not invalid
+    if (!obj || !obj->getNameInDocument())
+        return;
+
     // remove all children
     if (obj->hasExtension(GroupExtension::getExtensionClassTypeId())) {
         GroupExtension *grp = static_cast<GroupExtension*>(obj->getExtension(GroupExtension::getExtensionClassTypeId()));
@@ -186,7 +200,7 @@ bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
         if (child == obj) {
             return true;
         } else if (child == getExtendedObject()) {
-            Base::Exception("Cyclic dependencies detected: Search cannot be performed");
+            Base::RuntimeError("Cyclic dependencies detected: Search cannot be performed");
         } else if ( recursive && child->hasExtension(GroupExtension::getExtensionClassTypeId()) ) {
 
             App::GroupExtension *subGroup = static_cast<App::GroupExtension *> (
@@ -227,7 +241,7 @@ bool GroupExtension::recursiveHasObject(const DocumentObject* obj, const GroupEx
             auto ext = child->getExtensionByType<GroupExtension>();
             
             if(std::find(history.begin(), history.end(), ext) != history.end())
-                Base::Exception("Cyclic dependencies detected: Search cannot be performed");
+                Base::RuntimeError("Cyclic dependencies detected: Search cannot be performed");
 
             if (recursiveHasObject(obj, ext, history)) {
                 return true;
@@ -326,7 +340,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
             //if an error was found we need to correct the values and inform the user
             if(error) {
                 Group.setValues(corrected);
-                throw Base::Exception("Object can only be in a single Group");
+                throw Base::RuntimeError("Object can only be in a single Group");
             }
         }
     }

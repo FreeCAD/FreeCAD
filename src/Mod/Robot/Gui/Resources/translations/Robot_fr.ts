@@ -504,6 +504,11 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Visitez %1 et copiez les fichiers vers %2</translation>
     </message>
+    <message>
+      <location filename="../../ViewProviderTrajectory.cpp" line="+164"/>
+      <source>Modify</source>
+      <translation>Modifier</translation>
+    </message>
   </context>
   <context>
     <name>RobotGui::DlgTrajectorySimulate</name>

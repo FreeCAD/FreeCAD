@@ -112,6 +112,11 @@ public:
     void SplitFacet(unsigned long ulFacetPos, const Base::Vector3f& rP1,
                     const Base::Vector3f& rP2);
     /**
+     * Collapse a vertex. At the moment only removing inner vertexes referenced
+     * by three facets is supposrted.
+     */
+    bool CollapseVertex(const VertexCollapse& vc);
+    /**
      * Collapses the common edge of two adjacent facets. This operation removes
      * one common point of the collapsed edge and the facets \a ulFacetPos and
      * \a ulNeighbour from the data structure.

@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,math,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,math,DraftVecUtils,ArchCommands,sys
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -294,10 +294,11 @@ class _ViewProviderAxis:
 
     def setProperties(self,vobj):
 
+        ts = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("textheight",350)
         pl = vobj.PropertiesList
         if not "BubbleSize" in pl:
             vobj.addProperty("App::PropertyLength","BubbleSize","Axis", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"))
-            vobj.BubbleSize = 500
+            vobj.BubbleSize = ts*1.42
         if not "NumberingStyle" in pl:
             vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Axis", QT_TRANSLATE_NOOP("App::Property","The numbering style"))
             vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
@@ -323,7 +324,7 @@ class _ViewProviderAxis:
             vobj.FontName = Draft.getParam("textfont","Arial,Sans")
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","Axis",QT_TRANSLATE_NOOP("App::Property","The font size"))
-            vobj.FontSize = 350
+            vobj.FontSize = ts
         if not "ShowLabel" in pl:
             vobj.addProperty("App::PropertyBool","ShowLabel","Axis",QT_TRANSLATE_NOOP("App::Property","If true, show the labels"))
         if not "LabelOffset" in pl:
@@ -542,7 +543,7 @@ class _ViewProviderAxis:
                                 tx = coin.SoAsciiText()
                                 tx.justification = coin.SoText2.LEFT
                                 t = vobj.Object.Labels[i]
-                                if isinstance(t,unicode):
+                                if sys.version_info.major < 3 and isinstance(t,unicode):
                                     t = t.encode("utf8")
                                 tx.string.setValue(t)
                                 if hasattr(vobj,"FontSize"):
@@ -575,7 +576,10 @@ class _ViewProviderAxis:
                ('C',100),('XC',90),('L',50),('XL',40),
                ('X',10),('IX',9),('V',5),('IV',4),('I',1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
-            return vobj.Object.CustomNumber.encode("utf8")
+            if sys.version_info.major < 3:
+                return vobj.Object.CustomNumber.encode("utf8")
+            else:
+                return vobj.Object.CustomNumber
         elif hasattr(vobj,"NumberingStyle"):
             if vobj.NumberingStyle == "1,2,3":
                 return str(num+1)

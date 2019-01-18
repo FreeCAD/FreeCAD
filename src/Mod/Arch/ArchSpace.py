@@ -148,7 +148,7 @@ ConditioningTypes = [
 "NaturallyVentedOnly"
 ]
 
-import FreeCAD,ArchComponent,ArchCommands,math,Draft
+import FreeCAD,ArchComponent,ArchCommands,math,Draft,sys
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -609,10 +609,12 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                             t = t.replace("$walls",vobj.Object.FinishWalls)
                         if hasattr(vobj.Object,"FinishCeiling"):
                             t = t.replace("$ceiling",vobj.Object.FinishCeiling)
+                        if sys.version_info.major < 3:
+                            t = t.encode("utf8")
                         if first:
-                            text1.append(t.encode("utf8"))
+                            text1.append(t)
                         else:
-                            text2.append(t.encode("utf8"))
+                            text2.append(t)
                     first = False
                 if text1:
                     self.text1.string.setValues(text1)

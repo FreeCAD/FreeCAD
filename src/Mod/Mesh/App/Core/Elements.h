@@ -79,6 +79,13 @@ struct MeshExport EdgeCollapse
   std::vector<unsigned long> _changeFacets;
 };
 
+struct MeshExport VertexCollapse
+{
+  unsigned long _point;
+  std::vector<unsigned long> _circumPoints;
+  std::vector<unsigned long> _circumFacets;
+};
+
 /**
  * The MeshPoint class represents a point in the mesh data structure. The class inherits from
  * Vector3f and provides some additional information such as flag state and property value.
@@ -441,7 +448,7 @@ public:
    * This does actually the same as IntersectWithLine() with one additionally constraint that the angle 
    * between the direction of the line and the normal of the plane must not exceed \a fMaxAngle.
    */
-  bool Foraminate (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes, float fMaxAngle = F_PI) const;
+  bool Foraminate (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes, float fMaxAngle = Mathf::PI) const;
   /** Checks if the facet intersects with the plane defined by the base \a rclBase and the normal 
    * \a rclNormal and returns true if two points are found, false otherwise.
    */

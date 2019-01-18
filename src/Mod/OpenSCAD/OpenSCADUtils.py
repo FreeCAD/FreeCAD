@@ -69,10 +69,10 @@ def searchforopenscadexe():
             if os.path.isfile(testpath):
                 return testpath
     elif sys.platform == 'darwin':
-        ascript = ('tell application "Finder"\n'
-        'POSIX path of (application file id "org.openscad.OpenSCAD"'
-        'as alias)\n'
-        'end tell')
+        ascript = (b'tell application "Finder"\n'
+        b'POSIX path of (application file id "org.openscad.OpenSCAD"'
+        b'as alias)\n'
+        b'end tell')
         p1=subprocess.Popen(['osascript','-'],stdin=subprocess.PIPE,\
                 stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         stdout,stderr = p1.communicate(ascript)
@@ -100,7 +100,11 @@ def workaroundforissue128needed():
     see https://github.com/openscad/openscad/issues/128'''
     vdate=getopenscadversion().split('-')[0]
     vdate=vdate.split(' ')[2].split('.')
-    year,mon=int(vdate[0]),int(vdate[1])
+    if len(vdate) == 1: # probably YYYYMMDD format (i.e. git version)
+        vdate = vdate[0]
+        year, mon = int("".join(vdate[0:4])), int("".join(vdate[4:6]))
+    else: # YYYY.MM(.DD?) (latest release)
+        year,mon=int(vdate[0]),int(vdate[1])
     return (year<2012 or (year==2012 and (mon <6 or (mon == 6 and \
         (len(vdate)<3 or int(vdate[2]) <=23)))))
     #ifdate=int(vdate[0])+(int(vdate[1])-1)/12.0

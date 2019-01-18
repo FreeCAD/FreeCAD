@@ -257,6 +257,7 @@ class Component:
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcRole\n")
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+            obj.MoveWithHost = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveWithHost",False)
         if not "IfcProperties" in pl:
             obj.addProperty("App::PropertyMap","IfcProperties","Component",QT_TRANSLATE_NOOP("App::Property","Stores IFC properties"))
         if not "VerticalArea" in pl:
@@ -304,31 +305,56 @@ class Component:
     def onBeforeChange(self,obj,prop):
 
         if prop == "Placement":
-            self.placementBefore = FreeCAD.Placement(obj.Placement)
+            self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
 
         if prop == "Placement":
-            if hasattr(self,"placementBefore"):
-                delta = FreeCAD.Placement()
-                delta.Base = obj.Placement.Base.sub(self.placementBefore.Base)
-                delta.Rotation = obj.Placement.multiply(self.placementBefore.inverse()).Rotation
-                for o in self.getIncluded(obj,movable=True):
-                    o.Placement = o.Placement.multiply(delta)
+            if hasattr(self,"oldPlacement"):
+                if self.oldPlacement:
+                    import DraftVecUtils
+                    deltap = obj.Placement.Base.sub(self.oldPlacement.Base)
+                    if deltap.Length == 0:
+                        deltap = None
+                    v = FreeCAD.Vector(0,0,1)
+                    deltar = FreeCAD.Rotation(self.oldPlacement.Rotation.multVec(v),obj.Placement.Rotation.multVec(v))
+                    #print "Rotation",deltar.Axis,deltar.Angle
+                    if deltar.Angle < 0.0001:
+                        deltar = None
+                    for child in self.getMovableChildren(obj):
+                        #print "moving ",child.Label
+                        if deltar:
+                            #child.Placement.Rotation = child.Placement.Rotation.multiply(deltar) - not enough, child must also move
+                            # use shape methods to obtain a correct placement
+                            import Part,math
+                            shape = Part.Shape()
+                            shape.Placement = child.Placement
+                            #print("angle before rotation:",shape.Placement.Rotation.Angle)
+                            #print("rotation angle:",math.degrees(deltar.Angle))
+                            shape.rotate(DraftVecUtils.tup(self.oldPlacement.Base), DraftVecUtils.tup(deltar.Axis), math.degrees(deltar.Angle))
+                            #print("angle after rotation:",shape.Placement.Rotation.Angle)
+                            child.Placement = shape.Placement
+                        if deltap:
+                            child.Placement.move(deltap)
 
-    def getIncluded(self,obj,movable=False):
+    def getMovableChildren(self,obj):
 
-        ilist = []
+        ilist = obj.Additions + obj.Subtractions
         for o in obj.InList:
             if hasattr(o,"Hosts"):
                 if obj in o.Hosts:
-                    if movable:
-                        if hasattr(o,"MoveWithHost"):
-                            if o.MoveWithHost:
-                                ilist.append(o)
-                    else:
-                        ilist.append(o)
-        return ilist
+                    ilist.append(o)
+            elif hasattr(o,"Host"):
+                if obj == o.Host:
+                    ilist.append(o)
+        ilist2 = []
+        for o in ilist:
+            if hasattr(o,"MoveWithHost"):
+                if o.MoveWithHost:
+                    ilist2.append(o)
+            else:
+                ilist2.append(o)
+        return ilist2
 
     def clone(self,obj):
 
@@ -420,11 +446,12 @@ class Component:
                     return (rshapes,revs,rpls)
         return None
 
-    def rebase(self,shape):
+    def rebase(self,shape,hint=None):
 
         """returns a shape that is a copy of the original shape
         but centered on the (0,0) origin, and a placement that is needed to
-        reposition that shape to its original location/orientation"""
+        reposition that shape to its original location/orientation.
+        hint can be a vector that indicates the preferred normal direction"""
 
         import DraftGeomUtils,math
         if not isinstance(shape,list):
@@ -434,6 +461,8 @@ class Component:
         else:
             v = shape[0].BoundBox.Center
         n = DraftGeomUtils.getNormal(shape[0])
+        if hint and hint.getAngle(n) > 1.58:
+            n = n.negative()
         r = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),n)
         if round(abs(r.Angle),8) == round(math.pi,8):
             r = FreeCAD.Rotation()
@@ -729,6 +758,11 @@ class ViewProviderComponent:
                             if obj.ViewObject:
                                 if obj.ViewObject.ShapeColor != c:
                                     obj.ViewObject.ShapeColor = c
+                    if 'Transparency' in obj.Material.Material:
+                            t = int(obj.Material.Material['Transparency'])
+                            if obj.ViewObject:
+                                if obj.ViewObject.Transparency != t:
+                                    obj.ViewObject.Transparency = t
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
@@ -763,13 +797,12 @@ class ViewProviderComponent:
     def onChanged(self,vobj,prop):
 
         #print(vobj.Object.Name, " : changing ",prop)
-        if prop == "Visibility":
+        #if prop == "Visibility":
             #for obj in vobj.Object.Additions+vobj.Object.Subtractions:
             #    if (Draft.getType(obj) == "Window") or (Draft.isClone(obj,"Window",True)):
             #        obj.ViewObject.Visibility = vobj.Visibility
             # this would now hide all previous windows... Not the desired behaviour anymore.
-            pass
-        elif prop == "DiffuseColor":
+        if prop == "DiffuseColor":
             if hasattr(vobj.Object,"CloneOf"):
                 if vobj.Object.CloneOf:
                     if len(vobj.Object.CloneOf.ViewObject.DiffuseColor) > 1:

@@ -537,6 +537,10 @@ void Document::exportGraphviz(std::ostream& out) const
             //setup the origin if available
             if(cs->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
                 auto origin = cs->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
+                if (!origin) {
+                    std::cerr << "Origin feature not found" << std::endl;
+                    return;
+                }
                 auto& osub = sub.create_subgraph();
                 GraphList[origin] = &osub;
                 get_property(osub, graph_name) = getClusterName(origin);
@@ -961,7 +965,7 @@ void Document::openTransaction(const char* name)
             d->activeUndoTransaction->Name = name;
         else
             d->activeUndoTransaction->Name = "<empty>";
-        
+
         signalOpenTransaction(*this, d->activeUndoTransaction->Name);
     }
 }
@@ -1027,6 +1031,15 @@ bool Document::hasPendingTransaction() const
         return true;
     else
         return false;
+}
+
+bool Document::isTransactionEmpty() const
+{
+    if (d->activeUndoTransaction) {
+        return d->activeUndoTransaction->isEmpty();
+    }
+
+    return true;
 }
 
 void Document::clearUndos()
@@ -1106,7 +1119,7 @@ void Document::onBeforeChange(const Property* prop)
 void Document::onChanged(const Property* prop)
 {
     signalChanged(*this, *prop);
-    
+
     // the Name property is a label for display purposes
     if (prop == &Label) {
         App::GetApplication().signalRelabelDocument(*this);
@@ -1149,7 +1162,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
 {
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
-    
+
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
 }
@@ -1274,7 +1287,11 @@ Document::~Document()
     Console().Log("-App::Document: %s %p\n",getName(), this);
 #endif
 
-    clearUndos();
+    try {
+        clearUndos();
+    }
+    catch (const boost::exception&) {
+    }
 
     std::map<std::string,DocumentObject*>::iterator it;
 
@@ -1538,16 +1555,40 @@ Document::readObjects(Base::XMLReader& reader)
     setStatus(Document::KeepTrailingDigits, keepDigits);
 
     // read the features itself
+    reader.clearPartialRestoreDocumentObject();
     reader.readElement("ObjectData");
     Cnt = reader.getAttributeAsInteger("Count");
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Object");
         std::string name = reader.getName(reader.getAttribute("name"));
         DocumentObject* pObj = getObject(name.c_str());
+
         if (pObj) { // check if this feature has been registered
             pObj->setStatus(ObjectStatus::Restore, true);
-            pObj->Restore(reader);
+            try {
+                pObj->Restore(reader);
+            }
+            // Try to continue only for certain exception types if not handled
+            // by the feature type. For all other exception types abort the process.
+            catch (const Base::UnicodeError &e) {
+                e.ReportException();
+            }
+            catch (const Base::ValueError &e) {
+                e.ReportException();
+            }
+            catch (const Base::IndexError &e) {
+                e.ReportException();
+            }
+            catch (const Base::RuntimeError &e) {
+                e.ReportException();
+            }
+
             pObj->setStatus(ObjectStatus::Restore, false);
+
+            if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInDocumentObject)) {
+                Base::Console().Error("Object \"%s\" was subject to a partial restore. As a result geometry may have changed or be incomplete.\n",name.c_str());
+                reader.clearPartialRestoreDocumentObject();
+            }
         }
         reader.readEndElement("Object");
     }
@@ -1844,6 +1885,11 @@ void Document::restore (void)
 
     GetApplication().signalFinishRestoreDocument(*this);
     setStatus(Document::Restoring, false);
+
+    if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
+        setStatus(Document::PartialRestore, true);
+        Base::Console().Error("There were errors while loading the file. Some data might have been modified or not recovered at all. Look above for more specific information about the objects involved.\n");
+    }
 }
 
 bool Document::isSaved() const
@@ -1994,7 +2040,7 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         std::stringstream ss;
         ss << "Gathering all dependencies failed, probably due to circular dependencies. Error: ";
         ss << e.what();
-        throw Base::RuntimeError(ss.str().c_str());
+        throw Base::BadGraphError(ss.str().c_str());
     }
 
     std::set<Vertex> out;
@@ -2481,7 +2527,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
             returnCode->Which = Feat;
             _RecomputeLog.push_back(returnCode);
     #ifdef FC_DEBUG
-            Base::Console().Error("%s\n",returnCode->Why.c_str());
+            Base::Console().Error("Error in feature: %s\n%s\n",Feat->getNameInDocument(),returnCode->Why.c_str());
     #endif
             Feat->setError();
             return true;
@@ -2530,7 +2576,7 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
         returnCode->Which = Feat;
         _RecomputeLog.push_back(returnCode);
 #ifdef FC_DEBUG
-        Base::Console().Error("%s\n",returnCode->Why.c_str());
+        Base::Console().Error("Error in feature: %s\n%s\n",Feat->getNameInDocument(),returnCode->Why.c_str());
 #endif
         Feat->setError();
     }

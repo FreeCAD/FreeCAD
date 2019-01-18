@@ -54,6 +54,17 @@ ViewProjMatrix::~ViewProjMatrix()
 {
 }
 
+Matrix4D ViewProjMatrix::getProjectionMatrix (void) const
+{
+    // Return the same matrix as passed to the constructor
+    Matrix4D mat(_clMtx);
+    if (isOrthographic) {
+        mat.move(-0.5, -0.5, -0.5);
+        mat.scale(2.0, 2.0, 2.0);
+    }
+    return mat;
+}
+
 template<typename Vec>
 void perspectiveTransform(const Base::Matrix4D& mat, Vec& pnt)
 {

@@ -335,7 +335,7 @@ void ViewProviderBody::updateOriginDatumSize () {
 
         Gui::ViewProvider *vp = Gui::Application::Instance->getViewProvider(origin);
         if (!vp) {
-            throw Base::Exception ("No view provider linked to the Origin");
+            throw Base::ValueError ("No view provider linked to the Origin");
         }
         assert ( vp->isDerivedFrom ( Gui::ViewProviderOrigin::getClassTypeId () ) );
         vpOrigin = static_cast <Gui::ViewProviderOrigin *> ( vp );

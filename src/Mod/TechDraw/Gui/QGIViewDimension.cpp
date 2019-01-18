@@ -497,6 +497,14 @@ void QGIViewDimension::draw()
         Base::Vector3d startDist, endDist, midDist;                     //start/end/mid points of distance line
         startDist = Rez::guiX(pts.first);
         endDist   = Rez::guiX(pts.second);
+        if (strcmp(dimType, "DistanceY") == 0 ) {
+            if (startDist.y < endDist.y) {                              //measure bottom to top
+                Base::Vector3d temp = startDist;
+                startDist = endDist;
+                endDist = temp;
+            }
+        }
+
         Base::Vector3d vecDist = (endDist - startDist);
 
         // +/- aligned method
@@ -522,8 +530,8 @@ void QGIViewDimension::draw()
             normDim = Base::Vector3d (-dirDim.y,dirDim.x, 0);
         } else if (strcmp(dimType, "DistanceY") == 0 ) {
             //distance and dimension lines not (necessarily) parallel
-            dirDim = Base::Vector3d (0, ((endDist.y - startDist.y >= FLT_EPSILON) ? 1 : -1) , 0);
-            normDim = Base::Vector3d (-dirDim.y, dirDim.x, 0);
+            dirDim = Base::Vector3d (0, 1, 0); 
+            normDim = Base::Vector3d (-1, 0, 0);
         }
 
         //for ortho drawing extension lines are para to normDim, perp to dirDist
@@ -647,6 +655,10 @@ void QGIViewDimension::draw()
         Base::Vector3d  dim2Tail = fauxCenter;
         Base::Vector3d  a1Dir = -dirDim;
         Base::Vector3d  a2Dir = dirDim;
+        if (strcmp(dimType, "DistanceY") == 0 ) {
+            a1Dir = Base::Vector3d(0,1,0);
+            a2Dir = Base::Vector3d(0,-1,0);
+        }
 
         double dimSpan    = (extEndEnd - extStartEnd).Length();     //distance between extension lines
         double fauxToDim1 = (fauxCenter - dim1Tip).Length();        //label to arrow #1
@@ -657,21 +669,33 @@ void QGIViewDimension::draw()
         double lblWidth = datumLabel->boundingRect().width();
         if ((DrawUtil::isBetween(fauxCenter, dim1Tip, dim2Tip)) &&
             (lblWidth > dimSpan) ) {
-            dim1Tail = dim1Tip - tailLength * dirDim;
-            a1Dir = dirDim;
-            a2Dir = -dirDim;
-            dim2Tail = dim2Tip + tailLength * dirDim;
+            if (strcmp(dimType, "DistanceY") == 0 ) {
+                a1Dir = Base::Vector3d(0,-1,0);
+                a2Dir = Base::Vector3d(0,1,0);
+                dim1Tail = dim1Tip;
+                dim2Tail = dim2Tip;
+            } else {
+                dim1Tail = dim1Tip - tailLength * dirDim;
+                dim2Tail = dim2Tip + tailLength * dirDim;
+                a1Dir = dirDim;
+                a2Dir = -dirDim;
+            }
         }
 
         if (!DrawUtil::isBetween(fauxCenter, dim1Tip, dim2Tip)) {
             //case3 - outerPlacement
-            a1Dir = dirDim;
-            a2Dir = -dirDim;
+            if (strcmp(dimType, "DistanceY") == 0 ) {
+                a1Dir = Base::Vector3d(0,-1,0);
+                a2Dir = Base::Vector3d(0,1,0);
+            } else {
+                a1Dir = dirDim;
+                a2Dir = -dirDim;
+            }
             if (fauxToDim1 < fauxToDim2)  {
                 dim1Tail = fauxCenter;
-                dim2Tail = dim2Tip + tailLength * dirDim;
+                dim2Tail = dim2Tip;
             } else {
-                dim1Tail = dim1Tip - tailLength * dirDim;
+                dim1Tail = dim1Tip;
                 dim2Tail = fauxCenter;
             }
         }
@@ -702,11 +726,14 @@ void QGIViewDimension::draw()
         datumLabel->setTransformOriginPoint(bbX / 2, bbY /2);
         double angleOption = 0.0;                                      //put lblText angle adjustments here
         datumLabel->setRotation((angle * 180 / M_PI) + angleOption);
+        if (strcmp(dimType, "DistanceY") == 0 ) {
+            datumLabel->setRotation(-90.0 + angleOption);
+        }
+
 
         aHead1->setDirMode(true);
         aHead2->setDirMode(true);
-        
-        
+    
         if (vp->FlipArrowheads.getValue()) {
             aHead1->setDirection(a1Dir * -1.0);
             aHead2->setDirection(a2Dir * -1.0);

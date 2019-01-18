@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>477</width>
-    <height>505</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -119,7 +119,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_useVBO">
         <property name="text">
-         <string>Use OpenGL Vertex Buffer Object (experimental)</string>
+         <string>Use OpenGL Vertex Buffer Object</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>UseVBO</cstring>
@@ -243,6 +243,17 @@
           </item>
          </widget>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="newDocViewLabel">
+          <property name="text">
+           <string>New Document Camera Orientation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QComboBox" name="comboNewDocView">
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
@@ -324,6 +335,25 @@
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
+        <property name="toolTip">
+         <string>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</string>
+        </property>
+        <property name="text">
+         <string>Disable touchscreen tilt gesture</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisableTouchTilt</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxDragAtCursor">
         <property name="text">
          <string>Drag at cursor</string>
@@ -344,7 +374,16 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
@@ -422,6 +461,16 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QGridLayout" name="backlightLayout">
@@ -598,13 +647,8 @@
    <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSlider</class>
-   <extends>QSlider</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -613,13 +657,18 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSlider</class>
+   <extends>QSlider</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -637,6 +686,7 @@
   <tabstop>comboNavigationStyle</tabstop>
   <tabstop>mouseButton</tabstop>
   <tabstop>comboOrbitStyle</tabstop>
+  <tabstop>comboNewDocView</tabstop>
   <tabstop>checkBoxZoomAtCursor</tabstop>
   <tabstop>spinBoxZoomStep</tabstop>
   <tabstop>checkBoxInvertZoom</tabstop>

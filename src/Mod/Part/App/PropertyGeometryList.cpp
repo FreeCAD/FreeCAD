@@ -32,12 +32,14 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Console.h>
 
 #include "Geometry.h"
 #include "GeometryPy.h"
 
 #include "PropertyGeometryList.h"
 #include "Part2DObject.h"
+
 
 using namespace App;
 using namespace Base;
@@ -155,7 +157,7 @@ void PropertyGeometryList::Save(Writer &writer) const
     writer.Stream() << writer.ind() << "<GeometryList count=\"" << getSize() <<"\">" << endl;
     writer.incInd();
     for (int i = 0; i < getSize(); i++) {
-        writer.Stream() << writer.ind() << "<Geometry  type=\"" 
+        writer.Stream() << writer.ind() << "<Geometry  type=\""
                         << _lValueList[i]->getTypeId().getName() << "\">" << endl;;
         writer.incInd();
         _lValueList[i]->Save(writer);
@@ -169,10 +171,10 @@ void PropertyGeometryList::Save(Writer &writer) const
 void PropertyGeometryList::Restore(Base::XMLReader &reader)
 {
     // read my element
+    reader.clearPartialRestoreObject();
     reader.readElement("GeometryList");
     // get the value of my attribute
     int count = reader.getAttributeAsInteger("count");
-
     std::vector<Geometry*> values;
     values.reserve(count);
     for (int i = 0; i < count; i++) {
@@ -180,7 +182,22 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
         const char* TypeName = reader.getAttribute("type");
         Geometry *newG = (Geometry *)Base::Type::fromName(TypeName).createInstance();
         newG->Restore(reader);
-        values.push_back(newG);
+
+        if(reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInObject)) {
+            Base::Console().Error("Geometry \"%s\" within a PropertyGeometryList was subject to a partial restore.\n",reader.localName());
+            if(isOrderRelevant()) {
+                // Pushes the best try by the Geometry class
+                values.push_back(newG);
+            }
+            else {
+                delete newG;
+            }
+            reader.clearPartialRestoreObject();
+        }
+        else {
+            values.push_back(newG);
+        }
+
         reader.readEndElement("Geometry");
     }
 

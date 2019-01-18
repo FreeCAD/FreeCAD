@@ -185,12 +185,12 @@
     <message>
       <location line="+1"/>
       <source>Groove</source>
-      <translation>Enlèvement de matière par révolution.</translation>
+      <translation>Rainure</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Groove a selected sketch</source>
-      <translation>Enlèvement de matière par révolution à partir de l'esquisse sélectionnée.</translation>
+      <translation>Faire une rainure à partir de l'esquisse sélectionnée</translation>
     </message>
   </context>
   <context>
@@ -3332,7 +3332,7 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="+51"/>
       <source>Edit groove</source>
-      <translation>Éditer la rainure</translation>
+      <translation>Modifier la rainure</translation>
     </message>
     <message>
       <source>Edit revolve</source>

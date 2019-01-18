@@ -369,11 +369,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathCompoundExtended.py" line="45"/>
-        <source>An ptional description of this compounded operation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="PathCompoundExtended.py" line="46"/>
         <source>An optional description of this compounded operation</source>
         <translation type="unfinished"></translation>

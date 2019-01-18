@@ -51,6 +51,7 @@
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "DrawGuiUtil.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGIView.h"
@@ -67,6 +68,7 @@
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 using namespace TechDrawGui;
 
@@ -118,12 +120,14 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     QPointF newPos(0.0,0.0);
-    if(change == ItemPositionChange && scene()) {
-        newPos = value.toPointF();
+//    if(change == ItemPositionChange && scene()) {
+    if(change == ItemPositionHasChanged && scene()) {
+        newPos = value.toPointF();            //position within parent!
         if(locked){
             newPos.setX(pos().x());
             newPos.setY(pos().y());
         }
+        
         // TODO  find a better data structure for this
         // this is just a pair isn't it?
         if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
@@ -209,30 +213,48 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIView::setPosition(qreal x, qreal y)
 {
+    double newX = x;
+    double newY;
+    double oldX = pos().x();
+    double oldY = pos().y();
     if (!isInnerView()) {
-        setPos(x,-y);                                                 //position on page
+        newY = -y;
     } else {
-        setPos(x,getYInClip(y));                                      //position in Clip
+        newY = getYInClip(y);
+    }
+    if ( (TechDraw::DrawUtil::fpCompare(newX,oldX)) &&
+         (TechDraw::DrawUtil::fpCompare(newY,oldY)) ) {
+        return;
+    } else {
+        setPos(newX,newY);
     }
 }
 
+//is this needed anymore???
 double QGIView::getYInClip(double y)
 {
+    return -y;
+}
+
+QGIViewClip* QGIView::getClipGroup(void)
+{
+    if (!getViewObject()->isInClip()) {
+        Base::Console().Log( "Logic Error - getClipGroup called for child "
+                         "(%s) not in Clip\n", getViewName() );
+        return nullptr;
+    }
+    
+    QGIViewClip* result = nullptr;
     auto parentClip( dynamic_cast<QGCustomClip*>( parentItem() ) );
     if (parentClip) {
         auto parentView( dynamic_cast<QGIViewClip*>( parentClip->parentItem() ) );
         if (parentView) {
-            auto parentFeat( dynamic_cast<TechDraw::DrawViewClip*>(parentView->getViewObject()) );
-            if (parentFeat) {
-                return Rez::guiX(parentFeat->Height.getValue()) - y;
-            }
+            result = parentView;
         }
     }
-
-    Base::Console().Log( "Logic Error - getYInClip called for child "
-                         "(%s) not in Clip\n", getViewName() );
-    return 0;
+    return result;
 }
+
 
 void QGIView::updateView(bool update)
 {
@@ -242,7 +264,7 @@ void QGIView::updateView(bool update)
         setFlag(QGraphicsItem::ItemIsMovable, true);
     }
 
-    if (getViewObject()->X.isTouched() ||
+    if (getViewObject()->X.isTouched() ||                   //change in feat position
         getViewObject()->Y.isTouched()) {
         double featX = Rez::guiX(getViewObject()->X.getValue());
         double featY = Rez::guiX(getViewObject()->Y.getValue());

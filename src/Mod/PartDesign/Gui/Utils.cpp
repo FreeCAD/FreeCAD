@@ -201,7 +201,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     const App::Document* doc = sketch->getDocument();
     PartDesign::Body *body = getBodyFor(sketch, /*messageIfNot*/ 0);
     if (!body) {
-        throw Base::Exception ("Couldn't find body for the sketch");
+        throw Base::RuntimeError ("Couldn't find body for the sketch");
     }
 
     // Get the Origin for the body
@@ -226,7 +226,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     else if (sketchVector == Base::Vector3d(1,0,0))
         plane = origin->getYZ ();
     else {
-        throw Base::Exception("Sketch plane cannot be migrated");
+        throw Base::ValueError("Sketch plane cannot be migrated");
     }
     assert (plane);
 
@@ -324,7 +324,7 @@ void relinkToBody (PartDesign::Feature *feature) {
     PartDesign::Body *body = PartDesign::Body::findBodyOf ( feature );
 
     if (!body) {
-        throw Base::Exception ("Couldn't find body for the feature");
+        throw Base::RuntimeError ("Couldn't find body for the feature");
     }
 
     std::string bodyName = body->getNameInDocument ();

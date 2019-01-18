@@ -197,7 +197,8 @@ bool LoftWidget::accept()
             ).arg(list).arg(solid).arg(ruled).arg(closed).arg(QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
-        if (!doc) throw Base::Exception("Document doesn't exist anymore");
+        if (!doc)
+            throw Base::RuntimeError("Document doesn't exist anymore");
         doc->openCommand("Loft");
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
@@ -205,7 +206,7 @@ bool LoftWidget::accept()
         if (obj && !obj->isValid()) {
             std::string msg = obj->getStatusString();
             doc->abortCommand();
-            throw Base::Exception(msg);
+            throw Base::RuntimeError(msg);
         }
         doc->commitCommand();
     }

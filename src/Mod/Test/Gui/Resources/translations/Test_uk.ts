@@ -110,5 +110,21 @@ Double click on an error in the tree view to see more information about it,inclu
 
 Подвійний клік по помилці, в деревоподібному перегляді, покаже додаткову інформацію, включаючи трасування.</translation>
     </message>
+    <message>
+      <source>Enter the name of a callable object which, when called, will return a TestCase.
+Click 'start', and the test thus produced will be run.
+
+Double click on an error in the tree view to see more information about it, including the stack trace.</source>
+      <translation>Введіть ім'я викликається об'єкта при виклику якого, буде повертатися TestCase.
+Клацніть 'Запуск' і, тест буде запущений.
+
+Зробіть подвійне клацання на помилку в деревовидному списку для додаткової інформації про неї, включаючи стек викликів.</translation>
+    </message>
+    <message>
+      <source>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
+      <translation>Copyright (c) Вернер Майер (Werner Mayer) FreeCAD UnitTest є частиною FreeCAD і підтримує написання Unit Tests для них власних модулів.</translation>
+    </message>
   </context>
 </TS>

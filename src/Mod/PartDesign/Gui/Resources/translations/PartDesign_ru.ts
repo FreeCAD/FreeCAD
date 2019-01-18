@@ -136,7 +136,7 @@
     <message>
       <location line="+1"/>
       <source>Make a draft on a face</source>
-      <translation>Сделать притяжку грани</translation>
+      <translation>Создать набросок на грани</translation>
     </message>
   </context>
   <context>
@@ -221,12 +221,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation>Создать базовую линию</translation>
+      <translation>Создать опорную линию</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation>Создать новую базовую линию</translation>
+      <translation>Создать новую опорную линию</translation>
     </message>
   </context>
   <context>
@@ -266,11 +266,11 @@
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Перенести документ в современный рабочий процесс Partdesign</translation>
+      <translation>Перенести документ в современный рабочий процесс разработки детали</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation>Перенести документ в современный рабочий процесс Partdesign</translation>
+      <translation>Перенести документ в современный рабочий процесс разработки детали</translation>
     </message>
   </context>
   <context>
@@ -292,7 +292,7 @@
     </message>
     <message>
       <source>create a mirrored feature</source>
-      <translation>Создать симметрию детали</translation>
+      <translation>создать симметричное отражение детали</translation>
     </message>
   </context>
   <context>
@@ -341,7 +341,7 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation>Установка подсказки</translation>
+      <translation>Установка кончика</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -436,12 +436,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum plane</source>
-      <translation>Создать базовую плоскость</translation>
+      <translation>Создать опорную плоскость</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum plane</source>
-      <translation>Создать новую базовую плоскость</translation>
+      <translation>Создать новую опорную плоскость</translation>
     </message>
   </context>
   <context>
@@ -476,12 +476,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum point</source>
-      <translation>Создать базовую точку</translation>
+      <translation>Создать опорную точку</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum point</source>
-      <translation>Создать новую базовую точку</translation>
+      <translation>Создать новую опорную точку</translation>
     </message>
   </context>
   <context>
@@ -539,7 +539,7 @@
     <message>
       <location line="+1"/>
       <source>Create a scaled feature</source>
-      <translation>Создать масштабируемый элемент</translation>
+      <translation>Создать элемент масштабирования</translation>
     </message>
     <message>
       <source>create a scaled feature</source>
@@ -777,7 +777,7 @@
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>Без проводов в эскизе</translation>
+      <translation>Нет ломаных в эскизе</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -787,7 +787,7 @@
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation>Рисунок принадлежит телу другого элемента</translation>
+      <translation>Эскиз принадлежит телу другого элемента</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -797,7 +797,7 @@
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>Элемент расположен после элемента Подсказка</translation>
+      <translation>Элемент расположен после элемента кончика</translation>
     </message>
   </context>
   <context>
@@ -815,7 +815,7 @@
     <message>
       <location line="+1"/>
       <source>Create Geometry</source>
-      <translation>Создайте геометрию</translation>
+      <translation>Создать геометрию</translation>
     </message>
   </context>
   <context>
@@ -828,7 +828,7 @@
     <message>
       <location line="+6"/>
       <source>Number of teeth:</source>
-      <translation>Количество зубов:</translation>
+      <translation>Количество зубцов:</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -1082,7 +1082,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+7"/>
       <source>Minor radius:</source>
-      <translation>Малый радиус:</translation>
+      <translation>Малая полуось:</translation>
     </message>
     <message>
       <location line="+82"/>
@@ -1283,12 +1283,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Пустой список тел</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Список тел не может быть пустым</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -1308,12 +1308,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+49"/>
       <source>Incompatible reference set</source>
-      <translation>Несовместимый эталонный набор</translation>
+      <translation>Несовместимый набор ориентиров</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Это режим без вложений, которому соответствует текущий набор ссылок. Если Вы выберете "Продолжить", элемент останется там, где он сейчас находится, и не будет перенесён как изменение ссылки. Продолжить?</translation>
+      <translation>Нет режимов присоединения, которому соответствует текущий набор ориентиров. Если Вы выберете "Продолжить", элемент останется там, где он сейчас находится, и не будет перенесён при изменении базового объекта. Продолжить?</translation>
     </message>
   </context>
   <context>
@@ -1516,7 +1516,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation>Без проводов в эскизе</translation>
+      <translation>Нет ломаных в эскизе</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1550,7 +1550,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation>Элемент расположен после элемента Подсказка</translation>
+      <translation>Элемент расположен после элемента Кончика</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -1937,7 +1937,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+6"/>
       <source>Edit</source>
-      <translation>Правка</translation>
+      <translation>Редактировать</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1947,7 +1947,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+4"/>
       <source>Add mirrored transformation</source>
-      <translation>Добавить зеркальное отражение</translation>
+      <translation>Добавить зеркальное преобразование</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -2075,7 +2075,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="-356"/>
       <source>Pad parameters</source>
-      <translation>Параметры панели</translation>
+      <translation>Параметры выдавливания</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2159,7 +2159,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Закфиксировано</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2173,7 +2173,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+10"/>
       <source>Binormal</source>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Бинормали</translation>
     </message>
     <message>
       <source>Curvelinear equivalenz</source>
@@ -2232,7 +2232,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
-      <translation>Ориентация секции</translation>
+      <translation>Ориентация сечения</translation>
     </message>
   </context>
   <context>
@@ -2974,7 +2974,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="+201"/>
       <source>Select body</source>
-      <translation>Выбрать тело</translation>
+      <translation>Выберите тело</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3135,12 +3135,12 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-      <translation>Нет режимов вложения, которые соответствуют выбранным объектам. Выберите что-нибудь другое.</translation>
+      <translation>Нет режимов присоединения, которые соответствуют выбранным объектам. Выберите что-нибудь другое.</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Нет режимов вложения, которые соответствуют выбранным объектам. Выберите что-нибудь другое.</translation>
+      <translation>Нет режимов присоединения, которые соответствуют выбранным объектам. Выберите что-нибудь другое.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3223,12 +3223,12 @@ Create the sketch on a face.</source>
     <message>
       <location line="-913"/>
       <source>No sketch to work on</source>
-      <translation>Нет эскиза для работы на</translation>
+      <translation>Нет эскиза для работы над ним</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No sketch is available in the document</source>
-      <translation>Нет доступного эскиза в документе</translation>
+      <translation>В документе нет эскизов</translation>
     </message>
     <message>
       <location line="+600"/>
@@ -3238,7 +3238,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="+4"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation>Выберите кромку, лицо или тело от одного тела.</translation>
+      <translation>Выберите ребро, грань или тело от одного тела.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3249,7 +3249,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation>Выберите кромку, сторону или тело от активного тела.</translation>
+      <translation>Выберите ребро, грань или тело от активного тела.</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -3264,7 +3264,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="+12"/>
       <source> not possible on selected faces/edges.</source>
-      <translation> невозможно на выбранной грани/кромке.</translation>
+      <translation> невозможно на выбранной грани/ребре.</translation>
     </message>
     <message>
       <location line="+292"/>
@@ -3362,7 +3362,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-68"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>Тело не может основываться на PartDesign элементе.</translation>
+      <translation>Тело не может основываться на элементе "разработка детали".</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -3391,21 +3391,21 @@ Create the sketch on a face.</source>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>Выбранная форма состоит из нескольких твердых тел.
+      <translation>Выбранная фигура состоит из нескольких твердых тел.
 Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation>Выбранная форма состоит из нескольких оболочек.
+      <translation>Выбранная фигура состоит из нескольких оболочек.
 Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation>Выбранная форма состоит только из оболочки.
+      <translation>Выбранная фигура состоит только из оболочки.
 Это может привести к неожиданным результатам.</translation>
     </message>
     <message>
@@ -3433,7 +3433,8 @@ This may lead to unexpected results.</source>
     <message>
       <location line="+1"/>
       <source>No PartDesign features which doesn't belong to a body found. Nothing to migrate.</source>
-      <translation>Обнаружено тело с элементами не принадлежащими PartDesign. Нет ничего для миграции.</translation>
+      <translation>Не найдено элементов разработанной детали, которые не принадлежат телу.
+ Нечему мигрировать.</translation>
     </message>
     <message>
       <location line="+148"/>
@@ -3457,7 +3458,7 @@ This may lead to unexpected results.</source>
     <message>
       <location line="-304"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Выберите элемент PartDesign или тело.</translation>
+      <translation>Выберите элемент разработанной детали или тело.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3471,7 +3472,7 @@ This may lead to unexpected results.</source>
     <message>
       <location line="+5"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Только твердый элемент может быть вершиной тела.</translation>
+      <translation>Только твердый элемент может быть кончиком тела.</translation>
     </message>
     <message>
       <location line="+116"/>
@@ -3549,14 +3550,16 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation>Чтобы использовать PartDesign необходим активный объект Тело в документе. Пожалуйста, сделайте имеющееся тело активным (двойной клик) или создайте новое. Если у вас устаревший документ с объектами PartDesign без тела, то используйте функцию миграции в PartDesign чтобы положить их в тело.</translation>
+      <translation>Чтобы использовать рабочее окружение "разработка детали" необходим активный объект Тело в документе. Пожалуйста, сделайте имеющееся тело активным (двойной клик) или создайте новое. Если у вас устаревший документ с объектами, созданными в рабочем окружении "разработка детали" без тела, то используйте функцию миграции в "разработка детали" чтобы положить их в тело.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation>Для того чтобы использовать PartDesign необходимо активное тело в документе. Пожалуйста, сделайте существующее тело активным (двойной клик) или создайте новое. Если у вас устаревший документ с объектами PartDesign без тела, то используйте функцию миграции в меню PartDesign чтобы вложить их в тело.</translation>
+      <translation>Для того чтобы использовать рабочее окружение "разработка детали" необходимо активное тело в документе. Пожалуйста, сделайте существующее тело активным (двойной клик) или создайте новое. 
+
+Если у вас устаревший документ с объектами, созданными в рабочем окружении "разработка детали" без тела, то используйте функцию миграции в меню "разработка детали" чтобы вложить их в тело.</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3566,7 +3569,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Чтобы создать новый объект PartDesign, в документе должно быть активное тело. Пожалуйста, сделайте существующее тело активным (двойной клик) или создайте новое.</translation>
+      <translation>Чтобы создать новый объект "разработанной детали", в документе должно быть активное тело. Пожалуйста, сделайте существующее тело активным (двойной клик) или создайте новое.</translation>
     </message>
     <message>
       <location line="+36"/>
@@ -3586,7 +3589,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>Для того, чтобы использовать этот элемент, он должен являться частью детали в документе.</translation>
+      <translation>Для того, чтобы использовать этот элемент, он должен являться объектом типа деталь в документе.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
@@ -3644,7 +3647,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
       <location line="+1"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation>%1 пропускает базовый элемент. Этот элемент нарушен и не может быть изменён.</translation>
+      <translation>%1 не имеет базовый элемент. Этот элемент нарушен и не может быть изменён.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
@@ -3663,22 +3666,22 @@ This feature is broken and can't be edited.</source>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
-      <translation>Документ «%1», который вы редактируете был спроектирован с использованием старой версии верстака PartDesign.</translation>
+      <translation>Документ «%1», который вы редактируете был спроектирован с использованием старой версии рабочего окружения "разработка детали".</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="+144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Документ «%1», который вы редактируете был спроектирован с использованием старой версии верстака PartDesign.</translation>
+      <translation>Документ «%1», который вы редактируете был спроектирован с использованием старой версии рабочего окружения "разработка детали".</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation>Вы хотите совершить миграцию для того чтобы начать использовать современные функции PartDesign?</translation>
+      <translation>Вы хотите совершить миграцию для того чтобы начать использовать современные функции рабочего окружения "разработка детали"?</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>Документ "%1", по-видимому, находится либо в середине процесса миграции из старого PartDesign, либо имеет слегка нарушенную структуру.</translation>
+      <translation>Документ "%1", по-видимому, находится либо в середине процесса миграции из старого рабочего окружения "разработка детали", либо имеет слегка нарушенную структуру.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3690,13 +3693,13 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Примечание. Если вы решите выполнить миграцию, вы не сможете редактировать файл в старых версиях FreeCAD. Если вы откажетесь мигрировать, вы не сможете использовать новые функции PartDesign, такие как Тело и Деталь. В результате вы также не сможете использовать свои детали в верстаке Assembly. В любом случае вы сможете мигрировать позже, выполнив 'Part Design-&gt;Перенос...'.</translation>
+      <translation>Примечание. Если вы решите выполнить миграцию, вы не сможете редактировать файл в старых версиях FreeCAD. Если вы откажетесь мигрировать, вы не сможете использовать новые функции рабочего окружения "разработка детали", такие как Тело и Деталь. В результате вы также не сможете использовать свои детали в рабочем окружении Сборка. В любом случае вы сможете мигрировать позже, выполнив 'разработка детали-&gt;Миграция...'.</translation>
     </message>
     <message>
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Примечание. Если вы решите выполнить миграцию, вы не сможете редактировать файл в старых версиях FreeCAD. Если вы откажетесь мигрировать, вы не сможете использовать новые функции PartDesign, такие как Тело и Деталь. В результате вы также не сможете использовать свои детали в верстаке Assembly. В любом случае вы сможете мигрировать позже, выполнив 'Part Design-&gt;Миграция'.</translation>
+      <translation>Примечание. Если вы решите выполнить миграцию, вы не сможете редактировать файл в старых версиях FreeCAD. Если вы откажетесь мигрировать, вы не сможете использовать новые функции рабочего окружения "разработка детали", такие как Тело и Деталь. В результате вы также не сможете использовать свои детали в рабочем окружении Сборка. В любом случае вы сможете мигрировать позже, выполнив 'разработка детали-&gt;Миграция...'.</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -3782,7 +3785,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+6"/>
       <source>Custom dimensions</source>
-      <translation>Пользовательские размеры</translation>
+      <translation>Произвольные размеры</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3810,7 +3813,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+62"/>
       <source> Custom thread length</source>
-      <translation> Пользовательская длина резьбы</translation>
+      <translation> Произвольная длина резьбы</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -3901,7 +3904,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+15"/>
       <source>Angled</source>
-      <translation>Угольность</translation>
+      <translation>Уготватость</translation>
     </message>
     <message>
       <location line="+18"/>

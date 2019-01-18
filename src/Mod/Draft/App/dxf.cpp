@@ -687,7 +687,7 @@ bool CDxfRead::ReadSpline()
 bool CDxfRead::ReadCircle()
 {
     double radius = 0.0;
-    double c[3]; // centre
+    double c[3] = {0,0,0}; // centre
     bool hidden = false;
 
     while(!((*m_ifs).eof()))
@@ -845,8 +845,8 @@ bool CDxfRead::ReadText()
 
 bool CDxfRead::ReadEllipse()
 {
-    double c[3]; // centre
-    double m[3]; //major axis point
+    double c[3] = {0,0,0}; // centre
+    double m[3] = {0,0,0}; //major axis point
     double ratio=0; //ratio of major to minor axis
     double start=0; //start of arc
     double end=0;  // end of arc

@@ -88,6 +88,7 @@
 #include <Base/Console.h>
 #include <Base/Stream.h>
 #include <Base/FileInfo.h>
+#include <Base/Rotation.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
@@ -964,16 +965,16 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 	else {
 		for (int pass = 0; pass < 3 ; pass++) {
 			for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++) {
-				if (pickMode) { // pick should not be drawn in tree passes
-					glColor3ub((*f)->m_PickId, 0, 0);
-					glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
-				} else {
+				//if (pickMode) { // pick should not be drawn in tree passes
+				//	glColor3ub((*f)->m_PickId, 0, 0);
+				//	glBindTexture(GL_TEXTURE_2D, (*f)->m_PickTextureId);
+				//} else {
 					if (pass != (*f)->m_RenderPass)
 						continue;
 					QColor& c = (m_HiliteId == (*f)->m_PickId) && (pass < 2) ? m_HiliteColor : (*f)->m_Color;
 					glColor4f(c.redF(), c.greenF(), c.blueF(),c.alphaF());
 					glBindTexture(GL_TEXTURE_2D, (*f)->m_TextureId);
-				}
+				//}
 				glDrawElements(GL_TRIANGLE_FAN, (*f)->m_VertexCount, GL_UNSIGNED_BYTE, (void*) &m_IndexArray[(*f)->m_FirstVertex]);
 			}
 		}
@@ -1294,7 +1295,7 @@ void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
 
 DEF_3DV_CMD(ViewIsometricCmd)
 ViewIsometricCmd::ViewIsometricCmd()
-  : Command("ViewIsometric")
+  : Command("ViewIsometricCmd")
 {
     sGroup        = QT_TR_NOOP("");
     sMenuText     = QT_TR_NOOP("Isometric");
@@ -1309,11 +1310,12 @@ ViewIsometricCmd::ViewIsometricCmd()
 void ViewIsometricCmd::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    Command::doCommand(Command::Gui,"Gui.activeDocument().activeView().viewIsometric()");
 }
 
 DEF_3DV_CMD(ViewOrthographicCmd)
 ViewOrthographicCmd::ViewOrthographicCmd()
-  : Command("ViewDimetric")
+  : Command("ViewOrthographicCmd")
 {
     sGroup        = QT_TR_NOOP("");
     sMenuText     = QT_TR_NOOP("Orthographic");
@@ -1334,7 +1336,7 @@ void ViewOrthographicCmd::activated(int iMsg)
 DEF_3DV_CMD(ViewPerspectiveCmd)
 
 ViewPerspectiveCmd::ViewPerspectiveCmd()
-  : Command("ViewTrimetric")
+  : Command("ViewPerspectiveCmd")
 {
     sGroup        = QT_TR_NOOP("");
     sMenuText     = QT_TR_NOOP("Perspective");
@@ -1384,13 +1386,15 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu() {
         init = false;
         rcCmdMgr.addCommand(new ViewOrthographicCmd);
         rcCmdMgr.addCommand(new ViewPerspectiveCmd);
+        rcCmdMgr.addCommand(new ViewIsometricCmd);
         rcCmdMgr.addCommand(new ViewZoomToFitCmd);
     }
 
     vector<string> commands = NaviCubeImplementation::m_commands;
     if (commands.empty()) {
-        commands.push_back("ViewDimetric");
-        commands.push_back("ViewTrimetric");
+        commands.push_back("ViewOrthographicCmd");
+        commands.push_back("ViewPerspectiveCmd");
+        commands.push_back("ViewIsometricCmd");
         commands.push_back("Separator");
         commands.push_back("ViewZoomToFit");
     }

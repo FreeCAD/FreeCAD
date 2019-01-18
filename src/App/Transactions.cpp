@@ -110,6 +110,11 @@ void Transaction::Restore(Base::XMLReader &/*reader*/)
     assert(0);
 }
 
+bool Transaction::isEmpty() const
+{
+    return _Objects.empty();
+}
+
 int Transaction::getPos(void) const
 {
     return iPos;

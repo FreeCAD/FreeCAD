@@ -333,20 +333,34 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Tree view
     if (hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
-        TreeDockWidget* tree = new TreeDockWidget(0, this);
-        tree->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
-        tree->setMinimumWidth(210);
-        pDockMgr->registerDockWindow("Std_TreeView", tree);
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("TreeView");
+        bool enabled = group->GetBool("Enabled", true);
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        if (enabled) {
+            TreeDockWidget* tree = new TreeDockWidget(0, this);
+            tree->setObjectName
+                (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
+            tree->setMinimumWidth(210);
+            pDockMgr->registerDockWindow("Std_TreeView", tree);
+        }
     }
 
     // Property view
     if (hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
-        PropertyDockView* pcPropView = new PropertyDockView(0, this);
-        pcPropView->setObjectName
-            (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
-        pcPropView->setMinimumWidth(210);
-        pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("PropertyView");
+        bool enabled = group->GetBool("Enabled", true);
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        if (enabled) {
+            PropertyDockView* pcPropView = new PropertyDockView(0, this);
+            pcPropView->setObjectName
+                (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
+            pcPropView->setMinimumWidth(210);
+            pDockMgr->registerDockWindow("Std_PropertyView", pcPropView);
+        }
     }
 
     // Selection view
@@ -405,16 +419,24 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     //Dag View.
     if (hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
         //work through parameter.
+        // old group name
+        ParameterGrp::handle deprecateGroup = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp")->GetGroup("Preferences");
+        bool enabled = false;
+        if (deprecateGroup->HasGroup("DAGView")) {
+            deprecateGroup = deprecateGroup->GetGroup("DAGView");
+            enabled = deprecateGroup->GetBool("Enabled", enabled);
+        }
+        // new group name
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
-        bool enabled = group->GetBool("Enabled", false);
+              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
+        enabled = group->GetBool("Enabled", enabled);
         group->SetBool("Enabled", enabled); //ensure entry exists.
-        if (enabled)
-        {
-          DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
-          dagDockWindow->setObjectName
-              (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
-          pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
+        if (enabled) {
+            DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, this);
+            dagDockWindow->setObjectName
+                (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+            pDockMgr->registerDockWindow("Std_DAGView", dagDockWindow);
         }
     }
 

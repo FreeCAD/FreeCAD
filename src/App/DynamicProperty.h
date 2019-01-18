@@ -64,7 +64,7 @@ public:
       @a Group gives the grouping name which appears in the property editor and
       @a doc shows the tooltip there.
       With @a attr, @a ro and @a hidden the behaviour of the property can be controlled.
-      @a attr is an OR'ed value of Prop_ReadOnly, Prop_Transient, Prop_Hidden or Prop_Output.
+      @a attr is an OR'ed value of the PropertyType enumeration.
       If no special attribute should be set Prop_None can be set (or leave the default of 0).
       For convenience the attributes for 'Read-Only' and 'Hidden' can also be controlled with
       the values @a ro or @a hidden. This means,

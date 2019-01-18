@@ -307,7 +307,7 @@ void Tooltable::deleteTool(int pos)
     if (Tools.find(pos) != Tools.end()) {
         Tools.erase(pos);
     } else {
-        throw Base::Exception("Index not found");
+        throw Base::IndexError("Index not found");
     }
 }
 

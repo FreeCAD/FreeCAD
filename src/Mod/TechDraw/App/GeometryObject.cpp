@@ -390,7 +390,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         base = BaseGeom::baseFactory(edge);
         if (base == nullptr) {
             Base::Console().Message("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
-            throw Base::Exception("GeometryObject::addGeomFromCompound - baseFactory failed");
+            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
         base->classOfEdge = category;
         base->visible = visible;

@@ -33,7 +33,7 @@ import FreeCAD
 import os
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -58,20 +58,29 @@ def insert(filename, docname):
     import_inp(filename)
 
 
-########## module specific methods ##########
-def import_inp(filename):
-    "create imported objects in FreeCAD, currently only FemMesh"
-
-    m = read_inp(filename)
+# ********* module specific methods *********
+def read(filename):
+    '''read a FemMesh from a inp mesh file and return the FemMesh
+    '''
+    # no document object is created, just the FemMesh is returned
+    mesh_data = read_inp(filename)
     from . import importToolsFem
-    mesh = importToolsFem.make_femmesh(m)
+    return importToolsFem.make_femmesh(mesh_data)
+
+
+def import_inp(filename):
+    '''read a FEM mesh from a Z88 mesh file and insert a FreeCAD FEM Mesh object in the ActiveDocument
+    '''
+    femmesh = read(filename)
     mesh_name = os.path.splitext(os.path.basename(filename))[0]
-    mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
-    mesh_object.FemMesh = mesh
+    if femmesh:
+        mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
+        mesh_object.FemMesh = femmesh
 
 
 def read_inp(file_name):
-    "read .inp file, currently only the mesh"
+    '''read .inp file '''
+    # ATM only mesh reading is supported (no boundary conditions)
 
     class elements():
 

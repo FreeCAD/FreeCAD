@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2017 - Markus Hovorka <m.hovorka@live.de>               *
+# *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,11 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-__title__ = "view provider for constraint electrostatic potential object"
+__title__ = "FreeCAD FEM constraint electrostatic potential ViewProvider for the document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package ViewProviderFemConstraintElctrostaticPotential
+#  \ingroup FEM
+#  \brief FreeCAD FEM view provider for constraint electrostatic potential object
 
 import FreeCAD
 import FreeCADGui

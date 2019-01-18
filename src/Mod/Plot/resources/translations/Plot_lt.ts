@@ -115,7 +115,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="179"/>
       <source>Active axes</source>
-      <translation>Aktyvios ašys</translation>
+      <translation>Darbinės ašys</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="211"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="227"/>
       <source>Index of the active axes</source>
-      <translation>Aktyvių ašių indeksas</translation>
+      <translation>Darbinių ašių rikiuotė</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="231"/>
@@ -238,12 +238,12 @@
     <message>
       <location filename="../../PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation>Tinklelis turi būti įgalintas ant diagramos dokumento</translation>
+      <translation>Tinklelis turi būti įjungtas virš diagramos dokumento</translation>
     </message>
     <message>
       <location filename="../../PlotGui.py" line="125"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation>Ženklinimas turi būti įgalintas ant diagramos dokumento</translation>
+      <translation>Ženklinimas turi būti įjungtas virš diagramos dokumento</translation>
     </message>
   </context>
   <context>
@@ -256,7 +256,7 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="137"/>
       <source>Active axes</source>
-      <translation>Aktyvios ašys</translation>
+      <translation>Darbinės ašys</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="141"/>
@@ -276,12 +276,12 @@
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="153"/>
       <source>Index of the active axes</source>
-      <translation>Aktyvių ašių indeksas</translation>
+      <translation>Darbinių ašių rikiuotė</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="157"/>
       <source>Title (associated to active axes)</source>
-      <translation>Pavadinimas (susietas su aktyviomis ašimis)</translation>
+      <translation>Pavadinimas (susietas su darbinėmis ašimis)</translation>
     </message>
     <message>
       <location filename="../../plotLabels/TaskPanel.py" line="162"/>

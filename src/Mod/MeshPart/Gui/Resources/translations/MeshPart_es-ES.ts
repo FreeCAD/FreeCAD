@@ -4,7 +4,7 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="+245"/>
+      <location filename="../../Command.cpp" line="+290"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
@@ -22,7 +22,7 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location line="-191"/>
+      <location line="-235"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
@@ -40,7 +40,7 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location line="+106"/>
+      <location line="+150"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
@@ -58,7 +58,7 @@
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Mesh</source>
       <translation>Malla</translation>
     </message>
@@ -157,7 +157,7 @@
     <message>
       <location line="+24"/>
       <source>Start</source>
-      <translation>Comenzar</translation>
+      <translation>Inicio</translation>
     </message>
   </context>
   <context>
@@ -296,7 +296,7 @@
       <translation>Longitud máx. de la arista:</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+225"/>
+      <location filename="../../Tessellation.cpp" line="+226"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Seleccione primero una forma para el mallado.</translation>
     </message>
@@ -309,7 +309,7 @@
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="+93"/>
+      <location filename="../../Command.cpp" line="+137"/>
       <source>Select plane</source>
       <translation>Seleccionar plano</translation>
     </message>
@@ -322,7 +322,7 @@
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location line="-85"/>
+      <location line="-129"/>
       <source>Select plane</source>
       <translation>Seleccionar plano</translation>
     </message>
@@ -330,6 +330,31 @@
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>Por favor seleccione el plano de corte de la malla.</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>Trim by plane</source>
+      <translation>Corte por plano</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select the side you want to keep.</source>
+      <translation>Seleccione el lado que desea mantener.</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Inner</source>
+      <translation>Interior</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Outer</source>
+      <translation>Exterior</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Split</source>
+      <translation>Dividir</translation>
     </message>
   </context>
   <context>

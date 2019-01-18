@@ -67,6 +67,9 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     ui->Value->selectAll();
     QMetaObject::invokeMethod(ui->Value, "setFocus", Qt::QueuedConnection);
 
+    // Bind input fields to properties
+    ui->Value->bind(pcThickness->Value);
+
     bool r = pcThickness->Reversed.getValue();
     ui->checkReverse->setChecked(r);
 

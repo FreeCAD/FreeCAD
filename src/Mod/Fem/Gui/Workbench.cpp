@@ -37,6 +37,25 @@ using namespace FemGui;
 #if 0 // needed for Qt's lupdate utility
     qApp->translate("Workbench", "FEM");
     qApp->translate("Workbench", "&FEM");
+    qApp->translate("Workbench", "Model");
+    qApp->translate("Workbench", "M&odel");
+    qApp->translate("Workbench", "Mechanical Constraints");
+    qApp->translate("Workbench", "&Mechanical Constraints");
+    qApp->translate("Workbench", "Thermal Constraints");
+    qApp->translate("Workbench", "&Thermal Constraints");
+    qApp->translate("Workbench", "Mesh");
+    qApp->translate("Workbench", "M&esh");
+    qApp->translate("Workbench", "Fluid Constraints");
+    qApp->translate("Workbench", "&Fluid Constraints");
+    qApp->translate("Workbench", "Electrostatic Constraints");
+    qApp->translate("Workbench", "&Electrostatic Constraints");
+    qApp->translate("Workbench", "Solve");
+    qApp->translate("Workbench", "&Solve");
+    qApp->translate("Workbench", "Results");
+    qApp->translate("Workbench", "&Results");
+    qApp->translate("Workbench", "Materials");
+    qApp->translate("Workbench", "&Element Geometry");
+    qApp->translate("Workbench", "Utilities");
 #endif
 
 /// @namespace FemGui @class Workbench
@@ -55,7 +74,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
      StdWorkbench::setupContextMenu( recipient, item );
      *item << "Separator"
            << "FEM_MeshClear"
-           << "FEM_MeshPrintInfo";
+           << "FEM_MeshDisplayInfo";
 }
 
 Gui::ToolBarItem* Workbench::setupToolBars() const
@@ -154,7 +173,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 #endif
 
      Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
-     utils->setCommand("Results");
+     utils->setCommand("Utilities");
      *utils << "FEM_ClippingPlaneAdd"
             << "FEM_ClippingPlaneRemoveAll";
 

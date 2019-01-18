@@ -266,7 +266,7 @@ Body* Body::findBodyOf(const App::DocumentObject* feature)
 std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
 {
     if(!isAllowed(feature))
-        throw Base::Exception("Body: object is not allowed");
+        throw Base::ValueError("Body: object is not allowed");
     
     //TODO: features should not add all links
     
@@ -299,7 +299,7 @@ std::vector< App::DocumentObject* > Body::addObjects(std::vector< App::DocumentO
 void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after)
 {
     if (target && !hasObject (target)) {
-        throw Base::Exception("Body: the feature we should insert relative to is not part of that body");
+        throw Base::ValueError("Body: the feature we should insert relative to is not part of that body");
     }
     
     //ensure that all origin links are ok

@@ -25,14 +25,18 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QDoubleSpinBox>
 # include <QRegExp>
+# include <QGridLayout>
 # include <QMessageBox>
 # include <memory>
 #endif
 
 #include "DlgSettings3DViewImp.h"
+#include "MainWindow.h"
 #include "NavigationStyle.h"
 #include "PrefWidgets.h"
+#include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ui_MouseButtons.h"
 #include <App/Application.h>
@@ -52,6 +56,7 @@ bool DlgSettings3DViewImp::showMsg = true;
  */
 DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     : PreferencePage( parent )
+    , q0(0), q1(0), q2(0), q3(1)
 {
     this->setupUi(this);
     retranslate();
@@ -88,6 +93,7 @@ void DlgSettings3DViewImp::saveSettings()
 
     checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
+    checkBoxDisableTilt->onSave();
     spinBoxZoomStep->onSave();
     checkBoxDragAtCursor->onSave();
     CheckBox_CornerCoordSystem->onSave();
@@ -101,12 +107,23 @@ void DlgSettings3DViewImp::saveSettings()
     sliderIntensity->onSave();
     radioPerspective->onSave();
     radioOrthographic->onSave();
+
+    QVariant camera = comboNewDocView->itemData(comboNewDocView->currentIndex(), Qt::UserRole);
+    hGrp->SetASCII("NewDocumentCameraOrientation", (const char*)camera.toByteArray());
+    if (camera == QByteArray("Custom")) {
+        ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
+        hCustom->SetFloat("Q0", q0);
+        hCustom->SetFloat("Q1", q1);
+        hCustom->SetFloat("Q2", q2);
+        hCustom->SetFloat("Q3", q3);
+    }
 }
 
 void DlgSettings3DViewImp::loadSettings()
 {
     checkBoxZoomAtCursor->onRestore();
     checkBoxInvertZoom->onRestore();
+    checkBoxDisableTilt->onRestore();
     spinBoxZoomStep->onRestore();
     checkBoxDragAtCursor->onRestore();
     CheckBox_CornerCoordSystem->onRestore();
@@ -151,6 +168,30 @@ void DlgSettings3DViewImp::loadSettings()
     index = this->boxMarkerSize->findData(QVariant(current));
     if (index < 0) index = 2;
     this->boxMarkerSize->setCurrentIndex(index);
+
+    comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
+    comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));
+    comboNewDocView->addItem(tr("Trimetric"), QByteArray("Trimetric"));
+    comboNewDocView->addItem(tr("Top"), QByteArray("Top"));
+    comboNewDocView->addItem(tr("Front"), QByteArray("Front"));
+    comboNewDocView->addItem(tr("Left"), QByteArray("Left"));
+    comboNewDocView->addItem(tr("Right"), QByteArray("Right"));
+    comboNewDocView->addItem(tr("Rear"), QByteArray("Rear"));
+    comboNewDocView->addItem(tr("Bottom"), QByteArray("Bottom"));
+    comboNewDocView->addItem(tr("Custom"), QByteArray("Custom"));
+    std::string camera = hGrp->GetASCII("NewDocumentCameraOrientation", "Top");
+    index = comboNewDocView->findData(QByteArray(camera.c_str()));
+    if (index > -1) comboNewDocView->setCurrentIndex(index);
+    if (camera == "Custom") {
+        ParameterGrp::handle hCustom = hGrp->GetGroup("Custom");
+        q0 = hCustom->GetFloat("Q0", q0);
+        q1 = hCustom->GetFloat("Q1", q1);
+        q2 = hCustom->GetFloat("Q2", q2);
+        q3 = hCustom->GetFloat("Q3", q3);
+    }
+
+    connect(comboNewDocView, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onNewDocViewChanged(int)));
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()
@@ -229,6 +270,127 @@ void DlgSettings3DViewImp::onAliasingChanged(int index)
             tr("Open a new viewer or restart %1 to apply anti-aliasing changes.").arg(qApp->applicationName()));
     }
 }
+
+void DlgSettings3DViewImp::onNewDocViewChanged(int index)
+{
+    QVariant camera = comboNewDocView->itemData(index, Qt::UserRole);
+    if (camera == QByteArray("Custom")) {
+        CameraDialog dlg(this);
+        dlg.setValues(q0, q1, q2, q3);
+        if (dlg.exec()) {
+            dlg.getValues(q0, q1, q2, q3);
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+CameraDialog::CameraDialog(QWidget* parent)
+    : QDialog(parent)
+{
+    this->setWindowTitle(tr("Camera settings"));
+
+    QGridLayout *gridLayout;
+    gridLayout = new QGridLayout(this);
+
+    QGroupBox *groupBox;
+    groupBox = new QGroupBox(this);
+    groupBox->setTitle(tr("Orientation"));
+    gridLayout->addWidget(groupBox, 0, 0, 1, 1);
+
+    QDialogButtonBox *buttonBox;
+    buttonBox = new QDialogButtonBox(this);
+    buttonBox->setOrientation(Qt::Horizontal);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+    gridLayout->addWidget(buttonBox, 3, 0, 1, 1);
+
+    QGridLayout *layout;
+    layout = new QGridLayout(groupBox);
+
+    // Q0
+    QLabel* label0 = new QLabel(groupBox);
+    label0->setText(tr("Q0"));
+    layout->addWidget(label0, 0, 0, 1, 1);
+
+    sb0 = new QDoubleSpinBox(groupBox);
+    sb0->setRange(-1, 1);
+    sb0->setSingleStep(0.1);
+    layout->addWidget(sb0, 0, 1, 1, 1);
+
+    // Q1
+    QLabel* label1 = new QLabel(groupBox);
+    label1->setText(tr("Q1"));
+    layout->addWidget(label1, 1, 0, 1, 1);
+
+    sb1 = new QDoubleSpinBox(groupBox);
+    sb1->setRange(-1, 1);
+    sb1->setSingleStep(0.1);
+    layout->addWidget(sb1, 1, 1, 1, 1);
+
+    // Q2
+    QLabel* label2 = new QLabel(groupBox);
+    label2->setText(tr("Q2"));
+    layout->addWidget(label2, 2, 0, 1, 1);
+
+    sb2 = new QDoubleSpinBox(groupBox);
+    sb2->setRange(-1, 1);
+    sb2->setSingleStep(0.1);
+    layout->addWidget(sb2, 2, 1, 1, 1);
+
+    // Q3
+    QLabel* label3 = new QLabel(groupBox);
+    label3->setText(tr("Q3"));
+    layout->addWidget(label3, 3, 0, 1, 1);
+
+    sb3 = new QDoubleSpinBox(groupBox);
+    sb3->setRange(-1, 1);
+    sb3->setSingleStep(0.1);
+    layout->addWidget(sb3, 3, 1, 1, 1);
+
+    QPushButton *currentViewButton;
+    currentViewButton = new QPushButton(this);
+    currentViewButton->setText(tr("Current view"));
+    currentViewButton->setObjectName(QString::fromLatin1("currentView"));
+    layout->addWidget(currentViewButton, 4, 1, 2, 1);
+
+    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    QMetaObject::connectSlotsByName(this);
+}
+
+CameraDialog::~CameraDialog()
+{
+}
+
+void CameraDialog::setValues(double q0, double q1, double q2, double q3)
+{
+    sb0->setValue(q0);
+    sb1->setValue(q1);
+    sb2->setValue(q2);
+    sb3->setValue(q3);
+}
+
+void CameraDialog::getValues(double& q0, double& q1, double& q2, double& q3) const
+{
+    q0 = sb0->value();
+    q1 = sb1->value();
+    q2 = sb2->value();
+    q3 = sb3->value();
+}
+
+void CameraDialog::on_currentView_clicked()
+{
+    View3DInventor* mdi = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    if (mdi) {
+        SbRotation rot = mdi->getViewer()->getCameraOrientation();
+        const float* q = rot.getValue();
+        sb0->setValue(q[0]);
+        sb1->setValue(q[1]);
+        sb2->setValue(q[2]);
+        sb3->setValue(q[3]);
+    }
+}
+
 
 #include "moc_DlgSettings3DViewImp.cpp"
 

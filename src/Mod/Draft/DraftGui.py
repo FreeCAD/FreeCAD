@@ -47,7 +47,10 @@ except ImportError:
     FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    if sys.version_info.major >= 3:
+        _encoding = None
+    else:
+        _encoding = QtGui.QApplication.UnicodeUTF8
     def translate(context, text, utf8_decode=True):
         """convenience function for Qt translator
             context: str
@@ -58,7 +61,9 @@ try:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version_info.major >= 3 or utf8_decode:
+        if sys.version_info.major >= 3:
+            return QtGui.QApplication.translate(context, text, None)
+        elif utf8_decode:
             return QtGui.QApplication.translate(context, text, None, _encoding)
         else:
             return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
@@ -74,10 +79,18 @@ except AttributeError:
                 if set to true utf8 encoded unicode will be returned. This option does not have influence
                 on python3 as for python3 we are returning utf-8 encoded unicode by default!
         """
-        if sys.version_info.major >= 3 or utf8_decode:
+        if sys.version_info.major >= 3:
             return QtGui.QApplication.translate(context, text, None)
+        elif QtCore.qVersion() > "4":
+            if utf8_decode:
+                return QtGui.QApplication.translate(context, text, None)
+            else:
+                return QtGui.QApplication.translate(context, text, None).encode("utf8")
         else:
-            return QtGui.QApplication.translate(context, text, None).encode("utf8")
+            if utf8_decode:
+                return QtGui.QApplication.translate(context, text, None, _encoding)
+            else:
+                return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
 
 def utf8_decode(text):
     """py2: str     -> unicode
@@ -1817,6 +1830,9 @@ class DraftToolBar:
             
     def getDefaultColor(self,type,rgb=False):
         "gets color from the preferences or toolbar"
+        r = 0
+        g = 0
+        b = 0
         if type == "snap":
             color = Draft.getParam("snapcolor",4294967295)
             r = ((color>>24)&0xFF)/255
@@ -2360,6 +2376,107 @@ class ScaleTaskPanel:
     def reject(self):
         if self.sourceCmd:
             self.sourceCmd.finish()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+#def translateWidget(w, context=None, disAmb=None):
+#    '''translator for items where retranslateUi() is unavailable.
+#    translates widget w and children.'''
+#    #handle w itself
+#    if w.metaObject().className() == "QWidget":
+#        origText = None
+#        origText = w.windowTitle()
+#        if origText:
+#            newText = translate(context, str(origText))
+#            if newText:
+#                w.setWindowTitle(newText)
+
+#    #handle children
+#    wKids = w.findChildren(QtGui.QWidget)
+#    for i in wKids:
+#        className = i.metaObject().className()
+#        if hasattr(i,"text") and hasattr(i,"setText"):
+#            origText = i.text()
+#            newText = translate(context, str(origText))
+#            if newText:
+#                i.setText(newText)
+#        elif hasattr(i,"title") and hasattr(i,"setTitle"):
+#            origText = i.title()
+#            newText = translate(context, str(origText))
+#            if newText:
+#                i.setTitle(newText)
+#        elif hasattr(i,"itemText") and hasattr(i,"setItemText"):
+#            for item in range(i.count()):
+#                oldText = i.itemText(item)
+#                newText = translate(context, str(origText))
+#                if newText:
+#                    i.setItemText(item,newText)
+##for debugging:
+##        else:
+##            msg = "TranslateWidget: Can not translate widget: {0} type: {1}\n".format(w.objectName(),w.metaObject().className())
+##            FreeCAD.Console.PrintMessage(msg)
+
+class ShapeStringTaskPanel:
+    '''A TaskPanel for ShapeString'''
+    def __init__(self):
+        self.form = QtGui.QWidget()
+        self.form.setObjectName("ShapeStringTaskPanel")
+        self.form.setWindowTitle(translate("draft","ShapeString"))
+        layout = QtGui.QVBoxLayout(self.form)
+        uiFile = QtCore.QFile(u":/ui/TaskShapeString.ui")  #this has to change if ui not in Resource file
+        loader = FreeCADGui.UiLoader()
+        self.task = loader.load(uiFile)
+        layout.addWidget(self.task)
+        
+        qStart = FreeCAD.Units.Quantity(0.0, FreeCAD.Units.Length)
+        self.task.sbX.setProperty('rawValue',qStart.Value)
+        self.task.sbX.setProperty('unit',qStart.getUserPreferred()[2])
+        self.task.sbY.setProperty('rawValue',qStart.Value)
+        self.task.sbY.setProperty('unit',qStart.getUserPreferred()[2])
+        self.task.sbZ.setProperty('rawValue',qStart.Value)
+        self.task.sbZ.setProperty('unit',qStart.getUserPreferred()[2])
+        self.task.sbHeight.setProperty('rawValue',10.0)
+        self.task.sbHeight.setProperty('unit',qStart.getUserPreferred()[2])
+
+        self.stringText = translate("draft","Default")
+        self.task.leString.setText(self.stringText)
+        self.task.fcFontFile.setFileName(Draft.getParam("FontFile",""))
+        self.fileSpec = Draft.getParam("FontFile","")
+
+        QtCore.QObject.connect(self.task.fcFontFile,QtCore.SIGNAL("fileNameSelected(const QString&)"),self.fileSelect)
+
+    def fileSelect(self, fn):
+        self.fileSpec = fn
+
+    def accept(self):
+        FreeCAD.ActiveDocument.openTransaction("ShapeString")
+        qr,sup,points,fil = self.sourceCmd.getStrings()
+        height = FreeCAD.Units.Quantity(self.task.sbHeight.text()).Value
+        ss = Draft.makeShapeString(str(self.task.leString.text()),  ##needs to be bytes for Py3!
+                                   str(self.fileSpec),
+                                   height,
+                                   0.0)
+
+        x = FreeCAD.Units.Quantity(self.task.sbX.text()).Value
+        y = FreeCAD.Units.Quantity(self.task.sbY.text()).Value
+        z = FreeCAD.Units.Quantity(self.task.sbZ.text()).Value
+        ssBase = FreeCAD.Vector(x,y,z)
+        plm=FreeCAD.Placement()
+        plm.Base = ssBase
+        elements = qr[1:-1].split(",")  #string to tuple
+        mytuple = tuple(elements)       #to prevent
+        plm.Rotation.Q = mytuple        #PyCXX: Error creating object of type N2Py5TupleE from '(0.0,-0.0,-0.0,1.0)'
+        ss.Placement=plm
+        if sup:
+            ss.Support = FreeCAD.ActiveDocument.getObject(sup)
+        Draft.autogroup(ss)
+        FreeCAD.ActiveDocument.commitTransaction()
+
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 

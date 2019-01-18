@@ -437,7 +437,7 @@ def createpdf_firefox(pagename):
     if (not exists(pagename+".pdf",image=True)) or OVERWRITE:
         infile = FOLDER + os.sep + pagename+'.html'
         outfile = FOLDER + os.sep + pagename+'.pdf'
-        return os.system('firefox -print ' + infile)
+        os.system('firefox -print ' + infile)
         time.sleep(6)
         if os.path.exists(FIREFOXPDFFOLDER + os.sep + pagename + ".pdf"):
             shutil.move(FIREFOXPDFFOLDER+os.sep+pagename+".pdf",outfile)

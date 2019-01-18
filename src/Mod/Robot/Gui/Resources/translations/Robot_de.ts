@@ -504,6 +504,11 @@ Siehe Dokumentation für Details.</translation>
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Bitte gehen Sie zu %1 und kopieren Sie die Dateien in %2</translation>
     </message>
+    <message>
+      <location filename="../../ViewProviderTrajectory.cpp" line="+164"/>
+      <source>Modify</source>
+      <translation>Bearbeiten</translation>
+    </message>
   </context>
   <context>
     <name>RobotGui::DlgTrajectorySimulate</name>

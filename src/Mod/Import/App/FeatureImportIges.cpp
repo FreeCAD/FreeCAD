@@ -85,7 +85,7 @@ Standard_Integer FeatureImportIges::Execute(void)
 
     // read iges-file
     if (aReader.ReadFile((const Standard_CString)FileName.c_str()) != IFSelect_RetDone)
-      throw Base::Exception("IGES read failed (load file)");
+      throw Base::FileException("IGES read failed (load file)");
   
     // check iges-file (memory)
     //if (!aReader.Check(Standard_True))

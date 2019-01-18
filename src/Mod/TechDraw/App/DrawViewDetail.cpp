@@ -84,6 +84,7 @@
 #include "DrawUtil.h"
 #include "DrawViewDetail.h"
 #include "DrawProjGroupItem.h"
+#include "DrawViewSection.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -167,7 +168,23 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         dvp = static_cast<DrawViewPart*>(baseObj);
     }
 
-    TopoDS_Shape shape = dvp->getSourceShapeFused();
+    DrawProjGroupItem* dpgi = nullptr;
+    if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        dpgi= static_cast<TechDraw::DrawProjGroupItem*>(dvp);
+    }
+
+    DrawViewSection* dvs = nullptr;
+    if (dvp->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
+        dvs= static_cast<TechDraw::DrawViewSection*>(dvp);
+    }
+
+    TopoDS_Shape shape;
+    if (dvs != nullptr) {
+        shape = dvs->getCutShape();
+    } else {
+        shape = dvp->getSourceShapeFused();
+    }
+
     if (shape.IsNull()) {
         return new App::DocumentObjectExecReturn("DVD - Linked shape object is invalid");
     }
@@ -175,29 +192,46 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     Base::Vector3d anchor = AnchorPoint.getValue();    //this is a 2D point (in unrotated coords)
     Base::Vector3d dirDetail = dvp->Direction.getValue();
 
-    double shapeRotate = dvp->Rotation.getValue();                      //degrees CW?
-    if (dvp->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        DrawProjGroupItem* dpgi= static_cast<TechDraw::DrawProjGroupItem*>(dvp);
-        shapeRotate += dpgi->getRotateAngle() * 180.0/M_PI;            // to degrees from radians
-    }
- 
     double radius = getFudgeRadius();
     double scale = getScale();
 
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
 
-    //rotate the copied shape to match orientation of BaseView and center it on origin
-    gp_Pnt gpCenter = TechDrawGeometry::findCentroid(myShape,           //centre of unrotated shape
+    gp_Pnt gpCenter = TechDrawGeometry::findCentroid(myShape,
                                                      dirDetail);
     Base::Vector3d shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
-    gp_Ax2 viewAxis = getViewAxis(shapeCenter, dirDetail, false);
-    myShape = TechDrawGeometry::rotateShape(myShape,                    //rotate to match Base shape
-                                            viewAxis,
-                                            -shapeRotate);
+
+    gp_Ax2 viewAxis;
+    gp_Ax2 vaBase;
+    if (dpgi != nullptr) {
+        viewAxis = dpgi->getViewAxis(shapeCenter, dirDetail);
+        vaBase = TechDrawGeometry::getViewAxis(shapeCenter,dirDetail,false);
+
+        Base::Vector3d vaDir(vaBase.Direction().X(),vaBase.Direction().Y(),vaBase.Direction().Z());
+        Base::Vector3d vabDir(vaBase.Direction().X(),vaBase.Direction().Y(),vaBase.Direction().Z());
+        double vaDot = vaDir.Dot(vabDir);
+
+        if (DrawUtil::fpCompare(vaDot,-1.0)) {                //anti-parallel, flip
+            myShape = TechDrawGeometry::rotateShape(myShape,
+                                                    viewAxis,
+                                                    180.0);
+        }
+        Base::Vector3d vaxDir(vaBase.XDirection().X(),vaBase.XDirection().Y(),vaBase.XDirection().Z());
+        Base::Vector3d vabxDir(vaBase.XDirection().X(),vaBase.XDirection().Y(),vaBase.XDirection().Z());
+        double vaxDot = vaxDir.Dot(vabxDir);
+        if (DrawUtil::fpCompare(vaxDot,-1.0)) {
+            myShape = TechDrawGeometry::rotateShape(myShape,
+                                                    viewAxis,
+                                                    180.0);
+        }
+    } else {
+        viewAxis = dvp->getViewAxis(shapeCenter, dirDetail,false);
+    }
+
     myShape = TechDrawGeometry::moveShape(myShape,                     //centre on origin
                                           -shapeCenter);
-    gpCenter = TechDrawGeometry::findCentroid(myShape,
+    gpCenter = TechDrawGeometry::findCentroid(myShape,                 //sb origin!
                                               dirDetail);
     shapeCenter = Base::Vector3d(gpCenter.X(),gpCenter.Y(),gpCenter.Z());
 
@@ -268,16 +302,25 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(tool,
-                                                     Direction.getValue());
+                                                     dirDetail);
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(detail,
                                                     inputCenter,
                                                     scale);
-        viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
-        if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+
+        viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),dirDetail);
+
+        double shapeRotate = dvp->Rotation.getValue();                      //degrees CW?
+        if (dpgi != nullptr) {
+            shapeRotate += dpgi->getRotateAngle() * 180.0/M_PI;            // to degrees from radians
+        }
+ 
+        if (!DrawUtil::fpCompare(shapeRotate,0.0)) {
             mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
                                                           viewAxis,
-                                                          Rotation.getValue());         //degrees cw?
+                                                          shapeRotate);
         }
+        inputCenter = TechDrawGeometry::findCentroid(mirroredShape,
+                                                     dirDetail);
 
         geometryObject = buildGeometryObject(mirroredShape,viewAxis);
         geometryObject->pruneVertexGeom(Base::Vector3d(0.0,0.0,0.0),Radius.getValue() * scale);      //remove vertices beyond clipradius

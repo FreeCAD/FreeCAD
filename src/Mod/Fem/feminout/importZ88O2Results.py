@@ -35,7 +35,7 @@ import os
 Debug = False
 
 
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -60,7 +60,7 @@ def insert(filename, docname):
     import_z88_disp(filename)
 
 
-########## module specific methods ##########
+# ********* module specific methods *********
 def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     '''insert a FreeCAD FEM mechanical result object in the ActiveDocument
     pure usage:

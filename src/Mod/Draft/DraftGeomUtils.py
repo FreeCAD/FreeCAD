@@ -1384,8 +1384,8 @@ def findClosestCircle(point,circles):
             closest = c
     return closest
 
-def isCoplanar(faces):
-    "checks if all faces in the given list are coplanar"
+def isCoplanar(faces,tolerance=0):
+    "isCoplanar(faces,[tolerance]): checks if all faces in the given list are coplanar. Tolerance is the max deviation to be considered coplanar"
     if len(faces) < 2:
         return True
     base =faces[0].normalAt(0,0)
@@ -1393,7 +1393,7 @@ def isCoplanar(faces):
         for v in faces[i].Vertexes:
             chord = v.Point.sub(faces[0].Vertexes[0].Point)
             dist = DraftVecUtils.project(chord,base)
-            if round(dist.Length,precision()) > 0:
+            if round(dist.Length,precision()) > tolerance:
                 return False
     return True
 
@@ -2437,6 +2437,27 @@ def circleFrom2PointsRadius(p1, p2, radius):
     if circles: return circles
     else: return None
 
+
+def arcFrom2Pts(firstPt,lastPt,center,axis=None):
+
+    '''Builds an arc with center and 2 points, can be oriented with axis'''
+
+    radius1  = firstPt.sub(center).Length
+    radius2  = lastPt.sub(center).Length
+    if round(radius1-radius2,4) != 0 : # (PREC = 4 = same as Part Module),  Is it possible ?
+        return None
+
+    thirdPt = Vector(firstPt.sub(center).add(lastPt).sub(center))
+    thirdPt.normalize()
+    thirdPt.scale(radius1,radius1,radius1)
+    thirdPt = thirdPt.add(center)
+    newArc = Part.Edge(Part.Arc(firstPt,thirdPt,lastPt))
+    if not axis is None and newArc.Curve.Axis.dot(axis) < 0 :
+        thirdPt = thirdPt.sub(center)
+        thirdPt.scale(-1,-1,-1)
+        thirdPt = thirdPt.add(center)
+        newArc = Part.Edge(Part.Arc(firstPt,thirdPt,lastPt))
+    return newArc
 
 
 #############################33 to include

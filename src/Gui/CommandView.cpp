@@ -1285,27 +1285,71 @@ void StdCmdViewTop::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_ViewAxo
+// Std_ViewIsometric
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewAxo)
+DEF_3DV_CMD(StdCmdViewIsometric)
 
-StdCmdViewAxo::StdCmdViewAxo()
-  : Command("Std_ViewAxo")
+StdCmdViewIsometric::StdCmdViewIsometric()
+  : Command("Std_ViewIsometric")
 {
     sGroup      = QT_TR_NOOP("Standard-View");
-    sMenuText   = QT_TR_NOOP("Axonometric");
-    sToolTipText= QT_TR_NOOP("Set to axonometric view");
-    sWhatsThis  = "Std_ViewAxo";
-    sStatusTip  = QT_TR_NOOP("Set to axonometric view");
+    sMenuText   = QT_TR_NOOP("Isometric");
+    sToolTipText= QT_TR_NOOP("Set to isometric view");
+    sWhatsThis  = "Std_ViewIsometric";
+    sStatusTip  = QT_TR_NOOP("Set to isometric view");
     sPixmap     = "view-axonometric";
     sAccel      = "0";
     eType         = Alter3DView;
 }
 
-void StdCmdViewAxo::activated(int iMsg)
+void StdCmdViewIsometric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewAxonometric()");
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewIsometric()");
+}
+
+//===========================================================================
+// Std_ViewDimetric
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewDimetric)
+
+StdCmdViewDimetric::StdCmdViewDimetric()
+  : Command("Std_ViewDimetric")
+{
+    sGroup      = QT_TR_NOOP("Standard-View");
+    sMenuText   = QT_TR_NOOP("Dimetric");
+    sToolTipText= QT_TR_NOOP("Set to dimetric view");
+    sWhatsThis  = "Std_ViewDimetric";
+    sStatusTip  = QT_TR_NOOP("Set to dimetric view");
+    eType         = Alter3DView;
+}
+
+void StdCmdViewDimetric::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDimetric()");
+}
+
+//===========================================================================
+// Std_ViewTrimetric
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewTrimetric)
+
+StdCmdViewTrimetric::StdCmdViewTrimetric()
+  : Command("Std_ViewTrimetric")
+{
+    sGroup      = QT_TR_NOOP("Standard-View");
+    sMenuText   = QT_TR_NOOP("Trimetric");
+    sToolTipText= QT_TR_NOOP("Set to trimetric view");
+    sWhatsThis  = "Std_ViewTrimetric";
+    sStatusTip  = QT_TR_NOOP("Set to trimetric view");
+    eType         = Alter3DView;
+}
+
+void StdCmdViewTrimetric::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewTrimetric()");
 }
 
 //===========================================================================
@@ -2970,7 +3014,9 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdViewRear());
     rcCmdMgr.addCommand(new StdCmdViewRight());
     rcCmdMgr.addCommand(new StdCmdViewTop());
-    rcCmdMgr.addCommand(new StdCmdViewAxo());
+    rcCmdMgr.addCommand(new StdCmdViewIsometric());
+    rcCmdMgr.addCommand(new StdCmdViewDimetric());
+    rcCmdMgr.addCommand(new StdCmdViewTrimetric());
     rcCmdMgr.addCommand(new StdCmdViewFitAll());
     rcCmdMgr.addCommand(new StdCmdViewVR());
     rcCmdMgr.addCommand(new StdCmdViewFitSelection());

@@ -118,8 +118,10 @@ SET(FemTests_SRCS
     femtest/testccxtools.py
     femtest/testcommon.py
     femtest/testmesh.py
+    femtest/testobject.py
+    femtest/testresult.py
     femtest/testsolverframework.py
-    femtest/testtools.py
+    femtest/utilstest.py
 )
 
 SET(FemTestsFiles_SRCS
@@ -166,6 +168,8 @@ SET(FemTestsMesh_SRCS
     femtest/testfiles/mesh/__init__.py
     femtest/testfiles/mesh/tetra10_mesh.inp
     femtest/testfiles/mesh/tetra10_mesh.unv
+    femtest/testfiles/mesh/tetra10_mesh.vtk
+    femtest/testfiles/mesh/tetra10_mesh.z88
 )
 
 SET(FemTools_SRCS

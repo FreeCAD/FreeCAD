@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Апроксимировать поверхность B-сплайна...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Апроксимировать поверхность B-сплайна</translation>
     </message>
     <message>
       <source>Approximate B-Spline surface...</source>
@@ -59,7 +59,7 @@
     <message>
       <location line="+1"/>
       <source>Poisson...</source>
-      <translation>Poisson...</translation>
+      <translation>Пуассона...</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -77,13 +77,13 @@
     <message>
       <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation>Структурированные точки облака</translation>
+      <translation>Облака структурированных точек</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Триангуляция облаков точек структурированных</translation>
+      <translation>Триангуляция облаков структурированных точек</translation>
     </message>
     <message>
       <source>View triangulation</source>
@@ -94,12 +94,12 @@
     <name>ReenGui::FitBSplineSurface</name>
     <message>
       <source>Fit B-Spline surface</source>
-      <translation>Fit B-сплайновая поверхность</translation>
+      <translation>Разместить B-сплайновую поверхность</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Разместить B-сплайновую поверхность</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -110,7 +110,7 @@
       <location line="+6"/>
       <location line="+67"/>
       <source>Degree</source>
-      <translation>Степень</translation>
+      <translation>Градусы</translation>
     </message>
     <message>
       <location line="-38"/>
@@ -121,7 +121,7 @@
     <message>
       <location line="-35"/>
       <source>v-Direction</source>
-      <translation>u направление</translation>
+      <translation>v направление</translation>
     </message>
     <message>
       <location line="+67"/>
@@ -136,12 +136,12 @@
     <message>
       <location line="+29"/>
       <source>Size factor</source>
-      <translation>Коэффициент размера</translation>
+      <translation>Масштабирование</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Smoothing</source>
-      <translation>Размытие</translation>
+      <translation>Сглаживание</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -156,17 +156,17 @@
     <message>
       <location line="+29"/>
       <source>Bending energy</source>
-      <translation>Изгиб энергии</translation>
+      <translation>Энергия изгиба</translation>
     </message>
     <message>
       <location line="+29"/>
       <source>Curvature variation</source>
-      <translation>Вариация кривизны</translation>
+      <translation>Варианты кривизны</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>User-defined u/v directions</source>
-      <translation>Определяемые пользователем u/v направления</translation>
+      <translation>Пользовательские u/v направления</translation>
     </message>
   </context>
   <context>
@@ -179,7 +179,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation>Пожалуйста, выберите один размещение объекта для получения местной ориентации.</translation>
+      <translation>Пожалуйста, выберите один объект размещения для получения локальной ориентации.</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -202,17 +202,17 @@
     <message>
       <location line="+6"/>
       <source>Octree depth</source>
-      <translation>Октодерево глубина</translation>
+      <translation>Глубина октодерева</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Solver divide</source>
-      <translation>Механизм расчета разрыва</translation>
+      <translation>Решатель разделения</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Samples per node</source>
-      <translation>Образцы каждого узла</translation>
+      <translation>Количество дискретных элементов на узел</translation>
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="+109"/>
@@ -240,7 +240,7 @@
     <message>
       <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation>Просмотр триангуляции не удалось</translation>
+      <translation>Просмотр непросчитанной триангуляции</translation>
     </message>
   </context>
   <context>

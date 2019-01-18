@@ -99,7 +99,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
     myNetGenMesher.Compute();
 
-    // throw Base::Exception("Compute Done\n");
+    // throw Base::RuntimeError("Compute Done\n");
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
     const SMDS_MeshInfo& info = data->GetMeshInfo();

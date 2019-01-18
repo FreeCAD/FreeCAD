@@ -230,7 +230,7 @@ static PyObject * tesselateShape(PyObject *self, PyObject *args)
             // if the triangulation of only one face is not possible to get
             else
             {
-                throw Base::Exception("Empty face triangulation\n");
+                throw Base::RuntimeError("Empty face triangulation\n");
             }
         }
         // finish FreeCAD Mesh Builder and exit with new mesh

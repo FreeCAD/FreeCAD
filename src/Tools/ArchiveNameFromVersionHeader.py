@@ -16,7 +16,7 @@ def deserializeVersionHeader(path):
     for l in dat:
         tokens = l.split()
         if len(tokens) > 1 and tokens[0].lower() == '#define':
-	   version[tokens[1]] = tokens[2].replace('"',"")
+            version[tokens[1]] = tokens[2].replace('"',"")
 
     return version
 
@@ -38,7 +38,7 @@ def main():
 
     version = deserializeVersionHeader(sys.argv[1])
     if SHA:
-	version['FCRepositoryHash'] = SHA
+        version['FCRepositoryHash'] = SHA
 
     print('FreeCAD_{Major}.{Minor}-{RevCount}.{GitShortSHA}-{OS}-{Arch}'.format(
           Major=version['FCVersionMajor'],

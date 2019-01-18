@@ -72,6 +72,7 @@ class GuiExport InputField : public ExpressionLineEdit, public ExpressionBinding
     Q_PROPERTY(QString format READ getFormat WRITE setFormat )
     Q_PROPERTY(Base::Quantity quantity READ getQuantity WRITE setValue )
     Q_PROPERTY(QString quantityString READ getQuantityString WRITE setQuantityString )
+    Q_PROPERTY(QString rawText READ rawText WRITE setRawText )
 
 
 public:
@@ -91,6 +92,12 @@ public:
 
     /// set, validate and display quantity from a string. Must match existing units.
     void setQuantityString(const QString& text);
+
+    /// return the quantity in C locale, i.e. decimal separator is a dot.
+    QString rawText(void) const;
+
+    /// expects the string in C locale and internally converts it into the OS-specific locale
+    void setRawText(const QString& text);
 
     /// gives the current state of the user input, gives true if it is a valid input with correct quantity
     /// (shown by the green pixmap), returns false if the input is a unparsable string or has a wrong unit

@@ -470,10 +470,10 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
                 TopoDS_Iterator it(shape.getShape());
                 for (; it.More(); it.Next()) {
                     if (it.Value().IsNull())
-                        throw Base::Exception("In valid element in spine.");
+                        throw Base::ValueError("In valid element in spine.");
                     if ((it.Value().ShapeType() != TopAbs_EDGE) &&
                         (it.Value().ShapeType() != TopAbs_WIRE)) {
-                        throw Base::Exception("Element in spine is neither an edge nor a wire.");
+                        throw Base::TypeError("Element in spine is neither an edge nor a wire.");
                     }
                 }
 
@@ -485,15 +485,15 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
                 ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_True, hWires);
                 int len = hWires->Length();
                 if (len != 1)
-                    throw Base::Exception("Spine is not connected.");
+                    throw Base::ValueError("Spine is not connected.");
                 path = hWires->Value(1);
             }
             else {
-                throw Base::Exception("Spine is neither an edge nor a wire.");
+                throw Base::TypeError("Spine is neither an edge nor a wire.");
             }
         }
         catch (Standard_Failure&) {
-            throw Base::Exception("Invalid spine.");
+            throw Base::CADKernelError("Invalid spine.");
         }
     }
 }

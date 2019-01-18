@@ -76,7 +76,7 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+6773"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+6866"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -94,7 +94,7 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1474"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1234"/>
+      <location line="-1378"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -162,9 +162,37 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherCompConstrainRadDia</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="+5915"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain arc or circle</source>
+      <translation type="unfinished">Constrain arc or circle</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain an arc or a circle</source>
+      <translation type="unfinished">Constrain an arc or a circle</translation>
+    </message>
+    <message>
+      <location line="+83"/>
+      <source>Constrain radius</source>
+      <translation>Constrain Guhit na mulâ sa gitnâ hanggang sa gilid ng bilog</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Constrain diameter</source>
+      <translation type="unfinished">Constrain diameter</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1450"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -182,7 +210,7 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4800"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4852"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -210,7 +238,7 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location line="+2831"/>
+      <location line="+2848"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -256,7 +284,7 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location line="-1076"/>
+      <location line="-1093"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -299,7 +327,7 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location line="+3091"/>
+      <location line="+3143"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -356,7 +384,7 @@
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="+473"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+492"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -384,7 +412,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1346"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -402,7 +430,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5429"/>
+      <location filename="../../CommandConstraints.cpp" line="+29"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -420,7 +448,7 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location line="-3501"/>
+      <location line="-4079"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -454,9 +482,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherConstrainDiameter</name>
+    <message>
+      <location line="+3188"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain diameter</source>
+      <translation type="unfinished">Constrain diameter</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Fix the diameter of a circle or an arc</source>
+      <translation type="unfinished">Fix the diameter of a circle or an arc</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="+190"/>
+      <location line="-3000"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -518,7 +564,7 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+2689"/>
+      <location line="+3267"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -536,7 +582,7 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-4776"/>
+      <location line="-5354"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -554,7 +600,7 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location line="+5376"/>
+      <location line="+5966"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -572,7 +618,7 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="-4886"/>
+      <location line="-5476"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -666,7 +712,7 @@
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location line="+1433"/>
+      <location line="+2023"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -706,7 +752,7 @@
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-1774"/>
+      <location line="-2364"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -742,7 +788,7 @@
   <context>
     <name>CmdSketcherConvertToNURB</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-520"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-539"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -760,7 +806,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1222"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -778,7 +824,7 @@
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-5666"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-5718"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -796,7 +842,7 @@
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location line="+3272"/>
+      <location line="+3289"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -814,7 +860,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location line="-3588"/>
+      <location line="-3605"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -894,7 +940,7 @@
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location line="+588"/>
+      <location line="+605"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -912,7 +958,7 @@
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location line="-2565"/>
+      <location line="-2582"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -930,7 +976,7 @@
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location line="+3274"/>
+      <location line="+3291"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -948,7 +994,7 @@
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location line="-2407"/>
+      <location line="-2424"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -984,7 +1030,7 @@
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location line="+2721"/>
+      <location line="+2769"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1006,7 +1052,7 @@
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location line="+1574"/>
+      <location line="+1578"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1042,7 +1088,7 @@
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location line="-6951"/>
+      <location line="-7042"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1060,7 +1106,7 @@
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location line="+6999"/>
+      <location line="+7090"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1096,7 +1142,7 @@
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location line="-2482"/>
+      <location line="-2517"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1132,7 +1178,7 @@
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location line="-4122"/>
+      <location line="-4139"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1154,7 +1200,7 @@
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location line="-697"/>
+      <location line="-736"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1172,7 +1218,7 @@
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location line="+6786"/>
+      <location line="+6877"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1226,7 +1272,7 @@
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location line="-1815"/>
+      <location line="-1850"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1244,7 +1290,7 @@
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location line="+1785"/>
+      <location line="+1820"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1262,7 +1308,7 @@
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="+302"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+320"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1278,9 +1324,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherDeleteAllConstraints</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+590"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Delete All Constraints</source>
+      <translation type="unfinished">Delete All Constraints</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Deletes all the constraints</source>
+      <translation type="unfinished">Deletes all the constraints</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+453"/>
+      <location line="-68"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1316,7 +1380,7 @@
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-954"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-958"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1334,7 +1398,7 @@
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location line="+223"/>
+      <location line="+224"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1352,7 +1416,7 @@
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-226"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-243"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1370,12 +1434,16 @@
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location line="+62"/>
+      <location line="+78"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Increase knot multiplicity</source>
+      <translation>Pataasin ang multiplicity ng umpukan</translation>
+    </message>
+    <message>
       <source>Increase degree</source>
       <translation>Antas ng pagtaas</translation>
     </message>
@@ -1475,9 +1543,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherMove</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="-441"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Move</source>
+      <translation>Galawin</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Moves the geometry taking as reference the last selected point</source>
+      <translation type="unfinished">Moves the geometry taking as reference the last selected point</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location line="-548"/>
+      <location filename="../../Command.cpp" line="-548"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1514,7 +1600,7 @@
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-140"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+298"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1550,7 +1636,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-997"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1568,7 +1654,7 @@
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location line="-175"/>
+      <location line="-282"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1582,7 +1668,7 @@
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location line="-253"/>
+      <location line="-254"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1600,7 +1686,7 @@
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location line="+300"/>
+      <location line="+301"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1612,9 +1698,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherSelectElementsWithDoFs</name>
+    <message>
+      <location line="+120"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select solver DoFs</source>
+      <translation type="unfinished">Select solver DoFs</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select elements where the solver still detects unconstrained degrees of freedom.</source>
+      <translation type="unfinished">Select elements where the solver still detects unconstrained degrees of freedom.</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location line="-149"/>
+      <location line="-271"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1700,7 +1804,7 @@
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+517"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1744,7 +1848,7 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5545"/>
+      <location filename="../../CommandConstraints.cpp" line="+6135"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1762,7 +1866,7 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-583"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-584"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1810,9 +1914,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherViewSection</name>
+    <message>
+      <location line="+209"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>View section</source>
+      <translation type="unfinished">View section</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Switches between section and full view</source>
+      <translation type="unfinished">Switches between section and full view</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location line="-53"/>
+      <location line="-264"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1830,11 +1952,20 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>Ang bersyon na ito ng OCE/OCC ay hindi sumusuporta sa operasyon ng pag-ikot. Kailangan mo ng 6.9.0 o mas mataas
 </translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="+1500"/>
+      <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
+      <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+    </message>
+    <message>
+      <location line="+3397"/>
+      <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
+      <translation type="unfinished">This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1871,6 +2002,55 @@
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>Ang OCC ay hindi maaaring bawasan ang maraming iba't ibang uri sa loob ng maximum na tolerasyon.</translation>
     </message>
+    <message>
+      <location filename="../../../App/SketchAnalysis.cpp" line="+376"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.
+</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying coincident constraints.
+</translation>
+    </message>
+    <message>
+      <location line="+79"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
+</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
+</translation>
+    </message>
+    <message>
+      <location line="+195"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.
+</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying equality constraints.
+</translation>
+    </message>
+    <message>
+      <location line="+54"/>
+      <source>Autoconstrain error: Unsolvable sketch without constraints.
+</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch without constraints.
+</translation>
+    </message>
+    <message>
+      <location line="+37"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
+</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
+</translation>
+    </message>
+    <message>
+      <location line="+22"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
+</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
+</translation>
+    </message>
+    <message>
+      <location line="+28"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.
+</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.
+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskSketcherCreateCommands</name>
@@ -1883,11 +2063,11 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="+45"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="+48"/>
       <location line="+8"/>
-      <location filename="../../CommandConstraints.cpp" line="-6737"/>
+      <location filename="../../CommandConstraints.cpp" line="-7352"/>
       <location line="+6"/>
-      <location line="+965"/>
+      <location line="+990"/>
       <location line="+247"/>
       <location line="+246"/>
       <location line="+23"/>
@@ -1949,17 +2129,21 @@
       <location line="+11"/>
       <location line="+51"/>
       <location line="+237"/>
-      <location line="+185"/>
+      <location line="+172"/>
+      <location line="+11"/>
+      <location line="+51"/>
+      <location line="+237"/>
+      <location line="+292"/>
       <location line="+12"/>
       <location line="+180"/>
       <location line="+56"/>
       <location line="+252"/>
       <location line="+13"/>
-      <location line="+15"/>
-      <location line="+6"/>
       <location line="+16"/>
-      <location line="+16"/>
-      <location line="+9"/>
+      <location line="+5"/>
+      <location line="+19"/>
+      <location line="+20"/>
+      <location line="+14"/>
       <location line="+111"/>
       <location line="+12"/>
       <location line="+24"/>
@@ -1982,29 +2166,30 @@
       <location line="+6"/>
       <location line="+6"/>
       <location line="+133"/>
-      <location line="+53"/>
+      <location line="+55"/>
       <location line="+8"/>
-      <location line="+30"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-88"/>
-      <location line="+119"/>
+      <location line="+32"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-104"/>
+      <location line="+80"/>
+      <location line="+56"/>
       <location line="+67"/>
-      <location line="+93"/>
+      <location line="+94"/>
       <location line="+54"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-696"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-806"/>
       <location line="+8"/>
       <location line="+42"/>
-      <location line="+57"/>
+      <location line="+58"/>
       <location line="+8"/>
-      <location line="+75"/>
-      <location line="+424"/>
-      <location line="+98"/>
+      <location line="+76"/>
+      <location line="+532"/>
+      <location line="+99"/>
       <location line="+8"/>
       <location line="+106"/>
       <location line="+6"/>
-      <location line="+218"/>
+      <location line="+243"/>
       <location line="+8"/>
-      <location line="+62"/>
-      <location line="+392"/>
+      <location line="+59"/>
+      <location line="+466"/>
       <location line="+8"/>
       <location line="+62"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="+23"/>
@@ -2020,7 +2205,7 @@
       <translation>Pumili ng mga gilid(s) mula sa sketch.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5836"/>
+      <location filename="../../CommandConstraints.cpp" line="-6430"/>
       <location line="+247"/>
       <source>Select an edge from the sketch.</source>
       <translation>Pumili ng isang gilid mula sa sketch.</translation>
@@ -2059,13 +2244,13 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
-      <location line="+99"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1749"/>
+      <location line="+100"/>
       <source>Impossible constraint</source>
       <translation>Imposibleng pagpilit</translation>
     </message>
     <message>
-      <location line="-1356"/>
+      <location line="-1381"/>
       <source>Cannot add a constraint between two external geometries!</source>
       <translation>Hindi maaaring magdagdag ng pagpigil sa pagitan ng dalawang panlabas na Heometría!</translation>
     </message>
@@ -2075,7 +2260,7 @@
       <translation type="unfinished">Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
     </message>
     <message>
-      <location line="+520"/>
+      <location line="+545"/>
       <location line="+11"/>
       <location line="+12"/>
       <source>Only sketch and its support is allowed to select</source>
@@ -2248,16 +2433,19 @@
     <message>
       <location line="+422"/>
       <location line="+51"/>
+      <location line="+420"/>
+      <location line="+51"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Pumili ng isa o higit pang mga arko o mga lupon mula sa disenyo.</translation>
     </message>
     <message>
-      <location line="+52"/>
+      <location line="-419"/>
+      <location line="+471"/>
       <source>Constrain equal</source>
       <translation>Limitahan ang pagkakapareho</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-470"/>
       <source>Do you want to share the same radius for all selected elements?</source>
       <translation>Gusto mo bang ibahagi ang parehong radius para sa lahat ng napiling elemento?</translation>
     </message>
@@ -2286,7 +2474,8 @@
       <location line="+185"/>
       <location line="+249"/>
       <location line="+1706"/>
-      <location line="+484"/>
+      <location line="+471"/>
+      <location line="+591"/>
       <source>Select the right things from the sketch.</source>
       <translation>Piliin ang mga tamang bagay mula sa disenyo.</translation>
     </message>
@@ -2295,7 +2484,7 @@
       <translation>Tumuro sa hangganan ng BSpline na kasalukuyang hindi sinusuportahan.</translation>
     </message>
     <message>
-      <location line="-2294"/>
+      <location line="-2872"/>
       <location line="+247"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
       <translation>Ang pagpigil lamang ay may katuturan sa isang line segment o isang pares ng mga puntos</translation>
@@ -2320,11 +2509,17 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang endpoint at isang curve; dal
     </message>
     <message>
       <location line="+913"/>
+      <location line="+471"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Nalalapat lamang ang pagpipigil sa mga arko o lupon.</translation>
     </message>
     <message>
-      <location line="+197"/>
+      <location line="-184"/>
+      <source>Do you want to share the same diameter for all selected elements?</source>
+      <translation type="unfinished">Do you want to share the same diameter for all selected elements?</translation>
+    </message>
+    <message>
+      <location line="+488"/>
       <location line="+236"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Pumili ng isa o dalawang guhit mula sa plano. O pumili ng dalawang gilid at punto.</translation>
@@ -2346,18 +2541,18 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang endpoint at isang curve; dal
       <translation>Pagkapantay-pantay para sa BSpline hangganan kasalukuyang hindi sinusuportahan.</translation>
     </message>
     <message>
-      <location line="+606"/>
+      <location line="+618"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Pumili ng dalawang dulo ng guhit upang kumilos bilang ray, at isang gilid na kumakatawan sa isang hangganan. Ang unang napiling punto ay tumutugma sa index n1, pangalawa - hanggang sa n2, at ang datum na halaga ay nagtatakda ng ratio n2/n1.</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location line="+15"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Ang mga napiling bagay ay hindi lamang Heometría mula sa isang disenyo.</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location line="+9"/>
       <source>Number of selected objects is not 3 (is %1).</source>
       <translation>Ang bilang ng mga hinirang na bagay ay hindi 3 (ay %1).</translation>
     </message>
@@ -2460,9 +2655,9 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang endpoint at isang curve; dal
       <translation>Ang kasalukuyang panloob na Heometría ay sinusuportahan lamang para sa ellipse o arko ng ellipse. Ang huling piniling elemento ay dapat na isang tambilugan o isang arko ng tambilugan.</translation>
     </message>
     <message>
-      <location line="+53"/>
+      <location line="+55"/>
       <location line="+8"/>
-      <location line="+30"/>
+      <location line="+32"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="-31"/>
       <location line="+8"/>
       <location line="+24"/>
@@ -2474,7 +2669,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang endpoint at isang curve; dal
       <translation type="unfinished">Select exactly two vertexes from the sketch.</translation>
     </message>
     <message>
-      <location line="-4754"/>
+      <location line="-5348"/>
       <location line="+10"/>
       <source>Select two or more vertexes from the sketch.</source>
       <translation>Pumili ng dalawa o higit pang mga vertex mula sa disenyo.</translation>
@@ -2547,12 +2742,12 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang endpoint at isang curve; dal
     </message>
     <message>
       <location line="+13"/>
-      <location line="+2405"/>
+      <location line="+2983"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Pumili ng hindi bababa sa dalawang linya mula sa disenyo.</translation>
     </message>
     <message>
-      <location line="-2391"/>
+      <location line="-2969"/>
       <source>Select a valid line</source>
       <translation>Pumili ng isang valid na linya</translation>
     </message>
@@ -2591,13 +2786,13 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <location line="+465"/>
       <location line="+156"/>
       <location line="+454"/>
-      <location line="+1607"/>
+      <location line="+2197"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
       <source>Error</source>
       <translation>Kamalian</translation>
     </message>
     <message>
-      <location line="-2666"/>
+      <location line="-3256"/>
       <location line="+620"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
@@ -2668,7 +2863,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation type="unfinished">Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
-      <location line="+806"/>
+      <location line="+1384"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Hindi mangyayaring magdagdag ng anggulo sa pagpilit sa isang axis!</translation>
     </message>
@@ -2686,24 +2881,24 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation type="unfinished">Select atleast two lines from the sketch.</translation>
     </message>
     <message>
-      <location line="+28"/>
-      <location line="+618"/>
+      <location line="+29"/>
+      <location line="+629"/>
       <source>Select two or more compatible edges</source>
       <translation>Pumili ng dalawa o higit pang mga katugmang mga hangganan</translation>
     </message>
     <message>
-      <location line="-612"/>
+      <location line="-624"/>
       <source>Sketch axes cannot be used in equality constraints</source>
       <translation>Ang mga disenyo axes ay hindi maaaring gamitin sa mga limitasyon ng pagkakapantay-pantay</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location line="+19"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>Ang pagkakapantay-pantay para sa B-spline baybayin kasalukuyang ay hindi sinusuportahan.</translation>
     </message>
     <message>
-      <location line="+16"/>
-      <location line="+9"/>
+      <location line="+20"/>
+      <location line="+14"/>
       <source>Select two or more edges of similar type</source>
       <translation>Pumili ng dalawa o higit pang mga baybayin ng magkatulad na uri</translation>
     </message>
@@ -2801,7 +2996,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation type="unfinished">You need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="+84"/>
+      <location filename="../../EditDatumDialog.cpp" line="+79"/>
       <source>Distance constraint</source>
       <translation>Paghihigpit ng distansya</translation>
     </message>
@@ -2811,10 +3006,12 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Hindi pinapayagan nabaguhin ang datum dahil ang disenyo ay naglalaman ng magkasalungat na mga hadlang</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-6155"/>
-      <location line="+5057"/>
+      <location filename="../../CommandConstraints.cpp" line="-6770"/>
+      <location line="+5082"/>
       <location line="+133"/>
-      <location filename="../../EditDatumDialog.cpp" line="+93"/>
+      <location line="+338"/>
+      <location line="+133"/>
+      <location filename="../../EditDatumDialog.cpp" line="+99"/>
       <source>Dimensional constraint</source>
       <translation>Sukat na pagpilit</translation>
     </message>
@@ -2823,38 +3020,38 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Displey</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-138"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-139"/>
       <location line="+8"/>
-      <location line="+99"/>
+      <location line="+100"/>
       <location line="+8"/>
       <source>Select at least two edges from the sketch.</source>
       <translation>Pumili ng hindi bababa sa dalawang gilid mula sa plano.</translation>
     </message>
     <message>
-      <location line="-75"/>
-      <location line="+99"/>
+      <location line="-76"/>
+      <location line="+100"/>
       <source>One selected edge is not connectable</source>
       <translation>Ang isang napiling hangganan ay hindi maaaring maikabit</translation>
     </message>
     <message>
-      <location line="-89"/>
+      <location line="-90"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
       <translation>Ang pagsasara ng isang hugis na nabuo sa pamamagitan ng eksaktong dalawang guhit ay walang kahulugan.</translation>
     </message>
     <message>
-      <location line="+140"/>
-      <location line="+424"/>
-      <location line="+98"/>
+      <location line="+142"/>
+      <location line="+532"/>
+      <location line="+99"/>
       <location line="+8"/>
-      <location line="+330"/>
+      <location line="+355"/>
       <location line="+8"/>
-      <location line="+454"/>
+      <location line="+525"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Pumili ng mga elemento mula sa isang solong disenyo.</translation>
     </message>
     <message>
-      <location line="-941"/>
+      <location line="-1146"/>
       <source>No constraint selected</source>
       <translation>Walang pinipili ang pagpigil</translation>
     </message>
@@ -2864,7 +3061,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Hindi bababa sa isang hadlang ang dapat piliin</translation>
     </message>
     <message>
-      <location line="+1065"/>
+      <location line="+1270"/>
       <source>Delete All Geometry</source>
       <translation>Burahin ang lahat ng Geometry</translation>
     </message>
@@ -2874,11 +3071,21 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Sigurado ka na ba talaga na gusto mong tanggalin ang lahat ng geometry at mga harang?</translation>
     </message>
     <message>
+      <location line="+65"/>
+      <source>Delete All Constraints</source>
+      <translation type="unfinished">Delete All Constraints</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Are you really sure you want to delete all the constraints?</source>
+      <translation type="unfinished">Are you really sure you want to delete all the constraints?</translation>
+    </message>
+    <message>
       <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
       <translation>Ang kasalukuyang panloob na Heometría ay sinusuportahan lamang para sa ellipse at arko ng ellipse. Ang huling piniling elemento ay dapat na isang tambilugan o isang arko ng tambilugan.</translation>
     </message>
     <message>
-      <location line="-820"/>
+      <location line="-982"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Ang isang simetriko konstruksiyon ay nangangailangan ng hindi bababa sa dalawang mga geometriko kasangkapan, ang huling geometric elemento na ang reference para sa mahusay na konstruksiyon.</translation>
     </message>
@@ -2888,8 +3095,8 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Ang huling elemento ay dapat na isang punto o isang linya na nagsisilbing reference para sa mahusay na konstruksiyon.</translation>
     </message>
     <message>
-      <location line="+288"/>
-      <location line="+462"/>
+      <location line="+310"/>
+      <location line="+536"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Ang isang kopya ay nangangailangan ng hindi bababa sa isang napiling non-panlabas na geometric na elemento</translation>
     </message>
@@ -2946,41 +3153,47 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-319"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-337"/>
       <source>None of the selected elements is an edge.</source>
       <translation>Wala sa mga napiling elemento ay isang gilid.</translation>
     </message>
     <message>
-      <location line="+100"/>
-      <location line="+160"/>
+      <location line="+80"/>
+      <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
+      <translation type="unfinished">At least one of the selected objects was not a B-Spline and was ignored.</translation>
+    </message>
+    <message>
+      <location line="+36"/>
+      <location line="+161"/>
       <source>Wrong OCE/OCC version</source>
       <translation>Maling bersyon ng OCE/OCC</translation>
     </message>
     <message>
-      <location line="-159"/>
-      <location line="+160"/>
+      <location line="-160"/>
+      <location line="+161"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
       <translation>Ang bersyon na ito ng OCE/OCC ay hindi sumusuporta sa operasyon ng pag-ikot. Kailangan mo ng 6.9.0 o mas mataas</translation>
     </message>
     <message>
       <location line="-142"/>
-      <location line="+160"/>
+      <location line="+161"/>
       <source>The selection comprises more than one item. Please select just one knot.</source>
       <translation>Binubuo ang seleksyon ng higit sa isang item. Mangyaring pumili lamang ng isang magkabuhul-buhol.</translation>
     </message>
     <message>
-      <location line="-118"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-213"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-119"/>
       <source>CAD Kernel Error</source>
       <translation>Kamalian sa CAD Kernel</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+8"/>
       <source>Input Error</source>
       <translation>Kamalian sa Input</translation>
     </message>
     <message>
       <location line="+17"/>
-      <location line="+147"/>
+      <location line="+148"/>
       <source>None of the selected elements is a knot of a B-spline</source>
       <translation>Wala sa mga piniling kasangkapan ay isang buhol ng isang B-spline</translation>
     </message>
@@ -3019,7 +3232,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+626"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+840"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Ang kopya ng carbon ay magdudulot ng isang circular dependency.</translation>
     </message>
@@ -3036,6 +3249,11 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <location line="+3"/>
       <source>This object belongs to another body. Hold Ctrl to allow crossreferences.</source>
       <translation>Ang bagay na ito ay nabibilang sa ibang lupon. Hawakan ang Ctrl upang payagan ang crossreferences.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>This object belongs to another body and it contains external geometry. Crossreference not allowed.</source>
+      <translation type="unfinished">This object belongs to another body and it contains external geometry. Crossreference not allowed.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3061,7 +3279,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="+419"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="+444"/>
       <source>Toggle to/from reference</source>
       <translation>I-toggle sa/mula sanggunian</translation>
     </message>
@@ -3114,8 +3332,8 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5254"/>
-      <location filename="../../EditDatumDialog.cpp" line="-77"/>
+      <location filename="../../CommandConstraints.cpp" line="-5756"/>
+      <location filename="../../EditDatumDialog.cpp" line="-83"/>
       <source>Insert angle</source>
       <translation>Magpasok ng anggulo</translation>
     </message>
@@ -3134,6 +3352,20 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
     <message>
       <location line="+6"/>
       <location filename="../../EditDatumDialog.cpp" line="+6"/>
+      <source>Insert diameter</source>
+      <translation type="unfinished">Insert diameter</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <location line="+5558"/>
+      <location line="+145"/>
+      <location filename="../../EditDatumDialog.cpp" line="+2"/>
+      <source>Diameter:</source>
+      <translation>Diyametro:</translation>
+    </message>
+    <message>
+      <location line="-5699"/>
+      <location filename="../../EditDatumDialog.cpp" line="+4"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Ratio ng repraktibong index</translation>
@@ -3146,21 +3378,27 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Ratio n2/n1:</translation>
     </message>
     <message>
-      <location line="+5056"/>
+      <location line="+5081"/>
       <location line="+145"/>
       <source>Change radius</source>
       <translation>Palitan ang radius</translation>
     </message>
     <message>
-      <location line="-5206"/>
-      <location line="+5062"/>
+      <location line="-5237"/>
+      <location line="+5093"/>
       <location line="+145"/>
-      <location filename="../../EditDatumDialog.cpp" line="-5"/>
+      <location filename="../../EditDatumDialog.cpp" line="-11"/>
       <source>Radius:</source>
       <translation>Radius:</translation>
     </message>
     <message>
-      <location line="+1153"/>
+      <location line="+325"/>
+      <location line="+145"/>
+      <source>Change diameter</source>
+      <translation type="unfinished">Change diameter</translation>
+    </message>
+    <message>
+      <location line="+1273"/>
       <source>Refractive index ratio</source>
       <translation>Ratio ng repraktibong index</translation>
     </message>
@@ -3170,8 +3408,8 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Ratio n2/n1:</translation>
     </message>
     <message>
-      <location line="-6352"/>
-      <location filename="../../EditDatumDialog.cpp" line="+9"/>
+      <location line="-6967"/>
+      <location filename="../../EditDatumDialog.cpp" line="+15"/>
       <source>Insert length</source>
       <translation>Ipasok ang haba</translation>
     </message>
@@ -3185,7 +3423,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+170"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+171"/>
       <source>Delete</source>
       <translation>Burahin</translation>
     </message>
@@ -3193,7 +3431,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-250"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-254"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Ang pag-uugnay na ito ay magdudulot ng pag-ikot ng dependency.</translation>
     </message>
@@ -3238,8 +3476,8 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="+129"/>
-      <location line="+52"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="+130"/>
+      <location line="+53"/>
       <source>Unnamed</source>
       <translation>Walang pangalan</translation>
     </message>
@@ -3371,7 +3609,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::SketcherGeneralWidget</name>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+99"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="+100"/>
       <location line="+5"/>
       <location line="+5"/>
       <source>Normal Geometry</source>
@@ -3413,7 +3651,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="+192"/>
+      <location filename="../../SketcherSettings.cpp" line="+180"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -3471,22 +3709,20 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Pangkalahatan</translation>
     </message>
     <message>
-      <location line="+53"/>
       <source>Marker size</source>
       <translation>Laki ng marker</translation>
     </message>
     <message>
-      <location line="+40"/>
+      <location line="+132"/>
       <source>Geometry Creation "Continue Mode"</source>
       <translation>Heometría Creation "Magpatuloy anyo"</translation>
     </message>
     <message>
-      <location line="+16"/>
       <source>Constraint Creation "Continue Mode" (Experimental)</source>
       <translation>"Ang anyoo na Magpatuloy" (Pagpapatupad)</translation>
     </message>
     <message>
-      <location line="+43"/>
+      <location line="+59"/>
       <source>Visibility automation</source>
       <translation>Awtomatiko ng kakayahang makita</translation>
     </message>
@@ -3546,7 +3782,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>I-aplay sa mga umiiral na mga sketches</translation>
     </message>
     <message>
-      <location line="+37"/>
+      <location line="-262"/>
       <source>Notifications</source>
       <translation>Mga abiso</translation>
     </message>
@@ -3561,12 +3797,27 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Abisuhan ang kusang pagpapalit ng harang</translation>
     </message>
     <message>
-      <location line="+19"/>
+      <location line="+100"/>
+      <source>Constraint Creation "Continue Mode"</source>
+      <translation type="unfinished">Constraint Creation "Continue Mode"</translation>
+    </message>
+    <message>
+      <location line="+163"/>
       <source>Segments per geometry</source>
       <translation>Mga segment kada geometry</translation>
     </message>
     <message>
-      <location line="+26"/>
+      <location line="+23"/>
+      <source>Do not show base length units in sketches. Supports all unit systems except US Customary and Building US/Euro.</source>
+      <translation type="unfinished">Do not show base length units in sketches. Supports all unit systems except US Customary and Building US/Euro.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Hide base length units for supported unit systems</source>
+      <translation type="unfinished">Hide base length units for supported unit systems</translation>
+    </message>
+    <message>
+      <location line="+16"/>
       <source>Sketcher Solver</source>
       <translation>Tagalutas ng Dibuhista</translation>
     </message>
@@ -3610,7 +3861,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Ang default na kapal ng linya para sa bagong mga shape</translation>
     </message>
     <message>
-      <location line="-334"/>
+      <location line="-279"/>
       <source>px</source>
       <translation>px</translation>
     </message>
@@ -3639,17 +3890,17 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Ang kulay ng non-driving na mga hadlang o mga dimensyon na nasa edit na mode</translation>
     </message>
     <message>
-      <location line="-19"/>
+      <location line="-74"/>
       <source>Sketch editing</source>
       <translation>Pag e-edit ng sketch</translation>
     </message>
     <message>
-      <location line="+12"/>
+      <location line="+67"/>
       <source>Font size</source>
       <translation>Laki ng font</translation>
     </message>
     <message>
-      <location line="+65"/>
+      <location line="+52"/>
       <source>Grid line pattern</source>
       <translation>Pattern ng linya ng grid</translation>
     </message>
@@ -3659,12 +3910,11 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>Hingin ang halaga matapos ang paglikha ng isang pagpilit ng distansya</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="-51"/>
       <source>%1 px</source>
       <translation>%1 px</translation>
     </message>
     <message>
-      <location line="+48"/>
+      <location filename="../../SketcherSettings.cpp" line="-3"/>
       <source>Unexpected C++ exception</source>
       <translation>Hindi inaasahang C++ taliwas</translation>
     </message>
@@ -3839,7 +4089,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="+330"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="+139"/>
       <source>No missing coincidences</source>
       <translation>Walang nawawalang mga coincidences</translation>
     </message>
@@ -3859,7 +4109,7 @@ Mga tinanggap na kumbinasyon: dalawang kurva; isang pangwakas na dulo at isang k
       <translation>%1 nawawalang mga ngakataon ang natagpuan</translation>
     </message>
     <message>
-      <location line="+66"/>
+      <location line="+36"/>
       <source>No invalid constraints</source>
       <translation>Walang hindi valid na pagpilit</translation>
     </message>
@@ -3990,6 +4240,15 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
     </message>
     <message>
       <location line="+10"/>
+      <source>Hide Internal Alignment</source>
+      <translation type="unfinished">Hide Internal Alignment</translation>
+    </message>
+    <message>
+      <location line="+16"/>
+      <source>Extended Information</source>
+      <translation type="unfinished">Extended Information</translation>
+    </message>
+    <message>
       <source>Hide Internal Aligment</source>
       <translation>Itago ang mga linyang panloob</translation>
     </message>
@@ -3999,7 +4258,7 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location line="+199"/>
+      <location line="+207"/>
       <location line="+17"/>
       <source>Error</source>
       <translation>Kamalian</translation>
@@ -4052,7 +4311,7 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: maramihang pagpili&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: lumipat sa susunod na valid na uri&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+68"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+69"/>
       <source>Elements</source>
       <translation>Elemento</translation>
     </message>
@@ -4273,7 +4532,7 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
       <translation type="unfinished">auto constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+59"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="+88"/>
       <source>Edit controls</source>
       <translation type="unfinished">Edit controls</translation>
     </message>
@@ -4373,7 +4632,7 @@ Gayunpaman, natagpuan ang walang hadlang na nag-uugnay sa mga endpoint.</transla
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+5270"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+5548"/>
       <source>Invalid sketch</source>
       <translation>Hindi valid ang sketch</translation>
     </message>
@@ -4409,7 +4668,7 @@ Use the sketch validation tool.</translation>
       <translation>Ang sketch ay hindi valid at hindi pwdeng i-edit.</translation>
     </message>
     <message>
-      <location line="+156"/>
+      <location line="+162"/>
       <source>Please remove the following constraint:</source>
       <translation>Mangyaring alisin ang sumusunod na pagpilit:</translation>
     </message>
@@ -4456,6 +4715,16 @@ Use the sketch validation tool.</translation>
       <translation>Ang sketch ay naglalaman ng paulit ulit na mga pagpilit </translation>
     </message>
     <message>
+      <location line="+16"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</source>
+      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</source>
+      <translation type="unfinished">Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</translation>
+    </message>
+    <message>
       <source>Over-constrained sketch</source>
       <translation type="unfinished">Over-constrained sketch</translation>
     </message>
@@ -4468,22 +4737,20 @@ Use the sketch validation tool.</translation>
       <translation type="unfinished">Sketch contains redundant constraints</translation>
     </message>
     <message>
-      <location line="+11"/>
+      <location line="-7"/>
       <source>Fully constrained sketch</source>
       <translation>Kabuuang-constrained na sketch</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Under-constrained sketch with 1 degree of freedom</source>
       <translation>Under-constrained na sketch na may 1 degree ng kalayaan</translation>
     </message>
     <message>
-      <location line="+2"/>
       <source>Under-constrained sketch with %1 degrees of freedom</source>
       <translation>Under-constrained na sketch na may %1 degree ng kalayaan</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location line="+10"/>
       <source>Solved in %1 sec</source>
       <translation>Lutasin sa loob ng %1 sec</translation>
     </message>
@@ -4496,7 +4763,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-416"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-435"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
       <translation>Lilipat sa pagitan ng pagpapakita at pagtatago ng curvature comb para sa lahat ng B-splines</translation>
@@ -4505,7 +4772,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location line="+544"/>
+      <location line="+563"/>
       <location line="+1"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>Binabawasan ang napakaraming mga napiling buhol ng isang B-spline</translation>
@@ -4514,7 +4781,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-      <location line="-554"/>
+      <location line="-573"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
       <translation>Lilipat sa pagitan ng pagpapakita at pagtatago ng grado para sa lahat ng B-splines</translation>
@@ -4523,7 +4790,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location line="+548"/>
+      <location line="+567"/>
       <location line="+1"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>Pinapataas ang maraming iba't ibang mga napiling buhol ng isang B-spline</translation>
@@ -4532,7 +4799,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
-      <location line="-538"/>
+      <location line="-557"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
       <translation>Lilipat sa pagitan ng pagpapakita at pagtatago ng pagkarami-rami ng knot para sa lahat ng B-splines</translation>
@@ -4550,7 +4817,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-275"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-280"/>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Gumawa ng isang clone ng pagkuha ng geometry bilang sanggunian sa huling piniling punto</translation>
@@ -4568,11 +4835,34 @@ Use the sketch validation tool.</translation>
       <source>Copy</source>
       <translation>Kopya</translation>
     </message>
+    <message>
+      <location line="+4"/>
+      <source>Move</source>
+      <translation>Galawin</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ConstrainDiameter</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="+5874"/>
+      <location line="+1"/>
+      <source>Fix the diameter of a circle or an arc</source>
+      <translation type="unfinished">Fix the diameter of a circle or an arc</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ConstrainRadius</name>
+    <message>
+      <location line="-5"/>
+      <location line="+1"/>
+      <source>Fix the radius of a circle or an arc</source>
+      <translation>Ayusin ang radius ng isang bilog o isang arko</translation>
+    </message>
   </context>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location line="+1"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-3"/>
       <location line="+1"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Lumilikha ng isang simpleng kopya ng pagkuha ng Heometría bilang sanggunian sa huling piniling punto</translation>
@@ -4581,7 +4871,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4324"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4372"/>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Gumawa ng isang arko sa pamamagitan ng mga punto ng pagtatapos nito at isang punto kasama ang arko</translation>
@@ -4590,7 +4880,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location line="+3273"/>
+      <location line="+3290"/>
       <location line="+1"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Lumikha ng bilog gamit ang 3 rim na puntos</translation>
@@ -4599,7 +4889,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location line="-3279"/>
+      <location line="-3296"/>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Gumawa ng isang arko sa pamamagitan ng sentro nito at sa pamamagitan ng mga punto ng pagtatapos nito</translation>
@@ -4643,7 +4933,7 @@ Use the sketch validation tool.</translation>
       <translation>Lumikha ng isang B-spline sa pamamagitan ng mga kontrol na puntos o mga pole</translation>
     </message>
     <message>
-      <location line="+594"/>
+      <location line="+611"/>
       <source>B-spline by control points</source>
       <translation>B-spline sa pamamagitan ng mga puntong pangkontrol</translation>
     </message>
@@ -4666,7 +4956,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location line="-962"/>
+      <location line="-979"/>
       <location line="+1"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>Lumikha ng isang ellipse sa pamamagitan ng periapsis, apoapsos, at maliitna radius</translation>
@@ -4684,7 +4974,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location line="+3242"/>
+      <location line="+3294"/>
       <location line="+1"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Lumikha ng isang heptagon sa pamamagitan ng gitna nito at ng isang sulok</translation>
@@ -4752,7 +5042,7 @@ Use the sketch validation tool.</translation>
       <translation>Lumikha ng isang periodic B-spline sa pamamagitan ng mga kontrol na puntos o mga pole</translation>
     </message>
     <message>
-      <location line="-2613"/>
+      <location line="-2648"/>
       <source>Periodic B-spline by control points</source>
       <translation>Periodic B-spline sa pamamagitan ng mga puntong pangkontrol</translation>
     </message>
@@ -4829,9 +5119,18 @@ Use the sketch validation tool.</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_Move</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+3"/>
+      <location line="+1"/>
+      <source>Moves the geometry taking as reference the last selected point</source>
+      <translation type="unfinished">Moves the geometry taking as reference the last selected point</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location line="-406"/>
+      <location filename="../../Command.cpp" line="-406"/>
       <source>Sketch attachment</source>
       <translation>Kalakip na sketch</translation>
     </message>
@@ -4895,7 +5194,17 @@ Gusto mo bang tanggalin ito mula sa suporta?</translation>
       <translation>Hindi pa nareresolba</translation>
     </message>
     <message>
-      <location line="+25"/>
+      <location line="+10"/>
+      <source>Automatically removes redundant constraints.</source>
+      <translation type="unfinished">Automatically removes redundant constraints.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Auto Remove Redundants</source>
+      <translation type="unfinished">Auto Remove Redundants</translation>
+    </message>
+    <message>
+      <location line="+31"/>
       <source>Executes a recompute of the active document after every command</source>
       <translation>Nagpapatupad ng isang recompute ng aktibong dokumento pagkatapos ng bawat utos</translation>
     </message>

@@ -82,6 +82,8 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
         ret.append(Py::String("ReadOnly"));
     if (Type & Prop_Output)
         ret.append(Py::String("Output"));
+    if (Type & Prop_NoRecompute)
+        ret.append(Py::String("NoRecompute"));
     if (Type & Prop_Transient)
         ret.append(Py::String("Transient"));
 

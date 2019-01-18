@@ -1,6 +1,5 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,7 +19,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FemInputWriter"
+__title__ = "FreeCAD FEM solver writer base object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -92,6 +91,7 @@ class FemInputWriter():
         self.femelement_volumes_table = {}
         self.femelement_faces_table = {}
         self.femelement_edges_table = {}
+        self.femelement_count_test = True
 
     def get_constraints_fixed_nodes(self):
         # get nodes
@@ -261,7 +261,9 @@ class FemInputWriter():
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femnodes_ele_table:
                     self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
-                FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
+                control = FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
+                if (self.femelement_count_test is True) and (control is False):  # we only need to set it, if it is still True
+                    self.femelement_count_test = False
         if self.shellthickness_objects:
             if not self.femelement_faces_table:
                 self.femelement_faces_table = FemMeshTools.get_femelement_faces_table(self.femmesh)

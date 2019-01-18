@@ -2444,11 +2444,6 @@ Site creation aborted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../ArchPanel.py" line="579"/>
-        <source>Error computing shape of </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../ArchWall.py" line="310"/>
         <source>Wall Presets...</source>
         <translation type="unfinished"></translation>

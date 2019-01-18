@@ -123,7 +123,7 @@ class PathWorkbench (Workbench):
 
         curveAccuracy = PathPreferences.defaultLibAreaCurveAccuracy()
         if curveAccuracy:
-            Path.Area.setDefaultParams(curveAccuracy)
+            Path.Area.setDefaultParams(Accuracy = curveAccuracy)
 
         Log('Loading Path workbench... done\n')
 

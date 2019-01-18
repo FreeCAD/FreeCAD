@@ -68,7 +68,7 @@ void GTSAlgos::coarsen(float f)
   } catch (...)
   {
     gts_object_destroy (GTS_OBJECT (surface));
-    throw Base::Exception("Unknown error in GTSAlgos::coarsen()");
+    throw Base::RuntimeError("Unknown error in GTSAlgos::coarsen()");
   }
 
   // get the standard mesh
@@ -99,12 +99,12 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
   if (!gts_surface_is_orientable (s1)) {
     gts_object_destroy (GTS_OBJECT (s1));
     gts_object_destroy (GTS_OBJECT (s2));
-    throw Base::Exception("surface 1 is not an orientable manifold\n");
+    throw Base::RuntimeError("surface 1 is not an orientable manifold\n");
   }
   if (!gts_surface_is_orientable (s2)) {
     gts_object_destroy (GTS_OBJECT (s1));
     gts_object_destroy (GTS_OBJECT (s2));
-    throw Base::Exception("surface 2 is not an orientable manifold\n");
+    throw Base::RuntimeError("surface 2 is not an orientable manifold\n");
   }
 
   // check that the surfaces are not self-intersecting
@@ -119,7 +119,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
       gts_object_destroy (GTS_OBJECT (s2));
-      throw Base::Exception("surface is self-intersecting\n");
+      throw Base::RuntimeError("surface is self-intersecting\n");
     }
     self_intersects = gts_surface_is_self_intersecting (s2);
     if (self_intersects != NULL) {
@@ -129,7 +129,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
       gts_object_destroy (GTS_OBJECT (self_intersects));
       gts_object_destroy (GTS_OBJECT (s1));
       gts_object_destroy (GTS_OBJECT (s2));
-      throw Base::Exception("surface is self-intersecting\n");
+      throw Base::RuntimeError("surface is self-intersecting\n");
     }
   }
 
@@ -149,7 +149,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
     gts_object_destroy (GTS_OBJECT (s2));
     gts_bb_tree_destroy (tree1, TRUE);
     gts_bb_tree_destroy (tree2, TRUE);  
-    throw Base::Exception("the intersection of 1 and  2 is not a closed curve\n");
+    throw Base::RuntimeError("the intersection of 1 and  2 is not a closed curve\n");
   }
 
   s3 = gts_surface_new (gts_surface_class (),
@@ -193,7 +193,7 @@ void GTSAlgos::boolean(const Mesh::MeshObject& ToolMesh, int Type)
       gts_object_destroy (GTS_OBJECT (si));
       gts_bb_tree_destroy (tree1, TRUE);
       gts_bb_tree_destroy (tree2, TRUE);
-      throw Base::Exception("the resulting surface is self-intersecting\n");
+      throw Base::RuntimeError("the resulting surface is self-intersecting\n");
     }
   }
   // display summary information about the resulting surface

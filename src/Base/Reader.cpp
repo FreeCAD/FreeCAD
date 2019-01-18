@@ -61,7 +61,7 @@ using namespace std;
 //  Base::XMLReader: Constructors and Destructor
 // ---------------------------------------------------------------------------
 
-Base::XMLReader::XMLReader(const char* FileName, std::istream& str) 
+Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
   : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0),
     CharacterCount(0), ReadType(None), _File(FileName), _valid(false),
     _verbose(true)
@@ -169,13 +169,15 @@ const char*  Base::XMLReader::getAttribute (const char* AttrName) const
 {
     AttrMapType::const_iterator pos = AttrMap.find(AttrName);
 
-    if (pos != AttrMap.end())
+    if (pos != AttrMap.end()) {
         return pos->second.c_str();
-    else
+    }
+    else {
         // wrong name, use hasAttribute if not sure!
-        assert(0);
-
-    return ""; 
+        std::ostringstream msg;
+        msg << "XML Attribute: \"" << AttrName << "\" not found";
+        throw Base::XMLAttributeError(msg.str());
+    }
 }
 
 bool Base::XMLReader::hasAttribute (const char* AttrName) const
@@ -293,7 +295,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
 {
     // It's possible that not all objects inside the document could be created, e.g. if a module
     // is missing that would know these object types. So, there may be data files inside the zip
-    // file that cannot be read. We simply ignore these files. 
+    // file that cannot be read. We simply ignore these files.
     // On the other hand, however, it could happen that a file should be read that is not part of
     // the zip file. This happens e.g. if a document is written without GUI up but is read with GUI
     // up. In this case the associated GUI document asks for its file which is not part of the ZIP
@@ -311,7 +313,7 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
     std::vector<FileEntry>::const_iterator it = FileList.begin();
     Base::SequencerLauncher seq("Importing project files...", FileList.size());
     while (entry->isValid() && it != FileList.end()) {
-        std::vector<FileEntry>::const_iterator jt = it; 
+        std::vector<FileEntry>::const_iterator jt = it;
         // Check if the current entry is registered, otherwise check the next registered files as soon as
         // both file names match
         while (jt != FileList.end() && entry->getName() != jt->FileName)
@@ -503,6 +505,42 @@ void Base::XMLReader::warning(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseExcep
 
 void Base::XMLReader::resetErrors()
 {
+}
+
+bool Base::XMLReader::testStatus(ReaderStatus pos) const
+{
+    return StatusBits.test((size_t)pos);
+}
+
+void Base::XMLReader::setStatus(ReaderStatus pos, bool on)
+{
+    StatusBits.set((size_t)pos, on);
+}
+
+void Base::XMLReader::setPartialRestore(bool on)
+{
+    setStatus(PartialRestore, on);
+    setStatus(PartialRestoreInDocumentObject, on);
+    setStatus(PartialRestoreInProperty, on);
+    setStatus(PartialRestoreInObject, on);
+}
+
+void Base::XMLReader::clearPartialRestoreDocumentObject(void)
+{
+    setStatus(PartialRestoreInDocumentObject, false);
+    setStatus(PartialRestoreInProperty, false);
+    setStatus(PartialRestoreInObject, false);
+}
+
+void Base::XMLReader::clearPartialRestoreProperty(void)
+{
+    setStatus(PartialRestoreInProperty, false);
+    setStatus(PartialRestoreInObject, false);
+}
+
+void Base::XMLReader::clearPartialRestoreObject(void)
+{
+    setStatus(PartialRestoreInObject, false);
 }
 
 // ----------------------------------------------------------

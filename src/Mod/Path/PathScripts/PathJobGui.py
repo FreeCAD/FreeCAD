@@ -251,6 +251,7 @@ class StockEdit(object):
     StockType = PathStock.StockType.Unknown
 
     def __init__(self, obj, form, force):
+        PathLog.track(obj.Label, force)
         self.obj = obj
         self.form = form
         self.force = force
@@ -279,7 +280,9 @@ class StockEdit(object):
     def setStock(self, obj, stock):
         PathLog.track(obj.Label, stock)
         if obj.Stock:
-            obj.Document.removeObject(self.obj.Stock.Name)
+            PathLog.track(obj.Stock.Name)
+            obj.Document.removeObject(obj.Stock.Name)
+        PathLog.track(stock.Name)
         obj.Stock = stock
         if stock.ViewObject and stock.ViewObject.Proxy:
             stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
@@ -303,24 +306,27 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         PathLog.track()
         return self.form.stockFromBase
 
+    def getFieldsStock(self, stock, fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
+        try:
+            if 'xneg' in fields:
+                stock.ExtXneg = FreeCAD.Units.Quantity(self.form.stockExtXneg.text())
+            if 'xpos' in fields:
+                stock.ExtXpos = FreeCAD.Units.Quantity(self.form.stockExtXpos.text())
+            if 'yneg' in fields:
+                stock.ExtYneg = FreeCAD.Units.Quantity(self.form.stockExtYneg.text())
+            if 'ypos' in fields:
+                stock.ExtYpos = FreeCAD.Units.Quantity(self.form.stockExtYpos.text())
+            if 'zneg' in fields:
+                stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
+            if 'zpos' in fields:
+                stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
+        except:
+            pass
+
     def getFields(self, obj, fields = ['xneg', 'xpos', 'yneg', 'ypos', 'zneg', 'zpos']):
         PathLog.track(obj.Label, fields)
         if self.IsStock(obj):
-            try:
-                if 'xneg' in fields:
-                    obj.Stock.ExtXneg = FreeCAD.Units.Quantity(self.form.stockExtXneg.text())
-                if 'xpos' in fields:
-                    obj.Stock.ExtXpos = FreeCAD.Units.Quantity(self.form.stockExtXpos.text())
-                if 'yneg' in fields:
-                    obj.Stock.ExtYneg = FreeCAD.Units.Quantity(self.form.stockExtYneg.text())
-                if 'ypos' in fields:
-                    obj.Stock.ExtYpos = FreeCAD.Units.Quantity(self.form.stockExtYpos.text())
-                if 'zneg' in fields:
-                    obj.Stock.ExtZneg = FreeCAD.Units.Quantity(self.form.stockExtZneg.text())
-                if 'zpos' in fields:
-                    obj.Stock.ExtZpos = FreeCAD.Units.Quantity(self.form.stockExtZpos.text())
-            except:
-                pass
+            self.getFieldsStock(obj.Stock, fields)
         else:
             PathLog.error(translate('PathJob', 'Stock not from Base bound box!'))
 
@@ -328,7 +334,10 @@ class StockFromBaseBoundBoxEdit(StockEdit):
         PathLog.track()
         if self.force or not self.IsStock(obj):
             PathLog.track()
-            self.setStock(obj, PathStock.CreateFromBase(obj))
+            stock = PathStock.CreateFromBase(obj)
+            if self.force and self.editorFrame().isVisible():
+                self.getFieldsStock(stock)
+            self.setStock(obj, stock)
             self.force = False
         self.setLengthField(self.form.stockExtXneg, obj.Stock.ExtXneg)
         self.setLengthField(self.form.stockExtXpos, obj.Stock.ExtXpos)

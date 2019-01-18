@@ -76,7 +76,7 @@
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+6773"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+6866"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -94,14 +94,14 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1330"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1474"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Clone</source>
-      <translation>Clone</translation>
+      <translation>Clona</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-      <location line="-1234"/>
+      <location line="-1378"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -162,9 +162,37 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherCompConstrainRadDia</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="+5915"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain arc or circle</source>
+      <translation>Restringeix l'arc o el cercle</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain an arc or a circle</source>
+      <translation>Restringeix un arc o un cercle</translation>
+    </message>
+    <message>
+      <location line="+83"/>
+      <source>Constrain radius</source>
+      <translation>Restricció del radi</translation>
+    </message>
+    <message>
+      <location line="+4"/>
+      <source>Constrain diameter</source>
+      <translation>Restringeix el diàmetre</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1258"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1450"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -182,7 +210,7 @@
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4800"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4852"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -210,7 +238,7 @@
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location line="+2831"/>
+      <location line="+2848"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -256,7 +284,7 @@
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location line="-1076"/>
+      <location line="-1093"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -299,7 +327,7 @@
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location line="+3091"/>
+      <location line="+3143"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -315,7 +343,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation type="unfinished">Create a regular polygon in the sketcher</translation>
+      <translation>Crea un polígon regular en l'entorn de l'esbós</translation>
     </message>
     <message>
       <location line="+118"/>
@@ -350,13 +378,13 @@
     <message>
       <location line="+4"/>
       <source>Regular Polygon</source>
-      <translation type="unfinished">Regular Polygon</translation>
+      <translation>Polígon regular</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCompModifyKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="+473"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+492"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -384,7 +412,7 @@
   <context>
     <name>CmdSketcherConnect</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-1155"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1346"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -402,7 +430,7 @@
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5429"/>
+      <location filename="../../CommandConstraints.cpp" line="+29"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -420,19 +448,19 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location line="-3501"/>
+      <location line="-4079"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrain Block</source>
-      <translation type="unfinished">Constrain Block</translation>
+      <translation>Restringeix el bloc</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a Block constraint on the selected item</source>
-      <translation type="unfinished">Create a Block constraint on the selected item</translation>
+      <translation>Crea un bloc restringit en l'element seleccionat</translation>
     </message>
   </context>
   <context>
@@ -454,9 +482,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherConstrainDiameter</name>
+    <message>
+      <location line="+3188"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Constrain diameter</source>
+      <translation>Restringeix el diàmetre</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Fix the diameter of a circle or an arc</source>
+      <translation>Fixa el diàmetre d'un cercle o d'un arc</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="+190"/>
+      <location line="-3000"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -518,7 +564,7 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+2689"/>
+      <location line="+3267"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -536,7 +582,7 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-4776"/>
+      <location line="-5354"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -554,7 +600,7 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location line="+5376"/>
+      <location line="+5966"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -572,7 +618,7 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="-4886"/>
+      <location line="-5476"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -666,7 +712,7 @@
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location line="+1433"/>
+      <location line="+2023"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -706,7 +752,7 @@
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-1774"/>
+      <location line="-2364"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -742,7 +788,7 @@
   <context>
     <name>CmdSketcherConvertToNURB</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-520"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-539"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -760,7 +806,7 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+1086"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+1222"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -778,7 +824,7 @@
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-5666"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-5718"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -796,7 +842,7 @@
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location line="+3272"/>
+      <location line="+3289"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -814,7 +860,7 @@
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location line="-3588"/>
+      <location line="-3605"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -894,7 +940,7 @@
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location line="+588"/>
+      <location line="+605"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -912,7 +958,7 @@
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location line="-2565"/>
+      <location line="-2582"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -930,7 +976,7 @@
   <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-      <location line="+3274"/>
+      <location line="+3291"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -948,7 +994,7 @@
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location line="-2407"/>
+      <location line="-2424"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -984,7 +1030,7 @@
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location line="+2721"/>
+      <location line="+2769"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1006,7 +1052,7 @@
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location line="+1574"/>
+      <location line="+1578"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1042,7 +1088,7 @@
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location line="-6951"/>
+      <location line="-7042"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1060,7 +1106,7 @@
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location line="+6999"/>
+      <location line="+7090"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1096,7 +1142,7 @@
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location line="-2482"/>
+      <location line="-2517"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1132,7 +1178,7 @@
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location line="-4122"/>
+      <location line="-4139"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1154,7 +1200,7 @@
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location line="-697"/>
+      <location line="-736"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1172,7 +1218,7 @@
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location line="+6786"/>
+      <location line="+6877"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1184,7 +1230,7 @@
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation type="unfinished">Create a regular polygon in the sketch</translation>
+      <translation>Crea un polígon regular en l'esbós</translation>
     </message>
   </context>
   <context>
@@ -1226,7 +1272,7 @@
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location line="-1815"/>
+      <location line="-1850"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1244,7 +1290,7 @@
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location line="+1785"/>
+      <location line="+1820"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1262,7 +1308,7 @@
   <context>
     <name>CmdSketcherDecreaseKnotMultiplicity</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="+302"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+320"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1278,21 +1324,39 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherDeleteAllConstraints</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+590"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Delete All Constraints</source>
+      <translation>Suprimeix totes les restriccions</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Deletes all the constraints</source>
+      <translation>Suprimeix totes les restriccions</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+453"/>
+      <location line="-68"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Delete All Geometry</source>
-      <translation type="unfinished">Delete All Geometry</translation>
+      <translation>Suprimeix tota la Geometria</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Deletes all the geometry and constraints but external geometry</source>
-      <translation type="unfinished">Deletes all the geometry and constraints but external geometry</translation>
+      <translation>Suprimeix tota la geometria i les restriccions però no la geometria externa</translation>
     </message>
   </context>
   <context>
@@ -1316,7 +1380,7 @@
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-954"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-958"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1334,7 +1398,7 @@
   <context>
     <name>CmdSketcherExternal</name>
     <message>
-      <location line="+223"/>
+      <location line="+224"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1352,7 +1416,7 @@
   <context>
     <name>CmdSketcherIncreaseDegree</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-226"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-243"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1370,12 +1434,16 @@
   <context>
     <name>CmdSketcherIncreaseKnotMultiplicity</name>
     <message>
-      <location line="+62"/>
+      <location line="+78"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Increase knot multiplicity</source>
+      <translation>Augmenta la multiplicitat del nus</translation>
+    </message>
+    <message>
       <source>Increase degree</source>
       <translation>Augmenta el grau</translation>
     </message>
@@ -1475,9 +1543,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherMove</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="-441"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Move</source>
+      <translation>Mou</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Moves the geometry taking as reference the last selected point</source>
+      <translation>Mou la geometria prenent com a referència l'últim punt seleccionat</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-      <location line="-548"/>
+      <location filename="../../Command.cpp" line="-548"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1514,7 +1600,7 @@
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-140"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+298"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1550,7 +1636,7 @@
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-900"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-997"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1568,7 +1654,7 @@
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location line="-175"/>
+      <location line="-282"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1582,7 +1668,7 @@
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location line="-253"/>
+      <location line="-254"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1600,7 +1686,7 @@
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location line="+300"/>
+      <location line="+301"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1612,9 +1698,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherSelectElementsWithDoFs</name>
+    <message>
+      <location line="+120"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select solver DoFs</source>
+      <translation>Selecciona DoFs (graus de llibertat) del sistema de resolució</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Select elements where the solver still detects unconstrained degrees of freedom.</source>
+      <translation>Selecciona els elements on el sistema de resolució encara detecta graus de llibertat sense restriccions.</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location line="-149"/>
+      <location line="-271"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1689,18 +1793,18 @@
     <message>
       <location line="+1"/>
       <source>Switch virtual space</source>
-      <translation type="unfinished">Switch virtual space</translation>
+      <translation>Canvia l'espai virtual</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
-      <translation type="unfinished">Switches the selected constraints or the view to the other virtual space</translation>
+      <translation>Canvia les restriccions seleccionades o la vista d'altre espai virtual</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="+409"/>
+      <location filename="../../CommandSketcherTools.cpp" line="+517"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1744,7 +1848,7 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5545"/>
+      <location filename="../../CommandConstraints.cpp" line="+6135"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1762,7 +1866,7 @@
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-583"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-584"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1810,9 +1914,27 @@
     </message>
   </context>
   <context>
+    <name>CmdSketcherViewSection</name>
+    <message>
+      <location line="+209"/>
+      <source>Sketcher</source>
+      <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>View section</source>
+      <translation>Visualitzar la selecció</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Switches between section and full view</source>
+      <translation>Intercanvia entre secció i vista completa</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location line="-53"/>
+      <location line="-264"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1830,11 +1952,20 @@
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="+4232"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher
 </source>
       <translation>Aquesta versió d'OCE/OCC no admet l'operació de nus. Necessiteu la versió 6.9.0 o superior
 </translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchObject.cpp" line="+1500"/>
+      <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
+      <translation>No s'ha trobat la intersecció de les corbes. Intenteu afegir una restricció coincident entre els vèrtexs de les corbes que esteu intentant arrodonir.</translation>
+    </message>
+    <message>
+      <location line="+3397"/>
+      <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher.</source>
+      <translation>Aquesta versió d' OCE/OCC no permet operacions de nus. Necessiteu 6.9.0 o posteriors.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -1871,6 +2002,55 @@
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC no pot reduir la multiplicitat dins de la tolerància màxima.</translation>
     </message>
+    <message>
+      <location filename="../../../App/SketchAnalysis.cpp" line="+376"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.
+</source>
+      <translation>Error de restricció automàtica: esbós irresoluble si s'apliquen restriccions coincidents.
+</translation>
+    </message>
+    <message>
+      <location line="+79"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
+</source>
+      <translation>Error de restricció automàtica: esbós irresoluble si s'apliquen restriccions vertcials/horitzontals.
+</translation>
+    </message>
+    <message>
+      <location line="+195"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.
+</source>
+      <translation>Error de restricció automàtica: esbós irresoluble si s'apliquen restriccions d'igualtat.
+</translation>
+    </message>
+    <message>
+      <location line="+54"/>
+      <source>Autoconstrain error: Unsolvable sketch without constraints.
+</source>
+      <translation>Error de restricció: esbós irresoluble sense restriccions.
+</translation>
+    </message>
+    <message>
+      <location line="+37"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
+</source>
+      <translation>Error de restricció: esbós irresoluble després d'aplicar restriccions verticals i horitzontals.
+</translation>
+    </message>
+    <message>
+      <location line="+22"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
+</source>
+      <translation>Error de restricció: esbós irresoluble si s'apliquen restriccions de punt a punt.
+</translation>
+    </message>
+    <message>
+      <location line="+28"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.
+</source>
+      <translation>Error de restricció: esbós irresoluble si s'apliquen restriccions d'igualtat.
+</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TaskView::TaskSketcherCreateCommands</name>
@@ -1883,11 +2063,11 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="+45"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="+48"/>
       <location line="+8"/>
-      <location filename="../../CommandConstraints.cpp" line="-6737"/>
+      <location filename="../../CommandConstraints.cpp" line="-7352"/>
       <location line="+6"/>
-      <location line="+965"/>
+      <location line="+990"/>
       <location line="+247"/>
       <location line="+246"/>
       <location line="+23"/>
@@ -1949,17 +2129,21 @@
       <location line="+11"/>
       <location line="+51"/>
       <location line="+237"/>
-      <location line="+185"/>
+      <location line="+172"/>
+      <location line="+11"/>
+      <location line="+51"/>
+      <location line="+237"/>
+      <location line="+292"/>
       <location line="+12"/>
       <location line="+180"/>
       <location line="+56"/>
       <location line="+252"/>
       <location line="+13"/>
-      <location line="+15"/>
-      <location line="+6"/>
       <location line="+16"/>
-      <location line="+16"/>
-      <location line="+9"/>
+      <location line="+5"/>
+      <location line="+19"/>
+      <location line="+20"/>
+      <location line="+14"/>
       <location line="+111"/>
       <location line="+12"/>
       <location line="+24"/>
@@ -1982,29 +2166,30 @@
       <location line="+6"/>
       <location line="+6"/>
       <location line="+133"/>
-      <location line="+53"/>
+      <location line="+55"/>
       <location line="+8"/>
-      <location line="+30"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-88"/>
-      <location line="+119"/>
+      <location line="+32"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-104"/>
+      <location line="+80"/>
+      <location line="+56"/>
       <location line="+67"/>
-      <location line="+93"/>
+      <location line="+94"/>
       <location line="+54"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-696"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-806"/>
       <location line="+8"/>
       <location line="+42"/>
-      <location line="+57"/>
+      <location line="+58"/>
       <location line="+8"/>
-      <location line="+75"/>
-      <location line="+424"/>
-      <location line="+98"/>
+      <location line="+76"/>
+      <location line="+532"/>
+      <location line="+99"/>
       <location line="+8"/>
       <location line="+106"/>
       <location line="+6"/>
-      <location line="+218"/>
+      <location line="+243"/>
       <location line="+8"/>
-      <location line="+62"/>
-      <location line="+392"/>
+      <location line="+59"/>
+      <location line="+466"/>
       <location line="+8"/>
       <location line="+62"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="+23"/>
@@ -2020,7 +2205,7 @@
       <translation>Seleccioneu arestes de l'esbós</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5836"/>
+      <location filename="../../CommandConstraints.cpp" line="-6430"/>
       <location line="+247"/>
       <source>Select an edge from the sketch.</source>
       <translation>Seleccioneu una aresta de l'esbós</translation>
@@ -2059,23 +2244,23 @@
       <location line="+28"/>
       <location line="+9"/>
       <location line="+11"/>
-      <location filename="../../CommandSketcherTools.cpp" line="-1542"/>
-      <location line="+99"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-1749"/>
+      <location line="+100"/>
       <source>Impossible constraint</source>
       <translation>Restricció impossible</translation>
     </message>
     <message>
-      <location line="-1356"/>
+      <location line="-1381"/>
       <source>Cannot add a constraint between two external geometries!</source>
       <translation>No es pot afegir una restricció entre dues geometries externes.</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries! Fixed geometries involve external geometry, blocked geometry or special points as B-spline knot points.</translation>
+      <translation>No es poden afegir restriccions entre dues geometries fixes! Les geometries fixes impliquen geometries externes, bloquejades o punts especials com per exemple punts de B-spline.</translation>
     </message>
     <message>
-      <location line="+520"/>
+      <location line="+545"/>
       <location line="+11"/>
       <location line="+12"/>
       <source>Only sketch and its support is allowed to select</source>
@@ -2110,7 +2295,7 @@
       <location line="+416"/>
       <location line="+50"/>
       <source>The selected edge has already a Block constraint!</source>
-      <translation type="unfinished">The selected edge has already a Block constraint!</translation>
+      <translation>L'aresta seleccionada ja té una restricció de Bloc!</translation>
     </message>
     <message>
       <location line="-787"/>
@@ -2121,7 +2306,7 @@
       <location line="+27"/>
       <location line="+246"/>
       <source>There are more than one fixed point selected. Select a maximum of one fixed point!</source>
-      <translation type="unfinished">There are more than one fixed point selected. Select a maximum of one fixed point!</translation>
+      <translation>Hi ha més d'un punt fixe seleccionat! Seleccioneu com a màxim un punt fixe!</translation>
     </message>
     <message>
       <location line="-51"/>
@@ -2176,33 +2361,33 @@
     <message>
       <location line="+252"/>
       <source>Wrong solver status</source>
-      <translation type="unfinished">Wrong solver status</translation>
+      <translation>Estat de sistema de resolució incorrecte</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
-      <translation type="unfinished">A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</translation>
+      <translation>No es pot afegir una restricció de bloc si l'esbós no està resolt o hi ha un error redundant o restriccions en conflicte.</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Select one edge from the sketch.</source>
-      <translation type="unfinished">Select one edge from the sketch.</translation>
+      <translation>Seleccioneu una aresta de l'esbós.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select only edges from the sketch.</source>
-      <translation type="unfinished">Select only edges from the sketch.</translation>
+      <translation>Seleccioneu sols arestes de l'esbós.</translation>
     </message>
     <message>
       <location line="+355"/>
       <location line="+2231"/>
       <source>Constraint Substitution</source>
-      <translation type="unfinished">Constraint Substitution</translation>
+      <translation>Substitucions de restricions</translation>
     </message>
     <message>
       <location line="-2230"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
-      <translation type="unfinished">Endpoint to endpoint tangency was applied instead.</translation>
+      <translation>En el seu lloc s'ha aplicat una tangència entre extrems.</translation>
     </message>
     <message>
       <location line="+542"/>
@@ -2243,21 +2428,24 @@
     <message>
       <location line="-147"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
-      <translation type="unfinished">Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</translation>
+      <translation>S'ha aplicat una tangència entre extrems. S'han suprimit les restriccions coincidents.</translation>
     </message>
     <message>
       <location line="+422"/>
+      <location line="+51"/>
+      <location line="+420"/>
       <location line="+51"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Seleccioneu un o diversos arcs o cercles de l'esbós</translation>
     </message>
     <message>
-      <location line="+52"/>
+      <location line="-419"/>
+      <location line="+471"/>
       <source>Constrain equal</source>
       <translation>Restricció d'igualtat</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="-470"/>
       <source>Do you want to share the same radius for all selected elements?</source>
       <translation>Voleu compartir el mateix radi per a tots els elements seleccionats?</translation>
     </message>
@@ -2286,7 +2474,8 @@
       <location line="+185"/>
       <location line="+249"/>
       <location line="+1706"/>
-      <location line="+484"/>
+      <location line="+471"/>
+      <location line="+591"/>
       <source>Select the right things from the sketch.</source>
       <translation>Seleccioneu els elements correctes de l'esbós</translation>
     </message>
@@ -2295,7 +2484,7 @@
       <translation>Un punt sobre la vora del BSpline no s'admet actualment.</translation>
     </message>
     <message>
-      <location line="-2294"/>
+      <location line="-2872"/>
       <location line="+247"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
       <translation>Aquesta restricció només té sentit sobre un segment de línia o un parell de punts</translation>
@@ -2318,11 +2507,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+913"/>
+      <location line="+471"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>La restricció només s'aplica a arcs i cercles.</translation>
     </message>
     <message>
-      <location line="+197"/>
+      <location line="-184"/>
+      <source>Do you want to share the same diameter for all selected elements?</source>
+      <translation>Voleu compartir el mateix diàmetre per a tots els elements seleccionats?</translation>
+    </message>
+    <message>
+      <location line="+488"/>
       <location line="+236"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Seleccioneu una o dues línies de l'esbós. O seleccioneu dues arestes i un punt</translation>
@@ -2344,18 +2539,18 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>La igualtat per a la vora del BSpline no s'admet actualment.</translation>
     </message>
     <message>
-      <location line="+606"/>
+      <location line="+618"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Seleccioneu dos punts finals de línies perquè actuen com a raigs i una aresta que representa un límit. El primer punt seleccionat correspon a l'índex n1, el segon a n2 i el valor de referència estableix la relació n2/n1.</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location line="+15"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Els objectes seleccionats no són només geometria d'un esbós.</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location line="+9"/>
       <source>Number of selected objects is not 3 (is %1).</source>
       <translation>El nombre d'objectes seleccionats no és 3 (és %1).</translation>
     </message>
@@ -2458,9 +2653,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Actualment la geometria interna només s'admet per a l'el·lipse i l'arc d'el·lipse. L'últim element selecccionat ha de ser una el·lipse o un arc d'el·lipse.</translation>
     </message>
     <message>
-      <location line="+53"/>
+      <location line="+55"/>
       <location line="+8"/>
-      <location line="+30"/>
+      <location line="+32"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="-31"/>
       <location line="+8"/>
       <location line="+24"/>
@@ -2472,7 +2667,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Select exactly two vertexes from the sketch.</translation>
     </message>
     <message>
-      <location line="-4754"/>
+      <location line="-5348"/>
       <location line="+10"/>
       <source>Select two or more vertexes from the sketch.</source>
       <translation>Seleccioneu un o més vèrtexs de l'esbós</translation>
@@ -2545,12 +2740,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+13"/>
-      <location line="+2405"/>
+      <location line="+2983"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Seleccioneu almenys dues línies de l'esbós</translation>
     </message>
     <message>
-      <location line="-2391"/>
+      <location line="-2969"/>
       <source>Select a valid line</source>
       <translation>Seleccioneu una línia vàlida</translation>
     </message>
@@ -2587,13 +2782,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+465"/>
       <location line="+156"/>
       <location line="+454"/>
-      <location line="+1607"/>
+      <location line="+2197"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location line="-2666"/>
+      <location line="-3256"/>
       <location line="+620"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
@@ -2662,7 +2857,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Cannot add an angle constraint on an external geometry!</translation>
     </message>
     <message>
-      <location line="+806"/>
+      <location line="+1384"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>No es pot afegir una restricció d'angle sobre un eix.</translation>
     </message>
@@ -2680,24 +2875,24 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Select atleast two lines from the sketch.</translation>
     </message>
     <message>
-      <location line="+28"/>
-      <location line="+618"/>
+      <location line="+29"/>
+      <location line="+629"/>
       <source>Select two or more compatible edges</source>
       <translation>Seleccioneu dues o més arestes compatibles</translation>
     </message>
     <message>
-      <location line="-612"/>
+      <location line="-624"/>
       <source>Sketch axes cannot be used in equality constraints</source>
       <translation>Els eixos de l'esbós no es poden utilitzar en les restriccions d'igualtat.</translation>
     </message>
     <message>
-      <location line="+16"/>
+      <location line="+19"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>La igualtat per a la vora del B-spline no s'admet actualment.</translation>
     </message>
     <message>
-      <location line="+16"/>
-      <location line="+9"/>
+      <location line="+20"/>
+      <location line="+14"/>
       <source>Select two or more edges of similar type</source>
       <translation>Seleccioneu una o més arestes de tipus similar</translation>
     </message>
@@ -2795,7 +2990,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">You need a planar face as support for a sketch!</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="+84"/>
+      <location filename="../../EditDatumDialog.cpp" line="+79"/>
       <source>Distance constraint</source>
       <translation>Restricció de distància</translation>
     </message>
@@ -2805,10 +3000,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>No es permet editar aquest valor perquè l'esbós conté restriccions amb conflictes</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-6155"/>
-      <location line="+5057"/>
+      <location filename="../../CommandConstraints.cpp" line="-6770"/>
+      <location line="+5082"/>
       <location line="+133"/>
-      <location filename="../../EditDatumDialog.cpp" line="+93"/>
+      <location line="+338"/>
+      <location line="+133"/>
+      <location filename="../../EditDatumDialog.cpp" line="+99"/>
       <source>Dimensional constraint</source>
       <translation>Restricció de dimensió</translation>
     </message>
@@ -2817,38 +3014,38 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Visualització</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-138"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-139"/>
       <location line="+8"/>
-      <location line="+99"/>
+      <location line="+100"/>
       <location line="+8"/>
       <source>Select at least two edges from the sketch.</source>
       <translation>Seleccioneu almenys dues arestes de l'esbós</translation>
     </message>
     <message>
-      <location line="-75"/>
-      <location line="+99"/>
+      <location line="-76"/>
+      <location line="+100"/>
       <source>One selected edge is not connectable</source>
       <translation>Una aresta seleccionada no és connectable.</translation>
     </message>
     <message>
-      <location line="-89"/>
+      <location line="-90"/>
       <source>Closing a shape formed by exactly two lines makes no sense.</source>
       <translation>Tancar una figura formada per exactament dues línies no té sentit.</translation>
     </message>
     <message>
-      <location line="+140"/>
-      <location line="+424"/>
-      <location line="+98"/>
+      <location line="+142"/>
+      <location line="+532"/>
+      <location line="+99"/>
       <location line="+8"/>
-      <location line="+330"/>
+      <location line="+355"/>
       <location line="+8"/>
-      <location line="+454"/>
+      <location line="+525"/>
       <location line="+8"/>
       <source>Select elements from a single sketch.</source>
       <translation>Seleccioneu elements d'un únic esbós</translation>
     </message>
     <message>
-      <location line="-941"/>
+      <location line="-1146"/>
       <source>No constraint selected</source>
       <translation>No s'ha seleccionat cap restricció.</translation>
     </message>
@@ -2858,21 +3055,31 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>S'ha de seleccionar com a mínim una restricció.</translation>
     </message>
     <message>
-      <location line="+1065"/>
+      <location line="+1270"/>
       <source>Delete All Geometry</source>
-      <translation type="unfinished">Delete All Geometry</translation>
+      <translation>Suprimeix tota la Geometria</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Are you really sure you want to delete all the geometry and constraints?</source>
-      <translation type="unfinished">Are you really sure you want to delete all the geometry and constraints?</translation>
+      <translation>Esteu realment segur que voleu suprimir totes les geometries i restriccions?</translation>
+    </message>
+    <message>
+      <location line="+65"/>
+      <source>Delete All Constraints</source>
+      <translation>Suprimeix totes les restriccions</translation>
+    </message>
+    <message>
+      <location line="+1"/>
+      <source>Are you really sure you want to delete all the constraints?</source>
+      <translation>Esteu realment segur que voleu suprimir totes restriccions?</translation>
     </message>
     <message>
       <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
       <translation>Actualment la geometria interna només s'admet per a l'el·lipse i l'arc d'el·lipse. L'últim element selecccionat ha de ser una el·lipse o un arc d'el·lipse.</translation>
     </message>
     <message>
-      <location line="-820"/>
+      <location line="-982"/>
       <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
       <translation>Una construcció simètrica necessita com a mínim dos elements geomètrics, l'últim element geomètric és la referència per a la construcció de la simetria.</translation>
     </message>
@@ -2882,8 +3089,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>L'últim element ha de ser un punt o una línia que servisca com a referència per a la construcció de la simetria.</translation>
     </message>
     <message>
-      <location line="+288"/>
-      <location line="+462"/>
+      <location line="+310"/>
+      <location line="+536"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Una còpia necessita com a mínim que se seleccione un element geomètric no extern</translation>
     </message>
@@ -2940,41 +3147,47 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-319"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-337"/>
       <source>None of the selected elements is an edge.</source>
       <translation>No és una vora cap dels elements seleccionats.</translation>
     </message>
     <message>
-      <location line="+100"/>
-      <location line="+160"/>
+      <location line="+80"/>
+      <source>At least one of the selected objects was not a B-Spline and was ignored.</source>
+      <translation>Com a mínim, un els objectes seleccionats no és una B-Spline i s'ha ignorat.</translation>
+    </message>
+    <message>
+      <location line="+36"/>
+      <location line="+161"/>
       <source>Wrong OCE/OCC version</source>
       <translation>La versió d'OCE/OCC no és correcta</translation>
     </message>
     <message>
-      <location line="-159"/>
-      <location line="+160"/>
+      <location line="-160"/>
+      <location line="+161"/>
       <source>This version of OCE/OCC does not support knot operation. You need 6.9.0 or higher</source>
       <translation>Aquesta versió d'OCE/OCC no admet l'operació de nus. Necessiteu la versió 6.9.0 o superior</translation>
     </message>
     <message>
       <location line="-142"/>
-      <location line="+160"/>
+      <location line="+161"/>
       <source>The selection comprises more than one item. Please select just one knot.</source>
       <translation>La selecció inclou més d'un element. Seleccioneu només un nus.</translation>
     </message>
     <message>
-      <location line="-118"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-213"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-119"/>
       <source>CAD Kernel Error</source>
       <translation>Error del nucli del CAD</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="+8"/>
       <source>Input Error</source>
       <translation>Error d'entrada</translation>
     </message>
     <message>
       <location line="+17"/>
-      <location line="+147"/>
+      <location line="+148"/>
       <source>None of the selected elements is a knot of a B-spline</source>
       <translation>Cap dels elements seleccionats no és un nus d'un B-spline</translation>
     </message>
@@ -3013,7 +3226,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="+626"/>
+      <location filename="../../CommandCreateGeo.cpp" line="+840"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>La còpia pot provocar una dependència circular.</translation>
     </message>
@@ -3024,12 +3237,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>This object belongs to another body.</source>
-      <translation type="unfinished">This object belongs to another body.</translation>
+      <translation>Aquest objecte pertany a un altre cos.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>This object belongs to another body. Hold Ctrl to allow crossreferences.</source>
-      <translation type="unfinished">This object belongs to another body. Hold Ctrl to allow crossreferences.</translation>
+      <translation>Aquest objecte pertany a un altre cos. Manteniu la tecla Ctrl per a permetre les referències creuades.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>This object belongs to another body and it contains external geometry. Crossreference not allowed.</source>
+      <translation>Aquest objecte pertany a un altre cos i conté geometria externa. No es permeten les referències creuades.</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -3055,7 +3273,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstrains.cpp" line="+419"/>
+      <location filename="../../TaskSketcherConstrains.cpp" line="+444"/>
       <source>Toggle to/from reference</source>
       <translation>Commuta la referència a/des de</translation>
     </message>
@@ -3067,12 +3285,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+8"/>
       <source>Show constraints</source>
-      <translation type="unfinished">Show constraints</translation>
+      <translation>Mostra restriccions</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Hide constraints</source>
-      <translation type="unfinished">Hide constraints</translation>
+      <translation>Amaga restriccions</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3108,8 +3326,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5254"/>
-      <location filename="../../EditDatumDialog.cpp" line="-77"/>
+      <location filename="../../CommandConstraints.cpp" line="-5756"/>
+      <location filename="../../EditDatumDialog.cpp" line="-83"/>
       <source>Insert angle</source>
       <translation>Insereix un angle</translation>
     </message>
@@ -3128,6 +3346,20 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+6"/>
       <location filename="../../EditDatumDialog.cpp" line="+6"/>
+      <source>Insert diameter</source>
+      <translation>Introduïu el diàmetre</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <location line="+5558"/>
+      <location line="+145"/>
+      <location filename="../../EditDatumDialog.cpp" line="+2"/>
+      <source>Diameter:</source>
+      <translation>Diàmetre:</translation>
+    </message>
+    <message>
+      <location line="-5699"/>
+      <location filename="../../EditDatumDialog.cpp" line="+4"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Índex de refracció</translation>
@@ -3140,21 +3372,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Relació n2/n1:</translation>
     </message>
     <message>
-      <location line="+5056"/>
+      <location line="+5081"/>
       <location line="+145"/>
       <source>Change radius</source>
       <translation>Canvia els radis</translation>
     </message>
     <message>
-      <location line="-5206"/>
-      <location line="+5062"/>
+      <location line="-5237"/>
+      <location line="+5093"/>
       <location line="+145"/>
-      <location filename="../../EditDatumDialog.cpp" line="-5"/>
+      <location filename="../../EditDatumDialog.cpp" line="-11"/>
       <source>Radius:</source>
       <translation>Radi:</translation>
     </message>
     <message>
-      <location line="+1153"/>
+      <location line="+325"/>
+      <location line="+145"/>
+      <source>Change diameter</source>
+      <translation>Canvia el diàmetre</translation>
+    </message>
+    <message>
+      <location line="+1273"/>
       <source>Refractive index ratio</source>
       <translation>Índex de refracció</translation>
     </message>
@@ -3164,8 +3402,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Relació n2/n1:</translation>
     </message>
     <message>
-      <location line="-6352"/>
-      <location filename="../../EditDatumDialog.cpp" line="+9"/>
+      <location line="-6967"/>
+      <location filename="../../EditDatumDialog.cpp" line="+15"/>
       <source>Insert length</source>
       <translation>Insereix una longitud</translation>
     </message>
@@ -3179,7 +3417,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+170"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+171"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
@@ -3187,7 +3425,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-250"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-254"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>L'enllaç s'això provocarà una dependència circular</translation>
     </message>
@@ -3199,7 +3437,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>This object belongs to another body, can't link.</source>
-      <translation type="unfinished">This object belongs to another body, can't link.</translation>
+      <translation>Aquest objecte no es pot enllaçar perquè pertany a un altre cos.</translation>
     </message>
     <message>
       <source>This object belongs to another body, can't link. Hold Ctrl to allow crossreferences.</source>
@@ -3232,8 +3470,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-      <location filename="../../PropertyConstraintListItem.cpp" line="+129"/>
-      <location line="+52"/>
+      <location filename="../../PropertyConstraintListItem.cpp" line="+130"/>
+      <location line="+53"/>
       <source>Unnamed</source>
       <translation>Sense nom</translation>
     </message>
@@ -3340,7 +3578,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+13"/>
       <source>If selected, each element in the array is constraint with respect to the others using construction lines</source>
-      <translation type="unfinished">If selected, each element in the array is constraint with respect to the others using construction lines</translation>
+      <translation>Si està seleccionat, cada element de la matriiu es restringeix respecte als altres utilitzant les línies de construcció</translation>
     </message>
     <message>
       <source>if selected, each element in the array is constraint with respect to the others using construction lines</source>
@@ -3359,13 +3597,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Clone</source>
-      <translation>Clone</translation>
+      <translation>Clona</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::SketcherGeneralWidget</name>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+99"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="+100"/>
       <location line="+5"/>
       <location line="+5"/>
       <source>Normal Geometry</source>
@@ -3396,7 +3634,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+8"/>
       <source>Number of Sides:</source>
-      <translation type="unfinished">Number of Sides:</translation>
+      <translation>Nombre de costats:</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3407,7 +3645,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="+192"/>
+      <location filename="../../SketcherSettings.cpp" line="+180"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -3441,7 +3679,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>Construction geometry</source>
-      <translation>Construction geometry</translation>
+      <translation>Geometria de la construcció</translation>
     </message>
     <message>
       <source>The color of construction geometry in edit mode</source>
@@ -3465,22 +3703,20 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>General</translation>
     </message>
     <message>
-      <location line="+53"/>
       <source>Marker size</source>
       <translation>Mida del marcador</translation>
     </message>
     <message>
-      <location line="+40"/>
+      <location line="+132"/>
       <source>Geometry Creation "Continue Mode"</source>
       <translation>Creació de geometria "Mode continu"</translation>
     </message>
     <message>
-      <location line="+16"/>
       <source>Constraint Creation "Continue Mode" (Experimental)</source>
       <translation>Creació de restricció "Mode continu" (experimental)</translation>
     </message>
     <message>
-      <location line="+43"/>
+      <location line="+59"/>
       <source>Visibility automation</source>
       <translation>Automatització de la visibilitat</translation>
     </message>
@@ -3540,39 +3776,54 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Aplica als esbossos existents</translation>
     </message>
     <message>
-      <location line="+37"/>
+      <location line="-262"/>
       <source>Notifications</source>
-      <translation type="unfinished">Notifications</translation>
+      <translation>Notificacions</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Notify automatic constraint substitutions.</source>
-      <translation type="unfinished">Notify automatic constraint substitutions.</translation>
+      <translation>Notifica les substitucions automàtiques de restriccions.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Notify automatic constraint substitutions</source>
-      <translation type="unfinished">Notify automatic constraint substitutions</translation>
+      <translation>Notifica les substitucions automàtiques de restriccions</translation>
     </message>
     <message>
-      <location line="+19"/>
+      <location line="+100"/>
+      <source>Constraint Creation "Continue Mode"</source>
+      <translation>Creació de restricció "Mode continu"</translation>
+    </message>
+    <message>
+      <location line="+163"/>
       <source>Segments per geometry</source>
       <translation>Segments per geometria</translation>
     </message>
     <message>
-      <location line="+26"/>
+      <location line="+23"/>
+      <source>Do not show base length units in sketches. Supports all unit systems except US Customary and Building US/Euro.</source>
+      <translation>No mostres les unitats de longitud de base en els esbossos. És compatible amb tots els sistemes d'unitats excepte amb el sistema anglosaxó d'unitats i construccions.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Hide base length units for supported unit systems</source>
+      <translation>Amaga les unitats de longitud de base del sistemes d'unitats compatibles</translation>
+    </message>
+    <message>
+      <location line="+16"/>
       <source>Sketcher Solver</source>
-      <translation type="unfinished">Sketcher Solver</translation>
+      <translation>Sistema de resolució de l'entorn esbós</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Dragging Performance</source>
-      <translation type="unfinished">Dragging Performance</translation>
+      <translation>Rendiment d'arrossegament</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Improve solving while dragging (requires to re-enter edit mode to take effect)</source>
-      <translation type="unfinished">Improve solving while dragging (requires to re-enter edit mode to take effect)</translation>
+      <translation>Millora la resolució mentre arrossega (requereix tornar a entrar en el mode d'edició perquè tinga efecte)</translation>
     </message>
     <message>
       <source>Sketch Solver</source>
@@ -3604,7 +3855,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>El gruix de línia per defecte per a formes noves</translation>
     </message>
     <message>
-      <location line="-334"/>
+      <location line="-279"/>
       <source>px</source>
       <translation>px</translation>
     </message>
@@ -3614,7 +3865,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>Default line width</source>
-      <translation>Default line width</translation>
+      <translation>Amplària de la línia per defecte</translation>
     </message>
     <message>
       <source>Cursor text color</source>
@@ -3633,17 +3884,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>El color de les restriccions o dimensions no actives en mode d'edició</translation>
     </message>
     <message>
-      <location line="-19"/>
+      <location line="-74"/>
       <source>Sketch editing</source>
       <translation>Edició de l'esbós</translation>
     </message>
     <message>
-      <location line="+12"/>
+      <location line="+67"/>
       <source>Font size</source>
       <translation>Mida del tipus de lletra</translation>
     </message>
     <message>
-      <location line="+65"/>
+      <location line="+52"/>
       <source>Grid line pattern</source>
       <translation>Patró de línia de la quadrícula</translation>
     </message>
@@ -3653,12 +3904,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Demana el valor després de crear una restricció de distància</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="-51"/>
       <source>%1 px</source>
       <translation>%1 px</translation>
     </message>
     <message>
-      <location line="+48"/>
+      <location filename="../../SketcherSettings.cpp" line="-3"/>
       <source>Unexpected C++ exception</source>
       <translation>S'ha produït una excepció inesperada de C++</translation>
     </message>
@@ -3700,7 +3950,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-70"/>
       <source>Making line color</source>
-      <translation type="unfinished">Making line color</translation>
+      <translation>Color de línia activa</translation>
     </message>
     <message>
       <location line="+30"/>
@@ -3715,7 +3965,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+33"/>
       <source>Construction geometry</source>
-      <translation>Construction geometry</translation>
+      <translation>Geometria de la construcció</translation>
     </message>
     <message>
       <location line="+73"/>
@@ -3725,7 +3975,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+281"/>
       <source>Cursor crosshair color</source>
-      <translation type="unfinished">Cursor crosshair color</translation>
+      <translation>Color de la creu del cursor</translation>
     </message>
     <message>
       <location line="-347"/>
@@ -3760,12 +4010,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+54"/>
       <source>Expression dependent constraint color</source>
-      <translation type="unfinished">Expression dependent constraint color</translation>
+      <translation>Color de restricció que depén d'una expressió</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The color of expression dependent datum constraints in edit mode</source>
-      <translation type="unfinished">The color of expression dependent datum constraints in edit mode</translation>
+      <translation>El color de les restriccions de dades de referència que depén de l'expressió en mode edició</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -3799,7 +4049,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-10"/>
       <source>Default line width</source>
-      <translation>Default line width</translation>
+      <translation>Amplària de la línia per defecte</translation>
     </message>
     <message>
       <location line="+35"/>
@@ -3833,7 +4083,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-      <location filename="../../TaskSketcherValidation.cpp" line="+330"/>
+      <location filename="../../TaskSketcherValidation.cpp" line="+139"/>
       <source>No missing coincidences</source>
       <translation>No hi ha cap coincidència perduda.</translation>
     </message>
@@ -3853,7 +4103,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>S'han trobat %1 coincidències perdudes</translation>
     </message>
     <message>
-      <location line="+66"/>
+      <location line="+36"/>
       <source>No invalid constraints</source>
       <translation>No hi ha cap restricció no vàlida.</translation>
     </message>
@@ -3978,6 +4228,15 @@ However, no constraints linking to the endpoints were found.</source>
     </message>
     <message>
       <location line="+10"/>
+      <source>Hide Internal Alignment</source>
+      <translation>Oculta l'alineació interna</translation>
+    </message>
+    <message>
+      <location line="+16"/>
+      <source>Extended Information</source>
+      <translation>Informació ampliada</translation>
+    </message>
+    <message>
       <source>Hide Internal Aligment</source>
       <translation>Oculta l'alineació interna</translation>
     </message>
@@ -3987,7 +4246,7 @@ However, no constraints linking to the endpoints were found.</source>
       <translation type="unfinished">Constraints</translation>
     </message>
     <message>
-      <location line="+199"/>
+      <location line="+207"/>
       <location line="+17"/>
       <source>Error</source>
       <translation>Error</translation>
@@ -4040,7 +4299,7 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: selecció múltiple&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: canvia al tipus vàlid següent&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+68"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+69"/>
       <source>Elements</source>
       <translation>Elements</translation>
     </message>
@@ -4055,7 +4314,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location line="+81"/>
       <location line="+1"/>
       <source>Point</source>
-      <translation>Point</translation>
+      <translation>Punt</translation>
     </message>
     <message>
       <location line="-80"/>
@@ -4063,7 +4322,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location line="+80"/>
       <location line="+1"/>
       <source>Line</source>
-      <translation>Line</translation>
+      <translation>Línia</translation>
     </message>
     <message>
       <location line="-82"/>
@@ -4076,7 +4335,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location line="+4"/>
       <location line="+4"/>
       <source>Construction</source>
-      <translation>Construction</translation>
+      <translation>Construcció</translation>
     </message>
     <message>
       <location line="-29"/>
@@ -4092,7 +4351,7 @@ However, no constraints linking to the endpoints were found.</source>
       <location line="+78"/>
       <location line="+1"/>
       <source>Circle</source>
-      <translation>Circle</translation>
+      <translation>Cercle</translation>
     </message>
     <message>
       <location line="-77"/>
@@ -4261,7 +4520,7 @@ However, no constraints linking to the endpoints were found.</source>
       <translation type="unfinished">auto constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherGeneral.cpp" line="+59"/>
+      <location filename="../../TaskSketcherGeneral.cpp" line="+88"/>
       <source>Edit controls</source>
       <translation type="unfinished">Edit controls</translation>
     </message>
@@ -4312,7 +4571,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location line="+7"/>
       <source>Ignore construction geometry</source>
-      <translation type="unfinished">Ignore construction geometry</translation>
+      <translation>Ignora la geometria de construcció</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -4361,7 +4620,7 @@ However, no constraints linking to the endpoints were found.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="+5270"/>
+      <location filename="../../ViewProviderSketch.cpp" line="+5548"/>
       <source>Invalid sketch</source>
       <translation>L'esbós no és vàlid.</translation>
     </message>
@@ -4397,7 +4656,7 @@ Use the sketch validation tool.</translation>
       <translation>L'esbós no és vàlid i no es pot editar.</translation>
     </message>
     <message>
-      <location line="+156"/>
+      <location line="+162"/>
       <source>Please remove the following constraint:</source>
       <translation>Suprimiu la restricció següent:</translation>
     </message>
@@ -4444,6 +4703,16 @@ Use the sketch validation tool.</translation>
       <translation>L'esbós conté restriccions redundants.</translation>
     </message>
     <message>
+      <location line="+16"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; of freedom</source>
+      <translation>Esbós sota restriccions amb&lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;1 degree&lt;/span&gt;&lt;/a&gt; de llibertat</translation>
+    </message>
+    <message>
+      <location line="+2"/>
+      <source>Under-constrained sketch with &lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;%1 degrees&lt;/span&gt;&lt;/a&gt; of freedom</source>
+      <translation>Esbós sota restriccions amb&lt;a href="#dofs"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;%1 grau&lt;/span&gt;&lt;/a&gt; de llibertat</translation>
+    </message>
+    <message>
       <source>Over-constrained sketch</source>
       <translation type="unfinished">Over-constrained sketch</translation>
     </message>
@@ -4456,22 +4725,20 @@ Use the sketch validation tool.</translation>
       <translation type="unfinished">Sketch contains redundant constraints</translation>
     </message>
     <message>
-      <location line="+11"/>
+      <location line="-7"/>
       <source>Fully constrained sketch</source>
       <translation>Esbós completament restringit</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>Under-constrained sketch with 1 degree of freedom</source>
       <translation>Esbós subrestringit amb 1 grau de llibertat</translation>
     </message>
     <message>
-      <location line="+2"/>
       <source>Under-constrained sketch with %1 degrees of freedom</source>
       <translation>Esbós subrestringit amb %1 graus de llibertat</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location line="+10"/>
       <source>Solved in %1 sec</source>
       <translation>Solucionat en %1 s</translation>
     </message>
@@ -4484,7 +4751,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineComb</name>
     <message>
-      <location filename="../../CommandSketcherBSpline.cpp" line="-416"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="-435"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the curvature comb for all B-splines</source>
       <translation>Canvia entre mostrar i amagar l'ansa de curvatura per a tots els B-splines</translation>
@@ -4493,7 +4760,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineDecreaseKnotMultiplicity</name>
     <message>
-      <location line="+544"/>
+      <location line="+563"/>
       <location line="+1"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
       <translation>Redueix la multiplicitat del nus seleccionat d'un B-spline</translation>
@@ -4502,7 +4769,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineDegree</name>
     <message>
-      <location line="-554"/>
+      <location line="-573"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
       <translation>Canvia entre mostrar i amagar el grau per a tots els B-splines</translation>
@@ -4511,7 +4778,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineIncreaseKnotMultiplicity</name>
     <message>
-      <location line="+548"/>
+      <location line="+567"/>
       <location line="+1"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
       <translation>Augmenta la multiplicitat del nus seleccionat d'un B-spline</translation>
@@ -4520,7 +4787,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_BSplineKnotMultiplicity</name>
     <message>
-      <location line="-538"/>
+      <location line="-557"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the knot multiplicity for all B-splines</source>
       <translation>Canvia entre mostrar i amagar la multiplicitat del nus per a tots els B-splines</translation>
@@ -4538,7 +4805,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="-275"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-280"/>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Crea un clon de la geometria prenent com a referència l'últim punt seleccionat.</translation>
@@ -4549,18 +4816,41 @@ Use the sketch validation tool.</translation>
     <message>
       <location line="-2"/>
       <source>Clone</source>
-      <translation>Clone</translation>
+      <translation>Clona</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
+    <message>
+      <location line="+4"/>
+      <source>Move</source>
+      <translation>Mou</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ConstrainDiameter</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="+5874"/>
+      <location line="+1"/>
+      <source>Fix the diameter of a circle or an arc</source>
+      <translation>Fixa el diàmetre d'un cercle o d'un arc</translation>
+    </message>
+  </context>
+  <context>
+    <name>Sketcher_ConstrainRadius</name>
+    <message>
+      <location line="-5"/>
+      <location line="+1"/>
+      <source>Fix the radius of a circle or an arc</source>
+      <translation>Fixa el radi d'un cercle o arc</translation>
+    </message>
   </context>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location line="+1"/>
+      <location filename="../../CommandSketcherTools.cpp" line="-3"/>
       <location line="+1"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Crea una còpia simple de la geometria prenent com a referència l'últim punt seleccionat.</translation>
@@ -4569,7 +4859,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="-4324"/>
+      <location filename="../../CommandCreateGeo.cpp" line="-4372"/>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
       <translation>Crea un arc donats els extrems i un punt al llarg de l'arc</translation>
@@ -4578,7 +4868,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-      <location line="+3273"/>
+      <location line="+3290"/>
       <location line="+1"/>
       <source>Create a circle by 3 rim points</source>
       <translation>Crea un cercle donats tres punts de la vora</translation>
@@ -4587,7 +4877,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location line="-3279"/>
+      <location line="-3296"/>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
       <translation>Crea un arc donats el centre i els extrems</translation>
@@ -4631,7 +4921,7 @@ Use the sketch validation tool.</translation>
       <translation>Crea un B-spline donats els punts de control o pols</translation>
     </message>
     <message>
-      <location line="+594"/>
+      <location line="+611"/>
       <source>B-spline by control points</source>
       <translation>B-spline per punts de control</translation>
     </message>
@@ -4654,7 +4944,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-      <location line="-962"/>
+      <location line="-979"/>
       <location line="+1"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
       <translation>Crea una el·lipse donats el periàpside, l'apoàpside i el radi menor</translation>
@@ -4672,7 +4962,7 @@ Use the sketch validation tool.</translation>
   <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-      <location line="+3242"/>
+      <location line="+3294"/>
       <location line="+1"/>
       <source>Create a heptagon by its center and by one corner</source>
       <translation>Crea un heptàgon donats el centre i un vèrtex</translation>
@@ -4699,7 +4989,7 @@ Use the sketch validation tool.</translation>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation type="unfinished">Create a regular polygon by its center and by one corner</translation>
+      <translation>Crea un polígon regular donats el centre i un vèrtex</translation>
     </message>
   </context>
   <context>
@@ -4740,7 +5030,7 @@ Use the sketch validation tool.</translation>
       <translation>Crea un B-spline periòdic donats els punts de control o pols</translation>
     </message>
     <message>
-      <location line="-2613"/>
+      <location line="-2648"/>
       <source>Periodic B-spline by control points</source>
       <translation>B-spline periòdic per punts de control</translation>
     </message>
@@ -4816,9 +5106,18 @@ Use the sketch validation tool.</translation>
     </message>
   </context>
   <context>
+    <name>Sketcher_Move</name>
+    <message>
+      <location filename="../../CommandSketcherTools.cpp" line="+3"/>
+      <location line="+1"/>
+      <source>Moves the geometry taking as reference the last selected point</source>
+      <translation>Mou la geometria prenent com a referència l'últim punt seleccionat</translation>
+    </message>
+  </context>
+  <context>
     <name>Sketcher_NewSketch</name>
     <message>
-      <location line="-406"/>
+      <location filename="../../Command.cpp" line="-406"/>
       <source>Sketch attachment</source>
       <translation>Adjunt d'esbós</translation>
     </message>
@@ -4881,7 +5180,17 @@ Do you want to detach it from the support?</source>
       <translation>No s'ha solucionat encara.</translation>
     </message>
     <message>
-      <location line="+25"/>
+      <location line="+10"/>
+      <source>Automatically removes redundant constraints.</source>
+      <translation>Suprimeix automàticament les restriccions redundants.</translation>
+    </message>
+    <message>
+      <location line="+3"/>
+      <source>Auto Remove Redundants</source>
+      <translation>Suprimeix les redundàncies automàticament</translation>
+    </message>
+    <message>
+      <location line="+31"/>
       <source>Executes a recompute of the active document after every command</source>
       <translation>Recalcula el document actiu després de cada ordre</translation>
     </message>
@@ -5104,7 +5413,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+3"/>
       <source>Console Debug mode:</source>
-      <translation type="unfinished">Console Debug mode:</translation>
+      <translation>Mode de depuració de la consola:</translation>
     </message>
     <message>
       <source>Console  Debug mode:</source>
@@ -5113,7 +5422,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+17"/>
       <source>None</source>
-      <translation>None</translation>
+      <translation>Cap</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -5161,7 +5470,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location line="+1"/>
       <source>Sketcher virtual space</source>
-      <translation type="unfinished">Sketcher virtual space</translation>
+      <translation>Espai virtual de l'esbós</translation>
     </message>
     <message>
       <source>Sketcher geoms</source>

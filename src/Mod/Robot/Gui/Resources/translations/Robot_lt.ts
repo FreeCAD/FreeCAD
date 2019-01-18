@@ -241,12 +241,12 @@
     <message>
       <location line="+1"/>
       <source>Set default orientation</source>
-      <translation>Nustatyti numatytąją kryptį</translation>
+      <translation>Nustatyti numatytąją erdvinę padėtį</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
-      <translation>sekančioms komandoms nustatyti numatytąją kryptį tarpinio taško sukūrimui</translation>
+      <translation>sekančioms komandoms nustatyti numatytąją erdvinę padėtį tarpinio taško sukūrimui</translation>
     </message>
   </context>
   <context>
@@ -502,6 +502,11 @@
       <location line="+1"/>
       <source>Please visit %1 and copy the files to %2</source>
       <translation>Prašome apsilankyti %1 ir nukopijuoti failus į %2</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderTrajectory.cpp" line="+164"/>
+      <source>Modify</source>
+      <translation type="unfinished">Modify</translation>
     </message>
   </context>
   <context>
@@ -795,7 +800,7 @@
     <message>
       <location line="+31"/>
       <source>Use orientation of edge</source>
-      <translation>Naudoti kraštinės kryptį</translation>
+      <translation>Naudoti kraštinės kampinę padėtį</translation>
     </message>
     <message>
       <source>TaskEdge2TracParameter</source>
@@ -1001,7 +1006,7 @@
     <message>
       <location line="+15"/>
       <source>Position and Orientation:</source>
-      <translation>Vieta ir kryptis:</translation>
+      <translation>Dėstymas:</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -1016,12 +1021,12 @@
     <message>
       <location line="+10"/>
       <source>Don't change Position &amp; Orientation</source>
-      <translation>Nekeisti padėties ir krypties</translation>
+      <translation>Nekeisti dėstymo</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Use Orientation</source>
-      <translation>Naudoti kryptį</translation>
+      <translation>Naudoti erdvinę padėtį</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -1031,7 +1036,7 @@
     <message>
       <location line="+5"/>
       <source>Add Orientation</source>
-      <translation>Pridėti kryptį</translation>
+      <translation>Pridėti erdvinę padėtį</translation>
     </message>
     <message>
       <source>Dress Up Parameter</source>

@@ -793,35 +793,30 @@ PyObject* GeometryCurvePy::intersectCS(PyObject *args)
 
 PyObject* GeometryCurvePy::intersectCC(PyObject *args)
 {
-    Handle(Geom_Curve) curve1 = Handle(Geom_Curve)::DownCast(getGeometryPtr()->handle());
+    PyObject *p;
+    double prec = Precision::Confusion();
+    if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometryCurvePy::Type), &p, &prec))
+        return 0;
+
+    GeomCurve* curve1 = getGeomCurvePtr();
+    GeomCurve* curve2 = static_cast<GeometryCurvePy*>(p)->getGeomCurvePtr();
+
     try {
-        if (!curve1.IsNull()) {
-            PyObject *p;
-            double prec = Precision::Confusion();
-            if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometryCurvePy::Type), &p, &prec))
-                return 0;
-            Handle(Geom_Curve) curve2 = Handle(Geom_Curve)::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
-            GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
-            if (intersector.NbExtrema() == 0 ||
-                intersector.LowerDistance() > Precision::Confusion()) {
-                // No intersection
-                return Py::new_reference_to(Py::List());
-            }
-
-            Py::List points;
-            for (int i = 1; i <= intersector.NbExtrema(); i++) {
-                if (intersector.Distance(i) > Precision::Confusion())
-                    continue;
-                gp_Pnt p1, p2;
-                intersector.Points(i, p1, p2);
-                points.append(Py::asObject(new PointPy(new GeomPoint(Base::Vector3d(p1.X(), p1.Y(), p1.Z())))));
-            }
-
-            return Py::new_reference_to(points);
+        std::vector<std::pair<Base::Vector3d, Base::Vector3d> > pairs;
+        if (!curve1->intersect(curve2, pairs, prec)) {
+            // No intersection
+            return Py::new_reference_to(Py::List());
         }
+
+        Py::List points;
+        for (size_t i = 0; i < pairs.size(); i++) {
+            points.append(Py::asObject(new PointPy(new GeomPoint(pairs[i].first))));
+        }
+
+        return Py::new_reference_to(points);
     }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
+    catch (Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
         return 0;
     }
 

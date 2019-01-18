@@ -203,7 +203,7 @@ struct SuggestResult{
      */
     refTypeString references_Types;
 
-    Base::Exception error;
+    Base::RuntimeError error;
 };
 
 

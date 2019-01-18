@@ -1448,10 +1448,10 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::AbortException>;
     new ExceptionProducer<Base::XMLBaseException>;
     new ExceptionProducer<Base::XMLParseException>;
+    new ExceptionProducer<Base::XMLAttributeError>;
     new ExceptionProducer<Base::FileException>;
     new ExceptionProducer<Base::FileSystemError>;
     new ExceptionProducer<Base::BadFormatError>;
-    new ExceptionProducer<Base::MemoryException>;
     new ExceptionProducer<Base::MemoryException>;
     new ExceptionProducer<Base::AccessViolation>;
     new ExceptionProducer<Base::AbnormalProgramTermination>;
@@ -1462,6 +1462,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::IndexError>;
     new ExceptionProducer<Base::AttributeError>;
     new ExceptionProducer<Base::RuntimeError>;
+    new ExceptionProducer<Base::BadGraphError>;
     new ExceptionProducer<Base::NotImplementedError>;
     new ExceptionProducer<Base::DivisionByZeroError>;
     new ExceptionProducer<Base::ReferencesError>;
@@ -1472,6 +1473,7 @@ void Application::initTypes(void)
     new ExceptionProducer<Base::UnderflowError>;
     new ExceptionProducer<Base::UnitsMismatchError>;
     new ExceptionProducer<Base::CADKernelError>;
+    new ExceptionProducer<Base::RestoreError>;
 }
 
 void Application::initConfig(int argc, char ** argv)

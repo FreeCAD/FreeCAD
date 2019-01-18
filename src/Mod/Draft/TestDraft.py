@@ -53,7 +53,7 @@ class DraftTest(unittest.TestCase):
     def testWire(self):
         FreeCAD.Console.PrintLog ('Checking Draft Wire...\n')
         Draft.makeWire([FreeCAD.Vector(0,0,0),FreeCAD.Vector(2,0,0),FreeCAD.Vector(2,2,0)])
-        self.failUnless(FreeCAD.ActiveDocument.getObject("DWire"),"Draft Wire failed")
+        self.failUnless(FreeCAD.ActiveDocument.getObject("Wire"),"Draft Wire failed")
 
     def testBSpline(self):
         FreeCAD.Console.PrintLog ('Checking Draft BSpline...\n')

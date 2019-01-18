@@ -73,7 +73,7 @@ An exception is raised if the face is not triangulated.
 				<UserDocu>Validate the face.</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="curveOnSurface">
+        <Methode Name="curveOnSurface" Const="true">
             <Documentation>
                 <UserDocu>
 curveonSurface(Edge) -> None or tuple

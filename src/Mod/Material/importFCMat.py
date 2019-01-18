@@ -1,29 +1,28 @@
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 
 import FreeCAD
-# import Material
-from Material import getMaterialAttributeStructure
+import Material
 import os
 import sys
 if sys.version_info.major >= 3:
@@ -36,7 +35,7 @@ __url__ = "http://www.freecadweb.org"
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
 
 
@@ -86,18 +85,21 @@ def read(filename):
         filename = filename.encode(sys.getfilesystemencoding())
     f = pythonopen(filename)
     d = {}
-    l = 0
+    ln = 0
     for line in f:
-        if l == 0:
+        if ln == 0:
             d["CardName"] = line.split(";")[1].strip()
-        elif l == 1:
+        elif ln == 1:
             d["AuthorAndLicense"] = line.split(";")[1].strip()
         else:
             if not line[0] in ";#[":
                 k = line.split("=")
                 if len(k) == 2:
-                    d[k[0].strip()] = k[1].strip().decode('utf-8')
-        l += 1
+                    v = k[1].strip()
+                    if hasattr(v, "decode"):
+                        v = v.decode('utf-8')
+                    d[k[0].strip()] = v
+        ln += 1
     return d
 
 
@@ -105,14 +107,18 @@ def write(filename, dictionary):
     "writes the given dictionary to the given file"
     # sort the data into sections
     contents = []
-    for key in getMaterialAttributeStructure():  # get the mat file structure from material module
-        contents.append({"keyname": key[0]})
-        if key[0] == "Meta":
+    tree = Material.getMaterialAttributeStructure()
+    MatPropDict = tree.getroot()
+    for group in MatPropDict.getchildren():
+        groupName = group.attrib['Name']
+        contents.append({"keyname": groupName})
+        if groupName == "Meta":
             header = contents[-1]
-        elif key[0] == "User defined":
+        elif groupName == "User defined":
             user = contents[-1]
-        for p in key[1]:
-            contents[-1][p] = ""
+        for proper in group.getchildren():
+            properName = proper.attrib['Name']
+            contents[-1][properName] = ""
     for k, i in dictionary.iteritems():
         found = False
         for group in contents:
@@ -145,7 +151,7 @@ def write(filename, dictionary):
             if len(s) > 1:
                 # if the section has no contents, we don't write it
                 f.write("[" + s["keyname"] + "]\n")
-                for k, i in s.iteritems():
+                for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name even if empty
                         f.write(k + "=" + i.encode('utf-8') + "\n")

@@ -362,8 +362,8 @@ public:
   std::vector<unsigned long> GetIndices() const;
 
 private:
-  float fMinAngle;
-  float fMaxAngle;
+  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
+  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
 };
 
 /**
@@ -392,10 +392,36 @@ public:
   bool Fixup ();
 
 private:
-  float fMinAngle;
-  float fMaxAngle;
-  float fMaxSwapAngle;
+  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
+  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
+  float fMaxSwapAngle; /**< A swap edge is only allowed if the angle of both normals doesn't exceed fMaxSwapAngle */
   float fEpsilon;
+};
+
+/**
+ * The MeshFixMergeFacets class removes vertexes which have three adjacent vertexes and is referenced by three facets.
+ * Usually all the three facets that reference this vertex are not well-formed. If the number of adjacent vertexes
+ * is equal to the number of adjacent facets the affected vertex never lies on the boundary and thus it's safe to delete
+ * and replace the three facets with a single facet.
+ * Effectively this algorithm does the opposite of \ref MeshTopoAlgorithm::InsertVertex
+ * @author Werner Mayer
+ */
+class MeshExport MeshFixMergeFacets : public MeshValidation
+{
+public:
+  /**
+   * Construction.
+   */
+  MeshFixMergeFacets (MeshKernel &rclM)
+      : MeshValidation(rclM) { }
+  /**
+   * Destruction.
+   */
+  ~MeshFixMergeFacets () { }
+  /**
+   * Removes deformed facets.
+   */
+  bool Fixup ();
 };
 
 /**

@@ -24,7 +24,9 @@ env:
     - CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}
     - OSX_PORTS_CACHE=${OSX_PORTS_CACHE:-FreeCAD/FreeCAD-ports-cache}
     - DEPLOY=${DEPLOY:-0}
-
+  matrix:
+    # chunk.io key (if needed, obtain it with Yorik, PrzemoF, Kunda1)
+    secure: MJu0ZU/9Yqut6bUkHoSrXTV/c/WhCLR0KnHKCsnEU081PYoukzH6ngzgKk7/trAH2In080d/ra4B2OmTNl/LAgV6DXKFY9dO1aG8QwcrHgaMPf0pHYUy/OfwQSFYFByQDV2OEMAHcIWc/dtNkzK2QUi44Kn7d0GtSEiN4s816lriWtjg0vmEGAU8MjvcAGss4gKyn05Xm1NUCYPKgpgIHsywLbpE76lv0eOYoosEuKv5Q9Pb4FMQts02+JUlqE8eY4ZZ3nV8iQbgIDdseOSA7Ixn05zWjU/ZRZ74TrYxMnzfUAwQcJe9OcqoESq+pPWQt5HYG66VmeVxQim1gmsiDASH51U/nswKt0Q4bISj3tVk0YZMFV8Ax+SzPvLEmFZJQGfgO1mg7HdNcz9N9G5JHPawrV19DwYIEFbAw8MCSAoIXFOcPQZUWXCbtjm7NO9vCjMrqyVJMDD9L8omvQajHoajuHbOT8KB250gFokeLj3z8yu++Tz+IrZX5inUMrXsARVt/ALXpi8rJPXmoFMpMUjyWmDPqPWlnqUhLtTtEtKpuOWP8ZnWVwkg4QYOUhCy95C1okJSGkG+ylHWncWfY4mS+UBT525laoh+GOhH+sRW+p2xkI21xGFRqg1oHjjgY1yIYF6nnSHPzxMBRYmZwagyXsjkFG5FPMWR2oYk0Yg
 cache:
     ccache: true
 
@@ -35,6 +37,10 @@ python:
 
 # Inject osx build into matrix - needed to specify image/dist
 matrix:
+    allow_failures:
+      - python: 3.7
+      - os: osx
+    fast_finish: true  # https://blog.travis-ci.com/2013-11-27-fast-finishing-builds
     include:
       - os: linux
         dist: trusty
@@ -57,8 +63,16 @@ matrix:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON"
           - PYTHON_MAJOR_VERSION=3
 
+      - language: python
+        python: 3.7
+        dist: xenial  # required for Python >= 3.7 (travis-ci/travis-ci#9069)
+        before_install: true
+        install: python3 -m pip install flake8
+        # fail the build if there are Python syntax errors or undefined names
+        script: flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics
+
+      # macOS build is failing. See: https://forum.freecadweb.org/viewtopic.php?f=10&t=32272
       - os: osx
-        osx_image: xcode7.3
         compiler: clang
         env:
           - CMAKE_OPTS="-DBUILD_FEM_NETGEN=ON" QT=Qt5
@@ -126,7 +140,7 @@ before_install:
                                swig                             \
                                libvtk6-dev                      \
                                libmed-dev                       \
-                               libmedc-dev			\
+                               libmedc-dev                      \
                                asciidoc
 
        # Make sure dpkg is upgraded for Ubuntu 14.04 (required for eigen3)

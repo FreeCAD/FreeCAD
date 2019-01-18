@@ -268,7 +268,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source, std::v
             TechDrawGeometry::BaseGeom* base = BaseGeom::baseFactory(e);
             if (base == nullptr) {
                 Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n",i);
-                throw Base::Exception("DGH::getTrimmedLines - baseFactory failed");
+                throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
             }
             resultGeoms.push_back(base);
             i++;
@@ -416,7 +416,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
             TechDrawGeometry::BaseGeom* base = BaseGeom::baseFactory(e);
             if (base == nullptr) {
                 Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n",i);
-                throw Base::Exception("DGH::getFaceOverlay - baseFactory failed");
+                throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");
             }
             resultGeoms.push_back(base);
             i++;

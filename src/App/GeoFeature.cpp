@@ -42,7 +42,7 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 
 GeoFeature::GeoFeature(void)
 {
-    ADD_PROPERTY(Placement,(Base::Placement()));
+    ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
 }
 
 GeoFeature::~GeoFeature(void)

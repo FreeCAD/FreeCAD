@@ -40,6 +40,11 @@ import sys
 import math,FreeCAD
 from FreeCAD import Vector, Matrix
 
+try:
+    long
+except NameError:
+    long = int
+
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 def precision():
     return params.GetInt("precision",6)

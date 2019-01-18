@@ -236,7 +236,7 @@ bool TaskDlgSketchBasedParameters::accept() {
     // Make sure the feature is what we are expecting
     // Should be fine but you never know...
     if ( !feature->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId()) ) {
-        throw Base::Exception("Bad object processed in the sketch based dialog.");
+        throw Base::TypeError("Bad object processed in the sketch based dialog.");
     }
 
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(feature)->Profile.getValue();

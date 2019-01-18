@@ -210,14 +210,13 @@ XMLBaseException::XMLBaseException(const XMLBaseException &inst)
 
 // ---------------------------------------------------------
 
-
 XMLParseException::XMLParseException(const char * sMessage)
-  : Exception(sMessage)
+  : XMLBaseException(sMessage)
 {
 }
 
 XMLParseException::XMLParseException(const std::string& sMessage)
-  : Exception(sMessage)
+  : XMLBaseException(sMessage)
 {
 }
 
@@ -227,13 +226,40 @@ XMLParseException::XMLParseException()
 }
 
 XMLParseException::XMLParseException(const XMLParseException &inst)
-  : Exception(inst)
+  : XMLBaseException(inst)
 {
 }
 
 const char* XMLParseException::what() const throw()
 {
-    return Exception::what();
+    return XMLBaseException::what();
+}
+
+// ---------------------------------------------------------
+
+XMLAttributeError::XMLAttributeError(const char * sMessage)
+  : XMLBaseException(sMessage)
+{
+}
+
+XMLAttributeError::XMLAttributeError(const std::string& sMessage)
+  : XMLBaseException(sMessage)
+{
+}
+
+XMLAttributeError::XMLAttributeError()
+{
+    _sErrMsg = "XML attribute error";
+}
+
+XMLAttributeError::XMLAttributeError(const XMLAttributeError &inst)
+  : XMLBaseException(inst)
+{
+}
+
+const char* XMLAttributeError::what() const throw()
+{
+    return XMLBaseException::what();
 }
 
 // ---------------------------------------------------------
@@ -608,6 +634,28 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 
 // ---------------------------------------------------------
 
+BadGraphError::BadGraphError()
+  : RuntimeError("The graph must be a DAG.")
+{
+}
+
+BadGraphError::BadGraphError(const char * sMessage)
+  : RuntimeError(sMessage)
+{
+}
+
+BadGraphError::BadGraphError(const std::string& sMessage)
+  : RuntimeError(sMessage)
+{
+}
+
+BadGraphError::BadGraphError(const BadGraphError &inst)
+  : RuntimeError(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 NotImplementedError::NotImplementedError()
   : Exception()
 {
@@ -822,6 +870,29 @@ CADKernelError::CADKernelError(const std::string& sMessage)
 }
 
 CADKernelError::CADKernelError(const CADKernelError &inst)
+  : Exception(inst)
+{
+}
+
+
+// ---------------------------------------------------------
+
+RestoreError::RestoreError()
+  : Exception()
+{
+}
+
+RestoreError::RestoreError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+RestoreError::RestoreError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+RestoreError::RestoreError(const RestoreError &inst)
   : Exception(inst)
 {
 }

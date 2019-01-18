@@ -716,6 +716,19 @@ void ViewProvider::dropObject(App::DocumentObject* obj)
     throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
+void ViewProvider::replaceObject(App::DocumentObject* oldValue, App::DocumentObject* newValue)
+{
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDropObject(newValue)) {
+            ext->extensionReplaceObject(oldValue, newValue);
+            return;
+        }
+    }
+
+    throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
+}
+
 void ViewProvider::Restore(Base::XMLReader& reader)
 {
     setStatus(Gui::isRestoring, true);

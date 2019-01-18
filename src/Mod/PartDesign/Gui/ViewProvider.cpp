@@ -133,7 +133,7 @@ bool ViewProvider::setEdit(int ModNum)
         if (!featureDlg) {
             featureDlg = this->getEditDialog();
             if (!featureDlg) { // Shouldn't generally happen
-                throw Base::Exception ("Failed to create new edit dialog.");
+                throw Base::RuntimeError ("Failed to create new edit dialog.");
             }
         }
 
@@ -146,7 +146,7 @@ bool ViewProvider::setEdit(int ModNum)
 
 
 TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
-    throw Base::Exception("getEditDialog() not implemented");
+    throw Base::NotImplementedError("getEditDialog() not implemented");
 }
 
 

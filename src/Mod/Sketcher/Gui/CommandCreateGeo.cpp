@@ -6601,7 +6601,7 @@ public:
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
             if (obj == NULL)
-                throw Base::Exception("Sketcher: External geometry: Invalid object in selection");
+                throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             std::string subName(msg.pSubName);
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
                 obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()) ||
@@ -6826,7 +6826,7 @@ static const char *cursor_carboncopy[]={
             if (msg.Type == Gui::SelectionChanges::AddSelection) {
                 App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
                 if (obj == NULL)
-                    throw Base::Exception("Sketcher: Carbon Copy: Invalid object in selection");
+                    throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
                 
                 if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
 

@@ -241,6 +241,12 @@ ViewProviderPartExt::ViewProviderPartExt()
         ("User parameter:BaseApp/Preferences/Mod/Part");
     NormalsFromUV = hPart->GetBool("NormalsFromUVNodes", NormalsFromUV);
 
+    // Let the user define a custom lower limit but a value less than
+    // OCCT's epsilon is not allowed
+    double lowerLimit = hPart->GetFloat("MinimumDeviation", tessRange.LowerBound);
+    lowerLimit = std::max(lowerLimit, Precision::Confusion());
+    tessRange.LowerBound = lowerLimit;
+
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);
     mat.diffuseColor.set(r,g,b);
@@ -481,6 +487,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // wireframe node
     SoSeparator* wireframe = new SoSeparator();
+    wireframe->setName("Edge");
     wireframe->addChild(pcLineBind);
     wireframe->addChild(pcLineMaterial);
     wireframe->addChild(pcLineStyle);

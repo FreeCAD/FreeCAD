@@ -78,8 +78,8 @@ void DrawViewClip::addView(DrawView *view)
     std::vector<App::DocumentObject *> newViews(currViews);
     newViews.push_back(view);
     Views.setValues(newViews);
-    view->X.setValue(Width.getValue()/2.0);
-    view->Y.setValue(Height.getValue()/2.0);
+    view->X.setValue(0.0);                   //position in centre of clip group frame
+    view->Y.setValue(0.0);
     auto page = findParentPage();             //get Page to release child relationship in tree
     page->Views.touch();
 }

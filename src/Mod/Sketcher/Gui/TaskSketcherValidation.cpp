@@ -168,25 +168,8 @@ void SketcherValidation::on_fixButton_clicked()
 void SketcherValidation::on_highlightButton_clicked()
 {
     std::vector<Base::Vector3d> points;
-    TopoDS_Shape shape = sketch->Shape.getValue();
 
-    Base::Placement Plm = sketch->Placement.getValue();
-
-    Base::Placement invPlm = Plm.inverse();
-
-    // build up map vertex->edge
-    TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
-    TopExp::MapShapesAndAncestors(shape, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
-    for (int i=1; i<= vertex2Edge.Extent(); ++i) {
-        const TopTools_ListOfShape& los = vertex2Edge.FindFromIndex(i);
-        if (los.Extent() != 2) {
-            const TopoDS_Vertex& vertex = TopoDS::Vertex(vertex2Edge.FindKey(i));
-            gp_Pnt pnt = BRep_Tool::Pnt(vertex);
-            Base::Vector3d pos;
-            invPlm.multVec(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()),pos);
-            points.push_back(pos);
-        }
-    }
+    points = sketchAnalyser.getOpenVertices();
 
     hidePoints();
     if (!points.empty())
@@ -237,7 +220,7 @@ void SketcherValidation::on_findReversed_clicked()
                 tr("%1 reversed external-geometry arcs were found. Their endpoints are"
                    " encircled in 3d view.\n\n"
                    "%2 constraints are linking to the endpoints. The constraints have"
-                   " been listed in Report view (menu View -> Views -> Report view).\n\n"
+                   " been listed in Report view (menu View -> Panels -> Report view).\n\n"
                    "Click \"Swap endpoints in constraints\" button to reassign endpoints."
                    " Do this only once to sketches created in FreeCAD older than v0.15.???"
                    ).arg(points.size()/2).arg(nc)
@@ -278,7 +261,7 @@ void SketcherValidation::on_orientLockEnable_clicked()
     int n = sketch->changeConstraintsLocking(/*bLock=*/true);
     QMessageBox::warning(this, tr("Constraint orientation locking"),
         tr("Orientation locking was enabled and recomputed for %1 constraints. The"
-           " constraints have been listed in Report view (menu View -> Views ->"
+           " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view).").arg(n));
 
     doc->commitTransaction();
@@ -292,7 +275,7 @@ void SketcherValidation::on_orientLockDisable_clicked()
     int n = sketch->changeConstraintsLocking(/*bLock=*/false);
     QMessageBox::warning(this, tr("Constraint orientation locking"),
         tr("Orientation locking was disabled for %1 constraints. The"
-           " constraints have been listed in Report view (menu View -> Views ->"
+           " constraints have been listed in Report view (menu View -> Panels ->"
            " Report view). Note that for all future constraints, the locking still"
            " defaults to ON.").arg(n));
 

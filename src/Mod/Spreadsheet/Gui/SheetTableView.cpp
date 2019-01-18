@@ -347,7 +347,7 @@ bool SheetTableView::event(QEvent *event)
             return true;
         }
     }
-    else if (event->type() == QEvent::ShortcutOverride) {
+    else if (event && event->type() == QEvent::ShortcutOverride) {
         QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
         if (kevent->modifiers() == Qt::NoModifier ||
             kevent->modifiers() == Qt::ShiftModifier ||

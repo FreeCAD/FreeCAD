@@ -128,7 +128,7 @@ App::DocumentObjectExecReturn *DrawTemplate::execute(void)
 
 void DrawTemplate::getBlockDimensions(double & /*x*/, double & /*y*/, double & /*width*/, double & /*height*/) const
 {
-    throw Base::Exception("implement in virtual function");
+    throw Base::NotImplementedError("implement in virtual function");
 }
 
 DrawPage* DrawTemplate::getParentPage() const

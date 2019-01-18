@@ -36,6 +36,7 @@ namespace TechDraw
 {
 
 class DrawPage;
+class DrawViewClip;
 
 /** Base class of all View Features in the drawing module
  */
@@ -67,6 +68,7 @@ public:
     void Restore(Base::XMLReader &reader) override;
 
     bool isInClip();
+    DrawViewClip* getClipGroup(void);
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const override {

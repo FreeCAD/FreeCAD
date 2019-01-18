@@ -43,6 +43,7 @@
 # include <BRepAlgoAPI_Common.hxx>
 #endif
 
+#include <QCoreApplication>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
@@ -52,6 +53,8 @@
 
 
 using namespace PartDesign;
+
+/* TRANSLATOR PartDesign::Pocket */
 
 const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace","TwoLengths",NULL};
 
@@ -113,8 +116,13 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     TopoDS_Shape base;
     try {
         base = getBaseShape();
-    } catch (const Base::Exception&) {
-        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
+    }
+    catch (const Base::Exception&) {
+        std::string text(QT_TR_NOOP("The requested feature cannot be created. The reason may be that:\n\n"
+                                    "  \xe2\x80\xa2 the active Body does not contain a base shape, so there is no\n"
+                                    "  material to be removed;\n"
+                                    "  \xe2\x80\xa2 the selected sketch does not belong to the active Body."));
+        return new App::DocumentObjectExecReturn(text);
     }
 
     // get the Sketch plane

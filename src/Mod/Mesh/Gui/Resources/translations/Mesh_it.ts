@@ -447,6 +447,21 @@
     </message>
   </context>
   <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Mesh</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshSmoothing</name>
     <message>
       <source>Mesh</source>
@@ -1059,6 +1074,45 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Adattamento della superficie</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Parametri</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Selezione</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Regione</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Triangolo</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Pulisci</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Calcola</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Nessuna selezione</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Prima di adattare la superficie selezionare un'area.</translation>
+    </message>
+  </context>
+  <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
@@ -1163,6 +1217,73 @@ Please run the command to repair folds first</source>
       <source>Sphere</source>
       <translation>Sfera</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Curvatura</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Forma libera</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Curvatura max.</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Curvatura min.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentazione della mesh</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfera</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Tolleranza</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Numero minimo di facce</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametri...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Piano</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Cilindro</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Base</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Normale</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Asse</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Raggio</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Centro</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1204,6 +1325,13 @@ Please run the command to repair folds first</source>
     <message>
       <source>Invert</source>
       <translation>Inverti</translation>
+    </message>
+  </context>
+  <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>Limiti di %1:</translation>
     </message>
   </context>
   <context>
@@ -1469,6 +1597,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     <message>
       <source>Enter scaling factor:</source>
       <translation>Immettere il fattore di scala:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Formato del modello semplice</translation>
     </message>
   </context>
   <context>

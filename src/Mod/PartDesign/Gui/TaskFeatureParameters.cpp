@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QApplication>
 #include <QMessageBox>
 #endif
 
@@ -102,7 +103,7 @@ bool TaskDlgFeatureParameters::accept() {
         // Make sure the feature is what we are expecting
         // Should be fine but you never know...
         if ( !feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ) {
-            throw Base::Exception("Bad object processed in the feature dialog.");
+            throw Base::TypeError("Bad object processed in the feature dialog.");
         }
 
         App::DocumentObject* previous = static_cast<PartDesign::Feature*>(feature)->getBaseObject(/* silent = */ true );
@@ -115,7 +116,7 @@ bool TaskDlgFeatureParameters::accept() {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
 
         if (!feature->isValid()) {
-            throw Base::Exception(vp->getObject()->getStatusString());
+            throw Base::RuntimeError(vp->getObject()->getStatusString());
         }
 
         // detach the task panel from the selection to avoid to invoke
@@ -131,7 +132,12 @@ bool TaskDlgFeatureParameters::accept() {
         Gui::Command::commitCommand();
     } catch (const Base::Exception& e) {
         // Generally the only thing that should fail is feature->isValid() others should be fine
-        QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), QString::fromLatin1(e.what()));
+#if (QT_VERSION >= 0x050000)
+        QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what());
+#else
+        QString errorText = QApplication::translate(feature->getTypeId().getName(), e.what(), 0, QApplication::UnicodeUTF8);
+#endif
+        QMessageBox::warning(Gui::getMainWindow(), tr("Input error"), errorText);
         return false;
     }
 

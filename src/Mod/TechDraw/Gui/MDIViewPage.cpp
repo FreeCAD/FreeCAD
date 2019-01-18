@@ -313,6 +313,9 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
     //if this page has a QView for this obj, delete it.
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         (void) m_view->removeQViewByName(obj.getNameInDocument());
+    } else if (m_objectName == obj.getNameInDocument()) {
+        // if obj is me, hide myself and my tab
+        m_vpPage->hide();
     }
 }
 
@@ -1064,7 +1067,6 @@ void MDIViewPage::setTreeToSceneSelect(void)
 
                 std::stringstream ss;
                 ss << "Vertex" << vert->getProjIndex();
-                                        ss.str().c_str();
                 //bool accepted =
                 static_cast<void> (Gui::Selection().addSelection(viewObj->getDocument()->getName(),
                                               viewObj->getNameInDocument(),

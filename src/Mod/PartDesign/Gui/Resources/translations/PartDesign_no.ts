@@ -74,7 +74,7 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation type="unfinished">Boolean operation with two or more bodies</translation>
+      <translation>Boolsk operasjon med to eller flere kropper</translation>
     </message>
   </context>
   <context>
@@ -261,7 +261,7 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Migrér</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3626,7 +3626,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     </message>
     <message>
       <source>CoordinateSystem</source>
-      <translation type="unfinished">CoordinateSystem</translation>
+      <translation>Koordinatsystem</translation>
     </message>
     <message>
       <source>Edit datum </source>

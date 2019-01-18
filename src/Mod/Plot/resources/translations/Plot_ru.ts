@@ -6,12 +6,12 @@
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation>Инструменты редактирования диаграмм</translation>
+      <translation>Инструменты редактирования графиков</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation>Диаграмма</translation>
+      <translation>График</translation>
     </message>
   </context>
   <context>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../PlotGui.py" line="112"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation>Показывать/Скрыть вспомогательную сетку диаграммы</translation>
+      <translation>Показывать/Скрыть вспомогательную сетку на графике</translation>
     </message>
   </context>
   <context>
@@ -63,7 +63,7 @@
     <message>
       <location filename="../../PlotGui.py" line="138"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation>Показать/Скрыть легенду для выбранной диаграммы</translation>
+      <translation>Показать/Скрыть легенду для выбранного графика</translation>
     </message>
   </context>
   <context>
@@ -218,17 +218,17 @@
     <message>
       <location filename="../../Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation>Библиотека matplotlib, не найдена, поэтому модуль диаграмм не может быть загружен</translation>
+      <translation>библиотека matplotlib, не найдена, поэтому модуль графиков не может быть загружен</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="54"/>
       <source>matplotlib not found, Plot module will be disabled</source>
-      <translation>Библиотека matplotlib, не найдена, модуль диаграмм будет отключен</translation>
+      <translation>библиотека matplotlib, не найдена, модуль графиков будет отключен</translation>
     </message>
     <message>
       <location filename="../../plotSave/TaskPanel.py" line="42"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation>Документ с диаграммой должен быть выбран для сохранения</translation>
+      <translation>Документ с графиком должен быть выбран для сохранения</translation>
     </message>
     <message>
       <location filename="../../plotAxes/TaskPanel.py" line="340"/>

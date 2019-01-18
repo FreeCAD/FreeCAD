@@ -32,8 +32,11 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include <Mod/TechDraw/App/DrawUtil.h>
+
 #include <qmath.h>
 #include "Rez.h"
+#include "DrawGuiUtil.h"
 #include "QGIView.h"
 #include "QGIHighlight.h"
 
@@ -85,10 +88,17 @@ void QGIHighlight::makeReference()
     m_reference->setFont(m_refFont);
     m_reference->setPlainText(QString::fromUtf8(m_refText));
     double fudge = Rez::guiX(1.0);
-//    m_reference->centerAt(m_end.x() + fudge, m_start.y() - fudge);
-    m_reference->setPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
-}
+    QPointF newPos(m_end.x() + fudge, m_start.y() - m_refSize - fudge);
+    m_reference->setPos(newPos);   
 
+    double highRot = rotation();
+    if (!TechDraw::DrawUtil::fpCompare(highRot,0.0)) {
+        QRectF refBR = m_reference->boundingRect();
+        QPointF refCenter = refBR.center();
+        m_reference->setTransformOriginPoint(refCenter);
+        m_reference->setRotation(-highRot);
+    }
+}
 
 void QGIHighlight::setBounds(double x1,double y1,double x2,double y2)
 {
@@ -138,6 +148,7 @@ void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     myOption.state &= ~QStyle::State_Selected;
 
     setTools();
+//    painter->drawRect(boundingRect());          //good for debugging
     QGIDecoration::paint (painter, &myOption, widget);
 }
 

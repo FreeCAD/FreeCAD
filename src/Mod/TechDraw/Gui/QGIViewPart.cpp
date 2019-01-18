@@ -56,6 +56,7 @@
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "Rez.h"
 #include "ZVALUE.h"
@@ -736,6 +737,11 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         return;
     }
 
+    TechDraw::DrawProjGroupItem* dpgi = nullptr;
+    if (viewPart->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        dpgi = static_cast<TechDraw::DrawProjGroupItem*>(viewPart);
+    }
+
     if (b) {
         double fontSize = getPrefFontSize();
         QGIHighlight* highlight = new QGIHighlight();
@@ -748,10 +754,18 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
         highlight->setFont(m_font, fontSize);
         highlight->setZValue(ZVALUE::HIGHLIGHT);
+
+        QPointF rotCenter = highlight->mapFromParent(transformOriginPoint());
+        highlight->setTransformOriginPoint(rotCenter);
+        double rotation = viewPart->Rotation.getValue();
+        if (dpgi != nullptr) {
+            double rotDpgi = dpgi->getRotateAngle() * 180.0/M_PI;
+            rotation += rotDpgi;
+        }
+        highlight->setRotation(rotation);
         highlight->draw();
     }
 }
-
 
 void QGIViewPart::drawMatting()
 {

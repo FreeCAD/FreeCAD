@@ -92,6 +92,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+    requestPaint();
     return App::DocumentObject::StdReturn;                //DO::execute returns 0
 }
 
@@ -137,13 +138,12 @@ void DrawView::onChanged(const App::Property* prop)
                         Scale.purgeTouched();
                     }
                 }
-                }
-//            }
+            }
         }
-        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
-            prop == &Y) {
-            requestPaint();
-        }
+//        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
+//            prop == &Y) {
+//            requestPaint();
+//        }
     }
     App::DocumentObject::onChanged(prop);
 }
@@ -153,7 +153,9 @@ short DrawView::mustExecute() const
     short result = 0;
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
-                    ScaleType.isTouched() );
+                    ScaleType.isTouched() ||
+                    X.isTouched() ||
+                    Y.isTouched() );
     }
     if ((bool) result) {
         return result;
@@ -206,6 +208,23 @@ bool DrawView::isInClip()
     }
     return false;
 }
+
+DrawViewClip* DrawView::getClipGroup(void)
+{
+    std::vector<App::DocumentObject*> parent = getInList();
+    App::DocumentObject* obj = nullptr;
+    DrawViewClip* result = nullptr;
+    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawViewClip::getClassTypeId())) {
+            obj = (*it);
+            result = dynamic_cast<DrawViewClip*>(obj);
+            break;
+
+        }
+    }
+    return result;
+}
+
 
 double DrawView::autoScale(double w, double h) const
 {

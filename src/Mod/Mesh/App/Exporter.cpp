@@ -63,6 +63,30 @@ std::string Exporter::xmlEscape(const std::string &input)
     return out;
 }
 
+bool Exporter::isSupported(App::DocumentObject *obj)
+{
+    Base::Type meshFeatId(Base::Type::fromName("Mesh::Feature"));
+    Base::Type appPartId(Base::Type::fromName("Part::Feature"));
+    Base::Type groupExtensionId(App::GroupExtension::getExtensionClassTypeId());
+
+    if (obj->getTypeId().isDerivedFrom(meshFeatId)) {
+        return true;
+    }
+    else if (obj->getTypeId().isDerivedFrom(appPartId)) {
+        return true;
+    }
+    else if (obj->hasExtension(groupExtensionId)) {
+        auto groupEx( obj->getExtensionByType<App::GroupExtension>() );
+        for (auto it : groupEx->Group.getValues()) {
+            bool ok = isSupported(it);
+            if (ok)
+                return true;
+        }
+    }
+
+    return false;
+}
+
 bool Exporter::addAppGroup(App::DocumentObject *obj, float tol)
 {
     auto ret(true);

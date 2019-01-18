@@ -75,6 +75,7 @@
 #include "ViewProviderCurvature.h"
 #include "MeshEditor.h"
 #include "Segmentation.h"
+#include "SegmentationBestFit.h"
 
 using namespace Mesh;
 
@@ -1622,6 +1623,40 @@ bool CmdMeshSegmentation::isActive(void)
         (Mesh::Feature::getClassTypeId()) == 1;
 }
 
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdMeshSegmentationBestFit)
+
+CmdMeshSegmentationBestFit::CmdMeshSegmentationBestFit()
+  : Command("Mesh_SegmentationBestFit")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Create mesh segments from best-fit surfaces...");
+    sToolTipText  = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
+    sWhatsThis    = "Mesh_SegmentationBestFit";
+    sStatusTip    = QT_TR_NOOP("Create mesh segments from best-fit surfaces");
+}
+
+void CmdMeshSegmentationBestFit::activated(int)
+{
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
+        (Mesh::Feature::getClassTypeId());
+    Mesh::Feature* mesh = static_cast<Mesh::Feature*>(objs.front());
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        dlg = new MeshGui::TaskSegmentationBestFit(mesh);
+    }
+    Gui::Control().showDialog(dlg);
+}
+
+bool CmdMeshSegmentationBestFit::isActive(void)
+{
+    if (Gui::Control().activeDialog())
+        return false;
+    return Gui::Selection().countObjectsOfType
+        (Mesh::Feature::getClassTypeId()) == 1;
+}
 
 //--------------------------------------------------------------------------------------
 
@@ -1749,6 +1784,7 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshFromGeometry());
     rcCmdMgr.addCommand(new CmdMeshFromPartShape());
     rcCmdMgr.addCommand(new CmdMeshSegmentation());
+    rcCmdMgr.addCommand(new CmdMeshSegmentationBestFit);
     rcCmdMgr.addCommand(new CmdMeshMerge());
     rcCmdMgr.addCommand(new CmdMeshScale());
 }

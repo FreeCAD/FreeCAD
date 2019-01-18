@@ -58,39 +58,39 @@ Part.show(s)
 </UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="length">
+        <Methode Name="length" Const="true">
 			<Documentation>
 				<UserDocu>Computes the length of a curve
 length([uMin,uMax,Tol]) -> Float</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="parameterAtDistance">
+        <Methode Name="parameterAtDistance" Const="true">
 			<Documentation>
 				<UserDocu>Returns the parameter on the curve of a point at the given distance from a starting parameter. 
 parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="value">
+        <Methode Name="value" Const="true">
 			<Documentation>
 				<UserDocu>Computes the point of parameter u on this curve</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="tangent">
+        <Methode Name="tangent" Const="true">
 			<Documentation>
 				<UserDocu>Computes the tangent of parameter u on this curve</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="makeRuledSurface">
+        <Methode Name="makeRuledSurface" Const="true">
 			<Documentation>
 				<UserDocu>Make a ruled surface of this and the given curves</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="intersect2d">
+        <Methode Name="intersect2d" Const="true">
 			<Documentation>
 				<UserDocu>Get intersection points with another curve lying on a plane.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="parameter">
+        <Methode Name="parameter" Const="true">
 			<Documentation>
 				<UserDocu>Returns the parameter on the curve
 of the nearest orthogonal projection of the point.</UserDocu>
@@ -111,28 +111,28 @@ of the nearest orthogonal projection of the point.</UserDocu>
 			  <UserDocu>Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
-                <Methode Name="intersect" Const="true">
-                        <Documentation>
-                                <UserDocu>
-                                        Returns all intersection points and curve segments between the curve and the curve/surface.
-                                </UserDocu>
-                        </Documentation>
-                </Methode>
-                <Methode Name="intersectCS" Const="true">
-                        <Documentation>
-                                <UserDocu>
-                                        Returns all intersection points and curve segments between the curve and the surface.
-                                </UserDocu>
-                        </Documentation>
-                </Methode>
-                <Methode Name="intersectCC" Const="true">
-                        <Documentation>
-                                <UserDocu>
-                                        Returns all intersection points between this curve and the given curve.
-                                </UserDocu>
-                        </Documentation>
-                </Methode>
-		<Methode Name="toBSpline">
+      <Methode Name="intersect" Const="true">
+          <Documentation>
+              <UserDocu>
+                  Returns all intersection points and curve segments between the curve and the curve/surface.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="intersectCS" Const="true">
+          <Documentation>
+              <UserDocu>
+                  Returns all intersection points and curve segments between the curve and the surface.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Methode Name="intersectCC" Const="true">
+          <Documentation>
+              <UserDocu>
+                  Returns all intersection points between this curve and the given curve.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+        <Methode Name="toBSpline" Const="true">
 			<Documentation>
 				<UserDocu>
 					Converts a curve of any type (only part from First to Last)
@@ -140,7 +140,7 @@ of the nearest orthogonal projection of the point.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        <Methode Name="toNurbs">
+        <Methode Name="toNurbs" Const="true">
             <Documentation>
                 <UserDocu>
                     Converts a curve of any type (only part from First to Last)
@@ -148,7 +148,7 @@ of the nearest orthogonal projection of the point.</UserDocu>
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="trim">
+        <Methode Name="trim" Const="true">
             <Documentation>
                 <UserDocu>
                     Returns a trimmed curve defined in the given parameter range
@@ -156,7 +156,7 @@ of the nearest orthogonal projection of the point.</UserDocu>
                 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="approximateBSpline">
+        <Methode Name="approximateBSpline" Const="true">
 			<Documentation>
 				<UserDocu>
 					Approximates a curve of any type to a B-Spline curve

@@ -11,16 +11,16 @@
     <message>
       <location line="+1"/>
       <source>Additive loft</source>
-      <translation type="unfinished">Additive loft</translation>
+      <translation>Spațiu suplimentar</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>Neteziți un profil selectat prin alte secţiuni de profil</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Baleiați o schiță selectată de-a lungul unui traseu sau al altor profiluriluri</translation>
     </message>
   </context>
   <context>
@@ -33,12 +33,12 @@
     <message>
       <location line="+1"/>
       <source>Additive pipe</source>
-      <translation type="unfinished">Additive pipe</translation>
+      <translation>Țeavă suplimentară</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles</translation>
+      <translation>Baleiați o schiță selectată de-a lungul unui traseu sau al altor profiluriluri</translation>
     </message>
   </context>
   <context>
@@ -51,12 +51,12 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation type="unfinished">Create body</translation>
+      <translation>Crează corp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation type="unfinished">Create a new body and make it active</translation>
+      <translation>Creaţi un nou corp și a-l face activ</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
     <message>
       <location line="+1"/>
       <source>Boolean operation with two or more bodies</source>
-      <translation type="unfinished">Boolean operation with two or more bodies</translation>
+      <translation>Operaţiune booleană cu două sau mai multe corpuri</translation>
     </message>
   </context>
   <context>
@@ -113,12 +113,12 @@
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Creaţi o clona</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new clone</source>
-      <translation type="unfinished">Create a new clone</translation>
+      <translation>Creaţi o clona noua</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
     <message>
       <location line="+1"/>
       <source>Draft</source>
-      <translation>Ciorna</translation>
+      <translation>Pescaj</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -149,12 +149,12 @@
     <message>
       <location line="+1"/>
       <source>Duplicate selected object</source>
-      <translation type="unfinished">Duplicate selected object</translation>
+      <translation>Duplicați Obiectul selectat</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation type="unfinished">Duplicates the selected object and adds it to the active body</translation>
+      <translation>Duplicați obiectul selectat şi adaugă-l la corpul activ</translation>
     </message>
   </context>
   <context>
@@ -203,12 +203,12 @@
     <message>
       <location line="+1"/>
       <source>Hole</source>
-      <translation type="unfinished">Hole</translation>
+      <translation>Gaura</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation type="unfinished">Create a hole with the selected sketch</translation>
+      <translation>Crează o gaură cu schita selectată</translation>
     </message>
   </context>
   <context>
@@ -221,12 +221,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation type="unfinished">Create a datum line</translation>
+      <translation>Creaţi o linie de referință</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation type="unfinished">Create a new datum line</translation>
+      <translation>Creaţi o nouă linie de referință</translation>
     </message>
   </context>
   <context>
@@ -244,7 +244,7 @@
     <message>
       <location line="+1"/>
       <source>Create a linear pattern feature</source>
-      <translation type="unfinished">Create a linear pattern feature</translation>
+      <translation>Creaţi o funcție de repetiție lineară</translation>
     </message>
     <message>
       <source>create a linear pattern feature</source>
@@ -261,16 +261,16 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Migra</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern PartDesign workflow</translation>
+      <translation>Migrați documentul către metodologia modernă Part Design</translation>
     </message>
     <message>
       <source>Migrate document to the modern partdesign workflow</source>
-      <translation type="unfinished">Migrate document to the modern partdesign workflow</translation>
+      <translation>Migrați documentul către metodologia modernă Part Design</translation>
     </message>
   </context>
   <context>
@@ -288,7 +288,7 @@
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation type="unfinished">Create a mirrored feature</translation>
+      <translation>Creaţi o caracteristică în simetrie</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
@@ -305,12 +305,12 @@
     <message>
       <location line="+1"/>
       <source>Move object to other body</source>
-      <translation type="unfinished">Move object to other body</translation>
+      <translation>Mutare obiect spre un alt corp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object to another body</source>
-      <translation type="unfinished">Moves the selected object to another body</translation>
+      <translation>Se mută obiectul selectat la un alt corp</translation>
     </message>
   </context>
   <context>
@@ -323,12 +323,12 @@
     <message>
       <location line="+1"/>
       <source>Move object after other object</source>
-      <translation type="unfinished">Move object after other object</translation>
+      <translation>Muta obiectul după alt obiect</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation type="unfinished">Moves the selected object and insert it after another object</translation>
+      <translation>Deplasează obiectul selectat și inserează-l după alt obiect</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation type="unfinished">Set tip</translation>
+      <translation>Proiectat ca o entitate finală</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Move the tip of the body</source>
-      <translation type="unfinished">Move the tip of the body</translation>
+      <translation>Muta vârful corpului</translation>
     </message>
   </context>
   <context>
@@ -359,7 +359,7 @@
     <message>
       <location line="+1"/>
       <source>Create MultiTransform</source>
-      <translation type="unfinished">Create MultiTransform</translation>
+      <translation>Crea MultiTransform</translation>
     </message>
     <message>
       <source>MultiTransform</source>
@@ -368,7 +368,7 @@
     <message>
       <location line="+1"/>
       <source>Create a multitransform feature</source>
-      <translation type="unfinished">Create a multitransform feature</translation>
+      <translation>Creaza o funcție de transformare multipla</translation>
     </message>
     <message>
       <source>create a multitransform feature</source>
@@ -419,11 +419,11 @@
     </message>
     <message>
       <source>Create part</source>
-      <translation type="unfinished">Create part</translation>
+      <translation>Creaţi o piesă /Part</translation>
     </message>
     <message>
       <source>Create a new part and make it active</source>
-      <translation type="unfinished">Create a new part and make it active</translation>
+      <translation>Creaţi o nouă parte şi a-l face activ</translation>
     </message>
   </context>
   <context>
@@ -436,12 +436,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum plane</source>
-      <translation type="unfinished">Create a datum plane</translation>
+      <translation>Creaţi un plan de referință</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum plane</source>
-      <translation type="unfinished">Create a new datum plane</translation>
+      <translation>Creați un plan de referință</translation>
     </message>
   </context>
   <context>
@@ -459,7 +459,7 @@
     <message>
       <location line="+1"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation type="unfinished">Create a pocket with the selected sketch</translation>
+      <translation>Crează un buzunar cu schița selectată</translation>
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
@@ -476,12 +476,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum point</source>
-      <translation type="unfinished">Create a datum point</translation>
+      <translation>Creați un punct de referință</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum point</source>
-      <translation type="unfinished">Create a new datum point</translation>
+      <translation>Creaţi un nou punct de referință</translation>
     </message>
   </context>
   <context>
@@ -499,7 +499,7 @@
     <message>
       <location line="+1"/>
       <source>Create a polar pattern feature</source>
-      <translation type="unfinished">Create a polar pattern feature</translation>
+      <translation>Creează un funcție cu repetiție circulară</translation>
     </message>
     <message>
       <source>create a polar pattern feature</source>
@@ -539,7 +539,7 @@
     <message>
       <location line="+1"/>
       <source>Create a scaled feature</source>
-      <translation type="unfinished">Create a scaled feature</translation>
+      <translation>Creaţi o caracteristică scalară</translation>
     </message>
     <message>
       <source>create a scaled feature</source>
@@ -556,12 +556,12 @@
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>Creați o formă de legătură</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>Creați o nouă formă de legătură</translation>
     </message>
   </context>
   <context>
@@ -574,16 +574,16 @@
     <message>
       <location line="+1"/>
       <source>Subtractive loft</source>
-      <translation type="unfinished">Subtractive loft</translation>
+      <translation>Netezire substractivă</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>Neteziți un profil selecționat prin alte secțiuni de profil și extrageți corpul</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>Baleiați o schiță selecționată de-a lungul unei traiectorii sau prin alte profile și extrageți-o din corp</translation>
     </message>
   </context>
   <context>
@@ -596,12 +596,12 @@
     <message>
       <location line="+1"/>
       <source>Subtractive pipe</source>
-      <translation type="unfinished">Subtractive pipe</translation>
+      <translation>Extragere de material prin baleiere</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
-      <translation type="unfinished">Sweep a selected sketch along a path or to other profiles and remove it from the body</translation>
+      <translation>Baleiați o schiță selecționată de-a lungul unei traiectorii sau prin alte profile și extrageți-o din corp</translation>
     </message>
   </context>
   <context>
@@ -619,7 +619,7 @@
     <message>
       <location line="+1"/>
       <source>Make a thick solid</source>
-      <translation type="unfinished">Make a thick solid</translation>
+      <translation>Generați o grosime</translation>
     </message>
   </context>
   <context>
@@ -633,47 +633,47 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation type="unfinished">Create an additive primitive</translation>
+      <translation>Creaţi un aditiv primitiv</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation type="unfinished">Additive Box</translation>
+      <translation>Cutie aditivă</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cylinder</source>
-      <translation type="unfinished">Additive Cylinder</translation>
+      <translation>Cilindru aditiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Sphere</source>
-      <translation type="unfinished">Additive Sphere</translation>
+      <translation>Sferă aditivă</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation type="unfinished">Additive Cone</translation>
+      <translation>Con aditiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Ellipsoid</source>
-      <translation type="unfinished">Additive Ellipsoid</translation>
+      <translation>Elipsoid aditiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Torus</source>
-      <translation type="unfinished">Additive Torus</translation>
+      <translation>Tor aditiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Prism</source>
-      <translation type="unfinished">Additive Prism</translation>
+      <translation>Prismă aditivă</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation type="unfinished">Additive Wedge</translation>
+      <translation>Pană aditivă</translation>
     </message>
   </context>
   <context>
@@ -685,53 +685,53 @@
     </message>
     <message>
       <source>Create an subtractive primitive</source>
-      <translation type="unfinished">Create an subtractive primitive</translation>
+      <translation>Creaţi o primitivă substractivă</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Create a subtractive primitive</source>
-      <translation type="unfinished">Create a subtractive primitive</translation>
+      <translation>Creaţi o primitivă substractivă</translation>
     </message>
     <message>
       <location line="+111"/>
       <source>Subtractive Box</source>
-      <translation type="unfinished">Subtractive Box</translation>
+      <translation>Cutie substractivă</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cylinder</source>
-      <translation type="unfinished">Subtractive Cylinder</translation>
+      <translation>Cilindru substractiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Sphere</source>
-      <translation type="unfinished">Subtractive Sphere</translation>
+      <translation>Sfera substractiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Cone</source>
-      <translation type="unfinished">Subtractive Cone</translation>
+      <translation>Substractiv con</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Ellipsoid</source>
-      <translation type="unfinished">Subtractive Ellipsoid</translation>
+      <translation>Elipsoid substractiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Torus</source>
-      <translation type="unfinished">Subtractive Torus</translation>
+      <translation>Tor substractiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Prism</source>
-      <translation type="unfinished">Subtractive Prism</translation>
+      <translation>Prisma substractivă</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Subtractive Wedge</source>
-      <translation type="unfinished">Subtractive Wedge</translation>
+      <translation>Pană Substractivă</translation>
     </message>
   </context>
   <context>
@@ -744,22 +744,22 @@
     <message>
       <location line="+6"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
-      <translation type="unfinished">You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</translation>
+      <translation>Aţi selectat o geometrie care nu face parte din corpul activ. Vă rugăm să definiţi cum să se manevreze aceste selecţii. Dacă nu doriţi ca aceste referinţe anulați comanda.</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Faceți copie independente (recomandat)</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Faceți copie dependente</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Creați referinţă încrucişată</translation>
     </message>
   </context>
   <context>
@@ -767,37 +767,37 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="+45"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Valabil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Forma incorectă</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Niciun fir in schita</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Schita deja utilizat de altă caracteristică</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch belongs to another Body feature</source>
-      <translation type="unfinished">Sketch belongs to another Body feature</translation>
+      <translation>Schița aparține la o caracteristică a altui corp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Plan de baza</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Feature is located after the Tip feature</source>
-      <translation type="unfinished">Feature is located after the Tip feature</translation>
+      <translation>Caracteristică este situat după funcția de Vârf</translation>
     </message>
   </context>
   <context>
@@ -823,7 +823,7 @@
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
       <source>Involute parameter</source>
-      <translation type="unfinished">Involute parameter</translation>
+      <translation>Parametrii evolventei</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -855,12 +855,12 @@
     <message>
       <location line="-19"/>
       <source>External gear:</source>
-      <translation type="unfinished">External gear:</translation>
+      <translation>Echipamentul extern:</translation>
     </message>
     <message>
       <location line="-68"/>
       <source>Pressure angle:</source>
-      <translation type="unfinished">Pressure angle:</translation>
+      <translation>Unghiul de presiune:</translation>
     </message>
   </context>
   <context>
@@ -968,28 +968,28 @@ Please check one or more edge entities first.</translation>
       <location line="-377"/>
       <location line="+191"/>
       <source>U parameter:</source>
-      <translation type="unfinished">U parameter:</translation>
+      <translation>Parametrul U:</translation>
     </message>
     <message>
       <location line="-184"/>
       <source>V parameters:</source>
-      <translation type="unfinished">V parameters:</translation>
+      <translation>Parametrul V:</translation>
     </message>
     <message>
       <location line="+137"/>
       <source>Radius 3:</source>
-      <translation type="unfinished">Radius 3:</translation>
+      <translation>Raza 3:</translation>
     </message>
     <message>
       <location line="+70"/>
       <location line="+90"/>
       <source>V parameter:</source>
-      <translation type="unfinished">V parameter:</translation>
+      <translation>Parametrul V:</translation>
     </message>
     <message>
       <location line="-23"/>
       <source>U Parameter:</source>
-      <translation type="unfinished">U Parameter:</translation>
+      <translation>Parametrul U:</translation>
     </message>
     <message>
       <location line="+150"/>
@@ -1001,7 +1001,7 @@ Please check one or more edge entities first.</translation>
       <location line="-862"/>
       <location line="+882"/>
       <source>Circumradius:</source>
-      <translation type="unfinished">Circumradius:</translation>
+      <translation>Raza cercului circumscris:</translation>
     </message>
     <message>
       <location line="-831"/>
@@ -1129,7 +1129,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="+182"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation type="unfinished">Selecting this will cause circular dependency.</translation>
+      <translation>Această selecție va crea o dependență circulară.</translation>
     </message>
   </context>
   <context>
@@ -1142,17 +1142,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add body</source>
-      <translation type="unfinished">Add body</translation>
+      <translation>Adauga corp</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove body</source>
-      <translation type="unfinished">Remove body</translation>
+      <translation>Elimina corpul</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>Fuziune</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -1162,7 +1162,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+5"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Intersecție</translation>
     </message>
     <message>
       <source>Section</source>
@@ -1171,7 +1171,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
       <source>Boolean parameters</source>
-      <translation type="unfinished">Boolean parameters</translation>
+      <translation>Parametrii booleene</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -1184,12 +1184,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="+54"/>
       <source>Primitive parameters</source>
-      <translation type="unfinished">Primitive parameters</translation>
+      <translation>Parametrii primitivei</translation>
     </message>
     <message>
       <location line="+593"/>
       <source>Create primitive</source>
-      <translation type="unfinished">Create primitive</translation>
+      <translation>Creează o primitivă</translation>
     </message>
   </context>
   <context>
@@ -1249,12 +1249,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Adaugă o referință</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Elimina referințele</translation>
     </message>
     <message>
       <location line="+18"/>
@@ -1276,7 +1276,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+72"/>
       <source> parameters</source>
-      <translation type="unfinished"> parameters</translation>
+      <translation> parametrii</translation>
     </message>
   </context>
   <context>
@@ -1284,17 +1284,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Lista cu corpurile vide</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Lista corpurilor nu poate fi goală</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Boolean: Accept: Input error</source>
-      <translation type="unfinished">Boolean: Accept: Input error</translation>
+      <translation>Boolean: Accepta: eroare de intrare</translation>
     </message>
   </context>
   <context>
@@ -1309,12 +1309,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="+49"/>
       <source>Incompatible reference set</source>
-      <translation type="unfinished">Incompatible reference set</translation>
+      <translation>Combinație de referinţe incompatibile</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation type="unfinished">There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</translation>
+      <translation>Nu există niciun mod de atașare care să corespundă combinației curente de referințe. Dacă veți continua, funcția va rămâne acolo unde este și nu se va mișca dacă se schimbă referințele. Continuați?</translation>
     </message>
   </context>
   <context>
@@ -1472,91 +1472,91 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+9"/>
       <source>Allow used features</source>
-      <translation type="unfinished">Allow used features</translation>
+      <translation>Permite caracteristici deja utilizate</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Allow external features</source>
-      <translation type="unfinished">Allow external features</translation>
+      <translation>Permite caracteristici externe</translation>
     </message>
     <message>
       <location line="+12"/>
       <source>From  other bodies of the same part</source>
-      <translation type="unfinished">From  other bodies of the same part</translation>
+      <translation>Plecând de la alte corpuri de la aceeași piesă</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>From different parts or free features</source>
-      <translation type="unfinished">From different parts or free features</translation>
+      <translation>De la diferite părţi sau funcții independente</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Make independent copy (recommended)</source>
-      <translation type="unfinished">Make independent copy (recommended)</translation>
+      <translation>Faceți copie independente (recomandat)</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Make dependent copy</source>
-      <translation type="unfinished">Make dependent copy</translation>
+      <translation>Faceți copie dependente</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Create cross-reference</source>
-      <translation type="unfinished">Create cross-reference</translation>
+      <translation>Creați referinţă încrucişată</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="+65"/>
       <source>Valid</source>
-      <translation type="unfinished">Valid</translation>
+      <translation>Valabil</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Invalid shape</source>
-      <translation type="unfinished">Invalid shape</translation>
+      <translation>Forma incorectă</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Niciun fir in schita</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Sketch already used by other feature</source>
-      <translation type="unfinished">Sketch already used by other feature</translation>
+      <translation>Schita deja utilizat de altă caracteristică</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Belongs to another body</source>
-      <translation type="unfinished">Belongs to another body</translation>
+      <translation>Aparține altui corp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Belongs to another part</source>
-      <translation type="unfinished">Belongs to another part</translation>
+      <translation>Aparține altei părți</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Doesn't belong to any body</source>
-      <translation type="unfinished">Doesn't belong to any body</translation>
+      <translation>Nu aparţine niciunui corp</translation>
     </message>
     <message>
       <source>Doesn't belongs to any body</source>
-      <translation type="unfinished">Doesn't belongs to any body</translation>
+      <translation>Nu aparţine niciunui corp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base plane</source>
-      <translation type="unfinished">Base plane</translation>
+      <translation>Plan de baza</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Feature is located after the tip feature</source>
-      <translation type="unfinished">Feature is located after the tip feature</translation>
+      <translation>Funcția este situată după funcția rezultantă</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Selectaţi funcţia</translation>
     </message>
   </context>
   <context>
@@ -1569,12 +1569,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add ref</source>
-      <translation type="unfinished">Add ref</translation>
+      <translation>Adaugă o referință</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove ref</source>
-      <translation type="unfinished">Remove ref</translation>
+      <translation>Elimina referințele</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -1663,7 +1663,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="+48"/>
       <source>Hole parameters</source>
-      <translation type="unfinished">Hole parameters</translation>
+      <translation>Parametrii găurii</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -1673,27 +1673,27 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+1"/>
       <source>ISO metric coarse profile</source>
-      <translation type="unfinished">ISO metric coarse profile</translation>
+      <translation>Filet ISO metric profil grosier</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>ISO metric fine profile</source>
-      <translation type="unfinished">ISO metric fine profile</translation>
+      <translation>Filet ISO metric profil fin</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS coarse profile</source>
-      <translation type="unfinished">UTS coarse profile</translation>
+      <translation>Filet unificat UTS Profil grosier</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS fine profile</source>
-      <translation type="unfinished">UTS fine profile</translation>
+      <translation>Filet unificat UTS Profil fin</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>UTS extra fine profile</source>
-      <translation type="unfinished">UTS extra fine profile</translation>
+      <translation>Filet unificat UTS Profil extra fin</translation>
     </message>
   </context>
   <context>
@@ -1727,12 +1727,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Adauga o caracteristica</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Elimina caracteristică</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -1798,12 +1798,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+12"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Adauga secţiunea</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Elimină secţiunea</translation>
     </message>
     <message>
       <location line="+35"/>
@@ -1813,7 +1813,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="+58"/>
       <source>Loft parameters</source>
-      <translation type="unfinished">Loft parameters</translation>
+      <translation>Parametrii de netezire</translation>
     </message>
   </context>
   <context>
@@ -1859,12 +1859,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Adauga o caracteristica</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Elimina caracteristică</translation>
     </message>
     <message>
       <location line="+31"/>
@@ -1913,12 +1913,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Adauga o caracteristica</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Elimina caracteristică</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2150,7 +2150,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Orientation mode</source>
-      <translation type="unfinished">Orientation mode</translation>
+      <translation>Modul de orientare</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2160,7 +2160,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+5"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Fixă</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -2169,26 +2169,26 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Auxillery</source>
-      <translation type="unfinished">Auxillery</translation>
+      <translation>Auxiliare</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Binormal</source>
-      <translation type="unfinished">Binormal</translation>
+      <translation>Binormal</translation>
     </message>
     <message>
       <source>Curvelinear equivalenz</source>
-      <translation type="unfinished">Curvelinear equivalenz</translation>
+      <translation>Echivalent curbiliniu</translation>
     </message>
     <message>
       <location line="-5"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Auxiliare</translation>
     </message>
     <message>
       <location line="+25"/>
       <source>Curvelinear equivalence</source>
-      <translation type="unfinished">Curvelinear equivalence</translation>
+      <translation>Echivalență curbilinie</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2198,22 +2198,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Obiect</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Adauga o muchie</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Eliminați muchia</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>Setaţi vectorul constant binormal utilizat pentru a calcula orientarea profilelor</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -2233,7 +2233,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-505"/>
       <source>Section orientation</source>
-      <translation type="unfinished">Section orientation</translation>
+      <translation>Orientarea Secțiunii</translation>
     </message>
   </context>
   <context>
@@ -2246,22 +2246,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+11"/>
       <source>Corner Transition</source>
-      <translation type="unfinished">Corner Transition</translation>
+      <translation>Tranziția colțului</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Transformed</source>
-      <translation type="unfinished">Transformed</translation>
+      <translation>Transformat</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Right Corner</source>
-      <translation type="unfinished">Right Corner</translation>
+      <translation>Colţul drept</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Round Corner</source>
-      <translation type="unfinished">Round Corner</translation>
+      <translation>Colt rotund</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -2271,22 +2271,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Obiect</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Adauga o muchie</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Eliminați muchia</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="-222"/>
       <source>Pipe parameters</source>
-      <translation type="unfinished">Pipe parameters</translation>
+      <translation>Parametrii ţevii</translation>
     </message>
   </context>
   <context>
@@ -2299,32 +2299,32 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Transform mode</source>
-      <translation type="unfinished">Transform mode</translation>
+      <translation>Transforma modul</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Constant</source>
-      <translation type="unfinished">Constant</translation>
+      <translation>Constanta</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Multisection</source>
-      <translation type="unfinished">Multisection</translation>
+      <translation>Multisectiune</translation>
     </message>
     <message>
       <location line="+23"/>
       <source>Add Section</source>
-      <translation type="unfinished">Add Section</translation>
+      <translation>Adauga secţiunea</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Remove Section</source>
-      <translation type="unfinished">Remove Section</translation>
+      <translation>Elimină secţiunea</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
-      <translation type="unfinished">Section transformation</translation>
+      <translation>Transformarea Secţiunii</translation>
     </message>
   </context>
   <context>
@@ -2470,12 +2470,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-27"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Adauga o caracteristica</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Elimina caracteristică</translation>
     </message>
     <message>
       <location line="+29"/>
@@ -2543,19 +2543,19 @@ Please check one or more edge entities first.</translation>
       <location line="-15"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+181"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Axa X</translation>
     </message>
     <message>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Axa Y</translation>
     </message>
     <message>
       <location line="+5"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Axa Z</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -2615,12 +2615,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Add feature</source>
-      <translation type="unfinished">Add feature</translation>
+      <translation>Adauga o caracteristica</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Remove feature</source>
-      <translation type="unfinished">Remove feature</translation>
+      <translation>Elimina caracteristică</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2658,22 +2658,22 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Object</source>
-      <translation type="unfinished">Object</translation>
+      <translation>Obiect</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Add Geometry</source>
-      <translation type="unfinished">Add Geometry</translation>
+      <translation>Adaugă geometrie</translation>
     </message>
     <message>
       <location line="+19"/>
       <source>Remove Geometry</source>
-      <translation type="unfinished">Remove Geometry</translation>
+      <translation>Elimină geometrie</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
       <source>Datum shape parameters</source>
-      <translation type="unfinished">Datum shape parameters</translation>
+      <translation>Parametrii formei de referință</translation>
     </message>
   </context>
   <context>
@@ -2707,7 +2707,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Thikness</source>
-      <translation type="unfinished">Thikness</translation>
+      <translation>Grosimi</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2722,7 +2722,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+7"/>
       <source>Join Type</source>
-      <translation type="unfinished">Join Type</translation>
+      <translation>Tipul racordului</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -2737,7 +2737,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+5"/>
       <source>Recto Verso</source>
-      <translation type="unfinished">Recto Verso</translation>
+      <translation>Ambele fețe ale foii (față- verso)</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -2752,7 +2752,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+10"/>
       <source>Make thickness inwards</source>
-      <translation type="unfinished">Make thickness inwards</translation>
+      <translation>Faceți grosimea spre interior</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
@@ -2789,22 +2789,22 @@ Please check one or more edge entities first.</translation>
       <location line="+2"/>
       <location line="+36"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>%1 linie de construcție</translation>
     </message>
     <message>
       <location line="-22"/>
       <source>Base X axis</source>
-      <translation type="unfinished">Base X axis</translation>
+      <translation>Axa X</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base Y axis</source>
-      <translation type="unfinished">Base Y axis</translation>
+      <translation>Axa Y</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base Z axis</source>
-      <translation type="unfinished">Base Z axis</translation>
+      <translation>Axa Z</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -2815,17 +2815,17 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="-9"/>
       <source>Base XY plane</source>
-      <translation type="unfinished">Base XY plane</translation>
+      <translation>Plan XY</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base YZ plane</source>
-      <translation type="unfinished">Base YZ plane</translation>
+      <translation>Plan YZ</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Base XZ plane</source>
-      <translation type="unfinished">Base XZ plane</translation>
+      <translation>Plan XZ</translation>
     </message>
   </context>
   <context>
@@ -2833,141 +2833,141 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../ViewProviderBody.cpp" line="+137"/>
       <source>Toggle active body</source>
-      <translation type="unfinished">Toggle active body</translation>
+      <translation>Activează/dezactivează corpurile</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <source>Create an additive box by its with, height and length</source>
-      <translation type="unfinished">Create an additive box by its with, height and length</translation>
+      <translation>Creaţi un paralelipiped aditiv definit prin lățime, înălțime și lungime</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-180"/>
       <source>Create an additive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height and angle</translation>
+      <translation>Creaţi un cilindru aditiv definit prin rază, inaltime si unghi</translation>
     </message>
     <message>
       <source>Create an additive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and varius angles</translation>
+      <translation>Creaţi o sferă aditivă definită prin raza sa și diferite unghiuri</translation>
     </message>
     <message>
       <location line="-4"/>
       <source>Create an additive box by its width, height and length</source>
-      <translation type="unfinished">Create an additive box by its width, height and length</translation>
+      <translation>Creaţi un paralelipiped aditiv, definit prin lăţime, înălţime şi lungime</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an additive sphere by its radius and various angles</translation>
+      <translation>Creaţi o sferă aditivă, definită de raza sa şi diverse unghiuri</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive cone</source>
-      <translation type="unfinished">Create an additive cone</translation>
+      <translation>Creaţi un con de aditiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive ellipsoid</source>
-      <translation type="unfinished">Create an additive ellipsoid</translation>
+      <translation>Creaţi un elipsoid aditiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive torus</source>
-      <translation type="unfinished">Create an additive torus</translation>
+      <translation>Creaţi un aditiv Tor</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive prism</source>
-      <translation type="unfinished">Create an additive prism</translation>
+      <translation>Creaţi o prismă aditiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create an additive wedge</source>
-      <translation type="unfinished">Create an additive wedge</translation>
+      <translation>Creaţi o cală aditiv</translation>
     </message>
   </context>
   <context>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
       <source>Create an subtractive box by its with, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
+      <translation>Creaţi un paralelipiped substractiv, definit prin lăţime, înălţime şi lungime</translation>
     </message>
     <message>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an subtractive cylinder by its radius, height and angle</translation>
+      <translation>Creaţi un cilindru substractiv, definit prin raza, înălţimea şi unghi</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and varius angles</translation>
+      <translation>Creaţi o sferă substractivă, definită de rază şi diferite unghiuri</translation>
     </message>
     <message>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
+      <translation>Creaţi un paralelipiped substractiv, definit prin lăţime, înălţime şi lungime</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
+      <translation>Creaţi o sferă substractivă, definită de raza sa şi diverse unghiuri</translation>
     </message>
     <message>
       <source>Create an subtractive cone</source>
-      <translation type="unfinished">Create an subtractive cone</translation>
+      <translation>Creaţi un con substractiv</translation>
     </message>
     <message>
       <source>Create an subtractive ellipsoid</source>
-      <translation type="unfinished">Create an subtractive ellipsoid</translation>
+      <translation>Creaţi un elipsoid substractiv</translation>
     </message>
     <message>
       <source>Create an subtractive torus</source>
-      <translation type="unfinished">Create an subtractive torus</translation>
+      <translation>Creaţi un tor substractiv</translation>
     </message>
     <message>
       <source>Create an subtractive prism</source>
-      <translation type="unfinished">Create an subtractive prism</translation>
+      <translation>Creaţi o prismă substractivă</translation>
     </message>
     <message>
       <source>Create an subtractive wedge</source>
-      <translation type="unfinished">Create an subtractive wedge</translation>
+      <translation>Creaţi o pană substractivă</translation>
     </message>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Creaţi un paralelipiped substractiv, definit prin lăţime, înălţime şi lungime</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Creaţi un cilindru substractiv, definit prin rază, înălţime şi unghi</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Creaţi o sferă substractivă, definită prin rază şi diverse unghiuri</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Creaţi un con substractiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Creaţi un elipsoid substractiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Creaţi un tor substractiv</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Creaţi o prismă substractivă</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Creaţi o pană substractivă</translation>
     </message>
   </context>
   <context>
@@ -2975,12 +2975,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="+201"/>
       <source>Select body</source>
-      <translation type="unfinished">Select body</translation>
+      <translation>Selectaţi corpurile</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a body from the list</source>
-      <translation type="unfinished">Select a body from the list</translation>
+      <translation>Selectează un corp din lista</translation>
     </message>
   </context>
   <context>
@@ -2988,12 +2988,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+150"/>
       <source>Select feature</source>
-      <translation type="unfinished">Select feature</translation>
+      <translation>Selectaţi funcţia</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select a feature from the list</source>
-      <translation type="unfinished">Select a feature from the list</translation>
+      <translation>Selectaţi o funcție din lista</translation>
     </message>
   </context>
   <context>
@@ -3074,7 +3074,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+310"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation type="unfinished">Please create a subtractive or additive feature first.</translation>
+      <translation>Vă rugăm să creaţi o funcție substractivă sau aditivă de material.</translation>
     </message>
     <message>
       <source>No chamfer possible on selected faces/edges</source>
@@ -3131,16 +3131,16 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../Command.cpp" line="-1653"/>
       <source>Invalid selection</source>
-      <translation type="unfinished">Invalid selection</translation>
+      <translation>Selectie invalida</translation>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit seleted objects. Select something else.</translation>
+      <translation>Nu există nici un moduri de fixare corespunzător obiectelor selecționate. Selectaţi altceva.</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>Nu există nici un mod de fixare care să convină obiectelor selcționate. Selectaţi altceva.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3152,7 +3152,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Nu există niciun corp activ. Vă rugăm să activați un corp înainte de a insera o referință.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3187,12 +3187,12 @@ Create the sketch on a face.</source>
     <message>
       <location line="+180"/>
       <source>No valid planes in this document</source>
-      <translation type="unfinished">No valid planes in this document</translation>
+      <translation>Nu sunt plane valabile în acest document</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Please create a plane first or select a face to sketch on</translation>
+      <translation>Vă rugăm să creaţi mai întâi un plan, sau selectează o faţă pe care se aplică schiţa</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3223,63 +3223,63 @@ Create the sketch on a face.</source>
     <message>
       <location line="-913"/>
       <source>No sketch to work on</source>
-      <translation type="unfinished">No sketch to work on</translation>
+      <translation>Nici o schiţă pentru a lucra la ea</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No sketch is available in the document</source>
-      <translation type="unfinished">No sketch is available in the document</translation>
+      <translation>Nicio Schița nu este disponibilă în document</translation>
     </message>
     <message>
       <location line="+600"/>
       <source>Select an edge, face or body.</source>
-      <translation type="unfinished">Select an edge, face or body.</translation>
+      <translation>Selecționați o muchie, o fațetă, sau un corp.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select an edge, face or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face or body from a single body.</translation>
+      <translation>Selectaţi o margine, o faţa sau un corp de la un singur corp.</translation>
     </message>
     <message>
       <location line="+4"/>
       <location line="+333"/>
       <source>Selection is not in Active Body</source>
-      <translation type="unfinished">Selection is not in Active Body</translation>
+      <translation>Selecţia nu este în Corpul Activ</translation>
     </message>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face or body from an active body.</translation>
+      <translation>Selectaţi o margine, o faţa sau un corp de la un corp de piesă activ.</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>%1 works only on parts.</source>
-      <translation type="unfinished">%1 works only on parts.</translation>
+      <translation>%1 funcţionează doar pe piese.</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Shape of the selected Part is empty</source>
-      <translation type="unfinished">Shape of the selected Part is empty</translation>
+      <translation>Forma de piesă selectată este goală</translation>
     </message>
     <message>
       <location line="+12"/>
       <source> not possible on selected faces/edges.</source>
-      <translation type="unfinished"> not possible on selected faces/edges.</translation>
+      <translation> nu este posibil pe feţele/muchiile selectate.</translation>
     </message>
     <message>
       <location line="+292"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>Funcții multiple selecționate</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>Vă rugăm să selectaţi mai întâi o singură funcție substractivă sau aditivă.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>Vă rugăm să selectaţi doar o singură funcție substractivă sau aditivă într-un corp activ.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
@@ -3334,7 +3334,7 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="+51"/>
       <source>Edit groove</source>
-      <translation type="unfinished">Edit groove</translation>
+      <translation>Editează canelura</translation>
     </message>
     <message>
       <source>Edit revolve</source>
@@ -3343,12 +3343,12 @@ Create the sketch on a face.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="-834"/>
       <source>Part creation failed</source>
-      <translation type="unfinished">Part creation failed</translation>
+      <translation>Crearea piesei a eșuat</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Failed to create a part object.</source>
-      <translation type="unfinished">Failed to create a part object.</translation>
+      <translation>A eșuat crearea unui obiect piesă.</translation>
     </message>
     <message>
       <location line="+48"/>
@@ -3357,93 +3357,89 @@ Create the sketch on a face.</source>
       <location line="+8"/>
       <location line="+49"/>
       <source>Bad base feature</source>
-      <translation type="unfinished">Bad base feature</translation>
+      <translation>Funcție de bază invalidă</translation>
     </message>
     <message>
       <location line="-68"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation type="unfinished">Body can't be based on a PartDesign feature.</translation>
+      <translation>Corpul nu se poate baza pe o caracteristică de PartDesign.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>%1 already belongs to a body, can't use it as base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body, can't use it as base feature for another body.</translation>
+      <translation>%1 deja face parte dintr-un corp, nu se poate folosi ca baza pentru un alt corp.</translation>
     </message>
     <message>
       <source>Body can't be based on annother body.</source>
-      <translation type="unfinished">Body can't be based on annother body.</translation>
+      <translation>Corpul nu se poate baza pe alt corp.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Body can't be based on another body.</source>
-      <translation type="unfinished">Body can't be based on another body.</translation>
+      <translation>Corpul nu se poate baza pe alt corp.</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation type="unfinished">Base feature (%1) belongs to other part.</translation>
+      <translation>Funcția de bază (%1) aparține unei alte piese.</translation>
     </message>
     <message>
       <source>Body may be based no more than on one feature.</source>
-      <translation type="unfinished">Body may be based no more than on one feature.</translation>
+      <translation>Corpul se poate baza doar pe o singură funcție.</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids.
-This may lead to unexpected results.</translation>
+      <translation>Forma selectată constă din mai multe solide. Acest lucru poate duce la rezultate imprevizibile.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple shells.
-This may lead to unexpected results.</translation>
+      <translation>Forma selectată constă din mai multe cochilii. Acest lucru poate duce la rezultate imprevizibile.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of only a shell.
-This may lead to unexpected results.</translation>
+      <translation>Forma selectată constă dintr-o singură cochilie. Acest lucru poate duce la rezultate imprevizibile.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation type="unfinished">The selected shape consists of multiple solids or shells.
-This may lead to unexpected results.</translation>
+      <translation>Forma selectată este format din mai multe solide sau cochilii. Acest lucru poate duce la rezultate imprevizibile.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Caracteristica de bază</translation>
     </message>
     <message>
       <location line="+8"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation type="unfinished">Body may be based on no more than one feature.</translation>
+      <translation>Corpul se poate baza pe cel mult o caracteristică.</translation>
     </message>
     <message>
       <location line="+176"/>
       <source>Nothing to migrate</source>
-      <translation type="unfinished">Nothing to migrate</translation>
+      <translation>Nimic de migrat</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>No PartDesign features which doesn't belong to a body found. Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features which doesn't belong to a body found. Nothing to migrate.</translation>
+      <translation>Nu s-a găsit nici o caracteristică de PartDesign, care nu aparțin unui corp. Nimic de migrat.</translation>
     </message>
     <message>
       <location line="+148"/>
       <source>Sketch plane cannot be migrated</source>
-      <translation type="unfinished">Sketch plane cannot be migrated</translation>
+      <translation>Schita plan nu poate fi migrată</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation type="unfinished">Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</translation>
+      <translation>Vă rugăm să editaţi '%1' şi să redefinească pentru a utiliza un Plan de bază sau de referință ale ca plan de schiţă.</translation>
     </message>
     <message>
       <location line="+62"/>
@@ -3457,68 +3453,68 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="-304"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation type="unfinished">Select exactly one PartDesign feature or a body.</translation>
+      <translation>Selectaţi numai o caracteristică PartDesign sau un corp.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determine a body for the selected feature '%s'.</translation>
+      <translation>Nu a putut determina un corp pentru funcţia selectată '%s '.</translation>
     </message>
     <message>
       <source>Couldn't determin a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Couldn't determin a body for the selected feature '%s'.</translation>
+      <translation>Nu s-a putut determin un corp pentru funcţia selectată '%s '.</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation type="unfinished">Only a solid feature can be the tip of a body.</translation>
+      <translation>Doar o funcție solidă poate fi funcția rezultantă a unui corp.</translation>
     </message>
     <message>
       <location line="+116"/>
       <location line="+22"/>
       <location line="+15"/>
       <source>Features cannot be moved</source>
-      <translation type="unfinished">Features cannot be moved</translation>
+      <translation>Caracteristici nu pot fi mutate</translation>
     </message>
     <message>
       <location line="-36"/>
       <source>Some of the selected features have dependencies in the source body</source>
-      <translation type="unfinished">Some of the selected features have dependencies in the source body</translation>
+      <translation>Unele dintre funcțiile selectate au dependențe în corpul sursă</translation>
     </message>
     <message>
       <location line="+22"/>
       <source>Only features of a single source Body can be moved</source>
-      <translation type="unfinished">Only features of a single source Body can be moved</translation>
+      <translation>Pot fi mutate doar de caracteristici de o singură sursă de corp</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>There are no other bodies to move to</source>
-      <translation type="unfinished">There are no other bodies to move to</translation>
+      <translation>Nu este nici un alt corp spre care să se deplaseze</translation>
     </message>
     <message>
       <location line="+135"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation type="unfinished">Impossible to move the base feature of a body.</translation>
+      <translation>Imposibil de a deplasa caracteristica de bază a unui corp.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Select one or more features from the same body.</source>
-      <translation type="unfinished">Select one or more features from the same body.</translation>
+      <translation>Selectați una sau mai multe funcții în același corp.</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Beginning of the body</source>
-      <translation type="unfinished">Beginning of the body</translation>
+      <translation>Începutul corpului</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="-116"/>
       <source>No previous feature found</source>
-      <translation type="unfinished">No previous feature found</translation>
+      <translation>Nu s-a găsit Nici o caracteristica precedenta</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>It is not possible to create a subtractive feature without a base feature available</source>
-      <translation type="unfinished">It is not possible to create a subtractive feature without a base feature available</translation>
+      <translation>Nu este posibil să se creeze o funcție substractivă fără prezența unei funcții de bază</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="+103"/>
@@ -3535,7 +3531,7 @@ This may lead to unexpected results.</translation>
     <message>
       <location line="+2"/>
       <source>Construction line %1</source>
-      <translation type="unfinished">Construction line %1</translation>
+      <translation>%1 linie de construcție</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
@@ -3545,55 +3541,53 @@ This may lead to unexpected results.</translation>
     <message>
       <location filename="../../Utils.cpp" line="+88"/>
       <source>No active Body</source>
-      <translation type="unfinished">No active Body</translation>
+      <translation>Nici un corp activ</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>Pentru a utiliza PartDesign, aveți nevoie de un Corp activ în document. Activați un corp (faceți dublu clic) sau creați unul. Dacă aveți un document vechi cu obiecte PartDesign fără corp, utilizați caracteristica de migrare în PartDesign pentru a le include într-un Corp.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
-
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>Pentru a utiliza PartDesign, aveți nevoie de un Corp activ în document. Dacă doriți să activați unul (faceți dublul clic) pentru a crea unul.</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Active Body Required</source>
-      <translation type="unfinished">Active Body Required</translation>
+      <translation>Corp activ necesar</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>Pentru a crea un nou obiect PartDesign, trebuie să existe un corp activ în document. Activați unul (faceți dublu clic) sau creați un nou corp.</translation>
     </message>
     <message>
       <location line="+36"/>
       <source>Feature is not in a body</source>
-      <translation type="unfinished">Feature is not in a body</translation>
+      <translation>Funcția nu face parte dintr-un corp</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a body object in the document.</translation>
+      <translation>Pentru a utiliza această caracteristică, ea trebuie să aparțină unui corp din document.</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>Feature is not in a part</source>
-      <translation type="unfinished">Feature is not in a part</translation>
+      <translation>Caracteristica nu este de la o piesă/Part</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation type="unfinished">In order to use this feature it needs to belong to a part object in the document.</translation>
+      <translation>Pentru a utiliza această funcție, ea trebuie să aparțină unei piese din document.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
       <source>Edit boolean</source>
-      <translation type="unfinished">Edit boolean</translation>
+      <translation>Editare boolean</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="-131"/>
@@ -3616,109 +3610,104 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="-82"/>
       <source>Coordinate System</source>
-      <translation type="unfinished">Coordinate System</translation>
+      <translation>Sistem de coordonate</translation>
     </message>
     <message>
       <location line="+99"/>
       <source>Edit datum</source>
-      <translation type="unfinished">Edit datum</translation>
+      <translation>Modificarea referinței</translation>
     </message>
     <message>
       <source>CoordinateSystem</source>
-      <translation type="unfinished">CoordinateSystem</translation>
+      <translation>Sistem de coordonate</translation>
     </message>
     <message>
       <source>Edit datum </source>
-      <translation type="unfinished">Edit datum </translation>
+      <translation>Modificarea referinței </translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Editare %1</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Feature error</source>
-      <translation type="unfinished">Feature error</translation>
+      <translation>Eroare de funcționare</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>%1 misses a base feature.
 This feature is broken and can't be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and can't be edited.</translation>
+      <translation>%1 este fără o funcție de bază. Această caracteristică este deteriorată și nu poate fi editată.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="+77"/>
       <source>Edit loft</source>
-      <translation type="unfinished">Edit loft</translation>
+      <translation>Modificați spațiul /loft</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="+80"/>
       <source>Edit pipe</source>
-      <translation type="unfinished">Edit pipe</translation>
+      <translation>Editare ţeavă</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation type="unfinished">Edit shape binder</translation>
+      <translation>Editaţi forma de conexiune</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was design with old version of PartDesign workbench.</translation>
+      <translation>Documentul pe care îl editați "%1" a fost de proiectat cu vechea versiune mai veche a bancului de lucru PartDesign.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="+144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of PartDesign workbench.</translation>
+      <translation>Documentul pe care îl editați "%1" a fost de proiectat cu o vechea versiune Part Design a bancului de lucru.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
+      <translation>Doriţi să migreze în scopul de a utiliza elemente moderne din PartDesign?</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
+      <translation>Documentul "%1" pare să fie în mijlocul procesului de migrare de la moştenirea PartDesign sau are o structură uşor spartă.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation type="unfinished">Do you want to make the migration automatically?</translation>
+      <translation>Vrei să faci migrarea automat?</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Notă: Dacă alegeţi să migrați nu veţi putea edita fişierul cu o versiune mai veche de FreeCAD. Dacă refuză să migreze nu va fi capabil să folosească noile caracteristici de PartDesign ca Corp și Piese. Ca rezultat, de asemenea, nu veţi putea să utilizaţi Piesele voastre în ansamblul de bancul de lucru. Deşi veţi putea să migrați în orice moment mai tarziu către 'Parte Design-&gt; migrate...'.</translation>
     </message>
     <message>
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Notă: în cazul în care alegeţi să migrați nu veţi putea să editaţi fişierul cu versiunile vechi FreeCAD. Dacă refuzați să migrați nu veți fi capabil să folosiți noile caracteristici de PartDesign precum Corp și Piese. Ca rezultat, de asemenea, nu veţi putea să utilizaţi piesele voastre în ansamblul de bancului de lucru. Deşi veţi putea să migrați orice moment mai tarziu cu 'Parte Design-&gt; migrate...'.</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Migrate manually</source>
-      <translation type="unfinished">Migrate manually</translation>
+      <translation>Migrare manuală</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
       <source>Edit hole</source>
-      <translation type="unfinished">Edit hole</translation>
+      <translation>Editare gaura</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Editare primitivă</translation>
     </message>
   </context>
   <context>
@@ -3758,38 +3747,38 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Through</source>
-      <translation type="unfinished">Through</translation>
+      <translation>Peste</translation>
     </message>
     <message>
       <location line="+7"/>
       <location line="+340"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Adâncimea</translation>
     </message>
     <message>
       <location line="-331"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Filetul</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Countersink</source>
-      <translation type="unfinished">Countersink</translation>
+      <translation>Frezaj</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Counterbore</source>
-      <translation type="unfinished">Counterbore</translation>
+      <translation>Frezarea</translation>
     </message>
     <message>
       <location line="+21"/>
       <source>Hole norm</source>
-      <translation type="unfinished">Hole norm</translation>
+      <translation>Normă de găurire</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Custom dimensions</source>
-      <translation type="unfinished">Custom dimensions</translation>
+      <translation>Dimensiuni personalizate</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3806,23 +3795,23 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="-194"/>
       <source>Bolt/Washer</source>
-      <translation type="unfinished">Bolt/Washer</translation>
+      <translation>Șasibă/Rondelă</translation>
     </message>
     <message>
       <location line="+49"/>
       <location line="+8"/>
       <source>Thread norm</source>
-      <translation type="unfinished">Thread norm</translation>
+      <translation>Normă de filetare</translation>
     </message>
     <message>
       <location line="+62"/>
       <source> Custom thread length</source>
-      <translation type="unfinished"> Custom thread length</translation>
+      <translation> Lungimea de filet personalizat</translation>
     </message>
     <message>
       <location line="+24"/>
       <source>Finish depth</source>
-      <translation type="unfinished">Finish depth</translation>
+      <translation>Adâncime finală</translation>
     </message>
     <message>
       <location line="+43"/>
@@ -3832,22 +3821,22 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+44"/>
       <source>Counterbore/sink dia</source>
-      <translation type="unfinished">Counterbore/sink dia</translation>
+      <translation>Diamètru de fraizare</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Counterbore depth</source>
-      <translation type="unfinished">Counterbore depth</translation>
+      <translation>Profondeur de frezare</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Countersink angle</source>
-      <translation type="unfinished">Countersink angle</translation>
+      <translation>Unghi de frezare</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Thread length</source>
-      <translation type="unfinished">Thread length</translation>
+      <translation>Lungimea filetată</translation>
     </message>
   </context>
   <context>
@@ -3855,7 +3844,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>Paramètres du perçage</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3873,22 +3862,22 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
       <location line="-253"/>
       <location line="+269"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Adâncimea</translation>
     </message>
     <message>
       <location line="-259"/>
       <source>Cutoff inner</source>
-      <translation type="unfinished">Cutoff inner</translation>
+      <translation>Coupure à l'intérieur</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Class</source>
-      <translation type="unfinished">Class</translation>
+      <translation>Clasă</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Tapered</source>
-      <translation type="unfinished">Tapered</translation>
+      <translation>Conique</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3898,42 +3887,42 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Se potrivesc</translation>
     </message>
     <message>
       <location line="+40"/>
       <source>Flat</source>
-      <translation type="unfinished">Flat</translation>
+      <translation>Plat</translation>
     </message>
     <message>
       <location line="+15"/>
       <source>Angled</source>
-      <translation type="unfinished">Angled</translation>
+      <translation>In unghi</translation>
     </message>
     <message>
       <location line="+18"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Pas</translation>
     </message>
     <message>
       <location line="+25"/>
       <source>Right hand</source>
-      <translation type="unfinished">Right hand</translation>
+      <translation>Mâna dreaptă</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Left hand</source>
-      <translation type="unfinished">Left hand</translation>
+      <translation>Mâna stângă</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Model actual thread</source>
-      <translation type="unfinished">Model actual thread</translation>
+      <translation>Modelul actual de filetare</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Threaded</source>
-      <translation type="unfinished">Threaded</translation>
+      <translation>Filetul</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -3948,7 +3937,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+10"/>
       <source>Countersink angle</source>
-      <translation type="unfinished">Countersink angle</translation>
+      <translation>Unghi de frezare</translation>
     </message>
     <message>
       <location line="+56"/>
@@ -3968,37 +3957,37 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Standard fit</source>
-      <translation type="unfinished">Standard fit</translation>
+      <translation>Ajustement standard</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Close fit</source>
-      <translation type="unfinished">Close fit</translation>
+      <translation>Se potrivesc aproape</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>Tăietură exterioară</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Punct de găurire&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Misc&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Diferite&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Hole cut&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;gaura decupată&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading and size&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;filetare şi dimensiune&lt;/b&gt;</translation>
     </message>
   </context>
   <context>

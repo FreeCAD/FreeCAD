@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2013 Juergen Riegel <FreeCAD@juergen-riegel.net>         *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,12 +20,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderFemMaterial"
+__title__ = "FreeCAD FEM material ViewProvider for the document object"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package _ViewProviderFemMaterial
 #  \ingroup FEM
+#  \brief FreeCAD FEM _ViewProviderFemMaterial
 
 import FreeCAD
 import FreeCADGui
@@ -164,7 +165,7 @@ class _TaskPanelFemMaterial:
             self.choose_material(index)  # fill input fields and set the current material in the cb widget
         else:
             # we found our exact material in self.materials dict :-)
-            FreeCAD.Console.PrintMessage("Previously used material card was found in material directories. We gone use this material.\n")
+            FreeCAD.Console.PrintMessage("Previously used material card was found in material directories. We will use this material.\n")
             index = self.parameterWidget.cb_materials.findData(self.card_path)
             # print(index)
             self.choose_material(index)  # fill input fields and set the current material in the cb widget
@@ -178,7 +179,7 @@ class _TaskPanelFemMaterial:
         # check references, has to be after initialisation of selectionWidget
         self.selectionWidget.has_equal_references_shape_types()
 
-    ################ leave task panel #########################
+    # ********* leave task panel *********
     def accept(self):
         # print(self.material)
         if self.selectionWidget.has_equal_references_shape_types():
@@ -199,7 +200,7 @@ class _TaskPanelFemMaterial:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
 
-    ################ choose material #########################
+    # ********* choose material *********
     def get_material_card(self, material):
         for a_mat in self.materials:
             unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
@@ -239,7 +240,7 @@ class _TaskPanelFemMaterial:
         self.parameterWidget.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), self.card_path, self.card_path)
         self.set_transient_material()
 
-    ################ how to edit a material #########################
+    # ********* how to edit a material *********
     def edit_material(self):
         # self.print_material_params()
         import MaterialEditor
@@ -273,7 +274,7 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.input_fd_kinematic_viscosity.setReadOnly(True)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(True)
 
-    ################ material parameter input fields #########################
+    # ********* material parameter input fields *********
     def print_material_params(self, material=None):
         if not material:
             material = self.material
@@ -315,7 +316,7 @@ class _TaskPanelFemMaterial:
                 self.material['KinematicViscosity'] = '0 m^2/s'
             if 'VolumetricThermalExpansionCoefficient' in self.material:
                 # unit type of VolumetricThermalExpansionCoefficient is ThermalExpansionCoefficient
-                if 'ThermalExpansionCoefficient' not in str(Units.Unit(self.material['VolumetricThermalExpansionCoefficient'])):
+                if 'VolumetricThermalExpansionCoefficient' not in str(Units.Unit(self.material['VolumetricThermalExpansionCoefficient'])):
                     print('VolumetricThermalExpansionCoefficient in material data seems to have no unit or a wrong unit (reset the value): ' + self.material['Name'])
                     self.material['VolumetricThermalExpansionCoefficient'] = '0 m/m/K'
             else:
@@ -503,7 +504,7 @@ class _TaskPanelFemMaterial:
             density_new_unit = "kg/m^3"
             density = FreeCAD.Units.Quantity(matmap['Density'])
             density_with_new_unit = density.getValueAs(density_new_unit)
-            #self.parameterWidget.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
+            # self.parameterWidget.input_fd_density.setText("{} {}".format(density_with_new_unit, density_new_unit))
             q = FreeCAD.Units.Quantity("{} {}".format(density_with_new_unit, density_new_unit))
             self.parameterWidget.input_fd_density.setText(q.UserString)
         # thermal properties
@@ -526,7 +527,7 @@ class _TaskPanelFemMaterial:
             q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
             self.parameterWidget.input_fd_specific_heat.setText(q.UserString)
 
-    ######################## material import and export ###################
+    # ********* material import and export *********
     def print_materialsdict(self):
         print('\n\n')
         for mat_card in self.materials:
@@ -562,8 +563,8 @@ class _TaskPanelFemMaterial:
             self.add_cards_from_a_dir(custom_mat_dir, ":/icons/user.svg")
 
     def import_fluid_materials(self):
-        #use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
-        #if use_built_in_materials:
+        # use_built_in_materials = self.fem_prefs.GetBool("UseBuiltInMaterials", True)
+        # if use_built_in_materials:
         system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/FluidMaterial"
         self.add_cards_from_a_dir(system_mat_dir, ":/icons/freecad.svg")
 

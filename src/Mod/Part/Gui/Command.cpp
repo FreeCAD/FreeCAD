@@ -608,7 +608,7 @@ void CmdPartCompJoinFeatures::languageChange()
 
     if (!_pcAction)
         return;
-#if 0
+
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
@@ -637,7 +637,6 @@ void CmdPartCompJoinFeatures::languageChange()
         cmd2->setToolTip(QApplication::translate("Part_JoinFeatures", joinCutout->getToolTipText()));
         cmd2->setStatusTip(QApplication::translate("Part_JoinFeatures", joinCutout->getStatusTip()));
     }
-#endif
 }
 
 bool CmdPartCompJoinFeatures::isActive(void)
@@ -671,8 +670,10 @@ void CmdPartCompSplitFeatures::activated(int iMsg)
     if (iMsg==0)
         rcCmdMgr.runCommandByName("Part_BooleanFragments");
     else if (iMsg==1)
-        rcCmdMgr.runCommandByName("Part_Slice");
+        rcCmdMgr.runCommandByName("Part_SliceApart");
     else if (iMsg==2)
+        rcCmdMgr.runCommandByName("Part_Slice");
+    else if (iMsg==3)
         rcCmdMgr.runCommandByName("Part_XOR");
     else
         return;
@@ -695,9 +696,11 @@ Gui::Action * CmdPartCompSplitFeatures::createAction(void)
     QAction* cmd0 = pcAction->addAction(QString());
     cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_BooleanFragments"));
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_Slice"));
+    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_SliceApart"));
     QAction* cmd2 = pcAction->addAction(QString());
-    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_XOR"));
+    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_Slice"));
+    QAction* cmd3 = pcAction->addAction(QString());
+    cmd3->setIcon(Gui::BitmapFactory().pixmap("Part_XOR"));
 
     _pcAction = pcAction;
     languageChange();
@@ -729,9 +732,17 @@ void CmdPartCompSplitFeatures::languageChange()
         cmd0->setStatusTip(QApplication::translate("Part_SplitFeatures", splitBoolFragments->getStatusTip()));
     }
 
+    Gui::Command* splitSliceApart = rcCmdMgr.getCommandByName("Part_SliceApart");
+    if (splitSliceApart) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("Part_SplitFeatures", splitSliceApart->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("Part_SplitFeatures", splitSliceApart->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("Part_SplitFeatures", splitSliceApart->getStatusTip()));
+    }
+
     Gui::Command* splitSlice = rcCmdMgr.getCommandByName("Part_Slice");
     if (splitSlice) {
-        QAction* cmd1 = a[1];
+        QAction* cmd1 = a[2];
         cmd1->setText(QApplication::translate("Part_SplitFeatures", splitSlice->getMenuText()));
         cmd1->setToolTip(QApplication::translate("Part_SplitFeatures", splitSlice->getToolTipText()));
         cmd1->setStatusTip(QApplication::translate("Part_SplitFeatures", splitSlice->getStatusTip()));
@@ -739,7 +750,7 @@ void CmdPartCompSplitFeatures::languageChange()
 
     Gui::Command* splitXOR = rcCmdMgr.getCommandByName("Part_XOR");
     if (splitXOR) {
-        QAction* cmd2 = a[2];
+        QAction* cmd2 = a[3];
         cmd2->setText(QApplication::translate("Part_SplitFeatures", splitXOR->getMenuText()));
         cmd2->setToolTip(QApplication::translate("Part_SplitFeatures", splitXOR->getToolTipText()));
         cmd2->setStatusTip(QApplication::translate("Part_SplitFeatures", splitXOR->getStatusTip()));
@@ -757,6 +768,114 @@ bool CmdPartCompSplitFeatures::isActive(void)
     else
         return false;
 }
+
+//===========================================================================
+// Part_CompCompoundTools (dropdown toolbar button for BooleanFragments, Slice)
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdPartCompCompoundTools);
+
+CmdPartCompCompoundTools::CmdPartCompCompoundTools()
+  : Command("Part_CompCompoundTools")
+{
+    sAppModule      = "Part";
+    sGroup          = QT_TR_NOOP("Part");
+    sMenuText       = QT_TR_NOOP("Counpound tools");
+    sToolTipText    = QT_TR_NOOP("Compound tools: working with lists of shapes.");
+    sWhatsThis      = "Part_CompCompoundTools";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdPartCompCompoundTools::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg==0)
+        rcCmdMgr.runCommandByName("Part_Compound");
+    else if (iMsg==1)
+        rcCmdMgr.runCommandByName("Part_ExplodeCompound");
+    else if (iMsg==2)
+        rcCmdMgr.runCommandByName("Part_CompoundFilter");
+    else
+        return;
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdPartCompCompoundTools::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_Compound"));
+    QAction* cmd1 = pcAction->addAction(QString());
+    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_ExplodeCompound"));
+    QAction* cmd2 = pcAction->addAction(QString());
+    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_CompoundFilter"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdPartCompCompoundTools::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    Gui::Command* cmdCompound = rcCmdMgr.getCommandByName("Part_Compound");
+    if (cmdCompound) {
+        QAction* cmd0 = a[0];
+        cmd0->setText(QApplication::translate("CmdPartCompound", cmdCompound->getMenuText()));
+        cmd0->setToolTip(QApplication::translate("CmdPartCompound", cmdCompound->getToolTipText()));
+        cmd0->setStatusTip(QApplication::translate("CmdPartCompound", cmdCompound->getStatusTip()));
+    }
+
+    Gui::Command* cmdExplode = rcCmdMgr.getCommandByName("Part_ExplodeCompound");
+    if (cmdExplode) {
+        QAction* cmd1 = a[1];
+        cmd1->setText(QApplication::translate("Part_CompoundTools", cmdExplode->getMenuText()));
+        cmd1->setToolTip(QApplication::translate("Part_CompoundTools", cmdExplode->getToolTipText()));
+        cmd1->setStatusTip(QApplication::translate("Part_CompoundTools", cmdExplode->getStatusTip()));
+    }
+
+    Gui::Command* cmdCompoundFilter = rcCmdMgr.getCommandByName("Part_CompoundFilter");
+    if (cmdCompoundFilter) {
+        QAction* cmd2 = a[2];
+        cmd2->setText(QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getMenuText()));
+        cmd2->setToolTip(QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getToolTipText()));
+        cmd2->setStatusTip(QApplication::translate("Part_CompoundTools", cmdCompoundFilter->getStatusTip()));
+    }
+}
+
+bool CmdPartCompCompoundTools::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
+}
+
+
 
 //===========================================================================
 // Part_Compound
@@ -1213,7 +1332,7 @@ CmdPartMakeFace::CmdPartMakeFace()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Make face from wires");
-    sToolTipText  = QT_TR_NOOP("Part_MakeFace: Make face from set of wires (e.g. from a sketch)");
+    sToolTipText  = QT_TR_NOOP("Make face from set of wires (e.g. from a sketch)");
     sWhatsThis    = "Part_MakeFace";
     sStatusTip    = sToolTipText;
 }
@@ -1502,7 +1621,7 @@ CmdPartOffset::CmdPartOffset()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("3D Offset...");
-    sToolTipText  = QT_TR_NOOP("Part_Offset: Utility to offset in 3D");
+    sToolTipText  = QT_TR_NOOP("Utility to offset in 3D");
     sWhatsThis    = "Part_Offset";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Offset";
@@ -1552,7 +1671,7 @@ CmdPartOffset2D::CmdPartOffset2D()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("2D Offset...");
-    sToolTipText  = QT_TR_NOOP("Part_Offset2D: Utility to offset planar shapes");
+    sToolTipText  = QT_TR_NOOP("Utility to offset planar shapes");
     sWhatsThis    = "Part_Offset2D";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Offset2D";
@@ -2271,6 +2390,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartFuse());
     rcCmdMgr.addCommand(new CmdPartCompJoinFeatures());
     rcCmdMgr.addCommand(new CmdPartCompSplitFeatures());
+    rcCmdMgr.addCommand(new CmdPartCompCompoundTools());
     rcCmdMgr.addCommand(new CmdPartCompound());
     rcCmdMgr.addCommand(new CmdPartSection());
     //rcCmdMgr.addCommand(new CmdPartBox2());

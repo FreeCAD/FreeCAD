@@ -29,16 +29,16 @@
     <message>
       <location line="+1"/>
       <source>Approximate B-spline surface...</source>
-      <translation type="unfinished">Approximate B-spline surface...</translation>
+      <translation>Апроксимувати поверхню B-сплайна...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Approximate a B-spline surface</source>
-      <translation type="unfinished">Approximate a B-spline surface</translation>
+      <translation>Апроксимувати поверхню B-сплайна</translation>
     </message>
     <message>
       <source>Approximate B-Spline surface...</source>
-      <translation type="unfinished">Approximate B-Spline surface...</translation>
+      <translation>Приблизна B-сплайнова поверхня...</translation>
     </message>
     <message>
       <source>Approximate surface...</source>
@@ -59,12 +59,12 @@
     <message>
       <location line="+1"/>
       <source>Poisson...</source>
-      <translation type="unfinished">Poisson...</translation>
+      <translation>Пуассона...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Poisson surface reconstruction</source>
-      <translation type="unfinished">Poisson surface reconstruction</translation>
+      <translation>Реконструкція поверхні Пуассона</translation>
     </message>
   </context>
   <context>
@@ -77,13 +77,13 @@
     <message>
       <location line="+1"/>
       <source>Structured point clouds</source>
-      <translation type="unfinished">Structured point clouds</translation>
+      <translation>Хмари структурованих точок</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Triangulation of structured point clouds</source>
-      <translation type="unfinished">Triangulation of structured point clouds</translation>
+      <translation>Триангуляція хмар структурованих точок</translation>
     </message>
     <message>
       <source>View triangulation</source>
@@ -94,17 +94,17 @@
     <name>ReenGui::FitBSplineSurface</name>
     <message>
       <source>Fit B-Spline surface</source>
-      <translation type="unfinished">Fit B-Spline surface</translation>
+      <translation>Розмістити B-сплайна поверхню</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="+14"/>
       <source>Fit B-spline surface</source>
-      <translation type="unfinished">Fit B-spline surface</translation>
+      <translation>Розмістити B-сплайна поверхню</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>u-Direction</source>
-      <translation type="unfinished">u-Direction</translation>
+      <translation>u напрямок</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -121,7 +121,7 @@
     <message>
       <location line="-35"/>
       <source>v-Direction</source>
-      <translation type="unfinished">v-Direction</translation>
+      <translation>v напрямок</translation>
     </message>
     <message>
       <location line="+67"/>
@@ -161,12 +161,12 @@
     <message>
       <location line="+29"/>
       <source>Curvature variation</source>
-      <translation type="unfinished">Curvature variation</translation>
+      <translation>Варіанти кривизни</translation>
     </message>
     <message>
       <location line="+32"/>
       <source>User-defined u/v directions</source>
-      <translation type="unfinished">User-defined u/v directions</translation>
+      <translation>Користувацькі u / v напрямки</translation>
     </message>
   </context>
   <context>
@@ -179,7 +179,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a single placement object to get local orientation.</source>
-      <translation type="unfinished">Please select a single placement object to get local orientation.</translation>
+      <translation>Будь ласка, виберіть один об'єкт розміщення для отримання локальної орієнтації.</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -192,7 +192,7 @@
     <message>
       <location filename="../../Poisson.ui" line="+14"/>
       <source>Poisson</source>
-      <translation type="unfinished">Poisson</translation>
+      <translation>Пуассона</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -202,12 +202,12 @@
     <message>
       <location line="+6"/>
       <source>Octree depth</source>
-      <translation type="unfinished">Octree depth</translation>
+      <translation>Глибина октодерева</translation>
     </message>
     <message>
       <location line="+20"/>
       <source>Solver divide</source>
-      <translation type="unfinished">Solver divide</translation>
+      <translation>Вирішувач поділу</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -240,7 +240,7 @@
     <message>
       <location line="+55"/>
       <source>View triangulation failed</source>
-      <translation type="unfinished">View triangulation failed</translation>
+      <translation>Перегляд непрорахованими тріангуляції</translation>
     </message>
   </context>
   <context>

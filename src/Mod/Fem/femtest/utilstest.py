@@ -54,7 +54,7 @@ def fcc_print(message):
     FreeCAD.Console.PrintMessage('{} \n'.format(message))
 
 
-def get_defmake_count():
+def get_defmake_count(fem_vtk_post=True):
     '''
     count the def make in module ObjectsFem
     could also be done in bash with
@@ -65,6 +65,12 @@ def get_defmake_count():
     lines_modefile = modfile.readlines()
     modfile.close()
     lines_defmake = [l for l in lines_modefile if l.startswith('def make')]
+    if not fem_vtk_post:  # FEM VTK post processing is disabled, we are not able to create VTK post objects
+        new_lines = []
+        for l in lines_defmake:
+            if "PostVtk" not in l:
+                new_lines.append(l)
+        lines_defmake = new_lines
     return len(lines_defmake)
 
 
@@ -148,10 +154,10 @@ def compare_stats(fea, stat_file=None, loc_stat_types=None, res_obj_name=None):
 
 def force_unix_line_ends(line_list):
     new_line_list = []
-    for l in line_list:
-        if l.endswith("\r\n"):
-            l = l[:-2] + '\n'
-        new_line_list.append(l)
+    for ln in line_list:
+        if ln.endswith("\r\n"):
+            ln = ln[:-2] + '\n'
+        new_line_list.append(ln)
     return new_line_list
 
 

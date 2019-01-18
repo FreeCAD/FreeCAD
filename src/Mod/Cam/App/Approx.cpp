@@ -694,7 +694,7 @@ void Approximate::ParameterInnerPoints()
             }
             else   //Can an inside point have less than 3 neighbours...?
             {
-                throw Base::Exception("Something's wrong here. Less than 3 Neighbour");
+                throw Base::RuntimeError("Something's wrong here. Less than 3 Neighbour");
             }
         }
     }

@@ -710,7 +710,7 @@ private:
                 } else if (PyObject_TypeCheck(pcPyShapeOrList, &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(pcPyShapeOrList)->getTopoShapePtr()->getShape();
                     if (sh.IsNull())
-                        throw Base::Exception("Shape is null!");
+                        throw NullShapeException("Shape is null!");
                     if (sh.ShapeType() == TopAbs_COMPOUND)
                         fm->useCompound(TopoDS::Compound(sh));
                     else

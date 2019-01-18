@@ -42,7 +42,7 @@
 using namespace App;
 using namespace Base;
 using namespace std;
- 
+
 TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence);
 
 
@@ -94,12 +94,12 @@ void PropertyContainer::setPropertyStatus(unsigned char bit,bool value)
         (**it).StatusBits.set(bit,value);
 }
 
-short PropertyContainer::getPropertyType(const Property* prop) const 
+short PropertyContainer::getPropertyType(const Property* prop) const
 {
     return getPropertyData().getType(this,prop);
 }
 
-short PropertyContainer::getPropertyType(const char *name) const 
+short PropertyContainer::getPropertyType(const char *name) const
 {
     return getPropertyData().getType(this,name);
 }
@@ -150,8 +150,8 @@ const char* PropertyContainer::getPropertyName(const Property* prop)const
 }
 
 
-const PropertyData * PropertyContainer::getPropertyDataPtr(void){return &propertyData;} 
-const PropertyData & PropertyContainer::getPropertyData(void) const{return propertyData;} 
+const PropertyData * PropertyContainer::getPropertyDataPtr(void){return &propertyData;}
+const PropertyData & PropertyContainer::getPropertyData(void) const{return propertyData;}
 
 /**
  * @brief PropertyContainer::handleChangedPropertyName is called during restore to possibly
@@ -207,11 +207,11 @@ private:
     const PropertyContainer* cont;
 };
 
-void PropertyContainer::Save (Base::Writer &writer) const 
+void PropertyContainer::Save (Base::Writer &writer) const
 {
     std::map<std::string,Property*> Map;
     getPropertyMap(Map);
-  
+
     // ignore the properties we won't store
     size_t ct = std::count_if(Map.begin(), Map.end(), std::bind2nd(PropertyAttribute
         <std::pair<std::string,Property*> >(this), Prop_Transient));
@@ -222,11 +222,11 @@ void PropertyContainer::Save (Base::Writer &writer) const
     std::map<std::string,Property*>::iterator it;
     for (it = Map.begin(); it != Map.end(); ++it)
     {
-        // Don't write transient properties 
+        // Don't write transient properties
         if (!(getPropertyType(it->second) & Prop_Transient))
         {
             writer.incInd(); // indentation for 'Property name'
-            writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\"" 
+            writer.Stream() << writer.ind() << "<Property name=\"" << it->first << "\" type=\""
                             << it->second->getTypeId().getName() << "\">" << endl;;
             writer.incInd(); // indentation for the actual property
             try {
@@ -250,7 +250,7 @@ void PropertyContainer::Save (Base::Writer &writer) const
             }
 #endif
             writer.decInd(); // indentation for the actual property
-            writer.Stream() << writer.ind() << "</Property>" << endl;    
+            writer.Stream() << writer.ind() << "</Property>" << endl;
             writer.decInd(); // indentation for 'Property name'
         }
     }
@@ -260,35 +260,46 @@ void PropertyContainer::Save (Base::Writer &writer) const
 
 void PropertyContainer::Restore(Base::XMLReader &reader)
 {
+    reader.clearPartialRestoreProperty();
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
 
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        Property* prop = getPropertyByName(PropName);
+        std::string PropName = reader.getAttribute("name");
+        std::string TypeName = reader.getAttribute("type");
+        Property* prop = getPropertyByName(PropName.c_str());
         // NOTE: We must also check the type of the current property because a
         // subclass of PropertyContainer might change the type of a property but
         // not its name. In this case we would force to read-in a wrong property
         // type and the behaviour would be undefined.
         try {
             // name and type match
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName.c_str()) == 0) {
                 prop->Restore(reader);
             }
             // name matches but not the type
             else if (prop) {
-                handleChangedPropertyType(reader, TypeName, prop);
+                handleChangedPropertyType(reader, TypeName.c_str(), prop);
             }
             // name doesn't match, the sub-class then has to know
             // if the property has been renamed or removed
             else {
-                handleChangedPropertyName(reader, TypeName, PropName);
+                handleChangedPropertyName(reader, TypeName.c_str(), PropName.c_str());
+            }
+
+            if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestoreInProperty)) {
+                Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
+                reader.clearPartialRestoreProperty();
             }
         }
         catch (const Base::XMLParseException&) {
             throw; // re-throw
+        }
+        catch (const Base::RestoreError &) {
+            reader.setPartialRestore(true);
+            reader.clearPartialRestoreProperty();
+            Base::Console().Error("Property %s of type %s was subject to a partial restore.\n",PropName.c_str(),TypeName.c_str());
         }
         catch (const Base::Exception &e) {
             Base::Console().Error("%s\n", e.what());
@@ -338,7 +349,7 @@ const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBa
 
   if(parentPropertyData)
       return parentPropertyData->findProperty(offsetBase,PropName);
- 
+
   return 0;
 }
 
@@ -351,10 +362,10 @@ const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBa
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(diff == It->Offset)
         return &(*It);
-  
+
   if(parentPropertyData)
       return parentPropertyData->findProperty(offsetBase,prop);
-  
+
   return 0;
 }
 
@@ -467,7 +478,7 @@ const char* PropertyData::getDocumentation(OffsetBase offsetBase,const char* nam
 
 
 
-Property *PropertyData::getPropertyByName(OffsetBase offsetBase,const char* name) const 
+Property *PropertyData::getPropertyByName(OffsetBase offsetBase,const char* name) const
 {
   const PropertyData::PropertySpec* Spec = findProperty(offsetBase,name);
 
@@ -505,7 +516,7 @@ void PropertyData::getPropertyMap(OffsetBase offsetBase,std::map<std::string,Pro
 
   if(parentPropertyData)
       parentPropertyData->getPropertyMap(offsetBase,Map);
-  
+
 }
 
 void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const
@@ -534,7 +545,7 @@ The property framework introduces the ability to access attributes (member varia
 knowing the class type. It's like the reflection mechanism of Java or C#.
 This ability is introduced by the App::PropertyContainer class and can be used by all derived classes.
 
-This makes it possible in the first place to make an automatic mapping to python (e.g. in App::FeaturePy) and 
+This makes it possible in the first place to make an automatic mapping to python (e.g. in App::FeaturePy) and
 abstract editing properties in Gui::PropertyEditor.
 
 \section Examples

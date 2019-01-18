@@ -19,7 +19,6 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from __future__ import print_function
 
 __title__ = "FreeCAD Z88 Mesh reader and writer"
 __author__ = "Bernd Hahnebach"
@@ -33,10 +32,7 @@ import FreeCAD
 import os
 
 
-Debug = False
-
-
-########## generic FreeCAD import and export methods ##########
+# ********* generic FreeCAD import and export methods *********
 if open.__module__ == '__builtin__':
     # because we'll redefine open below (Python2)
     pyopen = open
@@ -79,14 +75,37 @@ def export(objectslist, filename):
     f.close()
 
 
-########## module specific methods ##########
-def import_z88_mesh(filename, analysis=None):
-    '''insert a FreeCAD FEM Mesh object in the ActiveDocument
+# ********* module specific methods *********
+def write(fem_mesh, filename):
+    '''directly write a FemMesh to a Z88 mesh file format
+    fem_mesh: a FemMesh'''
+
+    if not fem_mesh.isDerivedFrom("Fem::FemMesh"):
+        FreeCAD.Console.PrintError("Not a FemMesh was given as parameter.\n")
+        return
+    femnodes_mesh = fem_mesh.Nodes
+    import femmesh.meshtools as FemMeshTools
+    femelement_table = FemMeshTools.get_femelement_table(fem_mesh)
+    z88_element_type = get_z88_element_type(fem_mesh, femelement_table)
+    f = pyopen(filename, "w")
+    write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f)
+    f.close()
+
+
+def read(filename):
+    '''read a FemMesh from a Z88 mesh file and return the FemMesh
     '''
+    # no document object is created, just the FemMesh is returned
     mesh_data = read_z88_mesh(filename)
-    mesh_name = os.path.basename(os.path.splitext(filename)[0])
     from . import importToolsFem
-    femmesh = importToolsFem.make_femmesh(mesh_data)
+    return importToolsFem.make_femmesh(mesh_data)
+
+
+def import_z88_mesh(filename, analysis=None):
+    '''read a FEM mesh from a Z88 mesh file and insert a FreeCAD FEM Mesh object in the ActiveDocument
+    '''
+    femmesh = read(filename)
+    mesh_name = os.path.basename(os.path.splitext(filename)[0])
     if femmesh:
         mesh_object = FreeCAD.ActiveDocument.addObject('Fem::FemMeshObject', mesh_name)
         mesh_object.FemMesh = femmesh
@@ -128,12 +147,16 @@ def read_z88_mesh(z88_mesh_input):
     nodes_last_line = nodes_count + 1
     elemts_first_line = nodes_last_line + 1
     elements_last_line = elemts_first_line - 1 + elements_count * 2
-    if Debug:
-        print(nodes_count)
-        print(elements_count)
-        print(nodes_last_line)
-        print(elemts_first_line)
-        print(elements_last_line)
+
+    FreeCAD.Console.PrintLog(nodes_count)
+    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog(elements_count)
+    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog(nodes_last_line)
+    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog(elemts_first_line)
+    FreeCAD.Console.PrintLog('\n')
+    FreeCAD.Console.PrintLog(elements_last_line)
 
     z88_mesh_file.seek(0)  # go back to the beginning of the file
     for no, line in enumerate(z88_mesh_file):
@@ -295,11 +318,11 @@ def read_z88_mesh(z88_mesh_input):
                     FreeCAD.Console.PrintError("Unknown element\n")
                     return {}
 
-    if Debug:
-        for n in nodes:
-            print(n, '  ', nodes[n])
-        for e in elements_tria6:
-            print(e, '  ', elements_tria6[e])
+    for n in nodes:
+        FreeCAD.Console.PrintLog(str(n) + '  ' + str(nodes[n]) + '\n')
+    for e in elements_tria6:
+        FreeCAD.Console.PrintLog(str(e) + '  ' + str(elements_tria6[e]) + '\n')
+    FreeCAD.Console.PrintLog('\n')
 
     z88_mesh_file.close()
     return {
@@ -322,11 +345,18 @@ def read_z88_mesh(z88_mesh_input):
 # write z88 Mesh
 def write_z88_mesh_to_file(femnodes_mesh, femelement_table, z88_element_type, f):
     node_dimension = 3  # 2 for 2D not supported
-    if (z88_element_type == 4 or
-       z88_element_type == 17 or z88_element_type == 16 or
-       z88_element_type == 1 or z88_element_type == 10):
+    if (
+        z88_element_type == 4
+        or z88_element_type == 17
+        or z88_element_type == 16
+        or z88_element_type == 1
+        or z88_element_type == 10
+    ):
         node_dof = 3
-    elif z88_element_type == 23 or z88_element_type == 24:
+    elif (
+        z88_element_type == 23
+        or z88_element_type == 24
+    ):
         node_dof = 6  # schalenelemente
     else:
         print("Error: wrong z88_element_type")
@@ -408,7 +438,7 @@ def get_z88_element_type(femmesh, femelement_table=None):
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
         elem_length = len(femelement_table[elem])
-        print(elem_length)
+        FreeCAD.Console.PrintLog('node count of first element: ' + str(elem_length) + '\n')
         break  # break after the first elem
     if FemMeshTools.is_solid_femmesh(femmesh):
         if femmesh.TetraCount == femmesh.VolumeCount:

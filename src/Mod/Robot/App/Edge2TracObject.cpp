@@ -169,7 +169,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
                     first = false;
                 else
                     beg += stp;
-                Base::SequencerLauncher seq("Create way points", static_cast<size_t>((end-beg)/stp));
+                Base::SequencerLauncher seq("Create waypoints", static_cast<size_t>((end-beg)/stp));
 				if(reversed)
 				{
 					for (;beg > end; beg += stp) {
@@ -255,7 +255,7 @@ App::DocumentObjectExecReturn *Edge2TracObject::execute(void)
                 }
 
             default:
-                throw Base::Exception("Unknown Edge type in Robot::Edge2TracObject::execute()");
+                throw Base::TypeError("Unknown Edge type in Robot::Edge2TracObject::execute()");
             }
            
 

@@ -1,7 +1,6 @@
 # ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2015 - Przemo Firszt <przemo@firszt.eu>                 *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
+# *   Copyright (c) 2015 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "CalculiX Writer"
+__title__ = "FreeCAD FEM solver CalculiX writer"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
@@ -75,8 +74,14 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
-        FreeCAD.Console.PrintMessage("Writing time input file: " + str(time.clock() - timestart) + ' \n\n')
-        return self.file_name
+        writing_time_string = "Writing time input file: " + str(time.clock() - timestart)
+        if self.femelement_count_test is True:
+            FreeCAD.Console.PrintMessage(writing_time_string + ' \n\n')
+            return self.file_name
+        else:
+            FreeCAD.Console.PrintMessage(writing_time_string + ' \n')
+            FreeCAD.Console.PrintError("Problems on writing input file, check report prints.\n\n")
+            return ""
 
     def write_calculix_one_input_file(self):
         self.femmesh.writeABAQUS(self.file_name, 1, False)

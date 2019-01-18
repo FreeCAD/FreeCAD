@@ -21,12 +21,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="65"/>
       <source>Pan</source>
-      <translation type="unfinished">Pan</translation>
+      <translation>좌우회전</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="66"/>
       <source>Tilt</source>
-      <translation type="unfinished">Tilt</translation>
+      <translation>상하회전</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="67"/>
@@ -41,12 +41,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotation focus</source>
-      <translation type="unfinished">Rotation focus</translation>
+      <translation>시점회전</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Middle mouse button or key H.</source>
-      <translation type="unfinished">Middle mouse button or key H.</translation>
+      <translation>가운데버튼 또는 'H' 키</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>

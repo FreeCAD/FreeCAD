@@ -143,5 +143,7 @@
         <file>translations/Path_id.qm</file>
         <file>translations/Path_lt.qm</file>
         <file>translations/Path_val-ES.qm</file>
+        <file>translations/Path_ar.qm</file>
+        <file>translations/Path_vi.qm</file>
     </qresource>
 </RCC>

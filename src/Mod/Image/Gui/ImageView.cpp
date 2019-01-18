@@ -90,6 +90,10 @@ ImageView::ImageView(QWidget* parent)
   // Create the actions, menus and toolbars
   createActions();
 
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+          ("User parameter:BaseApp/Preferences/View");
+  _invertZoom = hGrp->GetBool("InvertZoom", true);
+
   // connect other slots
   connect(_pGLImageBox, SIGNAL(drawGraphics()), this, SLOT(drawGraphics()));
 }
@@ -475,6 +479,9 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
 
        // Zoom around centrally displayed image point
        int numTicks = cEvent->delta() / 120;
+       if (_invertZoom)
+           numTicks = -numTicks;
+
        int ICx, ICy;
        _pGLImageBox->getCentrePoint(ICx, ICy);
        _pGLImageBox->setZoomFactor(_pGLImageBox->getZoomFactor() / pow(2.0, (double)numTicks), true, ICx, ICy);

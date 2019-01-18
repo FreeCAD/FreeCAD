@@ -4,7 +4,7 @@
   <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-      <location filename="../../Command.cpp" line="+496"/>
+      <location filename="../../Command.cpp" line="+519"/>
       <source>File</source>
       <translation>Fájl</translation>
     </message>
@@ -26,7 +26,7 @@
   <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-      <location line="+207"/>
+      <location line="+231"/>
       <source>Raytracing</source>
       <translation>Sugárkövetés</translation>
     </message>
@@ -41,7 +41,7 @@
       <translation>Új Luxrender projekt beszúrása a dokumentumba</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>Nincs sablon</translation>
     </message>
@@ -54,7 +54,7 @@
   <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-      <location line="-341"/>
+      <location line="-372"/>
       <source>Raytracing</source>
       <translation>Sugárkövetés</translation>
     </message>
@@ -76,7 +76,7 @@
   <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-      <location line="-100"/>
+      <location line="-119"/>
       <source>Raytracing</source>
       <translation>Sugárkövetés</translation>
     </message>
@@ -99,7 +99,7 @@
       <translation>Új Nézőpont-fénysugár projekt beszúrása a dokumentumba</translation>
     </message>
     <message>
-      <location line="+45"/>
+      <location line="+52"/>
       <source>No template</source>
       <translation>Nincs sablon</translation>
     </message>
@@ -112,7 +112,7 @@
   <context>
     <name>CmdRaytracingRender</name>
     <message>
-      <location line="+196"/>
+      <location line="+212"/>
       <source>Raytracing</source>
       <translation>Sugárkövetés</translation>
     </message>
@@ -130,7 +130,7 @@
   <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-      <location line="+243"/>
+      <location line="+278"/>
       <source>Raytracing</source>
       <translation>Sugárkövetés</translation>
     </message>
@@ -148,7 +148,7 @@
   <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-      <location line="-723"/>
+      <location line="-785"/>
       <source>Raytracing</source>
       <translation>Sugárkövetés</translation>
     </message>
@@ -206,21 +206,21 @@
     <message>
       <location line="-79"/>
       <location line="+139"/>
-      <location line="+93"/>
-      <location line="+391"/>
+      <location line="+97"/>
+      <location line="+434"/>
       <source>No perspective camera</source>
       <translation>Nincs perspektivikus (távoli) kamera</translation>
     </message>
     <message>
-      <location line="-622"/>
+      <location line="-669"/>
       <location line="+139"/>
-      <location line="+93"/>
+      <location line="+97"/>
       <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>A jelenlegi kamera nézet nem távoli nézet, így a kép Nézőpont-fánysugár eredménye később eltérhet az elvárttól. Folytatni szeretné?</translation>
     </message>
     <message>
-      <location line="-109"/>
+      <location line="-113"/>
       <source>Export view to POV-Ray...</source>
       <translation>Nézet exportálása Nézőpont-fénysugárba...</translation>
     </message>
@@ -230,12 +230,24 @@ Do you want to continue?</source>
       <translation>Írja le az aktív 3D-s nézetet a kamerával és összes tartalmával egy Nézőpont-fénysugár fájlba</translation>
     </message>
     <message>
+      <location line="+126"/>
+      <location line="+434"/>
+      <source>No template</source>
+      <translation>Nincs sablon</translation>
+    </message>
+    <message>
+      <location line="-433"/>
+      <location line="+434"/>
+      <source>Cannot create a project because there is no template installed.</source>
+      <translation>A projekt nem hozható létre, mert nincs telepített sablon.</translation>
+    </message>
+    <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>Az aktuális nézet kamera nem perspektívikus és így povray kép nézet eredménye különbözni fog az elvárttól. Folytatni kívánja?</translation>
     </message>
     <message>
-      <location line="-2"/>
+      <location line="-563"/>
       <source>Raytracing</source>
       <translation>Sugárkövetés</translation>
     </message>
@@ -248,7 +260,7 @@ Do you want to continue?</source>
       <translation>Az aktuális 3D nézet minden tartalmának írása egy Povray fájlba</translation>
     </message>
     <message>
-      <location line="+501"/>
+      <location line="+548"/>
       <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
       <translation>A jelenlegi kamera nézet nem távoli nézet, így a kép luxrender eredménye később eltérhet az elvárttól. Folytatni szeretné?</translation>
@@ -269,10 +281,10 @@ Do you want to continue?</source>
       <translation>Minden fájl (*.*)</translation>
     </message>
     <message>
-      <location line="-585"/>
+      <location line="-632"/>
       <location line="+51"/>
       <location line="+63"/>
-      <location line="+276"/>
+      <location line="+299"/>
       <source>Export page</source>
       <translation>Oldal exportálása</translation>
     </message>
@@ -283,13 +295,13 @@ Do you want to continue?</source>
     <message>
       <location line="-103"/>
       <location line="+87"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Wrong selection</source>
       <translation>Rossz választás</translation>
     </message>
     <message>
-      <location line="-392"/>
+      <location line="-431"/>
       <source>Select a Part object.</source>
       <translation>Válasszon ki egy alkatrész objektumot.</translation>
     </message>
@@ -311,18 +323,18 @@ Do you want to continue?</source>
     </message>
     <message>
       <location line="+64"/>
-      <location line="+63"/>
-      <location line="+243"/>
+      <location line="+67"/>
+      <location line="+278"/>
       <source>Select one Raytracing project object.</source>
       <translation>Jelöljön ki egy Sugárkövetés projekt tárgyat.</translation>
     </message>
     <message>
-      <location line="-302"/>
+      <location line="-341"/>
       <source>Luxrender</source>
       <translation>Luxrender</translation>
     </message>
     <message>
-      <location line="+74"/>
+      <location line="+78"/>
       <location line="+6"/>
       <source>POV-Ray not found</source>
       <translation>Nézőpont-fénysugár nem található</translation>
@@ -338,7 +350,7 @@ Do you want to continue?</source>
       <translation>Kérjük, javítsa a Nézőpont-fénysugár elérési útját a beállításokban.</translation>
     </message>
     <message>
-      <location line="+75"/>
+      <location line="+95"/>
       <source>Lux project file missing</source>
       <translation>Lux projekt fájl hiányzik</translation>
     </message>
@@ -348,25 +360,25 @@ Do you want to continue?</source>
       <translation>A Lux projekt fájl nem létezik.</translation>
     </message>
     <message>
-      <location line="-69"/>
+      <location line="-89"/>
       <location line="+6"/>
       <source>Luxrender not found</source>
       <translation>Luxrender nem található</translation>
     </message>
     <message>
-      <location line="-475"/>
+      <location line="-502"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+272"/>
+      <location line="+295"/>
       <source>POV-Ray</source>
       <translation>Nézőpont-fénysugár</translation>
     </message>
     <message>
-      <location line="-384"/>
+      <location line="-407"/>
       <location line="+51"/>
       <location line="+62"/>
-      <location line="+276"/>
-      <location line="+109"/>
+      <location line="+299"/>
+      <location line="+113"/>
       <source>All Files</source>
       <translation>Összes fájl</translation>
     </message>
@@ -559,7 +571,7 @@ Do you want to continue?</source>
       <translation>LuxRender vetítés szerkesztése</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>LuxRender template</source>
       <translation>LuxRender sablon</translation>
     </message>
@@ -572,12 +584,12 @@ Do you want to continue?</source>
   <context>
     <name>RaytracingGui::ViewProviderPovray</name>
     <message>
-      <location line="+48"/>
+      <location line="+47"/>
       <source>Edit Povray project</source>
       <translation>Povray vetítés szerkesztése</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+31"/>
       <source>Povray template</source>
       <translation>Povray sablon</translation>
     </message>

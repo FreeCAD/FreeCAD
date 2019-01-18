@@ -61,12 +61,17 @@
         </Methode>
         <Methode Name="read">
             <Documentation>
-                <UserDocu>Read in a DAT, UNV, MED or STL file.</UserDocu>
+                <UserDocu>Read in a various FEM mesh file formats.
+                    read(file.endingToExportTo)
+                    supported formats: DAT, INP, MED, STL, UNV, VTK, Z88</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="write" Const="true">
             <Documentation>
-                <UserDocu>Write out a DAT, UNV, MED or STL file.</UserDocu>
+                <UserDocu>Write out various FEM mesh file formats.
+                    write(file.endingToExportTo)
+                    supported formats: BDF, DAT, INP, MED, STL, UNV, VTK, Z88
+                </UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="writeABAQUS" Const="true">
@@ -91,6 +96,11 @@
         <Methode Name="getFacesByFace" Const="true">
             <Documentation>
                 <UserDocu>Return a list of face IDs which belong to a TopoFace</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getEdgesByEdge" Const="true">
+            <Documentation>
+                <UserDocu>Return a list of edge IDs which belong to a TopoEdge</UserDocu>
             </Documentation>
         </Methode>
         <Methode Name="getVolumesByFace" Const="true">

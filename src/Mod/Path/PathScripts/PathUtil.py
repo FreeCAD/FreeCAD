@@ -122,5 +122,5 @@ def isString(string):
 def keyValueIter(dictionary):
     '''keyValueIter(dict) ... return iterable object over dictionary's (key,value) tuples.'''
     if sys.version_info.major < 3:
-        return dictionary.iteritems()
+        return dictionary.items()
     return dictionary.items()

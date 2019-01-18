@@ -183,9 +183,9 @@ class CommandConnect:
     "Command to create Connect feature"
     def GetResources(self):
         return {'Pixmap'  : getIconPath("Part_JoinConnect.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinFeatures","Connect objects"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Connect objects"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinFeatures","Part_JoinConnect: Fuses objects, taking care to preserve voids.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinConnect","Fuses objects, taking care to preserve voids.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1 :
@@ -270,9 +270,9 @@ class CommandEmbed:
     "Command to create Part Embed feature"
     def GetResources(self):
         return {'Pixmap'  : getIconPath("Part_JoinEmbed.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinFeatures","Embed object"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed","Embed object"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinFeatures","Fuses one object into another, taking care to preserve voids.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinEmbed","Fuses one object into another, taking care to preserve voids.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) == 2 :
@@ -359,9 +359,9 @@ class CommandCutout:
     "Command to create PartJoinFeature in Cutout mode"
     def GetResources(self):
         return {'Pixmap'  : getIconPath("Part_JoinCutout.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinFeatures","Cutout for object"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout","Cutout for object"),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinFeatures","Makes a cutout in one object to fit another object.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_JoinCutout","Makes a cutout in one object to fit another object.")}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) == 2 :

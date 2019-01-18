@@ -541,9 +541,9 @@ class _ViewProviderSectionPlane:
         return ":/icons/Arch_SectionPlane_Tree.svg"
 
     def claimChildren(self):
-        if hasattr(self,"Object") and hasattr(self.Object,"Objects"):
-            return self.Object.Objects
-        print("claiming children, but none!")
+        # buggy at the moment so it's disabled - it will for ex. swallow a building object directly at the root of the document...
+        #if hasattr(self,"Object") and hasattr(self.Object,"Objects"):
+        #    return self.Object.Objects
         return []
 
     def attach(self,vobj):

@@ -439,14 +439,6 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
         return FormatSpec.getStrValue();
     }
 
-    //units api: get schema to figure out if this is multi-value schema(Imperial1, ImperialBuilding)
-    //if it is multi-unit schema, don't even try to use Alt Decimals or format per format spec
-    bool multiValueUnits = false;
-    Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
-    if ( (uniSys == Base::UnitSystem::Imperial1) ||
-         (uniSys == Base::UnitSystem::ImperialBuilding) ) {
-        multiValueUnits = true;
-    }
     QString specStr = QString::fromUtf8(FormatSpec.getStrValue().data(),FormatSpec.getStrValue().size());
     double val = std::abs(getDimValue());    //internal units!
     
@@ -470,11 +462,25 @@ std::string  DrawViewDimension::getFormatedValue(bool obtuse)
                                                                       // really should be able to ask units for value
                                                                       // in appropriate UoM!!
 
-    if (multiValueUnits  &&
-        !angularMeasure) {
+    //units api: get schema to figure out if this is multi-value schema(Imperial1, ImperialBuilding, etc)
+    //if it is multi-unit schema, don't even try to use Alt Decimals or format per format spec
+    Base::UnitSystem uniSys = Base::UnitsApi::getSchema();
+
+//handle multi value schemes
+    if (((uniSys == Base::UnitSystem::Imperial1) ||
+         (uniSys == Base::UnitSystem::ImperialBuilding) ) &&
+         !angularMeasure) {
         specStr = userStr;
+    } else if ((uniSys == Base::UnitSystem::ImperialCivil) &&
+         angularMeasure) {
+        QString dispMinute = QString::fromUtf8("\'");
+        QString dispSecond = QString::fromUtf8("\"");
+        QString schemeMinute = QString::fromUtf8("M");
+        QString schemeSecond = QString::fromUtf8("S");
+        specStr = userStr.replace(schemeMinute,dispMinute);
+        specStr = specStr.replace(schemeSecond,dispSecond);
     } else {
-        //should be able to handle angular Measures even in ft-in systems
+//handle single value schemes
         QRegExp rxUnits(QString::fromUtf8(" \\D*$"));                     //space + any non digits at end of string
 
         QString userVal = userStr;
@@ -561,7 +567,7 @@ double DrawViewDimension::getDimValue()
         } else if(Type.isValue("Angle")){
             result = measurement->angle();
         } else {  //tarfu
-            throw Base::Exception("getDimValue() - Unknown Dimension Type (3)");
+            throw Base::ValueError("getDimValue() - Unknown Dimension Type (3)");
         }
     } else {
         // Projected Values
@@ -793,7 +799,7 @@ pointPair DrawViewDimension::closestPoints(TopoDS_Shape s1,
     pointPair result;
     BRepExtrema_DistShapeShape extss(s1, s2);
     if (!extss.IsDone()) {
-        throw Base::Exception("DVD::closestPoints - BRepExtrema_DistShapeShape failed");
+        throw Base::RuntimeError("DVD::closestPoints - BRepExtrema_DistShapeShape failed");
     }
     int count = extss.NbSolution();
     if (count != 0) {
@@ -860,7 +866,7 @@ double DrawViewDimension::dist2Segs(Base::Vector2d s1,
 
     BRepExtrema_DistShapeShape extss(edge1, edge2);
     if (!extss.IsDone()) {
-        throw Base::Exception("DVD::dist2Segs - BRepExtrema_DistShapeShape failed");
+        throw Base::RuntimeError("DVD::dist2Segs - BRepExtrema_DistShapeShape failed");
     }
     int count = extss.NbSolution();
     double minDist = 0.0;

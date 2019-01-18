@@ -60,15 +60,15 @@ def crawl(pagename=[]):
     else:
         if os.path.exists("wikifiles.txt"):
             f = open("wikifiles.txt","r")
-            if VERBOSE: print "Reading existing list..."
+            if VERBOSE: print ("Reading existing list...")
             for l in f.readlines():
                 if l.strip() != "":
-                    if VERBOSE: print "Adding ",l
+                    if VERBOSE: print ("Adding ",l)
                     processed.append(l.strip())
             f.close()
         if os.path.exists("todolist.txt"):
             f = open("todolist.txt","r")
-            if VERBOSE: print "Reading existing todo list..."
+            if VERBOSE: print ("Reading existing todo list...")
             for l in f.readlines():
                 if l.strip() != "":
                     todolist.append(l.strip())
@@ -79,19 +79,19 @@ def crawl(pagename=[]):
     while todolist:
         targetpage = todolist.pop()
         if (not targetpage in NORETRIEVE):
-            if VERBOSE: print count, ": Scanning ", targetpage
+            if VERBOSE: print (count, ": Scanning ", targetpage)
             pages,images = get(targetpage)
             count += 1
             processed.append(targetpage)
             processed.extend(images)
-            if VERBOSE: print "got",len(pages),"links"
+            if VERBOSE: print ("got",len(pages),"links")
             for p in pages:
                 if (not (p in todolist)) and (not (p in processed)):
                     todolist.append(p)
             if WRITETHROUGH:
                 writeList(processed)
                 writeList(todolist,"todolist.txt")
-    if VERBOSE: print "Fetched ", count, " pages"
+    if VERBOSE: print ("Fetched ", count, " pages")
     if not WRITETHROUGH:
         writeList(processed)
     if pagename:
@@ -156,7 +156,7 @@ def getlinks(html):
                     NORETRIEVE.append(rg)
             if not rg in NORETRIEVE:
                 pages.append(rg)
-                print "got link: ",rg
+                print ("got link: ",rg)
     return pages
 
 def getimagelinks(html):
@@ -167,7 +167,7 @@ def getimagelinks(html):
 
 def fetchpage(page):
     "retrieves given page from the wiki"
-    print "fetching: ",page
+    print ("fetching: ",page)
     failcount = 0
     while failcount < MAXFAIL:
         try:
@@ -175,7 +175,7 @@ def fetchpage(page):
             return html
         except HTTPError:
             failcount += 1
-    print 'Error: unable to fetch page ' + page
+    print ('Error: unable to fetch page ' + page)
     sys.exit()
 
 def cleanList(pagelist):
@@ -193,7 +193,7 @@ def writeList(pages,filename="wikifiles.txt"):
     for p in pages:
         f.write(p+"\n")
     f.close()
-    if VERBOSE: print "written ",filename
+    if VERBOSE: print ("written ",filename)
 
 if __name__ == "__main__":
 	crawl(sys.argv[1:])

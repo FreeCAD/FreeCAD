@@ -488,7 +488,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
             App::DocumentObject* part = static_cast<Part::Feature*>(selobjs[i].getObject());
             if (!part) {
                 assert(0);
-                throw Base::Exception("Unexpected null pointer in CmdSketcherMapSketch::activated");
+                throw Base::ValueError("Unexpected null pointer in CmdSketcherMapSketch::activated");
             }
             std::vector<App::DocumentObject*> input = part->getOutList();
             if (std::find(input.begin(), input.end(), &sketch) != input.end()) {

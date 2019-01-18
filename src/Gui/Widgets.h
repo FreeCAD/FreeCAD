@@ -124,13 +124,15 @@ class GuiExport AccelLineEdit : public QLineEdit
   Q_OBJECT
 
 public:
-  AccelLineEdit ( QWidget * parent=0 );
+    AccelLineEdit(QWidget * parent=0);
+    bool isNone() const;
 
 protected:
-  void keyPressEvent ( QKeyEvent * e);
+    void keyPressEvent(QKeyEvent * e);
 
 private:
-  int keyPressedCount;
+    QString noneStr;
+    int keyPressedCount;
 };
 
 // ------------------------------------------------------------------------------

@@ -114,7 +114,7 @@
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation type="unfinished">Evaluate and repair mesh...</translation>
+      <translation>Оцінити і відновити полигональную сітку...</translation>
     </message>
   </context>
   <context>
@@ -293,7 +293,7 @@
     </message>
     <message>
       <source>Merges selected meshes into one</source>
-      <translation type="unfinished">Merges selected meshes into one</translation>
+      <translation>Об'єднати вибрані полігональні сітки в одну</translation>
     </message>
   </context>
   <context>
@@ -409,11 +409,11 @@
     </message>
     <message>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>Масштаб...</translation>
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation type="unfinished">Scale selected meshes</translation>
+      <translation>Масштабування вибраних полігональних сіток</translation>
     </message>
   </context>
   <context>
@@ -424,11 +424,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation type="unfinished">Create section from mesh and plane</translation>
+      <translation>Створити секцію з полігональної сітки і площини</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation type="unfinished">Section from mesh and plane</translation>
+      <translation>Секція з полігональної сітки і площини</translation>
     </message>
   </context>
   <context>
@@ -444,6 +444,21 @@
     <message>
       <source>Create mesh segments</source>
       <translation>Створити сегменти сітки</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMeshSegmentationBestFit</name>
+    <message>
+      <source>Mesh</source>
+      <translation>Сітка(Меш)</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces...</source>
+      <translation>Створити сегменти полігональної сітка з найкращої відповідності поверхонь...</translation>
+    </message>
+    <message>
+      <source>Create mesh segments from best-fit surfaces</source>
+      <translation>Створити сегменти полігональної сітка з найкращої відповідності поверхонь</translation>
     </message>
   </context>
   <context>
@@ -778,7 +793,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgEvaluateSettings</name>
     <message>
       <source>Evaluation settings</source>
-      <translation type="unfinished">Evaluation settings</translation>
+      <translation>Параметри обчислень</translation>
     </message>
     <message>
       <source>Settings</source>
@@ -786,15 +801,15 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation type="unfinished">Check for non-manifold points</translation>
+      <translation>Перевірити на наявність точок неоднорідностей</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation type="unfinished">Enable check for folds on surface</translation>
+      <translation>Увімкнути перевірку складок на поверхні</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
-      <translation type="unfinished">Only consider zero area faces as degenerated</translation>
+      <translation>Вважати пошкодженими тільки межі з нульовою площею</translation>
     </message>
   </context>
   <context>
@@ -899,7 +914,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
       <source>Mesh Formats</source>
-      <translation type="unfinished">Mesh Formats</translation>
+      <translation>Формати сітки</translation>
     </message>
     <message>
       <source>Export</source>
@@ -915,7 +930,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
-      <translation type="unfinished">Maximum mesh deviation</translation>
+      <translation>Максимальне відхилення полігональної сітки</translation>
     </message>
     <message>
       <source>mm</source>
@@ -923,7 +938,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Export AMF files using compression</source>
-      <translation type="unfinished">Export AMF files using compression</translation>
+      <translation>Експорт AMF файлів із стисненням</translation>
     </message>
   </context>
   <context>
@@ -954,7 +969,8 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Плоске згладжування/згладжування Фонга&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Задає зовнішній вигляд поверхонь.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;
+При плоскому згладжуванні нормалі поверхні не визначені для кожної вершини, що призводить до нереального появи кривих поверхонь, використання згладжування Фонга призводить до більш плавного вигляду. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Define normal per vertex</source>
@@ -1056,6 +1072,45 @@ Please run the command to repair folds first</source>
     <message>
       <source>Finish</source>
       <translation>Завершити</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::ParametersDialog</name>
+    <message>
+      <source>Surface fit</source>
+      <translation>Відповідність поверхні</translation>
+    </message>
+    <message>
+      <source>Parameters</source>
+      <translation>Параметри</translation>
+    </message>
+    <message>
+      <source>Selection</source>
+      <translation>Вибір</translation>
+    </message>
+    <message>
+      <source>Region</source>
+      <translation>Область</translation>
+    </message>
+    <message>
+      <source>Triangle</source>
+      <translation>Трикутник</translation>
+    </message>
+    <message>
+      <source>Clear</source>
+      <translation>Очистити</translation>
+    </message>
+    <message>
+      <source>Compute</source>
+      <translation>Обчислити</translation>
+    </message>
+    <message>
+      <source>No selection</source>
+      <translation>Нічого не вибрано</translation>
+    </message>
+    <message>
+      <source>Before fitting the surface select an area.</source>
+      <translation>Перед градуюванням поверхні виберіть область.</translation>
     </message>
   </context>
   <context>
@@ -1163,6 +1218,73 @@ Please run the command to repair folds first</source>
       <source>Sphere</source>
       <translation>Сфера</translation>
     </message>
+    <message>
+      <source>Curvature</source>
+      <translation>Кривизна</translation>
+    </message>
+    <message>
+      <source>Freeform</source>
+      <translation>Довільної форми</translation>
+    </message>
+    <message>
+      <source>Max. Curvature</source>
+      <translation>Макс. Кривизна</translation>
+    </message>
+    <message>
+      <source>Min. Curvature</source>
+      <translation>Мін. Кривизна</translation>
+    </message>
+  </context>
+  <context>
+    <name>MeshGui::SegmentationBestFit</name>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Сегментація сітки</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Сфера</translation>
+    </message>
+    <message>
+      <source>Tolerance</source>
+      <translation>Точність</translation>
+    </message>
+    <message>
+      <source>Minimum number of faces</source>
+      <translation>Мінімальна кількість граней</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Параметри...</translation>
+    </message>
+    <message>
+      <source>Plane</source>
+      <translation>Площини</translation>
+    </message>
+    <message>
+      <source>Cylinder</source>
+      <translation>Циліндр</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation>Основа</translation>
+    </message>
+    <message>
+      <source>Normal</source>
+      <translation>Звичайне</translation>
+    </message>
+    <message>
+      <source>Axis</source>
+      <translation>Вісь</translation>
+    </message>
+    <message>
+      <source>Radius</source>
+      <translation>Радіус</translation>
+    </message>
+    <message>
+      <source>Center</source>
+      <translation>Центр</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::Selection</name>
@@ -1207,6 +1329,13 @@ Please run the command to repair folds first</source>
     </message>
   </context>
   <context>
+    <name>Mesh_BoundingBox</name>
+    <message>
+      <source>Boundings of %1:</source>
+      <translation>Прив'язка %1:</translation>
+    </message>
+  </context>
+  <context>
     <name>Mesh_TrimByPlane</name>
     <message>
       <source>Select plane</source>
@@ -1234,7 +1363,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Unknown error occurred while running OpenSCAD.</source>
-      <translation type="unfinished">Unknown error occurred while running OpenSCAD.</translation>
+      <translation>Виникла невідома помилка при виконанні OpenSCAD.</translation>
     </message>
   </context>
   <context>
@@ -1400,11 +1529,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>All Mesh Files</source>
-      <translation type="unfinished">All Mesh Files</translation>
+      <translation>Всі файли полігональних сіток</translation>
     </message>
     <message>
       <source>Binary STL</source>
-      <translation type="unfinished">Binary STL</translation>
+      <translation>Двійковий STL</translation>
     </message>
     <message>
       <source>ASCII STL</source>
@@ -1412,23 +1541,23 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Binary Mesh</source>
-      <translation type="unfinished">Binary Mesh</translation>
+      <translation>Двійкова полигональная сітка</translation>
     </message>
     <message>
       <source>Alias Mesh</source>
-      <translation type="unfinished">Alias Mesh</translation>
+      <translation>Ім'я користувача сітки</translation>
     </message>
     <message>
       <source>Object File Format</source>
-      <translation type="unfinished">Object File Format</translation>
+      <translation>Формат файлу Object</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii</source>
-      <translation type="unfinished">Inventor V2.1 ascii</translation>
+      <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
-      <translation type="unfinished">Stanford Polygon</translation>
+      <translation>Stanford Polygon</translation>
     </message>
     <message>
       <source>All Files</source>
@@ -1436,7 +1565,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>X3D Extensible 3D</source>
-      <translation type="unfinished">X3D Extensible 3D</translation>
+      <translation>X3D Extensible 3D</translation>
     </message>
     <message>
       <source>VRML V2.0</source>
@@ -1444,15 +1573,15 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Compressed VRML 2.0</source>
-      <translation type="unfinished">Compressed VRML 2.0</translation>
+      <translation>Стиснутий VRML 2.0</translation>
     </message>
     <message>
       <source>Nastran</source>
-      <translation type="unfinished">Nastran</translation>
+      <translation>Nastran</translation>
     </message>
     <message>
       <source>Python module def</source>
-      <translation type="unfinished">Python module def</translation>
+      <translation>Python модуль</translation>
     </message>
     <message>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
@@ -1464,11 +1593,15 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Масштабування</translation>
     </message>
     <message>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Введіть коефіцієнт масштабування:</translation>
+    </message>
+    <message>
+      <source>Simple Model Format</source>
+      <translation>Простий формат моделі</translation>
     </message>
   </context>
   <context>

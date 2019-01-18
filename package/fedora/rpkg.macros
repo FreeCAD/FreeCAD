@@ -1,4 +1,4 @@
 function git_commits_no {
-	commits=$(git fetch --unshallow && git rev-list master --count)
-	echo $commits
+	commits=$(curl -s 'https://api.github.com/repos/FreeCAD/FreeCAD/compare/120ca87015...master' | grep "ahead_by" | sed -s 's/ //g' | sed -s 's/"ahead_by"://' | sed -s 's/,//')
+	echo $((commits + 1))
 }

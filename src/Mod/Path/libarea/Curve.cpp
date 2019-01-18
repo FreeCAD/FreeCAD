@@ -269,9 +269,9 @@ void CCurve::FitArcs(bool retry)
 
 	if(arc_added)
 	{
-		m_vertices.clear();
-		for(std::list<CVertex>::iterator It = new_vertices.begin(); It != new_vertices.end(); It++)m_vertices.push_back(*It);
-		for(std::list<const CVertex*>::iterator It = might_be_an_arc.begin(); It != might_be_an_arc.end(); It++)m_vertices.push_back(*(*It));
+        for(auto *v : might_be_an_arc)
+            new_vertices.push_back(*v);
+        m_vertices.swap(new_vertices);
 	}
 }
 
@@ -466,7 +466,7 @@ void CCurve::Reverse()
 		prev_v = &v;
 	}
 
-	m_vertices = new_vertices;
+	m_vertices.swap(new_vertices);
 }
 
 double CCurve::GetArea()const
@@ -556,7 +556,7 @@ void CCurve::ChangeStart(const Point &p) {
 
 	if(started)
 	{
-		*this = new_curve;
+		m_vertices.swap(new_curve.m_vertices);
 	}
 }
 
@@ -656,7 +656,7 @@ void CCurve::RemoveTinySpans() {
 			new_curve.m_vertices.push_back(vertex);
 		}
 	}
-	*this = new_curve;
+    m_vertices.swap(new_curve.m_vertices);
 }
 
 void CCurve::ChangeEnd(const Point &p) {
@@ -691,7 +691,7 @@ void CCurve::ChangeEnd(const Point &p) {
 		prev_p = &(vertex.m_p);
 	}
 
-	*this = new_curve;
+	m_vertices.swap(new_curve.m_vertices);
 }
 
 Point CCurve::NearestPoint(const Span& p, double *d)const

@@ -99,7 +99,7 @@
     </message>
     <message>
       <source>Vertically center-align</source>
-      <translation>Выровнять центры по вертикали</translation>
+      <translation>Выровнять вертикально по центру</translation>
     </message>
     <message>
       <source>Center-align contents vertically of selected cells</source>
@@ -159,11 +159,11 @@
     </message>
     <message>
       <source>Set alias</source>
-      <translation>Установить имя</translation>
+      <translation>Установить псевдоним</translation>
     </message>
     <message>
       <source>Set alias for selected cell</source>
-      <translation>Установить имя для выбранной ячейки</translation>
+      <translation>Установить псевдоним для выбранной ячейки</translation>
     </message>
   </context>
   <context>
@@ -301,11 +301,11 @@
     </message>
     <message>
       <source>&amp;Display unit</source>
-      <translation>&amp;Единица измерения</translation>
+      <translation>&amp;Показывать Единицы измерения</translation>
     </message>
     <message>
       <source>Unit string</source>
-      <translation>Строка блока</translation>
+      <translation>Строка единицы измерения</translation>
     </message>
     <message>
       <source>A&amp;lias</source>
@@ -395,7 +395,7 @@
     </message>
     <message>
       <source>Dark cyan</source>
-      <translation>Тёмно голубой</translation>
+      <translation>Тёмно-голубой</translation>
     </message>
     <message>
       <source>Magenta</source>
@@ -445,7 +445,7 @@
     <name>SpreadsheetGui::Module</name>
     <message>
       <source>Unnamed</source>
-      <translation>Без имени</translation>
+      <translation>Безымянный</translation>
     </message>
   </context>
   <context>

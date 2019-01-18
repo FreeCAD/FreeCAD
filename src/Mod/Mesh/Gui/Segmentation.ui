@@ -50,10 +50,10 @@
       <item row="0" column="1">
        <widget class="QDoubleSpinBox" name="tolPln">
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
       </item>
@@ -89,20 +89,17 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Radius</string>
+         <string>Curvature</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="radCyl">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
+       <widget class="QDoubleSpinBox" name="crvCyl">
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <double>5.000000000000000</double>
+         <double>0.200000000000000</double>
         </property>
        </widget>
       </item>
@@ -116,10 +113,10 @@
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="tol1Cyl">
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
       </item>
@@ -133,10 +130,10 @@
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="tol2Cyl">
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
       </item>
@@ -172,20 +169,17 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Radius</string>
+         <string>Curvature</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::QuantitySpinBox" name="radSph">
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
+       <widget class="QDoubleSpinBox" name="crvSph">
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <double>5.000000000000000</double>
+         <double>0.200000000000000</double>
         </property>
        </widget>
       </item>
@@ -199,10 +193,10 @@
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="tolSph">
         <property name="singleStep">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <double>0.100000000000000</double>
+         <double>0.010000000000000</double>
         </property>
        </widget>
       </item>
@@ -226,15 +220,105 @@
      </layout>
     </widget>
    </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBoxFree">
+     <property name="title">
+      <string>Freeform</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Max. Curvature</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="crv1Free">
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.200000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Tolerance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="tol1Free">
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Min. Curvature</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="crv2Free">
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.200000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Tolerance</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="tol2Free">
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="value">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>Minimum number of faces</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QSpinBox" name="numFree">
+        <property name="maximum">
+         <number>100000</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

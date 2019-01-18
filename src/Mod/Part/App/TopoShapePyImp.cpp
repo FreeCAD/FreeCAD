@@ -41,11 +41,14 @@
 #endif
 # include <BRepExtrema_SupportType.hxx>
 # include <BRepBndLib.hxx>
+# include <BRep_Tool.hxx>
 # include <gp_Ax1.hxx>
 # include <gp_Ax2.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Pnt.hxx>
 # include <gp_Trsf.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <Poly_Triangulation.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Iterator.hxx>
@@ -71,6 +74,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
+#include <App/PropertyStandard.h>
 #include <CXX/Extensions.hxx>
 
 #include "TopoShape.h"
@@ -283,21 +287,32 @@ PyObject*  TopoShapePy::read(PyObject *args)
     Py_Return;
 }
 
-PyObject* TopoShapePy::writeInventor(PyObject * args)
+PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
 {
+    static char *kwlist[] = {"Mode", "Deviation", "Angle", "FaceColors", NULL};
+
     double dev=0.3, angle=0.4;
     int mode=2;
-    if (!PyArg_ParseTuple(args, "|idd", &mode,&dev,&angle))
+    PyObject* pylist=nullptr;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist,
+                                     &mode,&dev,&angle,&pylist))
         return NULL;
+
+    std::vector<App::Color> faceColors;
+    if (pylist) {
+        App::PropertyColorList prop;
+        prop.setPyObject(pylist);
+        faceColors = prop.getValues();
+    }
 
     std::stringstream result;
     BRepMesh_IncrementalMesh(getTopoShapePtr()->getShape(),dev);
     if (mode == 0)
-        getTopoShapePtr()->exportFaceSet(dev, angle, result);
+        getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
     else if (mode == 1)
         getTopoShapePtr()->exportLineSet(result);
     else {
-        getTopoShapePtr()->exportFaceSet(dev, angle, result);
+        getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
         getTopoShapePtr()->exportLineSet(result);
     }
     // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
@@ -1605,7 +1620,11 @@ PyObject* TopoShapePy::makeChamfer(PyObject *args)
                     if (edge.ShapeType() == TopAbs_EDGE) {
                         //Add edge to fillet algorithm
                         const TopoDS_Face& face = TopoDS::Face(mapEdgeFace.FindFromKey(edge).First());
+#if OCC_VERSION_HEX > 0x070300
+                        mkChamfer.Add(radius, radius, TopoDS::Edge(edge), face);
+#else
                         mkChamfer.Add(radius, TopoDS::Edge(edge), face);
+#endif
                     }
                 }
             }

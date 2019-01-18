@@ -69,6 +69,9 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidge
     ui->draftAngle->selectAll();
     QMetaObject::invokeMethod(ui->draftAngle, "setFocus", Qt::QueuedConnection);
 
+    // Bind input fields to properties
+    ui->draftAngle->bind(pcDraft->Angle);
+
     bool r = pcDraft->Reversed.getValue();
     ui->checkReverse->setChecked(r);
 

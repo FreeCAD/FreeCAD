@@ -111,10 +111,10 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
 }
 
 Base::Placement GeoFeatureGroupExtension::globalGroupPlacement() {
-    
+
     if(getExtendedObject()->isRecomputing())
-        throw Base::Exception("Global placement cannot be calculated on recompute");
-    
+        throw Base::RuntimeError("Global placement cannot be calculated on recompute");
+
     return recursiveGroupPlacement(this);
 }
 
@@ -217,7 +217,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p) {
             //if an error was found we need to correct the values and inform the user
             if(error) {
                 Group.setValues(corrected);
-                throw Base::Exception("Object can only be in a single GeoFeatureGroup");
+                throw Base::RuntimeError("Object can only be in a single GeoFeatureGroup");
             }
         }
     }
