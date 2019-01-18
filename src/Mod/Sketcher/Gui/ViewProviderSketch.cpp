@@ -5505,6 +5505,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
     ViewProvider2DObject::updateData(prop);
 
     if (edit && (prop == &(getSketchObject()->Geometry) ||
+                 prop == &(getSketchObject()->ExternalGeo) ||
                  prop == &(getSketchObject()->Constraints))) {
         edit->FullyConstrained = false;
         // At this point, we do not need to solve the Sketch 
@@ -5524,8 +5525,10 @@ void ViewProviderSketch::updateData(const App::Property *prop)
                 draw(false,true);
             
             signalConstraintsChanged();
-            signalElementsChanged();
         }
+
+        if(prop != &getSketchObject()->Constraints)
+            signalElementsChanged();
     }
 }
 

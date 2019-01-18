@@ -7301,6 +7301,7 @@ void SketchObject::onChanged(const App::Property* prop)
                     geo->Ref.clear();
                 }
                 geo->setFlag(Part::Geometry::Detached,false);
+                geo->setFlag(Part::Geometry::Missing,false);
             }
             if(geo->Id > geoLastId)
                 geoLastId = geo->Id;
