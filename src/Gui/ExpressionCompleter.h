@@ -7,6 +7,7 @@
 #include <QPlainTextEdit>
 #include <set>
 #include <memory>
+#include <App/DocumentObserver.h>
 
 class QStandardItem;
 
@@ -15,7 +16,6 @@ class Document;
 class DocumentObject;
 class Property;
 class ObjectIdentifier;
-class DocumentObjectT;
 }
 
 namespace Gui {
@@ -41,7 +41,7 @@ private:
     virtual QStringList splitPath ( const QString & path ) const;
 
     int prefixStart;
-    std::unique_ptr<App::DocumentObjectT> currentObj;
+    App::DocumentObjectT currentObj;
 
 };
 

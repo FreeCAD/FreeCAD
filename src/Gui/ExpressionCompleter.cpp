@@ -299,7 +299,7 @@ private:
  */
 
 ExpressionCompleter::ExpressionCompleter(const App::DocumentObject * currentDocObj, QObject *parent)
-    : QCompleter(parent), prefixStart(0), currentObj(new App::DocumentObjectT(currentDocObj))
+    : QCompleter(parent), prefixStart(0), currentObj(currentDocObj)
 {
     setCaseSensitivity(Qt::CaseInsensitive);
 }
@@ -308,7 +308,7 @@ void ExpressionCompleter::init() {
     if(model())
         return;
 
-    setModel(new ExpressionCompleterModel(this,currentObj->getObject()));
+    setModel(new ExpressionCompleterModel(this,currentObj.getObject()));
 }
 
 
@@ -343,7 +343,7 @@ QStringList ExpressionCompleter::splitPath ( const QString & input ) const
     while(1) {
         try {
             App::ObjectIdentifier p = ObjectIdentifier::parse(
-                    currentObj->getObject(), path);
+                    currentObj.getObject(), path);
 
             std::vector<std::string> sl = p.getStringList();
             std::vector<std::string>::const_iterator sli = sl.begin();
