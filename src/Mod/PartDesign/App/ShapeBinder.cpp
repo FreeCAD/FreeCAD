@@ -409,8 +409,14 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::s
             FC_THROWM(Base::ValueError, "Cyclic referece to " << v.first->getFullName());
     }
 
-    for(auto &v : values) 
-        Support.addValue(v.first,std::move(v.second),reset);
+    if(!reset) {
+        for(auto &link : Support.getSubListValues()) {
+            const auto &subs = link.getSubValues();
+            auto &s = values[link.getValue()];
+            s.insert(s.end(),subs.begin(),subs.end());
+        }
+    }
+    Support.setValues(std::move(values));
 }
     
 void SubShapeBinder::handleChangedPropertyType(

@@ -218,18 +218,10 @@ ViewProviderSubShapeBinder::ViewProviderSubShapeBinder() {
     LineWidth.setValue(1);
 }
 
-bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject *obj, 
-        App::DocumentObject *owner, const char *, const std::vector<std::string> &) const
+bool ViewProviderSubShapeBinder::canDropObjectEx(App::DocumentObject *, 
+        App::DocumentObject *, const char *, const std::vector<std::string> &) const
 {
-    auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
-    if(!self) return false;
-    auto doc = getDocument()->getDocument();
-    if(self->Relative.getValue()) {
-        if(!owner)
-            owner = obj;
-        return owner->getDocument()==doc;
-    }else
-        return obj->getDocument()==doc;
+    return true;
 }
 
 std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, App::DocumentObject *owner,
@@ -237,17 +229,22 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject *obj, A
 {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
     if(!self) return std::string();
+    std::map<App::DocumentObject *, std::vector<std::string> > values;
     if(!subname) subname = "";
-    std::vector<std::string> subs;
-    if(elements.size()) {
-        subs.reserve(elements.size());
-        std::string sub(subname);
-        for(auto &element : elements)
-            subs.push_back(sub+element);
+    std::string sub(subname);
+    if(sub.empty()) 
+        values[owner?owner:obj] = elements;
+    else {
+        std::vector<std::string> subs;
+        if(elements.size()) {
+            subs.reserve(elements.size());
+            for(auto &element : elements)
+                subs.push_back(sub+element);
+        }else
+            subs.push_back(sub);
+        values[owner?owner:obj] = std::move(subs);
     }
 
-    std::map<App::DocumentObject *, std::vector<std::string> > values;
-    values[owner?owner:obj] = elements;
     self->setLinks(std::move(values),QApplication::keyboardModifiers()==Qt::ControlModifier);
     if(self->Relative.getValue())
         updatePlacement(false);

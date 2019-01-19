@@ -409,6 +409,8 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         commitCommand();
     }catch(Base::Exception &e) {
         e.ReportException();
+        QMessageBox::critical(Gui::getMainWindow(), 
+                QObject::tr("Sub-Shape Binder"), QString::fromUtf8(e.what()));
         abortCommand();
     }
 }
