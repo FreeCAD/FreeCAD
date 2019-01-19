@@ -938,12 +938,11 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
     // However, we must let it here otherwise deleting MDI child views directly can
     // cause other problems.
     //
-    // The above mentioned problem can be fixed by sending ChildRemoved event instead.
+    // The above mentioned problem can be fixed by setParent(0) which triggers a
+    // ChildRemoved event being handled properly inside QMidArea::viewportEvent()
     //
     auto subwindow = qobject_cast<QMdiSubWindow*>(parent);
     if(subwindow && d->mdiArea->subWindowList().contains(subwindow)) {
-        QChildEvent childRemoved(QEvent::ChildRemoved, subwindow);
-        QApplication::sendEvent(d->mdiArea, &childRemoved);
         subwindow->setParent(0);
 
         assert(!d->mdiArea->subWindowList().contains(subwindow));
