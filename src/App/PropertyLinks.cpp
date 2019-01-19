@@ -3809,7 +3809,7 @@ Property *PropertyXLinkSubList::Copy(void) const
 {
     PropertyXLinkSubList *p = new PropertyXLinkSubList();
     for(auto &l : _Links) {
-        p->_Links.emplace_back();
+        p->_Links.emplace_back(testFlag(LinkAllowPartial),p);
         l.copyTo(p->_Links.back());
     }
     return p;
@@ -3824,13 +3824,7 @@ void PropertyXLinkSubList::Paste(const Property &from)
     _Links.clear();
     for(auto &l : static_cast<const PropertyXLinkSubList&>(from)._Links) {
         _Links.emplace_back(testFlag(LinkAllowPartial),this);
-        if(l._pcLink)
-            _Links.back()._setValue(const_cast<DocumentObject*>(l._pcLink),
-                    std::vector<std::string>(l._SubList));
-        else
-            _Links.back()._setValue(
-                    std::string(l.filePath),std::string(l.objectName),
-                    std::vector<std::string>(l._SubList));
+        _Links.back().Paste(l);
     }
     hasSetValue();
 }
