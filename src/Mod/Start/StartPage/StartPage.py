@@ -332,9 +332,12 @@ def handle():
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowExamples",True):
         SECTION_EXAMPLES = encode("<h2>"+TranslationTexts.T_EXAMPLES+"</h2>")
         SECTION_EXAMPLES += "<ul>"
-        for basename in os.listdir(FreeCAD.getResourceDir()+"examples"):
-            filename = FreeCAD.getResourceDir()+"examples"+os.sep+basename
-            SECTION_EXAMPLES += encode(buildCard(filename,method="LoadExample.py?filename="))
+        examples_path = FreeCAD.getResourceDir()+"examples"
+        if os.path.exists(examples_path):
+            examples = os.listdir(examples_path)
+            for basename in examples:
+                filename = FreeCAD.getResourceDir()+"examples"+os.sep+basename
+                SECTION_EXAMPLES += encode(buildCard(filename,method="LoadExample.py?filename="))
         SECTION_EXAMPLES += "</ul>"
     HTML = HTML.replace("SECTION_EXAMPLES",SECTION_EXAMPLES)
 
