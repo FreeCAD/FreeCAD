@@ -730,7 +730,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
 #endif
 
     FC_TRACE("clearing selection");
-    Gui::Selection().clearSelection(docname);
+    Gui::Selection().clearSelection();
     FC_TRACE("add selection");
     bool ok = Gui::Selection().addSelection(docname, objectName.c_str() ,subName.c_str(), 
             pt[0] ,pt[1] ,pt[2], &sels);
