@@ -277,9 +277,17 @@ void SubShapeBinder::update() {
             subs.erase(none);
         for(const auto &sub : subs) {
             try {
-                const auto &shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
-                if(!shape.isNull())
+                auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
+                if(!shape.isNull()) {
+                    if(shape.Hasher 
+                            && shape.getElementMapSize() 
+                            && shape.Hasher != getDocument()->getStringHasher()) 
+                    {
+                        shape.reTagElementMap(getID(),
+                                getDocument()->getStringHasher(),TOPOP_SHAPEBINDER);
+                    }
                     shapes.push_back(shape);
+                }
             } catch(Base::Exception &e) {
                 e.ReportException();
                 FC_ERR(getFullName() << " failed to obtain shape from " 
