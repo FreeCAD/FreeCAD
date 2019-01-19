@@ -56,7 +56,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.Side = ['Outside', 'Inside']  # side of profile that cutter is on in relation to direction of profile
         obj.addProperty("App::PropertyEnumeration", "Direction", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the profile runs
-        obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "make True, if using Cutter Radius Compensation"))
+        obj.addProperty("App::PropertyBool", "UseComp", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Make True, if using Cutter Radius Compensation"))
 
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Extra value to stay away from final profile- good for roughing toolpath"))
         obj.addProperty("App::PropertyEnumeration", "JoinType", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property", "Controls how tool moves around corners. Default=Round"))
@@ -130,7 +130,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 params['orientation'] = 0
 
         return params
-    
+
     def areaOpUseProjection(self, obj):
         '''areaOpUseProjection(obj) ... returns True'''
         return True
