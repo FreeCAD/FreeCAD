@@ -42,7 +42,7 @@ GroupExtension::GroupExtension()
 {
     initExtensionType(GroupExtension::getExtensionClassTypeId());
     
-    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
+    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_None),"List of referenced objects");
 }
 
 GroupExtension::~GroupExtension()
