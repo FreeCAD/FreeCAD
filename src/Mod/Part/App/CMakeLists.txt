@@ -51,6 +51,7 @@ generate_from_xml(ArcOfHyperbolaPy)
 generate_from_xml(ParabolaPy)
 generate_from_xml(OffsetCurvePy)
 generate_from_xml(GeometryPy)
+generate_from_xml(GeometryExtensionPy)
 generate_from_xml(GeometryCurvePy)
 generate_from_xml(BoundedCurvePy)
 generate_from_xml(TrimmedCurvePy)
@@ -211,6 +212,8 @@ SET(Python_SRCS
     OffsetCurvePyImp.cpp
     GeometryPy.xml
     GeometryPyImp.cpp
+    GeometryExtensionPy.xml
+    GeometryExtensionPyImp.cpp
     GeometryCurvePy.xml
     GeometryCurvePyImp.cpp
     BoundedCurvePy.xml
