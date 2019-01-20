@@ -45,6 +45,8 @@ class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
 {
     TYPESYSTEM_HEADER();
 public:
+    SketchGeometryExtension();
+    SketchGeometryExtension(long cid);
     virtual ~SketchGeometryExtension();
 
     // Persistence implementer ---------------------

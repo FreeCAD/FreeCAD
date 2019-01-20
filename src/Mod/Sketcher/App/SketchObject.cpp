@@ -80,6 +80,7 @@
 #include "SketchObject.h"
 #include "Sketch.h"
 #include <Mod/Sketcher/App/SketchObjectPy.h>
+#include <Mod/Sketcher/App/SketchGeometryExtensionPy.h>
 
 
 #undef DEBUG
@@ -91,6 +92,16 @@ using namespace Base;
 //---------- Geometry Extension
 
 TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryExtension)
+
+SketchGeometryExtension::SketchGeometryExtension():id(0)
+{
+
+}
+
+SketchGeometryExtension::SketchGeometryExtension(long cid):id(cid)
+{
+
+}
 
 SketchGeometryExtension::~SketchGeometryExtension()
 {
@@ -125,7 +136,7 @@ std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) con
 
 PyObject * SketchGeometryExtension::getPyObject(void)
 {
-    return 0;
+    return new SketchGeometryExtensionPy(new SketchGeometryExtension(this->id));
 }
 
 
