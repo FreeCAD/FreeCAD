@@ -90,6 +90,8 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
             // get only geometric types
             if (objType.isDerivedFrom(App::GeoFeature::getClassTypeId()))
                 baseType = App::GeoFeature::getClassTypeId();
+            else
+                baseType = App::DocumentObject::getClassTypeId();
 
             // get the direct base class of App::DocumentObject which 'obj' is derived from
             while (!objType.isBad()) {
