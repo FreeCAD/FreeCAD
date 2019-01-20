@@ -153,4 +153,28 @@ def get_stats(resultobj, result_type):
     return stats
 
 
+def compact_result(res_obj):
+    '''
+    compacts result.Mesh and appropriate result.NodeNumbers
+    '''
+    # as workaround for https://www.freecadweb.org/tracker/view.php?id=2873
+
+    # get compact mesh data
+    from femmesh.meshtools import compact_mesh as cm
+    compact_femmesh_data = cm(res_obj.Mesh.FemMesh)
+    compact_femmesh = compact_femmesh_data[0]
+    node_map = compact_femmesh_data[1]
+    # elem_map = compact_femmesh_data[2]  # FreeCAD result obj does not support elem results ATM
+
+    # set result mesh
+    res_obj.Mesh.FemMesh = compact_femmesh
+
+    # set result node numbers
+    new_node_numbers = []
+    for old_node_id in res_obj.NodeNumbers:
+        new_node_numbers.append(node_map[old_node_id])
+    res_obj.NodeNumbers = new_node_numbers
+
+    return res_obj
+
 ##  @}
