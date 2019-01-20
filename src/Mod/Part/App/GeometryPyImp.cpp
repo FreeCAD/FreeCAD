@@ -51,6 +51,7 @@
 #include "GeometryPy.h"
 #include "GeometryPy.cpp"
 
+#include "GeometryExtensionPy.h"
 #include "TopoShape.h"
 #include "TopoShapePy.h"
 
@@ -237,6 +238,57 @@ PyObject* GeometryPy::clone(PyObject *args)
     }
     geompy->_pcTwinPointer = geom->clone();
     return cpy;
+}
+
+PyObject* GeometryPy::setExtension(PyObject *args)
+{
+    PyObject* o;
+    if (PyArg_ParseTuple(args, "O!", &(GeometryExtensionPy::Type),&o)) {
+        Part::GeometryExtension * ext;
+        ext = static_cast<GeometryExtensionPy *>(o)->getGeometryExtensionPtr();
+
+        std::unique_ptr<GeometryExtension> cpy = ext->copy(); // allocate new extension in memory
+
+        this->getGeometryPtr()->setExtension(std::move(cpy));
+        Py_Return;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A geometry extension object was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::getExtension(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        Base::Type type = Base::Type::fromName(o);
+
+        if(type != Base::Type::badType()) {
+            try {
+                const std::weak_ptr<GeometryExtension> ext = this->getGeometryPtr()->getExtension(type);
+
+                std::unique_ptr<GeometryExtension> cext = ext.lock()->copy();
+
+                GeometryExtension * pcext = cext.release();
+
+                return pcext->getPyObject();
+            }
+            catch(Base::ValueError e) {
+                PyErr_SetString(PartExceptionOCCError, e.what());
+                return 0;
+            }
+        }
+        else
+        {
+            PyErr_SetString(PartExceptionOCCError, "Exception type does not exist");
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the name of the geometry extension type was expected");
+    return 0;
 }
 
 Py::Boolean GeometryPy::getConstruction(void) const
