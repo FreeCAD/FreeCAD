@@ -305,7 +305,7 @@ void Geometry::setExtension(std::unique_ptr<GeometryExtension> geo)
 {
     bool hasext=false;
 
-    for( auto ext : extensions) {
+    for( auto & ext : extensions) {
         if(ext->getTypeId() == geo->getTypeId()){
             ext = std::move(geo);
             hasext = true;
