@@ -170,7 +170,6 @@ class JobCreate:
         self.dialog.modelTree.setEditTriggers(QtGui.QAbstractItemView.AllEditTriggers)
         self.dialog.modelTree.setSelectionBehavior(QtGui.QAbstractItemView.SelectItems)
 
-        self.model.dataChanged.connect(self.updateData)
         self.dialog.modelGroup.show()
 
     def updateData(self, topLeft, bottomRight):
@@ -261,7 +260,13 @@ class JobCreate:
         return self.dialog.jobTemplate.itemData(self.dialog.jobTemplate.currentIndex())
 
     def exec_(self):
-        return self.dialog.exec_()
+        # ml: For some reason the callback has to be unregistered, otherwise there is a
+        # segfault when python is shutdown. To keep it symmetric I also put the callback
+        # registration here
+        self.model.dataChanged.connect(self.updateData)
+        rc = self.dialog.exec_()
+        self.model.dataChanged.disconnect()
+        return rc
 
 
 class JobTemplateExport:
