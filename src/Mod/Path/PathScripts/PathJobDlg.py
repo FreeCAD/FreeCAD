@@ -81,6 +81,10 @@ class JobCreate:
 
         self.candidates = sorted(PathJob.ObjectJob.baseCandidates(), key=lambda o: o.Label)
 
+        # If there is only one possibility we might as well make sure it's selected
+        if not preSelected and 1 == len(self.candidates):
+            preSelected = Counter([self.candidates[0].Label])
+
         expandSolids = False
         expand2Ds    = False
         expandJobs   = False
