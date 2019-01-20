@@ -27,7 +27,7 @@
 // #define AREA_OFFSET_ALGO
 
 /** \file
- * Parameters definition for Path::Area and its companion 
+ * Parameters definition for Path::Area and its companion
  * See \ref ParamPage "here" for details of parameter definition.
  */
 
@@ -37,7 +37,7 @@
 #define AREA_CLIPPER_FILL_TYPE \
     (NonZero)(EvenOdd)(Positive)(Negative),(ClipperLib::PolyFillType,ClipperLib::pft)
 
-/** Paramerters of clipper fill types */
+/** Parameters of clipper fill types */
 #define AREA_PARAMS_CLIPPER_FILL \
     ((enum2,subject_fill,SubjectFill,0,\
         "ClipperLib subject fill type. \nSee https://goo.gl/5pYQQP",AREA_CLIPPER_FILL_TYPE))\
@@ -72,7 +72,7 @@
         "'Edges' means separate to edges before Union. ClipperLib seems to have an.\n"\
         "urge to close open wires.",(None)(Union)(Edges)))\
     AREA_PARAMS_DEFLECTION \
-    AREA_PARAMS_CLIPPER_FILL 
+    AREA_PARAMS_CLIPPER_FILL
 
 #define AREA_PARAMS_FIT_ARCS \
     ((bool,fit_arcs,FitArcs,true,"Enable arc fitting"))
@@ -94,7 +94,7 @@
         "ClipperLib operate on integers. This is the scale factor to convert\n"\
         "floating points.",App::PropertyFloat))
 
-/** Pocket parameters 
+/** Pocket parameters
  *
  * These parameters cooresponds to CAreaPocketParams in libarea
  * */
@@ -226,7 +226,7 @@
         "as connected. You may want to set this to the tool diameter to keep the tool down.",\
         App::PropertyLength))\
     ((enum, retract_axis, RetractAxis, 2,"Tool retraction axis",(X)(Y)(Z)))
-       
+
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
     AREA_PARAMS_ARC_PLANE \
