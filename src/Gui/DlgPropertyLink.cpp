@@ -34,6 +34,7 @@
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
 
+#include "BitmapFactory.h"
 #include "DlgPropertyLink.h"
 #include "Application.h"
 #include "ViewProviderDocumentObject.h"
@@ -62,6 +63,8 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
     }
 
     ui->setupUi(this);
+    ui->typeTree->hide();
+
     if(!xlink) 
         ui->comboBox->hide();
     else {
@@ -73,7 +76,38 @@ DlgPropertyLink::DlgPropertyLink(const QStringList& list, QWidget* parent, Qt::W
                 ui->comboBox->setCurrentIndex(ui->comboBox->count()-1);
         }
     }
-    findObjects(ui->checkObjectType->isChecked());
+
+    Base::Type baseType;
+
+    App::Document *linkedDoc = doc;
+    if (link.size()>FC_XLINK_VALUE_INDEX) 
+        linkedDoc = App::GetApplication().getDocument(qPrintable(link[FC_XLINK_VALUE_INDEX]));
+    if(linkedDoc) {    
+        QString objName = link[1]; // linked object name
+        auto obj = linkedDoc->getObject((const char*)objName.toLatin1());
+        if (obj && inList.find(obj)==inList.end()) {
+            Base::Type objType = obj->getTypeId();
+            // get only geometric types
+            if (objType.isDerivedFrom(App::GeoFeature::getClassTypeId()))
+                baseType = App::GeoFeature::getClassTypeId();
+
+            // get the direct base class of App::DocumentObject which 'obj' is derived from
+            while (!objType.isBad()) {
+                std::string name = objType.getName();
+                Base::Type parType = objType.getParent();
+                if (parType == baseType) {
+                    baseType = objType;
+                    break;
+                }
+                objType = parType;
+            }
+        }
+    }
+    if(!baseType.isBad()) {
+        types.insert(baseType.getName());
+        ui->checkObjectType->setChecked(true);
+    }else
+        findObjects();
 
     connect(ui->treeWidget, SIGNAL(itemExpanded(QTreeWidgetItem*)),
             this, SLOT(onItemExpanded(QTreeWidgetItem*)));
@@ -91,7 +125,7 @@ DlgPropertyLink::~DlgPropertyLink()
 void DlgPropertyLink::setSelectionMode(QAbstractItemView::SelectionMode mode)
 {
     ui->treeWidget->setSelectionMode(mode);
-    findObjects(ui->checkObjectType->isChecked());
+    findObjects();
 }
 
 void DlgPropertyLink::accept()
@@ -165,8 +199,9 @@ QVariantList DlgPropertyLink::propertyLinkList() const
     return varList;
 }
 
-void DlgPropertyLink::findObjects(bool on)
+void DlgPropertyLink::findObjects()
 {
+    bool filterType = ui->checkObjectType->isChecked();
     ui->treeWidget->clear();
 
     QString docName = link[0]; // document name of the owner object of this editing property
@@ -174,33 +209,6 @@ void DlgPropertyLink::findObjects(bool on)
     bool isSingleSelection = (ui->treeWidget->selectionMode() == QAbstractItemView::SingleSelection);
     App::Document* doc = App::GetApplication().getDocument((const char*)docName.toLatin1());
     if (doc) {
-        Base::Type baseType = App::DocumentObject::getClassTypeId();
-        if (!on) {
-            App::Document *linkedDoc = doc;
-            if (link.size()>FC_XLINK_VALUE_INDEX) 
-                linkedDoc = App::GetApplication().getDocument(qPrintable(link[FC_XLINK_VALUE_INDEX]));
-            if(linkedDoc) {    
-                QString objName = link[1]; // linked object name
-                auto obj = linkedDoc->getObject((const char*)objName.toLatin1());
-                if (obj && inList.find(obj)==inList.end()) {
-                    Base::Type objType = obj->getTypeId();
-                    // get only geometric types
-                    if (objType.isDerivedFrom(App::GeoFeature::getClassTypeId()))
-                        baseType = App::GeoFeature::getClassTypeId();
-
-                    // get the direct base class of App::DocumentObject which 'obj' is derived from
-                    while (!objType.isBad()) {
-                        std::string name = objType.getName();
-                        Base::Type parType = objType.getParent();
-                        if (parType == baseType) {
-                            baseType = objType;
-                            break;
-                        }
-                        objType = parType;
-                    }
-                }
-            }
-        }
 
         // build list of objects names already in property so we can mark them as selected later on
         std::set<std::string> selectedNames;
@@ -228,10 +236,76 @@ void DlgPropertyLink::findObjects(bool on)
             }
         }
 
-        for(auto obj : doc->getObjectsOfType(baseType)) {
+        Base::PyGILStateLocker lock;
+        std::map<std::string,QIcon> typeInfos;
+
+        for(auto obj : doc->getObjects()) {
+            auto it = types.end();
+            auto prop = Base::freecad_dynamic_cast<App::PropertyPythonObject>(
+                    obj->getPropertyByName("Proxy"));
+            bool pass = false;
+            if(prop && !prop->getValue().isNone()) {
+                std::string typeName = prop->getValue().type().as_string();
+                if(refreshTypes) {
+                    QIcon &icon = typeInfos[typeName];
+                    if(icon.isNull()) {
+                        auto vp = Application::Instance->getViewProvider(obj);
+                        if(vp)
+                            icon = vp->getIcon();
+                    }
+                }
+                if(filterType)
+                    pass = types.count(typeName);
+            }
+            if(refreshTypes) {
+                auto type = obj->getTypeId();
+                QIcon &icon = typeInfos[type.getName()];
+                if(!prop && icon.isNull()) {
+                    auto vp = Application::Instance->getViewProvider(obj);
+                    if(vp)
+                        icon = vp->getIcon();
+                }
+                for(type = type.getParent();!type.isBad();type=type.getParent())
+                    typeInfos.emplace(type.getName(),QIcon());
+            }
+            if(filterType && !pass && types.size()) {
+                for(auto type = obj->getTypeId();!type.isBad();type=type.getParent()) {
+                    it = types.find(type.getName());
+                    if(it!=types.end())
+                        break;
+                }
+                if(it == types.end())
+                    continue;
+            }
+
             auto item = createItem(obj,0);
             if(item && selectedNames.count(obj->getNameInDocument())) 
                 item->setSelected(true);
+        }
+
+        if(refreshTypes) {
+            refreshTypes = false;
+            ui->typeTree->blockSignals(true);
+            ui->typeTree->clear();
+            QTreeWidgetItem *selected = 0;
+            QIcon icon = BitmapFactory().pixmap("px");
+            for(auto &v : typeInfos) {
+                auto item = new QTreeWidgetItem(ui->typeTree);
+                item->setText(0,QString::fromLatin1(v.first.c_str()));
+                item->setIcon(0,v.second.isNull()?icon:v.second);
+                if(types.count(v.first)) {
+                    item->setSelected(true);
+                    if(!selected)
+                        selected = item;
+                }
+            }
+            if(selected)
+                ui->typeTree->scrollToItem(selected);
+            ui->typeTree->blockSignals(false);
+            if(types.size() && !selected) {
+                types.clear();
+                findObjects();
+            }
         }
     }
 }
@@ -287,20 +361,27 @@ void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {
 
 void DlgPropertyLink::on_checkObjectType_toggled(bool on)
 {
-    findObjects(on);
+    ui->typeTree->setVisible(on);
+    findObjects();
+}
+
+void DlgPropertyLink::on_typeTree_itemSelectionChanged() {
+    types.clear();
+    for(auto item : ui->typeTree->selectedItems())
+        types.insert(item->text(0).toLatin1().constData());
+    findObjects();
 }
 
 void DlgPropertyLink::on_searchBox_textChanged(const QString& /*search*/)
 {
-    bool on = ui->checkObjectType->isChecked();
-    findObjects(on);
+    findObjects();
 }
 
 void DlgPropertyLink::on_comboBox_currentIndexChanged(int index)
 {
     link[0] = ui->comboBox->itemData(index).toString();
-    bool on = ui->checkObjectType->isChecked();
-    findObjects(on);
+    refreshTypes = true;
+    findObjects();
 }
 
 

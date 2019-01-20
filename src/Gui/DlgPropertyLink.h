@@ -47,18 +47,21 @@ public:
 
 private Q_SLOTS:
     void on_checkObjectType_toggled(bool);
+    void on_typeTree_itemSelectionChanged();
     void on_searchBox_textChanged(const QString&);
     void on_comboBox_currentIndexChanged(int);
     void onItemExpanded(QTreeWidgetItem * item);
 
 private:
     QTreeWidgetItem *createItem(App::DocumentObject *obj, QTreeWidgetItem *parent);
-    void findObjects(bool on);
+    void findObjects();
 
 private:
     QStringList link;
     Ui_DlgPropertyLink* ui;
     std::set<App::DocumentObject*> inList;
+    std::set<std::string> types;
+    bool refreshTypes = true;
 };
 
 } // namespace Dialog

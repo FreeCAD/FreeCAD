@@ -6,14 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>257</width>
-    <height>428</height>
+    <width>436</width>
+    <height>438</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Link</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="6" column="0">
+    <widget class="QCheckBox" name="checkObjectType">
+     <property name="text">
+      <string>Filter by type</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QTreeWidget" name="treeWidget">
      <property name="headerHidden">
@@ -29,7 +36,7 @@
      </column>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
@@ -47,14 +54,7 @@
      </item>
     </layout>
    </item>
-   <item row="5" column="0">
-    <widget class="QCheckBox" name="checkObjectType">
-     <property name="text">
-      <string>Show all object types</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -63,6 +63,24 @@
    </item>
    <item row="0" column="0">
     <widget class="QComboBox" name="comboBox"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QTreeWidget" name="typeTree">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
    </item>
   </layout>
  </widget>
