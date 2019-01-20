@@ -823,7 +823,7 @@ PyObject* FemMeshPy::getNodeById(PyObject *args)
         vec = Mtrx * vec;
         return new Base::VectorPy( vec );
     }else{
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "No valid ID");
+        PyErr_SetString(PyExc_ValueError, "No valid node ID");
         return 0;
     }
 }
@@ -975,7 +975,12 @@ PyObject* FemMeshPy::getGroupElementType(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
 
-    SMDSAbs_ElementType aElementType = getFemMeshPtr()->getSMesh()->GetGroup(id)->GetGroupDS()->GetType();
+    SMESH_Group* group = getFemMeshPtr()->getSMesh()->GetGroup(id);
+    if (!group) {
+        PyErr_SetString(PyExc_ValueError, "No group for given id");
+        return 0;
+    }
+    SMDSAbs_ElementType aElementType = group->GetGroupDS()->GetType();
     const char* typeString = "";
     switch(aElementType) {
         case SMDSAbs_All            : typeString = "All"; break;
@@ -1000,8 +1005,14 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
 
+    SMESH_Group* group = getFemMeshPtr()->getSMesh()->GetGroup(id);
+    if (!group) {
+        PyErr_SetString(PyExc_ValueError, "No group for given id");
+        return 0;
+    }
+
     std::set<int> ids;
-    SMDS_ElemIteratorPtr aElemIter = getFemMeshPtr()->getSMesh()->GetGroup(id)->GetGroupDS()->GetElements();
+    SMDS_ElemIteratorPtr aElemIter = group->GetGroupDS()->GetElements();
     while (aElemIter->more()) {
         const SMDS_MeshElement* aElement = aElemIter->next();
         ids.insert(aElement->GetID());
