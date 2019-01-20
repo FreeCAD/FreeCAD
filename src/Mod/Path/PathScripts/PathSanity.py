@@ -137,7 +137,7 @@ class CommandPathSanity:
             clean = False
 
         if len(obj.ToolController) == 0: #need at least one active TC
-            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.")+"\n")
+            FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.")+"\n")
             clean = False
 
         if clean:
