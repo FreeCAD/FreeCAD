@@ -52,9 +52,8 @@ class _ItemDelegate(QtGui.QStyledItemDelegate):
         QtGui.QStyledItemDelegate.__init__(self, parent)
 
     def createEditor(self, parent, option, index):
-        editor = QtGui.QStyledItemDelegate.createEditor(self, parent, option, index)
-        if index.column() == 1:
-            self.controller.setupColumnEditor(index, editor)
+        editor = QtGui.QSpinBox(parent)
+        self.controller.setupColumnEditor(index, editor)
         return editor
 
 class JobCreate:
@@ -155,7 +154,7 @@ class JobCreate:
             self.model.appendRow(self.itemsJob)
 
         self.dialog.modelTree.setModel(self.model)
-        self.dialog.modelTree.setItemDelegate(self.delegate)
+        self.dialog.modelTree.setItemDelegateForColumn(1, self.delegate)
         self.dialog.modelTree.expandAll()
         self.dialog.modelTree.resizeColumnToContents(0)
         self.dialog.modelTree.resizeColumnToContents(1)
