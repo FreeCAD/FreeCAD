@@ -59,7 +59,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyBool", "LeadIn", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-on to path"))
         obj.addProperty("App::PropertyBool", "LeadOut", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from path"))
         obj.addProperty("App::PropertyBool", "KeepToolDown", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in Path"))
-        obj.addProperty("App::PropertyBool", "UseMashineCRC", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use Mashine Cutter Radius Compensation /Tool Path Offset G41/G42"))
+        obj.addProperty("App::PropertyBool", "UseMachineCRC", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Use Machine Cutter Radius Compensation /Tool Path Offset G41/G42"))
         obj.addProperty("App::PropertyDistance", "Length", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"))
         obj.addProperty("App::PropertyEnumeration", "StyleOn", "Path", QtCore.QT_TRANSLATE_NOOP("Path_DressupLeadInOut", "The Style of LeadIn the Path"))
         obj.StyleOn = ["Arc", "Tangent", "Perpendicular"]
@@ -80,7 +80,7 @@ class ObjectDressup:
         obj.LeadIn = True
         obj.LeadOut = True
         obj.KeepToolDown = False
-        obj.UseMashineCRC = False
+        obj.UseMachineCRC = False
         obj.StyleOn = 'Arc'
         obj.StyleOff = 'Arc'
         obj.RadiusCenter = 'Radius'
@@ -169,7 +169,7 @@ class ObjectDressup:
             results.append(extendcommand)
         extendcommand = Path.Command('G1', {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z, "F": vertFeed})
         results.append(extendcommand)
-        if obj.UseMashineCRC:
+        if obj.UseMachineCRC:
                 if self.getDirectionOfPath(obj) == 'right':
                     results.append(Path.Command('G42', {'D': toolnummer}))
                 else:
@@ -222,7 +222,7 @@ class ObjectDressup:
             results.append(extendcommand)
         else:
             PathLog.notice(" CURRENT_IN Perp")
-        if obj.UseMashineCRC:  # crc off
+        if obj.UseMachineCRC:  # crc off
             results.append(Path.Command('G40', {}))
         return results
 
