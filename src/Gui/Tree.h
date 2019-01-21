@@ -131,8 +131,6 @@ protected:
     bool event(QEvent *e);
     void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent * event);
-    QList<App::DocumentObject *> buildListChildren(QTreeWidgetItem* targetitem,
-                                                   Gui::ViewProviderDocumentObject* vp);
 
 protected:
     void showEvent(QShowEvent *) override;
@@ -441,11 +439,6 @@ public:
     TreeWidgetEditDelegate(QObject* parent=0);
     virtual QWidget* createEditor(QWidget *parent, 
             const QStyleOptionViewItem &, const QModelIndex &index) const;
-protected Q_SLOTS:
-    void editorClosed(QWidget *);
-
-private:
-    mutable int activeTransactionID;
 };
 
 

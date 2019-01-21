@@ -259,10 +259,8 @@ public:
 // ---------------------------------------------------------------------------
 
 TreeWidgetEditDelegate::TreeWidgetEditDelegate(QObject* parent)
-    : QStyledItemDelegate(parent),activeTransactionID(0)
+    : QStyledItemDelegate(parent)
 {
-    connect(this, SIGNAL(closeEditor(QWidget*,QAbstractItemDelegate::EndEditHint)), 
-            this, SLOT(editorClosed(QWidget*)));
 }
 
 QWidget* TreeWidgetEditDelegate::createEditor(
@@ -277,7 +275,7 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 
     std::ostringstream str;
     str << "Change " << obj->getNameInDocument() << '.' << prop.getName();
-    activeTransactionID = App::GetApplication().setActiveTransaction(str.str().c_str());
+    App::GetApplication().setActiveTransaction(str.str().c_str());
     FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
 
     ExpLineEdit *le = new ExpLineEdit(parent);
@@ -286,18 +284,6 @@ QWidget* TreeWidgetEditDelegate::createEditor(
     le->bind(App::ObjectIdentifier(prop));
     le->setAutoApply(true);
     return le;
-}
-
-void TreeWidgetEditDelegate::editorClosed(QWidget *editor) {
-    int id = 0;
-    const char *name = App::GetApplication().getActiveTransaction(&id);
-    if(id && id==activeTransactionID) {
-        FC_LOG("editor close transaction " << name);
-        App::GetApplication().closeActiveTransaction();
-    }else
-        FC_LOG("editor closed");
-    activeTransactionID = 0;
-    editor->close();
 }
 
 // ---------------------------------------------------------------------------
@@ -1042,10 +1028,24 @@ void TreeWidget::keyPressEvent(QKeyEvent *event)
         event->ignore();
     }
 #endif
-    if(event && event->matches(QKeySequence::Find)) {
+    if(event->matches(QKeySequence::Find)) {
         event->accept();
         onSearchObjects();
         return;
+    }else if(event->key() == Qt::Key_Left) {
+        auto index = currentIndex();
+        if(index.column()==1) {
+            setCurrentIndex(index.parent().child(index.row(),0));
+            event->accept();
+            return;
+        }
+    }else if(event->key() == Qt::Key_Right) {
+        auto index = currentIndex();
+        if(index.column()==0) {
+            setCurrentIndex(index.parent().child(index.row(),1));
+            event->accept();
+            return;
+        }
     }
     QTreeWidget::keyPressEvent(event);
 }
