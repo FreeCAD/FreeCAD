@@ -1095,9 +1095,8 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property *What,
                     bool ignore = false;
                     if(What) {
                         auto parent = What->getContainer();
-                        auto parentObj = dynamic_cast<DocumentObject*>(parent);
-                        if((!parentObj || What != &parentObj->Label) && 
-                           (What->testStatus(Property::Output) || (parent->getPropertyType(What) & Prop_Output)))
+                        auto parentObj = Base::freecad_dynamic_cast<DocumentObject>(parent);
+                        if(!parentObj || What->testStatus(Property::NoModify))
                             ignore = true;
                     }
                     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {

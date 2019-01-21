@@ -72,6 +72,7 @@ DocumentObject::DocumentObject(void)
     // allow user to change its status later
     Visibility.setStatus(Property::Output,true);
     Visibility.setStatus(Property::Hidden,true);
+    Visibility.setStatus(Property::NoModify,true);
 }
 
 DocumentObject::~DocumentObject(void)
@@ -807,6 +808,8 @@ void DocumentObject::onDocumentRestored()
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : vector)
         ext->onExtendedDocumentRestored();
+    if(Visibility.testStatus(Property::Output))
+        Visibility.setStatus(Property::NoModify);
 }
 
 void DocumentObject::onSettingDocument()
