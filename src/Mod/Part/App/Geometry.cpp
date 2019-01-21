@@ -547,8 +547,7 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
         }
     }
     catch (StdFail_NotDone& e) {
-
-        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))){
+        if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))){
             Base::Vector3d firstpoint = this->pointAtParameter(c->FirstParameter());
             Base::Vector3d lastpoint = this->pointAtParameter(c->LastParameter());
 
