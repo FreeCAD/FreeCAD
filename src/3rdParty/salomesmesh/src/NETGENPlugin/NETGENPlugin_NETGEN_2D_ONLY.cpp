@@ -64,7 +64,7 @@ namespace nglib {
 
 #include <occgeom.hpp>
 #include <meshing.hpp>
-//#include <meshtype.hpp>
+//#include <meshing/meshtype.hpp>
 namespace netgen {
 #if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2)
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&);
