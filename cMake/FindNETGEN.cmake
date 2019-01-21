@@ -1,5 +1,5 @@
 # Try to find nglib/netgen
-# 
+#
 # Optional input NETGENDATA is path to the netgen libsrc source tree - this is
 # required due to some headers not being installed by netgen.
 #
@@ -112,20 +112,6 @@ else(Netgen_FOUND)
       file(STRINGS ${NETGEN_DIR_include}/mydefs.hpp NETGEN_VERSION
           REGEX "#define PACKAGE_VERSION.*"
       )
-      if (NETGEN_VERSION)
-  	string(REGEX MATCHALL "[0-9]+" NETGEN_VERSION ${NETGEN_VERSION})
-  	list(LENGTH NETGEN_VERSION NETGEN_VERSION_COUNT)
-  	list(GET NETGEN_VERSION 0 NETGEN_VERSION_MAJOR)
-  	if(NETGEN_VERSION_COUNT GREATER 1)
-  	    list(GET NETGEN_VERSION 1 NETGEN_VERSION_MINOR)
-  	else()
-  	    set(NETGEN_VERSION_MINOR 0)
-  	endif()
-      else()  # workaround for netgen 6.2 and newer. currently there is no easy way to detect the version
-  	    # better use "find_package(netgen CONFIG REQUIRED)"
-  	set(NETGEN_VERSION_MAJOR 6)
-  	set(NETGEN_VERSION_MINOR 2)
-      endif()
   ENDIF()
 
   IF(NOT NGLIB_LIBRARIES)
@@ -136,44 +122,50 @@ else(Netgen_FOUND)
       SET(Netgen_FOUND TRUE)
       SET(NETGEN_INCLUDE_DIRS ${NETGEN_DIR_include} ${NGLIB_INCLUDE_DIR})
       LIST(REMOVE_DUPLICATES NETGEN_INCLUDE_DIRS)
-      MATH(EXPR NETGEN_VERSION "(${NETGEN_VERSION_MAJOR} << 16) + (${NETGEN_VERSION_MINOR} << 8)")
-      MATH(EXPR NETGEN_VERSION_62 "(6 << 16) + (2 << 8)")
-      IF(NOT NETGEN_VERSION LESS NETGEN_VERSION_62) # Version >= 6.2
-        # NETGEN v6.2 or newer requires c++1y/c++14
-        include(CheckCXXCompilerFlag)
-        check_cxx_compiler_flag("-std=c++14" HAS_CPP14_FLAG)
-        check_cxx_compiler_flag("-std=c++1y" HAS_CPP1Y_FLAG)
-        if(HAS_CPP14_FLAG)
-            set(NETGEN_CXX_FLAGS "-std=c++14")
-        elseif(HAS_CPP1Y_FLAG)
-            set(NETGEN_CXX_FLAGS "-std=c++1y")
-        else()
-            # message(FATAL_ERROR "Unsupported compiler -- C++1y support or newer required!")
-            message(STATUS "can not detect c++1y support, but will try to build with c++1y")
-            set(NETGEN_CXX_FLAGS "-std=c++1y")
-        endif()
-        if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-          # Clang sometimes fails to include <cstdio>
-          include(CMakePushCheckState)
-          cmake_push_check_state(RESET)
-          set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} ${NETGEN_CXX_FLAGS}")
-          check_cxx_source_compiles("#include <cstdio>\nint main(){}" CSTDIO_INCLUDE_TRY1)
-          if(NOT CSTDIO_INCLUDE_TRY1)
+  ELSE()
+      SET(Netgen_FOUND FALSE)
+  ENDIF()
+endif(Netgen_FOUND)
+
+# Package-provided cMake file is not enough
+IF(Netgen_FOUND)
+  IF(NETGEN_VERSION)
+      string(REGEX MATCHALL "[0-9]+" NETGEN_VERSION_expr ${NETGEN_VERSION})
+      list(LENGTH NETGEN_VERSION_expr NETGEN_VERSION_COUNT)
+      list(GET NETGEN_VERSION_expr 0 NETGEN_VERSION_MAJOR)
+      IF(NETGEN_VERSION_COUNT GREATER 1)
+          list(GET NETGEN_VERSION_expr 1 NETGEN_VERSION_MINOR)
+      ELSE()
+          set(NETGEN_VERSION_MINOR 0)
+      ENDIF()
+  ELSE()  # workaround for netgen 6.2 and newer. currently there is no easy way to detect the version
+      # better use "find_package(netgen CONFIG REQUIRED)"
+      set(NETGEN_VERSION_MAJOR 6)
+      set(NETGEN_VERSION_MINOR 2)
+  ENDIF()
+
+  MATH(EXPR NETGEN_VERSION_C "(${NETGEN_VERSION_MAJOR} << 16) + (${NETGEN_VERSION_MINOR} << 8)")
+  MATH(EXPR NETGEN_VERSION_62 "(6 << 16) + (2 << 8)")
+  IF(NOT NETGEN_VERSION_C LESS NETGEN_VERSION_62) # Version >= 6.2
+    IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        # Clang sometimes fails to include <cstdio>
+        include(CMakePushCheckState)
+        cmake_push_check_state(RESET)
+        set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} ${NETGEN_CXX_FLAGS}")
+        check_cxx_source_compiles("#include <cstdio>\nint main(){}" CSTDIO_INCLUDE_TRY1)
+        IF(NOT CSTDIO_INCLUDE_TRY1)
             # Ugly hack to make <stdio.h> building gets function
             set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -U__cplusplus -D__cplusplus=201103L")
             check_cxx_source_compiles("#include <cstdio>\nint main(){}" CSTDIO_INCLUDE_TRY2)
-            if(NOT CSTDIO_INCLUDE_TRY2)
-              message(FATAL_ERROR "Cannot #include <cstdio>.")
-            else()
-              set(NETGEN_CXX_FLAGS "${NETGEN_CXX_FLAGS} -U__cplusplus -D__cplusplus=201103L")
-            endif()
-          endif()
-          cmake_pop_check_state()
-        endif()
-      ENDIF()
-      MESSAGE(STATUS "Found NETGEN version ${NETGEN_VERSION_MAJOR}.${NETGEN_VERSION_MINOR}, calculated: ${NETGEN_VERSION}")
-      LIST(APPEND NETGEN_DEFINITIONS -DNETGEN_VERSION=${NETGEN_VERSION})
-  ELSE()
-      SET(NETGEN_FOUND FALSE)
+            IF(NOT CSTDIO_INCLUDE_TRY2)
+                message(FATAL_ERROR "Cannot #include <cstdio>.")
+            ELSE()
+                set(NETGEN_CXX_FLAGS "${NETGEN_CXX_FLAGS} -U__cplusplus -D__cplusplus=201103L")
+            ENDIF()
+         ENDIF()
+         cmake_pop_check_state()
+    ENDIF()
   ENDIF()
-endif(Netgen_FOUND)
+  MESSAGE(STATUS "Found NETGEN version ${NETGEN_VERSION_MAJOR}.${NETGEN_VERSION_MINOR}, calculated: ${NETGEN_VERSION_C}")
+  LIST(APPEND NETGEN_DEFINITIONS -DNETGEN_VERSION=${NETGEN_VERSION_C})
+ENDIF()
