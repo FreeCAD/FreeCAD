@@ -24,7 +24,6 @@
 #define _DrawViewImage_h_
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
 #include "DrawView.h"
 #include <App/FeaturePython.h>
