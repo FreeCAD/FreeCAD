@@ -25,7 +25,6 @@
 
 #include <App/DocumentObject.h>
 
-#include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
