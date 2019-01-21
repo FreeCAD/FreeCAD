@@ -45,6 +45,7 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <App/Expression.h>
+#include <App/ExpressionParser.h>
 
 #include "Command.h"
 #include "Widgets.h"
@@ -1466,7 +1467,11 @@ void ExpLineEdit::onChange() {
     
     if (getExpression()) {
         std::unique_ptr<Expression> result(getExpression()->eval());
-        setText(QString::fromUtf8(result->toString().c_str()));
+        if(result->isDerivedFrom(App::StringExpression::getClassTypeId()))
+            setText(QString::fromUtf8(static_cast<App::StringExpression*>(
+                            result.get())->getText().c_str()));
+        else
+            setText(QString::fromUtf8(result->toString().c_str()));
         setReadOnly(true);
         iconLabel->setPixmap(getIcon(":/icons/bound-expression.svg", QSize(iconHeight, iconHeight)));
 
