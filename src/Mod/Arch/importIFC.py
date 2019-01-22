@@ -403,10 +403,17 @@ def insert(filename,docname,skip=[],only=[],root=None):
     if root:
         ROOT_ELEMENT = root
 
-    #global ifcfile # keeping global for debugging purposes
+    # global ifcfile # keeping global for debugging purposes
 
     filename = decode(filename,utf=True)
     ifcfile = ifcopenshell.open(filename)
+
+    # IfcOpenShell multiplies the precision value of the file by 100
+    # So we raise the precision by 100 too to compensate...
+    #ctxs = ifcfile.by_type("IfcGeometricRepresentationContext")
+    #for ctx in ctxs: 
+    #    if not ctx.is_a("IfcGeometricRepresentationSubContext"):
+    #        ctx.Precision = ctx.Precision/100
 
     # set default ifcopenshell options to work in brep mode
     from ifcopenshell import geom
@@ -659,11 +666,11 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if DEBUG: print("skipping space ",pid,end="")
                     elif structobj:
                         structshapes[pid] = shape
-                        if DEBUG: print(shape.Solids," ",end="")
+                        if DEBUG: print(len(shape.Solids),"solids ",end="")
                         baseobj = shape
                     else:
                         shapes[pid] = shape
-                        if DEBUG: print(shape.Solids," ",end="")
+                        if DEBUG: print(len(shape.Solids),"solids ",end="")
                         baseobj = shape
                 else:
 
@@ -671,7 +678,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if clone:
                         if DEBUG: print("clone ",end="")
                     else:
-                        if GET_EXTRUSIONS:
+                        if GET_EXTRUSIONS and (MERGE_MODE_ARCH != 1):
                             if ptype in ["IfcWall","IfcWallStandardCase"]:
                                 sortmethod = "z"
                             else:
@@ -795,49 +802,51 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if store:
                             sharedobjects[store] = obj
 
-                    obj.Label = name
-                    if DEBUG: print(": "+obj.Label+" ",end="")
-                    if hasattr(obj,"Description") and hasattr(product,"Description"):
-                        if product.Description:
-                            obj.Description = product.Description
-                    if FreeCAD.GuiUp and baseobj:
-                        try:
-                            if hasattr(baseobj,"ViewObject"):
-                                baseobj.ViewObject.hide()
-                        except ReferenceError:
-                            pass
                     if ptype == "IfcBuildingStorey":
                         if product.Elevation:
                             obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
 
-                    # setting IFC role
-
-                    try:
-                        if hasattr(obj,"IfcRole"):
-                            obj.IfcRole = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
-                        else:
-                            # pre-0.18 objects, only support a small subset of types
-                            r = ptype[3:]
-                            tr = dict((v,k) for k, v in translationtable.items())
-                            if r in tr.keys():
-                                r = tr[r]
-                            # remove the "StandardCase"
-                            if "StandardCase" in r:
-                                r = r[:-12]
-                            obj.Role = r
-                    except:
-                        print("Unable to give IFC role ",ptype," to object ",obj.Label)
-
-                    # setting uid
-
-                    if hasattr(obj,"IfcAttributes"):
-                        a = obj.IfcAttributes
-                        a["IfcUID"] = str(guid)
-                        obj.IfcAttributes = a
                     break
 
             if not obj:
                 obj = Arch.makeComponent(baseobj,name=name)
+
+            obj.Label = name
+            if DEBUG: print(": "+obj.Label+" ",end="")
+            if hasattr(obj,"Description") and hasattr(product,"Description"):
+                if product.Description:
+                    obj.Description = product.Description
+            if FreeCAD.GuiUp and baseobj:
+                try:
+                    if hasattr(baseobj,"ViewObject"):
+                        baseobj.ViewObject.hide()
+                except ReferenceError:
+                    pass
+
+            # setting IFC role
+
+            try:
+                if hasattr(obj,"IfcRole"):
+                    obj.IfcRole = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
+                else:
+                    # pre-0.18 objects, only support a small subset of types
+                    r = ptype[3:]
+                    tr = dict((v,k) for k, v in translationtable.items())
+                    if r in tr.keys():
+                        r = tr[r]
+                    # remove the "StandardCase"
+                    if "StandardCase" in r:
+                        r = r[:-12]
+                    obj.Role = r
+            except:
+                print("Unable to give IFC role ",ptype," to object ",obj.Label)
+
+            # setting uid
+
+            if hasattr(obj,"IfcAttributes"):
+                a = obj.IfcAttributes
+                a["IfcUID"] = str(guid)
+                obj.IfcAttributes = a
 
             if obj:
                 s = ""
@@ -860,6 +869,30 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 obj.Placement.Base.z = product.Elevation * getScaling(ifcfile)
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
+                obj.Label = name
+                if DEBUG: print(": "+obj.Label+" ",end="")
+                if hasattr(obj,"Description") and hasattr(product,"Description"):
+                    if product.Description:
+                        obj.Description = product.Description
+                try:
+                    if hasattr(obj,"IfcRole"):
+                        obj.IfcRole = ''.join(map(lambda x: x if x.islower() else " "+x, ptype[3:]))[1:]
+                    else:
+                        # pre-0.18 objects, only support a small subset of types
+                        r = ptype[3:]
+                        tr = dict((v,k) for k, v in translationtable.items())
+                        if r in tr.keys():
+                            r = tr[r]
+                        # remove the "StandardCase"
+                        if "StandardCase" in r:
+                            r = r[:-12]
+                        obj.Role = r
+                except:
+                    print("Unable to give IFC role ",ptype," to object ",obj.Label)
+                if hasattr(obj,"IfcAttributes"):
+                    a = obj.IfcAttributes
+                    a["IfcUID"] = str(guid)
+                    obj.IfcAttributes = a
 
         elif (MERGE_MODE_ARCH == 2 and archobj) or (MERGE_MODE_STRUCT == 1 and not archobj):
 
