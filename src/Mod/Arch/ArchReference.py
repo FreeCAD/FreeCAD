@@ -166,9 +166,9 @@ class ArchReference:
         if not os.path.exists(filename):
             # search for the file in the current directory if not found
             basename = os.path.basename(filename)
-            currentdir = os.path.dirname(FreeCAD.ActiveDocument.FileName)
+            currentdir = os.path.dirname(obj.Document.FileName)
             altfile = os.path.join(currentdir,basename)
-            if altfile == FreeCAD.ActiveDocument.FileName:
+            if altfile == obj.Document.FileName:
                 return None
             elif os.path.exists(altfile):
                 return altfile

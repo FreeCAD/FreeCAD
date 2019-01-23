@@ -10,8 +10,6 @@
         <file>icons/actions/web-zoom-out.svg</file>
         <file>icons/actions/web-sketchfab.svg</file>
         <file>icons/WebWorkbench.svg</file>
-        <file>icons/Sketchfab.svg</file>
-        <file>ui/TaskDlgSketchfab.ui</file>
         <file>translations/Web_de.qm</file>
         <file>translations/Web_af.qm</file>
         <file>translations/Web_zh-CN.qm</file>
