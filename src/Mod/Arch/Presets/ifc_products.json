@@ -1,0 +1,4439 @@
+[
+    {
+        "name": "IfcActuator",
+        "is_abstract": false,
+        "parent": "IfcDistributionControlElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcActuatorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "electricactuator",
+                    "handoperatedactuator",
+                    "hydraulicactuator",
+                    "pneumaticactuator",
+                    "thermostaticactuator",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcAirTerminal",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcAirTerminalTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "diffuser",
+                    "grille",
+                    "louvre",
+                    "register",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcAirTerminalBox",
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcAirTerminalBoxTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "constantflow",
+                    "variableflowpressuredependant",
+                    "variableflowpressureindependant",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcAirToAirHeatRecovery",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcAirToAirHeatRecoveryTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "fixedplatecounterflowexchanger",
+                    "fixedplatecrossflowexchanger",
+                    "fixedplateparallelflowexchanger",
+                    "rotarywheel",
+                    "runaroundcoilloop",
+                    "heatpipe",
+                    "twintowerenthalpyrecoveryloops",
+                    "thermosiphonsealedtubeheatexchangers",
+                    "thermosiphoncoiltypeheatexchangers",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcAlarm",
+        "is_abstract": false,
+        "parent": "IfcDistributionControlElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcAlarmTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bell",
+                    "breakglassbutton",
+                    "light",
+                    "manualpullbox",
+                    "siren",
+                    "whistle",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcAnnotation",
+        "is_abstract": false,
+        "parent": "IfcProduct",
+        "attributes": []
+    },
+    {
+        "name": "IfcAudioVisualAppliance",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcAudioVisualApplianceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "amplifier",
+                    "camera",
+                    "display",
+                    "microphone",
+                    "player",
+                    "projector",
+                    "receiver",
+                    "speaker",
+                    "switcher",
+                    "telephone",
+                    "tuner",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcBeam",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcBeamTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "beam",
+                    "joist",
+                    "hollowcore",
+                    "lintel",
+                    "spandrel",
+                    "t_beam",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcBeamStandardCase",
+        "is_abstract": false,
+        "parent": "IfcBeam",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcBeamTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "beam",
+                    "joist",
+                    "hollowcore",
+                    "lintel",
+                    "spandrel",
+                    "t_beam",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcBoiler",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcBoilerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "water",
+                    "steam",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcBuilding",
+        "is_abstract": false,
+        "parent": "IfcSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "ElevationOfRefHeight",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "ElevationOfTerrain",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcBuildingElementPart",
+        "is_abstract": false,
+        "parent": "IfcElementComponent",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcBuildingElementPartTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "insulation",
+                    "precastpanel",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcBuildingElementProxy",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcBuildingElementProxyTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "complex",
+                    "element",
+                    "partial",
+                    "provisionforvoid",
+                    "provisionforspace",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcBuildingStorey",
+        "is_abstract": false,
+        "parent": "IfcSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "Elevation",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcBurner",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcBurnerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCableCarrierFitting",
+        "is_abstract": false,
+        "parent": "IfcFlowFitting",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCableCarrierFittingTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bend",
+                    "cross",
+                    "reducer",
+                    "tee",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCableCarrierSegment",
+        "is_abstract": false,
+        "parent": "IfcFlowSegment",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCableCarrierSegmentTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "cableladdersegment",
+                    "cabletraysegment",
+                    "cabletrunkingsegment",
+                    "conduitsegment",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCableFitting",
+        "is_abstract": false,
+        "parent": "IfcFlowFitting",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCableFittingTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "connector",
+                    "entry",
+                    "exit",
+                    "junction",
+                    "transition",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCableSegment",
+        "is_abstract": false,
+        "parent": "IfcFlowSegment",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCableSegmentTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "busbarsegment",
+                    "cablesegment",
+                    "conductorsegment",
+                    "coresegment",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcChiller",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcChillerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "aircooled",
+                    "watercooled",
+                    "heatrecovery",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcChimney",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcChimneyTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCivilElement",
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCoil",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCoilTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "dxcoolingcoil",
+                    "electricheatingcoil",
+                    "gasheatingcoil",
+                    "hydroniccoil",
+                    "steamheatingcoil",
+                    "watercoolingcoil",
+                    "waterheatingcoil",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcColumn",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcColumnTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "column",
+                    "pilaster",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcColumnStandardCase",
+        "is_abstract": false,
+        "parent": "IfcColumn",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcColumnTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "column",
+                    "pilaster",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCommunicationsAppliance",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCommunicationsApplianceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "antenna",
+                    "computer",
+                    "fax",
+                    "gateway",
+                    "modem",
+                    "networkappliance",
+                    "networkbridge",
+                    "networkhub",
+                    "printer",
+                    "repeater",
+                    "router",
+                    "scanner",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCompressor",
+        "is_abstract": false,
+        "parent": "IfcFlowMovingDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCompressorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "dynamic",
+                    "reciprocating",
+                    "rotary",
+                    "scroll",
+                    "trochoidal",
+                    "singlestage",
+                    "booster",
+                    "opentype",
+                    "hermetic",
+                    "semihermetic",
+                    "weldedshellhermetic",
+                    "rollingpiston",
+                    "rotaryvane",
+                    "singlescrew",
+                    "twinscrew",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCondenser",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCondenserTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "aircooled",
+                    "evaporativecooled",
+                    "watercooled",
+                    "watercooledbrazedplate",
+                    "watercooledshellcoil",
+                    "watercooledshelltube",
+                    "watercooledtubeintube",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcController",
+        "is_abstract": false,
+        "parent": "IfcDistributionControlElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcControllerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "floating",
+                    "programmable",
+                    "proportional",
+                    "multiposition",
+                    "twoposition",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCooledBeam",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCooledBeamTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "active",
+                    "passive",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCoolingTower",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCoolingTowerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "naturaldraft",
+                    "mechanicalinduceddraft",
+                    "mechanicalforceddraft",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCovering",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCoveringTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "ceiling",
+                    "flooring",
+                    "cladding",
+                    "roofing",
+                    "molding",
+                    "skirtingboard",
+                    "insulation",
+                    "membrane",
+                    "sleeving",
+                    "wrapping",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcCurtainWall",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcCurtainWallTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDamper",
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcDamperTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "backdraftdamper",
+                    "balancingdamper",
+                    "blastdamper",
+                    "controldamper",
+                    "firedamper",
+                    "firesmokedamper",
+                    "fumehoodexhaust",
+                    "gravitydamper",
+                    "gravityreliefdamper",
+                    "reliefdamper",
+                    "smokedamper",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDiscreteAccessory",
+        "is_abstract": false,
+        "parent": "IfcElementComponent",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcDiscreteAccessoryTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "anchorplate",
+                    "bracket",
+                    "shoe",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDistributionChamberElement",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcDistributionChamberElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "formedduct",
+                    "inspectionchamber",
+                    "inspectionpit",
+                    "manhole",
+                    "meterchamber",
+                    "sump",
+                    "trench",
+                    "valvechamber",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDistributionControlElement",
+        "is_abstract": false,
+        "parent": "IfcDistributionElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDistributionElement",
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDistributionFlowElement",
+        "is_abstract": false,
+        "parent": "IfcDistributionElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDistributionPort",
+        "is_abstract": false,
+        "parent": "IfcPort",
+        "attributes": [
+            {
+                "name": "FlowDirection",
+                "type": "IfcFlowDirectionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "source",
+                    "sink",
+                    "sourceandsink",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcDistributionPortTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "cable",
+                    "cablecarrier",
+                    "duct",
+                    "pipe",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "SystemType",
+                "type": "IfcDistributionSystemEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "airconditioning",
+                    "audiovisual",
+                    "chemical",
+                    "chilledwater",
+                    "communication",
+                    "compressedair",
+                    "condenserwater",
+                    "control",
+                    "conveying",
+                    "data",
+                    "disposal",
+                    "domesticcoldwater",
+                    "domestichotwater",
+                    "drainage",
+                    "earthing",
+                    "electrical",
+                    "electroacoustic",
+                    "exhaust",
+                    "fireprotection",
+                    "fuel",
+                    "gas",
+                    "hazardous",
+                    "heating",
+                    "lighting",
+                    "lightningprotection",
+                    "municipalsolidwaste",
+                    "oil",
+                    "operational",
+                    "powergeneration",
+                    "rainwater",
+                    "refrigeration",
+                    "security",
+                    "sewage",
+                    "signal",
+                    "stormwater",
+                    "telephone",
+                    "tv",
+                    "vacuum",
+                    "vent",
+                    "ventilation",
+                    "wastewater",
+                    "watersupply",
+                    "userdefined",
+                    "notdefined"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "IfcDoor",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "OverallHeight",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OverallWidth",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcDoorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "door",
+                    "gate",
+                    "trapdoor",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "OperationType",
+                "type": "IfcDoorTypeOperationEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "single_swing_left",
+                    "single_swing_right",
+                    "double_door_single_swing",
+                    "double_door_single_swing_opposite_left",
+                    "double_door_single_swing_opposite_right",
+                    "double_swing_left",
+                    "double_swing_right",
+                    "double_door_double_swing",
+                    "sliding_to_left",
+                    "sliding_to_right",
+                    "double_door_sliding",
+                    "folding_to_left",
+                    "folding_to_right",
+                    "double_door_folding",
+                    "revolving",
+                    "rollingup",
+                    "swing_fixed_left",
+                    "swing_fixed_right",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "UserDefinedOperationType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDoorStandardCase",
+        "is_abstract": false,
+        "parent": "IfcDoor",
+        "attributes": [
+            {
+                "name": "OverallHeight",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OverallWidth",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcDoorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "door",
+                    "gate",
+                    "trapdoor",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "OperationType",
+                "type": "IfcDoorTypeOperationEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "single_swing_left",
+                    "single_swing_right",
+                    "double_door_single_swing",
+                    "double_door_single_swing_opposite_left",
+                    "double_door_single_swing_opposite_right",
+                    "double_swing_left",
+                    "double_swing_right",
+                    "double_door_double_swing",
+                    "sliding_to_left",
+                    "sliding_to_right",
+                    "double_door_sliding",
+                    "folding_to_left",
+                    "folding_to_right",
+                    "double_door_folding",
+                    "revolving",
+                    "rollingup",
+                    "swing_fixed_left",
+                    "swing_fixed_right",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "UserDefinedOperationType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDuctFitting",
+        "is_abstract": false,
+        "parent": "IfcFlowFitting",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcDuctFittingTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bend",
+                    "connector",
+                    "entry",
+                    "exit",
+                    "junction",
+                    "obstruction",
+                    "transition",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDuctSegment",
+        "is_abstract": false,
+        "parent": "IfcFlowSegment",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcDuctSegmentTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "rigidsegment",
+                    "flexiblesegment",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcDuctSilencer",
+        "is_abstract": false,
+        "parent": "IfcFlowTreatmentDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcDuctSilencerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "flatoval",
+                    "rectangular",
+                    "round",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcElectricAppliance",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcElectricApplianceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "dishwasher",
+                    "electriccooker",
+                    "freestandingelectricheater",
+                    "freestandingfan",
+                    "freestandingwaterheater",
+                    "freestandingwatercooler",
+                    "freezer",
+                    "fridge_freezer",
+                    "handdryer",
+                    "kitchenmachine",
+                    "microwave",
+                    "photocopier",
+                    "refrigerator",
+                    "tumbledryer",
+                    "vendingmachine",
+                    "washingmachine",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcElectricDistributionBoard",
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcElectricDistributionBoardTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "consumerunit",
+                    "distributionboard",
+                    "motorcontrolcentre",
+                    "switchboard",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcElectricFlowStorageDevice",
+        "is_abstract": false,
+        "parent": "IfcFlowStorageDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcElectricFlowStorageDeviceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "battery",
+                    "capacitorbank",
+                    "harmonicfilter",
+                    "inductorbank",
+                    "ups",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcElectricGenerator",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcElectricGeneratorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "chp",
+                    "enginegenerator",
+                    "standalone",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcElectricMotor",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcElectricMotorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "dc",
+                    "induction",
+                    "polyphase",
+                    "reluctancesynchronous",
+                    "synchronous",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcElectricTimeControl",
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcElectricTimeControlTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "timeclock",
+                    "timedelay",
+                    "relay",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcElementAssembly",
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "AssemblyPlace",
+                "type": "IfcAssemblyPlaceEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "site",
+                    "factory",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcElementAssemblyTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "accessory_assembly",
+                    "arch",
+                    "beam_grid",
+                    "braced_frame",
+                    "girder",
+                    "reinforcement_unit",
+                    "rigid_frame",
+                    "slab_field",
+                    "truss",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcEnergyConversionDevice",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcEngine",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcEngineTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "externalcombustion",
+                    "internalcombustion",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcEvaporativeCooler",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcEvaporativeCoolerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "directevaporativerandommediaaircooler",
+                    "directevaporativerigidmediaaircooler",
+                    "directevaporativeslingerspackagedaircooler",
+                    "directevaporativepackagedrotaryaircooler",
+                    "directevaporativeairwasher",
+                    "indirectevaporativepackageaircooler",
+                    "indirectevaporativewetcoil",
+                    "indirectevaporativecoolingtowerorcoilcooler",
+                    "indirectdirectcombination",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcEvaporator",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcEvaporatorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "directexpansion",
+                    "directexpansionshellandtube",
+                    "directexpansiontubeintube",
+                    "directexpansionbrazedplate",
+                    "floodedshellandtube",
+                    "shellandcoil",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcExternalSpatialElement",
+        "is_abstract": false,
+        "parent": "IfcExternalSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcExternalSpatialElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "external",
+                    "external_earth",
+                    "external_water",
+                    "external_fire",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFan",
+        "is_abstract": false,
+        "parent": "IfcFlowMovingDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcFanTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "centrifugalforwardcurved",
+                    "centrifugalradial",
+                    "centrifugalbackwardinclinedcurved",
+                    "centrifugalairfoil",
+                    "tubeaxial",
+                    "vaneaxial",
+                    "propelloraxial",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFastener",
+        "is_abstract": false,
+        "parent": "IfcElementComponent",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcFastenerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "glue",
+                    "mortar",
+                    "weld",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFilter",
+        "is_abstract": false,
+        "parent": "IfcFlowTreatmentDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcFilterTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "airparticlefilter",
+                    "compressedairfilter",
+                    "odorfilter",
+                    "oilfilter",
+                    "strainer",
+                    "waterfilter",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFireSuppressionTerminal",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcFireSuppressionTerminalTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "breechinginlet",
+                    "firehydrant",
+                    "hosereel",
+                    "sprinkler",
+                    "sprinklerdeflector",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowController",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowFitting",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowInstrument",
+        "is_abstract": false,
+        "parent": "IfcDistributionControlElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcFlowInstrumentTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "pressuregauge",
+                    "thermometer",
+                    "ammeter",
+                    "frequencymeter",
+                    "powerfactormeter",
+                    "phaseanglemeter",
+                    "voltmeter_peak",
+                    "voltmeter_rms",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowMeter",
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcFlowMeterTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "energymeter",
+                    "gasmeter",
+                    "oilmeter",
+                    "watermeter",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowMovingDevice",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowSegment",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowStorageDevice",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowTerminal",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFlowTreatmentDevice",
+        "is_abstract": false,
+        "parent": "IfcDistributionFlowElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFooting",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcFootingTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "caisson_foundation",
+                    "footing_beam",
+                    "pad_footing",
+                    "pile_cap",
+                    "strip_footing",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFurnishingElement",
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcFurniture",
+        "is_abstract": false,
+        "parent": "IfcFurnishingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcFurnitureTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "chair",
+                    "table",
+                    "desk",
+                    "bed",
+                    "filecabinet",
+                    "shelf",
+                    "sofa",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcGeographicElement",
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcGeographicElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "terrain",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcGrid",
+        "is_abstract": false,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcGridTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "rectangular",
+                    "radial",
+                    "triangular",
+                    "irregular",
+                    "userdefined",
+                    "notdefined"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "IfcHeatExchanger",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcHeatExchangerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "plate",
+                    "shellandtube",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcHumidifier",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcHumidifierTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "steaminjection",
+                    "adiabaticairwasher",
+                    "adiabaticpan",
+                    "adiabaticwettedelement",
+                    "adiabaticatomizing",
+                    "adiabaticultrasonic",
+                    "adiabaticrigidmedia",
+                    "adiabaticcompressedairnozzle",
+                    "assistedelectric",
+                    "assistednaturalgas",
+                    "assistedpropane",
+                    "assistedbutane",
+                    "assistedsteam",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcInterceptor",
+        "is_abstract": false,
+        "parent": "IfcFlowTreatmentDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcInterceptorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "cyclonic",
+                    "grease",
+                    "oil",
+                    "petrol",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcJunctionBox",
+        "is_abstract": false,
+        "parent": "IfcFlowFitting",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcJunctionBoxTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "data",
+                    "power",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcLamp",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcLampTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "compactfluorescent",
+                    "fluorescent",
+                    "halogen",
+                    "highpressuremercury",
+                    "highpressuresodium",
+                    "led",
+                    "metalhalide",
+                    "oled",
+                    "tungstenfilament",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcLightFixture",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcLightFixtureTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "pointsource",
+                    "directionsource",
+                    "securitylighting",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcMechanicalFastener",
+        "is_abstract": false,
+        "parent": "IfcElementComponent",
+        "attributes": [
+            {
+                "name": "NominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "NominalLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcMechanicalFastenerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "anchorbolt",
+                    "bolt",
+                    "dowel",
+                    "nail",
+                    "nailplate",
+                    "rivet",
+                    "screw",
+                    "shearconnector",
+                    "staple",
+                    "studshearconnector",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcMedicalDevice",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcMedicalDeviceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "airstation",
+                    "feedairunit",
+                    "oxygengenerator",
+                    "oxygenplant",
+                    "vacuumstation",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcMember",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcMemberTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "brace",
+                    "chord",
+                    "collar",
+                    "member",
+                    "mullion",
+                    "plate",
+                    "post",
+                    "purlin",
+                    "rafter",
+                    "stringer",
+                    "strut",
+                    "stud",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcMemberStandardCase",
+        "is_abstract": false,
+        "parent": "IfcMember",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcMemberTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "brace",
+                    "chord",
+                    "collar",
+                    "member",
+                    "mullion",
+                    "plate",
+                    "post",
+                    "purlin",
+                    "rafter",
+                    "stringer",
+                    "strut",
+                    "stud",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcMotorConnection",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcMotorConnectionTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "beltdrive",
+                    "coupling",
+                    "directdrive",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcOpeningElement",
+        "is_abstract": false,
+        "parent": "IfcFeatureElementSubtraction",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcOpeningElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "opening",
+                    "recess",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcOpeningStandardCase",
+        "is_abstract": false,
+        "parent": "IfcOpeningElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcOpeningElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "opening",
+                    "recess",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcOutlet",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcOutletTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "audiovisualoutlet",
+                    "communicationsoutlet",
+                    "poweroutlet",
+                    "dataoutlet",
+                    "telephoneoutlet",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcPile",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcPileTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bored",
+                    "driven",
+                    "jetgrouting",
+                    "cohesion",
+                    "friction",
+                    "support",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "ConstructionType",
+                "type": "IfcPileConstructionEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "cast_in_place",
+                    "composite",
+                    "precast_concrete",
+                    "prefab_steel",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcPipeFitting",
+        "is_abstract": false,
+        "parent": "IfcFlowFitting",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcPipeFittingTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bend",
+                    "connector",
+                    "entry",
+                    "exit",
+                    "junction",
+                    "obstruction",
+                    "transition",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcPipeSegment",
+        "is_abstract": false,
+        "parent": "IfcFlowSegment",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcPipeSegmentTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "culvert",
+                    "flexiblesegment",
+                    "rigidsegment",
+                    "gutter",
+                    "spool",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcPlate",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcPlateTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "curtain_panel",
+                    "sheet",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcPlateStandardCase",
+        "is_abstract": false,
+        "parent": "IfcPlate",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcPlateTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "curtain_panel",
+                    "sheet",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcProjectionElement",
+        "is_abstract": false,
+        "parent": "IfcFeatureElementAddition",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcProjectionElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcProtectiveDevice",
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcProtectiveDeviceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "circuitbreaker",
+                    "earthleakagecircuitbreaker",
+                    "earthingswitch",
+                    "fusedisconnector",
+                    "residualcurrentcircuitbreaker",
+                    "residualcurrentswitch",
+                    "varistor",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcProtectiveDeviceTrippingUnit",
+        "is_abstract": false,
+        "parent": "IfcDistributionControlElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcProtectiveDeviceTrippingUnitTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "electronic",
+                    "electromagnetic",
+                    "residualcurrent",
+                    "thermal",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcProxy",
+        "is_abstract": false,
+        "parent": "IfcProduct",
+        "attributes": [
+            {
+                "name": "ProxyType",
+                "type": "IfcObjectTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "product",
+                    "process",
+                    "control",
+                    "resource",
+                    "actor",
+                    "group",
+                    "project",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcPump",
+        "is_abstract": false,
+        "parent": "IfcFlowMovingDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcPumpTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "circulator",
+                    "endsuction",
+                    "splitcase",
+                    "submersiblepump",
+                    "sumppump",
+                    "verticalinline",
+                    "verticalturbine",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcRailing",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcRailingTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "handrail",
+                    "guardrail",
+                    "balustrade",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcRamp",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcRampTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "straight_run_ramp",
+                    "two_straight_run_ramp",
+                    "quarter_turn_ramp",
+                    "two_quarter_turn_ramp",
+                    "half_turn_ramp",
+                    "spiral_ramp",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcRampFlight",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcRampFlightTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "straight",
+                    "spiral",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcReinforcingBar",
+        "is_abstract": false,
+        "parent": "IfcReinforcingElement",
+        "attributes": [
+            {
+                "name": "NominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CrossSectionArea",
+                "type": "IfcAreaMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "BarLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcReinforcingBarTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "anchoring",
+                    "edge",
+                    "ligature",
+                    "main",
+                    "punching",
+                    "ring",
+                    "shear",
+                    "stud",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "BarSurface",
+                "type": "IfcReinforcingBarSurfaceEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "plain",
+                    "textured"
+                ]
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcReinforcingMesh",
+        "is_abstract": false,
+        "parent": "IfcReinforcingElement",
+        "attributes": [
+            {
+                "name": "MeshLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "MeshWidth",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongitudinalBarNominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TransverseBarNominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongitudinalBarCrossSectionArea",
+                "type": "IfcAreaMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TransverseBarCrossSectionArea",
+                "type": "IfcAreaMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LongitudinalBarSpacing",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TransverseBarSpacing",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcReinforcingMeshTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcRoof",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcRoofTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "flat_roof",
+                    "shed_roof",
+                    "gable_roof",
+                    "hip_roof",
+                    "hipped_gable_roof",
+                    "gambrel_roof",
+                    "mansard_roof",
+                    "barrel_roof",
+                    "rainbow_roof",
+                    "butterfly_roof",
+                    "pavilion_roof",
+                    "dome_roof",
+                    "freeform",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSanitaryTerminal",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSanitaryTerminalTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bath",
+                    "bidet",
+                    "cistern",
+                    "shower",
+                    "sink",
+                    "sanitaryfountain",
+                    "toiletpan",
+                    "urinal",
+                    "washhandbasin",
+                    "wcseat",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSensor",
+        "is_abstract": false,
+        "parent": "IfcDistributionControlElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSensorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "cosensor",
+                    "co2sensor",
+                    "conductancesensor",
+                    "contactsensor",
+                    "firesensor",
+                    "flowsensor",
+                    "frostsensor",
+                    "gassensor",
+                    "heatsensor",
+                    "humiditysensor",
+                    "identifiersensor",
+                    "ionconcentrationsensor",
+                    "levelsensor",
+                    "lightsensor",
+                    "moisturesensor",
+                    "movementsensor",
+                    "phsensor",
+                    "pressuresensor",
+                    "radiationsensor",
+                    "radioactivitysensor",
+                    "smokesensor",
+                    "soundsensor",
+                    "temperaturesensor",
+                    "windsensor",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcShadingDevice",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcShadingDeviceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "jalousie",
+                    "shutter",
+                    "awning",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSite",
+        "is_abstract": false,
+        "parent": "IfcSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "RefLatitude",
+                "type": "List-IfcCompoundPlaneAngleMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "RefLongitude",
+                "type": "List-IfcCompoundPlaneAngleMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "RefElevation",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "LandTitleNumber",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSlab",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSlabTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "floor",
+                    "roof",
+                    "landing",
+                    "baseslab",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSlabElementedCase",
+        "is_abstract": false,
+        "parent": "IfcSlab",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSlabTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "floor",
+                    "roof",
+                    "landing",
+                    "baseslab",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSlabStandardCase",
+        "is_abstract": false,
+        "parent": "IfcSlab",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSlabTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "floor",
+                    "roof",
+                    "landing",
+                    "baseslab",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSolarDevice",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSolarDeviceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "solarcollector",
+                    "solarpanel",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSpace",
+        "is_abstract": false,
+        "parent": "IfcSpatialStructureElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSpaceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "space",
+                    "parking",
+                    "gfa",
+                    "internal",
+                    "external",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "ElevationWithFlooring",
+                "type": "IfcLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CompositionType",
+                "type": "IfcElementCompositionEnum",
+                "is_enum": true,
+                "enum_values": []
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSpaceHeater",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSpaceHeaterTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "convector",
+                    "radiator",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSpatialZone",
+        "is_abstract": false,
+        "parent": "IfcSpatialElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSpatialZoneTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "construction",
+                    "firesafety",
+                    "lighting",
+                    "occupancy",
+                    "security",
+                    "thermal",
+                    "transport",
+                    "ventilation",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "LongName",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStackTerminal",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcStackTerminalTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "birdcage",
+                    "cowl",
+                    "rainwaterhopper",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStair",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcStairTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "straight_run_stair",
+                    "two_straight_run_stair",
+                    "quarter_winding_stair",
+                    "quarter_turn_stair",
+                    "half_winding_stair",
+                    "half_turn_stair",
+                    "two_quarter_winding_stair",
+                    "two_quarter_turn_stair",
+                    "three_quarter_winding_stair",
+                    "three_quarter_turn_stair",
+                    "spiral_stair",
+                    "double_return_stair",
+                    "curved_run_stair",
+                    "two_curved_run_stair",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStairFlight",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "NumberOfRisers",
+                "type": "IfcInteger",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "NumberOfTreads",
+                "type": "IfcInteger",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "RiserHeight",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TreadLength",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStairFlightTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "straight",
+                    "winder",
+                    "spiral",
+                    "curved",
+                    "freeform",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralCurveAction",
+        "is_abstract": false,
+        "parent": "IfcStructuralAction",
+        "attributes": [
+            {
+                "name": "ProjectedOrTrue",
+                "type": "IfcProjectedOrTrueLengthEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "projected_length",
+                    "true_length"
+                ]
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralCurveActivityTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "const",
+                    "linear",
+                    "polygonal",
+                    "equidistant",
+                    "sinus",
+                    "parabola",
+                    "discrete",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "IfcBoolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralCurveConnection",
+        "is_abstract": false,
+        "parent": "IfcStructuralConnection",
+        "attributes": []
+    },
+    {
+        "name": "IfcStructuralCurveMember",
+        "is_abstract": false,
+        "parent": "IfcStructuralMember",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralCurveMemberTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "rigid_joined_member",
+                    "pin_joined_member",
+                    "cable",
+                    "tension_member",
+                    "compression_member",
+                    "userdefined",
+                    "notdefined"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralCurveMemberVarying",
+        "is_abstract": false,
+        "parent": "IfcStructuralCurveMember",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralCurveMemberTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "rigid_joined_member",
+                    "pin_joined_member",
+                    "cable",
+                    "tension_member",
+                    "compression_member",
+                    "userdefined",
+                    "notdefined"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralCurveReaction",
+        "is_abstract": false,
+        "parent": "IfcStructuralReaction",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralCurveActivityTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "const",
+                    "linear",
+                    "polygonal",
+                    "equidistant",
+                    "sinus",
+                    "parabola",
+                    "discrete",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralLinearAction",
+        "is_abstract": false,
+        "parent": "IfcStructuralCurveAction",
+        "attributes": [
+            {
+                "name": "ProjectedOrTrue",
+                "type": "IfcProjectedOrTrueLengthEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "projected_length",
+                    "true_length"
+                ]
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralCurveActivityTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "const",
+                    "linear",
+                    "polygonal",
+                    "equidistant",
+                    "sinus",
+                    "parabola",
+                    "discrete",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "IfcBoolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralPlanarAction",
+        "is_abstract": false,
+        "parent": "IfcStructuralSurfaceAction",
+        "attributes": [
+            {
+                "name": "ProjectedOrTrue",
+                "type": "IfcProjectedOrTrueLengthEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "projected_length",
+                    "true_length"
+                ]
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralSurfaceActivityTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "const",
+                    "bilinear",
+                    "discrete",
+                    "isocontour",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "IfcBoolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralPointAction",
+        "is_abstract": false,
+        "parent": "IfcStructuralAction",
+        "attributes": [
+            {
+                "name": "DestabilizingLoad",
+                "type": "IfcBoolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralPointConnection",
+        "is_abstract": false,
+        "parent": "IfcStructuralConnection",
+        "attributes": []
+    },
+    {
+        "name": "IfcStructuralPointReaction",
+        "is_abstract": false,
+        "parent": "IfcStructuralReaction",
+        "attributes": [
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralSurfaceAction",
+        "is_abstract": false,
+        "parent": "IfcStructuralAction",
+        "attributes": [
+            {
+                "name": "ProjectedOrTrue",
+                "type": "IfcProjectedOrTrueLengthEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "projected_length",
+                    "true_length"
+                ]
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralSurfaceActivityTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "const",
+                    "bilinear",
+                    "discrete",
+                    "isocontour",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "DestabilizingLoad",
+                "type": "IfcBoolean",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralSurfaceConnection",
+        "is_abstract": false,
+        "parent": "IfcStructuralConnection",
+        "attributes": []
+    },
+    {
+        "name": "IfcStructuralSurfaceMember",
+        "is_abstract": false,
+        "parent": "IfcStructuralMember",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralSurfaceMemberTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bending_element",
+                    "membrane_element",
+                    "shell",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Thickness",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralSurfaceMemberVarying",
+        "is_abstract": false,
+        "parent": "IfcStructuralSurfaceMember",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralSurfaceMemberTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bending_element",
+                    "membrane_element",
+                    "shell",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Thickness",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcStructuralSurfaceReaction",
+        "is_abstract": false,
+        "parent": "IfcStructuralReaction",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcStructuralSurfaceActivityTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "const",
+                    "bilinear",
+                    "discrete",
+                    "isocontour",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "GlobalOrLocal",
+                "type": "IfcGlobalOrLocalEnum",
+                "is_enum": true,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSurfaceFeature",
+        "is_abstract": false,
+        "parent": "IfcFeatureElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSurfaceFeatureTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "mark",
+                    "tag",
+                    "treatment",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSwitchingDevice",
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSwitchingDeviceTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "contactor",
+                    "dimmerswitch",
+                    "emergencystop",
+                    "keypad",
+                    "momentaryswitch",
+                    "selectorswitch",
+                    "starter",
+                    "switchdisconnector",
+                    "toggleswitch",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcSystemFurnitureElement",
+        "is_abstract": false,
+        "parent": "IfcFurnishingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcSystemFurnitureElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "panel",
+                    "worksurface",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcTank",
+        "is_abstract": false,
+        "parent": "IfcFlowStorageDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcTankTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "basin",
+                    "breakpressure",
+                    "expansion",
+                    "feedandexpansion",
+                    "pressurevessel",
+                    "storage",
+                    "vessel",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcTendon",
+        "is_abstract": false,
+        "parent": "IfcReinforcingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcTendonTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "bar",
+                    "coated",
+                    "strand",
+                    "wire",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "NominalDiameter",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "CrossSectionArea",
+                "type": "IfcAreaMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "TensionForce",
+                "type": "IfcForceMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PreStress",
+                "type": "IfcPressureMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "FrictionCoefficient",
+                "type": "IfcNormalisedRatioMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "AnchorageSlip",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "MinCurvatureRadius",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcTendonAnchor",
+        "is_abstract": false,
+        "parent": "IfcReinforcingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcTendonAnchorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "coupler",
+                    "fixed_end",
+                    "tensioning_end",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "SteelGrade",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcTransformer",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcTransformerTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "current",
+                    "frequency",
+                    "inverter",
+                    "rectifier",
+                    "voltage",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcTransportElement",
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcTransportElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "elevator",
+                    "escalator",
+                    "movingwalkway",
+                    "craneway",
+                    "liftinggear",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcTubeBundle",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcTubeBundleTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "finned",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcUnitaryControlElement",
+        "is_abstract": false,
+        "parent": "IfcDistributionControlElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcUnitaryControlElementTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "alarmpanel",
+                    "controlpanel",
+                    "gasdetectionpanel",
+                    "indicatorpanel",
+                    "mimicpanel",
+                    "humidistat",
+                    "thermostat",
+                    "weatherstation",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcUnitaryEquipment",
+        "is_abstract": false,
+        "parent": "IfcEnergyConversionDevice",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcUnitaryEquipmentTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "airhandler",
+                    "airconditioningunit",
+                    "dehumidifier",
+                    "splitsystem",
+                    "rooftopunit",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcValve",
+        "is_abstract": false,
+        "parent": "IfcFlowController",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcValveTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "airrelease",
+                    "antivacuum",
+                    "changeover",
+                    "check",
+                    "commissioning",
+                    "diverting",
+                    "drawoffcock",
+                    "doublecheck",
+                    "doubleregulating",
+                    "faucet",
+                    "flushing",
+                    "gascock",
+                    "gastap",
+                    "isolating",
+                    "mixing",
+                    "pressurereducing",
+                    "pressurerelief",
+                    "regulating",
+                    "safetycutoff",
+                    "steamtrap",
+                    "stopcock",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcVibrationIsolator",
+        "is_abstract": false,
+        "parent": "IfcElementComponent",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcVibrationIsolatorTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "compression",
+                    "spring",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcVirtualElement",
+        "is_abstract": false,
+        "parent": "IfcElement",
+        "attributes": [
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcVoidingFeature",
+        "is_abstract": false,
+        "parent": "IfcFeatureElementSubtraction",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcVoidingFeatureTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "cutout",
+                    "notch",
+                    "hole",
+                    "miter",
+                    "chamfer",
+                    "edge",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcWall",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcWallTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "movable",
+                    "parapet",
+                    "partitioning",
+                    "plumbingwall",
+                    "shear",
+                    "solidwall",
+                    "standard",
+                    "polygonal",
+                    "elementedwall",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcWallElementedCase",
+        "is_abstract": false,
+        "parent": "IfcWall",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcWallTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "movable",
+                    "parapet",
+                    "partitioning",
+                    "plumbingwall",
+                    "shear",
+                    "solidwall",
+                    "standard",
+                    "polygonal",
+                    "elementedwall",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcWallStandardCase",
+        "is_abstract": false,
+        "parent": "IfcWall",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcWallTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "movable",
+                    "parapet",
+                    "partitioning",
+                    "plumbingwall",
+                    "shear",
+                    "solidwall",
+                    "standard",
+                    "polygonal",
+                    "elementedwall",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcWasteTerminal",
+        "is_abstract": false,
+        "parent": "IfcFlowTerminal",
+        "attributes": [
+            {
+                "name": "PredefinedType",
+                "type": "IfcWasteTerminalTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "floortrap",
+                    "floorwaste",
+                    "gullysump",
+                    "gullytrap",
+                    "roofdrain",
+                    "wastedisposalunit",
+                    "wastetrap",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcWindow",
+        "is_abstract": false,
+        "parent": "IfcBuildingElement",
+        "attributes": [
+            {
+                "name": "OverallHeight",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OverallWidth",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcWindowTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "window",
+                    "skylight",
+                    "lightdome",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "PartitioningType",
+                "type": "IfcWindowTypePartitioningEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "single_panel",
+                    "double_panel_vertical",
+                    "double_panel_horizontal",
+                    "triple_panel_vertical",
+                    "triple_panel_bottom",
+                    "triple_panel_top",
+                    "triple_panel_left",
+                    "triple_panel_right",
+                    "triple_panel_horizontal",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "UserDefinedPartitioningType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    },
+    {
+        "name": "IfcWindowStandardCase",
+        "is_abstract": false,
+        "parent": "IfcWindow",
+        "attributes": [
+            {
+                "name": "OverallHeight",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "OverallWidth",
+                "type": "IfcPositiveLengthMeasure",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "PredefinedType",
+                "type": "IfcWindowTypeEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "window",
+                    "skylight",
+                    "lightdome",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "PartitioningType",
+                "type": "IfcWindowTypePartitioningEnum",
+                "is_enum": true,
+                "enum_values": [
+                    "single_panel",
+                    "double_panel_vertical",
+                    "double_panel_horizontal",
+                    "triple_panel_vertical",
+                    "triple_panel_bottom",
+                    "triple_panel_top",
+                    "triple_panel_left",
+                    "triple_panel_right",
+                    "triple_panel_horizontal",
+                    "userdefined",
+                    "notdefined"
+                ]
+            },
+            {
+                "name": "UserDefinedPartitioningType",
+                "type": "IfcLabel",
+                "is_enum": false,
+                "enum_values": []
+            },
+            {
+                "name": "Tag",
+                "type": "IfcIdentifier",
+                "is_enum": false,
+                "enum_values": []
+            }
+        ]
+    }
+]
