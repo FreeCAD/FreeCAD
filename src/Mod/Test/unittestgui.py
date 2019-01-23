@@ -51,7 +51,7 @@ class BaseGUITestRunner:
         self.currentResult = None
         self.running = 0
         self.__rollbackImporter = None
-        apply(self.initGUI, args, kwargs)
+        self.initGUI(*args, **kwargs)
 
     def getSelectedTestName(self):
         "Override to return the name of the test selected to be run"
@@ -75,7 +75,7 @@ class BaseGUITestRunner:
             test = unittest.defaultTestLoader.loadTestsFromName(testName)
         except:
             exc_type, exc_value, exc_tb = sys.exc_info()
-            apply(traceback.print_exception,sys.exc_info())
+            traceback.print_exception(*sys.exc_info())
             self.errorDialog("Unable to run test '%s'" % testName,
                              "Error loading specified test: %s, %s" % \
                              (exc_type, exc_value))
@@ -341,7 +341,7 @@ class TkTestRunner(BaseGUITestRunner):
         test, error = self.errorInfo[selected]
         tk.Label(window, text=str(test),
                  foreground="red", justify=tk.LEFT).pack(anchor=tk.W)
-        tracebackLines = apply(traceback.format_exception, error + (10,))
+        tracebackLines = traceback.format_exception(*error + (10,))
         tracebackText = string.join(tracebackLines,'')
         tk.Label(window, text=tracebackText, justify=tk.LEFT).pack()
         tk.Button(window, text="Close",
@@ -356,7 +356,7 @@ class ProgressBar(tk.Frame):
     the given colour."""
 
     def __init__(self, *args, **kwargs):
-        apply(tk.Frame.__init__, (self,) + args, kwargs)
+        tk.Frame.__init__(*(self,) + args, **kwargs)
         self.canvas = tk.Canvas(self, height='20', width='60',
                                 background='white', borderwidth=3)
         self.canvas.pack(fill=tk.X, expand=1)

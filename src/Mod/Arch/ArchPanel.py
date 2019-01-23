@@ -736,7 +736,7 @@ class _Panel(ArchComponent.Component):
                 base = self.vol.common(base)
                 base = base.removeSplitter()
                 if not base:
-                    FreeCAD.Console.PrintError(translate("Arch","Error computing shape of ")+obj.Label+"\n")
+                    FreeCAD.Console.PrintError(translate("Arch","Error computing shape of")+" "+obj.Label+"\n")
                     return False
 
         if base and (obj.Sheets > 1) and normal and thickness:

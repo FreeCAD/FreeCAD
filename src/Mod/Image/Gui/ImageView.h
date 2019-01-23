@@ -128,6 +128,7 @@ protected:
     bool _statusBarEnabled;
     bool _mouseEventsEnabled;
     bool _ignoreCloseEvent;
+    bool _invertZoom;
 };
 
 } // namespace ImageViewGui

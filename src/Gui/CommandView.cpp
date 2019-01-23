@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -1285,27 +1286,71 @@ void StdCmdViewTop::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_ViewAxo
+// Std_ViewIsometric
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewAxo)
+DEF_3DV_CMD(StdCmdViewIsometric)
 
-StdCmdViewAxo::StdCmdViewAxo()
-  : Command("Std_ViewAxo")
+StdCmdViewIsometric::StdCmdViewIsometric()
+  : Command("Std_ViewIsometric")
 {
     sGroup      = QT_TR_NOOP("Standard-View");
-    sMenuText   = QT_TR_NOOP("Axonometric");
-    sToolTipText= QT_TR_NOOP("Set to axonometric view");
-    sWhatsThis  = "Std_ViewAxo";
-    sStatusTip  = QT_TR_NOOP("Set to axonometric view");
+    sMenuText   = QT_TR_NOOP("Isometric");
+    sToolTipText= QT_TR_NOOP("Set to isometric view");
+    sWhatsThis  = "Std_ViewIsometric";
+    sStatusTip  = QT_TR_NOOP("Set to isometric view");
     sPixmap     = "view-axonometric";
     sAccel      = "0";
     eType         = Alter3DView;
 }
 
-void StdCmdViewAxo::activated(int iMsg)
+void StdCmdViewIsometric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewAxonometric()");
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewIsometric()");
+}
+
+//===========================================================================
+// Std_ViewDimetric
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewDimetric)
+
+StdCmdViewDimetric::StdCmdViewDimetric()
+  : Command("Std_ViewDimetric")
+{
+    sGroup      = QT_TR_NOOP("Standard-View");
+    sMenuText   = QT_TR_NOOP("Dimetric");
+    sToolTipText= QT_TR_NOOP("Set to dimetric view");
+    sWhatsThis  = "Std_ViewDimetric";
+    sStatusTip  = QT_TR_NOOP("Set to dimetric view");
+    eType         = Alter3DView;
+}
+
+void StdCmdViewDimetric::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDimetric()");
+}
+
+//===========================================================================
+// Std_ViewTrimetric
+//===========================================================================
+DEF_3DV_CMD(StdCmdViewTrimetric)
+
+StdCmdViewTrimetric::StdCmdViewTrimetric()
+  : Command("Std_ViewTrimetric")
+{
+    sGroup      = QT_TR_NOOP("Standard-View");
+    sMenuText   = QT_TR_NOOP("Trimetric");
+    sToolTipText= QT_TR_NOOP("Set to trimetric view");
+    sWhatsThis  = "Std_ViewTrimetric";
+    sStatusTip  = QT_TR_NOOP("Set to trimetric view");
+    eType         = Alter3DView;
+}
+
+void StdCmdViewTrimetric::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().viewTrimetric()");
 }
 
 //===========================================================================
@@ -2507,32 +2552,31 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
             Gui::Selection().clearSelection(doc->getName());
         }
 
-        std::vector<App::GeoFeature*> geom = doc->getObjectsOfType<App::GeoFeature>();
-        for (std::vector<App::GeoFeature*>::iterator it = geom.begin(); it != geom.end(); ++it) {
+        std::vector<App::DocumentObject*> geom = doc->getObjectsOfType<App::DocumentObject>();
+        for (std::vector<App::DocumentObject*>::iterator it = geom.begin(); it != geom.end(); ++it) {
             Gui::ViewProvider* vp = Application::Instance->getViewProvider(*it);
             if (!vp->isVisible())
                 continue;
-            std::vector<App::Property*> props;
-            (*it)->getPropertyList(props);
-            for (std::vector<App::Property*>::iterator jt = props.begin(); jt != props.end(); ++jt) {
-                if ((*jt)->isDerivedFrom(App::PropertyGeometry::getClassTypeId())) {
-                    App::PropertyGeometry* prop = static_cast<App::PropertyGeometry*>(*jt);
-                    Base::BoundBox3d bbox = prop->getBoundingBox();
+            // 0002706: For box selection use SoGetBoundingBoxAction for
+            // the view provider of an object
+            SoGetBoundingBoxAction bboxAction(view->getViewportRegion());
+            bboxAction.apply(vp->getRoot());
+            SbBox3f bbox = bboxAction.getBoundingBox();
+            Base::BoundBox3d bbox3;
+            bbox3.Add(Base::convertTo<Base::Vector3d>(bbox.getMax()));
+            bbox3.Add(Base::convertTo<Base::Vector3d>(bbox.getMin()));
 
-                    if (selectionMode == CENTER) {
-                        Base::Vector3d pt2d;
-                        pt2d = proj(bbox.GetCenter());
-                        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
-                            Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
-                        }
-                    }
-                    else {
-                        Base::BoundBox2d bbox2 = bbox.ProjectBox(&proj);
-                        if (bbox2.Intersect(polygon)) {
-                            Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
-                        }
-                    }
-                    break;
+            if (selectionMode == CENTER) {
+                Base::Vector3d pt2d;
+                pt2d = proj(bbox3.GetCenter());
+                if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
+                    Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
+                }
+            }
+            else {
+                Base::BoundBox2d bbox2 = bbox3.ProjectBox(&proj);
+                if (bbox2.Intersect(polygon)) {
+                    Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
                 }
             }
         }
@@ -2970,7 +3014,9 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdViewRear());
     rcCmdMgr.addCommand(new StdCmdViewRight());
     rcCmdMgr.addCommand(new StdCmdViewTop());
-    rcCmdMgr.addCommand(new StdCmdViewAxo());
+    rcCmdMgr.addCommand(new StdCmdViewIsometric());
+    rcCmdMgr.addCommand(new StdCmdViewDimetric());
+    rcCmdMgr.addCommand(new StdCmdViewTrimetric());
     rcCmdMgr.addCommand(new StdCmdViewFitAll());
     rcCmdMgr.addCommand(new StdCmdViewVR());
     rcCmdMgr.addCommand(new StdCmdViewFitSelection());

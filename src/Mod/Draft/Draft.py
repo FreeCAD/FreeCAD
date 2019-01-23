@@ -2684,7 +2684,7 @@ def upgrade(objects,delete=False,force=None):
                     newobj.Shape = sol
                     addList.append(newobj)
                     deleteList.append(obj)
-            return newob
+            return newobj
 
     def closeWire(obj):
         """closes a wire object, if possible"""

@@ -120,7 +120,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
     isSelectionBlocked = false;
 
-    setWindowTitle(tr("dummy[*]"));      //Yuck. prevents "QWidget::setWindowModified: The window title does not contain a '[*]' placeholder"
+    QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
+    tabText += QString::fromUtf8("[*]");
+    setWindowTitle(tabText);
     setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
 
     // Connect Signals and Slots
@@ -313,6 +315,9 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
     //if this page has a QView for this obj, delete it.
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         (void) m_view->removeQViewByName(obj.getNameInDocument());
+    } else if (m_objectName == obj.getNameInDocument()) {
+        // if obj is me, hide myself and my tab
+        m_vpPage->hide();
     }
 }
 
@@ -645,7 +650,7 @@ void MDIViewPage::print(QPrinter* printer)
     if (!p.isActive() && !printer->outputFileName().isEmpty()) {
         qApp->setOverrideCursor(Qt::ArrowCursor);
         QMessageBox::critical(this, tr("Opening file failed"),
-            tr("Can't open file %1 for writing.").arg(printer->outputFileName()));
+            tr("Can not open file %1 for writing.").arg(printer->outputFileName()));
         qApp->restoreOverrideCursor();
         return;
     }
@@ -973,10 +978,10 @@ void MDIViewPage::sceneSelectionManager()
         }
         if (!found) {
             m_sceneSelected.push_back(qts);
-            break;    
+            break;
         }
     }
-    
+
     //remove items from m_sceneSelected that are not in q_sceneSel
     QList<QGraphicsItem*> m_new;
     for (auto m: m_sceneSelected) {
@@ -997,7 +1002,7 @@ void MDIViewPage::sceneSelectionChanged()
     sceneSelectionManager();
 
     QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
- 
+
     if(isSelectionBlocked)  {
         return;
     }
@@ -1005,7 +1010,7 @@ void MDIViewPage::sceneSelectionChanged()
     std::vector<Gui::SelectionObject> treeSel = Gui::Selection().getSelectionEx();
 //    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
     QList<QGraphicsItem*> sceneSel = m_sceneSelected;
-    
+
     //check if really need to change selection
     bool sameSel = compareSelections(treeSel,sceneSel);
     if (sameSel) {

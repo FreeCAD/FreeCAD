@@ -161,7 +161,7 @@ CmdWebBrowserStop::CmdWebBrowserStop()
     sAppModule      = "Web";
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Stop loading");
-    sToolTipText    = QT_TR_NOOP("Stop the current loading");
+    sToolTipText    = QT_TR_NOOP("Stop loading");
     sWhatsThis      = "Web_BrowserStop";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-stop";
@@ -191,7 +191,7 @@ CmdWebBrowserZoomIn::CmdWebBrowserZoomIn()
     sAppModule      = "Web";
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Zoom in");
-    sToolTipText    = QT_TR_NOOP("Zoom into the page");
+    sToolTipText    = QT_TR_NOOP("Zoom in");
     sWhatsThis      = "Web_BrowserZoomIn";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-zoom-in";
@@ -220,7 +220,7 @@ CmdWebBrowserZoomOut::CmdWebBrowserZoomOut()
     sAppModule      = "Web";
     sGroup          = QT_TR_NOOP("Web");
     sMenuText       = QT_TR_NOOP("Zoom out");
-    sToolTipText    = QT_TR_NOOP("Zoom out of the page");
+    sToolTipText    = QT_TR_NOOP("Zoom out");
     sWhatsThis      = "Web_BrowserZoomOut";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/web-zoom-out";

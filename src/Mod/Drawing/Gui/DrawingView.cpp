@@ -71,6 +71,7 @@ SvgView::SvgView(QWidget *parent)
     , m_svgItem(0)
     , m_backgroundItem(0)
     , m_outlineItem(0)
+    , m_invertZoom(false)
 {
     setScene(new QGraphicsScene(this));
     setTransformationAnchor(AnchorUnderMouse);
@@ -196,7 +197,10 @@ void SvgView::paintEvent(QPaintEvent *event)
 
 void SvgView::wheelEvent(QWheelEvent *event)
 {
-    qreal factor = std::pow(1.2, -event->delta() / 240.0);
+    int delta = -event->delta();
+    if (m_invertZoom)
+        delta = -delta;
+    qreal factor = std::pow(1.2, delta / 240.0);
     scale(factor, factor);
     event->accept();
 }
@@ -253,6 +257,11 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
 
     m_orientation = QPrinter::Landscape;
     m_pageSize = QPrinter::A4;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/View");
+    bool on = hGrp->GetBool("InvertZoom", true);
+    m_view->setZoomInverted(on);
 }
 
 DrawingView::~DrawingView()

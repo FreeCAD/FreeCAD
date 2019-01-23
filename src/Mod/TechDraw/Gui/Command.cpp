@@ -727,7 +727,7 @@ CmdTechDrawClipPlus::CmdTechDrawClipPlus()
   : Command("TechDraw_ClipPlus")
 {
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Add View to ClipGroup");
+    sMenuText     = QT_TR_NOOP("Add View to Clip group");
     sToolTipText  = QT_TR_NOOP("Add a View to Clip group");
     sWhatsThis    = "TechDraw_ClipPlus";
     sStatusTip    = sToolTipText;
@@ -740,7 +740,7 @@ void CmdTechDrawClipPlus::activated(int iMsg)
    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
    if (selection.size() != 2) {
        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Select 1 DrawViewClip and 1 DrawView."));
+                            QObject::tr("Select 1 Clip group and 1 View."));
        return;
    }
 
@@ -756,12 +756,12 @@ void CmdTechDrawClipPlus::activated(int iMsg)
     }
     if (!view) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one Drawing View object."));
+            QObject::tr("Select exactly one View to add to group."));
         return;
     }
     if (!clip) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one Clip object."));
+            QObject::tr("Select exactly one Clip group."));
         return;
     }
 
@@ -824,7 +824,7 @@ void CmdTechDrawClipMinus::activated(int iMsg)
     if (dObj.empty()) {
         QMessageBox::warning( Gui::getMainWindow(),
                               QObject::tr("Wrong selection"),
-                              QObject::tr("Select exactly one Drawing View object.") );
+                              QObject::tr("Select exactly one View to remove from Group.") );
         return;
     }
 
@@ -939,8 +939,8 @@ CmdTechDrawDraftView::CmdTechDrawDraftView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert a DraftView");
-    sToolTipText  = QT_TR_NOOP("Inserts a Draft WB object");
+    sMenuText     = QT_TR_NOOP("Insert a DraftWB object");
+    sToolTipText  = QT_TR_NOOP("Insert a View of a Draft Workbench object");
     sWhatsThis    = "TechDraw_NewDraft";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-draft-view";
@@ -992,8 +992,8 @@ CmdTechDrawArchView::CmdTechDrawArchView()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert an ArchView");
-    sToolTipText  = QT_TR_NOOP("Inserts a view of an Arch Section Plane");
+    sMenuText     = QT_TR_NOOP("Insert a Section Plane");
+    sToolTipText  = QT_TR_NOOP("Inserts a view of a Section Plane from Arch Workbench");
     sWhatsThis    = "TechDraw_NewArch";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/techdraw-arch-view";
@@ -1027,7 +1027,7 @@ void CmdTechDrawArchView::activated(int iMsg)
         archObj = objects[ifound];
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("There is no Arch Section Plane in selection."));
+            QObject::tr("There is no Section Plane in selection."));
         return;
     }
 

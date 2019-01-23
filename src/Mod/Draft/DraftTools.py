@@ -40,7 +40,8 @@ __url__ = "http://www.freecadweb.org"
 
 import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
-from DraftGui import todo, QtCore, QtGui, translate, utf8_decode
+from PySide import QtCore,QtGui
+from DraftGui import todo, translate, utf8_decode
 from DraftSnap import *
 from DraftTrackers import *
 from pivy import coin
@@ -513,7 +514,7 @@ class SelectPlane(DraftTool):
             plv = 'd('+str(arg.x)+','+str(arg.y)+','+str(arg.z)+')'
             self.ui.wplabel.setText(plv+suffix)
         self.ui.wplabel.setToolTip(translate("draft", "Current working plane:",utf8_decode=True)+self.ui.wplabel.text())
-        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid()")
+        FreeCADGui.doCommandGui("FreeCADGui.Snapper.setGrid(init=True)")
 
 #---------------------------------------------------------------------------
 # Geometry constructors
@@ -4099,8 +4100,7 @@ class Edit(Modifier):
                     self.trackers = []
                     if self.editpoints:
                         for ep in range(len(self.editpoints)):
-                            self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,
-                                                             ep,self.obj.ViewObject.LineColor))
+                            self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,ep))
                         self.call = self.view.addEventCallback("SoEvent",self.action)
                         self.running = True
                         plane.save()
@@ -5723,7 +5723,7 @@ class Draft_Snap_Near():
         if hasattr(FreeCADGui,"Snapper"):
             if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
                 for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonnear":
+                    if b.objectName() == "SnapButtonpassive":
                         b.toggle()
 
 class Draft_Snap_Ortho():

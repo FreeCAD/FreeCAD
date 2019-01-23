@@ -29,7 +29,6 @@
 #include <TopoDS_Wire.hxx>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 #include <Base/Vector3D.h>

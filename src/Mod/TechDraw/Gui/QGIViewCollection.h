@@ -25,7 +25,6 @@
 
 #include <QGraphicsItemGroup>
 #include <QObject>
-#include <App/PropertyLinks.h>
 
 #include "QGIView.h"
 

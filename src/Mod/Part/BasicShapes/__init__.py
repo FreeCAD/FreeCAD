@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,9 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "BasicShapes package"
+__author__ = "Werner Mayer"
+__url__ = "http://www.freecadweb.org"
+__doc__ = """BasicShapes Package (part of FreeCAD)."""
 
-import FreeCAD
-
-
-# import for the FreeCAD Material card
-FreeCAD.addImportType("FreeCAD Material Card (*.FCMat)", "importFCMat")
+## @package BasicShapes
+#  \ingroup PART
+#  \brief BasicShapes Package for Part workbench

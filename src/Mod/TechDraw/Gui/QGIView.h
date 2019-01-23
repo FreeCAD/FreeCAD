@@ -28,7 +28,6 @@
 #include <QFont>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
 #include <Base/Parameter.h>
 #include <Gui/ViewProvider.h>
 

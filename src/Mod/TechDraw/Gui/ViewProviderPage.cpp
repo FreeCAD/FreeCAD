@@ -206,6 +206,7 @@ bool ViewProviderPage::setEdit(int ModNum)
 
 bool ViewProviderPage::doubleClicked(void)
 {
+    Visibility.setValue(true);
     showMDIViewPage();
     Gui::getMainWindow()->setActiveWindow(m_mdiView);
     return true;

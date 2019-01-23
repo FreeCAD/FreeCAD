@@ -380,11 +380,11 @@ class _TaskPanelFemResultShow:
 
     def set_result_stats(self, unit, minm, avg, maxm):
         self.form.le_min.setProperty("unit", unit)
-        self.form.le_min.setText("{:.6} {}".format(minm, unit))
+        self.form.le_min.setProperty("rawText", "{:.6} {}".format(minm, unit))
         self.form.le_avg.setProperty("unit", unit)
-        self.form.le_avg.setText("{:.6} {}".format(avg, unit))
+        self.form.le_avg.setProperty("rawText", "{:.6} {}".format(avg, unit))
         self.form.le_max.setProperty("unit", unit)
-        self.form.le_max.setText("{:.6} {}".format(maxm, unit))
+        self.form.le_max.setProperty("rawText", "{:.6} {}".format(maxm, unit))
 
     def update_displacement(self, factor=None):
         if factor is None:

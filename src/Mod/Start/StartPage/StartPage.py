@@ -217,7 +217,7 @@ def buildCard(filename,method,arg=None):
             if size:
                 result += '<a href="'+method+arg+'" title="'+infostring+'">'
                 result += '<li class="icon">'
-                result += '<img src="'+image+'">'
+                result += '<img src="file:///'+image+'">'
                 result += '<div class="caption">'
                 result += '<h4>'+basename+'</h4>'
                 result += '<p>'+size+'</p>'
@@ -309,24 +309,23 @@ def handle():
     SECTION_RECENTFILES = encode("")
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     rfcount = rf.GetInt("RecentFiles",0)
-    if rfcount:
-        SECTION_RECENTFILES = encode("<h2>"+TranslationTexts.T_RECENTFILES+"</h2>")
-        SECTION_RECENTFILES += "<ul>"
-        SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
-        SECTION_RECENTFILES += '<li class="icon">'
-        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
-            SECTION_RECENTFILES += '<img src="'+encode(iconbank["createimg"])+'">'
-        else:
-            SECTION_RECENTFILES += '<img src="images/new_file_thumbnail.svg">'
-        SECTION_RECENTFILES += '<div class="caption">'
-        SECTION_RECENTFILES += '<h4>'+encode(TranslationTexts.T_CREATENEW)+'</h4>'
-        SECTION_RECENTFILES += '</div>'
-        SECTION_RECENTFILES += '</li>'
-        SECTION_RECENTFILES += '</a>'
-        for i in range(rfcount):
-            filename = rf.GetString("MRU%d" % (i))
-            SECTION_RECENTFILES += encode(buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i)))
-        SECTION_RECENTFILES += '</ul>'
+    SECTION_RECENTFILES = encode("<h2>"+TranslationTexts.T_RECENTFILES+"</h2>")
+    SECTION_RECENTFILES += "<ul>"
+    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
+    SECTION_RECENTFILES += '<li class="icon">'
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
+        SECTION_RECENTFILES += '<img src="file:///'+encode(iconbank["createimg"])+'">'
+    else:
+        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg")+'">'
+    SECTION_RECENTFILES += '<div class="caption">'
+    SECTION_RECENTFILES += '<h4>'+encode(TranslationTexts.T_CREATENEW)+'</h4>'
+    SECTION_RECENTFILES += '</div>'
+    SECTION_RECENTFILES += '</li>'
+    SECTION_RECENTFILES += '</a>'
+    for i in range(rfcount):
+        filename = rf.GetString("MRU%d" % (i))
+        SECTION_RECENTFILES += encode(buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i)))
+    SECTION_RECENTFILES += '</ul>'
     HTML = HTML.replace("SECTION_RECENTFILES",SECTION_RECENTFILES)
 
     # build SECTION_EXAMPLES
@@ -335,9 +334,12 @@ def handle():
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowExamples",True):
         SECTION_EXAMPLES = encode("<h2>"+TranslationTexts.T_EXAMPLES+"</h2>")
         SECTION_EXAMPLES += "<ul>"
-        for basename in os.listdir(FreeCAD.getResourceDir()+"examples"):
-            filename = FreeCAD.getResourceDir()+"examples"+os.sep+basename
-            SECTION_EXAMPLES += encode(buildCard(filename,method="LoadExample.py?filename="))
+        examples_path = FreeCAD.getResourceDir()+"examples"
+        if os.path.exists(examples_path):
+            examples = os.listdir(examples_path)
+            for basename in examples:
+                filename = FreeCAD.getResourceDir()+"examples"+os.sep+basename
+                SECTION_EXAMPLES += encode(buildCard(filename,method="LoadExample.py?filename="))
         SECTION_EXAMPLES += "</ul>"
     HTML = HTML.replace("SECTION_EXAMPLES",SECTION_EXAMPLES)
 
@@ -356,6 +358,12 @@ def handle():
         SECTION_CUSTOM += "</ul>"
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
+	# build IMAGE_SRC paths
+    HTML = HTML.replace("IMAGE_SRC_USERHUB",'file:///'+os.path.join(resources_dir, 'images/userhub.png'))
+    HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
+    HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))
+    HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png'))
+
     # build UL_WORKBENCHES
 
     wblist = []
@@ -366,11 +374,30 @@ def handle():
             wn = wb[:-9]
         else:
             wn = wb
+        # fixes for non-standard names
         if wn == "flamingoTools":
             wn = "flamingo"
-        if wn == "Geodat":
+        elif wn == "Geodat":
             wn = "geodata"
-        if wn == "None":
+        elif wn == "a2p":
+            wn = "A2plus"
+        elif wn == "ArchTexture":
+            wn = "ArchTextures"
+        elif wn == "CadQuery":
+            wn = "cadquery_module"
+        elif wn == "DefeaturingWB":
+            wn = "Defeaturing"
+        elif wn == "ManipulatorWB":
+            wn = "Manipulator"
+        elif wn == "PartOMagic":
+            wn = "Part-o-magic"
+        elif wn == "SM":
+            wn = "sheetmetal"
+        elif wn == "gear":
+            wn = "FCGear"
+        elif wn == "frame_":
+            wn = "frame"
+        elif wn == "None":
             continue
         wblist.append(wn.lower())
         if wb in iconbank:
@@ -394,7 +421,7 @@ def handle():
                     img="images/freecad.png"
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
-        UL_WORKBENCHES += '<img src="'+iconbank[wb]+'">&nbsp;'
+        UL_WORKBENCHES += '<img src="file:///'+iconbank[wb]+'">&nbsp;'
         UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'

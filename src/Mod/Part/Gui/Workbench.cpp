@@ -68,7 +68,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Part_Cylinder"
           << "Part_Sphere"
           << "Part_Cone"
-          << "Part_Torus";
+          << "Part_Torus"
+          << "Separator"
+          << "Part_MakeTube";
 
     Gui::MenuItem* bop = new Gui::MenuItem;
     bop->setCommand("Boolean");
