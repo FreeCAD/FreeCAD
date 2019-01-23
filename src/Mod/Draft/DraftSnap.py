@@ -893,7 +893,7 @@ class Snapper:
             else:
                 return []
         elif self.isEnabled("passive"):
-            return [p,'passive',self.toWP(p)]
+            return [p,'passive',p]
         else:
             return []
             
