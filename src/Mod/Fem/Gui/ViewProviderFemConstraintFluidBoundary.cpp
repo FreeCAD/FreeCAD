@@ -205,8 +205,11 @@ void ViewProviderFemConstraintFluidBoundary::updateData(const App::Property* pro
             // Re-orient all arrows
             Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
             Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
-            if (forceDirection.Length() < Precision::Confusion())
+            if (forceDirection.Length() < Precision::Confusion()) {
                 forceDirection = normal;
+                if (boundaryType == "inlet")
+                    forceDirection = - normal;
+            }
 
             SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
             SbRotation rot(SbVec3f(0,1,0), dir);
