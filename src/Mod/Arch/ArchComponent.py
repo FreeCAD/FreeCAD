@@ -57,7 +57,7 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
-with open(FreeCAD.ConfigGet("AppHomePath") + "Mod/Arch/Presets/ifc_products.json") as f:
+with open(FreeCAD.ConfigGet("AppHomePath") + "data/Mod/Arch/Presets/ifc_products.json") as f:
     IfcProducts = json.load(f)
 
 # Possible roles for FreeCAD BIM objects
