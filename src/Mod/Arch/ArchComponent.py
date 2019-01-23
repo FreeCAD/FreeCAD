@@ -25,51 +25,6 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-# IFC types
-
-IFCTYPES = ["IfcActuator", "IfcAirTerminal", "IfcAirTerminalBox", "IfcAirToAirHeatRecovery",
-"IfcAlarm", "IfcAnnotation", "IfcAudioVisualAppliance", "IfcBeam", "IfcBeamStandardCase",
-"IfcBoiler", "IfcBuilding", "IfcBuildingElement", "IfcBuildingElementPart", "IfcBuildingElementProxy",
-"IfcBuildingStorey", "IfcBurner", "IfcCableCarrierFitting", "IfcCableCarrierSegment",
-"IfcCableFitting", "IfcCableSegment", "IfcChiller", "IfcChimney", "IfcCivilElement",
-"IfcCoil", "IfcColumn", "IfcColumnStandardCase", "IfcCommunicationsAppliance", "IfcCompressor",
-"IfcCondenser", "IfcController", "IfcCooledBeam", "IfcCoolingTower", "IfcCovering",
-"IfcCurtainWall", "IfcDamper", "IfcDiscreteAccessory", "IfcDistributionChamberElement",
-"IfcDistributionControlElement", "IfcDistributionElement", "IfcDistributionFlowElement",
-"IfcDistributionPort", "IfcDoor", "IfcDoorStandardCase", "IfcDuctFitting", "IfcDuctSegment",
-"IfcDuctSilencer", "IfcElectricAppliance", "IfcElectricDistributionBoard", "IfcElectricFlowStorageDevice",
-"IfcElectricGenerator", "IfcElectricMotor", "IfcElectricTimeControl",
-"IfcElementAssembly", "IfcElementComponent", "IfcEnergyConversionDevice", "IfcEngine",
-"IfcEvaporativeCooler", "IfcEvaporator", "IfcExternalSpatialElement", "IfcExternalSpatialStructureElement",
-"IfcFan", "IfcFastener", "IfcFeatureElement", "IfcFeatureElementAddition", "IfcFeatureElementSubtraction",
-"IfcFilter", "IfcFireSuppressionTerminal", "IfcFlowController", "IfcFlowFitting", "IfcFlowInstrument",
-"IfcFlowMeter", "IfcFlowMovingDevice", "IfcFlowSegment", "IfcFlowStorageDevice", "IfcFlowTerminal",
-"IfcFlowTreatmentDevice", "IfcFooting", "IfcFurnishingElement", "IfcFurniture", "IfcGeographicElement",
-"IfcGrid", "IfcHeatExchanger", "IfcHumidifier", "IfcInterceptor", "IfcJunctionBox", "IfcLamp",
-"IfcLightFixture", "IfcMechanicalFastener", "IfcMedicalDevice", "IfcMember", "IfcMemberStandardCase",
-"IfcMotorConnection", "IfcOpeningElement", "IfcOpeningStandardCase", "IfcOutlet", "IfcPile",
-"IfcPipeFitting", "IfcPipeSegment", "IfcPlate", "IfcPlateStandardCase",
-"IfcProjectionElement", "IfcProtectiveDevice", "IfcProtectiveDeviceTrippingUnit",
-"IfcProxy", "IfcPump", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcReinforcingBar",
-"IfcReinforcingMesh", "IfcRoof", "IfcSanitaryTerminal",
-"IfcSensor", "IfcShadingDevice", "IfcSite", "IfcSlab", "IfcSlabElementedCase", "IfcSlabStandardCase",
-"IfcSolarDevice", "IfcSpace", "IfcSpaceHeater",
-"IfcSpatialZone", "IfcStackTerminal", "IfcStair", "IfcStairFlight",
-"IfcStructuralCurveAction",
-"IfcStructuralCurveConnection", "IfcStructuralCurveMember", "IfcStructuralCurveMemberVarying",
-"IfcStructuralCurveReaction", "IfcStructuralLinearAction",
-"IfcStructuralPlanarAction", "IfcStructuralPointAction",
-"IfcStructuralPointConnection", "IfcStructuralPointReaction",
-"IfcStructuralSurfaceAction", "IfcStructuralSurfaceConnection", "IfcStructuralSurfaceMember",
-"IfcStructuralSurfaceMemberVarying", "IfcStructuralSurfaceReaction", "IfcSurfaceFeature",
-"IfcSwitchingDevice", "IfcSystemFurnitureElement", "IfcTank", "IfcTendon", "IfcTendonAnchor",
-"IfcTransformer", "IfcTransportElement", "IfcTubeBundle", "IfcUnitaryControlElement",
-"IfcUnitaryEquipment", "IfcValve", "IfcVibrationIsolator", "IfcVirtualElement", "IfcVoidingFeature",
-"IfcWall", "IfcWallElementedCase", "IfcWallStandardCase", "IfcWasteTerminal", "IfcWindow",
-"IfcWindowStandardCase"]
-
-# Possible roles for FreeCAD BIM objects
-IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in IFCTYPES]
 
 # Property types
 SimplePropertyTypes = ["IfcInteger","IfcReal","IfcBoolean","IfcIdentifier","IfcText","IfcLabel","IfcLogical"]
@@ -80,7 +35,7 @@ MeasurePropertyTypes = ["IfcVolumeMeasure","IfcTimeMeasure","IfcThermodynamicTem
                         "IfcContextDependentMeasure","IfcAreaMeasure","IfcAmountOfSubstanceMeasure",
                         "IfcLuminousIntensityMeasure","IfcNormalisedRatioMeasure","IfcComplexNumber"]
 
-import FreeCAD,Draft,ArchCommands,math,sys
+import FreeCAD,Draft,ArchCommands,math,sys,json
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -102,7 +57,11 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
+with open(FreeCAD.ConfigGet("AppHomePath") + "Mod/Arch/Presets/ifc_products.json") as f:
+    IfcProducts = json.load(f)
 
+# Possible roles for FreeCAD BIM objects
+IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in [product["name"] for product in IfcProducts]]
 
 def convertOldComponents(objs=[]):
 
