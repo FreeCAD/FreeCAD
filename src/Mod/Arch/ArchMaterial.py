@@ -403,7 +403,7 @@ class _ViewProviderArchMaterial:
     def claimChildren(self):
         ch = []
         if hasattr(self,"Object"):
-            for o in FreeCAD.ActiveDocument.Objects:
+            for o in self.Object.Document.Objects:
                 if o.isDerivedFrom("App::MaterialObject"):
                     if o.Material:
                         if "Father" in o.Material:

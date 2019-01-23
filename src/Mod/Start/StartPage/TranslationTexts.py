@@ -69,7 +69,7 @@ T_OFFLINEPLACEHOLDER = translate("StartPage", "Cannot fetch information from Git
 T_RECENTCOMMITS = translate("StartPage", "Recent commits")
 T_DESCR_RECENTCOMMITS = translate("StartPage", "Below are the latest changes added to the <a href=\"http://github.com/FreeCAD/FreeCAD/\">FreeCAD source code</a>. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the <a href=\"https://www.freecadweb.org/wiki/Downloads\">available options</a> if you wish to obtain a development version.")
 T_SEEONGITHUB = translate("StartPage", "See all commits on github")
-T_CUSTOM = translate("StartPage", "You can configure a custom folder to display here in menu Edit -> Preferences -> Start -> Custom folder")
+T_CUSTOM = translate("StartPage", "You can configure a custom folder to display here in menu Edit -> Preferences -> Start -> Show additional folder")
 T_VERSION = translate("StartPage", "version")
 T_BUILD = translate("StartPage", "build")
 T_CREATENEW = translate("StartPage", "Create new...")
