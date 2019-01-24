@@ -6,7 +6,7 @@
       PythonName="Sketcher.SketchGeometryExtension"
       Twin="SketchGeometryExtension"
       TwinPointer="SketchGeometryExtension"
-      Include="Mod/Sketcher/App/SketchObject.h"
+      Include="Mod/Sketcher/App/SketchGeometryExtension.h"
       Namespace="Sketcher"
       FatherInclude="Mod/Part/App/GeometryExtensionPy.h"
       FatherNamespace="Part"

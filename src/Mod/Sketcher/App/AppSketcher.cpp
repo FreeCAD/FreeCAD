@@ -31,6 +31,7 @@
 
 #include "SketchObjectSF.h"
 #include "SketchObject.h"
+#include "SketchGeometryExtension.h"
 #include "Constraint.h"
 #include "Sketch.h"
 #include "ConstraintPy.h"
@@ -64,7 +65,7 @@ PyMOD_INIT_FUNC(Sketcher)
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
- 
+
     Sketcher::SketchGeometryExtension	::init();
     Sketcher::SketchObjectSF        	::init();
     Sketcher::SketchObject          	::init();
