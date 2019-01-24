@@ -63,34 +63,9 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
-namespace std {
-template<typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args)
-{
-    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-}
-}
-
+#include "GeometryExtension.h"
 
 namespace Part {
-
-class PartExport GeometryExtension: public Base::Persistence
-{
-    TYPESYSTEM_HEADER();
-public:
-    virtual ~GeometryExtension();
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const = 0;
-    virtual void Save(Base::Writer &/*writer*/) const = 0;
-    virtual void Restore(Base::XMLReader &/*reader*/) = 0;
-
-    virtual std::unique_ptr<GeometryExtension> copy(void) const = 0;
-
-    virtual PyObject *getPyObject(void) = 0;
-protected:
-    GeometryExtension();
-};
 
 class PartExport Geometry: public Base::Persistence
 {
