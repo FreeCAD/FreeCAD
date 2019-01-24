@@ -875,36 +875,30 @@ endif()
         endmacro(fc_wrap_cpp)
 
     elseif (BUILD_QT5)
-        find_package(Qt5Network)
-        find_package(Qt5Xml)
+        find_package(Qt5Core REQUIRED)
+        find_package(Qt5Network REQUIRED)
+        find_package(Qt5Xml REQUIRED)
         if(BUILD_GUI)
-            find_package(Qt5Widgets)
-            find_package(Qt5PrintSupport)
-            find_package(Qt5OpenGL)
-            find_package(Qt5Svg)
-            find_package(Qt5UiTools)
-            find_package(Qt5Network)
-            find_package(Qt5Concurrent)
+            find_package(Qt5Widgets REQUIRED)
+            find_package(Qt5PrintSupport REQUIRED)
+            find_package(Qt5OpenGL REQUIRED)
+            find_package(Qt5Svg REQUIRED)
+            find_package(Qt5UiTools REQUIRED)
+            find_package(Qt5Concurrent REQUIRED)
             if (BUILD_WEB)
                 if (FREECAD_USE_QWEBKIT)
-                    find_package(Qt5WebKitWidgets)
+                    find_package(Qt5WebKitWidgets REQUIRED)
                 else()
-                    find_package(Qt5WebEngineWidgets)
+                    find_package(Qt5WebEngineWidgets REQUIRED)
                     if (Qt5WebEngineWidgets_VERSION VERSION_LESS 5.7.0)
                         message(WARNING "** Minimum supported Qt5WebEngine version is 5.70!\n"
                                 "-- Trying with QWebkit, force with FREECAD_USE_QWEBKIT=On")
 
-                        find_package(Qt5WebKitWidgets)
+                        find_package(Qt5WebKitWidgets REQUIRED)
                     endif()
                 endif()
             endif()
         endif(BUILD_GUI)
-
-        IF(NOT Qt5Core_FOUND)
-            MESSAGE(FATAL_ERROR "========================\n"
-                                "Qt5 libraries not found.\n"
-                                "========================\n")
-        ENDIF(NOT Qt5Core_FOUND)
 
         # This is a special version of the built in macro qt5_wrap_cpp
         # It is required since moc'ed files are now included instead of being added to projects directly
