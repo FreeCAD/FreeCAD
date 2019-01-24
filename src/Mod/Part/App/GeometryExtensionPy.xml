@@ -5,7 +5,7 @@
       Name="GeometryExtensionPy"
       Twin="GeometryExtension"
       TwinPointer="GeometryExtension"
-      Include="Mod/Part/App/Geometry.h"
+      Include="Mod/Part/App/GeometryExtension.h"
       Namespace="Part"
       FatherInclude="Base/PyObjectBase.h"
       FatherNamespace="Base"
