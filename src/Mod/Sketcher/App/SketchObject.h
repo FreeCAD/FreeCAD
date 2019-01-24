@@ -38,29 +38,10 @@
 
 #include "Sketch.h"
 
+#include "SketchGeometryExtension.h"
+
 namespace Sketcher
 {
-
-class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
-{
-    TYPESYSTEM_HEADER();
-public:
-    SketchGeometryExtension();
-    SketchGeometryExtension(long cid);
-    virtual ~SketchGeometryExtension();
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
-
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const;
-
-    virtual PyObject *getPyObject(void);
-
-public:
-    long int id;
-};
 
 struct SketcherExport GeoEnum
 {
