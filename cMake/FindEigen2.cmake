@@ -67,7 +67,7 @@ if(EIGEN2_INCLUDE_DIR)
 endif(EIGEN2_INCLUDE_DIR)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Eigen2 DEFAULT_MSG EIGEN2_INCLUDE_DIR EIGEN2_VERSION_OK)
+find_package_handle_standard_args(Eigen2 REQUIRED_VARS EIGEN2_INCLUDE_DIR EIGEN2_VERSION_OK VERSION_VAR_EIGEN2_VERSION)
 
 mark_as_advanced(EIGEN2_INCLUDE_DIR)
 
