@@ -2386,7 +2386,7 @@ CmdPartProjectionOnSurface::CmdPartProjectionOnSurface()
   sToolTipText = QT_TR_NOOP("Create projection on surface...");
   sWhatsThis = "Part_projectionOnSurface";
   sStatusTip = sToolTipText;
-  sPixmap = "Part_Extrude";
+  sPixmap = "Part_ProjectionOnSurface";
 }
 
 void CmdPartProjectionOnSurface::activated(int iMsg)
