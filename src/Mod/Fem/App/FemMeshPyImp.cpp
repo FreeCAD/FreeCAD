@@ -823,7 +823,7 @@ PyObject* FemMeshPy::getNodeById(PyObject *args)
         vec = Mtrx * vec;
         return new Base::VectorPy( vec );
     }else{
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "No valid ID");
+        PyErr_SetString(PyExc_ValueError, "No valid node ID");
         return 0;
     }
 }
@@ -975,7 +975,12 @@ PyObject* FemMeshPy::getGroupElementType(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
 
-    SMDSAbs_ElementType aElementType = getFemMeshPtr()->getSMesh()->GetGroup(id)->GetGroupDS()->GetType();
+    SMESH_Group* group = getFemMeshPtr()->getSMesh()->GetGroup(id);
+    if (!group) {
+        PyErr_SetString(PyExc_ValueError, "No group for given id");
+        return 0;
+    }
+    SMDSAbs_ElementType aElementType = group->GetGroupDS()->GetType();
     const char* typeString = "";
     switch(aElementType) {
         case SMDSAbs_All            : typeString = "All"; break;
@@ -1000,8 +1005,14 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &id))
          return 0;
 
+    SMESH_Group* group = getFemMeshPtr()->getSMesh()->GetGroup(id);
+    if (!group) {
+        PyErr_SetString(PyExc_ValueError, "No group for given id");
+        return 0;
+    }
+
     std::set<int> ids;
-    SMDS_ElemIteratorPtr aElemIter = getFemMeshPtr()->getSMesh()->GetGroup(id)->GetGroupDS()->GetElements();
+    SMDS_ElemIteratorPtr aElemIter = group->GetGroupDS()->GetElements();
     while (aElemIter->more()) {
         const SMDS_MeshElement* aElement = aElemIter->next();
         ids.insert(aElement->GetID());
@@ -1015,6 +1026,81 @@ PyObject* FemMeshPy::getGroupElements(PyObject *args)
 #else
         tuple.setItem(index++, Py::Int(*it));
 #endif
+    }
+
+    return Py::new_reference_to(tuple);
+}
+
+PyObject* FemMeshPy::getElementType(PyObject *args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id))
+        return 0;
+
+    // An element ...
+    SMDSAbs_ElementType aElementType = getFemMeshPtr()->getSMesh()->GetElementType(id, true);
+    // ... or a node
+    if (aElementType == SMDSAbs_All)
+        aElementType = getFemMeshPtr()->getSMesh()->GetElementType(id, false);
+
+    const char* typeString = "";
+    switch(aElementType) {
+    case SMDSAbs_Node           : typeString = "Node"; break;
+    case SMDSAbs_Edge           : typeString = "Edge"; break;
+    case SMDSAbs_Face           : typeString = "Face"; break;
+    case SMDSAbs_Volume         : typeString = "Volume"; break;
+    case SMDSAbs_0DElement      : typeString = "0DElement"; break;
+    case SMDSAbs_Ball           : typeString = "Ball"; break;
+    default: {
+        PyErr_SetString(PyExc_ValueError, "No node or element for given id");
+        return 0;
+    }
+    }
+
+#if PY_MAJOR_VERSION >= 3
+    return PyUnicode_FromString(typeString);
+#else
+    return PyString_FromString(typeString);
+#endif
+}
+
+PyObject* FemMeshPy::getIdByElementType(PyObject *args)
+{
+    char* str;
+    if (!PyArg_ParseTuple(args, "s", &str))
+        return 0;
+
+    SMDSAbs_ElementType aElementType = SMDSAbs_All;
+    if (strcmp(str, "Node") == 0) {
+        aElementType = SMDSAbs_Node;
+    }
+    else if (strcmp(str, "Edge") == 0) {
+        aElementType = SMDSAbs_Edge;
+    }
+    else if (strcmp(str, "Face") == 0) {
+        aElementType = SMDSAbs_Face;
+    }
+    else if (strcmp(str, "Volume") == 0) {
+        aElementType = SMDSAbs_Volume;
+    }
+    else if (strcmp(str, "0DElement") == 0) {
+        aElementType = SMDSAbs_0DElement;
+    }
+    else if (strcmp(str, "Ball") == 0) {
+        aElementType = SMDSAbs_Ball;
+    }
+
+    std::set<int> ids;
+    SMDS_ElemIteratorPtr aElemIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->elementsIterator(aElementType);
+    while (aElemIter->more()) {
+        const SMDS_MeshElement* aElem = aElemIter->next();
+        ids.insert(aElem->GetID());
+    }
+
+    Py::Tuple tuple(ids.size());
+    int index = 0;
+    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        tuple.setItem(index++, Py::Long(*it));
     }
 
     return Py::new_reference_to(tuple);

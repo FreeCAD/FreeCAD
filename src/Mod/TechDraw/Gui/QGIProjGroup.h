@@ -25,7 +25,6 @@
 
 #include <QGraphicsItemGroup>
 #include <QObject>
-#include <App/PropertyLinks.h>
 
 #include "QGIViewCollection.h"
 
@@ -67,7 +66,7 @@ private:
     /// Convenience function
     TechDraw::DrawProjGroup * getDrawView(void) const;
 
-    QGraphicsRectItem *m_backgroundItem;
+    QGraphicsRectItem *m_groupBackground;
     QGraphicsItem* m_origin;
     QPoint mousePos;
 };

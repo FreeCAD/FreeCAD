@@ -63,6 +63,7 @@ DrawViewSpreadsheet::DrawViewSpreadsheet(void)
     std::string fontName = hGrp->GetASCII("LabelFont", "osifont");
 
     ADD_PROPERTY_TYPE(Source ,(0),vgroup,App::Prop_None,"Spreadsheet to view");
+    Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(CellStart ,("A1"),vgroup,App::Prop_None,"The top left cell of the range to display");
     ADD_PROPERTY_TYPE(CellEnd ,("B2"),vgroup,App::Prop_None,"The bottom right cell of the range to display");
     ADD_PROPERTY_TYPE(Font ,((fontName.c_str())),vgroup,App::Prop_None,"The name of the font to use");

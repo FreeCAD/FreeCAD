@@ -52,10 +52,11 @@ QGIProjGroup::QGIProjGroup()
     m_origin->setParentItem(this);
 
     // In place to ensure correct drawing and bounding box calculations
-    m_backgroundItem = new QGraphicsRectItem();
-    m_backgroundItem->setPen(QPen(QColor(Qt::black)));
+    // WF: obs? not even part of QGIGroup!
+    m_groupBackground = new QGraphicsRectItem();
+    m_groupBackground->setPen(QPen(QColor(Qt::black)));
 
-    //addToGroup(m_backgroundItem);
+    //addToGroup(m_groupBackground);
     setFlag(ItemIsSelectable, false);
     setFlag(ItemIsMovable, true);
     setFiltersChildEvents(true);
@@ -116,7 +117,8 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
                 if (type == QString::fromLatin1("Front")) {
-                    gView->setLocked(true);
+                    gView->setLocked(true);                  //this locks in GUI only
+                    fView->LockPosition.setValue(true);      //lock in App also
                     installSceneEventFilter(gView);
                     App::DocumentObject *docObj = getViewObject();
                     TechDraw::DrawProjGroup *projectionGroup = dynamic_cast<TechDraw::DrawProjGroup *>(docObj);
@@ -135,7 +137,6 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
     }
     return QGIViewCollection::itemChange(change, value);
 }
-
 
 void QGIProjGroup::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
@@ -208,7 +209,7 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 
 void QGIProjGroup::updateView(bool update)
 {
-    m_backgroundItem->setRect(boundingRect());
+    m_groupBackground->setRect(boundingRect());
     return QGIViewCollection::updateView(update);
 }
 
@@ -217,3 +218,4 @@ void QGIProjGroup::drawBorder()
 //QGIProjGroup does not have a border!
 //    Base::Console().Message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
+

@@ -166,7 +166,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_stats(fea, static_expected_values, 'CalculiX_static_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
-        static_save_fc_file = static_analysis_dir + static_base_name + '.fcstd'
+        static_save_fc_file = static_analysis_dir + static_base_name + '.FCStd'
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
         self.active_doc.saveAs(static_save_fc_file)
         fcc_print('--------------- End of FEM tests static and analysis ---------------')
@@ -273,7 +273,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_inp_files(static_analysis_inp_file, static_multiplemat_dir + self.mesh_name + '.inp')
         self.assertFalse(ret, "ccxtools write_inp_file test failed.\n{}".format(ret))
 
-        static_save_fc_file = static_multiplemat_dir + static_base_name + '.fcstd'
+        static_save_fc_file = static_multiplemat_dir + static_base_name + '.FCStd'
         fcc_print('Save FreeCAD file for static analysis to {}...'.format(static_save_fc_file))
         self.active_doc.saveAs(static_save_fc_file)
         fcc_print('--------------- End of FEM ccxtools multiple material test ---------------')
@@ -371,7 +371,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_stats(fea, frequency_expected_values, 'CalculiX_frequency_mode_1_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
-        frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.fcstd'
+        frequency_save_fc_file = frequency_analysis_dir + frequency_base_name + '.FCStd'
         fcc_print('Save FreeCAD file for frequency analysis to {}...'.format(frequency_save_fc_file))
         self.active_doc.saveAs(frequency_save_fc_file)
         fcc_print('--------------- End of FEM tests frequency analysis ---------------')
@@ -500,7 +500,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_stats(fea, thermomech_expected_values, 'CalculiX_thermomech_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
-        thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.fcstd'
+        thermomech_save_fc_file = thermomech_analysis_dir + thermomech_base_name + '.FCStd'
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(thermomech_save_fc_file))
         self.active_doc.saveAs(thermomech_save_fc_file)
 
@@ -750,7 +750,7 @@ class TestCcxTools(unittest.TestCase):
         ret = testtools.compare_stats(fea, Flow1D_thermomech_expected_values, stat_types, 'CalculiX_thermomech_time_1_0_results')
         self.assertFalse(ret, "Invalid results read from .frd file")
 
-        Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.fcstd'
+        Flow1D_thermomech_save_fc_file = Flow1D_thermomech_analysis_dir + Flow1D_thermomech_base_name + '.FCStd'
         fcc_print('Save FreeCAD file for thermomech analysis to {}...'.format(Flow1D_thermomech_save_fc_file))
         self.active_doc.saveAs(Flow1D_thermomech_save_fc_file)
 
@@ -783,7 +783,7 @@ def create_test_results():
     Test.runTestsFromModule(current_module)
 
     # static cube
-    FreeCAD.open(static_analysis_dir + 'cube_static.fcstd')
+    FreeCAD.open(static_analysis_dir + 'cube_static.FCStd')
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = ccxtools.FemToolsCcx()
 
@@ -808,7 +808,7 @@ def create_test_results():
     shutil.copyfile(dat_result_file, dat_static_test_result_file)
 
     # frequency cube
-    FreeCAD.open(frequency_analysis_dir + 'cube_frequency.fcstd')
+    FreeCAD.open(frequency_analysis_dir + 'cube_frequency.FCStd')
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = ccxtools.FemToolsCcx()
 
@@ -833,7 +833,7 @@ def create_test_results():
 
     # thermomech
     print("create thermomech result files")
-    FreeCAD.open(thermomech_analysis_dir + 'spine_thermomech.fcstd')
+    FreeCAD.open(thermomech_analysis_dir + 'spine_thermomech.FCStd')
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = ccxtools.FemToolsCcx()
     fea.reset_all()
@@ -858,7 +858,7 @@ def create_test_results():
 
     # Flow1D
     print("create Flow1D result files")
-    FreeCAD.open(Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech.fcstd')
+    FreeCAD.open(Flow1D_thermomech_analysis_dir + 'Flow1D_thermomech.FCStd')
     FemGui.setActiveAnalysis(FreeCAD.ActiveDocument.Analysis)
     fea = ccxtools.FemToolsCcx()
     fea.reset_all()

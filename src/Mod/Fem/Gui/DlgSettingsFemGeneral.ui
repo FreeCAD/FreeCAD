@@ -174,7 +174,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Beside .fcstd file</string>
+             <string>Beside .FCStd file</string>
             </property>
             <property name="prefPath" stdset="0">
              <cstring>Mod/Fem/Elmer</cstring>
@@ -192,7 +192,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Create a directory in the same folder in which the fcstd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.fcstd and a solver with the label Elmer002 use ./mydoc/Elmer002).</string>
+             <string>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</string>
             </property>
             <property name="wordWrap">
              <bool>true</bool>

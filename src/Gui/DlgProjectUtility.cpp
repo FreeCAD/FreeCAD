@@ -113,7 +113,7 @@ DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgProjectUtility)
 {
     ui->setupUi(this);
-    ui->extractSource->setFilter(QString::fromLatin1("%1 (*.fcstd)").arg(tr("Project file")));
+    ui->extractSource->setFilter(QString::fromLatin1("%1 (*.FCStd)").arg(tr("Project file")));
 }
 
 /**

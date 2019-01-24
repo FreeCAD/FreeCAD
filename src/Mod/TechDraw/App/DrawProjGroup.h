@@ -130,9 +130,6 @@ public:
 protected:
     void onChanged(const App::Property* prop) override;
 
-    //! Moves anchor view to keep our bounding box centre on the origin
-    void moveToCentre();
-
     /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums
     /*!
      * \todo {See note regarding App::PropertyEnumeration on my wiki page http://freecadweb.org/wiki/User:Ian.rees}

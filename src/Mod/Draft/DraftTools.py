@@ -4100,8 +4100,7 @@ class Edit(Modifier):
                     self.trackers = []
                     if self.editpoints:
                         for ep in range(len(self.editpoints)):
-                            self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,
-                                                             ep,self.obj.ViewObject.LineColor))
+                            self.trackers.append(editTracker(self.editpoints[ep],self.obj.Name,ep))
                         self.call = self.view.addEventCallback("SoEvent",self.action)
                         self.running = True
                         plane.save()
@@ -5724,7 +5723,7 @@ class Draft_Snap_Near():
         if hasattr(FreeCADGui,"Snapper"):
             if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
                 for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonnear":
+                    if b.objectName() == "SnapButtonpassive":
                         b.toggle()
 
 class Draft_Snap_Ortho():

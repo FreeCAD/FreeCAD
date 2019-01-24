@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>716</height>
+    <height>732</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TechDraw 2</string>
+   <string>TechDraw Dimensions</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">

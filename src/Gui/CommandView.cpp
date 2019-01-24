@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -2551,32 +2552,31 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
             Gui::Selection().clearSelection(doc->getName());
         }
 
-        std::vector<App::GeoFeature*> geom = doc->getObjectsOfType<App::GeoFeature>();
-        for (std::vector<App::GeoFeature*>::iterator it = geom.begin(); it != geom.end(); ++it) {
+        std::vector<App::DocumentObject*> geom = doc->getObjectsOfType<App::DocumentObject>();
+        for (std::vector<App::DocumentObject*>::iterator it = geom.begin(); it != geom.end(); ++it) {
             Gui::ViewProvider* vp = Application::Instance->getViewProvider(*it);
             if (!vp->isVisible())
                 continue;
-            std::vector<App::Property*> props;
-            (*it)->getPropertyList(props);
-            for (std::vector<App::Property*>::iterator jt = props.begin(); jt != props.end(); ++jt) {
-                if ((*jt)->isDerivedFrom(App::PropertyGeometry::getClassTypeId())) {
-                    App::PropertyGeometry* prop = static_cast<App::PropertyGeometry*>(*jt);
-                    Base::BoundBox3d bbox = prop->getBoundingBox();
+            // 0002706: For box selection use SoGetBoundingBoxAction for
+            // the view provider of an object
+            SoGetBoundingBoxAction bboxAction(view->getViewportRegion());
+            bboxAction.apply(vp->getRoot());
+            SbBox3f bbox = bboxAction.getBoundingBox();
+            Base::BoundBox3d bbox3;
+            bbox3.Add(Base::convertTo<Base::Vector3d>(bbox.getMax()));
+            bbox3.Add(Base::convertTo<Base::Vector3d>(bbox.getMin()));
 
-                    if (selectionMode == CENTER) {
-                        Base::Vector3d pt2d;
-                        pt2d = proj(bbox.GetCenter());
-                        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
-                            Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
-                        }
-                    }
-                    else {
-                        Base::BoundBox2d bbox2 = bbox.ProjectBox(&proj);
-                        if (bbox2.Intersect(polygon)) {
-                            Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
-                        }
-                    }
-                    break;
+            if (selectionMode == CENTER) {
+                Base::Vector3d pt2d;
+                pt2d = proj(bbox3.GetCenter());
+                if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
+                    Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
+                }
+            }
+            else {
+                Base::BoundBox2d bbox2 = bbox3.ProjectBox(&proj);
+                if (bbox2.Intersect(polygon)) {
+                    Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
                 }
             }
         }

@@ -140,10 +140,6 @@ void DrawView::onChanged(const App::Property* prop)
                 }
             }
         }
-//        if (prop == &X ||       //nothing needs to be calculated, just the graphic needs to be shifted.
-//            prop == &Y) {
-//            requestPaint();
-//        }
     }
     App::DocumentObject::onChanged(prop);
 }
