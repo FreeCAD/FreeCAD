@@ -22,11 +22,8 @@
 
 
 #include "PreCompiled.h"
-//#ifndef _PreComp_
-//# include <gp_Ax1.hxx>
-//#endif
 
-#include "Geometry.h" // For GeometryExtension
+#include "GeometryExtension.h"
 #include "GeometryExtensionPy.h"
 #include "GeometryExtensionPy.cpp"
 
