@@ -73,6 +73,7 @@ IF(FREECAD_VERSION VERSION_GREATER 0.16)
                  "C++11"
                  "C++14"
                  "C++17"
+                 "C++20"
     )
 
     IF(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
@@ -91,12 +92,14 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     add_definitions(-DHAVE_CONFIG_H)
 
     # Escape the two plus chars as otherwise cmake complains about invalid regex
-    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    if(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+20")
+        set(CMAKE_CXX_STANDARD 20)
+    elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+17")
+        set(CMAKE_CXX_STANDARD 17)
     elseif(${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+14")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+        set(CMAKE_CXX_STANDARD 14)
     elseif (${BUILD_ENABLE_CXX_STD} MATCHES "C\\+\\+11")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+        set(CMAKE_CXX_STANDARD 11)
     endif()
 
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-write-strings ${CMAKE_CXX_FLAGS}")
