@@ -343,6 +343,8 @@ SET(Part_SRCS
     BSplineCurveBiArcs.cpp
     CrossSection.cpp
     CrossSection.h
+    GeometryExtension.cpp
+    GeometryExtension.h
     Geometry.cpp
     Geometry.h
     Geometry2d.cpp

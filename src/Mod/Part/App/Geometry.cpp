@@ -180,18 +180,6 @@ const char* gce_ErrorStatusText(gce_ErrorType et)
     }
 }
 
-
-
-// ---------------------------------------------------------------
-TYPESYSTEM_SOURCE_ABSTRACT(Part::GeometryExtension,Base::Persistence)
-
-GeometryExtension::GeometryExtension()
-{
-}
-
-GeometryExtension::~GeometryExtension()
-{
-}
 // ---------------------------------------------------------------
 
 TYPESYSTEM_SOURCE_ABSTRACT(Part::Geometry,Base::Persistence)
