@@ -914,7 +914,7 @@ void CmdTechDrawNewAngle3PtDimension::activated(int iMsg)
         subs.push_back(SubNames[2]);
     } else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr("Need three points to make an 3 point Angle Dimension"));
+                                                   QObject::tr("Need three points to make a 3 point Angle Dimension"));
         return;
     }
 

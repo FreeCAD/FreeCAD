@@ -146,6 +146,7 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
         // need to trigger ViewProvider::updateData() for redraw in 3D view after this method
     }
 
+    //naturalDirectionVector is a private member of this class
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
@@ -157,8 +158,8 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
             Points.touch(); // This triggers ViewProvider::updateData()
         }
     } else if (prop == &Direction) {
-        Base::Vector3d direction = getDirection(Direction);
-        if (direction.Length() < Precision::Confusion())
+        Base::Vector3d direction = getDirection(Direction);  // Fem::Constraint
+        if (direction.Length() < Precision::Confusion())  // if Direct has no link provided return Base::Vector3d(0,0,0);
             return;
         naturalDirectionVector = direction;
         if (Reversed.getValue())

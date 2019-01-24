@@ -107,7 +107,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
 
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
- 
+
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
     m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
@@ -220,7 +220,7 @@ int QGVPage::addQView(QGIView *view)
 
     view->setPos(viewPos);
     view->updateView(true);
-    
+
     return 0;
 }
 
@@ -577,16 +577,16 @@ void QGVPage::saveSvg(QString filename)
 
     const QString docName( QString::fromUtf8(page->getDocument()->getName()) );
     const QString pageName( QString::fromUtf8(page->getNameInDocument()) );
-    QString svgDescription = tr("Drawing page: ") +
+    QString svgDescription = tr("Drawing page:") + QString::fromUtf8(" ") +
                              pageName +
-                             tr(" exported from FreeCAD document: ") +
+                             tr(" exported from FreeCAD document:") + QString::fromUtf8(" ") +
                              docName;
 
     QSvgGenerator svgGen;
     QTemporaryFile* tempFile = new QTemporaryFile();;
     svgGen.setOutputDevice(tempFile);
     svgGen.setSize(QSize((int) Rez::guiX(page->getPageWidth()), (int) Rez::guiX(page->getPageHeight())));   //expects pixels, gets mm
-    //"By default this property is set to QSize(-1, -1), which indicates that the generator should not output 
+    //"By default this property is set to QSize(-1, -1), which indicates that the generator should not output
     // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
     svgGen.setViewBox(QRect(0, 0, Rez::guiX(page->getPageWidth()), Rez::guiX(page->getPageHeight())));
 
@@ -624,7 +624,7 @@ void QGVPage::saveSvg(QString filename)
 }
 
 void QGVPage::postProcessXml(QTemporaryFile* tempFile, QString fileName, QString pageName)
-{    
+{
     QDomDocument doc(QString::fromUtf8("SvgDoc"));
     QFile file(tempFile->fileName());
     if (!file.open(QIODevice::ReadOnly)) {
