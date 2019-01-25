@@ -63,6 +63,11 @@ with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_prod
 # Possible roles for FreeCAD BIM objects
 IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in [product["name"] for product in IfcProducts]]
 
+def getIfcProduct(IfcRole):
+    for IfcProduct in IfcProducts:
+        if IfcProduct["name"] == 'Ifc' + IfcRole.replace(' ', ''):
+            return IfcProduct
+
 def convertOldComponents(objs=[]):
 
     """converts Arch Objects with a Role property to the new IfcRole.
@@ -180,6 +185,47 @@ class Component:
         Component.setProperties(self,obj)
         self.Type = "Component"
 
+    def setIfcAttributes(self, obj):
+        IfcProduct = getIfcProduct(obj.IfcRole)
+        if IfcProduct is None:
+            return
+        self.addIfcProductAttributesToObj(IfcProduct, obj)
+        self.purgeUnusedIfcAttributesFromPropertiesList(IfcProduct, obj)
+
+    def addIfcProductAttributesToObj(self, IfcProduct, obj):
+        for attribute in IfcProduct["attributes"]:
+            if attribute["name"] in obj.PropertiesList:
+                continue
+            self.addIfcProductAttributeToObj(attribute, obj)
+
+    def addIfcProductAttributeToObj(self, attribute, obj):
+        IfcData = obj.IfcData
+        if "attributes" not in IfcData:
+            IfcData["attributes"] = "{}"
+        IfcAttributes = json.loads(IfcData["attributes"])
+        IfcAttributes[attribute["name"]] = attribute
+        IfcData["attributes"] = json.dumps(IfcAttributes)
+        obj.IfcData = IfcData
+        obj.addProperty("App::PropertyString", attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
+
+    def setObjIfcAttributeValue(self, obj, attributeName, value):
+        IfcData = obj.IfcData
+        IfcAttributes = json.loads(IfcData["attributes"])
+        IfcAttributes[attributeName]["value"] = value
+        IfcData["attributes"] = json.dumps(IfcAttributes)
+        obj.IfcData = IfcData
+
+    def purgeUnusedIfcAttributesFromPropertiesList(self, IfcProduct, obj):
+        for property in obj.PropertiesList:
+            if obj.getGroupOfProperty(property) != "IFC Attributes":
+                continue
+            does_attribute_exist = False
+            for attribute in IfcProduct["attributes"]:
+                if attribute["name"].replace(' ', '') == property:
+                    does_attribute_exist = True
+            if does_attribute_exist == False:
+                obj.removeProperty(property)
+
     def setProperties(self,obj):
 
         pl = obj.PropertiesList
@@ -273,6 +319,12 @@ class Component:
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
+
+        if prop == "IfcRole":
+            self.setIfcAttributes(obj)
+
+        if obj.getGroupOfProperty(prop) == "IFC Attributes":
+            self.setObjIfcAttributeValue(obj, prop, obj.getPropertyByName(prop))
 
         if prop == "Placement":
             if hasattr(self,"oldPlacement"):
