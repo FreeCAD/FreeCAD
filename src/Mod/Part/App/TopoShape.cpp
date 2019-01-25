@@ -2528,32 +2528,35 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
     std::vector<TopoDS_Shape> shapesToReturn;
     bool forceOutputCompound = false;
 
-    if (this->_Shape.ShapeType() == TopAbs_COMPOUND){
-        if (!intersection){
+    if (this->_Shape.ShapeType() == TopAbs_COMPOUND) {
+        if (!intersection) {
             //simply recursively process the children, independently
             TopoDS_Iterator it(_Shape);
-            for( ; it.More() ; it.Next()){
+            for( ; it.More() ; it.Next()) {
                 shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
                 forceOutputCompound = true;
             }
-        } else {
+        }
+        else {
             //collect non-compounds from this compound for collective offset. Process other shapes independently.
             TopoDS_Iterator it(_Shape);
-            for( ; it.More() ; it.Next()){
-                if(it.Value().ShapeType() == TopAbs_COMPOUND){
+            for( ; it.More() ; it.Next()) {
+                if(it.Value().ShapeType() == TopAbs_COMPOUND) {
                     //recursively process subcompounds
                     shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
                     forceOutputCompound = true;
-                } else {
+                }
+                else {
                     shapesToProcess.push_back(it.Value());
                 }
             }
         }
-    } else {
+    }
+    else {
         shapesToProcess.push_back(this->_Shape);
     }
 
-    if(shapesToProcess.size() > 0){
+    if(shapesToProcess.size() > 0) {
 
         //although 2d offset supports offsetting a face directly, it seems there is
         //no way to do a collective offset of multiple faces. So, we are doing it
@@ -2620,11 +2623,12 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                                                 , allowOpenResult
 #endif
                                                );
-        for(TopoDS_Wire &w : sourceWires)
+        for (TopoDS_Wire &w : sourceWires) {
             if (&w != &(sourceWires[0])) //filter out first wire - it's already added
                 mkOffset.AddWire(w);
+        }
 
-        if (fabs(offset) > Precision::Confusion()){
+        if (fabs(offset) > Precision::Confusion()) {
             try {
     #if defined(__GNUC__) && defined (FC_OS_LINUX)
                 Base::SignalException se;
@@ -2645,7 +2649,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
             offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
-        } else {
+        }
+        else {
             offsetShape = sourceWires.size()>1 ? TopoDS_Shape(compoundSourceWires) : sourceWires[0];
         }
 
@@ -2665,11 +2670,13 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         if (!fill){
             if (haveFaces){
                 wiresForMakingFaces = offsetWires;
-            } else {
+            }
+            else {
                 for(TopoDS_Wire &w : offsetWires)
                     shapesToReturn.push_back(w);
             }
-        } else {
+        }
+        else {
             //fill offset
             if (fabs(offset) < Precision::Confusion())
                 throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
@@ -2703,7 +2710,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             wiresForMakingFaces = closedWires;
             if (!allowOpenResult || openWires.size() == 0){
                 //just ignore all open wires
-            } else {
+            }
+            else {
                 //We need to connect open wires to form closed wires.
 
                 //for now, only support offsetting one open wire -> there should be exactly two open wires for connecting
@@ -2743,9 +2751,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                     std::swap(v3, v4);
                     v3.Reverse();
                     v4.Reverse();
-                } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
+                }
+                else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
                     //orientation is as expected, nothing to do
-                } else {
+                }
+                else {
                     throw Base::CADKernelError("makeOffset2D: fill offset: failed to establish open vertex relationship.");
                 }
 
@@ -2803,7 +2813,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         for(TopoDS_Shape &sh : shapesToReturn)
             builder.Add(result, sh);
         return result;
-    } else {
+    }
+    else {
         return shapesToReturn[0];
     }
 }
