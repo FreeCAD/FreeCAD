@@ -383,11 +383,20 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
     if (!sourceWire.IsNull()) {
         std::list<TopoDS_Wire> list_of_sections;
 
-        //first. add wire for reversed part of extrusion
-        if (bRev){
-            gp_Vec translation = vecRev;
-            double offset = distanceRev;
+        // if the wire consists of a single edge which has applied a placement
+        // then this placement must be reset because otherwise the
+        // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement
+        // twice on the output shape
+        //
+        // count all edges of the wire
+        int numEdges = 0;
+        TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
+        while (xp.More()) {
+            numEdges++;
+            xp.Next();
+        }
 
+        auto makeOffset = [&numEdges,&sourceWire](const gp_Vec& translation, double offset) -> TopoDS_Shape {
             BRepOffsetAPI_MakeOffset mkOffset;
 #if OCC_VERSION_HEX >= 0x060800
             mkOffset.Init(GeomAbs_Arc);
@@ -401,16 +410,41 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
             TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
 
             TopoDS_Shape offsetShape;
-            if (fabs(offset)>Precision::Confusion()){
+            if (fabs(offset)>Precision::Confusion()) {
+                TopLoc_Location wireLocation;
+                TopLoc_Location edgeLocation;
+                if (numEdges == 1) {
+                    wireLocation = movedSourceWire.Location();
+
+                    BRepBuilderAPI_MakeWire mkWire;
+                    TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
+                    while (xp.More()) {
+                        TopoDS_Edge edge = TopoDS::Edge(xp.Current());
+                        edgeLocation = edge.Location();
+                        edge.Location(TopLoc_Location());
+                        mkWire.Add(edge);
+                        xp.Next();
+                    }
+                    movedSourceWire = mkWire.Wire();
+                }
                 mkOffset.AddWire(movedSourceWire);
                 mkOffset.Perform(offset);
 
                 offsetShape = mkOffset.Shape();
-            } else {
+                offsetShape.Move(edgeLocation);
+                offsetShape.Move(wireLocation);
+            }
+            else {
                 //stupid OCC doesn't understand, what to do when offset value is zero =/
                 offsetShape = movedSourceWire;
             }
 
+            return offsetShape;
+        };
+
+        //first. add wire for reversed part of extrusion
+        if (bRev){
+            TopoDS_Shape offsetShape = makeOffset(vecRev, distanceRev);
             if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
             TopAbs_ShapeEnum type = offsetShape.ShapeType();
@@ -433,32 +467,7 @@ void Extrusion::makeDraft(ExtrusionParameters params, const TopoDS_Shape& shape,
 
         //finally. Forward extrusion offset wire.
         if (bFwd){
-            gp_Vec translation = vecFwd;
-            double offset = distanceFwd;
-
-            BRepOffsetAPI_MakeOffset mkOffset;
-#if OCC_VERSION_HEX >= 0x060800
-            mkOffset.Init(GeomAbs_Arc);
-#endif
-#if OCC_VERSION_HEX >= 0x070000
-            mkOffset.Init(GeomAbs_Intersection);
-#endif
-            gp_Trsf mat;
-            mat.SetTranslation(translation);
-            TopLoc_Location loc(mat);
-            TopoDS_Wire movedSourceWire = TopoDS::Wire(sourceWire.Moved(loc));
-
-            TopoDS_Shape offsetShape;
-            if (fabs(offset)>Precision::Confusion()){
-                mkOffset.AddWire(movedSourceWire);
-                mkOffset.Perform(offset);
-
-                offsetShape = mkOffset.Shape();
-            } else {
-                //stupid OCC doesn't understand, what to do when offset value is zero =/
-                offsetShape = movedSourceWire;
-            }
-
+            TopoDS_Shape offsetShape = makeOffset(vecFwd, distanceFwd);
             if (offsetShape.IsNull())
                 Standard_Failure::Raise("Tapered shape is empty");
             TopAbs_ShapeEnum type = offsetShape.ShapeType();
