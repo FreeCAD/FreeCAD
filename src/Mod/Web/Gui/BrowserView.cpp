@@ -331,7 +331,7 @@ BrowserView::BrowserView(QWidget* parent)
 #ifdef QTWEBKIT
     textSizeMultiplier = 1.0;
 
-    view->page()->setLinkDelegationPolicy(QWebView::DelegateAllLinks);
+    view->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     view->page()->setForwardUnsupportedContent(true);
 
     // set our custom cookie manager

@@ -9,7 +9,7 @@ include_directories(
 
 if (Qt5WebEngineWidgets_FOUND)
     add_definitions(-DQTWEBENGINE)
-elseif(Qt5WebKitWidgets_FOUND or QT_QTWEBKIT_FOUND) # Qt5 and Qt4
+elseif(Qt5WebKitWidgets_FOUND OR QT_QTWEBKIT_FOUND) # Qt5 and Qt4
     add_definitions(-DQTWEBKIT)
 endif()
 
