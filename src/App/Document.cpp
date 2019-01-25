@@ -2490,8 +2490,12 @@ bool Document::afterRestore(const std::vector<DocumentObject *> &objArray,
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << "unknown exception");
         }
         if(checkXLink && !d->touchedObjs.count(obj)) {
-            for(auto prop : propMap[obj]) {
-                auto link = dynamic_cast<PropertyLinkBase*>(prop);
+            auto &props = propMap[obj];
+            props.clear();
+            // refresh properties in case the object changes its property list
+            obj->getPropertyList(props);
+            for(auto prop : props) {
+                auto link = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
                 int res;
                 if(link && (res=link->checkRestore())) {
                     d->touchedObjs.insert(obj);
