@@ -35,7 +35,7 @@ MeasurePropertyTypes = ["IfcVolumeMeasure","IfcTimeMeasure","IfcThermodynamicTem
                         "IfcContextDependentMeasure","IfcAreaMeasure","IfcAmountOfSubstanceMeasure",
                         "IfcLuminousIntensityMeasure","IfcNormalisedRatioMeasure","IfcComplexNumber"]
 
-import FreeCAD,Draft,ArchCommands,math,sys,json
+import FreeCAD,Draft,ArchCommands,math,sys,json,os
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -57,7 +57,7 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
-with open(FreeCAD.ConfigGet("AppHomePath") + "data/Mod/Arch/Presets/ifc_products.json") as f:
+with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_products.json")) as f:
     IfcProducts = json.load(f)
 
 # Possible roles for FreeCAD BIM objects
