@@ -650,7 +650,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
       // --> othwerwise BRepBuilderAPI_MakeFace can not make a face from the wire!
       for (auto itWireVec : itCurrentShape.aProjectedWireVec)
       {
-        std::vector<const TopoDS_Shape> edgeVec;
+        std::vector<TopoDS_Shape> edgeVec;
         for (TopExp_Explorer aExplorer(itWireVec, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
         {
           auto currentEdge = TopoDS::Edge(aExplorer.Current());
