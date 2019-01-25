@@ -58,15 +58,21 @@ else:
 #  is shared by all of the Arch BIM objects
 
 with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_products.json")) as f:
-    IfcProducts = json.load(f)
+    ifcProducts = json.load(f)
 
 # Possible roles for FreeCAD BIM objects
-IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in [product["name"] for product in IfcProducts]]
+IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in [product["name"] for product in ifcProducts]]
 
 def getIfcProduct(IfcRole):
-    for IfcProduct in IfcProducts:
-        if IfcProduct["name"] == 'Ifc' + IfcRole.replace(' ', ''):
-            return IfcProduct
+    for ifcProduct in ifcProducts:
+        if ifcProduct["name"] == 'Ifc' + IfcRole.replace(' ', ''):
+            return ifcProduct
+
+def getIfcProductAttribute(ifcProduct, name):
+    for attribute in ifcProduct["attributes"]:
+        if attribute["name"].replace(' ', '') == name:
+            return attribute
+    return None
 
 def convertOldComponents(objs=[]):
 
@@ -186,14 +192,14 @@ class Component:
         self.Type = "Component"
 
     def setIfcAttributes(self, obj):
-        IfcProduct = getIfcProduct(obj.IfcRole)
-        if IfcProduct is None:
+        ifcProduct = getIfcProduct(obj.IfcRole)
+        if ifcProduct is None:
             return
-        self.addIfcProductAttributesToObj(IfcProduct, obj)
-        self.purgeUnusedIfcAttributesFromPropertiesList(IfcProduct, obj)
+        self.purgeUnusedIfcAttributesFromPropertiesList(ifcProduct, obj)
+        self.addIfcProductAttributesToObj(ifcProduct, obj)
 
-    def addIfcProductAttributesToObj(self, IfcProduct, obj):
-        for attribute in IfcProduct["attributes"]:
+    def addIfcProductAttributesToObj(self, ifcProduct, obj):
+        for attribute in ifcProduct["attributes"]:
             if attribute["name"] in obj.PropertiesList:
                 continue
             self.addIfcProductAttributeToObj(attribute, obj)
@@ -206,7 +212,11 @@ class Component:
         IfcAttributes[attribute["name"]] = attribute
         IfcData["attributes"] = json.dumps(IfcAttributes)
         obj.IfcData = IfcData
-        obj.addProperty("App::PropertyString", attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
+        if attribute["is_enum"]:
+            obj.addProperty("App::PropertyEnumeration", attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
+            setattr(obj, attribute["name"], attribute["enum_values"])
+        else:
+            obj.addProperty("App::PropertyString", attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
 
     def setObjIfcAttributeValue(self, obj, attributeName, value):
         IfcData = obj.IfcData
@@ -215,15 +225,12 @@ class Component:
         IfcData["attributes"] = json.dumps(IfcAttributes)
         obj.IfcData = IfcData
 
-    def purgeUnusedIfcAttributesFromPropertiesList(self, IfcProduct, obj):
+    def purgeUnusedIfcAttributesFromPropertiesList(self, ifcProduct, obj):
         for property in obj.PropertiesList:
             if obj.getGroupOfProperty(property) != "IFC Attributes":
                 continue
-            does_attribute_exist = False
-            for attribute in IfcProduct["attributes"]:
-                if attribute["name"].replace(' ', '') == property:
-                    does_attribute_exist = True
-            if does_attribute_exist == False:
+            ifcProductAttribute = getIfcProductAttribute(ifcProduct, property)
+            if ifcProductAttribute is None or ifcProductAttribute["is_enum"] is True:
                 obj.removeProperty(property)
 
     def setProperties(self,obj):
