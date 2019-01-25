@@ -60,6 +60,7 @@
 #include "GeometryExtension.h"
 #include "GeometryIntExtension.h"
 #include "Geometry2d.h"
+#include "Mod/Part/App/GeometryIntExtensionPy.h"
 #include "Mod/Part/App/TopoShapePy.h"
 #include "Mod/Part/App/TopoShapeVertexPy.h"
 #include "Mod/Part/App/TopoShapeFacePy.h"
@@ -354,6 +355,8 @@ PyMOD_INIT_FUNC(Part)
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
     Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
+
+    Base::Interpreter().addType(&Part::GeometryIntExtensionPy ::Type,partModule,"GeometryIntExtension");
 
 #if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef BRepOffsetAPIDef = {
