@@ -197,8 +197,8 @@ class Component:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
         if not "StandardCode" in pl:
             obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"))
-        if not "IfcAttributes" in pl:
-            obj.addProperty("App::PropertyMap","IfcAttributes","Component",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        if not "IfcData" in pl:
+            obj.addProperty("App::PropertyMap","IfcData","Component",QT_TRANSLATE_NOOP("App::Property","IFC data"))
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         if "BaseMaterial" in pl:
@@ -1227,8 +1227,8 @@ class ComponentTaskPanel:
         self.ifcEditor.comboPset.addItems([QtGui.QApplication.translate("Arch", "Add property set...", None),
                                            QtGui.QApplication.translate("Arch", "New...", None)]+self.psetkeys)
         # set UUID
-        if "IfcUID" in self.obj.IfcAttributes:
-            self.ifcEditor.labelUUID.setText(self.obj.IfcAttributes["IfcUID"])
+        if "IfcUID" in self.obj.IfcData:
+            self.ifcEditor.labelUUID.setText(self.obj.IfcData["IfcUID"])
         # fill the tree
         psets = {}
         for pname,value in self.obj.IfcProperties.items():
@@ -1274,10 +1274,10 @@ class ComponentTaskPanel:
         QtCore.QObject.connect(self.ifcEditor.buttonDelete, QtCore.SIGNAL("clicked()"), self.removeIfcProperty)
         self.ifcEditor.treeProperties.setSortingEnabled(True)
         # set checkboxes
-        if "FlagForceBrep" in self.obj.IfcAttributes:
-            self.ifcEditor.checkBrep.setChecked(self.obj.IfcAttributes["FlagForceBrep"] == "True")
-        if "FlagParametric" in self.obj.IfcAttributes:
-            self.ifcEditor.checkParametric.setChecked(self.obj.IfcAttributes["FlagParametric"] == "True")
+        if "FlagForceBrep" in self.obj.IfcData:
+            self.ifcEditor.checkBrep.setChecked(self.obj.IfcData["FlagForceBrep"] == "True")
+        if "FlagParametric" in self.obj.IfcData:
+            self.ifcEditor.checkParametric.setChecked(self.obj.IfcData["FlagParametric"] == "True")
         self.ifcEditor.show()
 
     def acceptIfcProperties(self):
@@ -1299,16 +1299,16 @@ class ComponentTaskPanel:
                         else:
                             # keys cannot be unicode
                             ifcdict[prop.encode("utf8")] = pset+";;"+ptype+";;"+pvalue
-            ifcattrs = self.obj.IfcAttributes
-            ifcattrs["IfcUID"] = self.ifcEditor.labelUUID.text()
-            ifcattrs["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
-            ifcattrs["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
-            if (ifcdict != self.obj.IfcProperties) or (ifcattrs != self.obj.IfcAttributes):
+            ifcData = self.obj.IfcData
+            ifcData["IfcUID"] = self.ifcEditor.labelUUID.text()
+            ifcData["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
+            ifcData["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
+            if (ifcdict != self.obj.IfcProperties) or (ifcData != self.obj.IfcData):
                 FreeCAD.ActiveDocument.openTransaction("Change Ifc Properties")
                 if ifcdict != self.obj.IfcProperties:
                     self.obj.IfcProperties = ifcdict
-                if ifcattrs != self.obj.IfcAttributes:
-                    self.obj.IfcAttributes = ifcattrs
+                if ifcData != self.obj.IfcData:
+                    self.obj.IfcData = ifcData
                 FreeCAD.ActiveDocument.commitTransaction()
             del self.ifcEditor
 
@@ -1472,10 +1472,3 @@ if FreeCAD.GuiUp:
                 else:
                     model.setData(index,editor.text())
             self.dialog.update()
-
-
-
-
-
-
-
