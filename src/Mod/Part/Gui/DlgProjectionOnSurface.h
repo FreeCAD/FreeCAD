@@ -34,6 +34,7 @@
 #include "TopoDS_Edge.hxx"
 #include "TopoDS_Face.hxx"
 #include "TopoDS_Wire.hxx"
+#include "gp_Dir.hxx"
 
 namespace PartGui {
 
