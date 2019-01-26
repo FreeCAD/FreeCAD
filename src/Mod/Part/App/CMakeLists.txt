@@ -329,6 +329,8 @@ SET(Part_SRCS
     Attacher.h
     AppPart.cpp
     AppPartPy.cpp
+    BRepOffsetAPI_MakeOffsetFix.cpp
+    BRepOffsetAPI_MakeOffsetFix.h
     BSplineCurveBiArcs.cpp
     CrossSection.cpp
     CrossSection.h
