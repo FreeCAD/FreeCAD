@@ -4289,6 +4289,7 @@ class Edit(Modifier):
                 self.trackers[0].set(self.obj.Placement.Base)
             elif self.editing == 1:
                 self.obj.Radius = delta.Length
+                self.obj.recompute()
             self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
         elif Draft.getType(self.obj) == "Rectangle":
             delta = v.sub(self.obj.Placement.Base)
