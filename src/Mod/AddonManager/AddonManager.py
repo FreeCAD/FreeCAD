@@ -705,13 +705,13 @@ class FillMacroListWorker(QtCore.QThread):
         """Retrieve macros from FreeCAD-macros.git
 
         Emits a signal for each macro in
-        https://github.com/FreeCAD/FreeCAD-macros.git.
+        https://github.com/FreeCAD/FreeCAD-macros.git
         """
         try:
             import git
         except ImportError:
             self.info_label_signal.emit("GitPython not installed! Cannot retrieve macros from git")
-            FreeCAD.Console.PrintWarning('GitPython not installed! Cannot retrieve macros from git')
+            FreeCAD.Console.PrintWarning(translate('AddonInstaller', 'GitPython not installed! Cannot retrieve macros from git')+"\n")
             return
 
         self.info_label_signal.emit('Downloading list of macros for git...')
@@ -768,7 +768,7 @@ class ShowWorker(QtCore.QThread):
             desc = self.repos[self.idx][3]
         else:
             url = self.repos[self.idx][1]
-            self.info_label.emit(translate("AddonsInstaller", "Retrieving info from ") + str(url))
+            self.info_label.emit(translate("AddonsInstaller", "Retrieving info from") + ' ' + str(url))
             u = urlopen(url)
             p = u.read()
             if sys.version_info.major >= 3 and isinstance(p, bytes):
