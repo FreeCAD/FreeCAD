@@ -222,7 +222,7 @@ void SketcherValidation::on_findReversed_clicked()
                    "%2 constraints are linking to the endpoints. The constraints have"
                    " been listed in Report view (menu View -> Panels -> Report view).\n\n"
                    "Click \"Swap endpoints in constraints\" button to reassign endpoints."
-                   " Do this only once to sketches created in FreeCAD older than v0.15.???"
+                   " Do this only once to sketches created in FreeCAD older than v0.15"
                    ).arg(points.size()/2).arg(nc)
                                  );
             ui->swapReversed->setEnabled(true);
