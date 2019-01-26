@@ -1,6 +1,5 @@
 #/***************************************************************************
-# *   Copyright (c) Victor Titov (DeepSOIC)                                 *
-# *                                           (vv.titov@gmail.com) 2016     *
+# *   Copyright (c) 2016 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -526,8 +525,8 @@ class AttachmentEditorTaskPanel(FrozenClass):
 
                 tip = mi['BriefDocu']
                 if (m != 'Deactivated'):
-                    tip += QString::fromLatin1("\n\n")
-                    tip += _translate('AttachmentEditor', "Reference combinations:", None) + u"\n\n".join(cmb)
+                    tip += u"\n\n"
+                    tip += _translate('AttachmentEditor', "Reference combinations:", None) + u" \n\n".join(cmb)
 
                 item.setToolTip(tip)
 
