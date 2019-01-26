@@ -1724,8 +1724,8 @@ def export(exportList,filename):
                 count += 1
             continue
 
-        from ArchComponent import IFCTYPES
-        if ifctype not in IFCTYPES:
+        from ArchComponent import ifcProducts
+        if ifctype not in ifcProducts.keys():
             ifctype = "IfcBuildingElementProxy"
 
         # getting the "Force BREP" flag
