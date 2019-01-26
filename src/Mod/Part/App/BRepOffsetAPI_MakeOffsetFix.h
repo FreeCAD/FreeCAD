@@ -62,7 +62,7 @@ public:
 
     //! returns a list of the created shapes
     //! from the shape <S>.
-    virtual const TopTools_ListOfShape& Generated (const TopoDS_Shape& S) Standard_OVERRIDE;
+    virtual const TopTools_ListOfShape& Generated (const TopoDS_Shape& S);
 
     //! Returns the list  of shapes modified from the shape
     //! <S>.
