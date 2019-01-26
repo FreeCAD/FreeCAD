@@ -4050,6 +4050,9 @@ class Edit(Modifier):
                     self.editpoints.append(self.obj.Placement.Base)
                     if self.obj.FirstAngle == self.obj.LastAngle:
                         self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
+                    else:
+                        self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
+                        self.editpoints.append(self.obj.Shape.Vertexes[1].Point)
                 elif Draft.getType(self.obj) == "Rectangle":
                     self.editpoints.append(self.obj.Placement.Base)
                     self.editpoints.append(self.obj.Shape.Vertexes[2].Point)
@@ -4282,15 +4285,31 @@ class Edit(Modifier):
                 self.trackers[self.editing].set(v)
         elif Draft.getType(self.obj) == "Circle":
             delta = v.sub(self.obj.Placement.Base)
+            deltaX = v[0]-self.obj.Placement.Base[0]
+            deltaY = v[1]-self.obj.Placement.Base[1]
+            dangle = math.degrees(math.atan2(deltaY,deltaX)) 
             if self.editing == 0:
                 p = self.obj.Placement
                 p.move(delta)
                 self.obj.Placement = p
                 self.trackers[0].set(self.obj.Placement.Base)
+                if not self.obj.FirstAngle == self.obj.LastAngle:
+                    self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
             elif self.editing == 1:
+                if self.obj.FirstAngle == self.obj.LastAngle:
+                    self.obj.Radius = delta.Length
+                    self.obj.recompute()
+                else:
+                    self.obj.Radius = delta.Length
+                    self.obj.FirstAngle=dangle
+                    self.obj.recompute()
+                    self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+            elif self.editing == 2:
                 self.obj.Radius = delta.Length
+                self.obj.LastAngle=dangle
                 self.obj.recompute()
-            self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
+                self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)                     
+            self.trackers[1].set(self.obj.Shape.Vertexes[0].Point) 
         elif Draft.getType(self.obj) == "Rectangle":
             delta = v.sub(self.obj.Placement.Base)
             if self.editing == 0:
