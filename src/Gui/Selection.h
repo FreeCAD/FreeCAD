@@ -351,9 +351,15 @@ public:
 
     /// Add to selection 
     bool addSelection(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
-            float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0);
+            float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0, bool clearPreSelect=true);
+    bool addSelection2(const char* pDocName, const char* pObjectName=0, const char* pSubName=0, 
+            float x=0, float y=0, float z=0, const std::vector<SelObj> *pickedList = 0)
+    {
+        return addSelection(pDocName,pObjectName,pSubName,x,y,z,pickedList,false);
+    }
+
     /// Add to selection
-    bool addSelection(const SelectionObject&);
+    bool addSelection(const SelectionObject&, bool clearPreSelect=true);
     /// Add to selection with several sub-elements
     bool addSelections(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames);
     /// Update a selection 
@@ -364,9 +370,9 @@ public:
     /// Set the selection for a document
     void setSelection(const char* pDocName, const std::vector<App::DocumentObject*>&);
     /// Clear the selection of document \a pDocName. If the document name is not given the selection of the active document is cleared.
-    void clearSelection(const char* pDocName=0);
+    void clearSelection(const char* pDocName=0, bool clearPreSelect=true);
     /// Clear the selection of all documents
-    void clearCompleteSelection();
+    void clearCompleteSelection(bool clearPreSelect=true);
     /// Check if selected
     bool isSelected(const char* pDocName, const char* pObjectName=0, 
             const char* pSubName=0, int resolve=1) const;
@@ -570,7 +576,7 @@ protected:
         std::pair<std::string,std::string> elementName;
         App::DocumentObject* pResolvedObject = 0;
 
-        void log(bool remove=false);
+        void log(bool remove=false, bool clearPreselect=true);
     };
     mutable std::list<_SelObj> _SelList;
 

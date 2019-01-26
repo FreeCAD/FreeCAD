@@ -922,7 +922,7 @@ int SelectionSingleton::enableCommandLog(bool silent) {
     return logDisabled;
 }
 
-void SelectionSingleton::_SelObj::log(bool remove) {
+void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect) {
     if(logged && !remove) 
         return;
     logged = true;
@@ -936,16 +936,20 @@ void SelectionSingleton::_SelObj::log(bool remove) {
         else
             ss << ",'" << SubName << "'";
     }
-    if(!remove && (x || y || z)) {
+    if(!remove && (x || y || z || !clearPreselect)) {
         if(SubName.empty())
             ss << ",''";
         ss << ',' << x << ',' << y << ',' << z;
+        if(!clearPreselect)
+            ss << ",False";
     }
     ss << ')';
     Application::Instance->macroManager()->addLine(MacroManager::Cmt, ss.str().c_str());
 }
 
-bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, const std::vector<SelObj> *pickedList)
+bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, 
+        const char* pSubName, float x, float y, float z, 
+        const std::vector<SelObj> *pickedList, bool clearPreselect)
 {
     if(pickedList) {
         _PickedList.clear();
@@ -997,12 +1001,13 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     }
 
     if(!logDisabled)
-        temp.log();
+        temp.log(false,clearPreselect);
 
     _SelList.push_back(temp);
     _SelStackForward.clear();
 
-    rmvPreselect();
+    if(clearPreselect)
+        rmvPreselect();
 
     SelectionChanges Chng(SelectionChanges::AddSelection,
             temp.DocName,temp.FeatName,temp.SubName,temp.TypeName, x,y,z);
@@ -1193,7 +1198,7 @@ bool SelectionSingleton::updateSelection(bool show, const char* pDocName,
     return true;
 }
 
-bool SelectionSingleton::addSelection(const SelectionObject& obj)
+bool SelectionSingleton::addSelection(const SelectionObject& obj,bool clearPreselect)
 {
     const std::vector<std::string>& subNames = obj.getSubNames();
     const std::vector<Base::Vector3d> points = obj.getPickedPoints();
@@ -1205,7 +1210,7 @@ bool SelectionSingleton::addSelection(const SelectionObject& obj)
             ok &= addSelection(obj.getDocName(), obj.getFeatName(), name.c_str(),
                                static_cast<float>(pnt.x),
                                static_cast<float>(pnt.y),
-                               static_cast<float>(pnt.z));
+                               static_cast<float>(pnt.z),0,clearPreselect);
         }
         return ok;
     }
@@ -1406,13 +1411,13 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
     getMainWindow()->updateActions();
 }
 
-void SelectionSingleton::clearSelection(const char* pDocName)
+void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelect)
 {
     // Because the introduction of external editing, it is best to make
     // clearSelection(0) behave as clearCompleteSelection(), which is the same
     // behavior of python Selection.clearSelection(None)
     if(!pDocName || !pDocName[0] || strcmp(pDocName,"*")==0) {
-        clearCompleteSelection();
+        clearCompleteSelection(clearPreSelect);
         return;
     }
 
@@ -1430,7 +1435,7 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         else
             docName = pDoc->getName(); // active document
 
-        if(DocName == docName)
+        if(clearPreSelect && DocName == docName)
             rmvPreselect();
 
         bool touched = false;
@@ -1445,7 +1450,10 @@ void SelectionSingleton::clearSelection(const char* pDocName)
             return;
 
         std::ostringstream ss;
-        ss << "Gui.clearSelection('" << docName << "')";
+        ss << "Gui.clearSelection('" << docName << "'";
+        if(!clearPreSelect)
+            ss << ",False";
+        ss << ')';
         Application::Instance->macroManager()->addLine(MacroManager::Cmt,ss.str().c_str());
 
         notify(SelectionChanges(SelectionChanges::ClrSelection,docName.c_str()));
@@ -1454,19 +1462,21 @@ void SelectionSingleton::clearSelection(const char* pDocName)
     }
 }
 
-void SelectionSingleton::clearCompleteSelection()
+void SelectionSingleton::clearCompleteSelection(bool clearPreSelect)
 {
     if(_PickedList.size()) {
         _PickedList.clear();
         notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
-    rmvPreselect();
+    if(clearPreSelect)
+        rmvPreselect();
 
     if(_SelList.empty())
         return;
 
-    Application::Instance->macroManager()->addLine(MacroManager::Cmt,"Gui.clearSelection()");
+    Application::Instance->macroManager()->addLine(MacroManager::Cmt,
+            clearPreSelect?"Gui.clearSelection()":"Gui.clearSelection(False)");
 
 
     _SelList.clear();
@@ -1688,7 +1698,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
     {"removeSelection",      (PyCFunction) SelectionSingleton::sRemoveSelection, METH_VARARGS,
      "removeSelection(object) -- Remove an object from the selection"},
     {"clearSelection"  ,     (PyCFunction) SelectionSingleton::sClearSelection, METH_VARARGS,
-     "clearSelection(doc=None) -- Clear the selection\n"
+     "clearSelection(doc=None,clearPreSelect=True) -- Clear the selection\n"
      "Clear the selection to the given document name. If no document is\n"
      "given the complete selection is cleared."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
@@ -1773,12 +1783,15 @@ PyMethodDef SelectionSingleton::Methods[] = {
 PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
 {
     SelectionLogDisabler disabler(true);
+    PyObject *clearPreselect = Py_True;
     char *objname;
     char *docname;
     char* subname=0;
     float x=0,y=0,z=0;
-    if (PyArg_ParseTuple(args, "ss|sfff", &docname, &objname ,&subname,&x,&y,&z)) {
-        Selection().addSelection(docname,objname,subname,x,y,z);
+    if (PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname ,
+                &subname,&x,&y,&z,&PyBool_Type,&clearPreselect)) 
+    {
+        Selection().addSelection(docname,objname,subname,x,y,z,0,PyObject_IsTrue(clearPreselect));
         Py_Return;
     }
     PyErr_Clear();
@@ -1786,7 +1799,9 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
     PyObject *object;
     subname = 0;
     x=0,y=0,z=0;
-    if (PyArg_ParseTuple(args, "O!|sfff", &(App::DocumentObjectPy::Type),&object,&subname,&x,&y,&z)) {
+    if (PyArg_ParseTuple(args, "O!|sfffO!", &(App::DocumentObjectPy::Type),&object,
+                &subname,&x,&y,&z,&PyBool_Type,&clearPreselect)) 
+    {
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
@@ -1796,13 +1811,15 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
 
         Selection().addSelection(docObj->getDocument()->getName(),
                                  docObj->getNameInDocument(),
-                                 subname,x,y,z);
+                                 subname,x,y,z,0,PyObject_IsTrue(clearPreselect));
         Py_Return;
     }
 
     PyErr_Clear();
     PyObject *sequence;
-    if (PyArg_ParseTuple(args, "O!O", &(App::DocumentObjectPy::Type),&object,&sequence)) {
+    if (PyArg_ParseTuple(args, "O!OO!", &(App::DocumentObjectPy::Type),&object,
+                &sequence,&PyBool_Type,&clearPreselect)) 
+    {
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
@@ -1817,7 +1834,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
                     std::string subname = static_cast<std::string>(Py::String(*it));
                     Selection().addSelection(docObj->getDocument()->getName(),
                                              docObj->getNameInDocument(),
-                                             subname.c_str());
+                                             subname.c_str(),0,0,0,0,PyObject_IsTrue(clearPreselect));
                 }
 
                 Py_Return;
@@ -1903,10 +1920,14 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
 PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *args)
 {
     SelectionLogDisabler disabler(true);
+    PyObject *clearPreSelect = Py_True;
     char *documentName=0;
-    if (!PyArg_ParseTuple(args, "|s", &documentName))
-        return NULL;
-    Selection().clearSelection(documentName);
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &clearPreSelect)) {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args, "|sO!", &documentName, &PyBool_Type, &clearPreSelect))
+            return NULL;
+    }
+    Selection().clearSelection(documentName,PyObject_IsTrue(clearPreSelect));
     Py_Return;
 }
 
