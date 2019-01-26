@@ -52,6 +52,7 @@ generate_from_xml(ParabolaPy)
 generate_from_xml(OffsetCurvePy)
 generate_from_xml(GeometryPy)
 generate_from_xml(GeometryCurvePy)
+generate_from_xml(BoundedCurvePy)
 generate_from_xml(GeometrySurfacePy)
 generate_from_xml(LinePy)
 generate_from_xml(LineSegmentPy)
@@ -211,6 +212,8 @@ SET(Python_SRCS
     GeometryPyImp.cpp
     GeometryCurvePy.xml
     GeometryCurvePyImp.cpp
+    BoundedCurvePy.xml
+    BoundedCurvePyImp.cpp
     GeometrySurfacePy.xml
     GeometrySurfacePyImp.cpp
     LinePy.xml
