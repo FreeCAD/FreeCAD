@@ -8,13 +8,13 @@
                 "type": "IfcActuatorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "electricactuator",
-                    "handoperatedactuator",
-                    "hydraulicactuator",
-                    "pneumaticactuator",
-                    "thermostaticactuator",
-                    "userdefined",
-                    "notdefined"
+                    "ELECTRICACTUATOR",
+                    "HANDOPERATEDACTUATOR",
+                    "HYDRAULICACTUATOR",
+                    "PNEUMATICACTUATOR",
+                    "THERMOSTATICACTUATOR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -34,12 +34,12 @@
                 "type": "IfcAirTerminalTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "diffuser",
-                    "grille",
-                    "louvre",
-                    "register",
-                    "userdefined",
-                    "notdefined"
+                    "DIFFUSER",
+                    "GRILLE",
+                    "LOUVRE",
+                    "REGISTER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -59,11 +59,11 @@
                 "type": "IfcAirTerminalBoxTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "constantflow",
-                    "variableflowpressuredependant",
-                    "variableflowpressureindependant",
-                    "userdefined",
-                    "notdefined"
+                    "CONSTANTFLOW",
+                    "VARIABLEFLOWPRESSUREDEPENDANT",
+                    "VARIABLEFLOWPRESSUREINDEPENDANT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -83,17 +83,17 @@
                 "type": "IfcAirToAirHeatRecoveryTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "fixedplatecounterflowexchanger",
-                    "fixedplatecrossflowexchanger",
-                    "fixedplateparallelflowexchanger",
-                    "rotarywheel",
-                    "runaroundcoilloop",
-                    "heatpipe",
-                    "twintowerenthalpyrecoveryloops",
-                    "thermosiphonsealedtubeheatexchangers",
-                    "thermosiphoncoiltypeheatexchangers",
-                    "userdefined",
-                    "notdefined"
+                    "FIXEDPLATECOUNTERFLOWEXCHANGER",
+                    "FIXEDPLATECROSSFLOWEXCHANGER",
+                    "FIXEDPLATEPARALLELFLOWEXCHANGER",
+                    "ROTARYWHEEL",
+                    "RUNAROUNDCOILLOOP",
+                    "HEATPIPE",
+                    "TWINTOWERENTHALPYRECOVERYLOOPS",
+                    "THERMOSIPHONSEALEDTUBEHEATEXCHANGERS",
+                    "THERMOSIPHONCOILTYPEHEATEXCHANGERS",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -113,14 +113,14 @@
                 "type": "IfcAlarmTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bell",
-                    "breakglassbutton",
-                    "light",
-                    "manualpullbox",
-                    "siren",
-                    "whistle",
-                    "userdefined",
-                    "notdefined"
+                    "BELL",
+                    "BREAKGLASSBUTTON",
+                    "LIGHT",
+                    "MANUALPULLBOX",
+                    "SIREN",
+                    "WHISTLE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -145,19 +145,19 @@
                 "type": "IfcAudioVisualApplianceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "amplifier",
-                    "camera",
-                    "display",
-                    "microphone",
-                    "player",
-                    "projector",
-                    "receiver",
-                    "speaker",
-                    "switcher",
-                    "telephone",
-                    "tuner",
-                    "userdefined",
-                    "notdefined"
+                    "AMPLIFIER",
+                    "CAMERA",
+                    "DISPLAY",
+                    "MICROPHONE",
+                    "PLAYER",
+                    "PROJECTOR",
+                    "RECEIVER",
+                    "SPEAKER",
+                    "SWITCHER",
+                    "TELEPHONE",
+                    "TUNER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -177,14 +177,14 @@
                 "type": "IfcBeamTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "beam",
-                    "joist",
-                    "hollowcore",
-                    "lintel",
-                    "spandrel",
-                    "t_beam",
-                    "userdefined",
-                    "notdefined"
+                    "BEAM",
+                    "JOIST",
+                    "HOLLOWCORE",
+                    "LINTEL",
+                    "SPANDREL",
+                    "T_BEAM",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -204,14 +204,14 @@
                 "type": "IfcBeamTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "beam",
-                    "joist",
-                    "hollowcore",
-                    "lintel",
-                    "spandrel",
-                    "t_beam",
-                    "userdefined",
-                    "notdefined"
+                    "BEAM",
+                    "JOIST",
+                    "HOLLOWCORE",
+                    "LINTEL",
+                    "SPANDREL",
+                    "T_BEAM",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -231,10 +231,10 @@
                 "type": "IfcBoilerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "water",
-                    "steam",
-                    "userdefined",
-                    "notdefined"
+                    "WATER",
+                    "STEAM",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -266,9 +266,9 @@
                 "type": "IfcElementCompositionEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "complex",
-                    "element",
-                    "partial"
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
                 ]
             },
             {
@@ -288,10 +288,10 @@
                 "type": "IfcBuildingElementPartTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "insulation",
-                    "precastpanel",
-                    "userdefined",
-                    "notdefined"
+                    "INSULATION",
+                    "PRECASTPANEL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -311,13 +311,13 @@
                 "type": "IfcBuildingElementProxyTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "complex",
-                    "element",
-                    "partial",
-                    "provisionforvoid",
-                    "provisionforspace",
-                    "userdefined",
-                    "notdefined"
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL",
+                    "PROVISIONFORVOID",
+                    "PROVISIONFORSPACE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -343,9 +343,9 @@
                 "type": "IfcElementCompositionEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "complex",
-                    "element",
-                    "partial"
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
                 ]
             },
             {
@@ -365,8 +365,8 @@
                 "type": "IfcBurnerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "userdefined",
-                    "notdefined"
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -386,12 +386,12 @@
                 "type": "IfcCableCarrierFittingTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bend",
-                    "cross",
-                    "reducer",
-                    "tee",
-                    "userdefined",
-                    "notdefined"
+                    "BEND",
+                    "CROSS",
+                    "REDUCER",
+                    "TEE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -411,12 +411,12 @@
                 "type": "IfcCableCarrierSegmentTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "cableladdersegment",
-                    "cabletraysegment",
-                    "cabletrunkingsegment",
-                    "conduitsegment",
-                    "userdefined",
-                    "notdefined"
+                    "CABLELADDERSEGMENT",
+                    "CABLETRAYSEGMENT",
+                    "CABLETRUNKINGSEGMENT",
+                    "CONDUITSEGMENT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -436,13 +436,13 @@
                 "type": "IfcCableFittingTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "connector",
-                    "entry",
-                    "exit",
-                    "junction",
-                    "transition",
-                    "userdefined",
-                    "notdefined"
+                    "CONNECTOR",
+                    "ENTRY",
+                    "EXIT",
+                    "JUNCTION",
+                    "TRANSITION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -462,12 +462,12 @@
                 "type": "IfcCableSegmentTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "busbarsegment",
-                    "cablesegment",
-                    "conductorsegment",
-                    "coresegment",
-                    "userdefined",
-                    "notdefined"
+                    "BUSBARSEGMENT",
+                    "CABLESEGMENT",
+                    "CONDUCTORSEGMENT",
+                    "CORESEGMENT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -487,11 +487,11 @@
                 "type": "IfcChillerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "aircooled",
-                    "watercooled",
-                    "heatrecovery",
-                    "userdefined",
-                    "notdefined"
+                    "AIRCOOLED",
+                    "WATERCOOLED",
+                    "HEATRECOVERY",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -511,8 +511,8 @@
                 "type": "IfcChimneyTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "userdefined",
-                    "notdefined"
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -544,15 +544,15 @@
                 "type": "IfcCoilTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "dxcoolingcoil",
-                    "electricheatingcoil",
-                    "gasheatingcoil",
-                    "hydroniccoil",
-                    "steamheatingcoil",
-                    "watercoolingcoil",
-                    "waterheatingcoil",
-                    "userdefined",
-                    "notdefined"
+                    "DXCOOLINGCOIL",
+                    "ELECTRICHEATINGCOIL",
+                    "GASHEATINGCOIL",
+                    "HYDRONICCOIL",
+                    "STEAMHEATINGCOIL",
+                    "WATERCOOLINGCOIL",
+                    "WATERHEATINGCOIL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -572,10 +572,10 @@
                 "type": "IfcColumnTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "column",
-                    "pilaster",
-                    "userdefined",
-                    "notdefined"
+                    "COLUMN",
+                    "PILASTER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -595,10 +595,10 @@
                 "type": "IfcColumnTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "column",
-                    "pilaster",
-                    "userdefined",
-                    "notdefined"
+                    "COLUMN",
+                    "PILASTER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -618,20 +618,20 @@
                 "type": "IfcCommunicationsApplianceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "antenna",
-                    "computer",
-                    "fax",
-                    "gateway",
-                    "modem",
-                    "networkappliance",
-                    "networkbridge",
-                    "networkhub",
-                    "printer",
-                    "repeater",
-                    "router",
-                    "scanner",
-                    "userdefined",
-                    "notdefined"
+                    "ANTENNA",
+                    "COMPUTER",
+                    "FAX",
+                    "GATEWAY",
+                    "MODEM",
+                    "NETWORKAPPLIANCE",
+                    "NETWORKBRIDGE",
+                    "NETWORKHUB",
+                    "PRINTER",
+                    "REPEATER",
+                    "ROUTER",
+                    "SCANNER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -651,23 +651,23 @@
                 "type": "IfcCompressorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "dynamic",
-                    "reciprocating",
-                    "rotary",
-                    "scroll",
-                    "trochoidal",
-                    "singlestage",
-                    "booster",
-                    "opentype",
-                    "hermetic",
-                    "semihermetic",
-                    "weldedshellhermetic",
-                    "rollingpiston",
-                    "rotaryvane",
-                    "singlescrew",
-                    "twinscrew",
-                    "userdefined",
-                    "notdefined"
+                    "DYNAMIC",
+                    "RECIPROCATING",
+                    "ROTARY",
+                    "SCROLL",
+                    "TROCHOIDAL",
+                    "SINGLESTAGE",
+                    "BOOSTER",
+                    "OPENTYPE",
+                    "HERMETIC",
+                    "SEMIHERMETIC",
+                    "WELDEDSHELLHERMETIC",
+                    "ROLLINGPISTON",
+                    "ROTARYVANE",
+                    "SINGLESCREW",
+                    "TWINSCREW",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -687,15 +687,15 @@
                 "type": "IfcCondenserTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "aircooled",
-                    "evaporativecooled",
-                    "watercooled",
-                    "watercooledbrazedplate",
-                    "watercooledshellcoil",
-                    "watercooledshelltube",
-                    "watercooledtubeintube",
-                    "userdefined",
-                    "notdefined"
+                    "AIRCOOLED",
+                    "EVAPORATIVECOOLED",
+                    "WATERCOOLED",
+                    "WATERCOOLEDBRAZEDPLATE",
+                    "WATERCOOLEDSHELLCOIL",
+                    "WATERCOOLEDSHELLTUBE",
+                    "WATERCOOLEDTUBEINTUBE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -715,13 +715,13 @@
                 "type": "IfcControllerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "floating",
-                    "programmable",
-                    "proportional",
-                    "multiposition",
-                    "twoposition",
-                    "userdefined",
-                    "notdefined"
+                    "FLOATING",
+                    "PROGRAMMABLE",
+                    "PROPORTIONAL",
+                    "MULTIPOSITION",
+                    "TWOPOSITION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -741,10 +741,10 @@
                 "type": "IfcCooledBeamTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "active",
-                    "passive",
-                    "userdefined",
-                    "notdefined"
+                    "ACTIVE",
+                    "PASSIVE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -764,11 +764,11 @@
                 "type": "IfcCoolingTowerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "naturaldraft",
-                    "mechanicalinduceddraft",
-                    "mechanicalforceddraft",
-                    "userdefined",
-                    "notdefined"
+                    "NATURALDRAFT",
+                    "MECHANICALINDUCEDDRAFT",
+                    "MECHANICALFORCEDDRAFT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -788,18 +788,18 @@
                 "type": "IfcCoveringTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "ceiling",
-                    "flooring",
-                    "cladding",
-                    "roofing",
-                    "molding",
-                    "skirtingboard",
-                    "insulation",
-                    "membrane",
-                    "sleeving",
-                    "wrapping",
-                    "userdefined",
-                    "notdefined"
+                    "CEILING",
+                    "FLOORING",
+                    "CLADDING",
+                    "ROOFING",
+                    "MOLDING",
+                    "SKIRTINGBOARD",
+                    "INSULATION",
+                    "MEMBRANE",
+                    "SLEEVING",
+                    "WRAPPING",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -819,8 +819,8 @@
                 "type": "IfcCurtainWallTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "userdefined",
-                    "notdefined"
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -840,19 +840,19 @@
                 "type": "IfcDamperTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "backdraftdamper",
-                    "balancingdamper",
-                    "blastdamper",
-                    "controldamper",
-                    "firedamper",
-                    "firesmokedamper",
-                    "fumehoodexhaust",
-                    "gravitydamper",
-                    "gravityreliefdamper",
-                    "reliefdamper",
-                    "smokedamper",
-                    "userdefined",
-                    "notdefined"
+                    "BACKDRAFTDAMPER",
+                    "BALANCINGDAMPER",
+                    "BLASTDAMPER",
+                    "CONTROLDAMPER",
+                    "FIREDAMPER",
+                    "FIRESMOKEDAMPER",
+                    "FUMEHOODEXHAUST",
+                    "GRAVITYDAMPER",
+                    "GRAVITYRELIEFDAMPER",
+                    "RELIEFDAMPER",
+                    "SMOKEDAMPER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -872,11 +872,11 @@
                 "type": "IfcDiscreteAccessoryTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "anchorplate",
-                    "bracket",
-                    "shoe",
-                    "userdefined",
-                    "notdefined"
+                    "ANCHORPLATE",
+                    "BRACKET",
+                    "SHOE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -896,16 +896,16 @@
                 "type": "IfcDistributionChamberElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "formedduct",
-                    "inspectionchamber",
-                    "inspectionpit",
-                    "manhole",
-                    "meterchamber",
-                    "sump",
-                    "trench",
-                    "valvechamber",
-                    "userdefined",
-                    "notdefined"
+                    "FORMEDDUCT",
+                    "INSPECTIONCHAMBER",
+                    "INSPECTIONPIT",
+                    "MANHOLE",
+                    "METERCHAMBER",
+                    "SUMP",
+                    "TRENCH",
+                    "VALVECHAMBER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -961,10 +961,10 @@
                 "type": "IfcFlowDirectionEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "source",
-                    "sink",
-                    "sourceandsink",
-                    "notdefined"
+                    "SOURCE",
+                    "SINK",
+                    "SOURCEANDSINK",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -972,12 +972,12 @@
                 "type": "IfcDistributionPortTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "cable",
-                    "cablecarrier",
-                    "duct",
-                    "pipe",
-                    "userdefined",
-                    "notdefined"
+                    "CABLE",
+                    "CABLECARRIER",
+                    "DUCT",
+                    "PIPE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -985,50 +985,50 @@
                 "type": "IfcDistributionSystemEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "airconditioning",
-                    "audiovisual",
-                    "chemical",
-                    "chilledwater",
-                    "communication",
-                    "compressedair",
-                    "condenserwater",
-                    "control",
-                    "conveying",
-                    "data",
-                    "disposal",
-                    "domesticcoldwater",
-                    "domestichotwater",
-                    "drainage",
-                    "earthing",
-                    "electrical",
-                    "electroacoustic",
-                    "exhaust",
-                    "fireprotection",
-                    "fuel",
-                    "gas",
-                    "hazardous",
-                    "heating",
-                    "lighting",
-                    "lightningprotection",
-                    "municipalsolidwaste",
-                    "oil",
-                    "operational",
-                    "powergeneration",
-                    "rainwater",
-                    "refrigeration",
-                    "security",
-                    "sewage",
-                    "signal",
-                    "stormwater",
-                    "telephone",
-                    "tv",
-                    "vacuum",
-                    "vent",
-                    "ventilation",
-                    "wastewater",
-                    "watersupply",
-                    "userdefined",
-                    "notdefined"
+                    "AIRCONDITIONING",
+                    "AUDIOVISUAL",
+                    "CHEMICAL",
+                    "CHILLEDWATER",
+                    "COMMUNICATION",
+                    "COMPRESSEDAIR",
+                    "CONDENSERWATER",
+                    "CONTROL",
+                    "CONVEYING",
+                    "DATA",
+                    "DISPOSAL",
+                    "DOMESTICCOLDWATER",
+                    "DOMESTICHOTWATER",
+                    "DRAINAGE",
+                    "EARTHING",
+                    "ELECTRICAL",
+                    "ELECTROACOUSTIC",
+                    "EXHAUST",
+                    "FIREPROTECTION",
+                    "FUEL",
+                    "GAS",
+                    "HAZARDOUS",
+                    "HEATING",
+                    "LIGHTING",
+                    "LIGHTNINGPROTECTION",
+                    "MUNICIPALSOLIDWASTE",
+                    "OIL",
+                    "OPERATIONAL",
+                    "POWERGENERATION",
+                    "RAINWATER",
+                    "REFRIGERATION",
+                    "SECURITY",
+                    "SEWAGE",
+                    "SIGNAL",
+                    "STORMWATER",
+                    "TELEPHONE",
+                    "TV",
+                    "VACUUM",
+                    "VENT",
+                    "VENTILATION",
+                    "WASTEWATER",
+                    "WATERSUPPLY",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             }
         ]
@@ -1054,11 +1054,11 @@
                 "type": "IfcDoorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "door",
-                    "gate",
-                    "trapdoor",
-                    "userdefined",
-                    "notdefined"
+                    "DOOR",
+                    "GATE",
+                    "TRAPDOOR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1066,26 +1066,26 @@
                 "type": "IfcDoorTypeOperationEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "single_swing_left",
-                    "single_swing_right",
-                    "double_door_single_swing",
-                    "double_door_single_swing_opposite_left",
-                    "double_door_single_swing_opposite_right",
-                    "double_swing_left",
-                    "double_swing_right",
-                    "double_door_double_swing",
-                    "sliding_to_left",
-                    "sliding_to_right",
-                    "double_door_sliding",
-                    "folding_to_left",
-                    "folding_to_right",
-                    "double_door_folding",
-                    "revolving",
-                    "rollingup",
-                    "swing_fixed_left",
-                    "swing_fixed_right",
-                    "userdefined",
-                    "notdefined"
+                    "SINGLE_SWING_LEFT",
+                    "SINGLE_SWING_RIGHT",
+                    "DOUBLE_DOOR_SINGLE_SWING",
+                    "DOUBLE_DOOR_SINGLE_SWING_OPPOSITE_LEFT",
+                    "DOUBLE_DOOR_SINGLE_SWING_OPPOSITE_RIGHT",
+                    "DOUBLE_SWING_LEFT",
+                    "DOUBLE_SWING_RIGHT",
+                    "DOUBLE_DOOR_DOUBLE_SWING",
+                    "SLIDING_TO_LEFT",
+                    "SLIDING_TO_RIGHT",
+                    "DOUBLE_DOOR_SLIDING",
+                    "FOLDING_TO_LEFT",
+                    "FOLDING_TO_RIGHT",
+                    "DOUBLE_DOOR_FOLDING",
+                    "REVOLVING",
+                    "ROLLINGUP",
+                    "SWING_FIXED_LEFT",
+                    "SWING_FIXED_RIGHT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1123,11 +1123,11 @@
                 "type": "IfcDoorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "door",
-                    "gate",
-                    "trapdoor",
-                    "userdefined",
-                    "notdefined"
+                    "DOOR",
+                    "GATE",
+                    "TRAPDOOR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1135,26 +1135,26 @@
                 "type": "IfcDoorTypeOperationEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "single_swing_left",
-                    "single_swing_right",
-                    "double_door_single_swing",
-                    "double_door_single_swing_opposite_left",
-                    "double_door_single_swing_opposite_right",
-                    "double_swing_left",
-                    "double_swing_right",
-                    "double_door_double_swing",
-                    "sliding_to_left",
-                    "sliding_to_right",
-                    "double_door_sliding",
-                    "folding_to_left",
-                    "folding_to_right",
-                    "double_door_folding",
-                    "revolving",
-                    "rollingup",
-                    "swing_fixed_left",
-                    "swing_fixed_right",
-                    "userdefined",
-                    "notdefined"
+                    "SINGLE_SWING_LEFT",
+                    "SINGLE_SWING_RIGHT",
+                    "DOUBLE_DOOR_SINGLE_SWING",
+                    "DOUBLE_DOOR_SINGLE_SWING_OPPOSITE_LEFT",
+                    "DOUBLE_DOOR_SINGLE_SWING_OPPOSITE_RIGHT",
+                    "DOUBLE_SWING_LEFT",
+                    "DOUBLE_SWING_RIGHT",
+                    "DOUBLE_DOOR_DOUBLE_SWING",
+                    "SLIDING_TO_LEFT",
+                    "SLIDING_TO_RIGHT",
+                    "DOUBLE_DOOR_SLIDING",
+                    "FOLDING_TO_LEFT",
+                    "FOLDING_TO_RIGHT",
+                    "DOUBLE_DOOR_FOLDING",
+                    "REVOLVING",
+                    "ROLLINGUP",
+                    "SWING_FIXED_LEFT",
+                    "SWING_FIXED_RIGHT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1180,15 +1180,15 @@
                 "type": "IfcDuctFittingTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bend",
-                    "connector",
-                    "entry",
-                    "exit",
-                    "junction",
-                    "obstruction",
-                    "transition",
-                    "userdefined",
-                    "notdefined"
+                    "BEND",
+                    "CONNECTOR",
+                    "ENTRY",
+                    "EXIT",
+                    "JUNCTION",
+                    "OBSTRUCTION",
+                    "TRANSITION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1208,10 +1208,10 @@
                 "type": "IfcDuctSegmentTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "rigidsegment",
-                    "flexiblesegment",
-                    "userdefined",
-                    "notdefined"
+                    "RIGIDSEGMENT",
+                    "FLEXIBLESEGMENT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1231,11 +1231,11 @@
                 "type": "IfcDuctSilencerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "flatoval",
-                    "rectangular",
-                    "round",
-                    "userdefined",
-                    "notdefined"
+                    "FLATOVAL",
+                    "RECTANGULAR",
+                    "ROUND",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1255,24 +1255,24 @@
                 "type": "IfcElectricApplianceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "dishwasher",
-                    "electriccooker",
-                    "freestandingelectricheater",
-                    "freestandingfan",
-                    "freestandingwaterheater",
-                    "freestandingwatercooler",
-                    "freezer",
-                    "fridge_freezer",
-                    "handdryer",
-                    "kitchenmachine",
-                    "microwave",
-                    "photocopier",
-                    "refrigerator",
-                    "tumbledryer",
-                    "vendingmachine",
-                    "washingmachine",
-                    "userdefined",
-                    "notdefined"
+                    "DISHWASHER",
+                    "ELECTRICCOOKER",
+                    "FREESTANDINGELECTRICHEATER",
+                    "FREESTANDINGFAN",
+                    "FREESTANDINGWATERHEATER",
+                    "FREESTANDINGWATERCOOLER",
+                    "FREEZER",
+                    "FRIDGE_FREEZER",
+                    "HANDDRYER",
+                    "KITCHENMACHINE",
+                    "MICROWAVE",
+                    "PHOTOCOPIER",
+                    "REFRIGERATOR",
+                    "TUMBLEDRYER",
+                    "VENDINGMACHINE",
+                    "WASHINGMACHINE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1292,12 +1292,12 @@
                 "type": "IfcElectricDistributionBoardTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "consumerunit",
-                    "distributionboard",
-                    "motorcontrolcentre",
-                    "switchboard",
-                    "userdefined",
-                    "notdefined"
+                    "CONSUMERUNIT",
+                    "DISTRIBUTIONBOARD",
+                    "MOTORCONTROLCENTRE",
+                    "SWITCHBOARD",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1317,13 +1317,13 @@
                 "type": "IfcElectricFlowStorageDeviceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "battery",
-                    "capacitorbank",
-                    "harmonicfilter",
-                    "inductorbank",
-                    "ups",
-                    "userdefined",
-                    "notdefined"
+                    "BATTERY",
+                    "CAPACITORBANK",
+                    "HARMONICFILTER",
+                    "INDUCTORBANK",
+                    "UPS",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1343,11 +1343,11 @@
                 "type": "IfcElectricGeneratorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "chp",
-                    "enginegenerator",
-                    "standalone",
-                    "userdefined",
-                    "notdefined"
+                    "CHP",
+                    "ENGINEGENERATOR",
+                    "STANDALONE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1367,13 +1367,13 @@
                 "type": "IfcElectricMotorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "dc",
-                    "induction",
-                    "polyphase",
-                    "reluctancesynchronous",
-                    "synchronous",
-                    "userdefined",
-                    "notdefined"
+                    "DC",
+                    "INDUCTION",
+                    "POLYPHASE",
+                    "RELUCTANCESYNCHRONOUS",
+                    "SYNCHRONOUS",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1393,11 +1393,11 @@
                 "type": "IfcElectricTimeControlTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "timeclock",
-                    "timedelay",
-                    "relay",
-                    "userdefined",
-                    "notdefined"
+                    "TIMECLOCK",
+                    "TIMEDELAY",
+                    "RELAY",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1417,9 +1417,9 @@
                 "type": "IfcAssemblyPlaceEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "site",
-                    "factory",
-                    "notdefined"
+                    "SITE",
+                    "FACTORY",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1427,17 +1427,17 @@
                 "type": "IfcElementAssemblyTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "accessory_assembly",
-                    "arch",
-                    "beam_grid",
-                    "braced_frame",
-                    "girder",
-                    "reinforcement_unit",
-                    "rigid_frame",
-                    "slab_field",
-                    "truss",
-                    "userdefined",
-                    "notdefined"
+                    "ACCESSORY_ASSEMBLY",
+                    "ARCH",
+                    "BEAM_GRID",
+                    "BRACED_FRAME",
+                    "GIRDER",
+                    "REINFORCEMENT_UNIT",
+                    "RIGID_FRAME",
+                    "SLAB_FIELD",
+                    "TRUSS",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1469,10 +1469,10 @@
                 "type": "IfcEngineTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "externalcombustion",
-                    "internalcombustion",
-                    "userdefined",
-                    "notdefined"
+                    "EXTERNALCOMBUSTION",
+                    "INTERNALCOMBUSTION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1492,17 +1492,17 @@
                 "type": "IfcEvaporativeCoolerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "directevaporativerandommediaaircooler",
-                    "directevaporativerigidmediaaircooler",
-                    "directevaporativeslingerspackagedaircooler",
-                    "directevaporativepackagedrotaryaircooler",
-                    "directevaporativeairwasher",
-                    "indirectevaporativepackageaircooler",
-                    "indirectevaporativewetcoil",
-                    "indirectevaporativecoolingtowerorcoilcooler",
-                    "indirectdirectcombination",
-                    "userdefined",
-                    "notdefined"
+                    "DIRECTEVAPORATIVERANDOMMEDIAAIRCOOLER",
+                    "DIRECTEVAPORATIVERIGIDMEDIAAIRCOOLER",
+                    "DIRECTEVAPORATIVESLINGERSPACKAGEDAIRCOOLER",
+                    "DIRECTEVAPORATIVEPACKAGEDROTARYAIRCOOLER",
+                    "DIRECTEVAPORATIVEAIRWASHER",
+                    "INDIRECTEVAPORATIVEPACKAGEAIRCOOLER",
+                    "INDIRECTEVAPORATIVEWETCOIL",
+                    "INDIRECTEVAPORATIVECOOLINGTOWERORCOILCOOLER",
+                    "INDIRECTDIRECTCOMBINATION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1522,14 +1522,14 @@
                 "type": "IfcEvaporatorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "directexpansion",
-                    "directexpansionshellandtube",
-                    "directexpansiontubeintube",
-                    "directexpansionbrazedplate",
-                    "floodedshellandtube",
-                    "shellandcoil",
-                    "userdefined",
-                    "notdefined"
+                    "DIRECTEXPANSION",
+                    "DIRECTEXPANSIONSHELLANDTUBE",
+                    "DIRECTEXPANSIONTUBEINTUBE",
+                    "DIRECTEXPANSIONBRAZEDPLATE",
+                    "FLOODEDSHELLANDTUBE",
+                    "SHELLANDCOIL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1549,12 +1549,12 @@
                 "type": "IfcExternalSpatialElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "external",
-                    "external_earth",
-                    "external_water",
-                    "external_fire",
-                    "userdefined",
-                    "notdefined"
+                    "EXTERNAL",
+                    "EXTERNAL_EARTH",
+                    "EXTERNAL_WATER",
+                    "EXTERNAL_FIRE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1574,15 +1574,15 @@
                 "type": "IfcFanTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "centrifugalforwardcurved",
-                    "centrifugalradial",
-                    "centrifugalbackwardinclinedcurved",
-                    "centrifugalairfoil",
-                    "tubeaxial",
-                    "vaneaxial",
-                    "propelloraxial",
-                    "userdefined",
-                    "notdefined"
+                    "CENTRIFUGALFORWARDCURVED",
+                    "CENTRIFUGALRADIAL",
+                    "CENTRIFUGALBACKWARDINCLINEDCURVED",
+                    "CENTRIFUGALAIRFOIL",
+                    "TUBEAXIAL",
+                    "VANEAXIAL",
+                    "PROPELLORAXIAL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1602,11 +1602,11 @@
                 "type": "IfcFastenerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "glue",
-                    "mortar",
-                    "weld",
-                    "userdefined",
-                    "notdefined"
+                    "GLUE",
+                    "MORTAR",
+                    "WELD",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1626,14 +1626,14 @@
                 "type": "IfcFilterTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "airparticlefilter",
-                    "compressedairfilter",
-                    "odorfilter",
-                    "oilfilter",
-                    "strainer",
-                    "waterfilter",
-                    "userdefined",
-                    "notdefined"
+                    "AIRPARTICLEFILTER",
+                    "COMPRESSEDAIRFILTER",
+                    "ODORFILTER",
+                    "OILFILTER",
+                    "STRAINER",
+                    "WATERFILTER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1653,13 +1653,13 @@
                 "type": "IfcFireSuppressionTerminalTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "breechinginlet",
-                    "firehydrant",
-                    "hosereel",
-                    "sprinkler",
-                    "sprinklerdeflector",
-                    "userdefined",
-                    "notdefined"
+                    "BREECHINGINLET",
+                    "FIREHYDRANT",
+                    "HOSEREEL",
+                    "SPRINKLER",
+                    "SPRINKLERDEFLECTOR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1703,16 +1703,16 @@
                 "type": "IfcFlowInstrumentTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "pressuregauge",
-                    "thermometer",
-                    "ammeter",
-                    "frequencymeter",
-                    "powerfactormeter",
-                    "phaseanglemeter",
-                    "voltmeter_peak",
-                    "voltmeter_rms",
-                    "userdefined",
-                    "notdefined"
+                    "PRESSUREGAUGE",
+                    "THERMOMETER",
+                    "AMMETER",
+                    "FREQUENCYMETER",
+                    "POWERFACTORMETER",
+                    "PHASEANGLEMETER",
+                    "VOLTMETER_PEAK",
+                    "VOLTMETER_RMS",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1732,12 +1732,12 @@
                 "type": "IfcFlowMeterTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "energymeter",
-                    "gasmeter",
-                    "oilmeter",
-                    "watermeter",
-                    "userdefined",
-                    "notdefined"
+                    "ENERGYMETER",
+                    "GASMETER",
+                    "OILMETER",
+                    "WATERMETER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1817,13 +1817,13 @@
                 "type": "IfcFootingTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "caisson_foundation",
-                    "footing_beam",
-                    "pad_footing",
-                    "pile_cap",
-                    "strip_footing",
-                    "userdefined",
-                    "notdefined"
+                    "CAISSON_FOUNDATION",
+                    "FOOTING_BEAM",
+                    "PAD_FOOTING",
+                    "PILE_CAP",
+                    "STRIP_FOOTING",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1855,15 +1855,15 @@
                 "type": "IfcFurnitureTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "chair",
-                    "table",
-                    "desk",
-                    "bed",
-                    "filecabinet",
-                    "shelf",
-                    "sofa",
-                    "userdefined",
-                    "notdefined"
+                    "CHAIR",
+                    "TABLE",
+                    "DESK",
+                    "BED",
+                    "FILECABINET",
+                    "SHELF",
+                    "SOFA",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1883,9 +1883,9 @@
                 "type": "IfcGeographicElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "terrain",
-                    "userdefined",
-                    "notdefined"
+                    "TERRAIN",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1905,12 +1905,12 @@
                 "type": "IfcGridTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "rectangular",
-                    "radial",
-                    "triangular",
-                    "irregular",
-                    "userdefined",
-                    "notdefined"
+                    "RECTANGULAR",
+                    "RADIAL",
+                    "TRIANGULAR",
+                    "IRREGULAR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             }
         ]
@@ -1924,10 +1924,10 @@
                 "type": "IfcHeatExchangerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "plate",
-                    "shellandtube",
-                    "userdefined",
-                    "notdefined"
+                    "PLATE",
+                    "SHELLANDTUBE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1947,21 +1947,21 @@
                 "type": "IfcHumidifierTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "steaminjection",
-                    "adiabaticairwasher",
-                    "adiabaticpan",
-                    "adiabaticwettedelement",
-                    "adiabaticatomizing",
-                    "adiabaticultrasonic",
-                    "adiabaticrigidmedia",
-                    "adiabaticcompressedairnozzle",
-                    "assistedelectric",
-                    "assistednaturalgas",
-                    "assistedpropane",
-                    "assistedbutane",
-                    "assistedsteam",
-                    "userdefined",
-                    "notdefined"
+                    "STEAMINJECTION",
+                    "ADIABATICAIRWASHER",
+                    "ADIABATICPAN",
+                    "ADIABATICWETTEDELEMENT",
+                    "ADIABATICATOMIZING",
+                    "ADIABATICULTRASONIC",
+                    "ADIABATICRIGIDMEDIA",
+                    "ADIABATICCOMPRESSEDAIRNOZZLE",
+                    "ASSISTEDELECTRIC",
+                    "ASSISTEDNATURALGAS",
+                    "ASSISTEDPROPANE",
+                    "ASSISTEDBUTANE",
+                    "ASSISTEDSTEAM",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -1981,12 +1981,12 @@
                 "type": "IfcInterceptorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "cyclonic",
-                    "grease",
-                    "oil",
-                    "petrol",
-                    "userdefined",
-                    "notdefined"
+                    "CYCLONIC",
+                    "GREASE",
+                    "OIL",
+                    "PETROL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2006,10 +2006,10 @@
                 "type": "IfcJunctionBoxTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "data",
-                    "power",
-                    "userdefined",
-                    "notdefined"
+                    "DATA",
+                    "POWER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2029,17 +2029,17 @@
                 "type": "IfcLampTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "compactfluorescent",
-                    "fluorescent",
-                    "halogen",
-                    "highpressuremercury",
-                    "highpressuresodium",
-                    "led",
-                    "metalhalide",
-                    "oled",
-                    "tungstenfilament",
-                    "userdefined",
-                    "notdefined"
+                    "COMPACTFLUORESCENT",
+                    "FLUORESCENT",
+                    "HALOGEN",
+                    "HIGHPRESSUREMERCURY",
+                    "HIGHPRESSURESODIUM",
+                    "LED",
+                    "METALHALIDE",
+                    "OLED",
+                    "TUNGSTENFILAMENT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2059,11 +2059,11 @@
                 "type": "IfcLightFixtureTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "pointsource",
-                    "directionsource",
-                    "securitylighting",
-                    "userdefined",
-                    "notdefined"
+                    "POINTSOURCE",
+                    "DIRECTIONSOURCE",
+                    "SECURITYLIGHTING",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2095,18 +2095,18 @@
                 "type": "IfcMechanicalFastenerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "anchorbolt",
-                    "bolt",
-                    "dowel",
-                    "nail",
-                    "nailplate",
-                    "rivet",
-                    "screw",
-                    "shearconnector",
-                    "staple",
-                    "studshearconnector",
-                    "userdefined",
-                    "notdefined"
+                    "ANCHORBOLT",
+                    "BOLT",
+                    "DOWEL",
+                    "NAIL",
+                    "NAILPLATE",
+                    "RIVET",
+                    "SCREW",
+                    "SHEARCONNECTOR",
+                    "STAPLE",
+                    "STUDSHEARCONNECTOR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2126,13 +2126,13 @@
                 "type": "IfcMedicalDeviceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "airstation",
-                    "feedairunit",
-                    "oxygengenerator",
-                    "oxygenplant",
-                    "vacuumstation",
-                    "userdefined",
-                    "notdefined"
+                    "AIRSTATION",
+                    "FEEDAIRUNIT",
+                    "OXYGENGENERATOR",
+                    "OXYGENPLANT",
+                    "VACUUMSTATION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2152,20 +2152,20 @@
                 "type": "IfcMemberTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "brace",
-                    "chord",
-                    "collar",
-                    "member",
-                    "mullion",
-                    "plate",
-                    "post",
-                    "purlin",
-                    "rafter",
-                    "stringer",
-                    "strut",
-                    "stud",
-                    "userdefined",
-                    "notdefined"
+                    "BRACE",
+                    "CHORD",
+                    "COLLAR",
+                    "MEMBER",
+                    "MULLION",
+                    "PLATE",
+                    "POST",
+                    "PURLIN",
+                    "RAFTER",
+                    "STRINGER",
+                    "STRUT",
+                    "STUD",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2185,20 +2185,20 @@
                 "type": "IfcMemberTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "brace",
-                    "chord",
-                    "collar",
-                    "member",
-                    "mullion",
-                    "plate",
-                    "post",
-                    "purlin",
-                    "rafter",
-                    "stringer",
-                    "strut",
-                    "stud",
-                    "userdefined",
-                    "notdefined"
+                    "BRACE",
+                    "CHORD",
+                    "COLLAR",
+                    "MEMBER",
+                    "MULLION",
+                    "PLATE",
+                    "POST",
+                    "PURLIN",
+                    "RAFTER",
+                    "STRINGER",
+                    "STRUT",
+                    "STUD",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2218,11 +2218,11 @@
                 "type": "IfcMotorConnectionTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "beltdrive",
-                    "coupling",
-                    "directdrive",
-                    "userdefined",
-                    "notdefined"
+                    "BELTDRIVE",
+                    "COUPLING",
+                    "DIRECTDRIVE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2242,10 +2242,10 @@
                 "type": "IfcOpeningElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "opening",
-                    "recess",
-                    "userdefined",
-                    "notdefined"
+                    "OPENING",
+                    "RECESS",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2265,10 +2265,10 @@
                 "type": "IfcOpeningElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "opening",
-                    "recess",
-                    "userdefined",
-                    "notdefined"
+                    "OPENING",
+                    "RECESS",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2288,13 +2288,13 @@
                 "type": "IfcOutletTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "audiovisualoutlet",
-                    "communicationsoutlet",
-                    "poweroutlet",
-                    "dataoutlet",
-                    "telephoneoutlet",
-                    "userdefined",
-                    "notdefined"
+                    "AUDIOVISUALOUTLET",
+                    "COMMUNICATIONSOUTLET",
+                    "POWEROUTLET",
+                    "DATAOUTLET",
+                    "TELEPHONEOUTLET",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2314,14 +2314,14 @@
                 "type": "IfcPileTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bored",
-                    "driven",
-                    "jetgrouting",
-                    "cohesion",
-                    "friction",
-                    "support",
-                    "userdefined",
-                    "notdefined"
+                    "BORED",
+                    "DRIVEN",
+                    "JETGROUTING",
+                    "COHESION",
+                    "FRICTION",
+                    "SUPPORT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2329,12 +2329,12 @@
                 "type": "IfcPileConstructionEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "cast_in_place",
-                    "composite",
-                    "precast_concrete",
-                    "prefab_steel",
-                    "userdefined",
-                    "notdefined"
+                    "CAST_IN_PLACE",
+                    "COMPOSITE",
+                    "PRECAST_CONCRETE",
+                    "PREFAB_STEEL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2354,15 +2354,15 @@
                 "type": "IfcPipeFittingTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bend",
-                    "connector",
-                    "entry",
-                    "exit",
-                    "junction",
-                    "obstruction",
-                    "transition",
-                    "userdefined",
-                    "notdefined"
+                    "BEND",
+                    "CONNECTOR",
+                    "ENTRY",
+                    "EXIT",
+                    "JUNCTION",
+                    "OBSTRUCTION",
+                    "TRANSITION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2382,13 +2382,13 @@
                 "type": "IfcPipeSegmentTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "culvert",
-                    "flexiblesegment",
-                    "rigidsegment",
-                    "gutter",
-                    "spool",
-                    "userdefined",
-                    "notdefined"
+                    "CULVERT",
+                    "FLEXIBLESEGMENT",
+                    "RIGIDSEGMENT",
+                    "GUTTER",
+                    "SPOOL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2408,10 +2408,10 @@
                 "type": "IfcPlateTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "curtain_panel",
-                    "sheet",
-                    "userdefined",
-                    "notdefined"
+                    "CURTAIN_PANEL",
+                    "SHEET",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2431,10 +2431,10 @@
                 "type": "IfcPlateTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "curtain_panel",
-                    "sheet",
-                    "userdefined",
-                    "notdefined"
+                    "CURTAIN_PANEL",
+                    "SHEET",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2454,8 +2454,8 @@
                 "type": "IfcProjectionElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "userdefined",
-                    "notdefined"
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2475,15 +2475,15 @@
                 "type": "IfcProtectiveDeviceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "circuitbreaker",
-                    "earthleakagecircuitbreaker",
-                    "earthingswitch",
-                    "fusedisconnector",
-                    "residualcurrentcircuitbreaker",
-                    "residualcurrentswitch",
-                    "varistor",
-                    "userdefined",
-                    "notdefined"
+                    "CIRCUITBREAKER",
+                    "EARTHLEAKAGECIRCUITBREAKER",
+                    "EARTHINGSWITCH",
+                    "FUSEDISCONNECTOR",
+                    "RESIDUALCURRENTCIRCUITBREAKER",
+                    "RESIDUALCURRENTSWITCH",
+                    "VARISTOR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2503,12 +2503,12 @@
                 "type": "IfcProtectiveDeviceTrippingUnitTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "electronic",
-                    "electromagnetic",
-                    "residualcurrent",
-                    "thermal",
-                    "userdefined",
-                    "notdefined"
+                    "ELECTRONIC",
+                    "ELECTROMAGNETIC",
+                    "RESIDUALCURRENT",
+                    "THERMAL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2528,14 +2528,14 @@
                 "type": "IfcObjectTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "product",
-                    "process",
-                    "control",
-                    "resource",
-                    "actor",
-                    "group",
-                    "project",
-                    "notdefined"
+                    "PRODUCT",
+                    "PROCESS",
+                    "CONTROL",
+                    "RESOURCE",
+                    "ACTOR",
+                    "GROUP",
+                    "PROJECT",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2555,15 +2555,15 @@
                 "type": "IfcPumpTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "circulator",
-                    "endsuction",
-                    "splitcase",
-                    "submersiblepump",
-                    "sumppump",
-                    "verticalinline",
-                    "verticalturbine",
-                    "userdefined",
-                    "notdefined"
+                    "CIRCULATOR",
+                    "ENDSUCTION",
+                    "SPLITCASE",
+                    "SUBMERSIBLEPUMP",
+                    "SUMPPUMP",
+                    "VERTICALINLINE",
+                    "VERTICALTURBINE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2583,11 +2583,11 @@
                 "type": "IfcRailingTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "handrail",
-                    "guardrail",
-                    "balustrade",
-                    "userdefined",
-                    "notdefined"
+                    "HANDRAIL",
+                    "GUARDRAIL",
+                    "BALUSTRADE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2607,14 +2607,14 @@
                 "type": "IfcRampTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "straight_run_ramp",
-                    "two_straight_run_ramp",
-                    "quarter_turn_ramp",
-                    "two_quarter_turn_ramp",
-                    "half_turn_ramp",
-                    "spiral_ramp",
-                    "userdefined",
-                    "notdefined"
+                    "STRAIGHT_RUN_RAMP",
+                    "TWO_STRAIGHT_RUN_RAMP",
+                    "QUARTER_TURN_RAMP",
+                    "TWO_QUARTER_TURN_RAMP",
+                    "HALF_TURN_RAMP",
+                    "SPIRAL_RAMP",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2634,10 +2634,10 @@
                 "type": "IfcRampFlightTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "straight",
-                    "spiral",
-                    "userdefined",
-                    "notdefined"
+                    "STRAIGHT",
+                    "SPIRAL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2675,16 +2675,16 @@
                 "type": "IfcReinforcingBarTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "anchoring",
-                    "edge",
-                    "ligature",
-                    "main",
-                    "punching",
-                    "ring",
-                    "shear",
-                    "stud",
-                    "userdefined",
-                    "notdefined"
+                    "ANCHORING",
+                    "EDGE",
+                    "LIGATURE",
+                    "MAIN",
+                    "PUNCHING",
+                    "RING",
+                    "SHEAR",
+                    "STUD",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2692,8 +2692,8 @@
                 "type": "IfcReinforcingBarSurfaceEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "plain",
-                    "textured"
+                    "PLAIN",
+                    "TEXTURED"
                 ]
             },
             {
@@ -2767,8 +2767,8 @@
                 "type": "IfcReinforcingMeshTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "userdefined",
-                    "notdefined"
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2794,21 +2794,21 @@
                 "type": "IfcRoofTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "flat_roof",
-                    "shed_roof",
-                    "gable_roof",
-                    "hip_roof",
-                    "hipped_gable_roof",
-                    "gambrel_roof",
-                    "mansard_roof",
-                    "barrel_roof",
-                    "rainbow_roof",
-                    "butterfly_roof",
-                    "pavilion_roof",
-                    "dome_roof",
-                    "freeform",
-                    "userdefined",
-                    "notdefined"
+                    "FLAT_ROOF",
+                    "SHED_ROOF",
+                    "GABLE_ROOF",
+                    "HIP_ROOF",
+                    "HIPPED_GABLE_ROOF",
+                    "GAMBREL_ROOF",
+                    "MANSARD_ROOF",
+                    "BARREL_ROOF",
+                    "RAINBOW_ROOF",
+                    "BUTTERFLY_ROOF",
+                    "PAVILION_ROOF",
+                    "DOME_ROOF",
+                    "FREEFORM",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2828,18 +2828,18 @@
                 "type": "IfcSanitaryTerminalTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bath",
-                    "bidet",
-                    "cistern",
-                    "shower",
-                    "sink",
-                    "sanitaryfountain",
-                    "toiletpan",
-                    "urinal",
-                    "washhandbasin",
-                    "wcseat",
-                    "userdefined",
-                    "notdefined"
+                    "BATH",
+                    "BIDET",
+                    "CISTERN",
+                    "SHOWER",
+                    "SINK",
+                    "SANITARYFOUNTAIN",
+                    "TOILETPAN",
+                    "URINAL",
+                    "WASHHANDBASIN",
+                    "WCSEAT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2859,32 +2859,32 @@
                 "type": "IfcSensorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "cosensor",
-                    "co2sensor",
-                    "conductancesensor",
-                    "contactsensor",
-                    "firesensor",
-                    "flowsensor",
-                    "frostsensor",
-                    "gassensor",
-                    "heatsensor",
-                    "humiditysensor",
-                    "identifiersensor",
-                    "ionconcentrationsensor",
-                    "levelsensor",
-                    "lightsensor",
-                    "moisturesensor",
-                    "movementsensor",
-                    "phsensor",
-                    "pressuresensor",
-                    "radiationsensor",
-                    "radioactivitysensor",
-                    "smokesensor",
-                    "soundsensor",
-                    "temperaturesensor",
-                    "windsensor",
-                    "userdefined",
-                    "notdefined"
+                    "COSENSOR",
+                    "CO2SENSOR",
+                    "CONDUCTANCESENSOR",
+                    "CONTACTSENSOR",
+                    "FIRESENSOR",
+                    "FLOWSENSOR",
+                    "FROSTSENSOR",
+                    "GASSENSOR",
+                    "HEATSENSOR",
+                    "HUMIDITYSENSOR",
+                    "IDENTIFIERSENSOR",
+                    "IONCONCENTRATIONSENSOR",
+                    "LEVELSENSOR",
+                    "LIGHTSENSOR",
+                    "MOISTURESENSOR",
+                    "MOVEMENTSENSOR",
+                    "PHSENSOR",
+                    "PRESSURESENSOR",
+                    "RADIATIONSENSOR",
+                    "RADIOACTIVITYSENSOR",
+                    "SMOKESENSOR",
+                    "SOUNDSENSOR",
+                    "TEMPERATURESENSOR",
+                    "WINDSENSOR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2904,11 +2904,11 @@
                 "type": "IfcShadingDeviceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "jalousie",
-                    "shutter",
-                    "awning",
-                    "userdefined",
-                    "notdefined"
+                    "JALOUSIE",
+                    "SHUTTER",
+                    "AWNING",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2952,9 +2952,9 @@
                 "type": "IfcElementCompositionEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "complex",
-                    "element",
-                    "partial"
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
                 ]
             },
             {
@@ -2974,12 +2974,12 @@
                 "type": "IfcSlabTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "floor",
-                    "roof",
-                    "landing",
-                    "baseslab",
-                    "userdefined",
-                    "notdefined"
+                    "FLOOR",
+                    "ROOF",
+                    "LANDING",
+                    "BASESLAB",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -2999,12 +2999,12 @@
                 "type": "IfcSlabTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "floor",
-                    "roof",
-                    "landing",
-                    "baseslab",
-                    "userdefined",
-                    "notdefined"
+                    "FLOOR",
+                    "ROOF",
+                    "LANDING",
+                    "BASESLAB",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3024,12 +3024,12 @@
                 "type": "IfcSlabTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "floor",
-                    "roof",
-                    "landing",
-                    "baseslab",
-                    "userdefined",
-                    "notdefined"
+                    "FLOOR",
+                    "ROOF",
+                    "LANDING",
+                    "BASESLAB",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3049,10 +3049,10 @@
                 "type": "IfcSolarDeviceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "solarcollector",
-                    "solarpanel",
-                    "userdefined",
-                    "notdefined"
+                    "SOLARCOLLECTOR",
+                    "SOLARPANEL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3072,13 +3072,13 @@
                 "type": "IfcSpaceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "space",
-                    "parking",
-                    "gfa",
-                    "internal",
-                    "external",
-                    "userdefined",
-                    "notdefined"
+                    "SPACE",
+                    "PARKING",
+                    "GFA",
+                    "INTERNAL",
+                    "EXTERNAL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3092,9 +3092,9 @@
                 "type": "IfcElementCompositionEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "complex",
-                    "element",
-                    "partial"
+                    "COMPLEX",
+                    "ELEMENT",
+                    "PARTIAL"
                 ]
             },
             {
@@ -3114,10 +3114,10 @@
                 "type": "IfcSpaceHeaterTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "convector",
-                    "radiator",
-                    "userdefined",
-                    "notdefined"
+                    "CONVECTOR",
+                    "RADIATOR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3137,16 +3137,16 @@
                 "type": "IfcSpatialZoneTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "construction",
-                    "firesafety",
-                    "lighting",
-                    "occupancy",
-                    "security",
-                    "thermal",
-                    "transport",
-                    "ventilation",
-                    "userdefined",
-                    "notdefined"
+                    "CONSTRUCTION",
+                    "FIRESAFETY",
+                    "LIGHTING",
+                    "OCCUPANCY",
+                    "SECURITY",
+                    "THERMAL",
+                    "TRANSPORT",
+                    "VENTILATION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3166,11 +3166,11 @@
                 "type": "IfcStackTerminalTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "birdcage",
-                    "cowl",
-                    "rainwaterhopper",
-                    "userdefined",
-                    "notdefined"
+                    "BIRDCAGE",
+                    "COWL",
+                    "RAINWATERHOPPER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3190,22 +3190,22 @@
                 "type": "IfcStairTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "straight_run_stair",
-                    "two_straight_run_stair",
-                    "quarter_winding_stair",
-                    "quarter_turn_stair",
-                    "half_winding_stair",
-                    "half_turn_stair",
-                    "two_quarter_winding_stair",
-                    "two_quarter_turn_stair",
-                    "three_quarter_winding_stair",
-                    "three_quarter_turn_stair",
-                    "spiral_stair",
-                    "double_return_stair",
-                    "curved_run_stair",
-                    "two_curved_run_stair",
-                    "userdefined",
-                    "notdefined"
+                    "STRAIGHT_RUN_STAIR",
+                    "TWO_STRAIGHT_RUN_STAIR",
+                    "QUARTER_WINDING_STAIR",
+                    "QUARTER_TURN_STAIR",
+                    "HALF_WINDING_STAIR",
+                    "HALF_TURN_STAIR",
+                    "TWO_QUARTER_WINDING_STAIR",
+                    "TWO_QUARTER_TURN_STAIR",
+                    "THREE_QUARTER_WINDING_STAIR",
+                    "THREE_QUARTER_TURN_STAIR",
+                    "SPIRAL_STAIR",
+                    "DOUBLE_RETURN_STAIR",
+                    "CURVED_RUN_STAIR",
+                    "TWO_CURVED_RUN_STAIR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3249,13 +3249,13 @@
                 "type": "IfcStairFlightTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "straight",
-                    "winder",
-                    "spiral",
-                    "curved",
-                    "freeform",
-                    "userdefined",
-                    "notdefined"
+                    "STRAIGHT",
+                    "WINDER",
+                    "SPIRAL",
+                    "CURVED",
+                    "FREEFORM",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3275,8 +3275,8 @@
                 "type": "IfcProjectedOrTrueLengthEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "projected_length",
-                    "true_length"
+                    "PROJECTED_LENGTH",
+                    "TRUE_LENGTH"
                 ]
             },
             {
@@ -3284,15 +3284,15 @@
                 "type": "IfcStructuralCurveActivityTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "const",
-                    "linear",
-                    "polygonal",
-                    "equidistant",
-                    "sinus",
-                    "parabola",
-                    "discrete",
-                    "userdefined",
-                    "notdefined"
+                    "CONST",
+                    "LINEAR",
+                    "POLYGONAL",
+                    "EQUIDISTANT",
+                    "SINUS",
+                    "PARABOLA",
+                    "DISCRETE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3306,8 +3306,8 @@
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "global_coords",
-                    "local_coords"
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
                 ]
             }
         ]
@@ -3326,13 +3326,13 @@
                 "type": "IfcStructuralCurveMemberTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "rigid_joined_member",
-                    "pin_joined_member",
-                    "cable",
-                    "tension_member",
-                    "compression_member",
-                    "userdefined",
-                    "notdefined"
+                    "RIGID_JOINED_MEMBER",
+                    "PIN_JOINED_MEMBER",
+                    "CABLE",
+                    "TENSION_MEMBER",
+                    "COMPRESSION_MEMBER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             }
         ]
@@ -3346,13 +3346,13 @@
                 "type": "IfcStructuralCurveMemberTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "rigid_joined_member",
-                    "pin_joined_member",
-                    "cable",
-                    "tension_member",
-                    "compression_member",
-                    "userdefined",
-                    "notdefined"
+                    "RIGID_JOINED_MEMBER",
+                    "PIN_JOINED_MEMBER",
+                    "CABLE",
+                    "TENSION_MEMBER",
+                    "COMPRESSION_MEMBER",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             }
         ]
@@ -3366,15 +3366,15 @@
                 "type": "IfcStructuralCurveActivityTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "const",
-                    "linear",
-                    "polygonal",
-                    "equidistant",
-                    "sinus",
-                    "parabola",
-                    "discrete",
-                    "userdefined",
-                    "notdefined"
+                    "CONST",
+                    "LINEAR",
+                    "POLYGONAL",
+                    "EQUIDISTANT",
+                    "SINUS",
+                    "PARABOLA",
+                    "DISCRETE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3382,8 +3382,8 @@
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "global_coords",
-                    "local_coords"
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
                 ]
             }
         ]
@@ -3397,8 +3397,8 @@
                 "type": "IfcProjectedOrTrueLengthEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "projected_length",
-                    "true_length"
+                    "PROJECTED_LENGTH",
+                    "TRUE_LENGTH"
                 ]
             },
             {
@@ -3406,15 +3406,15 @@
                 "type": "IfcStructuralCurveActivityTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "const",
-                    "linear",
-                    "polygonal",
-                    "equidistant",
-                    "sinus",
-                    "parabola",
-                    "discrete",
-                    "userdefined",
-                    "notdefined"
+                    "CONST",
+                    "LINEAR",
+                    "POLYGONAL",
+                    "EQUIDISTANT",
+                    "SINUS",
+                    "PARABOLA",
+                    "DISCRETE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3428,8 +3428,8 @@
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "global_coords",
-                    "local_coords"
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
                 ]
             }
         ]
@@ -3443,8 +3443,8 @@
                 "type": "IfcProjectedOrTrueLengthEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "projected_length",
-                    "true_length"
+                    "PROJECTED_LENGTH",
+                    "TRUE_LENGTH"
                 ]
             },
             {
@@ -3452,12 +3452,12 @@
                 "type": "IfcStructuralSurfaceActivityTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "const",
-                    "bilinear",
-                    "discrete",
-                    "isocontour",
-                    "userdefined",
-                    "notdefined"
+                    "CONST",
+                    "BILINEAR",
+                    "DISCRETE",
+                    "ISOCONTOUR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3471,8 +3471,8 @@
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "global_coords",
-                    "local_coords"
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
                 ]
             }
         ]
@@ -3492,8 +3492,8 @@
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "global_coords",
-                    "local_coords"
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
                 ]
             }
         ]
@@ -3512,8 +3512,8 @@
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "global_coords",
-                    "local_coords"
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
                 ]
             }
         ]
@@ -3527,8 +3527,8 @@
                 "type": "IfcProjectedOrTrueLengthEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "projected_length",
-                    "true_length"
+                    "PROJECTED_LENGTH",
+                    "TRUE_LENGTH"
                 ]
             },
             {
@@ -3536,12 +3536,12 @@
                 "type": "IfcStructuralSurfaceActivityTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "const",
-                    "bilinear",
-                    "discrete",
-                    "isocontour",
-                    "userdefined",
-                    "notdefined"
+                    "CONST",
+                    "BILINEAR",
+                    "DISCRETE",
+                    "ISOCONTOUR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3555,8 +3555,8 @@
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "global_coords",
-                    "local_coords"
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
                 ]
             }
         ]
@@ -3575,11 +3575,11 @@
                 "type": "IfcStructuralSurfaceMemberTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bending_element",
-                    "membrane_element",
-                    "shell",
-                    "userdefined",
-                    "notdefined"
+                    "BENDING_ELEMENT",
+                    "MEMBRANE_ELEMENT",
+                    "SHELL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3599,11 +3599,11 @@
                 "type": "IfcStructuralSurfaceMemberTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bending_element",
-                    "membrane_element",
-                    "shell",
-                    "userdefined",
-                    "notdefined"
+                    "BENDING_ELEMENT",
+                    "MEMBRANE_ELEMENT",
+                    "SHELL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3623,12 +3623,12 @@
                 "type": "IfcStructuralSurfaceActivityTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "const",
-                    "bilinear",
-                    "discrete",
-                    "isocontour",
-                    "userdefined",
-                    "notdefined"
+                    "CONST",
+                    "BILINEAR",
+                    "DISCRETE",
+                    "ISOCONTOUR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3636,8 +3636,8 @@
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "global_coords",
-                    "local_coords"
+                    "GLOBAL_COORDS",
+                    "LOCAL_COORDS"
                 ]
             }
         ]
@@ -3651,11 +3651,11 @@
                 "type": "IfcSurfaceFeatureTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "mark",
-                    "tag",
-                    "treatment",
-                    "userdefined",
-                    "notdefined"
+                    "MARK",
+                    "TAG",
+                    "TREATMENT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3675,17 +3675,17 @@
                 "type": "IfcSwitchingDeviceTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "contactor",
-                    "dimmerswitch",
-                    "emergencystop",
-                    "keypad",
-                    "momentaryswitch",
-                    "selectorswitch",
-                    "starter",
-                    "switchdisconnector",
-                    "toggleswitch",
-                    "userdefined",
-                    "notdefined"
+                    "CONTACTOR",
+                    "DIMMERSWITCH",
+                    "EMERGENCYSTOP",
+                    "KEYPAD",
+                    "MOMENTARYSWITCH",
+                    "SELECTORSWITCH",
+                    "STARTER",
+                    "SWITCHDISCONNECTOR",
+                    "TOGGLESWITCH",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3705,10 +3705,10 @@
                 "type": "IfcSystemFurnitureElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "panel",
-                    "worksurface",
-                    "userdefined",
-                    "notdefined"
+                    "PANEL",
+                    "WORKSURFACE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3728,15 +3728,15 @@
                 "type": "IfcTankTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "basin",
-                    "breakpressure",
-                    "expansion",
-                    "feedandexpansion",
-                    "pressurevessel",
-                    "storage",
-                    "vessel",
-                    "userdefined",
-                    "notdefined"
+                    "BASIN",
+                    "BREAKPRESSURE",
+                    "EXPANSION",
+                    "FEEDANDEXPANSION",
+                    "PRESSUREVESSEL",
+                    "STORAGE",
+                    "VESSEL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3756,12 +3756,12 @@
                 "type": "IfcTendonTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "bar",
-                    "coated",
-                    "strand",
-                    "wire",
-                    "userdefined",
-                    "notdefined"
+                    "BAR",
+                    "COATED",
+                    "STRAND",
+                    "WIRE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3829,11 +3829,11 @@
                 "type": "IfcTendonAnchorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "coupler",
-                    "fixed_end",
-                    "tensioning_end",
-                    "userdefined",
-                    "notdefined"
+                    "COUPLER",
+                    "FIXED_END",
+                    "TENSIONING_END",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3859,13 +3859,13 @@
                 "type": "IfcTransformerTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "current",
-                    "frequency",
-                    "inverter",
-                    "rectifier",
-                    "voltage",
-                    "userdefined",
-                    "notdefined"
+                    "CURRENT",
+                    "FREQUENCY",
+                    "INVERTER",
+                    "RECTIFIER",
+                    "VOLTAGE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3885,13 +3885,13 @@
                 "type": "IfcTransportElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "elevator",
-                    "escalator",
-                    "movingwalkway",
-                    "craneway",
-                    "liftinggear",
-                    "userdefined",
-                    "notdefined"
+                    "ELEVATOR",
+                    "ESCALATOR",
+                    "MOVINGWALKWAY",
+                    "CRANEWAY",
+                    "LIFTINGGEAR",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3911,9 +3911,9 @@
                 "type": "IfcTubeBundleTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "finned",
-                    "userdefined",
-                    "notdefined"
+                    "FINNED",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3933,16 +3933,16 @@
                 "type": "IfcUnitaryControlElementTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "alarmpanel",
-                    "controlpanel",
-                    "gasdetectionpanel",
-                    "indicatorpanel",
-                    "mimicpanel",
-                    "humidistat",
-                    "thermostat",
-                    "weatherstation",
-                    "userdefined",
-                    "notdefined"
+                    "ALARMPANEL",
+                    "CONTROLPANEL",
+                    "GASDETECTIONPANEL",
+                    "INDICATORPANEL",
+                    "MIMICPANEL",
+                    "HUMIDISTAT",
+                    "THERMOSTAT",
+                    "WEATHERSTATION",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3962,13 +3962,13 @@
                 "type": "IfcUnitaryEquipmentTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "airhandler",
-                    "airconditioningunit",
-                    "dehumidifier",
-                    "splitsystem",
-                    "rooftopunit",
-                    "userdefined",
-                    "notdefined"
+                    "AIRHANDLER",
+                    "AIRCONDITIONINGUNIT",
+                    "DEHUMIDIFIER",
+                    "SPLITSYSTEM",
+                    "ROOFTOPUNIT",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -3988,29 +3988,29 @@
                 "type": "IfcValveTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "airrelease",
-                    "antivacuum",
-                    "changeover",
-                    "check",
-                    "commissioning",
-                    "diverting",
-                    "drawoffcock",
-                    "doublecheck",
-                    "doubleregulating",
-                    "faucet",
-                    "flushing",
-                    "gascock",
-                    "gastap",
-                    "isolating",
-                    "mixing",
-                    "pressurereducing",
-                    "pressurerelief",
-                    "regulating",
-                    "safetycutoff",
-                    "steamtrap",
-                    "stopcock",
-                    "userdefined",
-                    "notdefined"
+                    "AIRRELEASE",
+                    "ANTIVACUUM",
+                    "CHANGEOVER",
+                    "CHECK",
+                    "COMMISSIONING",
+                    "DIVERTING",
+                    "DRAWOFFCOCK",
+                    "DOUBLECHECK",
+                    "DOUBLEREGULATING",
+                    "FAUCET",
+                    "FLUSHING",
+                    "GASCOCK",
+                    "GASTAP",
+                    "ISOLATING",
+                    "MIXING",
+                    "PRESSUREREDUCING",
+                    "PRESSURERELIEF",
+                    "REGULATING",
+                    "SAFETYCUTOFF",
+                    "STEAMTRAP",
+                    "STOPCOCK",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4030,10 +4030,10 @@
                 "type": "IfcVibrationIsolatorTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "compression",
-                    "spring",
-                    "userdefined",
-                    "notdefined"
+                    "COMPRESSION",
+                    "SPRING",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4065,14 +4065,14 @@
                 "type": "IfcVoidingFeatureTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "cutout",
-                    "notch",
-                    "hole",
-                    "miter",
-                    "chamfer",
-                    "edge",
-                    "userdefined",
-                    "notdefined"
+                    "CUTOUT",
+                    "NOTCH",
+                    "HOLE",
+                    "MITER",
+                    "CHAMFER",
+                    "EDGE",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4092,17 +4092,17 @@
                 "type": "IfcWallTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "movable",
-                    "parapet",
-                    "partitioning",
-                    "plumbingwall",
-                    "shear",
-                    "solidwall",
-                    "standard",
-                    "polygonal",
-                    "elementedwall",
-                    "userdefined",
-                    "notdefined"
+                    "MOVABLE",
+                    "PARAPET",
+                    "PARTITIONING",
+                    "PLUMBINGWALL",
+                    "SHEAR",
+                    "SOLIDWALL",
+                    "STANDARD",
+                    "POLYGONAL",
+                    "ELEMENTEDWALL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4122,17 +4122,17 @@
                 "type": "IfcWallTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "movable",
-                    "parapet",
-                    "partitioning",
-                    "plumbingwall",
-                    "shear",
-                    "solidwall",
-                    "standard",
-                    "polygonal",
-                    "elementedwall",
-                    "userdefined",
-                    "notdefined"
+                    "MOVABLE",
+                    "PARAPET",
+                    "PARTITIONING",
+                    "PLUMBINGWALL",
+                    "SHEAR",
+                    "SOLIDWALL",
+                    "STANDARD",
+                    "POLYGONAL",
+                    "ELEMENTEDWALL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4152,17 +4152,17 @@
                 "type": "IfcWallTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "movable",
-                    "parapet",
-                    "partitioning",
-                    "plumbingwall",
-                    "shear",
-                    "solidwall",
-                    "standard",
-                    "polygonal",
-                    "elementedwall",
-                    "userdefined",
-                    "notdefined"
+                    "MOVABLE",
+                    "PARAPET",
+                    "PARTITIONING",
+                    "PLUMBINGWALL",
+                    "SHEAR",
+                    "SOLIDWALL",
+                    "STANDARD",
+                    "POLYGONAL",
+                    "ELEMENTEDWALL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4182,15 +4182,15 @@
                 "type": "IfcWasteTerminalTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "floortrap",
-                    "floorwaste",
-                    "gullysump",
-                    "gullytrap",
-                    "roofdrain",
-                    "wastedisposalunit",
-                    "wastetrap",
-                    "userdefined",
-                    "notdefined"
+                    "FLOORTRAP",
+                    "FLOORWASTE",
+                    "GULLYSUMP",
+                    "GULLYTRAP",
+                    "ROOFDRAIN",
+                    "WASTEDISPOSALUNIT",
+                    "WASTETRAP",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4222,11 +4222,11 @@
                 "type": "IfcWindowTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "window",
-                    "skylight",
-                    "lightdome",
-                    "userdefined",
-                    "notdefined"
+                    "WINDOW",
+                    "SKYLIGHT",
+                    "LIGHTDOME",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4234,17 +4234,17 @@
                 "type": "IfcWindowTypePartitioningEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "single_panel",
-                    "double_panel_vertical",
-                    "double_panel_horizontal",
-                    "triple_panel_vertical",
-                    "triple_panel_bottom",
-                    "triple_panel_top",
-                    "triple_panel_left",
-                    "triple_panel_right",
-                    "triple_panel_horizontal",
-                    "userdefined",
-                    "notdefined"
+                    "SINGLE_PANEL",
+                    "DOUBLE_PANEL_VERTICAL",
+                    "DOUBLE_PANEL_HORIZONTAL",
+                    "TRIPLE_PANEL_VERTICAL",
+                    "TRIPLE_PANEL_BOTTOM",
+                    "TRIPLE_PANEL_TOP",
+                    "TRIPLE_PANEL_LEFT",
+                    "TRIPLE_PANEL_RIGHT",
+                    "TRIPLE_PANEL_HORIZONTAL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4282,11 +4282,11 @@
                 "type": "IfcWindowTypeEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "window",
-                    "skylight",
-                    "lightdome",
-                    "userdefined",
-                    "notdefined"
+                    "WINDOW",
+                    "SKYLIGHT",
+                    "LIGHTDOME",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
@@ -4294,17 +4294,17 @@
                 "type": "IfcWindowTypePartitioningEnum",
                 "is_enum": true,
                 "enum_values": [
-                    "single_panel",
-                    "double_panel_vertical",
-                    "double_panel_horizontal",
-                    "triple_panel_vertical",
-                    "triple_panel_bottom",
-                    "triple_panel_top",
-                    "triple_panel_left",
-                    "triple_panel_right",
-                    "triple_panel_horizontal",
-                    "userdefined",
-                    "notdefined"
+                    "SINGLE_PANEL",
+                    "DOUBLE_PANEL_VERTICAL",
+                    "DOUBLE_PANEL_HORIZONTAL",
+                    "TRIPLE_PANEL_VERTICAL",
+                    "TRIPLE_PANEL_BOTTOM",
+                    "TRIPLE_PANEL_TOP",
+                    "TRIPLE_PANEL_LEFT",
+                    "TRIPLE_PANEL_RIGHT",
+                    "TRIPLE_PANEL_HORIZONTAL",
+                    "USERDEFINED",
+                    "NOTDEFINED"
                 ]
             },
             {
