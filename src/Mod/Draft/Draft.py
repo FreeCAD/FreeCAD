@@ -2929,7 +2929,7 @@ def upgrade(objects,delete=False,force=None):
             # we have one shell: we try to make a solid
             if (len(objects) == 1) and (len(faces) > 3):
                 result = makeSolid(objects[0])
-                if result: msg(translate("draft", "Found 1 solidificable object: solidifying it")+"\n")
+                if result: msg(translate("draft", "Found 1 solidifiable object: solidifying it")+"\n")
 
             # we have exactly 2 objects: we fuse them
             elif (len(objects) == 2) and (not curves):
