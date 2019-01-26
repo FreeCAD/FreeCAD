@@ -168,7 +168,7 @@ void EditDatumDialog::exec(bool atCursor)
 
                     Gui::Command::commitCommand();
 
-                    if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
+                    if (sketch->noRecomputes) {
                         sketch->ExpressionEngine.execute();
                         sketch->solve();
                     }

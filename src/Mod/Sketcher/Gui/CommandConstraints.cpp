@@ -165,7 +165,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                     }
                     Gui::Command::commitCommand();
                 
-                    if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
+                    if (sketch->noRecomputes) {
                         sketch->ExpressionEngine.execute();
                         sketch->solve();
                     }
@@ -5180,7 +5180,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
                     commitCommand();
                 
-                    if (Obj->noRecomputes && Obj->ExpressionEngine.depsAreTouched()) {
+                    if (Obj->noRecomputes) {
                         Obj->ExpressionEngine.execute();
                         Obj->solve();
                     }
@@ -5315,7 +5315,7 @@ void CmdSketcherConstrainRadius::applyConstraint(std::vector<SelIdPair> &selSeq,
 
                     commitCommand();
 
-                    if (Obj->noRecomputes && Obj->ExpressionEngine.depsAreTouched()) {
+                    if (Obj->noRecomputes) {
                         Obj->ExpressionEngine.execute();
                         Obj->solve();
                     }
@@ -5653,7 +5653,7 @@ void CmdSketcherConstrainDiameter::activated(int iMsg)
                     
                     commitCommand();
                     
-                    if (Obj->noRecomputes && Obj->ExpressionEngine.depsAreTouched()) {
+                    if (Obj->noRecomputes) {
                         Obj->ExpressionEngine.execute();
                         Obj->solve();
                     }
@@ -5786,7 +5786,7 @@ void CmdSketcherConstrainDiameter::applyConstraint(std::vector<SelIdPair> &selSe
                         
                         commitCommand();
                         
-                        if (Obj->noRecomputes && Obj->ExpressionEngine.depsAreTouched()) {
+                        if (Obj->noRecomputes) {
                             Obj->ExpressionEngine.execute();
                             Obj->solve();
                         }
