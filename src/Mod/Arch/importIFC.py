@@ -29,6 +29,7 @@ __url__ =    "http://www.freecadweb.org"
 
 import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils,sys
 from DraftGeomUtils import vec
+from ArchComponent import ifcProducts
 
 ## @package importIFC
 #  \ingroup ARCH
@@ -847,6 +848,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 a = obj.IfcData
                 a["IfcUID"] = str(guid)
                 obj.IfcData = a
+                for attribute in ifcProducts[product.is_a()]["attributes"]:
+                    if hasattr(product, attribute["name"]) and getattr(product, attribute["name"]):
+                        setattr(obj, attribute["name"], getattr(product, attribute["name"]))
 
             if obj:
                 s = ""
@@ -1724,7 +1728,6 @@ def export(exportList,filename):
                 count += 1
             continue
 
-        from ArchComponent import ifcProducts
         if ifctype not in ifcProducts.keys():
             ifctype = "IfcBuildingElementProxy"
 
@@ -1793,6 +1796,14 @@ def export(exportList,filename):
         elif ifctype == "IfcReinforcingBar":
             kwargs.update({"NominalDiameter": obj.Diameter.Value,
                 "BarLength": obj.Length.Value})
+        # TODO: Reconcile the attributes above which can be cleverly derived
+        # from FreeCAD native data, with the explicit IFC attribute values below
+        for property in obj.PropertiesList:
+            if obj.getGroupOfProperty(property) == "IFC Attributes" and obj.getPropertyByName(property):
+                value = obj.getPropertyByName(property)
+                if isinstance(value, FreeCAD.Units.Quantity):
+                    value = float(value)
+                kwargs.update({ property: value })
 
         # creating the product
 
