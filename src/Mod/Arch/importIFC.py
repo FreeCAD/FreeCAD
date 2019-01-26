@@ -843,10 +843,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
 
             # setting uid
 
-            if hasattr(obj,"IfcAttributes"):
-                a = obj.IfcAttributes
+            if hasattr(obj,"IfcData"):
+                a = obj.IfcData
                 a["IfcUID"] = str(guid)
-                obj.IfcAttributes = a
+                obj.IfcData = a
 
             if obj:
                 s = ""
@@ -889,10 +889,10 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj.Role = r
                 except:
                     print("Unable to give IFC role ",ptype," to object ",obj.Label)
-                if hasattr(obj,"IfcAttributes"):
-                    a = obj.IfcAttributes
+                if hasattr(obj,"IfcData"):
+                    a = obj.IfcData
                     a["IfcUID"] = str(guid)
-                    obj.IfcAttributes = a
+                    obj.IfcData = a
 
         elif (MERGE_MODE_ARCH == 2 and archobj) or (MERGE_MODE_STRUCT == 1 and not archobj):
 
@@ -994,17 +994,17 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                 #print("adding property: ",pname,ptype,pvalue," pset ",psetname)
                     obj.IfcProperties = d
 
-                elif hasattr(obj,"IfcAttributes"):
+                elif hasattr(obj,"IfcData"):
 
-                    # 0.17: properties are saved as type(value) in IfcAttributes
+                    # 0.17: properties are saved as type(value) in IfcData
 
-                    a = obj.IfcAttributes
+                    a = obj.IfcData
                     for c in properties[pid].keys():
                         for p in properties[pid][c]:
                             l = ifcfile[p]
                             if l.is_a("IfcPropertySingleValue"):
                                 a[l.Name.encode("utf8")] = str(l.NominalValue) # no py3 support here
-                    obj.IfcAttributes = a
+                    obj.IfcData = a
 
             # color
 
@@ -1633,16 +1633,16 @@ def export(exportList,filename):
         # getting uid
 
         uid = None
-        if hasattr(obj,"IfcAttributes"):
-            if "IfcUID" in obj.IfcAttributes.keys():
-                uid = str(obj.IfcAttributes["IfcUID"])
+        if hasattr(obj,"IfcData"):
+            if "IfcUID" in obj.IfcData.keys():
+                uid = str(obj.IfcData["IfcUID"])
         if not uid:
             uid = ifcopenshell.guid.compress(uuid.uuid1().hex)
             # storing the uid for further use
-            if STORE_UID and hasattr(obj,"IfcAttributes"):
-                d = obj.IfcAttributes
+            if STORE_UID and hasattr(obj,"IfcData"):
+                d = obj.IfcData
                 d["IfcUID"] = uid
-                obj.IfcAttributes = d
+                obj.IfcData = d
 
         # setting the IFC type + name conversions
 
@@ -1731,9 +1731,9 @@ def export(exportList,filename):
         # getting the "Force BREP" flag
 
         brepflag = False
-        if hasattr(obj,"IfcAttributes"):
-            if "FlagForceBrep" in obj.IfcAttributes.keys():
-                if obj.IfcAttributes["FlagForceBrep"] == "True":
+        if hasattr(obj,"IfcData"):
+            if "FlagForceBrep" in obj.IfcData.keys():
+                if obj.IfcData["FlagForceBrep"] == "True":
                     brepflag = True
 
         # getting the representation
@@ -1956,18 +1956,18 @@ def export(exportList,filename):
                             pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,cat,None,props)
                             ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
 
-        if hasattr(obj,"IfcAttributes"):
+        if hasattr(obj,"IfcData"):
 
-            if obj.IfcAttributes:
+            if obj.IfcData:
                 ifcprop = True
                 #if DEBUG : print("      adding ifc attributes")
                 props = []
-                for key in obj.IfcAttributes:
+                for key in obj.IfcData:
                     if not (key in ["IfcUID","FlagForceBrep"]):
 
-                        # (deprecated) properties in IfcAttributes dict are stored as "key":"type(value)"
+                        # (deprecated) properties in IfcData dict are stored as "key":"type(value)"
 
-                        r = obj.IfcAttributes[key].strip(")").split("(")
+                        r = obj.IfcData[key].strip(")").split("(")
                         if len(r) == 1:
                             tp = "IfcText"
                             val = r[0]
@@ -2000,19 +2000,19 @@ def export(exportList,filename):
 
         # Quantities
 
-        if hasattr(obj,"IfcAttributes"):
+        if hasattr(obj,"IfcData"):
             quantities = []
-            if ("ExportHeight" in obj.IfcAttributes) and obj.IfcAttributes["ExportHeight"] and hasattr(obj,"Height"):
+            if ("ExportHeight" in obj.IfcData) and obj.IfcData["ExportHeight"] and hasattr(obj,"Height"):
                 quantities.append(ifcfile.createIfcQuantityLength('Height',None,None,obj.Height.Value/1000.0))
-            if ("ExportWidth" in obj.IfcAttributes) and obj.IfcAttributes["ExportWidth"] and hasattr(obj,"Width"):
+            if ("ExportWidth" in obj.IfcData) and obj.IfcData["ExportWidth"] and hasattr(obj,"Width"):
                 quantities.append(ifcfile.createIfcQuantityLength('Width',None,None,obj.Width.Value/1000.0))
-            if ("ExportLength" in obj.IfcAttributes) and obj.IfcAttributes["ExportLength"] and hasattr(obj,"Length"):
+            if ("ExportLength" in obj.IfcData) and obj.IfcData["ExportLength"] and hasattr(obj,"Length"):
                 quantities.append(ifcfile.createIfcQuantityLength('Length',None,None,obj.Length.Value/1000.0))
-            if ("ExportHorizontalArea" in obj.IfcAttributes) and obj.IfcAttributes["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
+            if ("ExportHorizontalArea" in obj.IfcData) and obj.IfcData["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
                 quantities.append(ifcfile.createIfcQuantityArea('HorizontalArea',None,None,obj.HorizontalArea.Value/1000000.0))
-            if ("ExportVerticalArea" in obj.IfcAttributes) and obj.IfcAttributes["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
+            if ("ExportVerticalArea" in obj.IfcData) and obj.IfcData["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
                 quantities.append(ifcfile.createIfcQuantityArea('VerticalArea',None,None,obj.VerticalArea.Value/1000000.0))
-            if ("ExportVolume" in obj.IfcAttributes) and obj.IfcAttributes["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
+            if ("ExportVolume" in obj.IfcData) and obj.IfcData["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
                 quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume/1000000000.0))
             if quantities:
                 eltq = ifcfile.createIfcElementQuantity(ifcopenshell.guid.compress(uuid.uuid1().hex),history,"ElementQuantities",None,"FreeCAD",quantities)
@@ -2037,7 +2037,7 @@ def export(exportList,filename):
             for realm,ctx in sets:
                 if ctx:
                     for prop in ctx.PropertiesList:
-                        if not(prop in ["IfcProperties","IfcAttributes","Shape","Proxy","ExpressionEngine","AngularDeflection","BoundingBox"]):
+                        if not(prop in ["IfcProperties","IfcData","Shape","Proxy","ExpressionEngine","AngularDeflection","BoundingBox"]):
                             try:
                                 ptype = ctx.getTypeIdOfProperty(prop)
                             except AttributeError:
