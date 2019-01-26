@@ -1,6 +1,5 @@
-[
-    {
-        "name": "IfcActuator",
+{
+    "IfcActuator": {
         "is_abstract": false,
         "parent": "IfcDistributionControlElement",
         "attributes": [
@@ -26,8 +25,7 @@
             }
         ]
     },
-    {
-        "name": "IfcAirTerminal",
+    "IfcAirTerminal": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -52,8 +50,7 @@
             }
         ]
     },
-    {
-        "name": "IfcAirTerminalBox",
+    "IfcAirTerminalBox": {
         "is_abstract": false,
         "parent": "IfcFlowController",
         "attributes": [
@@ -77,8 +74,7 @@
             }
         ]
     },
-    {
-        "name": "IfcAirToAirHeatRecovery",
+    "IfcAirToAirHeatRecovery": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -108,8 +104,7 @@
             }
         ]
     },
-    {
-        "name": "IfcAlarm",
+    "IfcAlarm": {
         "is_abstract": false,
         "parent": "IfcDistributionControlElement",
         "attributes": [
@@ -136,14 +131,12 @@
             }
         ]
     },
-    {
-        "name": "IfcAnnotation",
+    "IfcAnnotation": {
         "is_abstract": false,
         "parent": "IfcProduct",
         "attributes": []
     },
-    {
-        "name": "IfcAudioVisualAppliance",
+    "IfcAudioVisualAppliance": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -175,8 +168,7 @@
             }
         ]
     },
-    {
-        "name": "IfcBeam",
+    "IfcBeam": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -203,8 +195,7 @@
             }
         ]
     },
-    {
-        "name": "IfcBeamStandardCase",
+    "IfcBeamStandardCase": {
         "is_abstract": false,
         "parent": "IfcBeam",
         "attributes": [
@@ -231,8 +222,7 @@
             }
         ]
     },
-    {
-        "name": "IfcBoiler",
+    "IfcBoiler": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -255,8 +245,7 @@
             }
         ]
     },
-    {
-        "name": "IfcBuilding",
+    "IfcBuilding": {
         "is_abstract": false,
         "parent": "IfcSpatialStructureElement",
         "attributes": [
@@ -276,7 +265,11 @@
                 "name": "CompositionType",
                 "type": "IfcElementCompositionEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "complex",
+                    "element",
+                    "partial"
+                ]
             },
             {
                 "name": "LongName",
@@ -286,8 +279,7 @@
             }
         ]
     },
-    {
-        "name": "IfcBuildingElementPart",
+    "IfcBuildingElementPart": {
         "is_abstract": false,
         "parent": "IfcElementComponent",
         "attributes": [
@@ -310,8 +302,7 @@
             }
         ]
     },
-    {
-        "name": "IfcBuildingElementProxy",
+    "IfcBuildingElementProxy": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -337,8 +328,7 @@
             }
         ]
     },
-    {
-        "name": "IfcBuildingStorey",
+    "IfcBuildingStorey": {
         "is_abstract": false,
         "parent": "IfcSpatialStructureElement",
         "attributes": [
@@ -352,7 +342,11 @@
                 "name": "CompositionType",
                 "type": "IfcElementCompositionEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "complex",
+                    "element",
+                    "partial"
+                ]
             },
             {
                 "name": "LongName",
@@ -362,8 +356,7 @@
             }
         ]
     },
-    {
-        "name": "IfcBurner",
+    "IfcBurner": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -384,8 +377,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCableCarrierFitting",
+    "IfcCableCarrierFitting": {
         "is_abstract": false,
         "parent": "IfcFlowFitting",
         "attributes": [
@@ -410,8 +402,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCableCarrierSegment",
+    "IfcCableCarrierSegment": {
         "is_abstract": false,
         "parent": "IfcFlowSegment",
         "attributes": [
@@ -436,8 +427,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCableFitting",
+    "IfcCableFitting": {
         "is_abstract": false,
         "parent": "IfcFlowFitting",
         "attributes": [
@@ -463,8 +453,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCableSegment",
+    "IfcCableSegment": {
         "is_abstract": false,
         "parent": "IfcFlowSegment",
         "attributes": [
@@ -489,8 +478,7 @@
             }
         ]
     },
-    {
-        "name": "IfcChiller",
+    "IfcChiller": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -514,8 +502,7 @@
             }
         ]
     },
-    {
-        "name": "IfcChimney",
+    "IfcChimney": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -536,8 +523,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCivilElement",
+    "IfcCivilElement": {
         "is_abstract": false,
         "parent": "IfcElement",
         "attributes": [
@@ -549,8 +535,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCoil",
+    "IfcCoil": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -578,8 +563,7 @@
             }
         ]
     },
-    {
-        "name": "IfcColumn",
+    "IfcColumn": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -602,8 +586,7 @@
             }
         ]
     },
-    {
-        "name": "IfcColumnStandardCase",
+    "IfcColumnStandardCase": {
         "is_abstract": false,
         "parent": "IfcColumn",
         "attributes": [
@@ -626,8 +609,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCommunicationsAppliance",
+    "IfcCommunicationsAppliance": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -660,8 +642,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCompressor",
+    "IfcCompressor": {
         "is_abstract": false,
         "parent": "IfcFlowMovingDevice",
         "attributes": [
@@ -697,8 +678,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCondenser",
+    "IfcCondenser": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -726,8 +706,7 @@
             }
         ]
     },
-    {
-        "name": "IfcController",
+    "IfcController": {
         "is_abstract": false,
         "parent": "IfcDistributionControlElement",
         "attributes": [
@@ -753,8 +732,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCooledBeam",
+    "IfcCooledBeam": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -777,8 +755,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCoolingTower",
+    "IfcCoolingTower": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -802,8 +779,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCovering",
+    "IfcCovering": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -834,8 +810,7 @@
             }
         ]
     },
-    {
-        "name": "IfcCurtainWall",
+    "IfcCurtainWall": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -856,8 +831,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDamper",
+    "IfcDamper": {
         "is_abstract": false,
         "parent": "IfcFlowController",
         "attributes": [
@@ -889,8 +863,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDiscreteAccessory",
+    "IfcDiscreteAccessory": {
         "is_abstract": false,
         "parent": "IfcElementComponent",
         "attributes": [
@@ -914,8 +887,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDistributionChamberElement",
+    "IfcDistributionChamberElement": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -944,8 +916,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDistributionControlElement",
+    "IfcDistributionControlElement": {
         "is_abstract": false,
         "parent": "IfcDistributionElement",
         "attributes": [
@@ -957,8 +928,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDistributionElement",
+    "IfcDistributionElement": {
         "is_abstract": false,
         "parent": "IfcElement",
         "attributes": [
@@ -970,8 +940,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDistributionFlowElement",
+    "IfcDistributionFlowElement": {
         "is_abstract": false,
         "parent": "IfcDistributionElement",
         "attributes": [
@@ -983,8 +952,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDistributionPort",
+    "IfcDistributionPort": {
         "is_abstract": false,
         "parent": "IfcPort",
         "attributes": [
@@ -1065,8 +1033,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDoor",
+    "IfcDoor": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -1135,8 +1102,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDoorStandardCase",
+    "IfcDoorStandardCase": {
         "is_abstract": false,
         "parent": "IfcDoor",
         "attributes": [
@@ -1205,8 +1171,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDuctFitting",
+    "IfcDuctFitting": {
         "is_abstract": false,
         "parent": "IfcFlowFitting",
         "attributes": [
@@ -1234,8 +1199,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDuctSegment",
+    "IfcDuctSegment": {
         "is_abstract": false,
         "parent": "IfcFlowSegment",
         "attributes": [
@@ -1258,8 +1222,7 @@
             }
         ]
     },
-    {
-        "name": "IfcDuctSilencer",
+    "IfcDuctSilencer": {
         "is_abstract": false,
         "parent": "IfcFlowTreatmentDevice",
         "attributes": [
@@ -1283,8 +1246,7 @@
             }
         ]
     },
-    {
-        "name": "IfcElectricAppliance",
+    "IfcElectricAppliance": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -1321,8 +1283,7 @@
             }
         ]
     },
-    {
-        "name": "IfcElectricDistributionBoard",
+    "IfcElectricDistributionBoard": {
         "is_abstract": false,
         "parent": "IfcFlowController",
         "attributes": [
@@ -1347,8 +1308,7 @@
             }
         ]
     },
-    {
-        "name": "IfcElectricFlowStorageDevice",
+    "IfcElectricFlowStorageDevice": {
         "is_abstract": false,
         "parent": "IfcFlowStorageDevice",
         "attributes": [
@@ -1374,8 +1334,7 @@
             }
         ]
     },
-    {
-        "name": "IfcElectricGenerator",
+    "IfcElectricGenerator": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -1399,8 +1358,7 @@
             }
         ]
     },
-    {
-        "name": "IfcElectricMotor",
+    "IfcElectricMotor": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -1426,8 +1384,7 @@
             }
         ]
     },
-    {
-        "name": "IfcElectricTimeControl",
+    "IfcElectricTimeControl": {
         "is_abstract": false,
         "parent": "IfcFlowController",
         "attributes": [
@@ -1451,8 +1408,7 @@
             }
         ]
     },
-    {
-        "name": "IfcElementAssembly",
+    "IfcElementAssembly": {
         "is_abstract": false,
         "parent": "IfcElement",
         "attributes": [
@@ -1492,8 +1448,7 @@
             }
         ]
     },
-    {
-        "name": "IfcEnergyConversionDevice",
+    "IfcEnergyConversionDevice": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -1505,8 +1460,7 @@
             }
         ]
     },
-    {
-        "name": "IfcEngine",
+    "IfcEngine": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -1529,8 +1483,7 @@
             }
         ]
     },
-    {
-        "name": "IfcEvaporativeCooler",
+    "IfcEvaporativeCooler": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -1560,8 +1513,7 @@
             }
         ]
     },
-    {
-        "name": "IfcEvaporator",
+    "IfcEvaporator": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -1588,8 +1540,7 @@
             }
         ]
     },
-    {
-        "name": "IfcExternalSpatialElement",
+    "IfcExternalSpatialElement": {
         "is_abstract": false,
         "parent": "IfcExternalSpatialStructureElement",
         "attributes": [
@@ -1614,8 +1565,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFan",
+    "IfcFan": {
         "is_abstract": false,
         "parent": "IfcFlowMovingDevice",
         "attributes": [
@@ -1643,8 +1593,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFastener",
+    "IfcFastener": {
         "is_abstract": false,
         "parent": "IfcElementComponent",
         "attributes": [
@@ -1668,8 +1617,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFilter",
+    "IfcFilter": {
         "is_abstract": false,
         "parent": "IfcFlowTreatmentDevice",
         "attributes": [
@@ -1696,8 +1644,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFireSuppressionTerminal",
+    "IfcFireSuppressionTerminal": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -1723,8 +1670,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowController",
+    "IfcFlowController": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -1736,8 +1682,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowFitting",
+    "IfcFlowFitting": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -1749,8 +1694,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowInstrument",
+    "IfcFlowInstrument": {
         "is_abstract": false,
         "parent": "IfcDistributionControlElement",
         "attributes": [
@@ -1779,8 +1723,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowMeter",
+    "IfcFlowMeter": {
         "is_abstract": false,
         "parent": "IfcFlowController",
         "attributes": [
@@ -1805,8 +1748,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowMovingDevice",
+    "IfcFlowMovingDevice": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -1818,8 +1760,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowSegment",
+    "IfcFlowSegment": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -1831,8 +1772,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowStorageDevice",
+    "IfcFlowStorageDevice": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -1844,8 +1784,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowTerminal",
+    "IfcFlowTerminal": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -1857,8 +1796,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFlowTreatmentDevice",
+    "IfcFlowTreatmentDevice": {
         "is_abstract": false,
         "parent": "IfcDistributionFlowElement",
         "attributes": [
@@ -1870,8 +1808,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFooting",
+    "IfcFooting": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -1897,8 +1834,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFurnishingElement",
+    "IfcFurnishingElement": {
         "is_abstract": false,
         "parent": "IfcElement",
         "attributes": [
@@ -1910,8 +1846,7 @@
             }
         ]
     },
-    {
-        "name": "IfcFurniture",
+    "IfcFurniture": {
         "is_abstract": false,
         "parent": "IfcFurnishingElement",
         "attributes": [
@@ -1939,8 +1874,7 @@
             }
         ]
     },
-    {
-        "name": "IfcGeographicElement",
+    "IfcGeographicElement": {
         "is_abstract": false,
         "parent": "IfcElement",
         "attributes": [
@@ -1962,8 +1896,7 @@
             }
         ]
     },
-    {
-        "name": "IfcGrid",
+    "IfcGrid": {
         "is_abstract": false,
         "parent": "IfcProduct",
         "attributes": [
@@ -1982,8 +1915,7 @@
             }
         ]
     },
-    {
-        "name": "IfcHeatExchanger",
+    "IfcHeatExchanger": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -2006,8 +1938,7 @@
             }
         ]
     },
-    {
-        "name": "IfcHumidifier",
+    "IfcHumidifier": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -2041,8 +1972,7 @@
             }
         ]
     },
-    {
-        "name": "IfcInterceptor",
+    "IfcInterceptor": {
         "is_abstract": false,
         "parent": "IfcFlowTreatmentDevice",
         "attributes": [
@@ -2067,8 +1997,7 @@
             }
         ]
     },
-    {
-        "name": "IfcJunctionBox",
+    "IfcJunctionBox": {
         "is_abstract": false,
         "parent": "IfcFlowFitting",
         "attributes": [
@@ -2091,8 +2020,7 @@
             }
         ]
     },
-    {
-        "name": "IfcLamp",
+    "IfcLamp": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -2122,8 +2050,7 @@
             }
         ]
     },
-    {
-        "name": "IfcLightFixture",
+    "IfcLightFixture": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -2147,8 +2074,7 @@
             }
         ]
     },
-    {
-        "name": "IfcMechanicalFastener",
+    "IfcMechanicalFastener": {
         "is_abstract": false,
         "parent": "IfcElementComponent",
         "attributes": [
@@ -2191,8 +2117,7 @@
             }
         ]
     },
-    {
-        "name": "IfcMedicalDevice",
+    "IfcMedicalDevice": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -2218,8 +2143,7 @@
             }
         ]
     },
-    {
-        "name": "IfcMember",
+    "IfcMember": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -2252,8 +2176,7 @@
             }
         ]
     },
-    {
-        "name": "IfcMemberStandardCase",
+    "IfcMemberStandardCase": {
         "is_abstract": false,
         "parent": "IfcMember",
         "attributes": [
@@ -2286,8 +2209,7 @@
             }
         ]
     },
-    {
-        "name": "IfcMotorConnection",
+    "IfcMotorConnection": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -2311,8 +2233,7 @@
             }
         ]
     },
-    {
-        "name": "IfcOpeningElement",
+    "IfcOpeningElement": {
         "is_abstract": false,
         "parent": "IfcFeatureElementSubtraction",
         "attributes": [
@@ -2335,8 +2256,7 @@
             }
         ]
     },
-    {
-        "name": "IfcOpeningStandardCase",
+    "IfcOpeningStandardCase": {
         "is_abstract": false,
         "parent": "IfcOpeningElement",
         "attributes": [
@@ -2359,8 +2279,7 @@
             }
         ]
     },
-    {
-        "name": "IfcOutlet",
+    "IfcOutlet": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -2386,8 +2305,7 @@
             }
         ]
     },
-    {
-        "name": "IfcPile",
+    "IfcPile": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -2427,8 +2345,7 @@
             }
         ]
     },
-    {
-        "name": "IfcPipeFitting",
+    "IfcPipeFitting": {
         "is_abstract": false,
         "parent": "IfcFlowFitting",
         "attributes": [
@@ -2456,8 +2373,7 @@
             }
         ]
     },
-    {
-        "name": "IfcPipeSegment",
+    "IfcPipeSegment": {
         "is_abstract": false,
         "parent": "IfcFlowSegment",
         "attributes": [
@@ -2483,8 +2399,7 @@
             }
         ]
     },
-    {
-        "name": "IfcPlate",
+    "IfcPlate": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -2507,8 +2422,7 @@
             }
         ]
     },
-    {
-        "name": "IfcPlateStandardCase",
+    "IfcPlateStandardCase": {
         "is_abstract": false,
         "parent": "IfcPlate",
         "attributes": [
@@ -2531,8 +2445,7 @@
             }
         ]
     },
-    {
-        "name": "IfcProjectionElement",
+    "IfcProjectionElement": {
         "is_abstract": false,
         "parent": "IfcFeatureElementAddition",
         "attributes": [
@@ -2553,8 +2466,7 @@
             }
         ]
     },
-    {
-        "name": "IfcProtectiveDevice",
+    "IfcProtectiveDevice": {
         "is_abstract": false,
         "parent": "IfcFlowController",
         "attributes": [
@@ -2582,8 +2494,7 @@
             }
         ]
     },
-    {
-        "name": "IfcProtectiveDeviceTrippingUnit",
+    "IfcProtectiveDeviceTrippingUnit": {
         "is_abstract": false,
         "parent": "IfcDistributionControlElement",
         "attributes": [
@@ -2608,8 +2519,7 @@
             }
         ]
     },
-    {
-        "name": "IfcProxy",
+    "IfcProxy": {
         "is_abstract": false,
         "parent": "IfcProduct",
         "attributes": [
@@ -2636,8 +2546,7 @@
             }
         ]
     },
-    {
-        "name": "IfcPump",
+    "IfcPump": {
         "is_abstract": false,
         "parent": "IfcFlowMovingDevice",
         "attributes": [
@@ -2665,8 +2574,7 @@
             }
         ]
     },
-    {
-        "name": "IfcRailing",
+    "IfcRailing": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -2690,8 +2598,7 @@
             }
         ]
     },
-    {
-        "name": "IfcRamp",
+    "IfcRamp": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -2718,8 +2625,7 @@
             }
         ]
     },
-    {
-        "name": "IfcRampFlight",
+    "IfcRampFlight": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -2742,8 +2648,7 @@
             }
         ]
     },
-    {
-        "name": "IfcReinforcingBar",
+    "IfcReinforcingBar": {
         "is_abstract": false,
         "parent": "IfcReinforcingElement",
         "attributes": [
@@ -2805,8 +2710,7 @@
             }
         ]
     },
-    {
-        "name": "IfcReinforcingMesh",
+    "IfcReinforcingMesh": {
         "is_abstract": false,
         "parent": "IfcReinforcingElement",
         "attributes": [
@@ -2881,8 +2785,7 @@
             }
         ]
     },
-    {
-        "name": "IfcRoof",
+    "IfcRoof": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -2916,8 +2819,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSanitaryTerminal",
+    "IfcSanitaryTerminal": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -2948,8 +2850,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSensor",
+    "IfcSensor": {
         "is_abstract": false,
         "parent": "IfcDistributionControlElement",
         "attributes": [
@@ -2994,8 +2895,7 @@
             }
         ]
     },
-    {
-        "name": "IfcShadingDevice",
+    "IfcShadingDevice": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -3019,8 +2919,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSite",
+    "IfcSite": {
         "is_abstract": false,
         "parent": "IfcSpatialStructureElement",
         "attributes": [
@@ -3052,7 +2951,11 @@
                 "name": "CompositionType",
                 "type": "IfcElementCompositionEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "complex",
+                    "element",
+                    "partial"
+                ]
             },
             {
                 "name": "LongName",
@@ -3062,8 +2965,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSlab",
+    "IfcSlab": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -3088,8 +2990,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSlabElementedCase",
+    "IfcSlabElementedCase": {
         "is_abstract": false,
         "parent": "IfcSlab",
         "attributes": [
@@ -3114,8 +3015,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSlabStandardCase",
+    "IfcSlabStandardCase": {
         "is_abstract": false,
         "parent": "IfcSlab",
         "attributes": [
@@ -3140,8 +3040,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSolarDevice",
+    "IfcSolarDevice": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -3164,8 +3063,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSpace",
+    "IfcSpace": {
         "is_abstract": false,
         "parent": "IfcSpatialStructureElement",
         "attributes": [
@@ -3193,7 +3091,11 @@
                 "name": "CompositionType",
                 "type": "IfcElementCompositionEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "complex",
+                    "element",
+                    "partial"
+                ]
             },
             {
                 "name": "LongName",
@@ -3203,8 +3105,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSpaceHeater",
+    "IfcSpaceHeater": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -3227,8 +3128,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSpatialZone",
+    "IfcSpatialZone": {
         "is_abstract": false,
         "parent": "IfcSpatialElement",
         "attributes": [
@@ -3257,8 +3157,7 @@
             }
         ]
     },
-    {
-        "name": "IfcStackTerminal",
+    "IfcStackTerminal": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -3282,8 +3181,7 @@
             }
         ]
     },
-    {
-        "name": "IfcStair",
+    "IfcStair": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -3318,8 +3216,7 @@
             }
         ]
     },
-    {
-        "name": "IfcStairFlight",
+    "IfcStairFlight": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -3369,8 +3266,7 @@
             }
         ]
     },
-    {
-        "name": "IfcStructuralCurveAction",
+    "IfcStructuralCurveAction": {
         "is_abstract": false,
         "parent": "IfcStructuralAction",
         "attributes": [
@@ -3409,18 +3305,19 @@
                 "name": "GlobalOrLocal",
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "global_coords",
+                    "local_coords"
+                ]
             }
         ]
     },
-    {
-        "name": "IfcStructuralCurveConnection",
+    "IfcStructuralCurveConnection": {
         "is_abstract": false,
         "parent": "IfcStructuralConnection",
         "attributes": []
     },
-    {
-        "name": "IfcStructuralCurveMember",
+    "IfcStructuralCurveMember": {
         "is_abstract": false,
         "parent": "IfcStructuralMember",
         "attributes": [
@@ -3440,8 +3337,7 @@
             }
         ]
     },
-    {
-        "name": "IfcStructuralCurveMemberVarying",
+    "IfcStructuralCurveMemberVarying": {
         "is_abstract": false,
         "parent": "IfcStructuralCurveMember",
         "attributes": [
@@ -3461,8 +3357,7 @@
             }
         ]
     },
-    {
-        "name": "IfcStructuralCurveReaction",
+    "IfcStructuralCurveReaction": {
         "is_abstract": false,
         "parent": "IfcStructuralReaction",
         "attributes": [
@@ -3486,12 +3381,14 @@
                 "name": "GlobalOrLocal",
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "global_coords",
+                    "local_coords"
+                ]
             }
         ]
     },
-    {
-        "name": "IfcStructuralLinearAction",
+    "IfcStructuralLinearAction": {
         "is_abstract": false,
         "parent": "IfcStructuralCurveAction",
         "attributes": [
@@ -3530,12 +3427,14 @@
                 "name": "GlobalOrLocal",
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "global_coords",
+                    "local_coords"
+                ]
             }
         ]
     },
-    {
-        "name": "IfcStructuralPlanarAction",
+    "IfcStructuralPlanarAction": {
         "is_abstract": false,
         "parent": "IfcStructuralSurfaceAction",
         "attributes": [
@@ -3571,12 +3470,14 @@
                 "name": "GlobalOrLocal",
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "global_coords",
+                    "local_coords"
+                ]
             }
         ]
     },
-    {
-        "name": "IfcStructuralPointAction",
+    "IfcStructuralPointAction": {
         "is_abstract": false,
         "parent": "IfcStructuralAction",
         "attributes": [
@@ -3590,18 +3491,19 @@
                 "name": "GlobalOrLocal",
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "global_coords",
+                    "local_coords"
+                ]
             }
         ]
     },
-    {
-        "name": "IfcStructuralPointConnection",
+    "IfcStructuralPointConnection": {
         "is_abstract": false,
         "parent": "IfcStructuralConnection",
         "attributes": []
     },
-    {
-        "name": "IfcStructuralPointReaction",
+    "IfcStructuralPointReaction": {
         "is_abstract": false,
         "parent": "IfcStructuralReaction",
         "attributes": [
@@ -3609,12 +3511,14 @@
                 "name": "GlobalOrLocal",
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "global_coords",
+                    "local_coords"
+                ]
             }
         ]
     },
-    {
-        "name": "IfcStructuralSurfaceAction",
+    "IfcStructuralSurfaceAction": {
         "is_abstract": false,
         "parent": "IfcStructuralAction",
         "attributes": [
@@ -3650,18 +3554,19 @@
                 "name": "GlobalOrLocal",
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "global_coords",
+                    "local_coords"
+                ]
             }
         ]
     },
-    {
-        "name": "IfcStructuralSurfaceConnection",
+    "IfcStructuralSurfaceConnection": {
         "is_abstract": false,
         "parent": "IfcStructuralConnection",
         "attributes": []
     },
-    {
-        "name": "IfcStructuralSurfaceMember",
+    "IfcStructuralSurfaceMember": {
         "is_abstract": false,
         "parent": "IfcStructuralMember",
         "attributes": [
@@ -3685,8 +3590,7 @@
             }
         ]
     },
-    {
-        "name": "IfcStructuralSurfaceMemberVarying",
+    "IfcStructuralSurfaceMemberVarying": {
         "is_abstract": false,
         "parent": "IfcStructuralSurfaceMember",
         "attributes": [
@@ -3710,8 +3614,7 @@
             }
         ]
     },
-    {
-        "name": "IfcStructuralSurfaceReaction",
+    "IfcStructuralSurfaceReaction": {
         "is_abstract": false,
         "parent": "IfcStructuralReaction",
         "attributes": [
@@ -3732,12 +3635,14 @@
                 "name": "GlobalOrLocal",
                 "type": "IfcGlobalOrLocalEnum",
                 "is_enum": true,
-                "enum_values": []
+                "enum_values": [
+                    "global_coords",
+                    "local_coords"
+                ]
             }
         ]
     },
-    {
-        "name": "IfcSurfaceFeature",
+    "IfcSurfaceFeature": {
         "is_abstract": false,
         "parent": "IfcFeatureElement",
         "attributes": [
@@ -3761,8 +3666,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSwitchingDevice",
+    "IfcSwitchingDevice": {
         "is_abstract": false,
         "parent": "IfcFlowController",
         "attributes": [
@@ -3792,8 +3696,7 @@
             }
         ]
     },
-    {
-        "name": "IfcSystemFurnitureElement",
+    "IfcSystemFurnitureElement": {
         "is_abstract": false,
         "parent": "IfcFurnishingElement",
         "attributes": [
@@ -3816,8 +3719,7 @@
             }
         ]
     },
-    {
-        "name": "IfcTank",
+    "IfcTank": {
         "is_abstract": false,
         "parent": "IfcFlowStorageDevice",
         "attributes": [
@@ -3845,8 +3747,7 @@
             }
         ]
     },
-    {
-        "name": "IfcTendon",
+    "IfcTendon": {
         "is_abstract": false,
         "parent": "IfcReinforcingElement",
         "attributes": [
@@ -3919,8 +3820,7 @@
             }
         ]
     },
-    {
-        "name": "IfcTendonAnchor",
+    "IfcTendonAnchor": {
         "is_abstract": false,
         "parent": "IfcReinforcingElement",
         "attributes": [
@@ -3950,8 +3850,7 @@
             }
         ]
     },
-    {
-        "name": "IfcTransformer",
+    "IfcTransformer": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -3977,8 +3876,7 @@
             }
         ]
     },
-    {
-        "name": "IfcTransportElement",
+    "IfcTransportElement": {
         "is_abstract": false,
         "parent": "IfcElement",
         "attributes": [
@@ -4004,8 +3902,7 @@
             }
         ]
     },
-    {
-        "name": "IfcTubeBundle",
+    "IfcTubeBundle": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -4027,8 +3924,7 @@
             }
         ]
     },
-    {
-        "name": "IfcUnitaryControlElement",
+    "IfcUnitaryControlElement": {
         "is_abstract": false,
         "parent": "IfcDistributionControlElement",
         "attributes": [
@@ -4057,8 +3953,7 @@
             }
         ]
     },
-    {
-        "name": "IfcUnitaryEquipment",
+    "IfcUnitaryEquipment": {
         "is_abstract": false,
         "parent": "IfcEnergyConversionDevice",
         "attributes": [
@@ -4084,8 +3979,7 @@
             }
         ]
     },
-    {
-        "name": "IfcValve",
+    "IfcValve": {
         "is_abstract": false,
         "parent": "IfcFlowController",
         "attributes": [
@@ -4127,8 +4021,7 @@
             }
         ]
     },
-    {
-        "name": "IfcVibrationIsolator",
+    "IfcVibrationIsolator": {
         "is_abstract": false,
         "parent": "IfcElementComponent",
         "attributes": [
@@ -4151,8 +4044,7 @@
             }
         ]
     },
-    {
-        "name": "IfcVirtualElement",
+    "IfcVirtualElement": {
         "is_abstract": false,
         "parent": "IfcElement",
         "attributes": [
@@ -4164,8 +4056,7 @@
             }
         ]
     },
-    {
-        "name": "IfcVoidingFeature",
+    "IfcVoidingFeature": {
         "is_abstract": false,
         "parent": "IfcFeatureElementSubtraction",
         "attributes": [
@@ -4192,8 +4083,7 @@
             }
         ]
     },
-    {
-        "name": "IfcWall",
+    "IfcWall": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -4223,8 +4113,7 @@
             }
         ]
     },
-    {
-        "name": "IfcWallElementedCase",
+    "IfcWallElementedCase": {
         "is_abstract": false,
         "parent": "IfcWall",
         "attributes": [
@@ -4254,8 +4143,7 @@
             }
         ]
     },
-    {
-        "name": "IfcWallStandardCase",
+    "IfcWallStandardCase": {
         "is_abstract": false,
         "parent": "IfcWall",
         "attributes": [
@@ -4285,8 +4173,7 @@
             }
         ]
     },
-    {
-        "name": "IfcWasteTerminal",
+    "IfcWasteTerminal": {
         "is_abstract": false,
         "parent": "IfcFlowTerminal",
         "attributes": [
@@ -4314,8 +4201,7 @@
             }
         ]
     },
-    {
-        "name": "IfcWindow",
+    "IfcWindow": {
         "is_abstract": false,
         "parent": "IfcBuildingElement",
         "attributes": [
@@ -4375,8 +4261,7 @@
             }
         ]
     },
-    {
-        "name": "IfcWindowStandardCase",
+    "IfcWindowStandardCase": {
         "is_abstract": false,
         "parent": "IfcWindow",
         "attributes": [
@@ -4436,4 +4321,4 @@
             }
         ]
     }
-]
+}
