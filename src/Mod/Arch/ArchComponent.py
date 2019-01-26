@@ -61,12 +61,12 @@ with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_prod
     ifcProducts = json.load(f)
 
 # Possible roles for FreeCAD BIM objects
-IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in [product["name"] for product in ifcProducts]]
+IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ifcProducts.keys()]
 
 def getIfcProduct(IfcRole):
-    for ifcProduct in ifcProducts:
-        if ifcProduct["name"] == 'Ifc' + IfcRole.replace(' ', ''):
-            return ifcProduct
+    name = "Ifc" + IfcRole.replace(" ", "")
+    if name in ifcProducts:
+        return ifcProducts[name]
 
 def getIfcProductAttribute(ifcProduct, name):
     for attribute in ifcProduct["attributes"]:
