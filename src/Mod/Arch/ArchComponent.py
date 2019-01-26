@@ -25,16 +25,6 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-
-# Property types
-SimplePropertyTypes = ["IfcInteger","IfcReal","IfcBoolean","IfcIdentifier","IfcText","IfcLabel","IfcLogical"]
-MeasurePropertyTypes = ["IfcVolumeMeasure","IfcTimeMeasure","IfcThermodynamicTemperatureMeasure","IfcSolidAngleMeasure",
-                        "IfcPositiveRatioMeasure","IfcRatioMeasure","IfcPositivePlaneAngleMeasure","IfcPlaneAngleMeasure",
-                        "IfcParameterValue","IfcNumericMeasure","IfcMassMeasure","IfcPositiveLengthMeasure",
-                        "IfcLengthMeasure","IfcElectricCurrentMeasure","IfcDescriptiveMeasure","IfcCountMeasure",
-                        "IfcContextDependentMeasure","IfcAreaMeasure","IfcAmountOfSubstanceMeasure",
-                        "IfcLuminousIntensityMeasure","IfcNormalisedRatioMeasure","IfcComplexNumber"]
-
 import FreeCAD,Draft,ArchCommands,math,sys,json,os
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
@@ -59,6 +49,9 @@ else:
 
 with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_products.json")) as f:
     ifcProducts = json.load(f)
+
+with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_types.json")) as f:
+    ifcTypes = json.load(f).keys()
 
 # Possible roles for FreeCAD BIM objects
 IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ifcProducts.keys()]
@@ -1258,7 +1251,7 @@ class ComponentTaskPanel:
         import Arch_rc,csv,os
 
         # get presets
-        self.ptypes = SimplePropertyTypes + MeasurePropertyTypes
+        self.ptypes = ifcTypes
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")
