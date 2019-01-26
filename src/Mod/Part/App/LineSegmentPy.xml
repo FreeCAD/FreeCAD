@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="GeometryCurvePy" 
+  <PythonExport
+      Father="ArcPy"
       Name="LineSegmentPy"
       PythonName="Part.LineSegment"
-      Twin="GeomLineSegment" 
-      TwinPointer="GeomLineSegment" 
-      Include="Mod/Part/App/Geometry.h" 
-      Namespace="Part" 
-      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      Twin="GeomLineSegment"
+      TwinPointer="GeomLineSegment"
+      Include="Mod/Part/App/Geometry.h"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ArcPy.h"
       FatherNamespace="Part"
       Constructor="true">
     <Documentation>
