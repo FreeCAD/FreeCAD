@@ -430,7 +430,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_14">
           <property name="toolTip">
-           <string>Ellipse export is badly supported. Use this to export them as polylines instead.</string>
+           <string>Ellipse export is poorly supported. Use this to export them as polylines instead.</string>
           </property>
           <property name="text">
            <string>Treat ellipses and splines as polylines</string>
