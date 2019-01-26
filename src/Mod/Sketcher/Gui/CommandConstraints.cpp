@@ -3144,7 +3144,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Cannot add a fixed x-coordinate constraint on the root point!"));
+                    QObject::tr("Cannot add a fixed x-coordinate constraint on the origin point!"));
             return;
         }
 
@@ -3392,7 +3392,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Cannot add a fixed y-coordinate constraint on the root point!"));
+                QObject::tr("Cannot add a fixed y-coordinate constraint on the origin point!"));
             return;
         }
 
