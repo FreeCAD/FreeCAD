@@ -51,7 +51,7 @@ with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_prod
     ifcProducts = json.load(f)
 
 with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_types.json")) as f:
-    ifcTypes = json.load(f).keys()
+    ifcTypes = json.load(f)
 
 # Possible roles for FreeCAD BIM objects
 IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ifcProducts.keys()]
@@ -209,11 +209,14 @@ class Component:
             obj.addProperty("App::PropertyEnumeration", attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
             setattr(obj, attribute["name"], attribute["enum_values"])
         else:
-            obj.addProperty("App::PropertyString", attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
+            propertyType = "App::" + ifcTypes[attribute["type"]]["property"]
+            obj.addProperty(propertyType, attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
 
     def setObjIfcAttributeValue(self, obj, attributeName, value):
         IfcData = obj.IfcData
         IfcAttributes = json.loads(IfcData["attributes"])
+        if isinstance(value, FreeCAD.Units.Quantity):
+            value = float(value)
         IfcAttributes[attributeName]["value"] = value
         IfcData["attributes"] = json.dumps(IfcAttributes)
         obj.IfcData = IfcData
@@ -1251,7 +1254,7 @@ class ComponentTaskPanel:
         import Arch_rc,csv,os
 
         # get presets
-        self.ptypes = ifcTypes
+        self.ptypes = ifcTypes.keys()
         self.plabels = [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in self.ptypes]
         self.psetdefs = {}
         psetspath = os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","pset_definitions.csv")
