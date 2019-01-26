@@ -4871,7 +4871,7 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create B-spline");
-    sToolTipText    = QT_TR_NOOP("Create a B-spline via control point in the sketch.");
+    sToolTipText    = QT_TR_NOOP("Create a B-spline via control points in the sketch.");
     sWhatsThis      = "Sketcher_CreateBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateBSpline";
@@ -4915,7 +4915,7 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create periodic B-spline");
-    sToolTipText    = QT_TR_NOOP("Create a periodic B-spline via control point in the sketch.");
+    sToolTipText    = QT_TR_NOOP("Create a periodic B-spline via control points in the sketch.");
     sWhatsThis      = "Sketcher_CreatePeriodicBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create_Periodic_BSpline";
