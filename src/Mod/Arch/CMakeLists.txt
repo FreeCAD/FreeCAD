@@ -54,6 +54,10 @@ SET(Dice3DS_SRCS
 SET(Arch_presets
     Presets/profiles.csv
     Presets/pset_definitions.csv
+    Presets/ifc_products_IFC2X3.json
+    Presets/ifc_products_IFC4.json
+    Presets/ifc_types_IFC2X3.json
+    Presets/ifc_types_IFC4.json
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})
