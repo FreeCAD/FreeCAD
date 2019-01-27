@@ -1,5 +1,5 @@
-<!DOCTYPE RCC><RCC version="1.0">
-    <qresource>
+<RCC>
+    <qresource prefix="/">
         <file>icons/actions/web-browser.svg</file>
         <file>icons/actions/web-home.svg</file>
         <file>icons/actions/web-next.svg</file>
@@ -9,6 +9,7 @@
         <file>icons/actions/web-zoom-in.svg</file>
         <file>icons/actions/web-zoom-out.svg</file>
         <file>icons/actions/web-sketchfab.svg</file>
+        <file>icons/actions/web-set-url.svg</file>
         <file>icons/WebWorkbench.svg</file>
         <file>translations/Web_de.qm</file>
         <file>translations/Web_af.qm</file>

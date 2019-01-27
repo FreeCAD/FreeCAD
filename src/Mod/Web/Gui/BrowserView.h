@@ -27,6 +27,7 @@
 
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
+#include <QLineEdit>
 
 #if QT_VERSION >= 0x050700 && defined(QTWEBENGINE)
 #include <QWebEngineView>
@@ -42,6 +43,7 @@ class QNetworkRequest;
 class QNetworkReply;
 
 namespace WebGui {
+class UrlWidget;
 
 #ifdef QTWEBENGINE
 class WebGuiExport WebView : public QWebEngineView
@@ -123,11 +125,25 @@ protected Q_SLOTS:
 private:
     WebView* view;
     bool isLoading;
+    UrlWidget *urlWgt;
 #ifdef QTWEBENGINE
     WebEngineUrlRequestInterceptor *interceptLinks;
 #else
     float textSizeMultiplier;
 #endif
+};
+
+// the URL ardressbar lineedit
+class UrlWidget : public QLineEdit
+{
+    Q_OBJECT
+    BrowserView *m_view;
+public:
+    explicit UrlWidget(BrowserView *view);
+    ~UrlWidget();
+    void display();
+protected:
+    void keyPressEvent(QKeyEvent *keyEvt);
 };
 
 } // namespace WebGui
