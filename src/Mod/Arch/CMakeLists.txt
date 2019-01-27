@@ -6,6 +6,7 @@ SET(Arch_SRCS
     Init.py
     InitGui.py
     ArchComponent.py
+    ArchIFC.py
     ArchWall.py
     importIFC.py
     importIFClegacy.py
