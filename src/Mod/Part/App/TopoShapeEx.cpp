@@ -598,14 +598,17 @@ TopoShape &TopoShape::makECompound(const std::vector<TopoShape> &shapes, const c
     return *this;
 }
 
-TopoShape &TopoShape::makETransform(const TopoShape &shape, 
+bool TopoShape::_makETransform(const TopoShape &shape, 
         const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
 {
     if(checkScale) {
-        if(rclTrf.hasScale()<0)
-            return makEGTransform(shape,rclTrf,op,copy);
+        if(rclTrf.hasScale()<0) {
+            makEGTransform(shape,rclTrf,op,copy);
+            return true;
+        }
     }
-    return makETransform(shape,convert(rclTrf),op,copy);
+    makETransform(shape,convert(rclTrf),op,copy);
+    return false;
 }
 
 TopoShape &TopoShape::makETransform(const TopoShape &shape, const gp_Trsf &trsf, const char *op, bool copy) {

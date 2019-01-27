@@ -293,7 +293,18 @@ public:
     //@{
     void transformGeometry(const Base::Matrix4D &rclMat);
     TopoDS_Shape transformGShape(const Base::Matrix4D&) const;
-    void transformShape(const Base::Matrix4D&, bool copy, bool checkScale=false);
+    /** Transform shape
+     * 
+     * @param mat: transformation matrix
+     * @param copy: whether to copy the shape before trasnformation
+     * @param checkScale: whether to check for non-uniform scaling. If not and
+     * there is non-uniform scaling, exception will be raised. If non-uniform
+     * scaling is detected, it will call makEGTransform() to do the
+     * transformation.
+     *
+     * @return Return true only if non-uniform scaling is detected.
+     */
+    bool transformShape(const Base::Matrix4D &mat, bool copy, bool checkScale=false);
     TopoDS_Shape mirror(const gp_Ax2&) const;
     TopoDS_Shape toNurbs() const;
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
@@ -404,8 +415,14 @@ public:
         return TopoShape(0,Hasher).makEShape(maker,*this,op,tol);
     }
 
-    TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
+    bool _makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
             const char *op=0, bool checkScale=false, bool copy=false);
+
+    TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=0, bool checkScale=false, bool copy=false) {
+        _makETransform(shape,mat,op,checkScale,copy);
+        return *this;
+    }
     TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0, 
             bool checkScale=false, bool copy=false) const {
         return TopoShape(Tag,Hasher).makETransform(*this,mat,op,checkScale,copy);

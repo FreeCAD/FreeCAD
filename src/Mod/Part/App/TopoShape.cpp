@@ -2901,12 +2901,12 @@ TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
     return mkTrf.Shape();
 }
 
-void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy, bool checkScale)
+bool TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy, bool checkScale)
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot transform null shape");
 
-    *this = makETransform(rclTrf,0,checkScale,copy);
+    return _makETransform(TopoShape(*this),rclTrf,0,checkScale,copy);
 }
 
 TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
