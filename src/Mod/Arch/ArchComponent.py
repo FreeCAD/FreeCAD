@@ -25,8 +25,9 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchCommands,math,sys,json,os,ifcopenshell
+import FreeCAD,Draft,ArchCommands,math,sys,json,os,ifcopenshell,ArchIFC
 from FreeCAD import Vector
+from ArchIFC import ifcProducts, ifcTypes
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -47,27 +48,8 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
-with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "Arch", "Presets",
-    "ifc_products_" + ifcopenshell.schema_identifier + ".json")) as f:
-    ifcProducts = json.load(f)
-
-with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "Arch", "Presets",
-    "ifc_types_" + ifcopenshell.schema_identifier + ".json")) as f:
-    ifcTypes = json.load(f)
-
 # Possible roles for FreeCAD BIM objects
 IfcRoles = ['Undefined']+[''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in ifcProducts.keys()]
-
-def getIfcProduct(IfcRole):
-    name = "Ifc" + IfcRole.replace(" ", "")
-    if name in ifcProducts:
-        return ifcProducts[name]
-
-def getIfcProductAttribute(ifcProduct, name):
-    for attribute in ifcProduct["attributes"]:
-        if attribute["name"].replace(' ', '') == name:
-            return attribute
-    return None
 
 def convertOldComponents(objs=[]):
 
@@ -186,59 +168,8 @@ class Component:
         Component.setProperties(self,obj)
         self.Type = "Component"
 
-    def setIfcAttributes(self, obj):
-        ifcProduct = getIfcProduct(obj.IfcRole)
-        if ifcProduct is None:
-            return
-        self.purgeUnusedIfcAttributesFromPropertiesList(ifcProduct, obj)
-        self.addIfcProductAttributesToObj(ifcProduct, obj)
-
-    def addIfcProductAttributesToObj(self, ifcProduct, obj):
-        for attribute in ifcProduct["attributes"]:
-            if attribute["name"] in obj.PropertiesList:
-                continue
-            self.addIfcProductAttributeToObj(attribute, obj)
-
-    def addIfcProductAttributeToObj(self, attribute, obj):
-        IfcData = obj.IfcData
-        if "attributes" not in IfcData:
-            IfcData["attributes"] = "{}"
-        IfcAttributes = json.loads(IfcData["attributes"])
-        IfcAttributes[attribute["name"]] = attribute
-        IfcData["attributes"] = json.dumps(IfcAttributes)
-        obj.IfcData = IfcData
-        if attribute["is_enum"]:
-            obj.addProperty("App::PropertyEnumeration", attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
-            setattr(obj, attribute["name"], attribute["enum_values"])
-        else:
-            propertyType = "App::" + ifcTypes[attribute["type"]]["property"]
-            obj.addProperty(propertyType, attribute["name"], "IFC Attributes", QT_TRANSLATE_NOOP("App::Property", "Description of IFC attributes are not yet implemented"))
-
-    def setObjIfcAttributeValue(self, obj, attributeName, value):
-        IfcData = obj.IfcData
-        IfcAttributes = json.loads(IfcData["attributes"])
-        if isinstance(value, FreeCAD.Units.Quantity):
-            value = float(value)
-        IfcAttributes[attributeName]["value"] = value
-        IfcData["attributes"] = json.dumps(IfcAttributes)
-        obj.IfcData = IfcData
-
-    def purgeUnusedIfcAttributesFromPropertiesList(self, ifcProduct, obj):
-        for property in obj.PropertiesList:
-            if obj.getGroupOfProperty(property) != "IFC Attributes":
-                continue
-            ifcProductAttribute = getIfcProductAttribute(ifcProduct, property)
-            if ifcProductAttribute is None or ifcProductAttribute["is_enum"] is True:
-                obj.removeProperty(property)
-
-
-    def migrateDeprecatedAttributes(self, obj):
-        # FreeCAD <= 0.17 stored IFC data in IfcAttributes
-        if hasattr(obj, "IfcAttributes"):
-            obj.IfcData = obj.IfcAttributes
-            obj.removeProperty("IfcAttributes")
-
     def setProperties(self,obj):
+        ArchIFC.setProperties(obj)
         pl = obj.PropertiesList
         if not "Base" in pl:
             obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
@@ -254,8 +185,6 @@ class Component:
             obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
         if not "StandardCode" in pl:
             obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"))
-        if not "IfcData" in pl:
-            obj.addProperty("App::PropertyMap","IfcData","Component",QT_TRANSLATE_NOOP("App::Property","IFC data"))
         if not "Material" in pl:
             obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         if "BaseMaterial" in pl:
@@ -298,7 +227,6 @@ class Component:
         self.Subvolume = None
         #self.MoveWithHost = False
         self.Type = "Component"
-        self.migrateDeprecatedAttributes(obj)
 
     def onDocumentRestored(self,obj):
 
@@ -331,12 +259,7 @@ class Component:
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
-
-        if prop == "IfcRole":
-            self.setIfcAttributes(obj)
-
-        if obj.getGroupOfProperty(prop) == "IFC Attributes":
-            self.setObjIfcAttributeValue(obj, prop, obj.getPropertyByName(prop))
+        ArchIFC.onChanged(obj, prop)
 
         if prop == "Placement":
             if hasattr(self,"oldPlacement"):
