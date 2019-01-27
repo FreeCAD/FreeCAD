@@ -197,6 +197,31 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
+PyObject* ArcPy::setParameterRange(PyObject * args)
+{
+    Handle(Geom_Geometry) g = getGeomTrimmedCurvePtr()->handle();
+    Handle(Geom_TrimmedCurve) c = Handle(Geom_TrimmedCurve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u,v;
+            u=c->FirstParameter();
+            v=c->LastParameter();
+            if (!PyArg_ParseTuple(args, "|dd", &u,&v))
+                return 0;
+            getGeomTrimmedCurvePtr()->setRange(u,v);
+            Py_Return;
+        }
+    }
+    catch (Base::CADKernelError& e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a trimmed curve");
+    return 0;
+}
+
+
 PyObject *ArcPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -204,5 +229,5 @@ PyObject *ArcPy::getCustomAttributes(const char* /*attr*/) const
 
 int ArcPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
