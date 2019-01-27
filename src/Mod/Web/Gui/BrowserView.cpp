@@ -90,7 +90,12 @@ using namespace Gui;
 
 namespace WebGui {
 enum WebAction {
-    OpenLink = 0xff
+    OpenLink = 0xff,
+#ifdef QTWEBENGINE
+    ViewSource = QWebEnginePage::ViewSource
+#else
+    ViewSource = 200 // QWebView doesn't have a ViewSource option
+#endif
 };
 
 #ifdef QTWEBENGINE
@@ -267,23 +272,36 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
     }
 #if QT_VERSION >= 0x050800 && defined(QTWEBENGINE)
     else { // for view source
-        // QWebEngine caches standardContextMenu, guard so we only add signlmapper once
+        // QWebEngine caches standardContextMenu, guard so we only add signalmapper once
         static bool firstRun = true;
         if (firstRun) {
             firstRun = false;
             QMenu *menu = page()->createStandardContextMenu();
             QList<QAction *> actions = menu->actions();
             for(QAction *ac : actions) {
-                if (ac->data().toInt() == QWEBPAGE::ViewSource) {
+                if (ac->data().toInt() == WebAction::ViewSource) {
                     QSignalMapper* signalMapper = new QSignalMapper (this);
                     signalMapper->setProperty("url", QVariant(r.linkUrl()));
-                    signalMapper->setMapping(ac, QWEBPAGE::ViewSource);
+                    signalMapper->setMapping(ac, WebAction::ViewSource);
                     connect(signalMapper, SIGNAL(mapped(int)),
                             this, SLOT(triggerContextMenuAction(int)));
                     connect (ac, SIGNAL(triggered()), signalMapper, SLOT(map()));
                 }
             }
         }
+    }
+#else
+    else {
+        QMenu *menu = page()->createStandardContextMenu();
+        QAction *ac = menu->addAction(tr("View source"));
+        ac->setData(WebAction::ViewSource);
+        QSignalMapper* signalMapper = new QSignalMapper (this);
+        signalMapper->setProperty("url", QVariant(r.linkUrl()));
+        signalMapper->setMapping(ac, WebAction::ViewSource);
+        connect(signalMapper, SIGNAL(mapped(int)),
+                this, SLOT(triggerContextMenuAction(int)));
+        connect (ac, SIGNAL(triggered()), signalMapper, SLOT(map()));
+        menu->exec(event->globalPos());
     }
 #endif
     QWEBVIEW::contextMenuEvent(event);
@@ -301,11 +319,9 @@ void WebView::triggerContextMenuAction(int id)
     case QWEBPAGE::OpenLinkInNewWindow:
         openLinkInNewWindow(url);
         break;
-#ifdef QTWEBENGINE
-    case QWEBPAGE::ViewSource:
+    case WebAction::ViewSource:
         Q_EMIT viewSource(url);
         break;
-#endif
     default:
         break;
     }
@@ -372,10 +388,10 @@ BrowserView::BrowserView(QWidget* parent)
             this, SLOT(onDownloadRequested(QWebEngineDownloadItem*)));
     connect(view->page(), SIGNAL(iconChanged(const QIcon &)),
             this, SLOT(setWindowIcon(const QIcon &)));
-    connect(view, SIGNAL(viewSource(const QUrl&)),
-            this, SLOT(onViewSource(const QUrl&)));
 #endif
 
+    connect(view, SIGNAL(viewSource(const QUrl&)),
+            this, SLOT(onViewSource(const QUrl&)));
     connect(view, SIGNAL(loadStarted()),
             this, SLOT(onLoadStarted()));
     connect(view, SIGNAL(loadProgress(int)),
@@ -522,6 +538,23 @@ void BrowserView::onUnsupportedContent(QNetworkReply* reply)
     // slot is called even when clicking on a downloadable file but the page
     // then fails to load. Thus, we reload the previous url.
     view->reload();
+}
+
+void BrowserView::onViewSource(const QUrl &url)
+{
+    Q_UNUSED(url);
+    if (!view->page() || !view->page()->currentFrame())
+        return;
+    QString pageSource = view->page()->currentFrame()->toHtml();
+    QPlainTextEdit *editorWidget = new QPlainTextEdit {};
+    App::TextDocument *txtDoc = new App::TextDocument;
+    TextDocumentEditorView *textDocView = new TextDocumentEditorView {
+                txtDoc,
+                editorWidget, getMainWindow()
+    };
+    editorWidget->setReadOnly(true);
+    editorWidget->setPlainText(pageSource);
+    getMainWindow()->addWindow(textDocView);
 }
 #endif
 
