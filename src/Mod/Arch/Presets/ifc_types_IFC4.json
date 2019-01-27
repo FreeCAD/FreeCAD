@@ -233,7 +233,7 @@
     },
     "IfcLengthMeasure": {
         "base": "xs:double",
-        "property": "PropertyFloat"
+        "property": "PropertyLength"
     },
     "IfcLinearForceMeasure": {
         "base": "xs:double",
@@ -549,6 +549,10 @@
     },
     "logical": {
         "base": "xs:normalizedString",
+        "property": "PropertyString"
+    },
+    "List-IfcCompoundPlaneAngleMeasure": {
+        "base": "xs:string",
         "property": "PropertyString"
     }
 }
