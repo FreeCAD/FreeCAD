@@ -71,9 +71,7 @@ private Q_SLOTS:
 Q_SIGNALS:
     void openLinkInExternalBrowser(const QUrl&);
     void openLinkInNewWindow(const QUrl&);
-#ifdef QTWEBENGINE
     void viewSource(const QUrl&);
-#endif
 };
 
 /**
@@ -113,12 +111,12 @@ protected Q_SLOTS:
     void onDownloadRequested(QWebEngineDownloadItem *request);
     void setWindowIcon(const QIcon &icon);
     void urlFilter(const QUrl &url);
-    void onViewSource(const QUrl &url);
 #else
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
     void onLinkClicked (const QUrl& url);
 #endif
+    void onViewSource(const QUrl &url);
     void onOpenLinkInExternalBrowser(const QUrl& url);
     void onOpenLinkInNewWindow(const QUrl&);
 
