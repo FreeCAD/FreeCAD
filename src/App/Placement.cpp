@@ -51,6 +51,14 @@ Placement::~Placement(void)
 
 
 
+// Python feature ---------------------------------------------------------
+namespace App {
+PROPERTY_SOURCE_TEMPLATE(App::PlacementPython, App::Placement)
+template<> const char* App::PlacementPython::getViewProviderName(void) const {
+   return "Gui::ViewProviderPlacementPython";
+}
+template class AppExport FeaturePythonT<App::Placement>;
+}
 
 
 

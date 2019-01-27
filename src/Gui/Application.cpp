@@ -1633,6 +1633,7 @@ void Application::initTypes(void)
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();
+    Gui::ViewProviderPlacementPython            ::init();
     Gui::ViewProviderOriginFeature              ::init();
     Gui::ViewProviderPlane                      ::init();
     Gui::ViewProviderLine                       ::init();

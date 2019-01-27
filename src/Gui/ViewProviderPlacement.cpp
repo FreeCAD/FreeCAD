@@ -219,4 +219,14 @@ bool ViewProviderPlacement::isSelectable(void) const
 }
 // ----------------------------------------------------------------------------
 
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPlacementPython, Gui::ViewProviderPlacement)
+/// @endcond
+
+// explicit template instantiation
+template class GuiExport ViewProviderPythonFeatureT<ViewProviderPlacement>;
+}
 

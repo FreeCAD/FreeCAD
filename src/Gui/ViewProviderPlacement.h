@@ -25,6 +25,7 @@
 #define GUI_ViewProviderPlacement_H
 
 #include "ViewProviderGeometryObject.h"
+#include "ViewProviderPythonFeature.h"
 #include <QObject>
 
 class SoFontStyle;
@@ -70,6 +71,8 @@ private:
     SoMaterial       * pMat;
     SoIndexedLineSet * pLines;
 };
+
+typedef ViewProviderPythonFeatureT<ViewProviderPlacement> ViewProviderPlacementPython;
 
 } //namespace Gui
 
