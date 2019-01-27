@@ -25,7 +25,7 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD,Draft,ArchCommands,math,sys,json,os
+import FreeCAD,Draft,ArchCommands,math,sys,json,os,ifcopenshell
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -47,10 +47,12 @@ else:
 #  This module provides the base Arch component class, that
 #  is shared by all of the Arch BIM objects
 
-with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_products.json")) as f:
+with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "Arch", "Presets",
+    "ifc_products_" + ifcopenshell.schema_identifier + ".json")) as f:
     ifcProducts = json.load(f)
 
-with open(os.path.join(FreeCAD.getResourceDir(),"Mod","Arch","Presets","ifc_types.json")) as f:
+with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "Arch", "Presets",
+    "ifc_types_" + ifcopenshell.schema_identifier + ".json")) as f:
     ifcTypes = json.load(f)
 
 # Possible roles for FreeCAD BIM objects
