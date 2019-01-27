@@ -237,6 +237,36 @@ bool CmdWebBrowserZoomOut::isActive(void)
     return getGuiApplication()->sendHasMsgToActiveView("ZoomOut");
 }
 
+//===========================================================================
+// CmdWebBrowserSetUrl
+//===========================================================================
+
+DEF_STD_CMD_A(CmdWebBrowserSetURL);
+
+CmdWebBrowserSetURL::CmdWebBrowserSetURL()
+  : Command("Web_BrowserSetURL")
+{
+    sAppModule      = "Web";
+    sGroup          = QT_TR_NOOP("Web");
+    sMenuText       = QT_TR_NOOP("Set URL");
+    sToolTipText    = QT_TR_NOOP("Set URL");
+    sWhatsThis      = "Web_BrowserSetURL";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/web-set-url";
+}
+
+void CmdWebBrowserSetURL::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    doCommand(Command::Gui,"Gui.SendMsgToActiveView('SetURL')");
+}
+
+bool CmdWebBrowserSetURL::isActive(void)
+{
+    return getGuiApplication()->sendHasMsgToActiveView("SetURL");
+}
+
+
 
 void CreateWebCommands(void)
 {
@@ -249,4 +279,5 @@ void CreateWebCommands(void)
     rcCmdMgr.addCommand(new CmdWebBrowserStop());
     rcCmdMgr.addCommand(new CmdWebBrowserZoomIn());
     rcCmdMgr.addCommand(new CmdWebBrowserZoomOut());
+    rcCmdMgr.addCommand(new CmdWebBrowserSetURL());
  }
