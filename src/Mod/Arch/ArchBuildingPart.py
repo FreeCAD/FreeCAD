@@ -22,7 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,DraftVecUtils,sys
+import FreeCAD,Draft,ArchCommands,DraftVecUtils,sys,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -320,6 +320,7 @@ class BuildingPart:
         self.setProperties(obj)
 
     def setProperties(self,obj):
+        ArchIFC.setProperties(obj)
 
         pl = obj.PropertiesList
         if not "Height" in pl:
@@ -362,7 +363,7 @@ class BuildingPart:
             self.oldPlacement = FreeCAD.Placement(obj.Placement)
 
     def onChanged(self,obj,prop):
-
+        ArchIFC.onChanged(obj, prop)
         if prop == "Height":
             for child in obj.Group:
                 if Draft.getType(child) in ["Wall","Structure"]:
