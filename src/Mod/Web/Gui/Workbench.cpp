@@ -325,7 +325,9 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     // web navigation toolbar
     Gui::ToolBarItem* navigation = new Gui::ToolBarItem(root);
     navigation->setCommand("Navigation");
-    *navigation << "Web_OpenWebsite" 
+    *navigation << "Web_BrowserSetURL"
+                << "Separator"
+                << "Web_OpenWebsite"
                 << "Separator" 
                 << "Web_BrowserBack" 
                 << "Web_BrowserNext" 

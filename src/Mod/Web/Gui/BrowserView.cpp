@@ -48,6 +48,7 @@
 # include <QSignalMapper>
 # include <QPointer>
 # include <QDir>
+# include <QLineEdit>
 #endif
 
 
@@ -65,6 +66,7 @@
 # include <QWebFrame>
 # include <QWebView>
 # include <QWebSettings>
+# include <QNetworkAccessManager>
 # define QWEBVIEW QWebView
 # define QWEBPAGE QWebPage
 #endif
@@ -129,6 +131,42 @@ private:
     BrowserView *m_parent;
 };
 #endif
+
+// ---------------------------------------------------------------------------------------------
+UrlWidget::UrlWidget(BrowserView *view) :
+    QLineEdit(view), m_view(view)
+{
+    setText(QLatin1String("https://"));
+    hide();
+}
+UrlWidget::~UrlWidget()
+{
+}
+
+void UrlWidget::keyPressEvent(QKeyEvent *keyEvt)
+{
+    switch (keyEvt->key()) {
+    case Qt::Key_Escape:
+        hide();
+        break;
+    case Qt::Key_Return:
+    case Qt::Key_Enter:
+        m_view->load(text().toLatin1());
+        hide();
+        break;
+    default:
+        QLineEdit::keyPressEvent(keyEvt);
+    }
+}
+
+void UrlWidget::display()
+{
+    setFixedWidth(m_view->size().width());
+    show();
+    setFocus(Qt::ActiveWindowFocusReason);
+}
+
+// ---------------------------------------------------------------------------------------------
 
 class BrowserViewPy : public Py::PythonExtension<BrowserViewPy>
 {
@@ -344,6 +382,8 @@ BrowserView::BrowserView(QWidget* parent)
     setCentralWidget(view);
     view->setAttribute(Qt::WA_OpaquePaintEvent, true);
 
+    urlWgt = new UrlWidget(this);
+
 #ifdef QTWEBKIT
     textSizeMultiplier = 1.0;
 
@@ -549,8 +589,7 @@ void BrowserView::onViewSource(const QUrl &url)
     QPlainTextEdit *editorWidget = new QPlainTextEdit {};
     App::TextDocument *txtDoc = new App::TextDocument;
     TextDocumentEditorView *textDocView = new TextDocumentEditorView {
-                txtDoc,
-                editorWidget, getMainWindow()
+                txtDoc, editorWidget, getMainWindow()
     };
     editorWidget->setReadOnly(true);
     editorWidget->setPlainText(pageSource);
@@ -568,6 +607,8 @@ void BrowserView::load(const QUrl & url)
 {
     if (isLoading)
         stop();
+
+    urlWgt->setText(url.toString());
 
     view->load(url);
     view->setUrl(url);
@@ -675,6 +716,9 @@ bool BrowserView::onMsg(const char* pMsg,const char** )
         qreal factor = view->zoomFactor();
         view->setZoomFactor(factor - 0.2);
         return true;
+    } else if (strcmp(pMsg,"SetURL")==0){
+        urlWgt->display();
+        return true;
     }
 
     return false;
@@ -694,6 +738,7 @@ bool BrowserView::onHasMsg(const char* pMsg) const
     if (strcmp(pMsg,"Stop")==0) return isLoading;
     if (strcmp(pMsg,"ZoomIn")==0) return true;
     if (strcmp(pMsg,"ZoomOut")==0) return true;
+    if (strcmp(pMsg,"SetURL")==0) return true;
 
     return false;
 }
