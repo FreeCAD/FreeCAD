@@ -747,9 +747,11 @@ void Command::_copyVisual(const char *file, int line, const char* to, const char
 
 void Command::_copyVisual(const char *file, int line, const char* to, const char* attr_to, const char* from, const char* attr_from)
 {
-    _doCommand(file,line,Gui,"Gui.ActiveDocument.%s.%s=getattr("
-        "App.ActiveDocument.%s.getLinkedObject().ViewObject,'%s',Gui.ActiveDocument.%s.%s)", 
-        to, attr_to, from, attr_from, to, attr_to);
+    auto doc = App::GetApplication().getActiveDocument();
+    if(!doc)
+        return;
+    return _copyVisual(file,line,doc->getObject(to),attr_to,
+            doc->getObject(from),attr_from);
 }
 
 void Command::_copyVisual(const char *file, int line, const App::DocumentObject *to, const char* attr_to, const App::DocumentObject *from, const char *attr_from)
@@ -780,8 +782,14 @@ void Command::_copyVisual(const char *file, int line, const App::DocumentObject 
             obj = linked;
         }
     }
-    _doCommand(file,line,Gui,"%s.ViewObject.%s=getattr(%s.getLinkedObject().ViewObject,'%s',%s.ViewObject.%s)",
-            objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
+
+    try {
+        _doCommand(file,line,Gui,
+                "%s.ViewObject.%s=getattr(%s.getLinkedObject(True).ViewObject,'%s',%s.ViewObject.%s)",
+                objCmd.c_str(),attr_to,getObjectCmd(from).c_str(),attr_from,objCmd.c_str(),attr_to);
+    }catch(Base::Exception &e) {
+        // e.ReportException();
+    }
 }
 
 void Command::_copyVisual(const char *file, int line, const App::DocumentObject *to, const char* attr, const App::DocumentObject *from)
