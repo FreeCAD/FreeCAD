@@ -23,7 +23,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchCommands,ArchFloor,math,re,datetime
+import FreeCAD,Draft,ArchCommands,ArchFloor,math,re,datetime,ArchIFC
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
@@ -324,7 +324,7 @@ class _Site(ArchFloor._Floor):
         obj.IfcRole = "Site"
 
     def setProperties(self,obj):
-
+        ArchIFC.setProperties(obj)
         pl = obj.PropertiesList
         if not "Terrain" in pl:
             obj.addProperty("App::PropertyLink","Terrain","Site",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"))
@@ -424,6 +424,7 @@ class _Site(ArchFloor._Floor):
                     self.computeAreas(obj)
 
     def onChanged(self,obj,prop):
+        ArchIFC.onChanged(obj, prop)
 
         ArchFloor._Floor.onChanged(self,obj,prop)
         if prop == "Terrain":

@@ -29,7 +29,7 @@ __url__ =    "http://www.freecadweb.org"
 
 import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils,sys
 from DraftGeomUtils import vec
-from ArchComponent import ifcProducts
+from ArchIFC import ifcProducts
 
 ## @package importIFC
 #  \ingroup ARCH
@@ -1648,26 +1648,11 @@ def export(exportList,filename):
                 d["IfcUID"] = uid
                 obj.IfcData = d
 
-        # setting the IFC type + name conversions
+        ifctype = getIfcRoleFromObj(obj)
 
-        if hasattr(obj,"IfcRole"):
-            ifctype = obj.IfcRole.replace(" ","")
-        elif hasattr(obj,"Role"):
-            ifctype = obj.Role.replace(" ","")
-        else:
-            ifctype = Draft.getType(obj)
-        if ifctype in translationtable.keys():
-            ifctype = translationtable[ifctype]
-        ifctype = "Ifc" + ifctype
-        if ifctype == "IfcVisGroup":
-            ifctype = "IfcGroup"
         if ifctype == "IfcGroup":
             groups[obj.Name] = [o.Name for o in obj.Group]
             continue
-        if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
-            ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
-        if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Building"):
-            ifctype = "IfcBuilding"
 
         # export grids
 
@@ -1749,61 +1734,15 @@ def export(exportList,filename):
 
         kwargs = {"GlobalId": uid, "OwnerHistory": history, "Name": name,
             "Description": description, "ObjectPlacement": placement, "Representation": representation}
-        if ifctype in ["IfcSlab","IfcFooting","IfcRoof"]:
-            kwargs.update({"PredefinedType": "NOTDEFINED"})
-        elif ifctype in ["IfcWindow","IfcDoor"]:
-            if hasattr(obj,"Width") and hasattr(obj,"Height"):
-                kwargs.update({"OverallHeight": obj.Width.Value/1000.0,
-                    "OverallWidth": obj.Height.Value/1000.0})
-            else:
-                if obj.Shape.BoundBox.XLength > obj.Shape.BoundBox.YLength:
-                    l = obj.Shape.BoundBox.XLength
-                else:
-                    l = obj.Shape.BoundBox.YLength
-                kwargs.update({"OverallHeight": l/1000.0,
-                    "OverallWidth": obj.Shape.BoundBox.ZLength/1000.0})
-        elif ifctype == "IfcSpace":
-            internal = "NOTDEFINED"
-            if hasattr(obj,"Internal"):
-                if obj.Internal:
-                    internal = "INTERNAL"
-                else:
-                    internal = "EXTERNAL"
-            if schema == "IFC2X3":
-                kwargs.update({"CompositionType": "ELEMENT",
-                    "InteriorOrExteriorSpace": internal,
-                    "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
-            else:
-                kwargs.update({"CompositionType": "ELEMENT",
-                    "PredefinedType": internal,
-                    "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
-        elif ifctype == "IfcBuildingElementProxy":
-            if ifcopenshell.schema_identifier == "IFC4":
-                kwargs.update({"PredefinedType": "ELEMENT"})
-            else:
-                kwargs.update({"CompositionType": "ELEMENT"})
-        elif ifctype == "IfcSite":
+        if ifctype == "IfcSite":
             kwargs.update({"RefLatitude":dd2dms(obj.Latitude),
                            "RefLongitude":dd2dms(obj.Longitude),
                            "RefElevation":obj.Elevation.Value/1000.0,
                            "SiteAddress":buildAddress(obj,ifcfile),
                            "CompositionType": "ELEMENT"})
-        elif ifctype == "IfcBuilding":
-            kwargs.update({"CompositionType": "ELEMENT"})
-        elif ifctype == "IfcBuildingStorey":
-            kwargs.update({"CompositionType": "ELEMENT",
-                "Elevation": obj.Placement.Base.z/1000.0})
-        elif ifctype == "IfcReinforcingBar":
-            kwargs.update({"NominalDiameter": obj.Diameter.Value,
-                "BarLength": obj.Length.Value})
-        # TODO: Reconcile the attributes above which can be cleverly derived
-        # from FreeCAD native data, with the explicit IFC attribute values below
-        for property in obj.PropertiesList:
-            if obj.getGroupOfProperty(property) == "IFC Attributes" and obj.getPropertyByName(property):
-                value = obj.getPropertyByName(property)
-                if isinstance(value, FreeCAD.Units.Quantity):
-                    value = float(value)
-                kwargs.update({ property: value })
+        if ifcopenshell.schema_identifier == "IFC2X3":
+            kwargs = exportIFC2X3Attributes(obj, kwargs)
+        kwargs = exportIfcAttributes(obj, kwargs)
 
         # creating the product
 
@@ -2397,6 +2336,59 @@ def export(exportList,filename):
         print("Compression ratio:",int((float(ifcbin.spared)/(s+ifcbin.spared))*100),"%")
     del ifcbin
 
+def getIfcRoleFromObj(obj):
+    if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcRole") and (obj.IfcRole == "Undefined"):
+        ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
+    elif hasattr(obj,"IfcRole"):
+        ifctype = obj.IfcRole.replace(" ","")
+    elif hasattr(obj,"Role"):
+        ifctype = obj.Role.replace(" ","")
+    else:
+        ifctype = Draft.getType(obj)
+
+    if ifctype in translationtable.keys():
+        ifctype = translationtable[ifctype]
+    if ifctype == "VisGroup":
+        ifctype = "Group"
+
+    return "Ifc" + ifctype
+
+def exportIFC2X3Attributes(obj, kwargs):
+    role = getIfcRoleFromObj(obj)
+    if role in ["IfcSlab", "IfcFooting", "IfcRoof"]:
+        kwargs.update({"PredefinedType": "NOTDEFINED"})
+    elif role == "IfcBuilding":
+        kwargs.update({"CompositionType": "ELEMENT"})
+    elif role == "IfcBuildingStorey":
+        kwargs.update({"CompositionType": "ELEMENT"})
+    elif role == "IfcBuildingElementProxy":
+        kwargs.update({"CompositionType": "ELEMENT"})
+    elif role == "IfcSpace":
+        internal = "NOTDEFINED"
+        if hasattr(obj,"Internal"):
+            if obj.Internal:
+                internal = "INTERNAL"
+            else:
+                internal = "EXTERNAL"
+        kwargs.update({"CompositionType": "ELEMENT",
+            "InteriorOrExteriorSpace": internal,
+            "ElevationWithFlooring": obj.Shape.BoundBox.ZMin/1000.0})
+    elif role == "IfcReinforcingBar":
+        kwargs.update({"NominalDiameter": obj.Diameter.Value,
+            "BarLength": obj.Length.Value})
+    elif role == "IfcBuildingStorey":
+        kwargs.update({"Elevation": obj.Placement.Base.z/1000.0})
+    return kwargs
+
+
+def exportIfcAttributes(obj, kwargs):
+    for property in obj.PropertiesList:
+        if obj.getGroupOfProperty(property) == "IFC Attributes" and obj.getPropertyByName(property):
+            value = obj.getPropertyByName(property)
+            if isinstance(value, FreeCAD.Units.Quantity):
+                value = float(value)
+            kwargs.update({ property: value })
+    return kwargs
 
 def buildAddress(obj,ifcfile):
 
