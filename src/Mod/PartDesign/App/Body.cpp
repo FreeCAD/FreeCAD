@@ -504,3 +504,23 @@ std::vector<std::string> Body::getSubObjects(int reason) const {
         return Part::BodyBase::getSubObjects(reason);
     return {};
 }
+
+App::DocumentObject *Body::getSubObject(const char *subname, 
+        PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
+{
+    if(!pyObj || showTip ||
+       (subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')))
+        return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+
+    // We return the shape only if there are feature visibile inside
+    for(auto obj : Group.getValues()) {
+        if(obj->Visibility.getValue() && 
+           obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) 
+        {
+            return Part::BodyBase::getSubObject(subname,pyObj,pmat,transform,depth);
+        }
+    }
+    if(pmat && transform)
+        *pmat *= Placement.getValue().toMatrix();
+    return const_cast<Body*>(this);
+}
