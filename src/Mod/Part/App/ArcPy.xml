@@ -29,5 +29,12 @@
     const Geom_Ellipse &amp; value(void) const {return *getGeom_EllipsePtr();}
 	</ClassDeclarations>
 	-->
+    <Methode Name="setParameterRange" Const="false">
+        <Documentation>
+            <UserDocu>
+                Re-trims this curve to the provided parameter range ([Float=First, Float=Last])
+                    </UserDocu>
+                </Documentation>
+            </Methode>
   </PythonExport>
 </GenerateModel>
