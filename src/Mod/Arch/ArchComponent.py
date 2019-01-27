@@ -231,8 +231,14 @@ class Component:
             if ifcProductAttribute is None or ifcProductAttribute["is_enum"] is True:
                 obj.removeProperty(property)
 
-    def setProperties(self,obj):
 
+    def migrateDeprecatedAttributes(self, obj):
+        # FreeCAD <= 0.17 stored IFC data in IfcAttributes
+        if hasattr(obj, "IfcAttributes"):
+            obj.IfcData = obj.IfcAttributes
+            obj.removeProperty("IfcAttributes")
+
+    def setProperties(self,obj):
         pl = obj.PropertiesList
         if not "Base" in pl:
             obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
@@ -292,6 +298,7 @@ class Component:
         self.Subvolume = None
         #self.MoveWithHost = False
         self.Type = "Component"
+        self.migrateDeprecatedAttributes(obj)
 
     def onDocumentRestored(self,obj):
 
