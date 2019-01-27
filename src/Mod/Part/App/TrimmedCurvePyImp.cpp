@@ -29,20 +29,22 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "OCCError.h"
+
 #include "Geometry.h"
-#include "BoundedCurvePy.h"
-#include "BoundedCurvePy.cpp"
+#include "TrimmedCurvePy.h"
+#include "TrimmedCurvePy.cpp"
 
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string BoundedCurvePy::representation(void) const
+std::string TrimmedCurvePy::representation(void) const
 {
     return "<Curve object>";
 }
 
-PyObject *BoundedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *TrimmedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
@@ -51,27 +53,41 @@ PyObject *BoundedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
 }
 
 // constructor method
-int BoundedCurvePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+int TrimmedCurvePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
     return 0;
 }
 
-Py::Object BoundedCurvePy::getStartPoint(void) const
+PyObject* TrimmedCurvePy::setParameterRange(PyObject * args)
 {
-    return Py::Vector(getGeomBoundedCurvePtr()->getStartPoint());
+    Handle(Geom_Geometry) g = getGeomTrimmedCurvePtr()->handle();
+    Handle(Geom_TrimmedCurve) c = Handle(Geom_TrimmedCurve)::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u,v;
+            u=c->FirstParameter();
+            v=c->LastParameter();
+            if (!PyArg_ParseTuple(args, "|dd", &u,&v))
+                return 0;
+            getGeomTrimmedCurvePtr()->setRange(u,v);
+            Py_Return;
+        }
+    }
+    catch (Base::CADKernelError& e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a trimmed curve");
+    return 0;
 }
 
-Py::Object BoundedCurvePy::getEndPoint(void) const
-{
-    return Py::Vector(getGeomBoundedCurvePtr()->getEndPoint());
-}
-
-PyObject *BoundedCurvePy::getCustomAttributes(const char* /*attr*/) const
+PyObject *TrimmedCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int BoundedCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int TrimmedCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
