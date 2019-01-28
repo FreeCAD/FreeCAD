@@ -260,7 +260,7 @@ bool ViewProviderSubShapeBinder::doubleClicked() {
 void ViewProviderSubShapeBinder::setupContextMenu(QMenu* menu, QObject* receiver, const char* member) 
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Syncrhonize"), receiver, member);
+    act = menu->addAction(QObject::tr("Synchronize"), receiver, member);
     act->setData(QVariant((int)0));
     act = menu->addAction(QObject::tr("Select bound object"), receiver, member);
     act->setData(QVariant((int)1));
