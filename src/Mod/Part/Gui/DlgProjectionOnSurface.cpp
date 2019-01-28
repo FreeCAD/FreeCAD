@@ -718,7 +718,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
         {
           // make a copy of the current face maker
           // if the face fails just try again with the copy
-          BRepBuilderAPI_MakeFace tempCopy = BRepBuilderAPI_MakeFace(faceMaker.Face());
+          TopoDS_Face tempCopy = BRepBuilderAPI_MakeFace(faceMaker.Face()).Face();
           faceMaker.Add(TopoDS::Wire(itWireVec.Reversed()));
           ShapeFix_Face fix(faceMaker.Face());
           fix.Perform();
