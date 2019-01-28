@@ -258,7 +258,7 @@ QGIViewClip* QGIView::getClipGroup(void)
 
 void QGIView::updateView(bool update)
 {
-    if (getViewObject()->LockPosition.getValue()) {
+    if (getViewObject()->LockPosition.getValue() || locked) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
         setFlag(QGraphicsItem::ItemIsMovable, true);
