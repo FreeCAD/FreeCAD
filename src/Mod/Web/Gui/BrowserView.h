@@ -93,6 +93,7 @@ public:
     void load(const QUrl & url);
     void setHtml(const QString& HtmlCode,const QUrl & BaseUrl);
     void stop(void);
+    QUrl url() const;
 
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
