@@ -35,6 +35,7 @@
 
 #include "ViewProviderExt.h"
 
+#include <TopoDS_Face.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <BRepProj_Projection.hxx>
@@ -54,6 +55,8 @@
 #include <BRepCheck_Analyzer.hxx>
 #include <ShapeFix_Wireframe.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepBuilderAPI_NurbsConvert.hxx>
 
 using namespace PartGui;
 
@@ -659,20 +662,22 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
         if (edgeVec.empty()) continue;
 
         BRepBuilderAPI_MakeWire aWire;
+        std::vector<gp_Pnt> pntVec;
         for (auto itEdge : edgeVec)
         {
           Standard_Real first, last;
-          auto currentCurve = BRep_Tool::Curve(TopoDS::Edge(itEdge), first, last);
-          // trim the curve, otherwise it can be an infinite one
-          auto trimmedCurve = new Geom_TrimmedCurve(currentCurve, first, last);
-
-          // get parametric space curve
-          auto aCurve = GeomProjLib::Curve2d(trimmedCurve, surface);
-          auto edgeInParametricSpace = BRepBuilderAPI_MakeEdge(aCurve, surface).Edge();
-          ShapeFix_Edge aEdgeRepair;
-          aEdgeRepair.FixAddCurve3d(edgeInParametricSpace);
+          auto currentCurve = BRep_Tool::CurveOnSurface(TopoDS::Edge(itEdge), itCurrentShape.surfaceToProject, first, last);
+          if (!currentCurve) continue;
+          auto edgeInParametricSpace = BRepBuilderAPI_MakeEdge(currentCurve, surface, first,last).Edge();
           aWire.Add(edgeInParametricSpace);
+          if (!aWire.IsDone())
+          {
+            std::stringstream errmsg;
+            errmsg << "Creating a wire in parametric space has errors....: " << aWire.Error() << "\n";
+            Base::Console().Warning(errmsg.str().c_str());
+          }
         }
+
         if (!aWire.IsDone())
         {
           std::stringstream errmsg;
@@ -689,7 +694,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
       }
 
       // try to create a face from the wires
-      // the first wire is the outerwire
+      // the first wire is the otherwise
       // the following wires are the inside wires
       BRepBuilderAPI_MakeFace faceMaker;
       bool first = true;
@@ -698,7 +703,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
         if (first)
         {
           first = false;
-          // change the wire direction, othwerwise no face is created
+          // change the wire direction, otherwise no face is created
           auto currentWire = TopoDS::Wire(itWireVec.Reversed());
           if (itCurrentShape.surfaceToProject.Orientation() == TopAbs_REVERSED) currentWire = itWireVec;
           faceMaker = BRepBuilderAPI_MakeFace(surface, currentWire);
@@ -708,7 +713,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
           BRepCheck_Analyzer aChecker(aFace);
           if (!aChecker.IsValid())
           {
-            faceMaker = BRepBuilderAPI_MakeFace(surface, itWireVec);
+            faceMaker = BRepBuilderAPI_MakeFace(surface, TopoDS::Wire(currentWire.Reversed()));
           }
         }
         else
