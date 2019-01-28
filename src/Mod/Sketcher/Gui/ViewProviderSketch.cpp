@@ -6062,9 +6062,11 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         edit = 0;
         this->detachSelection();
 
+        App::AutoTransaction trans("Sketch recompute");
         try {
             // and update the sketch
-            getSketchObject()->getDocument()->recompute();
+            // getSketchObject()->getDocument()->recompute();
+            Gui::Command::updateActive();
         }
         catch (...) {
         }
