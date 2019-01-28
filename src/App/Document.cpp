@@ -2197,8 +2197,13 @@ bool Document::saveCopy(const char* _file) const
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
-    if(testStatus(Document::PartialDoc))
-        throw Base::RuntimeError("Partial loaded document cannot be saved");
+    if(testStatus(Document::PartialDoc)) {
+        FC_ERR("Partial loaded document '" << Label.getValue() << "' cannot be saved");
+        // TODO We don't make this a fatal error and return 'true' to make it possible to
+        // save other documents that depends on this partial opened document. We need better
+        // handling to avoid touching partial documents.
+        return true;
+    }
 
     if (*(FileName.getValue()) != '\0') {
         // Save the name of the tip object in order to handle in Restore()
