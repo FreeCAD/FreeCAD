@@ -321,7 +321,15 @@ Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sam
         auto src = getElementSource(owner,shape,mapped,sameType?element_type:0);
         int idx = (int)source.size()-1;
         for(auto rit=src.rbegin();idx>=0&&rit!=src.rend();++rit,--idx) {
-            if(*rit != source[idx]) {
+            // TODO: shall we ignore source tag when comparing? It could cause
+            // matching unrelated element, but it does help dealing with feature
+            // reording in PartDesign::Body.
+#if 0
+            if(*rit != source[idx])
+#else
+            if(rit->second != source[idx].second)
+#endif
+            {
                 ++idx;
                 break;
             }
