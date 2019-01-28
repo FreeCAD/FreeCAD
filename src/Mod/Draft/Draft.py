@@ -1339,6 +1339,21 @@ def extrude(obj,vector,solid=False):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
+def joinWires(wire1, wire2):
+    wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
+    wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
+    if wire1AbsPoints[0] == wire2AbsPoints[0]:
+        wire1AbsPoints = list(reversed(wire1AbsPoints))
+    elif wire1AbsPoints[0] == wire2AbsPoints[-1]:
+        wire1AbsPoints = list(reversed(wire1AbsPoints))
+        wire2AbsPoints = list(reversed(wire2AbsPoints))
+    elif wire1AbsPoints[-1] == wire2AbsPoints[-1]:
+        wire2AbsPoints = list(reversed(wire2AbsPoints))
+    wire2AbsPoints.pop(0)
+    wire1.Points = [wire1.Placement.inverse().multVec(point) for point in wire1AbsPoints] + [wire1.Placement.inverse().multVec(point) for point in wire2AbsPoints]
+    FreeCAD.ActiveDocument.removeObject(wire2.Name)
+    FreeCAD.ActiveDocument.recompute()
+
 def fuse(object1,object2):
     '''fuse(oject1,object2): returns an object made from
     the union of the 2 given objects. If the objects are
