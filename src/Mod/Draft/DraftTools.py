@@ -3214,7 +3214,7 @@ class Join(Modifier):
         return {'Pixmap'  : 'Draft_Upgrade',
                 'Accel' : "F, U",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Join"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Does funky!")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Joins two wires together")}
 
     def Activated(self):
         Modifier.Activated(self,"Upgrade")
