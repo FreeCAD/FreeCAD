@@ -157,7 +157,10 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
     }
 
     for (auto& item: getViewsAsDPGI()) {
+        bool touched = item->isTouched();
         item->autoPosition();
+        if(!touched)
+            item->purgeTouched();
     }
 
     return DrawViewCollection::execute();
