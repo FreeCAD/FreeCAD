@@ -3207,6 +3207,36 @@ class Stretch(Modifier):
             self.commit(translate("draft","Stretch"),commitops)
         self.finish()
 
+class Join(Modifier):
+    '''The Draft_Join FreeCAD command definition.'''
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Upgrade',
+                'Accel' : "F, U",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Join"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Does funky!")}
+
+    def Activated(self):
+        Modifier.Activated(self,"Upgrade")
+        if not self.ui:
+            return
+        if not FreeCADGui.Selection.getSelection():
+            self.ui.selectUi()
+            msg(translate("draft", "Select an object to upgrade")+"\n")
+            self.call = self.view.addEventCallback("SoEvent",selectObject)
+        else:
+            self.proceed()
+
+    def proceed(self):
+        if self.call:
+            self.view.removeEventCallback("SoEvent",self.call)
+        if FreeCADGui.Selection.getSelection():
+            print(FreeCADGui.Selection.getSelection())
+            FreeCADGui.addModule("Draft")
+            self.commit(translate("draft","Upgrade"),
+                ['Draft.joinWires(FreeCADGui.Selection.getSelection()[0], FreeCADGui.Selection.getSelection()[1])', 'FreeCAD.ActiveDocument.recompute()'])
+        self.finish()
+
 
 class Upgrade(Modifier):
     '''The Draft_Upgrade FreeCAD command definition.'''
@@ -5820,6 +5850,7 @@ FreeCADGui.addCommand('Draft_Label',Draft_Label())
 FreeCADGui.addCommand('Draft_Move',Move())
 FreeCADGui.addCommand('Draft_Rotate',Rotate())
 FreeCADGui.addCommand('Draft_Offset',Offset())
+FreeCADGui.addCommand('Draft_Join',Join())
 FreeCADGui.addCommand('Draft_Upgrade',Upgrade())
 FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
 FreeCADGui.addCommand('Draft_Trimex',Trimex())
