@@ -4180,39 +4180,44 @@ class Edit(Modifier):
                     p = FreeCADGui.ActiveDocument.ActiveView.getCursorPos()
                     info = FreeCADGui.ActiveDocument.ActiveView.getObjectInfo(p)
                     if info:
-                        if info["Object"] == self.obj.Name:
-                            if self.ui.addButton.isChecked():
-                                if self.point:
-                                    pt = self.point
-                                    if "x" in info:
-                                        # prefer "real" 3D location over working-plane-driven one if possible
-                                        pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
-                                    self.addPoint(pt,info)
-                            elif self.ui.delButton.isChecked():
-                                if 'EditNode' in info["Component"]:
-                                    self.delPoint(int(info["Component"][8:]))
-                             # don't do tan/sym on DWire/BSpline!
-                            elif ((Draft.getType(self.obj) == "BezCurve") and
-                                  (self.ui.sharpButton.isChecked())):
-                                if 'EditNode' in info["Component"]:
-                                    self.smoothBezPoint(int(info["Component"][8:]), info, 'Sharp')
-                            elif ((Draft.getType(self.obj) == "BezCurve") and
-                                  (self.ui.tangentButton.isChecked())):
-                                if 'EditNode' in info["Component"]:
-                                    self.smoothBezPoint(int(info["Component"][8:]), info, 'Tangent')
-                            elif ((Draft.getType(self.obj) == "BezCurve") and
-                                  (self.ui.symmetricButton.isChecked())):
-                                if 'EditNode' in info["Component"]:
-                                    self.smoothBezPoint(int(info["Component"][8:]), info, 'Symmetric')
-                            elif 'EditNode' in info["Component"]:
-                                self.ui.pointUi()
-                                self.ui.isRelative.show()
-                                self.editing = int(info["Component"][8:])
-                                self.trackers[self.editing].off()
-                                if hasattr(self.obj.ViewObject,"Selectable"):
-                                    self.obj.ViewObject.Selectable = False
-                                self.node.append(self.trackers[self.editing].get())
-                                FreeCADGui.Snapper.setSelectMode(False)
+                        if info["Object"] != self.obj.Name:
+                            return
+                        if self.ui.addButton.isChecked() \
+                            and Draft.getType(self.obj) == "Wire" \
+                            and 'Edge' in info["Component"]:
+                                self.addPointOnEdge(FreeCAD.Vector(info["x"],info["y"],info["z"]), int(info["Component"][4:]))
+                        elif self.ui.addButton.isChecked():
+                            if self.point:
+                                pt = self.point
+                                if "x" in info:
+                                    # prefer "real" 3D location over working-plane-driven one if possible
+                                    pt = FreeCAD.Vector(info["x"],info["y"],info["z"])
+                                self.addPoint(pt,info)
+                        elif self.ui.delButton.isChecked():
+                            if 'EditNode' in info["Component"]:
+                                self.delPoint(int(info["Component"][8:]))
+                         # don't do tan/sym on DWire/BSpline!
+                        elif ((Draft.getType(self.obj) == "BezCurve") and
+                              (self.ui.sharpButton.isChecked())):
+                            if 'EditNode' in info["Component"]:
+                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Sharp')
+                        elif ((Draft.getType(self.obj) == "BezCurve") and
+                              (self.ui.tangentButton.isChecked())):
+                            if 'EditNode' in info["Component"]:
+                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Tangent')
+                        elif ((Draft.getType(self.obj) == "BezCurve") and
+                              (self.ui.symmetricButton.isChecked())):
+                            if 'EditNode' in info["Component"]:
+                                self.smoothBezPoint(int(info["Component"][8:]), info, 'Symmetric')
+                        elif 'EditNode' in info["Component"]:
+                            self.ui.pointUi()
+                            self.ui.isRelative.show()
+                            self.editing = int(info["Component"][8:])
+                            self.trackers[self.editing].off()
+                            if hasattr(self.obj.ViewObject,"Selectable"):
+                                self.obj.ViewObject.Selectable = False
+                            self.node.append(self.trackers[self.editing].get())
+                            FreeCADGui.Snapper.setSelectMode(False)
                 else:
                     self.trackers[self.editing].on()
                     #if hasattr(self.obj.ViewObject,"Selectable"):
@@ -4389,8 +4394,22 @@ class Edit(Modifier):
             self.ui.editUi()
         self.node = []
 
+    def addPointOnEdge(self, newPoint, edgeIndex):
+        newPoints = []
+        hasAddedPoint = False
+        for index, point in enumerate(self.obj.Points):
+            if index == edgeIndex:
+                hasAddedPoint = True
+                newPoints.append(self.invpl.multVec(newPoint))
+            newPoints.append(point)
+        if not hasAddedPoint:
+            newPoints.append(point)
+        self.obj.Points = newPoints
+        self.doc.recompute()
+        self.resetTrackers()
+
     def addPoint(self,point,info=None):
-        if not (Draft.getType(self.obj) in ["Wire","BSpline","BezCurve"]): return
+        if not (Draft.getType(self.obj) in ["BSpline","BezCurve"]): return
         pts = self.obj.Points
         if Draft.getType(self.obj) == "BezCurve":
             if not info['Component'].startswith('Edge'):
@@ -4421,23 +4440,7 @@ class Edit(Modifier):
             cont = 1 if (self.obj.Degree >= 2) else 0
             self.obj.Continuity = c[0:edgeindex]+[cont]+c[edgeindex:]
         else:
-            if ( Draft.getType(self.obj) == "Wire" ):
-                if (self.obj.Closed == True):
-                    # DNC: work around.... seems there is a
-                    # bug in approximate method for closed wires...
-                    edges = self.obj.Shape.Wires[0].Edges
-                    e1 = edges[-1] # last edge
-                    v1 = e1.Vertexes[0].Point
-                    v2 = e1.Vertexes[1].Point
-                    v2.multiply(0.9999)
-                    edges[-1] = Part.makeLine(v1,v2)
-                    edges.reverse()
-                    wire = Part.Wire(edges)
-                    curve = wire.approximate(0.0001,0.0001,100,25)
-                else:
-                    # DNC: this version is much more reliable near sharp edges!
-                    curve = self.obj.Shape.Wires[0].approximate(0.0001,0.0001,100,25)
-            elif ( Draft.getType(self.obj) in ["BSpline"]):
+            if ( Draft.getType(self.obj) in ["BSpline"]):
                 if (self.obj.Closed == True):
                     curve = self.obj.Shape.Edges[0].Curve
                 else:
