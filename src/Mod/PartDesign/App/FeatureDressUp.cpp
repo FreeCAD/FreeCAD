@@ -106,7 +106,6 @@ std::vector<TopoShape> DressUp::getContiniusEdges(const TopoShape &shape) {
             subshape = shape.getSubShape(ref.c_str());
         }catch(...){}
         if(subshape.IsNull()) {
-            FC_ERR(getFullName() << ": invalid edge link '" << ref << "'");
             throw Part::NullShapeException("Invalid edge link");
         }
 

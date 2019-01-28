@@ -27,6 +27,7 @@
 # include <QListWidgetItem>
 #endif
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "TaskDressUpParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
@@ -58,7 +59,6 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     , DressUpView(DressUpView)
     , allowFaces(selectFaces)
     , allowEdges(selectEdges)
-    , transactionID(0)
 {
     selectionMode = none;
     showObject();
@@ -72,11 +72,11 @@ TaskDressUpParameters::~TaskDressUpParameters()
 
 void TaskDressUpParameters::setupTransaction() {
     int tid = 0;
-    if(!App::GetApplication().getActiveTransaction(&tid) || tid!=transactionID) {
-        std::ostringstream ss;
-        ss << "Edit " << DressUpView->getObject()->getNameInDocument();
-        transactionID = App::GetApplication().setActiveTransaction(ss.str().c_str());
-    }
+    const char *name = App::GetApplication().getActiveTransaction(&tid);
+    std::string n("Edit ");
+    n += DressUpView->getObject()->Label.getValue();
+    if(!name || n != name)
+        App::GetApplication().setActiveTransaction(n.c_str());
 }
 
 void TaskDressUpParameters::setup(QListWidget *widget) {
@@ -107,14 +107,23 @@ void TaskDressUpParameters::setup(QListWidget *widget) {
             continue;
         }
         FC_WARN("missing element reference: " << pcDressUp->getFullName() << "." << ref);
-        touched = true;
-        refs.pop_back();
+        bool popped = false;
         for(auto &name : Part::Feature::getRelatedElements(base,ref.c_str())) {
             if(!subSet.insert(name.second).second || !subSet.insert(name.first).second)
                 continue;
             FC_WARN("guess element reference: " << ref << " -> " << name.first);
             widget->addItem(QString::fromStdString(name.second));
+            if(!popped) {
+                refs.pop_back();
+                touched = true;
+                popped = true;
+            }
             refs.push_back(name.second);
+        }
+        if(!popped) {
+            if(!boost::starts_with(refs.back(),Data::ComplexGeoData::missingPrefix()))
+                refs.back() = Data::ComplexGeoData::missingPrefix()+refs.back();
+            widget->addItem(QString::fromStdString(refs.back()));
         }
     }
     if(touched){
