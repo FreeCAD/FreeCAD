@@ -918,6 +918,45 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         FCMD_OBJ_CMD(body,"insertObject(" << getObjectCmd(feat) << ","<< getObjectCmd(target) << ", True)");
     }
 
+    // Dependency order check.
+    // We must make sure the resulting objects of PartDesign::Feature do not
+    // depend on later objects
+    std::vector<App::DocumentObject*> bodyFeatures;
+    std::map<App::DocumentObject*,size_t> orders;
+    for(auto obj : body->Group.getValues()) {
+        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+            orders.emplace(obj,bodyFeatures.size());
+            bodyFeatures.push_back(obj);
+        }
+    }
+    bool failed = false;
+    std::ostringstream ss;
+    for(size_t i=0;i<bodyFeatures.size();++i) {
+        auto feat = bodyFeatures[i];
+        for(auto obj : feat->getOutList()) {
+            if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                continue;
+            for(auto dep : App::Document::getDependencyList({obj})) {
+                auto it = orders.find(dep);
+                if(it != orders.end() && it->second > i) {
+                    ss << feat->Label.getValue() << ", " << 
+                        obj->Label.getValue() << " -> " << 
+                        it->first->Label.getValue();
+                    if(!failed)
+                        failed = true;
+                    else
+                        ss << std::endl;
+                }
+            }
+        }
+    }
+    if(failed) {
+        QMessageBox::critical (0, QObject::tr( "Dependency violation" ),
+                QObject::tr( "Early feature must not depend on later feature.\n\n") 
+                    + QString::fromUtf8(ss.str().c_str()));
+        abortCommand();
+        return;
+    }
     updateActive();
 }
 
