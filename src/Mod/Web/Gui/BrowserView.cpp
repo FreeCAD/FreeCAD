@@ -162,6 +162,7 @@ void UrlWidget::keyPressEvent(QKeyEvent *keyEvt)
 void UrlWidget::display()
 {
     setFixedWidth(m_view->size().width());
+    setText(m_view->url().toString());
     show();
     setFocus(Qt::ActiveWindowFocusReason);
 }
@@ -643,6 +644,11 @@ void BrowserView::stop(void)
     view->stop();
 }
 
+QUrl BrowserView::url() const
+{
+    return view->url();
+}
+
 void BrowserView::onLoadStarted()
 {
     QProgressBar* bar = Gui::Sequencer::instance()->getProgressBar();
@@ -716,7 +722,10 @@ bool BrowserView::onMsg(const char* pMsg,const char** )
         view->setZoomFactor(factor - 0.2);
         return true;
     } else if (strcmp(pMsg,"SetURL")==0){
-        urlWgt->display();
+        if (urlWgt->isVisible())
+            urlWgt->hide();
+        else
+            urlWgt->display();
         return true;
     }
 
