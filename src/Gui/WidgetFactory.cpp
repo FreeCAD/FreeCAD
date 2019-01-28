@@ -364,7 +364,6 @@ QIcon *PythonWrapper::toQIcon(PyObject *pyobj)
         }
     }
 #else
-    Q_UNUSED(icon);
     Q_UNUSED(pyobj);
 #endif
     return 0;
