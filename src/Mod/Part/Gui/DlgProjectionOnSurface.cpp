@@ -55,8 +55,6 @@
 #include <BRepCheck_Analyzer.hxx>
 #include <ShapeFix_Wireframe.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepBuilderAPI_NurbsConvert.hxx>
 
 using namespace PartGui;
 
@@ -720,7 +718,7 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
         {
           // make a copy of the current face maker
           // if the face fails just try again with the copy
-          auto tempCopy = BRepBuilderAPI_MakeFace(faceMaker.Face());
+          BRepBuilderAPI_MakeFace tempCopy = BRepBuilderAPI_MakeFace(faceMaker.Face());
           faceMaker.Add(TopoDS::Wire(itWireVec.Reversed()));
           ShapeFix_Face fix(faceMaker.Face());
           fix.Perform();
