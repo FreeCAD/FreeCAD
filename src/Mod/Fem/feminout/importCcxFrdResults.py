@@ -65,7 +65,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
-    m = readResult(filename)
+    m = read_frd_result(filename)
     result_mesh_object = None
     if len(m['Nodes']) > 0:
         if analysis:
@@ -134,7 +134,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
 
 # read a calculix result file and extract the nodes, displacement vectors and stress values.
-def readResult(frd_input):
+def read_frd_result(frd_input):
     print('Read ccx results from frd file: ' + frd_input)
     inout_nodes = []
     inout_nodes_file = frd_input.rsplit('.', 1)[0] + '_inout_nodes.txt'
