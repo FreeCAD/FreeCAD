@@ -240,7 +240,6 @@ def fill_femresult_mechanical(results, result_set):
 
         results.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
         results.NodeNumbers = list(disp.keys())
-        results.DisplacementLengths = calculate_disp_abs(displacement)
 
         if 'stress' in result_set:
             stress = result_set['stress']
@@ -367,12 +366,6 @@ def calculate_principal_stress(i):
     except:
         return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
 
-
-def calculate_disp_abs(displacements):
-    disp_abs = []
-    for d in displacements:
-        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-    return disp_abs
 
 def get_span(node_items):
     positions = []  # list of node vectors
