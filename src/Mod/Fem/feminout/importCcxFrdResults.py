@@ -158,7 +158,6 @@ def read_frd_result(frd_input):
     mode_results['time'] = float('NaN')
     mode_disp = {}
     mode_stress = {}
-    mode_stressv = {}
     mode_strain = {}
     mode_peeq = {}
     mode_temp = {}
@@ -426,7 +425,6 @@ def read_frd_result(frd_input):
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
             mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
-            mode_stressv[elem] = FreeCAD.Vector(stress_1, stress_2, stress_3)
 
         # Check if we found strain section
         if line[5:13] == "TOSTRAIN":
@@ -508,9 +506,7 @@ def read_frd_result(frd_input):
 
             if mode_stress_found:
                 mode_results['stress'] = mode_stress
-                mode_results['stressv'] = mode_stressv
                 mode_stress = {}
-                mode_stressv = {}
                 mode_stress_found = False
                 node_element_section = False
 
