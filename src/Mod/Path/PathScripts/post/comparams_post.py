@@ -95,7 +95,7 @@ def export(obj,filename,argstring):
             gcode+= lineout(c, oldvals, modal)+'\n'
             oldvals = saveVals(c)
         gcode+='M2\n'
-        gfile = open(filename,"wb")
+        gfile = open(filename,"w")
         gfile.write(gcode)
         gfile.close()
     else:

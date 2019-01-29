@@ -234,7 +234,7 @@ def export(objectslist, filename, argstring):
   print("done postprocessing.")
 
   #write the file
-  gfile = pythonopen(filename,"wb")
+  gfile = pythonopen(filename,"w")
   gfile.write(gcode)
   gfile.close()
 
