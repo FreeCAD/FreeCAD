@@ -109,6 +109,7 @@ private:
   void get_all_wire_from_face(SShapeStore& ioCurrentSahpe);
   void create_projection_face_from_wire(std::vector<SShapeStore>& iCurrentShape);
   TopoDS_Wire sort_and_heal_wire(const TopoDS_Shape& iShape, const TopoDS_Face& iFaceToProject);
+  TopoDS_Wire sort_and_heal_wire(const std::vector<TopoDS_Edge>& iEdgeVec, const TopoDS_Face& iFaceToProject);
   void create_face_extrude(std::vector<SShapeStore>& iCurrentShape);
   void store_wire_in_vector(const SShapeStore& iCurrentShape, const TopoDS_Shape& iParentShape, std::vector<SShapeStore>& iStoreVec, const unsigned int iColor);
   void set_xyz_dir_spinbox(QDoubleSpinBox* icurrentSpinBox);
