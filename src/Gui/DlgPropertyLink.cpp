@@ -241,6 +241,7 @@ void DlgPropertyLink::findObjects()
         Base::PyGILStateLocker lock;
         std::map<std::string,QIcon> typeInfos;
 
+        QTreeWidgetItem *selected = 0;
         for(auto obj : doc->getObjects()) {
             auto it = types.end();
             auto prop = Base::freecad_dynamic_cast<App::PropertyPythonObject>(
@@ -281,9 +282,14 @@ void DlgPropertyLink::findObjects()
             }
 
             auto item = createItem(obj,0);
-            if(item && selectedNames.count(obj->getNameInDocument())) 
+            if(item && selectedNames.count(obj->getNameInDocument())) {
+                if(!selected)
+                    selected = item;
                 item->setSelected(true);
+            }
         }
+        if(selected)
+            ui->treeWidget->scrollToItem(selected);
 
         if(refreshTypes) {
             refreshTypes = false;
