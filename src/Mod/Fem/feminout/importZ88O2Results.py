@@ -97,7 +97,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
 
             res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
             res_obj.Mesh = result_mesh_object
-            res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set, 0)
+            res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
             if analysis:
                 analysis_object.addObject(res_obj)
 
