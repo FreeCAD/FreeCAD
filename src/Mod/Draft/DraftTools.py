@@ -3217,12 +3217,12 @@ class Join(Modifier):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Joins two wires together")}
 
     def Activated(self):
-        Modifier.Activated(self,"Upgrade")
+        Modifier.Activated(self,"Join")
         if not self.ui:
             return
         if not FreeCADGui.Selection.getSelection():
             self.ui.selectUi()
-            msg(translate("draft", "Select an object to upgrade")+"\n")
+            msg(translate("draft", "Select an object to join")+"\n")
             self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
             self.proceed()
@@ -3233,10 +3233,9 @@ class Join(Modifier):
         if FreeCADGui.Selection.getSelection():
             print(FreeCADGui.Selection.getSelection())
             FreeCADGui.addModule("Draft")
-            self.commit(translate("draft","Upgrade"),
+            self.commit(translate("draft","Join"),
                 ['Draft.joinWires(FreeCADGui.Selection.getSelection())', 'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
-
 
 class Upgrade(Modifier):
     '''The Draft_Upgrade FreeCAD command definition.'''
