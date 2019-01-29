@@ -282,7 +282,6 @@ def fill_femresult_mechanical(results, result_set):
             if (results.NodeNumbers != 0 and results.NodeNumbers != stress_keys):
                 print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
                       .format(results.NodeNumbers, len(results.StressValues)))
-            results.NodeNumbers = stress_keys
 
         # Read Equivalent Plastic strain if they exist
         if 'peeq' in result_set:
