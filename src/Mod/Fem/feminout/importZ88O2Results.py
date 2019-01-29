@@ -108,7 +108,7 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
             FreeCAD.ActiveDocument.recompute()
 
     else:
-        FreeCAD.Console.PrintError('Problem on frd file import. No nodes found in frd file.\n')
+        FreeCAD.Console.PrintError('Problem on Z88 result file import. No nodes found in Z88 result file.\n')
 
 
 def read_z88_disp(z88_disp_input):
