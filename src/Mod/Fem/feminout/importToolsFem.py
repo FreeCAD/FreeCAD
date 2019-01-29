@@ -242,9 +242,16 @@ def fill_femresult_mechanical(results, result_set):
         results.NodeNumbers = list(disp.keys())
         results.DisplacementLengths = calculate_disp_abs(displacement)
 
-        if 'stressv' in result_set:
-            stressv = result_set['stressv']
-            results.StressVectors = list(map((lambda x: x * scale), stressv.values()))
+        if 'stress' in result_set:
+            stress = result_set['stress']
+            stressv1 = {}
+            for i, stval in enumerate(stress.values()):  # i .. stresstuple .. (Sxx, Syy, Szz, Sxy, Syz, Szx)
+                stressv1[i] = (FreeCAD.Vector(stval[0], stval[1], stval[2]))  # Sxx, Syy, Szz
+            results.StressVectors = list(map((lambda x: x * scale), stressv1.values()))
+            stress_keys = list(stress.keys())
+            if (results.NodeNumbers != 0 and results.NodeNumbers != stress_keys):
+                print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
+                      .format(results.NodeNumbers, len(results.StressValues)))
 
         if 'strainv' in result_set:
             strainv = result_set['strainv']
@@ -278,10 +285,6 @@ def fill_femresult_mechanical(results, result_set):
                     results.PrincipalMed = prinstress2
                     results.PrincipalMin = prinstress3
                     results.MaxShear = shearstress
-            stress_keys = list(stress.keys())
-            if (results.NodeNumbers != 0 and results.NodeNumbers != stress_keys):
-                print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
-                      .format(results.NodeNumbers, len(results.StressValues)))
 
         # Read Equivalent Plastic strain if they exist
         if 'peeq' in result_set:
