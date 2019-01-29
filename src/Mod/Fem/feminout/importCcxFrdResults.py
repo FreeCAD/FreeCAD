@@ -75,16 +75,6 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
         result_mesh_object = ObjectsFem.makeMeshResult(FreeCAD.ActiveDocument, 'Result_mesh')
         result_mesh_object.FemMesh = mesh
 
-        positions = []
-        for k, v in m['Nodes'].items():
-            positions.append(v)
-        p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
-        p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
-        x_span = abs(p_x_max - p_x_min)
-        y_span = abs(p_y_max - p_y_min)
-        z_span = abs(p_z_max - p_z_min)
-        span = max(x_span, y_span, z_span)
-
         number_of_increments = len(m['Results'])
         FreeCAD.Console.PrintLog('Increments: ' + str(number_of_increments) + '\n')
         if len(m['Results']) > 0:
