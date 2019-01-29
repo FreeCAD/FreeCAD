@@ -98,11 +98,12 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 if analysis:
                     analysis_object.addObject(res_obj)
                 # complementary result object calculations
+                import femresult.resulttools as restools
                 if not res_obj.MassFlowRate:
                     # only compact result if not Flow 1D results
                     # compact result object, workaround for bug 2873, https://www.freecadweb.org/tracker/view.php?id=2873
-                    from femresult.resulttools import compact_result as rs
-                    res_obj = rs(res_obj)
+                    res_obj = restools.compact_result(res_obj)
+                res_obj = restools.fill_femresult_stats(res_obj)  # fill Stats
         else:
             error_message = (
                 "We have nodes but no results in frd file, which means we only have a mesh in frd file. "
