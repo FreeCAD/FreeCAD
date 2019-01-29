@@ -1340,6 +1340,8 @@ def extrude(obj,vector,solid=False):
     return newobj
 
 def joinWires(wires, joinAttempts = 0):
+    '''joinWires(objects): merges a set of wires where possible, if any of those
+    wires have a coincident start and end point'''
     if joinAttempts > len(wires):
         return FreeCAD.ActiveDocument.recompute()
     joinAttempts += 1
@@ -1353,6 +1355,8 @@ def joinWires(wires, joinAttempts = 0):
     joinWires(wires, joinAttempts)
 
 def joinTwoWires(wire1, wire2):
+    '''joinTwoWires(object, object): joins two wires if they share a common
+    point as a start or an end'''
     wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
     wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
     if wire1AbsPoints[0] == wire2AbsPoints[0]:
