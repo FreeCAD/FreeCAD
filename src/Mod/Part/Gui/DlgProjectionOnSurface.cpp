@@ -659,36 +659,17 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
         }
         if (edgeVec.empty()) continue;
 
-        BRepBuilderAPI_MakeWire aWire;
-        std::vector<gp_Pnt> pntVec;
+        std::vector<TopoDS_Edge> edgeInParametricSpaceVec;
         for (auto itEdge : edgeVec)
         {
           Standard_Real first, last;
           auto currentCurve = BRep_Tool::CurveOnSurface(TopoDS::Edge(itEdge), itCurrentShape.surfaceToProject, first, last);
           if (!currentCurve) continue;
           auto edgeInParametricSpace = BRepBuilderAPI_MakeEdge(currentCurve, surface, first,last).Edge();
-          aWire.Add(edgeInParametricSpace);
-          if (!aWire.IsDone())
-          {
-            std::stringstream errmsg;
-            errmsg << "Creating a wire in parametric space has errors....: " << aWire.Error() << "\n";
-            Base::Console().Warning(errmsg.str().c_str());
-          }
+          edgeInParametricSpaceVec.push_back(edgeInParametricSpace);
         }
-
-        if (!aWire.IsDone())
-        {
-          std::stringstream errmsg;
-          errmsg << "Cannot create wire in parametric space....: " << aWire.Error() << "\n";
-          Base::Console().Warning(errmsg.str().c_str());
-          continue;
-        }
-
-        ShapeFix_Wire aWireRepair(aWire.Wire(), itCurrentShape.surfaceToProject, 0.00001);
-        aWireRepair.FixAddCurve3dMode();
-        aWireRepair.FixAddPCurveMode();
-        aWireRepair.Perform();
-        itCurrentShape.aProjectedWireInParametricSpaceVec.push_back(aWireRepair.Wire());
+        auto aWire = sort_and_heal_wire(edgeInParametricSpaceVec, itCurrentShape.surfaceToProject);
+        itCurrentShape.aProjectedWireInParametricSpaceVec.push_back(aWire);
       }
 
       // try to create a face from the wires
@@ -747,17 +728,29 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
 
 TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const TopoDS_Shape& iShape, const TopoDS_Face& iFaceToProject)
 {
+  std::vector<TopoDS_Edge> aEdgeVec;
+  for (TopExp_Explorer aExplorer(iShape, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
+  {
+    auto anEdge = TopoDS::Edge(aExplorer.Current());
+    aEdgeVec.push_back(anEdge);
+  }
+  return sort_and_heal_wire(aEdgeVec, iFaceToProject);
+}
+
+TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vector<TopoDS_Edge>& iEdgeVec, const TopoDS_Face& iFaceToProject)
+{
   // try to sort and heal all wires
-  // if the wires are not clean making a face will fail!
+// if the wires are not clean making a face will fail!
   ShapeAnalysis_FreeBounds shapeAnalyzer;
   Handle(TopTools_HSequenceOfShape) shapeList = new TopTools_HSequenceOfShape;
   Handle(TopTools_HSequenceOfShape) aWireHandle;
   Handle(TopTools_HSequenceOfShape) aWireWireHandle;
-  for (TopExp_Explorer aExplorer(iShape, TopAbs_EDGE); aExplorer.More(); aExplorer.Next())
+  
+  for (auto it : iEdgeVec)
   {
-    auto anEdge = TopoDS::Edge(aExplorer.Current());
-    shapeList->Append(TopoDS::Edge(aExplorer.Current()));
+    shapeList->Append(it);
   }
+
   shapeAnalyzer.ConnectEdgesToWires(shapeList, 0.0001, false, aWireHandle);
   shapeAnalyzer.ConnectWiresToWires(aWireHandle, 0.0001, false, aWireWireHandle);
   if (!aWireWireHandle) return TopoDS_Wire();
