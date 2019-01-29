@@ -266,27 +266,36 @@ void CmdTechDrawNewView::activated(int iMsg)
         return;
     }
     std::string PageName = page->getNameInDocument();
+    auto inlist = page->getInListEx(true);
+    inlist.insert(page);
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-    if ((shapes.empty())) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No Shapes or Groups in this selection"));
-        return;
-    }
+    std::vector<App::DocumentObject*> shapes;
 
     //set projection direction from selected Face
     //use first object with a face selected
     App::DocumentObject* partObj = 0;
     std::string subName;
     for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
+        auto obj = sel.getObject();
+        if(!obj || inlist.count(obj))
+            continue;
+        shapes.push_back(obj);
+        if(partObj)
+            continue;
         for(auto &sub : sel.getSubNames()) {
             if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
                 subName = sub;
-                partObj = sel.getObject();
+                partObj = obj;
                 break;
             }
         }
     }
+    if ((shapes.empty())) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("No Shapes or Groups in this selection"));
+        return;
+    }
+
     Base::Vector3d projDir;
 
     Gui::WaitCursor wc;
@@ -487,26 +496,34 @@ void CmdTechDrawProjGroup::activated(int iMsg)
         return;
     }
     std::string PageName = page->getNameInDocument();
+    auto inlist = page->getInListEx(true);
+    inlist.insert(page);
 
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    //set projection direction from selected Face
+    //use first object with a face selected
+
+    std::vector<App::DocumentObject*> shapes;
+    App::DocumentObject* partObj = 0;
+    std::string subName;
+    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
+        auto obj = sel.getObject();
+        if(inlist.count(obj))
+            continue;
+        shapes.push_back(obj);
+        if(partObj)
+            continue;
+        for(auto &sub : sel.getSubNames()) {
+            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
+                subName = sub;
+                partObj = obj;
+                break;
+            }
+        }
+    }
     if (shapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("No Shapes or Groups in this selection"));
         return;
-    }
-
-    //set projection direction from selected Face
-    //use first object with a face selected
-    App::DocumentObject* partObj = 0;
-    std::string subName;
-    for(auto &sel : getSelection().getSelectionEx(0,App::DocumentObject::getClassTypeId(),false)) {
-        for(auto &sub : sel.getSubNames()) {
-            if (TechDraw::DrawUtil::getGeomTypeFromName(sub) == "Face") {
-                subName = sub;
-                partObj = sel.getObject();
-                break;
-            }
-        }
     }
 
     Base::Vector3d projDir;

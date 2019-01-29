@@ -83,7 +83,7 @@ bool QGIProjGroup::sceneEventFilter(QGraphicsItem* watched, QEvent *event)
             switch(event->type()) {
               case QEvent::GraphicsSceneMousePress:
                   // TODO - Perhaps just pass the mouse event on to the anchor somehow?
-                  if (scene()) {
+                  if (scene() && !qAnchor->isSelected()) {
                       scene()->clearSelection();
                       qAnchor->setSelected(true);
                   }
@@ -119,8 +119,12 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
                     gView->setLocked(true);
                     installSceneEventFilter(gView);
                     App::DocumentObject *docObj = getViewObject();
-                    TechDraw::DrawProjGroup *projectionGroup = dynamic_cast<TechDraw::DrawProjGroup *>(docObj);
-                    projectionGroup->Anchor.setValue(fView);
+                    TechDraw::DrawProjGroup *projectionGroup = static_cast<TechDraw::DrawProjGroup *>(docObj);
+                    // Since we may doing this during document restore time, we
+                    // shall prevent unnecessary touching of the object, hence
+                    // the following check.
+                    if(projectionGroup->Anchor.getValue()!=fView)
+                        projectionGroup->Anchor.setValue(fView);
                     updateView();
                 } else if ( type == QString::fromLatin1("Top") ||
                     type == QString::fromLatin1("Bottom")) {
