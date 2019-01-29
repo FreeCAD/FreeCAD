@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>371</width>
-    <height>506</height>
+    <height>511</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -213,7 +213,7 @@
           <item row="1" column="1">
            <widget class="QLineEdit" name="lePrimary">
             <property name="enabled">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="font">
              <font>
@@ -227,7 +227,7 @@
              <enum>Qt::NoFocus</enum>
             </property>
             <property name="toolTip">
-             <string>Primary View Direction</string>
+             <string>Current primary view direction</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
