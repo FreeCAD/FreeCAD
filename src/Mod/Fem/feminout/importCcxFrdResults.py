@@ -102,16 +102,17 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 else:
                     results_name = result_name_prefix + 'results'
 
-                results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
-                results.Mesh = result_mesh_object
-                results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
-                if not results.MassFlowRate:
+                res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+                res_obj.Mesh = result_mesh_object
+                res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
+                if analysis:
+                    analysis_object.addObject(res_obj)
+                # complementary result object calculations
+                if not res_obj.MassFlowRate:
                     # only compact result if not Flow 1D results
                     # compact result object, workaround for bug 2873, https://www.freecadweb.org/tracker/view.php?id=2873
                     from femresult.resulttools import compact_result as rs
-                    results = rs(results)
-                if analysis:
-                    analysis_object.addObject(results)
+                    res_obj = rs(res_obj)
         else:
             error_message = (
                 "We have nodes but no results in frd file, which means we only have a mesh in frd file. "

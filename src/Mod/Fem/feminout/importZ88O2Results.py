@@ -95,11 +95,11 @@ def import_z88_disp(filename, analysis=None, result_name_prefix=None):
         for result_set in disp_read['Results']:
             results_name = result_name_prefix + 'results'
 
-            results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
-            results.Mesh = result_mesh_object
-            results = importToolsFem.fill_femresult_mechanical(results, result_set, 0)
+            res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+            res_obj.Mesh = result_mesh_object
+            res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set, 0)
             if analysis:
-                analysis_object.addObject(results)
+                analysis_object.addObject(res_obj)
 
         if FreeCAD.GuiUp:
             if analysis:
