@@ -55,6 +55,8 @@
 #include <BRepCheck_Analyzer.hxx>
 #include <ShapeFix_Wireframe.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
+#include <gp_Ax1.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
 
 using namespace PartGui;
 
@@ -339,6 +341,9 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
           {
             std::string parentName = aPart->getNameInDocument();
             auto currentShape =  aPart->Shape.getShape().getSubShape(itName->c_str());
+
+            transform_shape_to_global_postion(currentShape, aPart);
+
             currentShapeStore.inputShape = currentShape;
             currentShapeStore.partName = *itName;
             auto store = store_part_in_vector(currentShapeStore, iStoreVec);
@@ -348,6 +353,7 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
         }
         else
         {
+          transform_shape_to_global_postion(currentShapeStore.inputShape,currentShapeStore.partFeature);
           auto store = store_part_in_vector(currentShapeStore, iStoreVec);
           higlight_object(aPart, aPart->Shape.getName(), store, iColor);
         }
@@ -867,6 +873,35 @@ void PartGui::DlgProjectionOnSurface::set_xyz_dir_spinbox(QDoubleSpinBox* icurre
   ui->doubleSpinBoxDirY->setValue(0);
   ui->doubleSpinBoxDirZ->setValue(0);
   icurrentSpinBox->setValue(newVal);
+}
+
+void PartGui::DlgProjectionOnSurface::transform_shape_to_global_postion(TopoDS_Shape& ioShape, Part::Feature* iPart)
+{
+  auto currentPos = iPart->Placement.getValue().getPosition();
+  auto currentRotation = iPart->Placement.getValue().getRotation();
+  auto globalPlacement = iPart->globalPlacement();
+  auto globalPostion = globalPlacement.getPosition();
+  auto globalRotation = globalPlacement.getRotation();
+
+  if (currentRotation != globalRotation)
+  {
+    auto newRotation = globalRotation;
+    newRotation *= currentRotation.invert();
+
+    gp_Trsf aAngleTransform;
+    Base::Vector3d rotationAxes;
+    double rotationAngle;
+    newRotation.getRawValue(rotationAxes, rotationAngle);
+    aAngleTransform.SetRotation(gp_Ax1(gp_Pnt(currentPos.x, currentPos.y, currentPos.z), gp_Dir(rotationAxes.x, rotationAxes.y, rotationAxes.z)), rotationAngle);
+    ioShape = BRepBuilderAPI_Transform(ioShape, aAngleTransform, true).Shape();
+  }
+
+  if (currentPos != globalPostion)
+  {
+    gp_Trsf aPosTransform;
+    aPosTransform.SetTranslation(gp_Pnt(currentPos.x, currentPos.y, currentPos.z), gp_Pnt(globalPostion.x, globalPostion.y, globalPostion.z));
+    ioShape = BRepBuilderAPI_Transform(ioShape, aPosTransform, true).Shape();
+  }
 }
 
 void PartGui::DlgProjectionOnSurface::on_pushButtonAddProjFace_clicked()
