@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
+from math import sqrt
 
 
 ## Removes all result objects from an analysis group
@@ -240,6 +241,12 @@ def fill_femresult_stats(results):
     return results
 
 
+def add_disp_apps(res_obj):
+    res_obj.DisplacementLengths = calculate_disp_abs(res_obj.DisplacementVectors)
+    FreeCAD.Console.PrintMessage('Added DisplacementLengths.\n')
+    return res_obj
+
+
 def compact_result(res_obj):
     '''
     compacts result.Mesh and appropriate result.NodeNumbers
@@ -263,5 +270,12 @@ def compact_result(res_obj):
     res_obj.NodeNumbers = new_node_numbers
 
     return res_obj
+
+
+def calculate_disp_abs(displacements):
+    disp_abs = []
+    for d in displacements:
+        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+    return disp_abs
 
 ##  @}
