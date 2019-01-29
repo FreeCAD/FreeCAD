@@ -4183,7 +4183,7 @@ class Edit(Modifier):
                         if info["Object"] != self.obj.Name:
                             return
                         if self.ui.addButton.isChecked() \
-                            and Draft.getType(self.obj) == "Wire" \
+                            and Draft.getType(self.obj) in ["Wire","BSpline"] \
                             and 'Edge' in info["Component"]:
                                 self.addPointOnEdge(FreeCAD.Vector(info["x"],info["y"],info["z"]), int(info["Component"][4:]))
                         elif self.ui.addButton.isChecked():
