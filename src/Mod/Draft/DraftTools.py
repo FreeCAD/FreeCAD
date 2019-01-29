@@ -3234,7 +3234,7 @@ class Join(Modifier):
             print(FreeCADGui.Selection.getSelection())
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Upgrade"),
-                ['Draft.joinWires(FreeCADGui.Selection.getSelection()[0], FreeCADGui.Selection.getSelection()[1])', 'FreeCAD.ActiveDocument.recompute()'])
+                ['Draft.joinWires(FreeCADGui.Selection.getSelection())', 'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
 
 
