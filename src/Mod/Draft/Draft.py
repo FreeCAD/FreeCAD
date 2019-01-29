@@ -1349,7 +1349,7 @@ def joinWires(wires, joinAttempts = 0):
         for wire2Index, wire2 in enumerate(wires):
             if wire2Index <= wire1Index:
                 continue
-            if not joinTwoWires(wire1, wire2):
+            if joinTwoWires(wire1, wire2):
                 wires.pop(wire2Index)
                 break
     joinWires(wires, joinAttempts)
@@ -1373,6 +1373,7 @@ def joinTwoWires(wire1, wire2):
     wire2AbsPoints.pop(0)
     wire1.Points = [wire1.Placement.inverse().multVec(point) for point in wire1AbsPoints] + [wire1.Placement.inverse().multVec(point) for point in wire2AbsPoints]
     FreeCAD.ActiveDocument.removeObject(wire2.Name)
+    return True
 
 def fuse(object1,object2):
     '''fuse(oject1,object2): returns an object made from
