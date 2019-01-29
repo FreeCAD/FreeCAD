@@ -210,7 +210,7 @@ def make_femmesh(mesh_data):
     return mesh
 
 
-def fill_femresult_mechanical(results, result_set, span):
+def fill_femresult_mechanical(results, result_set):
     ''' fills a FreeCAD FEM mechanical result object with result data
     '''
     if 'number' in result_set:
@@ -229,6 +229,7 @@ def fill_femresult_mechanical(results, result_set, span):
 
         x_max, y_max, z_max = map(max, zip(*displacement))
         if eigenmode_number > 0:
+            span = get_span(results.Mesh.FemMesh.Nodes.items())
             max_disp = max(x_max, y_max, z_max)
             # Allow for max displacement to be 0.1% of the span
             # FIXME - add to Preferences
@@ -459,3 +460,15 @@ def calculate_disp_abs(displacements):
     for d in displacements:
         disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
     return disp_abs
+
+def get_span(node_items):
+    positions = []  # list of node vectors
+    for k, v in node_items:
+        positions.append(v)
+    p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
+    p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+    x_span = abs(p_x_max - p_x_min)
+    y_span = abs(p_y_max - p_y_min)
+    z_span = abs(p_z_max - p_z_min)
+    span = max(x_span, y_span, z_span)
+    return span
