@@ -62,7 +62,7 @@ class _FemResultMechanical():
         obj.addProperty("App::PropertyFloatList", "UserDefined", "NodeData", "User Defined Results", True)
         obj.addProperty("App::PropertyFloatList", "Temperature", "NodeData", "Temperature field", True)
 
-        # initialize the Stats with the appropriate count of items (see fill_femresult_stats in feminout/importToolsFem.py)
+        # initialize the Stats with the appropriate count of items (see fill_femresult_stats in femresult/resulttools.py)
         zero_list = 39 * [0]
         obj.Stats = zero_list
 
