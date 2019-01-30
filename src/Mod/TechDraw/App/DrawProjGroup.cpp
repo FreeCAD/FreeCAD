@@ -85,7 +85,6 @@ DrawProjGroup::~DrawProjGroup()
 {
 }
 
-
 void DrawProjGroup::onChanged(const App::Property* prop)
 {
     //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones don't... Or vice-versa.  WF: why would you change from 1st to 3rd in mid drawing?
@@ -136,7 +135,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
 
     }
-        
+
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
