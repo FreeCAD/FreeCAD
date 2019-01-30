@@ -3211,7 +3211,7 @@ class Join(Modifier):
     '''The Draft_Join FreeCAD command definition.'''
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_Upgrade',
+        return {'Pixmap'  : 'Draft_Join',
                 'Accel' : "J, O",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Join"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Join", "Joins two wires together")}
@@ -3241,7 +3241,7 @@ class Split(Modifier):
     '''The Draft_Split FreeCAD command definition.'''
 
     def GetResources(self):
-        return {'Pixmap'  : 'Draft_Downgrade',
+        return {'Pixmap'  : 'Draft_Split',
                 'Accel' : "S, P",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Split", "Split"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Split", "Splits a wire into two wires")}

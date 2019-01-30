@@ -17,6 +17,7 @@
         <file>icons/Draft_Drawing.svg</file>
         <file>icons/Draft_Edit.svg</file>
         <file>icons/Draft_Finish.svg</file>
+        <file>icons/Draft_Join.svg</file>
         <file>icons/Draft_Line.svg</file>
         <file>icons/Draft_Lock.svg</file>
         <file>icons/Draft_Macro.svg</file>
@@ -28,6 +29,7 @@
         <file>icons/Draft_Scale.svg</file>
         <file>icons/Draft_SelectGroup.svg</file>
         <file>icons/Draft_SelectPlane.svg</file>
+        <file>icons/Draft_Split.svg</file>
         <file>icons/Draft_SwitchMode.svg</file>
         <file>icons/Draft_Text.svg</file>
         <file>icons/Draft_Trimex.svg</file>
