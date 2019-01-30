@@ -300,7 +300,11 @@ QString DownloadItem::getDownloadDirectory() const
         dirPath = QString::fromUtf8(dir.c_str());
     }
 
+#if QT_VERSION >= 0x050000
+    if (QFileInfo::exists(dirPath) || QDir().mkpath(dirPath)) {
+#else
     if (QFileInfo(dirPath).exists() || QDir().mkpath(dirPath)) {
+#endif
         return dirPath;
     }
     else {
