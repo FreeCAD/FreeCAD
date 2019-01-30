@@ -389,7 +389,7 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
                 "FileName=\"%2\"\n"
                 "App.ActiveDocument.ActiveObject.Label=\"%1\"\n"
                 "App.ActiveDocument.recompute()")
-                .arg(fi.baseName()).arg(fi.absoluteFilePath());
+                .arg(fi.baseName(), fi.absoluteFilePath());
             Base::Interpreter().runString(cmd.toUtf8());
         }
         else if (ext == QLatin1String("wrl") ||
@@ -408,7 +408,7 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
                 "VrmlFile=\"%2\"\n"
                 "App.ActiveDocument.ActiveObject.Label=\"%1\"\n"
                 "App.ActiveDocument.recompute()")
-                .arg(fi.baseName()).arg(fi.absoluteFilePath());
+                .arg(fi.baseName(), fi.absoluteFilePath());
             Base::Interpreter().runString(cmd.toUtf8());
             SoInput::removeDirectory(path.constData());
         }

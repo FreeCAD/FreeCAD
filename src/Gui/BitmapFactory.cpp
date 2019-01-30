@@ -278,8 +278,8 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
         if (!loadPixmap(fileName, icon)) {
             // Go through supported file formats
             for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                QString path = QString::fromLatin1("%1.%2").arg(fileName).
-                    arg(QString::fromLatin1((*fm).toLower().constData()));
+                QString path = QString::fromLatin1("%1.%2").arg(fileName,
+                    QString::fromLatin1((*fm).toLower().constData()));
                 if (loadPixmap(path, icon)) {
                     break;
                 }

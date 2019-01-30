@@ -509,10 +509,9 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
             msg += QString::fromUtf8(" "); 
             msg.append(
                         QObject::tr("%1.%2.%3")
-                       .arg(QString::fromLatin1(pDocName))
-                       .arg(QString::fromLatin1(pObjectName))
-                       .arg(QString::fromLatin1(pSubName))
-                        );
+                       .arg(QString::fromLatin1(pDocName),
+                            QString::fromLatin1(pObjectName),
+                            QString::fromLatin1(pSubName)));
             msg += QString::fromUtf8(" "); 
 
             if (getMainWindow()) {

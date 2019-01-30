@@ -1797,7 +1797,7 @@ void Application::runApplication(void)
         std::map<std::string, std::string>& config = App::Application::Config();
         QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
         QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
-        QString title = QString::fromLatin1("%1 %2.%3").arg(mainApp.applicationName()).arg(major).arg(minor);
+        QString title = QString::fromLatin1("%1 %2.%3").arg(mainApp.applicationName(), major, minor);
         mw.setWindowTitle(title);
     } else {
         mw.setWindowTitle(mainApp.applicationName());

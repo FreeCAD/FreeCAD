@@ -102,7 +102,7 @@ bool Assistant::startAssistant()
         QFileInfo fi(qhc);
         if (!fi.isReadable()) {
             QMessageBox::critical(0, tr("%1 Help").arg(exe),
-                tr("%1 help files not found (%2). You might need to install the %1 documentation package.").arg(exe).arg(qhc));
+                tr("%1 help files not found (%2). You might need to install the %1 documentation package.").arg(exe, qhc));
             return false;
         }
 
