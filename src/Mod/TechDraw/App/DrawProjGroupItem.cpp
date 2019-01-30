@@ -29,8 +29,10 @@
 #include <gp_Ax2.hxx>
 #include <gp_Ax3.hxx>
 #include <gp_Trsf.hxx>
+
+#include <App/Application.h>
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
-#include <Base/Writer.h>
 
 #include "GeometryObject.h"
 #include "DrawUtil.h"
@@ -72,6 +74,10 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     ScaleType.setStatus(App::Property::ReadOnly,true);
 }
 
+DrawProjGroupItem::~DrawProjGroupItem()
+{
+}
+
 short DrawProjGroupItem::mustExecute() const
 {
     short result = 0;
@@ -91,11 +97,16 @@ short DrawProjGroupItem::mustExecute() const
 void DrawProjGroupItem::onChanged(const App::Property *prop)
 {
     TechDraw::DrawViewPart::onChanged(prop);
-
 }
 
-DrawProjGroupItem::~DrawProjGroupItem()
+bool DrawProjGroupItem::isLocked(void) const
 {
+    bool isLocked = DrawView::isLocked();
+    DrawProjGroup* parent = getPGroup();
+    if (parent != nullptr) {
+        isLocked = isLocked || parent->LockPosition.getValue();
+    }
+    return isLocked;
 }
 
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
@@ -233,7 +244,6 @@ double DrawProjGroupItem::getScale(void) const
     }
     return result;
 }
-
 
 void DrawProjGroupItem::unsetupObject()
 {
