@@ -3262,7 +3262,6 @@ class Split(Modifier):
             getPoint(self, arg)
             redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent" and arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
-            print('clicky!')
             self.point, ctrlPoint, info = getPoint(self, arg)
             if "Edge" in info["Component"]:
                 return self.proceed(info)

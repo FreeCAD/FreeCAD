@@ -1376,6 +1376,8 @@ def joinTwoWires(wire1, wire2):
     return True
 
 def split(wire, newPoint, edgeIndex):
+    if getType(wire) != "Wire":
+        return
     wire1Points = []
     wire2Points = []
     for index, point in enumerate(wire.Points):
