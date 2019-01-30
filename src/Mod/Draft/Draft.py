@@ -1359,7 +1359,11 @@ def joinTwoWires(wire1, wire2):
     point as a start or an end'''
     wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
     wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
-    if wire1AbsPoints[0] == wire2AbsPoints[0]:
+    if (wire1AbsPoints[0] == wire2AbsPoints[-1] and wire1AbsPoints[-1] == wire2AbsPoints[0]) \
+        or (wire1AbsPoints[0] == wire2AbsPoints[0] and wire1AbsPoints[-1] == wire2AbsPoints[-1]):
+        wire2AbsPoints.pop()
+        wire1.Closed = True
+    elif wire1AbsPoints[0] == wire2AbsPoints[0]:
         wire1AbsPoints = list(reversed(wire1AbsPoints))
     elif wire1AbsPoints[0] == wire2AbsPoints[-1]:
         wire1AbsPoints = list(reversed(wire1AbsPoints))
@@ -1385,6 +1389,7 @@ def split(wire, newPoint, edgeIndex):
     FreeCAD.ActiveDocument.recompute()
 
 def splitClosedWire(wire, edgeIndex):
+    wire.Closed = False
     if edgeIndex == len(wire.Points):
         makeWire([wire.Placement.multVec(wire.Points[0]),
             wire.Placement.multVec(wire.Points[-1])], placement=wire.Placement)
@@ -1392,7 +1397,6 @@ def splitClosedWire(wire, edgeIndex):
         makeWire([wire.Placement.multVec(wire.Points[edgeIndex-1]),
             wire.Placement.multVec(wire.Points[edgeIndex])], placement=wire.Placement)
         wire.Points = list(reversed(wire.Points[0:edgeIndex])) + list(reversed(wire.Points[edgeIndex:]))
-    wire.Closed = False
 
 def splitOpenWire(wire, newPoint, edgeIndex):
     wire1Points = []
