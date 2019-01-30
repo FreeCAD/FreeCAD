@@ -183,7 +183,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 
-#define TOPOP_VERSION 10
+#define TOPOP_VERSION 11
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -1949,7 +1949,8 @@ const char *TopoShape::setElementComboName(const char *element,
 
 struct NameKey {
     std::string name;
-    long tag;
+    long tag = 0;
+    int shapetype = 0;
 
     NameKey()
         :tag(0)
@@ -1960,8 +1961,31 @@ struct NameKey {
     NameKey(const std::string &n, long t=0)
         :name(n),tag(t)
     {}
+    void setShapeType(int type) {
+        switch(type) {
+        case TopAbs_VERTEX:
+            shapetype = 0;
+            break;
+        case TopAbs_EDGE:
+            shapetype = 1;
+            break;
+        case TopAbs_FACE:
+            shapetype = 2;
+            break;
+        default:
+            shapetype = 3;
+        }
+    }
     bool operator<(const NameKey &other) const {
-        return tag<other.tag || (tag==other.tag && name<other.name);
+        if(shapetype < other.shapetype)
+            return true;
+        if(shapetype > other.shapetype)
+            return false;
+        if(tag < other.tag)
+            return true;
+        if(tag > other.tag)
+            return false;
+        return name < other.name;
     }
 };
 
@@ -2038,9 +2062,6 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 ss << info.shapetype << i;
                 std::vector<App::StringIDRef> sids;
                 NameKey key(other.getElementName(ss.str().c_str(),true,&sids));
-                NameKey key2; // to put same shape type before others
-                key2.name = " ";
-                key2.name += key.name;
 
                 int k=0;
                 for(auto &newShape : mapper.modified(otherElement)) {
@@ -2069,9 +2090,9 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     }
                     ss.str("");
                     ss << newInfo.shapetype << j;
-                    NameKey &namekey = newShape.ShapeType()==info.type?key2:key;
-                    namekey.tag = other.Tag;
-                    auto &name_info = newNames[ss.str()][namekey];
+                    key.setShapeType(newInfo.type);
+                    key.tag = other.Tag;
+                    auto &name_info = newNames[ss.str()][key];
                     name_info.sids = sids;
                     name_info.index = k;
                     name_info.shapetype = info.shapetype;
@@ -2081,6 +2102,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 // (e.g. a face generated from an edge)
                 k=0;
                 for(auto &newShape : mapper.generated(otherElement)) {
+                    key.setShapeType(newShape.ShapeType());
                     auto itMap = infoMap.find(newShape.ShapeType());
                     if(itMap==infoMap.end()) {
                         FC_ERR("unknown generated shape type " << newShape.ShapeType() 
@@ -2089,14 +2111,17 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     }
                     auto &newInfo = *itMap->second;
                     std::vector<TopoDS_Shape> newShapes;
-                    NameKey &namekey = newShape.ShapeType()==info.type?key2:key;
                     if(newInfo.type == newShape.ShapeType()) {
                         newShapes.push_back(newShape);
                     } else {
+#if 1
+                        continue;
+#else
                         // It is possible for the maker to report generating a
                         // higher level shape, such as shell or solid.
                         for(TopExp_Explorer xp(newShape,newInfo.type);xp.More();xp.Next())
                             newShapes.push_back(xp.Current());
+#endif
                     }
                     for(auto &newShape : newShapes) {
                         ++k;
@@ -2109,8 +2134,8 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         }
                         ss.str("");
                         ss << newInfo.shapetype << j;
-                        namekey.tag = other.Tag;
-                        auto &name_info = newNames[ss.str()][namekey];
+                        key.tag = other.Tag;
+                        auto &name_info = newNames[ss.str()][key];
                         name_info.sids = sids;
                         name_info.index = -k;
                         name_info.shapetype = info.shapetype;
@@ -2149,6 +2174,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             bool same_type = false;
             for(auto it=names.begin();it!=names.end();++it) {
                 auto &other_key = it->first;
+                FC_LOG("key " << other_key.name);
                 if(other_key.name[0] == ' ')
                     same_type = true;
                 else if(same_type && name_type==2) {
@@ -2210,7 +2236,8 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
            ss << abs(first_info.index);
         ss << postfix;
         encodeElementName(element[0],first_name,ss,sids,op,first_key.tag);
-        setElementName(element.c_str(),first_name.c_str(),ss.str().c_str(),&sids);
+        const char *name = setElementName(element.c_str(),first_name.c_str(),ss.str().c_str(),&sids);
+        FC_LOG(name << std::endl);
     }
 
     // Now, the reverse pass. Starting from the highest level element, i.e.
