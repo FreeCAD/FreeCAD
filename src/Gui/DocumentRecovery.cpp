@@ -517,7 +517,6 @@ void DocumentRecovery::on_buttonCleanup_clicked()
     tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
     tmp.setFilter(QDir::Files);
 
-    QList<QFileInfo> restoreDocFiles;
     QString exeName = QString::fromLatin1(App::GetApplication().getExecutableName());
     QList<QFileInfo> locks = tmp.entryInfoList();
     for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
