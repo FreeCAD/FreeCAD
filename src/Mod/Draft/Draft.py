@@ -1378,6 +1378,23 @@ def joinTwoWires(wire1, wire2):
 def split(wire, newPoint, edgeIndex):
     if getType(wire) != "Wire":
         return
+    elif wire.Closed:
+        splitClosedWire(wire, edgeIndex)
+    else:
+        splitOpenWire(wire, newPoint, edgeIndex)
+    FreeCAD.ActiveDocument.recompute()
+
+def splitClosedWire(wire, edgeIndex):
+    if edgeIndex == len(wire.Points):
+        makeWire([wire.Placement.multVec(wire.Points[0]),
+            wire.Placement.multVec(wire.Points[-1])], placement=wire.Placement)
+    else:
+        makeWire([wire.Placement.multVec(wire.Points[edgeIndex-1]),
+            wire.Placement.multVec(wire.Points[edgeIndex])], placement=wire.Placement)
+        wire.Points = list(reversed(wire.Points[0:edgeIndex])) + list(reversed(wire.Points[edgeIndex:]))
+    wire.Closed = False
+
+def splitOpenWire(wire, newPoint, edgeIndex):
     wire1Points = []
     wire2Points = []
     for index, point in enumerate(wire.Points):
@@ -1391,7 +1408,6 @@ def split(wire, newPoint, edgeIndex):
             wire2Points.append(wire.Placement.multVec(point))
     wire.Points = wire1Points
     makeWire(wire2Points, placement=wire.Placement)
-    FreeCAD.ActiveDocument.recompute()
 
 def fuse(object1,object2):
     '''fuse(oject1,object2): returns an object made from
