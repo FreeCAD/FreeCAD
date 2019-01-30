@@ -369,7 +369,6 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
         CommandManager & cCmdMgr = Application::Instance->commandManager();
         std::vector<Command*> cmds = cCmdMgr.getAllCommands();
         for (std::vector<Command*>::iterator it = cmds.begin(); it != cmds.end(); ++it) {
-            QList<QAction*> acts;
             if ((*it)->getAction()) {
                 // A command may have several QAction's. So, check all of them if one of them matches (See bug #0002160)
                 QList<QAction*> acts = (*it)->getAction()->findChildren<QAction*>();
