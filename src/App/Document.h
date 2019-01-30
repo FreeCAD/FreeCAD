@@ -330,7 +330,8 @@ public:
      * @param objs: specify a sub set of objects to recompute. If empty, then
      * all object in this document is checked for recompute
      */
-    int recompute(const std::vector<App::DocumentObject*> &objs={},bool force=false,bool *hasError=0);
+    int recompute(const std::vector<App::DocumentObject*> &objs={},
+            bool force=false,bool *hasError=0, int options=0);
     /// Recompute only one feature
     bool recomputeFeature(DocumentObject* Feat,bool recursive=false);
     /// get the text of the error of a specified object
@@ -438,6 +439,8 @@ public:
         DepSort = 1,
         /// Do no include object linked by PropertyXLink, as it can handle external link
         DepNoXLinked = 2,
+        /// Raise exception on cycles
+        DepNoCycle = 4,
     };
     /** Get a complete list of all objects the given objects depend on. 
      *

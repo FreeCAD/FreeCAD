@@ -494,7 +494,10 @@ PyObject*  DocumentPy::clearUndos(PyObject * args)
 PyObject*  DocumentPy::recompute(PyObject * args)
 {
     PyObject *pyobjs = Py_None;
-    if (!PyArg_ParseTuple(args, "|O",&pyobjs))     // convert args: Python->C 
+    PyObject *force = Py_False;
+    PyObject *checkCycle = Py_False;
+    if (!PyArg_ParseTuple(args, "|OO!O!",&pyobjs,
+                &PyBool_Type,&force,&PyBool_Type,&checkCycle))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception
     PY_TRY {
         std::vector<App::DocumentObject *> objs;
@@ -512,7 +515,10 @@ PyObject*  DocumentPy::recompute(PyObject * args)
                 objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
             }
         }
-        int objectCount = getDocumentPtr()->recompute(objs);
+        int options = 0;
+        if(PyObject_IsTrue(checkCycle))
+            options = Document::DepNoCycle;
+        int objectCount = getDocumentPtr()->recompute(objs,PyObject_IsTrue(force),0,options);
         return Py::new_reference_to(Py::Int(objectCount));
     } PY_CATCH;
 }

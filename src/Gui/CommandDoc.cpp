@@ -1286,10 +1286,19 @@ void StdCmdRefresh::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
     if (getActiveGuiDocument()) {
-        for(auto doc : getDocument()->getDependentDocuments())
-            doc->setStatus(App::Document::SkipRecompute, false);
         App::AutoTransaction trans("Recompute");
-        doCommand(Doc,"App.activeDocument().recompute()");
+        try {
+            doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
+        } catch(Base::Exception &e) {
+            int ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+                QObject::tr("The document contains dependency cycles.\n"
+                            "Please check the Report View for more details.\n\n"
+                            "Do you still want to proceed?"),
+                    QMessageBox::Yes, QMessageBox::No);
+            if(ret == QMessageBox::No)
+                return;
+            doCommand(Doc,"App.activeDocument().recompute(None,True)");
+        }
     }
 }
 

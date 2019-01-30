@@ -65,6 +65,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
 #include <boost/bimap.hpp>
+#include <boost/graph/strong_components.hpp>
 
 #ifdef USE_OLD_DAG
 #include <boost/graph/topological_sort.hpp>
@@ -2724,7 +2725,38 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
     try {
         boost::topological_sort(depList, std::front_inserter(make_order));
     } catch (const std::exception& e) {
-        FC_WARN(e.what());
+        if(options & DepNoCycle) {
+            // Use boost::strong_components to find cycles. It groups strongly
+            // connected vertices as components, and therefore each component
+            // forms a cycle.
+            std::vector<int> c(vertexMap.size());
+            std::map<int,std::vector<Vertex> > components;
+            boost::strong_components(depList,boost::make_iterator_property_map(
+                        c.begin(),boost::get(boost::vertex_index,depList),c[0]));
+            for(size_t i=0;i<c.size();++i) 
+                components[c[i]].push_back(i);
+
+            FC_ERR("Dependency cycles: ");
+            std::ostringstream ss;
+            ss << std::endl;
+            for(auto &v : components) {
+                // Ignore components with only one member
+                if(v.second.size()==1)
+                    continue;
+                for(size_t i=0;i<v.second.size();++i) {
+                    auto it = vertexMap.find(v.second[i]);
+                    if(it==vertexMap.end())
+                        continue;
+                    if(i%6==0)
+                        ss << std::endl;
+                    ss << it->second->getFullName() << ", ";
+                }
+                ss << std::endl;
+            }
+            FC_ERR(ss.str());
+            FC_THROWM(Base::RuntimeError, e.what());
+        }
+        FC_ERR(e.what());
         ret = DocumentP::partialTopologicalSort(objectArray);
         std::reverse(ret.begin(),ret.end());
         return ret;
@@ -2965,7 +2997,8 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
 
 #else //ifdef USE_OLD_DAG
 
-int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError) {
+int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool force, bool *hasError, int options) 
+{
     int objectCount = 0;
 
     if (testStatus(Document::PartialDoc)) {
@@ -3013,7 +3046,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     }
     std::reverse(topoSortedObjects.begin(),topoSortedObjects.end());
 #else
-    auto topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,DepSort);
+    auto topoSortedObjects = getDependencyList(objs.empty()?d->objectArray:objs,DepSort|options);
 #endif
     for(auto obj : topoSortedObjects)
         obj->setStatus(ObjectStatus::PendingRecompute,true);
