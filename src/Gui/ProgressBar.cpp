@@ -243,7 +243,7 @@ void Sequencer::showRemainingTime()
             QTime time( 0,0, 0);
             time = time.addSecs( rest/1000 );
             QString remain = Gui::ProgressBar::tr("Remaining: %1").arg(time.toString());
-            QString status = QString::fromLatin1("%1\t[%2]").arg(txt).arg(remain);
+            QString status = QString::fromLatin1("%1\t[%2]").arg(txt, remain);
 
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
