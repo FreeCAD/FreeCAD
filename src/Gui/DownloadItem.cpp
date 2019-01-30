@@ -192,9 +192,9 @@ void NetworkAccessManager::authenticationRequired(QNetworkReply *reply, QAuthent
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
 #if QT_VERSION >= 0x050000
-    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped()).arg(QString(reply->url().toString()).toHtmlEscaped());
+    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped(), QString(reply->url().toString()).toHtmlEscaped());
 #else
-    introMessage = introMessage.arg(Qt::escape(reply->url().toString())).arg(Qt::escape(reply->url().toString()));
+    introMessage = introMessage.arg(Qt::escape(reply->url().toString()), Qt::escape(reply->url().toString()));
 #endif
     passwordDialog.siteDescription->setText(introMessage);
     passwordDialog.siteDescription->setWordWrap(true);
@@ -579,17 +579,17 @@ void DownloadItem::updateInfoLabel()
             .arg(timeRemaining)
             .arg(timeRemainingString);
         info = QString(tr("%1 of %2 (%3/sec) %4"))
-            .arg(dataString(m_bytesReceived))
-            .arg(bytesTotal == 0 ? tr("?") : dataString(bytesTotal))
-            .arg(dataString((int)speed))
-            .arg(remaining);
+            .arg(dataString(m_bytesReceived),
+                 bytesTotal == 0 ? tr("?") : dataString(bytesTotal),
+                 dataString((int)speed),
+                 remaining);
     } else {
         if (m_bytesReceived == bytesTotal)
             info = dataString(m_output.size());
         else
             info = tr("%1 of %2 - Stopped")
-                .arg(dataString(m_bytesReceived))
-                .arg(dataString(bytesTotal));
+                .arg(dataString(m_bytesReceived),
+                     dataString(bytesTotal));
     }
     downloadInfoLabel->setText(info);
 }

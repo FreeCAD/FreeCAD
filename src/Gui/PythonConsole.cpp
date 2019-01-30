@@ -468,7 +468,7 @@ PythonConsole::PythonConsole(QWidget *parent)
 #endif
     d->info = QString::fromLatin1("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
-    .arg(QString::fromLatin1(version)).arg(QString::fromLatin1(platform));
+    .arg(QString::fromLatin1(version), QString::fromLatin1(platform));
     d->output = d->info;
     printPrompt(PythonConsole::Complete);
 }

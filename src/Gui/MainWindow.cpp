@@ -1265,7 +1265,7 @@ QPixmap MainWindow::splashImage() const
         QString title = qApp->applicationName();
         QString major   = QString::fromLatin1(App::Application::Config()["BuildVersionMajor"].c_str());
         QString minor   = QString::fromLatin1(App::Application::Config()["BuildVersionMinor"].c_str());
-        QString version = QString::fromLatin1("%1.%2").arg(major).arg(minor);
+        QString version = QString::fromLatin1("%1.%2").arg(major, minor);
 
         std::map<std::string,std::string>::const_iterator te = App::Application::Config().find("SplashInfoExeName");
         std::map<std::string,std::string>::const_iterator tv = App::Application::Config().find("SplashInfoVersion");
@@ -1731,7 +1731,7 @@ void StatusBarObserver::OnChange(Base::Subject<const char*> &rCaller, const char
 void StatusBarObserver::Message(const char * m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->msg).arg(QString::fromUtf8(m));
+    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->msg, QString::fromUtf8(m));
     CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Msg, txt);
     QApplication::postEvent(getMainWindow(), ev);
 }
@@ -1742,7 +1742,7 @@ void StatusBarObserver::Message(const char * m)
 void StatusBarObserver::Warning(const char *m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->wrn).arg(QString::fromUtf8(m));
+    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->wrn, QString::fromUtf8(m));
     CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Wrn, txt);
     QApplication::postEvent(getMainWindow(), ev);
 }
@@ -1753,7 +1753,7 @@ void StatusBarObserver::Warning(const char *m)
 void StatusBarObserver::Error  (const char *m)
 {
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
-    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->err).arg(QString::fromUtf8(m));
+    QString txt = QString::fromLatin1("<font color=\"%1\">%2</font>").arg(this->err, QString::fromUtf8(m));
     CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Err, txt);
     QApplication::postEvent(getMainWindow(), ev);
 }

@@ -1782,8 +1782,8 @@ void StdViewScreenShot::activated(int iMsg)
         QStringList filter;
         QString selFilter;
         for (QStringList::Iterator it = formats.begin(); it != formats.end(); ++it) {
-            filter << QString::fromLatin1("%1 %2 (*.%3)").arg((*it).toUpper()).
-                arg(QObject::tr("files")).arg((*it).toLower());
+            filter << QString::fromLatin1("%1 %2 (*.%3)").arg((*it).toUpper(),
+                QObject::tr("files"), (*it).toLower());
             if (ext == *it)
                 selFilter = filter.last();
         }

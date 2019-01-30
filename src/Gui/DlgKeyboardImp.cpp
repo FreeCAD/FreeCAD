@@ -234,7 +234,7 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
         if (!accel.isEmpty()) {
             if (!toolTip.isEmpty()) {
                 QString tip = QString::fromLatin1("%1 (%2)")
-                    .arg(toolTip).arg(accel);
+                    .arg(toolTip, accel);
                 action->setToolTip(tip);
             }
         }
@@ -250,7 +250,7 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
         if (!accel.isEmpty()) {
             if (!statusTip.isEmpty()) {
                 QString tip = QString::fromLatin1("(%1)\t%2")
-                    .arg(accel).arg(statusTip);
+                    .arg(accel, statusTip);
                 action->setStatusTip(tip);
             }
         }
@@ -405,7 +405,7 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
         else if (countAmbiguous == 1 && ambiguousCommand != QLatin1String(name)) {
             int ret = QMessageBox::warning(this, tr("Already defined shortcut"),
                                  tr("The shortcut '%1' is already assigned to '%2'.\n\nDo you want to override it?")
-                                 .arg(sc).arg(ambiguousMenu), QMessageBox::Yes | QMessageBox::No);
+                                 .arg(sc, ambiguousMenu), QMessageBox::Yes | QMessageBox::No);
             if (ret == QMessageBox::Yes) {
                 for (auto* cmd : ambiguousCommands) {
                     Action* action = cmd->getAction();

@@ -540,7 +540,7 @@ QString ImageView::createStatusBarText()
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
     }
     else if ((colorFormat == IB_CF_RGB24) || 
              (colorFormat == IB_CF_RGB48))
@@ -550,7 +550,7 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, blue) != 0))
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
@@ -565,7 +565,7 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, red) != 0))
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
@@ -581,7 +581,7 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 2, blue) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 3, alpha) != 0))
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
@@ -597,7 +597,7 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 2, red) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 3, alpha) != 0))
             txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
-                  .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
+                  .arg(tr("outside image"), tr("zoom")).arg(zoomFactor,0,'f',1);
         else
             txt = QString::fromLatin1("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
