@@ -183,7 +183,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 
-#define TOPOP_VERSION 11
+#define TOPOP_VERSION 12
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -1953,15 +1953,15 @@ struct NameKey {
     int shapetype = 0;
 
     NameKey()
-        :tag(0)
     {}
-    NameKey(const char *n, long t=0)
-        :name(n),tag(t)
+    NameKey(const char *n)
+        :name(n)
     {}
-    NameKey(const std::string &n, long t=0)
-        :name(n),tag(t)
-    {}
-    void setShapeType(int type) {
+    NameKey(int type, const char *n)
+        :name(n)
+    {
+        // Order the shape type from vertex < edge < face < other.  We'll rely
+        // on this for sorting when we name the geometry element.
         switch(type) {
         case TopAbs_VERTEX:
             shapetype = 0;
@@ -2061,7 +2061,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 ss.str("");
                 ss << info.shapetype << i;
                 std::vector<App::StringIDRef> sids;
-                NameKey key(other.getElementName(ss.str().c_str(),true,&sids));
+                NameKey key(info.type, other.getElementName(ss.str().c_str(),true,&sids));
 
                 int k=0;
                 for(auto &newShape : mapper.modified(otherElement)) {
@@ -2082,7 +2082,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     if(!j) {
                         // This warning occurs in makERevolve. It generates
                         // some shape from a vertex that never made into the
-                        // final shape
+                        // final shape. There may be other cases there.
                         if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
                             FC_WARN("Cannot find " << op << " modified " <<
                                 newInfo.shapetype << " from " << info.shapetype << i);
@@ -2090,7 +2090,6 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     }
                     ss.str("");
                     ss << newInfo.shapetype << j;
-                    key.setShapeType(newInfo.type);
                     key.tag = other.Tag;
                     auto &name_info = newNames[ss.str()][key];
                     name_info.sids = sids;
@@ -2102,27 +2101,39 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 // (e.g. a face generated from an edge)
                 k=0;
                 for(auto &newShape : mapper.generated(otherElement)) {
-                    key.setShapeType(newShape.ShapeType());
                     auto itMap = infoMap.find(newShape.ShapeType());
                     if(itMap==infoMap.end()) {
                         FC_ERR("unknown generated shape type " << newShape.ShapeType() 
                                 << " from " << info.shapetype << i);
                         continue;
                     }
+
                     auto &newInfo = *itMap->second;
                     std::vector<TopoDS_Shape> newShapes;
+                    int shapeOffset = 0;
                     if(newInfo.type == newShape.ShapeType()) {
                         newShapes.push_back(newShape);
                     } else {
-#if 1
-                        continue;
-#else
                         // It is possible for the maker to report generating a
-                        // higher level shape, such as shell or solid.
+                        // higher level shape, such as shell or solid. For
+                        // example, when extruding, OCC will report the
+                        // extruding face generating the entire solid. However,
+                        // it will also report the edges of the extruding face
+                        // generating the side faces. In this case, too much
+                        // information is bad for us. We don't want the name of
+                        // the side face (and its edges) to be coupled with
+                        // other (unrelated) edges in the extruding face. 
+                        //
+                        // shapeOffset below is used to make sure the higher
+                        // level mapped names comes late after sorting. We'll
+                        // ignore those names if there are more precise mapping
+                        // available.
+                        shapeOffset = 3;
+
                         for(TopExp_Explorer xp(newShape,newInfo.type);xp.More();xp.Next())
                             newShapes.push_back(xp.Current());
-#endif
                     }
+                    key.shapetype += shapeOffset;
                     for(auto &newShape : newShapes) {
                         ++k;
                         int j = newInfo.shapeMap.FindIndex(newShape);
@@ -2140,10 +2151,13 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         name_info.index = -k;
                         name_info.shapetype = info.shapetype;
                     }
+                    key.shapetype -= shapeOffset;
                 }
             }
         }
     }
+
+    std::set<std::string> delayedNames;
 
     // Second, construct the names for modification/generation info collected in
     // the previous step
@@ -2162,7 +2176,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
         const auto &first_key = names.begin()->first;
         auto &first_info = names.begin()->second;
         int name_type = first_info.index>0?1:2; // index>0 means modified, or else generated
-        std::string first_name(first_key.name[0]==' '?first_key.name.c_str()+1:first_key.name.c_str());
+        std::string first_name = first_key.name;
 
         std::vector<App::StringIDRef> sids(first_info.sids);
 
@@ -2171,29 +2185,16 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
             ss.str("");
             ss << '(';
             bool first = true;
-            bool same_type = false;
-            for(auto it=names.begin();it!=names.end();++it) {
+            auto it = names.begin();
+            for(++it;it!=names.end();++it) {
                 auto &other_key = it->first;
-                FC_LOG("key " << other_key.name);
-                if(other_key.name[0] == ' ')
-                    same_type = true;
-                else if(same_type && name_type==2) {
-                    // name_type==2 means its a generated element, and same_type
-                    // means the generated element contains a name generated by
-                    // an old element of the same type, e.g. an edge generated
-                    // by an old edge. 
-                    //
-                    // We shall ignore all names from non-same-type-generated
-                    // element if there exists same-type-generated elements. For
-                    // example, for extruding, OCCT reports the edges from the
-                    // extruded face are both generated from the base face edges
-                    // and the base face. This duplication causes problem
-                    // because the face to edge generation index is prone to
-                    // change, while edge to edge generattion is a one to one
-                    // map.
+                if(other_key.shapetype>=3 && first_key.shapetype<3) {
+                    // shapetype>=3 means its a high level mapping (e.g. a face
+                    // generates a solid). We don't want that if there are more
+                    // precise low level mapping avaialable. See comments above
+                    // for more details.
                     break;
                 }
-                if(it == names.begin()) continue; // skip the first name
                 if(first)
                     first = false;
                 else
@@ -2202,11 +2203,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 std::ostringstream ss2;
                 if(other_info.index!=1)
                     ss2 << elementMapPrefix() << 'K' << other_info.index;
-                std::string other_name;
-                if(other_key.name[0]==' ')
-                    other_name = other_key.name.c_str()+1;
-                else
-                    other_name = other_key.name;
+                std::string other_name = other_key.name;
                 encodeElementName(other_info.shapetype[0],other_name,ss2,sids,0,other_key.tag);
                 ss << other_name << ss2.str();
                 if((name_type==1 && other_info.index<0) || 
@@ -2216,13 +2213,15 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 }
                 sids.insert(sids.end(),other_info.sids.begin(),other_info.sids.end());
             }
-            ss <<')';
-            if(Hasher) {
-                sids.push_back(Hasher->getID(ss.str().c_str()));
-                ss.str("");
-                ss << sids.back()->toString();
+            if(!first) {
+                ss <<')';
+                if(Hasher) {
+                    sids.push_back(Hasher->getID(ss.str().c_str()));
+                    ss.str("");
+                    ss << sids.back()->toString();
+                }
+                postfix = ss.str();
             }
-            postfix = ss.str();
         }
 
         ss.str("");
@@ -2236,145 +2235,184 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
            ss << abs(first_info.index);
         ss << postfix;
         encodeElementName(element[0],first_name,ss,sids,op,first_key.tag);
-        const char *name = setElementName(element.c_str(),first_name.c_str(),ss.str().c_str(),&sids);
-        FC_LOG(name << std::endl);
+        setElementName(element.c_str(),first_name.c_str(),ss.str().c_str(),&sids);
+
+        if(first_key.shapetype>=3)
+            delayedNames.emplace(element);
     }
 
-    // Now, the reverse pass. Starting from the highest level element, i.e.
-    // Face, for any element that are named, assign names for its lower unamed
-    // elements. For example, if Edge1 is named E1, and its vertexes are not
-    // named, then name them as E1;U1, E1;U2, etc.
-    //
-    // In order to make the name as stable as possible, we may assign multiple
-    // names (which must be sorted, because we may use the first one to name
-    // upper element in the final pass) to lower element if it appears in
-    // multiple higher elements, e.g. same edge in multiple faces.
+    // We shall first exclude those names (stored in delayedNames) generated
+    // from high level mapping. If there are still any unamed elements left
+    // after we go through the process below, we set delayed=true, and start
+    // using those excluded names.
+    bool delayed = false;
 
-    for(size_t ifo=infos.size()-1;ifo!=0;--ifo) {
-        newNames.clear();
-        auto &info = *infos[ifo];
-        auto &next = *infos[ifo-1];
-        for(int i=1;i<=info.shapeMap.Extent();++i) {
-            ss.str("");
-            ss << info.shapetype << i;
-            std::string element = ss.str();
-            std::vector<App::StringIDRef> sids;
-            const char *mapped = getElementName(element.c_str(),true,&sids);
-            if(mapped == element.c_str()) 
-                continue;
+    while(true) {
+        // The reverse pass. Starting from the highest level element, i.e.
+        // Face, for any element that are named, assign names for its lower unamed
+        // elements. For example, if Edge1 is named E1, and its vertexes are not
+        // named, then name them as E1;U1, E1;U2, etc.
+        //
+        // In order to make the name as stable as possible, we may assign multiple
+        // names (which must be sorted, because we may use the first one to name
+        // upper element in the final pass) to lower element if it appears in
+        // multiple higher elements, e.g. same edge in multiple faces.
 
-            TopTools_IndexedMapOfShape submap;
-            TopExp::MapShapes(info.shapeMap(i), next.type, submap);
-            for(int j=1,n=1;j<=submap.Extent();++j) {
-                ss.str("");
-                int k = next.shapeMap.FindIndex(submap(j));
-                assert(k);
-                ss << next.shapetype << k;
-                std::string element = ss.str();
-                if(getElementName(element.c_str(),true) != element.c_str())
-                    continue;
-                auto &info = newNames[element][mapped];
-                info.index = n++;
-                info.sids = sids;
-            }
-        }
-        // Assign the actual names
-        for(auto &v : newNames) {
-#ifndef FC_ELEMENT_MAP_ALL 
-            // Do we really want multiple names for an element in this case?
-            // If not, we just pick the name in the first sorting order here.
-            auto &name = *v.second.begin();
-#else
-            for(auto &name : v.second) 
-#endif
-            {
-                auto &info = name.second;
-                auto &sids = info.sids;
-                newName = name.first.name;
-                ss.str("");
-                ss << upperPostfix();
-                if(info.index>1)
-                    ss << info.index;
-                encodeElementName(v.first[0],newName,ss,sids,op);
-                setElementName(v.first.c_str(),newName.c_str(),ss.str().c_str(),&sids);
-            }
-        }
-    }
-
-    // Finally, the forward pass. For any elements that are not named, try
-    // construct its name from the lower elements
-    for(size_t ifo=1;ifo<infos.size();++ifo) {
-        auto &info = *infos[ifo];
-        auto &prev = *infos[ifo-1];
-        for(int i=1;i<=info.shapeMap.Extent();++i) {
-            ss.str("");
-            ss << info.shapetype << i;
-            std::string element = ss.str();
-            const char *name = getElementName(element.c_str(),true);
-            if(name != element.c_str()) 
-                continue;
-            std::vector<App::StringIDRef> sids;
-            std::map<std::string,std::string> names;
-            TopExp_Explorer xp;
-            if(info.type == TopAbs_FACE)
-                xp.Init(ShapeAnalysis::OuterWire(TopoDS::Face(info.shapeMap(i))),TopAbs_EDGE);
-            else
-                xp.Init(info.shapeMap(i),prev.type);
-            for(;xp.More();xp.Next()) {
-                int j = prev.shapeMap.FindIndex(xp.Current());
-                assert(j);
-                ss.str("");
-                ss << prev.shapetype << j;
-                std::string element = ss.str();
-                std::vector<App::StringIDRef> sid;
-                name = getElementName(element.c_str(),true,&sid);
-                if(name == element.c_str()) {
-                    // only assign name if all lower elements are named
-                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                        FC_WARN("unnamed lower element " << element);
-                    names.clear();
-                    break;
-                }
-                auto res = names.emplace(name,element);
-                if(res.second)
-                    sids.insert(sids.end(),sid.begin(),sid.end());
-                else if(element!=res.first->second) {
-                    // The seam edge will appear twice, which is normal. We
-                    // only warn if the mapped element names are different.
-                    FC_WARN("lower element " << element << " and " <<
-                            res.first->second << " has duplicated name " << name 
-                            << " for " << info.shapetype << i );
-                }
-            }
-            if(names.empty())
-                continue;
-            auto it = names.begin();
-            newName = it->first;
-            if(names.size() == 1) 
-                ss << lowerPostfix();
-            else {
-                bool first = true;
-                ss.str("");
-                if(!Hasher)
-                    ss << lowerPostfix();
-                ss << '(';
-                for(++it;it!=names.end();++it) {
-                    if(first)
-                        first = false;
-                    else
-                        ss << ',';
-                    ss << it->first;
-                }
-                ss << ')';
-                if(Hasher) {
-                    sids.push_back(Hasher->getID(ss.str().c_str()));
+        for(size_t ifo=infos.size()-1;ifo!=0;--ifo) {
+            newNames.clear();
+            auto &info = *infos[ifo];
+            auto &next = *infos[ifo-1];
+            int i = 1;
+            auto it = delayedNames.end();
+            if(delayed)
+                it = delayedNames.upper_bound(info.shapetype);
+            for(;;++i) {
+                std::string element;
+                if(!delayed) {
+                    if(i>info.shapeMap.Extent())
+                        break;
                     ss.str("");
-                    ss << lowerPostfix() << sids.back()->toString();
+                    ss << info.shapetype << i;
+                    element = ss.str();
+                    if(delayedNames.count(element))
+                        continue;
+                }else if(it==delayedNames.end() || !boost::starts_with(*it,info.shapetype))
+                    break;
+                else {
+                    element = *it++;
+                    i = shapeTypeAndIndex(element.c_str()).second;
+                    if(i==0 || i>info.shapeMap.Extent())
+                        continue;
+                }
+                std::vector<App::StringIDRef> sids;
+                const char *mapped = getElementName(element.c_str(),true,&sids);
+                if(mapped == element.c_str()) 
+                    continue;
+
+                TopTools_IndexedMapOfShape submap;
+                TopExp::MapShapes(info.shapeMap(i), next.type, submap);
+                for(int j=1,n=1;j<=submap.Extent();++j) {
+                    ss.str("");
+                    int k = next.shapeMap.FindIndex(submap(j));
+                    assert(k);
+                    ss << next.shapetype << k;
+                    std::string element = ss.str();
+                    if(getElementName(element.c_str(),true) != element.c_str())
+                        continue;
+                    auto &info = newNames[element][mapped];
+                    info.index = n++;
+                    info.sids = sids;
                 }
             }
-            encodeElementName(element[0],newName,ss,sids,op);
-            setElementName(element.c_str(),newName.c_str(),ss.str().c_str(),&sids);
+            // Assign the actual names
+            for(auto &v : newNames) {
+#ifndef FC_ELEMENT_MAP_ALL 
+                // Do we really want multiple names for an element in this case?
+                // If not, we just pick the name in the first sorting order here.
+                auto &name = *v.second.begin();
+#else
+                for(auto &name : v.second) 
+#endif
+                {
+                    auto &info = name.second;
+                    auto &sids = info.sids;
+                    newName = name.first.name;
+                    ss.str("");
+                    ss << upperPostfix();
+                    if(info.index>1)
+                        ss << info.index;
+                    encodeElementName(v.first[0],newName,ss,sids,op);
+                    setElementName(v.first.c_str(),newName.c_str(),ss.str().c_str(),&sids);
+                }
+            }
         }
+
+        // The forward pass. For any elements that are not named, try construct its
+        // name from the lower elements
+        bool hasUnamed = false;
+        for(size_t ifo=1;ifo<infos.size();++ifo) {
+            auto &info = *infos[ifo];
+            auto &prev = *infos[ifo-1];
+            for(int i=1;i<=info.shapeMap.Extent();++i) {
+                ss.str("");
+                ss << info.shapetype << i;
+                std::string element = ss.str();
+                const char *name = getElementName(element.c_str(),true);
+                if(name != element.c_str()) 
+                    continue;
+
+                std::vector<App::StringIDRef> sids;
+                std::map<std::string,std::string> names;
+                TopExp_Explorer xp;
+                if(info.type == TopAbs_FACE)
+                    xp.Init(ShapeAnalysis::OuterWire(TopoDS::Face(info.shapeMap(i))),TopAbs_EDGE);
+                else
+                    xp.Init(info.shapeMap(i),prev.type);
+                for(;xp.More();xp.Next()) {
+                    int j = prev.shapeMap.FindIndex(xp.Current());
+                    assert(j);
+                    ss.str("");
+                    ss << prev.shapetype << j;
+                    std::string element = ss.str();
+                    if(!delayed && delayedNames.count(element)) {
+                        names.clear();
+                        break;
+                    }
+                    std::vector<App::StringIDRef> sid;
+                    name = getElementName(element.c_str(),true,&sid);
+                    if(name == element.c_str()) {
+                        // only assign name if all lower elements are named
+                        if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
+                            FC_WARN("unnamed lower element " << element);
+                        names.clear();
+                        break;
+                    }
+                    auto res = names.emplace(name,element);
+                    if(res.second)
+                        sids.insert(sids.end(),sid.begin(),sid.end());
+                    else if(element!=res.first->second) {
+                        // The seam edge will appear twice, which is normal. We
+                        // only warn if the mapped element names are different.
+                        FC_WARN("lower element " << element << " and " <<
+                                res.first->second << " has duplicated name " << name 
+                                << " for " << info.shapetype << i );
+                    }
+                }
+                if(names.empty()) {
+                    hasUnamed = true;
+                    continue;
+                }
+                auto it = names.begin();
+                newName = it->first;
+                if(names.size() == 1) 
+                    ss << lowerPostfix();
+                else {
+                    bool first = true;
+                    ss.str("");
+                    if(!Hasher)
+                        ss << lowerPostfix();
+                    ss << '(';
+                    for(++it;it!=names.end();++it) {
+                        if(first)
+                            first = false;
+                        else
+                            ss << ',';
+                        ss << it->first;
+                    }
+                    ss << ')';
+                    if(Hasher) {
+                        sids.push_back(Hasher->getID(ss.str().c_str()));
+                        ss.str("");
+                        ss << lowerPostfix() << sids.back()->toString();
+                    }
+                }
+                encodeElementName(element[0],newName,ss,sids,op);
+                setElementName(element.c_str(),newName.c_str(),ss.str().c_str(),&sids);
+            }
+        }
+        if(!hasUnamed || delayed || delayedNames.empty())
+            break;
+        delayed = true;
     }
     return *this;
 }
