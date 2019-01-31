@@ -81,6 +81,8 @@ private:
         pcBrowserView->resize(400, 300);
         pcBrowserView->load(url);
         Gui::getMainWindow()->addWindow(pcBrowserView);
+        if (!Gui::getMainWindow()->activeWindow())
+            Gui::getMainWindow()->setActiveWindow(pcBrowserView);
 
         return Py::None();
     }
@@ -99,6 +101,8 @@ private:
         pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
         pcBrowserView->setWindowTitle(QString::fromUtf8(TabName));
         Gui::getMainWindow()->addWindow(pcBrowserView);
+        if (!Gui::getMainWindow()->activeWindow())
+            Gui::getMainWindow()->setActiveWindow(pcBrowserView);
 
         return Py::None();
     }
@@ -114,6 +118,8 @@ private:
         pcBrowserView->resize(400, 300);
         pcBrowserView->setWindowTitle(QString::fromUtf8(TabName));
         Gui::getMainWindow()->addWindow(pcBrowserView);
+        if (!Gui::getMainWindow()->activeWindow())
+            Gui::getMainWindow()->setActiveWindow(pcBrowserView);
 
         return Py::asObject(pcBrowserView->getPyObject());
     }

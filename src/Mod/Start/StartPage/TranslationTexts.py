@@ -1,7 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2012                                                    *
-#*   Yorik van Havre <yorik@uncreated.net>                                 *
+#*   Copyright (c) 2012 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -53,7 +52,7 @@ T_DESCR_USERHUB = translate("StartPage", "This section contains documentation us
 T_POWERHUB = translate("StartPage", "Power users hub")
 T_DESCR_POWERHUB = translate("StartPage", "This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.")
 T_DEVHUB = translate("StartPage", "Developers hub")
-T_DESCR_DEVHUB = translate("StartPage", "This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.")
+T_DESCR_DEVHUB = translate("StartPage", "This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.")
 T_MANUAL = translate("StartPage", "Manual")
 T_DESCR_MANUAL = translate("StartPage", "The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. <a href=\"https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details\">e-book versions</a> are also available.")
 T_WBHELP = translate("StartPage", "Workbenches documentation")

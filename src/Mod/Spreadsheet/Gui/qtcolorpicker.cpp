@@ -904,7 +904,7 @@ void ColorPickerPopup::getColorFromDialog()
     return;
 
     //QColor col = QColor::fromRgba(rgb);
-    insertColor(col, tr("Custom"), -1);
+    insertColor(col, tr("Custom Color"), -1);
     lastSel = col;
     Q_EMIT selected(col);
 }

@@ -501,7 +501,7 @@ void DocumentRecovery::on_buttonCleanup_clicked()
     msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle(tr("Cleanup"));
     msgBox.setText(tr("Are you sure you want to delete all transient directories?"));
-    msgBox.setInformativeText(tr("When deleting all transient directory you won't be able to recover any files afterwards."));
+    msgBox.setInformativeText(tr("When deleting all transient directories you won't be able to recover any files afterwards."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();

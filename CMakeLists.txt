@@ -1023,6 +1023,7 @@ endif()
                                                             "from PySide2.QtWidgets import *\n"
                                                             "QHeaderView.setResizeMode = QHeaderView.setSectionResizeMode\n")
         file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/Ext/PySide/QtUiTools.py  "from PySide2.QtUiTools import *\n")
 
 	if(APPLE AND NOT BUILD_WITH_CONDA)
 	    INSTALL(
