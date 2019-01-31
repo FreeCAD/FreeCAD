@@ -243,7 +243,7 @@ def fill_femresult_stats(results):
     # do not forget to adapt the def get_stats in:
     # - get_stats in module femresult/resulttools.py
     # - module femtest/testccxtools.py
-    # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
+    # TODO: all stats stuff should be reimplemented, maybe a dictionary would be far more robust than a list
 
     FreeCAD.Console.PrintLog('Stats list for result obj: ' + results.Name + ' calculated\n')
     return results
