@@ -729,7 +729,9 @@ void TaskSketcherElements::slotElementsChanged(void)
     // Build up ListView with the elements
     const std::vector< Part::Geometry * > &vals = sketchView->getSketchObject()->Geometry.getValues();
     
+    ui->elementsWidget->blockSignals(true);
     ui->elementsWidget->clear();
+    ui->elementsWidget->blockSignals(false);
     itemMap.clear();
 
     int element = ui->comboBoxElementFilter->currentIndex();
