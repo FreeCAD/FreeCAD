@@ -294,13 +294,14 @@
       <translation>Stiskněte prostřední tlačítko myši</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Stiskněte prostřední a levé nebo pravé tlačítko myši</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Rolujte prostředním tlačítkem myši nebo držte prostřední tlačítko zmáčknuté během stisknutí levého nebo pravého tlačítka a pohybujte myší nahoru nebo dolů</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -422,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Mimo rozsah</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Nastavení kamery</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientace</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Aktuální pohled</translation>
     </message>
   </context>
   <context>
@@ -828,8 +860,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>Klávesová zkratka '%1' je již přiřazena k '%2'.  Definujte jinou.</translation>
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
+
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -1248,7 +1282,7 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Style sheet:</source>
-      <translation>Formát listu:</translation>
+      <translation>Styl:</translation>
     </message>
     <message>
       <source>Python console</source>
@@ -1352,11 +1386,11 @@ Please define another shortcut.</source>
     </message>
     <message>
       <source>Duplicate</source>
-      <translation type="unfinished">Duplicate</translation>
+      <translation>Duplikovat</translation>
     </message>
     <message>
       <source>Addons...</source>
-      <translation type="unfinished">Addons...</translation>
+      <translation>Doplňky...</translation>
     </message>
   </context>
   <context>
@@ -1427,17 +1461,17 @@ Perhaps a file permission error?</source>
     </message>
     <message>
       <source>Duplicate Macro</source>
-      <translation type="unfinished">Duplicate Macro</translation>
+      <translation>Duplikovat makro</translation>
     </message>
     <message>
       <source>Duplicate Failed</source>
-      <translation type="unfinished">Duplicate Failed</translation>
+      <translation>Duplikace selhala</translation>
     </message>
     <message>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
-      <translation type="unfinished">Failed to duplicate to '%1'.
-Perhaps a file permission error?</translation>
+      <translation>Duplikace selhala na "%1".
+Možná je chyba v přístupových právech k souboru?</translation>
     </message>
   </context>
   <context>
@@ -2012,7 +2046,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Show navigation cube</source>
-      <translation type="unfinished">Show navigation cube</translation>
+      <translation>Zobrazit navigační kostku</translation>
     </message>
     <message>
       <source>Corner</source>
@@ -2036,23 +2070,27 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+      <translation>Použít OpenGL Vertex Buffer Object</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Orientace kamery nového dokumentu</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
+      <translation>Zabraňuje naklánění pohledu při více-dotykovém přiblížení. Ovlivní pouze navigační styl Gesture. Naklánění myší tímto nastavením není zakázáno.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+      <translation>Zakázat dotykové gesto naklánění</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>Táhnout nad kurzorem</translation>
     </message>
     <message>
       <source>Marker size:</source>
-      <translation type="unfinished">Marker size:</translation>
+      <translation>Velikost značky:</translation>
     </message>
   </context>
   <context>
@@ -2067,27 +2105,67 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>5px</source>
-      <translation type="unfinished">5px</translation>
+      <translation>5px</translation>
     </message>
     <message>
       <source>7px</source>
-      <translation type="unfinished">7px</translation>
+      <translation>7px</translation>
     </message>
     <message>
       <source>9px</source>
-      <translation type="unfinished">9px</translation>
+      <translation>9px</translation>
     </message>
     <message>
       <source>11px</source>
-      <translation type="unfinished">11px</translation>
+      <translation>11px</translation>
     </message>
     <message>
       <source>13px</source>
-      <translation type="unfinished">13px</translation>
+      <translation>13px</translation>
     </message>
     <message>
       <source>15px</source>
-      <translation type="unfinished">15px</translation>
+      <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrie</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrie</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrie</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Horní</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Přední</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Vlevo</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Vpravo</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Zadní</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Dole</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Vlastní</translation>
     </message>
   </context>
   <context>
@@ -2717,43 +2795,43 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
+      <translation>Imperiální stavební (ft/ft^2/ft^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation type="unfinished">Minimum fractional inch:</translation>
+      <translation>Minimální zlomek palce:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimální zlomek palce pro zobrazení.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
-      <translation type="unfinished">1/2"</translation>
+      <translation>1/2"</translation>
     </message>
     <message>
       <source>1/4"</source>
-      <translation type="unfinished">1/4"</translation>
+      <translation>1/4"</translation>
     </message>
     <message>
       <source>1/8"</source>
-      <translation type="unfinished">1/8"</translation>
+      <translation>1/8"</translation>
     </message>
     <message>
       <source>1/16"</source>
-      <translation type="unfinished">1/16"</translation>
+      <translation>1/16"</translation>
     </message>
     <message>
       <source>1/32"</source>
-      <translation type="unfinished">1/32"</translation>
+      <translation>1/32"</translation>
     </message>
     <message>
       <source>1/64"</source>
-      <translation type="unfinished">1/64"</translation>
+      <translation>1/64"</translation>
     </message>
     <message>
       <source>1/128"</source>
-      <translation type="unfinished">1/128"</translation>
+      <translation>1/128"</translation>
     </message>
   </context>
   <context>
@@ -2808,7 +2886,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Active container</source>
-      <translation type="unfinished">Active container</translation>
+      <translation>Aktivní kontejner</translation>
     </message>
   </context>
   <context>
@@ -2997,10 +3075,6 @@ Specify another directory, please.</source>
       <translation>Jste si jist, že chcete odstranit všechny dočasné adresáře?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Po odstranění všech dočasných adresářů jsou soubory nenávratně ztraceny.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Dokončeno</translation>
     </message>
@@ -3015,6 +3089,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Stiskem tlačítka "Začni obnovení" spustíte obnovení dokumentu uvedeného níže. 
 
 Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3377,27 +3455,27 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     </message>
     <message>
       <source>Axial:</source>
-      <translation type="unfinished">Axial:</translation>
+      <translation>Osový:</translation>
     </message>
     <message>
       <source>Apply axial</source>
-      <translation type="unfinished">Apply axial</translation>
+      <translation>Použít osový</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation type="unfinished">Shift click for opposite direction</translation>
+      <translation>Stisknutí Shiftu pro opačný směr</translation>
     </message>
     <message>
       <source>Selected points</source>
-      <translation type="unfinished">Selected points</translation>
+      <translation>Vybrané body</translation>
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation type="unfinished">Apply incremental changes</translation>
+      <translation>Použít přírůstkové změny</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
-      <translation type="unfinished">Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</translation>
+      <translation>Před stisknutím tohoto tlačítka prosím vyberte 1, 2 nebo 3 body. Bod může být na vrcholu, ploše nebo hraně. Je-li na ploše nebo hraně, pak bude použit bod na pozici myši podél plochy nebo hrany. Je-li vybrán 1 bod, pak bude použit jako střed rotace. Jsou-li vybrány 2 body, pak bude střední bod mezi nimi středem rotace a bude vytvořena nová uživatelská osa, je-li potřeba. Jsou-li vybrány 3 body, první bod bude středem rotace a bude podél vektoru, který je normálou roviny dané třemi body. Vzdálenost a úhlová informace jsou v zobrazení reportu, což může být užitečné pro zarovnání objektů. Příslušnou vzdálenost a úhel je možné zkopírovat do schánky kliknutím se Shiftem.</translation>
     </message>
   </context>
   <context>
@@ -3790,20 +3868,20 @@ Chcete uložit provedené změny?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Ťukněte. Nebo stiskněte levé tlačítko myši.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Klepněte nebo klikněte na levé tlačítko myši.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Táhněte obrazovku dvěma prsty. Nebo stiskněté pravé tlačítko myši.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Táhněte obrazovku jedním prstem. Nebo stiskněté levé tlačítko myši. V Náčrtu a dalších editačních módech držte navíc Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Štípněte (položte dva prsty na obrazovku a táhněte je od sebe/k sobě). Nebo rolujte prostředním tlačítem myši. Nebo použijte na klávesnici PgUp/PgDown.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4089,28 +4167,27 @@ V pravém pohledu jsou %2 body vybrány.</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Ťukněte. Nebo stiskněte levé tlačítko myši.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Klepněte nebo klikněte na levé tlačítko myši.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Táhněte obrazovku dvěma prsty. Nebo stiskněte ALT + prostřední tlačítko myši.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Táhněte obrazovku jedním prstem. Nebo stiskněte ALT + levé tlačítko myši. V Náčrtu a dalších editačních módech držte navíc Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Štípněte (položte dva prsty na obrazovku a táhněte je od sebe/k sobě). Nebo rolujte prostředním tlačítkem myši. Nebo stiskněte ALT + pravé tlačítko myši. Nebo použijte PgUp/PgDown na klávesnici.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Stahování začíná... </translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -4647,11 +4724,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Search...</source>
-      <translation type="unfinished">Search...</translation>
+      <translation>Hledat...</translation>
     </message>
     <message>
       <source>Search for objects</source>
-      <translation type="unfinished">Search for objects</translation>
+      <translation>Hledání objektů</translation>
     </message>
   </context>
   <context>
@@ -5209,18 +5286,6 @@ Dejte si pozor na místo, kam klikáte.</translation>
       <translation>Počátek</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Překlad: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotace: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Odstranit obsah skupiny?</translation>
     </message>
@@ -5234,15 +5299,27 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Rozdělit</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Překlad:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotace:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
-      <translation type="unfinished">Toggle active part</translation>
+      <translation>Přepnout aktivní část</translation>
     </message>
     <message>
       <source>Edit text</source>
-      <translation type="unfinished">Edit text</translation>
+      <translation>Upravit text</translation>
     </message>
   </context>
   <context>
@@ -5969,12 +6046,12 @@ Dejte si pozor na místo, kam klikáte.</translation>
       <translation>Sloučit projekt</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>dokument %1 (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Nelze sloučit projekt se sebou samým.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>dokument %1 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6650,21 +6727,6 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardní pohledy</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometrický</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Nastavit na axonometrický pohled</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6692,6 +6754,21 @@ Dejte si pozor na místo, kam klikáte.</translation>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Vytvoří nové okno zobrazení pro aktivní dokument</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardní pohledy</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrie</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Nastavit dimetrické zobrazení</translation>
     </message>
   </context>
   <context>
@@ -6782,6 +6859,21 @@ Dejte si pozor na místo, kam klikáte.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Nastavit na čelní pohled</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardní pohledy</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrie</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Nastavit izometrické zobrazení</translation>
     </message>
   </context>
   <context>
@@ -6965,6 +7057,21 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardní pohledy</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrie</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Nastavit trimetriké zobrazení</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -7088,11 +7195,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Collapse/Expand</source>
-      <translation type="unfinished">Collapse/Expand</translation>
+      <translation>Sbalit/Rozbalit</translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation type="unfinished">Expand active document and collapse all others</translation>
+      <translation>Rozbalit aktivní dokument a zbalit všechny ostatní</translation>
     </message>
   </context>
   <context>
@@ -7103,11 +7210,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Multi Document</source>
-      <translation type="unfinished">Multi Document</translation>
+      <translation>Vícenásobný dokument</translation>
     </message>
     <message>
       <source>Display all documents in the tree view</source>
-      <translation type="unfinished">Display all documents in the tree view</translation>
+      <translation>Zobrazit všechny dokumenty ve stromovém zobrazení</translation>
     </message>
   </context>
   <context>
@@ -7118,11 +7225,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Single Document</source>
-      <translation type="unfinished">Single Document</translation>
+      <translation>Jediný dokument</translation>
     </message>
     <message>
       <source>Only display the active document in the tree view</source>
-      <translation type="unfinished">Only display the active document in the tree view</translation>
+      <translation>Ve stromovém zobrazení zobrazit pouze aktivní dokument</translation>
     </message>
   </context>
   <context>
@@ -7133,11 +7240,11 @@ Dejte si pozor na místo, kam klikáte.</translation>
     </message>
     <message>
       <source>Document Tree</source>
-      <translation type="unfinished">Document Tree</translation>
+      <translation>Strom dokumentu</translation>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
-      <translation type="unfinished">Set visibility of inactive documents in tree view</translation>
+      <translation>Ve stromovém zobrazení zviditelnit neaktivní dokumenty</translation>
     </message>
   </context>
   <context>
@@ -7251,32 +7358,20 @@ Dejte si pozor na místo, kam klikáte.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Tyto položky jsou spojeny s položkami, které jsou vybrány pro odstranění, a mohou se rozbít.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Tyto položky jsou vybrány pro odstranění, ale nejsou v aktivním dokumentu. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-Opravdu si přejete pokračovat?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation>Opravdu chcete pokračovat?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
-      <translation type="unfinished">Delete Selection Issues</translation>
+      <translation>Smazat vybrané problémy</translation>
     </message>
   </context>
   <context>
@@ -7387,7 +7482,7 @@ Do you want to duplicate them, too?</source>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation type="unfinished">Set NaviCube to Isometric mode</translation>
+      <translation>Nastavit NaviCube do izometrického módu</translation>
     </message>
   </context>
   <context>

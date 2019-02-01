@@ -74,9 +74,9 @@
       <translation>Hub Dezvoltatori</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
-      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</source>
-      <translation>Aceasta sectiune contine material pentru dezvoltatori: cum să compilaţi dvs FreeCAD, cum este structurat codul sursă FreeCAD şi cum să navigaţi în el, şi cum să dezvolte noi ateliere, sau să încorporați FreeCAD în aplicaţia proprie.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -155,9 +155,9 @@ de documentare, help pentru atelier și documentarea comenzilor individuale făr
       <translation>A se vedea toate commits pe github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Custom folder</source>
-      <translation>Puteți configura aici un folder personalizat pentru afișare în meniul Edit-&gt; Preferences-&gt; Start-&gt; Folder personalizat</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>See all commits on github</source>
+      <translation>A se vedea toate commits pe github</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -209,13 +209,275 @@ de documentare, help pentru atelier și documentarea comenzilor individuale făr
       <source>Notes</source>
       <translation>Note</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
+      <source>Notes</source>
+      <translation>Note</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="543"/>
+      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
       <translation>Pagină principală</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <source>Start page</source>
+      <translation>Pagină principală</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
+    <message>
+      <location filename="../../Command.cpp" line="44"/>
+      <source>Start</source>
+      <translation>Start</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start Page</source>
+      <translation>Pagină principală</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Displays the start page in a browser view</source>
+      <translation>Afişează pagina de pornire într-o vizualizare a browser-ul</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Opţiuni de pagină de start</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Şablon de pagină Start</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation>Un şablon HTML opţional care va fi utilizat în loc de pagina de pornire implicită.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>Conţinutul</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Afișați forumul</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Afișați conținutul folderului cu exemple</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Afișați folderul suplimentar</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Daca doriți exemple pentru a arăta pe prima pagină</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation>În cazul în care această casetă este bifată, cele mai recente postări din FreeCAD forum vor fi afişate în fila de activitate</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page</source>
+      <translation>Un folder personalizat facultativ de afișat în partea de jos a primei pagini</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="126"/>
+      <source>Show notepad</source>
+      <translation>Afișează notepad</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
+      <translation>Prezinta un notepad lângă miniaturile de fişier, în cazul în care puteţi să vă păstraţi note de-a lungul sesiunii FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="155"/>
+      <source>Fonts and colors</source>
+      <translation>Fonturi si culori</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="167"/>
+      <source>The background of the main start page area</source>
+      <translation>Fundalul zonei principale a paginii de start</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="187"/>
+      <source>Background color</source>
+      <translation>Culoarea de fundal</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="199"/>
+      <source>in FreeCAD</source>
+      <translation>în FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="218"/>
+      <source>In external browser</source>
+      <translation>În browser-ul extern</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="236"/>
+      <source>Background color gradient down</source>
+      <translation>Gradientul/degrade-ul în jos a culorii fundalului</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="249"/>
+      <source>The color of the version text</source>
+      <translation>Culoarea textului versiunii curente</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="269"/>
+      <source>Link color</source>
+      <translation>Link-ul de culoare</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <source>An optional image to display as background</source>
+      <translation>O imagine opţională pentru a fi afişată ca fundal</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="289"/>
+      <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation>În cazul în care această casetă este bifată, dacă o foaie de stil este specificată în Preferinţe generale, acesta va fi folosită şi va înlocui culorile de mai jos</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="308"/>
+      <source>Page background color</source>
+      <translation>Culoarea de fundal a paginii</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
+      <source>The color of the text on the main pages</source>
+      <translation>Culoarea textului pe paginile principale</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="341"/>
+      <source>Background image</source>
+      <translation>Imagine de fundal</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <source>Page text color</source>
+      <translation>Culoarea textului</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="361"/>
+      <source>The color of the links</source>
+      <translation>Culoarea de link-uri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="387"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation>Culoarea de fundal a casetelor în interiorul paginilor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="407"/>
+      <source>Box background color</source>
+      <translation>Culoarea de fundal a casetei</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="420"/>
+      <source>The background color behind the panels</source>
+      <translation>Culoarea de fundal în spatele panourilor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation>Gradient/degrade-ul în jos pentru culoarea de fundal (în prezent neacceptată)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="472"/>
+      <source>Open links</source>
+      <translation>A deschide Link-uri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>Background text color</source>
+      <translation>Culoarea de fundal a textului</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="486"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>Utilizați o pagină cu stilul FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="493"/>
+      <source>Font family</source>
+      <translation>Familia de fonturi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation>Familia de fonturi pe care să o utilizați în pagina de start/principală. Poate fi un nume de font sau o serie de fonturi alternative separate prin virgule</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial,Helvetica,sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="521"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation>Dimensiunea fontului de bază pe care să o utilizați pentru toate textele de pe pagina de start/principală</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="524"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <source>Use gradient for New File icon</source>
+      <translation>Utilizați un degradeu pentru iconița noului fișier</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="568"/>
+      <source>Options</source>
+      <translation>Opţiuni</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="577"/>
+      <source>Should the start page be closed after loading?</source>
+      <translation>Este necesar ca pagina de start să fie închisă după încărcare?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="596"/>
+      <source>Switch workbench after loading</source>
+      <translation>Comutați către Atelier după încărcare</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="603"/>
+      <source>Close start page after loading</source>
+      <translation>Închideți pagina de start după încărcare</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="610"/>
+      <source>Close &amp; switch on file open</source>
+      <translation>Închideți și comutați la deschiderea unui fișier</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <source>If FreeCAD is started by opening a file, apply the two settings above</source>
+      <translation>Dacă FreeCAD este pornit prin deschiderea unui fișier, aplicați cei doi parametri de mai sus</translation>
     </message>
   </context>
 </TS>

@@ -102,8 +102,8 @@
       <translation>Alignement vertical au centre</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Aligner le contenu des cellules sélectionnées au centre verticalement</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Aligne le contenu des cellules sélectionnées au centre</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Texte souligné</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
+      <source>Underline text in selected cells</source>
       <translation>Souligner le texte des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Personnalisée</translation>
+      <source>Custom Color</source>
+      <translation>Couleur personnalisée</translation>
     </message>
   </context>
   <context>

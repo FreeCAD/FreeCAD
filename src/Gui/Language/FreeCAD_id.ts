@@ -294,13 +294,14 @@
       <translation>Tekan tombol tengah mouse</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Tekan tombol tengah dan kiri atau kanan</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Geser tombol tengah mouse atau tekan tombol tengah saat melakukan klik kiri atau kanan dan gerakkan mouse ke atas atau ke bawah</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -422,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Di luar jangkauan</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation type="unfinished">Camera settings</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientasi</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation type="unfinished">Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation type="unfinished">Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation type="unfinished">Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation type="unfinished">Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation type="unfinished">Current view</translation>
     </message>
   </context>
   <context>
@@ -828,8 +860,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>Jalan pintas ' %1 ' sudah ditetapkan ke ' %2 '. Harap tentukan jalan pintas yang lain.</translation>
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
+
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2039,6 +2073,10 @@ Specify another directory, please.</source>
       <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation type="unfinished">New Document Camera Orientation</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
       <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
     </message>
@@ -2088,6 +2126,46 @@ Specify another directory, please.</source>
     <message>
       <source>15px</source>
       <translation type="unfinished">15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrik</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrik</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrik</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Puncak</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Depan</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Kiri</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Kanan</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Belakang</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Bawah</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Adat</translation>
     </message>
   </context>
   <context>
@@ -2997,10 +3075,6 @@ Specify another directory, please.</source>
       <translation>Yakin ingin menghapus semua direktori transien?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Saat menghapus semua direktori sementara Anda tidak dapat memulihkan file apa pun setelahnya.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Jadi</translation>
     </message>
@@ -3013,6 +3087,10 @@ Specify another directory, please.</source>
 
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Tekan 'Start Recovery' untuk memulai proses pemulihan dokumen yang tercantum di bawah ini. Kolom 'Status' menunjukkan apakah dokumen dapat dipulihkan.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3787,20 +3865,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Keran. Atau klik tombol kiri mouse.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Tarik layar dengan dua jari. Atau tekan tombol mouse sebelah kanan.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Seret layar dengan satu jari. Atau tekan tombol kiri mouse. Di Sketcher dan mode edit lainnya, tahan Alt di sampingnya.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Jepit (letakkan dua jari di layar dan tarik keduanya / satu sama lain). Atau gulir tombol tengah mouse. Atau PgUp / PgDown di keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4081,29 +4159,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Keran. Atau klik tombol kiri mouse.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Tarik layar dengan dua jari. Atau tekan tombol ALT + tengah mouse.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Seret layar dengan satu jari. Atau tekan ALT + tombol kiri mouse. Di Sketcher dan mode edit lainnya, tahan Alt di sampingnya.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Jepit (letakkan dua jari di layar dan tarik keduanya / satu sama lain). Atau gulir tombol tengah mouse. Atau tekan tombol ALT + kanan mouse. Atau PgUp / PgDown di keyboard.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Download mulai...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -5196,18 +5272,6 @@ Be aware the point where you click matters.</source>
       <translation>Asal</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> % 1. % 2. % 3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Terjemahan: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotasi: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Hapus konten grup?</translation>
     </message>
@@ -5222,6 +5286,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Split</source>
       <translation type="unfinished">Split</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Terjemahan:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotasi:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5956,12 +6032,12 @@ Be aware the point where you click matters.</source>
       <translation>Gabung proyek</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>% 1 dokumen (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Tidak bisa menggabungkan proyek dengan dirinya sendiri.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>% 1 dokumen (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6637,21 +6713,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Tampilan Standar</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometrik</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Atur ke tampilan axonometric</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6679,6 +6740,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation type="unfinished">Creates a new view window for the active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Tampilan Standar</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrik</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation type="unfinished">Set to dimetric view</translation>
     </message>
   </context>
   <context>
@@ -6769,6 +6845,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Atur ke tampilan depan</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Tampilan Standar</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrik</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation type="unfinished">Set to isometric view</translation>
     </message>
   </context>
   <context>
@@ -6949,6 +7040,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to top view</source>
       <translation>Atur ke tampilan atas</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Tampilan Standar</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrik</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation type="unfinished">Set to trimetric view</translation>
     </message>
   </context>
   <context>
@@ -7238,28 +7344,16 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation type="unfinished">
-
-Are you sure you want to continue?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

@@ -492,12 +492,12 @@ Do you want to continue?</translation>
     <message>
       <location line="+40"/>
       <source>+P +A</source>
-      <translation type="unfinished">+P +A</translation>
+      <translation>+P +A</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>+W: </source>
-      <translation type="unfinished">+W: </translation>
+      <translation>+W: </translation>
     </message>
     <message>
       <location line="+7"/>
@@ -507,7 +507,7 @@ Do you want to continue?</translation>
     <message>
       <location line="+19"/>
       <source> +H : </source>
-      <translation type="unfinished"> +H : </translation>
+      <translation> +H : </translation>
     </message>
     <message>
       <location line="+7"/>

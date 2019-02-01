@@ -51,7 +51,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation type="unfinished">User hub</translation>
+      <translation>Erabiltzaileen gunea</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation type="unfinished">Power users hub</translation>
+      <translation>Erabiltzaile aurreratuen gunea</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
@@ -71,12 +71,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>Developers hub</source>
-      <translation type="unfinished">Developers hub</translation>
+      <translation>Garatzaileen gunea</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
-      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Getting help from the community</source>
-      <translation type="unfinished">Getting help from the community</translation>
+      <translation>Eskuratu komunitatearen laguntza</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
@@ -121,7 +121,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>Available addons</source>
-      <translation type="unfinished">Available addons</translation>
+      <translation>Gehigarri erabilgarriak</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
@@ -154,9 +154,9 @@
       <translation>Ikusi aldaketa guztiak github-en</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Custom folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Custom folder</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>See all commits on github</source>
+      <translation>Ikusi aldaketa guztiak github-en</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -206,15 +206,277 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Oharrak</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
+      <source>Notes</source>
+      <translation>Oharrak</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="543"/>
+      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
-      <translation type="unfinished">Start page</translation>
+      <translation>Hasierako orria</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <source>Start page</source>
+      <translation>Hasierako orria</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
+    <message>
+      <location filename="../../Command.cpp" line="44"/>
+      <source>Start</source>
+      <translation>Hasi</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start Page</source>
+      <translation>Hasierako orria</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Displays the start page in a browser view</source>
+      <translation>Hasierako orria nabigatzaile batean irekitzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Hasierako orriaren aukerak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Hasierako orriaren txantiloia</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>Edukiak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Erakutsi foroa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Erakutsi adibideen karpetako edukiak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Erakutsi karpeta gehigarria</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Adibideak lehen orrian erakutsi nahi badituzu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation>Hau markatuta badago, FreeCAD foroko azken bidalketak bistaratuko dira 'Jarduera' fitxan</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page</source>
+      <translation>Lehen orriaren behealdean bistaratuko den aukerako karpeta pertsonalizatu bat</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="126"/>
+      <source>Show notepad</source>
+      <translation type="unfinished">Show notepad</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
+      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="155"/>
+      <source>Fonts and colors</source>
+      <translation>Letra-tipoak eta koloreak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="167"/>
+      <source>The background of the main start page area</source>
+      <translation>Hasierako orriaren area nagusiaren atzeko planoa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="187"/>
+      <source>Background color</source>
+      <translation>Atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="199"/>
+      <source>in FreeCAD</source>
+      <translation>FreeCADen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="218"/>
+      <source>In external browser</source>
+      <translation>Kanpoko nabigatzailean</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="236"/>
+      <source>Background color gradient down</source>
+      <translation type="unfinished">Background color gradient down</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="249"/>
+      <source>The color of the version text</source>
+      <translation>Bertsio-testuaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="269"/>
+      <source>Link color</source>
+      <translation>Estekatu kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <source>An optional image to display as background</source>
+      <translation>Atzeko planoan erakutsiko den aukerako irudi bat</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="289"/>
+      <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation>Hau markatuta badago, estilo-orri bat adierazi bada hobespen orokorretan, hura erabiliko da eta hemengo koloreak gainidatziko dira</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="308"/>
+      <source>Page background color</source>
+      <translation>Orriaren atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
+      <source>The color of the text on the main pages</source>
+      <translation>Orri nagusien testuaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="341"/>
+      <source>Background image</source>
+      <translation>Atzeko planoko irudia</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <source>Page text color</source>
+      <translation>Orriko testuaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="361"/>
+      <source>The color of the links</source>
+      <translation>Esteken kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="387"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation>Orri barruko kutxen atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="407"/>
+      <source>Box background color</source>
+      <translation>Kutxen atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="420"/>
+      <source>The background color behind the panels</source>
+      <translation>Panelen atzeko planoaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="472"/>
+      <source>Open links</source>
+      <translation>Ireki estekak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>Background text color</source>
+      <translation>Atzeko planoko testuaren kolorea</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="486"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>Erabili FreeCADen estilo-orria</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="493"/>
+      <source>Font family</source>
+      <translation>Letra-tipoa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial,Helvetica,sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="521"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="524"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <source>Use gradient for New File icon</source>
+      <translation>Erabili gradientea 'Fitxategi berria' ikonorako</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="568"/>
+      <source>Options</source>
+      <translation>Aukerak</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="577"/>
+      <source>Should the start page be closed after loading?</source>
+      <translation>Hasierako orria itxi beharko litzateke kargaren ondoren?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="596"/>
+      <source>Switch workbench after loading</source>
+      <translation>Txandakatu lan-mahaia kargaren ondoren</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="603"/>
+      <source>Close start page after loading</source>
+      <translation>Itxi hasierako orria kargaren ondoren</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="610"/>
+      <source>Close &amp; switch on file open</source>
+      <translation>Itxi eta txandakatu fitxategia irekitzean</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <source>If FreeCAD is started by opening a file, apply the two settings above</source>
+      <translation>FreeCAD fitxategi bat irekita hasten bada, aplikatu goiko bi ezarpenak</translation>
     </message>
   </context>
 </TS>

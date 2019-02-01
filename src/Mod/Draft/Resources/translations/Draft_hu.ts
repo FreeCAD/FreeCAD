@@ -717,7 +717,7 @@
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../DraftTools.py" line="5329"/>
+      <location filename="../../DraftTools.py" line="5349"/>
       <source>Slope</source>
       <translation>Lejtő</translation>
     </message>
@@ -812,7 +812,7 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
       <translation>Ettől/eddig pontok kiválasztása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5335"/>
+      <location filename="../../DraftTools.py" line="5355"/>
       <source>Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</source>
       <translation>Lejtő a kiválasztott Drótvázakhoz/Vonalakhoz: 0 = vízszintes, 1 = 45fok felfelé, -1 = 45fok lefelé</translation>
     </message>
@@ -868,12 +868,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="../../DraftTools.py" line="5571"/>
+      <location filename="../../DraftTools.py" line="5591"/>
       <source>Add to Construction group</source>
       <translation>Építőipari csoporthoz adása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5572"/>
+      <location filename="../../DraftTools.py" line="5592"/>
       <source>Adds the selected objects to the Construction group</source>
       <translation>A kijelölt objektumok felvétele az építési csoporthoz</translation>
     </message>
@@ -881,12 +881,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4624"/>
+      <location filename="../../DraftTools.py" line="4644"/>
       <source>Add Point</source>
       <translation>Pont hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4625"/>
+      <location filename="../../DraftTools.py" line="4645"/>
       <source>Adds a point to an existing Wire or B-spline</source>
       <translation>Egy pont hozzáadása egy meglévő dróthálóhoz vagy a B-görbéhez</translation>
     </message>
@@ -894,12 +894,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4577"/>
+      <location filename="../../DraftTools.py" line="4597"/>
       <source>Move to group...</source>
       <translation>Áthelyezés csoportba...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4578"/>
+      <location filename="../../DraftTools.py" line="4598"/>
       <source>Moves the selected object(s) to an existing group</source>
       <translation>Kijelölt objektum(ok) egy létező csoportba költöztetése</translation>
     </message>
@@ -907,12 +907,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="../../DraftTools.py" line="2475"/>
+      <location filename="../../DraftTools.py" line="2476"/>
       <source>Apply Current Style</source>
       <translation>Aktuális stílus alkalmazása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2476"/>
+      <location filename="../../DraftTools.py" line="2477"/>
       <source>Applies current line width and color to selected objects</source>
       <translation>A kijelölt objektumok aktuális vonal vastagságát és színét vonatkoztatja</translation>
     </message>
@@ -920,12 +920,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="../../DraftTools.py" line="1170"/>
+      <location filename="../../DraftTools.py" line="1171"/>
       <source>Arc</source>
       <translation>Ív</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1171"/>
+      <location filename="../../DraftTools.py" line="1172"/>
       <source>Creates an arc. CTRL to snap, SHIFT to constrain</source>
       <translation>Ív létrehozása. CTRL igazít, SHIFT korlátoz</translation>
     </message>
@@ -933,12 +933,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="../../DraftTools.py" line="4846"/>
+      <location filename="../../DraftTools.py" line="4866"/>
       <source>Array</source>
       <translation>Sorba rendezés</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4847"/>
+      <location filename="../../DraftTools.py" line="4867"/>
       <source>Creates a polar or rectangular array from a selected object</source>
       <translation>Poláris vagy négyszögletes elrendezést hoz létre a kijelölt tárgyból</translation>
     </message>
@@ -946,12 +946,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5370"/>
+      <location filename="../../DraftTools.py" line="5390"/>
       <source>AutoGroup</source>
       <translation>Autocsoport</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5371"/>
+      <location filename="../../DraftTools.py" line="5391"/>
       <source>Select a group to automatically add all Draft &amp; Arch objects to</source>
       <translation>Válasszon ki egy csoportot az összes Tervezet &amp; Építészet objektum automatikus hozzáadásához</translation>
     </message>
@@ -959,12 +959,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_BSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="790"/>
+      <location filename="../../DraftTools.py" line="791"/>
       <source>B-spline</source>
       <translation>B-görbe</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="791"/>
+      <location filename="../../DraftTools.py" line="792"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain</source>
       <translation>Több pontos B-görbe létrehozása. CTRL igazít, SHIFT kényszerítés</translation>
     </message>
@@ -972,12 +972,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../DraftTools.py" line="889"/>
+      <location filename="../../DraftTools.py" line="890"/>
       <source>BezCurve</source>
       <translation>BézGörbe</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="890"/>
+      <location filename="../../DraftTools.py" line="891"/>
       <source>Creates a Bezier curve. CTRL to snap, SHIFT to constrain</source>
       <translation>A Bezier-görbét hoz létre. CTRL az illesztéshez, SHIFT a korlátozáshoz</translation>
     </message>
@@ -985,12 +985,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1485"/>
+      <location filename="../../DraftTools.py" line="1486"/>
       <source>Circle</source>
       <translation>Kör</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1486"/>
+      <location filename="../../DraftTools.py" line="1487"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
       <translation>Kör létrehozása. CTRL igazít, ALT érintő kiválasztása</translation>
     </message>
@@ -998,12 +998,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="../../DraftTools.py" line="5038"/>
+      <location filename="../../DraftTools.py" line="5058"/>
       <source>Clone</source>
       <translation>Klónozás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5039"/>
+      <location filename="../../DraftTools.py" line="5059"/>
       <source>Clones the selected object(s)</source>
       <translation>Kijelölt objektum(ok) klónozása</translation>
     </message>
@@ -1011,12 +1011,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_CloseLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="1016"/>
+      <location filename="../../DraftTools.py" line="1017"/>
       <source>Close Line</source>
       <translation>Vonal lezárása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1017"/>
+      <location filename="../../DraftTools.py" line="1018"/>
       <source>Closes the line being drawn</source>
       <translation>Rajzolt vonalsorozat lezárása</translation>
     </message>
@@ -1024,12 +1024,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4649"/>
+      <location filename="../../DraftTools.py" line="4669"/>
       <source>Remove Point</source>
       <translation>Pont eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4650"/>
+      <location filename="../../DraftTools.py" line="4670"/>
       <source>Removes a point from an existing Wire or B-spline</source>
       <translation>Egy pontot vesz el egy meglévő dróthálótól vagy a B-görbétől</translation>
     </message>
@@ -1037,12 +1037,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="1882"/>
+      <location filename="../../DraftTools.py" line="1883"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1883"/>
+      <location filename="../../DraftTools.py" line="1884"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
       <translation>Létrehoz egy dimenziót. CTRL igazít, SHIFT kényszerít, ALT szegmens kiválasztás</translation>
     </message>
@@ -1050,12 +1050,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3249"/>
+      <location filename="../../DraftTools.py" line="3250"/>
       <source>Downgrade</source>
       <translation>Visszaminősít</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3250"/>
+      <location filename="../../DraftTools.py" line="3251"/>
       <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
       <translation>A kijelölt objektumokat, egyszerűbb objektumokká robbantja szét, vagy kivon felületeket</translation>
     </message>
@@ -1063,12 +1063,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="../../DraftTools.py" line="4788"/>
+      <location filename="../../DraftTools.py" line="4808"/>
       <source>Draft to Sketch</source>
       <translation>Tervrajzból vázlat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4789"/>
+      <location filename="../../DraftTools.py" line="4809"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
       <translation>Konvertálja kettős irányba a terv és a vázlat objektumokat</translation>
     </message>
@@ -1076,12 +1076,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="../../DraftTools.py" line="3854"/>
+      <location filename="../../DraftTools.py" line="3855"/>
       <source>Drawing</source>
       <translation>Rajzolás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3855"/>
+      <location filename="../../DraftTools.py" line="3856"/>
       <source>Puts the selected objects on a Drawing sheet</source>
       <translation>A kijelölt objektumokat helyez el egy rajz lapon</translation>
     </message>
@@ -1089,12 +1089,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="../../DraftTools.py" line="3959"/>
+      <location filename="../../DraftTools.py" line="3960"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3960"/>
+      <location filename="../../DraftTools.py" line="3961"/>
       <source>Edits the active object</source>
       <translation>Az aktív objektum szerkesztése</translation>
     </message>
@@ -1102,12 +1102,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="../../DraftTools.py" line="1680"/>
+      <location filename="../../DraftTools.py" line="1681"/>
       <source>Ellipse</source>
       <translation>Ellipszis</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1681"/>
+      <location filename="../../DraftTools.py" line="1682"/>
       <source>Creates an ellipse. CTRL to snap</source>
       <translation>Ellipszis létrehozása. CTRL az illesztéshez</translation>
     </message>
@@ -1115,12 +1115,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Facebinder</name>
     <message>
-      <location filename="../../DraftTools.py" line="5123"/>
+      <location filename="../../DraftTools.py" line="5143"/>
       <source>Facebinder</source>
       <translation>Felületösszesítő</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5124"/>
+      <location filename="../../DraftTools.py" line="5144"/>
       <source>Creates a facebinder object from selected face(s)</source>
       <translation>Összesített felületű tárgyat képez a kiválasztott felület(ek)ből</translation>
     </message>
@@ -1128,12 +1128,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_FinishLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="996"/>
+      <location filename="../../DraftTools.py" line="997"/>
       <source>Finish line</source>
       <translation>Vonal befejezése</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="997"/>
+      <location filename="../../DraftTools.py" line="998"/>
       <source>Finishes a line without closing it</source>
       <translation>Befejez anélkül, hogy bezárná a vonalat</translation>
     </message>
@@ -1141,12 +1141,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5152"/>
+      <location filename="../../DraftTools.py" line="5172"/>
       <source>Flip Dimension</source>
       <translation>Dimenziók megfordítása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5153"/>
+      <location filename="../../DraftTools.py" line="5173"/>
       <source>Flip the normal direction of a dimension</source>
       <translation>A dimenzió irányának megfordítása</translation>
     </message>
@@ -1154,12 +1154,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Heal</name>
     <message>
-      <location filename="../../DraftTools.py" line="5104"/>
+      <location filename="../../DraftTools.py" line="5124"/>
       <source>Heal</source>
       <translation>Gyógyít</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5105"/>
+      <location filename="../../DraftTools.py" line="5125"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
       <translation>Hibás tervrajz objektumok gyógyítása egy korábbi mentett FreeCAD verziójából</translation>
     </message>
@@ -1167,12 +1167,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Label</name>
     <message>
-      <location filename="../../DraftTools.py" line="5438"/>
+      <location filename="../../DraftTools.py" line="5458"/>
       <source>Label</source>
       <translation>Címke</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5439"/>
+      <location filename="../../DraftTools.py" line="5459"/>
       <source>Creates a label, optionally attached to a selected object or element</source>
       <translation>Létrehoz egy címkét, tetszés szerint a kijelölt objektumhoz vagy elemhez csatolja</translation>
     </message>
@@ -1180,12 +1180,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Line</name>
     <message>
-      <location filename="../../DraftTools.py" line="551"/>
+      <location filename="../../DraftTools.py" line="552"/>
       <source>Line</source>
       <translation>Vonal</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="552"/>
+      <location filename="../../DraftTools.py" line="553"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain</source>
       <translation>2 pontos vonal készítése. CTRL igazítás, SHIFT kényszerítés</translation>
     </message>
@@ -1193,12 +1193,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../DraftTools.py" line="5193"/>
+      <location filename="../../DraftTools.py" line="5213"/>
       <source>Mirror</source>
       <translation>Tükrözés</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5194"/>
+      <location filename="../../DraftTools.py" line="5214"/>
       <source>Mirrors the selected objects along a line defined by two points</source>
       <translation>A kijelölt tárgyakat két pont által meghatározott vonal mentén tükrözi</translation>
     </message>
@@ -1206,12 +1206,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="../../DraftTools.py" line="2356"/>
+      <location filename="../../DraftTools.py" line="2357"/>
       <source>Move</source>
       <translation>Mozgat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2357"/>
+      <location filename="../../DraftTools.py" line="2358"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>A kijelölt objektum mozgatása két pont között. CTRL igazít, SHIFT kényszerít, ALT másol</translation>
     </message>
@@ -1219,12 +1219,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="../../DraftTools.py" line="2697"/>
+      <location filename="../../DraftTools.py" line="2698"/>
       <source>Offset</source>
       <translation>Eltolás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2698"/>
+      <location filename="../../DraftTools.py" line="2699"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Az aktív objektum átméretezése. CTLR igazít, SHIFT kényszerít, ALT másol</translation>
     </message>
@@ -1232,12 +1232,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_PathArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="4876"/>
+      <location filename="../../DraftTools.py" line="4896"/>
       <source>PathArray</source>
       <translation>Út az Adatmezőhöz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4877"/>
+      <location filename="../../DraftTools.py" line="4897"/>
       <source>Creates copies of a selected object along a selected path.</source>
       <translation>A kijelölt objektummal a kijelölt útvonalon másolatokat készít.</translation>
     </message>
@@ -1245,12 +1245,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="../../DraftTools.py" line="4943"/>
+      <location filename="../../DraftTools.py" line="4963"/>
       <source>Point</source>
       <translation>Pont</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4944"/>
+      <location filename="../../DraftTools.py" line="4964"/>
       <source>Creates a point object</source>
       <translation>Létrehoz egy pont objektumot</translation>
     </message>
@@ -1258,12 +1258,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_PointArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="4912"/>
+      <location filename="../../DraftTools.py" line="4932"/>
       <source>PointArray</source>
       <translation>Pont Tömb</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4913"/>
+      <location filename="../../DraftTools.py" line="4933"/>
       <source>Creates copies of a selected object on the position of points.</source>
       <translation>Másolatok készítése a kijelölt objektumokról a pontok helyén.</translation>
     </message>
@@ -1271,12 +1271,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="../../DraftTools.py" line="1495"/>
+      <location filename="../../DraftTools.py" line="1496"/>
       <source>Polygon</source>
       <translation>Sokszög</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1496"/>
+      <location filename="../../DraftTools.py" line="1497"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
       <translation>Szabályos sokszög létrehozása. CTRL igazít, SHIFT korlátoz</translation>
     </message>
@@ -1284,12 +1284,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Rectangle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1052"/>
+      <location filename="../../DraftTools.py" line="1053"/>
       <source>Rectangle</source>
       <translation>Téglalap</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1053"/>
+      <location filename="../../DraftTools.py" line="1054"/>
       <source>Creates a 2-point rectangle. CTRL to snap</source>
       <translation>Téglalap létrehozása 2 ponttal. CTRL igazít</translation>
     </message>
@@ -1297,12 +1297,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="../../DraftTools.py" line="2513"/>
+      <location filename="../../DraftTools.py" line="2514"/>
       <source>Rotate</source>
       <translation>Forgatás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2514"/>
+      <location filename="../../DraftTools.py" line="2515"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
       <translation>Kijelölt objektumok forgatása. CTLR igazítás, SHIFT kényszerít, ALT másolatot készít</translation>
     </message>
@@ -1310,12 +1310,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="../../DraftTools.py" line="3700"/>
+      <location filename="../../DraftTools.py" line="3701"/>
       <source>Scale</source>
       <translation>Méretezés</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3701"/>
+      <location filename="../../DraftTools.py" line="3702"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Méretezi a kiválasztott tárgyat egy alap ponttól. CTRL igazításhoz, SHIFT a kényszerít, ALT CTRL a másoláshoz</translation>
     </message>
@@ -1323,12 +1323,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4716"/>
+      <location filename="../../DraftTools.py" line="4736"/>
       <source>Select group</source>
       <translation>Válassza ki a csoportot</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4717"/>
+      <location filename="../../DraftTools.py" line="4737"/>
       <source>Selects all objects with the same parents as this group</source>
       <translation>Kiválasztja az összes azonos szülőkkel rendelkező objektumot ebben a csoportban</translation>
     </message>
@@ -1336,12 +1336,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_SelectPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="322"/>
+      <location filename="../../DraftTools.py" line="323"/>
       <source>SelectPlane</source>
       <translation>Sík kijelölés</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="323"/>
+      <location filename="../../DraftTools.py" line="324"/>
       <source>Select a working plane for geometry creation</source>
       <translation>Válassz ki egy munkasíkot a geometria létrehozásához</translation>
     </message>
@@ -1349,12 +1349,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
     <message>
-      <location filename="../../DraftTools.py" line="5415"/>
+      <location filename="../../DraftTools.py" line="5435"/>
       <source>Creates a proxy object from the current working plane</source>
       <translation>Egy proxy objektum létrehozása a jelenlegi munka síkból</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5414"/>
+      <location filename="../../DraftTools.py" line="5434"/>
       <source>Create Working Plane Proxy</source>
       <translation>Munka sík proxy létrehozása</translation>
     </message>
@@ -1362,12 +1362,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../DraftTools.py" line="4748"/>
+      <location filename="../../DraftTools.py" line="4768"/>
       <source>Shape 2D view</source>
       <translation>2D alak nézet</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4749"/>
+      <location filename="../../DraftTools.py" line="4769"/>
       <source>Creates Shape 2D views of selected objects</source>
       <translation>A kijelölt tárgy 2D felület nézetét hozza létre</translation>
     </message>
@@ -1375,12 +1375,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="../../DraftTools.py" line="2223"/>
+      <location filename="../../DraftTools.py" line="2224"/>
       <source>Shape from text...</source>
       <translation>Alakzat szöveg leírásból...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2224"/>
+      <location filename="../../DraftTools.py" line="2225"/>
       <source>Creates text string in shapes.</source>
       <translation>Karakterláncot hoz létre az alakzatokban.</translation>
     </message>
@@ -1388,12 +1388,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="../../DraftTools.py" line="5020"/>
+      <location filename="../../DraftTools.py" line="5040"/>
       <source>Show Snap Bar</source>
       <translation>Illesztési sáv megjelenítése</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5021"/>
+      <location filename="../../DraftTools.py" line="5041"/>
       <source>Shows Draft snap toolbar</source>
       <translation>Tervrajz Illesztési pont eszköztár megjelenítése</translation>
     </message>
@@ -1401,12 +1401,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Slope</name>
     <message>
-      <location filename="../../DraftTools.py" line="5315"/>
+      <location filename="../../DraftTools.py" line="5335"/>
       <source>Set Slope</source>
       <translation>Lejtő beállítás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5316"/>
+      <location filename="../../DraftTools.py" line="5336"/>
       <source>Sets the slope of a selected Line or Wire</source>
       <translation>Beállítja a kijelölt vonal lejtójét vagy dróthálóját</translation>
     </message>
@@ -1414,12 +1414,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="../../DraftTools.py" line="5688"/>
+      <location filename="../../DraftTools.py" line="5708"/>
       <source>Angles</source>
       <translation>Szögek</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5689"/>
+      <location filename="../../DraftTools.py" line="5709"/>
       <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
       <translation>45 és 90 fokos pontokat igazít az íveken és körökön</translation>
     </message>
@@ -1427,12 +1427,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="../../DraftTools.py" line="5700"/>
+      <location filename="../../DraftTools.py" line="5720"/>
       <source>Center</source>
       <translation>Középre</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5701"/>
+      <location filename="../../DraftTools.py" line="5721"/>
       <source>Snaps to center of circles and arcs</source>
       <translation>Körök és Körívek középpontjához illeszti</translation>
     </message>
@@ -1440,12 +1440,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="../../DraftTools.py" line="5760"/>
+      <location filename="../../DraftTools.py" line="5780"/>
       <source>Dimensions</source>
       <translation>Méretek</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5761"/>
+      <location filename="../../DraftTools.py" line="5781"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
       <translation>Ív tárgyhoz illesztésnél ideiglenesen mutatja a méreteket</translation>
     </message>
@@ -1453,12 +1453,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5676"/>
+      <location filename="../../DraftTools.py" line="5696"/>
       <source>Endpoint</source>
       <translation>Végpont</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5677"/>
+      <location filename="../../DraftTools.py" line="5697"/>
       <source>Snaps to endpoints of edges</source>
       <translation>Illesztés az élek végpontjaihoz</translation>
     </message>
@@ -1466,12 +1466,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5712"/>
+      <location filename="../../DraftTools.py" line="5732"/>
       <source>Extension</source>
       <translation>Meghosszabbítás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5713"/>
+      <location filename="../../DraftTools.py" line="5733"/>
       <source>Snaps to extension of edges</source>
       <translation>Élek meghosszabbításához illesztés</translation>
     </message>
@@ -1479,12 +1479,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5640"/>
+      <location filename="../../DraftTools.py" line="5660"/>
       <source>Grid</source>
       <translation>Rács</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5641"/>
+      <location filename="../../DraftTools.py" line="5661"/>
       <source>Snaps to grid points</source>
       <translation>Rácspontokhoz illesztés</translation>
     </message>
@@ -1492,12 +1492,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="../../DraftTools.py" line="5652"/>
+      <location filename="../../DraftTools.py" line="5672"/>
       <source>Intersection</source>
       <translation>Metszet</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5653"/>
+      <location filename="../../DraftTools.py" line="5673"/>
       <source>Snaps to edges intersections</source>
       <translation>Éleket metszéséhez illesztés</translation>
     </message>
@@ -1505,12 +1505,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="../../DraftTools.py" line="5606"/>
+      <location filename="../../DraftTools.py" line="5626"/>
       <source>Toggle On/Off</source>
       <translation>Illesztés Be/Ki kapcsolás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5607"/>
+      <location filename="../../DraftTools.py" line="5627"/>
       <source>Activates/deactivates all snap tools at once</source>
       <translation>Egyszerre Be-/kikapcsolja az összes illesztő eszközt</translation>
     </message>
@@ -1523,12 +1523,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5616"/>
+      <location filename="../../DraftTools.py" line="5636"/>
       <source>Midpoint</source>
       <translation>Felező</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5617"/>
+      <location filename="../../DraftTools.py" line="5637"/>
       <source>Snaps to midpoints of edges</source>
       <translation>Élek felezőpontjaihoz ilesztés</translation>
     </message>
@@ -1536,12 +1536,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="../../DraftTools.py" line="5724"/>
+      <location filename="../../DraftTools.py" line="5744"/>
       <source>Nearest</source>
       <translation>Legközelebbi</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5725"/>
+      <location filename="../../DraftTools.py" line="5745"/>
       <source>Snaps to nearest point on edges</source>
       <translation>Élek legközelebbi pontjához illeszt</translation>
     </message>
@@ -1549,12 +1549,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="../../DraftTools.py" line="5736"/>
+      <location filename="../../DraftTools.py" line="5756"/>
       <source>Ortho</source>
       <translation>Merőleges</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5737"/>
+      <location filename="../../DraftTools.py" line="5757"/>
       <source>Snaps to orthogonal and 45 degrees directions</source>
       <translation>Merőleges és 45 fokos irányú illesztés</translation>
     </message>
@@ -1562,12 +1562,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="../../DraftTools.py" line="5664"/>
+      <location filename="../../DraftTools.py" line="5684"/>
       <source>Parallel</source>
       <translation>Párhuzamos</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5665"/>
+      <location filename="../../DraftTools.py" line="5685"/>
       <source>Snaps to parallel directions of edges</source>
       <translation>Illesztés az élek párhuzamos irányaiban</translation>
     </message>
@@ -1575,12 +1575,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="../../DraftTools.py" line="5628"/>
+      <location filename="../../DraftTools.py" line="5648"/>
       <source>Perpendicular</source>
       <translation>Merőleges</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5629"/>
+      <location filename="../../DraftTools.py" line="5649"/>
       <source>Snaps to perpendicular points on edges</source>
       <translation>Illesztés az élek merőleges pontjaihoz</translation>
     </message>
@@ -1588,12 +1588,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="../../DraftTools.py" line="5748"/>
+      <location filename="../../DraftTools.py" line="5768"/>
       <source>Special</source>
       <translation>Különleges</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5749"/>
+      <location filename="../../DraftTools.py" line="5769"/>
       <source>Snaps to special locations of objects</source>
       <translation>Hozzáilleszti az objektumok különleges helyeihez</translation>
     </message>
@@ -1601,12 +1601,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="5772"/>
+      <location filename="../../DraftTools.py" line="5792"/>
       <source>Working Plane</source>
       <translation>Munka sík</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5773"/>
+      <location filename="../../DraftTools.py" line="5793"/>
       <source>Restricts the snapped point to the current working plane</source>
       <translation>Korlátozza az illesztési pontokat a jelenlegi munka síkra</translation>
     </message>
@@ -1614,12 +1614,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Stretch</name>
     <message>
-      <location filename="../../DraftTools.py" line="2888"/>
+      <location filename="../../DraftTools.py" line="2889"/>
       <source>Stretch</source>
-      <translation>Kinyújt</translation>
+      <translation>Nyújtás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2889"/>
+      <location filename="../../DraftTools.py" line="2890"/>
       <source>Stretches the selected objects</source>
       <translation>Kinyújtja a kiválasztott objektumokat</translation>
     </message>
@@ -1627,12 +1627,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="../../DraftTools.py" line="1797"/>
+      <location filename="../../DraftTools.py" line="1798"/>
       <source>Text</source>
       <translation>Szöveg</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1798"/>
+      <location filename="../../DraftTools.py" line="1799"/>
       <source>Creates an annotation. CTRL to snap</source>
       <translation>Megjegyzés létrehozása. CTRL illeszt</translation>
     </message>
@@ -1640,12 +1640,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3830"/>
+      <location filename="../../DraftTools.py" line="3831"/>
       <source>Toggles the Construction Mode for next objects.</source>
       <translation>Váltás szerkezeti módra a következő objektumoknál.</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3828"/>
+      <location filename="../../DraftTools.py" line="3829"/>
       <source>Toggle Construction Mode</source>
       <translation>Építési mód váltása</translation>
     </message>
@@ -1653,12 +1653,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3841"/>
+      <location filename="../../DraftTools.py" line="3842"/>
       <source>Toggle Continue Mode</source>
       <translation>Folyamatos üzemmódra váltás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3842"/>
+      <location filename="../../DraftTools.py" line="3843"/>
       <source>Toggles the Continue Mode for next commands.</source>
       <translation>A folyamat mód következő parancsra váltása.</translation>
     </message>
@@ -1666,12 +1666,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3925"/>
+      <location filename="../../DraftTools.py" line="3926"/>
       <source>Toggle display mode</source>
       <translation>Megjelenítési módra váltás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3926"/>
+      <location filename="../../DraftTools.py" line="3927"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
       <translation>Megjelenítési módot cserél a Drótvázas és a Sima vonalak között</translation>
     </message>
@@ -1679,12 +1679,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5082"/>
+      <location filename="../../DraftTools.py" line="5102"/>
       <source>Toggle Grid</source>
       <translation>Rácsvonal kapcsolása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5083"/>
+      <location filename="../../DraftTools.py" line="5103"/>
       <source>Toggles the Draft grid on/off</source>
       <translation>Tervrajz rácsát kapcsolja ki/be</translation>
     </message>
@@ -1702,12 +1702,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../DraftTools.py" line="3282"/>
+      <location filename="../../DraftTools.py" line="3283"/>
       <source>Trimex</source>
       <translation>Levág-Bővít (trimex)</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3283"/>
+      <location filename="../../DraftTools.py" line="3284"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
       <translation>A kijelölt tárgyat levág és meghosszabbít vagy kihúz egy egyoldalú felületet. CTRL-al igazít, SHIFT-el korlátozza a választott szegmenshez vagy a normál állapothoz, ALT megfordít</translation>
     </message>
@@ -1715,12 +1715,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_UndoLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="1036"/>
+      <location filename="../../DraftTools.py" line="1037"/>
       <source>Undo last segment</source>
       <translation>Utolsó szakasz visszavonása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1037"/>
+      <location filename="../../DraftTools.py" line="1038"/>
       <source>Undoes the last drawn segment of the line being drawn</source>
       <translation>A vonal utolsó rajzolt szakaszának visszavonása</translation>
     </message>
@@ -1728,12 +1728,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3219"/>
+      <location filename="../../DraftTools.py" line="3220"/>
       <source>Upgrade</source>
       <translation>Frissítés</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3220"/>
+      <location filename="../../DraftTools.py" line="3221"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</source>
       <translation>Összecsatolja a kijelölt tárgyakat, vagy összezárja a drótvázakat kitöltött felületekké, vagy egyesíti a felületeket</translation>
     </message>
@@ -1741,12 +1741,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_VisGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5167"/>
+      <location filename="../../DraftTools.py" line="5187"/>
       <source>VisGroup</source>
       <translation>LátCsoport</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5168"/>
+      <location filename="../../DraftTools.py" line="5188"/>
       <source>Adds a VisGroup</source>
       <translation>LátCsoport hozzáadása</translation>
     </message>
@@ -1754,12 +1754,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../DraftTools.py" line="750"/>
+      <location filename="../../DraftTools.py" line="751"/>
       <source>DWire</source>
       <translation>Terv-vonal</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="751"/>
+      <location filename="../../DraftTools.py" line="752"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
       <translation>Létrehoz egy több pontos vonalat (DWire). CTRL az igazításhoz, SHIFT a korlátozáshoz</translation>
     </message>
@@ -1767,12 +1767,12 @@ kézzel az Eszközök -&gt; Kiegészítő kezelő menüből</translation>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="4674"/>
+      <location filename="../../DraftTools.py" line="4694"/>
       <source>Wire to B-spline</source>
       <translation>Drótháló a B-görbéhez</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4675"/>
+      <location filename="../../DraftTools.py" line="4695"/>
       <source>Converts between Wire and B-spline</source>
       <translation>Átváltás a drótháló és a B-görbe közt</translation>
     </message>
@@ -2215,11 +2215,6 @@ Values with differences below this value will be treated as same.</source>
       <location filename="../ui/preferences-dxf.ui" line="559"/>
       <source>Project exported objects along current view direction</source>
       <translation>Exportált objektumok kivetítése az aktuális nézet iránya mentén</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="433"/>
-      <source>Ellipse export is badly supported. Use this to export them as polylines instead.</source>
-      <translation>Ellipszis exportot rosszul támogatja. Ennek segítségével exportálhatja vonalláncokként.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
@@ -2783,22 +2778,22 @@ Pl: a fájl milliméterben: 1, a centiméterben: 10, méterben: 1000, inches: 25
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="361"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</translation>
+      <translation>Jelölje be, ha meg szeretné őrizni a felületek színeit azok visszaállításánál és frissítésénél (csak splitFaces és makeShell)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="364"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve colors of faces during downgrade/upgrade</translation>
+      <translation>Az felületi színek megőrzése visszaállítás/frissítés során</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="381"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</translation>
+      <translation>Jelölje ezt, ha azt szeretné, hogy a felület nevek az objektum nevéből származzanak, és fordítva, a visszaállítás/frissítés esetén (csak splitFaces és makeShell)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="384"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve names of faces during downgrade/upgrade</translation>
+      <translation>A felület neveinek megőrzése visszaállítás/frissítés során</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
@@ -2809,6 +2804,11 @@ Pl: a fájl milliméterben: 1, a centiméterben: 10, méterben: 1000, inches: 25
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>The path to your ODA (formerly Teigha) File Converter executable</source>
       <translation>Az ODA (korábban Teigha) fájl konverter végrehajtható fájl elérési útja</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="433"/>
+      <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
+      <translation type="unfinished">Ellipse export is poorly supported. Use this to export them as polylines instead.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
@@ -3047,7 +3047,7 @@ Pl: a fájl milliméterben: 1, a centiméterben: 10, méterben: 1000, inches: 25
       <translation>Oldalak száma</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2876"/>
+      <location filename="../../DraftTools.py" line="2877"/>
       <source>Offset</source>
       <translation>Eltolás</translation>
     </message>
@@ -3172,12 +3172,12 @@ Pl: a fájl milliméterben: 1, a centiméterben: 10, méterben: 1000, inches: 25
       <translation>Jelölje ki a síkot</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="554"/>
+      <location filename="../../DraftTools.py" line="555"/>
       <source>Line</source>
       <translation>Vonal</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="778"/>
+      <location filename="../../DraftTools.py" line="779"/>
       <source>DWire</source>
       <translation>Terv-vonal</translation>
     </message>
@@ -3307,196 +3307,196 @@ Pl: a fájl milliméterben: 1, a centiméterben: 10, méterben: 1000, inches: 25
       <translation>Felülettároló elemek</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="601"/>
+      <location filename="../../DraftTools.py" line="602"/>
       <source>Create Line</source>
       <translation>Vonal létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="945"/>
+      <location filename="../../DraftTools.py" line="946"/>
       <source>Pick next point:
 </source>
       <translation>Következő pont kiválasztása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="774"/>
+      <location filename="../../DraftTools.py" line="775"/>
       <source>Convert to Wire</source>
       <translation>Dróthálóvá alakítja</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="794"/>
+      <location filename="../../DraftTools.py" line="795"/>
       <source>BSpline</source>
       <translation>Folyamatos ív</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="893"/>
+      <location filename="../../DraftTools.py" line="894"/>
       <source>BezCurve</source>
       <translation>BézGörbe</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="975"/>
+      <location filename="../../DraftTools.py" line="976"/>
       <source>Create BezCurve</source>
       <translation>BézGörbe létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1056"/>
+      <location filename="../../DraftTools.py" line="1057"/>
       <source>Rectangle</source>
       <translation>Téglalap</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1099"/>
+      <location filename="../../DraftTools.py" line="1100"/>
       <source>Create Plane</source>
       <translation>Sík létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1110"/>
+      <location filename="../../DraftTools.py" line="1111"/>
       <source>Create Rectangle</source>
       <translation>Téglalap rajzolása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1374"/>
+      <location filename="../../DraftTools.py" line="1375"/>
       <source>Create Circle</source>
       <translation>Kör rajzolása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1409"/>
+      <location filename="../../DraftTools.py" line="1410"/>
       <source>Create Arc</source>
       <translation>Ív létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1451"/>
+      <location filename="../../DraftTools.py" line="1452"/>
       <source>Start Angle</source>
       <translation>Kezdő nézet</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1458"/>
+      <location filename="../../DraftTools.py" line="1459"/>
       <source>Aperture</source>
       <translation>Nyílás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1499"/>
+      <location filename="../../DraftTools.py" line="1500"/>
       <source>Polygon</source>
       <translation>Sokszög</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1636"/>
+      <location filename="../../DraftTools.py" line="1637"/>
       <source>Create Polygon</source>
       <translation>Polygon létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1684"/>
+      <location filename="../../DraftTools.py" line="1685"/>
       <source>Ellipse</source>
       <translation>Ellipszis</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1741"/>
+      <location filename="../../DraftTools.py" line="1742"/>
       <source>Create Ellipse</source>
       <translation>Ellipszis létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1801"/>
+      <location filename="../../DraftTools.py" line="1802"/>
       <source>Text</source>
       <translation>Szöveg</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1837"/>
+      <location filename="../../DraftTools.py" line="1838"/>
       <source>Create Text</source>
       <translation>Szöveg létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1886"/>
+      <location filename="../../DraftTools.py" line="1887"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2010"/>
+      <location filename="../../DraftTools.py" line="2011"/>
       <source>Create Dimension</source>
       <translation>Méretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2227"/>
+      <location filename="../../DraftTools.py" line="2228"/>
       <source>ShapeString</source>
       <translation>AlakzatSzövegből</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2268"/>
+      <location filename="../../DraftTools.py" line="2269"/>
       <source>Create ShapeString</source>
       <translation>AlakzatSzövegből létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3763"/>
+      <location filename="../../DraftTools.py" line="3764"/>
       <source>Copy</source>
       <translation>Másolás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2407"/>
+      <location filename="../../DraftTools.py" line="2408"/>
       <source>Move</source>
       <translation>Mozgat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2496"/>
+      <location filename="../../DraftTools.py" line="2497"/>
       <source>Change Style</source>
       <translation>Stílus váltás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2568"/>
+      <location filename="../../DraftTools.py" line="2569"/>
       <source>Rotate</source>
       <translation>Forgatás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2720"/>
+      <location filename="../../DraftTools.py" line="2721"/>
       <source>Cannot offset this object type
 </source>
       <translation>Ezt az objektum típust nem képes eltolni</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3209"/>
+      <location filename="../../DraftTools.py" line="3210"/>
       <source>Stretch</source>
-      <translation>Kinyújt</translation>
+      <translation>Nyújtás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3237"/>
+      <location filename="../../DraftTools.py" line="3238"/>
       <source>Upgrade</source>
       <translation>Frissítés</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3267"/>
+      <location filename="../../DraftTools.py" line="3268"/>
       <source>Downgrade</source>
       <translation>Visszaminősít</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4493"/>
+      <location filename="../../DraftTools.py" line="4513"/>
       <source>Selection is not a Knot
 </source>
       <translation>A kiválasztás nem egy csomó
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4820"/>
+      <location filename="../../DraftTools.py" line="4840"/>
       <source>Convert to Sketch</source>
       <translation>Alakítsa vázlattá</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4824"/>
+      <location filename="../../DraftTools.py" line="4844"/>
       <source>Convert to Draft</source>
       <translation>Tervrajzzá alakít</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4836"/>
+      <location filename="../../DraftTools.py" line="4856"/>
       <source>Convert</source>
       <translation>Átalakítás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4865"/>
+      <location filename="../../DraftTools.py" line="4885"/>
       <source>Array</source>
       <translation>Sorba rendezés</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5002"/>
+      <location filename="../../DraftTools.py" line="5022"/>
       <source>Create Point</source>
       <translation>Pont létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5238"/>
+      <location filename="../../DraftTools.py" line="5258"/>
       <source>Mirror</source>
       <translation>Tükrözés</translation>
     </message>
@@ -3580,8 +3580,8 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2935"/>
-      <source>Found 1 solidificable object: solidifying it</source>
-      <translation>Egy kialakítható felület található: megszilárdítjuk, felületet képezünk</translation>
+      <source>Found 1 solidifiable object: solidifying it</source>
+      <translation type="unfinished">Found 1 solidifiable object: solidifying it</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2940"/>
@@ -3866,349 +3866,349 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
       <translation>Alapértelmezett</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="432"/>
+      <location filename="../../DraftTools.py" line="433"/>
       <source>Pick a face to define the drawing plane</source>
       <translation>Felület megadása, amely meghatározza a rajz síkját</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="571"/>
+      <location filename="../../DraftTools.py" line="572"/>
       <source>First point:</source>
       <translation>Első pont:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="578"/>
+      <location filename="../../DraftTools.py" line="579"/>
       <source>Closing</source>
       <translation>Bezárja</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="614"/>
+      <location filename="../../DraftTools.py" line="615"/>
       <source>Create Wire</source>
       <translation>Drótváz létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="671"/>
+      <location filename="../../DraftTools.py" line="672"/>
       <source>Removing last point</source>
       <translation>Utolsó pontot eltávolítja</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="711"/>
+      <location filename="../../DraftTools.py" line="712"/>
       <source>Next point:</source>
       <translation>Következő pont:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="710"/>
+      <location filename="../../DraftTools.py" line="711"/>
       <source>Restarting from</source>
       <translation>Újraindítás innen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="768"/>
+      <location filename="../../DraftTools.py" line="769"/>
       <source>Unable to create a Wire from selected objects</source>
       <translation>Nem sikerült létrehozni egy dróthálót a kijelölt objektumokból</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="830"/>
+      <location filename="../../DraftTools.py" line="831"/>
       <source>Spline has been closed</source>
       <translation>Görbe lezárva</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="938"/>
+      <location filename="../../DraftTools.py" line="939"/>
       <source>Last point has been removed</source>
       <translation>Utolsó pont eltávolítva</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="948"/>
+      <location filename="../../DraftTools.py" line="949"/>
       <source>Pick next point, or Finish (shift-F) or close (o):</source>
       <translation>Válasszon következő pontot, vagy fejezze be (shift-F) vagy zárja (o):</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="869"/>
+      <location filename="../../DraftTools.py" line="870"/>
       <source>Create B-spline</source>
       <translation>B-görbe létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="930"/>
+      <location filename="../../DraftTools.py" line="931"/>
       <source>Bezier curve has been closed</source>
       <translation>Bezier-görbe lezárásra került</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1917"/>
+      <location filename="../../DraftTools.py" line="1918"/>
       <source>Pick first point:</source>
       <translation>Válassza ki az első pontot:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1783"/>
+      <location filename="../../DraftTools.py" line="1784"/>
       <source>Pick opposite point:</source>
       <translation>Ellenkező pontot kiválasztása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1515"/>
+      <location filename="../../DraftTools.py" line="1516"/>
       <source>Pick center point:</source>
       <translation>Középpont kijelölése:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1654"/>
+      <location filename="../../DraftTools.py" line="1655"/>
       <source>Pick radius:</source>
       <translation>Sugár megadása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1456"/>
+      <location filename="../../DraftTools.py" line="1457"/>
       <source>Pick start angle:</source>
       <translation>Kezdő fok megadása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1351"/>
+      <location filename="../../DraftTools.py" line="1352"/>
       <source>Pick aperture:</source>
       <translation>Nyílás kiválasztás:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1467"/>
+      <location filename="../../DraftTools.py" line="1468"/>
       <source>Aperture angle:</source>
       <translation>Nyílás szöge:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1813"/>
+      <location filename="../../DraftTools.py" line="1814"/>
       <source>Pick location point:</source>
       <translation>Helyzet pont megadása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2170"/>
+      <location filename="../../DraftTools.py" line="2171"/>
       <source>Edges don't intersect!</source>
       <translation>Élek nem metszik egymást!</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2247"/>
+      <location filename="../../DraftTools.py" line="2248"/>
       <source>Pick ShapeString location point:</source>
       <translation>Válasszon AlakzatSzövegből elhelyezési pontot:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2366"/>
+      <location filename="../../DraftTools.py" line="2367"/>
       <source>Select an object to move</source>
       <translation>Objektum kijelölése mozgatáshoz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2383"/>
+      <location filename="../../DraftTools.py" line="2384"/>
       <source>Pick start point:</source>
       <translation>Kiinduló pont megadása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2460"/>
+      <location filename="../../DraftTools.py" line="2461"/>
       <source>Pick end point:</source>
       <translation>Végpont megadása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2523"/>
+      <location filename="../../DraftTools.py" line="2524"/>
       <source>Select an object to rotate</source>
       <translation>Jelöljön ki egy objektumot elforgatáshoz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2540"/>
+      <location filename="../../DraftTools.py" line="2541"/>
       <source>Pick rotation center:</source>
       <translation>Elforgatás középpont (tengely) megadás:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2673"/>
+      <location filename="../../DraftTools.py" line="2674"/>
       <source>Pick base angle:</source>
       <translation>Alap szög megadása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2685"/>
+      <location filename="../../DraftTools.py" line="2686"/>
       <source>Pick rotation angle:</source>
       <translation>Elforgatási szög megadása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2709"/>
+      <location filename="../../DraftTools.py" line="2710"/>
       <source>Select an object to offset</source>
       <translation>Egy tárgy kijelölése az eltoláshoz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2712"/>
+      <location filename="../../DraftTools.py" line="2713"/>
       <source>Offset only works on one object at a time</source>
       <translation>Egyszerre csak egy tárgyon működik az eltolás</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2743"/>
+      <location filename="../../DraftTools.py" line="2744"/>
       <source>Sorry, offset of Bezier curves is currently still not supported</source>
       <translation>Elnézést, a Bézier görbe eltolás jelenleg még nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3367"/>
+      <location filename="../../DraftTools.py" line="3368"/>
       <source>Pick distance:</source>
       <translation>Adja meg a távolságot:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2896"/>
+      <location filename="../../DraftTools.py" line="2897"/>
       <source>Select an object to stretch</source>
       <translation>Jelöljön ki egy objektumot a nyújtáshoz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2941"/>
+      <location filename="../../DraftTools.py" line="2942"/>
       <source>Pick first point of selection rectangle:</source>
       <translation>Válassza ki az első pontot a téglalap kijelölésén:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2965"/>
+      <location filename="../../DraftTools.py" line="2966"/>
       <source>Pick opposite point of selection rectangle:</source>
       <translation>Válassza ki a második pontot a téglalap kijelölésén:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2974"/>
+      <location filename="../../DraftTools.py" line="2975"/>
       <source>Pick start point of displacement:</source>
       <translation>Elmozdulás kezdőpontjának kiválasztása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3037"/>
+      <location filename="../../DraftTools.py" line="3038"/>
       <source>Pick end point of displacement:</source>
       <translation>Elmozdulás végpontjának kiválasztása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3189"/>
+      <location filename="../../DraftTools.py" line="3190"/>
       <source>Turning one Rectangle into a Wire</source>
       <translation>Egy téglalap átalakítása drótvázzá</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3257"/>
+      <location filename="../../DraftTools.py" line="3258"/>
       <source>Select an object to upgrade</source>
       <translation>Jelöljön ki egy objektumot a frissítéshez</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3296"/>
+      <location filename="../../DraftTools.py" line="3297"/>
       <source>Select object(s) to trim/extend</source>
       <translation>Válassza ki a tárgya(ka)t a vágáshoz/kiterjesztéshez</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3608"/>
+      <location filename="../../DraftTools.py" line="3609"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
       <translation>Nem lehet vágni a tárgyakat, csak Tervrajz vonalak és ívek támogatottak</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3611"/>
+      <location filename="../../DraftTools.py" line="3612"/>
       <source>Unable to trim these objects, too many wires</source>
       <translation>Nem lehet ezeket a tárgyakat vágni, túl sok drótváz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3628"/>
+      <location filename="../../DraftTools.py" line="3629"/>
       <source>These objects don't intersect</source>
       <translation>Ezek az objektumok nem metszik egymást</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3631"/>
+      <location filename="../../DraftTools.py" line="3632"/>
       <source>Too many intersection points</source>
       <translation>Túl sok kereszteződési pont</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3710"/>
+      <location filename="../../DraftTools.py" line="3711"/>
       <source>Select an object to scale</source>
       <translation>Objektum kijelölése a méretezéshez</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3728"/>
+      <location filename="../../DraftTools.py" line="3729"/>
       <source>Pick base point:</source>
       <translation>Bázis pont kiválasztása:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3734"/>
+      <location filename="../../DraftTools.py" line="3735"/>
       <source>Pick reference distance from base point:</source>
       <translation>Válassza ki a referencia távolságot az alap pontból:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3809"/>
+      <location filename="../../DraftTools.py" line="3810"/>
       <source>Pick new distance from base point:</source>
       <translation>Válassza ki az új referencia távolságot az alap pontból:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4756"/>
+      <location filename="../../DraftTools.py" line="4776"/>
       <source>Select an object to project</source>
       <translation>Jelöljön ki egy objektumot a vetítéshez</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4116"/>
+      <location filename="../../DraftTools.py" line="4119"/>
       <source>This object type is not editable</source>
       <translation>Ehhez az objektumtípus nem szerkezthető</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3989"/>
+      <location filename="../../DraftTools.py" line="3990"/>
       <source>Please select only one object</source>
       <translation>Kérem csak egy objektumot válasszon</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3994"/>
+      <location filename="../../DraftTools.py" line="3995"/>
       <source>Select a Draft object to edit</source>
       <translation>Szerkesztéshez Tervrajz tárgyat választ</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4446"/>
+      <location filename="../../DraftTools.py" line="4466"/>
       <source>Active object must have more than two points/nodes</source>
       <translation>Aktív objektumnak kettőnél több pontot/csomópontot kell tartalmaznia</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4518"/>
+      <location filename="../../DraftTools.py" line="4538"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
       <translation>BézGörbe végpontját nem lehet elsimítani</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4796"/>
+      <location filename="../../DraftTools.py" line="4816"/>
       <source>Select an object to convert</source>
       <translation>Jelöljön ki egy konvertálandó tárgyat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4854"/>
+      <location filename="../../DraftTools.py" line="4874"/>
       <source>Select an object to array</source>
       <translation>Jelöljön ki egy objektumot, a sorba rendezéshez</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4884"/>
+      <location filename="../../DraftTools.py" line="4904"/>
       <source>Please select base and path objects</source>
       <translation>Kérem válassza ki az alap és az útvonal tárgyakat</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4920"/>
+      <location filename="../../DraftTools.py" line="4940"/>
       <source>Please select base and pointlist objects
 </source>
       <translation>Kérem válasszon alap és pontlista objektumokat
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5046"/>
+      <location filename="../../DraftTools.py" line="5066"/>
       <source>Select an object to clone</source>
       <translation>Jelöljön ki egy tárgyat a klónozáshoz</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5131"/>
+      <location filename="../../DraftTools.py" line="5151"/>
       <source>Select face(s) on existing object(s)</source>
       <translation>Válassza ki a meglévő objektum(ok) felülete(i)t </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5203"/>
+      <location filename="../../DraftTools.py" line="5223"/>
       <source>Select an object to mirror</source>
       <translation>Elem kiválasztása tükrözéshez</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5217"/>
+      <location filename="../../DraftTools.py" line="5237"/>
       <source>Pick start point of mirror line:</source>
       <translation>Tükrözési tengely kezdőpontja:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5301"/>
+      <location filename="../../DraftTools.py" line="5321"/>
       <source>Pick end point of mirror line:</source>
       <translation>Tükrözési tengely végpontja:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5323"/>
+      <location filename="../../DraftTools.py" line="5343"/>
       <source>This tool only works with Wires and Lines</source>
       <translation>Ez az eszköz csak Dróthálókkal vagy Egyenesekkel működik</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5454"/>
+      <location filename="../../DraftTools.py" line="5474"/>
       <source>Pick target point:</source>
       <translation>Válassza ki a cél pontot:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5550"/>
+      <location filename="../../DraftTools.py" line="5570"/>
       <source>Pick endpoint of leader line:</source>
       <translation>Válassza ki a vezető vonal végpontját:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5560"/>
+      <location filename="../../DraftTools.py" line="5580"/>
       <source>Pick text position:</source>
       <translation>Válassza ki a szöveg helyzetét:</translation>
     </message>

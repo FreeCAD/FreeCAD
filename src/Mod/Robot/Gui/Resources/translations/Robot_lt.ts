@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>sekančioms komandoms nustatyti numatytąją erdvinę padėtį tarpinio taško sukūrimui</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>sekančioms komandoms nustatyti tarpinių taškų numatytąsias greičio, pagreičio ir tolygumo vertes</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Trajektorijos modeliavimui jums reikia bent dviejų tarpinių taškų.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Užveskite pelės žymeklį virš (pirminės) geometrijos, kad galėtumėte pasinaudoti šia komanda. Ieškokite smulkesnės informacijos žinyne.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation type="unfinished">Set default speed</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation type="unfinished">Set default continuity</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation type="unfinished">Set default acceleration</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Pasirinkite vieną robotą pradinei padėčiai nustatyti</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Pasirinkite vieną Robotą</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Pasirinkite vieną judėjimo kelio objektą.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>nustatyti numatytąjį greitį</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>greitis: (pvz., 1 m/s arba 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>nustatyti numatytąjį glotnumą</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>glotnus?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>nustatyti numatytąjį pagreitį</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>pagreitis: (pvz. 1 m/s^2 arba 3 cm/s^2)</translation>
     </message>

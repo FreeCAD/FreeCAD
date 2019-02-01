@@ -26,17 +26,17 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation type="unfinished">Use ViewProvider in Tree View</translation>
+      <translation>Gebruik ViewProvider in structuurweergave</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation type="unfinished">If this is checked, Multmatrix Object will be Parametric</translation>
+      <translation>Wanneer ingeschakeld, zal de Multmatrix Object parametrisch zijn</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
-      <translation type="unfinished">Use Multmatrix Feature</translation>
+      <translation>Functie van de Multmatrix gebruiken</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="153"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="185"/>
       <source>maximum fragment size</source>
-      <translation type="unfinished">maximum fragment size</translation>
+      <translation>maximale fragment grootte</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="208"/>
@@ -101,32 +101,32 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="393"/>
       <source>Triangulation settings</source>
-      <translation type="unfinished">Triangulation settings</translation>
+      <translation>Triangulatie instellingen</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>Wanneer ingeschakeld ingeschakeld, Zullen functies hun kinderen in de boomstructuurweergave claimen</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>Afdrukken van foutopsporingsgegevens in de Console</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation type="unfinished">The path to the OpenSCAD executable</translation>
+      <translation>Het pad naar het OpenSCAD programma</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>
       <source>Minimum angle for a fragment</source>
-      <translation type="unfinished">Minimum angle for a fragment</translation>
+      <translation>Minimale hoek voor een fragment</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="272"/>
       <source>Minimum size of a fragment</source>
-      <translation type="unfinished">Minimum size of a fragment</translation>
+      <translation>Minimale grootte van een fragment</translation>
     </message>
   </context>
   <context>
@@ -174,7 +174,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="344"/>
       <source>Perform</source>
-      <translation type="unfinished">Perform</translation>
+      <translation>Uitvoeren</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="345"/>
@@ -184,7 +184,7 @@
     <message>
       <location filename="../../OpenSCADUtils.py" line="585"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Error all shapes must be either 2D or both must be 3D</translation>
+      <translation>Fout alle vormen moeten ofwel 2D zijn of beide moeten 3D zijn</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="95"/>

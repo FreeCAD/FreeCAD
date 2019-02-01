@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation>Despregando un perfil seleccionado a través doutras seccións de perfil</translation>
+      <translation>Despregando un perfil escolmado a través doutras seccións de perfil</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -208,7 +208,7 @@
     <message>
       <location line="+1"/>
       <source>Create a hole with the selected sketch</source>
-      <translation>Crea un burato co croquis seleccionado</translation>
+      <translation>Crea un burato co croquis escolmado</translation>
     </message>
   </context>
   <context>
@@ -579,7 +579,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Coloque un perfil seleccionado a través doutras seccións de perfil e retíreo do corpo</translation>
+      <translation>Coloque un perfil escolmado a través doutras seccións de perfil e retíreo do corpo</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
@@ -887,12 +887,12 @@
     </message>
     <message>
       <source>No shape selected</source>
-      <translation>Ningunha forma seleccionada</translation>
+      <translation>Ningunha forma escolmada</translation>
     </message>
     <message>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>Ningunha forma válida está seleccionada. Por favor, seleccione unha forma válida no cadro despregable en primeiro lugar.</translation>
+      <translation>Ningunha forma válida está escolmada. Por favor, escolme unha forma válida no cadro despregable en primeiro lugar.</translation>
     </message>
     <message>
       <source>No edge selected</source>
@@ -1175,7 +1175,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+26"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
   </context>
   <context>
@@ -1267,7 +1267,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskChamferParameters.cpp" line="+86"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
   </context>
   <context>
@@ -1458,7 +1458,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="+96"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
   </context>
   <context>
@@ -1587,7 +1587,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="+86"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
   </context>
   <context>
@@ -1598,7 +1598,7 @@ Please check one or more edge entities first.</translation>
     </message>
     <message>
       <source>Axis:</source>
-      <translation>Eixe:</translation>
+      <translation>Eixo:</translation>
     </message>
     <message>
       <source>Vertical sketch axis</source>
@@ -1769,7 +1769,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="+113"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
     <message>
       <location line="+211"/>
@@ -1890,7 +1890,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskMirroredParameters.cpp" line="+110"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
     <message>
       <location line="+134"/>
@@ -1932,7 +1932,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="+75"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -2456,7 +2456,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+35"/>
       <source>Axis</source>
-      <translation>Eixe</translation>
+      <translation>Eixo</translation>
     </message>
     <message>
       <source>Normal sketch axis</source>
@@ -2508,7 +2508,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.cpp" line="+111"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
     <message>
       <location line="+206"/>
@@ -2526,7 +2526,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+8"/>
       <source>Axis:</source>
-      <translation>Eixe:</translation>
+      <translation>Eixo:</translation>
     </message>
     <message>
       <location line="+28"/>
@@ -2644,7 +2644,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="+97"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
   </context>
   <context>
@@ -2756,7 +2756,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
   </context>
   <context>
@@ -3244,7 +3244,7 @@ Create the sketch on a face.</translation>
       <location line="+4"/>
       <location line="+333"/>
       <source>Selection is not in Active Body</source>
-      <translation>Sen Corpo Activo seleccionado</translation>
+      <translation>Sen Corpo Activo escolmado</translation>
     </message>
     <message>
       <location line="-332"/>
@@ -3269,7 +3269,7 @@ Create the sketch on a face.</translation>
     <message>
       <location line="+292"/>
       <source>Multiple Features Selected</source>
-      <translation>Múltiples Características Seleccionadas</translation>
+      <translation>Múltiples Características Escolmadas</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3391,28 +3391,28 @@ Create the sketch on a face.</translation>
       <location line="+24"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>A forma seleccionada consiste en múltiples sólidos.
+      <translation>A forma escolmada consiste en múltiples sólidos.
 Esto pode levar a resultados inexperados.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation>Seleccione formas consistentes en múltiples shells.
+      <translation>Escolme formas consistentes en múltiples shells.
 Esto pode levar a resultados inexperados.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation>A forma seleccionada consiste nun só shell.
+      <translation>A forma escolmada consiste nun só shell.
 Esto pode levar a resultados inexperados.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>A forma seleccionado consiste en múltiples sólidos ou shells.
+      <translation>A forma escolmado consiste en múltiples sólidos ou shells.
 Esto pode levar a resultados inexperados.</translation>
     </message>
     <message>
@@ -3462,7 +3462,7 @@ Esto pode levar a resultados inexperados.</translation>
     <message>
       <location line="+4"/>
       <source>Couldn't determine a body for the selected feature '%s'.</source>
-      <translation>No se puido determinar un corpo para a función seleccionada '%s'.</translation>
+      <translation>No se puido determinar un corpo para a función escolmada '%s'.</translation>
     </message>
     <message>
       <source>Couldn't determin a body for the selected feature '%s'.</source>

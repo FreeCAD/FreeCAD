@@ -119,7 +119,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Murriztu potentzial elektrostatikoa</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Murriztu fluxu-abiadura</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -145,7 +145,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Murriztu hasierako fluxu-abiadura</translation>
     </message>
   </context>
   <context>
@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>FEM material bat sortzen du solido baterako</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -370,7 +370,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Bistaratu FEM sarearen informazioa</translation>
     </message>
   </context>
   <context>
@@ -545,7 +545,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </translation>
+      <translation>Sakatu "Gehitu" eta hautatu elementu geometrikoak, haiek zerrendari gehitzeko. Zerrendari geometriarik gehitzen ez bazaio, geratzen diren guztiak erabiliko dira. Honako geometria-elementuak hauta daitezke: </translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>

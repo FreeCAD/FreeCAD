@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>背景(&amp;B)</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>高品質アンチエイリアス(&amp;H)</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>SVGファイルを開く</translation>
     </message>
@@ -489,6 +489,10 @@ Do you want to continue?</source>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation type="unfinished">View projection</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation>ビュー投影</translation>
     </message>

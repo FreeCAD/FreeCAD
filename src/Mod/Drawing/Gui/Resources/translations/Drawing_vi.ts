@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>&amp;Nền</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>&amp;Chống răng cưa chất lượng cao</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>Mở tệp SVG</translation>
     </message>
@@ -491,6 +491,10 @@ Bạn có muốn tiếp tục?</translation>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation type="unfinished">View projection</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation> Chế độ xem các hình chiếu   </translation>
     </message>
