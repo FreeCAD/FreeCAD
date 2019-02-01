@@ -190,21 +190,6 @@ PropertyLinkBase::updateLabelReferences(App::DocumentObject *obj, const char *ne
     return ret;
 }
 
-void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {
-    if(!feature || !feature->getNameInDocument())
-        return;
-    auto it = _ElementRefMap.find(feature);
-    if(it == _ElementRefMap.end())
-        return;
-    std::vector<PropertyLinkBase*> props;
-    props.reserve(it->second.size());
-    props.insert(props.end(),it->second.begin(),it->second.end());
-    for(auto prop : props) {
-        if(prop->getContainer())
-            prop->updateElementReference(feature,reverse,true);
-    }
-}
-
 static std::string propertyName(Property *prop) {
     if(!prop)
         return std::string();
@@ -223,6 +208,30 @@ static std::string propertyName(Property *prop) {
     if(xlink)
         return propertyName(xlink->parent());
     return name;
+}
+
+void PropertyLinkBase::updateElementReferences(DocumentObject *feature, bool reverse) {
+    if(!feature || !feature->getNameInDocument())
+        return;
+    auto it = _ElementRefMap.find(feature);
+    if(it == _ElementRefMap.end())
+        return;
+    std::vector<PropertyLinkBase*> props;
+    props.reserve(it->second.size());
+    props.insert(props.end(),it->second.begin(),it->second.end());
+    for(auto prop : props) {
+        if(prop->getContainer()) {
+            try {
+                prop->updateElementReference(feature,reverse,true);
+            }catch(Base::Exception &e) {
+                e.ReportException();
+                FC_ERR("Failed to update element reference of " << propertyName(prop));
+            }catch(std::exception &e) {
+                FC_ERR("Failed to update element reference of " << propertyName(prop)
+                        << ": " << e.what());
+            }
+        }
+    }
 }
 
 void PropertyLinkBase::_registerElementReference(App::DocumentObject *obj, std::string &sub, ShadowSub &shadow)
