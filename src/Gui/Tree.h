@@ -273,6 +273,7 @@ protected:
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
     void slotScrollToObject  (const Gui::ViewProviderDocumentObject&);
     void slotRecomputed      (const App::Document &doc, const std::vector<App::DocumentObject*> &objs);
+    void slotRecomputedObject(const App::DocumentObject &);
     void slotTransactionDone (const App::Document &doc);
 
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
@@ -308,6 +309,7 @@ private:
     Connection connectExpObject;
     Connection connectScrObject;
     Connection connectRecomputed;
+    Connection connectRecomputedObj;
     Connection connectUndo;
     Connection connectRedo;
 

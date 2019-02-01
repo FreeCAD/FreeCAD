@@ -2254,6 +2254,8 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     connectScrObject = doc->signalScrollToObject.connect(boost::bind(&DocumentItem::slotScrollToObject, this, _1));
     auto adoc = doc->getDocument();
     connectRecomputed = adoc->signalRecomputed.connect(boost::bind(&DocumentItem::slotRecomputed, this, _1, _2));
+    connectRecomputedObj = adoc->signalRecomputedObject.connect(
+            boost::bind(&DocumentItem::slotRecomputedObject, this, _1));
     connectUndo = adoc->signalUndo.connect(boost::bind(&DocumentItem::slotTransactionDone, this, _1));
     connectRedo = adoc->signalRedo.connect(boost::bind(&DocumentItem::slotTransactionDone, this, _1));
 
@@ -2273,6 +2275,7 @@ DocumentItem::~DocumentItem()
     connectExpObject.disconnect();
     connectScrObject.disconnect();
     connectRecomputed.disconnect();
+    connectRecomputedObj.disconnect();
     connectUndo.disconnect();
     connectRedo.disconnect();
 }
@@ -2942,18 +2945,30 @@ void DocumentItem::slotScrollToObject(const Gui::ViewProviderDocumentObject& obj
     getTree()->scrollToItem(item);
 }
 
+void DocumentItem::slotRecomputedObject(const App::DocumentObject &obj) {
+    if(obj.isValid())
+        return;
+    auto it = ObjectMap.find(const_cast<App::DocumentObject*>(&obj));
+    if(it == ObjectMap.end() || it->second->items.empty())
+        return;
+    auto item = it->second->rootItem;
+    if(!item)
+        item = *it->second->items.begin();
+    showItem(item,false,true);
+    getTree()->scrollToItem(item);
+}
+
 void DocumentItem::slotRecomputed(const App::Document &, const std::vector<App::DocumentObject*> &objs) {
     auto tree = getTree();
-    if(!tree->isVisible()) return;
     bool scrolled = false;
     for(auto obj : objs) {
         if(obj->isValid()) 
             continue;
         auto it = ObjectMap.find(obj);
         if(it == ObjectMap.end() || it->second->items.empty()) {
-            auto itDoc = getTree()->DocumentMap.find(
+            auto itDoc = tree->DocumentMap.find(
                     Application::Instance->getDocument(obj->getDocument()));
-            if(itDoc!=getTree()->DocumentMap.end()) {
+            if(itDoc!=tree->DocumentMap.end()) {
                 it = itDoc->second->ObjectMap.find(obj);
                 if(it == ObjectMap.end() || it->second->items.empty()) {
                     FC_ERR("Cannot find recompute failure object " << obj->getFullName());
