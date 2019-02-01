@@ -325,6 +325,7 @@ enum MenuAction {
     MA_Expression,
     MA_Transient,
     MA_Output,
+    MA_NoRecompute,
     MA_ReadOnly,
     MA_Hidden,
     MA_Touched,
@@ -385,6 +386,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *event) {
 
                 ACTION_SETUP(Hidden);
                 ACTION_SETUP(Output);
+                ACTION_SETUP(NoRecompute);
                 ACTION_SETUP(ReadOnly);
                 ACTION_SETUP(Transient);
                 _ACTION_SETUP(Touched);
