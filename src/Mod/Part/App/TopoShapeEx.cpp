@@ -183,7 +183,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 
-#define TOPOP_VERSION 12
+#define TOPOP_VERSION 13
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -2095,12 +2095,20 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     }
                     ss.str("");
                     ss << newInfo.shapetype << j;
+                    std::string element = ss.str();
+
+                    if(getElementName(element.c_str(),true)!=element.c_str())
+                        continue;
+
                     key.tag = other.Tag;
-                    auto &name_info = newNames[ss.str()][key];
+                    auto &name_info = newNames[element][key];
                     name_info.sids = sids;
                     name_info.index = k;
                     name_info.shapetype = info.shapetype;
                 }
+
+                int checkParallel = -1;
+                gp_Pln pln;
 
                 // Find all new objects that were generated from an old object
                 // (e.g. a face generated from an edge)
@@ -2113,6 +2121,8 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         continue;
                     }
 
+                    int parallelFace = -1;
+                    int coplanarFace = -1;
                     auto &newInfo = *itMap->second;
                     std::vector<TopoDS_Shape> newShapes;
                     int shapeOffset = 0;
@@ -2135,8 +2145,51 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         // available.
                         shapeOffset = 3;
 
-                        for(TopExp_Explorer xp(newShape,newInfo.type);xp.More();xp.Next())
+                        if(info.type==TopAbs_FACE && checkParallel<0) {
+                            if(!TopoShape(otherElement).findPlane(pln))
+                                checkParallel = 0;
+                            else 
+                                checkParallel = 1;
+                        }
+                        for(TopExp_Explorer xp(newShape,newInfo.type);xp.More();xp.Next()) {
                             newShapes.push_back(xp.Current());
+
+                            if((parallelFace<0||coplanarFace<0) && checkParallel>0) {
+                                // Speciallized checking for high level mapped
+                                // face that are either coplanar or parallel
+                                // with the source face, which are common in
+                                // operations like extrusion. Once found, the
+                                // first coplanar face will assign an index of
+                                // INT_MIN+1, and the first parallel face
+                                // INT_MIN. The purpose of these special
+                                // indexing is to make the name more stable for
+                                // those generated faces.
+                                //
+                                // For example, the top or bottom face of an
+                                // extrusion will be named using the extruding
+                                // face. With a fixed index, the name is no
+                                // longer affected by adding/removing of holes
+                                // inside the extruding face/sketch.
+                                gp_Pln plnOther;
+                                if(TopoShape(newShapes.back()).findPlane(plnOther)) {
+                                    if(pln.Axis().IsParallel(plnOther.Axis(),Precision::Angular())) {
+                                        if(coplanarFace<0) {
+                                            gp_Vec vec(pln.Axis().Location(),plnOther.Axis().Location());
+                                            Standard_Real D1 = gp_Vec(pln.Axis().Direction()).Dot(vec);
+                                            if (D1 < 0) D1 = - D1;
+                                            Standard_Real D2 = gp_Vec(plnOther.Axis().Direction()).Dot(vec);
+                                            if (D2 < 0) D2 = - D2;
+                                            if(D1 <= Precision::Confusion() && D2 <= Precision::Confusion()) {
+                                                coplanarFace = (int)newShapes.size();
+                                                continue;
+                                            }
+                                        }
+                                        if(parallelFace<0)
+                                            parallelFace = (int)newShapes.size();
+                                    }
+                                }
+                            }
+                        }
                     }
                     key.shapetype += shapeOffset;
                     for(auto &newShape : newShapes) {
@@ -2150,10 +2203,20 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                         }
                         ss.str("");
                         ss << newInfo.shapetype << j;
+
+                        std::string element = ss.str();
+                        if(getElementName(element.c_str(),true)!=element.c_str())
+                            continue;
+
                         key.tag = other.Tag;
-                        auto &name_info = newNames[ss.str()][key];
+                        auto &name_info = newNames[element][key];
                         name_info.sids = sids;
-                        name_info.index = -k;
+                        if(k == parallelFace)
+                            name_info.index = INT_MIN;
+                        else if(k == coplanarFace)
+                            name_info.index = INT_MIN+1;
+                        else
+                            name_info.index = -k;
                         name_info.shapetype = info.shapetype;
                     }
                     key.shapetype -= shapeOffset;
@@ -2162,97 +2225,126 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
         }
     }
 
-    std::set<std::string> delayedNames;
-
-    // Second, construct the names for modification/generation info collected in
-    // the previous step
-    for(auto &v : newNames) {
-        // We treat the first modified/generated source shape name specially.
-        // If case there are more than one source shape. We hash the first
-        // source name separately, and then obtain the second string id by
-        // hashing all the source names together.  We then use the second
-        // string id as the postfix for our name. 
-        //
-        // In this way, we can associate the same source that are modified by
-        // multiple other shapes.
-
-        auto &element = v.first;
-        auto &names = v.second;
-        const auto &first_key = names.begin()->first;
-        auto &first_info = names.begin()->second;
-        int name_type = first_info.index>0?1:2; // index>0 means modified, or else generated
-        std::string first_name = first_key.name;
-
-        std::vector<App::StringIDRef> sids(first_info.sids);
-
-        postfix.clear();
-        if(names.size()>1) {
-            ss.str("");
-            ss << '(';
-            bool first = true;
-            auto it = names.begin();
-            for(++it;it!=names.end();++it) {
-                auto &other_key = it->first;
-                if(other_key.shapetype>=3 && first_key.shapetype<3) {
-                    // shapetype>=3 means its a high level mapping (e.g. a face
-                    // generates a solid). We don't want that if there are more
-                    // precise low level mapping avaialable. See comments above
-                    // for more details.
-                    break;
-                }
-                if(first)
-                    first = false;
-                else
-                    ss << ',';
-                auto &other_info = it->second;
-                std::ostringstream ss2;
-                if(other_info.index!=1)
-                    ss2 << elementMapPrefix() << 'K' << other_info.index;
-                std::string other_name = other_key.name;
-                encodeElementName(other_info.shapetype[0],other_name,ss2,sids,0,other_key.tag);
-                ss << other_name << ss2.str();
-                if((name_type==1 && other_info.index<0) || 
-                   (name_type==2 && other_info.index>0)) {
-                    FC_WARN("element is both generated and modified");
-                    name_type = 0;
-                }
-                sids.insert(sids.end(),other_info.sids.begin(),other_info.sids.end());
-            }
-            if(!first) {
-                ss <<')';
-                if(Hasher) {
-                    sids.push_back(Hasher->getID(ss.str().c_str()));
-                    ss.str("");
-                    ss << sids.back()->toString();
-                }
-                postfix = ss.str();
-            }
-        }
-
-        ss.str("");
-        if(name_type==2)
-            ss << genPostfix();
-        else if(name_type==1)
-            ss << modPostfix();
-        else
-            ss << modgenPostfix();
-        if(abs(first_info.index)>1)
-           ss << abs(first_info.index);
-        ss << postfix;
-        encodeElementName(element[0],first_name,ss,sids,op,first_key.tag);
-        setElementName(element.c_str(),first_name.c_str(),ss.str().c_str(),&sids);
-
-        if(first_key.shapetype>=3)
-            delayedNames.emplace(element);
-    }
-
-    // We shall first exclude those names (stored in delayedNames) generated
-    // from high level mapping. If there are still any unamed elements left
-    // after we go through the process below, we set delayed=true, and start
-    // using those excluded names.
+    // We shall first exclude those names generated from high level mapping. If
+    // there are still any unamed elements left after we go through the process
+    // below, we set delayed=true, and start using those excluded names.
     bool delayed = false;
 
     while(true) {
+
+        // Construct the names for modification/generation info collected in
+        // the previous step
+        for(auto itName=newNames.begin(),itNext=itName;
+                itNext!=newNames.end(); 
+                itName=itNext) 
+        {
+            // We treat the first modified/generated source shape name specially.
+            // If case there are more than one source shape. We hash the first
+            // source name separately, and then obtain the second string id by
+            // hashing all the source names together.  We then use the second
+            // string id as the postfix for our name. 
+            //
+            // In this way, we can associate the same source that are modified by
+            // multiple other shapes.
+
+            ++itNext;
+            
+            auto &element = itName->first;
+            auto &names = itName->second;
+            const auto &first_key = names.begin()->first;
+            auto &first_info = names.begin()->second;
+
+            if(!delayed && first_key.shapetype>=3 && first_info.index>INT_MIN+1) {
+                // This name is mapped from high level (shell, solid, etc.)
+                // Delay till next round. 
+                //
+                // index>INT_MAX+1 is for checking generated coplanar and
+                // parallel face mapping, which has special fixed index to make
+                // name stable.  These names are not delayed.
+                continue;
+            }else if(!delayed && getElementName(element.c_str(),true)!=element.c_str()) {
+                newNames.erase(itName);
+                continue;
+            }
+
+            int name_type = first_info.index>0?1:2; // index>0 means modified, or else generated
+            std::string first_name = first_key.name;
+
+            std::vector<App::StringIDRef> sids(first_info.sids);
+
+            postfix.clear();
+            if(names.size()>1) {
+                ss.str("");
+                ss << '(';
+                bool first = true;
+                auto it = names.begin();
+                for(++it;it!=names.end();++it) {
+                    auto &other_key = it->first;
+                    if(other_key.shapetype>=3 && first_key.shapetype<3) {
+                        // shapetype>=3 means its a high level mapping (e.g. a face
+                        // generates a solid). We don't want that if there are more
+                        // precise low level mapping avaialable. See comments above
+                        // for more details.
+                        break;
+                    }
+                    if(first)
+                        first = false;
+                    else
+                        ss << ',';
+                    auto &other_info = it->second;
+                    std::ostringstream ss2;
+                    if(other_info.index!=1) {
+                        ss2 << elementMapPrefix() << 'K';
+                        if(other_info.index == INT_MIN)
+                            ss2 << '0';
+                        else if(other_info.index == INT_MIN+1)
+                            ss2 << "00";
+                        else
+                            ss2 << other_info.index;
+                    }
+                    std::string other_name = other_key.name;
+                    encodeElementName(other_info.shapetype[0],other_name,ss2,sids,0,other_key.tag);
+                    ss << other_name << ss2.str();
+                    if((name_type==1 && other_info.index<0) 
+                            || (name_type==2 && other_info.index>0)) 
+                    {
+                        FC_WARN("element is both generated and modified");
+                        name_type = 0;
+                    }
+                    sids.insert(sids.end(),other_info.sids.begin(),other_info.sids.end());
+                }
+                if(!first) {
+                    ss <<')';
+                    if(Hasher) {
+                        sids.push_back(Hasher->getID(ss.str().c_str()));
+                        ss.str("");
+                        ss << sids.back()->toString();
+                    }
+                    postfix = ss.str();
+                }
+            }
+
+            ss.str("");
+            if(name_type==2)
+                ss << genPostfix();
+            else if(name_type==1)
+                ss << modPostfix();
+            else
+                ss << modgenPostfix();
+            if(first_info.index == INT_MIN)
+                ss << '0';
+            else if(first_info.index == INT_MIN+1)
+                ss << "00";
+            else if(abs(first_info.index)>1)
+                ss << abs(first_info.index);
+            ss << postfix;
+            encodeElementName(element[0],first_name,ss,sids,op,first_key.tag);
+            setElementName(element.c_str(),first_name.c_str(),ss.str().c_str(),&sids);
+
+            if(!delayed && first_key.shapetype<3)
+                newNames.erase(itName);
+        }
+
         // The reverse pass. Starting from the highest level element, i.e.
         // Face, for any element that are named, assign names for its lower unamed
         // elements. For example, if Edge1 is named E1, and its vertexes are not
@@ -2264,13 +2356,13 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
         // multiple higher elements, e.g. same edge in multiple faces.
 
         for(size_t ifo=infos.size()-1;ifo!=0;--ifo) {
-            newNames.clear();
+            std::map<std::string,std::map<std::string, NameInfo> > names;
             auto &info = *infos[ifo];
             auto &next = *infos[ifo-1];
             int i = 1;
-            auto it = delayedNames.end();
+            auto it = newNames.end();
             if(delayed)
-                it = delayedNames.upper_bound(info.shapetype);
+                it = newNames.upper_bound(info.shapetype);
             for(;;++i) {
                 std::string element;
                 if(!delayed) {
@@ -2279,12 +2371,14 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     ss.str("");
                     ss << info.shapetype << i;
                     element = ss.str();
-                    if(delayedNames.count(element))
+                    if(newNames.count(element))
                         continue;
-                }else if(it==delayedNames.end() || !boost::starts_with(*it,info.shapetype))
+                }else if(it==newNames.end() || 
+                        !boost::starts_with(it->first,info.shapetype))
                     break;
                 else {
-                    element = *it++;
+                    element = it->first;
+                    ++it;
                     i = shapeTypeAndIndex(element.c_str()).second;
                     if(i==0 || i>info.shapeMap.Extent())
                         continue;
@@ -2304,13 +2398,13 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     std::string element = ss.str();
                     if(getElementName(element.c_str(),true) != element.c_str())
                         continue;
-                    auto &info = newNames[element][mapped];
+                    auto &info = names[element][mapped];
                     info.index = n++;
                     info.sids = sids;
                 }
             }
             // Assign the actual names
-            for(auto &v : newNames) {
+            for(auto &v : names) {
 #ifndef FC_ELEMENT_MAP_ALL 
                 // Do we really want multiple names for an element in this case?
                 // If not, we just pick the name in the first sorting order here.
@@ -2321,7 +2415,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 {
                     auto &info = name.second;
                     auto &sids = info.sids;
-                    newName = name.first.name;
+                    newName = name.first;
                     ss.str("");
                     ss << upperPostfix();
                     if(info.index>1)
@@ -2359,7 +2453,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     ss.str("");
                     ss << prev.shapetype << j;
                     std::string element = ss.str();
-                    if(!delayed && delayedNames.count(element)) {
+                    if(!delayed && newNames.count(element)) {
                         names.clear();
                         break;
                     }
@@ -2415,7 +2509,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                 setElementName(element.c_str(),newName.c_str(),ss.str().c_str(),&sids);
             }
         }
-        if(!hasUnamed || delayed || delayedNames.empty())
+        if(!hasUnamed || delayed || newNames.empty())
             break;
         delayed = true;
     }
@@ -2937,3 +3031,4 @@ bool TopoShape::isCoplanar(const TopoShape &other, double tol) const {
         tol = Precision::Confusion();
     return pln1.Position().IsCoplanar(pln2.Position(),tol,tol);
 }
+
