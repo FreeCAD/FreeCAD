@@ -89,7 +89,8 @@ public:
     const rejectedMap getRejectedTransformations(void) { return rejected; }
 
 protected:
-    void Restore(Base::XMLReader &reader);
+    virtual void handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
     virtual void positionBySupport(void);
     TopoShape refineShapeIfActive(const TopoShape&) const;
     void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,

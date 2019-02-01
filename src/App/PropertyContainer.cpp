@@ -285,7 +285,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         std::string TypeName = reader.getAttribute("type");
         Property* prop = getPropertyByName(PropName.c_str());
         if(prop && reader.hasAttribute("status"))
-            prop->setStatus(reader.getAttributeAsUnsigned("status"));
+            prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
         // NOTE: We must also check the type of the current property because a
         // subclass of PropertyContainer might change the type of a property but
         // not its name. In this case we would force to read-in a wrong property

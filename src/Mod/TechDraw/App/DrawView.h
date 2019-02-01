@@ -65,7 +65,8 @@ public:
     virtual void onDocumentRestored() override;
     virtual short mustExecute() const override;
     //@}
-    void Restore(Base::XMLReader &reader) override;
+    virtual void handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     bool isInClip();
     DrawViewClip* getClipGroup(void);

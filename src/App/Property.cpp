@@ -159,7 +159,7 @@ void Property::Paste(const Property& /*from*/)
     assert(0);
 }
 
-void Property::setStatus(unsigned long status) {
+void Property::setStatusValue(unsigned long status) {
     static const unsigned long mask = 
         (1<<PropNoRecompute)|(1<<PropReadOnly)|(1<<PropTransient)|(1<<PropOutput)|(1<<PropHidden);
     status |= StatusBits.to_ulong() & mask;

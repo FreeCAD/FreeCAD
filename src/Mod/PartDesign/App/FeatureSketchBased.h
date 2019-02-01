@@ -111,7 +111,8 @@ public:
     virtual Part::Feature* getBaseObject(bool silent=false) const;
     
     //backwards compatibility: profile property was renamed and has different type now
-    virtual void Restore(Base::XMLReader& reader);
+    virtual void handleChangedPropertyName(
+        Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
     
 protected:
     void remapSupportShape(const TopoDS_Shape&);

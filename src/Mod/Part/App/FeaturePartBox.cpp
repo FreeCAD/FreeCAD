@@ -91,6 +91,10 @@ void Box::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
+    int transientCount = 0;
+    if(reader.hasAttribute("TransientCount"))
+        transientCount = reader.getAttributeAsUnsigned("TransientCount");
+    Cnt += transientCount;
 
     bool location_xyz = false;
     bool location_axis = false;
@@ -101,10 +105,20 @@ void Box::Restore(Base::XMLReader &reader)
     App::PropertyVector Axis, Location;
     Axis.setValue(0.0f,0.0f,1.0f);
     for (int i=0 ;i<Cnt;i++) {
-        reader.readElement("Property");
+        reader.readElement(i<transientCount?"_Property":"Property");
         const char* PropName = reader.getAttribute("name");
         const char* TypeName = reader.getAttribute("type");
         App::Property* prop = getPropertyByName(PropName);
+        if(prop && reader.hasAttribute("status"))
+            prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
+        if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+            if (!prop->testStatus(App::Property::Transient) &&
+                !(getPropertyType(prop) & App::Prop_Transient))
+                prop->Restore(reader);
+            if(i>=transientCount)
+                reader.readEndElement("Property");
+            continue;
+        }
         if (!prop) {
             // in case this comes from an old document we must use the new properties
             if (strcmp(PropName, "l") == 0) {
@@ -163,7 +177,8 @@ void Box::Restore(Base::XMLReader &reader)
         if (prop && strcmp(prop->getTypeId().getName(), tn.c_str()) == 0)
             prop->Restore(reader);
 
-        reader.readEndElement("Property");
+        if(i>=transientCount)
+            reader.readEndElement("Property");
     }
 
     if (distance_lhw) {

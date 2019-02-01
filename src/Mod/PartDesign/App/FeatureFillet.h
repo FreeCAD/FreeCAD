@@ -53,7 +53,8 @@ public:
     //@}
 
 protected:
-    void Restore(Base::XMLReader &reader);
+    virtual void handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
 };
 

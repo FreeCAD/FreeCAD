@@ -171,7 +171,7 @@ public:
         return StatusBits.test(static_cast<size_t>(pos));
     }
     void setStatus(Status pos, bool on);
-    void setStatus(unsigned long status);
+    void setStatusValue(unsigned long status);
     ///Sets property editable/grayed out in property editor
     void setReadOnly(bool readOnly);
     inline bool isReadOnly() const {

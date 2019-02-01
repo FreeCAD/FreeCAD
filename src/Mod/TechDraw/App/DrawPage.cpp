@@ -386,68 +386,26 @@ void DrawPage::unsetupObject()
     Template.setValue(nullptr);
 }
 
-void DrawPage::Restore(Base::XMLReader &reader)
+void DrawPage::handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
 {
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
-
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* schemaProp = getPropertyByName(PropName);
-        try {
-            if(schemaProp){
-                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
-                    schemaProp->Restore(reader);                                      //nothing special to do
-                } else  {
-                    if (strcmp(PropName, "Scale") == 0) {
-                        if (schemaProp->isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId())){  //right property type
-                            schemaProp->Restore(reader);                                                  //nothing special to do
-                        } else {                                                                //Scale, but not PropertyFloatConstraint
-                            App::PropertyFloat tmp;
-                            if (strcmp(tmp.getTypeId().getName(),TypeName)) {                   //property in file is Float
-                                tmp.setContainer(this);
-                                tmp.Restore(reader);
-                                double tmpValue = tmp.getValue();
-                                if (tmpValue > 0.0) {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(tmpValue);
-                                } else {
-                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(1.0);
-                                }
-                            } else {
-                                // has Scale prop that isn't Float! 
-                                Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
-                                // no idea
-                            }
-                        }
-                    } else {
-                        Base::Console().Log("DrawPage::Restore - old Document has unknown Property\n");
-                    }
-                }
+    if (prop == &Scale) {
+        App::PropertyFloat tmp;
+        if (strcmp(tmp.getTypeId().getName(),TypeName)==0) {                   //property in file is Float
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            double tmpValue = tmp.getValue();
+            if (tmpValue > 0.0) {
+                Scale.setValue(tmpValue);
+            } else {
+                Scale.setValue(1.0);
             }
+        } else {
+            // has Scale prop that isn't Float! 
+            Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
+            // no idea
         }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-#ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown\n");
-        }
-#endif
-
-        reader.readEndElement("Property");
     }
-    reader.readEndElement("Properties");
 }
 
 

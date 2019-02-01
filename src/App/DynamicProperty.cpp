@@ -417,7 +417,7 @@ void DynamicProperty::Restore(Base::XMLReader &reader)
                 prop = addDynamicProperty(TypeName, PropName, group, doc, attribute, readonly, hidden);
             }
             if(reader.hasAttribute("status")) 
-                prop->setStatus(reader.getAttributeAsUnsigned("status"));
+                prop->setStatusValue(reader.getAttributeAsUnsigned("status"));
         }
         catch(const Base::Exception& e) {
             // only handle this exception type

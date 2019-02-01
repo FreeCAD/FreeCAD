@@ -1161,56 +1161,24 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 }
 
 
-void ProfileBased::Restore(Base::XMLReader& reader) {
-   
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+void ProfileBased::handleChangedPropertyName(
+        Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    if((strcmp("Sketch", PropName) == 0) && (strcmp("App::PropertyLink", TypeName) == 0)) {
 
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* prop = getPropertyByName(PropName);
-        // NOTE: We must also check the type of the current property because a
-        // subclass of PropertyContainer might change the type of a property but
-        // not its name. In this case we would force to read-in a wrong property
-        // type and the behaviour would be undefined.
-        try {
-            //check if we load the old sketch property
-            if(!prop && (strcmp("Sketch", PropName) == 0) && (strcmp("App::PropertyLink", TypeName) == 0)) {
-                
-                std::vector<std::string> vec;
-                // read my element
-                reader.readElement("Link");
-                // get the value of my attribute
-                std::string name = reader.getAttribute("value");
+        std::vector<std::string> vec;
+        // read my element
+        reader.readElement("Link");
+        // get the value of my attribute
+        std::string name = reader.getAttribute("value");
 
-                if (name != "") {                    
-                    App::Document* document = getDocument();
-                    DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
-                    Profile.setValue(object, vec);
-                }
-                else {
-                    Profile.setValue(0, vec);
-                }
-            }
-            else if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0)
-                prop->Restore(reader);
+        if (name != "") {                    
+            App::Document* document = getDocument();
+            DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
+            Profile.setValue(object, vec);
         }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
+        else {
+            Profile.setValue(0, vec);
         }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-
-        reader.readEndElement("Property");
     }
-    reader.readEndElement("Properties");
 }

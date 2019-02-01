@@ -119,38 +119,14 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     }
 }
 
-void Chamfer::Restore(Base::XMLReader &reader)
+void Chamfer::handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
 {
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
-
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* prop = getPropertyByName(PropName);
-
-        try {
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-                prop->Restore(reader);
-            }
-            else if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
-                     strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
-                App::PropertyFloatConstraint p;
-                p.Restore(reader);
-                static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
-            }
-        }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        reader.readEndElement("Property");
+    if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
+            strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) 
+    {
+        App::PropertyFloatConstraint p;
+        p.Restore(reader);
+        static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
     }
-    reader.readEndElement("Properties");
 }

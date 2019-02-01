@@ -60,8 +60,6 @@ public:
     virtual const char* getViewProviderName(void) const override {
         return "TechDrawGui::ViewProviderArch";
     }
-    void Restore(Base::XMLReader &reader) override;
-
 
 protected:
     virtual void onChanged(const App::Property* prop) override;

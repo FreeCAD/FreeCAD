@@ -809,7 +809,7 @@ void DocumentObject::onDocumentRestored()
     for(auto ext : vector)
         ext->onExtendedDocumentRestored();
     if(Visibility.testStatus(Property::Output))
-        Visibility.setStatus(Property::NoModify);
+        Visibility.setStatus(Property::NoModify,true);
 }
 
 void DocumentObject::onSettingDocument()
