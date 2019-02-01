@@ -242,9 +242,14 @@ class _TaskPanelFemMaterial:
 
     # ********* how to edit a material *********
     def edit_material(self):
+        # opens the material editor to choose a material or edit material params
         # self.print_material_params()
         import MaterialEditor
-        self.material = MaterialEditor.editMaterial(self.material)
+        new_material_params = self.material.copy()
+        MaterialEditor.editMaterial(new_material_params)
+        # if the material editor was canceled a empty params dict will be returned, do not change the self.material
+        if new_material_params is True:
+            self.material = new_material_params
         self.check_material_keys()
         self.set_mat_params_in_input_fields(self.material)
         if self.has_transient_mat is False:
