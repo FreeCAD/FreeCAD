@@ -2760,8 +2760,12 @@ void ViewProviderSketch::updateColor(void)
     else
         crosscolor[1] = CrossColorV;
 
+    int count = std::min(edit->constrGroup->getNumChildren(), getSketchObject()->Constraints.getSize());
+    if(getSketchObject()->Constraints.hasInvalidGeometry())
+        count = 0;
+
     // colors of the constraints
-    for (int i=0; i < edit->constrGroup->getNumChildren(); i++) {
+    for (int i=0; i < count; i++) {
         SoSeparator *s = static_cast<SoSeparator *>(edit->constrGroup->getChild(i));
 
         // Check Constraint Type
