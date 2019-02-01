@@ -396,11 +396,10 @@ void SelectionView::preselect(QListWidgetItem* item)
         if(end) *end = 0;
     }
     QString cmd = QString::fromLatin1("Gui.Selection.preselect("
-        "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)")
+        "App.getDocument('%1').getObject('%2'),'%3')")
         .arg(QString::fromLatin1(docname))
         .arg(QString::fromLatin1(objname))
-        .arg(QString::fromLatin1(subname))
-        .arg(x).arg(y).arg(z);
+        .arg(QString::fromLatin1(subname));
     try {
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
     }catch(Base::Exception &e) {
