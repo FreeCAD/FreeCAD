@@ -1314,6 +1314,7 @@ class Arc(Creator):
                                     self.arctrack.on()
                                     self.ui.radiusUi()
                                     self.step = 1
+                                    self.ui.setNextFocus()
                                     self.linetrack.on()
                                     msg(translate("draft", "Pick radius:")+"\n")
                         else:
@@ -1328,6 +1329,7 @@ class Arc(Creator):
                             self.arctrack.on()
                             self.ui.radiusUi()
                             self.step = 1
+                            self.ui.setNextFocus()
                             self.linetrack.on()
                             msg(translate("draft", "Pick radius:")+"\n")
                             if self.planetrack:
