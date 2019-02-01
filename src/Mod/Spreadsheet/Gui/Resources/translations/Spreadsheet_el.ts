@@ -102,8 +102,8 @@
       <translation>Κατακόρυφη στοίχιση στο κέντρο</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Κατακόρυφη στοίχιση των περιεχομένων των επιλεγμένων κελιών στο κέντρο</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Υπογράμμιση κειμένου</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Ορισμός υπογράμμισης κειμένου σε επιλεγμένα κελιά</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Επιλογή</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

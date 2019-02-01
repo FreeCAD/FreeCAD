@@ -298,7 +298,7 @@
     <message>
       <location filename="../../Tessellation.cpp" line="+226"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>最初にメッシュにする図形を選択します。</translation>
+      <translation>最初にメッシュにするシェイプを選択してください。</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -334,12 +334,12 @@
     <message>
       <location line="+6"/>
       <source>Trim by plane</source>
-      <translation type="unfinished">Trim by plane</translation>
+      <translation>平面でトリム</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select the side you want to keep.</source>
-      <translation type="unfinished">Select the side you want to keep.</translation>
+      <translation>維持したい側面を選択してください。</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -354,7 +354,7 @@
     <message>
       <location line="+1"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>スプリット</translation>
     </message>
   </context>
   <context>

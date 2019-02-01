@@ -74,9 +74,9 @@
       <translation>Središče za razvijalce</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
-      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</source>
-      <translation>Ta oddelek vsebuje vsebino za razvijalce: Kako sami zgradite FreeCAD, kako je strukturirana FreeCAD izvorna koda in kako krmariti po njej ter kako razviti novo delovno okolje ali vgraditi FreeCAD v vašo aplikacijo.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -154,9 +154,9 @@
       <translation>Poglej vse prispevke na githubu</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Custom folder</source>
-      <translation>Mapo po meri, ki bo prikazana tukaj, lahko nastavite v meniju Uredi -&gt; Možnosti -&gt; Začetek -&gt; Mapa po meri</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>See all commits on github</source>
+      <translation>Poglej vse prispevke na githubu</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -208,13 +208,275 @@
       <source>Notes</source>
       <translation>Opombe</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
+      <source>Notes</source>
+      <translation>Opombe</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="543"/>
+      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
       <translation>Začetna stran</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <source>Start page</source>
+      <translation>Začetna stran</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
+    <message>
+      <location filename="../../Command.cpp" line="44"/>
+      <source>Start</source>
+      <translation>Začni</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start Page</source>
+      <translation>Začetna stran</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Displays the start page in a browser view</source>
+      <translation>Prikaže začetno stran v pogledu brskalnika</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Nastavitve začetne strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Predloga začetne strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation>Neobvezna HTML predloga, ki bo uporabljena namesto privzete začetne strani.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>Vsebina</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Prikaži forum</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Prikaži vsebino mape s primeri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Prikaži dodatno mapo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Če želiš primere prikazane na prvi strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation>Če je označno, bodo zadnje objave s FreeCAD foruma prikazane v zavihku aktivnosti</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page</source>
+      <translation>Neobvezna mapa po meri, ki se prikaže na dnu prve strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="126"/>
+      <source>Show notepad</source>
+      <translation>Prikaži beležnico</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
+      <translation>Prikaže beležko poleg sličic datoteke, kjer lahko hraniš zapiske skozi FreeCAD sejo</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="155"/>
+      <source>Fonts and colors</source>
+      <translation>Pisave in barve</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="167"/>
+      <source>The background of the main start page area</source>
+      <translation>Ozadje glavnega področja začetne strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="187"/>
+      <source>Background color</source>
+      <translation>Barva ozadja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="199"/>
+      <source>in FreeCAD</source>
+      <translation>v FreeCAD-u</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="218"/>
+      <source>In external browser</source>
+      <translation>V zunanjem brskalniku</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="236"/>
+      <source>Background color gradient down</source>
+      <translation>Gradient barve ozadja navzdol</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="249"/>
+      <source>The color of the version text</source>
+      <translation>Barva besedila različice programa</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="269"/>
+      <source>Link color</source>
+      <translation>Barva povezave</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <source>An optional image to display as background</source>
+      <translation>Neobvezna slika za prikaz kot ozadje</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="289"/>
+      <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation>Če je to označeno in je seznam slogov določen v Splošnih nastavitvah, bo uporabljen in bo preglasil barve spodaj</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="308"/>
+      <source>Page background color</source>
+      <translation>Barva ozadja strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
+      <source>The color of the text on the main pages</source>
+      <translation>Barva besedila prve strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="341"/>
+      <source>Background image</source>
+      <translation>Slika ozadja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <source>Page text color</source>
+      <translation>Barva besedila strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="361"/>
+      <source>The color of the links</source>
+      <translation>Barva povezav</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="387"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation>Barva ozadja okvirjev znotraj strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="407"/>
+      <source>Box background color</source>
+      <translation>Barva ozadja okvirja</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="420"/>
+      <source>The background color behind the panels</source>
+      <translation>Barva ozadja za zavihki</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation>Gradient navzdol za barvo ozadja (trenutno nepodprt)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="472"/>
+      <source>Open links</source>
+      <translation>Odpri povezave</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>Background text color</source>
+      <translation>Barva ozadja besedila</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="486"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>Uporabi FreeeCAD seznam slogov</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="493"/>
+      <source>Font family</source>
+      <translation>Družina pisav</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation>Družina pisave uporabljena na začetni strani. Lahko je ime pisave ali niz z vejico ločenih nadomestnih pisav</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial, Helvetica, sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="521"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation>Osnovna velikost črk za vsa besedila začetne strani</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="524"/>
+      <source>px</source>
+      <translation>sl. točk</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <source>Use gradient for New File icon</source>
+      <translation>Uporabi gradient za ikono Nova Datoteka</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="568"/>
+      <source>Options</source>
+      <translation>Možnosti</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="577"/>
+      <source>Should the start page be closed after loading?</source>
+      <translation>Bi morala biti začetna stran zaprta po nalaganju?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="596"/>
+      <source>Switch workbench after loading</source>
+      <translation>Preklopi delovno okolje po nalaganju</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="603"/>
+      <source>Close start page after loading</source>
+      <translation>Zapri začetno stran po nalaganju</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="610"/>
+      <source>Close &amp; switch on file open</source>
+      <translation>Zapri in prikaži dialog za odpiranje datotek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <source>If FreeCAD is started by opening a file, apply the two settings above</source>
+      <translation>Če se FreeCAD zažene odpiranjem datoteke, uporabi zgornji dve nastavitvi</translation>
     </message>
   </context>
 </TS>

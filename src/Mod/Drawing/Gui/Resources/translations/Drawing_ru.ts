@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>&amp;Фон</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>&amp;Высококачественное сглаживания</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>Открыть файл SVG </translation>
     </message>
@@ -491,6 +491,10 @@ Do you want to continue?</source>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation>Тип аксонометрии</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation> Тип аксонометрии   </translation>
     </message>

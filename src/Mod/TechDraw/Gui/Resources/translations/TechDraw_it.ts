@@ -24,13 +24,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
-      <source>Insert an ArchView</source>
-      <translation>Vista Arch</translation>
+      <source>Insert a Section Plane</source>
+      <translation>Piano di sezione</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
-      <source>Inserts a view of an Arch Section Plane</source>
-      <translation>Inserisce una vista di un Piano di sezione di Arch</translation>
+      <source>Inserts a view of a Section Plane from Arch Workbench</source>
+      <translation>Inserisce una vista di un piano di sezione dell'ambiente Arch</translation>
     </message>
   </context>
   <context>
@@ -74,7 +74,7 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
-      <source>Add View to ClipGroup</source>
+      <source>Add View to Clip group</source>
       <translation>Aggiungi una vista al Gruppo di clip</translation>
     </message>
     <message>
@@ -92,13 +92,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
-      <source>Insert a DraftView</source>
-      <translation>Vista Draft</translation>
+      <source>Insert a DraftWB object</source>
+      <translation>Oggetto di Draft</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
-      <source>Inserts a Draft WB object</source>
-      <translation>Inserisce un oggetto di Draft</translation>
+      <source>Insert a View of a Draft Workbench object</source>
+      <translation>Inserisce una vista di un oggetto dell'ambiente Draft</translation>
     </message>
   </context>
   <context>
@@ -504,8 +504,8 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
-      <source>Turn View Frames on or off</source>
-      <translation>Attiva o disattiva la visualizzazione della struttura di impaginazione</translation>
+      <source>Turn View Frames On/Off</source>
+      <translation>Attiva o disattiva la vista cornici</translation>
     </message>
   </context>
   <context>
@@ -542,24 +542,28 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="743"/>
-      <source>Select 1 DrawViewClip and 1 DrawView.</source>
-      <translation>Selezionare 1 DrawViewClip e 1 DrawView.</translation>
+      <source>Select 1 Clip group and 1 View.</source>
+      <translation>Selezionare 1 gruppo di Clip e 1 vista.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
-      <location filename="../../Command.cpp" line="827"/>
-      <source>Select exactly one Drawing View object.</source>
-      <translation>Selezionare un solo oggetto di vista di disegno.</translation>
+      <source>Select exactly one View to add to group.</source>
+      <translation>Selezionare esattamente una vista da aggiungere al gruppo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
-      <source>Select exactly one Clip object.</source>
-      <translation>Selezionare un solo oggetto Clip.</translation>
+      <source>Select exactly one Clip group.</source>
+      <translation>Selezionare esattamente un gruppo di Clip.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Clip e Vista deve essere dalla stessa pagina.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="827"/>
+      <source>Select exactly one View to remove from Group.</source>
+      <translation>Selezionare una vista da rimuovere dal gruppo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -584,8 +588,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1030"/>
-      <source>There is no Arch Section Plane in selection.</source>
-      <translation>Nella selezione non c'è nessun Piano di sezione di Arch.</translation>
+      <source>There is no Section Plane in selection.</source>
+      <translation>Non c'è nessun piano di sezione nella selezione.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -620,8 +624,8 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
-      <source>Can&apos;t make a Dimension from this selection</source>
-      <translation>Non è possibile creare una Dimensione di questa selezione</translation>
+      <source>Can not make a Dimension from this selection</source>
+      <translation>Non è possibile creare una Dimensione da questa selezione</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -646,7 +650,7 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
-      <source>Need three points to make an 3 point Angle Dimension</source>
+      <source>Need three points to make a 3 point Angle Dimension</source>
       <translation>Per creare una dimensione di Angolo da 3 punti servono tre punti</translation>
     </message>
     <message>
@@ -688,9 +692,13 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
+      <source>No View of a Part in selection.</source>
+      <translation>Nessuna vista di una Parte nella selezione.</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
-      <source>No DrawViewPart in selection.</source>
-      <translation>Nessuna DrawViewPart nella selezione.</translation>
+      <source>No Feature with Shape in selection.</source>
+      <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -754,35 +762,35 @@
       <translation>Selezionare solo 1 pagina.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="539"/>
+      <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*. pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="540"/>
-      <location filename="../../MDIViewPage.cpp" line="786"/>
+      <location filename="../../MDIViewPage.cpp" line="545"/>
+      <location filename="../../MDIViewPage.cpp" line="791"/>
       <source>All Files (*.*)</source>
       <translation>Tutti i File (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="541"/>
+      <location filename="../../MDIViewPage.cpp" line="546"/>
       <source>Export Page As PDF</source>
       <translation>Esporta pagina in PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="785"/>
+      <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="787"/>
+      <location filename="../../MDIViewPage.cpp" line="792"/>
       <source>Export page as SVG</source>
       <translation>Esporta pagina in SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1217"/>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
+      <location filename="../../MDIViewPage.cpp" line="1223"/>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
@@ -807,11 +815,6 @@
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
-      <source>TechDraw 2</source>
-      <translation>TechDraw 2</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="20"/>
       <source>Dimensions</source>
@@ -851,6 +854,11 @@
       <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Decimali alternativi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
+      <source>TechDraw Dimensions</source>
+      <translation>Dimensioni TechDraw</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1002,11 +1010,6 @@
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
-      <source>TechDraw 1</source>
-      <translation>TechDraw 1</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
       <source>General</source>
       <translation>Generale</translation>
@@ -1078,19 +1081,9 @@
       <translation>Mantieni aggiornate le pagine</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
-      <source>Font for View Labels</source>
-      <translation>Carattere per le etichette della vista</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
-      <source>Template Dot Size</source>
-      <translation>Dimensione del punto di modello</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
-      <source>Colors</source>
-      <translation>Colori</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
+      <source>TechDraw General</source>
+      <translation>TechDraw generale</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1121,6 +1114,11 @@
       <location filename="../../DlgPrefsTechDraw.ui" line="168"/>
       <source>AutoDistribute Secondary Views</source>
       <translation>Viste secondarie distribuite automaticamente</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
+      <source>Colors</source>
+      <translation>Colori</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="210"/>
@@ -1223,14 +1221,24 @@
       <translation>Carattere etichetta</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
+      <source>Font for View Labels</source>
+      <translation>Carattere per le etichette della vista</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
+      <source>Editable Text Marker Size</source>
+      <translation>Dimensione del marcatore di testo modificabile</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
       <source>View Label size in units</source>
       <translation>Dimensioni dell'etichetta della vista, di unità</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
-      <source>Green edit dot size in units</source>
-      <translation>Dimensione dei punti verdi, in unità</translation>
+      <source>Size of editable text marker in Templates (green dot).</source>
+      <translation>Dimensione dell'indicatore di testo modificabile nei modelli (punto verde).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1246,11 +1254,6 @@
       <translation>&amp;Esporta SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="123"/>
-      <source>dummy[*]</source>
-      <translation>segnaposto[*]</translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Attiva o disattiva l'aggiornamento automatico</translation>
@@ -1261,51 +1264,56 @@
       <translation>Attiva o disattiva la struttura</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="624"/>
       <source>Different orientation</source>
       <translation>Orientamento diverso</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="620"/>
+      <location filename="../../MDIViewPage.cpp" line="625"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>La stampante utilizza un orientamento diverso rispetto al disegno. Si desidera continuare?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="627"/>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="632"/>
+      <location filename="../../MDIViewPage.cpp" line="640"/>
       <source>Different paper size</source>
       <translation>Formato carta diverso</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="628"/>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
+      <location filename="../../MDIViewPage.cpp" line="633"/>
+      <location filename="../../MDIViewPage.cpp" line="641"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>La stampante utilizza un formato di carta diverso rispetto al disegno. Si desidera continuare?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
+      <location filename="../../MDIViewPage.cpp" line="652"/>
       <source>Opening file failed</source>
       <translation>Apertura del file non riuscita</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="648"/>
-      <source>Can&apos;t open file %1 for writing.</source>
+      <location filename="../../MDIViewPage.cpp" line="653"/>
+      <source>Can not open file %1 for writing.</source>
       <translation>Impossibile aprire il file %1 per la scrittura.</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="1221"/>
+      <source>Selected:</source>
+      <translation>Selezionato:</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
-      <source>Drawing page: </source>
-      <translation>Pagina di disegno: </translation>
+      <source>Drawing page:</source>
+      <translation>Pagina di disegno:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
-      <source> exported from FreeCAD document: </source>
-      <translation> esportati dal documento FreeCAD: </translation>
+      <source> exported from FreeCAD document:</source>
+      <translation> esportato dal documento FreeCAD:</translation>
     </message>
   </context>
   <context>
@@ -1499,8 +1507,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
-      <source>Primary View Direction</source>
-      <translation>Direzione della vista primaria</translation>
+      <source>Current primary view direction</source>
+      <translation>Direzione della vista principale corrente</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

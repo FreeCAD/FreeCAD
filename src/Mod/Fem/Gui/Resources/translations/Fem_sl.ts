@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation>Če želiš dodati reference, jih izberi v pogledu 3D in klikni "Dodaj".</translation>
+      <translation>Če želite dodati sklice, jih izberite v pogledu 3D in kliknite "Dodaj".</translation>
     </message>
   </context>
   <context>
@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="213"/>
       <source>Solver Control</source>
-      <translation>Kontrola Solver-ja</translation>
+      <translation>Nadzor opravil reševalnika</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
@@ -72,12 +72,12 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Ustvari vsebnik analize s standardnim solver-jem CalculiX</translation>
+      <translation>Ustvari vsebnik analize s standardnim reševalnikom CalculiX</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation>Ustvari vsebnik analize s standardnim solver-jem CalculiX</translation>
+      <translation>Ustvari vsebnik analize s standardnim reševalnikom CalculiX</translation>
     </message>
   </context>
   <context>
@@ -106,12 +106,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation>Ustvari pogoj telesnega toplotnega izvora</translation>
+      <translation>Omeji vir telesne toplote</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation>Ustvari MKE robni pogoj telesni toplotni izvor</translation>
+      <translation>Ustvari MKE robni pogoj izvor telesne toplote</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation>Ustvari MKE pogoj elektrostatičnega potenciala</translation>
+      <translation>Ustvari MKE robni pogoj elektrostatičnega potenciala</translation>
     </message>
   </context>
   <context>
@@ -192,22 +192,22 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Debelina lupine</translation>
+      <translation>Debelina stene profila</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Ustvari MKE debelino lupine</translation>
+      <translation>Ustvari MKE debelino stene profila</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="259"/>
       <source>Shell plate thickness</source>
-      <translation>Debelina lupine</translation>
+      <translation>Debelina stene profila</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Ustvari MKE debelino lupine</translation>
+      <translation>Ustvari MKE debelino stene profila</translation>
     </message>
   </context>
   <context>
@@ -215,12 +215,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="278"/>
       <source>Beam rotation</source>
-      <translation>Rotacija nosilca</translation>
+      <translation>Sukanje nosilca</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a FEM beam rotation</source>
-      <translation>Ustvari rotacijo nosilca za MKE</translation>
+      <translation>Ustvari sukanje nosilca za MKE</translation>
     </message>
   </context>
   <context>
@@ -267,12 +267,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="348"/>
       <source>Fluxsolver equation</source>
-      <translation>Fluxsolver enačba</translation>
+      <translation>Enačba reševalnika toka</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="349"/>
       <source>Creates a FEM equation for fluxsolver</source>
-      <translation>Ustvari MKE enačbo za fluxsolver</translation>
+      <translation>Ustvari MKE enačbo zareševalnik toka</translation>
     </message>
   </context>
   <context>
@@ -280,22 +280,22 @@
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation>MKE mreža v mrežo</translation>
+      <translation>MKE ploskovje v ploskovje</translation>
     </message>
     <message>
       <location filename="_CommandFemMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Pretvori površino MKE mreže v mrežo</translation>
+      <translation>Pretvori površje MKE ploskovja v ploskovje</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="470"/>
       <source>FEM mesh to mesh</source>
-      <translation>MKE mreža v mrežo</translation>
+      <translation>MKE ploskovje v ploskovje</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="471"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Pretvori površino MKE mreže v mrežo</translation>
+      <translation>Pretvori površje MKE ploskovja v ploskovje</translation>
     </message>
   </context>
   <context>
@@ -321,12 +321,12 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Ustvari MKE material za trdnine</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
       <source>FEM material for solid</source>
-      <translation>MKE material za telo</translation>
+      <translation>MKE material za trdnine</translation>
     </message>
   </context>
   <context>
@@ -334,7 +334,7 @@
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="41"/>
       <source>FEM mesh boundary layer</source>
-      <translation>Mejna plast MKE mreže</translation>
+      <translation>Plast obrobe ploskovja MKE</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshBoundaryLayer.py" line="43"/>
@@ -347,22 +347,22 @@
     <message>
       <location filename="_CommandFemMeshClear.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation>Odstrani MKE mrežo</translation>
+      <translation>Odstrani ploskovje MKE</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshClear.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Odstrani mrežo iz MKE mrežnega objekta</translation>
+      <translation>Odstrani ploskovje iz predmeta ploskovja MKE</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="518"/>
       <source>Clear FEM mesh</source>
-      <translation>Odstrani MKE mrežo</translation>
+      <translation>Odstrani ploskovje MKE</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="520"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Odstrani mrežo iz MKE mrežnega objekta</translation>
+      <translation>Odstrani ploskovje iz predmeta ploskovja MKE</translation>
     </message>
   </context>
   <context>
@@ -370,7 +370,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
-      <translation>Prikaži informacije FEM mreže</translation>
+      <translation>Prikaži podatke o ploskovju MKE</translation>
     </message>
   </context>
   <context>
@@ -378,22 +378,22 @@
     <message>
       <location filename="_CommandFemMeshGroup.py" line="41"/>
       <source>FEM mesh group</source>
-      <translation>Skupina MKE mrež</translation>
+      <translation>Skupina ploskovij MKE</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGroup.py" line="43"/>
       <source>Creates a FEM mesh group</source>
-      <translation>Ustvari skupino MKE mrež</translation>
+      <translation>Ustvari skupino ploskovij MKE</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="584"/>
       <source>FEM mesh group</source>
-      <translation>Skupina MKE mrež</translation>
+      <translation>Skupina ploskovij MKE</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="586"/>
       <source>Creates a FEM mesh group</source>
-      <translation>Ustvari skupino MKE mrež</translation>
+      <translation>Ustvari skupino ploskovij MKE</translation>
     </message>
   </context>
   <context>
@@ -401,12 +401,12 @@
     <message>
       <location filename="_CommandFemMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation>Področje MKE mreže</translation>
+      <translation>Področje ploskovja MKE</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation>Ustvari področje MKE mreže</translation>
+      <translation>Ustvari področje ploskovja MKE</translation>
     </message>
   </context>
   <context>
@@ -419,7 +419,7 @@
     <message>
       <location filename="_CommandFemResultShow.py" line="43"/>
       <source>Shows and visualizes selected result data</source>
-      <translation>Prikaži izbrane podatke o rezultatih</translation>
+      <translation>Prikaže izriše izbrane rezultate</translation>
     </message>
   </context>
   <context>
@@ -432,7 +432,7 @@
     <message>
       <location filename="_CommandFemResultsPurge.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation>Počisti vse rezultate izaktivne analize</translation>
+      <translation>Počisti vse rezultate dejavne analize</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="664"/>
@@ -442,7 +442,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Purges all results from active analysis</source>
-      <translation>Počisti vse rezultate izaktivne analize</translation>
+      <translation>Počisti vse rezultate dejavne analize</translation>
     </message>
   </context>
   <context>
@@ -468,7 +468,7 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Spremeni atribute reševalnika in izvede izračune za izbran reševalnik</translation>
+      <translation>Spremeni značilke reševalnika in izvede izračune za izbran reševalnik</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="726"/>
@@ -478,7 +478,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="728"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Spremeni atribute reševalnika in izvede izračune za izbran reševalnik</translation>
+      <translation>Spremeni značilke reševalnika in izvede izračune za izbran reševalnik</translation>
     </message>
   </context>
   <context>
@@ -545,7 +545,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation>Klikni "Add" in izberi geometrijske elemente za pripetje na seznam. Če noben element ni dodan na seznam so vsi ostali uporabljeni. Za izbiro so dovoljeni sledeči geometrijski elementi: </translation>
+      <translation>Kliknite "Dodaj" in izberite geometrijske elemente, ki jih želite dodati na seznam. Če noben element ni dodan na seznam so vsi ostali uporabljeni. Dovoljeno je izbrati sledeče geometrijske elemente: </translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -615,12 +615,12 @@
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="42"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>Netgen MKE mreža iz oblike</translation>
+      <translation>Ploskovje MKE iz Netgenove oblike</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshNetgenFromShape.py" line="43"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Ustvari MKE volumsko mrežo iz telesa ali ploskve z uporabo Netgen notranjega generatorja mreže</translation>
+      <translation>Ustvari MKE prostorninsko pslokovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
     </message>
   </context>
   <context>
@@ -628,12 +628,12 @@
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation>Gmsh MKE mreža iz oblike</translation>
+      <translation>Ploskovje MKE iz GMSHjeve oblike</translation>
     </message>
     <message>
       <location filename="_CommandFemMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Ustvari MKE mrežo iz oblike z uporabo Gmsh generatorja mreže</translation>
+      <translation>Ustvari ploskovje MKE iz oblike ploskovjevalnika GMSH</translation>
     </message>
   </context>
   <context>
@@ -641,7 +641,7 @@
     <message>
       <location filename="_CommandFemMeshPrintInfo.py" line="43"/>
       <source>Print FEM mesh info</source>
-      <translation>Prikaži lastnosti MKE mreže</translation>
+      <translation>Prikaži lastnosti ploskovja MKE</translation>
     </message>
   </context>
   <context>
@@ -688,12 +688,12 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Debelina lupine</translation>
+      <translation>Debelina stene profila</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Ustvari MKE debelino lupine</translation>
+      <translation>Ustvari MKE debelino stene profila</translation>
     </message>
   </context>
   <context>
@@ -706,7 +706,7 @@
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation>Ustvari vsebnik analize s standardnim solver-jem CalculiX</translation>
+      <translation>Ustvari vsebnik analize s standardnim reševalnikom CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
@@ -747,12 +747,12 @@
     <message>
       <location filename="_CommandClearMesh.py" line="41"/>
       <source>Clear FEM mesh</source>
-      <translation>Odstrani MKE mrežo</translation>
+      <translation>Odstrani ploskovje MKE</translation>
     </message>
     <message>
       <location filename="_CommandClearMesh.py" line="43"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Odstrani mrežo iz MKE mrežnega objekta</translation>
+      <translation>Odstrani ploskovje iz predmeta ploskovja MKE</translation>
     </message>
   </context>
   <context>
@@ -778,7 +778,7 @@
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Spremeni atribute reševalnika in izvede izračune za izbran reševalnik</translation>
+      <translation>Spremeni značilke reševalnika in izvede izračune za izbran reševalnik</translation>
     </message>
   </context>
   <context>
@@ -786,12 +786,12 @@
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="42"/>
       <source>FEM mesh to mesh</source>
-      <translation>MKE mreža v mrežo</translation>
+      <translation>MKE ploskovje v ploskovje</translation>
     </message>
     <message>
       <location filename="_CommandFEMMesh2Mesh.py" line="43"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Pretvori površino MKE mreže v mrežo</translation>
+      <translation>Pretvori površje MKE ploskovja v ploskovje</translation>
     </message>
   </context>
   <context>
@@ -835,12 +835,12 @@
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="41"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation>Netgen MKE mreža iz oblike</translation>
+      <translation>Ploskovje MKE iz Netgenove oblike</translation>
     </message>
     <message>
       <location filename="_CommandMeshNetgenFromShape.py" line="42"/>
       <source>Create a FEM volume mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Ustvari MKE volumsko mrežo iz telesa ali ploskve z uporabo Netgen notranjega generatorja mreže</translation>
+      <translation>Ustvari MKE prostorninsko pslokovje iz telesa ali ploskovne oblike z uporabo Netgen notranjega ploskovjevalnika</translation>
     </message>
   </context>
   <context>
@@ -848,12 +848,12 @@
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="42"/>
       <source>FEM mesh from shape by GMSH</source>
-      <translation>Gmsh MKE mreža iz oblike</translation>
+      <translation>Ploskovje MKE iz GMSHjeve oblike</translation>
     </message>
     <message>
       <location filename="_CommandMeshGmshFromShape.py" line="43"/>
       <source>Create a FEM mesh from a shape by GMSH mesher</source>
-      <translation>Ustvari MKE mrežo iz oblike z uporabo Gmsh generatorja mreže</translation>
+      <translation>Ustvari ploskovje MKE iz oblike ploskovjevalnika GMSH</translation>
     </message>
   </context>
   <context>
@@ -861,12 +861,12 @@
     <message>
       <location filename="_CommandMeshRegion.py" line="41"/>
       <source>FEM mesh region</source>
-      <translation>Področje MKE mreže</translation>
+      <translation>Področje ploskovja MKE</translation>
     </message>
     <message>
       <location filename="_CommandMeshRegion.py" line="43"/>
       <source>Creates a FEM mesh region</source>
-      <translation>Ustvari področje MKE mreže</translation>
+      <translation>Ustvari področje ploskovja MKE</translation>
     </message>
   </context>
   <context>
@@ -874,7 +874,7 @@
     <message>
       <location filename="_CommandPrintMeshInfo.py" line="44"/>
       <source>Print FEM mesh info</source>
-      <translation>Prikaži lastnosti MKE mreže</translation>
+      <translation>Prikaži lastnosti ploskovja MKE</translation>
     </message>
   </context>
   <context>
@@ -887,12 +887,12 @@
     <message>
       <location filename="_CommandPurgeFemResults.py" line="42"/>
       <source>Purge results from an analysis</source>
-      <translation>Počisti rezultate iz analize</translation>
+      <translation>Počisti rezultate analize</translation>
     </message>
     <message>
       <location filename="_CommandPurgeResults.py" line="43"/>
       <source>Purges all results from active analysis</source>
-      <translation>Počisti vse rezultate izaktivne analize</translation>
+      <translation>Počisti vse rezultate dejavne analize</translation>
     </message>
   </context>
   <context>
@@ -913,12 +913,12 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Debelina lupine</translation>
+      <translation>Debelina stene profila</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation>Ustvari MKE debelino lupine</translation>
+      <translation>Ustvari MKE debelino stene profila</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
@@ -946,7 +946,7 @@
     <message>
       <location filename="_CommandShowResult.py" line="42"/>
       <source>Shows and visualizes selected result data</source>
-      <translation>Prikaži izbrane podatke o rezultatih</translation>
+      <translation>Prikaže izriše izbrane rezultate</translation>
     </message>
   </context>
   <context>
@@ -1118,12 +1118,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Create FEM displacement constraint</source>
-      <translation>Ustvari MKE omejitev premika</translation>
+      <translation>Ustvari MKE omejitev pomika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Create FEM constraint for a displacement acting on a face</source>
-      <translation>Ustvari MKE omejitev za premik, ki deluje na ploskev</translation>
+      <translation>Ustvari MKE omejitev za pomik, ki deluje na ploskev</translation>
     </message>
   </context>
   <context>
@@ -1136,12 +1136,12 @@
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Create FEM fixed constraint</source>
-      <translation>Ustvari pritrjeno omejitev MKE</translation>
+      <translation>Ustvari polno vpetje MKE</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Create FEM constraint for a fixed geometric entity</source>
-      <translation>Ustvari omejitev MKE za pritrjeno geometrično entiteto</translation>
+      <translation>Ustvari omejitev MKE za pritrjeno geometrično prvino</translation>
     </message>
   </context>
   <context>
@@ -1159,7 +1159,7 @@
     <message>
       <location filename="../../Command.cpp" line="358"/>
       <source>Create FEM constraint for a force acting on a geometric entity</source>
-      <translation>Ustvari omejitev MKE za silo, ki deluje na geometrično entiteto</translation>
+      <translation>Ustvari omejitev MKE za silo, ki deluje na geometrično prvino</translation>
     </message>
   </context>
   <context>
@@ -1256,7 +1256,7 @@
       <location filename="../../Command.cpp" line="720"/>
       <location filename="../../Command.cpp" line="721"/>
       <source>Define/create a nodes set...</source>
-      <translation>Določi/Ustvari niz vozlišč …</translation>
+      <translation>Določi/Ustvari nabor vozlišč …</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="749"/>
@@ -1266,7 +1266,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Izberite eno mrežo MKE ali niz vozlišč.</translation>
+      <translation>Izberite eno ploskovje MKE ali nabor vozlišč.</translation>
     </message>
   </context>
   <context>
@@ -1295,7 +1295,7 @@
       <location filename="../../Command.cpp" line="664"/>
       <location filename="../../Command.cpp" line="666"/>
       <source>Create node set by Poly</source>
-      <translation>Ustvari niz vozlišč iz mnogokotnika</translation>
+      <translation>Ustvari nabor vozlišč iz mnogokotnika</translation>
     </message>
   </context>
   <context>
@@ -1435,7 +1435,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="45"/>
       <source>Nodes set</source>
-      <translation>Niz vozlišč</translation>
+      <translation>Nabor vozlišč</translation>
     </message>
   </context>
   <context>
@@ -1443,7 +1443,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.cpp" line="63"/>
       <source>Nodes set</source>
-      <translation>Niz vozlišč</translation>
+      <translation>Nabor vozlišč</translation>
     </message>
   </context>
   <context>
@@ -1530,7 +1530,7 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
       <source>Meshing failure</source>
-      <translation>Napaka pri ustvarjanju mreže</translation>
+      <translation>Napaka pri ploskovjenje</translation>
     </message>
   </context>
   <context>
@@ -1538,7 +1538,7 @@
     <message>
       <location filename="../../TaskDriver.cpp" line="51"/>
       <source>Nodes set</source>
-      <translation>Niz vozlišč</translation>
+      <translation>Nabor vozlišč</translation>
     </message>
   </context>
   <context>
@@ -1622,7 +1622,7 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation>Izbrani objekt ni del!</translation>
+      <translation>Izbrani predmet ni del!</translation>
     </message>
   </context>
   <context>
@@ -1641,7 +1641,7 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Mešane vrste oblik niso mogoče. Raje uporabite drugo omejitev</translation>
+      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejitev</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
@@ -1683,7 +1683,7 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Mešane vrste oblik niso mogoče. Raje uporabite drugo omejitev</translation>
+      <translation>Mešane vrste oblik niso mogoče. Raje uporabite dodatno omejitev</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
@@ -1803,12 +1803,12 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="76"/>
       <source>Meshing failure</source>
-      <translation>Napaka pri ustvarjanju mreže</translation>
+      <translation>Napaka pri ploskovjenje</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="77"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation>Modul MKE je vgrajen brez podpore za NETGEN. Ustvarjanje mreže ne bo delovalo!</translation>
+      <translation>Modul MKE je vgrajen brez podpore za NETGEN. Ploskovjenje ne bo delovalo!</translation>
     </message>
   </context>
   <context>
@@ -1943,7 +1943,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="33"/>
       <source>choose...</source>
-      <translation>izberi...</translation>
+      <translation>izberite ...</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
@@ -2019,7 +2019,7 @@
     <message>
       <location filename="../../Command.cpp" line="72"/>
       <source>You need to create or activate a Analysis</source>
-      <translation>Ustvariti ali aktivirati morate analizo</translation>
+      <translation>Ustvariti ali omogočiti morate analizo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -2035,7 +2035,7 @@
       <location filename="../../Command.cpp" line="177"/>
       <location filename="../../Command.cpp" line="240"/>
       <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-      <translation>FreeCAD je izgrajen brez podpore za NETGEN. Ustvarjanje mreže ne bo delovalo …</translation>
+      <translation>FreeCAD je izgrajen brez podpore za NETGEN. Ustvarjanje ploskovij ne bo delovalo …</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -2111,7 +2111,7 @@
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
       <source>Meshing</source>
-      <translation>Ustvarjanje mreže</translation>
+      <translation>Ploskovjenje</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="343"/>
@@ -2122,7 +2122,7 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="587"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="243"/>
       <source>Constraint normal stress</source>
-      <translation>Omejitev normalne napetosti</translation>
+      <translation>Omejitev osne sile</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="98"/>
@@ -2145,17 +2145,17 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="30"/>
       <source>Y displacement</source>
-      <translation>Premik Y</translation>
+      <translation>Pomik Y</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="37"/>
       <source>X displacement</source>
-      <translation>Premik X</translation>
+      <translation>Pomik X</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="44"/>
       <source>Z displacement</source>
-      <translation>Premik Z</translation>
+      <translation>Pomik Z</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="51"/>
@@ -2200,7 +2200,7 @@
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="176"/>
       <source>Factor:</source>
-      <translation>Faktor:</translation>
+      <translation>Količnik:</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
@@ -2226,7 +2226,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes:</source>
-      <translation>Mreže:</translation>
+      <translation>Ploskovja:</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
@@ -2325,7 +2325,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="86"/>
       <source>Other diameter</source>
-      <translation>Drug polmer</translation>
+      <translation>Drugi premer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="113"/>
@@ -2345,7 +2345,7 @@
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
       <source>Location</source>
-      <translation>Lokacija</translation>
+      <translation>Lega</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
@@ -2418,7 +2418,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="220"/>
       <source>Location</source>
-      <translation>Lokacija</translation>
+      <translation>Lega</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="234"/>
@@ -2431,7 +2431,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="35"/>
       <source>Prescribed Displacement</source>
-      <translation>Predpisani premik</translation>
+      <translation>Predpisani pomik</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
@@ -2451,7 +2451,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>
       <source>Displacement x</source>
-      <translation>Premik X</translation>
+      <translation>Pomik X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="104"/>
@@ -2476,32 +2476,32 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="137"/>
       <source>Displacement y</source>
-      <translation>Premik Y</translation>
+      <translation>Pomik Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="179"/>
       <source>Displacement z</source>
-      <translation>Premik Z</translation>
+      <translation>Pomik Z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation>Vrtenje je veljavno samo za nosilce in lupine.</translation>
+      <translation>Sukanje je mogoče le pri nosilcih in lupinah.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
       <source>Rotation x</source>
-      <translation>Vrtenje X</translation>
+      <translation>Sukanje X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="279"/>
       <source>Rotation y</source>
-      <translation>Vrtenje Y</translation>
+      <translation>Sukanje Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="318"/>
       <source>Rotation z</source>
-      <translation>Vrtenje Z</translation>
+      <translation>Sukanje Z</translation>
     </message>
   </context>
   <context>
@@ -2601,7 +2601,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="53"/>
       <source>Fineness:</source>
-      <translation>Drobnatost:</translation>
+      <translation>Podrobnost:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="64"/>
@@ -2621,12 +2621,12 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="79"/>
       <source>Fine</source>
-      <translation>Drobna</translation>
+      <translation>Podroben</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="84"/>
       <source>VeryFine</source>
-      <translation>Zelo drobna</translation>
+      <translation>Zelo podroben</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="89"/>

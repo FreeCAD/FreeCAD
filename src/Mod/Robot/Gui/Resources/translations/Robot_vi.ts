@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>thiết lập hướng mặc định cho lệnh tiếp theo để tạo ra điểm trung gian trên đường đi</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>đặt các giá trị mặc định cho tốc độ, gia tốc và tính liên tục cho các lệnh tiếp theo để tạo điểm trung gian trên đường đi</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Bạn cần ít nhất hai điểm trung gian trong một quỹ đạo để mô phỏng.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Bạn phải di chuyển trên một hình học (Chọn trước) bằng chuột để sử dụng lệnh này. Xem tài liệu để biết thêm chi tiết.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation type="unfinished">Set default speed</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation type="unfinished">Set default continuity</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation type="unfinished">Set default acceleration</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Chọn một Rô bốt để thiết lập vị trí nhà</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Chọn một Rô bốt</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Chọn một đối tượng Quỹ đạo.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>đặt tốc độ mặc định</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>tốc độ: (ví dụ: 1 m/s hoặc 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>thiết lập chế độ liên tục mặc định</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>liên tục?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>thiết lập chế độ tăng tốc mặc định</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>tăng tốc: (ví dụ: 1 m/s^2 hoặc 3 cm/s^2)</translation>
     </message>

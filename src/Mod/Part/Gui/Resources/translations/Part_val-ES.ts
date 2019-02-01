@@ -60,14 +60,8 @@
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
-      <source>
-
-Reference combinations:
-</source>
-      <translation>
-
-Combinacions de referència:
-</translation>
+      <source>Reference combinations:</source>
+      <translation type="unfinished">Reference combinations:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
@@ -155,6 +149,76 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>El resultat del càlcul ha fallat amb un error: 
+
+{err}
+
+Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
+      <source>Explode compound</source>
+      <translation>Descompon la composició</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
+      <source>Explode compound: split up a list of shapes into separate objects</source>
+      <translation>Descompon la composició: divideix una llista de formes en objectes separats</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
+      <source>Select a shape that is a compound, first!</source>
+      <translation>Primer, seleccioneu una forma que siga una composició!</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>Bad selection</source>
+      <translation>Selecció no vàlida</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Connecta objectes</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Fusiona objectes i té cura de preservar els buits.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
+      <source>Cutout for object</source>
+      <translation>Retall de l'objecte</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Crea un retall en un objecte per a encabir-ni un altre.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation>Objecte incrustat</translation>
+    </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
@@ -182,14 +246,19 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <translation>Continua</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
-      <source>Connect objects</source>
-      <translation>Connecta objectes</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>En primer lloc, seleccioneu com a mínim dos objectes, o un o més de compostos!</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
-      <source>Part_JoinConnect: Fuses objects, taking care to preserve voids.</source>
-      <translation>Part_JoinConnect: Fusiona objectes, tenint cura en preservar els buits.</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Seleccioneu un objecte base, després l'objecte que cal incrustar i apliqueu aquesta eina.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Seleccioneu l'objecte en què realitzar un retall, després l'objecte que ha d'encabir-se en el retall i apliqueu aquesta eina.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
@@ -200,26 +269,6 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
       <translation>Objecte incrustat</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Fusiona un objecte en un altre i va amb compte de preservar els buits.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Seleccioneu un objecte base, després l'objecte que cal incrustar i apliqueu aquesta eina.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
-      <source>Cutout for object</source>
-      <translation>Retall de l'objecte</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
-      <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Crea un retall en un objecte per a encabir-ni un altre.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
@@ -258,14 +307,72 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <translation>Fragments booleans</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Part_BooleanFragments: split objects where they intersect</source>
-      <translation>Part_BooleanFragments: divideix els objectes on s'intersequen</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>En primer lloc, seleccioneu coma mínim dos objectes, o un o més de compostos! Si sols se selecciona un compost, les formes compostes s'intersecaran les unes amb les altres (en cas contrari, els compostos amb auto-interseccions no són vàlids.).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>El resultat del càlcul ha fallat amb un error: 
+
+{err}
+
+Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp' per a cancel·lar.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Primer de tot, seleccioneu com a mínim dos objectes! El primer és l'objecte que es tallarà; la resta són objectes amb els qual es talla.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Continua</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragments booleans</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
+      <source>Boolean XOR</source>
+      <translation>XOR booleà</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>En primer lloc, seleccioneu coma mínim dos objectes, o un o més de compostos! Si sols se selecciona un compost, les formes compostes s'intersecaran les unes amb les altres (en cas contrari, els compostos amb auto-interseccions no són vàlids.).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Llesca a la composició</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Divideix l'objecte per les interseccions amb altres objectes i agrupa les peces en una composició.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Primer de tot, seleccioneu com a mínim dos objectes! El primer és l'objecte que es tallarà; la resta són objectes amb els qual es talla.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Llesca a part</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation>Part_BooleanFragments: divideix els objectes on s'intersequen</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
@@ -278,19 +385,32 @@ Feu clic en 'Continua' per a crear la propietat de totes formes, o en 'Interromp
       <translation>Part_Slice: Divideix un objecte per les interseccions amb altres objectes</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Primer de tot, seleccioneu com a mínim dos objectes! El primer és l'objecte que es tallarà; la resta són objectes amb els qual es talla.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
-      <source>Boolean XOR</source>
-      <translation>XOR booleà</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Divideix un objecte per les interseccions amb altres objectes.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
       <source>Part_XOR: remove intersection fragments</source>
       <translation>Part_XOR: Elimina els fragments d'intersecció</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>XOR booleà</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Elimina els fragments d'intersecció</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>

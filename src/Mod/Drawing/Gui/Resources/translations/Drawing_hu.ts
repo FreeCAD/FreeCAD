@@ -88,7 +88,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Insert new A3 landscape drawing</source>
-      <translation>Új A3 tájkép rajzot illeszt</translation>
+      <translation>Új A3 fekvő rajzot illeszt</translation>
     </message>
   </context>
   <context>
@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>Háttér</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>Magas minőségű élsimítás</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>SVG fájl megnyitása</translation>
     </message>
@@ -331,7 +331,7 @@ Szeretné folytatni?</translation>
     <message>
       <location line="+2"/>
       <source>A4</source>
-      <translation>A4-es</translation>
+      <translation>A4</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -490,6 +490,10 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation type="unfinished">View projection</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation> Vetítés megtekintése   </translation>
     </message>
@@ -564,7 +568,7 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <source>- Rotate</source>
-      <translation>-Forgatás</translation>
+      <translation>- Forgatás</translation>
     </message>
     <message>
       <source>90</source>
@@ -737,7 +741,7 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <source>Insert new A3 landscape drawing</source>
-      <translation>Új A3 tájkép rajzot illeszt</translation>
+      <translation>Új A3 fekvő rajzot illeszt</translation>
     </message>
     <message>
       <source>A4 landscape</source>
@@ -753,7 +757,7 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <source>A%1 landscape</source>
-      <translation>A%1 lfekvő</translation>
+      <translation>A%1 fekvő</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="-355"/>

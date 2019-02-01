@@ -102,8 +102,8 @@
       <translation>Zarovnat na střed</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Zarovnání na střed obsah vybraných buněk</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Podtržení textu</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Nastavení podtržení textu ve vybraných buňkách</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Vlastní</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

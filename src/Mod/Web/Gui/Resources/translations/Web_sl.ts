@@ -60,13 +60,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="163"/>
+      <location filename="../../Command.cpp" line="164"/>
       <source>Stop loading</source>
       <translation>Ustavi nalaganje</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="164"/>
-      <source>Stop the current loading</source>
-      <translation>Ustavi trenutno nalaganje</translation>
     </message>
   </context>
   <context>
@@ -78,13 +74,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Zoom in</source>
       <translation>Približaj</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="194"/>
-      <source>Zoom into the page</source>
-      <translation>Približaj na stran</translation>
     </message>
   </context>
   <context>
@@ -96,13 +88,9 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Zoom out</source>
       <translation>Oddalji</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="223"/>
-      <source>Zoom out of the page</source>
-      <translation>Oddalji na stran</translation>
     </message>
   </context>
   <context>
@@ -124,123 +112,15 @@
     </message>
   </context>
   <context>
-    <name>Form</name>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="14"/>
-      <source>Sketchfab exporter</source>
-      <translation>Izvoznik za Sketchfab</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="39"/>
-      <source>What to upload?</source>
-      <translation>Kaj prenesti?</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="46"/>
-      <source>Selection</source>
-      <translation>Izbira</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="56"/>
-      <source>All visible objects</source>
-      <translation>Vsi vidni objekti</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="81"/>
-      <source>Model name</source>
-      <translation>Ime modela</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="88"/>
-      <source>Private</source>
-      <translation>Zasebno</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="100"/>
-      <source>Description</source>
-      <translation>Opis</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="110"/>
-      <source>Tags (separated by commas)</source>
-      <translation>Tagi (ločeno z vejicami)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="119"/>
-      <source>FreeCAD,</source>
-      <translation>FreeCAD,</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="135"/>
-      <source>Format</source>
-      <translation>Oblika</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="143"/>
-      <source>OBJ + MTL (Arch exporter)</source>
-      <translation>OBJ + MTL (izvoznik loka)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="148"/>
-      <source>OBJ (standard Mesh exporter)</source>
-      <translation>OBJ (standardni izvoznik mreže)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="153"/>
-      <source>DAE (Collada)</source>
-      <translation>DAE (Collada)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="158"/>
-      <source>STL</source>
-      <translation>STL</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="163"/>
-      <source>IGES (shapes only)</source>
-      <translation>IGES (samo oblike)</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="168"/>
-      <source>IV</source>
-      <translation>IV</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="176"/>
-      <source>Sketchfab API token</source>
-      <translation>Sketchfab API žeton</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="192"/>
-      <source>Obtain</source>
-      <translation>Pridobi</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="201"/>
-      <source>Upload</source>
-      <translation>Naloži</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="211"/>
-      <source>uploading</source>
-      <translation>nalaganje</translation>
-    </message>
-    <message>
-      <location filename="../ui/TaskDlgSketchfab.ui" line="218"/>
-      <source>Success! View uploaded online</source>
-      <translation>Uspešno! Poglej naloženo preko spleta</translation>
-    </message>
-  </context>
-  <context>
     <name>QObject</name>
     <message>
       <location filename="../../AppWebGui.cpp" line="80"/>
-      <location filename="../../BrowserView.cpp" line="440"/>
+      <location filename="../../BrowserView.cpp" line="441"/>
       <source>Browser</source>
       <translation>Brskalnik</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="337"/>
+      <location filename="../../BrowserView.cpp" line="338"/>
       <source>File does not exist!</source>
       <translation>Datoteka ne obstaja!</translation>
     </message>
@@ -249,17 +129,17 @@
     <name>WebGui::BrowserView</name>
     <message>
       <location filename="../../BrowserView.cpp" line="329"/>
-      <location filename="../../BrowserView.cpp" line="333"/>
+      <location filename="../../BrowserView.cpp" line="334"/>
       <source>Error</source>
       <translation>Napaka</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="333"/>
+      <location filename="../../BrowserView.cpp" line="334"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Med nalaganjem datoteke je prišlo do napake. Nekateri podatki so se lahko spremenili ali pa se sploh niso obnovili. Poglej v okno poročil za podrobnejše informacije o vpletenih objektih.</translation>
     </message>
     <message>
-      <location filename="../../BrowserView.cpp" line="411"/>
+      <location filename="../../BrowserView.cpp" line="412"/>
       <source>Loading %1...</source>
       <translation>Nalaganje %1 …</translation>
     </message>

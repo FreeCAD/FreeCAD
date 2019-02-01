@@ -24,13 +24,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
-      <source>Insert an ArchView</source>
-      <translation>Insire una ArchView</translation>
+      <source>Insert a Section Plane</source>
+      <translation>Insire plano de corte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
-      <source>Inserts a view of an Arch Section Plane</source>
-      <translation>Insire unha vista de Plano da Sección de Corte</translation>
+      <source>Inserts a view of a Section Plane from Arch Workbench</source>
+      <translation>Insire unha vista do plano de corte dende o banco de traballo Arquitectura</translation>
     </message>
   </context>
   <context>
@@ -74,8 +74,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
-      <source>Add View to ClipGroup</source>
-      <translation>Engade Vista a ClipGroup</translation>
+      <source>Add View to Clip group</source>
+      <translation>Engade unha Vista a grupo Recortar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
@@ -92,13 +92,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
-      <source>Insert a DraftView</source>
-      <translation>Insire una DraftView</translation>
+      <source>Insert a DraftWB object</source>
+      <translation>Insire un obxecto DraftWB</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
-      <source>Inserts a Draft WB object</source>
-      <translation>Insire un obxecto a Borrador WB</translation>
+      <source>Insert a View of a Draft Workbench object</source>
+      <translation>Insire unha vista do obxecto de banco de traballo Borrador</translation>
     </message>
   </context>
   <context>
@@ -504,8 +504,8 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
-      <source>Turn View Frames on or off</source>
-      <translation>Activa ou desactiva Vista de Estruturas</translation>
+      <source>Turn View Frames On/Off</source>
+      <translation>Activa ou desactiva a Vista de Estruturas</translation>
     </message>
   </context>
   <context>
@@ -538,28 +538,32 @@
       <location filename="../../Command.cpp" line="367"/>
       <location filename="../../Command.cpp" line="437"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
-      <translation>Seleccione ao menos 1 obxecto DrawViewPart como base.</translation>
+      <translation>Escolme ao menos 1 obxecto DrawViewPart como base.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="743"/>
-      <source>Select 1 DrawViewClip and 1 DrawView.</source>
-      <translation>Selecciona 1 DrawViewClip e 1 DrawView.</translation>
+      <source>Select 1 Clip group and 1 View.</source>
+      <translation>Escolma 1 grupo de Recorte e 1 Vista.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
-      <location filename="../../Command.cpp" line="827"/>
-      <source>Select exactly one Drawing View object.</source>
-      <translation>Selecciona exactamente un obxecto da Vista de Deseño.</translation>
+      <source>Select exactly one View to add to group.</source>
+      <translation>Escolma exactamente unha vista a engadir ao grupo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
-      <source>Select exactly one Clip object.</source>
-      <translation>Selecciona exactamente un obxecto Clip.</translation>
+      <source>Select exactly one Clip group.</source>
+      <translation>Escolma exactamente un obxecto Clip.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Clip e Vista debe ser dende algunha Páxina.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="827"/>
+      <source>Select exactly one View to remove from Group.</source>
+      <translation>Escolma exactamente unha vista a remover dende o grupo.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -580,12 +584,12 @@
       <location filename="../../Command.cpp" line="962"/>
       <location filename="../../Command.cpp" line="1013"/>
       <source>Select at least one object.</source>
-      <translation>Selecciona canda menos un obxecto.</translation>
+      <translation>Escolma canda menos un obxecto.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1030"/>
-      <source>There is no Arch Section Plane in selection.</source>
-      <translation>Non hai selección de Plano Arquitectónico da Sección.</translation>
+      <source>There is no Section Plane in selection.</source>
+      <translation>Non hai selección de Plano de corte.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -620,8 +624,8 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
-      <source>Can&apos;t make a Dimension from this selection</source>
-      <translation>Can&apos;t facer un Acoutamento dende esta selección</translation>
+      <source>Can not make a Dimension from this selection</source>
+      <translation>Non se pode facer un Acoutamento dende esta selección</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -646,7 +650,7 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
-      <source>Need three points to make an 3 point Angle Dimension</source>
+      <source>Need three points to make a 3 point Angle Dimension</source>
       <translation>Necesita tres puntos para facer un Acotamento de Ángulo de 3 puntos</translation>
     </message>
     <message>
@@ -674,7 +678,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1056"/>
       <source>Select an object first</source>
-      <translation>Primeiro seleccione un obxecto</translation>
+      <translation>Primeiro escolme un obxecto</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1063"/>
@@ -688,9 +692,13 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
+      <source>No View of a Part in selection.</source>
+      <translation>Sen vista da peza en selección.</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
-      <source>No DrawViewPart in selection.</source>
-      <translation>Sen DrawViewPart en selección.</translation>
+      <source>No Feature with Shape in selection.</source>
+      <translation>Non hai característica con forma na escolma.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -705,7 +713,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="361"/>
       <source>Select a Face first</source>
-      <translation>Selecciona primeiro unha Cara</translation>
+      <translation>Escolma primeiro unha Cara</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="368"/>
@@ -751,38 +759,38 @@
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="145"/>
       <source>Select exactly 1 page.</source>
-      <translation>Selecciona exactamente 1 páxina.</translation>
+      <translation>Escolma exactamente 1 páxina.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="539"/>
+      <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="540"/>
-      <location filename="../../MDIViewPage.cpp" line="786"/>
+      <location filename="../../MDIViewPage.cpp" line="545"/>
+      <location filename="../../MDIViewPage.cpp" line="791"/>
       <source>All Files (*.*)</source>
       <translation type="unfinished">All Files (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="541"/>
+      <location filename="../../MDIViewPage.cpp" line="546"/>
       <source>Export Page As PDF</source>
       <translation>Exporta Páxina Como PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="785"/>
+      <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
       <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="787"/>
+      <location filename="../../MDIViewPage.cpp" line="792"/>
       <source>Export page as SVG</source>
       <translation>Exporta páxina como SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1217"/>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
+      <location filename="../../MDIViewPage.cpp" line="1223"/>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
@@ -807,11 +815,6 @@
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
-      <source>TechDraw 2</source>
-      <translation>TechDraw 2</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="20"/>
       <source>Dimensions</source>
@@ -851,6 +854,11 @@
       <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Decimales Alternativos</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
+      <source>TechDraw Dimensions</source>
+      <translation>Dimensións TechDraw</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1002,11 +1010,6 @@
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
-      <source>TechDraw 1</source>
-      <translation>TechDraw 1</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
       <source>General</source>
       <translation>Xeral</translation>
@@ -1078,19 +1081,9 @@
       <translation>Manter Páxinas Actualizadas</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
-      <source>Font for View Labels</source>
-      <translation>Fonte para etiquetas das vistas</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
-      <source>Template Dot Size</source>
-      <translation>Plantilla Tamaño de Punto</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
-      <source>Colors</source>
-      <translation>Cores</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
+      <source>TechDraw General</source>
+      <translation>TechDraw Xeral</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1123,6 +1116,11 @@
       <translation>AutoDistribute Vistas Secundarias</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
+      <source>Colors</source>
+      <translation>Cores</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="210"/>
       <source>Section Hatch</source>
       <translation>Raiado de Sección</translation>
@@ -1145,7 +1143,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="379"/>
       <source>Selected</source>
-      <translation>Seleccionado</translation>
+      <translation>Escolmado</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="403"/>
@@ -1223,14 +1221,24 @@
       <translation>Fonte de Etiqueta</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
+      <source>Font for View Labels</source>
+      <translation>Fonte para etiquetas das vistas</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
+      <source>Editable Text Marker Size</source>
+      <translation>Tamaño do Marcador de Texto editable</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
       <source>View Label size in units</source>
       <translation>Tamaño de etiqueta da vista en unidades</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
-      <source>Green edit dot size in units</source>
-      <translation>Tamaño dos puntos verdes de edición en unidades</translation>
+      <source>Size of editable text marker in Templates (green dot).</source>
+      <translation>O tamaño do marcador de texto editable en Plantilla (punto verde).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1246,11 +1254,6 @@
       <translation>&amp;Exporta SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="123"/>
-      <source>dummy[*]</source>
-      <translation>dummy[*]</translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Alternar &amp;Desactivar Actualizacións</translation>
@@ -1261,53 +1264,58 @@
       <translation>Alternar &amp;Estruturas</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="624"/>
       <source>Different orientation</source>
       <translation>Orientación diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="620"/>
+      <location filename="../../MDIViewPage.cpp" line="625"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>A impresora usa unha orientación de papel diferente da do debuxo.
 Quere seguir?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="627"/>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="632"/>
+      <location filename="../../MDIViewPage.cpp" line="640"/>
       <source>Different paper size</source>
       <translation>Tamaño de papel diferente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="628"/>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
+      <location filename="../../MDIViewPage.cpp" line="633"/>
+      <location filename="../../MDIViewPage.cpp" line="641"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A impresora usa un tamaño de papel diferente do do debuxo.
 Quere seguir?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
+      <location filename="../../MDIViewPage.cpp" line="652"/>
       <source>Opening file failed</source>
       <translation>Falla ó abrir o ficheiro</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="648"/>
-      <source>Can&apos;t open file %1 for writing.</source>
-      <translation>Can&apos;t abrir ficheiro %1 para escribir.</translation>
+      <location filename="../../MDIViewPage.cpp" line="653"/>
+      <source>Can not open file %1 for writing.</source>
+      <translation>Non se pode abrir o ficheiro %1 para escribir.</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="1221"/>
+      <source>Selected:</source>
+      <translation>Escolmado:</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
-      <source>Drawing page: </source>
-      <translation>Páxina de Debuxo: </translation>
+      <source>Drawing page:</source>
+      <translation>Páxina de Debuxo:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
-      <source> exported from FreeCAD document: </source>
-      <translation> exportado dende documento FreeCAD: </translation>
+      <source> exported from FreeCAD document:</source>
+      <translation> exportado dende documento FreeCAD:</translation>
     </message>
   </context>
   <context>
@@ -1418,7 +1426,7 @@ Quere seguir?</translation>
     <message>
       <location filename="../../TaskLinkDim.cpp" line="65"/>
       <source>Selected</source>
-      <translation>Seleccionado</translation>
+      <translation>Escolmado</translation>
     </message>
   </context>
   <context>
@@ -1501,8 +1509,8 @@ Quere seguir?</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
-      <source>Primary View Direction</source>
-      <translation>Vista Dirección Primaria</translation>
+      <source>Current primary view direction</source>
+      <translation>Actual dirección da vista primaria</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

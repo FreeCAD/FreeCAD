@@ -60,14 +60,8 @@
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
-      <source>
-
-Reference combinations:
-</source>
-      <translation>
-
-Combinações de referência:
-</translation>
+      <source>Reference combinations:</source>
+      <translation>Combinações de referência:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
@@ -155,6 +149,76 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 clique em 'Continuar' para criar o objeto de qualquer maneira, ou 'Abortar' para cancelar.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>O resultado de computação falha com um erro: 
+
+{err}
+
+clique em 'Continuar' para criar o objeto de qualquer maneira, ou 'Abortar' para cancelar.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
+      <source>Explode compound</source>
+      <translation>Explodir composto</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
+      <source>Explode compound: split up a list of shapes into separate objects</source>
+      <translation>Explodir composto: separar uma lista de formas em objetos separados</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
+      <source>Select a shape that is a compound, first!</source>
+      <translation>Selecione uma forma que seja um composto, primeiro!</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>Bad selection</source>
+      <translation>Má seleção</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Ligar objetos</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Funde objetos, tendo o cuidado de preservar espaços vazios.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
+      <source>Cutout for object</source>
+      <translation>Recorte para o objeto</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Faz um recorte de um objeto para caber noutro objeto.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation>Embeber objeto</translation>
+    </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
@@ -182,14 +246,19 @@ clique em 'Continuar' para criar o objeto de qualquer maneira, ou 'Abortar' para
       <translation>Continuar</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
-      <source>Connect objects</source>
-      <translation>Ligar objetos</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Selecione pelo menos dois objetos, ou um ou mais compostos, primeiro!</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
-      <source>Part_JoinConnect: Fuses objects, taking care to preserve voids.</source>
-      <translation>Part_JoinConnect: Funde objetos, tendo o cuidado de preservar vazios.</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Selecione o objeto base e, em seguida, o objeto para incorporar e ative esta ferramenta.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Selecione o objeto para fazer um recorte, depois o objeto que deve ajustar-se no recorte e ative esta ferramenta.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
@@ -200,26 +269,6 @@ clique em 'Continuar' para criar o objeto de qualquer maneira, ou 'Abortar' para
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
       <translation>Embeber objeto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Funde um objeto noutro, tendo o cuidado de preservar vazios.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Selecione o objeto base e, em seguida, o objeto para incorporar e ative esta ferramenta.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
-      <source>Cutout for object</source>
-      <translation>Recorte para o objeto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
-      <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Faz um recorte de um objeto para caber noutro objeto.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
@@ -258,14 +307,72 @@ clique em 'Continuar' para criar o objeto de qualquer maneira, ou 'Abortar' para
       <translation>Fragmentos de booleano</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Part_BooleanFragments: split objects where they intersect</source>
-      <translation>Part_BooleanFragments: separar os objetos onde eles se intercetam</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Selecione pelo menos dois objetos, ou um ou mais compostos, primeiro! Se apenas um composto estiver selecionado, as formas combinadas vão intersetar-se entre si (caso contrário, compostos com auto-intersecções são inválidos).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>O resultado de computação falha com um erro: 
+
+{err}
+
+clique em 'Continuar' para criar o objeto de qualquer maneira, ou 'Abortar' para cancelar.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Selecione pelo menos dois objetos, primeiro! O primeiro é o objeto a ser fatiado; o resto são objetos para cortar.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Continuar</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmentos de booleano</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
+      <source>Boolean XOR</source>
+      <translation>XOR Booleano</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Selecione pelo menos dois objetos, ou um ou mais compostos, primeiro! Se apenas um composto estiver selecionado, as formas combinadas vão intersetar-se entre si (caso contrário, compostos com auto-intersecções são inválidos).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Fatia para composto</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Separa o objeto pelas interseções com outros objetos e junta as peças num composto.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Selecione pelo menos dois objetos, primeiro! O primeiro é o objeto a ser fatiado; o resto são objetos para cortar.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Separa e afasta</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation>Part_BooleanFragments: separar os objetos onde eles se intercetam</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
@@ -275,22 +382,35 @@ clique em 'Continuar' para criar o objeto de qualquer maneira, ou 'Abortar' para
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
       <source>Part_Slice: split object by intersections with other objects</source>
-      <translation>Part_Slice: separar o objeto por interseções com outros objetos</translation>
+      <translation>Part_Slice: separa o objeto pelas interseções com outros objetos</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Selecione pelo menos dois objetos, primeiro! O primeiro é o objeto a ser fatiado; o resto são objetos para cortar.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
-      <source>Boolean XOR</source>
-      <translation>XOR Booleano</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Separar os objeto pelas interseções com outros objetos.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
       <source>Part_XOR: remove intersection fragments</source>
       <translation>Part_XOR: remover fragmentos de interseção</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>XOR Booleano</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Remove os fragmentos da interseção</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Cria um tubo</translation>
     </message>
   </context>
   <context>
@@ -5032,7 +5152,7 @@ Combinações de referência:
     </message>
     <message>
       <source>Move up</source>
-      <translation>Mover p/ Cima</translation>
+      <translation>Mover para cima</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -5040,7 +5160,7 @@ Combinações de referência:
     </message>
     <message>
       <source>Move down</source>
-      <translation>Mover p/ Baixo</translation>
+      <translation>Mover para baixo</translation>
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>

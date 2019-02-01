@@ -102,8 +102,8 @@
       <translation>Выровнять вертикально по центру</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Выровнять содержимое выбранных ячеек вертикально по центру</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Вертикально выровнять содержимое выделенных ячеек по центру</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Подчеркивание текста</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Задать подчеркивание текста в выбранных ячейках</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Подчеркивание текста в выбранных ячейках</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Дополнительно</translation>
+      <source>Custom Color</source>
+      <translation>﻿Пользовательский цвет</translation>
     </message>
   </context>
   <context>

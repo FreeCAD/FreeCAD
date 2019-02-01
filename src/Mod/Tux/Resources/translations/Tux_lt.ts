@@ -44,11 +44,6 @@
       <translation>Sukimosi taškas</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Vidurinysis pelės mygtukas arba H mygtukas.</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>Vidurinysis pelės mygtukas.</translation>
@@ -92,6 +87,11 @@
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation>Nežinomas</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation type="unfinished">Middle mouse button or H key.</translation>
     </message>
   </context>
 </TS>

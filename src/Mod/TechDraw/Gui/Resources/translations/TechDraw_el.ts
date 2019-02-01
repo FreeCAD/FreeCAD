@@ -24,13 +24,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
-      <source>Insert an ArchView</source>
-      <translation>Εισαγωγή μιας Προβολής Αρχιτεκτονικού Στοιχείου</translation>
+      <source>Insert a Section Plane</source>
+      <translation type="unfinished">Insert a Section Plane</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
-      <source>Inserts a view of an Arch Section Plane</source>
-      <translation>Εισάγει μια προβολή ενός Επιπέδου Τομής Αρχιτεκτονικού Στοιχείου</translation>
+      <source>Inserts a view of a Section Plane from Arch Workbench</source>
+      <translation type="unfinished">Inserts a view of a Section Plane from Arch Workbench</translation>
     </message>
   </context>
   <context>
@@ -74,8 +74,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
-      <source>Add View to ClipGroup</source>
-      <translation>Προσθήκη Προβολής στην Ομάδα Αποκοπής</translation>
+      <source>Add View to Clip group</source>
+      <translation type="unfinished">Add View to Clip group</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
@@ -92,13 +92,13 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
-      <source>Insert a DraftView</source>
-      <translation>Εισαγωγή μιας Προβολής Προσχεδίου</translation>
+      <source>Insert a DraftWB object</source>
+      <translation type="unfinished">Insert a DraftWB object</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
-      <source>Inserts a Draft WB object</source>
-      <translation>Εισάγει ένα αντικείμενο Πάγκου Εργασίας Προσχεδίου</translation>
+      <source>Insert a View of a Draft Workbench object</source>
+      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
     </message>
   </context>
   <context>
@@ -504,8 +504,8 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
-      <source>Turn View Frames on or off</source>
-      <translation>Ενεργοποίηση ή απενεργοποίηση των Πλαισίων Προβολής</translation>
+      <source>Turn View Frames On/Off</source>
+      <translation type="unfinished">Turn View Frames On/Off</translation>
     </message>
   </context>
   <context>
@@ -542,24 +542,28 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="743"/>
-      <source>Select 1 DrawViewClip and 1 DrawView.</source>
-      <translation>Επιλέξτε 1 Παράθυρο Αποκοπής της Προβολής Σχεδίασης Και 1 Προβολή Σχεδίασης.</translation>
+      <source>Select 1 Clip group and 1 View.</source>
+      <translation type="unfinished">Select 1 Clip group and 1 View.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
-      <location filename="../../Command.cpp" line="827"/>
-      <source>Select exactly one Drawing View object.</source>
-      <translation>Επιλέξτε ακριβώς ένα αντικείμενο Προβολής Σχεδίασης.</translation>
+      <source>Select exactly one View to add to group.</source>
+      <translation type="unfinished">Select exactly one View to add to group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
-      <source>Select exactly one Clip object.</source>
-      <translation>Επιλέξτε ακριβώς ένα αντικείμενο Αποκοπής.</translation>
+      <source>Select exactly one Clip group.</source>
+      <translation type="unfinished">Select exactly one Clip group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Το παράθυρο Αποκοπής και η Προβολή πρέπει να είναι από την ίδια Σελίδα.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="827"/>
+      <source>Select exactly one View to remove from Group.</source>
+      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -584,8 +588,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="1030"/>
-      <source>There is no Arch Section Plane in selection.</source>
-      <translation>Δεν υπάρχει κανένα Επίπεδο Τομής Αρχιτεκτονικού Στοιχείου στην επιλογή.</translation>
+      <source>There is no Section Plane in selection.</source>
+      <translation type="unfinished">There is no Section Plane in selection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -620,8 +624,8 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
-      <source>Can&apos;t make a Dimension from this selection</source>
-      <translation>Αδύνατη η δημιουργία Διάστασης από αυτήν την επιλογή</translation>
+      <source>Can not make a Dimension from this selection</source>
+      <translation type="unfinished">Can not make a Dimension from this selection</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -646,8 +650,8 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
-      <source>Need three points to make an 3 point Angle Dimension</source>
-      <translation type="unfinished">Need three points to make an 3 point Angle Dimension</translation>
+      <source>Need three points to make a 3 point Angle Dimension</source>
+      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -688,9 +692,13 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
+      <source>No View of a Part in selection.</source>
+      <translation type="unfinished">No View of a Part in selection.</translation>
+    </message>
+    <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
-      <source>No DrawViewPart in selection.</source>
-      <translation>Δεν υπάρχει κανένα Εξάρτημα Προβολής Σχεδίασης στην επιλογή.</translation>
+      <source>No Feature with Shape in selection.</source>
+      <translation type="unfinished">No Feature with Shape in selection.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -754,35 +762,35 @@
       <translation>Επιλέξτε ακριβώς 1 σελίδα.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="539"/>
+      <location filename="../../MDIViewPage.cpp" line="544"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="540"/>
-      <location filename="../../MDIViewPage.cpp" line="786"/>
+      <location filename="../../MDIViewPage.cpp" line="545"/>
+      <location filename="../../MDIViewPage.cpp" line="791"/>
       <source>All Files (*.*)</source>
       <translation>Όλα τα αρχεία (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="541"/>
+      <location filename="../../MDIViewPage.cpp" line="546"/>
       <source>Export Page As PDF</source>
       <translation>Εξαγωγή Σελίδας ως PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="785"/>
+      <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="787"/>
+      <location filename="../../MDIViewPage.cpp" line="792"/>
       <source>Export page as SVG</source>
       <translation>Εξαγωγή Σελίδας ως SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1217"/>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
+      <location filename="../../MDIViewPage.cpp" line="1223"/>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
@@ -807,11 +815,6 @@
   </context>
   <context>
     <name>TechDrawGui::DlgPrefsTechDraw2Imp</name>
-    <message>
-      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
-      <source>TechDraw 2</source>
-      <translation>Τεχνική Σχεδίαση 2</translation>
-    </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="20"/>
       <source>Dimensions</source>
@@ -851,6 +854,11 @@
       <location filename="../../DlgPrefsTechDraw2.ui" line="85"/>
       <source>Alternate Decimals</source>
       <translation>Εναλλακτικό Πλήθος Δεκαδικών</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
+      <source>TechDraw Dimensions</source>
+      <translation type="unfinished">TechDraw Dimensions</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1002,11 +1010,6 @@
   <context>
     <name>TechDrawGui::DlgPrefsTechDrawImp</name>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
-      <source>TechDraw 1</source>
-      <translation>Τεχνική Σχεδίαση 1</translation>
-    </message>
-    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="20"/>
       <source>General</source>
       <translation>Γενικές</translation>
@@ -1078,19 +1081,9 @@
       <translation>Διατηρήστε τις Σελίδες σε Συγχρονισμό με το τρισδιάστατο μοντέλο</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
-      <source>Font for View Labels</source>
-      <translation>Γραμματοσειρά για τις Ετικέτες της Προβολής</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
-      <source>Template Dot Size</source>
-      <translation>Μέγεθος Κουκκίδας στο Πρότυπο</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
-      <source>Colors</source>
-      <translation>Χρώματα</translation>
+      <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
+      <source>TechDraw General</source>
+      <translation type="unfinished">TechDraw General</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1121,6 +1114,11 @@
       <location filename="../../DlgPrefsTechDraw.ui" line="168"/>
       <source>AutoDistribute Secondary Views</source>
       <translation type="unfinished">AutoDistribute Secondary Views</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="202"/>
+      <source>Colors</source>
+      <translation>Χρώματα</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="210"/>
@@ -1223,14 +1221,24 @@
       <translation>Γραμματοσειρά Ετικέτας</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="656"/>
+      <source>Font for View Labels</source>
+      <translation>Γραμματοσειρά για τις Ετικέτες της Προβολής</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
+      <source>Editable Text Marker Size</source>
+      <translation type="unfinished">Editable Text Marker Size</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
       <source>View Label size in units</source>
       <translation>Προβολή μεγέθους Ετικέτας σε μονάδες</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
-      <source>Green edit dot size in units</source>
-      <translation>Μέγεθος πράσινης κουκκίδας επεξεργασίας σε μονάδες</translation>
+      <source>Size of editable text marker in Templates (green dot).</source>
+      <translation type="unfinished">Size of editable text marker in Templates (green dot).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1246,11 +1254,6 @@
       <translation>&amp;Εξαγωγή SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="123"/>
-      <source>dummy[*]</source>
-      <translation>ομοίωμα[*]</translation>
-    </message>
-    <message>
       <location filename="../../MDIViewPage.cpp" line="112"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation type="unfinished">Toggle &amp;Keep Updated</translation>
@@ -1261,53 +1264,58 @@
       <translation type="unfinished">Toggle &amp;Frames</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="619"/>
+      <location filename="../../MDIViewPage.cpp" line="624"/>
       <source>Different orientation</source>
       <translation>Διαφορετικός προσανατολισμός</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="620"/>
+      <location filename="../../MDIViewPage.cpp" line="625"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Ο εκτυπωτής χρησιμοποιεί διαφορετικό προσανατολισμό  από το σχέδιο.
 Θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="627"/>
-      <location filename="../../MDIViewPage.cpp" line="635"/>
+      <location filename="../../MDIViewPage.cpp" line="632"/>
+      <location filename="../../MDIViewPage.cpp" line="640"/>
       <source>Different paper size</source>
       <translation>Διαφορετικό μέγεθος χαρτιού</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="628"/>
-      <location filename="../../MDIViewPage.cpp" line="636"/>
+      <location filename="../../MDIViewPage.cpp" line="633"/>
+      <location filename="../../MDIViewPage.cpp" line="641"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Ο εκτυπωτής χρησιμοποιεί διαφορετικό μέγεθος χαρτιού από το σχέδιο.
 Θέλετε να συνεχίσετε;</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="647"/>
+      <location filename="../../MDIViewPage.cpp" line="652"/>
       <source>Opening file failed</source>
       <translation>Αποτυχία ανοίγματος αρχείου</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="648"/>
-      <source>Can&apos;t open file %1 for writing.</source>
-      <translation>Αδύνατο το άνοιγμα του αρχείου %1 για εγγραφή.</translation>
+      <location filename="../../MDIViewPage.cpp" line="653"/>
+      <source>Can not open file %1 for writing.</source>
+      <translation type="unfinished">Can not open file %1 for writing.</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="1221"/>
+      <source>Selected:</source>
+      <translation>Επιλεγμένα:</translation>
     </message>
   </context>
   <context>
     <name>TechDrawGui::QGVPage</name>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
-      <source>Drawing page: </source>
-      <translation>Σελίδα σχεδίασης: </translation>
+      <source>Drawing page:</source>
+      <translation type="unfinished">Drawing page:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
-      <source> exported from FreeCAD document: </source>
-      <translation> εξήχθη από έγγραφο FreeCAD: </translation>
+      <source> exported from FreeCAD document:</source>
+      <translation type="unfinished"> exported from FreeCAD document:</translation>
     </message>
   </context>
   <context>
@@ -1501,8 +1509,8 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
-      <source>Primary View Direction</source>
-      <translation>Κύρια Διεύθυνση Προβολής</translation>
+      <source>Current primary view direction</source>
+      <translation type="unfinished">Current primary view direction</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

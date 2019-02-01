@@ -36,12 +36,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="113"/>
       <source>Use Multmatrix Feature</source>
-      <translation>Uporabi značilnost množenja matrik</translation>
+      <translation>Uporabi zmožnost množenja matrik</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Največje število ploskev mnogokotnika, prizme ali prisekanega telesa. V kolikor je fn večji od te vrednosti, se objekt smatra kot zaokrožen. Izberite 0 za neomejeno</translation>
+      <translation>Največje število ploskev mnogokotnika, prizme ali prisekane piramide. Če je šp večji od te vrednosti, se predmet smatra kot zaokrožen. Izberite 0 za neomejeno</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="133"/>
@@ -81,7 +81,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="304"/>
       <source>convexity</source>
-      <translation>konveksnost</translation>
+      <translation>izbočenost</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="341"/>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="224"/>
       <source>Please select 3 objects first</source>
-      <translation>Izberi najprej 3 objekte</translation>
+      <translation>Izberite najprej 3 predmete</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="1204"/>
       <source>Unsupported Function</source>
-      <translation>Nepodprta funkcija</translation>
+      <translation>Nepodprta zmožnost</translation>
     </message>
     <message>
       <location filename="../../importCSG.py" line="1204"/>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="270"/>
       <source>as Mesh</source>
-      <translation>kot mreža</translation>
+      <translation>kot ploskovje</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="271"/>
@@ -179,12 +179,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="345"/>
       <source>Mesh Boolean</source>
-      <translation>Logična vrednost mreže</translation>
+      <translation>Logična vred. ploskovja</translation>
     </message>
     <message>
       <location filename="../../OpenSCADUtils.py" line="585"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>Napaka, vse oblike morajo biti 2D ali obe 3D</translation>
+      <translation>Napaka, vse oblike morajo biti 2D ali pa obe 3D</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="95"/>
@@ -249,7 +249,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="106"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation>Odstrani zlitje in uporabi postavitev za podrejene predmete ter jih poljubno obarvaj</translation>
+      <translation>Razveljavi zlitje, uporabi postavitev za podrejene predmete ter jih naključno obarvaj</translation>
     </message>
   </context>
   <context>
@@ -275,7 +275,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="187"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation>Ustvari značilnost, ki omogoča povečanje tolerance</translation>
+      <translation>Ustvari zmožnost, ki omogoča povečanje dopustnega odstopanja</translation>
     </message>
   </context>
   <context>
@@ -283,12 +283,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="400"/>
       <source>Mesh Boolean...</source>
-      <translation>Logična vrednost mreže …</translation>
+      <translation>Logična vrednost ploskovja …</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="402"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation>Izvozi objekte kot mreže in uporabi OpenSCAD za izvedbo logičnih operacij</translation>
+      <translation>Izvozi opredmete kot ploskovja in uporabi OpenSCAD za izvedbo logičnih operacij</translation>
     </message>
   </context>
   <context>
@@ -322,12 +322,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="243"/>
       <source>Remove Objects and their Children</source>
-      <translation>Odstrani objekte in njihove podrejene objekte</translation>
+      <translation>Odstrani predmete in njihove podrejenike</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="245"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Odstrani izbrane objekte in vse podrejene objekte, na katere se drugi objekti ne sklicujejo</translation>
+      <translation>Odstrani izbrane predmete in vse podrejenike, na katere se drugi objekti ne sklicujejo</translation>
     </message>
   </context>
   <context>
@@ -335,12 +335,12 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="228"/>
       <source>Replace Object</source>
-      <translation>Zamenjaj objekt</translation>
+      <translation>Zamenjaj predmet</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="230"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation>Zamenjaj objekt v Drevesu značilnosti. Izberi stari, novi in nadrejeni objekt</translation>
+      <translation>Zamenjaj predmet v Drevesu značilnosti. Izberite stari, novi in nadrejeni predmet</translation>
     </message>
   </context>
   <context>

@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>为后续创建路径点命令设置默认方向</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>为后续创建路径点命令设置默认速度,加速度和连续性</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>你至少需要两个路径点以进行轨迹模拟.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>您必须悬停鼠标于(预选)几何体以使用该命令.详情请参考文档.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation type="unfinished">Set default speed</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation type="unfinished">Set default continuity</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation type="unfinished">Set default acceleration</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>选择一个机器人来设置初始位置</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>选择一个机器人</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>选择一个轨迹对象.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>设置默认速度</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>速度: (如 1 m/s 或 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>设置默认连续性</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>连续?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>设置默认加速度</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>加速度: (如 1 m/s^2 或 3 cm/s^2)</translation>
     </message>

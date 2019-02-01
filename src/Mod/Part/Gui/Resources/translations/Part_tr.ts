@@ -60,14 +60,8 @@
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
-      <source>
-
-Reference combinations:
-</source>
-      <translation>
-
-Referans kombinasyonları:
-</translation>
+      <source>Reference combinations:</source>
+      <translation type="unfinished">Reference combinations:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
@@ -155,6 +149,76 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek için' İptal et'i tıklayın.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Sonuç hesaplanırken hata oluştu. 
+
+{err}
+
+Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek için' İptal et'i tıklayın.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
+      <source>Explode compound</source>
+      <translation>Bileşiği patlat</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
+      <source>Explode compound: split up a list of shapes into separate objects</source>
+      <translation>Bileşiği patlat: Bir şekil listesini, ayrı nesnelere böler</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
+      <source>Select a shape that is a compound, first!</source>
+      <translation>Öncelikle, bileşik olan bir şekil seçin!</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>Bad selection</source>
+      <translation>Kötü seçim</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Nesneleri bağla</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Boşlukları korumaya özen göstererek nesneleri birleştirir.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
+      <source>Cutout for object</source>
+      <translation>Nesne için kesip biçimle</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Bir nesneyi başka bir nesneye sığdırmak için bir kesim yapar.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation>Yerleştirilen nesne</translation>
+    </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
@@ -182,14 +246,19 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <translation>Devam</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
-      <source>Connect objects</source>
-      <translation>Nesneleri bağla</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Öncelikle en az iki nesne ya da bir veya daha fazla bileşik seçin!</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
-      <source>Part_JoinConnect: Fuses objects, taking care to preserve voids.</source>
-      <translation>Part_JoinConnect: Nesneleri kaynaştırır, boşlukları korumaya özen gösterir.</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Temel nesneyi, ardından yerleştirilecek nesneyi seçin ve bu aracı çalıştırın.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Bir kesim yapmak için nesneyi seçin, ardından kesime uyması gereken nesneyi seçin ve bu aracı çalıştırın.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
@@ -200,26 +269,6 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
       <translation>Yerleştirilen nesne</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Boşlukları korumaya özen göstererek bir nesneyi diğerine kaynaştırır.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Temel nesneyi, ardından yerleştirilecek nesneyi seçin ve bu aracı çalıştırın.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
-      <source>Cutout for object</source>
-      <translation>Nesne için kesip biçimle</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
-      <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Bir nesneyi başka bir nesneye sığdırmak için bir kesim yapar.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
@@ -258,14 +307,72 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
       <translation>Mantıksal (Boolean) Parçalar</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Part_BooleanFragments: split objects where they intersect</source>
-      <translation>Part_BooleanFragments: kesiştikleri yerde nesneleri ayır</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Öncelikle en az iki nesne ya da bir veya daha fazla bileşik seçin! Yalnızca bir bileşik seçilirse, bileşik şekiller birbirleri arasında kesişir (aksi halde, kendi kesişen bileşikler geçersiz olur).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Sonuç hesaplanırken hata oluştu. 
+
+{err}
+
+Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek için' İptal et'i tıklayın.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Öncelikle en az iki nesne seçin! İlk seçilen, dilimlenecek nesne; gerisi ise dilimlemek için kullanılacak nesnelerdir.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Devam</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Mantıksal (Boolean) Parçalar</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
+      <source>Boolean XOR</source>
+      <translation>Boolean XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Öncelikle en az iki nesne ya da bir veya daha fazla bileşik seçin! Yalnızca bir bileşik seçilirse, bileşik şekiller birbirleri arasında kesişir (aksi halde, kendi kesişen bileşikler geçersiz olur).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Bileşiği dilimle</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Nesneyi, diğer nesnelerle kesişme noktalarına göre bölün ve parçaları bir bileşene yerleştirin.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Öncelikle en az iki nesne seçin! İlk seçilen, dilimlenecek nesne; gerisi ise dilimlemek için kullanılacak nesnelerdir.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Parçalara ayır</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation>Part_BooleanFragments: kesiştikleri yerde nesneleri ayır</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
@@ -275,22 +382,35 @@ Yine de özelliği oluşturmak için 'Devam Et'i tıklayın veya iptal etmek iç
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
       <source>Part_Slice: split object by intersections with other objects</source>
-      <translation>Part_Slice: diğer nesnelerle olan kesişimlere göre nesneyi ayır</translation>
+      <translation>Parça_Dilim: nesneyi diğer nesnelerle kesişme noktalarına göre ayır</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Öncelikle en az iki nesne seçin! İlk seçilen, dilimlenecek nesne; gerisi ise dilimlemek için kullanılacak nesnelerdir.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
-      <source>Boolean XOR</source>
-      <translation>Boolean XOR</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Nesneyi, diğer nesnelerle kesişme noktalarına göre bölün.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
       <source>Part_XOR: remove intersection fragments</source>
       <translation>Part_XOR: kesişen parçalarını kaldır</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>Boolean XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Kesişen parçaları kaldır</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>
@@ -5085,7 +5205,7 @@ Referans kombinasyonları:
     <message>
       <location filename="../../TaskOffset.ui" line="68"/>
       <source>Arc</source>
-      <translation>Çember yayı</translation>
+      <translation>Yay</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="73"/>

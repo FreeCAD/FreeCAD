@@ -36,12 +36,12 @@
     <message>
       <location filename="../../Instance.py" line="79"/>
       <source>Set of external faces of the ship hull</source>
-      <translation type="unfinished">Set of external faces of the ship hull</translation>
+      <translation>Skup vanjskih lica brodskog trupa</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="87"/>
       <source>Set of weight instances</source>
-      <translation type="unfinished">Set of weight instances</translation>
+      <translation>Skup instanci težine</translation>
     </message>
     <message>
       <location filename="../../Instance.py" line="95"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../../ShipGui.py" line="80"/>
       <source>Plots the ship hull outline draw</source>
-      <translation type="unfinished">Plots the ship hull outline draw</translation>
+      <translation>Ispisi vanjske konture brodskog trupa</translation>
     </message>
   </context>
   <context>
@@ -172,12 +172,12 @@
     <message>
       <location filename="../../ShipGui.py" line="165"/>
       <source>Plot the tank capacity curve (level-volume curve)</source>
-      <translation type="unfinished">Plot the tank capacity curve (level-volume curve)</translation>
+      <translation>Ispis krivulje kapaciteta spremnika (krivulja nivoa volumena)</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="156"/>
       <source>Plot the tank capacity curve</source>
-      <translation type="unfinished">Plot the tank capacity curve</translation>
+      <translation>Ispis krivulje kapaciteta spremnika</translation>
     </message>
     <message>
       <location filename="../../shipCapacityCurve/TaskPanel.py" line="160"/>

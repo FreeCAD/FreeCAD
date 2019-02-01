@@ -55,7 +55,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-      <translation>Insire unha vista dos obxectos Bosquexo seleccionados da folla activa</translation>
+      <translation>Insire unha vista dos obxectos Bosquexo escolmados da folla activa</translation>
     </message>
   </context>
   <context>
@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>&amp;Fondo</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>&amp;Ante-entrelazado de alta calidade</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>Abrir ficheiro SVG</translation>
     </message>
@@ -491,6 +491,10 @@ Quere seguir?</translation>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation>Vista da proxección</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation> Vista da proxección   </translation>
     </message>
