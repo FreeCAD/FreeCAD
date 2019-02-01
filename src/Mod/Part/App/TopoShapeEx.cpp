@@ -1634,16 +1634,21 @@ TopoShape &TopoShape::makEWires(const TopoShape &shape, const char *op, bool fix
             }
         } while (found);
 
-        wires.push_back(new_wire);
-        wires.back().mapSubElement(edges,op);
-
         // Fix any topological issues of the wire
         ShapeFix_Wire aFix;
         aFix.SetPrecision(tol);
         aFix.Load(new_wire);
+
         aFix.FixReorder();
+        // Assuming FixReorder() just reorder and don't change the underlying
+        // edges, we get the wire and do a name mapping now, as the following
+        // two operations (FixConnected and FixClosed) may change the edges.
+        wires.push_back(aFix.Wire());
+        wires.back().mapSubElement(edges,op);
+
         aFix.FixConnected();
         aFix.FixClosed();
+        // Now retrieve the shape and set it without touching element map
         wires.back().setShape(aFix.Wire(),false);
     }
     return makECompound(wires,0,false);
