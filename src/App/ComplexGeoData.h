@@ -275,6 +275,9 @@ public:
     long getElementHistory(const char *name, 
             std::string *original=0, std::vector<std::string> *history=0) const;
 
+    void encodeElementName(char element_type, std::string &name, std::ostringstream &ss, 
+            std::vector<App::StringIDRef> &sids, const char* postfix=0, long tag=0) const;
+
     char elementType(const char *name) const;
 
     /** Reset/swap the element map
@@ -314,9 +317,6 @@ public:
 protected:
     virtual std::string renameDuplicateElement(int index, const char *element, 
            const char *element2, const char *name, std::vector<App::StringIDRef> &sids);
-
-    void encodeElementName(char element_type, std::string &name, std::ostringstream &ss, 
-            std::vector<App::StringIDRef> &sids, const char* postfix=0, long tag=0) const;
 
     static size_t findTagInElementName(const std::string &name, 
             long *tag=0, size_t *len=0, std::string *postfix=0, char *type=0);

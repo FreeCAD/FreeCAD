@@ -162,8 +162,9 @@ void Part::FaceMaker::postBuild() {
     const char *op = this->MyOp;
     if(!op) op = TOPOP_FACE;
     const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
-    // name the face using the edges of its outer wire, but only name them
-    // if there are more than one face
+    // name the face using the edges of its outer wire
+    long wireTag = 0;
+    bool sameTag = true;
     for(auto &face : faces) {
         ++i;
         TopoShape wire(ShapeAnalysis::OuterWire(TopoDS::Face(face.getShape())));
@@ -179,6 +180,13 @@ void Part::FaceMaker::postBuild() {
                 edgeNames.clear();
                 break;
             }
+            if(faces.size()==1 && sameTag) {
+                long tag = wire.getElementHistory(name);
+                if(!wireTag)
+                    wireTag = tag;
+                else
+                    sameTag = (wireTag==tag);
+            }
             edgeNames.insert(name);
         }
         if(edgeNames.empty())
@@ -186,7 +194,19 @@ void Part::FaceMaker::postBuild() {
         ss.str("");
         ss << "Face" << i;
         std::vector<std::string> names;
-        names.insert(names.end(),edgeNames.begin(),edgeNames.end());
+        if(faces.size()==1 && sameTag && wireTag) {
+            // If there is only one face, and all edges coming from the same
+            // object (tag), we abstract away individual edge names, and simply
+            // use a pseduo element name "Wire". The advantage is that the
+            // resulting face name will not be affected by any edge changes
+            // (e.g. edge changess from editing a sketch).
+            std::string name("Wire");
+            std::ostringstream ss;
+            std::vector<App::StringIDRef> sids;
+            TopoShape().encodeElementName(name[0],name,ss,sids,0,wireTag);
+            names.push_back(name + ss.str());
+        }else
+            names.insert(names.end(),edgeNames.begin(),edgeNames.end());
         this->myTopoShape.setElementComboName(ss.str().c_str(),names,op);
     }
     this->myTopoShape.initCache(true);
