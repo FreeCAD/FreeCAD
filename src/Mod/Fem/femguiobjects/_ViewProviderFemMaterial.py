@@ -246,9 +246,10 @@ class _TaskPanelFemMaterial:
         # self.print_material_params()
         import MaterialEditor
         new_material_params = self.material.copy()
-        MaterialEditor.editMaterial(new_material_params)
+        new_material_params = MaterialEditor.editMaterial(new_material_params)
         # if the material editor was canceled a empty params dict will be returned, do not change the self.material
-        if new_material_params is True:
+        # self.print_material_params(new_material_params)
+        if new_material_params:  # returns True if dict is not empty (do not use 'is True', this would return False for a non empty dict)
             self.material = new_material_params
         self.check_material_keys()
         self.set_mat_params_in_input_fields(self.material)
