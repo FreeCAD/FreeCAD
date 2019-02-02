@@ -179,7 +179,7 @@ class _TaskPanelFemMaterial:
         # check references, has to be after initialisation of selectionWidget
         self.selectionWidget.has_equal_references_shape_types()
 
-    # ********* leave task panel *********
+    # leave task panel **********************************************
     def accept(self):
         # print(self.material)
         if self.selectionWidget.has_equal_references_shape_types():
@@ -200,7 +200,7 @@ class _TaskPanelFemMaterial:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
 
-    # ********* choose material *********
+    # choose material ***********************************************
     def get_material_card(self, material):
         for a_mat in self.materials:
             unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
@@ -240,7 +240,7 @@ class _TaskPanelFemMaterial:
         self.parameterWidget.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), self.card_path, self.card_path)
         self.set_transient_material()
 
-    # ********* how to edit a material *********
+    # how to edit a material ****************************************
     def edit_material(self):
         # opens the material editor to choose a material or edit material params
         # self.print_material_params()
@@ -279,7 +279,7 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.input_fd_kinematic_viscosity.setReadOnly(True)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(True)
 
-    # ********* material parameter input fields *********
+    # material parameter input fields *******************************
     def print_material_params(self, material=None):
         if not material:
             material = self.material
@@ -288,6 +288,7 @@ class _TaskPanelFemMaterial:
         print('\n')
 
     def check_material_keys(self):
+        # FreeCAD units definition is at file end of src/Base/Unit.cpp
         if not self.material:
             print('For some reason all material data is empty!')
             self.material['Name'] = 'Empty'
@@ -532,7 +533,7 @@ class _TaskPanelFemMaterial:
             q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
             self.parameterWidget.input_fd_specific_heat.setText(q.UserString)
 
-    # ********* material import and export *********
+    # material import and export ************************************
     def print_materialsdict(self):
         print('\n\n')
         for mat_card in self.materials:
