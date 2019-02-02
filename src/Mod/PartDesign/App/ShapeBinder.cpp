@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 #include <cfloat>
 #include <boost/bind.hpp>
+#include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
@@ -145,24 +146,24 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::
     if (subs.empty())
         return obj->Shape.getShape();
 
-    //if we use multiple subshapes we build a shape from them by fusing them together
-    Part::TopoShape base;
-    std::vector<TopoDS_Shape> operators;
+    std::vector<TopoDS_Shape> shapes;
     for (std::string sub : subs) {
-        if (base.isNull())
-            base = obj->Shape.getShape().getSubShape(sub.c_str());
-        else
-            operators.push_back(obj->Shape.getShape().getSubShape(sub.c_str()));
+        shapes.push_back(obj->Shape.getShape().getSubShape(sub.c_str()));
     }
 
-    try {
-        if (!operators.empty() && !base.isNull())
-            return base.fuse(operators);
+    if (shapes.size() == 1){
+        //single subshape. Return directly.
+        return shapes[0];
+    } else {
+        //multiple subshapes. Make a compound.
+        BRep_Builder builder;
+        TopoDS_Compound cmp;
+        builder.MakeCompound(cmp);
+        for(const TopoDS_Shape& sh : shapes){
+            builder.Add(cmp, sh);
+        }
+        return cmp;
     }
-    catch (...) {
-        return base;
-    }
-    return base;
 }
 
 void ShapeBinder::handleChangedPropertyType(Base::XMLReader &reader, const char *TypeName, App::Property *prop)
