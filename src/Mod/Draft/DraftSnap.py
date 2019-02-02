@@ -97,6 +97,7 @@ class Snapper:
         self.running = False
         self.callbackClick = None
         self.callbackMove = None
+        self.snapObjectIndex = 0
         
         # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
@@ -138,7 +139,18 @@ class Snapper:
                                     ('ortho',           ':/icons/Snap_Ortho.svg'),
                                     ('intersection',    ':/icons/Snap_Intersection.svg'),
                                     ('special',         ':/icons/Snap_Special.svg')])
-        
+
+    def cstr(self, lastpoint, constrain, point):
+        "constrains if needed"
+        if constrain or self.mask:
+            fpt = self.constrain(point,lastpoint)
+        else:
+            self.unconstrain()
+            fpt = point
+        if self.radiusTracker:
+            self.radiusTracker.update(fpt)
+        return fpt
+
     def snap(self,screenpos,lastpoint=None,active=True,constrain=False,noTracker=False):
         """snap(screenpos,lastpoint=None,active=True,constrain=False,noTracker=False): returns a snapped
         point from the given (x,y) screenpos (the position of the mouse cursor), active is to
@@ -168,18 +180,6 @@ class Snapper:
             if Draft.getParam("showSnapBar",True):
                 bt.show()
 
-        def cstr(point):
-            "constrains if needed"
-            if constrain or self.mask:
-                fpt = self.constrain(point,lastpoint)
-            else:
-                self.unconstrain()
-                fpt = point
-            if self.radiusTracker:
-                self.radiusTracker.update(fpt)
-            return fpt
-
-        snaps = []
         self.snapInfo = None
         
         # type conversion if needed
@@ -230,202 +230,209 @@ class Snapper:
             if self.trackLine:
                 self.trackLine.p1(lastpoint)
             
-        # check if we snapped to something
-        self.snapInfo = Draft.get3DView().getObjectInfo((screenpos[0],screenpos[1]))
-
         # checking if parallel to one of the edges of the last objects or to a polar direction
         if active:
             eline = None
             point,eline = self.snapToPolar(point,lastpoint)
             point,eline = self.snapToExtensions(point,lastpoint,constrain,eline)
             
-        if not self.snapInfo or "Component" not in self.snapInfo:
-            # nothing has been snapped
+        objectsUnderCursor = Draft.get3DView().getObjectsInfo((screenpos[0],screenpos[1]))
+        if objectsUnderCursor:
+            if self.snapObjectIndex >= len(objectsUnderCursor):
+                self.snapObjectIndex = 0
+            self.snapInfo = objectsUnderCursor[self.snapObjectIndex]
+
+        if self.snapInfo and "Component" in self.snapInfo:
+            return self.snapToObject(lastpoint, active, constrain, eline, point, oldActive)
+
+        # nothing has been snapped
+        # check for grid snap and ext crossings
+        if active:
+            epoint = self.snapToCrossExtensions(point)
+            if epoint:
+                point = epoint
+            else:
+                point = self.snapToGrid(point)
+        fp = self.cstr(lastpoint, constrain, point)
+        if self.trackLine and lastpoint and (not noTracker):
+            self.trackLine.p2(fp)
+            self.trackLine.on()
+        # set the arch point tracking
+        if self.lastArchPoint:
+            self.setArchDims(self.lastArchPoint,fp)
+        self.spoint = fp
+        self.running = False
+        return fp
+
+    def cycleSnapObject(self):
+        self.snapObjectIndex = self.snapObjectIndex + 1
+
+    def snapToObject(self, lastpoint, active, constrain, eline, point, oldActive):
+        # we have an object to snap to
+        snaps = []
+
+        obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
+        if not obj:
+            self.spoint = self.cstr(lastpoint, constrain, point)
+            self.running = False
+            return self.spoint
+
+        self.lastSnappedObject = obj
             
-            # check for grid snap and ext crossings
-            if active:
-                epoint = self.snapToCrossExtensions(point)
-                if epoint:
-                    point = epoint
-                else:
-                    point = self.snapToGrid(point)
-            fp = cstr(point)
-            if self.trackLine and lastpoint and (not noTracker):
+        if hasattr(obj.ViewObject,"Selectable"):
+            if not obj.ViewObject.Selectable:
+                self.spoint = self.cstr(lastpoint, constrain, point)
+                self.running = False
+                return self.spoint
+            
+        if not active:
+            
+            # passive snapping
+            snaps = [self.snapToVertex(self.snapInfo)]
+
+        else:
+            
+            # first stick to the snapped object
+            s = self.snapToVertex(self.snapInfo)
+            if s:
+                point = s[0]
+                snaps = [s]
+            
+            # active snapping
+            comp = self.snapInfo['Component']
+
+            if obj.isDerivedFrom("Part::Feature"):
+                
+                # applying global placements
+                shape = obj.Shape.copy()
+                shape.Placement = obj.getGlobalPlacement()
+                
+                snaps.extend(self.snapToSpecials(obj,lastpoint,eline))
+                
+                if Draft.getType(obj) == "Polygon":
+                    # special snapping for polygons: add the center
+                    snaps.extend(self.snapToPolygon(obj))
+
+                if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
+                    if "Edge" in comp:
+                        # we are snapping to an edge
+                        en = int(comp[4:])-1
+                        if len(shape.Edges) > en:
+                            edge = shape.Edges[en]
+                            snaps.extend(self.snapToEndpoints(edge))
+                            snaps.extend(self.snapToMidpoint(edge))
+                            snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                            snaps.extend(self.snapToIntersection(edge))
+                            snaps.extend(self.snapToElines(edge,eline))
+                            
+                            et = DraftGeomUtils.geomType(edge)
+                            if et == "Circle":
+                                # the edge is an arc, we have extra options
+                                snaps.extend(self.snapToAngles(edge))
+                                snaps.extend(self.snapToCenter(edge))
+                            elif et == "Ellipse":
+                                # extra ellipse options
+                                snaps.extend(self.snapToCenter(edge))
+                    elif "Face" in comp:
+                        en = int(comp[4:])-1
+                        if len(shape.Faces) > en:
+                            face = shape.Faces[en]
+                            snaps.extend(self.snapToFace(face))
+                    elif "Vertex" in comp:
+                        # directly snapped to a vertex
+                        snaps.append(self.snapToVertex(self.snapInfo,active=True))
+                    elif comp == '':
+                        # workaround for the new view provider
+                        snaps.append(self.snapToVertex(self.snapInfo,active=True))
+                    else:
+                        # all other cases (face, etc...) default to passive snap
+                        snapArray = [self.snapToVertex(self.snapInfo)]
+                        
+            elif Draft.getType(obj) == "Dimension":
+                # for dimensions we snap to their 2 points:
+                snaps.extend(self.snapToDim(obj))
+
+            elif Draft.getType(obj) == "Axis":
+                for edge in obj.Shape.Edges:
+                    snaps.extend(self.snapToEndpoints(edge))
+                    snaps.extend(self.snapToIntersection(edge))
+                    
+            elif Draft.getType(obj) == "Mesh":
+                # for meshes we only snap to vertices
+                snaps.extend(self.snapToEndpoints(obj.Mesh))
+
+            elif Draft.getType(obj) == "Points":
+                # for points we only snap to points
+                snaps.extend(self.snapToEndpoints(obj.Points))
+
+            elif Draft.getType(obj) in ["WorkingPlaneProxy","BuildingPart"]:
+                # snap to the center of WPProxies and BuildingParts
+                snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Placement.Base)])
+
+            elif Draft.getType(obj) == "SectionPlane":
+                # snap to corners of section planes
+                snaps.extend(self.snapToEndpoints(obj.Shape))
+
+        # updating last objects list
+        if not self.lastObj[1]:
+            self.lastObj[1] = obj.Name
+        elif self.lastObj[1] != obj.Name:
+            self.lastObj[0] = self.lastObj[1]
+            self.lastObj[1] = obj.Name
+
+        if not snaps:
+            self.spoint = self.cstr(lastpoint, constrain, point)
+            self.running = False
+            return self.spoint
+
+        # calculating the nearest snap point
+        shortest = 1000000000000000000
+        origin = Vector(self.snapInfo['x'],self.snapInfo['y'],self.snapInfo['z'])
+        winner = None
+        fp = point
+        for snap in snaps:
+            if (not snap) or (snap[0] == None):
+                pass
+                #print("debug: Snapper: invalid snap point: ",snaps)
+            else:
+                delta = snap[0].sub(origin)
+                if delta.Length < shortest:
+                    shortest = delta.Length
+                    winner = snap
+                    
+        if winner:
+            # see if we are out of the max radius, if any
+            if self.radius:
+                dv = point.sub(winner[2])
+                if (dv.Length > self.radius):
+                    if (not oldActive) and self.isEnabled("passive"):
+                        winner = self.snapToVertex(self.snapInfo)
+
+            # setting the cursors
+            if self.tracker and not self.selectMode:
+                self.tracker.setCoords(winner[2])
+                self.tracker.setMarker(self.mk[winner[1]])
+                self.tracker.on()
+            # setting the trackline
+            fp = self.cstr(lastpoint, constrain, winner[2])
+            if self.trackLine and lastpoint:
                 self.trackLine.p2(fp)
                 self.trackLine.on()
+            # set the cursor
+            self.setCursor(winner[1])
+            
             # set the arch point tracking
             if self.lastArchPoint:
                 self.setArchDims(self.lastArchPoint,fp)
-            self.spoint = fp
-            self.running = False
-            return fp
-
-        else:
-
-            # we have an object to snap to
-
-            obj = FreeCAD.ActiveDocument.getObject(self.snapInfo['Object'])
-            if not obj:
-                self.spoint = cstr(point)
-                self.running = False
-                return self.spoint
-
-            self.lastSnappedObject = obj
-                
-            if hasattr(obj.ViewObject,"Selectable"):
-                if not obj.ViewObject.Selectable:
-                    self.spoint = cstr(point)
-                    self.running = False
-                    return self.spoint
-                
-            if not active:
-                
-                # passive snapping
-                snaps = [self.snapToVertex(self.snapInfo)]
-
+            if Draft.getType(obj) in ["Wall","Structure"]:
+                self.lastArchPoint = winner[2]
             else:
-                
-                # first stick to the snapped object
-                s = self.snapToVertex(self.snapInfo)
-                if s:
-                    point = s[0]
-                    snaps = [s]
-                
-                # active snapping
-                comp = self.snapInfo['Component']
-
-                if obj.isDerivedFrom("Part::Feature"):
-                    
-                    # applying global placements
-                    shape = obj.Shape.copy()
-                    shape.Placement = obj.getGlobalPlacement()
-                    
-                    snaps.extend(self.snapToSpecials(obj,lastpoint,eline))
-                    
-                    if Draft.getType(obj) == "Polygon":
-                        # special snapping for polygons: add the center
-                        snaps.extend(self.snapToPolygon(obj))
-
-                    if (not self.maxEdges) or (len(shape.Edges) <= self.maxEdges):
-                        if "Edge" in comp:
-                            # we are snapping to an edge
-                            en = int(comp[4:])-1
-                            if len(shape.Edges) > en:
-                                edge = shape.Edges[en]
-                                snaps.extend(self.snapToEndpoints(edge))
-                                snaps.extend(self.snapToMidpoint(edge))
-                                snaps.extend(self.snapToPerpendicular(edge,lastpoint))
-                                snaps.extend(self.snapToIntersection(edge))
-                                snaps.extend(self.snapToElines(edge,eline))
-                                
-                                et = DraftGeomUtils.geomType(edge)
-                                if et == "Circle":
-                                    # the edge is an arc, we have extra options
-                                    snaps.extend(self.snapToAngles(edge))
-                                    snaps.extend(self.snapToCenter(edge))
-                                elif et == "Ellipse":
-                                    # extra ellipse options
-                                    snaps.extend(self.snapToCenter(edge))
-                        elif "Face" in comp:
-                            en = int(comp[4:])-1
-                            if len(shape.Faces) > en:
-                                face = shape.Faces[en]
-                                snaps.extend(self.snapToFace(face))
-                        elif "Vertex" in comp:
-                            # directly snapped to a vertex
-                            snaps.append(self.snapToVertex(self.snapInfo,active=True))
-                        elif comp == '':
-                            # workaround for the new view provider
-                            snaps.append(self.snapToVertex(self.snapInfo,active=True))
-                        else:
-                            # all other cases (face, etc...) default to passive snap
-                            snapArray = [self.snapToVertex(self.snapInfo)]
-                            
-                elif Draft.getType(obj) == "Dimension":
-                    # for dimensions we snap to their 2 points:
-                    snaps.extend(self.snapToDim(obj))
-
-                elif Draft.getType(obj) == "Axis":
-                    for edge in obj.Shape.Edges:
-                        snaps.extend(self.snapToEndpoints(edge))
-                        snaps.extend(self.snapToIntersection(edge))
-                        
-                elif Draft.getType(obj) == "Mesh":
-                    # for meshes we only snap to vertices
-                    snaps.extend(self.snapToEndpoints(obj.Mesh))
-
-                elif Draft.getType(obj) == "Points":
-                    # for points we only snap to points
-                    snaps.extend(self.snapToEndpoints(obj.Points))
-
-                elif Draft.getType(obj) in ["WorkingPlaneProxy","BuildingPart"]:
-                    # snap to the center of WPProxies and BuildingParts
-                    snaps.append([obj.Placement.Base,'endpoint',self.toWP(obj.Placement.Base)])
-
-                elif Draft.getType(obj) == "SectionPlane":
-                    # snap to corners of section planes
-                    snaps.extend(self.snapToEndpoints(obj.Shape))
-
-            # updating last objects list
-            if not self.lastObj[1]:
-                self.lastObj[1] = obj.Name
-            elif self.lastObj[1] != obj.Name:
-                self.lastObj[0] = self.lastObj[1]
-                self.lastObj[1] = obj.Name
-
-            if not snaps:
-                self.spoint = cstr(point)
-                self.running = False
-                return self.spoint
-
-            # calculating the nearest snap point
-            shortest = 1000000000000000000
-            origin = Vector(self.snapInfo['x'],self.snapInfo['y'],self.snapInfo['z'])
-            winner = None
-            fp = point
-            for snap in snaps:
-                if (not snap) or (snap[0] == None):
-                    pass
-                    #print("debug: Snapper: invalid snap point: ",snaps)
-                else:
-                    delta = snap[0].sub(origin)
-                    if delta.Length < shortest:
-                        shortest = delta.Length
-                        winner = snap
-                        
-            if winner:
-                # see if we are out of the max radius, if any
-                if self.radius:
-                    dv = point.sub(winner[2])
-                    if (dv.Length > self.radius):
-                        if (not oldActive) and self.isEnabled("passive"):
-                            winner = self.snapToVertex(self.snapInfo)
-    
-                # setting the cursors
-                if self.tracker and not self.selectMode:
-                    self.tracker.setCoords(winner[2])
-                    self.tracker.setMarker(self.mk[winner[1]])
-                    self.tracker.on()
-                # setting the trackline
-                fp = cstr(winner[2])
-                if self.trackLine and lastpoint:
-                    self.trackLine.p2(fp)
-                    self.trackLine.on()
-                # set the cursor
-                self.setCursor(winner[1])
-                
-                # set the arch point tracking
-                if self.lastArchPoint:
-                    self.setArchDims(self.lastArchPoint,fp)
-                if Draft.getType(obj) in ["Wall","Structure"]:
-                    self.lastArchPoint = winner[2]
-                else:
-                    self.lastArchPoint = None
-                
-            # return the final point
-            self.spoint = fp
-            self.running = False
-            return self.spoint
+                self.lastArchPoint = None
+            
+        # return the final point
+        self.spoint = fp
+        self.running = False
+        return self.spoint
 
     def toWP(self,point):
         "projects the given point on the working plane, if needed"
