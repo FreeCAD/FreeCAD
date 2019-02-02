@@ -270,7 +270,17 @@ def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=No
 # Customized widgets
 #---------------------------------------------------------------------------
 
-class DraftDockWidget(QtGui.QWidget):
+class DraftBaseWidget(QtGui.QWidget):
+    def __init__(self,parent = None):
+        QtGui.QWidget.__init__(self,parent)
+    def eventFilter(self, widget, event):
+        if event.type() == QtCore.QEvent.KeyPress and event.key()==QtCore.Qt.Key_Tab:
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.cycleSnapObject()
+            return True
+        return QtGui.QWidget.eventFilter(self, widget, event)
+
+class DraftDockWidget(DraftBaseWidget):
     "custom Widget that emits a resized() signal when resized"
     def __init__(self,parent = None):
         QtGui.QWidget.__init__(self,parent)
@@ -359,7 +369,7 @@ class DraftToolBar:
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
-            self.baseWidget = QtGui.QWidget()
+            self.baseWidget = DraftBaseWidget()
             self.tray = QtGui.QToolBar(None)
             self.tray.setObjectName("Draft tray")
             self.tray.setWindowTitle("Draft tray")
@@ -505,6 +515,7 @@ class DraftToolBar:
         self.layout.addLayout(bl)
         self.labelx = self._label("labelx", xl)
         self.xValue = self._inputfield("xValue", xl) #width=60
+        self.xValue.installEventFilter(self.baseWidget)
         self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labely = self._label("labely", yl)
         self.yValue = self._inputfield("yValue", yl)
@@ -843,7 +854,7 @@ class DraftToolBar:
         if self.taskmode:
             self.isTaskOn = True
             todo.delay(FreeCADGui.Control.closeDialog,None)
-            self.baseWidget = QtGui.QWidget()
+            self.baseWidget = DraftBaseWidget()
             self.layout = QtGui.QVBoxLayout(self.baseWidget)
             self.setupToolBar(task=True)
             self.retranslateUi(self.baseWidget)
