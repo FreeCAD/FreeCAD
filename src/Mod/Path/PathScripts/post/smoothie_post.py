@@ -243,7 +243,7 @@ def export(objectslist, filename, argstring):
     else:
 
         if not filename == '-':
-            gfile = pythonopen(filename, "wb")
+            gfile = pythonopen(filename, "w")
             gfile.write(final)
             gfile.close()
 

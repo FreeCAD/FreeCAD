@@ -655,11 +655,11 @@ class _Stairs(ArchComponent.Component):
             isLine = isinstance(edge.Curve,(Part.Line, Part.LineSegment))
             isArc = isinstance(edge.Curve,Part.Circle)				# why it is Part.Circle for an Arc Edge? - Not Part.ArcOfCircle?
 
-            ''' (1) append v (vec) ''' 
+            ''' (1) append v (vec) '''
             v.append(DraftGeomUtils.vec(edge))	# TODO check all function below ok with curve?
 
 
-            ''' (2) get netWidthI ''' 
+            ''' (2) get netWidthI '''
             netWidthI = 0
             if i > 0:
                 try:
@@ -675,18 +675,18 @@ class _Stairs(ArchComponent.Component):
                netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
 
 
-            ''' (3) append vBase ''' 
+            ''' (3) append vBase '''
             vBase.append(edges[i].Vertexes[0].Point)
             if isArc:
                 vBase1 = edge.Vertexes[1].Point
                 vBase2 = (edge.valueAt((edge.LastParameter+edge.FirstParameter)/2))
                 #vBase2vec = (vBase2-vBase[i]) # - would not be correct if Align is not Left
 
-            ''' (1a) calc & append vLength - Need v (vec) ''' 
-            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d 
+            ''' (1a) calc & append vLength - Need v (vec) '''
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d
 
 
-            ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI ''' 
+            ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI '''
 
             #vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidthI))
 
@@ -705,7 +705,7 @@ class _Stairs(ArchComponent.Component):
                 vWidth1=DraftVecUtils.scaleTo(dvec1,netWidthI)
                 vWidth2=DraftVecUtils.scaleTo(dvec2,netWidthI)
 
-            ''' (3a) alter vBase ''' 
+            ''' (3a) alter vBase '''
             if stairsObj:
                 vBase[i] = stairsObj.Proxy.vbaseFollowLastSegment(stairsObj, vBase[i])
                 if isArc:
@@ -748,7 +748,7 @@ class _Stairs(ArchComponent.Component):
                 pArc1.append(_Stairs.align(vBase2, align, vWidth2).add(Vector(0,0,-abs(treadThickness.Value))).add(Vector(0,0,-railStartRiser.Value)))
                 pArc2.append(pArc1[i].add(vWidth2.add(Vector(0,0,(offsetVRight-offsetVLeft).Value))))
 
-            ''' (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 ''' 
+            ''' (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 '''
 
             if i > 0:
                 if isinstance(edges[i-1].Curve,(Part.Line, Part.LineSegment)) and isinstance(edge.Curve,(Part.Line, Part.LineSegment)):

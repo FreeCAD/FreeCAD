@@ -4871,7 +4871,7 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create B-spline");
-    sToolTipText    = QT_TR_NOOP("Create a B-spline via control point in the sketch.");
+    sToolTipText    = QT_TR_NOOP("Create a B-spline via control points in the sketch.");
     sWhatsThis      = "Sketcher_CreateBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateBSpline";
@@ -4915,7 +4915,7 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create periodic B-spline");
-    sToolTipText    = QT_TR_NOOP("Create a periodic B-spline via control point in the sketch.");
+    sToolTipText    = QT_TR_NOOP("Create a periodic B-spline via control points in the sketch.");
     sWhatsThis      = "Sketcher_CreatePeriodicBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create_Periodic_BSpline";
@@ -6708,7 +6708,7 @@ namespace SketcherGui {
                         this->notAllowedReason = QT_TR_NOOP("This object belongs to another part.");
                         break;
                     case Sketcher::SketchObject::rlNonParallel:
-                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketchs.");
+                        this->notAllowedReason = QT_TR_NOOP("The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.");
                         break;
                     case Sketcher::SketchObject::rlAxesMisaligned:
                         this->notAllowedReason = QT_TR_NOOP("The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.");

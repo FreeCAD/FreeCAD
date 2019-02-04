@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>i-set ang default na orientasyon para sa kasunod na mga commands para sa paglikha ng waypoint</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>i-set ang default values para sa bilis, pagpapabilis at pagpapatuloy para sa kasunod na mga command ng paglikha ng waypoint</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation type="unfinished">You need at least two waypoints in a trajectory to simulate.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Kailangan mo ng hindi bababa sa dalawang way points sa trajectory para ma-simulate.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Kailangan mong mag-hover sa taas ng isang geometry (Preselection) gamit ang mouse para magamit mo ang command na ito. Tignan ang dokumentasyon para sa mga detalye.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation type="unfinished">Set default speed</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation type="unfinished">Set default continuity</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation type="unfinished">Set default acceleration</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Pumili ng isang Robot para i-set ang home position</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Pumli ng isang robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Pumili ng isang Trajectory object.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>i-set ang default na bilis</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>bilis: (e.g. 1 m/s or 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>i-set ang default continuity</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>tuloy-tuloy?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>i-set ang default na acceleration</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>pagpapabilis: (e.g. 1 m/s^2 or 3 cm/s^2)</translation>
     </message>

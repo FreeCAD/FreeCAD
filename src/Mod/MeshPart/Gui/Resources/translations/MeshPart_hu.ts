@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="+290"/>
       <source>Mesh</source>
-      <translation>Hálós test</translation>
+      <translation>Háló</translation>
     </message>
     <message>
       <location line="+1"/>

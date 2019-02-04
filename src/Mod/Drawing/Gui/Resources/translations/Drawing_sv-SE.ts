@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>B&amp;akgrund</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>&amp;Högkvalitets kantutjämning</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>Öppna SVG-fil</translation>
     </message>
@@ -488,6 +488,10 @@ Do you want to continue?</source>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation type="unfinished">View projection</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation> Visa projektion   </translation>
     </message>

@@ -56,7 +56,7 @@
          <item>
           <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
            <property name="toolTip">
-            <string>Notify automatic constraint substitutions.</string>
+            <string>Notify automatic constraint substitutions</string>
            </property>
            <property name="text">
             <string>Notify automatic constraint substitutions</string>

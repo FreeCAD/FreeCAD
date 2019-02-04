@@ -210,7 +210,7 @@ def make_femmesh(mesh_data):
     return mesh
 
 
-def fill_femresult_mechanical(results, result_set, span):
+def fill_femresult_mechanical(results, result_set):
     ''' fills a FreeCAD FEM mechanical result object with result data
     '''
     if 'number' in result_set:
@@ -229,6 +229,7 @@ def fill_femresult_mechanical(results, result_set, span):
 
         x_max, y_max, z_max = map(max, zip(*displacement))
         if eigenmode_number > 0:
+            span = get_span(results.Mesh.FemMesh.Nodes.items())
             max_disp = max(x_max, y_max, z_max)
             # Allow for max displacement to be 0.1% of the span
             # FIXME - add to Preferences
@@ -239,11 +240,17 @@ def fill_femresult_mechanical(results, result_set, span):
 
         results.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
         results.NodeNumbers = list(disp.keys())
-        results.DisplacementLengths = calculate_disp_abs(displacement)
 
-        if 'stressv' in result_set:
-            stressv = result_set['stressv']
-            results.StressVectors = list(map((lambda x: x * scale), stressv.values()))
+        if 'stress' in result_set:
+            stress = result_set['stress']
+            stressv1 = {}
+            for i, stval in enumerate(stress.values()):  # i .. stresstuple .. (Sxx, Syy, Szz, Sxy, Syz, Szx)
+                stressv1[i] = (FreeCAD.Vector(stval[0], stval[1], stval[2]))  # Sxx, Syy, Szz
+            results.StressVectors = list(map((lambda x: x * scale), stressv1.values()))
+            stress_keys = list(stress.keys())
+            if (results.NodeNumbers != 0 and results.NodeNumbers != stress_keys):
+                print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
+                      .format(results.NodeNumbers, len(results.StressValues)))
 
         if 'strainv' in result_set:
             strainv = result_set['strainv']
@@ -277,11 +284,6 @@ def fill_femresult_mechanical(results, result_set, span):
                     results.PrincipalMed = prinstress2
                     results.PrincipalMin = prinstress3
                     results.MaxShear = shearstress
-            stress_keys = list(stress.keys())
-            if (results.NodeNumbers != 0 and results.NodeNumbers != stress_keys):
-                print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
-                      .format(results.NodeNumbers, len(results.StressValues)))
-            results.NodeNumbers = stress_keys
 
         # Read Equivalent Plastic strain if they exist
         if 'peeq' in result_set:
@@ -329,95 +331,6 @@ def fill_femresult_mechanical(results, result_set, span):
             results.NetworkPressure = list(map((lambda x: x), NetworkPressure.values()))
             results.Time = step_time
 
-    # fill the stats list
-    fill_femresult_stats(results)
-    return results
-
-
-def fill_femresult_stats(results):
-    '''
-    fills a FreeCAD FEM mechanical result object with stats data
-    results: FreeCAD FEM result object
-    '''
-    FreeCAD.Console.PrintLog('Calculate stats list for result obj: ' + results.Name + '\n')
-    no_of_values = 1  # to avoid division by zero
-    # set stats values to 0, they may not exist in result obj results
-    x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
-    a_max = a_min = a_avg = s_max = s_min = s_avg = 0
-    p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
-    ms_min = ms_avg = ms_max = peeq_min = peeq_avg = peeq_max = 0
-    temp_min = temp_avg = temp_max = mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
-
-    if results.DisplacementVectors:
-        no_of_values = len(results.DisplacementVectors)
-        x_max, y_max, z_max = map(max, zip(*results.DisplacementVectors))
-        x_min, y_min, z_min = map(min, zip(*results.DisplacementVectors))
-        sum_list = map(sum, zip(*results.DisplacementVectors))
-        x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
-        a_min = min(results.DisplacementLengths)
-        a_avg = sum(results.DisplacementLengths) / no_of_values
-        a_max = max(results.DisplacementLengths)
-    if results.StressValues:
-        s_min = min(results.StressValues)
-        s_avg = sum(results.StressValues) / no_of_values
-        s_max = max(results.StressValues)
-    if results.PrincipalMax:
-        p1_min = min(results.PrincipalMax)
-        p1_avg = sum(results.PrincipalMax) / no_of_values
-        p1_max = max(results.PrincipalMax)
-    if results.PrincipalMed:
-        p2_min = min(results.PrincipalMed)
-        p2_avg = sum(results.PrincipalMed) / no_of_values
-        p2_max = max(results.PrincipalMed)
-    if results.PrincipalMin:
-        p3_min = min(results.PrincipalMin)
-        p3_avg = sum(results.PrincipalMin) / no_of_values
-        p3_max = max(results.PrincipalMin)
-    if results.MaxShear:
-        ms_min = min(results.MaxShear)
-        ms_avg = sum(results.MaxShear) / no_of_values
-        ms_max = max(results.MaxShear)
-    if results.Peeq:
-        peeq_min = min(results.Peeq)
-        peeq_avg = sum(results.Peeq) / no_of_values
-        peeq_max = max(results.Peeq)
-    if results.Temperature:
-        temp_min = min(results.Temperature)
-        temp_avg = sum(results.Temperature) / no_of_values
-        temp_max = max(results.Temperature)
-    if results.MassFlowRate:
-        no_of_values = len(results.MassFlowRate)  # DisplacementVectors is empty, no_of_values needs to be set
-        mflow_min = min(results.MassFlowRate)
-        mflow_avg = sum(results.MassFlowRate) / no_of_values
-        mflow_max = max(results.MassFlowRate)
-    if results.NetworkPressure:
-        npress_min = min(results.NetworkPressure)
-        npress_avg = sum(results.NetworkPressure) / no_of_values
-        npress_max = max(results.NetworkPressure)
-
-    results.Stats = [x_min, x_avg, x_max,
-                     y_min, y_avg, y_max,
-                     z_min, z_avg, z_max,
-                     a_min, a_avg, a_max,
-                     s_min, s_avg, s_max,
-                     p1_min, p1_avg, p1_max,
-                     p2_min, p2_avg, p2_max,
-                     p3_min, p3_avg, p3_max,
-                     ms_min, ms_avg, ms_max,
-                     peeq_min, peeq_avg, peeq_max,
-                     temp_min, temp_avg, temp_max,
-                     mflow_min, mflow_avg, mflow_max,
-                     npress_min, npress_avg, npress_max]
-    # stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
-    # len(stat_types) == 13*3 == 39
-    # do not forget to adapt initialization of all Stats items in modules:
-    # - module femobjects/_FemResultMechanical.py
-    # do not forget to adapt the def get_stats in:
-    # - module femresult/resulttools.py
-    # - module femtest/testccxtools.py
-    # TODO: all stats stuff should be reimplemented, ma be a dictionary would be far more robust than a list
-
-    FreeCAD.Console.PrintLog('Stats list for result obj: ' + results.Name + ' calculated\n')
     return results
 
 
@@ -454,8 +367,14 @@ def calculate_principal_stress(i):
         return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
 
 
-def calculate_disp_abs(displacements):
-    disp_abs = []
-    for d in displacements:
-        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
-    return disp_abs
+def get_span(node_items):
+    positions = []  # list of node vectors
+    for k, v in node_items:
+        positions.append(v)
+    p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
+    p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
+    x_span = abs(p_x_max - p_x_min)
+    y_span = abs(p_y_max - p_y_min)
+    z_span = abs(p_z_max - p_z_min)
+    span = max(x_span, y_span, z_span)
+    return span

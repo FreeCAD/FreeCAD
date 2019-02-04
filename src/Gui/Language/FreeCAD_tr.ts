@@ -294,14 +294,14 @@
       <translation>Orta fare düğmesine basın</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Orta ve sol veya sağ fare düğmesine basın</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Orta fare düğmesini kaydırın veya orta düğmeyi basılı tutun
-sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -423,6 +423,37 @@ sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</tran
     <message>
       <source>Out Of Range</source>
       <translation>Aralığın dışında</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Kamera ayarları</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Yönlendirme</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Geçerli görünüm</translation>
     </message>
   </context>
   <context>
@@ -829,8 +860,10 @@ sola veya sağa tıklayın ve fareyi yukarı veya aşağı hareket ettirin</tran
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>'%1' kısayolu zaten '%2' için atanmış.</translation>
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
+
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2042,6 +2075,10 @@ Lütfen başka bir dizin belirtin.</translation>
       <translation>OpenGL Tepe Arabellek Nesnesini Kullan</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Yeni belge kamera oryantasyonu</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
       <translation>Pinch yakınlaştırma yaparken görüntünün eğilmesini önler. Sadece Gesture tarzı gezinmeyi etkiler. Fare eğmek bu ayar tarafından devre dışı bırakılmaz.</translation>
     </message>
@@ -2092,6 +2129,46 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>İzometrik</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrik</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrik</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>üst</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>ön</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Sol</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Sağ</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Arka</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Alt</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Özel</translation>
     </message>
   </context>
   <context>
@@ -3002,10 +3079,6 @@ Kenar yumuşatma değişiklikleri uygulamak için yeni bir görüntüleyici aç�
       <translation>Seçili organizasyonları/tasarımları silmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Ne zaman seçilen geçici dizin silme herhangi bir dosya daha sonra kurtarmak mümkün olmayacaktır.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Tamamlandı</translation>
     </message>
@@ -3020,6 +3093,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Aşağıda listelenen belgenin kurtarma işlemini başlatmak için 'Kurtarmayı Başlat' düğmesine basın.
 
 'Statü' sütunu, dokümanın kurtarılıp kurtarılmayacağını gösterir.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3794,20 +3871,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dokunun. Ya da sol fare düğmesini tıklatın.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>İki parmağıyla ekranı sürükleyin. Veya sağ fare düğmesine basın.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Ekranı bir parmakla sürükleyin. Ya da sol fare düğmesine basın. Sketcher ve diğer düzenleme modlarında Ek olarak Alt tuşunu basılı tutun.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Çimdikleme (iki parmağınızı ekranda tutun ve birbirlerine sürükleyin). Veya orta fare düğmesini kaydırın. Veya klavye üzerinde PgUp / PgDown.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4092,28 +4169,27 @@ sağ görünümde %2 nokta seçili.</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dokunun. Ya da sol fare düğmesini tıklatın.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>İki parmağıyla ekranı sürükleyin. Veya sağ fare düğmesine basın.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Ekranı bir parmakla sürükleyin. Ya da sol fare düğmesine basın. Sketcher ve diğer düzenleme modlarında Ek olarak Alt tuşunu basılı tutun.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Çimdikleme (iki parmağınızı ekranda tutun ve birbirlerine sürükleyin). Veya orta fare düğmesini kaydırın. Veya klavye üzerinde PgUp / PgDown.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>İndirme başladı ...</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -5210,18 +5286,6 @@ Be aware the point where you click matters.</source>
       <translation>Orijin</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1%2 %3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Çeviri: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Dönüş: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>İçerik silinsin?</translation>
     </message>
@@ -5236,6 +5300,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Split</source>
       <translation>Ayır</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Çeviri:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Döndürme:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5970,12 +6046,12 @@ Be aware the point where you click matters.</source>
       <translation>Projeyi birleştir</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 belgesi (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Proje kendisiyle birleştirilemez.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>% 1 belgesi (*. FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6651,21 +6727,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standart Görünüm</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Aksonometrik</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Axometric görünüme ayarla</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6693,6 +6754,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Etkin belge için yeni bir görünüm penceresi oluşturur</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standart Görünüm</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrik</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Dimetrik görünümü ayarla</translation>
     </message>
   </context>
   <context>
@@ -6783,6 +6859,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Ön görünüme ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standart Görünüm</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>İzometrik</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>İzometrik görünümü ayarla</translation>
     </message>
   </context>
   <context>
@@ -6963,6 +7054,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to top view</source>
       <translation>üstten görünüm için ayarla</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standart Görünüm</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrik</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Trimetrik görünümü ayarla</translation>
     </message>
   </context>
   <context>
@@ -7252,28 +7358,16 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Bu nesneler silinmek için seçilen nesnelere bağlı ve hata çıkarabilir.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Bu nesneler silmek için seçildi; ama etkin dokümanda yoklar.
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-Devam etmek istediğinize emin misiniz?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

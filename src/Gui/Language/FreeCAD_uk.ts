@@ -294,13 +294,14 @@
       <translation>Натиснути середню кнопку миші</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Натисніть середню та ліву або праву кнопку миші</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Натисніть середню + ліву або середню + праву кнопки</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Прокрутіть середню кнопку мишки або клікніть і рухайте мишку вверх або вниз утримуючи нажатою середню кнопку</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -422,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Поза межами припустимого діапазону</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Налаштування камери</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Орієнтація</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Поточний вигляд</translation>
     </message>
   </context>
   <context>
@@ -828,10 +860,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>Скорочення '%1' вже призначено для '%2'.
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
 
-Будь ласка оберіть інше сполучення.</translation>
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2043,6 +2075,10 @@ Specify another directory, please.</source>
       <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Орієнтація камери нового документа</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
       <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
     </message>
@@ -2092,6 +2128,46 @@ Specify another directory, please.</source>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Ізометричний</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Диметрія</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Триметрія</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Згори</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Фронт</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Ліворуч</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Направо</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Тил</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Внизу</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Підлаштувати</translation>
     </message>
   </context>
   <context>
@@ -3002,10 +3078,6 @@ Specify another directory, please.</source>
       <translation>Ви дійсно бажаєте видалити всі тимчасові каталоги?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>При видаленні всіх тимчасових каталогів, ви не зможете відновити після цього будь-які файли.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Завершено</translation>
     </message>
@@ -3020,6 +3092,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Натисніть 'Почати відновлення' щоб почати процес відновлення документів, що перелічені нижче.
 
 Колонка 'Статус' показує чи можливе відновлення документів.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3797,20 +3873,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Торкніться екрана. Або клацніть лівою кнопкою миші.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Торкніться екрана або клацніть лівою кнопкою миші.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Перетягніть екран двома пальцями. Або натисніть праву кнопку миші.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>Перетягніть екран двома пальцями або натисніть праву кнопку миші.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Перетягніть екран одним пальцем. Або натисніть ліву кнопку миші. У режимі Ескіз та в інших режимах, додатково утримуйте кнопку Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Перетягніть екран одним пальцем або натисніть ліву кнопку миші. У режимі Ескіз та в інших режимах, додатково утримуйте кнопку Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Защепніть (покладіть два пальці на екрані та перетягніть їх один від одного/один одного). Або прокрутіть середню кнопку миші. Або клавіші PgUp/PgDown на клавіатурі.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4091,29 +4167,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Торкніться екрана. Або клацніть лівою кнопкою миші.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Торкніться екрана або клацніть лівою кнопкою миші.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Перетягніть екран двома пальцями. Або натисніть Alt + середню клавішу миші.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Перетягніть екран одним пальцем. Або натисніть Alt + ліву клавішу миші. В ескізі і інших режимах редагування, утримуючи Alt додатково.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Защепніть (покладіть два пальці на екрані та перетягніть їх один від одного/один одного). Або прокрутіть середню кнопку миші. Або натисніть Alt + праву кнопку миші. Або клавіші PgUp/PgDown на клавіатурі.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Завантаження розпочато...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -5215,18 +5289,6 @@ Be aware the point where you click matters.</source>
       <translation>Початок координат</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Переміщення: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Обертання: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Видалити вміст групи?</translation>
     </message>
@@ -5241,6 +5303,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Split</source>
       <translation>Розділити</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Переміщення:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Обертання:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5975,12 +6049,12 @@ Be aware the point where you click matters.</source>
       <translation>Злиття проекту</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 документ (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Неможливо злити проекту з самим собою.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>Документ %1 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6656,21 +6730,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Аксонометрія</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Встановити аксонометричний вигляд</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6698,6 +6757,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Створює нове вікно перегляду для активного документа</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартні вигляди</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Диметрія</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Встановити диметричний вигляд</translation>
     </message>
   </context>
   <context>
@@ -6788,6 +6862,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Показ вигляду з переду</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартні вигляди</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Ізометричний</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Встановити ізометричний вигляд</translation>
     </message>
   </context>
   <context>
@@ -6968,6 +7057,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to top view</source>
       <translation>Встановити вигляд зверху</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартні вигляди</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Триметрія</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Встановити триметричний вигляд</translation>
     </message>
   </context>
   <context>
@@ -7257,28 +7361,16 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Ці елементи зв'язані з елементами, що вибрані для видалення і можуть стати зіпсованими.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Ці елементи обрані для видалення, але вони знаходяться не в активному документі.
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-Ви впевнені, що хочете продовжити?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

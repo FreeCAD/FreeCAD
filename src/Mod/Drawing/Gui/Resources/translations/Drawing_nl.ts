@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>&amp;Achtergrond</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>Hoge kwaliteit Antialiasing</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>Open SVG-bestand</translation>
     </message>
@@ -490,6 +490,10 @@ Do you want to continue?</source>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation>Projectie weergave</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation> Projectie weergave   </translation>
     </message>

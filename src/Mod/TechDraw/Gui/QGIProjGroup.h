@@ -51,6 +51,8 @@ public:
     void alignTo(QGIProjGroup *, const QString &alignment);
 
     virtual void updateView(bool update = false);
+    virtual void rotateView(void) override;
+
     virtual void drawBorder(void);
 
 protected:

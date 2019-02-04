@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Yol noktası oluşturmak üzere bir sonraki komutlar için varsayılan oryantasyonu ayarla</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>yol işareti oluşturmak üzere bir sonraki komutlar için varsayılan yönlendirmeyi ayarlama</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Bir sonraki yol noktası oluşturma komutları için hız, ivme ve süreklilik için varsayılan değerleri ayarlayın</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Bir sonraki yol işareti oluşturma komutları için hız, ivme ve süreklilik için varsayılan değerleri ayarlayın</translation>
     </message>
@@ -400,6 +408,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Simüle etmek için bir yörüngede en az iki geçiş noktasına ihtiyacınız var.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Yörüngenin benzetimi için en az iki noktaya ihtiyacınız var.</translation>
     </message>
@@ -445,6 +457,21 @@
       <translation>Bu komutu kullanmak için fareyle bir geometri (Seçim) üzerinde durmanız gerekir. Ayrıntılar için dokümanlara bakın.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Varsayılan hızı ayarla</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Varsayılan sürekliliği ayarla</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Varsayılan ivmeyi ayarla</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Başlangıç konumunu ayarlamak için bir robot seç</translation>
     </message>
@@ -454,38 +481,35 @@
       <translation>Bir Robot seç</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Bir Yörünge nesnesi seç.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>varsayılan hızı ayarla</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>hız: (örn. 1 m/s veya 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>Varsayılan sürekliliği ayarla</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>sürekli ?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>varsayılan ivmelenmeyi ayarla</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>ivme: (örn. 1 m/s^2 veya 3 cm/s^2)</translation>
     </message>

@@ -334,12 +334,12 @@
     <message>
       <location line="+6"/>
       <source>Trim by plane</source>
-      <translation type="unfinished">Trim by plane</translation>
+      <translation>Oříznout pomocí roviny</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select the side you want to keep.</source>
-      <translation type="unfinished">Select the side you want to keep.</translation>
+      <translation>Vyberte stranu, kterou chcete zachovat.</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -354,7 +354,7 @@
     <message>
       <location line="+1"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Rozdělit</translation>
     </message>
   </context>
   <context>

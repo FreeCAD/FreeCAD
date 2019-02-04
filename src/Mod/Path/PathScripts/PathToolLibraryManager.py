@@ -299,7 +299,7 @@ class ToolLibraryManager():
                     fext = os.path.splitext(name)[1].lower()
                     if fext != ext:
                         name = "{}{}".format(name, ext)
-                    return (open(PathUtil.toUnicode(name), 'wb'), name)
+                    return (open(PathUtil.toUnicode(name), 'w'), name)
 
                 if filename[1] == self.TooltableTypeXML:
                     fp,fname = openFileWithExtension(filename[0], '.xml')

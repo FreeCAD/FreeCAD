@@ -1339,6 +1339,80 @@ def extrude(obj,vector,solid=False):
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
+def joinWires(wires, joinAttempts = 0):
+    '''joinWires(objects): merges a set of wires where possible, if any of those
+    wires have a coincident start and end point'''
+    if joinAttempts > len(wires):
+        return FreeCAD.ActiveDocument.recompute()
+    joinAttempts += 1
+    for wire1Index, wire1 in enumerate(wires):
+        for wire2Index, wire2 in enumerate(wires):
+            if wire2Index <= wire1Index:
+                continue
+            if joinTwoWires(wire1, wire2):
+                wires.pop(wire2Index)
+                break
+    joinWires(wires, joinAttempts)
+
+def joinTwoWires(wire1, wire2):
+    '''joinTwoWires(object, object): joins two wires if they share a common
+    point as a start or an end'''
+    wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
+    wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
+    if (wire1AbsPoints[0] == wire2AbsPoints[-1] and wire1AbsPoints[-1] == wire2AbsPoints[0]) \
+        or (wire1AbsPoints[0] == wire2AbsPoints[0] and wire1AbsPoints[-1] == wire2AbsPoints[-1]):
+        wire2AbsPoints.pop()
+        wire1.Closed = True
+    elif wire1AbsPoints[0] == wire2AbsPoints[0]:
+        wire1AbsPoints = list(reversed(wire1AbsPoints))
+    elif wire1AbsPoints[0] == wire2AbsPoints[-1]:
+        wire1AbsPoints = list(reversed(wire1AbsPoints))
+        wire2AbsPoints = list(reversed(wire2AbsPoints))
+    elif wire1AbsPoints[-1] == wire2AbsPoints[-1]:
+        wire2AbsPoints = list(reversed(wire2AbsPoints))
+    elif wire1AbsPoints[-1] == wire2AbsPoints[0]:
+        pass
+    else:
+        return False
+    wire2AbsPoints.pop(0)
+    wire1.Points = [wire1.Placement.inverse().multVec(point) for point in wire1AbsPoints] + [wire1.Placement.inverse().multVec(point) for point in wire2AbsPoints]
+    FreeCAD.ActiveDocument.removeObject(wire2.Name)
+    return True
+
+def split(wire, newPoint, edgeIndex):
+    if getType(wire) != "Wire":
+        return
+    elif wire.Closed:
+        splitClosedWire(wire, edgeIndex)
+    else:
+        splitOpenWire(wire, newPoint, edgeIndex)
+    FreeCAD.ActiveDocument.recompute()
+
+def splitClosedWire(wire, edgeIndex):
+    wire.Closed = False
+    if edgeIndex == len(wire.Points):
+        makeWire([wire.Placement.multVec(wire.Points[0]),
+            wire.Placement.multVec(wire.Points[-1])], placement=wire.Placement)
+    else:
+        makeWire([wire.Placement.multVec(wire.Points[edgeIndex-1]),
+            wire.Placement.multVec(wire.Points[edgeIndex])], placement=wire.Placement)
+        wire.Points = list(reversed(wire.Points[0:edgeIndex])) + list(reversed(wire.Points[edgeIndex:]))
+
+def splitOpenWire(wire, newPoint, edgeIndex):
+    wire1Points = []
+    wire2Points = []
+    for index, point in enumerate(wire.Points):
+        if index == edgeIndex:
+            wire1Points.append(wire.Placement.inverse().multVec(newPoint))
+            wire2Points.append(newPoint)
+            wire2Points.append(wire.Placement.multVec(point))
+        elif index < edgeIndex:
+            wire1Points.append(point)
+        elif index > edgeIndex:
+            wire2Points.append(wire.Placement.multVec(point))
+    wire.Points = wire1Points
+    makeWire(wire2Points, placement=wire.Placement)
+
 def fuse(object1,object2):
     '''fuse(oject1,object2): returns an object made from
     the union of the 2 given objects. If the objects are
@@ -2929,7 +3003,7 @@ def upgrade(objects,delete=False,force=None):
             # we have one shell: we try to make a solid
             if (len(objects) == 1) and (len(faces) > 3):
                 result = makeSolid(objects[0])
-                if result: msg(translate("draft", "Found 1 solidificable object: solidifying it")+"\n")
+                if result: msg(translate("draft", "Found 1 solidifiable object: solidifying it")+"\n")
 
             # we have exactly 2 objects: we fuse them
             elif (len(objects) == 2) and (not curves):

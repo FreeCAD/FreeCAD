@@ -213,6 +213,12 @@ void QGIProjGroup::updateView(bool update)
     return QGIViewCollection::updateView(update);
 }
 
+//QGIPG does not rotate. Only individual views rotate
+void QGIProjGroup::rotateView(void)
+{
+    Base::Console().Warning("QGIPG: Projection Groups do not rotate. Change ignored\n");
+}    
+
 void QGIProjGroup::drawBorder()
 {
 //QGIProjGroup does not have a border!

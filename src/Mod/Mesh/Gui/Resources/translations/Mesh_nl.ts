@@ -941,6 +941,10 @@ Please run the command to repair folds first</source>
       <source>Export AMF files using compression</source>
       <translation type="unfinished">Export AMF files using compression</translation>
     </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Definieerd de maximale afwijking van de Tesselation mesh op het oppervlak. Hoe kleiner het getal deste hoger de resulterende afbeeldings resolutie, echter hoe langzamer de render zal verlopen.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
@@ -1102,7 +1106,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Compute</source>
-      <translation type="unfinished">Compute</translation>
+      <translation>Berekenen</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -1224,7 +1228,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Freeform</source>
-      <translation type="unfinished">Freeform</translation>
+      <translation>Vrije vormgeving</translation>
     </message>
     <message>
       <source>Max. Curvature</source>
@@ -1255,7 +1259,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Parameters...</source>
-      <translation type="unfinished">Parameters...</translation>
+      <translation>Parameters...</translation>
     </message>
     <message>
       <source>Plane</source>

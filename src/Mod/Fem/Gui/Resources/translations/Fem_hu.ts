@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Szilárd testhez létrehoz egy VEM anyagot</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -990,12 +990,12 @@
     <message>
       <location filename="_CommandFemFromShape.py" line="39"/>
       <source>Create FEM mesh</source>
-      <translation>Végeselemes analízis (FEM) háló létrehozása</translation>
+      <translation>Véges-elemes módszer analízis (VEM) háló létrehozása</translation>
     </message>
     <message>
       <location filename="_CommandFemFromShape.py" line="40"/>
       <source>Create FEM mesh from shape</source>
-      <translation>Végeselemes analízis háló létrehozása az alakzaton</translation>
+      <translation>Véges-elemes módszer analízis háló létrehozása az alakzaton</translation>
     </message>
   </context>
   <context>
@@ -1238,11 +1238,11 @@
     </message>
     <message>
       <source>Create FEM mesh</source>
-      <translation>Végeselemes analízis (FEM) háló létrehozása</translation>
+      <translation>Véges-elemes módszer analízis (VEM) háló létrehozása</translation>
     </message>
     <message>
       <source>Create FEM mesh from shape</source>
-      <translation>Végeselemes analízis háló létrehozása az alakzaton</translation>
+      <translation>Véges-elemes módszer analízis háló létrehozása az alakzaton</translation>
     </message>
   </context>
   <context>
@@ -1415,11 +1415,11 @@
     </message>
     <message>
       <source>Quadrangle</source>
-      <translation>Quadrangle</translation>
+      <translation>Négyszög</translation>
     </message>
     <message>
       <source>Maximum length</source>
-      <translation>Maximális hossza</translation>
+      <translation>Maximális hossz</translation>
     </message>
     <message>
       <source>Local length</source>

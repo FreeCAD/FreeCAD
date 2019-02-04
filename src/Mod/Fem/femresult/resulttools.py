@@ -28,6 +28,7 @@ __url__ = "http://www.freecadweb.org"
 #  @{
 
 import FreeCAD
+from math import sqrt
 
 
 ## Removes all result objects from an analysis group
@@ -118,6 +119,18 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
 ## Returns minimum, average and maximum value for provided result type
 #  @param result object
 #  @param result_type Type of FEM result, allowed are:
+#  - see def get_all_stats() for dict keys description
+#  - None - always return (0.0, 0.0, 0.0)
+def get_stats(res_obj, result_type):
+    match_table = get_all_stats(res_obj)
+    match_table["None"] = (0.0, 0.0, 0.0)
+    stats = (0.0, 0.0, 0.0)
+    stats = match_table[result_type]
+    return stats
+
+
+## Returns all stats for provided result type
+#  @param result object
 #  - U1, U2, U3 - deformation
 #  - Uabs - absolute deformation
 #  - Sabs - Von Mises stress
@@ -129,28 +142,117 @@ def show_color_by_scalar_with_cutoff(resultobj, values, limit=None):
 #  - Temp - Temperature
 #  - MFlow - MassFlowRate
 #  - NPress - NetworkPressure
-#  - None - always return (0.0, 0.0, 0.0)
-def get_stats(resultobj, result_type):
-    m = resultobj
-    stats = (0.0, 0.0, 0.0)
-    match_table = {
-        "U1": (m.Stats[0], m.Stats[1], m.Stats[2]),
-        "U2": (m.Stats[3], m.Stats[4], m.Stats[5]),
-        "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
-        "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
-        "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
-        "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
-        "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
-        "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
-        "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
-        "Peeq": (m.Stats[27], m.Stats[28], m.Stats[29]),
-        "Temp": (m.Stats[30], m.Stats[31], m.Stats[32]),
-        "MFlow": (m.Stats[33], m.Stats[34], m.Stats[35]),
-        "NPress": (m.Stats[36], m.Stats[37], m.Stats[38]),
-        "None": (0.0, 0.0, 0.0)
+def get_all_stats(res_obj):
+    m = res_obj.Stats
+    stats_dict = {
+        "U1": (m[0], m[1], m[2]),
+        "U2": (m[3], m[4], m[5]),
+        "U3": (m[6], m[7], m[8]),
+        "Uabs": (m[9], m[10], m[11]),
+        "Sabs": (m[12], m[13], m[14]),
+        "MaxPrin": (m[15], m[16], m[17]),
+        "MidPrin": (m[18], m[19], m[20]),
+        "MinPrin": (m[21], m[22], m[23]),
+        "MaxShear": (m[24], m[25], m[26]),
+        "Peeq": (m[27], m[28], m[29]),
+        "Temp": (m[30], m[31], m[32]),
+        "MFlow": (m[33], m[34], m[35]),
+        "NPress": (m[36], m[37], m[38])
     }
-    stats = match_table[result_type]
-    return stats
+    return stats_dict
+
+
+def fill_femresult_stats(results):
+    '''
+    fills a FreeCAD FEM mechanical result object with stats data
+    results: FreeCAD FEM result object
+    '''
+    FreeCAD.Console.PrintLog('Calculate stats list for result obj: ' + results.Name + '\n')
+    no_of_values = 1  # to avoid division by zero
+    # set stats values to 0, they may not exist in result obj results
+    x_min = y_min = z_min = x_max = y_max = z_max = x_avg = y_avg = z_avg = 0
+    a_max = a_min = a_avg = s_max = s_min = s_avg = 0
+    p1_min = p1_avg = p1_max = p2_min = p2_avg = p2_max = p3_min = p3_avg = p3_max = 0
+    ms_min = ms_avg = ms_max = peeq_min = peeq_avg = peeq_max = 0
+    temp_min = temp_avg = temp_max = mflow_min = mflow_avg = mflow_max = npress_min = npress_avg = npress_max = 0
+
+    if results.DisplacementVectors:
+        no_of_values = len(results.DisplacementVectors)
+        x_max, y_max, z_max = map(max, zip(*results.DisplacementVectors))
+        x_min, y_min, z_min = map(min, zip(*results.DisplacementVectors))
+        sum_list = map(sum, zip(*results.DisplacementVectors))
+        x_avg, y_avg, z_avg = [i / no_of_values for i in sum_list]
+        a_min = min(results.DisplacementLengths)
+        a_avg = sum(results.DisplacementLengths) / no_of_values
+        a_max = max(results.DisplacementLengths)
+    if results.StressValues:
+        s_min = min(results.StressValues)
+        s_avg = sum(results.StressValues) / no_of_values
+        s_max = max(results.StressValues)
+    if results.PrincipalMax:
+        p1_min = min(results.PrincipalMax)
+        p1_avg = sum(results.PrincipalMax) / no_of_values
+        p1_max = max(results.PrincipalMax)
+    if results.PrincipalMed:
+        p2_min = min(results.PrincipalMed)
+        p2_avg = sum(results.PrincipalMed) / no_of_values
+        p2_max = max(results.PrincipalMed)
+    if results.PrincipalMin:
+        p3_min = min(results.PrincipalMin)
+        p3_avg = sum(results.PrincipalMin) / no_of_values
+        p3_max = max(results.PrincipalMin)
+    if results.MaxShear:
+        ms_min = min(results.MaxShear)
+        ms_avg = sum(results.MaxShear) / no_of_values
+        ms_max = max(results.MaxShear)
+    if results.Peeq:
+        peeq_min = min(results.Peeq)
+        peeq_avg = sum(results.Peeq) / no_of_values
+        peeq_max = max(results.Peeq)
+    if results.Temperature:
+        temp_min = min(results.Temperature)
+        temp_avg = sum(results.Temperature) / no_of_values
+        temp_max = max(results.Temperature)
+    if results.MassFlowRate:
+        no_of_values = len(results.MassFlowRate)  # DisplacementVectors is empty, no_of_values needs to be set
+        mflow_min = min(results.MassFlowRate)
+        mflow_avg = sum(results.MassFlowRate) / no_of_values
+        mflow_max = max(results.MassFlowRate)
+    if results.NetworkPressure:
+        npress_min = min(results.NetworkPressure)
+        npress_avg = sum(results.NetworkPressure) / no_of_values
+        npress_max = max(results.NetworkPressure)
+
+    results.Stats = [x_min, x_avg, x_max,
+                     y_min, y_avg, y_max,
+                     z_min, z_avg, z_max,
+                     a_min, a_avg, a_max,
+                     s_min, s_avg, s_max,
+                     p1_min, p1_avg, p1_max,
+                     p2_min, p2_avg, p2_max,
+                     p3_min, p3_avg, p3_max,
+                     ms_min, ms_avg, ms_max,
+                     peeq_min, peeq_avg, peeq_max,
+                     temp_min, temp_avg, temp_max,
+                     mflow_min, mflow_avg, mflow_max,
+                     npress_min, npress_avg, npress_max]
+    # stat_types = ["U1", "U2", "U3", "Uabs", "Sabs", "MaxPrin", "MidPrin", "MinPrin", "MaxShear", "Peeq", "Temp", "MFlow", "NPress"]
+    # len(stat_types) == 13*3 == 39
+    # do not forget to adapt initialization of all Stats items in modules:
+    # - module femobjects/_FemResultMechanical.py
+    # do not forget to adapt the def get_stats in:
+    # - get_stats in module femresult/resulttools.py
+    # - module femtest/testccxtools.py
+    # TODO: all stats stuff should be reimplemented, maybe a dictionary would be far more robust than a list
+
+    FreeCAD.Console.PrintLog('Stats list for result obj: ' + results.Name + ' calculated\n')
+    return results
+
+
+def add_disp_apps(res_obj):
+    res_obj.DisplacementLengths = calculate_disp_abs(res_obj.DisplacementVectors)
+    FreeCAD.Console.PrintMessage('Added DisplacementLengths.\n')
+    return res_obj
 
 
 def compact_result(res_obj):
@@ -176,5 +278,12 @@ def compact_result(res_obj):
     res_obj.NodeNumbers = new_node_numbers
 
     return res_obj
+
+
+def calculate_disp_abs(displacements):
+    disp_abs = []
+    for d in displacements:
+        disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+    return disp_abs
 
 ##  @}

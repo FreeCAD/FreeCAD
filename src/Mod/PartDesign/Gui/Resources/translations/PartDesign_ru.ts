@@ -20,7 +20,7 @@
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Сдвиг выбранного эскизного контура вдоль траектории или до других сечений</translation>
+      <translation>Перемещение выбранного эскизного контура вдоль траектории или до других сечений</translation>
     </message>
   </context>
   <context>
@@ -38,7 +38,7 @@
     <message>
       <location line="+1"/>
       <source>Sweep a selected sketch along a path or to other profiles</source>
-      <translation>Сдвиг выбранного эскизного контура вдоль траектории или до других сечений</translation>
+      <translation>Перемещение выбранного эскизного контура вдоль траектории или до других сечений</translation>
     </message>
   </context>
   <context>
@@ -172,7 +172,7 @@
     <message>
       <location line="+1"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Скруглить грани поверхности или тела</translation>
+      <translation>Скруглить грани, поверхности или тела</translation>
     </message>
   </context>
   <context>
@@ -261,7 +261,7 @@
     <message>
       <location line="+1"/>
       <source>Migrate</source>
-      <translation>Миграция</translation>
+      <translation>Перенос</translation>
     </message>
     <message>
       <location line="+1"/>

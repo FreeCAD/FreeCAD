@@ -9,11 +9,11 @@
     </message>
     <message>
       <source>Add triangle</source>
-      <translation>dodaj trójkąt</translation>
+      <translation>Dodaj trójkąt</translation>
     </message>
     <message>
       <source>Add triangle manually to a mesh</source>
-      <translation>dodaj trójkąt do siatki</translation>
+      <translation>Dodaj trójkąt do siatki</translation>
     </message>
   </context>
   <context>
@@ -24,11 +24,11 @@
     </message>
     <message>
       <source>Boundings info...</source>
-      <translation>granice info</translation>
+      <translation>Informacja o granicach...</translation>
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Pokazuje bryły brzegowe wybranej siatki</translation>
+      <translation>Pokazuje granice wybranej siatki</translation>
     </message>
   </context>
   <context>
@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>Regular solid...</source>
-      <translation>prymityw</translation>
+      <translation>Bryła regularna...</translation>
     </message>
     <message>
       <source>Builds a regular solid</source>
-      <translation>wstaw prymityw</translation>
+      <translation>Twórz bryłę regularną</translation>
     </message>
   </context>
   <context>
@@ -80,7 +80,7 @@
     </message>
     <message>
       <source>Information about face</source>
-      <translation>Informacja o fasetce</translation>
+      <translation>Informacja o powierzchni</translation>
     </message>
   </context>
   <context>
@@ -91,11 +91,11 @@
     </message>
     <message>
       <source>Check solid mesh</source>
-      <translation>Sprawdź siatkę solid</translation>
+      <translation>Sprawdź siatkę bryły</translation>
     </message>
     <message>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Sprawdza czy siatka jest solidem</translation>
+      <translation>Sprawdza czy siatka jest bryłą</translation>
     </message>
   </context>
   <context>
@@ -110,7 +110,7 @@
     </message>
     <message>
       <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Rozwiń &amp;&amp; Napraw siatkę</translation>
+      <translation>Rozwiń i Napraw siatkę...</translation>
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
@@ -203,11 +203,11 @@
     </message>
     <message>
       <source>Flip normals</source>
-      <translation>Odwróć 'normalne'</translation>
+      <translation>Odwróć wektory normalne</translation>
     </message>
     <message>
       <source>Flips the normals of the mesh</source>
-      <translation>Odwróć 'normalne' siatki</translation>
+      <translation>Odwróć wektory normalne siatki</translation>
     </message>
   </context>
   <context>
@@ -248,11 +248,11 @@
     </message>
     <message>
       <source>Harmonize normals</source>
-      <translation>Porządkuj normalne</translation>
+      <translation>Porządkuj wektory normalne</translation>
     </message>
     <message>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>Porządkuje 'normaln'e siatki</translation>
+      <translation>Porządkuje wektory normalne siatki</translation>
     </message>
   </context>
   <context>
@@ -349,11 +349,11 @@
     </message>
     <message>
       <source>Split mesh</source>
-      <translation>Rozdziel siatkę</translation>
+      <translation>Podziel siatkę</translation>
     </message>
     <message>
       <source>Splits a mesh into two meshes</source>
-      <translation>Rozdziel siatkę na dwoje</translation>
+      <translation>Rozdziel siatkę na dwie siatki</translation>
     </message>
   </context>
   <context>
@@ -394,11 +394,11 @@
     </message>
     <message>
       <source>Remove components...</source>
-      <translation>Usuń składniki...</translation>
+      <translation>Usuń fragmenty...</translation>
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Kasuj topologię niezależną od siatki</translation>
+      <translation>Usuń topologię niezależną od siatki</translation>
     </message>
   </context>
   <context>
@@ -454,11 +454,11 @@
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces...</source>
-      <translation type="unfinished">Create mesh segments from best-fit surfaces...</translation>
+      <translation>Utwórz segmenty siatki z najlepszego dopasowania powierzchni...</translation>
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation type="unfinished">Create mesh segments from best-fit surfaces</translation>
+      <translation>Utwórz segmenty siatki z najlepszego dopasowania powierzchni</translation>
     </message>
   </context>
   <context>
@@ -693,11 +693,11 @@
     </message>
     <message>
       <source>No flipped normals</source>
-      <translation>Brak odwróconych 'normalnych'</translation>
+      <translation>Brak odwróconych wektorów normalnych</translation>
     </message>
     <message>
       <source>%1 flipped normals</source>
-      <translation>%1 odwrócone normalne</translation>
+      <translation>%1 odwrócone wektory normalne</translation>
     </message>
     <message>
       <source>No non-manifolds</source>
@@ -765,7 +765,7 @@
     </message>
     <message>
       <source>Flipped normals found</source>
-      <translation>Znaleziono odwrócone 'normalne'</translation>
+      <translation>Znaleziono odwrócone wektory normalne</translation>
     </message>
     <message>
       <source>Check failed due to folds on the surface.
@@ -940,6 +940,10 @@ Please run the command to repair folds first</source>
       <source>Export AMF files using compression</source>
       <translation>Eksportowanie plików AMF przy użyciu kompresji</translation>
     </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
@@ -973,7 +977,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Define normal per vertex</source>
-      <translation>Zdefiniuj 'normalną' wierzchołka</translation>
+      <translation>Zdefiniuj wektor normalny dla wierzchołka</translation>
     </message>
     <message utf8="true">
       <source> °</source>
@@ -1051,11 +1055,11 @@ Please run the command to repair folds first</source>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
       <source>Add triangle</source>
-      <translation>dodaj trójkąt</translation>
+      <translation>Dodaj trójkąt</translation>
     </message>
     <message>
       <source>Flip normal</source>
-      <translation>odwróć</translation>
+      <translation>Odwróć wektory normalny</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -1077,7 +1081,7 @@ Please run the command to repair folds first</source>
     <name>MeshGui::ParametersDialog</name>
     <message>
       <source>Surface fit</source>
-      <translation type="unfinished">Surface fit</translation>
+      <translation>Dopasowanie powierzchni</translation>
     </message>
     <message>
       <source>Parameters</source>
@@ -1109,14 +1113,14 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Before fitting the surface select an area.</source>
-      <translation type="unfinished">Before fitting the surface select an area.</translation>
+      <translation>Przed dopasowaniem powierzchni wybierz obszar.</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
-      <translation>usuń elementy</translation>
+      <translation>Usuń fragmenty</translation>
     </message>
     <message>
       <source>Select</source>
@@ -1124,11 +1128,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Select whole component</source>
-      <translation>zaznacz wszystkie trójkąty</translation>
+      <translation>Zaznacz cały fragment</translation>
     </message>
     <message>
       <source>Pick triangle</source>
-      <translation>wybierz trójkąt</translation>
+      <translation>Wybierz trójkąt</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
@@ -1140,7 +1144,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Components</source>
-      <translation>komponenty</translation>
+      <translation>Fragmenty</translation>
     </message>
     <message>
       <source>All</source>
@@ -1148,27 +1152,27 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Deselect</source>
-      <translation>odznacz</translation>
+      <translation>Odznacz</translation>
     </message>
     <message>
       <source>Deselect whole component</source>
-      <translation>odznacz wszystkie komponenty</translation>
+      <translation>Odznacz cały fragment</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
-      <translation>powierzchnie niż</translation>
+      <translation>&gt; powierzchnie niż</translation>
     </message>
     <message>
       <source>Region options</source>
-      <translation>opcje regionalne</translation>
+      <translation>Opcje</translation>
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>akceptuj tylko trójkąty zwrócone stroną zewnętrzną</translation>
+      <translation>Akceptuj tylko trójkąty zwrócone stroną zewnętrzną</translation>
     </message>
     <message>
       <source>Respect only visible triangles</source>
-      <translation>akceptuj tylko widoczne trójkąty</translation>
+      <translation>Akceptuj tylko widoczne trójkąty</translation>
     </message>
   </context>
   <context>
@@ -1223,7 +1227,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Freeform</source>
-      <translation type="unfinished">Freeform</translation>
+      <translation>Układ dowolny</translation>
     </message>
     <message>
       <source>Max. Curvature</source>
@@ -1301,11 +1305,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Respect only visible triangles</source>
-      <translation>akceptuj tylko widoczne trójkąty</translation>
+      <translation>Akceptuj tylko widoczne trójkąty</translation>
     </message>
     <message>
       <source>Respect only triangles with normals facing screen</source>
-      <translation>akceptuj tylko trójkąty zwrócone stroną zewnętrzną</translation>
+      <translation>Akceptuj tylko trójkąty zwrócone stroną zewnętrzną</translation>
     </message>
     <message>
       <source>Use a brush tool to select the area</source>
@@ -1324,14 +1328,14 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Invert</source>
-      <translation>przeciwny</translation>
+      <translation>Przeciwny</translation>
     </message>
   </context>
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
       <source>Boundings of %1:</source>
-      <translation type="unfinished">Boundings of %1:</translation>
+      <translation>Granice dla %1:</translation>
     </message>
   </context>
   <context>
@@ -1389,7 +1393,7 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     </message>
     <message>
       <source>Boundings</source>
-      <translation>Bryły brzegowe</translation>
+      <translation>Granice</translation>
     </message>
     <message>
       <source>Fill holes</source>
@@ -1523,7 +1527,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Display components</source>
-      <translation>Wyświetl komponenty</translation>
+      <translation>Wyświetl fragmenty</translation>
     </message>
     <message>
       <source>All Mesh Files</source>
@@ -1599,7 +1603,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>Simple Model Format</source>
-      <translation type="unfinished">Simple Model Format</translation>
+      <translation>Prosty Format Modelu</translation>
     </message>
   </context>
   <context>
@@ -1614,11 +1618,11 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
       <source>&amp;Meshes</source>
-      <translation>siatki</translation>
+      <translation>Siatki</translation>
     </message>
     <message>
       <source>Mesh tools</source>
-      <translation>narzędzia siatki</translation>
+      <translation>Narzędzia siatki</translation>
     </message>
   </context>
 </TS>

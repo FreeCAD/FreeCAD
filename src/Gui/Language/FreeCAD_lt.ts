@@ -294,13 +294,14 @@
       <translation>Paspauskite vidurinį pelės mygtuką</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Paspauskite vidurinįjį ir kairįjį arba dešinįjį pelės mygtuką</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Slinkite viduriniuoju pelės mygtuku arba laikykite nuspaudę vidurinįjį pelės mygtuką kartu su kairiuoju ar dešiniuoju mygtuku ir judindami pelę aukštyn arba žemyn</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -422,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Nėra tokio mygtuko</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation type="unfinished">Camera settings</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Kapminė padėtis</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation type="unfinished">Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation type="unfinished">Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation type="unfinished">Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation type="unfinished">Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation type="unfinished">Current view</translation>
     </message>
   </context>
   <context>
@@ -828,9 +860,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>Trumpinys „%1“ jau priskirtas „%2“.
-Nurodykite kitą trumpinį.</translation>
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
+
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2043,6 +2076,10 @@ Prašome nurodti kitą aplanką.</translation>
       <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation type="unfinished">New Document Camera Orientation</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
       <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
     </message>
@@ -2092,6 +2129,46 @@ Prašome nurodti kitą aplanką.</translation>
     <message>
       <source>15px</source>
       <translation type="unfinished">15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrinis vaizdavimas</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrinis vaizdavimas</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrinis vaizdavimas</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Iš viršaus</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Iš priekio</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Kairė</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Dešinys</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Iš galo</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Apačioje</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Pasirinktinė</translation>
     </message>
   </context>
   <context>
@@ -3002,10 +3079,6 @@ Prašome nurodti kitą aplanką.</translation>
       <translation>Ar tikrai norite panaikinti visus laikinus aplankus?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Panaikinę visus laikinus aplankus jūs negalėsite po to atkurti jokių failų.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Baigta</translation>
     </message>
@@ -3018,6 +3091,10 @@ Prašome nurodti kitą aplanką.</translation>
 
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Paspauskite „Pradėti atkūrimą“ toliau išvardytų dokumentų atkūrimo veiksmams pradėti. Būsenos stulpelyje bus parodyta ar dokumentas gali būti atkurtas.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3795,20 +3872,20 @@ Ar norite įrašyti keitimus?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Bakstelėkite. Arba spustelėkite kairį pelės mygtuką.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Braukite ekranu dviem pirštais, arba paspauskite dešinįjį pelės mygtuką.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Braukite ekranu pirštu, arba paspauskite kairįjį pelės mygtuką, brėžinių braižymo aplinkoje ar kitaip taisant, papildomai nuspaudę ir „Alt“ mygtuką.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Suglaudžiant ar skečiant du pirštus ant ekrano, arba sukant vidurinįjį pelės ratuką, arba klaviatūros mygtukų „PgUp“/„PgDown“ pagalba.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4094,29 +4171,27 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Bakstelėkite. Arba spustelėkite kairį pelės mygtuką.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Vilkite ekraną dviem pirštais arba paspauskite ALT ir vidurinį pelės mygtuką.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Braukite ekranu pirštu, arba paspauskite „Alt“ ir kairįjį pelės mygtuką. Brėžinių braižymo aplinkoje ar kitaip taisant, papildomai nuspaudę ir „Alt“ mygtuką.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Suglauskite ar skėskite du pirštus ant ekrano, arba sukite vidurinįjį pelės ratuką, arba spauskite „Alt“ ir dešinįjį pelės mygtuką, arba spauskite klaviatūros mygtukus „PgUp“/„PgDown“.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Atsisiuntimas prasidėjo...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -5219,18 +5294,6 @@ Be aware the point where you click matters.</source>
       <translation>Koordinačių pradžia</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Postūmis: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Pasukimas: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Pašalinti grupės turinį?</translation>
     </message>
@@ -5245,6 +5308,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Split</source>
       <translation type="unfinished">Split</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Postūmis:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Pasukimas:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5979,12 +6054,12 @@ Be aware the point where you click matters.</source>
       <translation>Apjungti projektus</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 dokumentas (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Negalima apjungti projekto pačio su savimi.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 dokumentas (*. FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6660,21 +6735,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Aksonometrinis</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Įjungia aksonometrinį rodinį</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6702,6 +6762,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Sukurti naują rodinio langą aktyviam dokumentui</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Įprastinis vaizdas</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrinis vaizdavimas</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation type="unfinished">Set to dimetric view</translation>
     </message>
   </context>
   <context>
@@ -6792,6 +6867,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Vaizdas iš priekio</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Įprastinis vaizdas</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrinis vaizdavimas</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation type="unfinished">Set to isometric view</translation>
     </message>
   </context>
   <context>
@@ -6972,6 +7062,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to top view</source>
       <translation>Vaizdas iš viršaus</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Įprastinis vaizdas</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrinis vaizdavimas</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation type="unfinished">Set to trimetric view</translation>
     </message>
   </context>
   <context>
@@ -7261,28 +7366,16 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation type="unfinished">These items are linked to items selected for deletion and might break.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation type="unfinished">
-
-Are you sure you want to continue?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

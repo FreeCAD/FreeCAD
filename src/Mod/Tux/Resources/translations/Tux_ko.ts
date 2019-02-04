@@ -44,11 +44,6 @@
       <translation>시점회전</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>가운데버튼 또는 'H' 키</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>마우스 가운데 버튼</translation>
@@ -92,6 +87,11 @@
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation type="unfinished">Undefined</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation type="unfinished">Middle mouse button or H key.</translation>
     </message>
   </context>
 </TS>

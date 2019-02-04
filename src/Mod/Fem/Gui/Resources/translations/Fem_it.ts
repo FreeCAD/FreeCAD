@@ -192,7 +192,7 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore della membrana</translation>
+      <translation>Spessore della lastra</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="259"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore della membrana</translation>
+      <translation>Spessore della lastra</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="261"/>
@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation>Crea un materiale FEM per solido</translation>
+      <translation>Crea un materiale FEM per il solido</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -688,7 +688,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore della membrana</translation>
+      <translation>Spessore della lastra</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
@@ -913,7 +913,7 @@
     <message>
       <location filename="_CommandShellThickness.py" line="41"/>
       <source>Shell plate thickness</source>
-      <translation>Spessore della membrana</translation>
+      <translation>Spessore della lastra</translation>
     </message>
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
@@ -928,7 +928,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM Shell Thickness</source>
-      <translation>Crea lo spessore di una lastra Shell FEM</translation>
+      <translation>Crea lo spessore di una shell (lastra-piastra) FEM</translation>
     </message>
   </context>
   <context>

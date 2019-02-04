@@ -294,13 +294,14 @@
       <translation>マウスの中央のボタンを押す</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>マウスボタンの中央と左または右を押す</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>マウスホイールをスクロールまたはマウス中央ボタンを押したまま左右どちらかをクリックして、マウスを上下に移動</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -422,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>範囲外</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>カメラ設定</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>向き</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>現在のビュー</translation>
     </message>
   </context>
   <context>
@@ -829,10 +861,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>このショートカット'%1'は、'%2'に割り当てられています。
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
 
-別のショートカットを割り当ててください。</translation>
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2041,12 +2073,16 @@ Specify another directory, please.</source>
       <translation>OpenGL 頂点バッファー オブジェクトを使用。</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation>新しいドキュメントのカメラの向き</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
+      <translation>ピンチズーム時のビューのチルトを防ぎます。ジェスチャーナビゲーションスタイルに対してのみ有効です。この設定ではマウスでのチルトは無効化されません。</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+      <translation>タッチスクリーンのチルトジェスチャーを無効化</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
@@ -2054,7 +2090,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Marker size:</source>
-      <translation type="unfinished">Marker size:</translation>
+      <translation>マーカーサイズ:</translation>
     </message>
   </context>
   <context>
@@ -2069,27 +2105,67 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>5px</source>
-      <translation type="unfinished">5px</translation>
+      <translation>5px</translation>
     </message>
     <message>
       <source>7px</source>
-      <translation type="unfinished">7px</translation>
+      <translation>7px</translation>
     </message>
     <message>
       <source>9px</source>
-      <translation type="unfinished">9px</translation>
+      <translation>9px</translation>
     </message>
     <message>
       <source>11px</source>
-      <translation type="unfinished">11px</translation>
+      <translation>11px</translation>
     </message>
     <message>
       <source>13px</source>
-      <translation type="unfinished">13px</translation>
+      <translation>13px</translation>
     </message>
     <message>
       <source>15px</source>
-      <translation type="unfinished">15px</translation>
+      <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>アイソメトリック</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>ダイメトリック</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>不等角投影図法</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>上面図</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>正面図</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>左面図</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>右面図</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>背面図</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>底面</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>色の編集</translation>
     </message>
   </context>
   <context>
@@ -2723,11 +2799,11 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
-      <translation type="unfinished">Minimum fractional inch:</translation>
+      <translation>最小分数インチ:</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum fractional inch to display.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;表示するインチの最小分数値。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>1/2"</source>
@@ -2735,27 +2811,27 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>1/4"</source>
-      <translation type="unfinished">1/4"</translation>
+      <translation>1/4"</translation>
     </message>
     <message>
       <source>1/8"</source>
-      <translation type="unfinished">1/8"</translation>
+      <translation>1/8"</translation>
     </message>
     <message>
       <source>1/16"</source>
-      <translation type="unfinished">1/16"</translation>
+      <translation>1/16"</translation>
     </message>
     <message>
       <source>1/32"</source>
-      <translation type="unfinished">1/32"</translation>
+      <translation>1/32"</translation>
     </message>
     <message>
       <source>1/64"</source>
-      <translation type="unfinished">1/64"</translation>
+      <translation>1/64"</translation>
     </message>
     <message>
       <source>1/128"</source>
-      <translation type="unfinished">1/128"</translation>
+      <translation>1/128"</translation>
     </message>
   </context>
   <context>
@@ -2999,10 +3075,6 @@ Specify another directory, please.</source>
       <translation>全ての一時ディレクトリを削除しますか？</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>全ての一時ディレクトリを削除すると全てのファイルを復元できなくなります。</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>終了</translation>
     </message>
@@ -3017,6 +3089,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>「復旧を開始」を押すと下記のドキュメントの復旧処理が開始されます。
 
 「状態」カラムにドキュメントが復旧できたかどうかが表示されます。</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3379,23 +3455,23 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Axial:</source>
-      <translation type="unfinished">Axial:</translation>
+      <translation>軸:</translation>
     </message>
     <message>
       <source>Apply axial</source>
-      <translation type="unfinished">Apply axial</translation>
+      <translation>軸を適用</translation>
     </message>
     <message>
       <source>Shift click for opposite direction</source>
-      <translation type="unfinished">Shift click for opposite direction</translation>
+      <translation>逆方向にするには Shfit + クリック</translation>
     </message>
     <message>
       <source>Selected points</source>
-      <translation type="unfinished">Selected points</translation>
+      <translation>選択したポイント</translation>
     </message>
     <message>
       <source>Apply incremental changes</source>
-      <translation type="unfinished">Apply incremental changes</translation>
+      <translation>増分変更を適用</translation>
     </message>
     <message>
       <source>Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, face, or edge.  If on a face or edge the point used will be the point at the mouse position along face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are selected the midpoint between them will be the center of rotation and a new custom axis will be created, if needed.  If 3 points are selected the first point becomes the center of rotation and lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle information is provided in the report view, which can be useful when aligning objects.  For your convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.</source>
@@ -3793,20 +3869,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>タップ、または左マウスボタンをクリック</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>二本指ですスクリーンをドラッグするか、右マウスボタンを押す</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>一本指でスクリーンをドラッグするか、左マウスボタンを押す。スケッチャーやその他の編集モードではさらにAltキーを押す。</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>ピンチ（スクリーンに二本の指を置き、互いに離すようにドラッグ）、または中マウスボタンをスクロール、またはキーボードのPgUp/PgDownキーを押す。</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4087,29 +4163,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>タップ、または左マウスボタンをクリック</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>画面を2本の指でドラッグするか、ALTキーとマウス中ボタンを押します。</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>画面を1本の指でドラッグするか、ALTキーとマウス左ボタンを押します。スケッチャーなどの編集モードではさらにALTキーを押しっぱなしにします。</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>ピンチ（2本の指を画面に置き、互いに離すようにドラッグ）するか、マウス中ボタンをスクロールします。またはALT1キーとマウス右ボタンを押すか、キーボードのPgUp/PgDownキーを押します。</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>ダウンロードを開始しました...
-</translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -4649,11 +4723,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Search...</source>
-      <translation type="unfinished">Search...</translation>
+      <translation>検索...</translation>
     </message>
     <message>
       <source>Search for objects</source>
-      <translation type="unfinished">Search for objects</translation>
+      <translation>オブジェクトの検索</translation>
     </message>
   </context>
   <context>
@@ -5209,18 +5283,6 @@ Be aware the point where you click matters.</source>
       <translation>原点</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>平行移動: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>回転: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>グループコンテンツを削除しますか?</translation>
     </message>
@@ -5234,15 +5296,27 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>スプリット</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>平行移動量:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>回転:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
-      <translation type="unfinished">Toggle active part</translation>
+      <translation>アクティブなパーツを切り替え</translation>
     </message>
     <message>
       <source>Edit text</source>
-      <translation type="unfinished">Edit text</translation>
+      <translation>テキストを編集</translation>
     </message>
   </context>
   <context>
@@ -5969,12 +6043,12 @@ Be aware the point where you click matters.</source>
       <translation>プロジェクトの統合</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 ドキュメント (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>プロジェクトを自身にマージすることはできません。</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 のドキュメント (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6650,21 +6724,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>標準ビュー</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>不等角投影</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>不等角投影ビューに設定</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6692,6 +6751,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>作業中のドキュメントのための新しいビューウィンドウを作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>ダイメトリック</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>二等角投影ビューに設定</translation>
     </message>
   </context>
   <context>
@@ -6782,6 +6856,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>前面ビューに設定</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>アイソメトリック</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>等角投影ビューに設定</translation>
     </message>
   </context>
   <context>
@@ -6965,6 +7054,21 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>標準ビュー</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>不等角投影図法</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>斜方投影ビューに設定</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdViewVR</name>
     <message>
       <source>Standard-View</source>
@@ -7088,11 +7192,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Collapse/Expand</source>
-      <translation type="unfinished">Collapse/Expand</translation>
+      <translation>折りたたみ/展開</translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation type="unfinished">Expand active document and collapse all others</translation>
+      <translation>アクティブなドキュメントを展開し、他の全てを折りたたむ</translation>
     </message>
   </context>
   <context>
@@ -7103,11 +7207,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Multi Document</source>
-      <translation type="unfinished">Multi Document</translation>
+      <translation>マルチドキュメント</translation>
     </message>
     <message>
       <source>Display all documents in the tree view</source>
-      <translation type="unfinished">Display all documents in the tree view</translation>
+      <translation>全てのドキュメントをツリービューに表示</translation>
     </message>
   </context>
   <context>
@@ -7118,11 +7222,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Single Document</source>
-      <translation type="unfinished">Single Document</translation>
+      <translation>シングルドキュメント</translation>
     </message>
     <message>
       <source>Only display the active document in the tree view</source>
-      <translation type="unfinished">Only display the active document in the tree view</translation>
+      <translation>アクティブなドキュメントのみをツリービューに表示</translation>
     </message>
   </context>
   <context>
@@ -7133,11 +7237,11 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Document Tree</source>
-      <translation type="unfinished">Document Tree</translation>
+      <translation>ドキュメントツリー</translation>
     </message>
     <message>
       <source>Set visibility of inactive documents in tree view</source>
-      <translation type="unfinished">Set visibility of inactive documents in tree view</translation>
+      <translation>アクティブでないドキュメントのツリービューでの表示状態を設定</translation>
     </message>
   </context>
   <context>
@@ -7251,28 +7355,16 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>これらのアイテムは削除対象として選択したアイテムにリンクされていて、壊れる可能性があります。
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>これらのアイテムは削除対象として選択されていますが、アクテイブなドキュメント内に存在しません。
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-本当に続行しますか？</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
