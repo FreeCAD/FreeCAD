@@ -76,6 +76,7 @@ public:
         ShowSelection, // to show a selection
         HideSelection, // to hide a selection
         RmvPreselectSignal, // to request 3D view to remove preselect
+        MovePreselect, // to signal observer the mouse movement when preselect
     };
 
     SelectionChanges(MsgType type = ClrSelection, 
@@ -132,6 +133,9 @@ public:
         pObjectName = ObjName.c_str();
         pSubName = SubName.c_str();
         pTypeName = TypeName.c_str();
+        pOriginalMsg = other.pOriginalMsg;
+        pSubObject = other.pSubObject;
+        pParentObject = other.pParentObject;
         return *this;
     }
 
@@ -153,6 +157,9 @@ public:
         pObjectName = ObjName.c_str();
         pSubName = SubName.c_str();
         pTypeName = TypeName.c_str();
+        pOriginalMsg = other.pOriginalMsg;
+        pSubObject = other.pSubObject;
+        pParentObject = other.pParentObject;
         return *this;
     }
 
@@ -174,6 +181,14 @@ public:
     std::string ObjName;
     std::string SubName;
     std::string TypeName;
+
+    // Resolved sub object in case resolve!=0, otherwise this is null
+    App::DocumentObject *pSubObject = 0;
+    // Resolved parent object in case resolve!=0, otherwise this is null
+    App::DocumentObject *pParentObject = 0;
+
+    // Original selection message in case resolve!=0
+    const SelectionChanges *pOriginalMsg = 0;
 };
 
 } //namespace Gui

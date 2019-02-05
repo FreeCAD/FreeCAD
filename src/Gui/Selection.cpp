@@ -701,12 +701,18 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg) {
         std::pair<std::string,std::string> elementName;
         auto &newElementName = elementName.first;
         auto &oldElementName = elementName.second;
-        auto pObject = App::GeoFeature::resolveElement(
-                pDoc->getObject(msg.pObjectName),msg.pSubName,elementName);
+        auto pParent = pDoc->getObject(msg.pObjectName);
+        if(!pParent) return;
+        auto pObject = App::GeoFeature::resolveElement(pParent,msg.pSubName,elementName);
         if (!pObject) return;
         SelectionChanges msg2(msg.Type,pObject->getDocument()->getName(),
                 pObject->getNameInDocument(),
-                newElementName.size()?newElementName.c_str():oldElementName.c_str());
+                newElementName.size()?newElementName.c_str():oldElementName.c_str(),
+                pObject->getTypeId().getName(), msg.x,msg.y,msg.z);
+
+        msg2.pOriginalMsg = &msg;
+        msg2.pParentObject = pParent;
+        msg2.pSubObject = pObject;
         signalSelectionChanged3(msg2);
 
         msg2.SubName = oldElementName;
@@ -727,8 +733,21 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     }
     if(!pSubName) pSubName = "";
 
-    if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName)
+    if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
+        // MovePreselect is likely going to slow down large scene rendering.
+        // Disable it fow now.
+#if 0
+        if(hx!=x || hy!=y || hz!=z) {
+            hx = x;
+            hy = y;
+            hz = z;
+            SelectionChanges Chng(SelectionChanges::MovePreselect,
+                    DocName,FeatName,SubName,std::string(),x,y,z);
+            notify(Chng);
+        }
+#endif
         return -1;
+    }
 
     rmvPreselect();
 
