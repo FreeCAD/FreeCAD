@@ -60,7 +60,7 @@ public:
     static bool isDatum(const App::DocumentObject* feature);
 
     /// Returns the body the feature is in, or none
-    Body* getFeatureBody();
+    Body* getFeatureBody() const;
     
     /**
      * Returns the BaseFeature property's object (if any)
@@ -85,6 +85,8 @@ protected:
      * Get a solid of the given shape. If no solid is found an exception is raised.
      */
     TopoShape getSolid(const TopoShape&);    
+
+    bool allowMultiSolid() const;
 
     /// Grab any point from the given face
     static const gp_Pnt getPointFromFace(const TopoDS_Face& f);    

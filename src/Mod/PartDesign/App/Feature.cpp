@@ -69,14 +69,18 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
+bool Feature::allowMultiSolid() const {
+    auto body = getFeatureBody();
+    return body && !body->SingleSolid.getValue();
+}
+
 TopoShape Feature::getSolid(const TopoShape& shape)
 {
     if (shape.isNull())
         Standard_Failure::Raise("Shape is null");
-    auto body = getFeatureBody();
     int count = shape.countSubShapes(TopAbs_SOLID);
     if(count>1) {
-        if(body && !body->SingleSolid.getValue())
+        if(allowMultiSolid())
             return shape;
         throw Base::RuntimeError("Result has multiple solids. This is not supported at this time.");
     }
@@ -198,7 +202,7 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
     return builder.Shape();
 }
 
-Body* Feature::getFeatureBody() {
+Body* Feature::getFeatureBody() const {
 
     auto body = Base::freecad_dynamic_cast<Body>(Owner.getValue());
     if(body)

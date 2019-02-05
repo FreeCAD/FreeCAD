@@ -265,10 +265,6 @@ App::DocumentObjectExecReturn *Pad::execute(void)
             solRes = refineShapeIfActive(solRes);
             this->Shape.setValue(getSolid(solRes));
         } else {
-            if(prism.countSubShapes(TopAbs_SOLID)>1){
-                return new App::DocumentObjectExecReturn("Pad: Result has multiple solids. This is not supported at this time.");
-            }
-
            this->Shape.setValue(getSolid(prism));
         }
 

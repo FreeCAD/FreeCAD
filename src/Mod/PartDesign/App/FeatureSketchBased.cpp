@@ -204,8 +204,11 @@ TopoShape ProfileBased::getVerifiedFace(bool silent) const {
                 return TopoShape();
             throw Base::CADKernelError("Cannot make face from profile");
         }
-        if(count>1)
+        if(count>1) {
+            if(allowMultiSolid())
+                return shape;
             FC_WARN("Found more than one face from profile");
+        }
         return shape.getSubTopoShape(TopAbs_FACE,1);
     }catch (Standard_Failure &) {
         if(silent)
