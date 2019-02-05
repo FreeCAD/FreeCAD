@@ -55,6 +55,7 @@
 #include <Base/Stream.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/SoFCBoundingBox.h>
 #include <Gui/SoAxisCrossKit.h>
@@ -76,6 +77,72 @@ using namespace Gui;
 using namespace PathGui;
 using namespace Path;
 using namespace PartGui;
+
+namespace PathGui {
+
+class PathSelectionObserver: public Gui::SelectionObserver {
+public:
+    static void init() {
+        static PathSelectionObserver *instance;
+        if(!instance)
+            instance = new PathSelectionObserver();
+    }
+
+    void setArrow(SoSwitch *pcSwitch=0) {
+        if(pcSwitch==pcLastArrowSwitch)
+            return;
+        if(pcLastArrowSwitch) {
+            pcLastArrowSwitch->whichChild = -1;
+            pcLastArrowSwitch->unref();
+            pcLastArrowSwitch = 0;
+        }
+        if(pcSwitch) {
+            pcSwitch->ref();
+            pcSwitch->whichChild = 0;
+            pcLastArrowSwitch = pcSwitch;
+        }
+    }
+
+    void onSelectionChanged(const Gui::SelectionChanges& msg) {
+        if(msg.Type == Gui::SelectionChanges::RmvPreselect) {
+            setArrow();
+            return;
+        }
+        if((msg.Type!=Gui::SelectionChanges::SetPreselect 
+                    && msg.Type!=Gui::SelectionChanges::MovePreselect)
+                || !msg.pOriginalMsg || !msg.pSubObject || !msg.pParentObject)
+            return;
+        Base::Matrix4D linkMat;
+        auto sobj = msg.pSubObject->getLinkedObject(true,&linkMat,false);
+        auto vp = Base::freecad_dynamic_cast<ViewProviderPath>(
+                        Application::Instance->getViewProvider(sobj));
+        if(!vp) {
+            setArrow();
+            return;
+        }
+        
+        if(vp->pt0Index >= 0) { 
+            Base::Matrix4D mat;
+            msg.pParentObject->getSubObject(msg.pSubName,0,&mat);
+            mat *= linkMat;
+            mat.inverse();
+            Base::Vector3d pt = mat*Base::Vector3d(msg.x,msg.y,msg.z);
+            const SbVec3f &ptTo = *vp->pcLineCoords->point.getValues(vp->pt0Index);
+            SbVec3f ptFrom(pt.x,pt.y,pt.z);
+            if(ptFrom != ptTo) {
+                vp->pcArrowTransform->pointAt(ptFrom,ptTo);
+                setArrow(vp->pcArrowSwitch);
+                return;
+            }
+        }
+        setArrow();
+    }
+
+    SoSwitch *pcLastArrowSwitch = 0;
+};
+}
+
+//////////////////////////////////////////////////////////////////////////////
 
 PROPERTY_SOURCE(PathGui::ViewProviderPath, Gui::ViewProviderGeometryObject)
 
@@ -173,6 +240,8 @@ ViewProviderPath::ViewProviderPath()
     SelectionStyle.setEnums(SelectionStyleEnum);
     unsigned long sstyle = hGrp->GetInt("DefaultSelectionStyle",0);
     SelectionStyle.setValue(sstyle);
+
+    PathSelectionObserver::init();
 }
 
 ViewProviderPath::~ViewProviderPath()
@@ -272,31 +341,6 @@ SoDetail* ViewProviderPath::getDetail(const char* subelement) const
         }
     }
     return detail;
-}
-
-void ViewProviderPath::onSelectionChanged(const Gui::SelectionChanges& msg) {
-    if(msg.Type == Gui::SelectionChanges::SetPreselect && msg.pSubName && 
-       pt0Index >= 0 && getObject() && getObject()->getDocument())
-    { 
-        const char *docName = getObject()->getDocument()->getName();
-        const char *objName = getObject()->getNameInDocument();
-        if(docName && objName && 
-           strcmp(msg.pDocName,docName)==0 &&
-           strcmp(msg.pObjectName,objName)==0)
-        {
-            Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
-            Base::Vector3d pt = pcPathObj->Placement.getValue().inverse().toMatrix()*
-                                    Base::Vector3d(msg.x,msg.y,msg.z);
-            const SbVec3f &ptTo = *pcLineCoords->point.getValues(pt0Index);
-            SbVec3f ptFrom(pt.x,pt.y,pt.z);
-            if(ptFrom != ptTo) {
-                pcArrowTransform->pointAt(ptFrom,ptTo);
-                pcArrowSwitch->whichChild = 0;
-                return;
-            }
-        }
-    }
-    pcArrowSwitch->whichChild = -1;
 }
 
 void ViewProviderPath::onChanged(const App::Property* prop)
