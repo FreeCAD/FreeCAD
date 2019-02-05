@@ -56,6 +56,11 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body() {
+    ADD_PROPERTY_TYPE(SingleSolid,(true),"Base",(App::PropertyType)(App::Prop_None),
+            "Enforce single solid on each feature");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath (
+                "User parameter:BaseApp/Preferences/Mod/PartDesign");
+    SingleSolid.setValue(hGrp->GetBool("SingleSolid",true));
 }
 
 /*
@@ -331,6 +336,9 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
 
     Group.setValues (model);
 
+    if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        static_cast<PartDesign::Feature*>(feature)->Owner.setValue(this);
+
     // Set the BaseFeature property
     setBaseProperty(feature);
 }
@@ -477,6 +485,12 @@ void Body::onChanged (const App::Property* prop) {
                     BaseFeature.setValue(nullptr);
             }
         }
+        else if( prop == &SingleSolid ) {
+            for(auto obj : Group.getValues()) {
+                if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                    obj->touch();
+            }
+        }
     }
 
     Part::BodyBase::onChanged(prop);
@@ -523,4 +537,13 @@ App::DocumentObject *Body::getSubObject(const char *subname,
     if(pmat && transform)
         *pmat *= Placement.getValue().toMatrix();
     return const_cast<Body*>(this);
+}
+
+void Body::onDocumentRestored()
+{
+    for(auto obj : Group.getValues()) {
+        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            static_cast<PartDesign::Feature*>(obj)->Owner.setValue(this);
+    }
+    DocumentObject::onDocumentRestored();
 }

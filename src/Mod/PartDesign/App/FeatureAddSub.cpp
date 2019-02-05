@@ -65,19 +65,10 @@ short FeatureAddSub::mustExecute() const
     return PartDesign::Feature::mustExecute();
 }
 
-TopoDS_Shape FeatureAddSub::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+TopoShape FeatureAddSub::refineShapeIfActive(const TopoShape& oldShape) const
 {
-    if (this->Refine.getValue()) {
-        try {
-            Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
-            TopoDS_Shape resShape = mkRefine.Shape();
-            return resShape;
-        }
-        catch (Standard_Failure&) {
-            return oldShape;
-        }
-    }
-
+    if (this->Refine.getValue())
+        return oldShape.makERefine();
     return oldShape;
 }
 

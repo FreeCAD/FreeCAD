@@ -47,6 +47,8 @@ public:
     /// True if this body feature is active or was active when the document was last closed
     //App::PropertyBool IsActive;
 
+    App::PropertyBool SingleSolid;
+
     Body();
 
     /** @name methods override feature */
@@ -150,6 +152,8 @@ protected:
     virtual void setupObject () override;
     /// Removes all planes and axis if they are still linked to the document
     virtual void unsetupObject () override;
+
+    virtual void onDocumentRestored() override;
 
 private:
     boost::signals2::scoped_connection connection;

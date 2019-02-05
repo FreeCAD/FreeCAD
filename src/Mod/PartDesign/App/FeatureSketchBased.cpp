@@ -1118,13 +1118,6 @@ void ProfileBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std
     throw Base::TypeError("Rotation axis reference is invalid");
 }
 
-TopoShape ProfileBased::refineShapeIfActive(const TopoShape& oldShape) const
-{
-    if (this->Refine.getValue()) 
-        return oldShape.makERefine();
-    return oldShape;
-}
-
 Base::Vector3d ProfileBased::getProfileNormal() const {
 
     Base::Vector3d SketchVector(0,0,1);

@@ -337,10 +337,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
             rejected[it->first].push_back(**it2);
 
-    if(support.countSubShapes(TopAbs_SOLID)>1){
-        return new App::DocumentObjectExecReturn("Transformed: Result has multiple solids. This is not supported at this time.");
-    }
-
     this->Shape.setValue(getSolid(result));
 
     if (rejected.size() > 0) {
