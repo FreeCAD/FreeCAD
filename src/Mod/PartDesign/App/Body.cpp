@@ -58,9 +58,6 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 Body::Body() {
     ADD_PROPERTY_TYPE(SingleSolid,(true),"Base",(App::PropertyType)(App::Prop_None),
             "Enforce single solid on each feature");
-    auto hGrp = App::GetApplication().GetParameterGroupByPath (
-                "User parameter:BaseApp/Preferences/Mod/PartDesign");
-    SingleSolid.setValue(hGrp->GetBool("SingleSolid",true));
 }
 
 /*
@@ -500,6 +497,9 @@ void Body::onChanged (const App::Property* prop) {
 
 void Body::setupObject () {
     Part::BodyBase::setupObject ();
+    auto hGrp = App::GetApplication().GetParameterGroupByPath (
+                "User parameter:BaseApp/Preferences/Mod/PartDesign");
+    SingleSolid.setValue(hGrp->GetBool("SingleSolid",true));
 }
 
 void Body::unsetupObject () {
