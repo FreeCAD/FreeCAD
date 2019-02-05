@@ -221,6 +221,7 @@ def fill_femresult_mechanical(results, result_set):
         step_time = result_set['time']
         step_time = round(step_time, 2)
 
+    # if disp exists, fill res_obj.NodeNumbers and res_obj.DisplacementVectors as well as stress and strain
     if 'disp' in result_set:
         disp = result_set['disp']
         displacement = []
@@ -241,6 +242,7 @@ def fill_femresult_mechanical(results, result_set):
         results.DisplacementVectors = list(map((lambda x: x * scale), disp.values()))
         results.NodeNumbers = list(disp.keys())
 
+        # fill res_obj.StressVectors if they exist
         if 'stress' in result_set:
             stress = result_set['stress']
             stressv1 = {}
@@ -252,10 +254,12 @@ def fill_femresult_mechanical(results, result_set):
                 print("Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement {} != {}"
                       .format(results.NodeNumbers, len(results.StressValues)))
 
+        # fill res_obj.StrainVectors if they exist
         if 'strainv' in result_set:
             strainv = result_set['strainv']
             results.StrainVectors = list(map((lambda x: x * scale), strainv.values()))
 
+        # calculate von Mises, principal and max Shear and fill them in res_obj
         if 'stress' in result_set:
             stress = result_set['stress']
             if len(stress) > 0:
@@ -285,7 +289,7 @@ def fill_femresult_mechanical(results, result_set):
                     results.PrincipalMin = prinstress3
                     results.MaxShear = shearstress
 
-        # Read Equivalent Plastic strain if they exist
+        # fill Equivalent Plastic strain if they exist
         if 'peeq' in result_set:
             Peeq = result_set['peeq']
             if len(Peeq) > 0:
@@ -300,7 +304,8 @@ def fill_femresult_mechanical(results, result_set):
                 else:
                     results.Peeq = Peeq.values()
 
-    # Read temperatures if they exist
+    # fill res_obj.Temperature if they exist
+    # TODO, check if it is possible to have Temperature without disp, we would need to set NodeNumbers than
     if 'temp' in result_set:
         Temperature = result_set['temp']
         if len(Temperature) > 0:
@@ -316,7 +321,7 @@ def fill_femresult_mechanical(results, result_set):
                 results.Temperature = list(map((lambda x: x), Temperature.values()))
             results.Time = step_time
 
-    # read MassFlow
+    # fill res_obj.MassFlow
     if 'mflow' in result_set:
         MassFlow = result_set['mflow']
         if len(MassFlow) > 0:
@@ -324,7 +329,7 @@ def fill_femresult_mechanical(results, result_set):
             results.Time = step_time
             results.NodeNumbers = list(MassFlow.keys())  # disp does not exist, results.NodeNumbers needs to be set
 
-    # read NetworkPressure, disp does not exist, see MassFlow
+    # fill res_obj.NetworkPressure, disp does not exist, see MassFlow
     if 'npressure' in result_set:
         NetworkPressure = result_set['npressure']
         if len(NetworkPressure) > 0:
