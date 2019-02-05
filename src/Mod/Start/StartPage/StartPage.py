@@ -361,6 +361,9 @@ def handle():
     HTML = HTML.replace("IMAGE_SRC_POWERHUB",'file:///'+os.path.join(resources_dir, 'images/poweruserhub.png'))
     HTML = HTML.replace("IMAGE_SRC_DEVHUB",'file:///'+os.path.join(resources_dir, 'images/developerhub.png'))
     HTML = HTML.replace("IMAGE_SRC_MANUAL",'file:///'+os.path.join(resources_dir, 'images/manual.png'))
+    imagepath= 'file:///'+os.path.join(resources_dir, 'images/installed.png')
+    imagepath = imagepath.replace('\\','/')  # replace Windows backslash with slash to make the path javascript compatible
+    HTML = HTML.replace("IMAGE_SRC_INSTALLED",imagepath)
 
     # build UL_WORKBENCHES
 
@@ -401,7 +404,7 @@ def handle():
         if wb in iconbank:
             img = iconbank[wb]
         else:
-            img = os.path.join(FreeCAD.getResourceDir(),"data","Mod",wn,"Resources","icons",wn+"Workbench.svg")
+            img = os.path.join(FreeCAD.getResourceDir(),"Mod",wn,"Resources","icons",wn+"Workbench.svg")
             if not os.path.exists(img):
                 w = FreeCADGui.listWorkbenches()[wb]
                 if hasattr(w,"Icon"):
@@ -416,7 +419,7 @@ def handle():
                     else:
                         img = xpm
                 else:
-                    img="images/freecad.png"
+                    img = os.path.join(resources_dir,"images/freecad.png")
             iconbank[wb] = img
         UL_WORKBENCHES += '<li>'
         UL_WORKBENCHES += '<img src="file:///'+iconbank[wb]+'">&nbsp;'
