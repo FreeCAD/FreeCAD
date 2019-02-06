@@ -220,7 +220,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         }
     }
 
-    pcSolver = NULL;  // this is an private object of type Fem::FemSolverObject* 
+    pcSolver = NULL;  // this is an private object of type Fem::FemSolverObject*
     if (pcAnalysis) {
         std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
         for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
@@ -620,7 +620,7 @@ void TaskFemConstraintFluidBoundary::onSelectionChanged(const Gui::SelectionChan
 void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged(void)
 {
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
-    // temperarily change BoundaryType property, but command transaction should reset it back if you 'reject' late
+    // temporarily change BoundaryType property, but command transaction should reset it back if you 'reject' late
     pcConstraint->BoundaryType.setValue(ui->comboBoundaryType->currentIndex());
     updateBoundaryTypeUI();
 
@@ -675,7 +675,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed) {
     Gui::Selection().clearSelection();
     /* minor bug:  once Direction property(edge link) is cleared in UI, arrow direction is not updated.
     Direction property can not be easily setup in C++, see example at the end of this file `accept()`
-    redraw will only happen once taskpanel is closed, 
+    redraw will only happen once taskpanel is closed,
     */
     //pcConstraint->Direction.setValue(pressed);
 }

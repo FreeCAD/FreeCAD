@@ -4725,7 +4725,7 @@ public:
                 // as the ones created by this tool are intended for the b-spline endpoints, and not for the poles,
                 // so here we retrieve any autoconstraint on those poles' center and mangle it to the endpoint.
                 if (ConstrMethod == 0) {
-                    
+
                     for(auto & constr : static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues()) {
                         if(constr->First == FirstPoleGeoId && constr->FirstPos == Sketcher::mid) {
                             constr->First = currentgeoid;

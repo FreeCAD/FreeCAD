@@ -495,7 +495,7 @@ class TestPathGeom(PathTestBase):
         self.assertEdgeShapesMatch(edge, PathGeom.flipEdge(edge))
 
     def test75(self):
-        '''Flip a b-spline'''
+        '''Flip a B-spline'''
         spline = Part.BSplineCurve()
         spline.interpolate([Vector(1,2,3), Vector(-3,0,7), Vector(-3,1,9), Vector(1, 3, 5)])
         edge = Part.Edge(spline)

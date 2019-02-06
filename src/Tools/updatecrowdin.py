@@ -2,7 +2,7 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *  
+#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Library General Public License (LGPL)   *
@@ -32,14 +32,14 @@ the API key that gives access to the crowdin FreeCAD project.
 Usage:
 
     updatecrowdin.py command
-    
+
 Available commands:
 
     status:   prints a status of the translations
     update:   updates crowdin the current version of .ts files found in the source code
-    build:    builds a new downloadable package on crowdin with all trasnlated strings
+    build:    builds a new downloadable package on crowdin with all translated strings
     download: downloads the latest build
-    
+
 Example:
 
     ./updatecrowdin.py update
@@ -84,7 +84,7 @@ files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
 
 # handler for the command responses
 class ResponseHandler( xml.sax.ContentHandler ):
-    
+
     def __init__(self):
         self.current = ""
         self.data = ""
@@ -120,14 +120,14 @@ class ResponseHandler( xml.sax.ContentHandler ):
 
 
 if __name__ == "__main__":
-    
+
     # only one argument allowed
     arg = sys.argv[1:]
     if len(arg) != 1:
         print(__doc__)
         sys.exit()
     arg = arg[0]
-    
+
     # getting API key stored in ~/.crowdin-freecad
     configfile = os.path.expanduser("~")+os.sep+".crowdin-freecad"
     if not os.path.exists(configfile):
@@ -137,35 +137,35 @@ if __name__ == "__main__":
     url = "https://api.crowdin.com/api/project/freecad/"
     key = "?key="+f.read().strip()
     f.close()
-    
+
     if arg == "status":
         c = pycurl.Curl()
         c.setopt(pycurl.URL, url+"status"+key+"&xml")
         b = StringIO.StringIO()
-        c.setopt(pycurl.WRITEFUNCTION, b.write) 
+        c.setopt(pycurl.WRITEFUNCTION, b.write)
         c.perform()
         c.close()
         handler = ResponseHandler()
         xml.sax.parseString(b.getvalue(),handler)
         print(handler.data)
-        
+
     elif arg == "build":
         print("Building (warning, this can be invoked only once per 30 minutes)...")
         c = pycurl.Curl()
         c.setopt(pycurl.URL, url+"export"+key)
         b = StringIO.StringIO()
-        c.setopt(pycurl.WRITEFUNCTION, b.write) 
+        c.setopt(pycurl.WRITEFUNCTION, b.write)
         c.perform()
         c.close()
         handler = ResponseHandler()
         xml.sax.parseString(b.getvalue(),handler)
         print(handler.data)
-        
+
     elif arg == "download":
         print("Downloading all.zip in current directory...")
         cmd = "wget -O freecad.zip "+url+"download/all.zip"+key
         os.system(cmd)
-        
+
     elif arg == "update":
         basepath = os.path.dirname(os.path.abspath("."))
         for f in files:
@@ -175,7 +175,7 @@ if __name__ == "__main__":
             c.setopt(pycurl.URL, url+"update-file"+key)
             c.setopt(pycurl.HTTPPOST, fields)
             b = StringIO.StringIO()
-            c.setopt(pycurl.WRITEFUNCTION, b.write) 
+            c.setopt(pycurl.WRITEFUNCTION, b.write)
             c.perform()
             c.close()
             handler = ResponseHandler()
@@ -184,5 +184,3 @@ if __name__ == "__main__":
 
     else:
         print(__doc__)
-        
-
