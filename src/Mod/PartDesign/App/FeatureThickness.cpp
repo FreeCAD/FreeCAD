@@ -28,9 +28,14 @@
 
 #include "FeatureThickness.h"
 #include <Base/Exception.h>
+#include <Base/Parameter.h>
+#include <Base/Console.h>
+#include <App/Application.h>
 #include <App/Document.h>
 #include <TopoDS.hxx>
 #include <Precision.hxx>
+
+FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
 using namespace PartDesign;
 
@@ -47,6 +52,14 @@ Thickness::Thickness()
     ADD_PROPERTY_TYPE(Join,(long(0)),"Thickness",App::Prop_None,"Join type");
     Join.setEnums(JoinEnums);
     ADD_PROPERTY_TYPE(Reversed,(false),"Thickness",App::Prop_None,"Apply the thickness towards the solids interior");
+    ADD_PROPERTY_TYPE(Refine,(false),"Thickness",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges)");
+
+}
+
+void Thickness::setupObject() {
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 short Thickness::mustExecute() const
@@ -69,7 +82,7 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
         return new App::DocumentObjectExecReturn(e.what());
     }
 
-    std::vector<TopoShape> closingFaces;
+    std::map<int,std::vector<TopoShape> > closeFaces;
     const std::vector<std::string>& subStrings = Base.getSubValues(true);
     for (std::vector<std::string>::const_iterator it = subStrings.begin(); it != subStrings.end(); ++it) {
         TopoDS_Shape face;
@@ -78,7 +91,12 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
         }catch(...){}
         if(face.IsNull())
             return new App::DocumentObjectExecReturn("Invalid face reference");
-        closingFaces.push_back(face);
+        int index = baseShape.findAncestor(face,TopAbs_SOLID);
+        if(!index) {
+            FC_WARN(getFullName() << ": Ignore non-solid face  " << *it);
+            continue;
+        }
+        closeFaces[index].emplace_back(face);
     }
 
     bool reversed = Reversed.getValue();
@@ -90,12 +108,33 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     if(join == 1)
         join = 2;
 
-    TopoShape result(0,getDocument()->getStringHasher());
-    try {
-        result.makEThickSolid(baseShape, closingFaces, thickness, tol, false, false, mode, join);
-    }catch(Standard_Failure &) {
-        return new App::DocumentObjectExecReturn("Failed to make thick solid");
+    std::vector<TopoShape> shapes;
+    int count = baseShape.countSubShapes(TopAbs_SOLID);
+    if(!count)
+        return new App::DocumentObjectExecReturn("No solid");
+    auto it = closeFaces.begin();
+    for(int i=1;i<=count;++i) {
+        if(it==closeFaces.end() || i<it->first) {
+            shapes.push_back(baseShape.getSubTopoShape(TopAbs_SOLID,i));
+            continue;
+        }
+        shapes.emplace_back(0,getDocument()->getStringHasher());
+        try {
+            shapes.back().makEThickSolid(
+                    baseShape.getSubTopoShape(TopAbs_SOLID,it->first), 
+                    it->second, thickness, tol, false, false, mode, join);
+        }catch(Standard_Failure &) {
+            return new App::DocumentObjectExecReturn("Failed to make thick solid");
+        }
+        ++it;
     }
+    TopoShape result(0,getDocument()->getStringHasher());
+    if(shapes.size()>1) {
+        result.makEFuse(shapes);
+        if(Refine.getValue())
+            result = result.makERefine();
+    }else
+        result = shapes.front();
     this->Shape.setValue(getSolid(result));
     return App::DocumentObject::StdReturn;
 }

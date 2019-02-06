@@ -256,7 +256,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             // Check for intersection with support
             try {
 
-                if (!Part::checkIntersection(support.getShape(), shapeCopy.getShape(), false, true)) {
+                if (!allowMultiSolid()
+                        && !Part::checkIntersection(support.getShape(), shapeCopy.getShape(), false, true)) {
 #ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
                     Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
 #endif
