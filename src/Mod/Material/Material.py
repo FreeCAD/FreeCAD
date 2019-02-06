@@ -100,7 +100,7 @@ def getMaterialAttributeStructure(withSpaces=None):
     ''''''
 
     # material properties
-    # see the following resources in the FreeCAD wiki for more informations about the material specific properties:
+    # see the following resources in the FreeCAD wiki for more information about the material specific properties:
     # https://www.freecadweb.org/wiki/Material_data_model
     # https://www.freecadweb.org/wiki/Material
 

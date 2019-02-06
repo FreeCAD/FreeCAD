@@ -85,7 +85,7 @@ CallTipsList::CallTipsList(QPlainTextEdit* parent)
     pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
     parent->setPalette( pal );
 
-    connect(this, SIGNAL(itemActivated(QListWidgetItem *)), 
+    connect(this, SIGNAL(itemActivated(QListWidgetItem *)),
             this, SLOT(callTipItemActivated(QListWidgetItem *)));
 
     hideKeys.append(Qt::Key_Space);
@@ -124,7 +124,7 @@ CallTipsList::~CallTipsList()
 }
 
 void CallTipsList::keyboardSearch(const QString& wordPrefix)
-{ 
+{
     // first search for the item that matches perfectly
     for (int i=0; i<count(); ++i) {
         QString text = item(i)->text();
@@ -189,7 +189,7 @@ QString CallTipsList::extractContext(const QString& line) const
             (ch == '.') || (ch == '_') || // dot or underscore
             (ch == ' ') || (ch == '\t'))  // whitespace (between dot and text)
             index = pos;
-        else 
+        else
             break;
     }
 
@@ -251,13 +251,13 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
         // Checks whether the type is a subclass of PyObjectBase because to get the doc string
         // of a member we must get it by its type instead of its instance otherwise we get the
-        // wrong string, namely that of the type of the member. 
-        // Note: 3rd party libraries may use their own type object classes so that we cannot 
+        // wrong string, namely that of the type of the member.
+        // Note: 3rd party libraries may use their own type object classes so that we cannot
         // reliably use Py::Type. To be on the safe side we should use Py::Object to assign
         // the used type object to.
         //Py::Object type = obj.type();
         Py::Object type(PyObject_Type(obj.ptr()), true);
-        Py::Object inst = obj; // the object instance 
+        Py::Object inst = obj; // the object instance
         union PyType_Object typeobj = {&Base::PyObjectBase::Type};
         union PyType_Object typedoc = {&App::DocumentObjectPy::Type};
         union PyType_Object basetype = {&PyBaseObject_Type};
@@ -285,7 +285,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 #endif
         else if (PyObject_IsInstance(obj.ptr(), basetype.o) == 1) {
             // New style class which can be a module, type, list, tuple, int, float, ...
-            // Make sure it's not a type objec
+            // Make sure it's not a type object
             union PyType_Object typetype = {&PyType_Type};
             if (PyObject_IsInstance(obj.ptr(), typetype.o) != 1) {
                 // this should be now a user-defined Python class
@@ -397,7 +397,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     QString longdoc = QString::fromUtf8(doc.as_string().c_str());
                     int pos = longdoc.indexOf(QLatin1Char('\n'));
                     pos = qMin(pos, 70);
-                    if (pos < 0) 
+                    if (pos < 0)
                         pos = qMin(longdoc.length(), 70);
                     tip.description = stripWhiteSpace(longdoc);
                     tip.parameter = longdoc.left(pos);
@@ -410,7 +410,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     QString longdoc = QString::fromUtf8(doc.as_string().c_str());
                     int pos = longdoc.indexOf(QLatin1Char('\n'));
                     pos = qMin(pos, 70);
-                    if (pos < 0) 
+                    if (pos < 0)
                         pos = qMin(longdoc.length(), 70);
                     tip.description = stripWhiteSpace(longdoc);
                     tip.parameter = longdoc.left(pos);
@@ -458,7 +458,7 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
         if (!longdoc.isEmpty()) {
             int pos = longdoc.indexOf(QLatin1Char('\n'));
             pos = qMin(pos, 70);
-            if (pos < 0) 
+            if (pos < 0)
                 pos = qMin(longdoc.length(), 70);
             tip.description = stripWhiteSpace(longdoc);
             tip.parameter = longdoc.left(pos);
@@ -571,7 +571,7 @@ void CallTipsList::showTips(const QString& line)
             w += textEdit->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
         setGeometry(posX, posY+fontMetrics().height(), w, h);
     }
-    
+
     setCurrentRow(0);
     show();
 }
@@ -589,7 +589,7 @@ void CallTipsList::hideEvent(QHideEvent* e)
     qApp->removeEventFilter(this);
 }
 
-/** 
+/**
  * Get all incoming events of the text edit and redirect some of them, like key up and
  * down, mouse press events, ... to the widget itself.
  */
@@ -681,7 +681,7 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 {
     hide();
     if (!isItemSelected(item)) return;
-    
+
     QString text = item->text();
     QTextCursor cursor = textEdit->textCursor();
     cursor.setPosition(this->cursorPos);
@@ -769,4 +769,4 @@ QString CallTipsList::stripWhiteSpace(const QString& str) const
     return stripped;
 }
 
-#include "moc_CallTips.cpp" 
+#include "moc_CallTips.cpp"

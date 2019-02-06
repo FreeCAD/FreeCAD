@@ -371,7 +371,7 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDoc
         if (It->pDoc == pcDoc) {
             // right type?
             if (It->pObject->getTypeId().isDerivedFrom(typeId)){
-                // if the object has already an entry
+                // if the object already has an entry
                 if (SortMap.find(It->pObject) != SortMap.end()){
                     // only add sub-element
                     if (!It->SubName.empty()) {
