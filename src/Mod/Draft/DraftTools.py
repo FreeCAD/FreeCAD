@@ -77,7 +77,7 @@ MODALT = MODS[Draft.getParam("modalt",2)]
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("Verbose",True):
-        if not text: 
+        if not text:
             FreeCAD.Console.PrintMessage("")
         else:
             if mode == 'warning':
@@ -779,7 +779,7 @@ class Wire(Line):
 
 
 class BSpline(Line):
-    "a FreeCAD command for creating a b-spline"
+    "a FreeCAD command for creating a B-spline"
 
     def __init__(self):
         Line.__init__(self,wiremode=True)
@@ -2900,7 +2900,7 @@ class Stretch(Modifier):
 
     def proceed(self):
         if self.call:
-            self.view.removeEventCallback("SoEvent",self.call) 
+            self.view.removeEventCallback("SoEvent",self.call)
         supported = ["Rectangle","Wire","BSpline","BezCurve","Sketch"]
         self.sel = []
         for obj in FreeCADGui.Selection.getSelection():
@@ -2910,7 +2910,7 @@ class Stretch(Modifier):
                 if obj.Base:
                     if Draft.getType(obj.Base) in supported:
                         self.sel.append([obj.Base,obj.Placement])
-                        
+
                     elif Draft.getType(obj.Base) in ["Offset2D","Array"]:
                         base = None
                         if hasattr(obj.Base,"Source") and obj.Base.Source:
