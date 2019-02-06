@@ -4036,7 +4036,7 @@ class Edit(Modifier):
                         if hasattr(self.selection[0].Proxy,"Type"):
                             if not Draft.getType(self.selection[0]) in ["BezCurve","Wire","BSpline","Circle","Rectangle",
                                                                         "Polygon","Dimension","Space","Structure","PanelCut",
-                                                                        "PanelSheet"]:
+                                                                        "PanelSheet","Wall"]:
                                 msg(translate("draft", "This object type is not editable")+"\n",'warning')
                                 self.finish()
                                 return
@@ -4071,10 +4071,14 @@ class Edit(Modifier):
                 self.obj = self.obj[0]
                 if not Draft.getType(self.obj) in ["BezCurve","Wire","BSpline","Circle","Rectangle",
                                                    "Polygon","Dimension","Space","Structure","PanelCut",
-                                                   "PanelSheet"]:
+                                                   "PanelSheet","Wall"]:
                     msg(translate("draft", "This object type is not editable")+"\n",'warning')
                     self.finish()
                     return
+                if Draft.getType(self.obj) == "Wall":
+                    if Draft.getType(self.obj.Base) in ["Wire","Circle","Rectangle",
+                                                       "Polygon"]:
+                        self.obj=self.obj.Base
                 if (Draft.getType(self.obj) == "BezCurve"):
                     self.ui.editUi("BezCurve")
                 else:
@@ -4166,6 +4170,12 @@ class Edit(Modifier):
                     self.editpoints.append(self.pl.multVec(self.obj.TagPosition))
                     for o in self.obj.Group:
                         self.editpoints.append(self.pl.multVec(o.Placement.Base))
+                elif Draft.getType(self.obj) == "Wall":
+                    if Draft.getType(self.obj.Base) == "Sketch":
+                        if self.obj.Base.GeometryCount == 1:
+                            self.editpoints.append(self.obj.Base.getPoint(0,1))
+                            self.editpoints.append(self.obj.Base.getPoint(0,2))
+                        #if self.obj.Base.GeometryCount > 1: add dialog box that asks if the user wants to enter sketch edit mode
                 if Draft.getType(self.obj) != "BezCurve":
                     self.trackers = []
                     if self.editpoints:
@@ -4442,6 +4452,15 @@ class Edit(Modifier):
                 self.obj.TagPosition = self.invpl.multVec(v)
             else:
                 self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
+        elif Draft.getType(self.obj) == "Wall":
+            if self.editing == 0:
+                self.obj.Base.movePoint(0,1,v)
+                self.obj.Base.recompute()
+                self.obj.recompute()
+            if self.editing == 1:
+                self.obj.Base.movePoint(0,2,v)
+                self.obj.Base.recompute()
+                self.obj.recompute()
         try:
             FreeCADGui.ActiveDocument.ActiveView.redraw()
         except AttributeError as err:
