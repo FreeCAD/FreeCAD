@@ -183,7 +183,7 @@
 #include "Tools.h"
 #include "FaceMaker.h"
 
-#define TOPOP_VERSION 13
+#define TOPOP_VERSION 14
 
 FC_LOG_LEVEL_INIT("TopoShape",true,true);
 
@@ -1990,7 +1990,7 @@ struct NameKey {
             return true;
         if(tag > other.tag)
             return false;
-        return name < other.name;
+        return Data::ElementNameComp()(name,other.name);
     }
 };
 
@@ -2356,7 +2356,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
         // multiple higher elements, e.g. same edge in multiple faces.
 
         for(size_t ifo=infos.size()-1;ifo!=0;--ifo) {
-            std::map<std::string,std::map<std::string, NameInfo> > names;
+            std::map<std::string,std::map<std::string, NameInfo, Data::ElementNameComp> > names;
             auto &info = *infos[ifo];
             auto &next = *infos[ifo-1];
             int i = 1;
@@ -2441,7 +2441,7 @@ TopoShape &TopoShape::makESHAPE(const TopoDS_Shape &shape, const Mapper &mapper,
                     continue;
 
                 std::vector<App::StringIDRef> sids;
-                std::map<std::string,std::string> names;
+                std::map<std::string,std::string,Data::ElementNameComp> names;
                 TopExp_Explorer xp;
                 if(info.type == TopAbs_FACE)
                     xp.Init(ShapeAnalysis::OuterWire(TopoDS::Face(info.shapeMap(i))),TopAbs_EDGE);
