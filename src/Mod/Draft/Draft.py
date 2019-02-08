@@ -1480,6 +1480,8 @@ def move(objectslist,vector,copy=False):
     newobjlist = []
     newgroups = {}
     for obj in objectslist:
+        if hasattr(obj, "MoveBase") and obj.MoveBase:
+            obj = obj.Base
         if hasattr(obj,"Placement"):
            if obj.getEditorMode("Placement") == ["ReadOnly"]:
                if not copy:
