@@ -74,8 +74,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
-        <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</source>
+        <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+        <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -154,8 +154,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-        <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Custom folder</source>
+        <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+        <source>See all commits on github</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -208,12 +208,22 @@
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
+        <source>Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>
     <message>
         <location filename="../../Command.cpp" line="58"/>
         <location filename="../../Workbench.cpp" line="65"/>
+        <source>Start page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../StartPage/StartPage.py" line="545"/>
         <source>Start page</source>
         <translation type="unfinished"></translation>
     </message>
