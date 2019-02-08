@@ -4005,7 +4005,6 @@ class ToggleDisplayMode():
                 if "Flat Lines" in obj.ViewObject.listDisplayModes():
                     obj.ViewObject.DisplayMode = "Flat Lines"
 
-
 class Edit(Modifier):
     "The Draft_Edit FreeCAD command definition"
 
