@@ -4124,11 +4124,7 @@ class Edit(Modifier):
                     else:#self.obj is an arc
                         self.editpoints.append(self.obj.Shape.Vertexes[0].Point)#First endpoint
                         self.editpoints.append(self.obj.Shape.Vertexes[1].Point)#Second endpoint
-                        midAngle=math.radians(self.obj.FirstAngle+(self.obj.LastAngle-self.obj.FirstAngle)/2)
-                        midRadX=self.obj.Radius*math.cos(midAngle)
-                        midRadY=self.obj.Radius*math.sin(midAngle)
-                        deltaMid=FreeCAD.Vector(midRadX,midRadY,0)
-                        self.editpoints.append(self.obj.Placement.Base+deltaMid)#Midpoint
+                        self.editpoints.append(self.getArcMid())#Midpoint
                 elif Draft.getType(self.obj) == "Rectangle":
                     self.editpoints.append(self.obj.Placement.Base)
                     self.editpoints.append(self.obj.Shape.Vertexes[2].Point)
