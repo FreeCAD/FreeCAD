@@ -261,6 +261,9 @@ class Component:
             if r in IfcRoles:
                 obj.IfcRole = r
                 FreeCAD.Console.PrintMessage("Downgrading "+obj.Label+" IfcType property to IfcRole\n")
+        if not "MoveBase" in pl:
+            obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"))
+            obj.MoveBase = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveBase",False)
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
             obj.MoveWithHost = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveWithHost",False)
