@@ -4121,9 +4121,14 @@ class Edit(Modifier):
                     self.editpoints.append(self.obj.Placement.Base)
                     if self.obj.FirstAngle == self.obj.LastAngle:
                         self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
-                    else:
-                        self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
-                        self.editpoints.append(self.obj.Shape.Vertexes[1].Point)
+                    else:#self.obj is an arc
+                        self.editpoints.append(self.obj.Shape.Vertexes[0].Point)#First endpoint
+                        self.editpoints.append(self.obj.Shape.Vertexes[1].Point)#Second endpoint
+                        midAngle=math.radians(self.obj.FirstAngle+(self.obj.LastAngle-self.obj.FirstAngle)/2)
+                        midRadX=self.obj.Radius*math.cos(midAngle)
+                        midRadY=self.obj.Radius*math.sin(midAngle)
+                        deltaMid=FreeCAD.Vector(midRadX,midRadY,0)
+                        self.editpoints.append(self.obj.Placement.Base+deltaMid)#Midpoint
                 elif Draft.getType(self.obj) == "Rectangle":
                     self.editpoints.append(self.obj.Placement.Base)
                     self.editpoints.append(self.obj.Shape.Vertexes[2].Point)
@@ -4175,7 +4180,8 @@ class Edit(Modifier):
                         if self.obj.Base.GeometryCount == 1:
                             self.editpoints.append(self.obj.Base.getPoint(0,1))
                             self.editpoints.append(self.obj.Base.getPoint(0,2))
-                        #if self.obj.Base.GeometryCount > 1: add dialog box that asks if the user wants to enter sketch edit mode
+                        else:
+                            msg("Wall base sketch is too complex to edit: it's suggested to edit directly the sketch")
                 if Draft.getType(self.obj) != "BezCurve":
                     self.trackers = []
                     if self.editpoints:
@@ -4377,20 +4383,26 @@ class Edit(Modifier):
                 self.trackers[0].set(self.obj.Placement.Base)
                 if not self.obj.FirstAngle == self.obj.LastAngle:
                     self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+                    self.trackers[3].set(self.getArcMid())#self.obj is an arc
             elif self.editing == 1:
-                if self.obj.FirstAngle == self.obj.LastAngle:
+                if self.obj.FirstAngle == self.obj.LastAngle:#self.obj is a circle
                     self.obj.Radius = delta.Length
                     self.obj.recompute()
-                else:
-                    self.obj.Radius = delta.Length
+                else:#self.obj is an arc
                     self.obj.FirstAngle=dangle
                     self.obj.recompute()
                     self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+                    self.trackers[3].set(self.getArcMid())
             elif self.editing == 2:
-                self.obj.Radius = delta.Length
                 self.obj.LastAngle=dangle
                 self.obj.recompute()
-                self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)                     
+                self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+                self.trackers[3].set(self.getArcMid())
+            elif self.editing == 3:
+                self.obj.Radius = delta.Length
+                self.obj.recompute()
+                self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+                self.trackers[3].set(self.getArcMid())
             self.trackers[1].set(self.obj.Shape.Vertexes[0].Point) 
         elif Draft.getType(self.obj) == "Rectangle":
             delta = v.sub(self.obj.Placement.Base)
@@ -4411,6 +4423,7 @@ class Edit(Modifier):
                         ay = -ay
                     self.obj.Length = ax
                     self.obj.Height = ay
+                    self.obj.recompute()
             self.trackers[0].set(self.obj.Placement.Base)
             self.trackers[1].set(self.obj.Shape.Vertexes[2].Point)
         elif Draft.getType(self.obj) == "Polygon":
@@ -4427,6 +4440,7 @@ class Edit(Modifier):
                     halfangle = ((math.pi*2)/self.obj.FacesNumber)/2
                     rad = math.cos(halfangle)*delta.Length
                     self.obj.Radius = rad
+                self.obj.recompute()
             self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
         elif Draft.getType(self.obj) == "Dimension":
             if self.editing == 0:
@@ -4465,6 +4479,24 @@ class Edit(Modifier):
             FreeCADGui.ActiveDocument.ActiveView.redraw()
         except AttributeError as err:
             pass
+
+    def getArcMid(self):#Returns object midpoint
+        if Draft.getType(self.obj) == "Circle":
+            #self.obj.recompute()
+            if self.obj.LastAngle>self.obj.FirstAngle:
+                midAngle=math.radians(self.obj.FirstAngle+(self.obj.LastAngle-self.obj.FirstAngle)/2)
+            else:
+                midAngle=math.radians(self.obj.FirstAngle+(self.obj.LastAngle-self.obj.FirstAngle)/2)+math.pi
+            midRadX=self.obj.Radius*math.cos(midAngle)
+            midRadY=self.obj.Radius*math.sin(midAngle)
+            deltaMid=FreeCAD.Vector(midRadX,midRadY,0)
+            midPoint=(self.obj.Placement.Base+deltaMid)
+            return(midPoint)
+        elif Draft.getType(self.obj) == "Wall":
+            if self.obj.Base.GeometryCount == 1:
+                msg("wall edit mode: get midpoint")
+        else:
+            msg("Failed to get object midpoint during Editing")
 
     def numericInput(self,v,numy=None,numz=None):
         '''this function gets called by the toolbar
