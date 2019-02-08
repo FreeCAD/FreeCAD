@@ -51,6 +51,10 @@ else:
 #  This module provides tools to build Stairs objects.
 
 zeroMM = FreeCAD.Units.Quantity('0mm')
+<<<<<<< HEAD
+=======
+
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="Stairs"):
 
@@ -161,6 +165,7 @@ def makeRailing(stairs):
         for stair in reversed(stairs):
             if side == "L":
                 outlineLR = stair.OutlineLeft
+<<<<<<< HEAD
                 OutlineLRAll = stair.OutlineLeftAll
                 stairs0OutlineWireLR = "OutlineWireLeft"
                 stairOutlineWireLR = "OutlineWireLeft"
@@ -177,14 +182,34 @@ def makeRailing(stairs):
                     lrRail.Base = lrRailWire
                     setattr(stairs[0], stairs0OutlineWireLR, lrRailWire.Name)
                     setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+=======
+                outlineLRAll = stair.OutlineLeftAll
+                stairs0RailingLR = "RailingLeft"				# stairs0OutlineWireLR = "OutlineWireLeft"
+                stairRailingLR = "RailingLeft"					# stairOutlineWireLR = "OutlineWireLeft"
+            elif side == "R":
+                outlineLR = stair.OutlineRight
+                outlineLRAll = stair.OutlineRightAll
+                stairs0RailingLR = "RailingRight"				# stairs0OutlineWireLR = "OutlineWireRight"
+                stairRailingLR = "RailingRight"					# stairOutlineWireLR = "OutlineWireRight"
+            if outlineLR or outlineLRAll:
+                lrRail = ArchPipe.makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Rail")
+                if outlineLRAll:
+                    #lrRail.Base = lrRailWire					# no need to set here as _Stairs will do
+                    setattr(stair, stairRailingLR, lrRail.Name)			# setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
                     railList = stairs[0].Additions
                     railList.append(lrRail)
                     stairs[0].Additions = railList
                     break
                 elif outlineLR:
+<<<<<<< HEAD
                     lrRailWire = Draft.makeWire(outlineLR)
                     lrRail.Base = lrRailWire
                     setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+=======
+                    #lrRail.Base = lrRailWire					# no need to set here as _Stairs will do
+                    setattr(stair, stairRailingLR, lrRail.Name)			# setattr(stair, stairOutlineWireLR, lrRailWire.Name)
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
                     railList = stair.Additions
                     railList.append(lrRail)
                     stair.Additions = railList
@@ -209,6 +234,7 @@ def makeRailing(stairs):
 
     makeRailingLorR(stairs,"L")
     makeRailingLorR(stairs,"R")
+<<<<<<< HEAD
 
     if False: # TODO - To be deleted
       for stair in reversed(stairs):
@@ -252,6 +278,8 @@ def makeRailing(stairs):
                     railList = stair.Additions
                     railList.append(lrRail)
                     stair.Additions = railList
+=======
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
 
 class _CommandStairs:
@@ -289,6 +317,7 @@ class _CommandStairs:
                 nStr = nStr + "FreeCAD.ActiveDocument." + obj.Name
             FreeCADGui.doCommand("obj = Arch.makeStairs(baseobj=["+nStr+"])")
 
+<<<<<<< HEAD
         #lenSelection = len(FreeCADGui.Selection.getSelection())
         #if lenSelection > 0:
         elif False: # TODO to be deleted ?
@@ -316,6 +345,8 @@ class _CommandStairs:
             if lenSelection > 1:
                 stairs[0].Additions = additions
 
+=======
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
         else:
             FreeCADGui.doCommand("obj = Arch.makeStairs(steps="+str(p.GetInt("StairsSteps",17))+")")
 
@@ -356,7 +387,11 @@ class _Stairs(ArchComponent.Component):
 
         # TODO - To be combined into Width when PropertyLengthList is available
         if not "WidthOfLanding" in pl:
+<<<<<<< HEAD
             obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (Second edge and after - First edge follows Width property)"))
+=======
+            obj.addProperty("App::PropertyFloatList","WidthOfLanding","Stairs",QT_TRANSLATE_NOOP("App::Property","The width of a Landing (Second edge and after - First edge follows Width property"))
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
         # steps properties
         if not "NumberOfSteps" in pl:
@@ -394,12 +429,17 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyVector","AbsTop","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'absolute' top level of a flight of stairs leads to "))
             obj.setEditorMode("AbsTop",1)
         if not hasattr(obj,"OutlineLeft"):
+<<<<<<< HEAD
             obj.addProperty("App::PropertyVectorList","OutlineLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs "))
+=======
+            obj.addProperty("App::PropertyVectorList","OutlineLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs ")) # Used for Outline of Railing
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
             obj.setEditorMode("OutlineLeft",1)
         if not hasattr(obj,"OutlineRight"):
             obj.addProperty("App::PropertyVectorList","OutlineRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of stairs "))
             obj.setEditorMode("OutlineRight",1)
 
+<<<<<<< HEAD
         if not hasattr(obj,"OutlineWireLeft"):
             #obj.addProperty("App::PropertyLink","OutlineWireLeft","Segment and Parts","Wire object created from OutlineLeft")	# To test which is better
             obj.addProperty("App::PropertyString","OutlineWireLeft","Segment and Parts","Name of Wire object's created from OutlineLeft")
@@ -414,6 +454,60 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs "))
             obj.setEditorMode("OutlineRightAll",1)
 
+=======
+        # Can't accept 'None' in list, need NaN
+        #if not hasattr(obj,"OutlineRailArcLeft"): 
+            #obj.addProperty("App::PropertyVectorList","OutlineRailArcLeft","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' 'arc points' of stairs railing"))
+            #obj.setEditorMode("OutlineRailArcLeft",1)
+        #if not hasattr(obj,"OutlineRailArcRight"):
+            #obj.addProperty("App::PropertyVectorList","OutlineRailArcRight","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' 'arc points of stairs railing"))
+            #obj.setEditorMode("OutlineRailArcRight",1)
+        if not hasattr(self,"OutlineRailArcLeft"):
+            self.OutlineRailArcLeft = []
+        if not hasattr(self,"OutlineRailArcRight"):
+            self.OutlineRailArcRight = []
+
+        if not hasattr(obj,"RailingLeft"):
+            obj.addProperty("App::PropertyString","RailingLeft","Segment and Parts","Name of Railing object (left) created")
+            # Migration
+            if hasattr(obj,"OutlineWireLeft"):
+                outlineWireLeftObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireLeft)
+                try:
+                    obj.RailingLeft = outlineWireLeftObject.InList[0].Name
+                    obj.removeProperty("OutlineWireLeft")
+                except:
+                    pass
+        if not hasattr(obj,"RailingRight"):
+            obj.addProperty("App::PropertyString","RailingRight","Segment and Parts","Name of Railing object (right) created")
+            # Migration
+            if hasattr(obj,"OutlineWireRight"):
+                outlineWireRightObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireRight)
+                try:
+                    obj.RailingRight = outlineWireRightObject.InList[0].Name
+                    obj.removeProperty("OutlineWireRight")
+                except:
+                    pass
+
+        if not hasattr(obj,"OutlineLeftAll"):
+            obj.addProperty("App::PropertyVectorList","OutlineLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' of all segments of stairs "))
+            obj.setEditorMode("OutlineLeftAll",1) # Used for Outline of Railing
+        if not hasattr(obj,"OutlineRightAll"):
+            obj.addProperty("App::PropertyVectorList","OutlineRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' of all segments of stairs "))
+            obj.setEditorMode("OutlineRightAll",1)
+
+        # Can't accept 'None' in list, need NaN
+        #if not hasattr(obj,"OutlineRailArcLeftAll"):
+            #obj.addProperty("App::PropertyVectorList","OutlineRailArcLeftAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'left outline' 'arc points' of all segments of stairs railing"))
+            #obj.setEditorMode("OutlineRailArcLeftAll",1) # Used for Outline of Railing
+        #if not hasattr(obj,"OutlineRailArcRightAll"):
+            #obj.addProperty("App::PropertyVectorList","OutlineRailArcRightAll","Segment and Parts",QT_TRANSLATE_NOOP("App::Property","The 'right outline' 'arc points' of all segments of stairs railing"))
+            #obj.setEditorMode("OutlineRailArcRightAll",1)
+        if not hasattr(self,"OutlineRailArcLeftAll"):
+            self.OutlineRailArcLeftAll = []
+        if not hasattr(self,"OutlineRailArcRightAll"):
+            self.OutlineRailArcRightAll = []
+
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
         if not hasattr(obj,"RailingHeightLeft"):
             obj.addProperty("App::PropertyLength","RailingHeightLeft","Segment and Parts","Height of Railing on Left hand side from Stairs or Landing ")
         if not hasattr(obj,"RailingHeightRight"):
@@ -456,7 +550,10 @@ class _Stairs(ArchComponent.Component):
         if self.clone(obj):
             return
 
+<<<<<<< HEAD
         #import Part
+=======
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
         self.steps = []
         self.pseudosteps = []
         self.structures = []
@@ -510,6 +607,7 @@ class _Stairs(ArchComponent.Component):
                 elif (len(obj.Base.Shape.Edges) >= 1):
                       #if obj.NumberOfSteps == 1:
                             # Sort the edges so each vertex tested of its tangent direction in order
+<<<<<<< HEAD
                             #edges = obj.Base.Shape.Edges
 
                             print ("DEBUG - 2019.1.2")
@@ -523,6 +621,11 @@ class _Stairs(ArchComponent.Component):
 
                             self.makeMultiEdgesLanding(obj,edges)
 
+=======
+                            ## TODO - Found Part.sortEdges() occasionally return less edges then 'input'
+                            edges = Part.sortEdges(obj.Base.Shape.Edges)[0]
+                            self.makeMultiEdgesLanding(obj,edges)
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
             else:
                 if not obj.Length.Value:
                     return
@@ -544,6 +647,7 @@ class _Stairs(ArchComponent.Component):
                 obj.Shape = base
                 obj.Placement = pl
 
+<<<<<<< HEAD
         if obj.OutlineWireLeft:
             OutlineWireLeftObject = FreeCAD.ActiveDocument.getObject(obj.OutlineWireLeft)
             if obj.OutlineLeftAll:
@@ -556,6 +660,56 @@ class _Stairs(ArchComponent.Component):
                 OutlineWireRightObject.Points = obj.OutlineRightAll
             elif obj.OutlineRight:
                 OutlineWireRightObject.Points = obj.OutlineRight
+=======
+        railingLeftObject, railWireL = None, None
+        railingRightObject, railWireR = None, None
+
+        if obj.RailingLeft:
+          railingLeftObject = FreeCAD.ActiveDocument.getObject(obj.RailingLeft)
+          if railingLeftObject: # TODO - need to update if railing is deleted by user? This become None if deleted.
+            if obj.OutlineLeftAll:
+                railWireL, NU = _Stairs.returnOutlineWireFace(obj.OutlineLeftAll, self.OutlineRailArcLeftAll, mode = "notFaceAlso") #(outlinePoints, pArc, mode="wire or faceAlso")
+            elif obj.OutlineLeft:
+                railWireL, NU = _Stairs.returnOutlineWireFace(obj.OutlineLeft, self.OutlineRailArcLeft, mode = "notFaceAlso")
+            else:
+                print (" No obj.OutlineLeftAll or obj.OutlineLeft")
+
+            if railWireL:
+                # Migration
+                if Draft.getType(railingLeftObject.Base) != "Part":		# None or not "Part"
+                    railingLeftWireObject = FreeCAD.ActiveDocument.addObject("Part::Feature","RailingWire")
+                    if railingLeftObject.Base:					# if has railingLeftObject.Base but that != "Part"
+                        railingLeftObject.Document.removeObject(railingLeftObject.Base.Name) # Delete the previous Base object... # Not Using FreeCAD.ActiveDocument...
+                    railingLeftObject.Base = railingLeftWireObject
+                # update the Base object shape
+                railingLeftObject.Base.Shape = railWireL
+            else:
+                print (" No railWireL created ")
+
+        if obj.RailingRight:
+          railingRightObject = FreeCAD.ActiveDocument.getObject(obj.RailingRight)
+          if railingRightObject: # TODO - need to update if railing is deleted by user? This become None if deleted.
+            if obj.OutlineRightAll:
+                print (" DEBUG - has obj.OutlineRightAll ")
+                railWireR, NU = _Stairs.returnOutlineWireFace(obj.OutlineRightAll, self.OutlineRailArcRightAll, mode = "notFaceAlso") #(outlinePoints, pArc, mode="wire or faceAlso")
+            elif obj.OutlineLeft:
+                print (" DEBUG - has obj.OutlineLeft ")
+                railWireR, NU = _Stairs.returnOutlineWireFace(obj.OutlineLeft, self.OutlineRailArcRight, mode = "notFaceAlso")
+            else:
+                print (" No obj.OutlineRightAll or obj.OutlineLeft")
+
+            if railWireR:
+                # Migration
+                if Draft.getType(railingRightObject.Base) != "Part":
+                    railingRightWireObject = FreeCAD.ActiveDocument.addObject("Part::Feature","RailingWire")
+                    if railingRightObject.Base:
+                        railingRightObject.Document.removeObject(railingRightObject.Base.Name)
+                    railingRightObject.Base = railingRightWireObject
+                # update the Base object shape
+                railingRightObject.Base.Shape = railWireR
+            else:
+                print (" No railWireL created ")
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
         # compute step data
         #if obj.NumberOfSteps > 1:
@@ -590,6 +744,7 @@ class _Stairs(ArchComponent.Component):
 
         "builds a 'multi-edges' landing from edges" # 'copying' from makeStraightLanding()
 
+<<<<<<< HEAD
         outline, outlineL, outlineR, vBase1, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding, obj.TreadThickness,
                                                                                                                       zeroMM, zeroMM, zeroMM, zeroMM, zeroMM, True)
         outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArcRail = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding,
@@ -614,6 +769,13 @@ class _Stairs(ArchComponent.Component):
                         edges.append(Part.Arc(outline[k],pArc[k],outline[k+1]).toShape())
             w = Part.Wire(edges)
             stepFace = Part.Face(w)
+=======
+        outline, outlineL, outlineR, vBase1, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc, pArcL, pArcR = self.returnOutlines(obj, edges, obj.Align, None, obj.Width, obj.WidthOfLanding,
+                                                                                                                                    obj.TreadThickness, zeroMM, zeroMM, zeroMM, zeroMM, zeroMM, True)
+
+        obj.AbsTop = vBase1[0]
+        stepWire, stepFace = _Stairs.returnOutlineWireFace(outline, pArc, mode = "faceAlso") #(outlinePoints, pArc, mode="wire or faceAlso")
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
         if obj.TreadThickness.Value:
             step = stepFace.extrude(Vector(0,0,abs(obj.TreadThickness.Value)))
@@ -628,11 +790,59 @@ class _Stairs(ArchComponent.Component):
         if struct:
             self.structures.append(struct)
 
+<<<<<<< HEAD
         self.connectRailingVector(obj,outlineRailL,outlineRailR)
 
 
     @staticmethod								# obj become stairsObj
     def returnOutlines(stairsObj, edges, align="Left", mode=None, widthFirstSegment=zeroMM, widthOtherSegment=[], treadThickness=zeroMM,
+=======
+        self.makeRailingOutline(obj,edges)
+
+
+    def makeRailingOutline(self,obj,edges):
+
+        "builds railing outline "
+
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, NU, pArcRailL, pArcRailR = self.returnOutlines(obj, edges, obj.Align, None, obj.Width,
+                                                                                                                                                         obj.WidthOfLanding, obj.TreadThickness, zeroMM,
+                                                                                                                                                         obj.RailingOffsetLeft, obj.RailingOffsetRight,
+                                                                                                                                                         obj.RailingHeightLeft, obj.RailingHeightRight, True)
+        self.connectRailingVector(obj,outlineRailL,outlineRailR, pArcRailL, pArcRailR)
+
+
+    @staticmethod
+    def returnOutlineWireFace(outlinePoints, pArc, mode="wire or faceAlso"):
+
+        stepFace = None
+
+        if not any(pArc): # i.e. no arc ... though any([0, '', False]):- is False
+            stepWire = Part.makePolygon(outlinePoints)
+            if mode == "faceAlso":
+                stepFace = Part.Face(stepWire)
+        else:
+            edges = []
+            enum_outlinePoints = enumerate(outlinePoints)
+            lenoutlinePoints = len(outlinePoints)
+
+            for k, a in enum_outlinePoints:
+                if k < (lenoutlinePoints-1): # iterate to last but 1: [k], [k+1] ... len() is +1 over index
+                    if pArc[k] is None:
+                        edges.append(Part.LineSegment(outlinePoints[k],outlinePoints[k+1]).toShape())
+                    else:
+                        edges.append(Part.Arc(outlinePoints[k],pArc[k],outlinePoints[k+1]).toShape())
+
+            stepWire = Part.Wire(edges)
+
+            if mode == "faceAlso":
+                stepFace = Part.Face(stepWire)
+
+        return stepWire, stepFace
+
+
+    @staticmethod								# obj become stairsObj
+    def returnOutlines(stairsObj, edges, align="Left", mode=None, widthFirstSegment=zeroMM, widthOtherSegments=[], treadThickness=zeroMM,
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
                        railStartRiser=zeroMM, offsetHLeft=zeroMM, offsetHRight=zeroMM, offsetVLeft=zeroMM, offsetVRight=zeroMM, widthFirstSegmentDefault=False):
 
         ''' Construct outline of stairs landing or the like from Edges - Side effect is vertexes are 'ordered' in series of findIntersection() functions '''
@@ -653,6 +863,7 @@ class _Stairs(ArchComponent.Component):
         for i, edge in enum_edges:
 
             isLine = isinstance(edge.Curve,(Part.Line, Part.LineSegment))
+<<<<<<< HEAD
             isArc = isinstance(edge.Curve,Part.Circle)				# why it is Part.Circle for an Arc Edge? - Not Part.ArcOfCircle?
 
             ''' (1) append v (vec) '''
@@ -665,6 +876,20 @@ class _Stairs(ArchComponent.Component):
                 try:
                     if widthOtherSegment[i-1] > 0 or (not widthFirstSegmentDefault):
                         netWidthI = widthOtherSegment[i-1] - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+=======
+            isArc = isinstance(edge.Curve,Part.Circle)				# why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+
+            ''' (1) append v (vec) ''' 
+            v.append(DraftGeomUtils.vec(edge))	# TODO check all function below ok with curve?
+
+
+            ''' (2) get netWidthI ''' 
+            netWidthI = 0
+            if i > 0:
+                try:
+                    if widthOtherSegments[i-1] > 0 or (not widthFirstSegmentDefault):
+                        netWidthI = widthOtherSegments[i-1] - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
                     else: # i.e. elif widthFirstSegmentDefault:
                         netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
                 except:
@@ -675,18 +900,30 @@ class _Stairs(ArchComponent.Component):
                netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
 
 
+<<<<<<< HEAD
             ''' (3) append vBase '''
+=======
+            ''' (3) append vBase ''' 
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
             vBase.append(edges[i].Vertexes[0].Point)
             if isArc:
                 vBase1 = edge.Vertexes[1].Point
                 vBase2 = (edge.valueAt((edge.LastParameter+edge.FirstParameter)/2))
                 #vBase2vec = (vBase2-vBase[i]) # - would not be correct if Align is not Left
 
+<<<<<<< HEAD
             ''' (1a) calc & append vLength - Need v (vec) '''
             vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d
 
 
             ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI '''
+=======
+            ''' (1a) calc & append vLength - Need v (vec) ''' 
+            vLength.append(Vector(v[i].x,v[i].y,v[i].z))	# TODO check all function below ok with curve? # TODO vLength in this f() is 3d 
+
+
+            ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI ''' 
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
             #vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidthI))
 
@@ -705,7 +942,11 @@ class _Stairs(ArchComponent.Component):
                 vWidth1=DraftVecUtils.scaleTo(dvec1,netWidthI)
                 vWidth2=DraftVecUtils.scaleTo(dvec2,netWidthI)
 
+<<<<<<< HEAD
             ''' (3a) alter vBase '''
+=======
+            ''' (3a) alter vBase ''' 
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
             if stairsObj:
                 vBase[i] = stairsObj.Proxy.vbaseFollowLastSegment(stairsObj, vBase[i])
                 if isArc:
@@ -716,7 +957,11 @@ class _Stairs(ArchComponent.Component):
             vBase[i] = vBase[i].add(Vector(0,0,railStartRiser.Value))
 
             if isArc:
+<<<<<<< HEAD
                 vBase1 = vBase1.add(Vector(0,0,offsetVLeft.Value))
+=======
+                vBase1 = vBase1.add(Vector(0,0,offsetVLeft.Value))	# TODO - if arc is flight (sloping then), arc would be ellipse, so the following become incorrect?
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
                 vBase1 = vBase1.add(Vector(0,0,railStartRiser.Value))
                 vBase2 = vBase2.add(Vector(0,0,offsetVLeft.Value))
                 vBase2 = vBase2.add(Vector(0,0,railStartRiser.Value))
@@ -754,6 +999,7 @@ class _Stairs(ArchComponent.Component):
                 pArc1.append(_Stairs.align(vBase2, align, vWidth2).add(Vector(0,0,-abs(treadThickness.Value))).add(Vector(0,0,-railStartRiser.Value)))
                 pArc2.append(pArc1[i].add(vWidth2.add(Vector(0,0,(offsetVRight-offsetVLeft).Value))))
 
+<<<<<<< HEAD
             ''' (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 '''
 
             if i > 0:
@@ -796,6 +1042,38 @@ class _Stairs(ArchComponent.Component):
                     nearestIntersectionIndex = distList.index(min(distList))
                     nearestIntersection = intersection[nearestIntersectionIndex]
                     outlineP3P4.insert(0, nearestIntersection)
+=======
+            ''' (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 ''' 
+
+            if i > 0:
+                lastEdge = edges[i-1]	# thisEdge = edge
+                p1last =  p1[i-1]
+                p2last =  p2[i-1]
+                p3last =  p3[i-1]
+                p4last =  p4[i-1]
+                p1this =  p1[i]
+                p2this =  p2[i]
+                p3this =  p3[i]
+                p4this =  p4[i]
+                pArc1last = pArc1[i-1]
+                pArc2last = pArc2[i-1]
+                pArc1this = pArc1[i]
+                pArc2this = pArc2[i]
+
+
+                lastEdgeIsLineSegmentBool = isinstance(lastEdge.Curve,(Part.Line, Part.LineSegment))
+                thisEdgeIsLineSegmentBool = isinstance(edge.Curve,(Part.Line, Part.LineSegment))
+
+                lastEdgeIsCircleBool = isinstance(lastEdge.Curve,(Part.Circle))	# why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+                thisEdgeIsCircleBool = isinstance(edge.Curve,(Part.Circle))
+
+                intersectionP1P2, intersectionP3P4 = _Stairs.findLineArcIntersections(p1last, p2last, p3last, p4last, p1this, p2this, p3this, p4this, lastEdgeIsLineSegmentBool, thisEdgeIsLineSegmentBool,
+                                                                                      lastEdgeIsCircleBool, thisEdgeIsCircleBool, pArc1last, pArc2last, pArc1this, pArc2this)
+
+                outlineP1P2.append(intersectionP1P2)
+                outlineP3P4.insert(0, intersectionP3P4)
+
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
             else:
                     outlineP1P2.append(p1[i])
                     outlineP3P4.insert(0, p4[i])
@@ -805,6 +1083,7 @@ class _Stairs(ArchComponent.Component):
         outlineP3P4.insert(0, p3[i])
         outline = outlineP1P2 + outlineP3P4
         outline.append(p1[0])
+<<<<<<< HEAD
         pArcReverse = pArc2[::-1]
         pArc.extend(pArc1)
         pArc.append(None)
@@ -822,6 +1101,28 @@ class _Stairs(ArchComponent.Component):
             intersection = DraftGeomUtils.findIntersection(p3[i],p4[i],p3[0],p4[0],True,True)
             outlineP3P4Closed[0] = intersection[0]
             outlineP3P4Closed[i+1] = intersection[0]
+=======
+
+        pArc1.append(None)
+        pArc2 = pArc2[::-1]							# pArcReverse = pArc2[::-1]
+        pArc2.append(None)
+        pArc.extend(pArc1)
+        pArc.extend(pArc2)							# pArc.extend(pArcReverse)
+
+        firstEdgeIsLineSegmentBool = isinstance(edges[0].Curve,(Part.Line, Part.LineSegment))
+        firstEdgeIsCircleBool = isinstance(edges[0].Curve,(Part.Circle))	# why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+
+        if mode in ["OrderedClose", "OrderedCloseAndOrderedOpen"]:		# seem only using 'OrderedClose'
+            intersectionP1P2, intersectionP3P4 = _Stairs.findLineArcIntersections(p1this, p2this, p3this, p4this, p1[0], p2[0], p3[0], p4[0], thisEdgeIsLineSegmentBool, firstEdgeIsLineSegmentBool,
+                                                                                  thisEdgeIsCircleBool, firstEdgeIsCircleBool, pArc1this, pArc2this, pArc1[0], pArc2[0])
+            outlineP1P2Closed = list(outlineP1P2)
+            outlineP1P2Closed[0] = intersectionP1P2	#intersection[0]
+            outlineP1P2Closed[i+1] = intersectionP1P2	#intersection[0]
+
+            outlineP3P4Closed = list(outlineP3P4)
+            outlineP3P4Closed[0] = intersectionP3P4	#intersection[0]
+            outlineP3P4Closed[i+1] = intersectionP3P4	#intersection[0]
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
         if mode in ["OrderedOpen", "OrderedCloseAndOrderedOpen"]:
           if i > 0: # Multi-edge, otherwise no use
@@ -859,8 +1160,55 @@ class _Stairs(ArchComponent.Component):
             outlineP1P2Ordered[0] = foundStart
             outlineP1P2Ordered[i+1] = foundEnd
 
+<<<<<<< HEAD
         return outline, outlineP1P2, outlineP3P4, vBase, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered, pArc
 
+=======
+        return outline, outlineP1P2, outlineP3P4, vBase, outlineP1P2Closed, outlineP3P4Closed, outlineP1P2Ordered, pArc, pArc1, pArc2
+
+
+    @staticmethod
+    def findLineArcIntersections(p1last, p2last, p3last, p4last, p1this, p2this, p3this, p4this, lastEdgeIsLineSegmentBool, thisEdgeIsLineSegmentBool, lastEdgeIsCircleBool, thisEdgeIsCircleBool,
+                                 pArc1last, pArc2last, pArc1this, pArc2this):
+
+        if lastEdgeIsLineSegmentBool and thisEdgeIsLineSegmentBool:
+            intersectionsP1P2 = DraftGeomUtils.findIntersection(p1last,p2last,p1this,p2this,True,True)
+            intersectionsP3P4 = DraftGeomUtils.findIntersection(p3last,p4last,p3this,p4this,True,True)
+            return intersectionsP1P2[0], intersectionsP3P4[0]
+        else:
+            if lastEdgeIsCircleBool:
+                edge1  = Part.Arc(p1last,pArc1last,p2last).toShape()		# edge1  = Part.Arc(p1[i-1],pArc1[i-1],p2[i-1]).toShape()
+                edge1a = Part.Arc(p3last,pArc2last,p4last).toShape()		# edge1a = Part.Arc(p3[i-1],pArc2[i-1],p4[i-1]).toShape()
+            else:
+                edge1  = Part.LineSegment(p1last,p2last).toShape()		# edge1  = Part.LineSegment(p1[i-1],p2[i-1]).toShape()
+                edge1a = Part.LineSegment(p3last,p4last).toShape()		# edge1a = Part.LineSegment(p3[i-1],p4[i-1]).toShape()
+
+            if thisEdgeIsCircleBool:						# why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
+                edge2  = Part.Arc(p1this,pArc1this,p2this).toShape()		# edge2  = Part.Arc(p1[i],pArc1[i],p2[i]).toShape()
+                edge2a = Part.Arc(p3this,pArc2this,p4this).toShape()		# edge2a = Part.Arc(p3[i],pArc2[i],p4[i]).toShape()
+            else:
+                edge2  = Part.LineSegment(p1this,p2this).toShape()		# edge2  = Part.LineSegment(p1[i],p2[i]).toShape()
+                edge2a = Part.LineSegment(p3this,p4this).toShape()		# edge2a = Part.LineSegment(p3[i],p4[i]).toShape()
+            intersections = DraftGeomUtils.findIntersection(edge1, edge2, True,True)
+
+            enum_intersections = enumerate(intersections)
+            distList = []
+            for n, intersectionI in enum_intersections:
+                distList.append((intersectionI-p1this).Length)			# distList.append((intersectionI-p1[i]).Length)) # TODO just use p1[i] for test; may be p2[i-1]...?
+
+            # TODO - To test and follow up if none intersection is found
+            nearestIntersectionIndex = distList.index(min(distList))
+            nearestIntersectionP1P2 = intersections[nearestIntersectionIndex]
+
+            intersections = DraftGeomUtils.findIntersection(edge1a, edge2a, True,True)
+            enum_intersections = enumerate(intersections)
+            distList = []
+            for n, intersectionI in enum_intersections:
+                distList.append((intersectionI-p4this).Length)			# distList.append((intersectionI-p4[i]).Length)) # TODO just use p4[i] for test; may be p3[i-1]...?
+            nearestIntersectionIndex = distList.index(min(distList))
+            nearestIntersectionP3P4 = intersections[nearestIntersectionIndex]
+            return nearestIntersectionP1P2, nearestIntersectionP3P4
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
     @staticmethod
     def vbaseFollowLastSegment(obj, vBase):
@@ -877,7 +1225,10 @@ class _Stairs(ArchComponent.Component):
         # general data
         if not numberofsteps:
             numberofsteps = obj.NumberOfSteps
+<<<<<<< HEAD
         #import Part,DraftGeomUtils
+=======
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
         v = DraftGeomUtils.vec(edge)
         vLength = Vector(v.x,v.y,0)
         vWidth = vWidth = DraftVecUtils.scaleTo(vLength.cross(Vector(0,0,1)),obj.Width.Value)
@@ -895,6 +1246,7 @@ class _Stairs(ArchComponent.Component):
         if obj.RiserHeightEnforce != 0:
             h = obj.RiserHeightEnforce * numberofsteps
         elif obj.Base: # TODO - should this happen? - though in original code
+<<<<<<< HEAD
             if obj.Base.isDerivedFrom("Part::Feature"):
                 #l = obj.Base.Shape.Length
                 #if obj.Base.Shape.BoundBox.ZLength:
@@ -916,6 +1268,29 @@ class _Stairs(ArchComponent.Component):
                     l += obj.Width.Value
         elif obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
+=======
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                #l = obj.Base.Shape.Length
+                #if obj.Base.Shape.BoundBox.ZLength:
+                if round(obj.Base.Shape.BoundBox.ZLength,Draft.precision()) != 0: # ? - need precision
+                    h = obj.Base.Shape.BoundBox.ZLength #.Value?
+                else:
+                    print ("obj.Base has 0 z-value")
+                    print (h)
+        if h==0 and obj.Height.Value != 0:
+            h = obj.Height.Value
+        else:
+            print (h)
+
+        if obj.TreadDepthEnforce != 0:
+                l = obj.TreadDepthEnforce.Value * (numberofsteps-2)
+                if obj.LandingDepth:
+                    l += obj.LandingDepth.Value
+                else:
+                    l += obj.Width.Value
+        elif obj.Base:
+            if obj.Base.isDerivedFrom("Part::Feature"):
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
                 l = obj.Base.Shape.Length #.Value?
         elif obj.Length.Value != 0:
             l = obj.Length.Value
@@ -1061,7 +1436,10 @@ class _Stairs(ArchComponent.Component):
             obj.addProperty("App::PropertyLength","StringerOverlap","Structure",QT_TRANSLATE_NOOP("App::Property","The overlap of the stringers above the bottom of the treads"))
 
         # general data
+<<<<<<< HEAD
         #import Part,DraftGeomUtils
+=======
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
         if not numberofsteps:
             numberofsteps = obj.NumberOfSteps
             # if not numberofsteps - not call by makeStraightStairsWithLanding()
@@ -1204,7 +1582,10 @@ class _Stairs(ArchComponent.Component):
 
         if obj.NumberOfSteps < 3:
             return
+<<<<<<< HEAD
         #import Part,DraftGeomUtils
+=======
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
         v = DraftGeomUtils.vec(edge)
 
         landing = 0
@@ -1295,6 +1676,7 @@ class _Stairs(ArchComponent.Component):
 
         edge = Part.LineSegment(p1,p2).toShape()
 
+<<<<<<< HEAD
         outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc = self.returnOutlines(obj, edge, obj.Align, None, obj.Width, obj.WidthOfLanding,
                                                                                                                                      obj.TreadThickness, obj.RiserHeight, obj.RailingOffsetLeft,
                                                                                                                                      obj.RailingOffsetRight, obj.RailingHeightLeft, obj.RailingHeightRight,True)
@@ -1303,10 +1685,21 @@ class _Stairs(ArchComponent.Component):
 
 
     def connectRailingVector(self,obj,outlineRailL,outlineRailR):
+=======
+        outlineNotUsed, outlineRailL, outlineRailR, vBase2, outlineP1P2ClosedNU, outlineP3P4ClosedNU, NU, pArc, pArc1, pArc2 = self.returnOutlines(obj, edge, obj.Align, None, obj.Width, obj.WidthOfLanding,
+                                                                                                                                                   obj.TreadThickness, obj.RiserHeight, obj.RailingOffsetLeft,
+                                                                                                                                                   obj.RailingOffsetRight, obj.RailingHeightLeft,
+                                                                                                                                                   obj.RailingHeightRight,True)
+        self.connectRailingVector(obj, outlineRailL, outlineRailR, pArc1, pArc2)
+
+
+    def connectRailingVector(self, obj, outlineRailL, outlineRailR, pArcRailL, pArcRailR):
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
         obj.OutlineLeft = outlineRailL # outlineL # outlineP1P2
         obj.OutlineRight = outlineRailR # outlineR # outlineP3P4
 
+<<<<<<< HEAD
         if obj.LastSegment:
             if obj.LastSegment.OutlineLeftAll:
                 outlineLeftAll = obj.LastSegment.OutlineLeftAll
@@ -1324,6 +1717,45 @@ class _Stairs(ArchComponent.Component):
         outlineRightAll=outlineRailR
         obj.OutlineLeftAll = outlineLeftAll
         obj.OutlineRightAll = outlineRightAll
+=======
+        self.OutlineRailArcLeft = pArcRailL	#obj.OutlineRailArcLeft = pArcRailL
+        self.OutlineRailArcRight = pArcRailR	#obj.OutlineRailArcRight = pArcRailR
+
+        outlineLeftAll, outlineRightAll, outlineRailArcLeftAll, outlineRailArcRightAll = [], [], [], []
+
+        outlineRightAll.extend(obj.OutlineRight)
+        outlineRailArcRightAll = self.OutlineRailArcRight
+
+        if obj.LastSegment:
+            if obj.LastSegment.OutlineLeftAll:
+                outlineLeftAll.extend(obj.LastSegment.OutlineLeftAll)
+
+            if obj.LastSegment.Proxy.OutlineRailArcLeftAll: # need if?
+                outlineRailArcLeftAll.extend(obj.LastSegment.Proxy.OutlineRailArcLeftAll)
+
+            if (outlineLeftAll[-1] - obj.OutlineLeft[0]).Length < 0.01: # To avoid 2 points overlapping fail creating LineSegment # TODO to allow tolerence Part.LineSegment / edge.toShape() allow?
+                # no need abs() after .Length right?
+                del outlineLeftAll[-1]
+                del outlineRailArcLeftAll[-1]
+
+            if (outlineRightAll[-1] - obj.LastSegment.OutlineRightAll[0]).Length < 0.01: # See above
+                del outlineRightAll[-1]
+                del outlineRailArcRightAll[-1]
+
+            if obj.LastSegment.OutlineRightAll: # need if?
+                outlineRightAll.extend(obj.LastSegment.OutlineRightAll)
+
+            if obj.LastSegment.Proxy.OutlineRailArcRightAll: # need if?
+                outlineRailArcRightAll.extend(obj.LastSegment.Proxy.OutlineRailArcRightAll)
+
+        outlineLeftAll.extend(obj.OutlineLeft)
+        outlineRailArcLeftAll.extend(self.OutlineRailArcLeft)
+
+        obj.OutlineLeftAll = outlineLeftAll
+        obj.OutlineRightAll = outlineRightAll
+        self.OutlineRailArcLeftAll = outlineRailArcLeftAll
+        self.OutlineRailArcRightAll = outlineRailArcRightAll
+>>>>>>> Build Curve Segment Railing Wire To Fit Landing
 
 
     def makeCurvedStairs(self,obj,edge):
