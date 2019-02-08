@@ -1481,6 +1481,15 @@ def move(objectslist,vector,copy=False):
     newgroups = {}
     for obj in objectslist:
         if hasattr(obj, "MoveBase") and obj.MoveBase and obj.Base:
+            parents = []
+            for parent in obj.Base.InList:
+                if parent.isDerivedFrom("Part::Feature"):
+                    parents.append(parent.Name)
+            if len(parents) > 1:
+                warningMessage = obj.Name+" shares a base with {} other objects. Please check if you want to move this.".format(len(parents) - 1)
+                FreeCAD.Console.PrintError(warningMessage)
+                if FreeCAD.GuiUp:
+                    FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
             obj = obj.Base
         if hasattr(obj,"Placement"):
            if obj.getEditorMode("Placement") == ["ReadOnly"]:
