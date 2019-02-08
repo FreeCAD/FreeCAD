@@ -74,9 +74,9 @@
       <translation>Geliştirici Merkezi</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
-      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</source>
-      <translation>Bu bölüm geliştiriciler için materyal içerir: FreeCAD'in nasıl derleneceği, FreeCAD kaynak kodunun nasıl yapılandırıldığı ve kod içinde nasıl gezinileceği ve yeni çalışma tezgahlarının nasıl geliştirileceği veya FreeCAD'i kendi uygulamanıza nasıl yerleştirileceği.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -154,9 +154,9 @@
       <translation>Github'daki tüm işlemleri görün</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Custom folder</source>
-      <translation>Burada görüntülenecek özel bir klasörü Düzenle -&gt; Tercihler -&gt; Başlat -&gt; Özel Klasör menüsünden yapılandırabilirsiniz</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>See all commits on github</source>
+      <translation>Github'daki tüm işlemleri görün</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -208,13 +208,275 @@
       <source>Notes</source>
       <translation>Notlar</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
+      <source>Notes</source>
+      <translation>Notlar</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="543"/>
+      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
       <translation>Başlangıç sayfası</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <source>Start page</source>
+      <translation>Başlangıç sayfası</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
+    <message>
+      <location filename="../../Command.cpp" line="44"/>
+      <source>Start</source>
+      <translation>Başla</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start Page</source>
+      <translation>Başlangıç sayfası</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Displays the start page in a browser view</source>
+      <translation>Başlangıç sayfasını bir tarayıcı görünümünde görüntüler</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Başlangıç sayfası seçenekleri</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Başlangıç sayfası şablonu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation>Varsayılan başlangıç sayfası yerine kullanılacak isteğe bağlı bir HTML şablonu.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>İçerikler</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Forumu göster</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Örnekler klasörü içeriğini göster</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Ek klasörü görüntüle</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Örneklerin ilk sayfada gösterilmesini istiyorsanız</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation>Bu işaretliyse, FreeCAD forumundan en son gönderiler Etkinlik sekmesinde görüntülenecektir</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page</source>
+      <translation>İlk sayfanın altında görüntülenecek isteğe bağlı bir özel klasör</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="126"/>
+      <source>Show notepad</source>
+      <translation>Not defterini göster</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
+      <translation>FreeCAD oturumlarında notları tutabileceğiniz küçük resimlerin yanında bir not defteri gösterir</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="155"/>
+      <source>Fonts and colors</source>
+      <translation>Yazı tipleri ve renkler</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="167"/>
+      <source>The background of the main start page area</source>
+      <translation>Ana Başlangıç sayfa alanının arka planı</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="187"/>
+      <source>Background color</source>
+      <translation>Arka plan rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="199"/>
+      <source>in FreeCAD</source>
+      <translation>FreeCAD’de</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="218"/>
+      <source>In external browser</source>
+      <translation>Harici tarayıcıda</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="236"/>
+      <source>Background color gradient down</source>
+      <translation>Arka plan renk gradyanı aşağı</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="249"/>
+      <source>The color of the version text</source>
+      <translation>Sürüm metninin rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="269"/>
+      <source>Link color</source>
+      <translation>Bağlantı Rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <source>An optional image to display as background</source>
+      <translation>İsteğe bağlı bir resmi, arka plan olarak görüntüle</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="289"/>
+      <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation>Eğer bu işaretlenir ve Genel ayarlarda da bir stil sayfası belirtilirse, kullanılır ve aşağıdaki renkleri geçersiz kılar</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="308"/>
+      <source>Page background color</source>
+      <translation>Sayfa arka plan rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
+      <source>The color of the text on the main pages</source>
+      <translation>Ana sayfalardaki metin rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="341"/>
+      <source>Background image</source>
+      <translation>Arka plan resmi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <source>Page text color</source>
+      <translation>Sayfa metninin rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="361"/>
+      <source>The color of the links</source>
+      <translation>Bağlantıların rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="387"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation>Sayfa içindeki kutuları arka plan rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="407"/>
+      <source>Box background color</source>
+      <translation>Kutu arka plan rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="420"/>
+      <source>The background color behind the panels</source>
+      <translation>Panellerin gerisindeki arka plan rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation>Arka plan renginin aşağı eğimi (şu anda desteklenmiyor)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="472"/>
+      <source>Open links</source>
+      <translation>Bağlantıları aç</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>Background text color</source>
+      <translation>Arka plan metninin rengi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="486"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>FreeCAD stili hesap tablosu kullan</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="493"/>
+      <source>Font family</source>
+      <translation>Yazı tipi</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation>Başlangıç sayfasında kullanılacak yazı tipi ailesi. Yazı tipi adı veya virgülle ayrılmış bir yazı tipi dizisi olabilir</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial,Helvetica,sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="521"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation>Başlangıç sayfasının tüm metinleri için kullanılacak temel font boyutu</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="524"/>
+      <source>px</source>
+      <translation>px</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <source>Use gradient for New File icon</source>
+      <translation>Yeni Dosya simgesi için gradyan kullan</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="568"/>
+      <source>Options</source>
+      <translation>Seçenekler</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="577"/>
+      <source>Should the start page be closed after loading?</source>
+      <translation>Yükleme işleminden sonra başlangıç sayfası kapanmalı mı?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="596"/>
+      <source>Switch workbench after loading</source>
+      <translation>Yüklemeden sonra çalışma tezgahını değiştir</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="603"/>
+      <source>Close start page after loading</source>
+      <translation>Yüklemeden sonra başlangıç sayfasını kapat</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="610"/>
+      <source>Close &amp; switch on file open</source>
+      <translation>Kapat &amp; Açık dosyada aç</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <source>If FreeCAD is started by opening a file, apply the two settings above</source>
+      <translation>FreeCAD bir dosya açarak başlıyorsa, yukarıdaki iki ayarı uygulayın</translation>
     </message>
   </context>
 </TS>

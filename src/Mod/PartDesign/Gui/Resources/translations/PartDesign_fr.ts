@@ -221,12 +221,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation>Créer une ligne de référence</translation>
+      <translation>Créer une droite de référence</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation>Créer une nouvelle ligne de référence</translation>
+      <translation>Créer une nouvelle droite de référence</translation>
     </message>
   </context>
   <context>
@@ -619,7 +619,7 @@
     <message>
       <location line="+1"/>
       <source>Make a thick solid</source>
-      <translation>Générer une épaisseur</translation>
+      <translation>Générer une coque solide</translation>
     </message>
   </context>
   <context>
@@ -633,7 +633,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>Créer une primitive d'addition</translation>
+      <translation>Créer une primitive additive</translation>
     </message>
     <message>
       <location line="+113"/>
@@ -1049,7 +1049,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+88"/>
       <source>Growth:</source>
-      <translation>Evolution:</translation>
+      <translation>Croissance :</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -1312,7 +1312,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Il n'y a aucun mode d'attachement qui corresponde à la combinaison de références actuelle. Si vous continuez, la fonction restera là où elle est et ne bougera pas si les références changent. Continuer?</translation>
+      <translation>Il n'y a aucun mode d'accrochage qui corresponde à la combinaison de références actuelle. Si vous continuez, la fonction restera là où elle est et ne bougera pas si les références changent. Continuer?</translation>
     </message>
   </context>
   <context>
@@ -2307,7 +2307,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Multisection</source>
-      <translation>Multisection</translation>
+      <translation>Sections multiples</translation>
     </message>
     <message>
       <location line="+23"/>
@@ -2322,7 +2322,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="+465"/>
       <source>Section transformation</source>
-      <translation>Transformer un élément</translation>
+      <translation>Transformation de section</translation>
     </message>
   </context>
   <context>
@@ -2671,7 +2671,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskShapeBinder.cpp" line="-270"/>
       <source>Datum shape parameters</source>
-      <translation>Paramètres de forme de données</translation>
+      <translation>Paramètres de la forme liée</translation>
     </message>
   </context>
   <context>
@@ -2705,7 +2705,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Thikness</source>
-      <translation>Epaisseur</translation>
+      <translation>Coque</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -2735,7 +2735,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+5"/>
       <source>Recto Verso</source>
-      <translation>Recto-Verso</translation>
+      <translation>Recto-verso</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -2750,7 +2750,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+10"/>
       <source>Make thickness inwards</source>
-      <translation>Faire l'épaisseur vers l'intérieur</translation>
+      <translation>Générer l'épaisseur vers l'intérieur</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
@@ -2787,7 +2787,7 @@ Please check one or more edge entities first.</source>
       <location line="+2"/>
       <location line="+36"/>
       <source>Construction line %1</source>
-      <translation>%1 ligne de construction</translation>
+      <translation>Ligne de construction %1</translation>
     </message>
     <message>
       <location line="-22"/>
@@ -3133,12 +3133,12 @@ Create the sketch on a face.</source>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-      <translation>Il n'y a pas de mode de fixation correspondant aux objets sélectionnés. Choisissez autre chose.</translation>
+      <translation>Il n'y a pas de mode d'accrochage correspondant aux objets sélectionnés. Choisissez autre chose.</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Il n’y a aucun mode de fixation qui convienne aux objets sélectionnés. Sélectionnez autre chose.</translation>
+      <translation>Il n’y a aucun mode d'accrochage qui convienne aux objets sélectionnés. Sélectionnez autre chose.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3529,7 +3529,7 @@ This may lead to unexpected results.</source>
     <message>
       <location line="+2"/>
       <source>Construction line %1</source>
-      <translation>%1 ligne de construction</translation>
+      <translation>Ligne de construction %1</translation>
     </message>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="-71"/>
@@ -3619,7 +3619,7 @@ Si vous avez un vieux document avec des objets PartDesign sans corps, utilisez l
     </message>
     <message>
       <source>CoordinateSystem</source>
-      <translation>Système de coordonnée</translation>
+      <translation>Système de coordonnées</translation>
     </message>
     <message>
       <source>Edit datum </source>
@@ -3629,7 +3629,7 @@ Si vous avez un vieux document avec des objets PartDesign sans corps, utilisez l
       <location filename="../../ViewProviderDressUp.cpp" line="+49"/>
       <location filename="../../ViewProviderTransformed.cpp" line="-94"/>
       <source>Edit %1</source>
-      <translation>Editer %1</translation>
+      <translation>Modifier %1</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -3675,7 +3675,7 @@ Cette fonction est cassée et ne peut pas être modifiée.</translation>
     <message>
       <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>Le document « %1 » semble soit être au milieu du processus de migration de PartDesign ou a une structure légèrement cassée.</translation>
+      <translation>Le document « %1 » semble être au milieu du processus de migration de PartDesign ou a une structure légèrement cassée.</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3687,16 +3687,16 @@ Cette fonction est cassée et ne peut pas être modifiée.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Remarque : Si vous choisissez de migrer vous ne serez pas en mesure d'éditer le fichier avec d’anciennes versions de FreeCAD. Si vous refusez de migrer vous ne serez pas en mesure d’utiliser les nouvelles fonctionnalités de PartDesign comme corps et pièces. Avec comme résultat que vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage.
-Il vous sera possible de migrer tout moment, plus tard, avec « Piéce Design-&gt; Migrer... ».</translation>
+      <translation>Remarque : Si vous choisissez de migrer vous ne serez pas en mesure de modifier le fichier avec d’anciennes versions de FreeCAD. Si vous refusez de migrer vous ne serez pas en mesure d’utiliser les nouvelles fonctionnalités de PartDesign telles corps et pièces. Avec comme résultat que vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage.
+Il vous sera toutefois possible de migrer à tout moment via le menu « Part Design -&gt; Migrer... ».</translation>
     </message>
     <message>
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation>Remarque : Si vous choisissez de migrer vous ne serez pas en mesure d'éditer le fichier avec d’anciennes versions de FreeCAD.
-Si vous refusez de migrer vous ne serez pas en mesure d’utiliser les nouvelles fonctionnalités de PartDesign comme Corps et Pièces. Avec comme résultat que vous ne serez aussi pas en mesure d’utiliser vos pièces dans l'atelier assemblage.
-Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Design-&gt; Migrer... ».</translation>
+      <translation>Remarque : Si vous choisissez de migrer vous ne serez pas en mesure de modifier le fichier avec d’anciennes versions de FreeCAD.
+Si vous refusez de migrer vous ne serez pas en mesure d’utiliser les nouvelles fonctionnalités de PartDesign telles corps et pièces. Avec comme résultat que vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage.
+Il vous sera toutefois possible de migrer à tout moment via le menu « Part Design -&gt; Migrer... ».</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -3706,12 +3706,12 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
       <source>Edit hole</source>
-      <translation>Editer le perçage</translation>
+      <translation>Modifier le perçage</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation>Editer la primitive</translation>
+      <translation>Modifier la primitive</translation>
     </message>
   </context>
   <context>
@@ -3751,7 +3751,7 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location line="+8"/>
       <source>Through</source>
-      <translation>Débouchant</translation>
+      <translation>A travers</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3772,7 +3772,7 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location line="+7"/>
       <source>Counterbore</source>
-      <translation>Lamage</translation>
+      <translation>Chambrage</translation>
     </message>
     <message>
       <location line="+21"/>
@@ -3891,7 +3891,7 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location line="+13"/>
       <source>Fit</source>
-      <translation>Adapter</translation>
+      <translation>Ajustement</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -3921,7 +3921,7 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location line="+13"/>
       <source>Model actual thread</source>
-      <translation>Modèle actuel de filetage</translation>
+      <translation>Modéliser le filetage réel</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3976,7 +3976,7 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation>&lt;b&gt;Point de perçage&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Pointe de perçage&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -3986,7 +3986,7 @@ Il vous sera possible de migrer à tout moment, plus tard, avec « Piéce Desig
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation>&lt;b&gt;trou découpé&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Découpe du trou&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>

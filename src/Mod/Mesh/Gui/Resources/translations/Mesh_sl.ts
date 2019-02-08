@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Add triangle manually to a mesh</source>
-      <translation>Ročno dodaj trikotnik k mreži</translation>
+      <translation>Ročno dodaj trikotnik v ploskovje</translation>
     </message>
   </context>
   <context>
@@ -28,7 +28,7 @@
     </message>
     <message>
       <source>Shows the boundings of the selected mesh</source>
-      <translation>Prikaže meje izbrane mreže</translation>
+      <translation>Prikaže meje izbranega ploskovja</translation>
     </message>
   </context>
   <context>
@@ -50,7 +50,7 @@
     <name>CmdMeshDemolding</name>
     <message>
       <source>Interactive demolding direction</source>
-      <translation>Vzajemna smer odstranitve iz kalupa</translation>
+      <translation>Sodejna smer odstranitve iz kalupa</translation>
     </message>
     <message>
       <source>Mesh</source>
@@ -91,11 +91,11 @@
     </message>
     <message>
       <source>Check solid mesh</source>
-      <translation>Preveri mrežo telesa</translation>
+      <translation>Preveri ploskovje telesa</translation>
     </message>
     <message>
       <source>Checks whether the mesh is a solid</source>
-      <translation>Preveri, ali je mreža telo</translation>
+      <translation>Preveri, ali je ploskovje telo</translation>
     </message>
   </context>
   <context>
@@ -106,15 +106,15 @@
     </message>
     <message>
       <source>Opens a dialog to analyze and repair a mesh</source>
-      <translation>Odpre pogovorno okno za analizo in popravilo mreže</translation>
+      <translation>Odpre pogovorno okno za analizo in popravilo ploskovja</translation>
     </message>
     <message>
       <source>Evaluate &amp;&amp; Repair mesh...</source>
-      <translation>Ovrednoti in popravi mrežo …</translation>
+      <translation>Ovrednoti in popravi ploskovje …</translation>
     </message>
     <message>
       <source>Evaluate and repair mesh...</source>
-      <translation>Ovrednoti in popravi mrežo...</translation>
+      <translation>Ovrednoti in popravi ploskovje...</translation>
     </message>
   </context>
   <context>
@@ -158,11 +158,11 @@
     </message>
     <message>
       <source>Export mesh...</source>
-      <translation>Izvozi mrežo …</translation>
+      <translation>Izvozi ploskovje …</translation>
     </message>
     <message>
       <source>Exports a mesh to file</source>
-      <translation>Izvozi mrežo v datoteko</translation>
+      <translation>Izvozi ploskovje v datoteko</translation>
     </message>
   </context>
   <context>
@@ -177,7 +177,7 @@
     </message>
     <message>
       <source>Close holes interactively</source>
-      <translation>Vzajemno zapri luknjo</translation>
+      <translation>Zapri luknjo sodejno</translation>
     </message>
   </context>
   <context>
@@ -192,7 +192,7 @@
     </message>
     <message>
       <source>Fill holes of the mesh</source>
-      <translation>Zapolni luknje mreže</translation>
+      <translation>Zapolni luknje ploskovja</translation>
     </message>
   </context>
   <context>
@@ -207,7 +207,7 @@
     </message>
     <message>
       <source>Flips the normals of the mesh</source>
-      <translation>Obrne normale mreže</translation>
+      <translation>Obrne normale ploskovja</translation>
     </message>
   </context>
   <context>
@@ -218,11 +218,11 @@
     </message>
     <message>
       <source>Create mesh from geometry...</source>
-      <translation>Ustvari mrežo iz geometrije …</translation>
+      <translation>Ustvari ploskovje iz geometrije …</translation>
     </message>
     <message>
       <source>Create mesh from the selected geometry</source>
-      <translation>Ustvari mrežo iz izbrane geometrije</translation>
+      <translation>Ustvari ploskovje iz izbrane geometrije</translation>
     </message>
   </context>
   <context>
@@ -233,11 +233,11 @@
     </message>
     <message>
       <source>Create mesh from shape...</source>
-      <translation>Ustvari mrežo iz oblike …</translation>
+      <translation>Ustvari ploskovje iz oblike …</translation>
     </message>
     <message>
       <source>Tessellate shape</source>
-      <translation>Teseliraj obliko</translation>
+      <translation>Tlakuj obliko</translation>
     </message>
   </context>
   <context>
@@ -252,7 +252,7 @@
     </message>
     <message>
       <source>Harmonizes the normals of the mesh</source>
-      <translation>Uskladi normale mreže</translation>
+      <translation>Uskladi normale ploskovja</translation>
     </message>
   </context>
   <context>
@@ -263,11 +263,11 @@
     </message>
     <message>
       <source>Import mesh...</source>
-      <translation>Uvozi mrežo …</translation>
+      <translation>Uvozi ploskovje …</translation>
     </message>
     <message>
       <source>Imports a mesh from file</source>
-      <translation>Uvozi mrežo iz datoteke</translation>
+      <translation>Uvozi ploskovje iz datoteke</translation>
     </message>
   </context>
   <context>
@@ -293,7 +293,7 @@
     </message>
     <message>
       <source>Merges selected meshes into one</source>
-      <translation>Združi izbrane mreže v eno</translation>
+      <translation>Združi izbrana ploskovja v eno</translation>
     </message>
   </context>
   <context>
@@ -304,11 +304,11 @@
     </message>
     <message>
       <source>Cut mesh</source>
-      <translation>Izreži mrežo</translation>
+      <translation>Reži ploskovje</translation>
     </message>
     <message>
       <source>Cuts a mesh with a picked polygon</source>
-      <translation>Izreže mrežo z izbranim mnogokotnikom</translation>
+      <translation>Reže ploskovje z izbranim mnogokotnikom</translation>
     </message>
   </context>
   <context>
@@ -334,11 +334,11 @@
     </message>
     <message>
       <source>Select mesh</source>
-      <translation>Izberi mrežo</translation>
+      <translation>Izberite ploskovje</translation>
     </message>
     <message>
       <source>Select an area of the mesh</source>
-      <translation>Izberi področje mreže</translation>
+      <translation>Izberite področje ploskovja</translation>
     </message>
   </context>
   <context>
@@ -349,11 +349,11 @@
     </message>
     <message>
       <source>Split mesh</source>
-      <translation>Razcepi mrežo</translation>
+      <translation>Razcepi ploskovje</translation>
     </message>
     <message>
       <source>Splits a mesh into two meshes</source>
-      <translation>Razcepi mrežo v dve</translation>
+      <translation>Razcepi ploskovje v dve</translation>
     </message>
   </context>
   <context>
@@ -364,11 +364,11 @@
     </message>
     <message>
       <source>Trim mesh</source>
-      <translation>Prireži mrežo</translation>
+      <translation>Prireži ploskovje</translation>
     </message>
     <message>
       <source>Trims a mesh with a picked polygon</source>
-      <translation>Prireže mrežo z izbranim mnogokotnikom</translation>
+      <translation>Prireže ploskovje z izbranim mnogokotnikom</translation>
     </message>
   </context>
   <context>
@@ -379,11 +379,11 @@
     </message>
     <message>
       <source>Remove components by hand...</source>
-      <translation>Ročno odstrani komponente …</translation>
+      <translation>Ročno odstrani sestavine …</translation>
     </message>
     <message>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Označi komponento za odstranjevanje iz mreže</translation>
+      <translation>Označite sestavino, ki jo želite odstraniti iz ploskovja</translation>
     </message>
   </context>
   <context>
@@ -394,11 +394,11 @@
     </message>
     <message>
       <source>Remove components...</source>
-      <translation>Odstrani komponente …</translation>
+      <translation>Odstrani sestavine …</translation>
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Odstrani topološko neodvisne komponente iz mreže</translation>
+      <translation>Odstrani zvezno neodvisne sestavine iz ploskovja</translation>
     </message>
   </context>
   <context>
@@ -413,7 +413,7 @@
     </message>
     <message>
       <source>Scale selected meshes</source>
-      <translation>Skaliraj izbrane mreže</translation>
+      <translation>Spremeni velikost izbranega ploskovja</translation>
     </message>
   </context>
   <context>
@@ -424,11 +424,11 @@
     </message>
     <message>
       <source>Create section from mesh and plane</source>
-      <translation>Ustvari prerez iz mreže in ravnine</translation>
+      <translation>Ustvari prerez iz ploskovja in ravnine</translation>
     </message>
     <message>
       <source>Section from mesh and plane</source>
-      <translation>Prerez iz mreže in ravnine</translation>
+      <translation>Prerez iz ploskovja in ravnine</translation>
     </message>
   </context>
   <context>
@@ -439,11 +439,11 @@
     </message>
     <message>
       <source>Create mesh segments...</source>
-      <translation>Ustvari mrežne odseke …</translation>
+      <translation>Ustvari odseke ploskovja …</translation>
     </message>
     <message>
       <source>Create mesh segments</source>
-      <translation>Ustvari mrežne odseke</translation>
+      <translation>Ustvari odseke ploskovja</translation>
     </message>
   </context>
   <context>
@@ -454,11 +454,11 @@
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces...</source>
-      <translation>Ustvari segmente mreže iz najboljše prilegajočih se površin...</translation>
+      <translation>Ustvari dele ploskovja iz najbolje prilegajočih se površij...</translation>
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Ustvari segmente mreže iz najboljše prilegajočih se površin</translation>
+      <translation>Ustvari dele ploskovja iz najbolje prilegajočih se površij</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@
     </message>
     <message>
       <source>Smooth the selected meshes</source>
-      <translation>Zgladi izbrane mreže</translation>
+      <translation>Zgladi izbrana ploskovja</translation>
     </message>
   </context>
   <context>
@@ -484,11 +484,11 @@
     </message>
     <message>
       <source>Segment by tool mesh</source>
-      <translation>Odsek iz orodne mreže</translation>
+      <translation>Razčlenitev z orodjem ploskovij</translation>
     </message>
     <message>
       <source>Creates a segment from a given tool mesh</source>
-      <translation>Ustvari odsek iz orodne mreže</translation>
+      <translation>Ustvari odsek iz orodnrga ploskovja</translation>
     </message>
   </context>
   <context>
@@ -499,11 +499,11 @@
     </message>
     <message>
       <source>Transform mesh</source>
-      <translation>Preoblikuj mrežo</translation>
+      <translation>Preoblikuj ploskovje</translation>
     </message>
     <message>
       <source>Rotate or move a mesh</source>
-      <translation>Zavrti ali premakni mrežo</translation>
+      <translation>Zasukaj ali premakni ploskovje</translation>
     </message>
   </context>
   <context>
@@ -514,11 +514,11 @@
     </message>
     <message>
       <source>Trim mesh with a plane</source>
-      <translation>Prireži mrežo z ravnino</translation>
+      <translation>Prireži ploskovje z ravnino</translation>
     </message>
     <message>
       <source>Trims a mesh with a plane</source>
-      <translation>Prireže mrežo z ravnino</translation>
+      <translation>Prireže ploskovje z ravnino</translation>
     </message>
   </context>
   <context>
@@ -529,7 +529,7 @@
     </message>
     <message>
       <source>Union</source>
-      <translation>Unija</translation>
+      <translation>Seštevek</translation>
     </message>
   </context>
   <context>
@@ -540,7 +540,7 @@
     </message>
     <message>
       <source>Calculates the curvature of the vertices of a mesh</source>
-      <translation>Izračuna ukrivljenost temen mreže</translation>
+      <translation>Izračuna ukrivljenost temen ploskovja</translation>
     </message>
     <message>
       <source>Curvature plot</source>
@@ -582,7 +582,7 @@
     </message>
     <message>
       <source>Mesh information</source>
-      <translation>Podatki mreže</translation>
+      <translation>Podatki ploskovja</translation>
     </message>
     <message>
       <source>No information</source>
@@ -602,7 +602,7 @@
     </message>
     <message>
       <source>Analyze</source>
-      <translation>Analiziraj</translation>
+      <translation>Razčleni</translation>
     </message>
     <message>
       <source>Repair</source>
@@ -634,7 +634,7 @@
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Samo mnogoterosti</translation>
+      <translation>Nemnogoterosti</translation>
     </message>
     <message>
       <source>Self-intersections</source>
@@ -650,11 +650,11 @@
     </message>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Ovrednoti in popravi mrežo</translation>
+      <translation>Ovrednoti in popravi ploskovje</translation>
     </message>
     <message>
       <source>Folds on surface</source>
-      <translation>Pregibi na površini</translation>
+      <translation>Pregibi na površju</translation>
     </message>
   </context>
   <context>
@@ -681,7 +681,7 @@
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Samo mnogoterosti</translation>
+      <translation>Nemnogoterosti</translation>
     </message>
     <message>
       <source>Cannot remove non-manifolds</source>
@@ -713,7 +713,7 @@
     </message>
     <message>
       <source>No degenerations</source>
-      <translation>Ni popačenosti</translation>
+      <translation>Ni popačenj</translation>
     </message>
     <message>
       <source>%1 degenerated faces</source>
@@ -745,7 +745,7 @@
     </message>
     <message>
       <source>Degenerations</source>
-      <translation>Popačenosti</translation>
+      <translation>Popačenja</translation>
     </message>
     <message>
       <source>Duplicated faces</source>
@@ -761,7 +761,7 @@
     </message>
     <message>
       <source>Mesh repair</source>
-      <translation>Popravilo mreže</translation>
+      <translation>Popravilo ploskovja</translation>
     </message>
     <message>
       <source>Flipped normals found</source>
@@ -770,16 +770,16 @@
     <message>
       <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-      <translation>Preverjanje ni uspelo zaradi pregibov na površini.
-Najprej zaženite ukaz za popravljaje pregibov</translation>
+      <translation>Preverjanje ni uspelo zaradi pregibov na površju.
+Najprej zaženite ukaz za odpravljaje pregibov</translation>
     </message>
     <message>
       <source>No folds on surface</source>
-      <translation>Ni pregibov na površini</translation>
+      <translation>Ni pregibov na površju</translation>
     </message>
     <message>
       <source>%1 folds on surface</source>
-      <translation>%1 pregibov na površini</translation>
+      <translation>%1 pregibov na površju</translation>
     </message>
     <message>
       <source>Folds</source>
@@ -802,15 +802,15 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Check for non-manifold points</source>
-      <translation>Preglej za ne-manifoldne točke</translation>
+      <translation>Preveri za morebitne nemnogoterostne točke</translation>
     </message>
     <message>
       <source>Enable check for folds on surface</source>
-      <translation>Omogoči kontrolo gub na površini</translation>
+      <translation>Omogoči preverjanje gub na površju</translation>
     </message>
     <message>
       <source>Only consider zero area faces as degenerated</source>
-      <translation>Samo ploskve z nično površino privzemi kot degenerirane</translation>
+      <translation>Samo ploskve z nično površino privzemi kot izrojene</translation>
     </message>
   </context>
   <context>
@@ -915,7 +915,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     <name>MeshGui::DlgSettingsImportExport</name>
     <message>
       <source>Mesh Formats</source>
-      <translation>Oblike mrež</translation>
+      <translation>Oblike ploskovij</translation>
     </message>
     <message>
       <source>Export</source>
@@ -923,15 +923,15 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Defines the deviation of tessellation to the actual surface</source>
-      <translation>Določa odstopanje teselacije od dejanske površine</translation>
+      <translation>Določa odstopanje tlakovanja od dejanskega površja</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed and the nicer the appearance are.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Teselacija&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Določa največje odstopanje teselirane mreže od površine. Manjša kot je vrednost, manjša je hitrost izrisa in lepši izgled.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tlakovanje&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Določa največje odstopanje tlaovanega ploskovja od površja. Manjša kot je vrednost, počasnejše je upodabljanje in lepši videz.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Maximum mesh deviation</source>
-      <translation>Največje odstopanje mreže</translation>
+      <translation>Največje odstopanje ploskovja</translation>
     </message>
     <message>
       <source>mm</source>
@@ -941,20 +941,24 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
       <source>Export AMF files using compression</source>
       <translation>Izvozi dadoteke AMF z uporabo kompresije</translation>
     </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tessellation&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Defines the maximum deviation of the tessellated mesh to the surface. The smaller the value is the slower the render speed which results in increased detail/resolution.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Tlakovanje&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;"&gt;&lt;span style=" font-weight:400;"&gt;Določa največje odstopanje tlakovanega ploskovja od površja. Manjša kot je vrednost, počasnejše je upodabljanje in lepši videz.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
   </context>
   <context>
     <name>MeshGui::DlgSettingsMeshView</name>
     <message>
       <source>Mesh view</source>
-      <translation>Pogled mreže</translation>
+      <translation>Pogled ploskovja</translation>
     </message>
     <message>
       <source>Two-side rendering</source>
-      <translation>Dvostranski izris</translation>
+      <translation>Obojestransko upodabljanje</translation>
     </message>
     <message>
       <source>Backface color</source>
-      <translation>Barva ozadne ploskve</translation>
+      <translation>Barva hrbtne ploskve</translation>
     </message>
     <message>
       <source>Smoothing</source>
@@ -962,7 +966,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;To je najmanjši kot med dvema ploskvama, kjer se izračunata normali za plosko senčenje.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Če je kot med dvema normalama sosednjih ploskev manjši od kota pregiba, bosta ploskvi osenčeni zglajeno okoli skupnega roba.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;To je najmanjši kot med dvema ploskvama, kjer se izračunata normali za plosko senčenje.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Če je kot med dvema normalama sosednjih ploskev manjši od kota pregiba, bosta ploskvi na skupnem robu zglajeno osenčeni.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Crease angle</source>
@@ -970,7 +974,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Plosko senčenje/Phongovo senčenje&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Določi izgled površin.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Pri ploskem senčenju normale površin niso določene na teme, kar privede do neresničnega izgleda ukrivljenih površin, medtem ko Phongovo senčenje privede do bolj gladkega izgleda. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Če je ta možnost nastavljena, bo uporabljeno Phongovo senčenje, v nasprotnem primeru pa plosko.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Plosko senčenje/Phongovo senčenje&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Določi videz površin.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Pri ploskem senčenju normale površin niso vezano na temena, kar privede do nepristnega videza ukrivljenih površin, medtem ko Phongovo senčenje privede do bolj gladkega videza. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Če je ta možnost nastavljena, bo uporabljeno Phongovo senčenje, v nasprotnem primeru pa plosko.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Define normal per vertex</source>
@@ -986,7 +990,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Default appearance for new meshes</source>
-      <translation>Privzeti izgled novih mrež</translation>
+      <translation>Privzeti videz novih ploskovij</translation>
     </message>
     <message>
       <source>Default line color</source>
@@ -994,19 +998,19 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Mesh transparency</source>
-      <translation>Prosojnost mreže</translation>
+      <translation>Prozornost ploskovja</translation>
     </message>
     <message>
       <source>Default mesh color</source>
-      <translation>Privzeta barva mreže</translation>
+      <translation>Privzeta barva ploskovja</translation>
     </message>
     <message>
       <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Prikaži mejni kvader za poudarjeno ali izbrano mrežo</translation>
+      <translation>Prikaži mejni kvader za poudarjena ali izbrana ploskovja</translation>
     </message>
     <message>
       <source>Line transparency</source>
-      <translation>Prosojnost črt</translation>
+      <translation>Prozornost črt</translation>
     </message>
   </context>
   <context>
@@ -1045,7 +1049,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Only selection</source>
-      <translation>Samo izbira</translation>
+      <translation>Samo izbor</translation>
     </message>
   </context>
   <context>
@@ -1078,7 +1082,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     <name>MeshGui::ParametersDialog</name>
     <message>
       <source>Surface fit</source>
-      <translation>Prileganje površine</translation>
+      <translation>Prileganje površja</translation>
     </message>
     <message>
       <source>Parameters</source>
@@ -1110,14 +1114,14 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Before fitting the surface select an area.</source>
-      <translation>Pred prilagajanjem površine izbreri območje.</translation>
+      <translation>Pred prilagajanjem površja izberite območje.</translation>
     </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
     <message>
       <source>Remove components</source>
-      <translation>Odstrani komponente</translation>
+      <translation>Odstrani sestavine</translation>
     </message>
     <message>
       <source>Select</source>
@@ -1125,7 +1129,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Select whole component</source>
-      <translation>Izberite celo komponento</translation>
+      <translation>Izberite celo sestavino</translation>
     </message>
     <message>
       <source>Pick triangle</source>
@@ -1153,7 +1157,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Deselect whole component</source>
-      <translation>Odstrani izbiro cele komponente</translation>
+      <translation>Odstrani izbiro cele sestavine</translation>
     </message>
     <message>
       <source>&gt; faces than</source>
@@ -1176,11 +1180,11 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     <name>MeshGui::Segmentation</name>
     <message>
       <source>Mesh segmentation</source>
-      <translation>Razčlenitev mreže</translation>
+      <translation>Razčlenitev ploskovja</translation>
     </message>
     <message>
       <source>Smooth mesh</source>
-      <translation>Zgladi mrežo</translation>
+      <translation>Zgladi ploskovje</translation>
     </message>
     <message>
       <source>Plane</source>
@@ -1204,11 +1208,11 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Tolerance (Flat)</source>
-      <translation>Toleranca (ravno)</translation>
+      <translation>Dopustno odstopanje (plosko)</translation>
     </message>
     <message>
       <source>Tolerance (Curved)</source>
-      <translation>Toleranca (ukrivljeno)</translation>
+      <translation>Dopustno odstopanje (ukrivljeno)</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
@@ -1239,7 +1243,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     <name>MeshGui::SegmentationBestFit</name>
     <message>
       <source>Mesh segmentation</source>
-      <translation>Razčlenitev mreže</translation>
+      <translation>Razčlenitev ploskovja</translation>
     </message>
     <message>
       <source>Sphere</source>
@@ -1255,7 +1259,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Parameters...</source>
-      <translation>Parametri...</translation>
+      <translation>Spremenljivke ...</translation>
     </message>
     <message>
       <source>Plane</source>
@@ -1343,7 +1347,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     </message>
     <message>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Izberite ravnino, s katero želite prirezati mrežo.</translation>
+      <translation>Izberite ravnino, s katero želite prirezati ploskovje.</translation>
     </message>
   </context>
   <context>
@@ -1359,7 +1363,7 @@ Najprej zaženite ukaz za popravljaje pregibov</translation>
     <message>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>Na vašem sistemu ni mogoče najti OpenSCADa.
+      <translation>V vašem sistemu ni mogoče najti OpenSCADa.
 Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     </message>
     <message>
@@ -1371,22 +1375,22 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <name>QDockWidget</name>
     <message>
       <source>Evaluate &amp; Repair Mesh</source>
-      <translation>Ovrednoti in popravi mrežo</translation>
+      <translation>Ovrednoti in popravi ploskovje</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
       <source>Import mesh</source>
-      <translation>Uvozi mrežo</translation>
+      <translation>Uvozi ploskovje</translation>
     </message>
     <message>
       <source>Export mesh</source>
-      <translation>Izvozi mrežo</translation>
+      <translation>Izvozi ploskovje</translation>
     </message>
     <message>
       <source>Solid Mesh</source>
-      <translation>Mrežno telo</translation>
+      <translation>Telesno ploskovje</translation>
     </message>
     <message>
       <source>Boundings</source>
@@ -1446,19 +1450,19 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     </message>
     <message>
       <source>Meshing Tolerance</source>
-      <translation>Toleranca mreže</translation>
+      <translation>Dopustna odstopanja ploskovjenja</translation>
     </message>
     <message>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation>Vnesite toleranco geometrije mreže:</translation>
+      <translation>Vnesite dopustno odstopanju pri ploskovjenju geometrije:</translation>
     </message>
     <message>
       <source>The mesh '%1' is a solid.</source>
-      <translation>Mreža '%1' je telo.</translation>
+      <translation>Ploskovje '%1' je telo.</translation>
     </message>
     <message>
       <source>The mesh '%1' is not a solid.</source>
-      <translation>Mreža '%1' ni telo.</translation>
+      <translation>Ploskovje '%1' ni telo.</translation>
     </message>
     <message>
       <source>Min=&lt;%1,%2,%3&gt;
@@ -1526,11 +1530,11 @@ Najv. = &lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Display components</source>
-      <translation>Prikaži komponente</translation>
+      <translation>Prikaži sestavine</translation>
     </message>
     <message>
       <source>All Mesh Files</source>
-      <translation>Vse datoteke mreže</translation>
+      <translation>Vse datoteke ploskovij</translation>
     </message>
     <message>
       <source>Binary STL</source>
@@ -1542,7 +1546,7 @@ Najv. = &lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Binary Mesh</source>
-      <translation>Dvojiška mreža</translation>
+      <translation>Dvojiško ploskovje</translation>
     </message>
     <message>
       <source>Alias Mesh</source>
@@ -1550,7 +1554,7 @@ Najv. = &lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
       <source>Object File Format</source>
-      <translation>Oblika datoteke objekta</translation>
+      <translation>Zapis datoteke predmeta</translation>
     </message>
     <message>
       <source>Inventor V2.1 ascii</source>
@@ -1609,7 +1613,7 @@ Najv. = &lt;%4,%5,%6&gt;</translation>
     <name>Workbench</name>
     <message>
       <source>Analyze</source>
-      <translation>Analiziraj</translation>
+      <translation>Razčleni</translation>
     </message>
     <message>
       <source>Boolean</source>

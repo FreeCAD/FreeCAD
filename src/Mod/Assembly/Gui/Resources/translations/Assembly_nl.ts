@@ -352,7 +352,7 @@
     <message>
       <location line="+3"/>
       <source>Fix</source>
-      <translation type="unfinished">Fix</translation>
+      <translation>Herstellen</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Setthe distance between first and second geometrie. Note that in many cases the shortes distance is used (e.g. line - line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>

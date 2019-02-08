@@ -331,7 +331,8 @@ class _Space(ArchComponent.Component):
             if obj.Zone:
                 if obj.Zone.ViewObject:
                     if hasattr(obj.Zone.ViewObject,"Proxy"):
-                        obj.Zone.ViewObject.Proxy.claimChildren()
+                        if hasattr(obj.Zone.ViewObject.Proxy,"claimChildren"):
+                            obj.Zone.ViewObject.Proxy.claimChildren()
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
         ArchComponent.Component.onChanged(self,obj,prop)

@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="213"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{obj} nem csatlakoztatható. Még mindíg használhatja a melléklet szerkesztő párbeszédpanelt a tárgy igazításához, de a mellékletet nem lesz változós.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="230"/>
@@ -60,14 +60,8 @@
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
-      <source>
-
-Reference combinations:
-</source>
-      <translation>
-
-Hivatkozás kombinációk:
-</translation>
+      <source>Reference combinations:</source>
+      <translation type="unfinished">Reference combinations:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
@@ -155,6 +149,76 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a 'Leállítás ' gombbal megszakítja.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Az eredmény kiszámítása nem sikerült, hiba: 
+
+{err}
+
+kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a 'Leállítás ' gombbal megszakítja.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
+      <source>Explode compound</source>
+      <translation>Összetevők szétbontása</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
+      <source>Explode compound: split up a list of shapes into separate objects</source>
+      <translation>Összetevők szétbontása: alakzat lista felosztása elkülönített tárgyakra</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
+      <source>Select a shape that is a compound, first!</source>
+      <translation>Először válasszon egy összetett alakzatot!</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>Bad selection</source>
+      <translation>Rossz kiválasztás</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Tárgyakat összekapcsol</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Egybeolvaszt objektumokat, ügyelve arra, hogy megőrizze az üregeket.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
+      <source>Cutout for object</source>
+      <translation>Kimetszés az objektumhoz</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Kimetszést hoz létre egy objektumon, hogy illeszkedjen egy másik objektumra.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation>Tárgy beágyazása</translation>
+    </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
@@ -182,14 +246,19 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <translation>Tovább</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
-      <source>Connect objects</source>
-      <translation>Tárgyakat összekapcsol</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Előbb jelöljön ki legalább két objektumot, vagy egy vagy több összetevőt!</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
-      <source>Part_JoinConnect: Fuses objects, taking care to preserve voids.</source>
-      <translation>Part_JoinConnect: Összeköti a tárgyat, ügyelve arra, hogy megőrizze az üregeket.</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Válassza ki az alap objektumot, majd a beágyazandó objektumot, és használja ezt az eszközt.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Kimetszésre szánt objektum kijelölése, majd a kimetszésre beilleszteni kívánt objektumot, és használja ezt az eszközt.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
@@ -200,26 +269,6 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
       <translation>Tárgy beágyazása</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Egybeolvaszt egy objektumot egy másikba, ügyelve arra, hogy megőrizze az üregeket.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Válassza ki az alap objektumot, majd a beágyazandó objektumot, és használja ezt az eszközt.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
-      <source>Cutout for object</source>
-      <translation>Kimetszés az objektumhoz</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
-      <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Kimetszést hoz létre egy objektumon, hogy illeszkedjen egy másik objektumra.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
@@ -258,14 +307,72 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <translation>Logikai töredékek</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Part_BooleanFragments: split objects where they intersect</source>
-      <translation>Part_BooleanFragments: ossza fel a tárgyakat ahol metszik egymást</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Előbb jelöljön ki legalább két tárgyat, vagy egy vagy több összetevőt! Ha csak egyetlen összetevő van megjelölve, az összetett alakzatok egymást keresztezni fogják (ellenkező esetben az önálló kereszteződéssel rendelkező összetett alakzatok érvénytelenek).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Az eredmény kiszámítása nem sikerült, hiba: 
+
+{err}
+
+kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a 'Leállítás ' gombbal megszakítja.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Először, válasszon ki legalább két objektumot! Az első a szeletelt tárgy; a többi objektum a szeletelő.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Tovább</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Logikai töredékek</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
+      <source>Boolean XOR</source>
+      <translation>Logikai XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Előbb jelöljön ki legalább két tárgyat, vagy egy vagy több összetevőt! Ha csak egyetlen összetevő van megjelölve, az összetett alakzatok egymást keresztezni fogják (ellenkező esetben az önálló kereszteződéssel rendelkező összetett alakzatok érvénytelenek).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Szeletelje összetevőkre</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Felosztja a tárgyaz a másik tárgy keresztezésénél, és egyesíti a darabokat.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Először, válasszon ki legalább két objektumot! Az első a szeletelt tárgy; a többi objektum a szeletelő.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Részekre szeletel</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation>Part_BooleanFragments: ossza fel a tárgyakat ahol metszik egymást</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
@@ -275,22 +382,35 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
       <source>Part_Slice: split object by intersections with other objects</source>
-      <translation>Part_Slice: objektum felosztása más objektumok metszéseivel</translation>
+      <translation>Rész_szeletelés: objektum felosztása más objektumok metszéseivel</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Először, válasszon ki legalább két objektumot! Az első a szeletelt tárgy; a többi objektum a szeletelő.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
-      <source>Boolean XOR</source>
-      <translation>Logikai XOR</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Objektum felosztása más objektumok kereszteződéseivel.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
       <source>Part_XOR: remove intersection fragments</source>
       <translation>Part_XOR: kereszteződési töredékek törlése</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>Logikai XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Kereszteződési töredékek törlése</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation type="unfinished">Creates a tube</translation>
     </message>
   </context>
   <context>
@@ -305,7 +425,7 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <location filename="../../AttacherTexts.cpp" line="313"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
-      <translation>Csúcs</translation>
+      <translation>Végpont</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="314"/>
@@ -518,7 +638,7 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
       <location filename="../../AttacherTexts.cpp" line="293"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Csúcs</translation>
+      <translation>Végpont</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="294"/>
@@ -1644,7 +1764,7 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
     </message>
     <message>
       <source>Create a box solid</source>
-      <translation>Hozzon létre egy doboz szilárdtestet</translation>
+      <translation>Hozzon létre egy doboz szilárd testet</translation>
     </message>
   </context>
   <context>
@@ -2012,7 +2132,7 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
     </message>
     <message>
       <source>Advanced utility to lofts</source>
-      <translation>Speciális segédprogram szintekhez</translation>
+      <translation>Speciális segédprogram szabadformaeszközhöz</translation>
     </message>
   </context>
   <context>
@@ -2038,11 +2158,11 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
     </message>
     <message>
       <source>Make face from sketch</source>
-      <translation>Vázlatból felület létrehozása</translation>
+      <translation>Felület létrehozás vázlatból</translation>
     </message>
     <message>
       <source>Make face from selected sketches</source>
-      <translation>Kiválasztott vázlatokból felület létrehozása</translation>
+      <translation>Felület létrehozása kiválasztott vázlatokból</translation>
     </message>
   </context>
   <context>
@@ -2843,7 +2963,7 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
     </message>
     <message>
       <source>Note:This option works for planes only</source>
-      <translation>Megjegyzés: Ez a beállítás csak a tervezés módban használható</translation>
+      <translation>Megjegyzés: Ez a beállítás csak a síkokhoz használható</translation>
     </message>
     <message>
       <source/>
@@ -2973,7 +3093,7 @@ kattintson "Folytatás" gombra, hogy mindenképp létrehozza a funkciót, vagy a
     <message>
       <location filename="../../DlgFilletEdges.ui" line="87"/>
       <source>None</source>
-      <translation>Nincs</translation>
+      <translation>Egyik sem</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="110"/>
@@ -3809,7 +3929,7 @@ Kérem, válasszon ki legalább egyet.</translation>
     </message>
     <message>
       <source>Angle - 0 for cyl</source>
-      <translation>Szög - 0 cyl</translation>
+      <translation>Szög - 0 a hengerhez</translation>
     </message>
     <message>
       <source>Angle0</source>
@@ -3846,7 +3966,7 @@ Kérem, válasszon ki legalább egyet.</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="627"/>
       <source>Vertex</source>
-      <translation>Csúcs</translation>
+      <translation>Végpont</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="855"/>
@@ -4045,7 +4165,7 @@ Kérem, válasszon ki legalább egyet.</translation>
     <name>PartGui::DlgSettings3DViewPart</name>
     <message>
       <source>View accuracy / Performance</source>
-      <translation>Pontosság/teljesítmény nézet</translation>
+      <translation>Pontosság / teljesítmény nézet</translation>
     </message>
     <message>
       <source>View smoothing</source>
@@ -4105,19 +4225,19 @@ Kérem, válasszon ki legalább egyet.</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt; &lt;span style="font-weight:600;"&gt; Lapos árnyalás/Phong-árnyalás&lt;/span&gt;&lt;/p&gt; &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt; A lapos árnyékolással a felszíni normákat nem vertexek határozzák meg, amely ahhoz vezet, hogy a hajlított felületek irreálisak, míg a Phong árnyalás simább megjelenést biztosít.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt;, ha ez a beállítás nem beállított akkor a Phong-árnyalást használja, ha értéke beállított, akkor a sima árnyalás van használtban.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt; &lt;span style="font-weight:600;"&gt; Lapos árnyalás/Phong-árnyalás&lt;/span&gt;&lt;/p&gt; &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt; A lapos árnyékolással a felszíni normákat nem a végpontok határozzák meg, amely ahhoz vezet, hogy a hajlított felületek irreálisak, míg a Phong árnyalás simább megjelenést biztosít.&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt; &lt;p style="margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;"&gt;Ha ez nincs beállítva akkor a Phong-árnyalást használja, ha értéke beállított, akkor a sima árnyalás van használtban.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Do not define normal per vertex</source>
-      <translation>Normál esetben ne vertexbe határozza meg</translation>
+      <translation>Normákat ne a végpontokkal határozza meg</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Defining the normals per vertex is also called &lt;span style=" font-style:italic;"&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;A normálisok vertexként való megjelenítését úgy is nevezik, hogy&lt;span style=" font-style:italic;"&gt;Phong árnyékolás&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-weight:600;"&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;A végpontonkénti normák meghatározása más néven&lt;span style=" font-style:italic;"&gt;Phong árnyékolás&lt;/span&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;"&gt;&lt;span style=" font-style:normal;"&gt;amíg a felülenténki normák más néven &lt;/span&gt;Flat shading&lt;span style=" font-style:normal;"&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Ez a renderelést lelassítja, 
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;Nagy felbontású normák&lt;/span&gt;&lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Ez a renderelést lelassítja, 
 de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -4186,7 +4306,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Units for export of STEP/IGES</source>
-      <translation>Az STEP/IGES exportban használt egységek</translation>
+      <translation>Az STEP/IGES exportban használt mértékegységek</translation>
     </message>
   </context>
   <context>
@@ -4305,7 +4425,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <name>PartGui::LoftWidget</name>
     <message>
       <source>Vertex/Wire</source>
-      <translation>Vertex / Vonal</translation>
+      <translation>Végpont/Vonal</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="75"/>
@@ -4344,11 +4464,11 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>At least two vertices, edges or wires are required.</source>
-      <translation>Legalább két vonal, szegély vagy háló szükséges.</translation>
+      <translation>Legalább két csúcspont, szegély vagy vonal szükséges.</translation>
     </message>
     <message>
       <source>At least two vertices or wires are required.</source>
-      <translation>Legalább két csúcs, illetve vonal szükséges.</translation>
+      <translation>Legalább két csúcs vagy vonal szükséges.</translation>
     </message>
   </context>
   <context>
@@ -4509,7 +4629,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Select three or more edges</source>
-      <translation>Válasszon ki a három vagy több élet</translation>
+      <translation>Válasszon ki három vagy több élet</translation>
     </message>
   </context>
   <context>
@@ -4580,7 +4700,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="416"/>
       <source>Vertex/Wire</source>
-      <translation>Vertex / Vonal</translation>
+      <translation>Végpont/Vonal</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="417"/>
@@ -4593,7 +4713,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>Select an edge or wire you want to sweep along.</source>
-      <translation>Jelöljön élet vagy hálót amely mentén húzni szeretne.</translation>
+      <translation>Jelöljön élet vagy vonalat amely mentén húzni szeretne.</translation>
     </message>
   </context>
   <context>
@@ -4730,7 +4850,7 @@ de szebb végeredményt ad.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="588"/>
       <source>Vertex</source>
-      <translation>Csúcs</translation>
+      <translation>Végpont</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="647"/>
@@ -4811,7 +4931,7 @@ Hivatkozás kombinációk:
     </message>
     <message>
       <source>Control</source>
-      <translation>Ellenőrzés</translation>
+      <translation>Vezérlés</translation>
     </message>
     <message>
       <source>Dynamic</source>
@@ -4835,7 +4955,7 @@ Hivatkozás kombinációk:
     </message>
     <message>
       <source>Stretch</source>
-      <translation>Kinyújt</translation>
+      <translation>Nyújtás</translation>
     </message>
     <message>
       <source>Move</source>
@@ -4855,7 +4975,7 @@ Hivatkozás kombinációk:
     </message>
     <message>
       <source>Match</source>
-      <translation>Összehasónlít</translation>
+      <translation>Összehasonlít</translation>
     </message>
     <message>
       <source>Surround</source>
@@ -4879,7 +4999,7 @@ Hivatkozás kombinációk:
     </message>
     <message>
       <source>Increment</source>
-      <translation>Növekmény</translation>
+      <translation>Növelés</translation>
     </message>
     <message>
       <source>.125</source>
@@ -4903,15 +5023,15 @@ Hivatkozás kombinációk:
     </message>
     <message>
       <source>Drag arrows to stretch box by increment</source>
-      <translation>Húzza a nyilakat a keretek növekménnyel való nyújtásához</translation>
+      <translation>Húzza a nyilakat a keretek növeléssel való nyújtásához</translation>
     </message>
     <message>
       <source>Drag arrows to move box by increment</source>
-      <translation>Húzza a nyílakat a keretek növekménnyel való mozgatásához</translation>
+      <translation>Húzza a nyilakat a keretek növeléssel való mozgatásához</translation>
     </message>
     <message>
       <source>Not implemented yet</source>
-      <translation>Még nem végrehejtható</translation>
+      <translation>Még nem végrehajtható</translation>
     </message>
     <message>
       <source>Drag arrows to offset checked axes by increment</source>
@@ -4919,11 +5039,11 @@ Hivatkozás kombinációk:
     </message>
     <message>
       <source>Select dragger for stretch by align</source>
-      <translation>Vállassza ki a fogási pontot a nyújtással való igazításhoz</translation>
+      <translation>Válassza ki a fogási pontot a nyújtással való igazításhoz</translation>
     </message>
     <message>
       <source>Select dragger for move by align</source>
-      <translation>Vállassza ki a fogási pontot az igazítással való mozgatáshoz</translation>
+      <translation>Válassza ki a fogási pontot az igazítással való mozgatáshoz</translation>
     </message>
     <message>
       <source>Select dragger for stretch by value</source>
@@ -4943,11 +5063,11 @@ Hivatkozás kombinációk:
     </message>
     <message>
       <source>Select box to match</source>
-      <translation>Jelölje be a mezőben</translation>
+      <translation>Jelöljön négyzetet az egyeztetéshez</translation>
     </message>
     <message>
       <source>Select a point</source>
-      <translation>Válassza ki a pontot</translation>
+      <translation>Válasszon egy pontot</translation>
     </message>
     <message>
       <source>0.0</source>
@@ -5022,7 +5142,7 @@ Hivatkozás kombinációk:
     </message>
     <message>
       <source>Vertex/Wire</source>
-      <translation>Vertex / Vonal</translation>
+      <translation>Végpont/Vonal</translation>
     </message>
     <message>
       <source>Move right</source>
@@ -5359,7 +5479,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>All Files (*.*)</source>
-      <translation>Minden fájl (*.*)</translation>
+      <translation>Összes fájl (*.*)</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="120"/>
@@ -5724,7 +5844,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="85"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Vertex</source>
-      <translation>Csúcs</translation>
+      <translation>Végpont</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="552"/>
@@ -5736,7 +5856,7 @@ Do you want to continue?</source>
       <location filename="../../TaskDimension.cpp" line="559"/>
       <location filename="../../TaskDimension.cpp" line="1605"/>
       <source>Control</source>
-      <translation>Ellenőrzés</translation>
+      <translation>Vezérlés</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1336"/>

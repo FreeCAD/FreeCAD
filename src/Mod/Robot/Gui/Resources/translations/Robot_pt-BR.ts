@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Definir a orientação padrão para os seguintes comandos para criação de ponto de passagem</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>definir a orientação padrão para os comandos subsequentes para a criação de waypoint</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Defina os valores padrão para velocidade, aceleração e continuidade para os seguintes comandos para criar o ponto de passagem</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Defina os valores padrão para a velocidade, aceleração e continuidade para comandos subsequentes de criação de waypoint</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Você precisa de pelo menos dois pontos em uma trajetória para simular.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Você precisa de pelo menos dois pontos para simular uma trajetória.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Coloque o mouse em cima de um objeto (preseleção) para usar este comando. Veja a documentação para mais detalhes.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Definir velocidade padrão</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Definir continuidade padrão</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Definir aceleração padrão</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Selecione um robô para definir a posição de origem</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Selecione um robô</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Selecione um objeto de trajetória.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>Definir a velocidade padrão</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>Velocidade: (por exemplo, 1 m/s ou 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>Definir continuidade padrão</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>Contínuo ?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>Definir aceleração padrão</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>Aceleração: (por exemplo, 1 m/s^2 ou 3 cm/s^2)</translation>
     </message>

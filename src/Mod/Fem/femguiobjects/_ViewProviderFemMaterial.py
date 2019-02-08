@@ -85,7 +85,7 @@ class _ViewProviderFemMaterial:
             guidoc.setEdit(vobj.Object.Name)
         else:
             from PySide.QtGui import QMessageBox
-            message = 'Active Task Dialog found! Please close this one before open a new one!'
+            message = 'Active Task Dialog found! Please close this one before opening  a new one!'
             QMessageBox.critical(None, "Error in tree view", message)
             FreeCAD.Console.PrintError(message + '\n')
         return True
@@ -179,7 +179,7 @@ class _TaskPanelFemMaterial:
         # check references, has to be after initialisation of selectionWidget
         self.selectionWidget.has_equal_references_shape_types()
 
-    # ********* leave task panel *********
+    # leave task panel **********************************************
     def accept(self):
         # print(self.material)
         if self.selectionWidget.has_equal_references_shape_types():
@@ -200,7 +200,7 @@ class _TaskPanelFemMaterial:
             FreeCADGui.Selection.removeObserver(self.selectionWidget.sel_server)
         doc.resetEdit()
 
-    # ********* choose material *********
+    # choose material ***********************************************
     def get_material_card(self, material):
         for a_mat in self.materials:
             unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
@@ -240,11 +240,17 @@ class _TaskPanelFemMaterial:
         self.parameterWidget.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), self.card_path, self.card_path)
         self.set_transient_material()
 
-    # ********* how to edit a material *********
+    # how to edit a material ****************************************
     def edit_material(self):
+        # opens the material editor to choose a material or edit material params
         # self.print_material_params()
         import MaterialEditor
-        self.material = MaterialEditor.editMaterial(self.material)
+        new_material_params = self.material.copy()
+        new_material_params = MaterialEditor.editMaterial(new_material_params)
+        # if the material editor was canceled a empty params dict will be returned, do not change the self.material
+        # self.print_material_params(new_material_params)
+        if new_material_params:  # returns True if dict is not empty (do not use 'is True', this would return False for a non empty dict)
+            self.material = new_material_params
         self.check_material_keys()
         self.set_mat_params_in_input_fields(self.material)
         if self.has_transient_mat is False:
@@ -274,15 +280,22 @@ class _TaskPanelFemMaterial:
             self.parameterWidget.input_fd_kinematic_viscosity.setReadOnly(True)
             self.parameterWidget.input_fd_vol_expansion_coefficient.setReadOnly(True)
 
-    # ********* material parameter input fields *********
+    # material parameter input fields *******************************
     def print_material_params(self, material=None):
-        if not material:
+        # in rare cases we gone pass a empty dict
+        # in such a case a empty dict should be printed and not self.material thus we check for None
+        if material is None: 
             material = self.material
-        for p in material:
-            print('   ' + p + ' --> ' + material[p])
+        if not material:
+            # empty dict
+            print('   ' + str(material))
+        else:
+            for p in material:
+                print('   ' + p + ' --> ' + material[p])
         print('\n')
 
     def check_material_keys(self):
+        # FreeCAD units definition is at file end of src/Base/Unit.cpp
         if not self.material:
             print('For some reason all material data is empty!')
             self.material['Name'] = 'Empty'
@@ -527,7 +540,7 @@ class _TaskPanelFemMaterial:
             q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
             self.parameterWidget.input_fd_specific_heat.setText(q.UserString)
 
-    # ********* material import and export *********
+    # material import and export ************************************
     def print_materialsdict(self):
         print('\n\n')
         for mat_card in self.materials:

@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation>Katı için bir FEM malzemesi oluşturur</translation>
+      <translation>Katı için FEM malzemesi oluşturur</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>

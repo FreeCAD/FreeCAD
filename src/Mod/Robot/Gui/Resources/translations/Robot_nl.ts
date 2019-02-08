@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Zet de standaard orientatie voor nieuw aan te maken tussenpunten</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>standaard oriëntatie instellen voor latere waypoint opdrachten</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Zet de standaard waarde voor snelheid, versnelling en continuïteit voor toekomstige aan te maken tussenpunten</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Standaardwaarden instellen voor snelheid, versnelling en continuïteit van latere waypoint opdrachten</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Minimaal 2 tussenpunten in baan nodig voor simulatie.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Je moet ten minste twee punten in een traject hebben om te kunnen simuleren.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Je moet zweven boven een geometrie (Voorselectie) met de muis om dit commando te gebruiken. Zie documentatie voor details.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Zet standaard snelheid</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Zet standaard continuïteit</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Zet standaard versnelling</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Selecteer een Robot om thuispositie te bepalen</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Selecteer een Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Één traject object selecteren.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>Standaard snelheid instellen</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>snelheid: (bijv. 1 m/s of 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>Set standaard continuïteit</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>continu?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>standaard versnelling instellen</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>versnelling: (bijv. 1 m/s^2 of 3 cm/s^2)</translation>
     </message>

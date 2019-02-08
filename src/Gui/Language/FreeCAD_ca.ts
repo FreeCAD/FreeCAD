@@ -294,11 +294,11 @@
       <translation>premeu el botó central del ratolí</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Premeu el botó central i dret o esquerre del ratolí</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Prem boto central + esquerre o central + dret</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>Feu lliscar la roda del ratolí o manteniu premuda la roda mentre feu clic dret o esquerre i moveu el ratolí cap amunt o cap avall</translation>
     </message>
@@ -422,6 +422,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Fora d'abast</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Configuració de la càmera</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientació</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Vista actual</translation>
     </message>
   </context>
   <context>
@@ -828,8 +859,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>La drecera '%1' ja s'ha assignat a '%2'. Definiu una altra drecera.</translation>
+Do you want to override it?</source>
+      <translation>La drecera "%1" ja està assignat a l "%2".
+
+voleu substituir-lo?</translation>
     </message>
   </context>
   <context>
@@ -2037,15 +2070,19 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+      <translation>Utilitzeu l'objecte OpenGL Vertex Buffer</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Orientació de la càmera del nou document</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</translation>
+      <translation>Evita la inclinació de la vista quan s'està fent zoom amb els dits. Sols afecta l'estil Navegació amb gestos. Aquesta opció no desactiva la inclinació del ratolí.</translation>
     </message>
     <message>
       <source>Disable touchscreen tilt gesture</source>
-      <translation type="unfinished">Disable touchscreen tilt gesture</translation>
+      <translation>Desactiva el gest d'inclinació de la pantalla tàctil</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
@@ -2089,6 +2126,46 @@ Specify another directory, please.</source>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isomètrica</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimètric</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimètric</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Planta</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Alçat</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Esquerra</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Dreta</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Posterior</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Inferior</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Personalitzat</translation>
     </message>
   </context>
   <context>
@@ -2718,7 +2795,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Imperial Civil (ft/ft^2/ft^3)</source>
-      <translation type="unfinished">Imperial Civil (ft/ft^2/ft^3)</translation>
+      <translation>Imperial Civil (ft/ft^2/ft^3)</translation>
     </message>
     <message>
       <source>Minimum fractional inch:</source>
@@ -2998,10 +3075,6 @@ Specify another directory, please.</source>
       <translation>Esteu segur que voleu eliminar tots els directoris transitoris?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Si suprimiu tots els directoris transitoris després no podreu recuperar cap fitxer.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Finalitzat</translation>
     </message>
@@ -3015,6 +3088,10 @@ Specify another directory, please.</source>
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Premeu 'Comença la recuperació' per a iniciar el procés de recuperació del document que s'indica a continuació.
 La columna 'Estat? mostra si el document es pot recuperar.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>Eliminant tots els directoris transitoris no serà capaç de recuperar arxius després.</translation>
     </message>
   </context>
   <context>
@@ -3789,20 +3866,20 @@ Do you want to save your changes?</source>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
+      <source>Tap OR click left mouse button.</source>
       <translation>Toqueu. O premeu el botó esquerre del ratolí.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Arrossegueu la pantalla amb dos dits. O premeu el botó dret del ratolí.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>Pantalla amb dos dits d'arrossegar o premeu el botó dret del ratolí.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrossegueu la pantalla amb un dit. O premeu el botó esquerre del ratolí. En l'entorn d'esbós i altres modes d'edició, manteniu, a més, la tecla Alt</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Arrossegar la pantalla amb un dit o premeu el botó esquerre del ratolí. El dibuixant i altres modes d'edició, mantenir a més Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pinceu (poseu dos dits en la pantalla i separeu-los o ajunteu-los). O feu girar la rodeta del ratolí. O utilitzeu les tecles Re Pàg/Av Pàg del teclat.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation>Pessigui (poseu dos dits a la pantalla i arrossegueu-los part de o cap a l'altre) OR moure botó del ratolí mitjà OR Re Pàg/PgDown al teclat.</translation>
     </message>
   </context>
   <context>
@@ -4083,28 +4160,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
+      <source>Tap OR click left mouse button.</source>
       <translation>Toqueu. O premeu el botó esquerre del ratolí.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Arrossegueu la pantalla amb dos dits. O premeu ALT i el botó central del ratolí</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation>Pantalla amb dos dits d'arrossegar o premeu ALT + botó del ratolí mitjà.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrossegueu la pantalla amb un dit. O premeu ALT i el botó esquerre del ratolí. En l'entorn d'esbós i altres modes d'edició, manteniu, a més, la tecla Alt</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Arrossegueu la pantalla amb un dit O premeu el botó esquerre del ratolí En l'entorn d'esbós i altres modes d'edició, manteniu, a més, la tecla Alt.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
       <translation>Pinceu (poseu dos dits en la pantalla i separeu-los o ajunteu-los). O feu girar la rodeta del ratolí. O premeu ALT i el botó dret del ratolí. O utilitzeu les tecles Re Pàg/Av Pàg del teclat.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Ha començat la baixada...</translation>
+      <source>Download started...</source>
+      <translation>La baixada ha començat...</translation>
     </message>
   </context>
   <context>
@@ -5197,18 +5273,6 @@ Be aware the point where you click matters.</source>
       <translation>Origen</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation>%1.%2.%3</translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Translació:</translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotació:</translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Voleu suprimir el contingut del grup?</translation>
     </message>
@@ -5223,6 +5287,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Split</source>
       <translation>Dividir</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Translació:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotació:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5957,12 +6033,12 @@ Be aware the point where you click matters.</source>
       <translation>Fusiona el projecte</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 document (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>No es pot fusionar el projecte amb si mateix.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>Document %1 (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6638,21 +6714,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estàndard</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonomètrica</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Estableix la vista axonomètrica</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6680,6 +6741,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Crea una nova finestra de visualització per al document actiu</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estàndard</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimètric</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Estableix la vista dimètrica</translation>
     </message>
   </context>
   <context>
@@ -6770,6 +6846,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Estableix la vista en alçat</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estàndard</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isomètrica</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Estableix la vista isomètrica</translation>
     </message>
   </context>
   <context>
@@ -6950,6 +7041,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to top view</source>
       <translation>Estableix la vista en planta</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estàndard</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimètric</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Estableix la vista trimètrica</translation>
     </message>
   </context>
   <context>
@@ -7239,28 +7345,16 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Aquests elements estan vinculats a elements seleccionats per a la supressió i podrien trencar-se.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation>Aquests elements estan vinculats a elements seleccionats per a la supressió i podrien trencar-se.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Aquests elements són seleccionats per suprimir-los, però no estan en el document actiu. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Aquests elements són seleccionats per suprimir-los, però no estan en el document actiu.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-Està segur que vol continuar?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation>Està segur que vol continuar?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

@@ -164,7 +164,7 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5915"/>
+      <location filename="../../CommandConstraints.cpp" line="+5942"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -448,7 +448,7 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location line="-4079"/>
+      <location line="-4106"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -484,7 +484,7 @@
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location line="+3188"/>
+      <location line="+3215"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -502,7 +502,7 @@
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="-3000"/>
+      <location line="-3027"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -564,7 +564,7 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+3267"/>
+      <location line="+3294"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -582,7 +582,7 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-5354"/>
+      <location line="-5381"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -600,7 +600,7 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location line="+5966"/>
+      <location line="+5993"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -618,7 +618,7 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="-5476"/>
+      <location line="-5503"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -694,7 +694,7 @@
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location line="+2142"/>
+      <location line="+2169"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -752,7 +752,7 @@
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-2364"/>
+      <location line="-2391"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -951,6 +951,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Create a B-spline via control points in the sketch.</source>
+      <translation type="unfinished">Create a B-spline via control points in the sketch.</translation>
+    </message>
+    <message>
       <source>Create a B-spline via control point in the sketch.</source>
       <translation>スケッチの制御点からB-スプラインを作成</translation>
     </message>
@@ -1153,6 +1157,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Create a periodic B-spline via control points in the sketch.</source>
+      <translation type="unfinished">Create a periodic B-spline via control points in the sketch.</translation>
+    </message>
+    <message>
       <source>Create a periodic B-spline via control point in the sketch.</source>
       <translation>スケッチの制御点から周期的なB-スプラインを作成</translation>
     </message>
@@ -1848,7 +1856,7 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+6135"/>
+      <location filename="../../CommandConstraints.cpp" line="+6162"/>
       <source>Sketcher</source>
       <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1969,31 +1977,43 @@
     </message>
     <message>
       <location line="+4"/>
+      <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
+      <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
+    </message>
+    <message>
+      <location line="+8"/>
+      <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
+      <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
+    </message>
+    <message>
+      <location line="+14"/>
+      <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
+      <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
+    </message>
+    <message>
       <source>BSpline GeoId is out of bounds.</source>
       <translation>B-スプライン・ジオイドが範囲外です。</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location line="-19"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>ノット多重度で変更が起きないように要求しています。</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>The GeoId provided is not a B-spline curve.</source>
       <translation>入力されたジオイドがB-スプライン曲線になりません。</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+12"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>ノット・インデックスが境界外です。OCCの記法に従うと最初のノットは1と非ゼロのインデックスを持ちます。</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source>The multiplicity cannot be increased beyond the degree of the b-spline.</source>
       <translation>B-スプラインの次数を越えて多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location line="+10"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>0を越えて多重度を減らすことはできません。</translation>
     </message>
@@ -2003,53 +2023,81 @@
       <translation>OCCは最大許容範囲内で多重度を減らすことができまぜん。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="+376"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.
 </source>
       <translation>自動拘束エラー: 一致拘束の適用中にスケッチの求解に失敗しました。
 </translation>
     </message>
     <message>
-      <location line="+79"/>
       <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
 </source>
       <translation>自動拘束エラー: 垂直/水平拘束の適用中にスケッチの求解に失敗しました。
 </translation>
     </message>
     <message>
-      <location line="+195"/>
       <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.
 </source>
       <translation>自動拘束エラー: 等値拘束の適用中にスケッチの求解に失敗しました。
 </translation>
     </message>
     <message>
-      <location line="+54"/>
       <source>Autoconstrain error: Unsolvable sketch without constraints.
 </source>
       <translation>自動拘束エラー: 拘束の無いスケッチの求解に失敗しました。
 </translation>
     </message>
     <message>
-      <location line="+37"/>
       <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
 </source>
       <translation>自動拘束エラー: 水平拘束・垂直拘束の適用後にスケッチの求解に失敗しました。
 </translation>
     </message>
     <message>
-      <location line="+22"/>
       <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
 </source>
       <translation>自動拘束エラー: 一致拘束の適用後にスケッチの求解に失敗しました。
 </translation>
     </message>
     <message>
-      <location line="+28"/>
       <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.
 </source>
       <translation>自動拘束エラー: 等値拘束の適用後にスケッチの求解に失敗しました。
 </translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchAnalysis.cpp" line="+376"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying coincident constraints.</translation>
+    </message>
+    <message>
+      <location line="+79"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</translation>
+    </message>
+    <message>
+      <location line="+195"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying equality constraints.</translation>
+    </message>
+    <message>
+      <location line="+54"/>
+      <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch without constraints.</translation>
+    </message>
+    <message>
+      <location line="+37"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</translation>
+    </message>
+    <message>
+      <location line="+22"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</translation>
+    </message>
+    <message>
+      <location line="+28"/>
+      <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
     </message>
   </context>
   <context>
@@ -2065,7 +2113,7 @@
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="+48"/>
       <location line="+8"/>
-      <location filename="../../CommandConstraints.cpp" line="-7352"/>
+      <location filename="../../CommandConstraints.cpp" line="-7379"/>
       <location line="+6"/>
       <location line="+990"/>
       <location line="+247"/>
@@ -2118,11 +2166,11 @@
       <location line="+9"/>
       <location line="+267"/>
       <location line="+13"/>
-      <location line="+82"/>
+      <location line="+80"/>
       <location line="+21"/>
       <location line="+9"/>
       <location line="+25"/>
-      <location line="+142"/>
+      <location line="+171"/>
       <location line="+36"/>
       <location line="+134"/>
       <location line="+130"/>
@@ -2205,7 +2253,7 @@
       <translation>スケッチからエッジを選択（複数可）</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-6430"/>
+      <location filename="../../CommandConstraints.cpp" line="-6457"/>
       <location line="+247"/>
       <source>Select an edge from the sketch.</source>
       <translation>スケッチからエッジを選択</translation>
@@ -2221,14 +2269,11 @@
       <translation>二重拘束</translation>
     </message>
     <message>
-      <location line="-816"/>
-      <location line="+93"/>
-      <location line="+247"/>
       <source>The selected edge has already a horizontal constraint!</source>
       <translation>選択されているエッジは既に水平拘束されています！</translation>
     </message>
     <message>
-      <location line="-350"/>
+      <location line="-826"/>
       <location line="+14"/>
       <location line="+6"/>
       <location line="+19"/>
@@ -2280,41 +2325,29 @@
       <translation>選択したエッジは線分ではありません</translation>
     </message>
     <message>
-      <location line="-326"/>
-      <location line="+93"/>
-      <location line="+149"/>
-      <location line="+98"/>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>選択されているエッジは既に垂直拘束されています！</translation>
     </message>
     <message>
-      <location line="-334"/>
-      <location line="+93"/>
-      <location line="+154"/>
-      <location line="+93"/>
-      <location line="+416"/>
-      <location line="+50"/>
       <source>The selected edge has already a Block constraint!</source>
       <translation>選択されたエッジにはすでに水ブロック平拘束が設定されています！</translation>
     </message>
     <message>
-      <location line="-787"/>
+      <location line="-301"/>
       <source>The selected item(s) can't accept a horizontal constraint!</source>
       <translation>選択されているアイテムは水平拘束出来ません！</translation>
     </message>
     <message>
       <location line="+27"/>
-      <location line="+246"/>
       <source>There are more than one fixed point selected. Select a maximum of one fixed point!</source>
       <translation>複数の固定点が選択されています。固定点を1つだけ選択してください！</translation>
     </message>
     <message>
-      <location line="-51"/>
       <source>The selected edge has already a horizontral constraint!</source>
       <translation>選択されたエッジにはすでに水平拘束が設定されています！</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+219"/>
       <source>The selected item(s) can't accept a vertical constraint!</source>
       <translation>選択されているアイテムは垂直拘束出来ません！</translation>
     </message>
@@ -2340,7 +2373,6 @@
       <translation>外部形状においてX固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
-      <location line="+655"/>
       <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
       <translation>原点に対してX座標を固定する拘束を追加することはできません！</translation>
     </message>
@@ -2349,7 +2381,7 @@
       <translation>外部形状に対してY固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
-      <location line="-1406"/>
+      <location line="-751"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>スケッチから原点以外の節点を 1 つ選択します。</translation>
     </message>
@@ -2364,12 +2396,11 @@
       <translation>不適切なソルバー状態</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
       <translation>スケッチが求解されていない場合や冗長/競合する拘束がある場合はブロック拘束を追加できません。</translation>
     </message>
     <message>
-      <location line="+15"/>
+      <location line="+16"/>
       <source>Select one edge from the sketch.</source>
       <translation>スケッチから1本のエッジを選択</translation>
     </message>
@@ -2380,12 +2411,12 @@
     </message>
     <message>
       <location line="+355"/>
-      <location line="+2231"/>
+      <location line="+2229"/>
       <source>Constraint Substitution</source>
       <translation>拘束代入</translation>
     </message>
     <message>
-      <location line="-2230"/>
+      <location line="-2228"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>代わりに端点間の正接拘束が適用されました。</translation>
     </message>
@@ -2407,31 +2438,30 @@
       <translation>１点と複数の曲線、または1つの曲線と複数の点を選択してください。 %1 個の曲線と %2 個の点が選択されています。</translation>
     </message>
     <message>
-      <location line="+457"/>
       <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
       <translation>原点に対してY座標を固定する拘束を追加することはできません！</translation>
     </message>
     <message>
-      <location line="+550"/>
+      <location line="+1007"/>
       <location line="+34"/>
       <location line="+177"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
       <translation>B-スプラインエッジの直角拘束は現在サポートされていません。</translation>
     </message>
     <message>
-      <location line="+392"/>
+      <location line="+390"/>
       <location line="+25"/>
-      <location line="+178"/>
+      <location line="+207"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
       <translation>B-スプラインエッジの正接拘束は現在サポートされていません。</translation>
     </message>
     <message>
-      <location line="-147"/>
+      <location line="-176"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>端点間の正接拘束が適用されました。一致拘束は削除されました。</translation>
     </message>
     <message>
-      <location line="+422"/>
+      <location line="+451"/>
       <location line="+51"/>
       <location line="+420"/>
       <location line="+51"/>
@@ -2454,7 +2484,7 @@
       <translation>スケッチからエンティティのみを選択</translation>
     </message>
     <message>
-      <location line="-3412"/>
+      <location line="-3439"/>
       <location line="+268"/>
       <source>Select vertices from the sketch.</source>
       <translation>スケッチから節点を選択</translation>
@@ -2473,7 +2503,7 @@
       <location line="+154"/>
       <location line="+185"/>
       <location line="+249"/>
-      <location line="+1706"/>
+      <location line="+1733"/>
       <location line="+471"/>
       <location line="+591"/>
       <source>Select the right things from the sketch.</source>
@@ -2484,7 +2514,7 @@
       <translation>B-スプラインエッジの点拘束は現在サポートされていません。</translation>
     </message>
     <message>
-      <location line="-2872"/>
+      <location line="-2899"/>
       <location line="+247"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
       <translation>この拘束は1線分または点ペアに対してのみ有効です</translation>
@@ -2508,7 +2538,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>B-スプラインエッジの正接拘束は現在サポートされていません。</translation>
     </message>
     <message>
-      <location line="+913"/>
+      <location line="+940"/>
       <location line="+471"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>円弧または円のみに適用される拘束です。</translation>
@@ -2557,12 +2587,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>選択したオブジェクトの数が 3 ではなく（%1 です）。</translation>
     </message>
     <message>
-      <location line="+22"/>
       <source>Can not create constraint with external geometry only!!</source>
       <translation>外部ジオメトリーのみからなる拘束を作成することはできません！！</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+29"/>
       <source>Incompatible geometry is selected!</source>
       <translation>互換性のないジオメトリが選択されています！</translation>
     </message>
@@ -2587,12 +2616,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>スケッチ軸を内部整列拘束で使用することはできません。</translation>
     </message>
     <message>
-      <location line="+45"/>
       <source>You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</source>
       <translation>他の楕円上にある楕円は内部拘束することができない。一つだけ楕円を選択して下さい。</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+51"/>
       <location line="+159"/>
       <source>Maximum 2 points are supported.</source>
       <translation>最大 2 点がサポートされています。</translation>
@@ -2604,13 +2632,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>最大 2線がサポートされています。</translation>
     </message>
     <message>
-      <location line="-122"/>
-      <location line="+159"/>
       <source>Nothing to constraint</source>
       <translation>拘束はありません</translation>
     </message>
     <message>
-      <location line="-158"/>
+      <location line="-121"/>
       <source>Currently all internal geometry of the ellipse is already exposed.</source>
       <translation>現在、楕円の全ての内部ジオメトリーは既に公開されています。</translation>
     </message>
@@ -2630,17 +2656,15 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>指定された楕円に対して可能な数を超えた要素が設定されました。これらは無視されました。</translation>
     </message>
     <message>
-      <location line="-138"/>
       <source>You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
       <translation>他の楕円弧にある楕円弧には内部拘束することができません。楕円弧を一つだけ選択してください。</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
       <translation>楕円弧にある楕円には内部拘束することができません。楕円弧または楕円を一つだけ選択してください。</translation>
     </message>
     <message>
-      <location line="+50"/>
+      <location line="-82"/>
       <source>Currently all internal geometry of the arc of ellipse is already exposed.</source>
       <translation>現在、楕円の弧の全ての内部ジオメトリーは既に公開されています。</translation>
     </message>
@@ -2669,7 +2693,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>スケッチから節点を2つだけ選択してください</translation>
     </message>
     <message>
-      <location line="-5348"/>
+      <location line="-5375"/>
       <location line="+10"/>
       <source>Select two or more vertexes from the sketch.</source>
       <translation>スケッチから2点以上の節点を選択してください。</translation>
@@ -2742,12 +2766,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+13"/>
-      <location line="+2983"/>
+      <location line="+3010"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>スケッチから2本以上の直線を選択してください</translation>
     </message>
     <message>
-      <location line="-2969"/>
+      <location line="-2996"/>
       <source>Select a valid line</source>
       <translation>有効な直線を選択してください</translation>
     </message>
@@ -2784,25 +2808,97 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+46"/>
       <location line="+1780"/>
       <location line="+465"/>
-      <location line="+156"/>
-      <location line="+454"/>
+      <location line="+154"/>
+      <location line="+483"/>
       <location line="+2197"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
     <message>
-      <location line="-3256"/>
-      <location line="+620"/>
+      <location line="-5912"/>
+      <location line="+93"/>
+      <location line="+159"/>
+      <location line="+88"/>
+      <source>The selected edge already has a horizontal constraint!</source>
+      <translation type="unfinished">The selected edge already has a horizontal constraint!</translation>
+    </message>
+    <message>
+      <location line="-335"/>
+      <location line="+93"/>
+      <location line="+149"/>
+      <location line="+98"/>
+      <source>The selected edge already has a vertical constraint!</source>
+      <translation type="unfinished">The selected edge already has a vertical constraint!</translation>
+    </message>
+    <message>
+      <location line="-334"/>
+      <location line="+93"/>
+      <location line="+154"/>
+      <location line="+93"/>
+      <location line="+416"/>
+      <location line="+50"/>
+      <source>The selected edge already has a Block constraint!</source>
+      <translation type="unfinished">The selected edge already has a Block constraint!</translation>
+    </message>
+    <message>
+      <location line="-514"/>
+      <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
+      <translation type="unfinished">There are more than one fixed points selected. Select a maximum of one fixed point!</translation>
+    </message>
+    <message>
+      <location line="+435"/>
+      <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
+      <translation type="unfinished">A Block constraint cannot be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</translation>
+    </message>
+    <message>
+      <location line="+1149"/>
+      <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
+      <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the origin point!</translation>
+    </message>
+    <message>
+      <location line="+248"/>
+      <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
+      <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the origin point!</translation>
+    </message>
+    <message>
+      <location line="+494"/>
+      <location line="+618"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
       <translation>使用される3オブジェクトは2つの曲線と1つの点である必要があります。</translation>
     </message>
     <message>
-      <location line="-611"/>
+      <location line="-609"/>
       <location line="+38"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>接続していない点に対して垂直拘束を追加することはできません！</translation>
+    </message>
+    <message>
+      <location line="+3159"/>
+      <source>Cannot create constraint with external geometry only!!</source>
+      <translation type="unfinished">Cannot create constraint with external geometry only!!</translation>
+    </message>
+    <message>
+      <location line="+189"/>
+      <source>You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</source>
+      <translation type="unfinished">You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</translation>
+    </message>
+    <message>
+      <location line="+49"/>
+      <location line="+159"/>
+      <source>Nothing to constrain</source>
+      <translation type="unfinished">Nothing to constrain</translation>
+    </message>
+    <message>
+      <location line="-55"/>
+      <source>You cannot internally constrain an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
+      <translation type="unfinished">You cannot internally constrain an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
+      <translation type="unfinished">You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</translation>
     </message>
     <message>
       <source>The selected points should be end points of arcs and lines.</source>
@@ -2817,7 +2913,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>選択されているエッジは円弧、直線、または円である必要があります</translation>
     </message>
     <message>
-      <location line="+34"/>
+      <location line="-3473"/>
       <location line="+177"/>
       <source>One of the selected edges should be a line.</source>
       <translation>選択されているエッジの1つが直線である必要があります</translation>
@@ -2844,9 +2940,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>選択したオブジェクトの数が正しくありません ！</translation>
     </message>
     <message>
-      <location line="+85"/>
+      <location line="+83"/>
       <location line="+21"/>
-      <location line="+346"/>
+      <location line="+375"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>接続されていない点に対して正接拘束を追加することはできません！</translation>
     </message>
@@ -3006,8 +3102,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>データムを編集できません。スケッチ拘束が他の拘束と矛盾しています。</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-6770"/>
-      <location line="+5082"/>
+      <location filename="../../CommandConstraints.cpp" line="-6797"/>
+      <location line="+5109"/>
       <location line="+133"/>
       <location line="+338"/>
       <location line="+133"/>
@@ -3262,6 +3358,10 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+3"/>
+      <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
+      <translation type="unfinished">The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</translation>
+    </message>
+    <message>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketchs.</source>
       <translation>選択されているスケッチはこのスケッチと平行でありません。非平行スケッチを許可するにはCtrl+Altを押してください。</translation>
     </message>
@@ -3332,7 +3432,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5756"/>
+      <location filename="../../CommandConstraints.cpp" line="-5783"/>
       <location filename="../../EditDatumDialog.cpp" line="-83"/>
       <source>Insert angle</source>
       <translation>角度を挿入</translation>
@@ -3357,14 +3457,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+2"/>
-      <location line="+5558"/>
+      <location line="+5585"/>
       <location line="+145"/>
       <location filename="../../EditDatumDialog.cpp" line="+2"/>
       <source>Diameter:</source>
       <translation>直径:</translation>
     </message>
     <message>
-      <location line="-5699"/>
+      <location line="-5726"/>
       <location filename="../../EditDatumDialog.cpp" line="+4"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
@@ -3378,14 +3478,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>比 n2/n1:</translation>
     </message>
     <message>
-      <location line="+5081"/>
+      <location line="+5108"/>
       <location line="+145"/>
       <source>Change radius</source>
       <translation>半径を変更</translation>
     </message>
     <message>
-      <location line="-5237"/>
-      <location line="+5093"/>
+      <location line="-5264"/>
+      <location line="+5120"/>
       <location line="+145"/>
       <location filename="../../EditDatumDialog.cpp" line="-11"/>
       <source>Radius:</source>
@@ -3408,7 +3508,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>比 n2/n1:</translation>
     </message>
     <message>
-      <location line="-6967"/>
+      <location line="-6994"/>
       <location filename="../../EditDatumDialog.cpp" line="+15"/>
       <source>Insert length</source>
       <translation>長さを挿入</translation>
@@ -3423,7 +3523,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+171"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+172"/>
       <source>Delete</source>
       <translation>削除</translation>
     </message>
@@ -3583,6 +3683,10 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+13"/>
+      <source>If selected, each element in the array is constrained with respect to the others using construction lines</source>
+      <translation type="unfinished">If selected, each element in the array is constrained with respect to the others using construction lines</translation>
+    </message>
+    <message>
       <source>If selected, each element in the array is constraint with respect to the others using construction lines</source>
       <translation>選択した場合、配列の各要素は補助線を使用して他の要素に対して拘束されます</translation>
     </message>
@@ -3787,17 +3891,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>通知</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>Notify automatic constraint substitutions.</source>
       <translation>自動的な拘束代入を通知</translation>
     </message>
     <message>
+      <location line="+6"/>
       <location line="+3"/>
       <source>Notify automatic constraint substitutions</source>
       <translation>自動的な拘束代入を通知</translation>
     </message>
     <message>
-      <location line="+100"/>
+      <location line="+61"/>
+      <source>Ask for value after creating a dimensional constraint</source>
+      <translation type="unfinished">Ask for value after creating a dimensional constraint</translation>
+    </message>
+    <message>
+      <location line="+39"/>
       <source>Constraint Creation "Continue Mode"</source>
       <translation>拘束作成「モードの続行」</translation>
     </message>
@@ -3905,7 +4014,6 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>グリッドの線種</translation>
     </message>
     <message>
-      <location line="-16"/>
       <source>Ask for value after creating a distance constraint</source>
       <translation>距離拘束を作成した後に値を入力</translation>
     </message>
@@ -4140,6 +4248,28 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="-28"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+
+Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
+      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+
+Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+    </message>
+    <message>
+      <location line="+43"/>
+      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
+      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</translation>
+    </message>
+    <message>
+      <location line="+14"/>
+      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+    </message>
+    <message>
+      <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
@@ -4150,7 +4280,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
 「拘束内の端点を交換」ボタンをクリックし端点を再配置してください。 v0.15 よりも古い FreeCAD において作成されたスケッチでは、一度だけ行ってみるとよい？？？</translation>
     </message>
     <message>
-      <location line="+11"/>
+      <location line="-46"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
@@ -4175,17 +4305,15 @@ However, no constraints linking to the endpoints were found.</source>
       <translation>方向のロック拘束</translation>
     </message>
     <message>
-      <location line="-13"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
       <translation>方向のロック拘束が有効なので、 %1 の拘束は再計算されました。拘束はレポートビュー（表示メニュー -&gt; ビュー -&gt; レポートビュー）でリストされています。</translation>
     </message>
     <message>
-      <location line="+14"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
       <translation>拘束 %1 によって方向のロックが無効です。拘束リストはレポートビューにあります(メニューの表示 -&gt; ビュー -&gt; レポートビュー)。全てのフィーチャー拘束でロックのデフォルトは有効のままであることに注意してください。</translation>
     </message>
     <message>
-      <location line="+12"/>
+      <location line="+13"/>
       <location line="+12"/>
       <source>Delete constraints to external geom.</source>
       <translation>外部ジオメトリーへの拘束を削除</translation>
@@ -4323,21 +4451,21 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location line="+463"/>
       <location line="+1"/>
-      <location line="+81"/>
+      <location line="+101"/>
       <location line="+1"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location line="-80"/>
+      <location line="-100"/>
       <location line="+2"/>
-      <location line="+80"/>
+      <location line="+100"/>
       <location line="+1"/>
       <source>Line</source>
       <translation>直線</translation>
     </message>
     <message>
-      <location line="-82"/>
+      <location line="-102"/>
       <location line="+4"/>
       <location line="+4"/>
       <location line="+4"/>
@@ -4352,63 +4480,63 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
       <location line="-29"/>
       <location line="+2"/>
-      <location line="+79"/>
+      <location line="+99"/>
       <location line="+1"/>
       <source>Arc</source>
       <translation>円弧</translation>
     </message>
     <message>
-      <location line="-78"/>
+      <location line="-98"/>
       <location line="+2"/>
-      <location line="+78"/>
+      <location line="+98"/>
       <location line="+1"/>
       <source>Circle</source>
       <translation>円</translation>
     </message>
     <message>
-      <location line="-77"/>
+      <location line="-97"/>
       <location line="+2"/>
-      <location line="+77"/>
+      <location line="+97"/>
       <location line="+1"/>
       <source>Ellipse</source>
       <translation>楕円</translation>
     </message>
     <message>
-      <location line="-76"/>
+      <location line="-96"/>
       <location line="+2"/>
-      <location line="+76"/>
+      <location line="+96"/>
       <location line="+1"/>
       <source>Elliptical Arc</source>
       <translation>楕円弧</translation>
     </message>
     <message>
-      <location line="-75"/>
+      <location line="-95"/>
       <location line="+2"/>
-      <location line="+75"/>
+      <location line="+95"/>
       <location line="+1"/>
       <source>Hyperbolic Arc</source>
       <translation>双曲線の円弧</translation>
     </message>
     <message>
-      <location line="-74"/>
+      <location line="-94"/>
       <location line="+2"/>
-      <location line="+74"/>
+      <location line="+94"/>
       <location line="+1"/>
       <source>Parabolic Arc</source>
       <translation>放物線の円弧</translation>
     </message>
     <message>
-      <location line="-73"/>
+      <location line="-93"/>
       <location line="+2"/>
-      <location line="+73"/>
+      <location line="+93"/>
       <location line="+1"/>
       <source>BSpline</source>
       <translation>B-スプライン</translation>
     </message>
     <message>
-      <location line="-72"/>
+      <location line="-92"/>
       <location line="+2"/>
-      <location line="+72"/>
+      <location line="+92"/>
       <location line="+1"/>
       <source>Other</source>
       <translation>その他</translation>
@@ -4844,7 +4972,7 @@ Use the sketch validation tool.</source>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5874"/>
+      <location filename="../../CommandConstraints.cpp" line="+5901"/>
       <location line="+1"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>円または円弧の直径を固定する</translation>

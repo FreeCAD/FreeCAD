@@ -102,8 +102,8 @@
       <translation>Căn giữa theo chiều dọc</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Nội dung căn chỉnh chính giữa theo chiều dọc của các ô đã chọn</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Chữ gạch chân</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Đặt kiểu chữ gạch chân cho các ô được chọn</translation>
+      <source>Underline text in selected cells</source>
+      <translation type="unfinished">Underline text in selected cells</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Tùy chọn</translation>
+      <source>Custom Color</source>
+      <translation type="unfinished">Custom Color</translation>
     </message>
   </context>
   <context>

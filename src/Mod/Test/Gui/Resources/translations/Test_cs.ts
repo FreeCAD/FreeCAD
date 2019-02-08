@@ -115,18 +115,18 @@ Poklepáním na chybu ve stromovém zobrazení zobrazíte další informace o ch
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
-Click 'start', and the test thus produced will be run.
+      <translation>Vložte název objektu, který při zavolání vrátí Testovací případ.
+Stiskněte "start" a takto vytvořený test se spustí.
 
-Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+Dvakrát klikněte na chybu ve stromovém zobrazení pro informace o ní včetně místa chyby.</translation>
     </message>
     <message>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation type="unfinished">Copyright (c) Werner Mayer
+      <translation>Copyright (c) Werner Mayer
 
-FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+FreeCAD UnitTest je součástí FreeCADu a podporuje zápis Jednotkových testů pro vlastní moduly.</translation>
     </message>
   </context>
 </TS>

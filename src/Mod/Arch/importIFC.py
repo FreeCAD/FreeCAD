@@ -411,7 +411,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # IfcOpenShell multiplies the precision value of the file by 100
     # So we raise the precision by 100 too to compensate...
     #ctxs = ifcfile.by_type("IfcGeometricRepresentationContext")
-    #for ctx in ctxs: 
+    #for ctx in ctxs:
     #    if not ctx.is_a("IfcGeometricRepresentationSubContext"):
     #        ctx.Precision = ctx.Precision/100
 
@@ -1385,7 +1385,9 @@ class recycler:
         self.localplacements = {}
         self.rgbs = {}
         self.ssrenderings = {}
+        self.sstyles = {}
         self.transformationoperators = {}
+        self.psas = {}
         self.spared = 0
 
     def createIfcCartesianPoint(self,points):
@@ -1517,6 +1519,36 @@ class recycler:
                 self.transformationoperators[key] = c
             return c
 
+    def createIfcSurfaceStyle(self,name,r,g,b):
+        if name:
+            key = name + str((r,g,b))
+        else:
+            key = str((r,g,b))
+        if self.compress and key in self.sstyles:
+            self.spared += 1
+            return self.sstyles[key]
+        else:
+            col = self.createIfcColourRgb(r,g,b)
+            ssr = self.createIfcSurfaceStyleRendering(col)
+            c = self.ifcfile.createIfcSurfaceStyle(name,"BOTH",[ssr])
+            if self.compress:
+                self.sstyles[key] = c
+            return c
+
+    def createIfcPresentationStyleAssignment(self,name,r,g,b):
+        if name:
+            key = name+str((r,g,b))
+        else:
+            key = str((r,g,b))
+        if self.compress and key in self.psas:
+            self.spared += 1
+            return self.psas[key]
+        else:
+            iss = self.createIfcSurfaceStyle(name,r,g,b)
+            c = self.ifcfile.createIfcPresentationStyleAssignment([iss])
+            if self.compress:
+                self.psas[key] = c
+            return c
 
 def export(exportList,filename):
 
@@ -2217,17 +2249,17 @@ def export(exportList,filename):
             mat = ifcfile.createIfcMaterial(l)
             materials[m.Label] = mat
             rgb = None
-            for colorslot in ["Color","DiffuseColor","ViewColor"]:
-                if colorslot in m.Material:
-                    if m.Material[colorslot]:
-                        if m.Material[colorslot][0] == "(":
-                            rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
-                            break
+            if hasattr(m,"Color"):
+                rgb = m.Color[:3]
+            else:
+                for colorslot in ["Color","DiffuseColor","ViewColor"]:
+                    if colorslot in m.Material:
+                        if m.Material[colorslot]:
+                            if m.Material[colorslot][0] == "(":
+                                rgb = tuple([float(f) for f in m.Material[colorslot].strip("()").split(",")])
+                                break
             if rgb:
-                col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
-                ssr = ifcbin.createIfcSurfaceStyleRendering(col)
-                iss = ifcfile.createIfcSurfaceStyle(l,"BOTH",[ssr])
-                psa = ifcfile.createIfcPresentationStyleAssignment([iss])
+                psa = ifcbin.createIfcPresentationStyleAssignment(l,rgb[0],rgb[1],rgb[2])
                 isi = ifcfile.createIfcStyledItem(None,[psa],None)
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
                 imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
@@ -2939,10 +2971,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         m = obj.Material.Label
                         if sys.version_info.major < 3:
                             m = m.encode("utf8")
-                col = ifcbin.createIfcColourRgb(rgb[0],rgb[1],rgb[2])
-                ssr = ifcbin.createIfcSurfaceStyleRendering(col)
-                iss = ifcfile.createIfcSurfaceStyle(m,"BOTH",[ssr])
-                psa = ifcfile.createIfcPresentationStyleAssignment([iss])
+                psa = ifcbin.createIfcPresentationStyleAssignment(m,rgb[0],rgb[1],rgb[2])
                 surfstyles[key] = psa
             for shape in shapes:
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)

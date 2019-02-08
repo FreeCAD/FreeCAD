@@ -164,7 +164,7 @@ class CommandJobTemplateExport:
 
         encoded = job.Proxy.setupSheet.encodeTemplateAttributes(attrs)
         # write template
-        with open(PathUtil.toUnicode(path), 'wb') as fp:
+        with open(PathUtil.toUnicode(path), 'w') as fp:
             json.dump(encoded, fp, sort_keys=True, indent=2)
 
 if FreeCAD.GuiUp:

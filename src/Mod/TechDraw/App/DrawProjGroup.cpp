@@ -77,6 +77,8 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
+    Rotation.setStatus(App::Property::Hidden,true);   //DPG does not rotate
+
 }
 
 DrawProjGroup::~DrawProjGroup()
@@ -123,6 +125,13 @@ void DrawProjGroup::onChanged(const App::Property* prop)
                 if(std::abs(getScale() - newScale) > FLT_EPSILON) {
                     Scale.setValue(newScale);
                 }
+            }
+        }
+        if (prop == &Rotation) {
+            if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+                Rotation.setValue(0.0);
+                purgeTouched();
+                Base::Console().Warning("DPG: Projection Groups do not rotate. Change ignored.\n");
             }
         }
 

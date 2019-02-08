@@ -51,7 +51,7 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation>Gövde oluştur</translation>
+      <translation>Cisim oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -113,7 +113,7 @@
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation>Bir Grup oluşturma</translation>
+      <translation>Klon oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -221,12 +221,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum line</source>
-      <translation>Bir başlangıç noktası satırı oluşturma</translation>
+      <translation>Bir referans çizgisi oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum line</source>
-      <translation>Yeni bir başlangıç noktası satırı oluşturma</translation>
+      <translation>Yeni bir referans çizgisi oluştur</translation>
     </message>
   </context>
   <context>
@@ -341,12 +341,12 @@
     <message>
       <location line="+1"/>
       <source>Set tip</source>
-      <translation>Ipucu ayarla</translation>
+      <translation>Ucu ayarla</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Move the tip of the body</source>
-      <translation>Vücudun ucunu hareket ettirin</translation>
+      <translation>Cismin ucunu hareket ettirin</translation>
     </message>
   </context>
   <context>
@@ -436,12 +436,12 @@
     <message>
       <location line="+1"/>
       <source>Create a datum plane</source>
-      <translation>Bir referans noktası oluşturma</translation>
+      <translation>Bir referans düzlemi oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new datum plane</source>
-      <translation>Yeni bir sıfır noktası oluşturma</translation>
+      <translation>Yeni bir referans düzlemi oluştur</translation>
     </message>
   </context>
   <context>
@@ -454,7 +454,7 @@
     <message>
       <location line="+1"/>
       <source>Pocket</source>
-      <translation>Cep</translation>
+      <translation>Oyuk</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -476,7 +476,7 @@
     <message>
       <location line="+1"/>
       <source>Create a datum point</source>
-      <translation>Bir referans noktası oluşturma</translation>
+      <translation>Bir referans noktası oluştur</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -521,7 +521,7 @@
     <message>
       <location line="+1"/>
       <source>Revolve a selected sketch</source>
-      <translation>Seçili bir eskizi döndürerek katıla</translation>
+      <translation>Seçili bir eskizi döndürerek katı oluştur</translation>
     </message>
   </context>
   <context>
@@ -561,7 +561,7 @@
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation>Yeni şekil tutkalı oluşturun</translation>
+      <translation>Yeni bir şekil bağlayıcı oluştur</translation>
     </message>
   </context>
   <context>
@@ -633,47 +633,47 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Create an additive primitive</source>
-      <translation>Katmanlı bir basit nesne oluştur</translation>
+      <translation>Temel bir geometrik cisim ekle</translation>
     </message>
     <message>
       <location line="+113"/>
       <source>Additive Box</source>
-      <translation>Katkı Kutusu</translation>
+      <translation>Kutu ekle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cylinder</source>
-      <translation>Katkı Silindir</translation>
+      <translation>Silindir ekle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Sphere</source>
-      <translation>Katkılı Küre</translation>
+      <translation>Küre ekle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Cone</source>
-      <translation>Katkı Konisi</translation>
+      <translation>Koni ekle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Ellipsoid</source>
-      <translation>Katkılı Elipsoit</translation>
+      <translation>Elipsoit ekle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Torus</source>
-      <translation>Katkı tozu</translation>
+      <translation>Halka ekle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Prism</source>
-      <translation>Katkı Prizması</translation>
+      <translation>Prizma ekle</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Additive Wedge</source>
-      <translation>Katkı Kaması</translation>
+      <translation>Kama ekle</translation>
     </message>
   </context>
   <context>
@@ -2742,7 +2742,7 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+9"/>
       <source>Arc</source>
-      <translation>Çember yayı</translation>
+      <translation>Yay</translation>
     </message>
     <message>
       <location line="+5"/>

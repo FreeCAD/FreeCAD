@@ -518,7 +518,7 @@ CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Vertically center-align");
-    sToolTipText    = QT_TR_NOOP("Center-align contents vertically of selected cells");
+    sToolTipText    = QT_TR_NOOP("Vertically center-align contents of selected cells");
     sWhatsThis      = "Spreadsheet_AlignVCenter";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetAlignVCenter";
@@ -718,7 +718,7 @@ CmdSpreadsheetStyleUnderline::CmdSpreadsheetStyleUnderline()
     sAppModule      = "Spreadsheet";
     sGroup          = QT_TR_NOOP("Spreadsheet");
     sMenuText       = QT_TR_NOOP("Underline text");
-    sToolTipText    = QT_TR_NOOP("Set underline text in selected cells");
+    sToolTipText    = QT_TR_NOOP("Underline text in selected cells");
     sWhatsThis      = "Spreadsheet_StyleUnderline";
     sStatusTip      = sToolTipText;
     sPixmap         = "SpreadsheetStyleUnderline";
@@ -904,4 +904,3 @@ void CreateSpreadsheetCommands(void)
 
     rcCmdMgr.addCommand(new CmdSpreadsheetSetAlias());
 }
-

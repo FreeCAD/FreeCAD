@@ -85,12 +85,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="60"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Střižná rovina na ploše</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Přidat střižnou rovinu na vybranou plochu</translation>
     </message>
   </context>
   <context>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="96"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Odstranit všechny střižné roviny</translation>
     </message>
   </context>
   <context>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="136"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Podmínka elektrostatického potenciálu</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="159"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Podmínka rychosti proudění</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
@@ -145,7 +145,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Podmínka počáteční rychlosti proudu</translation>
     </message>
   </context>
   <context>
@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Vytvoří MKP materiál pro těleso</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -370,7 +370,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>Zobrazit informace o MKP síti</translation>
     </message>
   </context>
   <context>
@@ -535,7 +535,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
       <source>Geometry reference selector for a </source>
-      <translation type="unfinished">Geometry reference selector for a </translation>
+      <translation>Volič referenční geometrie pro </translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -545,7 +545,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="255"/>
       <source>Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </source>
-      <translation type="unfinished">Click on "Add" and select geometric elements to add them to the list. If no geometry is added to the list, all remaining ones are used. The following geometry elements are allowed to select: </translation>
+      <translation>Klikněte "Přidat" a vyberte geometrické elementy pro přidání do seznamu. Pokud není v seznamu žádná geometrie, pak je použita veškerá zbývající geometrie. Je možné vybrat následující geometrické elementy: </translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
@@ -563,12 +563,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Editor materiálu</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="384"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Otevře editor materiálu FreeCADu</translation>
     </message>
   </context>
   <context>

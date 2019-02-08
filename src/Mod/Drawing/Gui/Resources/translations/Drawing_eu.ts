@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>&amp;Atzeko planoa</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>Kalitate &amp;handiko antialiasing-a</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>Ireki SVG fitxategia</translation>
     </message>
@@ -491,6 +491,10 @@ Jarraitu nahi duzu?</translation>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation>Bistaratu proiekzioa</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation> Bistaratu proiekzioa   </translation>
     </message>

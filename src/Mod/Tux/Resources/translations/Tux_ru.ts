@@ -44,11 +44,6 @@
       <translation>Центр вращения</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Средняя кнопка мыши или клавиша H.</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>Средняя кнопка мыши.</translation>
@@ -92,6 +87,11 @@
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation>Не определено</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation>Средняя кнопка мыши или клавиша H.</translation>
     </message>
   </context>
 </TS>

@@ -11,22 +11,22 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="99"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation>Échec de l'analyse du lien (plusieurs colonnes ont été rencontrés)</translation>
+      <translation>Échec de l'analyse du lien (plusieurs deux-points ont été rencontrés)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="205"/>
       <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
-      <translation>Objet {name} n’est ni mobiles ni saisissable, ne pouvez pas modifier les pièces jointes</translation>
+      <translation>L'objet {name} n’est pas mobile et ne peut être accroché, modification de l'accrochage impossible</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="213"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation type="unfinished">{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</translation>
+      <translation>{obj} ne peut être accroché. Vous pouvez toujours utiliser la boîte de dialogue d'accrochage pour aligner l'objet, mais l'accrochage ne sera pas paramétrique.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="230"/>
       <source>Attachment</source>
-      <translation>Pièce jointe</translation>
+      <translation>Accrochage</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="219"/>
@@ -36,22 +36,22 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="263"/>
       <source>Edit attachment of {feat}</source>
-      <translation>Modifier la pièce jointe de {feat}</translation>
+      <translation>Modifier l'accrochage de {feat}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="350"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation>Ignoré. Impossible d'attacher un objet à lui-même!</translation>
+      <translation>Ignoré. Impossible d'accrocher un objet à lui-même!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="353"/>
       <source>{obj1} depends on object being attached, can't use it for attachment</source>
-      <translation>{obj1} dépend de l'objet attaché, ne peut pas l'utiliser pour l'attachement</translation>
+      <translation>{obj1} dépend de l'objet en cours d'accrochage, ne peut pas l'utiliser pour l'accrochage</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="498"/>
       <source>{mode} (add {morerefs})</source>
-      <translation>{mode} (add {morerefs})</translation>
+      <translation>{mode} (ajouter {morerefs})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="501"/>
@@ -60,14 +60,8 @@
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
-      <source>
-
-Reference combinations:
-</source>
-      <translation>
-
-Combinaisons de références :
-</translation>
+      <source>Reference combinations:</source>
+      <translation>Combinaisons de référence :</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
@@ -82,17 +76,17 @@ Combinaisons de références :
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="575"/>
       <source>Failed to resolve links. {err}</source>
-      <translation>Impossible de valider le lien</translation>
+      <translation>Impossible de valider les liens. {err}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="583"/>
       <source>Not attached</source>
-      <translation>Non attaché</translation>
+      <translation>Non accroché</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="585"/>
       <source>Attached with mode {mode}</source>
-      <translation>Attaché avec mode {mode}</translation>
+      <translation>Accroché via le mode {mode}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="592"/>
@@ -102,22 +96,22 @@ Combinaisons de références :
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="595"/>
       <source>Attachment Offset:</source>
-      <translation>Offset d'attachement :</translation>
+      <translation>Compensation d'accrochage :</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="598"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Compensation d'attachement (inactif - non attaché) :</translation>
+      <translation>Compensation d'accrochage (inactif - non accroché) :</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="80"/>
       <source>Attachment...</source>
-      <translation>Pièce jointe...</translation>
+      <translation>Accrochage...</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="82"/>
       <source>Edit attachment of selected object.</source>
-      <translation>Modifier la pièce jointe de l’objet sélectionné.</translation>
+      <translation>Modifier l'accrochage de l’objet sélectionné.</translation>
     </message>
   </context>
   <context>
@@ -130,12 +124,12 @@ Combinaisons de références :
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
       <source>Compound Filter: remove some childs from a compound</source>
-      <translation>Filtre composé : supprimer certains childs d’un composé</translation>
+      <translation>Filtre composé : supprimer certains éléments d’un composé</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="68"/>
       <source>Select a shape that is a compound, first! Second selected item (optional) will be treated as a stencil.</source>
-      <translation>Sélectionnez une forme qui est un composé, tout d’abord ! Deuxième élément sélectionné (en option) est considérée comme un pochoir.</translation>
+      <translation>Sélectionnez d’abord une forme qui soit un composé ! Le second élément sélectionné (facultatif) sera utilisé comme un pochoir.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="105"/>
@@ -149,11 +143,81 @@ Combinaisons de références :
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Le résultat de calcul a échoué avec une erreur : 
+      <translation>Le calcul du résultat a échoué avec une erreur : 
 
 {err}
 
-cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
+Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Le calcul du résultat a échoué avec une erreur : 
+
+{err}
+
+Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
+      <source>Explode compound</source>
+      <translation>Éclater le composé</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
+      <source>Explode compound: split up a list of shapes into separate objects</source>
+      <translation>Éclater le composé : diviser une liste de formes en objets distincts</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
+      <source>Select a shape that is a compound, first!</source>
+      <translation>Sélectionnez d'abord une forme qui soit un composé !</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>Bad selection</source>
+      <translation>Sélection non valide</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Connecter des objets</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Fusionne les objets, en prenant soin de préserver les cavités.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
+      <source>Cutout for object</source>
+      <translation>Découpe de l'objet</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Créer une découpe dans un objet pour l'adapter à un autre objet.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation>Intégrer l'objet</translation>
     </message>
   </context>
   <context>
@@ -165,11 +229,11 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
 {err}
 
  Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Le résultat de calcul a échoué avec une erreur : 
+      <translation>Le calcul du résultat a échoué avec une erreur : 
 
 {err}
 
-cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
+ Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="373"/>
@@ -182,19 +246,24 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <translation>Continuer</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
-      <source>Connect objects</source>
-      <translation>Connecter des objets</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>En premier lieu, sélectionnez au moins deux objets, ou un ou plusieurs composés !</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
-      <source>Part_JoinConnect: Fuses objects, taking care to preserve voids.</source>
-      <translation>Part_JoinConnect : Objets fusionnés, en prenant soin de préserver les cavités.</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Sélectionnez l'objet de base, puis l'objet à incorporer, puis lancez cet outil.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Sélectionnez l'objet dans lequel effectuer une découpe, puis l'objet à insérer dans la découpe et lancez cet outil.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
       <source>Select at least two objects, or one or more compounds, first!</source>
-      <translation>Sélectionnez au moins deux objets, ou un ou plusieurs composés, tout d’abord !</translation>
+      <translation>En premier lieu, sélectionnez au moins deux objets, ou un ou plusieurs composés !</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
@@ -202,29 +271,9 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <translation>Intégrer l'objet</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Fusionne un objet dans un autre en prenant soin de préserver les cavités.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Sélectionnez l'objet de base, puis l'objet à incorporer, puis appelez cet outil.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
-      <source>Cutout for object</source>
-      <translation>Cutout for object</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
-      <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Créer une découpe dans un objet pour l'adapter à un autre objet.</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
       <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
-      <translation>Sélectionnez l'objet dans lequel effectuer une découpe, puis l'objet à insérer dans la découpe et appelez cet outil.</translation>
+      <translation>Sélectionnez l'objet dans lequel effectuer une découpe, puis l'objet à insérer dans la découpe et lancez cet outil.</translation>
     </message>
   </context>
   <context>
@@ -236,11 +285,11 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
 {err}
 
 Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Le résultat de calcul a échoué avec une erreur : 
+      <translation>Le calcul du résultat a échoué avec une erreur : 
 
 {err}
 
-cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
+Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="440"/>
@@ -255,32 +304,40 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
       <source>Boolean Fragments</source>
-      <translation>Fragments Booléen</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Part_BooleanFragments: split objects where they intersect</source>
-      <translation>Part_BooleanFragments: objets sectionnés où ils se croisent</translation>
+      <translation>Fragments Booléens</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Sélectionnez au moins deux objets, ou un ou plusieurs composés, en premier! Si un seul composé est sélectionné, les formes composées seront intersectées les unes avec les autres (sinon, les composés avec auto-intersections ne sont pas valides).</translation>
+      <translation>En premier lieu, sélectionnez au moins deux objets, ou un ou plusieurs composés ! Si un seul composé est sélectionné, les formes composées seront intersectées les unes avec les autres (sinon, les composés avec auto-intersections ne sont pas valides).</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
-      <source>Slice</source>
-      <translation>Tranche</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
-      <source>Part_Slice: split object by intersections with other objects</source>
-      <translation>Part_Slice: fractionner objet par intersections avec d'autres objets</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Le calcul du résultat a échoué avec une erreur : 
+
+{err}
+
+Cliquez sur « Continuer » pour créer la fonction de toute façon, ou « Annuler » pour annuler.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
       <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Sélectionnez au moins deux objets, d'abord! Le premier est l'objet à couper; le reste sont des objets avec lesquels on coupe.</translation>
+      <translation>En premier lieu, sélectionnez au moins deux objets ! Le premier est l'objet à couper; les autres objets seront utilisés pour la coupe.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Continuer</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragments Booléens</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
@@ -288,9 +345,72 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <translation>Booléen XOR</translation>
     </message>
     <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>En premier lieu, sélectionnez au moins deux objets, ou un ou plusieurs composés ! Si un seul composé est sélectionné, les formes composées seront intersectées les unes avec les autres (sinon, les composés avec auto-intersections ne sont pas valides).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Trancher vers composé</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Séparer l'objet par intersection avec d'autres objets, puis grouper en tant que composé.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>En premier lieu, sélectionnez au moins deux objets ! Le premier est l'objet à couper; les autres objets seront utilisés pour la coupe.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Trancher</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation>Fragments Booléens : diviser les objets sectionnés où ils se croisent</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
+      <source>Slice</source>
+      <translation>Trancher</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
+      <source>Part_Slice: split object by intersections with other objects</source>
+      <translation>Diviser un objet par l'intersection avec d'autres objets</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Séparer l'objet par intersection avec d'autres objets.</translation>
+    </message>
+    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
       <source>Part_XOR: remove intersection fragments</source>
-      <translation>Part_XOR: enlever les fragments d'intersection</translation>
+      <translation>Enlever les fragments d'intersection</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>Booléen XOR</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Supprimer les fragments d'intersection</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Créer un tube</translation>
     </message>
   </context>
   <context>
@@ -428,7 +548,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>La contrainte d'attachement est désactivée. Le point peut être déplacé en modifiant la propriété Position.</translation>
+      <translation>L'accrochage est désactivé. Le point peut être déplacé en modifiant la propriété Placement.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
@@ -440,7 +560,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="273"/>
       <source>Point is put at object's Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Le point est placé à la position Placement.Position de l'objet. Cela fonctionne pour les objets avec des positions et pour les bords des ellipses/paraboles/hyperboles.</translation>
+      <translation>Le point est placé au Placement/Position de l'objet. Cela fonctionne pour les objets avec des positionnements et pour les arêtes des ellipses/paraboles/hyperboles.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="275"/>
@@ -452,7 +572,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="276"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Focus sur l'ellipse, la parabole, l'hyperbole.</translation>
+      <translation>Focus de l'ellipse, la parabole, l'hyperbole.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="278"/>
@@ -470,13 +590,13 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="281"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Sur le bord</translation>
+      <translation>Sur l'arête</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="282"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Le point est placé sur l’arête, la position exacte est contrôlée par MapPathParametr. De plus, un sommet peut être lié pour permettre une projection.</translation>
+      <translation>Le point est placé sur l’arête, la position exacte est contrôlée par MapPathParameter. De plus, un sommet peut être lié pour permettre une projection.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="284"/>
@@ -488,7 +608,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="285"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Centre du cercle osculateur d'un bord. Le lien de sommet facultatif définit où.</translation>
+      <translation>Centre du cercle osculateur d'une arête. Un lien facultatif vers un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="287"/>
@@ -524,7 +644,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="294"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Mettre le point de référence coïncidant avec un autre sommet.</translation>
+      <translation>Faire coïncider le point de référence avec un autre sommet.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
@@ -553,12 +673,12 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Le point est placé sur l’arête, la position exacte est contrôlée par MapPathParametr. De plus, un sommet peut être lié pour permettre une projection.</translation>
+      <translation>Le point est placé sur l’arête, la position exacte est contrôlée par MapPathParameter. De plus, un sommet peut être lié pour permettre une projection.</translation>
     </message>
     <message>
       <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Centre du cercle osculateur (centre de courbure) d’une arête.</translation>
+      <translation>Centre du cercle osculateur (centre de courbure) d’une arête. Un lien facultatif vers un sommet définit où.</translation>
     </message>
   </context>
   <context>
@@ -573,7 +693,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="201"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>La contrainte d'attachement est désactivée. La ligne peut être déplacée en modifiant la propriété Position.</translation>
+      <translation>L'accrochage est désactivé. La ligne peut être déplacée en modifiant la propriété Placement.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="203"/>
@@ -586,7 +706,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>La ligne est alignée avec l'axe X local de l'objet. Cela fonctionne avec les objets avec des positions et les bords des ellipses/paraboles/hyperboles.</translation>
+      <translation>La ligne est alignée avec l'axe X local de l'objet. Cela fonctionne avec les objets avec des positions et les arêtes des ellipses/paraboles/hyperboles.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="206"/>
@@ -598,7 +718,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="207"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>La ligne est alignée avec l'axe Y local de l'objet. Cela fonctionne avec les objets avec des positions et les bords des ellipses/paraboles/hyperboles.</translation>
+      <translation>La ligne est alignée avec l'axe Y local de l'objet. Cela fonctionne avec les objets avec des positions et les arêtes des ellipses/paraboles/hyperboles.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
@@ -616,7 +736,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="213"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Ligne qui est un axe de Cercle osculateur d'une arête incurvée. Où sont définis les points optionnels.</translation>
+      <translation>Ligne qui est un axe de cercle osculateur d'une arête incurvée. Un sommet facultatif définit la position.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="215"/>
@@ -682,13 +802,13 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Normal au bord</translation>
+      <translation>Normal à l'arête</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="231"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Aligner au vecteur N du système de coordonnées Frenet-Serret du bord incurvé. Le lien de sommet facultatif définit où.</translation>
+      <translation>Aligner au vecteur N du système de coordonnées Frenet-Serret d'une arête courbe. Le lien facultatif à un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="233"/>
@@ -700,7 +820,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="234"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Aligner au vecteur B du système de coordonnées Frenet-Serret du bord incurvé. Le lien de sommet facultatif définit où.</translation>
+      <translation>Aligner au vecteur B du système de coordonnées Frenet-Serret d'une arête courbe. Le lien facultatif à un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="236"/>
@@ -823,7 +943,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="126"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>La contrainte d'attachement est désactivée. L'objet peut être déplacé en modifiant la propriété Position.</translation>
+      <translation>L'accrochage est désactivé. L'objet peut être déplacé en modifiant la propriété Placement.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
@@ -835,7 +955,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="129"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Origine alignée pour faire correspondre les points. L’orientation est contrôlée par la propriété Placement.</translation>
+      <translation>L'origine est alignée sur un sommet. L’orientation est contrôlée par la propriété Placement.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="131"/>
@@ -895,19 +1015,19 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="144"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan est rendu tangent à la surface au niveau du sommet.</translation>
+      <translation>Le plan est fait tangent à la surface au niveau du sommet.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Normal au bord</translation>
+      <translation>Normal à l'arête</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="147"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan est fait tangeant à une arête. Le lien optionnel vers un sommet définit où.</translation>
+      <translation>Le plan est fait tangent à une arête. Le lien optionnel vers un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="149"/>
@@ -921,7 +1041,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="156"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Aligner au système de coordonnées Frenet-Serret du bord incurvé. Le lien de sommet facultatif définit où.</translation>
+      <translation>Aligner au repère de Frenet-Serret de l'arête courbe. Un lien facultatif à un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="152"/>
@@ -945,7 +1065,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Aligner au plan du cercle osculateur d’une arête. L'origine est aligné au point de courbure. Le lien optionnel vertex définit où.</translation>
+      <translation>Aligner au plan du cercle osculateur d’une arête. L'origine est alignée au point de courbure. Un lien facultatif à un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="161"/>
@@ -957,7 +1077,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="162"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan est perpendiculaire au bord, et l'axe Y correspond à l'axe du cercle osculateur. Le lien vertex optionnel définit l'endroit où.</translation>
+      <translation>Le plan est perpendiculaire à l'arête, et l'axe Y correspond à l'axe du cercle osculateur. Un lien facultatif à un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="164"/>
@@ -993,7 +1113,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="171"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Mode de spécialité pour le pliage des polyèdres. Sélectionnez les 4 bords dans l’ordre : bord pliable, pliure, autre ligne de pliage, autre bord pliable. Le plan sera aligné sur le premier pli.</translation>
+      <translation>Mode spécialisé pour le pliage des polyèdres. Sélectionnez les 4 arêtes dans l’ordre : arête pliable, pliure, autre ligne de pliage, autre arête pliable. Le plan sera aligné sur le premier pli.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="173"/>
@@ -1010,12 +1130,12 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>La contrainte d'attachement est désactivée. Le plan peut être déplacé en modifiant la propriété Position.</translation>
+      <translation>L'accrochage est désactivé. Le plan peut être déplacé en modifiant la propriété Placement.</translation>
     </message>
     <message>
       <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Le plan est perpendiculaire au bord, et l'axe Y correspond à l'axe du cercle osculateur. Le lien vertex optionnel définit l'endroit où.</translation>
+      <translation>Le plan est perpendiculaire à l'arête, et l'axe Y correspond à l'axe du cercle osculateur. Un lien facultatif à un sommet définit où.</translation>
     </message>
   </context>
   <context>
@@ -1030,7 +1150,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="51"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>La contrainte d'attachement est désactivée. L'objet peut être déplacé en modifiant la propriété Position.</translation>
+      <translation>L'accrochage est désactivé. L'objet peut être déplacé en modifiant la propriété Placement.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
@@ -1042,7 +1162,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="54"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Origine alignée pour faire correspondre les points. L’orientation est contrôlée par la propriété Placement.</translation>
+      <translation>L'origine est alignée sur un sommet. L’orientation est contrôlée par la propriété Placement.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="56"/>
@@ -1054,7 +1174,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="57"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Le placement est réalisé de la même manière que le Placement de l’objet lié.</translation>
+      <translation>Le placement est calqué sur le Placement de l’objet lié.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="59"/>
@@ -1078,7 +1198,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="63"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Les axes X', Y', Z' sont respectivement mis en correspondances avec les axes locaux Y, Z X de l’objet.</translation>
+      <translation>Les axes X', Y', Z' sont respectivement mis en correspondances avec les axes locaux Y, Z, X de l’objet.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
@@ -1096,13 +1216,13 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="68"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>XY Tangent à la surface</translation>
+      <translation>XY tangent à la surface</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="69"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Le plan X' Y' est rendu tangent à la surface au niveau du point.</translation>
+      <translation>Le plan X' Y' est rendu tangent à la surface au niveau du sommet.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="71"/>
@@ -1114,7 +1234,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="72"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>L'axe Z est aligné pour être tangent au bord. Le lien optionnel vers un sommet définit où.</translation>
+      <translation>L'axe Z est aligné pour être tangent à l'arête. Le lien facultatif vers un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
@@ -1128,7 +1248,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="81"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Aligner au système de coordonnées Frenet-Serret du bord incurvé. Le lien de sommet facultatif définit où.</translation>
+      <translation>Aligner au repère de Frenet-Serret de l'arête courbe. Un lien facultatif à un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="77"/>
@@ -1152,7 +1272,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Aligner le plan XY pour associer un cercle a une arête. Des points optionnels définissent où.</translation>
+      <translation>Aligner le plan XY au cercle osculateur d'une arête. Un lien facultatif à un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="86"/>
@@ -1164,7 +1284,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="87"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Aligner l'axe Y pour qu'il corresponde à l'axe du cercle d'une arête. Des points optionnels définissent où.</translation>
+      <translation>Aligner l'axe Y au cercle osculateur d'une arête. Un lien facultatif à un sommet définit où.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="89"/>
@@ -1200,7 +1320,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../AttacherTexts.cpp" line="96"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Mode de spécialité pour le pliage des polyèdres. Sélectionnez les 4 bords dans l’ordre : bord pliable, ligne de pliage, autre ligne de pliage, autre bord pliable. Le plan XY sera aligné pour permettre le pli du premier bord.</translation>
+      <translation>Mode spécialisé pour le pliage des polyèdres. Sélectionnez les 4 arêtes dans l’ordre : arête pliable, pliure, autre ligne de pliage, autre arête pliable. Le plan XY sera aligné sur le premier pli.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="98"/>
@@ -1351,7 +1471,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>La contrainte d'attachement est désactivée. CS peut être déplacée en modifiant la propriété Position.</translation>
+      <translation>L'accrochage est désactivé. Le système de coordonnées peut être déplacé en modifiant la propriété Placement.</translation>
     </message>
   </context>
   <context>
@@ -1556,7 +1676,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../Command.cpp" line="2055"/>
       <location filename="../../Command.cpp" line="2056"/>
       <source>Measure Linear</source>
-      <translation>Mesure de longueur</translation>
+      <translation>Mesure linéaire</translation>
     </message>
   </context>
   <context>
@@ -1788,7 +1908,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../Command.cpp" line="661"/>
       <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
-      <translation>Outils d'éclatement de forme. Outils de création de Compsolid. OCC 6.9.0 ou ultérieur est requis.</translation>
+      <translation>Outils de division de forme. Outils de création de Compsolid. OCC 6.9.0 ou ultérieur est requis.</translation>
     </message>
   </context>
   <context>
@@ -2025,12 +2145,12 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../Command.cpp" line="1213"/>
       <source>Make face from wires</source>
-      <translation>Créer une face à partir de deux fils</translation>
+      <translation>Créer une face à partir de fils</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1214"/>
       <source>Part_MakeFace: Make face from set of wires (e.g. from a sketch)</source>
-      <translation>Part_MakeFace : Créer une face à partir d'un ensemble de cordons (par exemple, à partir d’une esquisse)</translation>
+      <translation>Part_MakeFace : Créer une face à partir d'un ensemble de fils (par exemple, à partir d’une esquisse)</translation>
     </message>
     <message>
       <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
@@ -2465,12 +2585,12 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Mode d'attachement :</translation>
+      <translation>Mode d'accrochage :</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>Propriété AttachmentOffset. Le placement est exprimé localement par rapport à l'objet auquel il est attaché.</translation>
+      <translation>Propriété AttachmentOffset (compensation d'accrochage). Le placement est exprimé localement par rapport à l'objet auquel il est attaché.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
@@ -2510,7 +2630,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Retourner la face</translation>
+      <translation>Retourner</translation>
     </message>
     <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
@@ -2750,7 +2870,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
-      <translation>Définir l'orientation pour qu'elle corresponde à celle d'une arête droite. Astuce : pour tenir compte de la longueur de l’arête aussi, définir les deux longueurs à zéro.</translation>
+      <translation>Définir l'orientation pour qu'elle corresponde à celle d'une arête droite. Astuce : pour tenir compte de la longueur de l’arête, définir les deux longueurs à zéro.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
@@ -2790,7 +2910,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../DlgExtrusion.ui" line="223"/>
       <source>Against:</source>
-      <translation>Contre:</translation>
+      <translation>Contre :</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="242"/>
@@ -2816,12 +2936,12 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <location filename="../../DlgExtrusion.ui" line="289"/>
       <location filename="../../DlgExtrusion.ui" line="314"/>
       <source>Apply slope (draft) to extrusion side faces.</source>
-      <translation>Applique la pente (esquisse) a l'extrusion des faces.</translation>
+      <translation>Appliquer un angle de dépouille aux faces extrudées.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="335"/>
       <source>If checked, extruding closed wires will give solids, not shells.</source>
-      <translation>Si coché, extruder des contours fermés produira des solides, non des coquilles.</translation>
+      <translation>Si coché, l'extrusion de contours fermés produira des solides, non des coques.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="338"/>
@@ -2869,7 +2989,7 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <source>Creating Extrusion failed.
 
 %1</source>
-      <translation>La création d’extrusion a échoué.
+      <translation>La création de l’extrusion a échoué.
 %1</translation>
     </message>
     <message>
@@ -2880,14 +3000,15 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../DlgExtrusion.cpp" line="595"/>
       <source>No shapes selected for extrusion. Select some, first.</source>
-      <translation>Aucune forme sélectionnée pour l’extrusion. Sélectionnez en une d’abord.</translation>
+      <translation>Aucune forme sélectionnée pour l’extrusion. Sélectionnez-en une d’abord.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="616"/>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Le lien à l'axe de révolution est invalide. 
+      <translation>Le lien à la direction d'extrusion est invalide. 
+
 %1</translation>
     </message>
     <message>
@@ -2900,18 +3021,19 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
       <source>Can't determine normal vector of shape to be extruded. Please use other mode. 
 
 (%1)</source>
-      <translation>Ne peut pas déterminer le vecteur normal de forme à extruder. Veuillez utiliser un autre mode.
+      <translation>Impossible de déterminer le vecteur normal de la forme à extruder. Veuillez utiliser un autre mode. 
+
 (%1)</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="651"/>
       <source>Extrusion direction is zero-length. It must be non-zero.</source>
-      <translation>La direction de l’extrusion est de longueur nulle. Il doit être différent de zéro.</translation>
+      <translation>La direction de l’extrusion est de longueur nulle. Elle doit être différente de zéro.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="662"/>
       <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
-      <translation>Longueur totale d’extrusion est à zéro (length1 == - length2). Il doit être différent de zéro.</translation>
+      <translation>Longueur totale d’extrusion est à zéro (length1 == - length2). Elle doit être différente de zéro.</translation>
     </message>
     <message>
       <source>Succeeded</source>
@@ -2957,12 +3079,12 @@ cliquez sur « Continuer » pour créer la fonction de toute façon, ou « An
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
       <source>Select edges</source>
-      <translation>Sélectionnez les arêtes</translation>
+      <translation>Sélectionner les arêtes</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="73"/>
       <source>Select faces</source>
-      <translation>Sélectionnez les faces</translation>
+      <translation>Sélectionner les faces</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
@@ -3115,12 +3237,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Write solids and shells as</source>
-      <translation>Écrire les solides et les coques comme</translation>
+      <translation>Exporter les solides et les coques comme</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation>Groupes de surfaces découpées (type 144)</translation>
+      <translation>Groupes de surfaces ajustées (type 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="81"/>
@@ -3135,7 +3257,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
       <source>Skip blank entities</source>
-      <translation>Passer les entités vides</translation>
+      <translation>Ignorer les entités vides</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="110"/>
@@ -3212,7 +3334,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="97"/>
       <source>Units for export of STEP</source>
-      <translation>Unités pour l'exportation de STEP</translation>
+      <translation>Unités pour l'exportation STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="104"/>
@@ -3222,7 +3344,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="130"/>
       <source>Write out curves in parametric space of surface</source>
-      <translation>Décrire des courbes dans l’espace paramétrique d'une surface</translation>
+      <translation>Enregistrer les courbes dans l’espace paramétrique de surface</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="153"/>
@@ -3232,12 +3354,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="159"/>
       <source>If this is checked, no Compound merge will be done during file reading (slower but higher details).</source>
-      <translation>Si cette case est cochée, aucune fusion ne sera faite au cours de la lecture du fichier (plus lents mais plus détaillé).</translation>
+      <translation>Si cette case est cochée, aucune fusion de composé ne sera faite au cours de la lecture du fichier (plus lent mais plus détaillé).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="162"/>
       <source>Enable STEP Compound merge</source>
-      <translation>Activer la fusion de Combiné STEP</translation>
+      <translation>Activer la fusion de combiné STEP</translation>
     </message>
   </context>
   <context>
@@ -3696,7 +3818,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1436"/>
       <source>Growth:</source>
-      <translation>Evolution:</translation>
+      <translation>Croissance :</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1443"/>
@@ -3894,7 +4016,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="32"/>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
-      <translation>Si coché, rotationer des fils produira des solides. Si non, rotationer un fil produit une coquille.</translation>
+      <translation>Si coché, la rotation des fils produira des solides. Sinon, la rotation d'un fil produit une coque.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="35"/>
@@ -3919,17 +4041,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="119"/>
       <source>Center X:</source>
-      <translation>Centre X:</translation>
+      <translation>Centre X :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="139"/>
       <source>Center Y:</source>
-      <translation>Centre Y:</translation>
+      <translation>Centre Y :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="159"/>
       <source>Center Z:</source>
-      <translation>Centre Z:</translation>
+      <translation>Centre Z :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="201"/>
@@ -3940,17 +4062,17 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
       <source>Dir. X:</source>
-      <translation>Dir. X:</translation>
+      <translation>Dir. X :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="245"/>
       <source>Dir. Y:</source>
-      <translation>Dir. Y:</translation>
+      <translation>Dir. Y :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="283"/>
       <source>Dir. Z:</source>
-      <translation>Dir. Z:</translation>
+      <translation>Dir. Z :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="305"/>
@@ -3961,7 +4083,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation>Si coché, la révolution s’étendra avant et en arrière de la moitié de l’angle.</translation>
+      <translation>Si coché, la révolution s’étendra de part et d'autre de la moitié de l’angle.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="328"/>
@@ -3970,7 +4092,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</source>
-      <translation>Si coché, rotationer des fils produira des solides. Si non, rotationer un fil produit une coquille.</translation>
+      <translation>Si coché, la rotation des fils produira des solides. Sinon, la rotation d'un fil produit une coque.</translation>
     </message>
     <message>
       <source>Y:</source>
@@ -4009,18 +4131,19 @@ Please check one or more edge entities first.</source>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>Le lien à l'axe de révolution est invalide. 
+      <translation>Le lien à la direction d'extrusion est invalide. 
+
 %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="288"/>
       <source>Revolution axis direction is zero-length. It must be non-zero.</source>
-      <translation>La direction d’axe de révolution est de longueur nulle. Il ne doit pas être nul.</translation>
+      <translation>La direction d’axe de révolution est de longueur nulle. Elle ne doit pas être nulle.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="298"/>
       <source>Revolution angle span is zero. It must be non-zero.</source>
-      <translation>L'angle de révolution angle est nul. Il doit être différent de zéro.</translation>
+      <translation>L'angle de révolution est nul. Il doit être différent de zéro.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="420"/>
@@ -4028,7 +4151,7 @@ Please check one or more edge entities first.</source>
       <source>Creating Revolve failed.
 
 %1</source>
-      <translation>La création de révolution a échoué.
+      <translation>La création de la révolution a échoué.
 
 %1</translation>
     </message>
@@ -4205,7 +4328,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
       <source>The default color for new shapes</source>
-      <translation>La couleur par défaut pour les nouvelles formes</translation>
+      <translation>La couleur par défaut des nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="67"/>
@@ -4216,7 +4339,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgSettingsObjectColor.ui" line="74"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="142"/>
       <source>The default line color for new shapes</source>
-      <translation>La couleur de ligne par défaut pour les nouvelles formes</translation>
+      <translation>La couleur de ligne par défaut des nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="100"/>
@@ -4227,7 +4350,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgSettingsObjectColor.ui" line="107"/>
       <location filename="../../DlgSettingsObjectColor.ui" line="175"/>
       <source>The default line thickness for new shapes</source>
-      <translation>L'épaisseur de ligne par défaut pour les nouvelles formes</translation>
+      <translation>L'épaisseur de ligne par défaut des nouvelles formes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="110"/>
@@ -4238,12 +4361,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="135"/>
       <source>Default vertex color</source>
-      <translation>Couleur de point par défaut</translation>
+      <translation>Couleur de sommet par défaut</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="168"/>
       <source>Default vertex size</source>
-      <translation>Taille de point par défaut</translation>
+      <translation>Taille de sommet par défaut</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="203"/>
@@ -4321,7 +4444,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="158"/>
       <source>At least two vertices, edges, wires or faces are required.</source>
-      <translation>Au moins deux sommets, arêtes, courbes ou faces sont nécessaires.</translation>
+      <translation>Au moins deux sommets, arêtes, fils ou faces sont requis.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="191"/>
@@ -4331,7 +4454,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="220"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Sommet/Arête/Ligne/Face</translation>
+      <translation>Sommet/Arête/Fil/Face</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="221"/>
@@ -4585,7 +4708,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Sommet/Arête/Ligne/Face</translation>
+      <translation>Sommet/Arête/Fil/Face</translation>
     </message>
     <message>
       <source>Select an edge or wire you want to sweep along.</source>
@@ -4627,18 +4750,18 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation>Mode d'attachement :</translation>
+      <translation>Mode d'accrochage :</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="121"/>
       <source>AttachmentOffset property. The placement is expressed in local space of object being attached.</source>
-      <translation>Propriété AttachmentOffset. Le placement est exprimé localement par rapport à l'objet auquel il est attaché.</translation>
+      <translation>Propriété AttachmentOffset (compensation d'accrochage). Le placement est exprimé localement par rapport à l'objet auquel il est attaché.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>Attachment Offset:</source>
-      <translation>Offset d'attachement :</translation>
+      <translation>Compensation d'accrochage :</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -4673,7 +4796,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="328"/>
       <source>Flip sides</source>
-      <translation>Retourner la face</translation>
+      <translation>Retourner</translation>
     </message>
     <message>
       <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
@@ -4696,22 +4819,22 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="290"/>
       <source>Attachment mode failed: %1</source>
-      <translation>Le mode d'attachement a échoué : %1</translation>
+      <translation>Le mode d'accrochage a échoué : %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="294"/>
       <source>Not attached</source>
-      <translation>Non attaché</translation>
+      <translation>Non accroché</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="298"/>
       <source>Attached with mode %1</source>
-      <translation>Attaché avec mode %1</translation>
+      <translation>Accroché avec mode %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="302"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Compensation d'attachement (inactif - non attaché) :</translation>
+      <translation>Compensation d'accrochage (inactif - non accroché) :</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="578"/>
@@ -4741,7 +4864,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="694"/>
       <source>Not editable because rotation part of AttachmentOffset is bound by expressions.</source>
-      <translation>Non modifiable parce que la rotation de AttachmentOffset est définie par des expressions.</translation>
+      <translation>Non modifiable parce que la rotation de la compensation d'accrochage est définie par des expressions.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="755"/>
@@ -4757,7 +4880,7 @@ Combinaisons de références :
     <message>
       <location filename="../../TaskAttacher.cpp" line="772"/>
       <source>%1 (add %2)</source>
-      <translation>%1 (Ajouter %2)</translation>
+      <translation>%1 (ajouter %2)</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="777"/>
@@ -5241,7 +5364,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="177"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Construit des faces planes séparées à partir de chaque ligne indépendamment. Pas de support pour les trous ; les lignes peuvent être sur différents plans.</translation>
+      <translation>Construit des faces planes séparées à partir de chaque fil indépendamment. Les trous ne sont pas pris en charge ; les fils peuvent être sur différents plans.</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="69"/>
@@ -5321,7 +5444,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Command.cpp" line="782"/>
       <source>Select one shape or more, please.</source>
-      <translation>Sélectionnez une forme, ou plus, s'il vous plaît.</translation>
+      <translation>Veuillez sélectionner au moins une forme.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="986"/>
@@ -5591,12 +5714,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Not Closed</source>
-      <translation>Non fermé-e-s</translation>
+      <translation>Non fermé</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Not Connected</source>
-      <translation>Non connecté-e-s</translation>
+      <translation>Non connecté</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
@@ -5636,7 +5759,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="156"/>
       <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo verifier les inconnues</translation>
+      <translation>BOPAlgo Vérifier les inconnues</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="157"/>
@@ -5686,12 +5809,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo_InvalidCurveOnSurface</translation>
+      <translation>BOPAlgo_Courbe invalide sur surface</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo Non Valide</translation>
+      <translation>BOPAlgo Non valide</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="452"/>
@@ -5738,7 +5861,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1336"/>
       <source>Reset Dialog</source>
-      <translation>Réinitialiser la fenêtre</translation>
+      <translation>Réinitialiser la boîte de dialogue</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1340"/>

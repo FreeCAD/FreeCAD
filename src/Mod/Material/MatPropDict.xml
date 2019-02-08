@@ -63,7 +63,7 @@
         <Property Name="ThermalExpansionCoefficient" Type="Quantity" Units="(0, 0, 0, 0, -1, 0, 0, 0)">
             <Reference>https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient</Reference>
         </Property>
-        <Property Name="SpecificHeat" Type="Quantity" Units="(2, 1, -2, 0, -1, 0, 0, 0)">
+        <Property Name="SpecificHeat" Type="Quantity" Units="(2, 0, -2, 0, -1, 0, 0, 0)">
             <Reference>https://en.wikipedia.org/wiki/Heat_capacity</Reference>
         </Property>
     </Group>

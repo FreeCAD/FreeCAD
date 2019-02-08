@@ -113,7 +113,7 @@
     <message>
       <location line="+1"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Een kloon maken</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -288,11 +288,11 @@
     <message>
       <location line="+1"/>
       <source>Create a mirrored feature</source>
-      <translation>Creëer een gespiegelde functie</translation>
+      <translation>Een gespiegelde functie maken</translation>
     </message>
     <message>
       <source>create a mirrored feature</source>
-      <translation>Een gespiegelde functie maken</translation>
+      <translation>een gespiegelde functie maken</translation>
     </message>
   </context>
   <context>
@@ -556,12 +556,12 @@
     <message>
       <location line="+1"/>
       <source>Create a shape binder</source>
-      <translation type="unfinished">Create a shape binder</translation>
+      <translation>Maak een vorm binder</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new shape binder</source>
-      <translation type="unfinished">Create a new shape binder</translation>
+      <translation>Maken van een nieuwe vorm binder</translation>
     </message>
   </context>
   <context>
@@ -1314,7 +1314,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+1"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation type="unfinished">There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</translation>
+      <translation>Er is geen bijlage-modus die past bij de huidige referentie-set. Als u doorgaat, de functie blijft waar het nu is, en zal niet worden verplaatst als de referenties gewijzigen. Doorgaan?</translation>
     </message>
   </context>
   <context>
@@ -2213,7 +2213,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+22"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>Zet De constante binormale vector voor het berekenen van de profiel oriëntatie</translation>
     </message>
     <message>
       <location line="+24"/>
@@ -2246,7 +2246,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+11"/>
       <source>Corner Transition</source>
-      <translation type="unfinished">Corner Transition</translation>
+      <translation>Hoek overgang</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -2737,7 +2737,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+5"/>
       <source>Recto Verso</source>
-      <translation type="unfinished">Recto Verso</translation>
+      <translation>Recto Verso</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -2891,23 +2891,23 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <name>PartDesign_CompPrimitiveSubtractive</name>
     <message>
       <source>Create an subtractive box by its with, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its with, height and length</translation>
+      <translation>Maak een Subtractieve box met de hoogte en lengte</translation>
     </message>
     <message>
       <source>Create an subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create an subtractive cylinder by its radius, height and angle</translation>
+      <translation>Maak een Subtractieve cilinder met de straal, hoogte en hoek</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and varius angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and varius angles</translation>
+      <translation>Maak een Subtractieve bol met de straal en diverse hoeken</translation>
     </message>
     <message>
       <source>Create an subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create an subtractive box by its width, height and length</translation>
+      <translation>Maak een Subtractieve box door de breedte, hoogte en lengte</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
+      <translation>Maak een Subtractieve bol met de straal en diverse hoeken</translation>
     </message>
     <message>
       <source>Create an subtractive cone</source>
@@ -2923,51 +2923,51 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
       <source>Create an subtractive prism</source>
-      <translation type="unfinished">Create an subtractive prism</translation>
+      <translation>Maak een Subtractieve prisma</translation>
     </message>
     <message>
       <source>Create an subtractive wedge</source>
-      <translation type="unfinished">Create an subtractive wedge</translation>
+      <translation>Maak een Subtractieve wig</translation>
     </message>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Maak een Subtractieve box door de breedte, hoogte en lengte</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Maak een Subtractieve cilinder door de straal, hoogte en hoek</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Maak een Subtractieve bol met de straal en diverse hoeken</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cone</source>
-      <translation type="unfinished">Create a subtractive cone</translation>
+      <translation>Maak een Subtractieve kegel</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation type="unfinished">Create a subtractive ellipsoid</translation>
+      <translation>Maak een Subtractieve ellipsoïde</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive torus</source>
-      <translation type="unfinished">Create a subtractive torus</translation>
+      <translation>Maak een Subtractieve torus</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive prism</source>
-      <translation type="unfinished">Create a subtractive prism</translation>
+      <translation>Maak een Subtractieve prisma</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive wedge</source>
-      <translation type="unfinished">Create a subtractive wedge</translation>
+      <translation>Maak een Subtractieve wig</translation>
     </message>
   </context>
   <context>
@@ -3074,7 +3074,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
       <location line="+310"/>
       <source>Please create a subtractive or additive feature first.</source>
-      <translation type="unfinished">Please create a subtractive or additive feature first.</translation>
+      <translation>Maak eerst een Subtractieve of additieve functie.</translation>
     </message>
     <message>
       <source>No chamfer possible on selected faces/edges</source>
@@ -3136,12 +3136,12 @@ Creëer de schets op een vlak.</translation>
     </message>
     <message>
       <source>There are no attachment modes that fit seleted objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit seleted objects. Select something else.</translation>
+      <translation>Er zijn geen koppel modi die de geselecteerde objecten passen. Selecteer iets anders.</translation>
     </message>
     <message>
       <location line="+0"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation type="unfinished">There are no attachment modes that fit selected objects. Select something else.</translation>
+      <translation>Er zijn geen koppel modi die de geselecteerde objecten passen. Selecteer iets anders.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -3153,7 +3153,7 @@ Creëer de schets op een vlak.</translation>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Er is geen actief lichaam. Breng een lichaam actief alvorens het een datum-entiteit in te voegen.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3188,12 +3188,12 @@ Creëer de schets op een vlak.</translation>
     <message>
       <location line="+180"/>
       <source>No valid planes in this document</source>
-      <translation type="unfinished">No valid planes in this document</translation>
+      <translation>Geen geldige werk-vlakken in dit document</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please create a plane first or select a face to sketch on</source>
-      <translation type="unfinished">Please create a plane first or select a face to sketch on</translation>
+      <translation>Maak eerst een werk-vlak of selecteer een zijde om op te schetsen</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3250,7 +3250,7 @@ Creëer de schets op een vlak.</translation>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face or body from an active body.</translation>
+      <translation>Selecteer een rand, zijde of lichaam van één lichaam.</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -3260,7 +3260,7 @@ Creëer de schets op een vlak.</translation>
     <message>
       <location line="+10"/>
       <source>Shape of the selected Part is empty</source>
-      <translation type="unfinished">Shape of the selected Part is empty</translation>
+      <translation>Vorm van het geselecteerde onderdeel is leeg</translation>
     </message>
     <message>
       <location line="+12"/>
@@ -3270,17 +3270,17 @@ Creëer de schets op een vlak.</translation>
     <message>
       <location line="+292"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>Meerdere functies geselecteerd</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>Selecteer eerst slechts één subtractieve of additieve functie.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>Selecteer slechts één subtractieve of additieve functie in een actief lichaam.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
@@ -3302,7 +3302,7 @@ Creëer de schets op een vlak.</translation>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="+203"/>
       <source>Missing neutral plane</source>
-      <translation type="unfinished">Missing neutral plane</translation>
+      <translation>Neutraal vlak ontbreekt</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3550,16 +3550,16 @@ Dit kan tot onverwachte resultaten leiden.</translation>
     </message>
     <message>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+      <translation>Om PartDesign te gebruiken heb je een actief Lichaam-object in het document nodig. Maak één actief (Dubbelklik) of maken één. Als u een ouder document met PartDesign objecten zonder een lichaam hebt, gebruik dan de overdrachtsfunctie in PartDesign om hen in een lichaam te zetten.</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
-      <translation type="unfinished">In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
+      <translation>Om PartDesign te gebruiken heb je een actief Lichaam-object in het document nodig. Maak één actief (Dubbelklik) of maken één.
 
-If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</translation>
+Als u een ouder document met PartDesign objecten zonder een lichaam hebt, gebruik dan de overdrachtsfunctie in PartDesign om hen in een lichaam te zetten.</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3663,53 +3663,51 @@ Deze functie is defect en kan niet worden gewijzigd.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
       <source>Edit shape binder</source>
-      <translation type="unfinished">Edit shape binder</translation>
+      <translation>Aanpassen form binder</translation>
     </message>
     <message>
       <source>The document "%1" you are editing was design with old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was design with old version of PartDesign workbench.</translation>
+      <translation>Het document '%1' dat u aan het bewerken bent was gemaakt met oude versie voor PartDesign workbench.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="+144"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of PartDesign workbench.</translation>
+      <translation>Het document '%1' dat u aan het bewerken bent was gemaakt met oude versie voor PartDesign workbench.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation type="unfinished">Do you want to migrate in order to use modern PartDesign features?</translation>
+      <translation>Wilt u migreren om gebruik te kunnen maken van de moderne PartDesign-functies?</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</translation>
+      <translation>Het document "%1" lijkt of in het midden in een migratieproces van de oudere PartDesign of een licht gebroken structuur hebben.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Do you want to make the migration automatically?</source>
-      <translation type="unfinished">Do you want to make the migration automatically?</translation>
+      <translation>Wil je automatisch migreren?</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Notitie: Als je kiest voor migratie is het niet mogelijk het bestand te openen in oudere FreeCAD versies. Als je niet migreert zijn sommige PartDesign functies niet mogelijk, zoals Lichamen en onderdelen. Met als gevolg dat het niet mogelijk is je onderdelen te gebruiken in de Assembly workbench. 
+Het is echter altijd nog mogelijk om later te migreren via 'Part Design-&gt; Migreren...'.</translation>
     </message>
     <message>
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Als je kiest voor migratie is het niet mogelijk het bestand te openen in oudere FreeCAD versies. Als je niet migreert zijn sommige PartDesign functies niet mogelijk, zoals Lichamen en onderdelen. Met als gevolg dat het niet mogelijk is je onderdelen te gebruiken in de Assembly workbench. 
+Het is echter altijd nog mogelijk om later te migreren via 'Part Design-&gt; Migreren...'.</translation>
     </message>
     <message>
       <location line="+9"/>
       <source>Migrate manually</source>
-      <translation type="unfinished">Migrate manually</translation>
+      <translation>Migreer handmatig</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
@@ -3879,7 +3877,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="-259"/>
       <source>Cutoff inner</source>
-      <translation type="unfinished">Cutoff inner</translation>
+      <translation>Verwijder Innerdeel</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -3924,12 +3922,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+7"/>
       <source>Left hand</source>
-      <translation type="unfinished">Left hand</translation>
+      <translation>Linkerhand</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Model actual thread</source>
-      <translation type="unfinished">Model actual thread</translation>
+      <translation>Modelleer daadwerkelijke draad</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3969,37 +3967,37 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Standard fit</source>
-      <translation type="unfinished">Standard fit</translation>
+      <translation>Standaard passing</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Close fit</source>
-      <translation type="unfinished">Close fit</translation>
+      <translation>Krappe passing</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>Verwijder buitendeel</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Boor punt&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Misc&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Overig&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Hole cut&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Gat maken&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading and size&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Draadtype en grootte&lt;/b&gt;</translation>
     </message>
   </context>
   <context>

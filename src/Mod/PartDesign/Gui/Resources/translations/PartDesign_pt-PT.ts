@@ -1967,12 +1967,12 @@ Please check one or more edge entities first.</translation>
     <message>
       <location line="+4"/>
       <source>Move up</source>
-      <translation>Mover p/ Cima</translation>
+      <translation>Mover para cima</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Move down</source>
-      <translation>Mover p/ Baixo</translation>
+      <translation>Mover para baixo</translation>
     </message>
     <message>
       <location line="+27"/>

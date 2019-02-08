@@ -124,7 +124,7 @@
       <translation>Μέθοδος Δημιουργίας Κεκλιμένης Επιφάνειας</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="41"/>
+      <location filename="../../../PathScripts/PathPlane.py" line="40"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Ορίστε ως ψευδές, για να εμποδίσετε την λειτουργία να δημιουργήσει κώδικα</translation>
     </message>
@@ -171,7 +171,7 @@
     <message>
       <location filename="PathDrilling.py" line="88"/>
       <source>Height to clear top of material</source>
-      <translation>Το ύψος στο οποίο να γίνει εκκαθάριση της κορυφής του υλικού</translation>
+      <translation type="unfinished">Height to clear top of material</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="55"/>
@@ -274,14 +274,14 @@
       <translation>Γωνία του μοτίβου zigzag</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
+      <source>Make True, if using Cutter Radius Compensation</source>
+      <translation type="unfinished">Make True, if using Cutter Radius Compensation</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="61"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Επιπλέον τιμή απόστασης από το τελικό προφίλ- καλή επιλογή για την πρώτη διαμόρφωση διαδρομής εργαλείων</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileBase.py" line="62"/>
-      <source>Controls how tool moves around corners. Default=Round</source>
-      <translation>Ελέγχει τον τρόπο με τον οποίο το εργαλείο κινείται γύρω από τις γωνίες. Προεπιλογή=Κυκλικά</translation>
     </message>
     <message>
       <location filename="PathStop.py" line="43"/>
@@ -292,16 +292,6 @@
       <location filename="PathArray.py" line="43"/>
       <source>Pattern method</source>
       <translation>Μέθοδος μοτίβου</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="44"/>
-      <source>The Height offset number of the active tool</source>
-      <translation>Ο αριθμός μετατόπισης Ύψους του ενεργού εργαλείου</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="46"/>
-      <source>The first height value in Z, to rapid to, before making a feed move in Z</source>
-      <translation>Η πρώτη τιμή ύψους στον άξονα Z, προς την οποία θα εκτελεστεί ταχεία κίνηση, πριν την εκτέλεση κίνησης τροφοδοσίας στον άξονα Z</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -344,14 +334,19 @@
       <translation>Ταχύς ρυθμός για οριζόντιες κινήσεις</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathArray.py" line="43"/>
+      <source>Pattern method</source>
+      <translation>Μέθοδος μοτίβου</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolController.py" line="73"/>
       <source>The active tool</source>
       <translation>Το ενεργό εργαλείο</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="75"/>
-      <source>The tool used by this controller</source>
-      <translation>Το εργαλείο που χρησιμοποιείται από αυτόν τον ελεγκτή</translation>
+      <location filename="../../../PathScripts/PathToolController.py" line="81"/>
+      <source>Feed rate for horizontal moves</source>
+      <translation>Ρυθμός τροφοδοσίας για οριζόντιες κινήσεις</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="82"/>
@@ -377,6 +372,16 @@
       <location filename="PathMillFace.py" line="79"/>
       <source>How far the cutter should extend past the boundary</source>
       <translation>Πόσο θα πρέπει να εκτείνεται ο κόπτης πέρα από το όριο</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="44"/>
+      <source>The Height offset number of the active tool</source>
+      <translation>Ο αριθμός μετατόπισης Ύψους του ενεργού εργαλείου</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="46"/>
+      <source>The first height value in Z, to rapid to, before making a feed move in Z</source>
+      <translation>Η πρώτη τιμή ύψους στον άξονα Z, προς την οποία θα εκτελεστεί ταχεία κίνηση, πριν την εκτέλεση κίνησης τροφοδοσίας στον άξονα Z</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="53"/>
@@ -474,11 +479,6 @@
       <translation>Το σχήμα Βάσης αυτής της διαδρομής εργαλείων</translation>
     </message>
     <message>
-      <location filename="PathCompoundExtended.py" line="45"/>
-      <source>An ptional description of this compounded operation</source>
-      <translation>Μια προαιρετική περιγραφή για αυτήν την σύνθετη λειτουργία</translation>
-    </message>
-    <message>
       <location filename="PathCompoundExtended.py" line="46"/>
       <source>An optional description of this compounded operation</source>
       <translation>Μια προαιρετική περιγραφή αυτής της σύνθετης λειτουργίας</translation>
@@ -552,11 +552,6 @@
       <translation>Η γονική εργασία %s δεν έχει αντικείμενο βάσης</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
-      <source>%s is not a Base Model object of the job %s</source>
-      <translation type="unfinished">%s is not a Base Model object of the job %s</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="514"/>
       <source>Heights</source>
       <translation>Ύψη</translation>
@@ -587,14 +582,14 @@
       <translation>Το χαρακτηριστικό %s.%s δεν δύναται να υποστεί επεξεργασία ως κυκλική οπή - παρακαλώ αφαιρέστε το από την λίστα γεωμετρίας Βάσης.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="333"/>
+      <source>No parent job found for operation.</source>
+      <translation>Δεν βρέθηκε καμία γονική εργασία για την λειτουργία.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="337"/>
       <source>Parent job %s doesn't have a base object</source>
       <translation>Η γονική εργασία %s δεν έχει αντικείμενο βάσης</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="503"/>
-      <source>Base object %s.%s already in the list</source>
-      <translation>Το αντικείμενο βάσης %s.%s υπάρχει ήδη στην λίστα</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -617,9 +612,9 @@
       <translation>Νέες Λειτουργίες</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="592"/>
-      <source>Heights</source>
-      <translation>Ύψη</translation>
+      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
+      <source>Edit</source>
+      <translation>Επεξεργασία</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="101"/>
@@ -637,9 +632,14 @@
       <translation>Αναδιαμόρφωση Διαδρομής</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="71"/>
-      <source>List of disabled features</source>
-      <translation>Λίστα απενεργοποιημένων χαρακτηριστικών</translation>
+      <location filename="../../../PathScripts/PathOpGui.py" line="958"/>
+      <source>Pick Start Point</source>
+      <translation>Διαλέξτε Σημείο Εκκίνησης</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="91"/>
+      <source>Engraving Operations</source>
+      <translation type="unfinished">Engraving Operations</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="100"/>
@@ -670,11 +670,6 @@
       <location filename="../../../InitGui.py" line="110"/>
       <source>Helpful Tools</source>
       <translation>Βοηθητικά Εργαλεία</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="120"/>
-      <source>&amp;Path</source>
-      <translation>Διαδρομή</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -724,6 +719,11 @@
       <translation>δεν βρέθηκε εργασία για την λειτουργία %s.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathAreaOp.py" line="96"/>
+      <source>job %s has no Base.</source>
+      <translation>η εργασία %s δεν έχει Βάση.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathAreaOp.py" line="98"/>
       <source>no job for op %s found.</source>
       <translation>δεν βρέθηκε εργασία για την λειτουργία %s.</translation>
@@ -733,6 +733,11 @@
     <name>PathDressup_HoldingTags</name>
     <message>
       <location filename="PathDressupTagGui.py" line="73"/>
+      <source>Edit HoldingTags Dress-up</source>
+      <translation>Επεξεργασία Αναδιαμόρφωσης Προσαρτήσεων Στήριξης</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTagGui.py" line="67"/>
       <source>Edit HoldingTags Dress-up</source>
       <translation>Επεξεργασία Αναδιαμόρφωσης Προσαρτήσεων Στήριξης</translation>
     </message>
@@ -796,11 +801,6 @@
       <source>Creates a Path Drilling object from a features of a base object</source>
       <translation>Δημιουργεί μια Διαδρομή Διάτρησης από τα χαρακτηριστικά ενός αντικειμένου βάσης</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathDrillingGui.py" line="109"/>
-      <source>Drilling</source>
-      <translation>Διάτρηση</translation>
-    </message>
   </context>
   <context>
     <name>PathEngrave</name>
@@ -814,6 +814,11 @@
       <source>Creates an Engraving Path around a Draft ShapeString</source>
       <translation>Δημιουργεί μια Διαδρομή Χάραξης γύρω από ένα Πλαίσιο Συμβολοσειράς Κειμένου Προσχεδίου</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
+      <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
+      <translation>Το Αντικείμενο Βάσης της Εργασίας δεν έχει κάποιο στοιχείο προς χάραξη. Η λειτουργία χάραξης δεν θα παράγει κανένα αρχείο εξόδου.</translation>
+    </message>
   </context>
   <context>
     <name>PathCustom</name>
@@ -826,14 +831,6 @@
       <location filename="../../../PathScripts/PathCustom.py" line="41"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>Ο ελεγκτής εργαλείων που θα χρησιμοποιηθεί για τον υπολογισμό της διαδρομής</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathDeburr</name>
-    <message>
-      <location filename="../../../PathScripts/PathDeburr.py" line="70"/>
-      <source>The desired width of the chamfer</source>
-      <translation type="unfinished">The desired width of the chamfer</translation>
     </message>
   </context>
   <context>
@@ -894,16 +891,6 @@
       <translation>Οριζόντιο(%s) δεν υποστηρίζεται</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="151"/>
-      <source>face %s not handled, assuming not vertical</source>
-      <translation>η όψη %s δεν τακτοποιήθηκε, γίνεται η υπόθεση ότι δεν είναι κατακόρυφη</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="163"/>
-      <source>edge %s not handled, assuming not vertical</source>
-      <translation>η ακμή %s δεν τακτοποιήθηκε, γίνεται η υπόθεση ότι δεν είναι κατακόρυφη</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathGeom.py" line="166"/>
       <source>isVertical(%s) not supported</source>
       <translation>Κάθετο(%s) δεν υποστηρίζεται</translation>
@@ -914,7 +901,7 @@
       <translation>Οριζόντιο(%s) δεν υποστηρίζεται</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="514"/>
+      <location filename="../../../PathScripts/PathGeom.py" line="548"/>
       <source>%s not support for flipping</source>
       <translation type="unfinished">%s not support for flipping</translation>
     </message>
@@ -925,6 +912,11 @@
       <location filename="../../../PathScripts/PathGui.py" line="56"/>
       <source>%s has no property %s (%s))</source>
       <translation>Το %s δεν έχει καμία ιδιότητα %s (%s))</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathGui.py" line="115"/>
+      <source>Cannot find property %s of %s</source>
+      <translation>Αδυναμία εύρεσης της ιδιότητας %s του %s</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGui.py" line="115"/>
@@ -960,9 +952,24 @@
       <translation>Προσαύξηση ακτίνας (θα πρέπει να είναι μικρότερη από την διάμετρο του εργαλείου)</translation>
     </message>
     <message>
+      <location filename="PathHelix.py" line="450"/>
+      <source>Creates a helix cut from selected circles</source>
+      <translation type="unfinished">Creates a helix cut from selected circles</translation>
+    </message>
+    <message>
       <location filename="PathHelix.py" line="464"/>
       <source>Create a helix cut</source>
       <translation type="unfinished">Create a helix cut</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelixGui.py" line="83"/>
+      <source>Helix</source>
+      <translation>Έλικα</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelixGui.py" line="83"/>
+      <source>Creates a Path Helix object from a features of a base object</source>
+      <translation>Δημιουργεί ένα αντικείμενο ελικοειδούς διαδρομής από τα χαρακτηριστικά ενός αντικειμένου βάσης</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="51"/>
@@ -993,39 +1000,9 @@
       <translation>Το απόθεμα δεν είναι κιβώτιο!</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="103"/>
-      <source>Solid object to be used as stock.</source>
-      <translation>Στερεό αντικείμενο προς χρήση ως απόθεμα.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="104"/>
-      <source>Compound path of all operations in the order they are processed.</source>
-      <translation>Σύνθετη διαδρομή όλων των λειτουργιών με την σειρά που υφίστανται επεξεργασία.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="105"/>
-      <source>Collection of tool controllers available for this job.</source>
-      <translation>Συλλογή διαθέσιμων ελεγκτών εργαλείων για αυτήν την εργασία.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="141"/>
-      <source>SetupSheet holding the settings for this job</source>
-      <translation>ΦύλλοΕγκατάστασης που περιέχει τις ρυθμίσεις για αυτήν την εργασία</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="331"/>
-      <source>Stock not from Base bound box!</source>
-      <translation>Το απόθεμα δεν είναι από το πλαίσιο οριοθέτησης Βάσης!</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="388"/>
       <source>Stock not a cylinder!</source>
       <translation>Το απόθεμα δεν είναι κύλινδρος!</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="408"/>
-      <source>Stock not a box!</source>
-      <translation>Το απόθεμα δεν είναι κιβώτιο!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="887"/>
@@ -1036,6 +1013,26 @@
       <location filename="../../../PathScripts/PathJobGui.py" line="900"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Μη υποστηριζόμενος τύπος αποθέματος %s(%d)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="103"/>
+      <source>Solid object to be used as stock.</source>
+      <translation>Στερεό αντικείμενο προς χρήση ως απόθεμα.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="104"/>
+      <source>Compound path of all operations in the order they are processed.</source>
+      <translation>Σύνθετη διαδρομή όλων των λειτουργιών με την σειρά που υφίστανται επεξεργασία.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="244"/>
+      <source>Unsupported PathJob template version %s</source>
+      <translation>Μη υποστηριζόμενη έκδοση προτύπου ΕργασίαςΔιαδρομής %s</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="331"/>
+      <source>Stock not from Base bound box!</source>
+      <translation>Το απόθεμα δεν είναι από το πλαίσιο οριοθέτησης Βάσης!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobCmd.py" line="149"/>
@@ -1058,6 +1055,16 @@
       <translation>Μη υποστηριζόμενος τύπος αποθέματος</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathJob.py" line="97"/>
+      <source>Arguments for the Post Processor (specific to the script)</source>
+      <translation>Παράμετροι για τον Τελικό Επεξεργαστή (συγκεκριμένα για το σενάριο)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="99"/>
+      <source>An optional description for this job</source>
+      <translation type="unfinished">An optional description for this job</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathJob.py" line="100"/>
       <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
       <translation>Για τον υπολογισμό Διαδρομών· το μικρότερο μέγεθος αυξάνει την ακρίβεια, αλλά επιβραδύνει τον υπολογισμό</translation>
@@ -1078,17 +1085,17 @@
       <translation>Σύνθετη διαδρομή όλων των λειτουργιών με την σειρά που υφίστανται επεξεργασία.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="104"/>
+      <location filename="../../../PathScripts/PathJob.py" line="105"/>
       <source>Collection of tool controllers available for this job.</source>
       <translation>Συλλογή διαθέσιμων ελεγκτών εργαλείων για αυτήν την εργασία.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="144"/>
+      <location filename="../../../PathScripts/PathJob.py" line="141"/>
       <source>SetupSheet holding the settings for this job</source>
       <translation>ΦύλλοΕγκατάστασης που περιέχει τις ρυθμίσεις για αυτήν την εργασία</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="244"/>
+      <location filename="../../../PathScripts/PathJob.py" line="304"/>
       <source>Unsupported PathJob template version %s</source>
       <translation>Μη υποστηριζόμενη έκδοση προτύπου ΕργασίαςΔιαδρομής %s</translation>
     </message>
@@ -1146,9 +1153,9 @@
       <translation>Περιέχει την υπολογισμένη τιμή για το Βάθος Εκκίνησης</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="104"/>
-      <source>Holds the calculated value for the FinalDepth</source>
-      <translation>Περιέχει την υπολογισμένη τιμή για το Τελικό Βάθος</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="114"/>
+      <source>An optional comment for this Operation</source>
+      <translation>Ένα προαιρετικό σχόλιο για αυτήν την Λειτουργία</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="115"/>
@@ -1171,11 +1178,6 @@
       <translation>Περιέχει την υπολογισμένη τιμή για το Βάθος Εκκίνησης</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="106"/>
-      <source>Holds the calculated value for the FinalDepth</source>
-      <translation>Περιέχει την υπολογισμένη τιμή για το Τελικό Βάθος</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="291"/>
       <source>Base Geometry</source>
       <translation>Γεωμετρία Βάσης</translation>
@@ -1186,9 +1188,9 @@
       <translation>Τοποθεσία Βάσης</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="114"/>
-      <source>Holds the min Z value of Stock</source>
-      <translation type="unfinished">Holds the min Z value of Stock</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="112"/>
+      <source>Holds the max Z value of Stock</source>
+      <translation type="unfinished">Holds the max Z value of Stock</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="545"/>
@@ -1201,6 +1203,11 @@
       <translation>Λειτουργία</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="104"/>
+      <source>Holds the calculated value for the FinalDepth</source>
+      <translation>Περιέχει την υπολογισμένη τιμή για το Τελικό Βάθος</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="107"/>
       <source>Holds the diameter of the tool</source>
       <translation>Περιέχει την διάμετρο του εργαλείου</translation>
@@ -1211,7 +1218,7 @@
       <translation>Ορίστε ως ψευδές, για να εμποδίσετε την λειτουργία να δημιουργήσει κώδικα</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="114"/>
+      <location filename="../../../PathScripts/PathOp.py" line="121"/>
       <source>An optional comment for this Operation</source>
       <translation>Ένα προαιρετικό σχόλιο για αυτήν την Λειτουργία</translation>
     </message>
@@ -1221,9 +1228,9 @@
       <translation>Ετικέτα που έχει Εκχωρηθεί από τον Χρήστη</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="130"/>
-      <source>Base locations for this operation</source>
-      <translation>Οι τοποθεσίες βάσης για αυτήν την λειτουργία</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="137"/>
+      <source>Starting Depth of Tool- first cut depth in Z</source>
+      <translation>Βάθος Εκκίνησης του Εργαλείου- αρχικό βάθος περικοπής στον άξονα Z</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="138"/>
@@ -1231,14 +1238,16 @@
       <translation>Τελικό Βάθος του Εργαλείου- χαμηλότερη τιμή στον άξονα Ζ</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="144"/>
-      <source>Starting Depth internal use only for derived values</source>
-      <translation type="unfinished">Starting Depth internal use only for derived values</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="156"/>
+      <source>The height needed to clear clamps and obstructions</source>
+      <translation>Το απαιτούμενο ύψος για την εκκαθάριση σφιγκτήρων και εμποδίων</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="157"/>
-      <source>Rapid Safety Height between locations.</source>
-      <translation>Ύψος Ασφαλείας μεταξύ τοποθεσιών σε ταχεία κίνηση.</translation>
+      <location filename="../../../PathScripts/PathOpGui.py" line="641"/>
+      <source>FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</source>
+      <translation type="unfinished">FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="660"/>
@@ -1339,19 +1348,14 @@
       <translation>Προφίλ Όψης</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
-      <source>Edge Profile</source>
-      <translation>Προφίλ Ακμής</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
-      <source>Profile based on edges</source>
-      <translation>Προφίλ βασισμένο σε ακμές</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
       <source>Face Profile</source>
       <translation>Προφίλ Όψης</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation type="unfinished">Profile based on face or faces</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
@@ -1376,11 +1380,6 @@
       <source>Creates a Contour Path for the Base Object </source>
       <translation>Δημιουργεί μια Διαδρομή Περιγράμματος για το Αντικείμενο Βάσης </translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileContourGui.py" line="44"/>
-      <source>Creates a Contour Path for the Base Object </source>
-      <translation>Δημιουργεί μια Διαδρομή Περιγράμματος για το Αντικείμενο Βάσης </translation>
-    </message>
   </context>
   <context>
     <name>PathProject</name>
@@ -1398,11 +1397,6 @@
       <location filename="PathOpGui.py" line="349"/>
       <source>Faces are not supported</source>
       <translation>Δεν υποστηρίζονται όψεις</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="400"/>
-      <source>Vertexes are not supported</source>
-      <translation>Δεν υποστηρίζονται κορυφές</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="587"/>
@@ -1553,6 +1547,21 @@
       <translation>Μη υποστηριζόμενη έκδοση προτύπου ΔιαδρομήςΑποθέματος {}</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathStock.py" line="153"/>
+      <source>Length of this stock box</source>
+      <translation type="unfinished">Length of this stock box</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathStock.py" line="154"/>
+      <source>Width of this stock box</source>
+      <translation type="unfinished">Width of this stock box</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathStock.py" line="155"/>
+      <source>Height of this stock box</source>
+      <translation>Ύψος αυτού του κιβωτίου αποθέματος</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathStock.py" line="188"/>
       <source>Radius of this stock cylinder</source>
       <translation>Ακτίνα αυτού του κυλίνδρου αποθέματος</translation>
@@ -1652,7 +1661,7 @@
       <translation>Πρόβλημα προσδιορισμού δυνατότητας διάτρησης: {}</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="201"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="202"/>
       <source>Issue determine drillability: {}</source>
       <translation>Πρόβλημα προσδιορισμού δυνατότητας διάτρησης: {}</translation>
     </message>
@@ -1973,21 +1982,6 @@
       <source>The Style of LeadIn the Path</source>
       <translation>Ο Τύπος Μορφοποίησης του σημείου Προσέγγισης στην Διαδρομή</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="66"/>
-      <source>The Style of LeadOut the Path</source>
-      <translation>Ο Τύπος Μορφοποίησης του σημείου Απομάκρυνσης από την Διαδρομή</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="68"/>
-      <source>The Mode of Point Radiusoffset or Center</source>
-      <translation>Η λειτουργία Σημείου Μετατόπισης Ακτίνας ή Κέντρου</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="338"/>
-      <source>LeadInOut Dressup</source>
-      <translation>Αναδιαμόρφωση σημείου Προσέγγισης και σημείου Απομάκρυνσης</translation>
-    </message>
   </context>
   <context>
     <name>Path_Fixture</name>
@@ -2007,9 +2001,14 @@
       <translation>Δημιουργήστε μια Μετατόπιση Προσάρτησης</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathFixture.py" line="125"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Δημιουργήστε μια Μετατόπιση Προσάρτησης</translation>
+      <location filename="../../../PathScripts/PathFixture.py" line="114"/>
+      <source>Fixture</source>
+      <translation>Προσάρτηση</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathFixture.py" line="115"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Δημιουργεί ένα αντικείμενο Μετατόπισης Προσάρτησης</translation>
     </message>
   </context>
   <context>
@@ -2042,11 +2041,6 @@
       <location filename="PathHop.py" line="122"/>
       <source>Create Hop</source>
       <translation>Δημιουργήστε Άλμα</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathHop.py" line="96"/>
-      <source>Hop</source>
-      <translation>Άλμα</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHop.py" line="97"/>
@@ -2084,9 +2078,9 @@
 </translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathInspect.py" line="220"/>
-      <source>Inspects the G-code contents of a path</source>
-      <translation>Επιθεωρεί τα περιεχόμενα του G-code μιας διαδρομής</translation>
+      <location filename="../../../PathScripts/PathInspect.py" line="135"/>
+      <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
+      <translation>&lt;b&gt;Σημείωση&lt;/b&gt;: Αν πιέσετε το OK θα εφαρμοστούν στο αντικείμενο όλες οι αλλαγές που έγιναν παραπάνω, ωστόσο αν το αντικείμενο είναι παραμετρικό, τότε αυτές οι αλλαγές θα παρακαμφθούν κατά την επανεκτέλεση υπολογισμών.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathInspect.py" line="237"/>
@@ -2141,24 +2135,29 @@
       <source>All Files (*.*)</source>
       <translation>Όλα τα αρχεία (*.*)</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobCmd.py" line="93"/>
-      <source>Export Template</source>
-      <translation>Εξαγωγή Προτύπου</translation>
-    </message>
   </context>
   <context>
     <name>Path_DressupTag</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupTagGui.py" line="506"/>
-      <source>Tag Dress-up</source>
-      <translation>Αναδιαμόρφωση Προσάρτησης</translation>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="241"/>
+      <source>Please select a Profile object</source>
+      <translation>Παρακαλώ επιλέξτε ένα αντικείμενο προφίλ</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="154"/>
+      <source>Base Path is empty.</source>
+      <translation>Η Διαδρομή βάσης είναι κενή.</translation>
     </message>
   </context>
   <context>
     <name>Path_OperationCopy</name>
     <message>
       <location filename="PathCommands.py" line="90"/>
+      <source>Copy the operation in the job</source>
+      <translation>Αντιγραφή της λειτουργίας στην εργασία</translation>
+    </message>
+    <message>
+      <location filename="../../../PathCommands.py" line="129"/>
       <source>Copy the operation in the job</source>
       <translation>Αντιγραφή της λειτουργίας στην εργασία</translation>
     </message>
@@ -2172,6 +2171,16 @@
     </message>
     <message>
       <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Δημιουργήστε ένα αντικείμενο Επιπέδου Επιλογής</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPlane.py" line="110"/>
+      <source>Selection Plane</source>
+      <translation>Επίπεδο Επιλογής</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPlane.py" line="121"/>
       <source>Create a Selection Plane object</source>
       <translation>Δημιουργήστε ένα αντικείμενο Επιπέδου Επιλογής</translation>
     </message>
@@ -2190,6 +2199,21 @@
     </message>
     <message>
       <location filename="PathPost.py" line="53"/>
+      <source>Post Process the Selected path(s)</source>
+      <translation>Πραγματοποιεί τελική επεξεργασία της Επιλεγμένης διαδρομής(ων)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPost.py" line="161"/>
+      <source>Post Process</source>
+      <translation>Τελική Επεξεργασία</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPost.py" line="163"/>
+      <source>Post Process the selected Job</source>
+      <translation>Τελική Επεξεργασία της επιλεγμένης εργασίας</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPost.py" line="200"/>
       <source>Post Process the Selected path(s)</source>
       <translation>Πραγματοποιεί τελική επεξεργασία της Επιλεγμένης διαδρομής(ων)</translation>
     </message>
@@ -2259,14 +2283,14 @@
       <location filename="../../../PathScripts/PathSanity.py" line="69"/>
       <source>A Postprocessor has not been selected.
 </source>
-      <translation>Δεν έχει επιλεχθεί κάποιος Τελικός Επεξεργαστής.
+      <translation type="unfinished">A Postprocessor has not been selected.
 </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="72"/>
       <source>No output file is named. You'll be prompted during postprocessing.
 </source>
-      <translation>Δεν ονομάστηκε κανένα αρχείο εξόδου. Θα σας ζητηθεί κατά τη διάρκεια της τελικής επεξεργασίας.
+      <translation type="unfinished">No output file is named. You'll be prompted during postprocessing.
 </translation>
     </message>
     <message>
@@ -2283,7 +2307,7 @@
       <location filename="../../../PathScripts/PathSanity.py" line="132"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.
 </source>
-      <translation>Δεν βρέθηκε Ελεγκτής Εργαλείων. Χρησιμοποιούνται προεπιλεγμένες τιμές και αυτό αποτελεί κίνδυνο. Παρακαλώ προσθέστε έναν Ελεγκτή Εργαλείων.
+      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.
 </translation>
     </message>
     <message>
@@ -2293,8 +2317,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="140"/>
-      <source>A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.</source>
-      <translation>Δεν βρέθηκε Ελεγκτής Εργαλείων. Χρησιμοποιούνται προεπιλεγμένες τιμές και αυτό αποτελεί κίνδυνο. Παρακαλώ προσθέστε έναν Ελεγκτή Εργαλείων.</translation>
+      <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
+      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
@@ -2411,39 +2435,6 @@
       <location filename="../../../PathScripts/PathToolController.py" line="276"/>
       <source>Add Tool Controller</source>
       <translation>Προσθέστε Ελεγκτή Εργαλείων</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_ToolLenOffset</name>
-    <message>
-      <location filename="PathToolLenOffset.py" line="126"/>
-      <source>Tool Length Offset</source>
-      <translation>Μήκος Μετατόπισης Εργαλείου</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="128"/>
-      <source>Create a Tool Length Offset object</source>
-      <translation>Δημιουργήστε ένα αντικείμενο Μήκους Μετατόπισης Εργαλείου</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="134"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Δημιουργήστε ένα αντικείμενο Επιπέδου Επιλογής</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="125"/>
-      <source>Tool Length Offset</source>
-      <translation>Μήκος Μετατόπισης Εργαλείου</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="126"/>
-      <source>Create a Tool Length Offset object</source>
-      <translation>Δημιουργήστε ένα αντικείμενο Μήκους Μετατόπισης Εργαλείου</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="136"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Δημιουργήστε ένα αντικείμενο Επιπέδου Επιλογής</translation>
     </message>
   </context>
   <context>
@@ -3082,6 +3073,24 @@
       <location filename="PathDressupTagGui.py" line="650"/>
       <source>Create Tag Dress-up</source>
       <translation>Δημιουργήστε Αναδιαμόρφωση Προσάρτησης</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_ToolLenOffset</name>
+    <message>
+      <location filename="PathToolLenOffset.py" line="126"/>
+      <source>Tool Length Offset</source>
+      <translation>Μήκος Μετατόπισης Εργαλείου</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="128"/>
+      <source>Create a Tool Length Offset object</source>
+      <translation>Δημιουργήστε ένα αντικείμενο Μήκους Μετατόπισης Εργαλείου</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="134"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Δημιουργήστε ένα αντικείμενο Επιπέδου Επιλογής</translation>
     </message>
   </context>
   <context>

@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>ezarri orientazio lehenetsia, bide-puntuak sortzeko ondoren erabiliko diren komandoetarako</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Ezarri balio lehenetsiak abiadurarako, azeleraziorako eta jarraitutasunerako, bide-puntuak sortzeko ondoren erabiliko diren komandoetarako</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>ezarri balio lehenetsiak abiadurarako, azeleraziorako eta jarraikortasunerako, bide-puntuak sortzeko ondoren erabiliko diren komandoetarako</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Gutxienez bi bide-puntu behar dituzu ibilbidean, simulazioa sortzeko.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Gutxienez bi bide-puntu behar dituzu ibilbidean, simulazioa sortzeko.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Geometria baten gainetik igaro behar duzu sagua (aurrehautaketa) komando hau erabili ahal izateko. Begiratu dokumentazioa xehetasun gehiago jasotzeko.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Ezarri abiadura lehenetsia</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Ezarri jarraitutasun lehenetsia</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Ezarri azelerazio lehenetsia</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Hautatu robot bat hasierako posizioa ezartzeko</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Hautatu robot bat</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Hautatu ibilbide-objektu bat.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>ezarri abiadura lehenetsia</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>abiadura: (adib. 1 m/s edo 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>ezarri jarraitutasun lehenetsia</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>jarraia?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>ezarri azelerazio lehenetsia</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>azelerazioa: (adib. 1 m/s^2 edo 3 cm/s^2)</translation>
     </message>

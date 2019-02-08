@@ -311,7 +311,7 @@
     <message>
       <location filename="../../Command.cpp" line="+137"/>
       <source>Select plane</source>
-      <translation>Seleccionar plano</translation>
+      <translation>Escolmar plano</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -324,7 +324,7 @@
     <message>
       <location line="-129"/>
       <source>Select plane</source>
-      <translation>Seleccionar plano</translation>
+      <translation>Escolmar plano</translation>
     </message>
     <message>
       <location line="+1"/>
