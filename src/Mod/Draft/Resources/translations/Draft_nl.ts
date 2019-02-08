@@ -306,7 +306,7 @@
     <message>
       <location filename="../../Draft.py" line="4827"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Parametrisatiefactor</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4892"/>
@@ -316,7 +316,7 @@
     <message>
       <location filename="../../Draft.py" line="4893"/>
       <source>The degree of the Bezier function</source>
-      <translation type="unfinished">The degree of the Bezier function</translation>
+      <translation>De omvang van de Bezier-functie</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4894"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Draft.py" line="5034"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>Het basisobject dat deze 2D-weergave moet weergeven</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5035"/>
@@ -356,7 +356,7 @@
     <message>
       <location filename="../../Draft.py" line="5037"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation type="unfinished">The indices of the faces to be projected in Individual Faces mode</translation>
+      <translation>De indexen van de vlakken die geprojecteerd moeten worden in de individuele aanzichtmodus</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5038"/>
@@ -426,7 +426,7 @@
     <message>
       <location filename="../../Draft.py" line="5196"/>
       <source>Angle to cover with copies</source>
-      <translation type="unfinished">Angle to cover with copies</translation>
+      <translation>Hoek om te dekken met kopieën</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5197"/>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../Draft.py" line="5286"/>
       <source>The path object along which to distribute objects</source>
-      <translation type="unfinished">The path object along which to distribute objects</translation>
+      <translation>Het trajectobject waarlangs de objecten gedistribueerd moeten worden</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5287"/>
@@ -486,7 +486,7 @@
     <message>
       <location filename="../../Draft.py" line="5708"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Tussentekenafstand</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5850"/>
@@ -496,12 +496,12 @@
     <message>
       <location filename="../../Draft.py" line="5851"/>
       <source>Specifies if splitter lines must be removed</source>
-      <translation type="unfinished">Specifies if splitter lines must be removed</translation>
+      <translation>Geeft aan of de splitslijnen verwijderd worden moeten</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5852"/>
       <source>An optional extrusion value to be applied to all faces</source>
-      <translation type="unfinished">An optional extrusion value to be applied to all faces</translation>
+      <translation>Een optionele extrusiewaarde die op alle vlakken toegepast moet worden</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4290"/>
@@ -511,12 +511,12 @@
     <message>
       <location filename="../../Draft.py" line="4294"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>Horizontale onderverdelingen van deze rechthoek</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4295"/>
       <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
+      <translation>Verticale onderverdelingen van deze rechthoek</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6570"/>
@@ -541,52 +541,52 @@
     <message>
       <location filename="../../Draft.py" line="4443"/>
       <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The base object is the wire, it's formed from 2 objects</translation>
+      <translation>Het basisobject is de draad, deze is gevormd uit 2 objecten</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4444"/>
       <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation type="unfinished">The tool object is the wire, it's formed from 2 objects</translation>
+      <translation>Het gereedschapsobject is de draad, deze is gevormd uit 2 objecten</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6265"/>
       <source>The length of the straight segment</source>
-      <translation type="unfinished">The length of the straight segment</translation>
+      <translation>De lengte van het rechte segment</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6266"/>
       <source>The point indicated by this label</source>
-      <translation type="unfinished">The point indicated by this label</translation>
+      <translation>Het punt aangegeven door dit label</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6267"/>
       <source>The points defining the label polyline</source>
-      <translation type="unfinished">The points defining the label polyline</translation>
+      <translation>De punten die de polylijn van het label definiëren</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6268"/>
       <source>The direction of the straight segment</source>
-      <translation type="unfinished">The direction of the straight segment</translation>
+      <translation>De richting van het rechte segment</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6269"/>
       <source>The type of information shown by this label</source>
-      <translation type="unfinished">The type of information shown by this label</translation>
+      <translation>Het type informatie dat door dit label wordt weergegeven</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6270"/>
       <source>The target object of this label</source>
-      <translation type="unfinished">The target object of this label</translation>
+      <translation>Het doelobject van dit label</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6271"/>
       <source>The text to display when type is set to custom</source>
-      <translation type="unfinished">The text to display when type is set to custom</translation>
+      <translation>De tekst die weergegeven moet worden wanneer het type ingesteld is op aangepast</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6272"/>
       <source>The text displayed by this label</source>
-      <translation type="unfinished">The text displayed by this label</translation>
+      <translation>De tekst die door dit label wordt weergegeven</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6583"/>
@@ -606,17 +606,17 @@
     <message>
       <location filename="../../Draft.py" line="6585"/>
       <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
+      <translation>De verticale uitlijning van de tekst</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6350"/>
       <source>The type of arrow of this label</source>
-      <translation type="unfinished">The type of arrow of this label</translation>
+      <translation>Het pijltype van dit label</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6351"/>
       <source>The type of frame around the text of this object</source>
-      <translation type="unfinished">The type of frame around the text of this object</translation>
+      <translation>Het kadertype rond de tekst van dit object</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6586"/>
@@ -626,42 +626,42 @@
     <message>
       <location filename="../../Draft.py" line="6356"/>
       <source>The maximum number of characters on each line of the text box</source>
-      <translation type="unfinished">The maximum number of characters on each line of the text box</translation>
+      <translation>Het maximale aantal tekens op elke regel van het tekstvak</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3510"/>
       <source>The distance the dimension line is extended past the extension lines</source>
-      <translation type="unfinished">The distance the dimension line is extended past the extension lines</translation>
+      <translation>De afstand die de maatlijn voorbij de verlengingslijnen wordt verlengd</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3511"/>
       <source>Length of the extension line above the dimension line</source>
-      <translation type="unfinished">Length of the extension line above the dimension line</translation>
+      <translation>Lengte van de verlengingslijn boven de maatlijn</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4817"/>
       <source>The points of the B-spline</source>
-      <translation type="unfinished">The points of the B-spline</translation>
+      <translation>De punten van de B-spline</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4818"/>
       <source>If the B-spline is closed or not</source>
-      <translation type="unfinished">If the B-spline is closed or not</translation>
+      <translation>Als de B-spline gesloten is of niet</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5039"/>
       <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation type="unfinished">Tessellate Ellipses and B-splines into line segments</translation>
+      <translation>Ellipsen en B-splines in lijnsegmenten betegelen</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5041"/>
       <source>Length of line segments if tessellating Ellipses or B-splines into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines into line segments</translation>
+      <translation>Lengte van lijnsegmenten als de ellipsen of B-splines in lijnsegmenten betegeld worden</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5042"/>
       <source>If this is True, this object will be recomputed only if it is visible</source>
-      <translation type="unfinished">If this is True, this object will be recomputed only if it is visible</translation>
+      <translation>Wanneer waar, wordt dit object alleen opnieuw berekend als het zichtbaar is</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5450"/>
@@ -671,7 +671,7 @@
     <message>
       <location filename="../../Draft.py" line="5451"/>
       <source>PointList</source>
-      <translation type="unfinished">PointList</translation>
+      <translation>PuntLijst</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5452"/>
@@ -681,43 +681,43 @@
     <message>
       <location filename="../../Draft.py" line="5538"/>
       <source>The objects included in this clone</source>
-      <translation type="unfinished">The objects included in this clone</translation>
+      <translation>De objecten inbegrepen in deze kloon</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5539"/>
       <source>The scale factor of this clone</source>
-      <translation type="unfinished">The scale factor of this clone</translation>
+      <translation>De schaalfactor van deze kloon</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5540"/>
       <source>If this clones several objects, this specifies if the result is a fusion or a compound</source>
-      <translation type="unfinished">If this clones several objects, this specifies if the result is a fusion or a compound</translation>
+      <translation>Als dit meerdere objecten kloont, geeft dit aan of het resultaat een fusie of een samenstelling is</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5853"/>
       <source>This specifies if the shapes sew</source>
-      <translation type="unfinished">This specifies if the shapes sew</translation>
+      <translation>Dit geeft aan of de vormen zich hechten</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6352"/>
       <source>Display a leader line or not</source>
-      <translation type="unfinished">Display a leader line or not</translation>
+      <translation>Toon een leiderslijn of niet</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6571"/>
       <source>The text displayed by this object</source>
-      <translation type="unfinished">The text displayed by this object</translation>
+      <translation>De tekst die door dit object wordt weergegeven</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6587"/>
       <source>Line spacing (relative to font size)</source>
-      <translation type="unfinished">Line spacing (relative to font size)</translation>
+      <translation>Lijnafstand (ten opzichte van de tekengrootte)</translation>
     </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../DraftTools.py" line="5329"/>
+      <location filename="../../DraftTools.py" line="5349"/>
       <source>Slope</source>
       <translation>Helling</translation>
     </message>
@@ -727,9 +727,9 @@
 Please download and install them manually.
 See complete instructions at
 http://www.freecadweb.org/wiki/Dxf_Importer_Install</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please download and install them manually.
-See complete instructions at
+      <translation>Download van dxf bibliotheken mislukt.
+Download en installeer ze handmatig.
+Zie volledige instructies op
 http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
     </message>
     <message>
@@ -740,12 +740,12 @@ http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
     <message>
       <location filename="../../Draft.py" line="6105"/>
       <source>Writing camera position</source>
-      <translation type="unfinished">Writing camera position</translation>
+      <translation>Camerapositie schrijven</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="6122"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>De weergegeven/verborgen staat van de objecten schrijven</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2346"/>
@@ -765,27 +765,27 @@ http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
     <message>
       <location filename="../../DraftGui.py" line="2349"/>
       <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <translation>Uniforme schaalverdeling</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2350"/>
       <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <translation>Oriëntatie van het werkvlak</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2351"/>
       <source>Result</source>
-      <translation type="unfinished">Result</translation>
+      <translation>Resultaat</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2352"/>
       <source>Create a clone</source>
-      <translation type="unfinished">Create a clone</translation>
+      <translation>Een kloon maken</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2353"/>
       <source>Modify original</source>
-      <translation type="unfinished">Modify original</translation>
+      <translation>Originele wijzigen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2354"/>
@@ -797,24 +797,24 @@ http://www.freecadweb.org/wiki/Dxf_Importer_Install</translation>
       <source>Download of dxf libraries failed.
 Please install the dxf Library addon manually
 from menu Tools -&gt; Addon Manager</source>
-      <translation type="unfinished">Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</translation>
+      <translation>Download van dxf-bibliotheken mislukt.
+Download en installeer ze handmatig
+vanuit het menu Tools -&gt; Addon Manager</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4695"/>
       <source>This Wire is already flat</source>
-      <translation type="unfinished">This Wire is already flat</translation>
+      <translation>Deze draad is al vlak</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2355"/>
       <source>Pick from/to points</source>
-      <translation type="unfinished">Pick from/to points</translation>
+      <translation>Kies van/naar punten</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5335"/>
+      <location filename="../../DraftTools.py" line="5355"/>
       <source>Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</source>
-      <translation type="unfinished">Slope to give selected Wires/Lines: 0 = horizontal, 1 = 45deg up, -1 = 45deg down</translation>
+      <translation>Helling om geselecteerde draden/lijnen te geven: 0 = horizontaal, 1 = 45graden naar boven, -1 = 45graden naar beneden</translation>
     </message>
   </context>
   <context>
@@ -822,12 +822,12 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="26"/>
       <source>ShapeString</source>
-      <translation type="unfinished">ShapeString</translation>
+      <translation>Tekenreeksvorm</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="46"/>
       <source>Text to be made into ShapeString</source>
-      <translation type="unfinished">Text to be made into ShapeString</translation>
+      <translation>Tekst die omgezet moet worden in ShapeString</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="53"/>
@@ -842,7 +842,7 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="71"/>
       <source>Height of the result</source>
-      <translation type="unfinished">Height of the result</translation>
+      <translation>Hoogte van het resultaat</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="118"/>
@@ -862,44 +862,44 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="150"/>
       <source>Font file</source>
-      <translation type="unfinished">Font file</translation>
+      <translation>Lettertypebestand</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddConstruction</name>
     <message>
-      <location filename="../../DraftTools.py" line="5571"/>
+      <location filename="../../DraftTools.py" line="5591"/>
       <source>Add to Construction group</source>
-      <translation type="unfinished">Add to Construction group</translation>
+      <translation>Voeg aan Constructiegroep toe</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5572"/>
+      <location filename="../../DraftTools.py" line="5592"/>
       <source>Adds the selected objects to the Construction group</source>
-      <translation type="unfinished">Adds the selected objects to the Construction group</translation>
+      <translation>Voegt de geselecteerde objecten toe aan de constructiegroep</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4624"/>
+      <location filename="../../DraftTools.py" line="4644"/>
       <source>Add Point</source>
       <translation>Punt toevoegen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4625"/>
+      <location filename="../../DraftTools.py" line="4645"/>
       <source>Adds a point to an existing Wire or B-spline</source>
-      <translation type="unfinished">Adds a point to an existing Wire or B-spline</translation>
+      <translation>Voegt een punt toe aan een een bestaande draad of B-spline</translation>
     </message>
   </context>
   <context>
     <name>Draft_AddToGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4577"/>
+      <location filename="../../DraftTools.py" line="4597"/>
       <source>Move to group...</source>
       <translation>Verplaats naar groep...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4578"/>
+      <location filename="../../DraftTools.py" line="4598"/>
       <source>Moves the selected object(s) to an existing group</source>
       <translation>Verplaats de geselecteerde object(en) naar een bestaande groep</translation>
     </message>
@@ -907,12 +907,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ApplyStyle</name>
     <message>
-      <location filename="../../DraftTools.py" line="2475"/>
+      <location filename="../../DraftTools.py" line="2476"/>
       <source>Apply Current Style</source>
       <translation>Huidige stijl toepassen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2476"/>
+      <location filename="../../DraftTools.py" line="2477"/>
       <source>Applies current line width and color to selected objects</source>
       <translation>Huidige lijndikte en -kleur toepassen op geselecteerde objecten</translation>
     </message>
@@ -920,12 +920,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Arc</name>
     <message>
-      <location filename="../../DraftTools.py" line="1170"/>
+      <location filename="../../DraftTools.py" line="1171"/>
       <source>Arc</source>
       <translation>Boog</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1171"/>
+      <location filename="../../DraftTools.py" line="1172"/>
       <source>Creates an arc. CTRL to snap, SHIFT to constrain</source>
       <translation>Creëert een boog. CTRL om te snappen, SHIFT om te beperken</translation>
     </message>
@@ -933,12 +933,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Array</name>
     <message>
-      <location filename="../../DraftTools.py" line="4846"/>
+      <location filename="../../DraftTools.py" line="4866"/>
       <source>Array</source>
       <translation>Reeks</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4847"/>
+      <location filename="../../DraftTools.py" line="4867"/>
       <source>Creates a polar or rectangular array from a selected object</source>
       <translation>Maak een polair of rechthoekige array van een geselecteerd object</translation>
     </message>
@@ -946,38 +946,38 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_AutoGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5370"/>
+      <location filename="../../DraftTools.py" line="5390"/>
       <source>AutoGroup</source>
       <translation>Automatisch groeperen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5371"/>
+      <location filename="../../DraftTools.py" line="5391"/>
       <source>Select a group to automatically add all Draft &amp; Arch objects to</source>
-      <translation type="unfinished">Select a group to automatically add all Draft &amp; Arch objects to</translation>
+      <translation>Selecteer een groep om automatisch alle Schets- &amp; Arch-objecten toe te voegen</translation>
     </message>
   </context>
   <context>
     <name>Draft_BSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="790"/>
+      <location filename="../../DraftTools.py" line="791"/>
       <source>B-spline</source>
-      <translation type="unfinished">B-spline</translation>
+      <translation>B-spline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="791"/>
+      <location filename="../../DraftTools.py" line="792"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain</translation>
+      <translation>Maakt een B-spline aan met meerdere punten. CTRL om te snappen, SHIFT om te beperken</translation>
     </message>
   </context>
   <context>
     <name>Draft_BezCurve</name>
     <message>
-      <location filename="../../DraftTools.py" line="889"/>
+      <location filename="../../DraftTools.py" line="890"/>
       <source>BezCurve</source>
-      <translation type="unfinished">BezCurve</translation>
+      <translation>BezCurve</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="890"/>
+      <location filename="../../DraftTools.py" line="891"/>
       <source>Creates a Bezier curve. CTRL to snap, SHIFT to constrain</source>
       <translation>Hiermee maakt u een Bezier-curve. CTRL om te vangen, SHIFT om te beperken</translation>
     </message>
@@ -985,12 +985,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Circle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1485"/>
+      <location filename="../../DraftTools.py" line="1486"/>
       <source>Circle</source>
       <translation>Cirkel</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1486"/>
+      <location filename="../../DraftTools.py" line="1487"/>
       <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
       <translation>Hiermee maakt u een cirkel. CTRL om te snappen, ALT om rakende objecten te kiezen</translation>
     </message>
@@ -998,12 +998,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Clone</name>
     <message>
-      <location filename="../../DraftTools.py" line="5038"/>
+      <location filename="../../DraftTools.py" line="5058"/>
       <source>Clone</source>
       <translation>Kopieer</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5039"/>
+      <location filename="../../DraftTools.py" line="5059"/>
       <source>Clones the selected object(s)</source>
       <translation>Kopieer het/de geselecteerde(e) object(en)</translation>
     </message>
@@ -1011,12 +1011,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_CloseLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="1016"/>
+      <location filename="../../DraftTools.py" line="1017"/>
       <source>Close Line</source>
       <translation>Sluit lijn</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1017"/>
+      <location filename="../../DraftTools.py" line="1018"/>
       <source>Closes the line being drawn</source>
       <translation>Sluit de getekende lijn</translation>
     </message>
@@ -1024,25 +1024,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_DelPoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="4649"/>
+      <location filename="../../DraftTools.py" line="4669"/>
       <source>Remove Point</source>
       <translation>Punt verwijderen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4650"/>
+      <location filename="../../DraftTools.py" line="4670"/>
       <source>Removes a point from an existing Wire or B-spline</source>
-      <translation type="unfinished">Removes a point from an existing Wire or B-spline</translation>
+      <translation>Verwijdert een punt uit een bestaande draad of B-spline</translation>
     </message>
   </context>
   <context>
     <name>Draft_Dimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="1882"/>
+      <location filename="../../DraftTools.py" line="1883"/>
       <source>Dimension</source>
       <translation>Afmeting</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1883"/>
+      <location filename="../../DraftTools.py" line="1884"/>
       <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
       <translation>Hiermee maakt u een dimensie. CTRL om te snappen, SHIFT om te beperken, ALT om een segment te kiezen</translation>
     </message>
@@ -1050,12 +1050,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Downgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3249"/>
+      <location filename="../../DraftTools.py" line="3250"/>
       <source>Downgrade</source>
       <translation>Vorige versie</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3250"/>
+      <location filename="../../DraftTools.py" line="3251"/>
       <source>Explodes the selected objects into simpler objects, or subtracts faces</source>
       <translation>Explodeert de geselecteerde objecten in eenvoudigere objecten, of verwijdert vlakken</translation>
     </message>
@@ -1063,12 +1063,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-      <location filename="../../DraftTools.py" line="4788"/>
+      <location filename="../../DraftTools.py" line="4808"/>
       <source>Draft to Sketch</source>
       <translation>Van klad naar schets</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4789"/>
+      <location filename="../../DraftTools.py" line="4809"/>
       <source>Convert bidirectionally between Draft and Sketch objects</source>
       <translation>Converteer bidirectioneel tussen Draft en Sketch objecten</translation>
     </message>
@@ -1076,25 +1076,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Drawing</name>
     <message>
-      <location filename="../../DraftTools.py" line="3854"/>
+      <location filename="../../DraftTools.py" line="3855"/>
       <source>Drawing</source>
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3855"/>
+      <location filename="../../DraftTools.py" line="3856"/>
       <source>Puts the selected objects on a Drawing sheet</source>
-      <translation type="unfinished">Puts the selected objects on a Drawing sheet</translation>
+      <translation>Zet de geselecteerde objecten op een tekenplaat</translation>
     </message>
   </context>
   <context>
     <name>Draft_Edit</name>
     <message>
-      <location filename="../../DraftTools.py" line="3959"/>
+      <location filename="../../DraftTools.py" line="3960"/>
       <source>Edit</source>
       <translation>Bewerken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3960"/>
+      <location filename="../../DraftTools.py" line="3961"/>
       <source>Edits the active object</source>
       <translation>Bewerkt het actieve object</translation>
     </message>
@@ -1102,12 +1102,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Ellipse</name>
     <message>
-      <location filename="../../DraftTools.py" line="1680"/>
+      <location filename="../../DraftTools.py" line="1681"/>
       <source>Ellipse</source>
       <translation>Ellips</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1681"/>
+      <location filename="../../DraftTools.py" line="1682"/>
       <source>Creates an ellipse. CTRL to snap</source>
       <translation>Hiermee maakt u een ellips. CTRL om te vangen</translation>
     </message>
@@ -1115,12 +1115,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Facebinder</name>
     <message>
-      <location filename="../../DraftTools.py" line="5123"/>
+      <location filename="../../DraftTools.py" line="5143"/>
       <source>Facebinder</source>
       <translation>Vlakenbinder</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5124"/>
+      <location filename="../../DraftTools.py" line="5144"/>
       <source>Creates a facebinder object from selected face(s)</source>
       <translation>Creëert een vlakkenbinder object van geselecteerde vlak(en)</translation>
     </message>
@@ -1128,12 +1128,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_FinishLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="996"/>
+      <location filename="../../DraftTools.py" line="997"/>
       <source>Finish line</source>
       <translation>Voltooi lijn</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="997"/>
+      <location filename="../../DraftTools.py" line="998"/>
       <source>Finishes a line without closing it</source>
       <translation>Voltooit een lijn zonder deze te sluiten</translation>
     </message>
@@ -1141,12 +1141,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5152"/>
+      <location filename="../../DraftTools.py" line="5172"/>
       <source>Flip Dimension</source>
       <translation>Afmeting spiegelen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5153"/>
+      <location filename="../../DraftTools.py" line="5173"/>
       <source>Flip the normal direction of a dimension</source>
       <translation>Keer de normaal richting van een maat om</translation>
     </message>
@@ -1154,12 +1154,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Heal</name>
     <message>
-      <location filename="../../DraftTools.py" line="5104"/>
+      <location filename="../../DraftTools.py" line="5124"/>
       <source>Heal</source>
       <translation>Repareer</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5105"/>
+      <location filename="../../DraftTools.py" line="5125"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
       <translation>Repareer beschadigde Draft objecten van een oudere FreeCAD versie</translation>
     </message>
@@ -1167,25 +1167,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Label</name>
     <message>
-      <location filename="../../DraftTools.py" line="5438"/>
+      <location filename="../../DraftTools.py" line="5458"/>
       <source>Label</source>
       <translation>Label</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5439"/>
+      <location filename="../../DraftTools.py" line="5459"/>
       <source>Creates a label, optionally attached to a selected object or element</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or element</translation>
+      <translation>Maakt een label aan, eventueel toegevoegd aan een geselecteerd object of element</translation>
     </message>
   </context>
   <context>
     <name>Draft_Line</name>
     <message>
-      <location filename="../../DraftTools.py" line="551"/>
+      <location filename="../../DraftTools.py" line="552"/>
       <source>Line</source>
       <translation>Lijn</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="552"/>
+      <location filename="../../DraftTools.py" line="553"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain</source>
       <translation>Hiermee maakt u een 2-punts lijn. CTRL om te snappen, SHIFT om te beperken</translation>
     </message>
@@ -1193,12 +1193,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Mirror</name>
     <message>
-      <location filename="../../DraftTools.py" line="5193"/>
+      <location filename="../../DraftTools.py" line="5213"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Spiegelen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5194"/>
+      <location filename="../../DraftTools.py" line="5214"/>
       <source>Mirrors the selected objects along a line defined by two points</source>
       <translation>Spiegelt de geselecteerde objecten langs een lijn redefiniert door twee punten</translation>
     </message>
@@ -1206,12 +1206,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Move</name>
     <message>
-      <location filename="../../DraftTools.py" line="2356"/>
+      <location filename="../../DraftTools.py" line="2357"/>
       <source>Move</source>
       <translation>Verplaatsen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2357"/>
+      <location filename="../../DraftTools.py" line="2358"/>
       <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Verplaatst de geselecteerde objecten tussen 2 punten. CTRL om te snappen, SHIFT om te beperken, ALT om te kopiëren</translation>
     </message>
@@ -1219,12 +1219,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Offset</name>
     <message>
-      <location filename="../../DraftTools.py" line="2697"/>
+      <location filename="../../DraftTools.py" line="2698"/>
       <source>Offset</source>
       <translation>Verschuiving</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2698"/>
+      <location filename="../../DraftTools.py" line="2699"/>
       <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Verschuift het actieve object. CTRL om te snappen, SHIFT om te beperken, ALT om te kopiëren</translation>
     </message>
@@ -1232,12 +1232,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_PathArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="4876"/>
+      <location filename="../../DraftTools.py" line="4896"/>
       <source>PathArray</source>
       <translation>Padpatroon</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4877"/>
+      <location filename="../../DraftTools.py" line="4897"/>
       <source>Creates copies of a selected object along a selected path.</source>
       <translation>Maakt kopieën van een geselecteerd object langs een geselecteerd pad.</translation>
     </message>
@@ -1245,12 +1245,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Point</name>
     <message>
-      <location filename="../../DraftTools.py" line="4943"/>
+      <location filename="../../DraftTools.py" line="4963"/>
       <source>Point</source>
       <translation>Punt</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4944"/>
+      <location filename="../../DraftTools.py" line="4964"/>
       <source>Creates a point object</source>
       <translation>Maak een punt object</translation>
     </message>
@@ -1258,25 +1258,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_PointArray</name>
     <message>
-      <location filename="../../DraftTools.py" line="4912"/>
+      <location filename="../../DraftTools.py" line="4932"/>
       <source>PointArray</source>
-      <translation type="unfinished">PointArray</translation>
+      <translation>Puntenreeks</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4913"/>
+      <location filename="../../DraftTools.py" line="4933"/>
       <source>Creates copies of a selected object on the position of points.</source>
-      <translation type="unfinished">Creates copies of a selected object on the position of points.</translation>
+      <translation>Maakt kopieën aan van een geselecteerd object op de positie van punten.</translation>
     </message>
   </context>
   <context>
     <name>Draft_Polygon</name>
     <message>
-      <location filename="../../DraftTools.py" line="1495"/>
+      <location filename="../../DraftTools.py" line="1496"/>
       <source>Polygon</source>
       <translation>Veelhoek</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1496"/>
+      <location filename="../../DraftTools.py" line="1497"/>
       <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
       <translation>Creëert een regelmatige veelhoek. CTRL om te snappen, SHIFT te beperken</translation>
     </message>
@@ -1284,12 +1284,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Rectangle</name>
     <message>
-      <location filename="../../DraftTools.py" line="1052"/>
+      <location filename="../../DraftTools.py" line="1053"/>
       <source>Rectangle</source>
       <translation>Rechthoek</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1053"/>
+      <location filename="../../DraftTools.py" line="1054"/>
       <source>Creates a 2-point rectangle. CTRL to snap</source>
       <translation>Hiermee maakt u een 2-punts rechthoek. CTRL om te snappen</translation>
     </message>
@@ -1297,12 +1297,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Rotate</name>
     <message>
-      <location filename="../../DraftTools.py" line="2513"/>
+      <location filename="../../DraftTools.py" line="2514"/>
       <source>Rotate</source>
       <translation>Draaien</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2514"/>
+      <location filename="../../DraftTools.py" line="2515"/>
       <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
       <translation>Draait de geselecteerde objecten. CTRL om te snappen, SHIFT om te beperken, ALT om een kopie te creëren</translation>
     </message>
@@ -1310,12 +1310,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Scale</name>
     <message>
-      <location filename="../../DraftTools.py" line="3700"/>
+      <location filename="../../DraftTools.py" line="3701"/>
       <source>Scale</source>
       <translation>Schalen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3701"/>
+      <location filename="../../DraftTools.py" line="3702"/>
       <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
       <translation>Schaalt de geselecteerde objecten uit een basispunt. CTRL om te srpingen, SHIFT om te beperken, ALT om te kopiëren</translation>
     </message>
@@ -1323,12 +1323,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_SelectGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="4716"/>
+      <location filename="../../DraftTools.py" line="4736"/>
       <source>Select group</source>
       <translation>Selecteer groep</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4717"/>
+      <location filename="../../DraftTools.py" line="4737"/>
       <source>Selects all objects with the same parents as this group</source>
       <translation>Selecteert alle objecten met dezelfde ouders als deze groep</translation>
     </message>
@@ -1336,12 +1336,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_SelectPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="322"/>
+      <location filename="../../DraftTools.py" line="323"/>
       <source>SelectPlane</source>
       <translation>Selecteer vlak</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="323"/>
+      <location filename="../../DraftTools.py" line="324"/>
       <source>Select a working plane for geometry creation</source>
       <translation>Selecteer een werkvlak om geometrie te creëren</translation>
     </message>
@@ -1349,25 +1349,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_SetWorkingPlaneProxy</name>
     <message>
-      <location filename="../../DraftTools.py" line="5415"/>
+      <location filename="../../DraftTools.py" line="5435"/>
       <source>Creates a proxy object from the current working plane</source>
-      <translation type="unfinished">Creates a proxy object from the current working plane</translation>
+      <translation>Maakt een proxy-object aan van het huidige werkvlak</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5414"/>
+      <location filename="../../DraftTools.py" line="5434"/>
       <source>Create Working Plane Proxy</source>
-      <translation type="unfinished">Create Working Plane Proxy</translation>
+      <translation>Maak proxy van het werkvlak aan</translation>
     </message>
   </context>
   <context>
     <name>Draft_Shape2DView</name>
     <message>
-      <location filename="../../DraftTools.py" line="4748"/>
+      <location filename="../../DraftTools.py" line="4768"/>
       <source>Shape 2D view</source>
       <translation>2D-uitzichtvorm</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4749"/>
+      <location filename="../../DraftTools.py" line="4769"/>
       <source>Creates Shape 2D views of selected objects</source>
       <translation>Maakt 2D-uitzichtvormen van geselecteerde objecten</translation>
     </message>
@@ -1375,12 +1375,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ShapeString</name>
     <message>
-      <location filename="../../DraftTools.py" line="2223"/>
+      <location filename="../../DraftTools.py" line="2224"/>
       <source>Shape from text...</source>
       <translation>Vorm van tekst...</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2224"/>
+      <location filename="../../DraftTools.py" line="2225"/>
       <source>Creates text string in shapes.</source>
       <translation>Hiermee maakt u een tekst in vormen.</translation>
     </message>
@@ -1388,12 +1388,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-      <location filename="../../DraftTools.py" line="5020"/>
+      <location filename="../../DraftTools.py" line="5040"/>
       <source>Show Snap Bar</source>
       <translation>Toon Snap Werkbalk</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5021"/>
+      <location filename="../../DraftTools.py" line="5041"/>
       <source>Shows Draft snap toolbar</source>
       <translation>Toont Draft snap werkbalk</translation>
     </message>
@@ -1401,25 +1401,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Slope</name>
     <message>
-      <location filename="../../DraftTools.py" line="5315"/>
+      <location filename="../../DraftTools.py" line="5335"/>
       <source>Set Slope</source>
-      <translation type="unfinished">Set Slope</translation>
+      <translation>Helling instellen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5316"/>
+      <location filename="../../DraftTools.py" line="5336"/>
       <source>Sets the slope of a selected Line or Wire</source>
-      <translation type="unfinished">Sets the slope of a selected Line or Wire</translation>
+      <translation>Stelt de helling van een geselecteerde lijn of draad in</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Angle</name>
     <message>
-      <location filename="../../DraftTools.py" line="5688"/>
+      <location filename="../../DraftTools.py" line="5708"/>
       <source>Angles</source>
       <translation>Hoeken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5689"/>
+      <location filename="../../DraftTools.py" line="5709"/>
       <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
       <translation>Vangt op 45 en 90 graden op bogen en cirkels</translation>
     </message>
@@ -1427,12 +1427,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Center</name>
     <message>
-      <location filename="../../DraftTools.py" line="5700"/>
+      <location filename="../../DraftTools.py" line="5720"/>
       <source>Center</source>
       <translation>Middelpunt</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5701"/>
+      <location filename="../../DraftTools.py" line="5721"/>
       <source>Snaps to center of circles and arcs</source>
       <translation>Vangt op het middelpunt van cirkels en bogen</translation>
     </message>
@@ -1440,12 +1440,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-      <location filename="../../DraftTools.py" line="5760"/>
+      <location filename="../../DraftTools.py" line="5780"/>
       <source>Dimensions</source>
       <translation>Dimensies</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5761"/>
+      <location filename="../../DraftTools.py" line="5781"/>
       <source>Shows temporary dimensions when snapping to Arch objects</source>
       <translation>Toont tijdelijke bemating terwijl men snapt aan Arch objecten</translation>
     </message>
@@ -1453,12 +1453,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5676"/>
+      <location filename="../../DraftTools.py" line="5696"/>
       <source>Endpoint</source>
       <translation>Eindpunt</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5677"/>
+      <location filename="../../DraftTools.py" line="5697"/>
       <source>Snaps to endpoints of edges</source>
       <translation>Snapt aan eindpunten van ribbes</translation>
     </message>
@@ -1466,12 +1466,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Extension</name>
     <message>
-      <location filename="../../DraftTools.py" line="5712"/>
+      <location filename="../../DraftTools.py" line="5732"/>
       <source>Extension</source>
       <translation>Extensie</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5713"/>
+      <location filename="../../DraftTools.py" line="5733"/>
       <source>Snaps to extension of edges</source>
       <translation>Snapt aan het verlengde van ribbes</translation>
     </message>
@@ -1479,12 +1479,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Grid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5640"/>
+      <location filename="../../DraftTools.py" line="5660"/>
       <source>Grid</source>
       <translation>Raster</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5641"/>
+      <location filename="../../DraftTools.py" line="5661"/>
       <source>Snaps to grid points</source>
       <translation>Vangt op rasterpunten</translation>
     </message>
@@ -1492,12 +1492,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-      <location filename="../../DraftTools.py" line="5652"/>
+      <location filename="../../DraftTools.py" line="5672"/>
       <source>Intersection</source>
       <translation>Snijpunt</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5653"/>
+      <location filename="../../DraftTools.py" line="5673"/>
       <source>Snaps to edges intersections</source>
       <translation>Vangt op snijpunten van randen</translation>
     </message>
@@ -1505,30 +1505,30 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Lock</name>
     <message>
-      <location filename="../../DraftTools.py" line="5606"/>
+      <location filename="../../DraftTools.py" line="5626"/>
       <source>Toggle On/Off</source>
       <translation>In-/ uitschakelen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5607"/>
+      <location filename="../../DraftTools.py" line="5627"/>
       <source>Activates/deactivates all snap tools at once</source>
       <translation>Activeert deactiveert/alle vanghulpmiddelen in één keer</translation>
     </message>
     <message>
       <location filename="../../DraftSnap.py" line="1259"/>
       <source>Lock</source>
-      <translation type="unfinished">Lock</translation>
+      <translation>Vergrendelen</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-      <location filename="../../DraftTools.py" line="5616"/>
+      <location filename="../../DraftTools.py" line="5636"/>
       <source>Midpoint</source>
       <translation>Midden</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5617"/>
+      <location filename="../../DraftTools.py" line="5637"/>
       <source>Snaps to midpoints of edges</source>
       <translation>Vangt op het midden van randen</translation>
     </message>
@@ -1536,12 +1536,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Near</name>
     <message>
-      <location filename="../../DraftTools.py" line="5724"/>
+      <location filename="../../DraftTools.py" line="5744"/>
       <source>Nearest</source>
       <translation>Dichtstbijzijnde</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5725"/>
+      <location filename="../../DraftTools.py" line="5745"/>
       <source>Snaps to nearest point on edges</source>
       <translation>Vangt op het dichtstbijzijnde punt op randen</translation>
     </message>
@@ -1549,12 +1549,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-      <location filename="../../DraftTools.py" line="5736"/>
+      <location filename="../../DraftTools.py" line="5756"/>
       <source>Ortho</source>
       <translation>Ortho</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5737"/>
+      <location filename="../../DraftTools.py" line="5757"/>
       <source>Snaps to orthogonal and 45 degrees directions</source>
       <translation>Vangt op orthogonale en 45 graden richtingen</translation>
     </message>
@@ -1562,12 +1562,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-      <location filename="../../DraftTools.py" line="5664"/>
+      <location filename="../../DraftTools.py" line="5684"/>
       <source>Parallel</source>
       <translation>Evenwijdig</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5665"/>
+      <location filename="../../DraftTools.py" line="5685"/>
       <source>Snaps to parallel directions of edges</source>
       <translation>Snapt aan parallelen richtingen van ribbes</translation>
     </message>
@@ -1575,12 +1575,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-      <location filename="../../DraftTools.py" line="5628"/>
+      <location filename="../../DraftTools.py" line="5648"/>
       <source>Perpendicular</source>
       <translation>Loodrecht</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5629"/>
+      <location filename="../../DraftTools.py" line="5649"/>
       <source>Snaps to perpendicular points on edges</source>
       <translation>Snapt aan rechthoekige punten aan ribbes</translation>
     </message>
@@ -1588,25 +1588,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Snap_Special</name>
     <message>
-      <location filename="../../DraftTools.py" line="5748"/>
+      <location filename="../../DraftTools.py" line="5768"/>
       <source>Special</source>
       <translation type="unfinished">Special</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5749"/>
+      <location filename="../../DraftTools.py" line="5769"/>
       <source>Snaps to special locations of objects</source>
-      <translation type="unfinished">Snaps to special locations of objects</translation>
+      <translation>Snapt naar speciale locaties van de objecten</translation>
     </message>
   </context>
   <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-      <location filename="../../DraftTools.py" line="5772"/>
+      <location filename="../../DraftTools.py" line="5792"/>
       <source>Working Plane</source>
       <translation>Werkvlak</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5773"/>
+      <location filename="../../DraftTools.py" line="5793"/>
       <source>Restricts the snapped point to the current working plane</source>
       <translation>Beperkt het gesnapte punt tot beweging in het huidige werkvlak</translation>
     </message>
@@ -1614,25 +1614,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Stretch</name>
     <message>
-      <location filename="../../DraftTools.py" line="2888"/>
+      <location filename="../../DraftTools.py" line="2889"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2889"/>
+      <location filename="../../DraftTools.py" line="2890"/>
       <source>Stretches the selected objects</source>
-      <translation type="unfinished">Stretches the selected objects</translation>
+      <translation>Rekt de geselecteerde objecten uit</translation>
     </message>
   </context>
   <context>
     <name>Draft_Text</name>
     <message>
-      <location filename="../../DraftTools.py" line="1797"/>
+      <location filename="../../DraftTools.py" line="1798"/>
       <source>Text</source>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1798"/>
+      <location filename="../../DraftTools.py" line="1799"/>
       <source>Creates an annotation. CTRL to snap</source>
       <translation>Hiermee maakt u een aantekening. CTRL op te snappen</translation>
     </message>
@@ -1640,25 +1640,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3830"/>
+      <location filename="../../DraftTools.py" line="3831"/>
       <source>Toggles the Construction Mode for next objects.</source>
       <translation>Schakelt de Bouw-modus voor de volgende objecten aan/uit.</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3828"/>
+      <location filename="../../DraftTools.py" line="3829"/>
       <source>Toggle Construction Mode</source>
-      <translation type="unfinished">Toggle Construction Mode</translation>
+      <translation>Constructiemodus omschakelen</translation>
     </message>
   </context>
   <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3841"/>
+      <location filename="../../DraftTools.py" line="3842"/>
       <source>Toggle Continue Mode</source>
       <translation>Schakel Continue Modus</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3842"/>
+      <location filename="../../DraftTools.py" line="3843"/>
       <source>Toggles the Continue Mode for next commands.</source>
       <translation>Schakelt de vervolg-modus voor de volgende opdrachten.</translation>
     </message>
@@ -1666,12 +1666,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-      <location filename="../../DraftTools.py" line="3925"/>
+      <location filename="../../DraftTools.py" line="3926"/>
       <source>Toggle display mode</source>
       <translation>Wissel weergave-modus</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3926"/>
+      <location filename="../../DraftTools.py" line="3927"/>
       <source>Swaps display mode of selected objects between wireframe and flatlines</source>
       <translation>Schakelt weergavemodus van geselecteerde objecten tussen wireframe en flatlines</translation>
     </message>
@@ -1679,12 +1679,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_ToggleGrid</name>
     <message>
-      <location filename="../../DraftTools.py" line="5082"/>
+      <location filename="../../DraftTools.py" line="5102"/>
       <source>Toggle Grid</source>
       <translation>Schakel raster</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5083"/>
+      <location filename="../../DraftTools.py" line="5103"/>
       <source>Toggles the Draft grid on/off</source>
       <translation>Schakel draft raster aan/uit</translation>
     </message>
@@ -1696,18 +1696,18 @@ from menu Tools -&gt; Addon Manager</translation>
     <message>
       <location filename="../../DraftSnap.py" line="1251"/>
       <source>Toggles the Draft grid On/Off</source>
-      <translation type="unfinished">Toggles the Draft grid On/Off</translation>
+      <translation>Schakelt het schetsraster in/uit</translation>
     </message>
   </context>
   <context>
     <name>Draft_Trimex</name>
     <message>
-      <location filename="../../DraftTools.py" line="3282"/>
+      <location filename="../../DraftTools.py" line="3283"/>
       <source>Trimex</source>
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3283"/>
+      <location filename="../../DraftTools.py" line="3284"/>
       <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
       <translation>Trimt of breidt het geselecteerde object uit, of extrudeert enkele oppervlakken. CTRL snapt, SHIFT, beperkt tot huidige segment of tot de normale, ALT omkeert</translation>
     </message>
@@ -1715,12 +1715,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_UndoLine</name>
     <message>
-      <location filename="../../DraftTools.py" line="1036"/>
+      <location filename="../../DraftTools.py" line="1037"/>
       <source>Undo last segment</source>
       <translation>Maak laatste segment ongedaan</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1037"/>
+      <location filename="../../DraftTools.py" line="1038"/>
       <source>Undoes the last drawn segment of the line being drawn</source>
       <translation>Verwijdert het laatst getekende segment van de lijn die wordt getekend</translation>
     </message>
@@ -1728,25 +1728,25 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Upgrade</name>
     <message>
-      <location filename="../../DraftTools.py" line="3219"/>
+      <location filename="../../DraftTools.py" line="3220"/>
       <source>Upgrade</source>
       <translation>Opwaarderen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3220"/>
+      <location filename="../../DraftTools.py" line="3221"/>
       <source>Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</source>
-      <translation type="unfinished">Joins the selected objects into one, or converts closed wires to filled faces, or unites faces</translation>
+      <translation>Voegt de geselecteerde objecten samen tot één of converteert gesloten draden naar gevulde vlakken of verenigt vlakken</translation>
     </message>
   </context>
   <context>
     <name>Draft_VisGroup</name>
     <message>
-      <location filename="../../DraftTools.py" line="5167"/>
+      <location filename="../../DraftTools.py" line="5187"/>
       <source>VisGroup</source>
       <translation>Visuele Groep</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5168"/>
+      <location filename="../../DraftTools.py" line="5188"/>
       <source>Adds a VisGroup</source>
       <translation>Voeg toe aan Visuele Groep</translation>
     </message>
@@ -1754,12 +1754,12 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_Wire</name>
     <message>
-      <location filename="../../DraftTools.py" line="750"/>
+      <location filename="../../DraftTools.py" line="751"/>
       <source>DWire</source>
-      <translation type="unfinished">DWire</translation>
+      <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="751"/>
+      <location filename="../../DraftTools.py" line="752"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
       <translation>Het creëren van een veelvoudig-punt onderwerp (DWire). Druk op CTRL en SHIFT te gelijker tijd</translation>
     </message>
@@ -1767,14 +1767,14 @@ from menu Tools -&gt; Addon Manager</translation>
   <context>
     <name>Draft_WireToBSpline</name>
     <message>
-      <location filename="../../DraftTools.py" line="4674"/>
+      <location filename="../../DraftTools.py" line="4694"/>
       <source>Wire to B-spline</source>
-      <translation type="unfinished">Wire to B-spline</translation>
+      <translation>Draad naar B-spline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4675"/>
+      <location filename="../../DraftTools.py" line="4695"/>
       <source>Converts between Wire and B-spline</source>
-      <translation type="unfinished">Converts between Wire and B-spline</translation>
+      <translation>Converteert tussen draad en B-spline</translation>
     </message>
   </context>
   <context>
@@ -2076,22 +2076,22 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="242"/>
       <source>Hide Draft snap toolbar after use</source>
-      <translation type="unfinished">Hide Draft snap toolbar after use</translation>
+      <translation>Verberg de Draft snap werkbalk na gebruik</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="218"/>
       <source>Show Working Plane tracker</source>
-      <translation type="unfinished">Show Working Plane tracker</translation>
+      <translation>Toon werkbalktracker</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="297"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation type="unfinished">If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</translation>
+      <translation>Indien aangevinkt, zal het schetsraster altijd zichtbaar zijn wanneer de schetswerkbank actief is. Anders alleen bij gebruik van een commando</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="353"/>
       <source>If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</source>
-      <translation type="unfinished">If this is checked, imported texts will get the standard Draft text size, instead of the size they have in the DXF document</translation>
+      <translation>Indien aangevinkt, krijgen geïmporteerde teksten de standaard schetstekstgrootte in plaats van de grootte die ze in het DXF-document hebben</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="356"/>
@@ -2101,57 +2101,57 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="393"/>
       <source>If this is checked, hatches will be converted into simple wires</source>
-      <translation type="unfinished">If this is checked, hatches will be converted into simple wires</translation>
+      <translation>Als u dit selectievakje aanvinkt, worden arceringen omgezet in eenvoudige draden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="396"/>
       <source>Import hatch boundaries as wires</source>
-      <translation type="unfinished">Import hatch boundaries as wires</translation>
+      <translation>Arceergrenzen als draden importeren</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="413"/>
       <source>If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</source>
-      <translation type="unfinished">If this is checked, when polylines have a width defined, they will be rendered as closed wires with the correct width</translation>
+      <translation>Als u dit selectievakje aanvinkt, wanneer de polylijnen een gedefinieerde breedte hebben, zullen ze als gesloten draden met de juiste breedte weergegeven worden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="416"/>
       <source>Render polylines with width</source>
-      <translation type="unfinished">Render polylines with width</translation>
+      <translation>Geef polylijnen met breedte weer</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="127"/>
       <source>Style of SVG file to write when exporting a Sketch.</source>
-      <translation type="unfinished">Style of SVG file to write when exporting a Sketch.</translation>
+      <translation>Stijl van SVG-bestand om te schrijven bij het exporteren van een sketch.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
       <source>Translated (for print &amp; display)</source>
-      <translation type="unfinished">Translated (for print &amp; display)</translation>
+      <translation>Vertaald (voor publicatie en weergave)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="145"/>
       <source>Raw (for CAM)</source>
-      <translation type="unfinished">Raw (for CAM)</translation>
+      <translation>Ruw (voor CAM)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="157"/>
       <source>When exporting SVG views, make all white linework appear in black, for better readability against white backgrounds</source>
-      <translation type="unfinished">When exporting SVG views, make all white linework appear in black, for better readability against white backgrounds</translation>
+      <translation>Bij het exporteren van SVG-weergaven, gelieve alle witte lijnwerken in het zwart laten verschijnen, voor een betere leesbaarheid tegen een witte achtergrond</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="160"/>
       <source>Translate white line color to black</source>
-      <translation type="unfinished">Translate white line color to black</translation>
+      <translation>Vertaal witte lijnkleur naar zwart</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="292"/>
       <source>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</source>
-      <translation type="unfinished">When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</translation>
+      <translation>Als u dit selectievakje aanvinkt, zullen de schetsgereedschappen, indien beschikbaar, deelbasisvormen aanmaken in plaats van schetsobjecten.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="295"/>
       <source>Use Part Primitives when available</source>
-      <translation type="unfinished">Use Part Primitives when available</translation>
+      <translation>Gebruik deelbasisvormen indien beschikbaar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
@@ -2161,12 +2161,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="34"/>
       <source>If this is checked, snapping is activated without the need to press the snap mod key</source>
-      <translation type="unfinished">If this is checked, snapping is activated without the need to press the snap mod key</translation>
+      <translation>Als u dit selectievakje aanvinkt, wordt het magnetisch uitlijnen geactiveerd zonder dat u op de snapmodustoets hoeft te drukken</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
-      <translation type="unfinished">Always snap (disable snap mod)</translation>
+      <translation>Altijd uitlijnen (schakel de snapmodus uit)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="367"/>
@@ -2176,7 +2176,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="402"/>
       <source>Construction geometry color</source>
-      <translation type="unfinished">Construction geometry color</translation>
+      <translation>Kleur van de bouwgeometrie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="108"/>
@@ -2201,32 +2201,27 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="163"/>
       <source>*blocks</source>
-      <translation type="unfinished">*blocks</translation>
+      <translation>*blokken</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="556"/>
       <source>If this is checked, the exported objects will be projected to reflect the current view direction</source>
-      <translation type="unfinished">If this is checked, the exported objects will be projected to reflect the current view direction</translation>
+      <translation>Als u dit selectievakje aanvinkt, zullen de geëxporteerde objecten geprojecteerd worden om de huidige kijkrichting te weerspiegelen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="559"/>
       <source>Project exported objects along current view direction</source>
-      <translation type="unfinished">Project exported objects along current view direction</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-dxf.ui" line="433"/>
-      <source>Ellipse export is badly supported. Use this to export them as polylines instead.</source>
-      <translation type="unfinished">Ellipse export is badly supported. Use this to export them as polylines instead.</translation>
+      <translation>Projecteer de geëxporteerde objecten langs de huidige kijkrichting</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="14"/>
       <source>Visual settings</source>
-      <translation type="unfinished">Visual settings</translation>
+      <translation>Visuele instellingen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="26"/>
       <source>Visual Settings</source>
-      <translation type="unfinished">Visual Settings</translation>
+      <translation>Visuele instellingen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="34"/>
@@ -2241,17 +2236,17 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="118"/>
       <source>Snap symbols style</source>
-      <translation type="unfinished">Snap symbols style</translation>
+      <translation>Stijl van de snapsymbolen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="138"/>
       <source>Draft classic style</source>
-      <translation type="unfinished">Draft classic style</translation>
+      <translation>Klassieke schetsstijl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="143"/>
       <source>Bitsnpieces style</source>
-      <translation type="unfinished">Bitsnpieces style</translation>
+      <translation>Flardenstijl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="164"/>
@@ -2261,7 +2256,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="321"/>
       <source>Hatch patterns resolution</source>
-      <translation type="unfinished">Hatch patterns resolution</translation>
+      <translation>Resolutie van de arceerpatronen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="263"/>
@@ -2271,7 +2266,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="300"/>
       <source>Always show the grid</source>
-      <translation type="unfinished">Always show the grid</translation>
+      <translation>Altijd de raster tonen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="14"/>
@@ -2281,7 +2276,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="59"/>
       <source>Internal font</source>
-      <translation type="unfinished">Internal font</translation>
+      <translation>Intern lettertype</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="323"/>
@@ -2306,22 +2301,22 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="208"/>
       <source>The default size of dimensions extension lines</source>
-      <translation type="unfinished">The default size of dimensions extension lines</translation>
+      <translation>De standaardgrootte van verlengingslijnen voor de afmetingen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="429"/>
       <source>The space between the dimension line and the dimension text</source>
-      <translation type="unfinished">The space between the dimension line and the dimension text</translation>
+      <translation>De afstand tussen de afmetingslijn en de afmetingstekst</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="497"/>
       <source>Select a font file</source>
-      <translation type="unfinished">Select a font file</translation>
+      <translation>Kies een lettertypebestand</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="311"/>
       <source>Fill objects with faces whenever possible</source>
-      <translation type="unfinished">Fill objects with faces whenever possible</translation>
+      <translation>Vul, waar mogelijk, de objecten op met vlakken</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="180"/>
@@ -2331,22 +2326,22 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="190"/>
       <source>simple Part shapes</source>
-      <translation type="unfinished">simple Part shapes</translation>
+      <translation>eenvoudige deelvormen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="206"/>
       <source>If this is checked, parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">If this is checked, parametric Draft objects will be created whenever possible</translation>
+      <translation>Als u dit selectievakje aanvinkt, worden, waar mogelijk, parametrische schetsobjecten aangemaakt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="209"/>
       <source>Draft objects</source>
-      <translation type="unfinished">Draft objects</translation>
+      <translation>Schetsobjecten</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="222"/>
       <source>If this is checked, sketches will be created whenever possible</source>
-      <translation type="unfinished">If this is checked, sketches will be created whenever possible</translation>
+      <translation>Als u dit selectievakje aanvinkt, worden, waar mogelijk, schetsen aangemaakt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="225"/>
@@ -2356,52 +2351,52 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="293"/>
       <source>If this is checked, colors will be retrieved from the DXF objects whenever possible. Otherwise default colors will be applied.</source>
-      <translation type="unfinished">If this is checked, colors will be retrieved from the DXF objects whenever possible. Otherwise default colors will be applied.</translation>
+      <translation>Als u dit selectievakje aanvinkt, worden, waar mogelijk, kleuren uit de DXF-objecten opgehaald. Anders worden standaardkleuren toegepast.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="296"/>
       <source>Get original colors from the DXF file</source>
-      <translation type="unfinished">Get original colors from the DXF file</translation>
+      <translation>De originele kleuren uit het DXF-bestand verkrijgen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="436"/>
       <source>Treat ellipses and splines as polylines</source>
-      <translation type="unfinished">Treat ellipses and splines as polylines</translation>
+      <translation>Behandel ellipsen en splines als polylijnen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
       <source>Export style</source>
-      <translation type="unfinished">Export style</translation>
+      <translation>Exportstijl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="455"/>
       <source>Show the unit suffix in dimensions</source>
-      <translation type="unfinished">Show the unit suffix in dimensions</translation>
+      <translation>Toon het eenheidachtervoegsel in de afmetingen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Als dit aangevinkt is, staat u FreeCAD toe om de componenten&lt;/p&gt;&lt;p&gt;die nodig zijn voor het importeren en exporteren van DXF te downloaden en bij te werken. u kunt dat ook handmatig doen,&lt;/p&gt;&lt;p&gt;door https://github.com/yorikvanhavre/Draft-dxf-importer te bezoeken&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="69"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation type="unfinished">Allow FreeCAD to automatically download and update the DXF libraries</translation>
+      <translation>Sta FreeCAD toe om de DXF-bibliotheken automatisch te downloaden en bij te werken</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="187"/>
       <source>If this is checked, only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">If this is checked, only standard Part objects will be created (fastest)</translation>
+      <translation>Als u dit selectievakje aanvinkt, worden alleen standaard deelobjecten aangemaakt (snelste)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="373"/>
       <source>If this is checked, DXF layers will be imported as Draft VisGroups</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft VisGroups</translation>
+      <translation>Als u dit selectievakje aanvinkt, worden de DXF-lagen als VisGroups-ontwerp geïmporteerd</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="376"/>
       <source>Use VisGroups</source>
-      <translation type="unfinished">Use VisGroups</translation>
+      <translation>VisGroups gebruiken</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="206"/>
@@ -2411,7 +2406,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="427"/>
       <source>Grid size</source>
-      <translation type="unfinished">Grid size</translation>
+      <translation>Rastergrootte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="453"/>
@@ -2421,57 +2416,57 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="144"/>
       <source>text above (2D)</source>
-      <translation type="unfinished">text above (2D)</translation>
+      <translation>tekst bovenaan (2D)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source> text inside (3D)</source>
-      <translation type="unfinished"> text inside (3D)</translation>
+      <translation> tekst binnen (3D)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="410"/>
       <source>Dashed line definition</source>
-      <translation type="unfinished">Dashed line definition</translation>
+      <translation>Streepjeslijndefinitie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="433"/>
       <source>0.09,0.05</source>
-      <translation type="unfinished">0.09,0.05</translation>
+      <translation>0.09,0.05</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="453"/>
       <source>Dashdot line definition</source>
-      <translation type="unfinished">Dashdot line definition</translation>
+      <translation>Streepstiplijndefinitie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="476"/>
       <source>0.09,0.05,0.02,0.05</source>
-      <translation type="unfinished">0.09,0.05,0.02,0.05</translation>
+      <translation>0.09,0.05,0.02,0.05</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="496"/>
       <source>Dotted line definition</source>
-      <translation type="unfinished">Dotted line definition</translation>
+      <translation>Stippelijndefinitie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="519"/>
       <source>0.02,0.02</source>
-      <translation type="unfinished">0.02,0.02</translation>
+      <translation>0.02,0.02</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="14"/>
       <source>Grid and snapping</source>
-      <translation type="unfinished">Grid and snapping</translation>
+      <translation>Raster en magnetisch uitlijnen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="26"/>
       <source>Text settings</source>
-      <translation type="unfinished">Text settings</translation>
+      <translation>Tekstinstellingen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="34"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Lettertypefamilie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="76"/>
@@ -2481,67 +2476,67 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="116"/>
       <source>Dimension settings</source>
-      <translation type="unfinished">Dimension settings</translation>
+      <translation>Afmetingsinstellingen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="124"/>
       <source>Display mode</source>
-      <translation type="unfinished">Display mode</translation>
+      <translation>Weergavemodus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="309"/>
       <source>Arrows style</source>
-      <translation type="unfinished">Arrows style</translation>
+      <translation>Pijltype</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="355"/>
       <source>Arrows size</source>
-      <translation type="unfinished">Arrows size</translation>
+      <translation>Pijlgrootte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="388"/>
       <source>Text orientation</source>
-      <translation type="unfinished">Text orientation</translation>
+      <translation>Tekstoriëntatie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="422"/>
       <source>Text spacing</source>
-      <translation type="unfinished">Text spacing</translation>
+      <translation>Tekstafstand</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="476"/>
       <source>ShapeString settings</source>
-      <translation type="unfinished">ShapeString settings</translation>
+      <translation>ShapeString-instellingen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="484"/>
       <source>Default ShapeString font file</source>
-      <translation type="unfinished">Default ShapeString font file</translation>
+      <translation>Standaard ShapeString-lettertypebestand</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="402"/>
       <source>Drawing view line definitions</source>
-      <translation type="unfinished">Drawing view line definitions</translation>
+      <translation>Kijklijndefinities tekenen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
       <source>DWG</source>
-      <translation type="unfinished">DWG</translation>
+      <translation>DWG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="26"/>
       <source>DWG conversion</source>
-      <translation type="unfinished">DWG conversion</translation>
+      <translation>DWG conversie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="56"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; DXF options apply to DWG files as well.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Opmerking:&lt;/span&gt; DXF-opties zijn ook van toepassing op de DWG-bestanden.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="14"/>
       <source>DXF</source>
-      <translation type="unfinished">DXF</translation>
+      <translation>DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="26"/>
@@ -2551,12 +2546,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="39"/>
       <source>If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</source>
-      <translation type="unfinished">If this is checked, the old python importer is used, otherwise the new C++ one (faster, but not as many features yet)</translation>
+      <translation>Als u dit selectievakje aanvinkt, wordt het oude python-importeerprogramma gebruikt, anders het nieuwe C++ (sneller, maar nog niet zo veel functies)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="42"/>
       <source>Use legacy python importer</source>
-      <translation type="unfinished">Use legacy python importer</translation>
+      <translation>Gebruik het legacy python-importeerprogramma</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="106"/>
@@ -2566,37 +2561,37 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-oca.ui" line="14"/>
       <source>OCA</source>
-      <translation type="unfinished">OCA</translation>
+      <translation>OCA</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="14"/>
       <source>SVG</source>
-      <translation type="unfinished">SVG</translation>
+      <translation>SVG</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="82"/>
       <source>If this is checked, no units conversion will occur. One unit in the SVG file will translate as one millimeter.</source>
-      <translation type="unfinished">If this is checked, no units conversion will occur. One unit in the SVG file will translate as one millimeter.</translation>
+      <translation>Als u dit selectievakje aanvinkt, zal er geen eenheidsconversie plaatsvinden. Eén eenheid in het SVG-bestand vertaalt zich als één millimeter.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="85"/>
       <source>Disable units scaling</source>
-      <translation type="unfinished">Disable units scaling</translation>
+      <translation>Schakel eenheidsschalen uit</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="533"/>
       <source>If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</source>
-      <translation type="unfinished">If this is checked, Drawing Views will be exported as blocks. This might fail for post-R12 templates.</translation>
+      <translation>Als u dit selectievakje aanvinkt, worden tekenweergaven als blokken geëxporteerd. Dit kan mislukken voor post-R12-sjablonen.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="536"/>
       <source>Export Drawing Views as blocks</source>
-      <translation type="unfinished">Export Drawing Views as blocks</translation>
+      <translation>Tekenweergaven als blokken exporteren</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="99"/>
       <source>Note: Not all the options below are used by the new importer yet</source>
-      <translation type="unfinished">Note: Not all the options below are used by the new importer yet</translation>
+      <translation>Opmerking: niet alle onderstaande opties worden door het nieuwe importeerprogramma al gebruikt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
@@ -2606,211 +2601,216 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="58"/>
       <source>Automatic update (legacy importer only)</source>
-      <translation type="unfinished">Automatic update (legacy importer only)</translation>
+      <translation>Automatische update (alleen oud importeerprogramma)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="342"/>
       <source>Prefix labels of Clones with:</source>
-      <translation type="unfinished">Prefix labels of Clones with:</translation>
+      <translation>Voorvoegsellabels van klonen met:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="245"/>
       <source>Scale factor to apply to imported files</source>
-      <translation type="unfinished">Scale factor to apply to imported files</translation>
+      <translation>Toe te passen schaalfactor op geïmporteerde bestanden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="265"/>
       <source>Scale factor to apply to DXF files on import.
 The factor is the conversion between the unit of your DXF file and millimeters.
 Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4, in feet: 304.8</source>
-      <translation type="unfinished">Scale factor to apply to DXF files on import.
-The factor is the conversion between the unit of your DXF file and millimeters.
-Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4, in feet: 304.8</translation>
+      <translation>Schaalfactor die toegepast moet worden op DXF-bestanden bij het importeren.
+De factor is de conversie tussen de eenheid van uw DXF-bestand en millimeters.
+Bijv: voor bestanden in millimeters: 1, in centimeters: 10, in meters: 1000, in duimen: 25,4, in voeten: 304,8</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="180"/>
       <source>Max segment length for discretized arcs</source>
-      <translation type="unfinished">Max segment length for discretized arcs</translation>
+      <translation>Max. Segmentlengte voor gediscretiseerde bogen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="203"/>
       <source>When arcs are projected, if your version of OpenCasCade doesn't support arc projection, these arcs will be discretized into small line segments. This value is the maximum segment length.</source>
-      <translation type="unfinished">When arcs are projected, if your version of OpenCasCade doesn't support arc projection, these arcs will be discretized into small line segments. This value is the maximum segment length.</translation>
+      <translation>Wanneer bogen geprojecteerd worden, als uw versie van OpenCasCade geen boogprojectie ondersteunt, worden deze bogen in kleine lijnsegmenten gediscretiseerd. Deze waarde is de maximale segmentlengte.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="161"/>
       <source>Number of decimals</source>
-      <translation type="unfinished">Number of decimals</translation>
+      <translation>Aantal decimalen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
       <source>This is the method chosen for importing SVG object color into FreeCAD.</source>
-      <translation type="unfinished">This is the method chosen for importing SVG object color into FreeCAD.</translation>
+      <translation>Dit is de methode die gekozen is voor het importeren van de SVG-objectkleur in FreeCAD.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="308"/>
       <source>If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">If this is checked, objects will appear as filled by default. Otherwise, they will appear as wireframe</translation>
+      <translation>Als u dit selectievakje aanvinkt, verschijnen de objecten als standaard gevuld. Anders verschijnen ze als draadmodel</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="197"/>
       <source>Shift</source>
-      <translation type="unfinished">Shift</translation>
+      <translation>Shift</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="202"/>
       <source>Ctrl</source>
-      <translation type="unfinished">Ctrl</translation>
+      <translation>Ctrl</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="207"/>
       <source>Alt</source>
-      <translation type="unfinished">Alt</translation>
+      <translation>Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="184"/>
       <source>The Alt modifier key</source>
-      <translation type="unfinished">The Alt modifier key</translation>
+      <translation>De Alt-wijzigingstoets</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="447"/>
       <source>The number of horizontal or vertical lines of the grid</source>
-      <translation type="unfinished">The number of horizontal or vertical lines of the grid</translation>
+      <translation>Het aantal horizontale of verticale lijnen van het raster</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="54"/>
       <source>The default color for new objects</source>
-      <translation type="unfinished">The default color for new objects</translation>
+      <translation>De standaardkleur voor nieuwe objecten</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="98"/>
       <source>The default linewidth for new objects</source>
-      <translation type="unfinished">The default linewidth for new objects</translation>
+      <translation>De standaard lijnbreedte voor nieuwe objecten</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="171"/>
       <source>The default color for snap symbols</source>
-      <translation type="unfinished">The default color for snap symbols</translation>
+      <translation>De standaardkleur voor snapsymbolen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="195"/>
       <source>Check this if you want to use the color/linewidth from the toolbar as default</source>
-      <translation type="unfinished">Check this if you want to use the color/linewidth from the toolbar as default</translation>
+      <translation>Vink dit aan als u de kleur/lijnbreedte van de werkbalk standaard wilt gebruiken</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="215"/>
       <source>If checked, a widget indicating the current working plane orientation appears during drawing operations</source>
-      <translation type="unfinished">If checked, a widget indicating the current working plane orientation appears during drawing operations</translation>
+      <translation>Indien aangevinkt verschijnt tijdens het tekenen een widget die de huidige werkvlakoriëntatie aangeeft</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="516"/>
       <source>An SVG linestyle definition</source>
-      <translation type="unfinished">An SVG linestyle definition</translation>
+      <translation>Een SVG-lijnstijldefinitie</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="115"/>
       <source>If this is unchecked, texts/mtexts won't be imported</source>
-      <translation type="unfinished">If this is unchecked, texts/mtexts won't be imported</translation>
+      <translation>Als dit niet aangevinkt is, zullen de teksten/mteksten niet geïmporteerd worden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="144"/>
       <source>If this is checked, paper space objects will be imported too</source>
-      <translation type="unfinished">If this is checked, paper space objects will be imported too</translation>
+      <translation>Als dit aangevinkt is, zullen de papieren ruimteobjecten ook geïmporteerd worden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="313"/>
       <source>If checked, FreeCAD will try to join coincident objects into wires. Beware, this can take a while...</source>
-      <translation type="unfinished">If checked, FreeCAD will try to join coincident objects into wires. Beware, this can take a while...</translation>
+      <translation>Indien aangevinkt, zal FreeCAD proberen samenvallende objecten samen te voegen tot draden. Pas op, dit kan een tijdje duren...</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="333"/>
       <source>If this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</source>
-      <translation type="unfinished">If this is checked, objects from the same layers will be joined into Draft Blocks, turning the display faster, but making them less easily editable</translation>
+      <translation>Als dit aangevinkt is, zullen objecten uit dezelfde lagen samengevoegd worden in ontwerpblokken, waardoor het scherm sneller weergegeven wordt, maar minder gemakkelijk bewerkt kunnen worden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="85"/>
       <source>If this is checked, step-by-step instructions will be displayed in the Output Window when running Draft commands</source>
-      <translation type="unfinished">If this is checked, step-by-step instructions will be displayed in the Output Window when running Draft commands</translation>
+      <translation>Als u dit selectievakje aanvinkt, zullen stapsgewijze instructies weergegeven worden in het uitvoervenster bij het uitvoeren van ontwerpopdrachten</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="88"/>
       <source>Verbose command line mode</source>
-      <translation type="unfinished">Verbose command line mode</translation>
+      <translation>Uitgebreide opdrachtregelmodus</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="327"/>
       <source>When drawing lines, set focus on Length instead of X coordinate</source>
-      <translation type="unfinished">When drawing lines, set focus on Length instead of X coordinate</translation>
+      <translation>Bij het tekenen van lijnen, focus instellen op Lengte in plaats van X-coördinaat</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="201"/>
       <source>Extension lines size</source>
-      <translation type="unfinished">Extension lines size</translation>
+      <translation>Verlengingslijngrootte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="237"/>
       <source>Extension line overshoot</source>
-      <translation type="unfinished">Extension line overshoot</translation>
+      <translation>Extensielijnoverschrijding</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="244"/>
       <source>The default length of extension line above dimension line</source>
-      <translation type="unfinished">The default length of extension line above dimension line</translation>
+      <translation>De standaardlengte van de verlengingslijn boven de afmetingslijn</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="273"/>
       <source>Dimension line overshoot</source>
-      <translation type="unfinished">Dimension line overshoot</translation>
+      <translation>Afmetingslijnoverschrijding</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="280"/>
       <source>The default distance the dimension line is extended past extension lines</source>
-      <translation type="unfinished">The default distance the dimension line is extended past extension lines</translation>
+      <translation>De standaardafstand waar de afmetingslijn voorbij de verlengingslijnen verlengd is</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="338"/>
       <source>Tick</source>
-      <translation type="unfinished">Tick</translation>
+      <translation>Vink</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="343"/>
       <source>Tick-2</source>
-      <translation type="unfinished">Tick-2</translation>
+      <translation>Vink-2</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="361"/>
       <source>Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want to preserve colors of faces while doing downgrade and upgrade (splitFaces and makeShell only)</translation>
+      <translation>Vink dit aan als u de kleuren van de vlakken wilt behouden tijdens het downgraden en upgraden (alleen splitFaces en makeShell)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="364"/>
       <source>Preserve colors of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve colors of faces during downgrade/upgrade</translation>
+      <translation>Behoud de kleuren van de vlakken tijdens het downgraden/upgraden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="381"/>
       <source>Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</source>
-      <translation type="unfinished">Check this if you want the face names to derive from the originating object name and vice versa while doing downgrade/upgrade (splitFaces and makeShell only)</translation>
+      <translation>Vink dit aan als u wilt dat de vlaknamen afgeleid worden van de oorspronkelijke objectnaam en andersom terwijl u downgradet/upgradet (alleen splitFaces en makeShell)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="384"/>
       <source>Preserve names of faces during downgrade/upgrade</source>
-      <translation type="unfinished">Preserve names of faces during downgrade/upgrade</translation>
+      <translation>Behoud de namen van de vlakken tijdens het downgraden/upgraden</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="34"/>
       <source>Path to ODA (formerly Teigha) File Converter</source>
-      <translation type="unfinished">Path to ODA (formerly Teigha) File Converter</translation>
+      <translation>Pad naar ODA-bestandsconverter (voorheen Teigha)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>The path to your ODA (formerly Teigha) File Converter executable</source>
-      <translation type="unfinished">The path to your ODA (formerly Teigha) File Converter executable</translation>
+      <translation>Het pad naar uw uitvoerbare ODA-bestandsconverter (voorheen Teigha)</translation>
+    </message>
+    <message>
+      <location filename="../ui/preferences-dxf.ui" line="433"/>
+      <source>Ellipse export is poorly supported. Use this to export them as polylines instead.</source>
+      <translation>Het exporteren van ellipsen wordt slecht ondersteund. Gebruik dit om ze als polylijnen te exporteren.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="465"/>
       <source>Max Spline Segment:</source>
-      <translation type="unfinished">Max Spline Segment:</translation>
+      <translation>Max. Splinesegment:</translation>
     </message>
   </context>
   <context>
@@ -2818,17 +2818,17 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftSnap.py" line="1245"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Ontwerpsnap</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="93"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>Ontwerpaanmaakgereedschap</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="94"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Ontwerpwijzigingsgereedschap</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="96"/>
@@ -2851,52 +2851,52 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../Draft.py" line="2136"/>
       <source>not shape found</source>
-      <translation type="unfinished">not shape found</translation>
+      <translation>vorm niet gevonden</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2141"/>
       <source>All Shapes must be co-planar</source>
-      <translation type="unfinished">All Shapes must be co-planar</translation>
+      <translation>Alle vormen moeten coplanair zijn</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2269"/>
       <source>The given object is not planar and cannot be converted into a sketch.</source>
-      <translation type="unfinished">The given object is not planar and cannot be converted into a sketch.</translation>
+      <translation>Het gegeven object is niet vlak en kan niet omgezet worden in een schets.</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2277"/>
       <source>Unable to guess the normal direction of this object</source>
-      <translation type="unfinished">Unable to guess the normal direction of this object</translation>
+      <translation>Kan de normale richting van dit object niet raden</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="382"/>
       <source>Draft Command Bar</source>
-      <translation type="unfinished">Draft Command Bar</translation>
+      <translation>Ontwerpopdrachtbalk</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="715"/>
       <source>Toggle construction mode</source>
-      <translation type="unfinished">Toggle construction mode</translation>
+      <translation>Constructiemodus omschakelen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="716"/>
       <source>Current line color</source>
-      <translation type="unfinished">Current line color</translation>
+      <translation>Huidige lijnkleur</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="717"/>
       <source>Current face color</source>
-      <translation type="unfinished">Current face color</translation>
+      <translation>Huidige vlakkleur</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="718"/>
       <source>Current line width</source>
-      <translation type="unfinished">Current line width</translation>
+      <translation>Huidige lijnbreedte</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="719"/>
       <source>Current font size</source>
-      <translation type="unfinished">Current font size</translation>
+      <translation>Huidige lettertypegrootte</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="720"/>
@@ -2906,7 +2906,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="1991"/>
       <source>Autogroup off</source>
-      <translation type="unfinished">Autogroup off</translation>
+      <translation>Autogroup uit</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="749"/>
@@ -2956,12 +2956,12 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="758"/>
       <source>Enter point</source>
-      <translation type="unfinished">Enter point</translation>
+      <translation>Punt invoeren</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="759"/>
       <source>Enter a new point with the given coordinates</source>
-      <translation type="unfinished">Enter a new point with the given coordinates</translation>
+      <translation>Voer een nieuw punt in met de gegeven coördinaten</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="760"/>
@@ -2976,12 +2976,12 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="762"/>
       <source>Length of current segment</source>
-      <translation type="unfinished">Length of current segment</translation>
+      <translation>Lengte van het huidige segment</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="763"/>
       <source>Angle of current segment</source>
-      <translation type="unfinished">Angle of current segment</translation>
+      <translation>Hoek van het huidige segment</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1092"/>
@@ -3021,22 +3021,22 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="780"/>
       <source>Make Bezier node sharp</source>
-      <translation type="unfinished">Make Bezier node sharp</translation>
+      <translation>Maak het Bezier-knooppunt hoekig</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="781"/>
       <source>Make Bezier node tangent</source>
-      <translation type="unfinished">Make Bezier node tangent</translation>
+      <translation>Maak het Bezier-knooppunt tangentieel</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="782"/>
       <source>Make Bezier node symmetric</source>
-      <translation type="unfinished">Make Bezier node symmetric</translation>
+      <translation>Maak het Bezier-knooppunt symmetrisch</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="793"/>
       <source>Sides</source>
-      <translation type="unfinished">Sides</translation>
+      <translation>Zijkanten</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="794"/>
@@ -3044,14 +3044,14 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
       <translation>Aantal zijden</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2876"/>
+      <location filename="../../DraftTools.py" line="2877"/>
       <source>Offset</source>
       <translation>Verschuiving</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="796"/>
       <source>XY (top)</source>
-      <translation type="unfinished">XY (top)</translation>
+      <translation>XY (bovenaan)</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="797"/>
@@ -3061,7 +3061,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="798"/>
       <source>XZ (front)</source>
-      <translation type="unfinished">XZ (front)</translation>
+      <translation>XZ (voor)</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="799"/>
@@ -3071,7 +3071,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="800"/>
       <source>YZ (side)</source>
-      <translation type="unfinished">YZ (side)</translation>
+      <translation>YZ (zijkant)</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="801"/>
@@ -3091,7 +3091,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="804"/>
       <source>Auto</source>
-      <translation type="unfinished">Auto</translation>
+      <translation>Automatisch</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="805"/>
@@ -3101,7 +3101,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="808"/>
       <source>Text string to draw</source>
-      <translation type="unfinished">Text string to draw</translation>
+      <translation>Tekstreeks om te tekenen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="809"/>
@@ -3121,7 +3121,7 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="812"/>
       <source>Intercharacter spacing</source>
-      <translation type="unfinished">Intercharacter spacing</translation>
+      <translation>Tekenafstand</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="813"/>
@@ -3131,12 +3131,12 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="814"/>
       <source>Full path to font file:</source>
-      <translation type="unfinished">Full path to font file:</translation>
+      <translation>Volledig traject naar lettertypebestand:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="815"/>
       <source>Open a FileChooser for font file</source>
-      <translation type="unfinished">Open a FileChooser for font file</translation>
+      <translation>Open een Bestandkiezer voor het lettertypebestand</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="816"/>
@@ -3146,22 +3146,22 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="817"/>
       <source>The spacing between the grid lines</source>
-      <translation type="unfinished">The spacing between the grid lines</translation>
+      <translation>De afstand tussen de rasterlijnen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="818"/>
       <source>Main line every</source>
-      <translation type="unfinished">Main line every</translation>
+      <translation>Hoofdlijn elk</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="819"/>
       <source>The number of lines between main lines</source>
-      <translation type="unfinished">The number of lines between main lines</translation>
+      <translation>Het aantal lijnen tussen de hoofdlijnen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="820"/>
       <source>Center plane on view</source>
-      <translation type="unfinished">Center plane on view</translation>
+      <translation>Middenvlak op zicht</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="894"/>
@@ -3169,14 +3169,14 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
       <translation>Selecteer vlak</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="554"/>
+      <location filename="../../DraftTools.py" line="555"/>
       <source>Line</source>
       <translation>Lijn</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="778"/>
+      <location filename="../../DraftTools.py" line="779"/>
       <source>DWire</source>
-      <translation type="unfinished">DWire</translation>
+      <translation>DWire</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="965"/>
@@ -3256,32 +3256,32 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="1481"/>
       <source>Invalid Size value. Using 200.0.</source>
-      <translation type="unfinished">Invalid Size value. Using 200.0.</translation>
+      <translation>Ongeldige groottewaarde. 200.0 wordt gebruikt.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1489"/>
       <source>Invalid Tracking value. Using 0.</source>
-      <translation type="unfinished">Invalid Tracking value. Using 0.</translation>
+      <translation>Ongeldige kerningwaarde. 0 wordt gebruikt.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1503"/>
       <source>Please enter a text string.</source>
-      <translation type="unfinished">Please enter a text string.</translation>
+      <translation>Voer een tekstreeks in.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1511"/>
       <source>Select a Font file</source>
-      <translation type="unfinished">Select a Font file</translation>
+      <translation>Kies een lettertypebestand</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1542"/>
       <source>Please enter a font file.</source>
-      <translation type="unfinished">Please enter a font file.</translation>
+      <translation>Voer een lettertypebestand in.</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1985"/>
       <source>Autogroup: </source>
-      <translation type="unfinished">Autogroup: </translation>
+      <translation>Autogroeperen: </translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2280"/>
@@ -3301,207 +3301,207 @@ Ex: for files in millimeters: 1, in centimeters: 10, in meters: 1000, in inches:
     <message>
       <location filename="../../DraftGui.py" line="2283"/>
       <source>Facebinder elements</source>
-      <translation type="unfinished">Facebinder elements</translation>
+      <translation>Vlakenbinderelementen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="601"/>
+      <location filename="../../DraftTools.py" line="602"/>
       <source>Create Line</source>
       <translation>Lijn aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="945"/>
+      <location filename="../../DraftTools.py" line="946"/>
       <source>Pick next point:
 </source>
       <translation>Kies volgende punt: </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="774"/>
+      <location filename="../../DraftTools.py" line="775"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>Converteren naar draad</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="794"/>
+      <location filename="../../DraftTools.py" line="795"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="893"/>
+      <location filename="../../DraftTools.py" line="894"/>
       <source>BezCurve</source>
-      <translation type="unfinished">BezCurve</translation>
+      <translation>BezCurve</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="975"/>
+      <location filename="../../DraftTools.py" line="976"/>
       <source>Create BezCurve</source>
-      <translation type="unfinished">Create BezCurve</translation>
+      <translation>BezCurve aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1056"/>
+      <location filename="../../DraftTools.py" line="1057"/>
       <source>Rectangle</source>
       <translation>Rechthoek</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1099"/>
+      <location filename="../../DraftTools.py" line="1100"/>
       <source>Create Plane</source>
       <translation>Vlak aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1110"/>
+      <location filename="../../DraftTools.py" line="1111"/>
       <source>Create Rectangle</source>
       <translation>Rechthoek aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1374"/>
+      <location filename="../../DraftTools.py" line="1375"/>
       <source>Create Circle</source>
       <translation>Cirkel aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1409"/>
+      <location filename="../../DraftTools.py" line="1410"/>
       <source>Create Arc</source>
       <translation>Boog aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1451"/>
+      <location filename="../../DraftTools.py" line="1452"/>
       <source>Start Angle</source>
       <translation>Starthoek</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1458"/>
+      <location filename="../../DraftTools.py" line="1459"/>
       <source>Aperture</source>
       <translation>Opening</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1499"/>
+      <location filename="../../DraftTools.py" line="1500"/>
       <source>Polygon</source>
       <translation>Veelhoek</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1636"/>
+      <location filename="../../DraftTools.py" line="1637"/>
       <source>Create Polygon</source>
       <translation>Veelhoek aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1684"/>
+      <location filename="../../DraftTools.py" line="1685"/>
       <source>Ellipse</source>
       <translation>Ellips</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1741"/>
+      <location filename="../../DraftTools.py" line="1742"/>
       <source>Create Ellipse</source>
       <translation>Ellips aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1801"/>
+      <location filename="../../DraftTools.py" line="1802"/>
       <source>Text</source>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1837"/>
+      <location filename="../../DraftTools.py" line="1838"/>
       <source>Create Text</source>
       <translation>Tekst aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1886"/>
+      <location filename="../../DraftTools.py" line="1887"/>
       <source>Dimension</source>
       <translation>Afmeting</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2010"/>
+      <location filename="../../DraftTools.py" line="2011"/>
       <source>Create Dimension</source>
       <translation>Dimensie aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2227"/>
+      <location filename="../../DraftTools.py" line="2228"/>
       <source>ShapeString</source>
-      <translation type="unfinished">ShapeString</translation>
+      <translation>Tekenreeksvorm</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2268"/>
+      <location filename="../../DraftTools.py" line="2269"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Create ShapeString</translation>
+      <translation>ShapeString aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3763"/>
+      <location filename="../../DraftTools.py" line="3764"/>
       <source>Copy</source>
       <translation>Kopie</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2407"/>
+      <location filename="../../DraftTools.py" line="2408"/>
       <source>Move</source>
       <translation>Verplaatsen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2496"/>
+      <location filename="../../DraftTools.py" line="2497"/>
       <source>Change Style</source>
       <translation>Stijl wijzigen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2568"/>
+      <location filename="../../DraftTools.py" line="2569"/>
       <source>Rotate</source>
       <translation>Draaien</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2720"/>
+      <location filename="../../DraftTools.py" line="2721"/>
       <source>Cannot offset this object type
 </source>
       <translation>Dit objecttype niet kan verschuift worden
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3209"/>
+      <location filename="../../DraftTools.py" line="3210"/>
       <source>Stretch</source>
       <translation type="unfinished">Stretch</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3237"/>
+      <location filename="../../DraftTools.py" line="3238"/>
       <source>Upgrade</source>
       <translation>Opwaarderen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3267"/>
+      <location filename="../../DraftTools.py" line="3268"/>
       <source>Downgrade</source>
       <translation>Vorige versie</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4493"/>
+      <location filename="../../DraftTools.py" line="4513"/>
       <source>Selection is not a Knot
 </source>
-      <translation type="unfinished">Selection is not a Knot
+      <translation>De selectie is geen knoop
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4820"/>
+      <location filename="../../DraftTools.py" line="4840"/>
       <source>Convert to Sketch</source>
-      <translation type="unfinished">Convert to Sketch</translation>
+      <translation>Converteren naar schets</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4824"/>
+      <location filename="../../DraftTools.py" line="4844"/>
       <source>Convert to Draft</source>
-      <translation type="unfinished">Convert to Draft</translation>
+      <translation>Converteren naar ontwerp</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4836"/>
+      <location filename="../../DraftTools.py" line="4856"/>
       <source>Convert</source>
-      <translation type="unfinished">Convert</translation>
+      <translation>Converteer</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4865"/>
+      <location filename="../../DraftTools.py" line="4885"/>
       <source>Array</source>
       <translation>Reeks</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5002"/>
+      <location filename="../../DraftTools.py" line="5022"/>
       <source>Create Point</source>
-      <translation type="unfinished">Create Point</translation>
+      <translation>Punt aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5238"/>
+      <location filename="../../DraftTools.py" line="5258"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Spiegelen</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="98"/>
       <source>&amp;Draft</source>
-      <translation type="unfinished">&amp;Draft</translation>
+      <translation>&amp;Schets</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="114"/>
@@ -3513,14 +3513,14 @@ Please either enable FreeCAD to download these libraries:
 Or install the libraries manually by installing the dxf-Library addon
 from menu Tools -&gt; Addon Manager.
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or install the libraries manually by installing the dxf-Library addon
-from menu Tools -&gt; Addon Manager.
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+      <translation>De DXF-import-/exportbibliotheken die FreeCAD nodig heeft om
+het DXF-formaat te verwerken, zijn niet gevonden op dit systeem.
+Gelieve FreeCAD in te schakelen om deze bibliotheken te downloaden:
+  1 - Laad de ontwerpwerkbank op
+  2 - Menu Edit &gt; Voorkeuren &gt; Import-Export &gt; DXF &gt; Downloads inschakelen
+Of installeer de bibliotheken handmatig door de dxf-Bibliotheek-add-on 
+te installeren vanuit het menu Gereedschappen -&gt; Add-onbeheer.
+Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.</translation>
     </message>
     <message>
       <location filename="../../importDXF.py" line="123"/>
@@ -3532,186 +3532,186 @@ Please either enable FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
+      <translation>De DXF-import-/exportbibliotheken die FreeCAD nodig heeft om
+het DXF-formaat te verwerken, zijn niet gevonden op dit systeem.
+Gelieve FreeCAD in te schakelen om deze bibliotheken te downloaden:
+  1 - Laad de ontwerpwerkbank op
+  2 - Menu Edit &gt; Voorkeuren &gt; Import-Export &gt; DXF &gt; Downloads inschakelen
+Of installeer de bibliotheken handmatig zoals uitgelegd op 
 https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</translation>
+Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="972"/>
       <source>Draft.makeBSpline: not enough points</source>
-      <translation type="unfinished">Draft.makeBSpline: not enough points</translation>
+      <translation>Draft.makeBSpline: niet genoeg punten</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="978"/>
       <source>Draft.makeBSpline: Equal endpoints forced Closed</source>
-      <translation type="unfinished">Draft.makeBSpline: Equal endpoints forced Closed</translation>
+      <translation>Draft.makeBSpline: Gelijke eindpunten geforceerd gesloten</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="980"/>
       <source>Draft.makeBSpline: Invalid pointslist</source>
-      <translation type="unfinished">Draft.makeBSpline: Invalid pointslist</translation>
+      <translation>Draft.makeBSpline: Ongeldige puntenlijst</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2509"/>
       <source>No object given</source>
-      <translation type="unfinished">No object given</translation>
+      <translation>Geen object gegeven</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2512"/>
       <source>The two points are coincident</source>
-      <translation type="unfinished">The two points are coincident</translation>
+      <translation>De twee punten vallen samen</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2922"/>
       <source>Found groups: closing each open object inside</source>
-      <translation type="unfinished">Found groups: closing each open object inside</translation>
+      <translation>Gevonden groepen: sluiting van elk open object binnenin</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2927"/>
       <source>Found mesh(es): turning into Part shapes</source>
-      <translation type="unfinished">Found mesh(es): turning into Part shapes</translation>
+      <translation>Een of meerdere mesh(es) gevonden: veranderen in deelvormen</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2935"/>
-      <source>Found 1 solidificable object: solidifying it</source>
-      <translation type="unfinished">Found 1 solidificable object: solidifying it</translation>
+      <source>Found 1 solidifiable object: solidifying it</source>
+      <translation>1 object gevonden welke massief kan worden gemaakt: Maak deze nu massief</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2940"/>
       <source>Found 2 objects: fusing them</source>
-      <translation type="unfinished">Found 2 objects: fusing them</translation>
+      <translation>2 objecten gevonden: ze samenvoegen</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2945"/>
       <source>Found several objects: creating a shell</source>
-      <translation type="unfinished">Found several objects: creating a shell</translation>
+      <translation>Verschillende objecten gevonden: een schil maken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2950"/>
       <source>Found several coplanar objects or faces: creating one face</source>
-      <translation type="unfinished">Found several coplanar objects or faces: creating one face</translation>
+      <translation>Verschillende coplanaire objecten of vlakken gevonden: één gezicht aanmaken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2955"/>
       <source>Found 1 non-parametric objects: draftifying it</source>
-      <translation type="unfinished">Found 1 non-parametric objects: draftifying it</translation>
+      <translation>1 niet-parametrische object gevonden: ontwerp aanmaken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2976"/>
       <source>Found 1 closed sketch object: creating a face from it</source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it</translation>
+      <translation>1 gesloten schetsobject gevonden: er een gezicht van maken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2968"/>
       <source>Found 1 linear object: converting to line</source>
-      <translation type="unfinished">Found 1 linear object: converting to line</translation>
+      <translation>1 lineair object gevonden: naar lijn converteren</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2981"/>
       <source>Found closed wires: creating faces</source>
-      <translation type="unfinished">Found closed wires: creating faces</translation>
+      <translation>Gesloten draden gevonden: vlakken aanmaken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2986"/>
       <source>Found 1 open wire: closing it</source>
-      <translation type="unfinished">Found 1 open wire: closing it</translation>
+      <translation>1 open draad gevonden: word gesloten</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2991"/>
       <source>Found several open wires: joining them</source>
-      <translation type="unfinished">Found several open wires: joining them</translation>
+      <translation>Verscheidene open draden gevonden: worden samengevoegd</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="2996"/>
       <source>Found several edges: wiring them</source>
-      <translation type="unfinished">Found several edges: wiring them</translation>
+      <translation>Verscheidene randen gevonden: worden aan elkaar verbonden</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3001"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+      <translation>Verschillende niet-behandelbare objecten gevonden: samenstellingen worden aangemaakt</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3005"/>
       <source>Unable to upgrade these objects.</source>
-      <translation type="unfinished">Unable to upgrade these objects.</translation>
+      <translation>Kan deze objecten niet upgraden.</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3175"/>
       <source>Found 1 block: exploding it</source>
-      <translation type="unfinished">Found 1 block: exploding it</translation>
+      <translation>1 blok gevonden: wordt opgeblazen</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3181"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation type="unfinished">Found 1 multi-solids compound: exploding it</translation>
+      <translation>1 samenstelling van meerdere volumemodellen gevonden: het opblazen</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3187"/>
       <source>Found 1 parametric object: breaking its dependencies</source>
-      <translation type="unfinished">Found 1 parametric object: breaking its dependencies</translation>
+      <translation>1 parametrisch object gevonden: de afhankelijkheden ervan breken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3194"/>
       <source>Found 2 objects: subtracting them</source>
-      <translation type="unfinished">Found 2 objects: subtracting them</translation>
+      <translation>2 objecten gevonden: hiervan aftrekken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3201"/>
       <source>Found several faces: splitting them</source>
-      <translation type="unfinished">Found several faces: splitting them</translation>
+      <translation>Verschillende gezichten gevonden: ze splitsen</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3206"/>
       <source>Found several objects: subtracting them from the first one</source>
-      <translation type="unfinished">Found several objects: subtracting them from the first one</translation>
+      <translation>Verschillende objecten gevonden: deze van de eerste aftrekken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3211"/>
       <source>Found 1 face: extracting its wires</source>
-      <translation type="unfinished">Found 1 face: extracting its wires</translation>
+      <translation>1 vlak gevonden: de draden eruit trekken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3216"/>
       <source>Found only wires: extracting their edges</source>
-      <translation type="unfinished">Found only wires: extracting their edges</translation>
+      <translation>Alleen draden gevonden: randen uittrekken</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="3220"/>
       <source>No more downgrade possible</source>
-      <translation type="unfinished">No more downgrade possible</translation>
+      <translation>Geen downgrade meer mogelijk</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="4860"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>_BSpline.createGeometry: Gesloten met hetzelfde eerste/laatste punt. Geometrie niet bijgewerkt.</translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5493"/>
       <source>No point found
 </source>
-      <translation type="unfinished">No point found
+      <translation>Geen punt gevonden
 </translation>
     </message>
     <message>
       <location filename="../../Draft.py" line="5726"/>
       <source>ShapeString: string has no wires</source>
-      <translation type="unfinished">ShapeString: string has no wires</translation>
+      <translation>ShapeString: tekenreeks heeft geen draden</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="768"/>
       <source>Relative</source>
-      <translation type="unfinished">Relative</translation>
+      <translation>Relatief</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="775"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>Doorgaan</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="785"/>
@@ -3721,87 +3721,87 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../DraftGui.py" line="113"/>
       <source>Fill</source>
-      <translation type="unfinished">Fill</translation>
+      <translation>Vullen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="114"/>
       <source>Exit</source>
-      <translation type="unfinished">Exit</translation>
+      <translation>Afsluiten</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="115"/>
       <source>Snap On/Off</source>
-      <translation type="unfinished">Snap On/Off</translation>
+      <translation>Snap Aan/Uit</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="116"/>
       <source>Increase snap radius</source>
-      <translation type="unfinished">Increase snap radius</translation>
+      <translation>Verhoog de snapstraal</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="117"/>
       <source>Decrease snap radius</source>
-      <translation type="unfinished">Decrease snap radius</translation>
+      <translation>Verlaag de snapstraal</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="118"/>
       <source>Restrict X</source>
-      <translation type="unfinished">Restrict X</translation>
+      <translation>X beperken</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="119"/>
       <source>Restrict Y</source>
-      <translation type="unfinished">Restrict Y</translation>
+      <translation>Y beperken</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="120"/>
       <source>Restrict Z</source>
-      <translation type="unfinished">Restrict Z</translation>
+      <translation>Z beperken</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="791"/>
       <source>Select edge</source>
-      <translation type="unfinished">Select edge</translation>
+      <translation>Selecteer rand</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="122"/>
       <source>Add custom snap point</source>
-      <translation type="unfinished">Add custom snap point</translation>
+      <translation>Voeg een aangepast snappunt toe</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="123"/>
       <source>Length mode</source>
-      <translation type="unfinished">Length mode</translation>
+      <translation>Lengtemodus</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="787"/>
       <source>Wipe</source>
-      <translation type="unfinished">Wipe</translation>
+      <translation>Wissen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="125"/>
       <source>Set Working Plane</source>
-      <translation type="unfinished">Set Working Plane</translation>
+      <translation>Werkvlak instellen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="765"/>
       <source>Check this to lock the current angle</source>
-      <translation type="unfinished">Check this to lock the current angle</translation>
+      <translation>Vink dit aan om de huidige hoek te vergrendelen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="769"/>
       <source>Coordinates relative to last point or absolute</source>
-      <translation type="unfinished">Coordinates relative to last point or absolute</translation>
+      <translation>Coördinaten ten opzichte van het laatste punt of absoluut</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="770"/>
       <source>Filled</source>
-      <translation type="unfinished">Filled</translation>
+      <translation>Gevuld</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="771"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe</source>
-      <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe</translation>
+      <translation>Vink dit aan als het object als gevuld moet worden weergegeven, anders wordt het als draadmodel weergegeven</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="772"/>
@@ -3811,52 +3811,52 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../DraftGui.py" line="773"/>
       <source>Finishes the current drawing or editing operation</source>
-      <translation type="unfinished">Finishes the current drawing or editing operation</translation>
+      <translation>Beëindigt de huidige tekening of bewerking</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="783"/>
       <source>&amp;Undo (CTRL+Z)</source>
-      <translation type="unfinished">&amp;Undo (CTRL+Z)</translation>
+      <translation>&amp;Ongedaan maken (CTRL+Z)</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="784"/>
       <source>Undo the last segment</source>
-      <translation type="unfinished">Undo the last segment</translation>
+      <translation>Maak het laatste segment ongedaan</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="786"/>
       <source>Finishes and closes the current line</source>
-      <translation type="unfinished">Finishes and closes the current line</translation>
+      <translation>Eindigt en sluit de huidige lijn</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="788"/>
       <source>Wipes the existing segments of this line and starts again from the last point</source>
-      <translation type="unfinished">Wipes the existing segments of this line and starts again from the last point</translation>
+      <translation>Wist de bestaande segmenten van deze lijn en begint opnieuw vanaf het laatste punt</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="789"/>
       <source>Set WP</source>
-      <translation type="unfinished">Set WP</translation>
+      <translation>WV instellen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="790"/>
       <source>Reorients the working plane on the last segment</source>
-      <translation type="unfinished">Reorients the working plane on the last segment</translation>
+      <translation>Heroriënteert het werkvlak op het laatste segment</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="792"/>
       <source>Selects an existing edge to be measured by this dimension</source>
-      <translation type="unfinished">Selects an existing edge to be measured by this dimension</translation>
+      <translation>Selecteert een bestaande rand die door deze afmeting gemeten moet worden</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="807"/>
       <source>If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</source>
-      <translation type="unfinished">If checked, objects will be copied instead of moved. Preferences -&gt; Draft -&gt; Global copy mode to keep this mode in next commands</translation>
+      <translation>Indien aangevinkt, zullen de objecten gekopieerd worden in plaats van verplaatst. Voorkeuren -&gt; Ontwerp -&gt; Globale kopieermodus om deze modus in de volgende opdrachten te behouden</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1216"/>
       <source>options</source>
-      <translation type="unfinished">options</translation>
+      <translation>opties</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2442"/>
@@ -3864,356 +3864,356 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>Standaard</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="432"/>
+      <location filename="../../DraftTools.py" line="433"/>
       <source>Pick a face to define the drawing plane</source>
-      <translation type="unfinished">Pick a face to define the drawing plane</translation>
+      <translation>Kies een vlak om het tekenvlak te definiëren</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="571"/>
+      <location filename="../../DraftTools.py" line="572"/>
       <source>First point:</source>
-      <translation type="unfinished">First point:</translation>
+      <translation>Eerste punt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="578"/>
+      <location filename="../../DraftTools.py" line="579"/>
       <source>Closing</source>
-      <translation type="unfinished">Closing</translation>
+      <translation>Sluiting</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="614"/>
+      <location filename="../../DraftTools.py" line="615"/>
       <source>Create Wire</source>
-      <translation type="unfinished">Create Wire</translation>
+      <translation>Draad aanmaken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="671"/>
+      <location filename="../../DraftTools.py" line="672"/>
       <source>Removing last point</source>
-      <translation type="unfinished">Removing last point</translation>
+      <translation>Laatste punt verwijderen</translation>
+    </message>
+    <message>
+      <location filename="../../DraftTools.py" line="712"/>
+      <source>Next point:</source>
+      <translation>Volgende punt:</translation>
     </message>
     <message>
       <location filename="../../DraftTools.py" line="711"/>
-      <source>Next point:</source>
-      <translation type="unfinished">Next point:</translation>
-    </message>
-    <message>
-      <location filename="../../DraftTools.py" line="710"/>
       <source>Restarting from</source>
-      <translation type="unfinished">Restarting from</translation>
+      <translation>Herstarten vanaf</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="768"/>
+      <location filename="../../DraftTools.py" line="769"/>
       <source>Unable to create a Wire from selected objects</source>
-      <translation type="unfinished">Unable to create a Wire from selected objects</translation>
+      <translation>Kan geen draad maken van de geselecteerde objecten</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="830"/>
+      <location filename="../../DraftTools.py" line="831"/>
       <source>Spline has been closed</source>
-      <translation type="unfinished">Spline has been closed</translation>
+      <translation>Spline is gesloten</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="938"/>
+      <location filename="../../DraftTools.py" line="939"/>
       <source>Last point has been removed</source>
-      <translation type="unfinished">Last point has been removed</translation>
+      <translation>Het laatste punt is verwijderd</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="948"/>
+      <location filename="../../DraftTools.py" line="949"/>
       <source>Pick next point, or Finish (shift-F) or close (o):</source>
-      <translation type="unfinished">Pick next point, or Finish (shift-F) or close (o):</translation>
+      <translation>Kies het volgende punt, of afwerken (shift-F) of sluiten (o):</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="869"/>
+      <location filename="../../DraftTools.py" line="870"/>
       <source>Create B-spline</source>
       <translation type="unfinished">Create B-spline</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="930"/>
+      <location filename="../../DraftTools.py" line="931"/>
       <source>Bezier curve has been closed</source>
-      <translation type="unfinished">Bezier curve has been closed</translation>
+      <translation>De bezier-curve is gesloten</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1917"/>
+      <location filename="../../DraftTools.py" line="1918"/>
       <source>Pick first point:</source>
-      <translation type="unfinished">Pick first point:</translation>
+      <translation>Kies het startpunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1783"/>
+      <location filename="../../DraftTools.py" line="1784"/>
       <source>Pick opposite point:</source>
-      <translation type="unfinished">Pick opposite point:</translation>
+      <translation>Kies het tegenovergestelde punt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1515"/>
+      <location filename="../../DraftTools.py" line="1516"/>
       <source>Pick center point:</source>
-      <translation type="unfinished">Pick center point:</translation>
+      <translation>Kies het middelpunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1654"/>
+      <location filename="../../DraftTools.py" line="1655"/>
       <source>Pick radius:</source>
-      <translation type="unfinished">Pick radius:</translation>
+      <translation>Kies de straal:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1456"/>
+      <location filename="../../DraftTools.py" line="1457"/>
       <source>Pick start angle:</source>
-      <translation type="unfinished">Pick start angle:</translation>
+      <translation>Kies de starthoek:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1351"/>
+      <location filename="../../DraftTools.py" line="1352"/>
       <source>Pick aperture:</source>
-      <translation type="unfinished">Pick aperture:</translation>
+      <translation>Kies de opening:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1467"/>
+      <location filename="../../DraftTools.py" line="1468"/>
       <source>Aperture angle:</source>
-      <translation type="unfinished">Aperture angle:</translation>
+      <translation>Openingshoek:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="1813"/>
+      <location filename="../../DraftTools.py" line="1814"/>
       <source>Pick location point:</source>
-      <translation type="unfinished">Pick location point:</translation>
+      <translation>Kies het locatiepunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2170"/>
+      <location filename="../../DraftTools.py" line="2171"/>
       <source>Edges don't intersect!</source>
-      <translation type="unfinished">Edges don't intersect!</translation>
+      <translation>De randen snijden elkaar niet!</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2247"/>
+      <location filename="../../DraftTools.py" line="2248"/>
       <source>Pick ShapeString location point:</source>
-      <translation type="unfinished">Pick ShapeString location point:</translation>
+      <translation>Kies het ShapeString-locatiepunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2366"/>
+      <location filename="../../DraftTools.py" line="2367"/>
       <source>Select an object to move</source>
-      <translation type="unfinished">Select an object to move</translation>
+      <translation>Selecteer een object om te verplaatsen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2383"/>
+      <location filename="../../DraftTools.py" line="2384"/>
       <source>Pick start point:</source>
-      <translation type="unfinished">Pick start point:</translation>
+      <translation>Kies het startpunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2460"/>
+      <location filename="../../DraftTools.py" line="2461"/>
       <source>Pick end point:</source>
-      <translation type="unfinished">Pick end point:</translation>
+      <translation>Kies het eindpunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2523"/>
+      <location filename="../../DraftTools.py" line="2524"/>
       <source>Select an object to rotate</source>
-      <translation type="unfinished">Select an object to rotate</translation>
+      <translation>Selecteer een object om te roteren</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2540"/>
+      <location filename="../../DraftTools.py" line="2541"/>
       <source>Pick rotation center:</source>
-      <translation type="unfinished">Pick rotation center:</translation>
+      <translation>Kies het rotatiemiddelpunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2673"/>
+      <location filename="../../DraftTools.py" line="2674"/>
       <source>Pick base angle:</source>
-      <translation type="unfinished">Pick base angle:</translation>
+      <translation>Kies de basishoek:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2685"/>
+      <location filename="../../DraftTools.py" line="2686"/>
       <source>Pick rotation angle:</source>
-      <translation type="unfinished">Pick rotation angle:</translation>
+      <translation>Kies de rotatiehoek:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2709"/>
+      <location filename="../../DraftTools.py" line="2710"/>
       <source>Select an object to offset</source>
-      <translation type="unfinished">Select an object to offset</translation>
+      <translation>Selecteer een object om te verschuiven</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2712"/>
+      <location filename="../../DraftTools.py" line="2713"/>
       <source>Offset only works on one object at a time</source>
-      <translation type="unfinished">Offset only works on one object at a time</translation>
+      <translation>Verschuiving werkt maar op één object tegelijk</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2743"/>
+      <location filename="../../DraftTools.py" line="2744"/>
       <source>Sorry, offset of Bezier curves is currently still not supported</source>
-      <translation type="unfinished">Sorry, offset of Bezier curves is currently still not supported</translation>
+      <translation>Sorry, de verschuiving van Bezier-curven wordt momenteel nog steeds niet ondersteund</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3367"/>
+      <location filename="../../DraftTools.py" line="3368"/>
       <source>Pick distance:</source>
-      <translation type="unfinished">Pick distance:</translation>
+      <translation>Kies de afstand:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2896"/>
+      <location filename="../../DraftTools.py" line="2897"/>
       <source>Select an object to stretch</source>
-      <translation type="unfinished">Select an object to stretch</translation>
+      <translation>Selecteer een object om uit te rekken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2941"/>
+      <location filename="../../DraftTools.py" line="2942"/>
       <source>Pick first point of selection rectangle:</source>
-      <translation type="unfinished">Pick first point of selection rectangle:</translation>
+      <translation>Kies het eerste punt van de selectierechthoek:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2965"/>
+      <location filename="../../DraftTools.py" line="2966"/>
       <source>Pick opposite point of selection rectangle:</source>
-      <translation type="unfinished">Pick opposite point of selection rectangle:</translation>
+      <translation>Kies het tegenovergestelde punt van de selectierechthoek:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="2974"/>
+      <location filename="../../DraftTools.py" line="2975"/>
       <source>Pick start point of displacement:</source>
-      <translation type="unfinished">Pick start point of displacement:</translation>
+      <translation>Kies het startpunt van verplaatsing:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3037"/>
+      <location filename="../../DraftTools.py" line="3038"/>
       <source>Pick end point of displacement:</source>
-      <translation type="unfinished">Pick end point of displacement:</translation>
+      <translation>Kies het eindpunt van verplaatsing:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3189"/>
+      <location filename="../../DraftTools.py" line="3190"/>
       <source>Turning one Rectangle into a Wire</source>
-      <translation type="unfinished">Turning one Rectangle into a Wire</translation>
+      <translation>Een rechthoek in een draad veranderen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3257"/>
+      <location filename="../../DraftTools.py" line="3258"/>
       <source>Select an object to upgrade</source>
-      <translation type="unfinished">Select an object to upgrade</translation>
+      <translation>Selecteer een object om te upgraden</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3296"/>
+      <location filename="../../DraftTools.py" line="3297"/>
       <source>Select object(s) to trim/extend</source>
-      <translation type="unfinished">Select object(s) to trim/extend</translation>
+      <translation>Selecteer (een) object(en) om te trimmen/uit te breiden</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3608"/>
+      <location filename="../../DraftTools.py" line="3609"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported</source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported</translation>
+      <translation>Kan deze objecten niet trimmen, alleen ontwerpdraden en bogen worden ondersteund</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3611"/>
+      <location filename="../../DraftTools.py" line="3612"/>
       <source>Unable to trim these objects, too many wires</source>
-      <translation type="unfinished">Unable to trim these objects, too many wires</translation>
+      <translation>Kan deze objecten niet trimmen, te veel draden</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3628"/>
+      <location filename="../../DraftTools.py" line="3629"/>
       <source>These objects don't intersect</source>
-      <translation type="unfinished">These objects don't intersect</translation>
+      <translation>Deze objecten snijden elkaar niet</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3631"/>
+      <location filename="../../DraftTools.py" line="3632"/>
       <source>Too many intersection points</source>
-      <translation type="unfinished">Too many intersection points</translation>
+      <translation>Te veel snijpunten</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3710"/>
+      <location filename="../../DraftTools.py" line="3711"/>
       <source>Select an object to scale</source>
-      <translation type="unfinished">Select an object to scale</translation>
+      <translation>Selecteer een object om schaal te brengen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3728"/>
+      <location filename="../../DraftTools.py" line="3729"/>
       <source>Pick base point:</source>
-      <translation type="unfinished">Pick base point:</translation>
+      <translation>Kies het basispunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3734"/>
+      <location filename="../../DraftTools.py" line="3735"/>
       <source>Pick reference distance from base point:</source>
-      <translation type="unfinished">Pick reference distance from base point:</translation>
+      <translation>Kies een referentieafstand vanaf het basispunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3809"/>
+      <location filename="../../DraftTools.py" line="3810"/>
       <source>Pick new distance from base point:</source>
-      <translation type="unfinished">Pick new distance from base point:</translation>
+      <translation>Kies een nieuwe afstand vanaf het basispunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4756"/>
+      <location filename="../../DraftTools.py" line="4776"/>
       <source>Select an object to project</source>
-      <translation type="unfinished">Select an object to project</translation>
+      <translation>Selecteer een object om te projecteren</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4116"/>
+      <location filename="../../DraftTools.py" line="4119"/>
       <source>This object type is not editable</source>
-      <translation type="unfinished">This object type is not editable</translation>
+      <translation>Dit objecttype kan niet bewerkt worden</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3989"/>
+      <location filename="../../DraftTools.py" line="3990"/>
       <source>Please select only one object</source>
-      <translation type="unfinished">Please select only one object</translation>
+      <translation>Gelieve slechts één object te selecteren</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="3994"/>
+      <location filename="../../DraftTools.py" line="3995"/>
       <source>Select a Draft object to edit</source>
-      <translation type="unfinished">Select a Draft object to edit</translation>
+      <translation>Selecteer een ontwerpobject om te bewerken</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4446"/>
+      <location filename="../../DraftTools.py" line="4466"/>
       <source>Active object must have more than two points/nodes</source>
-      <translation type="unfinished">Active object must have more than two points/nodes</translation>
+      <translation>Het actieve object moet meer dan twee punten/knooppunten hebben</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4518"/>
+      <location filename="../../DraftTools.py" line="4538"/>
       <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation type="unfinished">Endpoint of BezCurve can't be smoothed</translation>
+      <translation>Het eindpunt van de BezCurve kan niet geëffend worden</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4796"/>
+      <location filename="../../DraftTools.py" line="4816"/>
       <source>Select an object to convert</source>
-      <translation type="unfinished">Select an object to convert</translation>
+      <translation>Selecteer een object om te converteren</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4854"/>
+      <location filename="../../DraftTools.py" line="4874"/>
       <source>Select an object to array</source>
-      <translation type="unfinished">Select an object to array</translation>
+      <translation>Selecteer een object voor de reeks</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4884"/>
+      <location filename="../../DraftTools.py" line="4904"/>
       <source>Please select base and path objects</source>
-      <translation type="unfinished">Please select base and path objects</translation>
+      <translation>Selecteer de basis- en trajectobjecten</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="4920"/>
+      <location filename="../../DraftTools.py" line="4940"/>
       <source>Please select base and pointlist objects
 </source>
-      <translation type="unfinished">Please select base and pointlist objects
+      <translation>Gelieve de basis- en puntlijstobjecten te selecteren
 </translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5046"/>
+      <location filename="../../DraftTools.py" line="5066"/>
       <source>Select an object to clone</source>
-      <translation type="unfinished">Select an object to clone</translation>
+      <translation>Selecteer een object om te klonen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5131"/>
+      <location filename="../../DraftTools.py" line="5151"/>
       <source>Select face(s) on existing object(s)</source>
-      <translation type="unfinished">Select face(s) on existing object(s)</translation>
+      <translation>Selecteer een of meerdere vlak(en) op de bestaande objecten</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5203"/>
+      <location filename="../../DraftTools.py" line="5223"/>
       <source>Select an object to mirror</source>
-      <translation type="unfinished">Select an object to mirror</translation>
+      <translation>Selecteer een object om te spiegelen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5217"/>
+      <location filename="../../DraftTools.py" line="5237"/>
       <source>Pick start point of mirror line:</source>
-      <translation type="unfinished">Pick start point of mirror line:</translation>
+      <translation>Kies het beginpunt van de spiegellijn:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5301"/>
+      <location filename="../../DraftTools.py" line="5321"/>
       <source>Pick end point of mirror line:</source>
-      <translation type="unfinished">Pick end point of mirror line:</translation>
+      <translation>Kies het eindpunt van de spiegellijn:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5323"/>
+      <location filename="../../DraftTools.py" line="5343"/>
       <source>This tool only works with Wires and Lines</source>
-      <translation type="unfinished">This tool only works with Wires and Lines</translation>
+      <translation>Dit gereedschap werkt alleen met draden en lijnen</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5454"/>
+      <location filename="../../DraftTools.py" line="5474"/>
       <source>Pick target point:</source>
-      <translation type="unfinished">Pick target point:</translation>
+      <translation>Kies het doelpunt:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5550"/>
+      <location filename="../../DraftTools.py" line="5570"/>
       <source>Pick endpoint of leader line:</source>
-      <translation type="unfinished">Pick endpoint of leader line:</translation>
+      <translation>Kies het eindpunt van de leiderslijn:</translation>
     </message>
     <message>
-      <location filename="../../DraftTools.py" line="5560"/>
+      <location filename="../../DraftTools.py" line="5580"/>
       <source>Pick text position:</source>
-      <translation type="unfinished">Pick text position:</translation>
+      <translation>Kies de tekstpositie:</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="91"/>
       <source>ODA (formerly Teigha) File Converter not found, DWG support is disabled</source>
-      <translation type="unfinished">ODA (formerly Teigha) File Converter not found, DWG support is disabled</translation>
+      <translation>ODA-bestandsconverter (voorheen Teigha) niet gevonden, DWG-ondersteuning is uitgeschakeld</translation>
     </message>
   </context>
 </TS>

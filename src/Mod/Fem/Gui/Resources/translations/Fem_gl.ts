@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation>Seleccionar Caras/Aristas/Vértices</translation>
+      <translation>Escolmar Caras/Aristas/Vértices</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation>Crea un material FEM para sólido</translation>
+      <translation>Crea un material MEF para sólido</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -419,7 +419,7 @@
     <message>
       <location filename="_CommandFemResultShow.py" line="43"/>
       <source>Shows and visualizes selected result data</source>
-      <translation>Amosa e visualiza os datos de resultados seleccionados</translation>
+      <translation>Amosa e visualiza os datos de resultados escolmados</translation>
     </message>
   </context>
   <context>
@@ -468,7 +468,7 @@
     <message>
       <location filename="_CommandFemSolverControl.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor seleccionado</translation>
+      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor escolmado</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="726"/>
@@ -478,7 +478,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="728"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor seleccionado</translation>
+      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor escolmado</translation>
     </message>
   </context>
   <context>
@@ -491,7 +491,7 @@
     <message>
       <location filename="_CommandFemSolverRun.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation>Fai os cálculos no resolvedor seleccionado</translation>
+      <translation>Fai os cálculos no resolvedor escolmado</translation>
     </message>
   </context>
   <context>
@@ -576,7 +576,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="147"/>
       <source>Select Solids</source>
-      <translation>Seleccionar Sólidos</translation>
+      <translation>Escolmar Sólidos</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="148"/>
@@ -594,7 +594,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="50"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
   </context>
   <context>
@@ -778,7 +778,7 @@
     <message>
       <location filename="_CommandControlSolver.py" line="42"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
-      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor seleccionado</translation>
+      <translation>Troca os atributos do resolvedor e executa os cálculos para o resolvedor escolmado</translation>
     </message>
   </context>
   <context>
@@ -905,7 +905,7 @@
     <message>
       <location filename="_CommandRunSolver.py" line="42"/>
       <source>Runs the calculations for the selected solver</source>
-      <translation>Fai os cálculos no resolvedor seleccionado</translation>
+      <translation>Fai os cálculos no resolvedor escolmado</translation>
     </message>
   </context>
   <context>
@@ -946,7 +946,7 @@
     <message>
       <location filename="_CommandShowResult.py" line="42"/>
       <source>Shows and visualizes selected result data</source>
-      <translation>Amosa e visualiza os datos de resultados seleccionados</translation>
+      <translation>Amosa e visualiza os datos de resultados escolmados</translation>
     </message>
   </context>
   <context>
@@ -1266,7 +1266,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation>Seleccione unha única malla FEM ou un conxunto de nós, por favor.</translation>
+      <translation>Escolme unha única malla FEM ou un conxunto de nós, por favor.</translation>
     </message>
   </context>
   <context>
@@ -1323,7 +1323,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="122"/>
       <source>Leave blank to use default CalculiX ccx binary file</source>
-      <translation>Deixe en branco para usar o ficheiro binario por defecto CalculiX ccx</translation>
+      <translation>Deixo en branco para usar o ficheiro binario por defecto CalculiX ccx</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="141"/>
@@ -1616,13 +1616,13 @@
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="412"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="454"/>
       <source>Nothing selected!</source>
-      <translation>Nada seleccionado!</translation>
+      <translation>Nada escolmado!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="422"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="464"/>
       <source>Selected object is not a part!</source>
-      <translation>O obxecto seleccionado non é unha peza!</translation>
+      <translation>O obxecto escolmado non é unha peza!</translation>
     </message>
   </context>
   <context>
@@ -2446,7 +2446,7 @@
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="66"/>
       <source>Remove</source>
-      <translation>Remover</translation>
+      <translation>Rexeitar</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="95"/>

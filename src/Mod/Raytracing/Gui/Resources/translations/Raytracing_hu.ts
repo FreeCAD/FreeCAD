@@ -194,7 +194,7 @@
     </message>
     <message>
       <source>Export part to povray...</source>
-      <translation>Alkatrész exportálása Povray-be ...</translation>
+      <translation>Alkatrész exportálása Povray-be...</translation>
     </message>
     <message>
       <source>Write the selected Part (object) as a povray file</source>
@@ -244,7 +244,7 @@ Do you want to continue?</source>
     <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
-      <translation>Az aktuális nézet kamera nem perspektívikus és így povray kép nézet eredménye különbözni fog az elvárttól. Folytatni kívánja?</translation>
+      <translation>Az aktuális nézet kamera nem perspektivikus és így povray kép nézet eredménye különbözni fog az elvárttól. Folytatni kívánja?</translation>
     </message>
     <message>
       <location line="-563"/>
@@ -555,7 +555,7 @@ Do you want to continue?</source>
     <message>
       <location line="+54"/>
       <source>Do not calculate vertex normals</source>
-      <translation>Nem számítson vertex helyzetet</translation>
+      <translation>Nem számítson normák végponti helyzetet</translation>
     </message>
     <message>
       <location line="+13"/>

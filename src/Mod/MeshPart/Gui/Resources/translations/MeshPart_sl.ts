@@ -11,12 +11,12 @@
     <message>
       <location line="+1"/>
       <source>Curve on mesh...</source>
-      <translation>Krivulja na mreži...</translation>
+      <translation>Krivulja na ploskovju ...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Curve on mesh</source>
-      <translation>Krivulja na mreži</translation>
+      <translation>Krivulja na ploskovju</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Create mesh from shape...</source>
-      <translation>Ustvari mrežo iz oblike …</translation>
+      <translation>Ustvari ploskovje iz oblike …</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Tessellate shape</source>
-      <translation>Teseliraj obliko</translation>
+      <translation>Tlakuj obliko</translation>
     </message>
   </context>
   <context>
@@ -47,7 +47,7 @@
     <message>
       <location line="+1"/>
       <source>Create section from mesh and plane</source>
-      <translation>Ustvari prerez iz mreže in ravnine</translation>
+      <translation>Ustvari prerez iz ploskovja in ravnine</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -65,13 +65,13 @@
     <message>
       <location line="+1"/>
       <source>Trim mesh with a plane</source>
-      <translation>Prireži mrežo z ravnino</translation>
+      <translation>Prireži ploskovje z ravnino</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Trims a mesh with a plane</source>
-      <translation>Prireže mrežo z ravnino</translation>
+      <translation>Prireže ploskovje z ravnino</translation>
     </message>
   </context>
   <context>
@@ -84,7 +84,7 @@
     <message>
       <location line="+2"/>
       <source>Close wire</source>
-      <translation>Zapri žico</translation>
+      <translation>Skledni črtovje</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -99,7 +99,7 @@
     <message>
       <location line="+208"/>
       <source>Wrong mesh picked</source>
-      <translation>Izbrana je napačna mreža</translation>
+      <translation>Izbrano je napačno ploskovje</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -112,17 +112,17 @@
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
       <source>Curve on mesh</source>
-      <translation>Krivulja na mreži</translation>
+      <translation>Krivulja na ploskovju</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Wire</source>
-      <translation>Žica</translation>
+      <translation>Črtovje</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Snap tolerance to vertexes</source>
-      <translation>Pripni toleranco na vozlišče</translation>
+      <translation>Dopustno odstopanje pri pripenjanju na vozlišča</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -137,12 +137,12 @@
     <message>
       <location line="+26"/>
       <source>Spline Approximation</source>
-      <translation>Aproksimacija črte Spline</translation>
+      <translation>Približek zlepku</translation>
     </message>
     <message>
       <location line="+6"/>
       <source>Tolerance to mesh</source>
-      <translation>Toleranca mreži</translation>
+      <translation>Dopustna odstopanja ploskovja</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../Tessellation.ui" line="+14"/>
       <source>Tessellation</source>
-      <translation>Teselacija</translation>
+      <translation>Tlakovanje</translation>
     </message>
     <message>
       <location line="+10"/>
@@ -175,7 +175,7 @@
     <message>
       <location line="+8"/>
       <source>Meshing options</source>
-      <translation>Možnosti izdelovanja mrež</translation>
+      <translation>Možnosti ploskovjenja</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -200,7 +200,7 @@
     <message>
       <location line="-7"/>
       <source>Apply face colors to mesh</source>
-      <translation>Uporabi barve ploskev za mrežo</translation>
+      <translation>Uporabi barve ploskev za ploskovje</translation>
     </message>
     <message>
       <location line="-35"/>
@@ -210,7 +210,7 @@
     <message>
       <location line="+28"/>
       <source>Relative surface deviation</source>
-      <translation>Relativno odstopanje površine</translation>
+      <translation>Relativno odstopanje površja</translation>
     </message>
     <message>
       <location line="+40"/>
@@ -220,7 +220,7 @@
     <message>
       <location line="+44"/>
       <source>Fineness:</source>
-      <translation>Drobnatost:</translation>
+      <translation>Podrobnost:</translation>
     </message>
     <message>
       <location line="+17"/>
@@ -240,12 +240,12 @@
     <message>
       <location line="+5"/>
       <source>Fine</source>
-      <translation>Drobna</translation>
+      <translation>Podroben</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Very fine</source>
-      <translation>Zelo fino</translation>
+      <translation>Zelo drobno</translation>
     </message>
     <message>
       <location line="+5"/>
@@ -270,12 +270,12 @@
     <message>
       <location line="+31"/>
       <source>Optimize surface</source>
-      <translation>Optimiziraj površino</translation>
+      <translation>Optimiziraj površje</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>Second order elements</source>
-      <translation>Elementi drugega reda</translation>
+      <translation>Prvine drugega reda</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -289,7 +289,7 @@
     <message>
       <location line="-293"/>
       <source>Surface deviation:</source>
-      <translation>Odstopanje površine:</translation>
+      <translation>Odstopanje površja:</translation>
     </message>
     <message>
       <source>Max. edge length:</source>
@@ -298,7 +298,7 @@
     <message>
       <location filename="../../Tessellation.cpp" line="+226"/>
       <source>Select a shape for meshing, first.</source>
-      <translation>Najprej izberite obliko za pretvorbo v mrežo.</translation>
+      <translation>Najprej izberite obliko za ploskovjenje.</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -316,7 +316,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you section the mesh.</source>
-      <translation>Izberite ravnino s katero želite prerezati mrežo.</translation>
+      <translation>Izberite ravnino s katero želite prerezati ploskovje.</translation>
     </message>
   </context>
   <context>
@@ -329,7 +329,7 @@
     <message>
       <location line="+1"/>
       <source>Please select a plane at which you trim the mesh.</source>
-      <translation>Izberite ravnino, s katero želite prirezati mrežo.</translation>
+      <translation>Izberite ravnino, s katero želite prirezati ploskovje.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -339,7 +339,7 @@
     <message>
       <location line="+1"/>
       <source>Select the side you want to keep.</source>
-      <translation>Izberi strani katero želiš obdržati.</translation>
+      <translation>Izberite stran, ki jo želite obdržati.</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -362,7 +362,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="+36"/>
       <source>MeshPart</source>
-      <translation>Mrežni del</translation>
+      <translation>Ploskovjev del</translation>
     </message>
   </context>
 </TS>

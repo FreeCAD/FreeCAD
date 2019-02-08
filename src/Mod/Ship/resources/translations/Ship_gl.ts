@@ -724,7 +724,7 @@
     <message>
       <location filename="../../shipCreateWeight/TaskPanel.py" line="162"/>
       <source>Unknown object shapes selected</source>
-      <translation>Seleccionadas Formas de obxecto descoñecidas</translation>
+      <translation>Escolmadas Formas de obxecto descoñecidas</translation>
     </message>
   </context>
 </TS>

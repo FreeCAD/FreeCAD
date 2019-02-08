@@ -16,7 +16,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections</translation>
+      <translation>Loft en markerad profil genom andra profil sektioner</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles</source>
@@ -51,12 +51,12 @@
     <message>
       <location line="+1"/>
       <source>Create body</source>
-      <translation>Skapa kropp</translation>
+      <translation>Skapa Body</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a new body and make it active</source>
-      <translation>Skapa en ny kropp och gör den aktiv</translation>
+      <translation>Skapa en ny Body och gör den aktiv</translation>
     </message>
   </context>
   <context>
@@ -190,7 +190,7 @@
     <message>
       <location line="+1"/>
       <source>Groove a selected sketch</source>
-      <translation>Skåra av aktiva skissen</translation>
+      <translation>Skåra en markerad skiss</translation>
     </message>
   </context>
   <context>
@@ -579,7 +579,7 @@
     <message>
       <location line="+1"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation type="unfinished">Loft a selected profile through other profile sections and remove it from the body</translation>
+      <translation>Använd den markerade profilen samt andra profiler för att göra ett hål i kroppen</translation>
     </message>
     <message>
       <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
@@ -1284,12 +1284,12 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="+246"/>
       <source>Empty body list</source>
-      <translation type="unfinished">Empty body list</translation>
+      <translation>Tom Body lista</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The body list cannot be empty</source>
-      <translation type="unfinished">The body list cannot be empty</translation>
+      <translation>Body listan får ej vara tom</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -2183,7 +2183,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location line="-5"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Extra</translation>
     </message>
     <message>
       <location line="+25"/>
@@ -2737,7 +2737,7 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location line="+5"/>
       <source>Recto Verso</source>
-      <translation type="unfinished">Recto Verso</translation>
+      <translation>Framsida baksida</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -2907,7 +2907,7 @@ Välj en eller fler kanter först.</translation>
     </message>
     <message>
       <source>Create an subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create an subtractive sphere by its radius and various angles</translation>
+      <translation>Skapa en subtraktiv sfär av dess radie och olika vinklar</translation>
     </message>
     <message>
       <source>Create an subtractive cone</source>
@@ -2932,17 +2932,17 @@ Välj en eller fler kanter först.</translation>
     <message>
       <location line="+129"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Create a subtractive box by its width, height and length</translation>
+      <translation>Skapa en subtraktiv låda av dess vidd, höjd och längd</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Create a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Skapa en subtraktiv cylinder av dess radie, höjd och vinkel</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Create a subtractive sphere by its radius and various angles</translation>
+      <translation>Skapa en subtraktiv sfär av dess radie och olika vinklar</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -3152,7 +3152,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-5"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please make a body active before inserting a datum entity.</translation>
+      <translation>Det finns ingen aktiv Body. Vänligen gör en Body aktiv innan du sätter in en datum-enhet.</translation>
     </message>
     <message>
       <location line="+289"/>
@@ -3249,7 +3249,7 @@ Create the sketch on a face.</source>
     <message>
       <location line="-332"/>
       <source>Select an edge, face or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face or body from an active body.</translation>
+      <translation>Välj en kant, sida eller Body från en aktiv Body.</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -3269,17 +3269,17 @@ Create the sketch on a face.</source>
     <message>
       <location line="+292"/>
       <source>Multiple Features Selected</source>
-      <translation type="unfinished">Multiple Features Selected</translation>
+      <translation>Flera object markerade</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Please select only one subtractive or additive feature first.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature first.</translation>
+      <translation>Vänligen skapa en subtraktiv eller additiv detalj först.</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Please select only one subtractive or additive feature in an active body.</source>
-      <translation type="unfinished">Please select only one subtractive or additive feature in an active body.</translation>
+      <translation>Vänligen skapa en subtraktiv eller additiv detalj i en aktiv Body först.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
@@ -3562,7 +3562,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="+1"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</translation>
+      <translation>För att skapa ett nytt PartDesign-objekt, måste det finnas en aktiv Body-objekt i dokumentet. Gör en aktiv (dubbel klicka) eller skapa en ny Body.</translation>
     </message>
     <message>
       <location line="+36"/>
@@ -3615,7 +3615,7 @@ If you have a legacy document with PartDesign objects without Body, use the tran
     <message>
       <location line="+99"/>
       <source>Edit datum</source>
-      <translation type="unfinished">Edit datum</translation>
+      <translation>Redigera datum</translation>
     </message>
     <message>
       <source>CoordinateSystem</source>
@@ -3686,9 +3686,7 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an old FreeCAD versions.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design-&gt;Migrate...'.</translation>
+      <translation>Om du väljer att migrera du kommer inte att kunna redigera-filen med gamla FreeCAD versioner. Om du vägrar att migrera kommer du inte att kunna använda nya PartDesign detaljer som Body och Part containrar. Du kommer heller inte kunna använda dina delar i assembly arbetsbänken. Dock kan du alltid migrera senare med 'Part Design-&gt; migrera...'.</translation>
     </message>
     <message>
       <source>Note If you choose to migrate you won't be able to edit the file wtih old FreeCAD versions.
@@ -3704,12 +3702,12 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../ViewProviderHole.cpp" line="-18"/>
       <source>Edit hole</source>
-      <translation type="unfinished">Edit hole</translation>
+      <translation>Redigera hål</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="-17"/>
       <source>Edit primitive</source>
-      <translation type="unfinished">Edit primitive</translation>
+      <translation>Redigera primitiv</translation>
     </message>
   </context>
   <context>
@@ -3846,7 +3844,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location filename="../../TaskHoleParameters.ui" line="+14"/>
       <source>Task Hole Parameters</source>
-      <translation type="unfinished">Task Hole Parameters</translation>
+      <translation>Aktivitet hål parametrar</translation>
     </message>
     <message>
       <location line="+15"/>
@@ -3869,17 +3867,17 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="-259"/>
       <source>Cutoff inner</source>
-      <translation type="unfinished">Cutoff inner</translation>
+      <translation>Skärav inre</translation>
     </message>
     <message>
       <location line="+13"/>
       <source>Class</source>
-      <translation type="unfinished">Class</translation>
+      <translation>Klass</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Tapered</source>
-      <translation type="unfinished">Tapered</translation>
+      <translation>Avsmalnande</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3904,7 +3902,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+18"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Stigning</translation>
     </message>
     <message>
       <location line="+25"/>
@@ -3919,7 +3917,7 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+13"/>
       <source>Model actual thread</source>
-      <translation type="unfinished">Model actual thread</translation>
+      <translation>Modellera gänga</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3959,37 +3957,37 @@ Although you will be able to migrate any moment later with 'Part Design-&gt;Migr
     <message>
       <location line="+8"/>
       <source>Standard fit</source>
-      <translation type="unfinished">Standard fit</translation>
+      <translation>Standard passform</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Close fit</source>
-      <translation type="unfinished">Close fit</translation>
+      <translation>Nära passform</translation>
     </message>
     <message>
       <location line="+11"/>
       <source>Cutoff outer</source>
-      <translation type="unfinished">Cutoff outer</translation>
+      <translation>Skärav yttre</translation>
     </message>
     <message>
       <location line="+41"/>
       <source>&lt;b&gt;Drill point&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Drill point&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;borr punkt&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+10"/>
       <source>&lt;b&gt;Misc&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Misc&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Diverse&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Hole cut&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Hole cut&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Hål skär&lt;/b&gt;</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>&lt;b&gt;Threading and size&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Threading and size&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Gängning och storlek&lt;/b&gt;</translation>
     </message>
   </context>
   <context>

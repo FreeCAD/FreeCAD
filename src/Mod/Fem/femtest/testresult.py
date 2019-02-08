@@ -45,8 +45,8 @@ class TestResult(unittest.TestCase):
     def test_read_frd_massflow_networkpressure(self):
         # read data from frd file
         frd_file = testtools.get_fem_test_home_dir() + 'ccx/Flow1D_thermomech.frd'
-        import feminout.importCcxFrdResults as importCcxFrdResults
-        frd_content = importCcxFrdResults.readResult(frd_file)
+        from feminout.importCcxFrdResults import read_frd_result as read_frd
+        frd_content = read_frd(frd_file)
 
         # do something with the read data
         frd_content_len = []

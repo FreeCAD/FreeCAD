@@ -113,8 +113,6 @@ class ObjectOp(PathOp.ObjectOp):
                             self.appendCommand(cmd, z, rel)
                         last = edge.Vertexes[0].Point
             self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
-        if self.commandlist:
-            self.commandlist.pop()
 
     def appendCommand(self, cmd, z, rel):
         params = cmd.Parameters

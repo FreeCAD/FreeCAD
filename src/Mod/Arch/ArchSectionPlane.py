@@ -238,11 +238,12 @@ def getSVG(section, renderMode="Wireframe", allOn=False, showHidden=False, scale
             # print(render.info())
             section.Proxy.svgcache = [svgcache,renderMode,showHidden,showFill]
     else:
+        shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+        
         if not svgcache:
             svgcache = ""
             # render using the Drawing module
             import Drawing, Part
-            shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
             if shapes:
                 baseshape = Part.makeCompound(shapes)
                 style = {'stroke':       "SVGLINECOLOR",

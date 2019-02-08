@@ -294,13 +294,14 @@
       <translation>Nyomja meg a középső egérgombot</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Nyomja meg a középső és a jobb vagy bal egérgombot</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation type="unfinished">Press middle+left or middle+right button</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Görgesse a középső egérgombot vagy tartsa a középső gombot megnyomva, a bal vagy jobb kattintás esetén, és mozgassa az egeret felfelé vagy lefelé</translation>
+      <translation type="unfinished">Scroll middle mouse button or keep middle button depressed
+while doing a left or right click and move the mouse up or down</translation>
     </message>
   </context>
   <context>
@@ -422,6 +423,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Tartományon kívüli</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Kamera beállításai</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Tájolás</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Jelenlegi nézet</translation>
     </message>
   </context>
   <context>
@@ -828,10 +860,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>A '%1' billentyűparancs már a '%2' hoz rendelve.
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
 
-Kérek másik billentyűparancsot definiálni.</translation>
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -1508,7 +1540,7 @@ Esetleg fájl jogosultsági hiba?</translation>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
       <source>Material properties</source>
-      <translation>Anyag tulajdonságok</translation>
+      <translation>Anyag tulajdonságai</translation>
     </message>
     <message>
       <source>Material</source>
@@ -2040,7 +2072,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
       <source>Use OpenGL Vertex Buffer Object</source>
-      <translation type="unfinished">Use OpenGL Vertex Buffer Object</translation>
+      <translation>OpenGL végpont tárgy puffer</translation>
+    </message>
+    <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Új dokumentum kamera elhelyezkedése</translation>
     </message>
     <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
@@ -2092,6 +2128,46 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrikus</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrikus</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrikus</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Felülnézet</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Elölnézet</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Bal</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Jobb</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Hátsó nézet</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Alsó</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Egyéni</translation>
     </message>
   </context>
   <context>
@@ -3002,10 +3078,6 @@ Kérem válasszon másik könyvtárat.</translation>
       <translation>Biztosan törli az összes átmeneti könyvtárakat?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Ha a kijelölt átmeneti könyvtárakat törli, nem lesz képes visszaszerezni a fájlokat utána.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Kész</translation>
     </message>
@@ -3020,6 +3092,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Nyomja meg a 'Helyreállítás indítása' az alább listázott dokumentumok helyreállítási folyamatának elindításához.
 
 Az 'Állapot' oszlop tájékoztatja a visszaállítás sikerességéről.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3797,20 +3873,20 @@ El akarja menteni a változásokat?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Érintse meg. Vagy kattintson a bal egérgombbal.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Húzza a képernyőn két ujjal. Vagy nyomja meg az egér jobb oldali gombját.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Húzza a képernyőn, egy ujjal. Vagy nyomja meg a bal egérgombot. Vázlatkészítőben és más szerkesztési módokban tartsa lenyomva az Alt billentyűt is ezen kívül.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Csípje (helyezze két ujját a képernyőn, és húzza őket egymáshoz). Vagy görgesse a középső egér gombot. Vagy a billentyűzet PgUp/PgDown gombjával.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4096,28 +4172,27 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Érintse meg. Vagy kattintson a bal egérgombbal.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Húzza a képernyőn két ujjal. Vagy nyomja meg az ALT + a középső egér gombot.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Húzza a képernyőn, egy ujjal. Vagy nyomja meg az ALT + bal egérgombot. Vázlatkészítőben és más szerkesztési módokban tartsa lenyomva az Alt billentyűt is ezen felül.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Csípjen (helyezze két ujját a képernyőn, és húzza őket egymáshoz). Vagy görgesse a középső egér gombot. Vagy nyomja meg az ALT + jobb egér gombot. Vagy a billentyűzet PgUp/PgDown gombjait használja.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Letöltés indítása... </translation>
+      <source>Download started...</source>
+      <translation type="unfinished">Download started...</translation>
     </message>
   </context>
   <context>
@@ -4912,11 +4987,11 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
       <source>Cannot load workbench</source>
-      <translation>Munkamenet nem betölthető</translation>
+      <translation>Munkafelület nem tölthető be</translation>
     </message>
     <message>
       <source>A general error occurred while loading the workbench</source>
-      <translation>A munkamenet betöltése közben hiba lépett fel</translation>
+      <translation>Általános hiba történt a munkafelület betöltése során</translation>
     </message>
     <message>
       <source>Save views...</source>
@@ -5218,18 +5293,6 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
       <translation>Kezdőpont</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Fordítás: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Elforgatás: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Törli a csoport tartalmát?</translation>
     </message>
@@ -5244,6 +5307,18 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
       <source>Split</source>
       <translation>Feloszt</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation type="unfinished">%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Fordítás:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Elforgatás:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5978,12 +6053,12 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
       <translation>Projekt egyesítése</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 dokumentum (*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Nem tudja egyesíteni önmagával a projekt témát.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 dokumentum (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6659,21 +6734,6 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standard-nézet</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometric</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Axonometric nézetre váltás</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6701,6 +6761,21 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Új nézet ablakot hoz létre az aktív dokumentumhoz</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrikus</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Dimetrikus nézetre váltás</translation>
     </message>
   </context>
   <context>
@@ -6791,6 +6866,21 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Elölnézetre állítás</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Izometrikus</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Izometrikus nézetre váltás</translation>
     </message>
   </context>
   <context>
@@ -6971,6 +7061,21 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
       <source>Set to top view</source>
       <translation>Felülnézetre váltás</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standard-nézet</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrikus</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Trimetrikus nézetre váltás</translation>
     </message>
   </context>
   <context>
@@ -7260,28 +7365,16 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Ezek a tételek hozzárendeltek kiválasztott vagy törlésre váró tételekhez és talán tönkremennek.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Ezek a tételek törlésre jelöltek, de nincsenek az aktív dokumentumban.
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-Biztos folytatni szeretné?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

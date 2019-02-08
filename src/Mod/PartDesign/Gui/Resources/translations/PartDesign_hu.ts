@@ -463,7 +463,7 @@
     </message>
     <message>
       <source>create a pocket with the selected sketch</source>
-      <translation>Hozzon létre egy zsebet a kiválasztott vázlattal</translation>
+      <translation>hozzon létre egy zsebet a kiválasztott vázlattal</translation>
     </message>
   </context>
   <context>
@@ -503,7 +503,7 @@
     </message>
     <message>
       <source>create a polar pattern feature</source>
-      <translation>hozzon létre egy srki minta funkciót</translation>
+      <translation>hozzon létre egy sarki minta funkciót</translation>
     </message>
   </context>
   <context>
@@ -871,15 +871,15 @@
     </message>
     <message>
       <source>Start distance</source>
-      <translation>Eleje távolság</translation>
+      <translation>Távolság kezdete</translation>
     </message>
     <message>
       <source>End distance</source>
-      <translation>Vége távolsága</translation>
+      <translation>Távolság vége</translation>
     </message>
     <message>
       <source>Edge%1</source>
-      <translation>Él %1</translation>
+      <translation>Él%1</translation>
     </message>
     <message>
       <source>Distance</source>
@@ -902,7 +902,7 @@ Kérjük, először a legördülő listából válasszon egy érvényes alakzato
     <message>
       <source>No edge entity is checked to chamfer.
 Please check one or more edge entities first.</source>
-      <translation>A letöréshez nem lett él létezés ellenőrzés végezve. Ellenőrizze először egy vagy több él meglétét.</translation>
+      <translation>A letöréshez nem lett él szerkezet ellenőrzés végezve. Ellenőrizze először egy vagy több él meglétét.</translation>
     </message>
   </context>
   <context>
@@ -1211,7 +1211,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Chamfer Parameter</source>
-      <translation>Letörési Paraméter</translation>
+      <translation>Letörési paraméter</translation>
     </message>
     <message>
       <source>All</source>
@@ -1453,7 +1453,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Draft parameters</source>
-      <translation>Paraméterek tervrajza</translation>
+      <translation>Tervrajz paraméterei</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.cpp" line="+96"/>
@@ -1602,11 +1602,11 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Vertical sketch axis</source>
-      <translation>Vázlat függőleges tengely</translation>
+      <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
       <source>Horizontal sketch axis</source>
-      <translation>Vázlat vízszintes tengely</translation>
+      <translation>Vázlat vízszintes tengelye</translation>
     </message>
     <message>
       <source>Angle:</source>
@@ -1713,11 +1713,11 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Horizontal sketch axis</source>
-      <translation>Vázlat vízszintes tengely</translation>
+      <translation>Vázlat vízszintes tengelye</translation>
     </message>
     <message>
       <source>Vertical sketch axis</source>
-      <translation>Vázlat függőleges tengely</translation>
+      <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
       <source>Select reference...</source>
@@ -1845,11 +1845,11 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Horizontal sketch axis</source>
-      <translation>Vázlat vízszintes tengely</translation>
+      <translation>Vázlat vízszintes tengelye</translation>
     </message>
     <message>
       <source>Vertical sketch axis</source>
-      <translation>Vázlat függőleges tengely</translation>
+      <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
       <source>Select reference...</source>
@@ -2531,12 +2531,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+28"/>
       <source>Vertical sketch axis</source>
-      <translation>Vázlat függőleges tengely</translation>
+      <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
       <location line="-5"/>
       <source>Horizontal sketch axis</source>
-      <translation>Vázlat vízszintes tengely</translation>
+      <translation>Vázlat vízszintes tengelye</translation>
     </message>
     <message>
       <location line="-15"/>
@@ -2777,12 +2777,12 @@ Please check one or more edge entities first.</source>
     <message>
       <location line="+1"/>
       <source>Vertical sketch axis</source>
-      <translation>Vázlat függőleges tengely</translation>
+      <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Horizontal sketch axis</source>
-      <translation>Vázlat vízszintes tengely</translation>
+      <translation>Vázlat vízszintes tengelye</translation>
     </message>
     <message>
       <location line="+2"/>
@@ -3217,7 +3217,7 @@ Create the sketch on a face.</source>
       <location filename="../../ViewProviderPrimitive.cpp" line="+1"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="+1"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Biztos be szeretné zárni a párbeszédpanelt?</translation>
+      <translation>Szeretné bezárni a párbeszédpanelt?</translation>
     </message>
     <message>
       <location line="-913"/>
@@ -3523,13 +3523,13 @@ Ez nem várt eredményekhez vezethet.</translation>
       <location filename="../../TaskRevolutionParameters.cpp" line="+103"/>
       <location filename="../../TaskTransformedParameters.cpp" line="-19"/>
       <source>Vertical sketch axis</source>
-      <translation>Vázlat függőleges tengely</translation>
+      <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
       <location line="+1"/>
       <location filename="../../TaskTransformedParameters.cpp" line="+1"/>
       <source>Horizontal sketch axis</source>
-      <translation>Vázlat vízszintes tengely</translation>
+      <translation>Vázlat vízszintes tengelye</translation>
     </message>
     <message>
       <location line="+2"/>

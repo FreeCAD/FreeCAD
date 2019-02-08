@@ -34,6 +34,7 @@
 # include <TopLoc_Location.hxx>
 # include <TopTools_ListOfShape.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
+# include <TopTools_MapOfShape.hxx>
 #endif
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 

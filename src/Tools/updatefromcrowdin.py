@@ -39,7 +39,12 @@ Options:
     -d or --directory : specifies a directory containing unzipped translation folders
     -z or --zipfile : specifies a path to the freecad.zip file
     -m or --module : specifies a single module name to be updated, instead of all modules
-    
+
+If no argument is specified, the command will try to find and use a freecad.zip file
+located in the current src/Tools directory (such as the one obtained by running
+updatecrowdin.py download) and will extract the default languages specified below
+in this file.
+
 This command must be run from its current source tree location (/src/Tools)
 so it can find the correct places to put the translation files.  If run with
 no arguments, the latest translations from crowdin will be downloaded, unzipped
@@ -189,30 +194,36 @@ def doLanguage(lncode,fmodule=""):
     print(lncode + " done!")
 
 if __name__ == "__main__":
-    args = sys.argv[1:]
-    if len(args) < 1:
-        print(__doc__)
-        sys.exit()
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "hd:z:m:", ["help", "directory=","zipfile=", "module="])
-    except getopt.GetoptError:
-        print(__doc__)
-        sys.exit()
-        
-    # checking on the options
+    
     inputdir = ""
     inputzip = ""
     fmodule = ""
-    for o, a in opts:
-        if o in ("-h", "--help"):
+    args = sys.argv[1:]
+    if len(args) < 1:
+        inputzip = os.path.join(os.path.abspath(os.curdir),"freecad.zip")
+        if os.path.exists(inputzip):
+            print("Using zip file found at",inputzip)
+        else:
             print(__doc__)
             sys.exit()
-        if o in ("-d", "--directory"):
-            inputdir = a
-        if o in ("-z", "--zipfile"):
-            inputzip = a
-        if o in ("-m", "--module"):
-            fmodule = a
+    else:
+        try:
+            opts, args = getopt.getopt(sys.argv[1:], "hd:z:m:", ["help", "directory=","zipfile=", "module="])
+        except getopt.GetoptError:
+            print(__doc__)
+            sys.exit()
+            
+        # checking on the options
+        for o, a in opts:
+            if o in ("-h", "--help"):
+                print(__doc__)
+                sys.exit()
+            if o in ("-d", "--directory"):
+                inputdir = a
+            if o in ("-z", "--zipfile"):
+                inputzip = a
+            if o in ("-m", "--module"):
+                fmodule = a
 
     currentfolder = os.getcwd()
     if inputdir:

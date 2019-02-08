@@ -74,9 +74,9 @@
       <translation>Уголок разработчиков</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
-      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured and how to navigate in it, and how to develop new workbenches, or embed FreeCAD in your own application.</source>
-      <translation>Этот раздел содержит материалы для разработчиков: как скомпилировать FreeCAD самому, как структурирован исходный код FreeCAD и как ориентироваться в нем и как разрабатывать новые рабочие окружения, или встраивать FreeCAD в собственные приложения.</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
+      <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
+      <translation>Этот раздел содержит материалы для разработчиков: как скомпилировать FreeCAD самому, как структурирован исходный код FreeCAD + как ориентироваться в нем и как разрабатывать новые рабочие окружения, и/или встраивать FreeCAD в собственные приложения.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -154,9 +154,9 @@
       <translation>Просмотреть все коммиты на github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
-      <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Custom folder</source>
-      <translation>Можно настроить пользовательскую папку для отображения здесь в меню Правка-&gt; предпочтения-&gt; запуск-&gt; настраиваемая папка</translation>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
+      <source>See all commits on github</source>
+      <translation>Просмотреть все коммиты на github</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
@@ -208,13 +208,275 @@
       <source>Notes</source>
       <translation>Заметки</translation>
     </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="81"/>
+      <source>Notes</source>
+      <translation>Заметки</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="543"/>
+      <location filename="../../Command.cpp" line="58"/>
+      <location filename="../../Workbench.cpp" line="65"/>
       <source>Start page</source>
       <translation>Стартовая страница</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <source>Start page</source>
+      <translation>Стартовая страница</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdStartPage</name>
+    <message>
+      <location filename="../../Command.cpp" line="44"/>
+      <source>Start</source>
+      <translation>Запустить</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="45"/>
+      <source>Start Page</source>
+      <translation>Стартовая страница</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="46"/>
+      <source>Displays the start page in a browser view</source>
+      <translation>Показать стартовую страницу во встроенном обозревателе</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>Start page options</source>
+      <translation>Настройки стартовой страницы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Start page template</source>
+      <translation>Шаблон стартовой страницы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>An optional HTML template that will be used instead of the default start page.</source>
+      <translation>Дополнительный HTML-шаблон, который будет использоваться вместо начальной страницы по умолчанию.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="42"/>
+      <source>Contents</source>
+      <translation>Содержание</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="48"/>
+      <source>Show forum</source>
+      <translation>Показать Форум</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="55"/>
+      <source>Show examples folder contents</source>
+      <translation>Показать содержимое папки примеров</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="62"/>
+      <source>Show additional folder</source>
+      <translation>Показать дополнительную папку</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="69"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation>Если вы хотите, чтобы примеры показывались на первой странице</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="91"/>
+      <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
+      <translation>Если этот флажок установлен, последние сообщения с форума FreeCAD будет отображаться на вкладке активности</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="110"/>
+      <source>An optional custom folder to be displayed at the bottom of the first page</source>
+      <translation>Дополнительная произвольная папка будет отображаться в нижней части первой страницы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="126"/>
+      <source>Show notepad</source>
+      <translation>Показывать Блокнот</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Shows a notepad next to the file thumbnails, where you can keep notes across FreeCAD sessions</source>
+      <translation>Показывает блокнот рядом с эскизами файлов, где вы можете хранить заметки между сессиями FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="155"/>
+      <source>Fonts and colors</source>
+      <translation>Шрифты и цвета</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="167"/>
+      <source>The background of the main start page area</source>
+      <translation>Фон главной стартовой страницы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="187"/>
+      <source>Background color</source>
+      <translation>Цвет фона</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="199"/>
+      <source>in FreeCAD</source>
+      <translation>в FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="218"/>
+      <source>In external browser</source>
+      <translation>Во внешнем браузере</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="236"/>
+      <source>Background color gradient down</source>
+      <translation>Градиентная заливка фона вниз</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="249"/>
+      <source>The color of the version text</source>
+      <translation>Цвет текста версии</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="269"/>
+      <source>Link color</source>
+      <translation>Цвет ссылок</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="276"/>
+      <source>An optional image to display as background</source>
+      <translation>Необязательное изображение для отображения в виде фона</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="289"/>
+      <source>If this is checked, if a style sheet is specified in General preferences, it will be used and override the colors below</source>
+      <translation>Если этот флажок установлен и в стиле указано общие предпочтения, он будет использоваться и переопределит цвета ниже</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="308"/>
+      <source>Page background color</source>
+      <translation>Цвет фона страницы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="321"/>
+      <source>The color of the text on the main pages</source>
+      <translation>Цвет текста на главных страницах</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="341"/>
+      <source>Background image</source>
+      <translation>Фоновое изображение</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="348"/>
+      <source>Page text color</source>
+      <translation>Цвет текста на странице</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="361"/>
+      <source>The color of the links</source>
+      <translation>Цвет ссылок</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="387"/>
+      <source>The background color of the boxes inside the pages</source>
+      <translation>Цвет фона поля внутри страниц</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="407"/>
+      <source>Box background color</source>
+      <translation>Цвет фона поля</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="420"/>
+      <source>The background color behind the panels</source>
+      <translation>Цвет фона позади панелей</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="449"/>
+      <source>The down gradient for the background color (currently unsupported)</source>
+      <translation>Нижний градиент цвета фона (в настоящее время не поддерживается)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="472"/>
+      <source>Open links</source>
+      <translation>Открыть ссылки</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="479"/>
+      <source>Background text color</source>
+      <translation>Фоновый цвет текста</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="486"/>
+      <source>Use FreeCAD style sheet</source>
+      <translation>Использование стилей FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="493"/>
+      <source>Font family</source>
+      <translation>Шрифт</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="502"/>
+      <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
+      <translation>Шрифт, используемый на стартовой странице. Может быть имя шрифта или разделённый запятыми список резервных шрифтов</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="508"/>
+      <source>Arial,Helvetica,sans</source>
+      <translation>Arial,Helvetica,sans</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="521"/>
+      <source>The base font size to use for all texts of the Start page</source>
+      <translation>Базовый размер шрифта для всего текста стартовой страницы</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="524"/>
+      <source>px</source>
+      <translation>пикс.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="542"/>
+      <source>Use gradient for New File icon</source>
+      <translation>Использовать градиент для нового значка файла</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="568"/>
+      <source>Options</source>
+      <translation>Параметры</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="577"/>
+      <source>Should the start page be closed after loading?</source>
+      <translation>Закрывать стартовую страницу после загрузки?</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="596"/>
+      <source>Switch workbench after loading</source>
+      <translation>Переключатель рабочее окружение после загрузки</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="603"/>
+      <source>Close start page after loading</source>
+      <translation>Закрыть стартовую страницу после загрузки</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="610"/>
+      <source>Close &amp; switch on file open</source>
+      <translation>Закрыть и перейти при открытии файла</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="617"/>
+      <source>If FreeCAD is started by opening a file, apply the two settings above</source>
+      <translation>Если FreeCAD запускается открытием файла, применить два параметра выше</translation>
     </message>
   </context>
 </TS>

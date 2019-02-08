@@ -65,7 +65,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
     import ObjectsFem
     if result_name_prefix is None:
         result_name_prefix = ''
-    m = readResult(filename)
+    m = read_frd_result(filename)
     result_mesh_object = None
     if len(m['Nodes']) > 0:
         if analysis:
@@ -74,16 +74,6 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
         mesh = importToolsFem.make_femmesh(m)
         result_mesh_object = ObjectsFem.makeMeshResult(FreeCAD.ActiveDocument, 'Result_mesh')
         result_mesh_object.FemMesh = mesh
-
-        positions = []
-        for k, v in m['Nodes'].items():
-            positions.append(v)
-        p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
-        p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
-        x_span = abs(p_x_max - p_x_min)
-        y_span = abs(p_y_max - p_y_min)
-        z_span = abs(p_z_max - p_z_min)
-        span = max(x_span, y_span, z_span)
 
         number_of_increments = len(m['Results'])
         FreeCAD.Console.PrintLog('Increments: ' + str(number_of_increments) + '\n')
@@ -102,16 +92,19 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                 else:
                     results_name = result_name_prefix + 'results'
 
-                results = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
-                results.Mesh = result_mesh_object
-                results = importToolsFem.fill_femresult_mechanical(results, result_set, span)
-                if not results.MassFlowRate:
+                res_obj = ObjectsFem.makeResultMechanical(FreeCAD.ActiveDocument, results_name)
+                res_obj.Mesh = result_mesh_object
+                res_obj = importToolsFem.fill_femresult_mechanical(res_obj, result_set)
+                if analysis:
+                    analysis_object.addObject(res_obj)
+                # complementary result object calculations
+                import femresult.resulttools as restools
+                if not res_obj.MassFlowRate:
                     # only compact result if not Flow 1D results
                     # compact result object, workaround for bug 2873, https://www.freecadweb.org/tracker/view.php?id=2873
-                    from femresult.resulttools import compact_result as rs
-                    results = rs(results)
-                if analysis:
-                    analysis_object.addObject(results)
+                    res_obj = restools.compact_result(res_obj)
+                res_obj = restools.add_disp_apps(res_obj)  # fill DisplacementLengths
+                res_obj = restools.fill_femresult_stats(res_obj)  # fill Stats
         else:
             error_message = (
                 "We have nodes but no results in frd file, which means we only have a mesh in frd file. "
@@ -133,7 +126,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
 
 # read a calculix result file and extract the nodes, displacement vectors and stress values.
-def readResult(frd_input):
+def read_frd_result(frd_input):
     print('Read ccx results from frd file: ' + frd_input)
     inout_nodes = []
     inout_nodes_file = frd_input.rsplit('.', 1)[0] + '_inout_nodes.txt'
@@ -166,7 +159,6 @@ def readResult(frd_input):
     mode_results['time'] = float('NaN')
     mode_disp = {}
     mode_stress = {}
-    mode_stressv = {}
     mode_strain = {}
     mode_peeq = {}
     mode_temp = {}
@@ -434,7 +426,6 @@ def readResult(frd_input):
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
             mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
-            mode_stressv[elem] = FreeCAD.Vector(stress_1, stress_2, stress_3)
 
         # Check if we found strain section
         if line[5:13] == "TOSTRAIN":
@@ -516,9 +507,7 @@ def readResult(frd_input):
 
             if mode_stress_found:
                 mode_results['stress'] = mode_stress
-                mode_results['stressv'] = mode_stressv
                 mode_stress = {}
-                mode_stressv = {}
                 mode_stress_found = False
                 node_element_section = False
 

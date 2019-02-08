@@ -124,7 +124,7 @@
       <translation>Metoda de plonjare în șpan</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="41"/>
+      <location filename="../../../PathScripts/PathPlane.py" line="40"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Selectează "False" pentru a preveni generarea codului</translation>
     </message>
@@ -171,7 +171,7 @@
     <message>
       <location filename="PathDrilling.py" line="88"/>
       <source>Height to clear top of material</source>
-      <translation>Înălţime degajării în raport cu partea de sus a piesei</translation>
+      <translation type="unfinished">Height to clear top of material</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="55"/>
@@ -274,14 +274,14 @@
       <translation>Unghiul la modelul zig-zag</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathProfileBase.py" line="59"/>
+      <source>Make True, if using Cutter Radius Compensation</source>
+      <translation type="unfinished">Make True, if using Cutter Radius Compensation</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathProfileBase.py" line="61"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Grosimea necesară în raport cu profilul final -valabil pentru o degroșare</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileBase.py" line="62"/>
-      <source>Controls how tool moves around corners. Default=Round</source>
-      <translation>Controlează modul în care scula se mişcă în jurul colturi. Implicit = rotund</translation>
     </message>
     <message>
       <location filename="PathStop.py" line="43"/>
@@ -292,16 +292,6 @@
       <location filename="PathArray.py" line="43"/>
       <source>Pattern method</source>
       <translation>Metodă de operare</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="44"/>
-      <source>The Height offset number of the active tool</source>
-      <translation>Înălţimea de compensare a instrumentului activ</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="46"/>
-      <source>The first height value in Z, to rapid to, before making a feed move in Z</source>
-      <translation>Prima valoare de înălţime în Z, de atins în deplasare rapidă, înainte de a face o deplasarea de uzinare pe Z</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="47"/>
@@ -344,14 +334,19 @@
       <translation>Avans rapid pentru mișcări orizontale</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathArray.py" line="43"/>
+      <source>Pattern method</source>
+      <translation>Metodă de operare</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathToolController.py" line="73"/>
       <source>The active tool</source>
       <translation>Unealta activă</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathToolController.py" line="75"/>
-      <source>The tool used by this controller</source>
-      <translation>Instrumentul utilizat de către acest controler</translation>
+      <location filename="../../../PathScripts/PathToolController.py" line="81"/>
+      <source>Feed rate for horizontal moves</source>
+      <translation>Pasul pentru mișcările pe orizontală</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathToolController.py" line="82"/>
@@ -377,6 +372,16 @@
       <location filename="PathMillFace.py" line="79"/>
       <source>How far the cutter should extend past the boundary</source>
       <translation>Cu cât scula de așchiere va depăși limita</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="44"/>
+      <source>The Height offset number of the active tool</source>
+      <translation>Înălţimea de compensare a instrumentului activ</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="46"/>
+      <source>The first height value in Z, to rapid to, before making a feed move in Z</source>
+      <translation>Prima valoare de înălţime în Z, de atins în deplasare rapidă, înainte de a face o deplasarea de uzinare pe Z</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="53"/>
@@ -474,11 +479,6 @@
       <translation>Forma baza a acestei traiectorii</translation>
     </message>
     <message>
-      <location filename="PathCompoundExtended.py" line="45"/>
-      <source>An ptional description of this compounded operation</source>
-      <translation>O descriere opționala pentru aceasta operație compusă</translation>
-    </message>
-    <message>
       <location filename="PathCompoundExtended.py" line="46"/>
       <source>An optional description of this compounded operation</source>
       <translation>O descriere opţională a acestei combinații de operații</translation>
@@ -552,11 +552,6 @@
       <translation>Sarcina de lucru originală %s nu are un obiect de bază</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngraveGui.py" line="62"/>
-      <source>%s is not a Base Model object of the job %s</source>
-      <translation>%s nu este un obiect de bază Model al jobului %s</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="514"/>
       <source>Heights</source>
       <translation>Înălţimi</translation>
@@ -587,14 +582,14 @@
       <translation>Caracteristica %s.%s nu pot fi procesate ca un orificiu circular - vă rugăm să o înlăturaţi din lista de geometrie de Bază.</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="333"/>
+      <source>No parent job found for operation.</source>
+      <translation>Nicio sarcină de lucru nu a fost găsită pentru operație.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="337"/>
       <source>Parent job %s doesn't have a base object</source>
       <translation>Sarcina de lucru originală %s nu are un obiect de bază</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOp.py" line="503"/>
-      <source>Base object %s.%s already in the list</source>
-      <translation>Obiectul de bază %.% este deja în listă</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -617,9 +612,9 @@
       <translation>Operațiuni noi</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="592"/>
-      <source>Heights</source>
-      <translation>Înălţimi</translation>
+      <location filename="../../../PathScripts/PathToolController.py" line="234"/>
+      <source>Edit</source>
+      <translation>Editare</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="101"/>
@@ -637,9 +632,14 @@
       <translation>Parcursul traiectoriei adiționale (Dressup)</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathCircularHoleBase.py" line="71"/>
-      <source>List of disabled features</source>
-      <translation>Lista caracteristicilor dezactivate</translation>
+      <location filename="../../../PathScripts/PathOpGui.py" line="958"/>
+      <source>Pick Start Point</source>
+      <translation>Selecționați punctul de plecare</translation>
+    </message>
+    <message>
+      <location filename="../../../InitGui.py" line="91"/>
+      <source>Engraving Operations</source>
+      <translation type="unfinished">Engraving Operations</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="100"/>
@@ -670,11 +670,6 @@
       <location filename="../../../InitGui.py" line="110"/>
       <source>Helpful Tools</source>
       <translation>Instrumente utile</translation>
-    </message>
-    <message>
-      <location filename="../../../InitGui.py" line="120"/>
-      <source>&amp;Path</source>
-      <translation>&amp;Traiectorie</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="153"/>
@@ -724,6 +719,11 @@
       <translation>nu s-a găsit nicio sarcină de lucru pentru op " %s ".</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathAreaOp.py" line="96"/>
+      <source>job %s has no Base.</source>
+      <translation>job %s nu are nicio bază.</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathAreaOp.py" line="98"/>
       <source>no job for op %s found.</source>
       <translation>nu s-a găsit nicio sarcină de lucru pentru op " %s ".</translation>
@@ -733,6 +733,11 @@
     <name>PathDressup_HoldingTags</name>
     <message>
       <location filename="PathDressupTagGui.py" line="73"/>
+      <source>Edit HoldingTags Dress-up</source>
+      <translation>Modificați traiectoria adițională atașată</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTagGui.py" line="67"/>
       <source>Edit HoldingTags Dress-up</source>
       <translation>Modificați traiectoria adițională atașată</translation>
     </message>
@@ -796,11 +801,6 @@
       <source>Creates a Path Drilling object from a features of a base object</source>
       <translation>Creează un obiect traiectorie de găurirea plecând de la o funcție a obiectului de bază</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathDrillingGui.py" line="109"/>
-      <source>Drilling</source>
-      <translation>Găurire</translation>
-    </message>
   </context>
   <context>
     <name>PathEngrave</name>
@@ -814,6 +814,11 @@
       <source>Creates an Engraving Path around a Draft ShapeString</source>
       <translation>Creează o traiectorie de gravura în jurul unei schițe tip text</translation>
     </message>
+    <message>
+      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
+      <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
+      <translation>Obiectul de baza Job are nici un element ca repoate fi gravat.  Operațiunea de Gravura nu va produce nici o ieşire.</translation>
+    </message>
   </context>
   <context>
     <name>PathCustom</name>
@@ -826,14 +831,6 @@
       <location filename="../../../PathScripts/PathCustom.py" line="41"/>
       <source>The tool controller that will be used to calculate the path</source>
       <translation>Controlerul sculei care va utiizat pentru calcului traiectoriei</translation>
-    </message>
-  </context>
-  <context>
-    <name>PathDeburr</name>
-    <message>
-      <location filename="../../../PathScripts/PathDeburr.py" line="70"/>
-      <source>The desired width of the chamfer</source>
-      <translation>Lăţimea dorită de chanfren</translation>
     </message>
   </context>
   <context>
@@ -894,16 +891,6 @@
       <translation>isHorizontal (%s) nu este acceptat</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="151"/>
-      <source>face %s not handled, assuming not vertical</source>
-      <translation>fațeta %s nu este prelucrată, se presupune a nu verticală</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="163"/>
-      <source>edge %s not handled, assuming not vertical</source>
-      <translation>muchia %s nu este tratată. se presupune a fi verticală</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathGeom.py" line="166"/>
       <source>isVertical(%s) not supported</source>
       <translation>isVertical (%s) nu este acceptat</translation>
@@ -914,7 +901,7 @@
       <translation>isHorizontal (%s) nu este acceptat</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathGeom.py" line="514"/>
+      <location filename="../../../PathScripts/PathGeom.py" line="548"/>
       <source>%s not support for flipping</source>
       <translation>%s nu are suport pentru flipping</translation>
     </message>
@@ -925,6 +912,11 @@
       <location filename="../../../PathScripts/PathGui.py" line="56"/>
       <source>%s has no property %s (%s))</source>
       <translation>%s nu are nici o proprietate %s (%s))</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathGui.py" line="115"/>
+      <source>Cannot find property %s of %s</source>
+      <translation>Imposibil de găsit proprietatea %s de %s</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathGui.py" line="115"/>
@@ -960,9 +952,24 @@
       <translation>Increment pe rază (trebuie să fie mai mic decât diametrul sculei)</translation>
     </message>
     <message>
+      <location filename="PathHelix.py" line="450"/>
+      <source>Creates a helix cut from selected circles</source>
+      <translation type="unfinished">Creates a helix cut from selected circles</translation>
+    </message>
+    <message>
       <location filename="PathHelix.py" line="464"/>
       <source>Create a helix cut</source>
       <translation type="unfinished">Create a helix cut</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelixGui.py" line="83"/>
+      <source>Helix</source>
+      <translation>Spirala</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathHelixGui.py" line="83"/>
+      <source>Creates a Path Helix object from a features of a base object</source>
+      <translation>Creează un obiect traiectoriea Helix de caracteristici a unui obiect de bază</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHelix.py" line="51"/>
@@ -993,39 +1000,9 @@
       <translation>Brutul nu o cutie!</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="103"/>
-      <source>Solid object to be used as stock.</source>
-      <translation>Obiect solid pentru a fi utilizate ca semifabricat inițial.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="104"/>
-      <source>Compound path of all operations in the order they are processed.</source>
-      <translation>Traiectorie combinată a tuturor operațiunilor în ordinea în care ele sunt realizate.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="105"/>
-      <source>Collection of tool controllers available for this job.</source>
-      <translation>Colecţie de instrument controlerele disponibile pentru această sarcină de muncă.</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJob.py" line="141"/>
-      <source>SetupSheet holding the settings for this job</source>
-      <translation>Fișă de control a parametrilor pentru această sarcină de muncă</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="331"/>
-      <source>Stock not from Base bound box!</source>
-      <translation>Piesa de prelucrat nu vine din cadrul obiectului de bază!</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="388"/>
       <source>Stock not a cylinder!</source>
       <translation>Brutul nu un cilindru!</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobGui.py" line="408"/>
-      <source>Stock not a box!</source>
-      <translation>Brutul nu o cutie!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="887"/>
@@ -1036,6 +1013,26 @@
       <location filename="../../../PathScripts/PathJobGui.py" line="900"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Tip de semifabricat %s (%d) de Neacceptat</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="103"/>
+      <source>Solid object to be used as stock.</source>
+      <translation>Obiect solid pentru a fi utilizate ca semifabricat inițial.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="104"/>
+      <source>Compound path of all operations in the order they are processed.</source>
+      <translation>Traiectorie combinată a tuturor operațiunilor în ordinea în care ele sunt realizate.</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="244"/>
+      <source>Unsupported PathJob template version %s</source>
+      <translation>Versiune nesuportată de șablon PathJob %s</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJobGui.py" line="331"/>
+      <source>Stock not from Base bound box!</source>
+      <translation>Piesa de prelucrat nu vine din cadrul obiectului de bază!</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobCmd.py" line="149"/>
@@ -1058,6 +1055,16 @@
       <translation>Tip de semifabricat respins ca piesă de bază</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathJob.py" line="97"/>
+      <source>Arguments for the Post Processor (specific to the script)</source>
+      <translation>Argumente pentru Post procesare (specifice script-ul)</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathJob.py" line="99"/>
+      <source>An optional description for this job</source>
+      <translation type="unfinished">An optional description for this job</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathJob.py" line="100"/>
       <source>For computing Paths; smaller increases accuracy, but slows down computation</source>
       <translation>Pentru calculul traiectoriei; o viteză mai mică crește acuratețea, dar încetinește computerul</translation>
@@ -1078,17 +1085,17 @@
       <translation>Traiectorie combinată a tuturor operațiunilor în ordinea în care ele sunt realizate.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="104"/>
+      <location filename="../../../PathScripts/PathJob.py" line="105"/>
       <source>Collection of tool controllers available for this job.</source>
       <translation>Colecţie de instrument controlerele disponibile pentru această sarcină de muncă.</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="144"/>
+      <location filename="../../../PathScripts/PathJob.py" line="141"/>
       <source>SetupSheet holding the settings for this job</source>
       <translation>Fișă de control a parametrilor pentru această sarcină de muncă</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathJob.py" line="244"/>
+      <location filename="../../../PathScripts/PathJob.py" line="304"/>
       <source>Unsupported PathJob template version %s</source>
       <translation>Versiune nesuportată de șablon PathJob %s</translation>
     </message>
@@ -1146,9 +1153,9 @@
       <translation>Conţine valoarea calculată pentru StartDepth</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="104"/>
-      <source>Holds the calculated value for the FinalDepth</source>
-      <translation>Conţine valoarea calculată pentru StartDepth</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="114"/>
+      <source>An optional comment for this Operation</source>
+      <translation>Un comentariu opțional pentru această Operaţie</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="115"/>
@@ -1171,11 +1178,6 @@
       <translation>Conţine valoarea calculată pentru StartDepth</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="106"/>
-      <source>Holds the calculated value for the FinalDepth</source>
-      <translation>Conţine valoarea calculată pentru StartDepth</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="291"/>
       <source>Base Geometry</source>
       <translation>Geometria de bază</translation>
@@ -1186,9 +1188,9 @@
       <translation>Amplasamentul de bază</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="114"/>
-      <source>Holds the min Z value of Stock</source>
-      <translation>Menține valoarea minimă Z a Stock</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="112"/>
+      <source>Holds the max Z value of Stock</source>
+      <translation type="unfinished">Holds the max Z value of Stock</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="545"/>
@@ -1201,6 +1203,11 @@
       <translation>Operațiuni</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathOp.py" line="104"/>
+      <source>Holds the calculated value for the FinalDepth</source>
+      <translation>Conţine valoarea calculată pentru StartDepth</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathOp.py" line="107"/>
       <source>Holds the diameter of the tool</source>
       <translation>Păstrează diametrul sculei</translation>
@@ -1211,7 +1218,7 @@
       <translation>Selectează "False" pentru a preveni generarea codului</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="114"/>
+      <location filename="../../../PathScripts/PathOp.py" line="121"/>
       <source>An optional comment for this Operation</source>
       <translation>Un comentariu opțional pentru această Operaţie</translation>
     </message>
@@ -1221,9 +1228,9 @@
       <translation>Etichetă asignată de către utilizator</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="130"/>
-      <source>Base locations for this operation</source>
-      <translation>Locatii de bază pentru această operaţie</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="137"/>
+      <source>Starting Depth of Tool- first cut depth in Z</source>
+      <translation>Adâncimea Z a primei așchii a sculei</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="138"/>
@@ -1231,14 +1238,16 @@
       <translation>Adâncimea finala a sculei - valoarea minima a lui Z</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="144"/>
-      <source>Starting Depth internal use only for derived values</source>
-      <translation>Utilizarea internă a adâncimii doar pentru valorile derivate</translation>
+      <location filename="../../../PathScripts/PathOp.py" line="156"/>
+      <source>The height needed to clear clamps and obstructions</source>
+      <translation>Înălțimea necesita înlăturarea suporţilor și obstacolelor</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathOp.py" line="157"/>
-      <source>Rapid Safety Height between locations.</source>
-      <translation>Înălțime de siguranță între locații.</translation>
+      <location filename="../../../PathScripts/PathOpGui.py" line="641"/>
+      <source>FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</source>
+      <translation type="unfinished">FinalDepth cannot be modified for this operation.
+If it is necessary to set the FinalDepth manually please select a different operation.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOpGui.py" line="660"/>
@@ -1339,19 +1348,14 @@
       <translation>Profil de față</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
-      <source>Edge Profile</source>
-      <translation>Profil de muchie</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileEdgesGui.py" line="45"/>
-      <source>Profile based on edges</source>
-      <translation>Profil bazat pe margini</translation>
-    </message>
-    <message>
       <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
       <source>Face Profile</source>
       <translation>Profil de față</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathProfileFacesGui.py" line="45"/>
+      <source>Profile based on face or faces</source>
+      <translation type="unfinished">Profile based on face or faces</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="54"/>
@@ -1376,11 +1380,6 @@
       <source>Creates a Contour Path for the Base Object </source>
       <translation>Creează o cale conturului pentru obiectul de baza </translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathProfileContourGui.py" line="44"/>
-      <source>Creates a Contour Path for the Base Object </source>
-      <translation>Creează o cale conturului pentru obiectul de baza </translation>
-    </message>
   </context>
   <context>
     <name>PathProject</name>
@@ -1398,11 +1397,6 @@
       <location filename="PathOpGui.py" line="349"/>
       <source>Faces are not supported</source>
       <translation>Fetele nu sunt acceptate</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathOpGui.py" line="400"/>
-      <source>Vertexes are not supported</source>
-      <translation>Vertexurile nu sunt acceptate</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="587"/>
@@ -1553,6 +1547,21 @@
       <translation>Se respinge această versiune de șablon PathStockt {}</translation>
     </message>
     <message>
+      <location filename="../../../PathScripts/PathStock.py" line="153"/>
+      <source>Length of this stock box</source>
+      <translation type="unfinished">Length of this stock box</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathStock.py" line="154"/>
+      <source>Width of this stock box</source>
+      <translation type="unfinished">Width of this stock box</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathStock.py" line="155"/>
+      <source>Height of this stock box</source>
+      <translation>Înălţimea acestei piese de bază paralelipipedice</translation>
+    </message>
+    <message>
       <location filename="../../../PathScripts/PathStock.py" line="188"/>
       <source>Radius of this stock cylinder</source>
       <translation>Înălțimea brută a a acestui cilindru</translation>
@@ -1652,7 +1661,7 @@
       <translation>A apărut o problemă privind comportarea la găurire: {}</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtils.py" line="201"/>
+      <location filename="../../../PathScripts/PathUtils.py" line="202"/>
       <source>Issue determine drillability: {}</source>
       <translation>A apărut o problemă privind comportarea la găurire: {}</translation>
     </message>
@@ -1973,21 +1982,6 @@
       <source>The Style of LeadIn the Path</source>
       <translation>Stilul traiectoriei de apopiere</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="66"/>
-      <source>The Style of LeadOut the Path</source>
-      <translation>Stilul de traiectoriei de retragere</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="68"/>
-      <source>The Mode of Point Radiusoffset or Center</source>
-      <translation>Modul decalajul Punctului sau Modul Centrului</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="338"/>
-      <source>LeadInOut Dressup</source>
-      <translation>LeadInOut Dressup</translation>
-    </message>
   </context>
   <context>
     <name>Path_Fixture</name>
@@ -2007,9 +2001,14 @@
       <translation>Creaţi un decalaj de fixare</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathFixture.py" line="125"/>
-      <source>Create a Fixture Offset</source>
-      <translation>Creaţi un decalaj de fixare</translation>
+      <location filename="../../../PathScripts/PathFixture.py" line="114"/>
+      <source>Fixture</source>
+      <translation>Punct de fixare</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathFixture.py" line="115"/>
+      <source>Creates a Fixture Offset object</source>
+      <translation>Creează un obiect punct de fixare decalat</translation>
     </message>
   </context>
   <context>
@@ -2042,11 +2041,6 @@
       <location filename="PathHop.py" line="122"/>
       <source>Create Hop</source>
       <translation>Creați un salt</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathHop.py" line="96"/>
-      <source>Hop</source>
-      <translation>Salt</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathHop.py" line="97"/>
@@ -2084,9 +2078,9 @@
 </translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathInspect.py" line="220"/>
-      <source>Inspects the G-code contents of a path</source>
-      <translation>Inspectează conţinutul traiectoriei definită de G-code</translation>
+      <location filename="../../../PathScripts/PathInspect.py" line="135"/>
+      <source>&lt;b&gt;Note&lt;/b&gt;: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.</source>
+      <translation>&lt;b&gt;nota&lt;/b&gt;: apăsând OK va comite orice schimbare ai face deasupra la obiect, dar în cazul în care obiectul este parametrice, aceste modificări vor fi ignorate pe recalculare.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathInspect.py" line="237"/>
@@ -2141,24 +2135,29 @@
       <source>All Files (*.*)</source>
       <translation>Toate fișierele (*.*)</translation>
     </message>
-    <message>
-      <location filename="../../../PathScripts/PathJobCmd.py" line="93"/>
-      <source>Export Template</source>
-      <translation>Export șablon</translation>
-    </message>
   </context>
   <context>
     <name>Path_DressupTag</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupTagGui.py" line="506"/>
-      <source>Tag Dress-up</source>
-      <translation>Etichetă de traiectorie suplimentră</translation>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="241"/>
+      <source>Please select a Profile object</source>
+      <translation>Vă rugăm să selectaţi un obiect contur</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathDressupTag.py" line="154"/>
+      <source>Base Path is empty.</source>
+      <translation>Traiectoria de bază este vidă.</translation>
     </message>
   </context>
   <context>
     <name>Path_OperationCopy</name>
     <message>
       <location filename="PathCommands.py" line="90"/>
+      <source>Copy the operation in the job</source>
+      <translation>Copiază operaţiunea în sarcina de lucru</translation>
+    </message>
+    <message>
+      <location filename="../../../PathCommands.py" line="129"/>
       <source>Copy the operation in the job</source>
       <translation>Copiază operaţiunea în sarcina de lucru</translation>
     </message>
@@ -2172,6 +2171,16 @@
     </message>
     <message>
       <location filename="PathPlane.py" line="122"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Crearea unui obiect Plan de Selecție</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPlane.py" line="110"/>
+      <source>Selection Plane</source>
+      <translation>Planul de selecţie</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPlane.py" line="121"/>
       <source>Create a Selection Plane object</source>
       <translation>Crearea unui obiect Plan de Selecție</translation>
     </message>
@@ -2190,6 +2199,21 @@
     </message>
     <message>
       <location filename="PathPost.py" line="53"/>
+      <source>Post Process the Selected path(s)</source>
+      <translation>Post tratament al traiectoriilor selectate</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPost.py" line="161"/>
+      <source>Post Process</source>
+      <translation>Post-procesare</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPost.py" line="163"/>
+      <source>Post Process the selected Job</source>
+      <translation>Post tratament al sarcinii selcționate</translation>
+    </message>
+    <message>
+      <location filename="../../../PathScripts/PathPost.py" line="200"/>
       <source>Post Process the Selected path(s)</source>
       <translation>Post tratament al traiectoriilor selectate</translation>
     </message>
@@ -2259,14 +2283,14 @@
       <location filename="../../../PathScripts/PathSanity.py" line="69"/>
       <source>A Postprocessor has not been selected.
 </source>
-      <translation>Un Postprocessor nu a fost selectat.
+      <translation type="unfinished">A Postprocessor has not been selected.
 </translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="72"/>
       <source>No output file is named. You'll be prompted during postprocessing.
 </source>
-      <translation>Nici un fişier de ieşire nu este denumit. Veţi fi solicitat în timpul postprocesare.
+      <translation type="unfinished">No output file is named. You'll be prompted during postprocessing.
 </translation>
     </message>
     <message>
@@ -2283,7 +2307,7 @@
       <location filename="../../../PathScripts/PathSanity.py" line="132"/>
       <source>A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.
 </source>
-      <translation>Nici un Controller de sculă nu a fost găsit. Valorile implicite sunt folosite sunt periculoase.  Vă rugăm să adăugaţi un controler de sculă.
+      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.
 </translation>
     </message>
     <message>
@@ -2293,8 +2317,8 @@
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="140"/>
-      <source>A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.</source>
-      <translation>Nici un Controller de sculă nu a fost găsit. Valorile implicite sunt folosite sunt periculoase.  Vă rugăm să adăugaţi un controler de sculă.</translation>
+      <source>A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</source>
+      <translation type="unfinished">A Tool Controller was not found. Default values are used which is dangerous. Please add a Tool Controller.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSanity.py" line="144"/>
@@ -2411,39 +2435,6 @@
       <location filename="../../../PathScripts/PathToolController.py" line="276"/>
       <source>Add Tool Controller</source>
       <translation>Adăugare dispozitiv de control a sculei</translation>
-    </message>
-  </context>
-  <context>
-    <name>Path_ToolLenOffset</name>
-    <message>
-      <location filename="PathToolLenOffset.py" line="126"/>
-      <source>Tool Length Offset</source>
-      <translation>Domeniul lungimii sculei</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="128"/>
-      <source>Create a Tool Length Offset object</source>
-      <translation>Creați un domeniu de lungime a sculei</translation>
-    </message>
-    <message>
-      <location filename="PathToolLenOffset.py" line="134"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Crearea unui obiect Plan de Selecție</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="125"/>
-      <source>Tool Length Offset</source>
-      <translation>Domeniul lungimii sculei</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="126"/>
-      <source>Create a Tool Length Offset object</source>
-      <translation>Creați un domeniu de lungime a sculei</translation>
-    </message>
-    <message>
-      <location filename="../../../PathScripts/PathToolLenOffset.py" line="136"/>
-      <source>Create a Selection Plane object</source>
-      <translation>Crearea unui obiect Plan de Selecție</translation>
     </message>
   </context>
   <context>
@@ -3082,6 +3073,24 @@
       <location filename="PathDressupTagGui.py" line="650"/>
       <source>Create Tag Dress-up</source>
       <translation>Creaţi etichete de traiectorie adițională (Dress-up)</translation>
+    </message>
+  </context>
+  <context>
+    <name>Path_ToolLenOffset</name>
+    <message>
+      <location filename="PathToolLenOffset.py" line="126"/>
+      <source>Tool Length Offset</source>
+      <translation>Domeniul lungimii sculei</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="128"/>
+      <source>Create a Tool Length Offset object</source>
+      <translation>Creați un domeniu de lungime a sculei</translation>
+    </message>
+    <message>
+      <location filename="PathToolLenOffset.py" line="134"/>
+      <source>Create a Selection Plane object</source>
+      <translation>Crearea unui obiect Plan de Selecție</translation>
     </message>
   </context>
   <context>

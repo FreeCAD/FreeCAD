@@ -1143,7 +1143,7 @@ void StdCmdDelete::activated(int iMsg)
                     //message for linked items
                     if (!affectedLabels.empty()) {
                         bodyMessageStream << qApp->translate("Std_Delete",
-                                                             "These items are linked to items selected for deletion and might break.\n\n");
+                                                             "These items are linked to items selected for deletion and might break.") << "\n\n";
                         for (const auto &currentLabel : affectedLabels)
                           bodyMessageStream << currentLabel << '\n';
                     }
@@ -1154,13 +1154,13 @@ void StdCmdDelete::activated(int iMsg)
                             bodyMessageStream << "\n";
                         }
                         std::string thisDoc = pGuiDoc->getDocument()->getName();
-                        bodyMessageStream << qApp->translate("Std_Delete", 
-                                             "These items are selected for deletion, but are not in the active document. \n\n"); 
+                        bodyMessageStream << qApp->translate("Std_Delete",
+                                             "These items are selected for deletion, but are not in the active document.") << "\n\n";
                         for (const auto &currentLabel : inactiveLabels)
                           bodyMessageStream << currentLabel << " / " << Base::Tools::fromStdString(thisDoc) << '\n';
                     }
-                    bodyMessageStream << qApp->translate("Std_Delete",
-                                                         "\n\nAre you sure you want to continue?");
+                    bodyMessageStream << "\n\n" << qApp->translate("Std_Delete",
+                                                         "Are you sure you want to continue?");
 
                     int ret = QMessageBox::question(Gui::getMainWindow(),
                         qApp->translate("Std_Delete", "Delete Selection Issues"), bodyMessage,
@@ -1477,4 +1477,3 @@ void CreateDocCommands(void)
 }
 
 } // namespace Gui
-

@@ -6,12 +6,12 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="129"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Selecteer vlakken/randen/hoekpunten</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="130"/>
       <source>To add references select them in the 3D view and then click "Add".</source>
-      <translation type="unfinished">To add references select them in the 3D view and then click "Add".</translation>
+      <translation>RandKiezer.</translation>
     </message>
   </context>
   <context>
@@ -19,17 +19,17 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="213"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>Solver Instellingen</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="224"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Werkmap</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="303"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>Schrijf</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="312"/>
@@ -39,22 +39,22 @@
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="243"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>Verstreken tijd:</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="309"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Uitvoeren</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="311"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>Herschrijven</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="313"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>Opnieuw uitvoeren</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/_TaskPanelFemSolverControl.py" line="315"/>
@@ -72,12 +72,12 @@
     <message>
       <location filename="_CommandFemAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Maakt een analysecontainer aan met standaardoplosser CalculiX</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="40"/>
       <source>Creates an analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates an analysis container with standard solver CalculiX</translation>
+      <translation>Maakt een analyse blok met standaard solver CalculiX</translation>
     </message>
   </context>
   <context>
@@ -85,12 +85,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="60"/>
       <source>Clipping plane on face</source>
-      <translation type="unfinished">Clipping plane on face</translation>
+      <translation>Snijvlak op vlak</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Add a clipping plane on a selected face</source>
-      <translation type="unfinished">Add a clipping plane on a selected face</translation>
+      <translation>Voeg een snijvlak toe op het geselecteerd vlak</translation>
     </message>
   </context>
   <context>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="96"/>
       <source>Remove all clipping planes</source>
-      <translation type="unfinished">Remove all clipping planes</translation>
+      <translation>Verwijder alle snijvlakken</translation>
     </message>
   </context>
   <context>
@@ -106,12 +106,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="115"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>Vormvoorwaarde warmtebron</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="118"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>Maakt een FEM-vormvoorwaarde warmtebron aan</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="139"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Maakt een FEM-randvoorwaarde electrostatische potentiaal aan</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="162"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Maakt een FEM-randvoorwaarde stroomsnelheid aan</translation>
     </message>
   </context>
   <context>
@@ -158,7 +158,7 @@
     <message>
       <location filename="_CommandFemConstraintSelfWeight.py" line="43"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Maakt een FEM-randvoorwaarde van eigen gewicht aan</translation>
     </message>
   </context>
   <context>
@@ -171,7 +171,7 @@
     <message>
       <location filename="_CommandFemElementFluid1D.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Maakt een FEM-vloeistofsectie aan voor 1D-stroming</translation>
     </message>
   </context>
   <context>
@@ -179,12 +179,12 @@
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Balkdoorsnede</translation>
     </message>
     <message>
       <location filename="_CommandFemElementGeometry1D.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Maakt een FEM-balkdwarsdoorsnede aan</translation>
     </message>
   </context>
   <context>
@@ -197,7 +197,7 @@
     <message>
       <location filename="_CommandFemElementGeometry2D.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Maakt een FEM-schilplaatdikte aan</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="259"/>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="261"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Maakt een FEM-schilplaatdikte aan</translation>
     </message>
   </context>
   <context>
@@ -215,12 +215,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="278"/>
       <source>Beam rotation</source>
-      <translation type="unfinished">Beam rotation</translation>
+      <translation>Balkrotatie</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="280"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Maakt een FEM-balkrotatie aan</translation>
     </message>
   </context>
   <context>
@@ -233,7 +233,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="315"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity</translation>
+      <translation>Maakt een FEM-vergelijking voor elasticiteit aan</translation>
     </message>
   </context>
   <context>
@@ -246,7 +246,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="298"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Maakt een FEM-vergelijking voor elektrostatica aan</translation>
     </message>
   </context>
   <context>
@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Maak een FEM materiaal voor de solid</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -499,7 +499,7 @@
     <message>
       <location filename="_CommandFemSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Oplosser Z88</translation>
     </message>
     <message>
       <location filename="_CommandFemSolverZ88.py" line="43"/>
@@ -550,7 +550,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="263"/>
       <source>Selection mode</source>
-      <translation type="unfinished">Selection mode</translation>
+      <translation>Selectiemodus</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="265"/>
@@ -662,12 +662,12 @@
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Balkdoorsnede</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Maakt een FEM-balkdwarsdoorsnede aan</translation>
     </message>
   </context>
   <context>
@@ -680,7 +680,7 @@
     <message>
       <location filename="_CommandFemFluidSection.py" line="44"/>
       <source>Creates a FEM Fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM Fluid section for 1D flow</translation>
+      <translation>Maakt een FEM-vloeistofsectie aan voor 1D-stroming</translation>
     </message>
   </context>
   <context>
@@ -693,7 +693,7 @@
     <message>
       <location filename="_CommandFemShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Maakt een FEM-schilplaatdikte aan</translation>
     </message>
   </context>
   <context>
@@ -706,7 +706,7 @@
     <message>
       <location filename="_CommandAnalysis.py" line="43"/>
       <source>Creates a analysis container with standard solver CalculiX</source>
-      <translation type="unfinished">Creates a analysis container with standard solver CalculiX</translation>
+      <translation>Maakt een analysecontainer aan met standaardoplosser CalculiX</translation>
     </message>
     <message>
       <location filename="_CommandNewMechanicalAnalysis.py" line="40"/>
@@ -724,12 +724,12 @@
     <message>
       <location filename="_CommandBeamSection.py" line="41"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Balkdoorsnede</translation>
     </message>
     <message>
       <location filename="_CommandBeamSection.py" line="43"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Maakt een FEM-balkdwarsdoorsnede aan</translation>
     </message>
     <message>
       <location filename="_CommandFemBeamSection.py" line="41"/>
@@ -918,7 +918,7 @@
     <message>
       <location filename="_CommandShellThickness.py" line="43"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Maakt een FEM-schilplaatdikte aan</translation>
     </message>
     <message>
       <location filename="_CommandFemShellThickness.py" line="41"/>
@@ -977,7 +977,7 @@
     <message>
       <location filename="_CommandSolverZ88.py" line="41"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Oplosser Z88</translation>
     </message>
     <message>
       <location filename="_CommandSolverZ88.py" line="43"/>
@@ -1256,7 +1256,7 @@
       <location filename="../../Command.cpp" line="720"/>
       <location filename="../../Command.cpp" line="721"/>
       <source>Define/create a nodes set...</source>
-      <translation type="unfinished">Define/create a nodes set...</translation>
+      <translation>Een verzameling knooppunten definiëren/aanmaken...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="749"/>
@@ -1333,7 +1333,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="157"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Werkmap</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="199"/>
@@ -1404,7 +1404,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
+      <translation>Gebruikerslijst</translation>
     </message>
   </context>
   <context>
@@ -1880,7 +1880,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="20"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Werkmap</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="45"/>
@@ -2259,7 +2259,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="60"/>
       <source>Poly</source>
-      <translation type="unfinished">Poly</translation>
+      <translation>Poly</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
@@ -2269,7 +2269,7 @@
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
       <source>Pick</source>
-      <translation type="unfinished">Pick</translation>
+      <translation>Kiezen</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="87"/>
@@ -2666,7 +2666,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="194"/>
       <source>Tetraeder count:</source>
-      <translation type="unfinished">Tetraeder count:</translation>
+      <translation>Tetraëdertelling:</translation>
     </message>
   </context>
   <context>

@@ -27,9 +27,10 @@ __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 
-import FreeCAD
-import tempfile
 import os
+import unittest
+import tempfile
+import FreeCAD
 
 
 def get_fem_test_home_dir():
@@ -175,3 +176,43 @@ def collect_python_modules(femsubdir=None):
             else:
                 collected_modules.append(femsubdir.replace('/', '.') + '.' + os.path.splitext(os.path.basename(pyfile))[0])
     return collected_modules
+
+
+# open all files
+def all_test_files():
+    cube_frequency()
+    cube_static()
+    Flow1D_thermomech()
+    multimat()
+    spine_thermomech()
+
+
+# run the specific test case of the file, open the file in FreeCAD GUI and return the doc identifier
+def cube_frequency():
+    testname = "femtest.testccxtools.TestCcxTools.test_3_freq_analysis"
+    unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
+    return FreeCAD.open(get_fem_test_tmp_dir() + 'FEM_ccx_frequency/cube_frequency.FCStd')
+
+
+def cube_static():
+    testname = "femtest.testccxtools.TestCcxTools.test_1_static_analysis"
+    unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
+    return FreeCAD.open(get_fem_test_tmp_dir() + 'FEM_ccx_static/cube_static.FCStd')
+
+
+def Flow1D_thermomech():
+    testname = "femtest.testccxtools.TestCcxTools.test_5_Flow1D_thermomech_analysis"
+    unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
+    return FreeCAD.open(get_fem_test_tmp_dir() + 'FEM_ccx_Flow1D_thermomech/Flow1D_thermomech.FCStd')
+
+
+def multimat():
+    testname = "femtest.testccxtools.TestCcxTools.test_2_static_multiple_material"
+    unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
+    return FreeCAD.open(get_fem_test_tmp_dir() + 'FEM_ccx_multimat/multimat.FCStd')
+
+
+def spine_thermomech():
+    testname = "femtest.testccxtools.TestCcxTools.test_4_thermomech_analysis"
+    unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromName(testname))
+    return FreeCAD.open(get_fem_test_tmp_dir() + 'FEM_ccx_thermomech/spine_thermomech.FCStd')

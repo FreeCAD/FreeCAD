@@ -19,12 +19,12 @@
       <translation>Độ dài của các trục</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="300"/>
+      <location filename="../../ArchAxis.py" line="301"/>
       <source>The size of the axis bubbles</source>
       <translation>Kích thước bọt khí của các trục</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="303"/>
+      <location filename="../../ArchAxis.py" line="304"/>
       <source>The numbering style</source>
       <translation>Kiểu đánh số thứ tự</translation>
     </message>
@@ -74,17 +74,17 @@
       <translation>Một vật liệu cho đối tượng này</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="147"/>
+      <location filename="../../ArchFloor.py" line="146"/>
       <source>The role of this object</source>
       <translation>Vai trò của đối tượng này</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="259"/>
+      <location filename="../../ArchComponent.py" line="265"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>Xác định xem đối tượng này có phải di chuyển khi khi máy chủ của nó được di chuyển hay không</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="264"/>
+      <location filename="../../ArchComponent.py" line="270"/>
       <source>The area of all vertical faces of this object</source>
       <translation>Diện tích của tất cả các bề mặt thẳng đứng của đối tượng này</translation>
     </message>
@@ -94,7 +94,7 @@
       <translation>Diện tích hình chiếu của đối tượng này trên mặt phẳng XY</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="270"/>
+      <location filename="../../ArchComponent.py" line="276"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>Chu vi hình chiếu của đối tượng trên mặt phẳng nằm ngang</translation>
     </message>
@@ -114,12 +114,12 @@
       <translation>Công suất điện năng cho thiết bị này được tính bằng Watt</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="140"/>
+      <location filename="../../ArchFloor.py" line="139"/>
       <source>The height of this object</source>
       <translation>Chiều cao của đối tượng này</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="142"/>
+      <location filename="../../ArchFloor.py" line="141"/>
       <source>The computed floor area of this floor</source>
       <translation>Phần diện tích tính toán của tầng này</translation>
     </message>
@@ -1049,7 +1049,7 @@
       <translation>Diện tích của cửa sổ này</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="273"/>
+      <location filename="../../ArchComponent.py" line="279"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>Lưới hoặc hình dạng có độ phân giải cao hơn tùy chỉnh cho đối tượng này</translation>
     </message>
@@ -1069,7 +1069,7 @@
       <translation>Mã tiêu chuẩn (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="601"/>
+      <location filename="../../ArchMaterial.py" line="603"/>
       <source>A description for this material</source>
       <translation>Mô tả cho loại vật liệu này</translation>
     </message>
@@ -1084,17 +1084,17 @@
       <translation>Màu sắc của loại vật liệu này</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="602"/>
+      <location filename="../../ArchMaterial.py" line="604"/>
       <source>The list of layer names</source>
       <translation>Danh sách tên các lớp</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="603"/>
+      <location filename="../../ArchMaterial.py" line="605"/>
       <source>The list of layer materials</source>
       <translation>Danh sách vật liệu của từng lớp</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="604"/>
+      <location filename="../../ArchMaterial.py" line="606"/>
       <source>The list of layer thicknesses</source>
       <translation>Danh sách của chiều dày các lớp</translation>
     </message>
@@ -1109,12 +1109,12 @@
       <translation>Màu sắc của các mặt cắt (nếu kích hoạt)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="955"/>
+      <location filename="../../ArchStairs.py" line="1056"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>Xếp chồng các cốn thang lên trên đáy các mặt bậc</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1667"/>
+      <location filename="../../ArchWindow.py" line="1673"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Số dây xác định lỗ. Giá trị 0 sẽ có nghĩa là giá trị tự động</translation>
     </message>
@@ -1124,22 +1124,22 @@
       <translation>Nhãn của mỗi trục</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="329"/>
+      <location filename="../../ArchAxis.py" line="330"/>
       <source>If true, show the labels</source>
       <translation>Nếu đúng, các nhãn sẽ được hiển thị</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="331"/>
+      <location filename="../../ArchAxis.py" line="332"/>
       <source>A transformation to apply to each label</source>
       <translation>Một phép chuyển đổi áp dụng cho mỗi nhãn</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="806"/>
+      <location filename="../../ArchAxis.py" line="807"/>
       <source>The axes this system is made of</source>
       <translation>Các trục tạo nên hệ thống này</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="275"/>
+      <location filename="../../ArchComponent.py" line="281"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>Một trục hoặc hệ trục tùy chọn mà đối tượng này sẽ được nhân đôi</translation>
     </message>
@@ -1234,42 +1234,42 @@
       <translation type="unfinished">An optional custom bubble number</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="307"/>
+      <location filename="../../ArchAxis.py" line="308"/>
       <source>The type of line to draw this axis</source>
       <translation>Kiểu đường dùng để vẽ trục này</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="311"/>
+      <location filename="../../ArchAxis.py" line="312"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
       <translation>Nơi để thêm bọt khí vào trục này: Điểm bắt đầu, điểm kết thúc, cả hai hoặc không ở điểm nào</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="314"/>
+      <location filename="../../ArchAxis.py" line="315"/>
       <source>The line width to draw this axis</source>
       <translation>Độ dày của đường dùng để vẽ trục này</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="317"/>
+      <location filename="../../ArchAxis.py" line="318"/>
       <source>The color of this axis</source>
       <translation>Màu sắc của trục này</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="320"/>
+      <location filename="../../ArchAxis.py" line="321"/>
       <source>The number of the first axis</source>
       <translation>Số trục đầu tiên</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="323"/>
+      <location filename="../../ArchAxis.py" line="324"/>
       <source>The font to use for texts</source>
       <translation>Phông chữ được được sử dụng cho văn bản</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="326"/>
+      <location filename="../../ArchAxis.py" line="327"/>
       <source>The font size</source>
       <translation>Kích cỡ phông chữ</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="808"/>
+      <location filename="../../ArchAxis.py" line="809"/>
       <source>The placement of this axis system</source>
       <translation>Vị trí của hệ trục này</translation>
     </message>
@@ -1284,7 +1284,7 @@
       <translation>Hình dạng của bộ phận này</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="262"/>
+      <location filename="../../ArchComponent.py" line="268"/>
       <source>Stores IFC properties</source>
       <translation type="unfinished">Stores IFC properties</translation>
     </message>
@@ -1384,6 +1384,11 @@
       <translation>Xem sóng có ảnh hưởng đến mặt dưới hay không</translation>
     </message>
     <message>
+      <location filename="../../ArchPanel.py" line="938"/>
+      <source>The position of the tag text. Keep (0,0,0) for center position</source>
+      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
+    </message>
+    <message>
       <location filename="../../ArchPanel.py" line="1218"/>
       <source>The font file</source>
       <translation>Tệp phông chữ</translation>
@@ -1419,12 +1424,12 @@
       <translation type="unfinished">If True, the shape will be discarded when turning visibility off, resulting in a lighter file, but with an additional loading time when turning the object back on</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="278"/>
+      <location filename="../../ArchReference.py" line="287"/>
       <source>The latest time stamp of the linked file</source>
       <translation type="unfinished">The latest time stamp of the linked file</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="281"/>
+      <location filename="../../ArchReference.py" line="290"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
     </message>
@@ -1475,8 +1480,8 @@
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="360"/>
-      <source>The width of a Landing (Second edge and after - First edge follows Width property</source>
-      <translation type="unfinished">The width of a Landing (Second edge and after - First edge follows Width property</translation>
+      <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
+      <translation type="unfinished">The width of a Landing (Second edge and after - First edge follows Width property)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="376"/>
@@ -1490,18 +1495,18 @@
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="383"/>
-      <source>The depth of the treads of these stairs - Enforced regardless Length or edge's Length</source>
-      <translation type="unfinished">The depth of the treads of these stairs - Enforced regardless Length or edge's Length</translation>
+      <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
+      <translation type="unfinished">The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="385"/>
-      <source>The height of the risers of these stairs - Enforced regardless Height or edge's Height</source>
-      <translation type="unfinished">The height of the risers of these stairs - Enforced regardless Height or edge's Height</translation>
+      <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
+      <translation type="unfinished">The height of the risers of these stairs - Enforced regardless of Height or edge's Height</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="388"/>
-      <source>The direction of of flight after landing</source>
-      <translation type="unfinished">The direction of of flight after landing</translation>
+      <source>The direction of flight after landing</source>
+      <translation type="unfinished">The direction of flight after landing</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="395"/>
@@ -1617,17 +1622,17 @@
   <context>
     <name>Arch</name>
     <message>
-      <location filename="../../ArchWindow.py" line="1908"/>
+      <location filename="../../ArchWindow.py" line="1914"/>
       <source>Components</source>
       <translation>Các bộ phận</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1204"/>
+      <location filename="../../ArchComponent.py" line="1215"/>
       <source>Components of this object</source>
       <translation>Các thành phần của bộ phận này</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1209"/>
+      <location filename="../../ArchComponent.py" line="1220"/>
       <source>Axes</source>
       <translation>Các trục</translation>
     </message>
@@ -1637,27 +1642,27 @@
       <translation>Tạo trục</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1902"/>
+      <location filename="../../ArchWindow.py" line="1908"/>
       <source>Remove</source>
       <translation>Xóa bỏ</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1903"/>
+      <location filename="../../ArchWindow.py" line="1909"/>
       <source>Add</source>
       <translation>Thêm mới</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Axis</source>
       <translation>Trục</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Angle</source>
       <translation>Góc</translation>
     </message>
@@ -1707,22 +1712,22 @@
       <translation>Chuyển đổi từ lưới sang hình dạng</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1205"/>
+      <location filename="../../ArchComponent.py" line="1216"/>
       <source>Base component</source>
       <translation>Thành phần cơ sở</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1206"/>
+      <location filename="../../ArchComponent.py" line="1217"/>
       <source>Additions</source>
       <translation>Phần bổ sung</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1207"/>
+      <location filename="../../ArchComponent.py" line="1218"/>
       <source>Subtractions</source>
       <translation>Phép trừ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1208"/>
+      <location filename="../../ArchComponent.py" line="1219"/>
       <source>Objects</source>
       <translation>Các vật thể</translation>
     </message>
@@ -1797,42 +1802,42 @@
       <translation>Tạo cửa sổ</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1904"/>
+      <location filename="../../ArchWindow.py" line="1910"/>
       <source>Edit</source>
       <translation>Chỉnh sửa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1905"/>
+      <location filename="../../ArchWindow.py" line="1911"/>
       <source>Create/update component</source>
       <translation>Tạo/cập nhật thành phần</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1906"/>
+      <location filename="../../ArchWindow.py" line="1912"/>
       <source>Base 2D object</source>
       <translation>Đối tượng 2D cơ bản</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1912"/>
+      <location filename="../../ArchWindow.py" line="1918"/>
       <source>Wires</source>
       <translation>Dây dẫn</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1909"/>
+      <location filename="../../ArchWindow.py" line="1915"/>
       <source>Create new component</source>
       <translation>Tạo bộ phận mới</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1910"/>
+      <location filename="../../ArchWindow.py" line="1916"/>
       <source>Name</source>
       <translation>Tên</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1911"/>
+      <location filename="../../ArchWindow.py" line="1917"/>
       <source>Type</source>
       <translation>Kiểu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1913"/>
+      <location filename="../../ArchWindow.py" line="1919"/>
       <source>Thickness</source>
       <translation>Độ dày</translation>
     </message>
@@ -1862,7 +1867,7 @@
       <translation>Hãy chọn một đối tượng cơ bản</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1211"/>
+      <location filename="../../ArchComponent.py" line="1222"/>
       <source>Fixtures</source>
       <translation>Tệp đính kèm</translation>
     </message>
@@ -1922,12 +1927,12 @@
       <translation>Kết hợp những bức tường</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="786"/>
+      <location filename="../../ArchAxis.py" line="787"/>
       <source>Distances (mm) and angles (deg) between axes</source>
       <translation>Khoảng cách (mm) và góc (độ) giữa các trục</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="645"/>
+      <location filename="../../ArchComponent.py" line="651"/>
       <source>Error computing the shape of this object</source>
       <translation>Lỗi tính toán hình dạng của đối tượng này</translation>
     </message>
@@ -1952,17 +1957,17 @@
       <translation>Cho phép cài đặt chế độ tắt/mở cưỡng bức- Brep của đối tượng</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="666"/>
+      <location filename="../../ArchComponent.py" line="672"/>
       <source>has no solid</source>
       <translation>không có vật thể rắn</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="673"/>
+      <location filename="../../ArchComponent.py" line="679"/>
       <source>has an invalid shape</source>
       <translation>có một hình dạng không hợp lệ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="675"/>
+      <location filename="../../ArchComponent.py" line="681"/>
       <source>has a null shape</source>
       <translation>có hình dạng rỗng</translation>
     </message>
@@ -2137,7 +2142,7 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Chìa khóa</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1252"/>
+      <location filename="../../ArchComponent.py" line="1263"/>
       <source>Value</source>
       <translation>Giá trị</translation>
     </message>
@@ -2157,12 +2162,12 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Tạo tòa nhà</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1212"/>
+      <location filename="../../ArchComponent.py" line="1223"/>
       <source>Group</source>
       <translation>Nhóm</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="116"/>
+      <location filename="../../ArchFloor.py" line="115"/>
       <source>Create Floor</source>
       <translation>Tạo tầng của tòa nhà</translation>
     </message>
@@ -2332,7 +2337,7 @@ Nếu Run = 0 thì Run được tính toán sao cho chiều cao giống với c�
       <translation>Xoay</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1914"/>
+      <location filename="../../ArchWindow.py" line="1920"/>
       <source>Offset</source>
       <translation>Offset</translation>
     </message>
@@ -2420,22 +2425,22 @@ Site creation aborted.</source>
       <translation>Cửa</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1915"/>
+      <location filename="../../ArchWindow.py" line="1921"/>
       <source>Hinge</source>
       <translation>Bản lề</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1916"/>
+      <location filename="../../ArchWindow.py" line="1922"/>
       <source>Opening mode</source>
       <translation>Chế độ mở</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1921"/>
+      <location filename="../../ArchWindow.py" line="1927"/>
       <source>Get selected edge</source>
       <translation>Lấy một cạnh được chọn</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1922"/>
+      <location filename="../../ArchWindow.py" line="1928"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Nhấn để chọn cạnh đã chọn</translation>
     </message>
@@ -2455,19 +2460,14 @@ Site creation aborted.</source>
       <translation>Tạo chế độ đa vật liệu</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="726"/>
+      <location filename="../../ArchMaterial.py" line="728"/>
       <source>Material</source>
       <translation>Vật liệu</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="754"/>
+      <location filename="../../ArchMaterial.py" line="756"/>
       <source>New layer</source>
       <translation>Lớp mới</translation>
-    </message>
-    <message>
-      <location filename="../../ArchPanel.py" line="739"/>
-      <source>Error computing shape of </source>
-      <translation>Lỗi tính toán hình dạng của </translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="337"/>
@@ -2475,12 +2475,12 @@ Site creation aborted.</source>
       <translation>Tùy chọn tường...</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1899"/>
+      <location filename="../../ArchWindow.py" line="1905"/>
       <source>Hole wire</source>
       <translation>Dây điện</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1901"/>
+      <location filename="../../ArchWindow.py" line="1907"/>
       <source>Pick selected</source>
       <translation>Chọn các đối tượng đã được chọn</translation>
     </message>
@@ -2495,67 +2495,67 @@ Site creation aborted.</source>
       <translation>Tạo lưới</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="787"/>
+      <location filename="../../ArchAxis.py" line="788"/>
       <source>Label</source>
       <translation>Nhãn</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1053"/>
+      <location filename="../../ArchAxis.py" line="1054"/>
       <source>Axis system components</source>
       <translation>Các bộ phận của hệ thống trục</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1379"/>
+      <location filename="../../ArchAxis.py" line="1380"/>
       <source>Grid</source>
       <translation>Lưới</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1380"/>
+      <location filename="../../ArchAxis.py" line="1381"/>
       <source>Total width</source>
       <translation>Tổng bề rộng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1381"/>
+      <location filename="../../ArchAxis.py" line="1382"/>
       <source>Total height</source>
       <translation>Tổng chiều cao</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1382"/>
+      <location filename="../../ArchAxis.py" line="1383"/>
       <source>Add row</source>
       <translation>Thêm hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1383"/>
+      <location filename="../../ArchAxis.py" line="1384"/>
       <source>Del row</source>
       <translation>Xóa hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1384"/>
+      <location filename="../../ArchAxis.py" line="1385"/>
       <source>Add col</source>
       <translation>Thêm cột</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1385"/>
+      <location filename="../../ArchAxis.py" line="1386"/>
       <source>Del col</source>
       <translation>Xóa cột</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1386"/>
+      <location filename="../../ArchAxis.py" line="1387"/>
       <source>Create span</source>
       <translation>Tạo nhịp</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1387"/>
+      <location filename="../../ArchAxis.py" line="1388"/>
       <source>Remove span</source>
       <translation>Gỡ nhịp</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1388"/>
+      <location filename="../../ArchAxis.py" line="1389"/>
       <source>Rows</source>
       <translation>Hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1388"/>
+      <location filename="../../ArchAxis.py" line="1389"/>
       <source>Columns</source>
       <translation>Cột</translation>
     </message>
@@ -2575,7 +2575,7 @@ Site creation aborted.</source>
       <translation>Lỗi: Bạn không thể sửa đổi đối tượng cơ bản của bức tường này</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1898"/>
+      <location filename="../../ArchWindow.py" line="1904"/>
       <source>Window elements</source>
       <translation>Các bộ phận của cửa sổ</translation>
     </message>
@@ -2625,7 +2625,7 @@ Site creation aborted.</source>
       <translation>Tổng</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1213"/>
+      <location filename="../../ArchComponent.py" line="1224"/>
       <source>Hosts</source>
       <translation>Máy chủ lưu trữ</translation>
     </message>
@@ -2640,22 +2640,22 @@ Site creation aborted.</source>
       <translation>Hãy chọn ít nhất một trục</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1115"/>
+      <location filename="../../ArchAxis.py" line="1116"/>
       <source>Auto height is larger than height</source>
       <translation>Chiều cao tự động lớn hơn chiều cao</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1124"/>
+      <location filename="../../ArchAxis.py" line="1125"/>
       <source>Total row size is larger than height</source>
       <translation>Tổng kích thước các hàng lớn hơn chiều cao</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1146"/>
+      <location filename="../../ArchAxis.py" line="1147"/>
       <source>Auto width is larger than width</source>
       <translation>Chiều rộng tự động lớn hơn chiều rộng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1155"/>
+      <location filename="../../ArchAxis.py" line="1156"/>
       <source>Total column size is larger than width</source>
       <translation>Tổng kích thước cột lớn hơn chiều rộng</translation>
     </message>
@@ -2703,73 +2703,73 @@ Việc tạo toà nhà bị gián đoạn.</translation>
       <translation>Đối tượng không có thuộc tính IfcProperties. Hủy tạo bảng tính cho đối tượng:</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="939"/>
+      <location filename="../../ArchComponent.py" line="950"/>
       <source>Toggle subcomponents</source>
       <translation>Bật / tắt các thành phần phụ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="988"/>
+      <location filename="../../ArchComponent.py" line="999"/>
       <source>Closing Sketch edit</source>
       <translation>Vô hiệu hóa việc chỉnh sửa bản phác thảo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1201"/>
+      <location filename="../../ArchComponent.py" line="1212"/>
       <source>Component</source>
       <translation>Thành phần</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1214"/>
+      <location filename="../../ArchComponent.py" line="1225"/>
       <source>Edit IFC properties</source>
       <translation type="unfinished">Edit IFC properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1215"/>
+      <location filename="../../ArchComponent.py" line="1226"/>
       <source>Edit standard code</source>
       <translation type="unfinished">Edit standard code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1252"/>
+      <location filename="../../ArchComponent.py" line="1263"/>
       <source>Property</source>
       <translation>Thuộc tính</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1256"/>
+      <location filename="../../ArchComponent.py" line="1267"/>
       <source>Add property...</source>
       <translation type="unfinished">Add property...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1257"/>
+      <location filename="../../ArchComponent.py" line="1268"/>
       <source>Add property set...</source>
       <translation type="unfinished">Add property set...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1257"/>
+      <location filename="../../ArchComponent.py" line="1268"/>
       <source>New...</source>
       <translation>Mới...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1356"/>
+      <location filename="../../ArchComponent.py" line="1367"/>
       <source>New property</source>
       <translation type="unfinished">New property</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1377"/>
+      <location filename="../../ArchComponent.py" line="1388"/>
       <source>New property set</source>
       <translation type="unfinished">New property set</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="102"/>
-      <source>You can put anything but Site, Building, Floor object in a Floor object.
-Floor object are not allowed to accept Site or Building object.
-Site, Building and Floor objects will be removed from the selection.
+      <location filename="../../ArchFloor.py" line="101"/>
+      <source>You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+Floor object is not allowed to accept Site or Building objects.
+Site, Building, and Floor objects will be removed from the selection.
 You can change that in the preferences.</source>
-      <translation>Bạn có thể đặt bất cứ thứ gì vào đối tượng Tầng, ngoại trừ công trường, tòa nhà, tầng trong đối tượng tầng
-Đối tượng tầng không được phép chấp nhận đối tượng Công trường hoặc Tòa nhà.
-Các đối tượng Công trường, Tòa nhà và Tầng sẽ bị xóa khỏi vùng chọn.
-Bạn có thể thay đổi điều đó trong mục tùy chọn.</translation>
+      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+Floor object is not allowed to accept Site or Building objects.
+Site, Building, and Floor objects will be removed from the selection.
+You can change that in the preferences.</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="108"/>
+      <location filename="../../ArchFloor.py" line="107"/>
       <source>There is no valid object in the selection.
 Floor creation aborted.</source>
       <translation>Không tìm thấy đối tượng hợp lệ nào trong vùng chọn.
@@ -2779,6 +2779,11 @@ Việc tạo tầng bị gián đoạn.</translation>
       <location filename="../../ArchFrame.py" line="220"/>
       <source>Crossing point not found in profile.</source>
       <translation>Không tìm thấy điểm giao nhau trên hồ sơ.</translation>
+    </message>
+    <message>
+      <location filename="../../ArchPanel.py" line="739"/>
+      <source>Error computing shape of</source>
+      <translation type="unfinished">Error computing shape of</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="161"/>
@@ -2866,7 +2871,7 @@ Việc tạo tầng bị gián đoạn.</translation>
       <translation>Hãy chọn một mặt cơ sở trên một bộ phận kết cấu</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="518"/>
+      <location filename="../../ArchReference.py" line="534"/>
       <source>Create external reference</source>
       <translation type="unfinished">Create external reference</translation>
     </message>
@@ -2977,27 +2982,27 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
       <translation>Chọn một bề mặt trên một đối tượng hiện có hoặc chọn một giá trị đặt trước</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1860"/>
+      <location filename="../../ArchWindow.py" line="1866"/>
       <source>Unable to create component</source>
       <translation>Không thể tạo thành phần</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1900"/>
+      <location filename="../../ArchWindow.py" line="1906"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Số lượng dây xác định một lỗ trong đối tượng lưu trữ. Giá trị bằng 0 tức là chương trình sẽ tự động áp dụng dây lớn nhất</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1919"/>
+      <location filename="../../ArchWindow.py" line="1925"/>
       <source>+ default</source>
       <translation type="unfinished">+ default</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1918"/>
+      <location filename="../../ArchWindow.py" line="1924"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1920"/>
+      <location filename="../../ArchWindow.py" line="1926"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
     </message>
@@ -3225,7 +3230,7 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
   <context>
     <name>Arch_AxisTools</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1553"/>
+      <location filename="../../ArchAxis.py" line="1554"/>
       <source>Axis tools</source>
       <translation>Công cụ trục</translation>
     </message>
@@ -3342,12 +3347,12 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
   <context>
     <name>Arch_Floor</name>
     <message>
-      <location filename="../../ArchFloor.py" line="78"/>
+      <location filename="../../ArchFloor.py" line="77"/>
       <source>Floor</source>
       <translation>Tầng</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="80"/>
+      <location filename="../../ArchFloor.py" line="79"/>
       <source>Creates a floor object including selected objects</source>
       <translation>Tạo một đối tượng tầng bao gồm các đối tượng được chọn</translation>
     </message>
@@ -3368,62 +3373,62 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
   <context>
     <name>Arch_Grid</name>
     <message>
-      <location filename="../../ArchAxis.py" line="1069"/>
+      <location filename="../../ArchAxis.py" line="1070"/>
       <source>The number of rows</source>
       <translation>Số hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1071"/>
+      <location filename="../../ArchAxis.py" line="1072"/>
       <source>The number of columns</source>
       <translation>Số cột</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1073"/>
+      <location filename="../../ArchAxis.py" line="1074"/>
       <source>The sizes for rows</source>
       <translation>Kích thước các hàng</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1075"/>
+      <location filename="../../ArchAxis.py" line="1076"/>
       <source>The sizes of columns</source>
       <translation>Kích thước các cột</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1077"/>
+      <location filename="../../ArchAxis.py" line="1078"/>
       <source>The span ranges of cells that are merged together</source>
       <translation>Phạm vi khoảng cách của các ô đã sát nhập lại thành một</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1079"/>
+      <location filename="../../ArchAxis.py" line="1080"/>
       <source>The type of 3D points produced by this grid object</source>
       <translation>Lưới là một loại đối tượng được tạo nên bởi các chấm 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1082"/>
+      <location filename="../../ArchAxis.py" line="1083"/>
       <source>The total width of this grid</source>
       <translation>Tổng bề rộng của loại lưới này</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1084"/>
+      <location filename="../../ArchAxis.py" line="1085"/>
       <source>The total height of this grid</source>
       <translation>Tổng chiều cao của lưới này</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1086"/>
+      <location filename="../../ArchAxis.py" line="1087"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
       <translation>Tạo chế độ tự động chia tách cột (Đặt 0 để tắt chế độ này)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1088"/>
+      <location filename="../../ArchAxis.py" line="1089"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
       <translation>Tạo chế độ tự động chia tách hàng (Đặt 0 để tắt chế độ này)</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1090"/>
+      <location filename="../../ArchAxis.py" line="1091"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
       <translation>Nếu ở chế độ trung điểm của cạnh, lưới gốc phải định hướng lại theo các cạnh bình thường hoặc không</translation>
     </message>
     <message>
-      <location filename="../../ArchAxis.py" line="1092"/>
+      <location filename="../../ArchAxis.py" line="1093"/>
       <source>The indices of faces to hide</source>
       <translation>Ẩn các dấu trên bề mặt</translation>
     </message>
@@ -3465,7 +3470,7 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
   <context>
     <name>Arch_MaterialTools</name>
     <message>
-      <location filename="../../ArchMaterial.py" line="831"/>
+      <location filename="../../ArchMaterial.py" line="833"/>
       <source>Material tools</source>
       <translation>Các công cụ vật liệu</translation>
     </message>
@@ -3619,12 +3624,12 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
   <context>
     <name>Arch_Reference</name>
     <message>
-      <location filename="../../ArchReference.py" line="507"/>
+      <location filename="../../ArchReference.py" line="523"/>
       <source>External reference</source>
       <translation type="unfinished">External reference</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="509"/>
+      <location filename="../../ArchReference.py" line="525"/>
       <source>Creates an external reference object</source>
       <translation type="unfinished">Creates an external reference object</translation>
     </message>
@@ -4033,11 +4038,6 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
       <translation>Đăng nhập vào máy chủ Bim</translation>
     </message>
     <message>
-      <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
-      <source>Bim server URL:</source>
-      <translation>Đường dẫn URL của máy chủ bim:</translation>
-    </message>
-    <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email):</source>
       <translation>Đăng nhập (thư điện tử):</translation>
@@ -4046,11 +4046,6 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
       <source>Password:</source>
       <translation>Mật khẩu:</translation>
-    </message>
-    <message>
-      <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
-      <source>Keep me logged across FreeCAD sessions</source>
-      <translation>Duy trì trạng thái đăng nhập mỗi khi dùng FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
@@ -4063,6 +4058,16 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
         Note: as of LibreOffice v5.4.5.1 the correct path now is: Sheets tab bar -&gt; Insert Sheet... -&gt; From file -&gt; Browse...</source>
       <translation>Điều này xuất ra nội dung của bảng "Result" thành tệp CSV. Trong Libreoffice, bạn có thể trích dẫn liên kết của tệp CSV này bằng cách nhấp chuột phải vào thanh tab của bảng-&gt; Bảng mới -&gt; Tệp -&gt; Liên kết
          Ghi chú: Để định tuyến chính xác LibreOffice v5.4.5.1: Thanh tab của bảng -&gt; Chèn bảng... -&gt; Tập tin -&gt; Duyệt...</translation>
+    </message>
+    <message>
+      <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
+      <source>BimServer URL:</source>
+      <translation type="unfinished">BimServer URL:</translation>
+    </message>
+    <message>
+      <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
+      <source>Keep me logged in across FreeCAD sessions</source>
+      <translation type="unfinished">Keep me logged in across FreeCAD sessions</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
@@ -4103,7 +4108,7 @@ Lưu ý: Bạn có thể thay đổi điều đó trong mục tùy chọn.</tran
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="714"/>
+      <location filename="../../ArchBuildingPart.py" line="702"/>
       <source>Writing camera position</source>
       <translation>Viết vị trí camera</translation>
     </message>

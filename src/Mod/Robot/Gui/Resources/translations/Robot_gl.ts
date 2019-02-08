@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Conxunto da orientación por defecto para subseguintes comandos para creación de waypoint</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>estabelece a orientación por defecto para comandos posteriores a creación dun punto de referencia</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Conxunto dos valores por defecto para velocidade, aceleración e continuidad para comandos subseguintes de creación de puntos de ruta</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>estabelecer os valores por defecto de velocidade, aceleración e continuidade para os comandos posteriores a creación do punto de referencia</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Necesitas canda menos dous puntos na ruta da traxectoria para simular.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Precisa polo menos dous puntos de paso nunha traxectoria para poder simular.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Ten que pasar o rato por riba dunha xeometría (pre-escolma) para usar este comando. Consulte a documentación para obter máis detalles.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Conxunto da velocidade predeterminada</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Conxunto continuidade por defecto</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Conxunto aceleración por defecto</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Escolme un Robot para estabelecer a posición de principio</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Escolmar un Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Escolme un obxecto Traxectoria.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>estabelecer velocidade por defecto</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>Velocidade: (ex.: 1 m/s ou 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>estabelecer a continuidade por defecto</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>continuo?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>estabelecer aceleración por defecto</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>aceleración: (ex.: 1 m/s^2 ou 3 cm/s^2)</translation>
     </message>

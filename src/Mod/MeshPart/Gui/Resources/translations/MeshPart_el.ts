@@ -354,7 +354,7 @@
     <message>
       <location line="+1"/>
       <source>Split</source>
-      <translation type="unfinished">Split</translation>
+      <translation>Χωρισμός</translation>
     </message>
   </context>
   <context>
