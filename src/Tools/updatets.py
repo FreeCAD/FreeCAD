@@ -88,13 +88,13 @@ PyCommands = [["src/Mod/Draft",
               ["src/Mod/Part",
                'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Partpy.ts'],
               ["src/Mod/Part",
-               'lconvert -i Gui/Resources/translations/Partpy.ts Gui/Resources/translations/Part_de.ts -o Gui/Resources/translations/Part_de.ts'],
+               'lconvert -i Gui/Resources/translations/Partpy.ts Gui/Resources/translations/Part.ts -o Gui/Resources/translations/Part.ts'],
               ["src/Mod/Part",
                'rm Gui/Resources/translations/Partpy.ts'],
               ["src/Mod/Image",
                'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Imagepy.ts'],
               ["src/Mod/Image",
-               'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image_de.ts -o Gui/Resources/translations/Image_de.ts'],
+               'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image.ts -o Gui/Resources/translations/Image.ts'],
               ["src/Mod/Image",
                'rm Gui/Resources/translations/Imagepy.ts'],
                ]
@@ -172,7 +172,14 @@ def update_translation(path):
     os.chdir(path)
     filename = os.path.basename(path) + ".pro"
     os.system(QMAKE + " -project")
-    os.system(LUPDATE + " " + filename)
+    #os.system(LUPDATE + " " + filename)
+    #only update the master ts file
+    tsname = ""
+    if "Mod" in path:
+        tsname = " -ts "+os.path.join("Gui","Resources","translations",os.path.basename(path) + ".ts")
+    elif "src/Gui" in path:
+        tsname = " -ts "+os.path.join("Languages", "FreeCAD.ts")
+    os.system(LUPDATE + " " + filename + tsname)
     os.remove(filename)
     os.chdir(cur)
 
