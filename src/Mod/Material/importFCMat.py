@@ -119,7 +119,7 @@ def write(filename, dictionary):
         for proper in group.getchildren():
             properName = proper.attrib['Name']
             contents[-1][properName] = ""
-    for k, i in dictionary.iteritems():
+    for k, i in dictionary.items():
         found = False
         for group in contents:
             if not found:
@@ -134,16 +134,23 @@ def write(filename, dictionary):
         import sys
         filename = filename.encode(sys.getfilesystemencoding())
     print(filename)
-    f = pythonopen(filename, "wb")
-    f.write("; " + header["CardName"].encode("utf8") + "\n")
-    f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
+    f = pythonopen(filename, "w")
+    if sys.version_info.major >= 3:
+        f.write("; " + header["CardName"] + "\n")
+        f.write("; " + header["AuthorAndLicense"] + "\n")
+    else:
+        f.write("; " + header["CardName"].encode("utf8") + "\n")
+        f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
     f.write("; file produced by FreeCAD " + rev + "\n")
     f.write("; information about the content of this card can be found here:\n")
     f.write("; http://www.freecadweb.org/wiki/index.php?title=Material\n")
     f.write("\n")
     if header["Source"]:
         f.write("; source of the data provided in this card:\n")
-        f.write("; " + header["Source"].encode("utf8") + "\n")
+        if sys.version_info.major >= 3:
+            f.write("; " + header["Source"] + "\n")
+        else:
+            f.write("; " + header["Source"].encode("utf8") + "\n")
         f.write("\n")
     # write sections
     for s in contents:
@@ -154,6 +161,9 @@ def write(filename, dictionary):
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name even if empty
-                        f.write(k + "=" + i.encode('utf-8') + "\n")
+                        if sys.version_info.major >= 3:
+                            f.write(k + "=" + i + "\n")
+                        else:
+                            f.write(k + "=" + i.encode('utf-8') + "\n")
                 f.write("\n")
     f.close()
