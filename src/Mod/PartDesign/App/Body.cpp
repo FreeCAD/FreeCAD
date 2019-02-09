@@ -284,6 +284,17 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     if (isSolidFeature(feature)) {
         Tip.setValue (feature);
     }
+
+    if(feature->Visibility.getValue()
+        && feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+    {
+        for(auto obj : Group.getValues()) {
+            if(obj->Visibility.getValue() 
+                    && obj!=feature 
+                    && obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                obj->Visibility.setValue(false);
+        }
+    }
     
     std::vector<App::DocumentObject*> result = {feature};
     return result;
