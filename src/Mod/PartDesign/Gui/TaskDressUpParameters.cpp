@@ -123,7 +123,9 @@ void TaskDressUpParameters::setup(QListWidget *widget) {
         if(!popped) {
             if(!boost::starts_with(refs.back(),Data::ComplexGeoData::missingPrefix()))
                 refs.back() = Data::ComplexGeoData::missingPrefix()+refs.back();
-            widget->addItem(QString::fromStdString(refs.back()));
+            auto item = new QListWidgetItem(widget);
+            item->setText(QString::fromStdString(refs.back()));
+            item->setForeground(Qt::red);
         }
     }
     if(touched){
