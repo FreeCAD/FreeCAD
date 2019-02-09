@@ -4670,7 +4670,7 @@ class _ViewProviderWire(_ViewProviderDraft):
     "A View Provider for the Wire object"
     def __init__(self, obj):
         _ViewProviderDraft.__init__(self,obj)
-        obj.addProperty("App::PropertyBool","EndArrow","Draft",QT_TRANSLATE_NOOP("App::Property","Displays a dim symbol at the end of the wire"))
+        obj.addProperty("App::PropertyBool","EndArrow","Draft",QT_TRANSLATE_NOOP("App::Property","Displays a Dimension symbol at the end of the wire"))
         obj.addProperty("App::PropertyLength","ArrowSize","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
         obj.addProperty("App::PropertyEnumeration","ArrowType","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
         obj.ArrowSize = getParam("arrowsize",0.1)
