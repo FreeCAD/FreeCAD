@@ -600,6 +600,7 @@ class ghostTracker(Tracker):
 
     def getNode(self,obj):
         "returns a coin node representing the given object"
+        import Part
         if isinstance(obj,Part.Shape):
             return self.getNodeLight(obj)
         elif obj.isDerivedFrom("Part::Feature"):
