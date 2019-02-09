@@ -1805,15 +1805,23 @@ void PropertyLinkSubList::setSubListValues(const std::vector<PropertyLinkSubList
     setValues(links, subs);
 }
 
-std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues() const
+std::vector<PropertyLinkSubList::SubSet> PropertyLinkSubList::getSubListValues(bool newStyle) const
 {
     std::vector<PropertyLinkSubList::SubSet> values;
     if (_lValueList.size() != _lSubList.size())
         throw Base::ValueError("PropertyLinkSubList::getSubListValues: size of subelements list != size of objects list");
 
+    assert(_ShadowSubList.size() == _lSubList.size());
+
     for (std::size_t i = 0; i < _lValueList.size(); i++) {
         App::DocumentObject* link = _lValueList[i];
-        std::string sub = _lSubList[i];
+        std::string sub;
+        if(newStyle && _ShadowSubList[i].first.size())
+            sub = _ShadowSubList[i].first;
+        else if(!newStyle && _ShadowSubList[i].second.size())
+            sub = _ShadowSubList[i].second;
+        else
+            sub = _lSubList[i];
         if (values.size() == 0 || values.back().first != link){
             //new object started, start a new subset.
             values.push_back(SubSet(link, std::vector<std::string>()));

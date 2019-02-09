@@ -875,7 +875,7 @@ public:
     int removeValue(App::DocumentObject *lValue);
 
     void setSubListValues(const std::vector<SubSet>&);
-    std::vector<SubSet> getSubListValues() const;
+    std::vector<SubSet> getSubListValues(bool newStyle=false) const;
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
