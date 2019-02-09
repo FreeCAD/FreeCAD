@@ -157,6 +157,7 @@ void DrawViewCollection::onDocumentRestored()
 
 void DrawViewCollection::lockChildren(void) 
 {
+//    Base::Console().Message("DVC::lockChildren()\n");
     for (auto& v:Views.getValues()) {
         TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(v);
         if (!view) {

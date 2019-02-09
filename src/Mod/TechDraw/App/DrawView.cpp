@@ -141,6 +141,8 @@ void DrawView::onChanged(const App::Property* prop)
             }
         } else if (prop == &LockPosition) {
             handleXYLock();
+            LockPosition.purgeTouched(); 
+            requestPaint();
         }
     }
     App::DocumentObject::onChanged(prop);
@@ -159,21 +161,27 @@ void DrawView::handleXYLock(void)
             X.setStatus(App::Property::ReadOnly,true);
             App::GetApplication().signalChangePropertyEditor(X);
             X.purgeTouched();
+            requestPaint();
         }
-        Y.setStatus(App::Property::ReadOnly,true);
-        App::GetApplication().signalChangePropertyEditor(Y);
-        Y.purgeTouched();
-        requestPaint();
+        if (!Y.testStatus(App::Property::ReadOnly)) {
+            Y.setStatus(App::Property::ReadOnly,true);
+            App::GetApplication().signalChangePropertyEditor(Y);
+            Y.purgeTouched();
+            requestPaint();
+        }
     } else {
         if (X.testStatus(App::Property::ReadOnly)) {
             X.setStatus(App::Property::ReadOnly,false);
             App::GetApplication().signalChangePropertyEditor(X);
             X.purgeTouched();
+            requestPaint();
         }
-        Y.setStatus(App::Property::ReadOnly,false);
-        App::GetApplication().signalChangePropertyEditor(Y);
-        Y.purgeTouched();
-        requestPaint();
+        if (Y.testStatus(App::Property::ReadOnly)) {
+            Y.setStatus(App::Property::ReadOnly,false);
+            App::GetApplication().signalChangePropertyEditor(Y);
+            Y.purgeTouched();
+            requestPaint();
+        }
     }
 }
 
@@ -182,11 +190,9 @@ short DrawView::mustExecute() const
     short result = 0;
     if (!isRestoring()) {
         result  =  (Scale.isTouched()  ||
-                    ScaleType.isTouched() );
-        if (!isLocked()) {
-            result = result || X.isTouched() ||
-                     Y.isTouched() ;
-        }
+                    ScaleType.isTouched() ||
+                    X.isTouched() ||
+                    Y.isTouched() );
     }
     if ((bool) result) {
         return result;
@@ -287,6 +293,7 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 
 void DrawView::setPosition(double x, double y)
 {
+//    Base::Console().Message("DV::setPosition(%.3f,%.3f) - \n",x,y,getNameInDocument());
     if (!isLocked()) {
         X.setValue(x);
         Y.setValue(y);
