@@ -158,7 +158,7 @@ Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
                     "If you refuse to migrate you won't be able to use new PartDesign features"
                     " like Bodies and Parts. As a result you also won't be able to use your parts"
                     " in the assembly workbench.\n"
-                    "Although you will be able to migrate any moment later with 'Part Design->Migrate...'." ) );
+                    "Although you will be able to migrate any moment later with 'Part Design -> Migrate'." ) );
         msgBox.setIcon( QMessageBox::Question );
         QPushButton * yesBtn      = msgBox.addButton ( QMessageBox::Yes );
         QPushButton * manuallyBtn = msgBox.addButton (
