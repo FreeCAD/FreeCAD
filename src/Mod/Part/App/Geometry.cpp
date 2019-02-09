@@ -192,8 +192,7 @@ Geometry::Geometry()
 
 Geometry::~Geometry()
 {
-    for(std::vector<std::shared_ptr<GeometryExtension>>::iterator it = extensions.begin(); it != extensions.end(); it++)
-        (*it).reset();
+
 }
 
 // Persistence implementer
