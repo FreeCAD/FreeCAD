@@ -7434,7 +7434,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         if(arcsofellipseids.size()>1){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You cannot internally constrain an arc of ellipse on other arc of ellipse. Select only one arc of ellipse."));
+                QObject::tr("You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse."));
             return;
         }
 
