@@ -102,6 +102,9 @@ void DrawProjGroupItem::onChanged(const App::Property *prop)
 bool DrawProjGroupItem::isLocked(void) const
 {
     bool isLocked = DrawView::isLocked();
+    if (isAnchor()) {                             //Anchor view is always locked to DPG
+        return true;
+    }
     DrawProjGroup* parent = getPGroup();
     if (parent != nullptr) {
         isLocked = isLocked || parent->LockPosition.getValue();
@@ -117,26 +120,32 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
     }
 
     App::DocumentObjectExecReturn * ret = DrawViewPart::execute();
-    delete ret;
-
-    autoPosition();
-    requestPaint();
+    if (ret != nullptr) {
+        return ret;
+    } else {
+        autoPosition();
+        requestPaint();
+        delete ret;
+    }
     return App::DocumentObject::StdReturn;
 }
 
 void DrawProjGroupItem::autoPosition()
 {
+//    Base::Console().Message("DPGI::autoPosition(%s)\n",getNameInDocument());
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
-    if ((pgroup != nullptr) && 
-        (pgroup->AutoDistribute.getValue()) &&
-        (!LockPosition.getValue())) {
-        newPos = pgroup->getXYPosition(Type.getValueAsString());
-        X.setValue(newPos.x);
-        Y.setValue(newPos.y);
+    if (pgroup != nullptr) {
+        if (pgroup->AutoDistribute.getValue()) {
+            if (!LockPosition.getValue()) {
+                newPos = pgroup->getXYPosition(Type.getValueAsString());
+                X.setValue(newPos.x);
+                Y.setValue(newPos.y);
+            }
+        }
     }
     requestPaint();
-    purgeTouched();
+    purgeTouched();               //prevents "still touched after recompute" message
 }
 
 void DrawProjGroupItem::onDocumentRestored()
@@ -160,7 +169,7 @@ DrawProjGroup* DrawProjGroupItem::getPGroup() const
     return result;
 }
 
-bool DrawProjGroupItem::isAnchor(void)
+bool DrawProjGroupItem::isAnchor(void) const
 {
     bool result = false;
     auto group = getPGroup();
