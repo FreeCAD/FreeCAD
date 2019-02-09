@@ -101,7 +101,7 @@ DlgCustomKeyboardImp::DlgCustomKeyboardImp( QWidget* parent  )
         categoryBox->setItemData(index, QVariant(it->first), Qt::UserRole);
     }
 
-    QStringList labels; 
+    QStringList labels;
     labels << tr("Icon") << tr("Command");
     commandTreeWidget->setHeaderLabels(labels);
     commandTreeWidget->header()->hide();
@@ -123,7 +123,7 @@ DlgCustomKeyboardImp::~DlgCustomKeyboardImp()
 
 void DlgCustomKeyboardImp::showEvent(QShowEvent* e)
 {
-    Q_UNUSED(e); 
+    Q_UNUSED(e);
     // If we did this already in the constructor we wouldn't get the vertical scrollbar if needed.
     // The problem was noticed with Qt 4.1.4 but may arise with any later version.
     if (firstShow) {
@@ -394,16 +394,16 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
 
         if (countAmbiguous > 0)
             assignedTreeWidget->resizeColumnToContents(0);
-        
+
         if (countAmbiguous > 1) {
             QMessageBox::warning(this, tr("Multiple defined shortcut"),
-                                 tr("The shortcut '%1' is defined more than once. This could result into unexpected behaviour.").arg(sc) );
+                                 tr("The shortcut '%1' is defined more than once. This could result in unexpected behaviour.").arg(sc) );
             editShortcut->setFocus();
             buttonAssign->setEnabled(false);
         }
         else if (countAmbiguous == 1 && ambiguousCommand != QLatin1String(name)) {
             int ret = QMessageBox::warning(this, tr("Already defined shortcut"),
-                                 tr("The shortcut '%1' is already assigned to '%2'.\n\nDo you want to override it?")
+                                 tr("The shortcut '%1' is already assigned to '%2'. Do you want to override it?")
                                  .arg(sc, ambiguousMenu), QMessageBox::Yes | QMessageBox::No);
             if (ret == QMessageBox::Yes) {
                 for (auto* cmd : ambiguousCommands) {
