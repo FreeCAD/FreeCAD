@@ -65,7 +65,6 @@ private Q_SLOTS:
     void onAngle(const double a);
     void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);

@@ -1908,17 +1908,15 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
 
         // Set the tip of the body
         FCMD_OBJ_CMD(pcActiveBody,"Tip = " << Gui::Command::getObjectCmd(Feat));
-        // Adjust visibility to show only the tip feature
-        FCMD_OBJ_SHOW(Feat);
         Gui::Command::updateActive();
     };
 
     // Get a valid original from the user
     // First check selections
-    std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::FeatureAddSub::getClassTypeId());
+    std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::Feature::getClassTypeId());
     // Next create a list of all eligible objects
     if (features.size() == 0) {
-        features = cmd->getDocument()->getObjectsOfType(PartDesign::FeatureAddSub::getClassTypeId());
+        features = cmd->getDocument()->getObjectsOfType(PartDesign::Feature::getClassTypeId());
         // If there is more than one selected or eligible object, show dialog and let user pick one
         if (features.size() > 1) {
             std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
@@ -1945,22 +1943,23 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
 
             Gui::Selection().clearSelection();
             Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker));
-        } else {
+            return;
+        } else if(features.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first."));
+                QObject::tr("Please create a feature first."));
             return;
         }
     }
-    else if (features.size() > 1) {
+    if (features.size() > 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Multiple Features Selected"),
-            QObject::tr("Please select only one subtractive or additive feature first."));
+            QObject::tr("Please select only one feature first."));
         return;
     }
     else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
         if (pcActiveBody != PartDesignGui::getBodyFor(features[0], false)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
-                QObject::tr("Please select only one subtractive or additive feature in an active body."));
+                QObject::tr("Please select only one feature in an active body."));
             return;
         }
         worker(features);

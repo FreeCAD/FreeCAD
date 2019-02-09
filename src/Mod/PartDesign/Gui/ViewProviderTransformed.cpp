@@ -139,11 +139,9 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
 void ViewProviderTransformed::recomputeFeature(void)
 {
     PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    pcTransformed->getDocument()->recomputeFeature(pcTransformed);
-    PartDesign::Transformed::rejectedMap rejected_trsf = pcTransformed->getRejectedTransformations();
-    unsigned rejected = 0;
-    for (PartDesign::Transformed::rejectedMap::const_iterator r = rejected_trsf.begin(); r != rejected_trsf.end(); r++)
-        rejected += r->second.size();
+    pcTransformed->recomputeFeature(true);
+    const PartDesign::Transformed::rejectedMap &rejected_trsf = pcTransformed->getRejectedTransformations();
+    unsigned rejected = rejected_trsf.size();
     QString msg = QString::fromLatin1("%1");
     if (rejected > 0) {
         msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
@@ -175,18 +173,8 @@ void ViewProviderTransformed::recomputeFeature(void)
     }
 
     for (PartDesign::Transformed::rejectedMap::const_iterator o = rejected_trsf.begin(); o != rejected_trsf.end(); o++) {
-        if (o->second.empty()) continue;
-
-        TopoDS_Shape shape;
-        if ((o->first)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
-            PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(o->first);
-            shape = feature->AddSubShape.getShape().getShape();
-        }
-
-        if (shape.IsNull()) continue;
-
         // Display the rejected transformations in red
-        TopoDS_Shape cShape(shape);
+        TopoDS_Shape cShape(o->first.getShape());
 
         try {
             // calculating the deflection value
@@ -330,7 +318,7 @@ void ViewProviderTransformed::recomputeFeature(void)
             rejectedTrfms->matrix.setNum((o->second).size());
             SbMatrix* mats = rejectedTrfms->matrix.startEditing();
 
-            std::list<gp_Trsf>::const_iterator trsf = (o->second).begin();
+            auto trsf = (o->second).begin();
             for (unsigned int i=0; i < (o->second).size(); i++,trsf++) {
                 Base::Matrix4D mat;
                 Part::TopoShape::convertToMatrix(*trsf,mat);

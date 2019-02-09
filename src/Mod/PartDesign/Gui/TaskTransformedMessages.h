@@ -27,6 +27,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <boost/signals2.hpp>
 
+class QCheckBox;
 class Ui_TaskTransformedMessages;
 typedef boost::signals2::connection Connection;
 
@@ -47,6 +48,7 @@ public:
     ~TaskTransformedMessages();
 
     void slotDiagnosis(QString msg);
+    QCheckBox *getCheckBox();
 
 private Q_SLOTS:
     

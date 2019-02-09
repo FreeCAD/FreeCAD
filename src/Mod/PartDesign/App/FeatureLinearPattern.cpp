@@ -67,7 +67,7 @@ short LinearPattern::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App::DocumentObject*>)
+std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<Part::TopoShape> &)
 {
     double distance = Length.getValue();
     if (distance < Precision::Confusion())

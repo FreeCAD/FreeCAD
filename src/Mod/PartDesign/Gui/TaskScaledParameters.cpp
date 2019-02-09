@@ -94,11 +94,8 @@ void TaskScaledParameters::setupUI()
 {
     connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
     connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    ui->listWidgetFeatures->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
-    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    setupListWidget(ui->listWidgetFeatures);
 
     connect(ui->spinFactor, SIGNAL(valueChanged(double)),
             this, SLOT(onFactor(double)));
@@ -106,23 +103,9 @@ void TaskScaledParameters::setupUI()
             this, SLOT(onOccurrences(uint)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
-
-    // Get the feature data
-    PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcScaled->Originals.getValues();
-
-    // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
-        const App::DocumentObject* obj = *i;
-        if (obj != NULL) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
-            ui->listWidgetFeatures->addItem(item);
-        }
-    }
     // ---------------------
 
+    PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     ui->spinFactor->bind(pcScaled->Factor);
     ui->spinOccurrences->setMaximum(INT_MAX);
     ui->spinOccurrences->bind(pcScaled->Occurrences);
@@ -153,22 +136,6 @@ void TaskScaledParameters::updateUI()
 void TaskScaledParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
-        Gui::SelectionObject selObj(msg);
-        App::DocumentObject* obj = selObj.getObject();
-        Q_ASSERT(obj);
-
-        QString label = QString::fromUtf8(obj->Label.getValue());
-        QString objectName = QString::fromLatin1(msg.pObjectName);
-
-        if (selectionMode == addFeature) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(label);
-            item->setData(Qt::UserRole, objectName);
-            ui->listWidgetFeatures->addItem(item);
-        }
-        else {
-            removeItemFromListWidget(ui->listWidgetFeatures, label);
-        }
         exitSelectionMode();
     }
 }
@@ -183,6 +150,7 @@ void TaskScaledParameters::onFactor(const double f)
 {
     if (blockUpdate)
         return;
+    setupTransaction();
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     pcScaled->Factor.setValue(f);
     recomputeFeature();
@@ -192,6 +160,7 @@ void TaskScaledParameters::onOccurrences(const uint n)
 {
     if (blockUpdate)
         return;
+    setupTransaction();
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
     pcScaled->Occurrences.setValue(n);
     recomputeFeature();
@@ -202,21 +171,12 @@ void TaskScaledParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         // Do the same like in TaskDlgScaledParameters::accept() but without doCommand
+        setupTransaction();
         PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
         pcScaled->Factor.setValue(getFactor());
         pcScaled->Occurrences.setValue(getOccurrences());
         recomputeFeature();
     }
-}
-
-void TaskScaledParameters::onFeatureDeleted(void)
-{
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
-    pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
-    recomputeFeature();
 }
 
 double TaskScaledParameters::getFactor(void) const
@@ -256,11 +216,8 @@ void TaskScaledParameters::apply()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgScaledParameters::TaskDlgScaledParameters(ViewProviderScaled *ScaledView)
-    : TaskDlgTransformedParameters(ScaledView)
+    : TaskDlgTransformedParameters(ScaledView, new TaskScaledParameters(ScaledView))
 {
-    parameter = new TaskScaledParameters(ScaledView);
-
-    Content.push_back(parameter);
 }
 //==== calls from the TaskView ===============================================================
 

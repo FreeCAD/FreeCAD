@@ -56,7 +56,7 @@ short Scaled::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> Scaled::getTransformations(const std::vector<App::DocumentObject*> originals)
+std::list<gp_Trsf> Scaled::getTransformations(const std::vector<Part::TopoShape> &originals)
 {
     double factor = Factor.getValue();
     if (factor < Precision::Confusion())
@@ -69,16 +69,7 @@ const std::list<gp_Trsf> Scaled::getTransformations(const std::vector<App::Docum
 
     // Find centre of gravity of first original
     // FIXME: This method will NOT give the expected result for more than one original!
-    Part::Feature* originalFeature = static_cast<Part::Feature*>(originals.front());
-    TopoDS_Shape original;
-
-    if (originalFeature->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
-        PartDesign::FeatureAddSub* Feature = static_cast<PartDesign::FeatureAddSub*>(originalFeature);
-        //if(Feature->getAddSubType() == FeatureAddSub::Additive)
-        //    original = Feature->AddSubShape.getShape().getShape();
-        //else
-            original = Feature->AddSubShape.getShape().getShape();
-    }
+    TopoDS_Shape original = originals.front().getShape();
 
     GProp_GProps props;
     BRepGProp::VolumeProperties(original,props);
