@@ -89,19 +89,16 @@ std::vector<std::string> ViewProviderProjGroup::getDisplayModes(void) const
 
 void ViewProviderProjGroup::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderDocumentObject::updateData(prop);
+    ViewProviderDrawingView::updateData(prop);
 
     if(prop == &(getObject()->Scale) ||
        prop == &(getObject()->ScaleType) ||
        prop == &(getObject()->Views) ||
-       prop == &(getObject()->ProjectionType)) {
-
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgProjGroup *projDlg = qobject_cast<TaskDlgProjGroup *>(dlg);
-
-        if (projDlg &&
-            projDlg->getViewProvider() == dynamic_cast<const ViewProviderProjGroup *>(getObject()) ) {
-            projDlg->update();
+       prop == &(getObject()->ProjectionType) ||
+       prop == &(getObject()->LockPosition) ) {
+        QGIView* qgiv = getQView();
+        if (qgiv) {
+            qgiv->updateView(true);
         }
     }
 
