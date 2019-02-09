@@ -229,7 +229,7 @@ public:
     * Command::commitCommand(). 
     *
     * Note that Command::commitCommand() will check this static counter, and
-    * will only actually commit the command if the counter is not zero. This is
+    * will only actually commit the command if the counter is zero. This is
     * because the purpose of this class is to fix premature command committing
     * in many of the existing command implementation, which cause many
     * non-undoable changes to the document.
@@ -242,7 +242,7 @@ public:
         AutoCommit(bool enable=true);
         ~AutoCommit();
     private:
-        bool enabled;
+        int enabled;
     };
 protected:
     Command(const char* name);
