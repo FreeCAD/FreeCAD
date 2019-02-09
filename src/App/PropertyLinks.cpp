@@ -1882,8 +1882,18 @@ void PropertyLinkSubList::setPyObject(PyObject *value)
         PropertyLinkSub dummy;
         dummy.setPyObject(value);
         this->setValue(dummy.getValue(), dummy.getSubValues());
+        return;
     }
-    catch (Base::TypeError&) {
+    catch (...) {}
+    try {
+        // try PropertyLinkList syntax
+        PropertyLinkList dummy;
+        dummy.setPyObject(value);
+        const auto &values = dummy.getValues();
+        std::vector<std::string> subs(values.size());
+        this->setValues(values,subs);
+        return;
+    }catch(...) {
         if (PyTuple_Check(value) || PyList_Check(value)) {
             Py::Sequence list(value);
             Py::Sequence::size_type size = list.size();
