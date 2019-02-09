@@ -1251,7 +1251,7 @@ def export(exportList,filename):
         # writing header
         # we specify the svg width and height in FreeCAD's physical units (mm),
         # and specify the viewBox so that user units maps one-to-one to mm
-        svg = pythonopen(filename,'wb') 
+        svg = pythonopen(filename,'w') 
         svg.write('<?xml version="1.0"?>\n')
         svg.write('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"')
         svg.write(' "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n')
@@ -1280,13 +1280,10 @@ def export(exportList,filename):
                     svg.write('<g id="%s" transform="scale(1,-1)">\n' %\
                             ob.Name)
                 svg.write(Draft.getSVG(ob))
-                svg.write('<title>%s</title>\n' % ob.Label.encode('utf8')\
+                svg.write('<title>%s</title>\n' % str(ob.Label.encode('utf8'))\
                         .replace('<','&lt;').replace('>','&gt;'))
                         # replace('"',\ "&quot;")
                 svg.write('</g>\n')
         # closing
         svg.write('</svg>')
         svg.close()
-
-
-
