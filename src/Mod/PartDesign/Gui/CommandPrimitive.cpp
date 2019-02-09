@@ -189,11 +189,11 @@ void CmdPrimtiveCompAdditive::languageChange()
 
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Box"));
-    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive box by its width, height and length"));
+    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive box by its width, height, and length"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Cylinder"));
-    arc2->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive cylinder by its radius, height and angle"));
+    arc2->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive cylinder by its radius, height, and angle"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
     arc3->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Sphere"));

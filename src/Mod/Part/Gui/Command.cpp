@@ -780,7 +780,7 @@ CmdPartCompCompoundTools::CmdPartCompCompoundTools()
 {
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
-    sMenuText       = QT_TR_NOOP("Counpound tools");
+    sMenuText       = QT_TR_NOOP("Compound tools");
     sToolTipText    = QT_TR_NOOP("Compound tools: working with lists of shapes.");
     sWhatsThis      = "Part_CompCompoundTools";
     sStatusTip      = sToolTipText;
