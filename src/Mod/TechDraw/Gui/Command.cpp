@@ -452,7 +452,7 @@ void CmdTechDrawNewViewDetail::activated(int iMsg)
         throw Base::TypeError("CmdTechDrawNewViewDetail DVD not found\n");
     }
     dvd->Source.setValues(dvp->Source.getValues());
-    
+
     doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Direction = App.activeDocument().%s.Direction",FeatName.c_str(),dvp->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
@@ -740,7 +740,7 @@ void CmdTechDrawClipPlus::activated(int iMsg)
    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
    if (selection.size() != 2) {
        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Select 1 Clip group and 1 View."));
+                            QObject::tr("Select one Clip group and one View."));
        return;
    }
 
