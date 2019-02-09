@@ -1619,13 +1619,13 @@ def filterObjectsForModifiers(objects, isCopied=False):
                 if parent.isDerivedFrom("Part::Feature"):
                     parents.append(parent.Name)
             if len(parents) > 1:
-                warningMessage = object.Name+" shares a base with {} other objects. Please check if you want to modify this.".format(len(parents) - 1)
+                warningMessage = translate("draft","%s shares a base with %d other objects. Please check if you want to modify this.") % (object.Name,len(parents) - 1)
                 FreeCAD.Console.PrintError(warningMessage)
                 if FreeCAD.GuiUp:
                     FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
             filteredObjects.append(object.Base)
         elif hasattr(object,"Placement") and object.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
-           FreeCAD.Console.PrintError(obj.Name+" cannot be modified because its placement is readonly.")
+           FreeCAD.Console.PrintError(translate("%s cannot be modified because its placement is readonly.") % obj.Name)
            continue
         else:
            filteredObjects.append(object)
