@@ -101,7 +101,7 @@ public:
 
     bool hasExtension(Base::Type type) const;
     const std::weak_ptr<GeometryExtension> getExtension(Base::Type type) const;
-    void setExtension(std::unique_ptr<GeometryExtension> geo);
+    void setExtension(std::unique_ptr<GeometryExtension> &&geo);
 
 protected:
     /// create a new tag for the geometry object
