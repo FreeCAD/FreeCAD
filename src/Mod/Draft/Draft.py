@@ -1478,23 +1478,8 @@ def move(objectslist,vector,copy=False):
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
     newgroups = {}
+    objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
-        if hasattr(obj, "MoveBase") and obj.MoveBase and obj.Base:
-            parents = []
-            for parent in obj.Base.InList:
-                if parent.isDerivedFrom("Part::Feature"):
-                    parents.append(parent.Name)
-            if len(parents) > 1:
-                warningMessage = obj.Name+" shares a base with {} other objects. Please check if you want to move this.".format(len(parents) - 1)
-                FreeCAD.Console.PrintError(warningMessage)
-                if FreeCAD.GuiUp:
-                    FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
-            obj = obj.Base
-        if hasattr(obj,"Placement"):
-           if obj.getEditorMode("Placement") == ["ReadOnly"]:
-               if not copy:
-                   FreeCAD.Console.PrintError(obj.Name+" cannot be moved because its placement is readonly.")
-                   continue
         if getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
             v = v.add(vector)
@@ -1624,6 +1609,27 @@ def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
     else:
         polarArray(objectslist,arg1,arg2,arg3)
 
+def filterObjectsForModifiers(objects, isCopied=False):
+    filteredObjects = []
+    for object in objects:
+        if hasattr(object, "MoveBase") and object.MoveBase and object.Base:
+            parents = []
+            for parent in object.Base.InList:
+                if parent.isDerivedFrom("Part::Feature"):
+                    parents.append(parent.Name)
+            if len(parents) > 1:
+                warningMessage = object.Name+" shares a base with {} other objects. Please check if you want to modify this.".format(len(parents) - 1)
+                FreeCAD.Console.PrintError(warningMessage)
+                if FreeCAD.GuiUp:
+                    FreeCADGui.getMainWindow().showMessage(warningMessage, 0)
+            filteredObjects.append(object.Base)
+        elif hasattr(object,"Placement") and object.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
+           FreeCAD.Console.PrintError(obj.Name+" cannot be modified because its placement is readonly.")
+           continue
+        else:
+           filteredObjects.append(object)
+    return filteredObjects
+
 def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False):
     '''rotate(objects,angle,[center,axis,copy]): Rotates the objects contained
     in objects (that can be a list of objects or an object) of the given angle
@@ -1637,12 +1643,8 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
     newgroups = {}
+    objectslist = filterObjectsForModifiers(objectslist, copy)
     for obj in objectslist:
-        if hasattr(obj,"Placement"):
-           if obj.getEditorMode("Placement") == ["ReadOnly"]:
-               if not copy:
-                   FreeCAD.Console.PrintError(obj.Name+" cannot be rotated because its placement is readonly.")
-                   continue
         if copy:
             newobj = makeCopy(obj)
         else:
