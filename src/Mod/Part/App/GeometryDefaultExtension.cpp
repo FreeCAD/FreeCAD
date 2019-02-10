@@ -83,20 +83,20 @@ PyObject * GeometryDefaultExtension<T>::getPyObject(void)
 
 // ----------------------------- Template specialisations----------------------------------------------------
 
-//typedef Part::GeometryDefaultExtension<int> GeometryIntExtension;
+//typedef Part::GeometryDefaultExtension<long> GeometryIntExtension;
 //typedef Part::GeometryStringExtension<std::string> GeometryStringExtension;
 
 // ---------- GeometryIntExtension ----------
 TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryExtension)
 
 template <>
-PyObject * GeometryDefaultExtension<int>::getPyObject(void)
+PyObject * GeometryDefaultExtension<long>::getPyObject(void)
 {
     return new GeometryIntExtensionPy(new GeometryIntExtension(this->value));
 }
 
 template <>
-void GeometryDefaultExtension<int>::Restore(Base::XMLReader &reader)
+void GeometryDefaultExtension<long>::Restore(Base::XMLReader &reader)
 {
     value = reader.getAttributeAsInteger("value");
 }
