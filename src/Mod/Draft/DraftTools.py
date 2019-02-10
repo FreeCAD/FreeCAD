@@ -4068,46 +4068,40 @@ class Edit(Modifier):
             self.obj = FreeCADGui.Selection.getSelection()
             if self.obj:
                 self.obj = self.obj[0]
+                # we could skip next passage putting an "else" at the end of the proceed function
                 if not Draft.getType(self.obj) in ["BezCurve","Wire","BSpline","Circle","Rectangle",
                                                    "Polygon","Dimension","Space","Structure","PanelCut",
                                                    "PanelSheet","Wall"]:
                     msg(translate("draft", "This object type is not editable")+"\n",'warning')
                     self.finish()
                     return
-                if Draft.getType(self.obj) == "Wall":
-                    if Draft.getType(self.obj.Base) in ["Wire","Circle","Rectangle",
-                                                       "Polygon"]:
-                        self.obj=self.obj.Base
-                if (Draft.getType(self.obj) == "BezCurve"):
-                    self.ui.editUi("BezCurve")
-                else:
-                    self.ui.editUi()
                 # store selectable state of the object
                 if hasattr(self.obj.ViewObject,"Selectable"):
                     self.selectstate = self.obj.ViewObject.Selectable
                     self.obj.ViewObject.Selectable = False
                 FreeCADGui.Selection.clearSelection()
-                if Draft.getType(self.obj) in ["Wire","BSpline"]:
-                    self.ui.setEditButtons(True)
-                    self.ui.setBezEditButtons(False)
-                elif Draft.getType(self.obj) == "BezCurve":
-                    self.ui.setEditButtons(True)
-                    self.ui.setBezEditButtons(True)
-                else:
-                    self.ui.setEditButtons(False)
-                    self.ui.setBezEditButtons(False)
                 self.editing = None
                 self.editpoints = []
                 self.pl = None
+                self.arc3Pt = False
                 FreeCADGui.Snapper.setSelectMode(True)
+                # Edit Gui setup is moved inside each kind of object
+                # overwrite self.obj to match the right editing target
+                if Draft.getType(self.obj) == "Wall":
+                    if Draft.getType(self.obj.Base) in ["Wire","Circle","Rectangle",
+                                                       "Polygon"]:
+                        self.obj=self.obj.Base
                 if "Placement" in self.obj.PropertiesList:
                     self.pl = self.obj.Placement
                     self.invpl = self.pl.inverse()
+                # setup of different object type (set editUi, set editTrackers)
                 if Draft.getType(self.obj) in ["Wire","BSpline"]:
+                    self.ui.editUi("Wire")
                     for p in self.obj.Points:
                         if self.pl: p = self.pl.multVec(p)
                         self.editpoints.append(p)
                 elif Draft.getType(self.obj) == "BezCurve":
+                    self.ui.editUi("BezCurve")
                     self.resetTrackersBezier()
                     self.call = self.view.addEventCallback("SoEvent",self.action)
                     self.running = True
@@ -4118,13 +4112,16 @@ class Edit(Modifier):
                         self.planetrack.set(self.editpoints[0])
                 elif Draft.getType(self.obj) == "Circle":
                     self.editpoints.append(self.obj.Placement.Base)
-                    if self.obj.FirstAngle == self.obj.LastAngle:
+                    if self.obj.FirstAngle == self.obj.LastAngle:#self.obj is a circle
+                        self.ui.editUi("Circle")
                         self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
                     else:#self.obj is an arc
+                        self.ui.editUi("Arc")
                         self.editpoints.append(self.obj.Shape.Vertexes[0].Point)#First endpoint
                         self.editpoints.append(self.obj.Shape.Vertexes[1].Point)#Second endpoint
                         self.editpoints.append(self.getArcMid())#Midpoint
                 elif Draft.getType(self.obj) == "Rectangle":
+                    self.ui.editUi()
                     self.editpoints.append(self.obj.Placement.Base)
                     self.editpoints.append(self.obj.Shape.Vertexes[2].Point)
                     v = self.obj.Shape.Vertexes
@@ -4135,20 +4132,24 @@ class Edit(Modifier):
                     if self.obj.Height < 0:
                         self.by = self.by.negative()
                 elif Draft.getType(self.obj) == "Polygon":
+                    self.ui.editUi()
                     self.editpoints.append(self.obj.Placement.Base)
                     self.editpoints.append(self.obj.Shape.Vertexes[0].Point)
                 elif Draft.getType(self.obj) == "Dimension":
+                    self.ui.editUi()
                     p = self.obj.ViewObject.Proxy.textpos.translation.getValue()
                     self.editpoints.append(self.obj.Start)
                     self.editpoints.append(self.obj.End)
                     self.editpoints.append(self.obj.Dimline)
                     self.editpoints.append(Vector(p[0],p[1],p[2]))
                 elif Draft.getType(self.obj) == "Space":
+                    self.ui.editUi()
                     try:
                         self.editpoints.append(self.obj.ViewObject.Proxy.getTextPosition(self.obj.ViewObject))
                     except:
                         pass
                 elif Draft.getType(self.obj) == "Structure":
+                    self.ui.editUi()
                     if self.obj.Nodes:
                         self.originalDisplayMode = self.obj.ViewObject.DisplayMode
                         self.originalPoints = self.obj.ViewObject.NodeSize
@@ -4161,16 +4162,19 @@ class Edit(Modifier):
                                 p = self.pl.multVec(p)
                             self.editpoints.append(p)
                 elif Draft.getType(self.obj) == "PanelCut":
+                    self.ui.editUi()
                     if self.obj.TagPosition.Length == 0:
                         pos = self.obj.Shape.BoundBox.Center
                     else:
                         pos = self.pl.multVec(self.obj.TagPosition)
                     self.editpoints.append(pos)
                 elif Draft.getType(self.obj) == "PanelSheet":
+                    self.ui.editUi()
                     self.editpoints.append(self.pl.multVec(self.obj.TagPosition))
                     for o in self.obj.Group:
                         self.editpoints.append(self.pl.multVec(o.Placement.Base))
                 elif Draft.getType(self.obj) == "Wall":
+                    self.ui.editUi()
                     if Draft.getType(self.obj.Base) == "Sketch":
                         if self.obj.Base.GeometryCount == 1:
                             self.editpoints.append(self.obj.Base.getPoint(0,1))
@@ -4288,6 +4292,10 @@ class Edit(Modifier):
                             if 'EditNode' in info["Component"]:
                                 self.smoothBezPoint(int(info["Component"][8:]), info, 'Symmetric')
                         elif 'EditNode' in info["Component"]:
+                            if self.ui.arc3PtButton.isChecked():
+                                self.arc3Pt = True#store arc 3 points edit mode
+                            else:
+                                self.arc3Pt = False#decide if it's deselected after every editing point
                             self.ui.pointUi()
                             self.ui.isRelative.show()
                             self.editing = int(info["Component"][8:])
@@ -4368,37 +4376,83 @@ class Edit(Modifier):
                 self.trackers[self.editing].set(v)
         elif Draft.getType(self.obj) == "Circle":
             delta = v.sub(self.obj.Placement.Base)
-            deltaX = v[0]-self.obj.Placement.Base[0]
-            deltaY = v[1]-self.obj.Placement.Base[1]
-            dangle = math.degrees(math.atan2(deltaY,deltaX)) 
-            if self.editing == 0:
-                p = self.obj.Placement
-                p.move(delta)
-                self.obj.Placement = p
-                self.trackers[0].set(self.obj.Placement.Base)
-                if not self.obj.FirstAngle == self.obj.LastAngle:
-                    self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
-                    self.trackers[3].set(self.getArcMid())#self.obj is an arc
-            elif self.editing == 1:
-                if self.obj.FirstAngle == self.obj.LastAngle:#self.obj is a circle
+            if self.obj.FirstAngle == self.obj.LastAngle:# object is a circle
+                if self.editing == 0:
+                    p = self.obj.Placement
+                    p.move(delta)
+                    self.obj.Placement = p
+                    self.trackers[0].set(self.obj.Placement.Base)
+                if self.editing == 1:
                     self.obj.Radius = delta.Length
                     self.obj.recompute()
-                else:#self.obj is an arc
-                    self.obj.FirstAngle=dangle
+                self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
+            else:#self.obj is an arc
+                if self.arc3Pt == False:#edit by center radius FirstAngle LastAngle
+                    msg("CENTRO E RAGGIO")
+                    deltaX = v[0]-self.obj.Placement.Base[0]
+                    deltaY = v[1]-self.obj.Placement.Base[1]
+                    dangle = math.degrees(math.atan2(deltaY,deltaX))
+                    if self.editing == 0:
+                        p = self.obj.Placement
+                        p.move(delta)
+                        self.obj.Placement = p
+                        self.trackers[0].set(self.obj.Placement.Base)
+                        self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+                        self.trackers[3].set(self.getArcMid())
+                    elif self.editing == 1:
+                        self.obj.FirstAngle=dangle
+                        self.obj.recompute()
+                        self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+                        self.trackers[3].set(self.getArcMid())
+                    elif self.editing == 2:
+                        self.obj.LastAngle=dangle
+                        self.obj.recompute()
+                        self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+                        self.trackers[3].set(self.getArcMid())
+                    elif self.editing == 3:
+                        self.obj.Radius = delta.Length
+                        self.obj.recompute()
+                        self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+                        self.trackers[3].set(self.getArcMid())
+                    self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
+                elif self.arc3Pt:
+                    msg("3 PUNTI")
+                    if self.editing == 0:#keep everithing as it is for the moment
+                        p1=self.obj.Shape.Vertexes[0].Point
+                        p2=self.getArcMid()
+                        p3=self.obj.Shape.Vertexes[1].Point
+                        arc=Part.ArcOfCircle(p1,p2,p3)#object is a support, do i have to delete it someway after?
+                    if self.editing == 1:
+                        p1=v
+                        p2=self.getArcMid()
+                        p3=self.obj.Shape.Vertexes[1].Point
+                        arc=Part.ArcOfCircle(p1,p2,p3)#object is a support, do i have to delete it someway after?
+                    elif self.editing == 3:
+                        p1=self.obj.Shape.Vertexes[0].Point
+                        p2=v
+                        p3=self.obj.Shape.Vertexes[1].Point
+                        arc=Part.ArcOfCircle(p1,p2,p3)#object is a support, do i have to delete it someway after?
+                    elif self.editing == 2:
+                        p1=self.obj.Shape.Vertexes[0].Point
+                        p2=self.getArcMid()
+                        p3=v
+                        arc=Part.ArcOfCircle(p1,p2,p3)#object is a support, do i have to delete it someway after?
+                    self.obj.Placement.Base=arc.Center
+                    self.obj.Radius = arc.Radius
+                    deltaX = p1[0]-self.obj.Placement.Base[0]
+                    deltaY = p1[1]-self.obj.Placement.Base[1]
+                    dangleF = math.degrees(math.atan2(deltaY,deltaX))
+                    deltaX = p3[0]-self.obj.Placement.Base[0]
+                    deltaY = p3[1]-self.obj.Placement.Base[1]
+                    dangleL = math.degrees(math.atan2(deltaY,deltaX))
+                    self.obj.FirstAngle = dangleF
+                    self.obj.LastAngle = dangleL                    
                     self.obj.recompute()
+                    self.trackers[0].set(self.obj.Placement.Base)
+                    self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
                     self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
                     self.trackers[3].set(self.getArcMid())
-            elif self.editing == 2:
-                self.obj.LastAngle=dangle
-                self.obj.recompute()
-                self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
-                self.trackers[3].set(self.getArcMid())
-            elif self.editing == 3:
-                self.obj.Radius = delta.Length
-                self.obj.recompute()
-                self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
-                self.trackers[3].set(self.getArcMid())
-            self.trackers[1].set(self.obj.Shape.Vertexes[0].Point) 
+                    
         elif Draft.getType(self.obj) == "Rectangle":
             delta = v.sub(self.obj.Placement.Base)
             if self.editing == 0:
@@ -4477,7 +4531,6 @@ class Edit(Modifier):
 
     def getArcMid(self):#Returns object midpoint
         if Draft.getType(self.obj) == "Circle":
-            #self.obj.recompute()
             if self.obj.LastAngle>self.obj.FirstAngle:
                 midAngle=math.radians(self.obj.FirstAngle+(self.obj.LastAngle-self.obj.FirstAngle)/2)
             else:
@@ -4501,10 +4554,7 @@ class Edit(Modifier):
         self.update(v)
         self.doc.recompute()
         self.editing = None
-        if (Draft.getType(self.obj) == "BezCurve"):
-            self.ui.editUi("BezCurve")
-        else:
-            self.ui.editUi()
+        self.ui.editUi(self.ui.lastMode)
         self.node = []
 
     def addPointOnEdge(self, newPoint, edgeIndex):
@@ -4701,7 +4751,6 @@ class Edit(Modifier):
                 objPoints = self.obj.Points[ep]
                 if self.pl: objPoints = self.pl.multVec(objPoints)
                 self.trackers.append(editTracker(objPoints,self.obj.Name,ep,self.obj.ViewObject.LineColor))
-
 class AddToGroup():
     "The AddToGroup FreeCAD command definition"
 
