@@ -56,7 +56,7 @@ int GeometryIntExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     long Id;
-    if (PyArg_ParseTuple(args, "i", &Id)) {
+    if (PyArg_ParseTuple(args, "l", &Id)) {
         this->getGeometryIntExtensionPtr()->setValue(Id);
         return 0;
     }
