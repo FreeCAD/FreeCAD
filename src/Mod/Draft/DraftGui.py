@@ -503,6 +503,7 @@ class DraftToolBar:
         self.sharpButton = self._pushbutton("sharpButton", self.layout, icon="Draft_BezSharpNode", width=22, checkable=True)
         self.tangentButton = self._pushbutton("tangentButton", self.layout, icon="Draft_BezTanNode", width=22, checkable=True)
         self.symmetricButton = self._pushbutton("symmetricButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
+        self.arc3PtButton = self._pushbutton("arc3PtButton", self.layout, icon="Draft_BezSymNode", width=22, checkable=True)
 
         # point
 
@@ -647,6 +648,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.sharpButton,QtCore.SIGNAL("toggled(bool)"),self.setSharpMode)
         QtCore.QObject.connect(self.tangentButton,QtCore.SIGNAL("toggled(bool)"),self.setTangentMode)
         QtCore.QObject.connect(self.symmetricButton,QtCore.SIGNAL("toggled(bool)"),self.setSymmetricMode)
+        QtCore.QObject.connect(self.arc3PtButton,QtCore.SIGNAL("toggled(bool)"),self.arc3PtMode)
         QtCore.QObject.connect(self.finishButton,QtCore.SIGNAL("pressed()"),self.finish)
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
@@ -791,6 +793,7 @@ class DraftToolBar:
         self.sharpButton.setToolTip(translate("draft", "Make Bezier node sharp"))
         self.tangentButton.setToolTip(translate("draft", "Make Bezier node tangent"))
         self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
+        self.arc3PtButton.setToolTip(translate("draft", "Activate 3 point arc editing"))
         self.undoButton.setText(translate("draft", "&Undo (CTRL+Z)"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close")+" ("+inCommandShortcuts["Close"][0]+")")
@@ -1057,6 +1060,7 @@ class DraftToolBar:
             self.sharpButton.hide()
             self.tangentButton.hide()
             self.symmetricButton.hide()
+            self.arc3PtButton.hide()
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
@@ -1187,6 +1191,7 @@ class DraftToolBar:
         self.makeDumbTask(extra,callback)
 
     def editUi(self, mode=None):
+        self.lastMode=mode
         self.taskUi(translate("draft", "Edit"))
         self.hideXYZ()
         self.numFaces.hide()
@@ -1194,18 +1199,26 @@ class DraftToolBar:
         self.hasFill.hide()
         self.addButton.show()
         self.delButton.show()
-        if mode == 'BezCurve':
+        if mode == 'Wire':
+            self.setEditButtons(True)
+            self.setBezEditButtons(False)
+        elif mode == 'Arc':
+            self.addButton.hide()
+            self.delButton.hide()
+            self.arc3PtButton.show()
+        elif mode == 'BezCurve':
             self.sharpButton.show()
             self.tangentButton.show()
             self.symmetricButton.show()
-        self.finishButton.show()
         self.closeButton.show()
+        self.finishButton.show()
         # always start Edit with buttons unchecked
         self.addButton.setChecked(False)
         self.delButton.setChecked(False)
         self.sharpButton.setChecked(False)
         self.tangentButton.setChecked(False)
         self.symmetricButton.setChecked(False)
+        self.arc3PtButton.setChecked(False)
 
     def extUi(self):
         self.hasFill.show()
@@ -1967,6 +1980,10 @@ class DraftToolBar:
             self.tangentButton.setChecked(False)
             self.addButton.setChecked(False)
             self.delButton.setChecked(False)
+
+    def arc3PtMode(self,bool):
+        if self.arc3PtButton.isChecked():
+            self.arc3PtButton.setChecked(True)
 
     def setRadiusValue(self,val,unit=None):
         #print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)
