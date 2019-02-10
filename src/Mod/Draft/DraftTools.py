@@ -4388,7 +4388,6 @@ class Edit(Modifier):
                 self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
             else:#self.obj is an arc
                 if self.arc3Pt == False:#edit by center radius FirstAngle LastAngle
-                    msg("CENTRO E RAGGIO")
                     deltaX = v[0]-self.obj.Placement.Base[0]
                     deltaY = v[1]-self.obj.Placement.Base[1]
                     dangle = math.degrees(math.atan2(deltaY,deltaX))
@@ -4416,7 +4415,6 @@ class Edit(Modifier):
                         self.trackers[3].set(self.getArcMid())
                     self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
                 elif self.arc3Pt:
-                    msg("3 PUNTI")
                     if self.editing == 0:#keep everithing as it is for the moment
                         p1=self.obj.Shape.Vertexes[0].Point
                         p2=self.getArcMid()
