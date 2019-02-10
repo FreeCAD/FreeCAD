@@ -34,7 +34,7 @@ using namespace Part;
 std::string GeometryIntExtensionPy::representation(void) const
 {
     std::stringstream str;
-    long id = getGeometryIntExtensionPtr()->value;
+    long id = getGeometryIntExtensionPtr()->getValue();
     str << "<GeometryIntExtension (" << id << ") >";
     return str.str();
 }
@@ -57,7 +57,7 @@ int GeometryIntExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     int Id;
     if (PyArg_ParseTuple(args, "i", &Id)) {
-        this->getGeometryIntExtensionPtr()->value=Id;
+        this->getGeometryIntExtensionPtr()->setValue(Id);
         return 0;
     }
 
@@ -71,12 +71,12 @@ int GeometryIntExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Long GeometryIntExtensionPy::getValue(void) const
 {
-    return Py::Long(this->getGeometryIntExtensionPtr()->value);
+    return Py::Long(this->getGeometryIntExtensionPtr()->getValue());
 }
 
 void GeometryIntExtensionPy::setValue(Py::Long value)
 {
-    this->getGeometryIntExtensionPtr()->value=long(value);
+    this->getGeometryIntExtensionPtr()->setValue(long(value));
 }
 
 
