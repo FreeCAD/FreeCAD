@@ -83,7 +83,7 @@ namespace Part {
     // 6. Register your type and corresponding python type in AppPart.cpp
 
     // Prefer alias to typedef item 9
-    using GeometryIntExtension = GeometryDefaultExtension<int>;
+    using GeometryIntExtension = GeometryDefaultExtension<long>;
     using GeometryStringExtension = GeometryDefaultExtension<std::string>;
 }
 
