@@ -55,7 +55,7 @@ int GeometryIntExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    int Id;
+    long Id;
     if (PyArg_ParseTuple(args, "i", &Id)) {
         this->getGeometryIntExtensionPtr()->setValue(Id);
         return 0;
@@ -65,7 +65,7 @@ int GeometryIntExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_SetString(PyExc_TypeError, "GeometryIntExtension constructor accepts:\n"
     "-- empty parameter list\n"
-    "-- int\n");
+    "-- long int\n");
     return -1;
 }
 
