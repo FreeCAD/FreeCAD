@@ -37,9 +37,9 @@ using namespace Part;
 
 //---------- Geometry Extension
 template <typename T>
-GeometryDefaultExtension<T>::GeometryDefaultExtension(const T& val):value(val)
+GeometryDefaultExtension<T>::GeometryDefaultExtension(const T& val, std::string name):value(val)
 {
-
+    setName(name);
 }
 
 // Persistence implementer
@@ -53,13 +53,21 @@ template <typename T>
 void GeometryDefaultExtension<T>::Save(Base::Writer &writer) const
 {
 
-    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName()
-    << "\" value=\"" << value << "\"/>" << std::endl;
+    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
+
+    const std::string name = getName();
+
+    if(name.size() > 0)
+        writer.Stream() << "\" name=\"" << name;
+
+    writer.Stream() << "\" value=\"" << value << "\"/>" << std::endl;
 }
 
 template <typename T>
 void GeometryDefaultExtension<T>::Restore(Base::XMLReader &reader)
 {
+    restoreNameAttribute(reader);
+
     value = reader.getAttribute("value");
 }
 
@@ -69,6 +77,7 @@ std::unique_ptr<Part::GeometryExtension> GeometryDefaultExtension<T>::copy(void)
     std::unique_ptr<GeometryDefaultExtension<T>> cpy = std::make_unique<GeometryDefaultExtension<T>>();
 
     cpy->value = this->value;
+    cpy->setName(this->getName());
 
     return cpy;
     // Don't std::move(cpy); RVO optimization Item 25, if the compiler fails to elide, would have to move it anyway
@@ -92,12 +101,14 @@ TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryIntExtension,Part::GeometryExtension)
 template <>
 PyObject * GeometryDefaultExtension<long>::getPyObject(void)
 {
-    return new GeometryIntExtensionPy(new GeometryIntExtension(this->value));
+    return new GeometryIntExtensionPy(new GeometryIntExtension(*this));
 }
 
 template <>
 void GeometryDefaultExtension<long>::Restore(Base::XMLReader &reader)
 {
+    restoreNameAttribute(reader);
+
     value = reader.getAttributeAsInteger("value");
 }
 
@@ -107,7 +118,7 @@ TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryStringExtension,Part::GeometryExtensi
 template <>
 PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
 {
-    return new GeometryStringExtensionPy(new GeometryStringExtension(this->value));
+    return new GeometryStringExtensionPy(new GeometryStringExtension(*this));
 }
 
 
