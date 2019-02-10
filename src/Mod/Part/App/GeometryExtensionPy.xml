@@ -20,5 +20,11 @@
         <UserDocu>Create a copy of this geometry extension.</UserDocu>
       </Documentation>
     </Methode>
+    <Attribute Name="Name" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Sets/returns the name of this extension.</UserDocu>
+        </Documentation>
+        <Parameter Name="Name" Type="String"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>
