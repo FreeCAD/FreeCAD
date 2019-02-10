@@ -38,7 +38,7 @@ using namespace Part;
 std::string GeometryStringExtensionPy::representation(void) const
 {
     std::stringstream str;
-    str << "<GeometryStringExtension (" << getGeometryStringExtensionPtr()->value << ") >";
+    str << "<GeometryStringExtension (" << getGeometryStringExtensionPtr()->getValue() << ") >";
     return str.str();
 }
 
@@ -60,7 +60,7 @@ int GeometryStringExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     char *pstr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
-        this->getGeometryStringExtensionPtr()->value=pstr;
+        this->getGeometryStringExtensionPtr()->setValue(pstr);
         return 0;
     }
 
@@ -74,12 +74,12 @@ int GeometryStringExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::String GeometryStringExtensionPy::getValue(void) const
 {
-    return Py::String(this->getGeometryStringExtensionPtr()->value);
+    return Py::String(this->getGeometryStringExtensionPtr()->getValue());
 }
 
 void GeometryStringExtensionPy::setValue(Py::String value)
 {
-    this->getGeometryStringExtensionPtr()->value = value.as_std_string();
+    this->getGeometryStringExtensionPtr()->setValue(value.as_std_string());
 }
 
 PyObject *GeometryStringExtensionPy::getCustomAttributes(const char* /*attr*/) const

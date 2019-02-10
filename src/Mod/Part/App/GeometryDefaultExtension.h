@@ -35,8 +35,11 @@ namespace Part {
         TYPESYSTEM_HEADER();
     public:
         GeometryDefaultExtension() = default;
-        GeometryDefaultExtension(const T& obj);
+        GeometryDefaultExtension(const T& val);
         virtual ~GeometryDefaultExtension() = default;
+
+        inline void setValue(const T& val) {value = val;};
+        inline const T &getValue() {return value;};
 
         // Persistence implementer ---------------------
         virtual unsigned int getMemSize(void) const;
@@ -47,7 +50,7 @@ namespace Part {
 
         virtual PyObject *getPyObject(void);
 
-    public:
+    private:
         T value;
     };
 

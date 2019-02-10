@@ -37,7 +37,7 @@ using namespace Part;
 
 //---------- Geometry Extension
 template <typename T>
-GeometryDefaultExtension<T>::GeometryDefaultExtension(const T& obj):value(obj)
+GeometryDefaultExtension<T>::GeometryDefaultExtension(const T& val):value(val)
 {
 
 }
