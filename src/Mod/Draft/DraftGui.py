@@ -367,6 +367,7 @@ class DraftToolBar:
         self.uiloader = FreeCADGui.UiLoader()
         self.autogroup = None
         self.isCenterPlane = False
+        self.lastMode = None
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
