@@ -351,10 +351,8 @@ SET(Part_SRCS
     CrossSection.h
     GeometryExtension.cpp
     GeometryExtension.h
-    GeometryIntExtension.cpp
-    GeometryIntExtension.h
-    GeometryStringExtension.cpp
-    GeometryStringExtension.h
+    GeometryDefaultExtension.cpp
+    GeometryDefaultExtension.h
     Geometry.cpp
     Geometry.h
     Geometry2d.cpp
