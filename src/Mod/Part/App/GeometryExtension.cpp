@@ -37,6 +37,10 @@ GeometryExtension::GeometryExtension()
 {
 }
 
-GeometryExtension::~GeometryExtension()
+void GeometryExtension::restoreNameAttribute(Base::XMLReader &reader)
 {
+    if(reader.hasAttribute("name")) {
+        std::string name = reader.getAttribute("name");
+        setName(name);
+    }
 }

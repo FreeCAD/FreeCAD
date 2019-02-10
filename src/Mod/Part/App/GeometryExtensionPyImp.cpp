@@ -76,6 +76,19 @@ PyObject* GeometryExtensionPy::copy(PyObject *args)
     return cpy;
 }
 
+Py::String GeometryExtensionPy::getName(void) const
+{
+    std::string name = this->getGeometryExtensionPtr()->getName();
+
+    return Py::String(name);
+}
+
+void GeometryExtensionPy::setName(Py::String arg)
+{
+    std::string name = arg.as_std_string();
+
+    this->getGeometryExtensionPtr()->setName(name);
+}
 
 PyObject *GeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
