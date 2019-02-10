@@ -39,7 +39,7 @@ namespace Part {
         virtual ~GeometryDefaultExtension() = default;
 
         inline void setValue(const T& val) {value = val;};
-        inline const T &getValue() {return value;};
+        inline const T &getValue() const {return value;};
 
         // Persistence implementer ---------------------
         virtual unsigned int getMemSize(void) const;
