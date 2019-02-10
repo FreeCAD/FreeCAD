@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 
-#include "GeometryIntExtension.h"
+#include "GeometryDefaultExtension.h"
 
 #include "GeometryIntExtensionPy.h"
 #include "GeometryIntExtensionPy.cpp"
@@ -34,7 +34,7 @@ using namespace Part;
 std::string GeometryIntExtensionPy::representation(void) const
 {
     std::stringstream str;
-    long id = getGeometryIntExtensionPtr()->id;
+    long id = getGeometryIntExtensionPtr()->value;
     str << "<GeometryIntExtension (" << id << ") >";
     return str.str();
 }
@@ -57,7 +57,7 @@ int GeometryIntExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     int Id;
     if (PyArg_ParseTuple(args, "i", &Id)) {
-        this->getGeometryIntExtensionPtr()->id=Id;
+        this->getGeometryIntExtensionPtr()->value=Id;
         return 0;
     }
 
@@ -71,12 +71,12 @@ int GeometryIntExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Long GeometryIntExtensionPy::getValue(void) const
 {
-    return Py::Long(this->getGeometryIntExtensionPtr()->id);
+    return Py::Long(this->getGeometryIntExtensionPtr()->value);
 }
 
 void GeometryIntExtensionPy::setValue(Py::Long value)
 {
-    this->getGeometryIntExtensionPtr()->id=long(value);
+    this->getGeometryIntExtensionPtr()->value=long(value);
 }
 
 

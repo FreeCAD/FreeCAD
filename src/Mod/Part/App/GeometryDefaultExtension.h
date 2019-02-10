@@ -21,21 +21,22 @@
  ***************************************************************************/
 
 
-#ifndef PART_GEOMETRYSTRINGEXTENSION_H
-#define PART_GEOMETRYSTRINGEXTENSION_H
+#ifndef PART_GEOMETRYDEFAULTEXTENSION_H
+#define PART_GEOMETRYDEFAULTEXTENSION_H
 
 #include <string>
 #include "GeometryExtension.h"
 
 namespace Part {
 
-    class PartExport GeometryStringExtension: public Part::GeometryExtension
+    template <typename T>
+    class PartExport GeometryDefaultExtension: public Part::GeometryExtension
     {
         TYPESYSTEM_HEADER();
     public:
-        GeometryStringExtension();
-        GeometryStringExtension(std::string strp);
-        virtual ~GeometryStringExtension();
+        GeometryDefaultExtension() = default;
+        GeometryDefaultExtension(const T& obj);
+        virtual ~GeometryDefaultExtension() = default;
 
         // Persistence implementer ---------------------
         virtual unsigned int getMemSize(void) const;
@@ -47,9 +48,40 @@ namespace Part {
         virtual PyObject *getPyObject(void);
 
     public:
-        std::string str;
+        T value;
     };
 
+    // Description:
+    //
+    // This template allows to define a geometry extension for a given type (uniform interface for one value of type T).
+    //
+    // Warnings:
+    // - The default constructor relies on the default constructor of T for initialisation. Built-in types
+    //   so constructed will be uninitialised. Use the specific constructor from a T to initiliase it.
+    //
+    // Default assumptions:
+    // - T can be constructed from T
+    // - T can be assigned to T
+    // - T is convertible to a std::string
+    // - T is serialisable as a string
+    //
+    // template specialisation:
+    //
+    // If the assumptions do not meet for your type, template specialisation allows you to provide specific code,
+    // look for examples (int/string) in GeometryDefaultExtensions.cpp
+    //
+    // Instructions:
+    //
+    // 1. Read the assumptions above and provide template initilisation if needed.
+    // 2. Add an alias to your type under these comments
+    // 3. Add a TYPESYSTEM_SOURCE_TEMPLATE_T in the cpp file to generate class type information
+    // 4. Provide a specialisation of getPyObject to generate a py object of the corresponding type (cpp file)
+    // 5. Provide specialisations if your type does not meet the assumptions above (e.g. for serialisation) (cpp file)
+    // 6. Register your type and corresponding python type in AppPart.cpp
+
+    // Prefer alias to typedef item 9
+    using GeometryIntExtension = GeometryDefaultExtension<int>;
+    using GeometryStringExtension = GeometryDefaultExtension<std::string>;
 }
 
-#endif // PART_GEOMETRYSTRINGEXTENSION_H
+#endif // PART_GEOMETRYDEFAULTEXTENSION_H

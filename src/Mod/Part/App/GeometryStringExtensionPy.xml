@@ -6,7 +6,7 @@
         PythonName="Part.GeometryStringExtension"
         Twin="GeometryStringExtension"
         TwinPointer="GeometryStringExtension"
-        Include="Mod/Part/App/GeometryStringExtension.h"
+        Include="Mod/Part/App/GeometryDefaultExtension.h"
         Namespace="Part"
         FatherInclude="Mod/Part/App/GeometryExtensionPy.h"
         FatherNamespace="Part"

@@ -62,6 +62,15 @@ void * _class_::create(void){\
 }
 
 /// define to implement a  subclass of Base::BaseClass
+#define TYPESYSTEM_SOURCE_TEMPLATE_P(_class_) \
+template<> Base::Type _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+template<> Base::Type _class_::getTypeId(void) const { return _class_::classTypeId; } \
+template<> Base::Type _class_::classTypeId = Base::Type::badType();  \
+template<> void * _class_::create(void){\
+    return new _class_ ();\
+}
+
+/// define to implement a  subclass of Base::BaseClass
 #define TYPESYSTEM_SOURCE_ABSTRACT_P(_class_) \
 Base::Type _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 Base::Type _class_::getTypeId(void) const { return _class_::classTypeId; } \
@@ -77,6 +86,13 @@ void _class_::init(void){\
 }
 
 /// define to implement a subclass of Base::BaseClass
+#define TYPESYSTEM_SOURCE_TEMPLATE_T(_class_, _parentclass_) \
+TYPESYSTEM_SOURCE_TEMPLATE_P(_class_);\
+template<> void _class_::init(void){\
+    initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
+}
+
+/// define to implement a subclass of Base::BaseClass
 #define TYPESYSTEM_SOURCE_ABSTRACT(_class_, _parentclass_) \
 TYPESYSTEM_SOURCE_ABSTRACT_P(_class_);\
 void _class_::init(void){\
@@ -88,9 +104,9 @@ namespace Base
 /// BaseClass class and root of the type system
 class BaseExport BaseClass
 {
-public: 
-  static Type getClassTypeId(void); 
-  virtual Type getTypeId(void) const; 
+public:
+  static Type getClassTypeId(void);
+  virtual Type getTypeId(void) const;
   bool isDerivedFrom(const Type type) const {return getTypeId().isDerivedFrom(type);}
 
   static void init(void);
@@ -99,7 +115,7 @@ public:
   virtual void setPyObject(PyObject *);
 
   static void *create(void){return 0;}
-private: 
+private:
   static Type classTypeId;
 protected:
   static void initSubclass(Base::Type &toInit,const char* ClassName, const char *ParentName, Type::instantiationMethod method=0);
@@ -124,7 +140,7 @@ template<typename T> T * freecad_dynamic_cast(Base::BaseClass * t)
     else
         return 0;
 }
- 
+
 /**
  * Template that works just like dynamic_cast, but expects the argument to
  * inherit from a const Base::BaseClass.
