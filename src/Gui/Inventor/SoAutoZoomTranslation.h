@@ -39,6 +39,8 @@ public:
     SoAutoZoomTranslation();
     //SoSFVec3f abPos;
 
+    SoSFFloat scaleFactor;
+
 protected:
     virtual ~SoAutoZoomTranslation() {};
     virtual void doAction(SoAction * action);
