@@ -35,7 +35,7 @@ namespace Part {
         TYPESYSTEM_HEADER();
     public:
         GeometryDefaultExtension() = default;
-        GeometryDefaultExtension(const T& val);
+        GeometryDefaultExtension(const T& val, std::string name = std::string());
         virtual ~GeometryDefaultExtension() = default;
 
         inline void setValue(const T& val) {value = val;};
@@ -49,6 +49,9 @@ namespace Part {
         virtual std::unique_ptr<Part::GeometryExtension> copy(void) const;
 
         virtual PyObject *getPyObject(void);
+
+    private:
+        GeometryDefaultExtension(const GeometryDefaultExtension<T>&) = default;
 
     private:
         T value;

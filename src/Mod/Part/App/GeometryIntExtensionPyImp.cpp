@@ -35,7 +35,14 @@ std::string GeometryIntExtensionPy::representation(void) const
 {
     std::stringstream str;
     long id = getGeometryIntExtensionPtr()->getValue();
-    str << "<GeometryIntExtension (" << id << ") >";
+    str << "<GeometryIntExtension (" ;
+
+    if(getGeometryIntExtensionPtr()->getName().size()>0)
+        str << "\'" << getGeometryIntExtensionPtr()->getName() << "\', ";
+
+    str << id << ") >";
+
+
     return str.str();
 }
 

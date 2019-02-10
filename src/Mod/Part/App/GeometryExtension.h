@@ -26,6 +26,7 @@
 
 #include <Base/Persistence.h>
 #include <memory>
+#include <string>
 
 namespace std {
     template<typename T, typename... Args>
@@ -41,7 +42,7 @@ class PartExport GeometryExtension: public Base::Persistence
 {
     TYPESYSTEM_HEADER();
 public:
-    virtual ~GeometryExtension();
+    virtual ~GeometryExtension() = default;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const = 0;
@@ -51,8 +52,18 @@ public:
     virtual std::unique_ptr<GeometryExtension> copy(void) const = 0;
 
     virtual PyObject *getPyObject(void) = 0;
+
+    inline void setName(const std::string& str) {name = str;}
+    inline const std::string &getName () const {return name;}
+
 protected:
     GeometryExtension();
+    GeometryExtension(const GeometryExtension &obj) = default;
+
+    void restoreNameAttribute(Base::XMLReader &/*reader*/);
+
+private:
+    std::string name;
 };
 
 }

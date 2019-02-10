@@ -38,7 +38,13 @@ using namespace Part;
 std::string GeometryStringExtensionPy::representation(void) const
 {
     std::stringstream str;
-    str << "<GeometryStringExtension (" << getGeometryStringExtensionPtr()->getValue() << ") >";
+    str << "<GeometryStringExtension (" ;
+
+    if(getGeometryStringExtensionPtr()->getName().size()>0)
+        str << "\'" << getGeometryStringExtensionPtr()->getName() << "\', ";
+
+    str << getGeometryStringExtensionPtr()->getValue() << ") >";
+
     return str.str();
 }
 
