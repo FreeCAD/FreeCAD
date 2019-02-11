@@ -102,6 +102,7 @@ public:
     bool hasExtension(Base::Type type) const;
     bool hasExtension(std::string name) const;
     const std::weak_ptr<GeometryExtension> getExtension(Base::Type type) const;
+    const std::weak_ptr<GeometryExtension> getExtension(std::string name) const;
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
     void deleteExtension(Base::Type type);
     void deleteExtension(std::string name);
