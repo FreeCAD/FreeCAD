@@ -402,9 +402,15 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
             buttonAssign->setEnabled(false);
         }
         else if (countAmbiguous == 1 && ambiguousCommand != QLatin1String(name)) {
-            int ret = QMessageBox::warning(this, tr("Already defined shortcut"),
-                                 tr("The shortcut '%1' is already assigned to '%2'. Do you want to override it?")
-                                 .arg(sc, ambiguousMenu), QMessageBox::Yes | QMessageBox::No);
+            QMessageBox box(this);
+            box.setIcon(QMessageBox::Warning);
+            box.setWindowTitle(tr("Already defined shortcut"));
+            box.setText(tr("The shortcut '%1' is already assigned to '%2'.").arg(sc, ambiguousMenu));
+            box.setInformativeText(tr("Do you want to override it?"));
+            box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+            box.setDefaultButton(QMessageBox::No);
+            box.setEscapeButton(QMessageBox::No);
+            int ret = box.exec();
             if (ret == QMessageBox::Yes) {
                 for (auto* cmd : ambiguousCommands) {
                     Action* action = cmd->getAction();
