@@ -78,6 +78,19 @@ def decode(name):
     return decodedName
 
 
+# the reader and writer do not use some Library to read and write the ini file format, they are implemented here
+# thus non standard ini files will be read and written too
+# in standard ini file format a = in the value without any encapsulation or string quotes is not allowed (AFAIK)
+# https://en.wikipedia.org/wiki/INI_file
+# http://www.docuxplorer.com/WebHelp/INI_File_Format.htm
+
+# Metainformations
+# first five lines are the same in any card file
+# Line1: card name
+# Line2: author and licence
+# Line3: information string
+# Line4: information link
+# Line5: FreeCAD version info or empty
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
     if isinstance(filename, unicode):
@@ -89,10 +102,13 @@ def read(filename):
     ln = 0
     for line in f:
         if ln == 0:
-            d["CardName"] = line.split(";")[1].strip()
+            d["CardName"] = line.split(";")[1].strip()  # Line 1
         elif ln == 1:
-            d["AuthorAndLicense"] = line.split(";")[1].strip()
+            d["AuthorAndLicense"] = line.split(";")[1].strip()  # Line 2
         else:
+            # ; is a Commend
+            # # might be a comment too ?
+            # [ is a Section
             if not line[0] in ";#[":
                 k = line.split("=")
                 if len(k) == 2:
@@ -106,6 +122,7 @@ def read(filename):
 
 def write(filename, dictionary):
     "writes the given dictionary to the given file"
+
     # sort the data into sections
     contents = []
     tree = Material.getMaterialAttributeStructure()
@@ -129,13 +146,16 @@ def write(filename, dictionary):
                     found = True
         if not found:
             user[k] = i
-    # write header
+
+    # card writer
     rev = FreeCAD.ConfigGet("BuildVersionMajor") + "." + FreeCAD.ConfigGet("BuildVersionMinor") + "." + FreeCAD.ConfigGet("BuildRevision")
     if isinstance(filename, unicode):
         if sys.version_info.major < 3:
             filename = filename.encode(sys.getfilesystemencoding())
     # print(filename)
     f = pythonopen(filename, "w")
+    # write header
+    # first five lines are the same in any card file, see comment above read def
     if sys.version_info.major >= 3:
         f.write("; " + header["CardName"] + "\n")
         f.write("; " + header["AuthorAndLicense"] + "\n")
