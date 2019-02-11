@@ -12,4 +12,4 @@ PoissonRatio = 0.3
 Density = 7900 kg/m^3
 SpecificHeat = 590 J/kg/K
 ThermalConductivity = 43 W/m/K
-ThermalExpansionCoefficient = 12 um/m/K
+ThermalExpansionCoefficient = 0.000012 m/m/K
