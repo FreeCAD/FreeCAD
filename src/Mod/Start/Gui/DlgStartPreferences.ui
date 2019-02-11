@@ -607,7 +607,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_13">
         <property name="text">
-         <string>Close &amp; switch on opening file</string>
+         <string>Close and switch on opening file</string>
         </property>
        </widget>
       </item>
