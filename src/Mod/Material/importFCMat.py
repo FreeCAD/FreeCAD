@@ -97,12 +97,16 @@ def read(filename):
         if sys.version_info.major < 3:
             filename = filename.encode(sys.getfilesystemencoding())
     # print(filename)
+    card_name_file = os.path.splitext(os.path.basename(filename))[0]
     f = pythonopen(filename)
     d = {}
+    d["CardName"] = card_name_file  # CardName is the MatCard file name
     ln = 0
     for line in f:
         if ln == 0:
-            d["CardName"] = line.split(";")[1].strip()  # Line 1
+            card_name_content = line.split(";")[1].strip()  # Line 1
+            if card_name_content != d["CardName"]:
+                FreeCAD.Console.PrintError("File CardName (" + card_name_file + ") is not content CardName (" + card_name_content + ")\n")
         elif ln == 1:
             d["AuthorAndLicense"] = line.split(";")[1].strip()  # Line 2
         else:
@@ -153,11 +157,15 @@ def write(filename, dictionary):
         if sys.version_info.major < 3:
             filename = filename.encode(sys.getfilesystemencoding())
     # print(filename)
+    card_name_file = os.path.splitext(os.path.basename(filename))[0]
+    # print(card_name_file)
     f = pythonopen(filename, "w")
     # write header
     # first five lines are the same in any card file, see comment above read def
+    if header["CardName"] != card_name_file:
+        FreeCAD.Console.PrintMessage("File CardName is used: " + card_name_file + " \n")  # CardName is the MatCard file name
     if sys.version_info.major >= 3:
-        f.write("; " + header["CardName"] + "\n")
+        f.write("; " + card_name_file + "\n")
         f.write("; " + header["AuthorAndLicense"] + "\n")
     else:
         f.write("; " + header["CardName"].encode("utf8") + "\n")
