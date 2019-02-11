@@ -184,7 +184,7 @@ protected:
     void hideBase();
     void showBase();
 
-    void addReferenceSelectionGate(bool edge, bool face);    
+    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false);    
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;

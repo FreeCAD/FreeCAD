@@ -258,6 +258,7 @@ static void checkVisibility(PartDesign::Feature *feat) {
     auto body = feat->getFeatureBody();
     if(!body) return;
     auto inset = feat->getInListEx(true);
+    inset.emplace(feat);
     for(auto o : body->Group.getValues()) {
         if(!o->Visibility.getValue() 
                 || !o->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
@@ -275,6 +276,7 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
         checkVisibility(getObject());
         selectionMode = addFeature;
         Gui::Selection().clearSelection();
+        addReferenceSelectionGate(false,true,false,true);
     } else {
         exitSelectionMode();
     }
@@ -458,9 +460,10 @@ void TaskTransformedParameters::exitSelectionMode()
     hideBase();
 }
 
-void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
+void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, bool planar, bool whole)
 {
-    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(new ReferenceSelection(getBaseObject(), edge, face, /*point =*/ true));
+    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(
+            new ReferenceSelection(getBaseObject(), edge, face, planar,false,whole));
     std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
     Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
