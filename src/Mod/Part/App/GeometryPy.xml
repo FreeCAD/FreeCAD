@@ -51,6 +51,16 @@ It describes the common behavior of these objects when:
     <Methode Name="clone" Const="true">
         <Documentation>
             <UserDocu>Create a clone of this geometry with the same Tag</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hasExtensionType" Const="true">
+        <Documentation>
+            <UserDocu>Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="hasExtensionName" Const="true">
+        <Documentation>
+            <UserDocu>Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="getExtension" Const="true">
