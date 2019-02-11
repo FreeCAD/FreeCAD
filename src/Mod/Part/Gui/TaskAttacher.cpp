@@ -802,8 +802,8 @@ void TaskAttacher::updateListOfModes()
 
             if (mmode != mmDeactivated) {
                 tooltip += QString::fromLatin1("\n\n%1\n%2")
-                        .arg(tr("Reference combinations:"))
-                        .arg(AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
+                        .arg(tr("Reference combinations:"),
+                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
             }
             item->setToolTip(tooltip);
 

@@ -1219,10 +1219,10 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
 void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) const
 {
     QString msg = QString::fromLatin1("%1 %2.%3.%4 ")
-            .arg(tr("Selected:"))
-            .arg(QString::fromUtf8(s1))
-            .arg(QString::fromUtf8(s2))
-            .arg(QString::fromUtf8(s3));
+            .arg(tr("Selected:"),
+                 QString::fromUtf8(s1),
+                 QString::fromUtf8(s2),
+                 QString::fromUtf8(s3));
     if (Gui::getMainWindow()) {
         Gui::getMainWindow()->showMessage(msg,3000);
     }
