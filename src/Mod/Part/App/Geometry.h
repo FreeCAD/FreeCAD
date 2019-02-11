@@ -100,6 +100,7 @@ public:
     const std::vector<std::weak_ptr<GeometryExtension>> getExtensions() const;
 
     bool hasExtension(Base::Type type) const;
+    bool hasExtension(std::string name) const;
     const std::weak_ptr<GeometryExtension> getExtension(Base::Type type) const;
     void setExtension(std::unique_ptr<GeometryExtension> &&geo);
     void deleteExtension(Base::Type type);
