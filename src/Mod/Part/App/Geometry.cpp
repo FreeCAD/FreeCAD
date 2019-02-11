@@ -260,10 +260,8 @@ const std::vector<std::weak_ptr<GeometryExtension>> Geometry::getExtensions() co
 {
     std::vector<std::weak_ptr<GeometryExtension>> wp;
 
-    wp.reserve(extensions.size());
-
-    for(size_t i=0; i<extensions.size(); i++)
-        wp[i]=extensions[i];
+    for(auto & ext:extensions)
+        wp.push_back(ext);
 
     return wp;
 }
