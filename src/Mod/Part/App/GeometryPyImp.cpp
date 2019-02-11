@@ -257,7 +257,7 @@ PyObject* GeometryPy::setExtension(PyObject *args)
     return 0;
 }
 
-PyObject* GeometryPy::getExtension(PyObject *args)
+PyObject* GeometryPy::getExtensionOfType(PyObject *args)
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -266,16 +266,19 @@ PyObject* GeometryPy::getExtension(PyObject *args)
 
         if(type != Base::Type::badType()) {
             try {
-                const std::weak_ptr<GeometryExtension> ext = this->getGeometryPtr()->getExtension(type);
+                std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
 
-                std::unique_ptr<GeometryExtension> cext = ext.lock()->copy();
+                // we create a copy and tranfer this copy's memory management responsibility to Python
+                GeometryExtension * rext = ext->copy().release();
 
-                GeometryExtension * pcext = cext.release();
-
-                return pcext->getPyObject();
+                return rext->getPyObject();
             }
             catch(Base::ValueError e) {
                 PyErr_SetString(PartExceptionOCCError, e.what());
+                return 0;
+            }
+            catch(std::bad_weak_ptr e) {
+                PyErr_SetString(PartExceptionOCCError, "Geometry extension does not exist anymore.");
                 return 0;
             }
         }
@@ -291,7 +294,35 @@ PyObject* GeometryPy::getExtension(PyObject *args)
     return 0;
 }
 
-PyObject* GeometryPy::hasExtensionType(PyObject *args)
+PyObject* GeometryPy::getExtensionOfName(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        try {
+            std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(std::string(o)));
+
+            // we create a copy and tranfer this copy's memory management responsibility to Python
+            GeometryExtension * rext = ext->copy().release();
+
+            return rext->getPyObject();
+        }
+        catch(Base::ValueError e) {
+            PyErr_SetString(PartExceptionOCCError, e.what());
+            return 0;
+        }
+        catch(std::bad_weak_ptr e) {
+            PyErr_SetString(PartExceptionOCCError, "Geometry extension does not exist anymore.");
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the name of the geometry extension was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::hasExtensionOfType(PyObject *args)
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -319,7 +350,7 @@ PyObject* GeometryPy::hasExtensionType(PyObject *args)
     return 0;
 }
 
-PyObject* GeometryPy::hasExtensionName(PyObject *args)
+PyObject* GeometryPy::hasExtensionOfName(PyObject *args)
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -338,7 +369,7 @@ PyObject* GeometryPy::hasExtensionName(PyObject *args)
     return 0;
 }
 
-PyObject* GeometryPy::deleteExtensionType(PyObject *args)
+PyObject* GeometryPy::deleteExtensionOfType(PyObject *args)
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -367,7 +398,7 @@ PyObject* GeometryPy::deleteExtensionType(PyObject *args)
     return 0;
 }
 
-PyObject* GeometryPy::deleteExtensionName(PyObject *args)
+PyObject* GeometryPy::deleteExtensionOfName(PyObject *args)
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
