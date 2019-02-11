@@ -109,8 +109,8 @@ def read(filename):
             # ; is a Commend
             # # might be a comment too ?
             # [ is a Section
-            if not line[0] in ";#[":
-                k = line.split("=")
+            if line[0] not in ";#[":
+                k = line.split("=", 1)  # only split once on first occurence, a link could contain a = and thus would be splitted
                 if len(k) == 2:
                     v = k[1].strip()
                     if hasattr(v, "decode"):
