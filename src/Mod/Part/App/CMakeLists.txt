@@ -54,6 +54,8 @@ generate_from_xml(GeometryPy)
 generate_from_xml(GeometryExtensionPy)
 generate_from_xml(GeometryIntExtensionPy)
 generate_from_xml(GeometryStringExtensionPy)
+generate_from_xml(GeometryBoolExtensionPy)
+generate_from_xml(GeometryDoubleExtensionPy)
 generate_from_xml(GeometryCurvePy)
 generate_from_xml(BoundedCurvePy)
 generate_from_xml(TrimmedCurvePy)
@@ -220,6 +222,10 @@ SET(Python_SRCS
     GeometryIntExtensionPyImp.cpp
     GeometryStringExtensionPy.xml
     GeometryStringExtensionPyImp.cpp
+    GeometryBoolExtensionPy.xml
+    GeometryBoolExtensionPyImp.cpp
+    GeometryDoubleExtensionPy.xml
+    GeometryDoubleExtensionPyImp.cpp
     GeometryCurvePy.xml
     GeometryCurvePyImp.cpp
     BoundedCurvePy.xml
