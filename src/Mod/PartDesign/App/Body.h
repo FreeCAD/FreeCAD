@@ -64,7 +64,7 @@ public:
     //@}
 
     /// Return the previous feature
-    App::DocumentObject* getPrevFeature(App::DocumentObject *start = NULL) const;
+    PartDesign::Feature* getPrevFeature(App::DocumentObject *start = NULL) const;
 
     /**
      * Add the feature into the body at the current insert point.

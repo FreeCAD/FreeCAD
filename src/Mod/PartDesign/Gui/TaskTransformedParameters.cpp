@@ -254,7 +254,8 @@ void TaskTransformedParameters::populate() {
 }
 
 // Make sure only some feature before the given one is visible
-static void checkVisibility(PartDesign::Feature *feat) {
+void TaskTransformedParameters::checkVisibility() {
+    auto feat = getObject();
     auto body = feat->getFeatureBody();
     if(!body) return;
     auto inset = feat->getInListEx(true);
@@ -267,13 +268,13 @@ static void checkVisibility(PartDesign::Feature *feat) {
             break;
         return;
     }
-    FCMD_OBJ_SHOW(feat->getBaseObject());
+    FCMD_OBJ_SHOW(getBaseObject());
 }
 
 void TaskTransformedParameters::onButtonAddFeature(bool checked)
 {
     if (checked) {
-        checkVisibility(getObject());
+        checkVisibility();
         selectionMode = addFeature;
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(false,true,false,true);
@@ -308,7 +309,7 @@ void TaskTransformedParameters::onFeatureDeleted(void) {
 void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
 {
     if (checked) {
-        checkVisibility(getObject());
+        checkVisibility();
         selectionMode = removeFeature;
         Gui::Selection().clearSelection();
     } else {
@@ -424,7 +425,13 @@ PartDesign::Transformed *TaskTransformedParameters::getObject() const {
 Part::Feature *TaskTransformedParameters::getBaseObject() const {
     PartDesign::Feature* feature = getTopTransformedObject ();
     // NOTE: getBaseObject() throws if there is no base; shouldn't happen here.
-    return feature->getBaseObject();
+    auto base = feature->getBaseObject(true);
+    if(!base) {
+        auto body = feature->getFeatureBody();
+        if(body)
+            base = body->getPrevFeature(feature);
+    }
+    return base;
 }
 
 App::DocumentObject* TaskTransformedParameters::getSketchObject() const {
@@ -453,11 +460,14 @@ void TaskTransformedParameters::showBase()
 
 void TaskTransformedParameters::exitSelectionMode()
 {
-    clearButtons();
-    selectionMode = none;
-    Gui::Selection().rmvSelectionGate();
-    showObject();
-    hideBase();
+    try {
+        clearButtons();
+        selectionMode = none;
+        Gui::Selection().rmvSelectionGate();
+        showObject();
+    } catch(Base::Exception &e) {
+        e.ReportException();
+    }
 }
 
 void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face, bool planar, bool whole)

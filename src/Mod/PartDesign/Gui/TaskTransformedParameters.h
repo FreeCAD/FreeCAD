@@ -189,6 +189,8 @@ protected:
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
 
+    void checkVisibility();
+
 protected:
     /** Notifies when the object is about to be removed. */
     virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);

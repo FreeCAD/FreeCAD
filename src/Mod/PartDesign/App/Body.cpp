@@ -118,19 +118,22 @@ short Body::mustExecute() const
     return Part::BodyBase::mustExecute();
 }
 
-App::DocumentObject* Body::getPrevFeature(App::DocumentObject *start) const
+PartDesign::Feature* Body::getPrevFeature(App::DocumentObject *start) const
 {
     std::vector<App::DocumentObject*> features = Group.getValues();
     if (features.empty()) return NULL;
     App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
     if (st == NULL)
-        return st; // Tip is NULL
+        return 0; // Tip is NULL
 
-    std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), st);
-    if (it == features.end()) return NULL; // Invalid start object
-
-    it--;
-    return *it;
+    PartDesign::Feature *res = 0;
+    for(auto obj : features) {
+        if(obj == st)
+            return res;
+        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            res = static_cast<PartDesign::Feature*>(obj);
+    }
+    return res;
 }
 
 App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)

@@ -2268,9 +2268,9 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         Gui::Selection().clearSelection();
         if (prevFeature != NULL)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
-        // TODO Review this (2015-09-05, Fat-Zer)
-        openCommand("Convert to MultiTransform feature");
-        doCommand(Gui, "FreeCADGui.runCommand('PartDesign_MoveTip')");
+
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+        rcCmdMgr.runCommandByName("PartDesign_MoveTip");
 
         // We cannot remove the Transform feature from the body as otherwise
         // we will have a PartDesign feature without a body which is not allowed
@@ -2300,7 +2300,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         if (pcActiveBody && oldTip != trFeat) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+            rcCmdMgr.runCommandByName("PartDesign_MoveTip");
             Gui::Selection().clearSelection();
         } // otherwise the insert point remains at the new MultiTransform, which is fine
     } else {
