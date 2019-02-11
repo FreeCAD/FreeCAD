@@ -34,7 +34,7 @@ namespace Part {
     {
         TYPESYSTEM_HEADER();
     public:
-        GeometryDefaultExtension() = default;
+        inline GeometryDefaultExtension();
         GeometryDefaultExtension(const T& val, std::string name = std::string());
         virtual ~GeometryDefaultExtension() = default;
 
@@ -63,7 +63,8 @@ namespace Part {
     //
     // Warnings:
     // - The default constructor relies on the default constructor of T for initialisation. Built-in types
-    //   so constructed will be uninitialised. Use the specific constructor from a T to initiliase it.
+    //   so constructed will be uninitialised. Use the specific constructor from a T to initiliase it. Note
+    //   that the default constructor is required by the type system (see TYPESYSTEM_SOURCE_TEMPLATE_T).
     //
     // Default assumptions:
     // - T can be constructed from T
@@ -84,6 +85,19 @@ namespace Part {
     // 4. Provide a specialisation of getPyObject to generate a py object of the corresponding type (cpp file)
     // 5. Provide specialisations if your type does not meet the assumptions above (e.g. for serialisation) (cpp file)
     // 6. Register your type and corresponding python type in AppPart.cpp
+
+    template <typename T>
+    inline GeometryDefaultExtension<T>::GeometryDefaultExtension(){ }
+
+    // Specialised constructors go here so that specialisation is before the template instantiation
+    // Specialised default constructors are inline, because a full specialisation otherwise shall go in the cpp file, but there it would be after the template instantiation.
+    template <>
+    inline GeometryDefaultExtension<long>::GeometryDefaultExtension():value(0){}
+
+    // instantiate the types so that other translation units (python wrappers) can access template
+    //constructors other than the default.
+    template class GeometryDefaultExtension<long>;
+    template class GeometryDefaultExtension<std::string>;
 
     // Prefer alias to typedef item 9
     using GeometryIntExtension = GeometryDefaultExtension<long>;
