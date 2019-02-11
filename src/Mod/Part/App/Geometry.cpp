@@ -311,13 +311,15 @@ void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
     bool hasext=false;
 
     for( auto & ext : extensions) {
-        if(ext->getTypeId() == geo->getTypeId()){
+        // if same type and name, this modifies the existing extension.
+        if( ext->getTypeId() == geo->getTypeId() &&
+            ext->getName() == geo->getName()){
             ext = std::move(geo);
             hasext = true;
         }
     }
 
-    if(!hasext)
+    if(!hasext) // new type-name unique id, so add.
         extensions.push_back(std::move(geo));
 }
 

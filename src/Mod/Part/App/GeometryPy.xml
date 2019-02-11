@@ -88,7 +88,7 @@ It describes the common behavior of these objects when:
             <UserDocu>Deletes all extensions of the indicated name.</UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="showExtensions" Const="true">
+    <Methode Name="getExtensions" Const="true">
         <Documentation>
             <UserDocu>Returns a list with information about the geometry extensions.</UserDocu>
         </Documentation>
