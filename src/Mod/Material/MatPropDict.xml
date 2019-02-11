@@ -7,8 +7,6 @@
         </Property>
         <Property Name="AuthorAndLicense" Type="String">
         </Property>
-        <Property Name="Source" Type="String">
-        </Property>
     </Group>
 
     <Group Name="General">
@@ -18,17 +16,16 @@
         </Property>
         <Property Name="Description" Type="String">
         </Property>
-        <Property Name="Density" Type="Quantity" Units="(-3, 1, 0, 0, 0, 0, 0, 0)">
+        <Property Name="ReferenceSource" Type="String">
         </Property>
-        <Property Name="Vendor" Type="String">
-        </Property>
-        <Property Name="ProductURL" Type="URL">
-        </Property>
-        <Property Name="SpecificPrice" Type="Float">
+        <Property Name="SourceURL" Type="URL">
         </Property>
     </Group>
 
     <Group Name="Mechanical">
+        <Property Name="Density" Type="Quantity" Units="(-3, 1, 0, 0, 0, 0, 0, 0)">
+            <Reference>https://en.wikipedia.org/wiki/Density</Reference>
+        </Property>
         <Property Name="YoungsModulus" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
             <Reference>https://en.wikipedia.org/wiki/Young%27s_modulus</Reference>
         </Property>
@@ -124,6 +121,15 @@
         <Property Name="SectionLinewidth" Type="Quantity" Units="(1, 0, 0, 0, 0, 0, 0, 0)">
         </Property>
     </Group>
+
+    <Group Name="Cost">
+        <Property Name="Vendor" Type="String">
+        </Property>
+        <Property Name="SpecificPrice" Type="Float">
+        </Property>
+        <Property Name="ProductURL" Type="URL">
+        </Property>
+     </Group>
 
     <Group Name="User defined">
     </Group>
