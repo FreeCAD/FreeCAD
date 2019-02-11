@@ -506,14 +506,10 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
             } else {
                 msg = QCoreApplication::translate("SelectionFilter","Not allowed:");
             }
-            msg += QString::fromUtf8(" "); 
-            msg.append(
-                        QObject::tr("%1.%2.%3")
-                       .arg(QString::fromLatin1(pDocName))
-                       .arg(QString::fromLatin1(pObjectName))
-                       .arg(QString::fromLatin1(pSubName))
-                        );
-            msg += QString::fromUtf8(" "); 
+            msg.append(QString::fromLatin1(" %1.%2.%3 ")
+                  .arg(QString::fromLatin1(pDocName))
+                  .arg(QString::fromLatin1(pObjectName))
+                  .arg(QString::fromLatin1(pSubName)));
 
             if (getMainWindow()) {
                 getMainWindow()->showMessage(msg);
