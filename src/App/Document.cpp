@@ -2740,9 +2740,22 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
             std::ostringstream ss;
             ss << std::endl;
             for(auto &v : components) {
-                // Ignore components with only one member
-                if(v.second.size()==1)
+                if(v.second.size()==1) {
+                    // For components with only one member, we still need to
+                    // check if there it is self looping.
+                    auto it = vertexMap.find(v.second[0]);
+                    if(it==vertexMap.end())
+                        continue;
+                    // Try search the object in its own out list
+                    for(auto obj : it->second->getOutList()) {
+                        if(obj == it->second) {
+                            ss << std::endl << it->second->getFullName() << std::endl;
+                            break;
+                        }
+                    }
                     continue;
+                }
+                // For components with more than one member, they form a loop together
                 for(size_t i=0;i<v.second.size();++i) {
                     auto it = vertexMap.find(v.second[i]);
                     if(it==vertexMap.end())
