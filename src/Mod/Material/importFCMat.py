@@ -146,13 +146,6 @@ def write(filename, dictionary):
     f.write("; http://www.freecadweb.org/wiki/index.php?title=Material\n")
     f.write("; file produced by FreeCAD" + rev + "\n")
     f.write("\n")
-    if header["Source"]:
-        f.write("; source of the data provided in this card:\n")
-        if sys.version_info.major >= 3:
-            f.write("; " + header["Source"] + "\n")
-        else:
-            f.write("; " + header["Source"].encode("utf8") + "\n")
-        f.write("\n")
     # write sections
     for s in contents:
         if s["keyname"] != "Meta":
