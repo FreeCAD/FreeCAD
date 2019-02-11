@@ -32,6 +32,8 @@
 
 #include "GeometryStringExtensionPy.h"
 #include "GeometryIntExtensionPy.h"
+#include "GeometryBoolExtensionPy.h"
+#include "GeometryDoubleExtensionPy.h"
 
 using namespace Part;
 
@@ -121,4 +123,36 @@ PyObject * GeometryDefaultExtension<std::string>::getPyObject(void)
     return new GeometryStringExtensionPy(new GeometryStringExtension(*this));
 }
 
+// ---------- GeometryBoolExtension ----------
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryBoolExtension,Part::GeometryExtension)
 
+template <>
+PyObject * GeometryDefaultExtension<bool>::getPyObject(void)
+{
+    return new GeometryBoolExtensionPy(new GeometryBoolExtension(*this));
+}
+
+template <>
+void GeometryDefaultExtension<bool>::Restore(Base::XMLReader &reader)
+{
+    restoreNameAttribute(reader);
+
+    value = (bool)reader.getAttributeAsInteger("value");
+}
+
+// ---------- GeometryDoubleExtension ----------
+TYPESYSTEM_SOURCE_TEMPLATE_T(Part::GeometryDoubleExtension,Part::GeometryExtension)
+
+template <>
+PyObject * GeometryDefaultExtension<double>::getPyObject(void)
+{
+    return new GeometryDoubleExtensionPy(new GeometryDoubleExtension(*this));
+}
+
+template <>
+void GeometryDefaultExtension<double>::Restore(Base::XMLReader &reader)
+{
+    restoreNameAttribute(reader);
+
+    value = reader.getAttributeAsFloat("value");
+}
