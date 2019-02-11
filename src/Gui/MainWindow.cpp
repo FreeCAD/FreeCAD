@@ -592,7 +592,7 @@ int MainWindow::confirmSave(const char *docName, QWidget *parent, bool addCheckb
     box.setDefaultButton(QMessageBox::Save);
     box.setEscapeButton(QMessageBox::Cancel);
 
-    QCheckBox checkBox(QObject::tr("Apply awnser to all"));
+    QCheckBox checkBox(QObject::tr("Apply answer to all"));
     ParameterGrp::handle hGrp;
     if(addCheckbox) {
          hGrp = App::GetApplication().GetUserParameter().
