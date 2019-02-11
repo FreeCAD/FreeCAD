@@ -53,19 +53,24 @@ It describes the common behavior of these objects when:
             <UserDocu>Create a clone of this geometry with the same Tag</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="hasExtensionType" Const="true">
+    <Methode Name="hasExtensionOfType" Const="true">
         <Documentation>
             <UserDocu>Returns a boolean indicating whether a geometry extension of the type indicated as a string exists.</UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="hasExtensionName" Const="true">
+    <Methode Name="hasExtensionOfName" Const="true">
         <Documentation>
             <UserDocu>Returns a boolean indicating whether a geometry extension with the name indicated as a string exists.</UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="getExtension" Const="true">
+    <Methode Name="getExtensionOfType" Const="true">
         <Documentation>
-            <UserDocu>Gets a geometry extension of the indicated type.</UserDocu>
+            <UserDocu>Gets the first geometry extension of the type indicated by the string.</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="getExtensionOfName" Const="true">
+        <Documentation>
+            <UserDocu>Gets the first geometry extension of the name indicated by the string.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="setExtension" Const="false">
@@ -73,12 +78,12 @@ It describes the common behavior of these objects when:
             <UserDocu>Sets a geometry extension of the indicated type.</UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="deleteExtensionType" Const="false">
+    <Methode Name="deleteExtensionOfType" Const="false">
         <Documentation>
             <UserDocu>Deletes all extensions of the indicated type.</UserDocu>
         </Documentation>
     </Methode>
-    <Methode Name="deleteExtensionName" Const="false">
+    <Methode Name="deleteExtensionOfName" Const="false">
         <Documentation>
             <UserDocu>Deletes all extensions of the indicated name.</UserDocu>
         </Documentation>
