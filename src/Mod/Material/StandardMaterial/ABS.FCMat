@@ -1,11 +1,11 @@
-; Standard AcrylnitrilButadienStyrol (ABS) Material
+; ABS
 ; (c) 2013 Juergen Riegel (CC-BY 3.0)
 ; information about the content of such cards you can find here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
 Name = ABS
-Description = This is a blend ABS material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised ABS-blend cards.
+Description = This is a blend AcrylnitrilButadienStyrol (ABS) material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised ABS-blend cards.
 Father = Thermoplast
 ProductURL = http://en.wikipedia.org/wiki/Acrylonitrile_butadiene_styrene
 SpecificPrice = 3

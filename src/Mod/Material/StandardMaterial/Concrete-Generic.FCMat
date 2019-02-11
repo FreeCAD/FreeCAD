@@ -1,7 +1,7 @@
-; Standard Concrete Material
+; Concrete-Generic
 ; (c) 2013 Yorik van Havre (CC-BY 3.0)
-; file produced by FreeCAD 0.14 2756 (Git)
 ; information about the content of this card can be found here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
 Name = Concrete
