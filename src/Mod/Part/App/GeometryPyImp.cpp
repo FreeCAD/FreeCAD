@@ -247,7 +247,8 @@ PyObject* GeometryPy::setExtension(PyObject *args)
         Part::GeometryExtension * ext;
         ext = static_cast<GeometryExtensionPy *>(o)->getGeometryExtensionPtr();
 
-        std::unique_ptr<GeometryExtension> cpy = ext->copy(); // allocate new extension in memory
+        // make copy of Python managed memory and wrap it in smart pointer
+        auto cpy = ext->copy();
 
         this->getGeometryPtr()->setExtension(std::move(cpy));
         Py_Return;
@@ -417,7 +418,7 @@ PyObject* GeometryPy::deleteExtensionOfName(PyObject *args)
     return 0;
 }
 
-PyObject* GeometryPy::showExtensions(PyObject *args)
+PyObject* GeometryPy::getExtensions(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, "")){
         PyErr_SetString(PartExceptionOCCError, "No arguments were expected");
@@ -427,21 +428,20 @@ PyObject* GeometryPy::showExtensions(PyObject *args)
     try {
         const std::vector<std::weak_ptr<GeometryExtension>> ext = this->getGeometryPtr()->getExtensions();
 
+        PyObject* list = PyList_New(ext.size());
 
         Py::Tuple tuple(ext.size());
 
         for (std::size_t i=0; i<ext.size(); ++i) {
-            std::stringstream str;
+
             std::shared_ptr<GeometryExtension> p = ext[i].lock();
 
             if(p) {
-                str << "<" << p->getTypeId().getName() << ", \"" << p->getName() << "\">";
-
-                tuple.setItem(i, Py::String(str.str()));
+                PyList_SetItem( list, i, p->getPyObject());
             }
         }
 
-        return Py::new_reference_to(tuple);
+        return list;
     }
     catch(Base::ValueError e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
