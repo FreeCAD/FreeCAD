@@ -291,6 +291,39 @@ PyObject* GeometryPy::getExtension(PyObject *args)
     return 0;
 }
 
+PyObject* GeometryPy::showExtensions(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, "")){
+        PyErr_SetString(PartExceptionOCCError, "No arguments were expected");
+        return NULL;
+    }
+
+    try {
+        const std::vector<std::weak_ptr<GeometryExtension>> ext = this->getGeometryPtr()->getExtensions();
+
+
+        Py::Tuple tuple(ext.size());
+
+        for (std::size_t i=0; i<ext.size(); ++i) {
+            std::stringstream str;
+            std::shared_ptr<GeometryExtension> p = ext[i].lock();
+
+            if(p) {
+                str << "<" << p->getTypeId().getName() << ", \"" << p->getName() << "\">";
+
+                tuple.setItem(i, Py::String(str.str()));
+            }
+        }
+
+        return Py::new_reference_to(tuple);
+    }
+    catch(Base::ValueError e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
+        return 0;
+    }
+
+}
+
 Py::Boolean GeometryPy::getConstruction(void) const
 {
     return Py::Boolean(getGeometryPtr()->Construction);
