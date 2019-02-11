@@ -291,6 +291,54 @@ PyObject* GeometryPy::getExtension(PyObject *args)
     return 0;
 }
 
+PyObject* GeometryPy::deleteExtensionType(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        Base::Type type = Base::Type::fromName(o);
+
+        if(type != Base::Type::badType()) {
+            try {
+                this->getGeometryPtr()->deleteExtension(type);
+                Py_Return;
+            }
+            catch(Base::ValueError e) {
+                PyErr_SetString(PartExceptionOCCError, e.what());
+                return 0;
+            }
+        }
+        else
+        {
+            PyErr_SetString(PartExceptionOCCError, "Type does not exist");
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with a type object was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::deleteExtensionName(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        try {
+            this->getGeometryPtr()->deleteExtension(std::string(o));
+            Py_Return;
+        }
+        catch(Base::ValueError e) {
+            PyErr_SetString(PartExceptionOCCError, e.what());
+            return 0;
+        }
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the name of the extension was expected");
+    return 0;
+}
+
 PyObject* GeometryPy::showExtensions(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, "")){
