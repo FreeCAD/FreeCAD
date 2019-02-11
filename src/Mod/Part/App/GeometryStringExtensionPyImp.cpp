@@ -50,7 +50,7 @@ std::string GeometryStringExtensionPy::representation(void) const
 
 PyObject *GeometryStringExtensionPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of PointPy and the Twin object
+    // create a new instance of the python object and the Twin object
     return new GeometryStringExtensionPy(new GeometryStringExtension);
 }
 
@@ -70,11 +70,19 @@ int GeometryStringExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
+    PyErr_Clear();
+    char * pystr;
+    if (PyArg_ParseTuple(args, "ss", &pstr, &pystr)) {
+        this->getGeometryStringExtensionPtr()->setValue(pstr);
+        this->getGeometryStringExtensionPtr()->setName(pystr);
+        return 0;
+    }
 
 
     PyErr_SetString(PyExc_TypeError, "GeometryStringExtension constructor accepts:\n"
     "-- empty parameter list\n"
-    "-- string\n");
+    "-- string\n"
+    "-- string, string\n");
     return -1;
 }
 
