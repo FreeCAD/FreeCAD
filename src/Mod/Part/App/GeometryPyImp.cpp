@@ -291,6 +291,53 @@ PyObject* GeometryPy::getExtension(PyObject *args)
     return 0;
 }
 
+PyObject* GeometryPy::hasExtensionType(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        Base::Type type = Base::Type::fromName(o);
+
+        if(type != Base::Type::badType()) {
+            try {
+                return Py::new_reference_to(Py::Boolean(this->getGeometryPtr()->hasExtension(type)));
+            }
+            catch(Base::ValueError e) {
+                PyErr_SetString(PartExceptionOCCError, e.what());
+                return 0;
+            }
+        }
+        else
+        {
+            PyErr_SetString(PartExceptionOCCError, "Exception type does not exist");
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the type of the geometry extension was expected");
+    return 0;
+}
+
+PyObject* GeometryPy::hasExtensionName(PyObject *args)
+{
+    char* o;
+    if (PyArg_ParseTuple(args, "s", &o)) {
+
+        try {
+            return Py::new_reference_to(Py::Boolean(this->getGeometryPtr()->hasExtension(std::string(o))));
+        }
+        catch(Base::ValueError e) {
+            PyErr_SetString(PartExceptionOCCError, e.what());
+            return 0;
+        }
+
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "A string with the type of the geometry extension was expected");
+    return 0;
+}
+
 PyObject* GeometryPy::deleteExtensionType(PyObject *args)
 {
     char* o;
