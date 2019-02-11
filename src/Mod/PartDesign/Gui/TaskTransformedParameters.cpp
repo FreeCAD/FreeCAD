@@ -213,6 +213,7 @@ void TaskTransformedParameters::populate() {
         bool missing = false;
         auto obj = *itValue++;
         const auto &shadow = *itShadow++;
+        QLatin1String subName(sub.c_str());
         if(feat!=obj)
             feat = Base::freecad_dynamic_cast<PartDesign::Feature>(obj);
         if(feat && shadow.first.size()) {
@@ -223,23 +224,24 @@ void TaskTransformedParameters::populate() {
                 if(names.size()) {
                     auto &name = names.front();
                     FC_WARN("guess element reference: " << shadow.first << " -> " << name.first);
+                    sub = name.second;
+                    subName = QLatin1String(sub.c_str());
                     touched = true;
                 }else{
                     if(!boost::starts_with(sub,Data::ComplexGeoData::missingPrefix()))
                         sub = Data::ComplexGeoData::missingPrefix() + sub;
+                    subName = QLatin1String(sub.c_str());
+                    sub = shadow.first; // use new style name for future guessing
                     missing = true;
                 }
             }
         }
         QString label = QString::fromUtf8(obj->Label.getValue());
         QLatin1String objectName(obj->getNameInDocument());
-        QLatin1String subName(sub.c_str());
         if(sub.size()) 
             label += QString::fromLatin1(" (%1)").arg(subName);
         QListWidgetItem* item = new QListWidgetItem(listWidget);
         item->setText(label);
-        item->setData(Qt::UserRole, objectName);
-        item->setData(Qt::UserRole+1, subName);
         if(missing)
             item->setForeground(Qt::red);
     }

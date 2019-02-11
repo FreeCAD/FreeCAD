@@ -97,7 +97,7 @@ void TaskDressUpParameters::setup(QListWidget *widget) {
             widget->addItem(QString::fromStdString(sub.second));
             continue;
         }
-        auto &ref = sub.first;
+        const auto &ref = sub.first;
         Part::TopoShape edge;
         try {
             edge = baseShape.getSubShape(ref.c_str());
@@ -121,11 +121,13 @@ void TaskDressUpParameters::setup(QListWidget *widget) {
             refs.push_back(name.second);
         }
         if(!popped) {
-            if(!boost::starts_with(refs.back(),Data::ComplexGeoData::missingPrefix()))
-                refs.back() = Data::ComplexGeoData::missingPrefix()+refs.back();
+            std::string missingSub = refs.back();
+            if(!boost::starts_with(missingSub,Data::ComplexGeoData::missingPrefix()))
+                missingSub = Data::ComplexGeoData::missingPrefix()+missingSub;
             auto item = new QListWidgetItem(widget);
-            item->setText(QString::fromStdString(refs.back()));
+            item->setText(QString::fromStdString(missingSub));
             item->setForeground(Qt::red);
+            refs.back() = ref; // use new style name for future guessing
         }
     }
     if(touched){
