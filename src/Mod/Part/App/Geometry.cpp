@@ -296,6 +296,16 @@ const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) c
     throw Base::ValueError("No geometry extension of the requested type.");
 }
 
+const std::weak_ptr<GeometryExtension> Geometry::getExtension(std::string name) const
+{
+    for( auto ext : extensions) {
+        if(ext->getName() == name)
+            return ext;
+    }
+
+    throw Base::ValueError("No geometry extension with the requested name.");
+}
+
 void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
 {
     bool hasext=false;
