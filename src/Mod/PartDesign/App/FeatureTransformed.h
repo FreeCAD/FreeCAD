@@ -47,7 +47,8 @@ public:
     /** The shapes to be transformed
       * if Originals is empty the instance is just a container for storing transformation data
       */
-    App::PropertyLinkSubList Originals;
+    App::PropertyLinkList Originals; // For backward compatibility
+    App::PropertyLinkSubList OriginalSubs; // to replace Originals for working with multiple solids
 
     App::PropertyBool Refine;
 
@@ -83,6 +84,9 @@ public:
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     //@}
+
+    virtual void onDocumentRestored() override;
+    virtual void onChanged(const App::Property *) override;
 
     /** returns a list of the transformations that where rejected during the last execute
       * because they did not ovelap with the support

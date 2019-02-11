@@ -65,6 +65,7 @@ Transformed::Transformed()
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
+    ADD_PROPERTY(OriginalSubs,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Base",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
@@ -93,7 +94,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
     }
 
     const char* err = nullptr;
-    const std::vector<App::DocumentObject*> & originals = Originals.getValues();
+    const std::vector<App::DocumentObject*> & originals = OriginalSubs.getValues();
     // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here first 
     App::DocumentObject* firstOriginal = originals.empty() ? NULL : originals.front();
     if (firstOriginal) {
@@ -115,7 +116,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
 
 App::DocumentObject* Transformed::getSketchObject() const
 {
-    std::vector<DocumentObject*> originals = Originals.getValues();
+    std::vector<DocumentObject*> originals = OriginalSubs.getValues();
     if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
         return (static_cast<PartDesign::ProfileBased*>(originals.front()))->getVerifiedSketch(true);
     }
@@ -146,17 +147,9 @@ void Transformed::handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
 {
     Base::Type inputType = Base::Type::fromName(TypeName);
-    if(prop == &Originals && inputType == App::PropertyLinkList::getClassTypeId()) {
-        App::PropertyLinkList tmp;
-        tmp.setContainer(this);
-        tmp.Restore(reader);
-        auto values = tmp.getValues();
-        std::vector<std::string> subs(values.size());
-        Originals.setValues(values,subs);
-    }
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
     // to PropertyAngle and the property 'Length' has changed to PropertyLength.
-    else if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
             inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
@@ -168,7 +161,7 @@ void Transformed::handleChangedPropertyType(
 
 short Transformed::mustExecute() const
 {
-    if (Originals.isTouched())
+    if (OriginalSubs.isTouched())
         return 1;
     return PartDesign::Feature::mustExecute();
 }
@@ -177,7 +170,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 {
     rejected.clear();
 
-    auto originals = Originals.getSubListValues(true);
+    auto originals = OriginalSubs.getSubListValues(true);
     if (originals.empty()) {
         if(!BaseFeature.getValue()) {
             // typically InsideMultiTransform
@@ -472,4 +465,61 @@ void Transformed::divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vec
     }
 }
 
+void Transformed::onDocumentRestored() {
+    if(OriginalSubs.getValues().empty() && Originals.getSize()) {
+        std::vector<std::string> subs(Originals.getSize());
+        OriginalSubs.setValues(Originals.getValues(),subs);
+    }
+    PartDesign::Feature::onDocumentRestored();
+}
+
+void Transformed::onChanged(const App::Property *prop) {
+    if (!this->isRestoring() 
+            && this->getDocument()
+            && !this->getDocument()->isPerformingTransaction()
+            && !prop->testStatus(App::Property::User3))
+    {
+        if(prop == &Originals) {
+            std::map<App::DocumentObject*,std::vector<std::string> > subMap;
+            const auto &originals = OriginalSubs.getSubListValues();
+            for(auto &v : originals) {
+                auto &subs = subMap[v.first];
+                subs.insert(subs.end(),v.second.begin(),v.second.end());
+            }
+            std::vector<App::PropertyLinkSubList::SubSet> subset;
+            std::set<App::DocumentObject*> objSet;
+            bool touched = false;
+            for(auto obj : Originals.getValues()) {
+                if(!objSet.insert(obj).second)
+                    continue;
+                auto it = subMap.find(obj);
+                if(it == subMap.end()) {
+                    touched = true;
+                    subset.emplace_back(obj,std::vector<std::string>());
+                    continue;
+                }
+                subset.emplace_back(it->first,std::move(it->second));
+                subMap.erase(it);
+            }
+            if(subMap.size() || touched || originals!=subset) {
+                OriginalSubs.setStatus(App::Property::User3,true);
+                OriginalSubs.setSubListValues(subset);
+                OriginalSubs.setStatus(App::Property::User3,false);
+            }
+        }else if(prop == &OriginalSubs) {
+            std::set<App::DocumentObject*> objSet;
+            std::vector<App::DocumentObject *> objs;
+            for(auto obj : OriginalSubs.getValues()) {
+                if(objSet.insert(obj).second)
+                    objs.push_back(obj);
+            }
+            if(objs != Originals.getValues()) {
+                Originals.setStatus(App::Property::User3,true);
+                Originals.setValues(objs);
+                Originals.setStatus(App::Property::User3,false);
+            }
+        }
+    }
+    PartDesign::Feature::onChanged(prop);
+}
 }

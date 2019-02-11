@@ -130,7 +130,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
         auto selectedObject = Base::freecad_dynamic_cast<PartDesign::Feature>(
                 pcTransformed->getDocument()->getObject(msg.pObjectName));
         if (selectedObject) {
-            auto subset = pcTransformed->Originals.getSubListValues();
+            auto subset = pcTransformed->OriginalSubs.getSubListValues();
             std::map<App::DocumentObject*,std::pair<size_t,std::set<std::string> > > submap;
             for(auto it=subset.begin(),itNext=it;it!=subset.end();it=itNext) {
                 ++itNext;
@@ -178,7 +178,7 @@ bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& ms
                 }
             }
             setupTransaction();
-            pcTransformed->Originals.setSubListValues(subset);
+            pcTransformed->OriginalSubs.setSubListValues(subset);
             populate();
             recomputeFeature();
             return true;
@@ -202,12 +202,12 @@ void TaskTransformedParameters::populate() {
         return;
     PartDesign::Transformed* pcTransformed = getObject();
     listWidget->clear();
-    auto values = pcTransformed->Originals.getValues();
+    auto values = pcTransformed->OriginalSubs.getValues();
     auto itValue = values.begin();
-    const auto &shadows = pcTransformed->Originals.getShadowSubs();
+    const auto &shadows = pcTransformed->OriginalSubs.getShadowSubs();
     auto itShadow = shadows.begin();
     PartDesign::Feature *feat = 0;
-    auto subs = pcTransformed->Originals.getSubValues(false);
+    auto subs = pcTransformed->OriginalSubs.getSubValues(false);
     bool touched = false;
     for(auto &sub : subs) {
         bool missing = false;
@@ -248,7 +248,7 @@ void TaskTransformedParameters::populate() {
 
     if(touched) {
         setupTransaction();
-        getObject()->Originals.setValues(values,subs);
+        getObject()->OriginalSubs.setValues(values,subs);
         recomputeFeature();
     }
 }
@@ -293,13 +293,13 @@ void TaskTransformedParameters::setupListWidget(QListWidget *widget) {
 
 void TaskTransformedParameters::onFeatureDeleted(void) {
     PartDesign::Transformed* pcTransformed = getObject();
-    auto values = pcTransformed->Originals.getValues();
-    auto subs = pcTransformed->Originals.getSubValues(false);
+    auto values = pcTransformed->OriginalSubs.getValues();
+    auto subs = pcTransformed->OriginalSubs.getSubValues(false);
     if(values.size()==subs.size() && listWidget->currentRow()<(int)values.size()) {
         values.erase(values.begin() + listWidget->currentRow());
         subs.erase(subs.begin() + listWidget->currentRow());
 
-        pcTransformed->Originals.setValues(values,subs);
+        pcTransformed->OriginalSubs.setValues(values,subs);
         recomputeFeature();
     }
     populate();
@@ -500,6 +500,8 @@ TaskDlgTransformedParameters::TaskDlgTransformedParameters(
 
 bool TaskDlgTransformedParameters::accept()
 {
+    parameter->exitSelectionMode();
+
     // Continue (usually in virtual method accept())
     return TaskDlgFeatureParameters::accept ();
 }

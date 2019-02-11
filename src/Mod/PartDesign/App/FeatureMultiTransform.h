@@ -50,8 +50,6 @@ public:
     }
     //@}
 
-    std::vector<App::DocumentObject*> getOriginals() const { return Originals.getValues(); }
-
     /** Create transformations
       * Returns a list containing the product of all transformations of the subfeatures given
       * by the Transformations property. Subfeatures can be Mirrored, LinearPattern, PolarPattern and
