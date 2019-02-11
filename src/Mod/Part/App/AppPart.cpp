@@ -62,6 +62,8 @@
 #include "Geometry2d.h"
 #include "Mod/Part/App/GeometryIntExtensionPy.h"
 #include "Mod/Part/App/GeometryStringExtensionPy.h"
+#include "Mod/Part/App/GeometryBoolExtensionPy.h"
+#include "Mod/Part/App/GeometryDoubleExtensionPy.h"
 #include "Mod/Part/App/TopoShapePy.h"
 #include "Mod/Part/App/TopoShapeVertexPy.h"
 #include "Mod/Part/App/TopoShapeFacePy.h"
@@ -359,6 +361,8 @@ PyMOD_INIT_FUNC(Part)
 
     Base::Interpreter().addType(&Part::GeometryIntExtensionPy ::Type,partModule,"GeometryIntExtension");
     Base::Interpreter().addType(&Part::GeometryStringExtensionPy ::Type,partModule,"GeometryStringExtension");
+    Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
+    Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
 
 #if PY_MAJOR_VERSION >= 3
     static struct PyModuleDef BRepOffsetAPIDef = {
@@ -486,6 +490,8 @@ PyMOD_INIT_FUNC(Part)
     Part::GeometryExtension	  ::init();
     Part::GeometryIntExtension	  ::init();
     Part::GeometryStringExtension ::init();
+    Part::GeometryBoolExtension	  ::init();
+    Part::GeometryDoubleExtension ::init();
     Part::Geometry                ::init();
     Part::GeomPoint               ::init();
     Part::GeomCurve               ::init();
