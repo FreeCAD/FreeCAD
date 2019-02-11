@@ -63,6 +63,16 @@ It describes the common behavior of these objects when:
             <UserDocu>Sets a geometry extension of the indicated type.</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="deleteExtensionType" Const="false">
+        <Documentation>
+            <UserDocu>Deletes all extensions of the indicated type.</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="deleteExtensionName" Const="false">
+        <Documentation>
+            <UserDocu>Deletes all extensions of the indicated name.</UserDocu>
+        </Documentation>
+    </Methode>
     <Methode Name="showExtensions" Const="true">
         <Documentation>
             <UserDocu>Returns a list with information about the geometry extensions.</UserDocu>

@@ -301,6 +301,28 @@ void Geometry::setExtension(std::unique_ptr<GeometryExtension> && geo)
         extensions.push_back(std::move(geo));
 }
 
+void Geometry::deleteExtension(Base::Type type)
+{
+    extensions.erase(
+        std::remove_if( extensions.begin(),
+                        extensions.end(),
+                        [&type](const std::shared_ptr<GeometryExtension>& ext){
+                            return ext->getTypeId() == type;
+                        }),
+        extensions.end());
+}
+
+void Geometry::deleteExtension(std::string name)
+{
+    extensions.erase(
+        std::remove_if( extensions.begin(),
+                        extensions.end(),
+                        [&name](const std::shared_ptr<GeometryExtension>& ext){
+                            return ext->getName() == name;
+                        }),
+        extensions.end());
+}
+
 
 void Geometry::createNewTag()
 {
