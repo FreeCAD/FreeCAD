@@ -860,7 +860,7 @@ while doing a left or right click and move the mouse up or down</source>
       <source>The shortcut '%1' is already assigned to '%2'.
 
 Do you want to override it?</source>
-      <translation>Die Verknüpfung "%1" ist bereits "%2" zugewiesen. Möchten Sie sie überschreiben?</translation>
+      <translation>Die Tastenkombination "%1" ist bereits "%2" zugewiesen. Möchten Sie sie überschreiben?</translation>
     </message>
   </context>
   <context>
@@ -7370,7 +7370,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation>Bist du sicher, dass du fortfahren möchtest?</translation>
+      <translation>Sind Sie sicher, dass Sie fortfahren möchten?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>
