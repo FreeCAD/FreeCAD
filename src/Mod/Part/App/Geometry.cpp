@@ -276,6 +276,16 @@ bool Geometry::hasExtension(Base::Type type) const
     return false;
 }
 
+bool Geometry::hasExtension(std::string name) const
+{
+    for( auto ext : extensions) {
+        if(ext->getName() == name)
+            return true;
+    }
+
+    return false;
+}
+
 const std::weak_ptr<GeometryExtension> Geometry::getExtension(Base::Type type) const
 {
     for( auto ext : extensions) {
