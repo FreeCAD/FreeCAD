@@ -130,7 +130,7 @@ def write(filename, dictionary):
         if not found:
             user[k] = i
     # write header
-    rev = FreeCAD.ConfigGet("BuildVersionMajor") + "." + FreeCAD.ConfigGet("BuildVersionMinor") + " " + FreeCAD.ConfigGet("BuildRevision")
+    rev = FreeCAD.ConfigGet("BuildVersionMajor") + "." + FreeCAD.ConfigGet("BuildVersionMinor") + "." + FreeCAD.ConfigGet("BuildRevision")
     if isinstance(filename, unicode):
         if sys.version_info.major < 3:
             filename = filename.encode(sys.getfilesystemencoding())
@@ -142,9 +142,9 @@ def write(filename, dictionary):
     else:
         f.write("; " + header["CardName"].encode("utf8") + "\n")
         f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
-    f.write("; file produced by FreeCAD " + rev + "\n")
     f.write("; information about the content of this card can be found here:\n")
     f.write("; http://www.freecadweb.org/wiki/index.php?title=Material\n")
+    f.write("; file produced by FreeCAD" + rev + "\n")
     f.write("\n")
     if header["Source"]:
         f.write("; source of the data provided in this card:\n")
