@@ -306,7 +306,13 @@ App.Units.KiloPascal    = App.Units.Quantity('kPa')
 App.Units.MegaPascal    = App.Units.Quantity('MPa')
 App.Units.GigaPascal    = App.Units.Quantity('GPa')
 
+App.Units.PoundForce    = App.Units.Quantity().PoundForce
+App.Units.Torr          = App.Units.Quantity().Torr
+App.Units.mTorr         = App.Units.Quantity().mTorr
+App.Units.yTorr         = App.Units.Quantity().yTorr
+
 App.Units.PSI           = App.Units.Quantity('psi')
+App.Units.KSI           = App.Units.Quantity('ksi')
 
 App.Units.Watt          = App.Units.Quantity('W')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
@@ -325,12 +331,15 @@ App.Units.KMH           = App.Units.Quantity('km/h')
 App.Units.Degree        = App.Units.Quantity('deg')
 App.Units.Radian        = App.Units.Quantity('rad')
 App.Units.Gon           = App.Units.Quantity('gon')
+App.Units.AngularMinute = App.Units.Quantity().AngularMinute
+App.Units.AngularSecond = App.Units.Quantity().AngularSecond
 
 App.Units.Length        = App.Units.Unit(1)
 App.Units.Area          = App.Units.Unit(2)
 App.Units.Volume        = App.Units.Unit(3)
 App.Units.Mass          = App.Units.Unit(0,1) 
 App.Units.Angle         = App.Units.Unit(0,0,0,0,0,0,0,1) 
+App.Units.Density       = App.Units.Unit(-3,1)
 
 App.Units.TimeSpan      = App.Units.Unit(0,0,1) 
 App.Units.Velocity      = App.Units.Unit(1,0,-1) 
@@ -349,6 +358,14 @@ App.Units.Force         = App.Units.Unit(1,1,-2)
 App.Units.Work          = App.Units.Unit(2,1,-2) 
 App.Units.Power         = App.Units.Unit(2,1,-3) 
 
+App.Units.SpecificEnergy               = App.Units.Unit(2,0,-2)
+App.Units.ThermalConductivity          = App.Units.Unit(1,1,-3,0,-1)
+App.Units.ThermalExpansionCoefficient  = App.Units.Unit(0,0,0,0,-1)
+App.Units.SpecificHeat                 = App.Units.Unit(2,0,-2,0,-1)
+App.Units.ThermalTransferCoefficient   = App.Units.Unit(0,1,-3,0,-1)
+App.Units.HeatFlux                     = App.Units.Unit(0,1,-3,0,0)
+App.Units.DynamicViscosity             = App.Units.Unit(-1,1,-1)
+App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
 
 # clean up namespace
 del(InitApplications)

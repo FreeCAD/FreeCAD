@@ -663,8 +663,26 @@ void  QuantityPy::setFormat(Py::Dict arg)
     getQuantityPtr()->setFormat(fmt);
 }
 
-PyObject *QuantityPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *QuantityPy::getCustomAttributes(const char* attr) const
 {
+    if (strcmp(attr, "Torr") == 0) {
+        return new QuantityPy(new Quantity(Quantity::Torr));
+    }
+    else if (strcmp(attr, "mTorr") == 0) {
+        return new QuantityPy(new Quantity(Quantity::mTorr));
+    }
+    else if (strcmp(attr, "yTorr") == 0) {
+        return new QuantityPy(new Quantity(Quantity::yTorr));
+    }
+    else if (strcmp(attr, "PoundForce") == 0) {
+        return new QuantityPy(new Quantity(Quantity::PoundForce));
+    }
+    else if (strcmp(attr, "AngularMinute") == 0) {
+        return new QuantityPy(new Quantity(Quantity::AngMinute));
+    }
+    else if (strcmp(attr, "AngularSecond") == 0) {
+        return new QuantityPy(new Quantity(Quantity::AngSecond));
+    }
     return 0;
 }
 
