@@ -49,6 +49,10 @@ Version:
 """
 
 
+# see comments in module importFCMat, there is a independent parser implementaion for reading and writing FCMat files
+# inside FreeCAD the importFCMat.py parser defs are used
+
+
 def importFCMat(fileName):
     "Read a FCMat file into a dictionary"
     try:
