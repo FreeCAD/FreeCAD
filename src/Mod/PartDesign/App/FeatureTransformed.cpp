@@ -174,6 +174,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     if (originals.empty()) {
         if(!BaseFeature.getValue()) {
             // typically InsideMultiTransform
+            Shape.setValue(TopoShape());
             return App::DocumentObject::StdReturn;
         }
         std::vector<std::string> subs;

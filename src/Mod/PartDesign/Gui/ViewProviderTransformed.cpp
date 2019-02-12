@@ -57,6 +57,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
+#include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 using namespace PartDesignGui;
 
@@ -68,6 +69,21 @@ void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, c
     act = menu->addAction(QObject::tr("Edit %1").arg(QString::fromStdString(featureName)), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
+}
+
+Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
+    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
+    if(!pcTransformed->Originals.getSize()) {
+        for(auto obj : pcTransformed->getInList()) {
+            if(obj->isDerivedFrom(PartDesign::MultiTransform::getClassTypeId())) {
+                auto vp = Gui::Application::Instance->getViewProvider(obj);
+                if(vp)
+                    return vp->startEditing(ModNum);
+                return 0;
+            }
+        }
+    }
+    return ViewProvider::startEditing(ModNum);
 }
 
 bool ViewProviderTransformed::setEdit(int ModNum)

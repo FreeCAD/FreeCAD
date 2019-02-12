@@ -2263,11 +2263,13 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         App::DocumentObject* prevFeature = 0;
         if (pcActiveBody){
             oldTip = pcActiveBody->Tip.getValue();
-            prevFeature = pcActiveBody->getPrevFeature(trFeat);
+            prevFeature = pcActiveBody->getPrevSolidFeature(trFeat);
         }
         Gui::Selection().clearSelection();
         if (prevFeature != NULL)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
+
+        openCommand("Convert to MultiTransform feature", true);
 
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
         rcCmdMgr.runCommandByName("PartDesign_MoveTip");
@@ -2289,8 +2291,9 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::MultiTransform','"<<FeatName<<"')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
         auto objCmd = getObjectCmd(trFeat);
-        FCMD_OBJ_CMD(Feat,"OriginalSubs = "<<objCmd<<".Originals");
-        FCMD_OBJ_CMD(Feat,"OriginalSubs = []");
+        FCMD_OBJ_CMD(Feat,"OriginalSubs = "<<objCmd<<".OriginalSubs");
+        FCMD_OBJ_CMD(Feat,"BaseFeature = "<<objCmd<<".BaseFeature");
+        FCMD_OBJ_CMD(trFeat,"OriginalSubs = []");
         FCMD_OBJ_CMD(Feat,"Transformations = ["<<objCmd<<"]");
 
         // Add the MultiTransform into the Body at the current insert point

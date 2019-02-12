@@ -422,14 +422,14 @@ PartDesign::Transformed *TaskTransformedParameters::getObject() const {
         return nullptr;
 }
 
-Part::Feature *TaskTransformedParameters::getBaseObject() const {
+App::DocumentObject *TaskTransformedParameters::getBaseObject() const {
     PartDesign::Feature* feature = getTopTransformedObject ();
     // NOTE: getBaseObject() throws if there is no base; shouldn't happen here.
-    auto base = feature->getBaseObject(true);
+    App::DocumentObject *base = feature->getBaseObject(true);
     if(!base) {
         auto body = feature->getFeatureBody();
         if(body)
-            base = body->getPrevFeature(feature);
+            base = body->getPrevSolidFeature(feature);
     }
     return base;
 }

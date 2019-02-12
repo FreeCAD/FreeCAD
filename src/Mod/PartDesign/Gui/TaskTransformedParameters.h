@@ -130,7 +130,7 @@ public:
 
     /// Get the TransformedFeature object associated with this task
     // Either through the ViewProvider or the currently active subFeature of the parentTask
-    Part::Feature *getBaseObject() const;
+    App::DocumentObject *getBaseObject() const;
 
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSketchObject() const;   

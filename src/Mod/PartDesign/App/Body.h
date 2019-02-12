@@ -63,9 +63,6 @@ public:
     }
     //@}
 
-    /// Return the previous feature
-    PartDesign::Feature* getPrevFeature(App::DocumentObject *start = NULL) const;
-
     /**
      * Add the feature into the body at the current insert point.
      * The insertion poin is the before next solid after the Tip feature
@@ -130,12 +127,6 @@ public:
         showTip = enable;
     }
 
-protected:
-    virtual void onSettingDocument() override;
-
-    /// Adjusts the first solid's feature's base on BaseFeature getting set
-    virtual void onChanged (const App::Property* prop) override;
-
     /**
       * Return the solid feature before the given feature, or before the Tip feature
       * That is, sketches and datum features are skipped
@@ -147,6 +138,12 @@ protected:
       * That is, sketches and datum features are skipped
       */
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
+
+protected:
+    virtual void onSettingDocument() override;
+
+    /// Adjusts the first solid's feature's base on BaseFeature getting set
+    virtual void onChanged (const App::Property* prop) override;
 
     /// Creates the corresponding Origin object
     virtual void setupObject () override;

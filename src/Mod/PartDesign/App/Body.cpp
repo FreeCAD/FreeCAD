@@ -118,24 +118,6 @@ short Body::mustExecute() const
     return Part::BodyBase::mustExecute();
 }
 
-PartDesign::Feature* Body::getPrevFeature(App::DocumentObject *start) const
-{
-    std::vector<App::DocumentObject*> features = Group.getValues();
-    if (features.empty()) return NULL;
-    App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
-    if (st == NULL)
-        return 0; // Tip is NULL
-
-    PartDesign::Feature *res = 0;
-    for(auto obj : features) {
-        if(obj == st)
-            return res;
-        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
-            res = static_cast<PartDesign::Feature*>(obj);
-    }
-    return res;
-}
-
 App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
 {
     if (!start) { // default to tip
