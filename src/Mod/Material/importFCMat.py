@@ -83,6 +83,8 @@ def decode(name):
 # in standard ini file format a = in the value without any encapsulation or string quotes is not allowed (AFAIK)
 # https://en.wikipedia.org/wiki/INI_file
 # http://www.docuxplorer.com/WebHelp/INI_File_Format.htm
+# in the module Material.py is another implementaion of reading and writing FCMat files which uses the module ConfigParser
+# it seams these are not used inside FreeCAD
 
 # Metainformations
 # first five lines are the same in any card file
