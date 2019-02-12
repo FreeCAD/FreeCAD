@@ -190,14 +190,8 @@ QVariantList DlgPropertyLink::propertyLinkList() const
 {
     QVariantList varList;
     QList<QTreeWidgetItem*> items = ui->treeWidget->selectedItems();
-    if (items.isEmpty()) {
-        varList << link;
-    }
-    else {
-        for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it)
-            varList << getLinkFromItem(link,*it);
-    }
-
+    for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it)
+        varList << getLinkFromItem(link,*it);
     return varList;
 }
 
