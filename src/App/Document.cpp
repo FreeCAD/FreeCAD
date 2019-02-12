@@ -3047,6 +3047,11 @@ DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
     md.setVerbose(recursive);
     if (recursive) {
         objs = obj->getDocument()->getDependencyList(objs);
+        auto it = std::find(objs.begin(), objs.end(), obj);
+        if (it != objs.end()) {
+            auto index = std::distance(objs.begin(), it);
+            std::swap(objs[index], objs.back());
+        }
     }
 
     unsigned int memsize=1000; // ~ for the meta-information
