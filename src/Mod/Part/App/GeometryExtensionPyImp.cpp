@@ -72,7 +72,7 @@ PyObject* GeometryExtensionPy::copy(PyObject *args)
         Part::GeometryExtension* clone = static_cast<Part::GeometryExtension*>(extpy->_pcTwinPointer);
         delete clone;
     }
-    extpy->_pcTwinPointer = ext->copy().get();
+    extpy->_pcTwinPointer = ext->copy().release();
     return cpy;
 }
 
