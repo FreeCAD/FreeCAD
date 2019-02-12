@@ -48,7 +48,7 @@ PyObject *TrimmedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
 {
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
-                    "You cannot create an instance of the abstract class 'BoundedCurve'.");
+                    "You cannot create an instance of the abstract class 'TrimmedCurve'.");
     return 0;
 }
 

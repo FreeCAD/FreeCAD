@@ -380,8 +380,8 @@ public:
     Base::Vector3d getStartPoint(bool emulateCCWXY) const;
     Base::Vector3d getEndPoint(bool emulateCCWXY) const;
 
-    inline virtual Base::Vector3d getStartPoint() const {return getStartPoint(false);};
-    inline virtual Base::Vector3d getEndPoint() const {return getEndPoint(false);};
+    inline virtual Base::Vector3d getStartPoint() const {return getStartPoint(false);}
+    inline virtual Base::Vector3d getEndPoint() const {return getEndPoint(false);}
     /*!
      * \deprecated use getLocation
      * \brief getCenter
@@ -398,8 +398,8 @@ public:
     virtual void getRange(double& u, double& v, bool emulateCCWXY) const = 0;
     virtual void setRange(double u, double v, bool emulateCCWXY) = 0;
 
-    inline virtual void getRange(double& u, double& v) const { getRange(u,v,false);};
-    inline virtual void setRange(double u, double v) { setRange(u,v,false);};
+    inline virtual void getRange(double& u, double& v) const { getRange(u,v,false);}
+    inline virtual void setRange(double u, double v) { setRange(u,v,false);}
 
     bool isReversed() const;
     double getAngleXU(void) const;
