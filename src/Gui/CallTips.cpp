@@ -367,10 +367,16 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
     try {
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
             Py::String attrname(*it);
-            Py::Object attr = obj.getAttr(attrname.as_string());
+            std::string name = attrname.as_string();
+            Py::Object attr = obj.getAttr(name);
+
+            if (!attr.ptr()) {
+                Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
+                continue;
+            }
 
             CallTip tip;
-            QString str = QString::fromLatin1(attrname.as_string().c_str());
+            QString str = QString::fromLatin1(name.c_str());
             tip.name = str;
 
             if (attr.isCallable()) {
