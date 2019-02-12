@@ -270,9 +270,9 @@ PyObject* GeometryPy::getExtensionOfType(PyObject *args)
                 std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(type));
 
                 // we create a copy and tranfer this copy's memory management responsibility to Python
-                GeometryExtension * rext = ext->copy().release();
+                PyObject* cpy = static_cast<GeometryExtensionPy *>(ext->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
 
-                return rext->getPyObject();
+                return cpy;
             }
             catch(Base::ValueError e) {
                 PyErr_SetString(PartExceptionOCCError, e.what());
@@ -304,9 +304,9 @@ PyObject* GeometryPy::getExtensionOfName(PyObject *args)
             std::shared_ptr<GeometryExtension> ext(this->getGeometryPtr()->getExtension(std::string(o)));
 
             // we create a copy and tranfer this copy's memory management responsibility to Python
-            GeometryExtension * rext = ext->copy().release();
+            PyObject* cpy = static_cast<GeometryExtensionPy *>(ext->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
 
-            return rext->getPyObject();
+            return cpy;
         }
         catch(Base::ValueError e) {
             PyErr_SetString(PartExceptionOCCError, e.what());
@@ -437,7 +437,11 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
             std::shared_ptr<GeometryExtension> p = ext[i].lock();
 
             if(p) {
-                PyList_SetItem( list, i, p->getPyObject());
+                // we create a python copy and add it to the list
+                Py::Tuple args(size_t(0));
+                PyObject* cpy = static_cast<GeometryExtensionPy *>(p->getPyObject())->copy(Py::new_reference_to(Py::Tuple(size_t(0))));
+
+                PyList_SetItem( list, i, cpy);
             }
         }
 
