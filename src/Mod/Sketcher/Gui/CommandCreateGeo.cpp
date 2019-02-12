@@ -436,11 +436,11 @@ void CmdSketcherCreateLine::updateAction(int mode)
     switch (mode) {
     case Normal:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine"));
         break;
     case Construction:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateLine_Constr"));
         break;
     }
 }
@@ -675,11 +675,11 @@ void CmdSketcherCreateRectangle::updateAction(int mode)
     switch (mode) {
     case Normal:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
         break;
     case Construction:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
         break;
     }
 }
@@ -1408,11 +1408,11 @@ void CmdSketcherCreatePolyline::updateAction(int mode)
     switch (mode) {
     case Normal:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolyline"));
         break;
     case Construction:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePolyline_Constr"));
         break;
     }
 }
@@ -2046,9 +2046,9 @@ Gui::Action * CmdSketcherCompCreateArc::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateArc"));
+    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
     QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc"));
+    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
 
     _pcAction = pcAction;
     languageChange();
@@ -2070,13 +2070,13 @@ void CmdSketcherCompCreateArc::updateAction(int mode)
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
     case Normal:
-        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateArc"));
-        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
-        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateArc_Constr"));
-        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc_Constr"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -4338,25 +4338,25 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* ellipseByCenter = pcAction->addAction(QString());
-    ellipseByCenter->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse"));
+    ellipseByCenter->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
      /// @todo replace with correct icon
     QAction* ellipseBy3Points = pcAction->addAction(QString());
-    ellipseBy3Points->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points"));
+    ellipseBy3Points->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
 
     QAction* arcofellipse = pcAction->addAction(QString());
-    arcofellipse->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc"));
+    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc"));
 
     QAction* arcofhyperbola = pcAction->addAction(QString());
-    arcofhyperbola->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc"));
+    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc"));
 
     QAction* arcofparabola = pcAction->addAction(QString());
-    arcofparabola->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc"));
+    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc"));
 
     _pcAction = pcAction;
     languageChange();
 
     // set ellipse by center, a, b as default method
-    pcAction->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Conics"));
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Conics"));
     int defaultId = 0;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
@@ -4373,19 +4373,19 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
     case Normal:
-        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse"));
-        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points"));
-        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc"));
-        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc"));
-        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
-        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_Constr"));
-        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points_Constr"));
-        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc_Constr"));
-        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc_Constr"));
-        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc_Constr"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Elliptical_Arc_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Hyperbolic_Arc_Constr"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Parabolic_Arc_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -4889,11 +4889,11 @@ void CmdSketcherCreateBSpline::activated(int iMsg)
     switch (mode) {
     case Normal:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
         break;
     case Construction:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline_Constr"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline_Constr"));
         break;
     }
 }*/
@@ -4982,16 +4982,16 @@ Gui::Action * CmdSketcherCompCreateBSpline::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* bspline = pcAction->addAction(QString());
-    bspline->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+    bspline->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
 
     QAction* periodicbspline = pcAction->addAction(QString());
-    periodicbspline->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline"));
+    periodicbspline->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
 
     _pcAction = pcAction;
     languageChange();
 
     // default
-    pcAction->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
     int defaultId = 0;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
@@ -5008,13 +5008,13 @@ void CmdSketcherCompCreateBSpline::updateAction(int mode)
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
         case Normal:
-            a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
-            a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline"));
+            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
+            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
             getAction()->setIcon(a[index]->icon());
             break;
         case Construction:
-            a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline_Constr"));
-            a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline_Constr"));
+            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline_Constr"));
+            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_Constr"));
             getAction()->setIcon(a[index]->icon());
             break;
     }
@@ -5337,9 +5337,9 @@ Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle"));
+    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
     QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle"));
+    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
 
     _pcAction = pcAction;
     languageChange();
@@ -5361,13 +5361,13 @@ void CmdSketcherCompCreateCircle::updateAction(int mode)
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
     case Normal:
-        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle"));
-        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
-        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle_Constr"));
-        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle_Constr"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -6889,11 +6889,11 @@ static const char *cursor_carboncopy[]={
         switch (mode) {
             case Normal:
                 if (getAction())
-                    getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CarbonCopy"));
+                    getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy"));
                 break;
             case Construction:
                 if (getAction())
-                    getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CarbonCopy_Constr"));
+                    getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy_Constr"));
                 break;
         }
     }
@@ -7164,11 +7164,11 @@ void CmdSketcherCreateSlot::updateAction(int mode)
     switch (mode) {
     case Normal:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSlot"));
         break;
     case Construction:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSlot_Constr"));
         break;
     }
 }
@@ -7614,19 +7614,19 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* triangle = pcAction->addAction(QString());
-    triangle->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle"));
+    triangle->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateTriangle"));
     QAction* square = pcAction->addAction(QString());
-    square->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSquare"));
+    square->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSquare"));
     QAction* pentagon = pcAction->addAction(QString());
-    pentagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon"));
+    pentagon->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePentagon"));
     QAction* hexagon = pcAction->addAction(QString());
-    hexagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon"));
+    hexagon->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHexagon"));
     QAction* heptagon = pcAction->addAction(QString());
-    heptagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
+    heptagon->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHeptagon"));
     QAction* octagon = pcAction->addAction(QString());
-    octagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));
+    octagon->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOctagon"));
     QAction* regular = pcAction->addAction(QString());
-    regular->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon"));
+    regular->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRegularPolygon"));
 
     _pcAction = pcAction;
     languageChange();
@@ -7648,23 +7648,23 @@ void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
     case Normal:
-        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle"));
-        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSquare"));
-        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon"));
-        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon"));
-        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
-        a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));
-        a[6]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateTriangle"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSquare"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePentagon"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHexagon"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHeptagon"));
+        a[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOctagon"));
+        a[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRegularPolygon"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
-        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle_Constr"));
-        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSquare_Constr"));
-        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon_Constr"));
-        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon_Constr"));
-        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon_Constr"));
-        a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon_Constr"));
-        a[6]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRegularPolygon_Constr"));
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateTriangle_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSquare_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePentagon_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHexagon_Constr"));
+        a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHeptagon_Constr"));
+        a[5]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOctagon_Constr"));
+        a[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRegularPolygon_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
