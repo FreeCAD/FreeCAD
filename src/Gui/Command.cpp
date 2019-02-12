@@ -564,6 +564,7 @@ void Command::setGroupName(const char* s)
 #endif
 }
 
+static int _CommitCount;
 
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling
@@ -576,19 +577,29 @@ void Command::setGroupName(const char* s)
  *  operation default is the Command name.
  *  @see CommitCommand(),AbortCommand()
  */
-void Command::openCommand(const char* sCmdName)
+void Command::openCommand(const char* sCmdName, bool exclusive)
 {
     // Using OpenCommand with no active document !
     if(!Gui::Application::Instance->activeDocument())
         FC_THROWM(Base::RuntimeError,"No active document");
 
-    if (sCmdName)
-        Gui::Application::Instance->activeDocument()->openCommand(sCmdName);
+    static int _ExclusiveTransaction;
+    if(_ExclusiveTransaction) {
+        int tid = 0;
+        App::GetApplication().getActiveTransaction(&tid);
+        if(tid == _ExclusiveTransaction)
+            return;
+    }
+
+    if (!sCmdName)
+        sCmdName = "Command";
+
+    if(exclusive && _CommitCount>0)
+        _ExclusiveTransaction = App::GetApplication().setActiveTransaction(sCmdName);
     else
-        Gui::Application::Instance->activeDocument()->openCommand("Command");
+        Gui::Application::Instance->activeDocument()->openCommand(sCmdName);
 }
 
-static int _CommitCount;
 Command::AutoCommit::AutoCommit(bool enable)
     :enabled(enable?1:0)
 {
