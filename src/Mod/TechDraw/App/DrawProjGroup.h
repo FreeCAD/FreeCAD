@@ -160,6 +160,7 @@ protected:
     TechDraw::DrawPage * getPage(void) const;
     void updateChildren(void);
     void updateChildrenSource(void);
+    void updateChildrenLock(void);
     int getViewIndex(const char *viewTypeCStr) const;
 
 };

@@ -109,6 +109,10 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         if (prop == &Source) {
             updateChildrenSource();
         }
+
+        if (prop == &LockPosition) {
+            updateChildrenLock();
+        }
         
         if (prop == &ScaleType) {
             double newScale = getScale();
@@ -129,7 +133,7 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
                 Rotation.setValue(0.0);
                 purgeTouched();
-                Base::Console().Warning("DPG: Projection Groups do not rotate. Change ignored.\n");
+                Base::Console().Log("DPG: Projection Groups do not rotate. Change ignored.\n");
             }
         }
     }
@@ -382,9 +386,10 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             view->LockPosition.purgeTouched();
             requestPaint();
         }
-
-        addView(view);         //from DrawViewCollection
-        requestPaint();
+        addView(view);                            //from DrawViewCollection
+        if (view != getAnchor()) {                //anchor is done elsewhere
+            view->recomputeFeature();
+        }
     }
 
     return view;
@@ -783,6 +788,20 @@ void DrawProjGroup::updateChildrenSource(void)
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if( view ) {
             view->Source.setValues(Source.getValues());
+        }
+    }
+}
+
+/*! 
+ * tell children DPGIs that parent DPG has changed LockPosition
+ * (really for benefit of QGIV on Gui side)
+ */
+void DrawProjGroup::updateChildrenLock(void)
+{
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if( view ) {
+            view->requestPaint();
         }
     }
 }
