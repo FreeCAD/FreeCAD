@@ -274,6 +274,13 @@ void QGIDatumLabel::setPrettyNormal(void)
     m_tolText->setPrettyNormal();
 }
 
+void QGIDatumLabel::setColor(QColor c)
+{
+    m_colNormal = c;
+    m_dimText->setColor(m_colNormal);
+    m_tolText->setColor(m_colNormal);
+}
+
 //**************************************************************
 QGIViewDimension::QGIViewDimension() :
     hasHover(false),
@@ -286,6 +293,7 @@ QGIViewDimension::QGIViewDimension() :
 
     datumLabel = new QGIDatumLabel();
     addToGroup(datumLabel);
+    datumLabel->setColor(getNormalColor());
     datumLabel->setPrettyNormal();
     dimLines = new QGIDimLines();
     addToGroup(dimLines);
@@ -481,6 +489,9 @@ void QGIViewDimension::draw()
     if ( vp == nullptr ) {
         return;
     }
+
+    m_colNormal = getNormalColor();
+    datumLabel->setColor(m_colNormal);
 
     m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
     float margin = Rez::guiX(5.f);
