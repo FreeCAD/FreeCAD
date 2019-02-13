@@ -80,6 +80,8 @@ public:
     void printPreview();
 
     void saveSVG(std::string file);
+    void saveDXF(std::string file);
+    void savePDF(std::string file);
 
     void setFrameState(bool state);
     bool getFrameState(void) {return m_frameState;};
@@ -104,6 +106,8 @@ public:
 public Q_SLOTS:
     void viewAll();
     void saveSVG(void);
+    void saveDXF(void);
+    void savePDF(void);
     void toggleFrame(void);
     void toggleKeepUpdated(void);
 //    void testAction(void);
@@ -137,6 +141,8 @@ private:
     QAction *m_toggleFrameAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
+    QAction *m_exportDXFAction;
+    QAction *m_exportPDFAction;
 //    QAction* m_testAction;
 
     std::string m_objectName;
