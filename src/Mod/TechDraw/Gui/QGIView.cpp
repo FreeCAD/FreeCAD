@@ -144,7 +144,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                         newPos.setY(item->pos().y());
                     } else if(alignMode == QString::fromLatin1("45slash")) {
                          //this logic is wrong since the constained movement direction is not necessarily 45*
-                         Base::Console().Message("QGIV::itemChange - oblique BL-TR\n");
+//                         Base::Console().Message("QGIV::itemChange - oblique BL-TR\n");
 //                        double dist = ( (newPos.x() - item->pos().x()) +
 //                                        (item->pos().y() - newPos.y()) ) / 2.0;
 
@@ -152,7 +152,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 //                        newPos.setY( item->pos().y() - dist );
                     } else if(alignMode == QString::fromLatin1("45backslash")) {
                          //this logic is wrong since the constained movement direction is not necessarily 45*
-                         Base::Console().Message("QGIV::itemChange - oblique TL-BR\n");
+//                         Base::Console().Message("QGIV::itemChange - oblique TL-BR\n");
 //                        double dist = ( (newPos.x() - item->pos().x()) +
 //                                        (newPos.y() - item->pos().y()) ) / 2.0;
 
@@ -274,6 +274,7 @@ QGIViewClip* QGIView::getClipGroup(void)
 
 void QGIView::updateView(bool update)
 {
+//    Base::Console().Message("QGIV::updateView() - %s\n",getViewObject()->getNameInDocument());
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
@@ -287,7 +288,9 @@ void QGIView::updateView(bool update)
         setPosition(featX,featY);
     }
 
-    if (getViewObject()->Rotation.isTouched() ) {
+    double appRotation = getViewObject()->Rotation.getValue();
+    double guiRotation = rotation();
+    if (!TechDraw::DrawUtil::fpCompare(appRotation,guiRotation)) {
         rotateView();
     }
 
