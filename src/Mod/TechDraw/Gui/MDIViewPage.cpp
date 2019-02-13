@@ -118,6 +118,12 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
     connect(m_exportSVGAction, SIGNAL(triggered()), this, SLOT(saveSVG()));
 
+    m_exportDXFAction = new QAction(tr("Export DXF"), this);
+    connect(m_exportDXFAction, SIGNAL(triggered()), this, SLOT(saveDXF()));
+
+    m_exportPDFAction = new QAction(tr("Export PDF"), this);
+    connect(m_exportPDFAction, SIGNAL(triggered()), this, SLOT(savePDF()));
+
     isSelectionBlocked = false;
 
     QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
@@ -763,6 +769,8 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
     menu.addAction(m_toggleFrameAction);
     menu.addAction(m_toggleKeepUpdatedAction);
     menu.addAction(m_exportSVGAction);
+    menu.addAction(m_exportDXFAction);
+    menu.addAction(m_exportPDFAction);
     menu.exec(event->globalPos());
 }
 
@@ -809,6 +817,43 @@ void MDIViewPage::saveSVG(std::string file)
     m_view->saveSvg(filename);
 }
 
+void MDIViewPage::saveDXF()
+{
+//    TechDraw::DrawPage* page = m_vpPage->getDrawPage();
+    QString defaultDir;
+    QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File ")),
+                                                   defaultDir,
+                                                   QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    std::string sFileName = fileName.toUtf8().constData();
+    saveDXF(sFileName);
+}
+
+void MDIViewPage::saveDXF(std::string fileName)
+{
+    TechDraw::DrawPage* page = m_vpPage->getDrawPage();
+    std::string PageName = page->getNameInDocument();
+    Gui::Command::openCommand("Save page to dxf");
+    Gui::Command::doCommand(Gui::Command::Doc,"import TechDraw");
+    Gui::Command::doCommand(Gui::Command::Doc,"TechDraw.writeDXFPage(App.activeDocument().%s,u\"%s\")",
+                            PageName.c_str(),(const char*)fileName.c_str());
+    Gui::Command::updateActive();
+    Gui::Command::commitCommand();
+}
+
+void MDIViewPage::savePDF()
+{
+    printPdf();
+}
+
+void MDIViewPage::savePDF(std::string file)
+{
+    printPdf(file);
+}
 
 /////////////// Selection Routines ///////////////////
 // wf: this is never executed???
