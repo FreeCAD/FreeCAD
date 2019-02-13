@@ -25,6 +25,7 @@
 #define _AppComplexGeoData_h_
 
 #include <memory>
+#include <cctype>
 #include <Base/Placement.h>
 #include <Base/Persistence.h>
 #include <Base/Handle.h>
@@ -341,6 +342,24 @@ public:
 protected:
     ElementMapPtr _ElementMap;
 };
+
+struct AppExport ElementNameComp {
+    /** Comparison function to make topo name more stable
+     *
+     * The sorting decompose the name into either of the following two forms
+     *      '#' + hex_digits + tail
+     *      non_digits + digits + tail
+     *
+     * The non-digits part is compared lexically, while the digits part is
+     * compared by its integer value.
+     *
+     * The reason for this is to prevent name with bigger digits (usually means
+     * comes late in history) comes early when sorting.
+     */
+    bool operator()(const std::string &a, const std::string &b) const;
+};
+
+typedef std::set<std::string,ElementNameComp> ElementNameSet;
 
 } //namespace App
 

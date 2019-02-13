@@ -56,7 +56,7 @@ public:
       * If MirrorPlane contains a feature and a face name, then the mirror plane will be
       * the given face, which must be planar
       */
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>);
+    virtual std::list<gp_Trsf> getTransformations(const std::vector<Part::TopoShape> &) override;
 };
 
 } //namespace PartDesign

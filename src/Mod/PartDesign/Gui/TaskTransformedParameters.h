@@ -128,12 +128,9 @@ public:
     TaskTransformedParameters(TaskMultiTransformParameters *parentTask);
     virtual ~TaskTransformedParameters();
 
-    /// Returns the originals property of associated top feeature object
-    const std::vector<App::DocumentObject*> & getOriginals(void) const;
-
     /// Get the TransformedFeature object associated with this task
     // Either through the ViewProvider or the currently active subFeature of the parentTask
-    Part::Feature *getBaseObject() const;
+    App::DocumentObject *getBaseObject() const;
 
     /// Get the sketch object of the first original either of the object associated with this feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSketchObject() const;   
@@ -141,6 +138,9 @@ public:
     void exitSelectionMode();
 
     virtual void apply() = 0;
+
+    void setupTransaction();
+    void setupCheckBox(QCheckBox *checkBox);
 
 protected Q_SLOTS:
     /**
@@ -161,7 +161,8 @@ protected Q_SLOTS:
     virtual void onSubTaskButtonOK() {}
     void onButtonAddFeature(const bool checked);
     void onButtonRemoveFeature(const bool checked);
-    virtual void onFeatureDeleted(void)=0;
+    virtual void onFeatureDeleted(void);
+    void onChangedSubTransform(bool);
 
 protected:
     /**
@@ -172,6 +173,8 @@ protected:
     PartDesign::Transformed *getObject () const;
 
     bool originalSelected(const Gui::SelectionChanges& msg);
+    void populate();
+    void setupListWidget(QListWidget *listWidget);
 
     /// Recompute either this feature or the parent feature (MultiTransform mode)
     void recomputeFeature();
@@ -181,10 +184,12 @@ protected:
     void hideBase();
     void showBase();
 
-    void addReferenceSelectionGate(bool edge, bool face);    
+    void addReferenceSelectionGate(bool edge, bool face, bool planar=true, bool whole=false);    
 
     bool isViewUpdated() const;
     int getUpdateViewTimeout() const;
+
+    void checkVisibility();
 
 protected:
     /** Notifies when the object is about to be removed. */
@@ -192,7 +197,6 @@ protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
     virtual void clearButtons()=0;
-    static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
 
     void fillAxisCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
     void fillPlanesCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
@@ -210,6 +214,8 @@ protected:
     bool insideMultiTransform;
     /// Lock updateUI(), applying changes to the underlying feature and calling recomputeFeature()
     bool blockUpdate;    
+
+    QListWidget *listWidget = 0;
 };
 
 /// simulation dialog for the TaskView
@@ -218,7 +224,9 @@ class TaskDlgTransformedParameters : public PartDesignGui::TaskDlgFeatureParamet
     Q_OBJECT
 
 public:
-    TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView);
+    TaskDlgTransformedParameters(
+            ViewProviderTransformed *TransformedView, TaskTransformedParameters *parameter);
+
     virtual ~TaskDlgTransformedParameters() {}
 
     ViewProviderTransformed* getTransformedView() const

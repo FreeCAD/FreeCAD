@@ -725,3 +725,85 @@ unsigned int ComplexGeoData::getMemSize(void) const {
         return _ElementMap->size()*10;
     return 0;
 }
+
+bool ElementNameComp::operator()(const std::string &a, const std::string &b) const {
+    size_t size = std::min(a.size(),b.size());
+    if(!size)
+        return a.size()<b.size();
+    size_t i=0;
+
+    if(b[0] == '#') {
+        if(a[0]!='#')
+            return true;
+        // If both string starts with '#', compare the following hex digits by
+        // its integer value.
+        int res = 0;
+        for(i=1;i<size;++i) {
+            unsigned char ac = (unsigned char)a[i];
+            unsigned char bc = (unsigned char)b[i];
+            if(std::isxdigit(bc)) {
+                if(!std::isxdigit(ac))
+                    return true;
+                if(res==0) {
+                    if(ac<bc)
+                        res = -1;
+                    else if(ac>bc)
+                        res = 1;
+                }
+            }else if(std::isxdigit(ac))
+                return false;
+            else
+                break;
+        }
+        if(res < 0)
+            return true;
+        else if(res > 0)
+            return false;
+        return std::strcmp(&a[i],&b[i])<0;
+    }
+
+    // If the string does not start with '#', compare the non-digits prefix
+    // using lexical order.
+    for(i=0;i<size;++i) {
+        unsigned char ac = (unsigned char)a[i];
+        unsigned char bc = (unsigned char)b[i];
+        if(!std::isdigit(bc)) {
+            if(std::isdigit(ac))
+                return true;
+            if(ac<bc)
+                return true;
+            if(ac>bc)
+                return false;
+        } else if(!std::isdigit(ac)) {
+            return false;
+        } else
+            break;
+    }
+
+    // Then compare the following digits part by integer value
+    int res = 0;
+    for(;i<size;++i) {
+        unsigned char ac = (unsigned char)a[i];
+        unsigned char bc = (unsigned char)b[i];
+        if(std::isdigit(bc)) {
+            if(!std::isdigit(ac))
+                return true;
+            if(res==0) {
+                if(ac<bc)
+                    res = -1;
+                else if(ac>bc)
+                    res = 1;
+            }
+        }else if(std::isdigit(ac))
+            return false;
+        else
+            break;
+    }
+    if(res < 0)
+        return true;
+    else if(res > 0)
+        return false;
+
+    // Finally, compare the remaining tail using lexical order
+    return std::strcmp(&a[i],&b[i])<0;
+}

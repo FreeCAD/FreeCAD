@@ -229,7 +229,7 @@ public:
     * Command::commitCommand(). 
     *
     * Note that Command::commitCommand() will check this static counter, and
-    * will only actually commit the command if the counter is not zero. This is
+    * will only actually commit the command if the counter is zero. This is
     * because the purpose of this class is to fix premature command committing
     * in many of the existing command implementation, which cause many
     * non-undoable changes to the document.
@@ -242,7 +242,7 @@ public:
         AutoCommit(bool enable=true);
         ~AutoCommit();
     private:
-        bool enabled;
+        int enabled;
     };
 protected:
     Command(const char* name);
@@ -325,8 +325,12 @@ public:
 
     /** @name Helper methods for the Undo/Redo and Update handling */
     //@{
-    /// Open a new Undo transaction on the active document
-    static void openCommand(const char* sName=0);
+    /** Open a new Undo transaction on the active document
+     *
+     * @param sName: transaction name
+     * @param exclusive: set true to disable any new transaction in any recusive invoking commands
+     */
+    static void openCommand(const char* sName=0, bool exclusive=false);
     /// Commit the Undo transaction on the active document
     static void commitCommand(void);
     /// Abort the Undo transaction on the active document

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>228</width>
-    <height>89</height>
+    <height>120</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,6 +27,13 @@
      </property>
      <property name="wordWrap">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxSubTransform">
+     <property name="text">
+      <string>Transform sub-feature</string>
      </property>
     </widget>
    </item>

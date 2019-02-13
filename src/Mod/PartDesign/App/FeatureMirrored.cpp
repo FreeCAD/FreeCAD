@@ -57,7 +57,7 @@ short Mirrored::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*>)
+std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<Part::TopoShape> &)
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
     if (refObject == NULL)

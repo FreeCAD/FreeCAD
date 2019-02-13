@@ -1266,8 +1266,6 @@ App::DocumentObjectExecReturn *Hole::execute(void)
         this->AddSubShape.setValue(TopoShape().makECompound(holes));
 
         remapSupportShape(base.getShape());
-        if(base.countSubShapes(TopAbs_SOLID)>1)
-            return new App::DocumentObjectExecReturn("Hole: Result has multiple solids. This is not supported at this time.");
 
         this->Shape.setValue(base);
 

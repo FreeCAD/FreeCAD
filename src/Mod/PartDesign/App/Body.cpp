@@ -56,6 +56,8 @@ using namespace PartDesign;
 PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body() {
+    ADD_PROPERTY_TYPE(SingleSolid,(true),"Base",(App::PropertyType)(App::Prop_None),
+            "Enforce single solid on each feature");
 }
 
 /*
@@ -114,21 +116,6 @@ short Body::mustExecute() const
         return 1;
     }
     return Part::BodyBase::mustExecute();
-}
-
-App::DocumentObject* Body::getPrevFeature(App::DocumentObject *start) const
-{
-    std::vector<App::DocumentObject*> features = Group.getValues();
-    if (features.empty()) return NULL;
-    App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
-    if (st == NULL)
-        return st; // Tip is NULL
-
-    std::vector<App::DocumentObject*>::iterator it = std::find(features.begin(), features.end(), st);
-    if (it == features.end()) return NULL; // Invalid start object
-
-    it--;
-    return *it;
 }
 
 App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
@@ -282,6 +269,17 @@ std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
     if (isSolidFeature(feature)) {
         Tip.setValue (feature);
     }
+
+    if(feature->Visibility.getValue()
+        && feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+    {
+        for(auto obj : Group.getValues()) {
+            if(obj->Visibility.getValue() 
+                    && obj!=feature 
+                    && obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                obj->Visibility.setValue(false);
+        }
+    }
     
     std::vector<App::DocumentObject*> result = {feature};
     return result;
@@ -330,6 +328,9 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
     model.insert (insertInto, feature);
 
     Group.setValues (model);
+
+    if(feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        static_cast<PartDesign::Feature*>(feature)->Owner.setValue(this);
 
     // Set the BaseFeature property
     setBaseProperty(feature);
@@ -446,7 +447,9 @@ void Body::onSettingDocument() {
 
 void Body::onChanged (const App::Property* prop) {
     // we neither load a project nor perform undo/redo
-    if (!this->isRestoring() && !this->getDocument()->isPerformingTransaction()) {
+    if (!this->isRestoring() 
+            && this->getDocument()
+            && !this->getDocument()->isPerformingTransaction()) {
         if (prop == &BaseFeature) {
             FeatureBase* bf = nullptr;
             auto first = Group.getValues().empty() ? nullptr : Group.getValues().front();
@@ -477,6 +480,12 @@ void Body::onChanged (const App::Property* prop) {
                     BaseFeature.setValue(nullptr);
             }
         }
+        else if( prop == &SingleSolid ) {
+            for(auto obj : Group.getValues()) {
+                if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+                    obj->touch();
+            }
+        }
     }
 
     Part::BodyBase::onChanged(prop);
@@ -484,6 +493,9 @@ void Body::onChanged (const App::Property* prop) {
 
 void Body::setupObject () {
     Part::BodyBase::setupObject ();
+    auto hGrp = App::GetApplication().GetParameterGroupByPath (
+                "User parameter:BaseApp/Preferences/Mod/PartDesign");
+    SingleSolid.setValue(hGrp->GetBool("SingleSolid",true));
 }
 
 void Body::unsetupObject () {
@@ -523,4 +535,13 @@ App::DocumentObject *Body::getSubObject(const char *subname,
     if(pmat && transform)
         *pmat *= Placement.getValue().toMatrix();
     return const_cast<Body*>(this);
+}
+
+void Body::onDocumentRestored()
+{
+    for(auto obj : Group.getValues()) {
+        if(obj->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+            static_cast<PartDesign::Feature*>(obj)->Owner.setValue(this);
+    }
+    DocumentObject::onDocumentRestored();
 }

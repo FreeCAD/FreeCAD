@@ -372,7 +372,7 @@ void Command::setupCheckable(int iMsg) {
 void Command::invoke(int i, bool autoCommit, TriggerSource trigger)
 {
     CommandTrigger cmdTrigger(_trigger,trigger);
-    AutoCommit committer(autoCommit);
+    AutoCommit committer(autoCommit && (eType&(AlterDoc|ForEdit)));
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdG: %s\n",sName);
@@ -564,6 +564,7 @@ void Command::setGroupName(const char* s)
 #endif
 }
 
+static int _CommitCount;
 
 //--------------------------------------------------------------------------
 // UNDO REDO transaction handling
@@ -576,23 +577,36 @@ void Command::setGroupName(const char* s)
  *  operation default is the Command name.
  *  @see CommitCommand(),AbortCommand()
  */
-void Command::openCommand(const char* sCmdName)
+void Command::openCommand(const char* sCmdName, bool exclusive)
 {
     // Using OpenCommand with no active document !
     if(!Gui::Application::Instance->activeDocument())
         FC_THROWM(Base::RuntimeError,"No active document");
 
-    if (sCmdName)
-        Gui::Application::Instance->activeDocument()->openCommand(sCmdName);
+    static int _ExclusiveTransaction;
+    if(_ExclusiveTransaction) {
+        int tid = 0;
+        App::GetApplication().getActiveTransaction(&tid);
+        if(tid == _ExclusiveTransaction)
+            return;
+    }
+
+    if (!sCmdName)
+        sCmdName = "Command";
+
+    if(exclusive && _CommitCount>0)
+        _ExclusiveTransaction = App::GetApplication().setActiveTransaction(sCmdName);
     else
-        Gui::Application::Instance->activeDocument()->openCommand("Command");
+        Gui::Application::Instance->activeDocument()->openCommand(sCmdName);
 }
 
-static int _CommitCount;
 Command::AutoCommit::AutoCommit(bool enable)
-    :enabled(enable)
+    :enabled(enable?1:0)
 {
-    if(enabled) {
+    if(App::GetApplication().getActiveTransaction()
+            || Command::hasPendingCommand())
+        enabled = -1;
+    else if(enabled) {
         // When enabled, it is only effective if there is no existing disabled
         // AutoCommit decleared in the stack above
         if(_CommitCount>=0)
@@ -605,12 +619,12 @@ Command::AutoCommit::AutoCommit(bool enable)
 
 Command::AutoCommit::~AutoCommit() 
 {
-    if(enabled) { 
+    if(enabled>0) { 
         if(_CommitCount>0) {
             --_CommitCount;
             Command::commitCommand();
         }
-    }else if(_CommitCount<0)
+    }else if(enabled==0 && _CommitCount<0)
         ++_CommitCount;
 }
 

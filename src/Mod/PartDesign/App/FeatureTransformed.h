@@ -47,9 +47,12 @@ public:
     /** The shapes to be transformed
       * if Originals is empty the instance is just a container for storing transformation data
       */
-    App::PropertyLinkList Originals;
+    App::PropertyLinkList Originals; // For backward compatibility
+    App::PropertyLinkSubList OriginalSubs; // to replace Originals for working with multiple solids
 
     App::PropertyBool Refine;
+
+    App::PropertyBool SubTransform;
 
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,
@@ -65,7 +68,7 @@ public:
 
     /// Get the list of transformations describing the members of the pattern
     // Note: Only the Scaled feature requires the originals
-    virtual const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> /*originals*/) {
+    virtual std::list<gp_Trsf> getTransformations(const std::vector<Part::TopoShape> &/*originals*/) {
         return std::list<gp_Trsf>(); // Default method
     }
 
@@ -82,10 +85,13 @@ public:
     short mustExecute() const;
     //@}
 
+    virtual void onDocumentRestored() override;
+    virtual void onChanged(const App::Property *) override;
+
     /** returns a list of the transformations that where rejected during the last execute
       * because they did not ovelap with the support
       */
-    typedef std::map<App::DocumentObject*, std::list<gp_Trsf> > rejectedMap;
+    typedef std::vector<std::pair<Part::TopoShape,std::vector<gp_Trsf> > > rejectedMap;
     const rejectedMap getRejectedTransformations(void) { return rejected; }
 
 protected:

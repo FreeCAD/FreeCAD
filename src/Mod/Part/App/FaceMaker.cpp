@@ -153,6 +153,23 @@ void Part::FaceMaker::Build()
     postBuild();
 }
 
+struct ElementName {
+    long tag;
+    std::string name;
+
+    ElementName(long t, const char *n)
+        :tag(t),name(n)
+    {}
+
+    inline bool operator<(const ElementName &other) const {
+        if(tag<other.tag)
+            return true;
+        if(tag>other.tag)
+            return false;
+        return Data::ElementNameComp()(name,other.name);
+    }
+};
+
 void Part::FaceMaker::postBuild() {
     this->myTopoShape.setShape(this->myShape);
     this->myTopoShape.Hasher = this->MyHasher;
@@ -163,50 +180,32 @@ void Part::FaceMaker::postBuild() {
     if(!op) op = TOPOP_FACE;
     const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
     // name the face using the edges of its outer wire
-    long wireTag = 0;
-    bool sameTag = true;
     for(auto &face : faces) {
         ++i;
         TopoShape wire(ShapeAnalysis::OuterWire(TopoDS::Face(face.getShape())));
         wire.mapSubElement(face);
-        std::set<std::string> edgeNames;
+        std::set<ElementName> edgeNames;
         int count = wire.countSubShapes(TopAbs_EDGE);
         for(int i=1;i<=count;++i) {
             std::string element("Edge");
             element += std::to_string(i);
             const char *name = face.getElementName(element.c_str(),true);
-            if(name == element) {
-                // only name the face if all edges are named
-                edgeNames.clear();
-                break;
-            }
-            if(faces.size()==1 && sameTag) {
-                long tag = wire.getElementHistory(name);
-                if(!wireTag)
-                    wireTag = tag;
-                else
-                    sameTag = (wireTag==tag);
-            }
-            edgeNames.insert(name);
+            if(name == element)
+                continue;
+            edgeNames.emplace(wire.getElementHistory(name),name);
         }
         if(edgeNames.empty())
             continue;
         ss.str("");
         ss << "Face" << i;
         std::vector<std::string> names;
-        if(faces.size()==1 && sameTag && wireTag) {
-            // If there is only one face, and all edges coming from the same
-            // object (tag), we abstract away individual edge names, and simply
-            // use a pseduo element name "Wire". The advantage is that the
-            // resulting face name will not be affected by any edge changes
-            // (e.g. edge changess from editing a sketch).
-            std::string name("Wire");
-            std::ostringstream ss;
-            std::vector<App::StringIDRef> sids;
-            TopoShape().encodeElementName(name[0],name,ss,sids,0,wireTag);
-            names.push_back(name + ss.str());
-        }else
-            names.insert(names.end(),edgeNames.begin(),edgeNames.end());
+#if 0
+        names.insert(names.end(),edgeNames.begin(),edgeNames.end());
+#else
+        // We just use the first source element name to make the face name more
+        // stable
+        names.push_back(edgeNames.begin()->name);
+#endif
         this->myTopoShape.setElementComboName(ss.str().c_str(),names,op);
     }
     this->myTopoShape.initCache(true);

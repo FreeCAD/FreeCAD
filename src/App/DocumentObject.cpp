@@ -461,8 +461,12 @@ bool _isInInListRecursive(const DocumentObject* act,
 
 bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
 {
+#if 0
     int maxDepth = getDocument()->countObjects() + 2;
     return _isInInListRecursive(this, linkTo, maxDepth);
+#else
+    return this==linkTo || getInListEx(true).count(linkTo);
+#endif
 }
 
 bool DocumentObject::isInInList(DocumentObject *linkTo) const
@@ -529,6 +533,7 @@ bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
 
 bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const
 {
+#if 0
     Document* doc = this->getDocument();
     if (!doc)
         throw Base::RuntimeError("DocumentObject::testIfLinkIsDAG: object is not in any document.");
@@ -538,6 +543,14 @@ bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *>
         return false;
     else
         return true;
+#else
+    auto inLists = getInListEx(true);
+    inLists.emplace(const_cast<DocumentObject*>(this));
+    for(auto obj : linksTo)
+        if(inLists.count(obj))
+            return false;
+    return true;
+#endif
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSubList &linksTo) const

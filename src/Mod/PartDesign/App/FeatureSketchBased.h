@@ -116,7 +116,6 @@ public:
     
 protected:
     void remapSupportShape(const TopoDS_Shape&);
-    TopoShape refineShapeIfActive(const TopoShape&) const;
 
     /// Extract a face from a given LinkSub
     static void getUpToFaceFromLinkSub(TopoDS_Face& upToFace,

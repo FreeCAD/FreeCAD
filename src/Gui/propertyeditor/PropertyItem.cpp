@@ -3869,8 +3869,10 @@ void PropertyLinkListItem::setValue(const QVariant& value)
         if (!o.isEmpty())
             data << QString::fromLatin1("App.getDocument('%1').getObject('%2')").arg(d).arg(o);
     }
-
-    setPropertyValue(QString::fromLatin1("[%1]").arg(data.join(QString::fromLatin1(", "))));
+    if(data.size()==0)
+        setPropertyValue(QLatin1String("[]"));
+    else
+        setPropertyValue(QString::fromLatin1("[%1]").arg(data.join(QString::fromLatin1(", "))));
 }
 
 QWidget* PropertyLinkListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const

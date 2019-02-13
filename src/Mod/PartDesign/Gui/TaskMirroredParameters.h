@@ -64,7 +64,6 @@ public:
 private Q_SLOTS:
     void onPlaneChanged(int num);
     virtual void onUpdateView(bool);
-    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);

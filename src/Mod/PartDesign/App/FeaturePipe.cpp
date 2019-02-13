@@ -310,10 +310,6 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
 
-            if(boolOp.countSubShapes(TopAbs_SOLID)>1){
-                return new App::DocumentObjectExecReturn("Pipe: Result has multiple solids. This is not supported at this time.");
-            }
-
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
@@ -328,10 +324,6 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             // lets check if the result is a solid
             if (boolOp.isNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
-
-            if(boolOp.countSubShapes(TopAbs_SOLID)>1){
-                return new App::DocumentObjectExecReturn("Pipe: Result has multiple solids. This is not supported at this time.");
-            }
 
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));

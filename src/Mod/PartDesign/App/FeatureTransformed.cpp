@@ -55,6 +55,7 @@
 #include <Mod/Part/App/modelRefine.h>
 
 using namespace PartDesign;
+using namespace Part;
 
 namespace PartDesign {
 
@@ -64,9 +65,13 @@ Transformed::Transformed()
 {
     ADD_PROPERTY(Originals,(0));
     Originals.setSize(0);
+    ADD_PROPERTY(OriginalSubs,(0));
     Placement.setStatus(App::Property::ReadOnly, true);
 
-    ADD_PROPERTY_TYPE(Refine,(0),"SketchBased",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    ADD_PROPERTY_TYPE(Refine,(0),"Base",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+
+    ADD_PROPERTY_TYPE(SubTransform,(true),"Base",(App::PropertyType)(App::Prop_None),
+        "Transform sub feature instead of the solid if is an additive or substractive feature (e.g. Pad, Pocket)");
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -89,7 +94,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
     }
 
     const char* err = nullptr;
-    const std::vector<App::DocumentObject*> & originals = Originals.getValues();
+    const std::vector<App::DocumentObject*> & originals = OriginalSubs.getValues();
     // NOTE: may be here supposed to be last origin but in order to keep the old behaviour keep here first 
     App::DocumentObject* firstOriginal = originals.empty() ? NULL : originals.front();
     if (firstOriginal) {
@@ -111,7 +116,7 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
 
 App::DocumentObject* Transformed::getSketchObject() const
 {
-    std::vector<DocumentObject*> originals = Originals.getValues();
+    std::vector<DocumentObject*> originals = OriginalSubs.getValues();
     if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
         return (static_cast<PartDesign::ProfileBased*>(originals.front()))->getVerifiedSketch(true);
     }
@@ -141,9 +146,9 @@ App::DocumentObject* Transformed::getSketchObject() const
 void Transformed::handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) 
 {
+    Base::Type inputType = Base::Type::fromName(TypeName);
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
     // to PropertyAngle and the property 'Length' has changed to PropertyLength.
-    Base::Type inputType = Base::Type::fromName(TypeName);
     if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
             inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
@@ -156,7 +161,7 @@ void Transformed::handleChangedPropertyType(
 
 short Transformed::mustExecute() const
 {
-    if (Originals.isTouched())
+    if (OriginalSubs.isTouched())
         return 1;
     return PartDesign::Feature::mustExecute();
 }
@@ -165,9 +170,17 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 {
     rejected.clear();
 
-    std::vector<App::DocumentObject*> originals = Originals.getValues();
-    if (originals.empty()) // typically InsideMultiTransform
-        return App::DocumentObject::StdReturn;
+    auto originals = OriginalSubs.getSubListValues(true);
+    if (originals.empty()) {
+        if(!BaseFeature.getValue()) {
+            // typically InsideMultiTransform
+            Shape.setValue(TopoShape());
+            return App::DocumentObject::StdReturn;
+        }
+        std::vector<std::string> subs;
+        subs.emplace_back("");
+        originals.emplace_back(BaseFeature.getValue(),subs);
+    }
 
     if(!this->BaseFeature.getValue()) {
         auto body = getFeatureBody();
@@ -178,10 +191,65 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
     this->positionBySupport();
 
+    TopTools_IndexedMapOfShape shapeMap;
+    std::vector<TopoShape> originalShapes;
+    std::vector<std::string> originalSubs;
+    std::vector<bool> fuses;
+    for(auto &v : originals) {
+        auto obj = Base::freecad_dynamic_cast<PartDesign::Feature>(v.first);
+        if(!obj) 
+            continue;
+
+        if (SubTransform.getValue() 
+                && obj->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) 
+        {
+            PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(obj);
+            auto shape = feature->AddSubShape.getShape();
+            if (shape.isNull())
+                return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
+            int count = shapeMap.Extent();
+            if(shapeMap.Add(shape.getShape())<=count)
+                continue;
+            shape.Tag = -getID();
+            originalShapes.push_back(shape);
+            originalSubs.push_back(feature->getFullName());
+            fuses.push_back((feature->getAddSubType() == FeatureAddSub::Additive) ? true : false);
+            continue;
+        } 
+
+        for(auto &sub : v.second) {
+            TopoShape baseShape = obj->Shape.getShape();
+            std::vector<TopoShape> shapes;
+            if(sub.empty()) 
+                shapes = baseShape.getSubTopoShapes(TopAbs_SOLID);
+            else {
+                TopoDS_Shape subShape = baseShape.getSubShape(sub.c_str());
+                if(subShape.IsNull())
+                    return new App::DocumentObjectExecReturn("Shape of source feature is empty");
+                int idx = baseShape.findAncestor(subShape,TopAbs_SOLID);
+                if(idx)
+                    shapes.push_back(baseShape.getSubTopoShape(TopAbs_SOLID,idx));
+            }
+            if(shapes.empty())
+                return new App::DocumentObjectExecReturn("Non solid source feature");
+            for(auto &s : shapes) {
+                int count = shapeMap.Extent();
+                if(shapeMap.Add(s.getShape())<=count)
+                    continue;
+                originalShapes.push_back(s);
+                if(sub.size())
+                    originalSubs.push_back(obj->getFullName() + '.' + sub);
+                else
+                    originalSubs.push_back(obj->getFullName());
+                fuses.push_back(true);
+            }
+        }
+    }
+
     // get transformations from subclass by calling virtual method
     std::vector<gp_Trsf> transformations;
     try {
-        std::list<gp_Trsf> t_list = getTransformations(originals);
+        std::list<gp_Trsf> t_list = getTransformations(originalShapes);
         transformations.insert(transformations.end(), t_list.begin(), t_list.end());
     } catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -200,9 +268,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     if(!support.Hasher)
         support.Hasher = getDocument()->getStringHasher();
 
-    typedef std::set<std::vector<gp_Trsf>::const_iterator> trsf_it;
-    typedef std::map<App::DocumentObject*,  trsf_it> rej_it_map;
-    rej_it_map nointersect_trsfms;
     std::ostringstream ss;
 
     TopoShape result;
@@ -212,24 +277,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     // Original separately. This way it is easier to discover what feature causes a fuse/cut
     // to fail. The downside is that performance suffers when there are many originals. But it seems
     // safe to assume that in most cases there are few originals and many transformations
-    for (std::vector<App::DocumentObject*>::const_iterator o = originals.begin(); o != originals.end(); ++o)
-    {
-        // Extract the original shape and determine whether to cut or to fuse
-        TopoShape shape;
-        bool fuse;
-
-        if ((*o)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
-            PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(*o);
-            shape = feature->AddSubShape.getShape();
-            shape.Tag = -getID();
-            if (shape.isNull())
-                return new App::DocumentObjectExecReturn("Shape of additive feature is empty");
-            
-            fuse = (feature->getAddSubType() == FeatureAddSub::Additive) ? true : false;
-        } 
-        else {
-            return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");
-        }
+    int i=0;
+    for (TopoShape &shape : originalShapes) {
+        auto &sub = originalSubs[i];
+        bool fuse = fuses[i++];
+        bool failed = false;
 
         // Transform the add/subshape and collect the resulting shapes for overlap testing
         /*typedef std::vector<std::vector<gp_Trsf>::const_iterator> trsf_it_vec;
@@ -250,17 +302,24 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             try {
                 shapeCopy = shapeCopy.makETransform(*t);
             }catch(Standard_Failure &) {
-                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
+                std::string msg("Transformation failed ");
+                msg += sub;
+                return new App::DocumentObjectExecReturn(msg.c_str());
             }
 
             // Check for intersection with support
             try {
 
-                if (!Part::checkIntersection(support.getShape(), shapeCopy.getShape(), false, true)) {
+                if (!allowMultiSolid()
+                        && !Part::checkIntersection(support.getShape(), shapeCopy.getShape(), false, true)) {
 #ifdef FC_DEBUG // do not write this in release mode because a message appears already in the task view
-                    Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", (*o)->getNameInDocument());
+                    Base::Console().Warning("Transformed shape does not intersect support %s: Removed\n", sub.c_str());
 #endif
-                    nointersect_trsfms[*o].insert(t);
+                    if(!failed) {
+                        failed = true;
+                        rejected.emplace_back(shape,std::vector<gp_Trsf>());
+                    }
+                    rejected.back().second.push_back(*t);
                 } else {
                     // We cannot wait to fuse a transformation with the support until all the transformations are done,
                     // because the "support" potentially changes with every transformation, basically when checking intersection
@@ -290,8 +349,11 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                         // we have to get the solids (fuse sometimes creates compounds)
                         support = this->getSolid(result);
                         // lets check if the result is a solid
-                        if (support.isNull())
-                            return new App::DocumentObjectExecReturn("Resulting shape is not a solid", *o);
+                        if (support.isNull()) {
+                            std::string msg("Resulting shape is not a solid: ");
+                            msg += sub;
+                            return new App::DocumentObjectExecReturn(msg.c_str());
+                        }
 
                         /*std::vector<TopoDS_Shape>::const_iterator individualIt;
                         for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
@@ -332,14 +394,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         }
     }
     result = refineShapeIfActive(result);
-
-    for (rej_it_map::const_iterator it = nointersect_trsfms.begin(); it != nointersect_trsfms.end(); ++it)
-        for (trsf_it::const_iterator it2 = it->second.begin(); it2 != it->second.end(); ++it2)
-            rejected[it->first].push_back(**it2);
-
-    if(support.countSubShapes(TopAbs_SOLID)>1){
-        return new App::DocumentObjectExecReturn("Transformed: Result has multiple solids. This is not supported at this time.");
-    }
 
     this->Shape.setValue(getSolid(result));
 
@@ -412,4 +466,61 @@ void Transformed::divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vec
     }
 }
 
+void Transformed::onDocumentRestored() {
+    if(OriginalSubs.getValues().empty() && Originals.getSize()) {
+        std::vector<std::string> subs(Originals.getSize());
+        OriginalSubs.setValues(Originals.getValues(),subs);
+    }
+    PartDesign::Feature::onDocumentRestored();
+}
+
+void Transformed::onChanged(const App::Property *prop) {
+    if (!this->isRestoring() 
+            && this->getDocument()
+            && !this->getDocument()->isPerformingTransaction()
+            && !prop->testStatus(App::Property::User3))
+    {
+        if(prop == &Originals) {
+            std::map<App::DocumentObject*,std::vector<std::string> > subMap;
+            const auto &originals = OriginalSubs.getSubListValues();
+            for(auto &v : originals) {
+                auto &subs = subMap[v.first];
+                subs.insert(subs.end(),v.second.begin(),v.second.end());
+            }
+            std::vector<App::PropertyLinkSubList::SubSet> subset;
+            std::set<App::DocumentObject*> objSet;
+            bool touched = false;
+            for(auto obj : Originals.getValues()) {
+                if(!objSet.insert(obj).second)
+                    continue;
+                auto it = subMap.find(obj);
+                if(it == subMap.end()) {
+                    touched = true;
+                    subset.emplace_back(obj,std::vector<std::string>());
+                    continue;
+                }
+                subset.emplace_back(it->first,std::move(it->second));
+                subMap.erase(it);
+            }
+            if(subMap.size() || touched || originals!=subset) {
+                OriginalSubs.setStatus(App::Property::User3,true);
+                OriginalSubs.setSubListValues(subset);
+                OriginalSubs.setStatus(App::Property::User3,false);
+            }
+        }else if(prop == &OriginalSubs) {
+            std::set<App::DocumentObject*> objSet;
+            std::vector<App::DocumentObject *> objs;
+            for(auto obj : OriginalSubs.getValues()) {
+                if(objSet.insert(obj).second)
+                    objs.push_back(obj);
+            }
+            if(objs != Originals.getValues()) {
+                Originals.setStatus(App::Property::User3,true);
+                Originals.setValues(objs);
+                Originals.setStatus(App::Property::User3,false);
+            }
+        }
+    }
+    PartDesign::Feature::onChanged(prop);
+}
 }

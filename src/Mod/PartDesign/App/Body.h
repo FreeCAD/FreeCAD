@@ -47,6 +47,8 @@ public:
     /// True if this body feature is active or was active when the document was last closed
     //App::PropertyBool IsActive;
 
+    App::PropertyBool SingleSolid;
+
     Body();
 
     /** @name methods override feature */
@@ -60,9 +62,6 @@ public:
         return "PartDesignGui::ViewProviderBody";
     }
     //@}
-
-    /// Return the previous feature
-    App::DocumentObject* getPrevFeature(App::DocumentObject *start = NULL) const;
 
     /**
      * Add the feature into the body at the current insert point.
@@ -128,12 +127,6 @@ public:
         showTip = enable;
     }
 
-protected:
-    virtual void onSettingDocument() override;
-
-    /// Adjusts the first solid's feature's base on BaseFeature getting set
-    virtual void onChanged (const App::Property* prop) override;
-
     /**
       * Return the solid feature before the given feature, or before the Tip feature
       * That is, sketches and datum features are skipped
@@ -146,10 +139,18 @@ protected:
       */
     App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
 
+protected:
+    virtual void onSettingDocument() override;
+
+    /// Adjusts the first solid's feature's base on BaseFeature getting set
+    virtual void onChanged (const App::Property* prop) override;
+
     /// Creates the corresponding Origin object
     virtual void setupObject () override;
     /// Removes all planes and axis if they are still linked to the document
     virtual void unsetupObject () override;
+
+    virtual void onDocumentRestored() override;
 
 private:
     boost::signals2::scoped_connection connection;

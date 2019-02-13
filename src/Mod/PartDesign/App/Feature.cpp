@@ -56,6 +56,8 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 Feature::Feature()
 {
     ADD_PROPERTY(BaseFeature,(0));
+    ADD_PROPERTY_TYPE(Owner,(0),"Base",(App::PropertyType)(
+                App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
 }
@@ -67,32 +69,25 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
+bool Feature::allowMultiSolid() const {
+    auto body = getFeatureBody();
+    return body && !body->SingleSolid.getValue();
+}
+
 TopoShape Feature::getSolid(const TopoShape& shape)
 {
     if (shape.isNull())
         Standard_Failure::Raise("Shape is null");
     int count = shape.countSubShapes(TopAbs_SOLID);
-    if(count>1) 
-        FC_WARN("found more than one solid");
+    if(count>1) {
+        if(allowMultiSolid())
+            return shape;
+        throw Base::RuntimeError("Result has multiple solids. This is not supported at this time.");
+    }
     if(count)
         return shape.getSubTopoShape(TopAbs_SOLID,1);
     return TopoShape();
 }
-
-int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
-{
-    int result = 0;
-    if (shape.IsNull())
-        return result;
-    TopExp_Explorer xp;
-    xp.Init(shape,type);
-    for (; xp.More(); xp.Next()) {
-        result++;
-    }
-    return result;
-}
-
-
 
 const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
 {
@@ -207,7 +202,11 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
     return builder.Shape();
 }
 
-Body* Feature::getFeatureBody() {
+Body* Feature::getFeatureBody() const {
+
+    auto body = Base::freecad_dynamic_cast<Body>(Owner.getValue());
+    if(body)
+        return body;
 
     auto list = getInList();
     for (auto in : list) {

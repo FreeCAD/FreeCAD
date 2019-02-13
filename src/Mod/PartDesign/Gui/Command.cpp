@@ -1908,17 +1908,15 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
 
         // Set the tip of the body
         FCMD_OBJ_CMD(pcActiveBody,"Tip = " << Gui::Command::getObjectCmd(Feat));
-        // Adjust visibility to show only the tip feature
-        FCMD_OBJ_SHOW(Feat);
         Gui::Command::updateActive();
     };
 
     // Get a valid original from the user
     // First check selections
-    std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::FeatureAddSub::getClassTypeId());
+    std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::Feature::getClassTypeId());
     // Next create a list of all eligible objects
     if (features.size() == 0) {
-        features = cmd->getDocument()->getObjectsOfType(PartDesign::FeatureAddSub::getClassTypeId());
+        features = cmd->getDocument()->getObjectsOfType(PartDesign::Feature::getClassTypeId());
         // If there is more than one selected or eligible object, show dialog and let user pick one
         if (features.size() > 1) {
             std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
@@ -1945,22 +1943,23 @@ void prepareTransformed(PartDesign::Body *pcActiveBody, Gui::Command* cmd, const
 
             Gui::Selection().clearSelection();
             Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(features, status, accepter, worker));
-        } else {
+            return;
+        } else if(features.empty()) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first."));
+                QObject::tr("Please create a feature first."));
             return;
         }
     }
-    else if (features.size() > 1) {
+    if (features.size() > 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Multiple Features Selected"),
-            QObject::tr("Please select only one subtractive or additive feature first."));
+            QObject::tr("Please select only one feature first."));
         return;
     }
     else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(true);
         if (pcActiveBody != PartDesignGui::getBodyFor(features[0], false)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection is not in Active Body"),
-                QObject::tr("Please select only one subtractive or additive feature in an active body."));
+                QObject::tr("Please select only one feature in an active body."));
             return;
         }
         worker(features);
@@ -2264,14 +2263,16 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         App::DocumentObject* prevFeature = 0;
         if (pcActiveBody){
             oldTip = pcActiveBody->Tip.getValue();
-            prevFeature = pcActiveBody->getPrevFeature(trFeat);
+            prevFeature = pcActiveBody->getPrevSolidFeature(trFeat);
         }
         Gui::Selection().clearSelection();
         if (prevFeature != NULL)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
-        // TODO Review this (2015-09-05, Fat-Zer)
-        openCommand("Convert to MultiTransform feature");
-        doCommand(Gui, "FreeCADGui.runCommand('PartDesign_MoveTip')");
+
+        openCommand("Convert to MultiTransform feature", true);
+
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+        rcCmdMgr.runCommandByName("PartDesign_MoveTip");
 
         // We cannot remove the Transform feature from the body as otherwise
         // we will have a PartDesign feature without a body which is not allowed
@@ -2290,8 +2291,9 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::MultiTransform','"<<FeatName<<"')");
         auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
         auto objCmd = getObjectCmd(trFeat);
-        FCMD_OBJ_CMD(Feat,"Originals = "<<objCmd<<".Originals");
-        FCMD_OBJ_CMD(Feat,"Originals = []");
+        FCMD_OBJ_CMD(Feat,"OriginalSubs = "<<objCmd<<".OriginalSubs");
+        FCMD_OBJ_CMD(Feat,"BaseFeature = "<<objCmd<<".BaseFeature");
+        FCMD_OBJ_CMD(trFeat,"OriginalSubs = []");
         FCMD_OBJ_CMD(Feat,"Transformations = ["<<objCmd<<"]");
 
         // Add the MultiTransform into the Body at the current insert point
@@ -2301,7 +2303,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         if (pcActiveBody && oldTip != trFeat) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
+            rcCmdMgr.runCommandByName("PartDesign_MoveTip");
             Gui::Selection().clearSelection();
         } // otherwise the insert point remains at the new MultiTransform, which is fine
     } else {

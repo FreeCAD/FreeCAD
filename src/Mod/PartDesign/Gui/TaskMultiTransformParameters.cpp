@@ -72,14 +72,11 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
 
     connect(ui->buttonAddFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonAddFeature(bool)));
     connect(ui->buttonRemoveFeature, SIGNAL(toggled(bool)), this, SLOT(onButtonRemoveFeature(bool)));
-    // Create context menu
-    QAction* action = new QAction(tr("Remove"), this);
-    ui->listWidgetFeatures->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onFeatureDeleted()));
-    ui->listWidgetFeatures->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+    setupListWidget(ui->listWidgetFeatures);
 
     // Create a context menu for the listview of transformation features
-    action = new QAction(tr("Edit"), ui->listTransformFeatures);
+    auto action = new QAction(tr("Edit"), ui->listTransformFeatures);
     action->connect(action, SIGNAL(triggered()),
                     this, SLOT(onTransformEdit()));
     ui->listTransformFeatures->addAction(action);
@@ -138,41 +135,11 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         editHint = true;
     }
 
-    // Get the Originals data
-    std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
-
-    // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++) {
-        const App::DocumentObject* obj = *i;
-        if (obj != NULL) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
-            ui->listWidgetFeatures->addItem(item);
-        }
-    }
-    // ---------------------
 }
 
 void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
-        Gui::SelectionObject selObj(msg);
-        App::DocumentObject* obj = selObj.getObject();
-        Q_ASSERT(obj);
-
-        QString label = QString::fromUtf8(obj->Label.getValue());
-        QString objectName = QString::fromLatin1(msg.pObjectName);
-
-        if (selectionMode == addFeature) {
-            QListWidgetItem* item = new QListWidgetItem();
-            item->setText(label);
-            item->setData(Qt::UserRole, objectName);
-            ui->listWidgetFeatures->addItem(item);
-        }
-        else {
-            removeItemFromListWidget(ui->listWidgetFeatures, label);
-        }
         exitSelectionMode();
     }
 }
@@ -181,16 +148,6 @@ void TaskMultiTransformParameters::clearButtons()
 {
     ui->buttonAddFeature->setChecked(false);
     ui->buttonRemoveFeature->setChecked(false);
-}
-
-void TaskMultiTransformParameters::onFeatureDeleted(void)
-{
-    PartDesign::Transformed* pcTransformed = getObject();
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-    originals.erase(originals.begin() + ui->listWidgetFeatures->currentRow());
-    pcTransformed->Originals.setValues(originals);
-    ui->listWidgetFeatures->model()->removeRow(ui->listWidgetFeatures->currentRow());
-    recomputeFeature();
 }
 
 void TaskMultiTransformParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
@@ -220,6 +177,8 @@ void TaskMultiTransformParameters::onTransformDelete()
     App::DocumentObject* feature = transformFeatures[row];
     if (feature == this->subFeature)
         this->subFeature = nullptr;
+
+    setupTransaction();
     pcMultiTransform->getDocument()->removeObject(feature->getNameInDocument());
     closeSubTask();
 
@@ -357,6 +316,7 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
     //Gui::Command::copyVisual(newFeatName.c_str(), "ShapeColor", getOriginals().front()->getNameInDocument().c_str());
     //Gui::Command::copyVisual(newFeatName.c_str(), "DisplayMode", getOriginals().front()->getNameInDocument().c_str());
 
+    setupTransaction();
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     if (editHint) {
         // Remove hint, first feature is being added
@@ -398,6 +358,7 @@ void TaskMultiTransformParameters::finishAdd(std::string &newFeatName)
 
 void TaskMultiTransformParameters::moveTransformFeature(const int increment)
 {
+    setupTransaction();
     int row = ui->listTransformFeatures->currentIndex().row();
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
@@ -446,8 +407,10 @@ void TaskMultiTransformParameters::onSubTaskButtonOK() {
 void TaskMultiTransformParameters::onUpdateView(bool on)
 {
     blockUpdate = !on;
-    if (on)
+    if (on) {
+        setupTransaction();
         recomputeFeature();
+    }
 }
 
 const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransformFeatures(void) const
@@ -482,11 +445,8 @@ void TaskMultiTransformParameters::changeEvent(QEvent *e)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(ViewProviderMultiTransform *MultiTransformView)
-    : TaskDlgTransformedParameters(MultiTransformView)
+    : TaskDlgTransformedParameters(MultiTransformView, new TaskMultiTransformParameters(MultiTransformView))
 {
-    parameter = new TaskMultiTransformParameters(MultiTransformView);
-
-    Content.push_back(parameter);
 }
 //==== calls from the TaskView ===============================================================
 

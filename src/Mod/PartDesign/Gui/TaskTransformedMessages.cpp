@@ -68,4 +68,8 @@ void TaskTransformedMessages::slotDiagnosis(QString msg)
     ui->labelTransformationStatus->setText(msg);
 }
 
+QCheckBox *TaskTransformedMessages::getCheckBox() {
+    return ui->checkBoxSubTransform;
+}
+
 #include "moc_TaskTransformedMessages.cpp"

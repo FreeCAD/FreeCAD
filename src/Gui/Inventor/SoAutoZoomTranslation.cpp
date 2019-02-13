@@ -73,16 +73,20 @@ void SoAutoZoomTranslation::initClass()
 
 float SoAutoZoomTranslation::getScaleFactor(SoAction* action) const
 {
+    float scale = scaleFactor.getValue();
+    if(!scale)
+        return 1.0;
     // Dividing by 5 seems to work well
     SbViewVolume vv = SoViewVolumeElement::get(action->getState());
     float aspectRatio = SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
-    float scale = vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
+    scale *= vv.getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / (5*aspectRatio);
     return scale;
 }
 
 SoAutoZoomTranslation::SoAutoZoomTranslation()
 {
     SO_NODE_CONSTRUCTOR(SoAutoZoomTranslation);
+    SO_NODE_ADD_FIELD(scaleFactor, (1.0f));
     //SO_NODE_ADD_FIELD(abPos, (SbVec3f(0.f,0.f,0.f)));
 }
 

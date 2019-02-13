@@ -55,7 +55,7 @@ public:
 protected:
     Type addSubType;
 
-    TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
+    TopoShape refineShapeIfActive(const TopoShape&) const;
 };
 
 typedef App::FeaturePythonT<FeatureAddSub> FeatureAddSubPython;

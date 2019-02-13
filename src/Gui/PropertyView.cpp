@@ -162,6 +162,7 @@ void PropertyView::setShowAll(bool enable) {
 }
 
 void PropertyView::hideEvent(QHideEvent *ev) {
+    this->timer->stop();
     this->detachSelection();
     PropertyModel::PropertyList props;
     // clear the properties before hiding.
@@ -173,6 +174,7 @@ void PropertyView::hideEvent(QHideEvent *ev) {
 
 void PropertyView::showEvent(QShowEvent *ev) {
     this->attachSelection();
+    this->timer->start(100);
     QWidget::showEvent(ev);
 }
 

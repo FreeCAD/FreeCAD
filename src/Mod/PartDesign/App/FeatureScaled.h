@@ -60,7 +60,7 @@ public:
       */
     // Note: We can't just use the Originals property because this will fail if the Scaled feature
     // is being used inside a MultiTransform feature
-    const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> originals);
+    virtual std::list<gp_Trsf> getTransformations(const std::vector<Part::TopoShape> &) override;
 };
 
 } //namespace PartDesign

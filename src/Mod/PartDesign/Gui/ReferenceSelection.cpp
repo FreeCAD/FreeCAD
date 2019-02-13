@@ -130,15 +130,15 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
         return false;
     }
 
-    // Handle selection of geometry elements
-    if (!sSubName || sSubName[0] == '\0')
-        return false;
     if (!allowOtherBody) {
         if (support == NULL)
             return false;
         if (pObj != support)
             return false;
     }
+    // Handle selection of geometry elements
+    if (!sSubName || sSubName[0] == '\0')
+        return whole;
     std::string subName(sSubName);
     if (edge && subName.size() > 4 && subName.substr(0,4) == "Edge") {
         const Part::TopoShape &shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();

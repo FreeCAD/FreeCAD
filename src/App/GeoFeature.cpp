@@ -211,8 +211,10 @@ void GeoFeature::updateElementReference() {
 }
 
 void GeoFeature::onChanged(const Property *prop) {
-    if(!isRestoring() && prop==getPropertyOfGeometry())
-        updateElementReference();
+    if(prop==getPropertyOfGeometry()) {
+        if(!isRestoring() && getDocument() && !getDocument()->isPerformingTransaction())
+            updateElementReference();
+    }
     DocumentObject::onChanged(prop);
 }
 

@@ -75,22 +75,13 @@ short MultiTransform::mustExecute() const
     return Transformed::mustExecute();
 }
 
-const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<App::DocumentObject*> originals)
+std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Part::TopoShape> &originals)
 {
     std::vector<App::DocumentObject*> transFeatures = Transformations.getValues();
 
     // Find centre of gravity of first original
     // FIXME: This method will NOT give the expected result for more than one original!
-    Part::Feature* originalFeature = static_cast<Part::Feature*>(originals.front());
-    TopoDS_Shape original;
-
-    if (originalFeature->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
-        PartDesign::FeatureAddSub* addFeature = static_cast<PartDesign::FeatureAddSub*>(originalFeature);
-        //if (addFeature->getAddSubType() == FeatureAddSub::Additive)
-        //    original = addFeature->AddSubShape.getShape().getShape();
-        //else
-            original = addFeature->AddSubShape.getShape().getShape();
-    }
+    TopoDS_Shape original = originals.front().getShape();
 
     GProp_GProps props;
     BRepGProp::VolumeProperties(original,props);
