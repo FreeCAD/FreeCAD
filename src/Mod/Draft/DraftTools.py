@@ -4241,7 +4241,10 @@ class Edit(Modifier):
             elif arg["Key"] == "f":
                 self.finish()
             elif arg["Key"] == "c":
-                self.finish(closed=True)
+                self.finish(closed=True)            
+            elif arg["Key"] == "i":
+                if (arg["State"] == "DOWN") and Draft.getType(self.obj) == "Circle":              
+                    self.arcInvert()               
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             self.point,ctrlPoint,info = getPoint(self,arg)
             if self.editing != None:
@@ -4387,7 +4390,7 @@ class Edit(Modifier):
                     self.obj.recompute()
                 self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
             else:#self.obj is an arc
-                if self.arc3Pt == False:#edit by center radius FirstAngle LastAngle
+                if self.arc3Pt == True:#edit by center radius FirstAngle LastAngle
                     deltaX = v[0]-self.obj.Placement.Base[0]
                     deltaY = v[1]-self.obj.Placement.Base[1]
                     dangle = math.degrees(math.atan2(deltaY,deltaX))
@@ -4414,7 +4417,7 @@ class Edit(Modifier):
                         self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
                         self.trackers[3].set(self.getArcMid())
                     self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
-                elif self.arc3Pt:
+                elif self.arc3Pt == False:
                     if self.editing == 0:#keep everithing as it is for the moment
                         p1=self.obj.Shape.Vertexes[0].Point
                         p2=self.getArcMid()
@@ -4543,7 +4546,16 @@ class Edit(Modifier):
                 msg("wall edit mode: get midpoint")
         else:
             msg("Failed to get object midpoint during Editing")
-
+            
+    def arcInvert(self):
+        FA=self.obj.FirstAngle
+        self.obj.FirstAngle=self.obj.LastAngle
+        self.obj.LastAngle=FA
+        self.obj.recompute()
+        self.trackers[1].set(self.obj.Shape.Vertexes[0].Point)
+        self.trackers[2].set(self.obj.Shape.Vertexes[1].Point)
+        self.trackers[3].set(self.getArcMid())
+        
     def numericInput(self,v,numy=None,numz=None):
         '''this function gets called by the toolbar
         when valid x, y, and z have been entered there'''
@@ -4749,6 +4761,7 @@ class Edit(Modifier):
                 objPoints = self.obj.Points[ep]
                 if self.pl: objPoints = self.pl.multVec(objPoints)
                 self.trackers.append(editTracker(objPoints,self.obj.Name,ep,self.obj.ViewObject.LineColor))
+                
 class AddToGroup():
     "The AddToGroup FreeCAD command definition"
 
