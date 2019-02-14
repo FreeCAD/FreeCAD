@@ -351,8 +351,14 @@ App.Units.ElectricPotential = App.Units.Unit(2,1,-3,-1)
 App.Units.AmountOfSubstance = App.Units.Unit(0,0,0,0,0,1)
 App.Units.LuminousIntensity = App.Units.Unit(0,0,0,0,0,0,1)
 
-App.Units.Stress        = App.Units.Unit(-1,1,-2) 
-App.Units.Pressure      = App.Units.Unit(-1,1,-2) 
+# Pressure
+App.Units.CompressiveStrength     = App.Units.Unit(-1,1,-2)
+App.Units.Pressure                = App.Units.Unit(-1,1,-2)
+App.Units.ShearModulus            = App.Units.Unit(-1,1,-2)
+App.Units.Stress                  = App.Units.Unit(-1,1,-2)
+App.Units.UltimateTensileStrength = App.Units.Unit(-1,1,-2)
+App.Units.YieldStrength           = App.Units.Unit(-1,1,-2)
+App.Units.YoungsModulus           = App.Units.Unit(-1,1,-2)
 
 App.Units.Force         = App.Units.Unit(1,1,-2) 
 App.Units.Work          = App.Units.Unit(2,1,-2) 
