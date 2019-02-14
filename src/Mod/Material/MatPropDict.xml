@@ -41,8 +41,8 @@
         <Property Name="YieldStrength" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
             <Reference>https://en.wikipedia.org/wiki/Yield_Strength</Reference>
         </Property>
-        <Property Name="UltimateStrain" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
-            <Reference>https://en.wikipedia.org/wiki/Ultimate_tensile_strength</Reference>
+        <Property Name="UltimateStrain" Type="Float">
+            <Reference>https://en.wikipedia.org/wiki/Deformation_(mechanics)</Reference>
         </Property>
         <Property Name="FractureToughness" Type="Quantity" Units="(-1, 1, -2, 0, 0, 0, 0, 0)">
             <Reference>https://en.wikipedia.org/wiki/Fracture_toughness</Reference>
@@ -116,9 +116,9 @@
         </Property>
         <Property Name="SectionFillPattern" Type="File">
         </Property>
-        <Property Name="ViewLinewidth" Type="Quantity" Units="(1, 0, 0, 0, 0, 0, 0, 0)">
+        <Property Name="ViewLinewidth" Type="Float">
         </Property>
-        <Property Name="SectionLinewidth" Type="Quantity" Units="(1, 0, 0, 0, 0, 0, 0, 0)">
+        <Property Name="SectionLinewidth" Type="Float">
         </Property>
     </Group>
 
