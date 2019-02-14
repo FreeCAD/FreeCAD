@@ -281,7 +281,7 @@ or None if the GUI is not up</UserDocu>
 		</Attribute>
         <Attribute Name="Parents" ReadOnly="true">
             <Documentation>
-                <UserDocu>A List of tuple(parent,subname) holding all parents of to this object</UserDocu>
+                <UserDocu>A List of tuple(parent,subname) holding all parents to this object</UserDocu>
             </Documentation>
 			<Parameter Name="Parents" Type="List"/>
         </Attribute>
