@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QButtonGroup>
+# include <QRegExp>
+# include <QRegExpValidator>
 #endif
 
 #include <Interface_Static.hxx>
@@ -95,6 +97,15 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     bg = new QButtonGroup(this);
     bg->addButton(ui->radioButtonBRepOff, 0);
     bg->addButton(ui->radioButtonBRepOn, 1);
+
+    QRegExp rx;
+    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
+    companyValidator->setRegExp(rx);
+    ui->lineEditCompany->setValidator(companyValidator);
+    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
+    authorValidator->setRegExp(rx);
+    ui->lineEditAuthor->setValidator(authorValidator);
 }
 
 /** 
@@ -188,6 +199,15 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
     ui = new Ui_DlgImportExportStep();
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
+
+    QRegExp rx;
+    rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
+    QRegExpValidator* companyValidator = new QRegExpValidator(ui->lineEditCompany);
+    companyValidator->setRegExp(rx);
+    ui->lineEditCompany->setValidator(companyValidator);
+    QRegExpValidator* authorValidator = new QRegExpValidator(ui->lineEditAuthor);
+    authorValidator->setRegExp(rx);
+    ui->lineEditAuthor->setValidator(authorValidator);
 }
 
 /** 
