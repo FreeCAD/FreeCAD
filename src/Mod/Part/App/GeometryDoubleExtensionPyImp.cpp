@@ -34,13 +34,13 @@ using namespace Part;
 std::string GeometryDoubleExtensionPy::representation(void) const
 {
     std::stringstream str;
-    double id = getGeometryDoubleExtensionPtr()->getValue();
+    double val = getGeometryDoubleExtensionPtr()->getValue();
     str << "<GeometryDoubleExtension (" ;
 
     if(getGeometryDoubleExtensionPtr()->getName().size()>0)
         str << "\'" << getGeometryDoubleExtensionPtr()->getName() << "\', ";
 
-    str << id << ") >";
+    str << val << ") >";
 
 
     return str.str();
@@ -62,16 +62,16 @@ int GeometryDoubleExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    double Id;
-    if (PyArg_ParseTuple(args, "d", &Id)) {
-        this->getGeometryDoubleExtensionPtr()->setValue(Id);
+    double val;
+    if (PyArg_ParseTuple(args, "d", &val)) {
+        this->getGeometryDoubleExtensionPtr()->setValue(val);
         return 0;
     }
 
     PyErr_Clear();
     char * pystr;
-    if (PyArg_ParseTuple(args, "ds", &Id,&pystr)) {
-        this->getGeometryDoubleExtensionPtr()->setValue(Id);
+    if (PyArg_ParseTuple(args, "ds", &val,&pystr)) {
+        this->getGeometryDoubleExtensionPtr()->setValue(val);
         this->getGeometryDoubleExtensionPtr()->setName(pystr);
         return 0;
     }
