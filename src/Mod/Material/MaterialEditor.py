@@ -67,6 +67,10 @@ class MaterialEditor:
         buttonSave = widget.ButtonSave
         comboMaterial = widget.ComboMaterial
         treeView = widget.treeView
+        
+        # temporarily hide preview fields, as they are not used yet
+        # TODO : implement previews
+        widget.PreviewGroup.hide()
 
         buttonURL.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
         buttonDeleteProperty.setEnabled(False)
