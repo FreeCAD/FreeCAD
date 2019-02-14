@@ -56,7 +56,6 @@
 #include <gp_Vec.hxx>
 #include <list>
 #include <vector>
-#include <map>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 

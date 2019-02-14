@@ -61,7 +61,7 @@ PyObject* GeometryExtensionPy::copy(PyObject *args)
     if (type->tp_new)
         cpy = type->tp_new(type, this, 0);
     if (!cpy) {
-        PyErr_SetString(PyExc_TypeError, "failed to create copy of geometry");
+        PyErr_SetString(PyExc_TypeError, "failed to create copy of the geometry extension");
         return 0;
     }
 
