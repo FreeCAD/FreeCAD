@@ -364,12 +364,22 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
 void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<QString, CallTip>& tips) const
 {
-    try {
-        for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+    for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
+        try {
             Py::String attrname(*it);
             std::string name = attrname.as_string();
-            Py::Object attr = obj.getAttr(name);
 
+            // If 'name' is an invalid attribute then PyCXX raises an exception
+            // for Py2 but silently accepts it for Py3.
+            //
+            // FIXME: Add methods of extension to the current instance and not its type object
+            // https://forum.freecadweb.org/viewtopic.php?f=22&t=18105
+            // https://forum.freecadweb.org/viewtopic.php?f=3&t=20009&p=154447#p154447
+            // https://forum.freecadweb.org/viewtopic.php?f=10&t=12534&p=155290#p155290
+            //
+            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&p=286759#p286759
+            // https://forum.freecadweb.org/viewtopic.php?f=39&t=33874&start=30#p286772
+            Py::Object attr = obj.getAttr(name);
             if (!attr.ptr()) {
                 Base::Console().Log("Python attribute '%s' returns null!\n", name.c_str());
                 continue;
@@ -428,10 +438,10 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
             if (pos == tips.end())
                 tips[str] = tip;
         }
-    }
-    catch (Py::Exception& e) {
-        // Just clear the Python exception
-        e.clear();
+        catch (Py::Exception& e) {
+            // Just clear the Python exception
+            e.clear();
+        }
     }
 }
 
