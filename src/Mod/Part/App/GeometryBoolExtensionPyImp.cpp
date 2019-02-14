@@ -34,13 +34,13 @@ using namespace Part;
 std::string GeometryBoolExtensionPy::representation(void) const
 {
     std::stringstream str;
-    long id = getGeometryBoolExtensionPtr()->getValue();
+    double val = getGeometryBoolExtensionPtr()->getValue();
     str << "<GeometryBoolExtension (" ;
 
     if(getGeometryBoolExtensionPtr()->getName().size()>0)
         str << "\'" << getGeometryBoolExtensionPtr()->getName() << "\', ";
 
-    str << (id==0?"False":"True") << ") >";
+    str << (val?"True":"False") << ") >";
 
 
     return str.str();
@@ -62,16 +62,16 @@ int GeometryBoolExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    PyObject* Id;
-    if (PyArg_ParseTuple(args, "O!", &PyBool_Type, &Id)) {
-        this->getGeometryBoolExtensionPtr()->setValue(PyObject_IsTrue(Id) ? true : false);
+    PyObject* val;
+    if (PyArg_ParseTuple(args, "O!", &PyBool_Type, &val)) {
+        this->getGeometryBoolExtensionPtr()->setValue(PyObject_IsTrue(val) ? true : false);
         return 0;
     }
 
     PyErr_Clear();
     char * pystr;
-    if (PyArg_ParseTuple(args, "O!s", &PyBool_Type, &Id, &pystr)) {
-        this->getGeometryBoolExtensionPtr()->setValue(PyObject_IsTrue(Id) ? true : false);
+    if (PyArg_ParseTuple(args, "O!s", &PyBool_Type, &val, &pystr)) {
+        this->getGeometryBoolExtensionPtr()->setValue(PyObject_IsTrue(val) ? true : false);
         this->getGeometryBoolExtensionPtr()->setName(pystr);
         return 0;
     }
