@@ -495,7 +495,7 @@ void Body::setupObject () {
     Part::BodyBase::setupObject ();
     auto hGrp = App::GetApplication().GetParameterGroupByPath (
                 "User parameter:BaseApp/Preferences/Mod/PartDesign");
-    SingleSolid.setValue(hGrp->GetBool("SingleSolid",true));
+    SingleSolid.setValue(hGrp->GetBool("SingleSolid",false));
 }
 
 void Body::unsetupObject () {

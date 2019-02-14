@@ -59,6 +59,19 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkSingleSolid">
+        <property name="text">
+         <string>Enforce single solid in Body</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SingleSolid</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/PartDesign</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

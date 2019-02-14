@@ -59,6 +59,7 @@ void DlgSettingsGeneral::saveSettings()
     ui->checkBooleanCheck->onSave();
     ui->checkBooleanRefine->onSave();
     ui->checkSketchBaseRefine->onSave();
+    ui->checkSingleSolid->onSave();
     ui->checkObjectNaming->onSave();
 }
 
@@ -67,6 +68,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->checkBooleanCheck->onRestore();
     ui->checkBooleanRefine->onRestore();
     ui->checkSketchBaseRefine->onRestore();
+    ui->checkSingleSolid->onRestore();
     ui->checkObjectNaming->onRestore();
 }
 
