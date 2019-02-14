@@ -112,13 +112,11 @@ class MaterialEditor:
         widget = self.widget
         treeView = widget.treeView
         model = treeView.model()
-        model.setHorizontalHeaderLabels(["Property", "Value",
-                                         "Type", "Units"])
+        model.setHorizontalHeaderLabels(["Property", "Value", "Type"])
 
         treeView.setColumnWidth(0, 250)
         treeView.setColumnWidth(1, 250)
         treeView.setColumnHidden(2, True)
-        treeView.setColumnHidden(3, True)
 
         tree = getMaterialAttributeStructure(True)
         MatPropDict = tree.getroot()
@@ -141,13 +139,7 @@ class MaterialEditor:
                 tt = properDict['Type']
                 itType = QtGui.QStandardItem(tt)
 
-                try:
-                    uu = properDict['Units']
-                    itUnit = QtGui.QStandardItem(uu)
-                except KeyError:
-                    itUnit = QtGui.QStandardItem()
-
-                top.appendRow([item, it, itType, itUnit])
+                top.appendRow([item, it, itType])
 
             top.sortChildren(0)
 
@@ -486,24 +478,22 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
         if column == 1:
 
             row = index.row()
+
+            PP = group.child(row, 0)
+            matproperty = PP.text().replace(" ", "")  # remove spaces
+
             TT = group.child(row, 2)
 
             if TT:
                 Type = TT.text()
-                UU = group.child(row, 3)
-                if UU:
-                    Units = UU.text()
-                else:
-                    Units = None
 
             else:
                 Type = "String"
-                Units = None
 
             VV = group.child(row, 1)
             Value = VV.text()
 
-            editor = matProperWidget(parent, Type, Units, Value)
+            editor = matProperWidget(parent, matproperty, Type, Value)
 
         elif column == 0:
 
@@ -546,7 +536,7 @@ class MaterialsDelegate(QtGui.QStyledItemDelegate):
 ui = FreeCADGui.UiLoader()
 
 
-def matProperWidget(parent=None, Type="String", Units=None, Value=None,
+def matProperWidget(parent=None, matproperty=None, Type="String", Value=None,
                     minimum=None, maximum=None, stepsize=None, precision=None):
 
     '''customs widgets for the material stuff.'''
@@ -569,13 +559,12 @@ def matProperWidget(parent=None, Type="String", Units=None, Value=None,
     elif Type == "Quantity":
 
         widget = ui.createWidget("Gui::InputField")
-        if Units:
-            vv = string2tuple(Units)
-            unit = FreeCAD.Units.Unit(
-                vv[0], vv[1], vv[2], vv[3], vv[4], vv[5], vv[6], vv[7]
-            )
+        if hasattr(FreeCAD.Units, matproperty):
+            unit = getattr(FreeCAD.Units, matproperty)
             quantity = FreeCAD.Units.Quantity(1, unit)
             widget.setProperty('unit', quantity.getUserPreferred()[2])
+        else:
+            FreeCAD.Console.PrintError('Not known unit for property: ' + matproperty + '\n')
 
     elif Type == "Integer":
 
