@@ -92,9 +92,6 @@ MaterialNumber =
 Model =
 
 ; Description to be updated
-ModulusOfShare =
-
-; Description to be updated
 Norm =
 
 ; Description to be updated
@@ -102,6 +99,9 @@ SectionFillPattern =
 
 ; Description to be updated
 SectionLinewidth =
+
+; Description to be updated
+ShearModulus =
 
 ; Description to be updated
 Shininess =

@@ -31,6 +31,7 @@ ModulusOfShare
 Norm
 SectionFillPattern
 SectionLinewidth
+ShearModulus
 Shininess
 SoundTransmissionClass
 SpecificHeat
