@@ -372,6 +372,7 @@ def calculate_principal_stress(i):
         return (float('NaN'), float('NaN'), float('NaN'), float('NaN'))
     # TODO might be possible without a try except for NaN, https://forum.freecadweb.org/viewtopic.php?f=22&t=33911&start=10#p284229
 
+
 def get_span(node_items):
     positions = []  # list of node vectors
     for k, v in node_items:
