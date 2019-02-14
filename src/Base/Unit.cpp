@@ -474,8 +474,14 @@ Unit Unit::ElectricPotential(2,1,-3,-1);
 Unit Unit::AmountOfSubstance(0,0,0,0,0,1);
 Unit Unit::LuminousIntensity(0,0,0,0,0,0,1);
 
-Unit Unit::Stress  (-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
-Unit Unit::Pressure(-1,1,-2);  // kg/m*s^2 or N/m^2 or PSI
+// Pressure, kg/m*s^2 or N/m^2 or PSI or MPa
+Unit Unit::CompressiveStrength     (-1,1,-2);
+Unit Unit::Pressure                (-1,1,-2);
+Unit Unit::ShearModulus            (-1,1,-2);
+Unit Unit::Stress                  (-1,1,-2);
+Unit Unit::UltimateTensileStrength (-1,1,-2);
+Unit Unit::YieldStrength           (-1,1,-2);
+Unit Unit::YoungsModulus           (-1,1,-2);
 
 Unit Unit::Force   (1,1,-2);
 Unit Unit::Work    (2,1,-2);
