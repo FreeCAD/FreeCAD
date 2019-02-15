@@ -21,45 +21,21 @@
  ***************************************************************************/
 
 
-#ifndef PART_GEOMETRYEXTENSION_H
-#define PART_GEOMETRYEXTENSION_H
 
-#include <Base/StdStlTools.h>
-#include <Base/Persistence.h>
+#ifndef BASE_STDSTLTOOLS_H
+#define BASE_STDSTLTOOLS_H
+
+#if defined __cplusplus && __cplusplus <= 201103L
+
 #include <memory>
-#include <string>
 
-
-namespace Part {
-
-class PartExport GeometryExtension: public Base::Persistence
-{
-    TYPESYSTEM_HEADER();
-public:
-    virtual ~GeometryExtension() = default;
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const = 0;
-    virtual void Save(Base::Writer &/*writer*/) const = 0;
-    virtual void Restore(Base::XMLReader &/*reader*/) = 0;
-
-    virtual std::unique_ptr<GeometryExtension> copy(void) const = 0;
-
-    virtual PyObject *getPyObject(void) = 0;
-
-    inline void setName(const std::string& str) {name = str;}
-    inline const std::string &getName () const {return name;}
-
-protected:
-    GeometryExtension();
-    GeometryExtension(const GeometryExtension &obj) = default;
-
-    void restoreNameAttribute(Base::XMLReader &/*reader*/);
-
-private:
-    std::string name;
-};
-
+namespace std {
+    template<typename T, typename... Args>
+    std::unique_ptr<T> make_unique(Args&&... args)
+    {
+        return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+    }
 }
+#endif
 
-#endif // PART_GEOMETRYEXTENSION_H
+#endif // BASE_STDSTLTOOLS_H
