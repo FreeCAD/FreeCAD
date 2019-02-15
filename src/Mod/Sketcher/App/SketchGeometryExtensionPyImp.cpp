@@ -38,8 +38,14 @@ using namespace Sketcher;
 std::string SketchGeometryExtensionPy::representation(void) const
 {
     std::stringstream str;
-    long id = getSketchGeometryExtensionPtr()->id;
-    str << "<SketchGeometryExtension (" << id << ") >";
+    str << "<SketchGeometryExtension (";
+
+    if(getSketchGeometryExtensionPtr()->getName().size()>0)
+        str << "\'" << getSketchGeometryExtensionPtr()->getName() << "\', ";
+
+    str << "\"";
+
+    str << getSketchGeometryExtensionPtr()->getId() << "\") >";
     return str.str();
 }
 
@@ -61,7 +67,7 @@ int SketchGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     int Id;
     if (PyArg_ParseTuple(args, "i", &Id)) {
-        this->getSketchGeometryExtensionPtr()->id=Id;
+        this->getSketchGeometryExtensionPtr()->setId(Id);
         return 0;
     }
 
@@ -75,12 +81,12 @@ int SketchGeometryExtensionPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Long SketchGeometryExtensionPy::getId(void) const
 {
-    return Py::Long(this->getSketchGeometryExtensionPtr()->id);
+    return Py::Long(this->getSketchGeometryExtensionPtr()->getId());
 }
 
 void SketchGeometryExtensionPy::setId(Py::Long Id)
 {
-    this->getSketchGeometryExtensionPtr()->id=long(Id);
+    this->getSketchGeometryExtensionPtr()->setId(long(Id));
 }
 
 

@@ -20,22 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHGEOMETRYEXTENSION_H
-#define SKETCHER_SKETCHGEOMETRYEXTENSION_H
+#ifndef SKETCHER_EXTERNALGEOMETRYEXTENSION_H
+#define SKETCHER_EXTERNALGEOMETRYEXTENSION_H
 
 #include <Mod/Part/App/Geometry.h>
-#include <atomic>
 
 namespace Sketcher
 {
 
-class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
+class SketcherExport ExternalGeometryExtension : public Part::GeometryExtension
 {
     TYPESYSTEM_HEADER();
 public:
-    SketchGeometryExtension();
-    SketchGeometryExtension(long cid);
-    virtual ~SketchGeometryExtension() = default;
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    enum Flag {
+        Defining = 0,   // allow an external geometry to build shape
+        Frozen = 1,     // freeze an external geometry
+        Detached = 2,   // signal the intentions of detaching the geometry from external reference
+        Missing = 3,    // geometry with missing external reference
+        Sync = 4,       // signal the intension to synchronize a frozen geometry
+        NumFlags        // Must be the last type
+    };
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+
+    constexpr static std::array<const char *,NumFlags> flag2str { "Defining", "Frozen", "Detached","Missing", "Sync" };
+
+    ExternalGeometryExtension() = default;
+    virtual ~ExternalGeometryExtension() = default;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -46,20 +57,31 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    long getId() const {return Id;}
-    void setId(long id) {Id = id;}
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    bool testFlag(int flag) const { return Flags.test((size_t)(flag)); }
+    void setFlag(int flag, bool v=true) { Flags.set((size_t)(flag),v); }
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+
+    bool isClear() const {return Flags.none();}
+    size_t flagSize() const {return Flags.size();}
+
+    const std::string& getRef() const {return Ref;}
+    void setRef(const std::string & ref) {Ref = ref;}
 
 private:
-    SketchGeometryExtension(const SketchGeometryExtension&) = default;
+    ExternalGeometryExtension(const ExternalGeometryExtension&) = default;
 
 private:
-    long Id;
+    using FlagType = std::bitset<32>;
+    // START_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
+    std::string Ref;
+    FlagType Flags;
+    // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
 
-private:
-    static std::atomic<long> _GeometryID;
+
 };
 
 } //namespace Sketcher
 
 
-#endif // SKETCHER_SKETCHGEOMETRYEXTENSION_H
+#endif // SKETCHER_EXTERNALGEOMETRYEXTENSION_H
