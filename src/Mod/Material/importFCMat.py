@@ -142,7 +142,7 @@ def write(filename, dictionary):
             user = contents[-1]
         for proper in group.getchildren():
             properName = proper.attrib['Name']
-            contents[-1][properName] = ""
+            contents[-1][properName] = ''
     for k, i in dictionary.items():
         found = False
         for group in contents:
@@ -152,6 +152,11 @@ def write(filename, dictionary):
                     found = True
         if not found:
             user[k] = i
+    # delete empty properties
+    for group in contents:
+        for k in list(group.keys()):  # iterating over a dict and changing it is not allowed, thus we iterate over a list of the keys
+            if group[k] == '':
+                del group[k]
 
     # card writer
     rev = FreeCAD.ConfigGet("BuildVersionMajor") + "." + FreeCAD.ConfigGet("BuildVersionMinor") + "." + FreeCAD.ConfigGet("BuildRevision")
