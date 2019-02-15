@@ -29,6 +29,9 @@
         <Property Name="YoungsModulus" Type="Quantity">
             <Reference>https://en.wikipedia.org/wiki/Young%27s_modulus</Reference>
         </Property>
+        <Property Name="ShearModulus" Type="Quantity">
+            <Reference>https://en.wikipedia.org/wiki/Shear_modulus</Reference>
+        </Property>
         <Property Name="PoissonRatio" Type="Float">
             <Reference>https://en.wikipedia.org/wiki/Poisson%27s_ratio</Reference>
         </Property>
