@@ -16,6 +16,6 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.601
 Norm = EN 1561
-ShearModulus = 34000
+ShearModulus = 34000 MPa
 ThermalExpansionCoefficient = 0.00001 m/m/K
 UltimateStrain = 0
