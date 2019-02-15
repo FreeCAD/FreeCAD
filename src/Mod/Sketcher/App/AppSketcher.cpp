@@ -32,11 +32,15 @@
 #include "SketchObjectSF.h"
 #include "SketchObject.h"
 #include "SketchGeometryExtension.h"
+#include "ExternalGeometryExtension.h"
 #include "Constraint.h"
 #include "Sketch.h"
 #include "ConstraintPy.h"
 #include "SketchPy.h"
+#include "SketchGeometryExtensionPy.h"
+#include "ExternalGeometryExtensionPy.h"
 #include "PropertyConstraintList.h"
+
 
 
 namespace Sketcher {
@@ -58,8 +62,10 @@ PyMOD_INIT_FUNC(Sketcher)
     PyObject* sketcherModule = Sketcher::initModule();
 
     // Add Types to module
-    Base::Interpreter().addType(&Sketcher::ConstraintPy  ::Type,sketcherModule,"Constraint");
-    Base::Interpreter().addType(&Sketcher::SketchPy      ::Type,sketcherModule,"Sketch");
+    Base::Interpreter().addType(&Sketcher::ConstraintPy                 ::Type,sketcherModule,"Constraint");
+    Base::Interpreter().addType(&Sketcher::SketchPy                     ::Type,sketcherModule,"Sketch");
+    Base::Interpreter().addType(&Sketcher::ExternalGeometryExtensionPy  ::Type,sketcherModule,"ExternalGeometryExtension");
+    Base::Interpreter().addType(&Sketcher::SketchGeometryExtensionPy  ::Type,sketcherModule,"SketchGeometryExtension");
 
 
     // NOTE: To finish the initialization of our own type objects we must
@@ -67,6 +73,7 @@ PyMOD_INIT_FUNC(Sketcher)
     // This function is responsible for adding inherited slots from a type's base class.
 
     Sketcher::SketchGeometryExtension	::init();
+    Sketcher::ExternalGeometryExtension	::init();
     Sketcher::SketchObjectSF        	::init();
     Sketcher::SketchObject          	::init();
     Sketcher::SketchObjectPython    	::init();

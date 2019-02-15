@@ -35,18 +35,17 @@ using namespace Sketcher;
 
 TYPESYSTEM_SOURCE(Sketcher::SketchGeometryExtension,Part::GeometryExtension)
 
-SketchGeometryExtension::SketchGeometryExtension():id(0)
+// scoped within the class, multithread ready
+std::atomic<long> SketchGeometryExtension::_GeometryID;
+
+SketchGeometryExtension::SketchGeometryExtension():Id(++SketchGeometryExtension::_GeometryID)
 {
 
 }
 
-SketchGeometryExtension::SketchGeometryExtension(long cid):id(cid)
+SketchGeometryExtension::SketchGeometryExtension(long cid):Id(cid)
 {
 
-}
-
-SketchGeometryExtension::~SketchGeometryExtension()
-{
 }
 
 // Persistence implementer
@@ -57,27 +56,36 @@ unsigned int SketchGeometryExtension::getMemSize (void) const
 
 void SketchGeometryExtension::Save(Base::Writer &writer) const
 {
+    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
 
-    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName()
-                    << "\" id=\"" << id << "\"/>" << endl;
+    const std::string name = getName();
+
+    if(name.size() > 0)
+        writer.Stream() << "\" name=\"" << name;
+
+    writer.Stream() << "\" id=\"" << Id << "\"/>" << std::endl;
 }
 
 void SketchGeometryExtension::Restore(Base::XMLReader &reader)
 {
-    id = reader.getAttributeAsInteger("id");
+    restoreNameAttribute(reader);
+
+    Id = reader.getAttributeAsInteger("id");
 }
 
 std::unique_ptr<Part::GeometryExtension> SketchGeometryExtension::copy(void) const
 {
     std::unique_ptr<SketchGeometryExtension> cpy = std::make_unique<SketchGeometryExtension>();
 
-    cpy->id = this->id;
+    cpy->Id = this->Id;
+
+    cpy->setName(this->getName()); // Base Class
 
     return std::move(cpy);
 }
 
 PyObject * SketchGeometryExtension::getPyObject(void)
 {
-    return new SketchGeometryExtensionPy(new SketchGeometryExtension(this->id));
+    return new SketchGeometryExtensionPy(new SketchGeometryExtension(*this));
 }
 

@@ -20,46 +20,64 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHGEOMETRYEXTENSION_H
-#define SKETCHER_SKETCHGEOMETRYEXTENSION_H
+#include "PreCompiled.h"
 
-#include <Mod/Part/App/Geometry.h>
-#include <atomic>
+#include <Base/Writer.h>
+#include <Base/Reader.h>
 
-namespace Sketcher
+#include <Mod/Sketcher/App/ExternalGeometryExtensionPy.h>
+
+#include "ExternalGeometryExtension.h"
+
+using namespace Sketcher;
+
+//---------- Geometry Extension
+
+constexpr std::array<const char *,ExternalGeometryExtension::NumFlags> ExternalGeometryExtension::flag2str;
+
+TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension,Part::GeometryExtension)
+
+// Persistence implementer
+unsigned int ExternalGeometryExtension::getMemSize (void) const
 {
+    return sizeof(long int);
+}
 
-class SketcherExport SketchGeometryExtension : public Part::GeometryExtension
+void ExternalGeometryExtension::Save(Base::Writer &writer) const
 {
-    TYPESYSTEM_HEADER();
-public:
-    SketchGeometryExtension();
-    SketchGeometryExtension(long cid);
-    virtual ~SketchGeometryExtension() = default;
+    writer.Stream() << writer.ind() << "<GeoExtension type=\"" << this->getTypeId().getName();
 
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize(void) const;
-    virtual void Save(Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
+    const std::string name = getName();
 
-    virtual std::unique_ptr<Part::GeometryExtension> copy(void) const;
+    if(name.size() > 0)
+        writer.Stream() << "\" name=\"" << name;
 
-    virtual PyObject *getPyObject(void);
+    writer.Stream() << "\" Ref=\"" << Ref << "\" Flags=\"" << Flags.to_string() << "\"/>" << std::endl;
+}
 
-    long getId() const {return Id;}
-    void setId(long id) {Id = id;}
+void ExternalGeometryExtension::Restore(Base::XMLReader &reader)
+{
+    restoreNameAttribute(reader);
 
-private:
-    SketchGeometryExtension(const SketchGeometryExtension&) = default;
+    Ref = reader.getAttribute("Ref");
+    Flags = FlagType(reader.getAttribute("Flags"));
 
-private:
-    long Id;
+}
 
-private:
-    static std::atomic<long> _GeometryID;
-};
+std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy(void) const
+{
+    std::unique_ptr<ExternalGeometryExtension> cpy = std::make_unique<ExternalGeometryExtension>();
 
-} //namespace Sketcher
+    cpy->Ref = this->Ref;
+    cpy->Flags = this->Flags;
 
+    cpy->setName(this->getName()); // Base Class
 
-#endif // SKETCHER_SKETCHGEOMETRYEXTENSION_H
+    return std::move(cpy);
+}
+
+PyObject * ExternalGeometryExtension::getPyObject(void)
+{
+    return new ExternalGeometryExtensionPy(new ExternalGeometryExtension(*this));
+}
+
