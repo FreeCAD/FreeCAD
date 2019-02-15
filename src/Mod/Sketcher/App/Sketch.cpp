@@ -3071,7 +3071,7 @@ bool Sketch::updateNonDrivingConstraints()
 
                 (*it).constr->setValue(std::remainder(*((*it).value), 2.0*M_PI));
             }
-            else if((*it).constr->Type==Diameter && (*it).constr->First>0 ) {
+            else if((*it).constr->Type==Diameter && (*it).constr->First>=0 ) {
 
                 (*it).constr->setValue(2.0**((*it).value));
             }
