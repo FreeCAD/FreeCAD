@@ -644,6 +644,27 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             }
         }
 
+        // Collect also shape binders consisting of a single planar face
+        auto shapeBinders( getDocument()->getObjectsOfType(PartDesign::ShapeBinder::getClassTypeId()) );
+        for (auto binder : shapeBinders) {
+            // Check whether this plane belongs to the active body
+            if (pcActiveBody && pcActiveBody->hasObject(binder)) {
+                TopoDS_Shape shape = static_cast<Part::Feature*>(binder)->Shape.getValue();
+                if (!shape.IsNull() && shape.ShapeType() == TopAbs_FACE) {
+                    const TopoDS_Face& face = TopoDS::Face(shape);
+                    TopLoc_Location loc;
+                    Handle(Geom_Surface) surf = BRep_Tool::Surface(face, loc);
+                    if (!surf.IsNull() && GeomLib_IsPlanarSurface(surf).IsPlanar()) {
+                        if (!pcActiveBody->isAfterInsertPoint (binder)) {
+                            validPlaneCount++;
+                            planes.push_back(binder);
+                            status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
+                        }
+                    }
+                }
+            }
+        }
+
         // Determines if user made a valid selection in dialog
         auto accepter = [](const std::vector<App::DocumentObject*>& features) -> bool {
             return !features.empty();
