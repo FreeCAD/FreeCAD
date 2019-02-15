@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="GeometryExtensionPy"
+      Name="ExternalGeometryExtensionPy"
+      PythonName="Sketcher.ExternalGeometryExtension"
+      Twin="ExternalGeometryExtension"
+      TwinPointer="ExternalGeometryExtension"
+      Include="Mod/Sketcher/App/ExternalGeometryExtension.h"
+      Namespace="Sketcher"
+      FatherInclude="Mod/Part/App/GeometryExtensionPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo@gmail.com" />
+      <UserDocu>Describes a ExternalGeometryExtension</UserDocu>
+    </Documentation>
+    <Methode Name="testFlag" Const="true">
+        <Documentation>
+            <UserDocu>returns a boolean indicating whether the given bit is set.</UserDocu>
+        </Documentation>
+    </Methode>
+    <Methode Name="setFlag" Const="false">
+        <Documentation>
+            <UserDocu>sets the given bit to true/false.</UserDocu>
+        </Documentation>
+    </Methode>
+    <Attribute Name="Ref" ReadOnly="false">
+        <Documentation>
+            <UserDocu>
+                returns the reference string of this external geometry.
+            </UserDocu>
+        </Documentation>
+        <Parameter Name="Ref" Type="String"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
