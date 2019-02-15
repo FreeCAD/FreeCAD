@@ -56,7 +56,19 @@ static void setLinkLabel(App::DocumentObject *obj, const char *doc, const char *
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-DEF_STD_CMD_A(StdCmdLinkMakeGroup)
+class StdCmdLinkMakeGroup : public Gui::Command
+{
+public:
+    StdCmdLinkMakeGroup();
+    const char* className() const
+    { return "StdCmdLinkMakeGroup"; }
+
+protected:
+    virtual void activated(int iMsg);
+    virtual bool isActive(void);
+    virtual Action * createAction(void);
+    virtual void languageChange();
+};
 
 StdCmdLinkMakeGroup::StdCmdLinkMakeGroup()
   : Command("Std_LinkMakeGroup")
@@ -71,10 +83,38 @@ StdCmdLinkMakeGroup::StdCmdLinkMakeGroup()
 }
 
 bool StdCmdLinkMakeGroup::isActive() {
-    return App::GetApplication().getActiveDocument() && Selection().hasSelection();
+    return !!App::GetApplication().getActiveDocument();
 }
 
-void StdCmdLinkMakeGroup::activated(int) {
+Action * StdCmdLinkMakeGroup::createAction(void)
+{
+    ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    // add the action items
+    pcAction->addAction(QObject::tr("Plain group"));
+    pcAction->addAction(QObject::tr("Group with links"));
+    pcAction->addAction(QObject::tr("Group with transform links"));
+    return pcAction;
+}
+
+void StdCmdLinkMakeGroup::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    ActionGroup* pcAction = qobject_cast<ActionGroup*>(_pcAction);
+    QList<QAction*> acts = pcAction->actions();
+    acts[0]->setText(QObject::tr("Plain group"));
+    acts[1]->setText(QObject::tr("Group with links"));
+    acts[2]->setText(QObject::tr("Group with transform links"));
+}
+
+
+void StdCmdLinkMakeGroup::activated(int option) {
+
     std::vector<App::DocumentObject*> objs;
     std::set<App::DocumentObject*> objset;
 
@@ -99,22 +139,38 @@ void StdCmdLinkMakeGroup::activated(int) {
             Command::doCommand(Command::Doc,"__objs__ = []");
             for(auto obj : objs) {
                 std::string name;
-                if(doc != obj->getDocument()) {
+                if(option!=0 || doc!=obj->getDocument()) {
                     name = doc->getUniqueObjectName("Link");
                     Command::doCommand(Command::Doc,
-                        "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s').%s)",
+                        "App.getDocument('%s').addObject('App::Link','%s').setLink("
+                            "App.getDocument('%s').getObject('%s'))",
                         doc->getName(),name.c_str(),obj->getDocument()->getName(),obj->getNameInDocument());
                     setLinkLabel(obj,doc->getName(),name.c_str());
+                    if(option==2)
+                        Command::doCommand(Command::Doc,
+                            "App.getDocument('%s').getObject('%s').LinkTransform = True",
+                            doc->getName(),name.c_str());
+                    else if(obj->getPropertyByName("Placement"))
+                        Command::doCommand(Command::Doc,
+                            "App.getDocument('%s').getObject('%s').Placement = "
+                                "App.getDocument('%s').getObject('%s').Placement",
+                            doc->getName(),name.c_str(),obj->getDocument()->getName(),obj->getNameInDocument());
                 }else
                     name = obj->getNameInDocument();
-                Command::doCommand(Command::Doc,"__objs__.append(App.getDocument('%s').%s)",
+                Command::doCommand(Command::Doc,"__objs__.append(App.getDocument('%s').getObject('%s'))",
                         doc->getName(),name.c_str());
-                Command::doCommand(Command::Doc,"App.getDocument('%s').%s.ViewObject.Visibility=False",
+                Command::doCommand(Command::Doc,
+                        "App.getDocument('%s').getObject('%s').ViewObject.Visibility=False",
                         doc->getName(),name.c_str());
             }
-            Command::doCommand(Command::Doc,"App.getDocument('%s').%s.setLink(__objs__)",
+            Command::doCommand(Command::Doc,"App.getDocument('%s').getObject('%s').setLink(__objs__)",
                     doc->getName(),groupName.c_str());
             Command::doCommand(Command::Doc,"del __objs__");
+        }
+        if(option!=0) {
+            Command::doCommand(Command::Doc,
+                    "App.getDocument('%s').getObject('%s').LinkMode = 'Auto Delete'",
+                    doc->getName(),groupName.c_str());
         }
         App::GetApplication().closeActiveTransaction();
     } catch (const Base::Exception& e) {
