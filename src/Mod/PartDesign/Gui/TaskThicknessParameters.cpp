@@ -104,7 +104,7 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp *DressUpVie
     ui->modeComboBox->setCurrentIndex(mode);
 
     int join = pcThickness->Join.getValue();
-    ui->modeComboBox->setCurrentIndex(join);
+    ui->joinComboBox->setCurrentIndex(join);
 }
 
 void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
