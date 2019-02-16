@@ -33,6 +33,8 @@ DlgSettingsImportExport::DlgSettingsImportExport(QWidget* parent)
   : PreferencePage(parent), ui(new Ui_DlgSettingsImportExport)
 {
     ui->setupUi(this);
+    ui->exportAmfCompressed->setToolTip(tr("This parameter indicates whether ZIP compression\n"
+                                           "is used when writing a file in AMF format"));
 }
 
 DlgSettingsImportExport::~DlgSettingsImportExport()
