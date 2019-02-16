@@ -199,6 +199,13 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
     ui = new Ui_DlgImportExportStep();
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
+    ui->radioButtonAP203->setToolTip(tr("Configuration controlled 3D designs of mechanical parts and assemblies"));
+    ui->radioButtonAP214->setToolTip(tr("Core data for automotive mechanical design processes"));
+
+    // https://tracker.dev.opencascade.org/view.php?id=25654
+    ui->checkBoxPcurves->setToolTip(tr("This parameter indicates whether parametric curves (curves in parametric space of surface)\n"
+                                       "should be written into the STEP file. This parameter can be set to off in order to minimize\n"
+                                       "the size of the resulting STEP file."));
 
     QRegExp rx;
     rx.setPattern(QString::fromLatin1("[\\x00-\\x7F]+"));
