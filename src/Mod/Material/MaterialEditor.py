@@ -51,6 +51,7 @@ class MaterialEditor:
         self.customprops = []
         self.internalprops = []
         self.groups = []
+        self.directory = FreeCAD.getResourceDir() + "Mod/Material"
 
         # load the UI file from the same directory as this script
         self.widget = FreeCADGui.PySideUic.loadUi(
@@ -412,10 +413,11 @@ class MaterialEditor:
 
     def openfile(self):
         "Opens a FCMat file"
-        filetuple = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), 'Open FreeCAD Material file', '*.FCMat')
+        filetuple = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), 'Open FreeCAD Material file', self.directory, '*.FCMat')
         filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
             import importFCMat
+            self.directory = os.path.dirname(filename)
             d = importFCMat.read(filename)
             if d:
                 self.updateContents(d)
@@ -437,9 +439,10 @@ class MaterialEditor:
         filetuple =\
             QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
                                               'Save FreeCAD Material file',
-                                              name + '.FCMat')
+                                              self.directory + '/' + name + '.FCMat', '*.FCMat')
         filename = filetuple[0]  # a tuple of two empty strings returns True, so use the filename directly
         if filename:
+            self.directory = os.path.dirname(filename)
             d = self.getDict()
             # self.outputDict(d)
             if d:
