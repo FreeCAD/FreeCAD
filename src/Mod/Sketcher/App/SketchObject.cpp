@@ -4865,8 +4865,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
     const Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(bsp->handle());
 
-    Part::GeomBSplineCurve *bspline = new Part::GeomBSplineCurve(curve);
-
+    std::unique_ptr<Part::GeomBSplineCurve> bspline(new Part::GeomBSplineCurve(curve));
 
     try {
         int cdegree = bspline->getDegree();
@@ -4882,7 +4881,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
     std::vector< Part::Geometry * > newVals(vals);
 
-    newVals[GeoId] = bspline;
+    newVals[GeoId] = bspline.release();
 
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());

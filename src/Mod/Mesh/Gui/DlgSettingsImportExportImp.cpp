@@ -40,6 +40,7 @@ DlgSettingsImportExport::DlgSettingsImportExport(QWidget* parent)
 DlgSettingsImportExport::~DlgSettingsImportExport()
 {
     // no need to delete child widgets, Qt does it all for us
+    delete ui;
 }
 
 void DlgSettingsImportExport::saveSettings()
