@@ -2810,15 +2810,13 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
                 *rsn = rlOtherBody;
             return false;
         }
-    } else {
+    }
+    else {
         // cross-part link. Disallow, should be done via shapebinders only
         if (rsn)
             *rsn = rlOtherPart;
         return false;
     }
-
-    assert(0);
-    return true;
 }
 
 bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn) const
