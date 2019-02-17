@@ -74,7 +74,7 @@ class DraftWorkbench (Workbench):
                         "Draft_ShapeString","Draft_Facebinder","Draft_BezCurve","Draft_Label"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Join", "Draft_Split", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
+                        "Draft_Edit","Draft_Edit_Improved","Draft_WireToBSpline","Draft_AddPoint",
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
                         "Draft_PathArray", "Draft_PointArray","Draft_Clone",
                         "Draft_Drawing","Draft_Mirror","Draft_Stretch"]

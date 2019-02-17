@@ -2358,7 +2358,16 @@ class Move(Modifier):
 
     def Activated(self):
         self.name = translate("draft","Move", utf8_decode=True)
-        Modifier.Activated(self,self.name)
+        if not isinstance(FreeCAD.activeDraftCommand, EditImproved):
+            Modifier.Activated(self,self.name)
+        else:
+            self.ui = FreeCADGui.draftToolBar
+            self.view = Draft.get3DView()
+            self.call = None
+            self.node = []
+            self.extendedCopy = False
+            self.featureName = "Edit_Improved"
+            self.planetrack = None
         self.ghost = None
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
@@ -4004,6 +4013,77 @@ class ToggleDisplayMode():
             elif obj.ViewObject.DisplayMode == "Wireframe":
                 if "Flat Lines" in obj.ViewObject.listDisplayModes():
                     obj.ViewObject.DisplayMode = "Flat Lines"
+
+class EditImproved(Modifier):
+    "The Draft_Edit_Improved FreeCAD command definition"
+
+    def __init__(self):
+        self.is_running = False
+        self.editable_objects = []
+        self.original_view_settings = {}
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_Edit',
+                'Accel' : "D, E",
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Edit_Improved", "Edit Improved"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Edit_Improved", "Edits the selected objects")}
+
+    def Activated(self):
+        if self.is_running:
+            return self.finish()
+        self.is_running = True
+        Modifier.Activated(self,"Edit_Improved")
+        self.get_selection()
+
+    def proceed(self):
+        self.remove_view_callback()
+        self.get_editable_objects_from_selection()
+        if not self.editable_objects:
+            return self.finish()
+        self.call = self.view.addEventCallback("SoEvent", self.action)
+        self.highlight_editable_objects()
+
+    def finish(self):
+        Modifier.finish(self)
+        self.remove_view_callback()
+        self.restore_editable_objects_graphics()
+        self.__init__()
+
+    def action(self, event):
+        if event["Type"] == "SoKeyboardEvent" and event["Key"] == "ESCAPE":
+            self.finish()
+
+    def get_selection(self):
+        if not FreeCADGui.Selection.getSelection() and self.ui:
+            msg(translate("Draft_Edit_Improved", "Select an object to edit")+"\n")
+            self.call = self.view.addEventCallback("SoEvent", selectObject)
+        else:
+            self.proceed()
+
+    def remove_view_callback(self):
+        if self.call:
+            self.view.removeEventCallback("SoEvent",self.call)
+
+    def get_editable_objects_from_selection(self):
+        for object in FreeCADGui.Selection.getSelection():
+            if object.isDerivedFrom("Part::Part2DObject"):
+                self.editable_objects.append(object)
+
+    def highlight_editable_objects(self):
+        for object in self.editable_objects:
+            self.original_view_settings[object.Name] = {
+                'PointSize': object.ViewObject.PointSize,
+                'PointColor': object.ViewObject.PointColor,
+                'LineColor': object.ViewObject.LineColor
+            }
+            object.ViewObject.PointSize = 10
+            object.ViewObject.PointColor = (1., 0., 0.)
+            object.ViewObject.LineColor = (1., 0., 0.)
+
+    def restore_editable_objects_graphics(self):
+        for object in self.editable_objects:
+            for attribute, value in self.original_view_settings[object.Name].items():
+                setattr(object.ViewObject, attribute, value)
 
 class Edit(Modifier):
     "The Draft_Edit FreeCAD command definition"
@@ -5944,6 +6024,7 @@ FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
 FreeCADGui.addCommand('Draft_Drawing',Drawing())
 FreeCADGui.addCommand('Draft_Edit',Edit())
+FreeCADGui.addCommand('Draft_Edit_Improved',EditImproved())
 FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
 FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
