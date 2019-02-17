@@ -120,7 +120,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
     }
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!processed && !viewer->isEditing()) {
+    if (!viewer->isEditing()) {
         processed = handleEventInForeground(ev);
         if (processed)
             return true;
@@ -252,7 +252,7 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->panningplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
                 this->lockrecenter = false;
             }
-            else if (!press && (this->currentmode == NavigationStyle::PANNING)) {
+            else if (this->currentmode == NavigationStyle::PANNING) {
                 newmode = NavigationStyle::IDLE;
                 processed = true;
             }

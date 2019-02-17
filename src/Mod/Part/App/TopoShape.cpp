@@ -2507,8 +2507,10 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
-    if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
+#if OCC_VERSION_HEX < 0x060900
+    if (allowOpenResult)
         throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
+#endif
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process

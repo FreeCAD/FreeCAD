@@ -124,7 +124,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     }
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!processed && !viewer->isEditing()) {
+    if (!viewer->isEditing()) {
         processed = handleEventInForeground(ev);
         if (processed)
             return true;
