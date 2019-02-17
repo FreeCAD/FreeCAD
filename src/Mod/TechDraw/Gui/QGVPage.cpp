@@ -143,6 +143,10 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     if(!drawBkg)
         return;
 
+    if(!m_vpPage) {
+        return;
+    }
+
     if (!m_vpPage->getDrawPage()) {
         //Base::Console().Log("TROUBLE - QGVP::drawBackground - no Page Object!\n");
         return;
@@ -154,10 +158,6 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
 
     p->setBrush(*bkgBrush);
     p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
-
-    if(!m_vpPage) {
-        return;
-    }
 
     // Default to A3 landscape, though this is currently relevant
     // only for opening corrupt docs, etc.
