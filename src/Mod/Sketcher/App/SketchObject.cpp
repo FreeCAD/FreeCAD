@@ -5425,7 +5425,7 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
         if (GeoId < int(geomlist.size()))
             return geomlist[GeoId];
     }
-    else if (GeoId <= -1 && -GeoId <= int(ExternalGeo.size()))
+    else if (-GeoId <= int(ExternalGeo.size()))
         return ExternalGeo[-GeoId-1];
 
     return 0;

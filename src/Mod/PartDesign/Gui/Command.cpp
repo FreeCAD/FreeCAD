@@ -758,7 +758,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     }
 
-    if (hidePrevSolid && prevSolidFeature && (prevSolidFeature != NULL))
+    if (hidePrevSolid && prevSolidFeature)
         cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
 
     if (updateDocument)
