@@ -739,6 +739,8 @@ MacroCommand::~MacroCommand()
 {
     free(const_cast<char*>(sName));
     sName = 0;
+    free(const_cast<char*>(sScriptName));
+    sScriptName = 0;
 }
 
 void MacroCommand::activated(int iMsg)
