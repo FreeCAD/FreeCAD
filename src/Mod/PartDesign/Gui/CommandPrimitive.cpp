@@ -105,6 +105,10 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         pcActiveBody = PartDesignGui::makeBody(doc);
     }
 
+    if (pcActiveBody == nullptr) {
+        return;
+    }
+
     Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.addObject(\'PartDesign::Additive%s\',\'%s\')",
@@ -118,13 +122,11 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     if (prm->BaseFeature.getValue())
        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prm->BaseFeature.getValue()->getNameInDocument());
 
-    if (pcActiveBody) {
-        copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
-        copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
-    }
+    copyVisual(FeatName.c_str(), "ShapeColor", pcActiveBody->getNameInDocument());
+    copyVisual(FeatName.c_str(), "LineColor", pcActiveBody->getNameInDocument());
+    copyVisual(FeatName.c_str(), "PointColor", pcActiveBody->getNameInDocument());
+    copyVisual(FeatName.c_str(), "Transparency", pcActiveBody->getNameInDocument());
+    copyVisual(FeatName.c_str(), "DisplayMode", pcActiveBody->getNameInDocument());
 
     Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
 }

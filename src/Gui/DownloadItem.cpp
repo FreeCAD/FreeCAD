@@ -520,19 +520,17 @@ void DownloadItem::metaDataChanged()
         if (url != redirectUrl) {
             url = redirectUrl;
 
-            if (m_reply) {
-                disconnect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
-                disconnect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-                           this, SLOT(error(QNetworkReply::NetworkError)));
-                disconnect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
-                           this, SLOT(downloadProgress(qint64, qint64)));
-                disconnect(m_reply, SIGNAL(metaDataChanged()),
-                           this, SLOT(metaDataChanged()));
-                disconnect(m_reply, SIGNAL(finished()),
-                           this, SLOT(finished()));
-                m_reply->close();
-                m_reply->deleteLater();
-            }
+            disconnect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
+            disconnect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+                       this, SLOT(error(QNetworkReply::NetworkError)));
+            disconnect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
+                       this, SLOT(downloadProgress(qint64, qint64)));
+            disconnect(m_reply, SIGNAL(metaDataChanged()),
+                       this, SLOT(metaDataChanged()));
+            disconnect(m_reply, SIGNAL(finished()),
+                       this, SLOT(finished()));
+            m_reply->close();
+            m_reply->deleteLater();
 
             m_reply = DownloadManager::getInstance()->networkAccessManager()->get(QNetworkRequest(url));
             init();

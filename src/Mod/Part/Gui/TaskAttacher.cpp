@@ -828,7 +828,6 @@ void TaskAttacher::updateListOfModes()
                 }
             } else if (mmode == this->lastSuggestResult.bestFitMode){
                 //suggested mode - make bold
-                assert (item);
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);
