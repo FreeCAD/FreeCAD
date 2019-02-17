@@ -994,6 +994,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   }
   
   DimensionAngular *dimension = new DimensionAngular();
+  dimension->ref();
   dimension->matrix.setValue(dimSys);
   dimension->radius.setValue(radius);
   dimension->angle.setValue(static_cast<float>(displayAngle));
@@ -1001,10 +1002,9 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   dimension->dColor.setValue(SbColor(0.0, 0.0, 1.0));
   
   Gui::View3DInventorViewer *viewer = getViewer();
-  if (!viewer)
-    return;
-  
-  viewer->addDimension3d(dimension);
+  if (viewer)
+    viewer->addDimension3d(dimension);
+  dimension->unref();
 }
 
 SO_KIT_SOURCE(PartGui::DimensionAngular);
@@ -1058,6 +1058,7 @@ void PartGui::DimensionAngular::setupDimension()
 
   //color
   SoMaterial *material = new SoMaterial;
+  material->ref();
   material->diffuseColor.connectFrom(&dColor);
 
   //dimension arrows.
@@ -1110,22 +1111,21 @@ void PartGui::DimensionAngular::setupDimension()
   coordinates->point.connectFrom(&arcEngine->points);
   
   SoLineSet *lineSet = new SoLineSet();
+  lineSet->ref();
   lineSet->vertexProperty.setValue(coordinates);
   lineSet->numVertices.connectFrom(&arcEngine->pointCount);
   lineSet->startIndex.setValue(0);
   
   SoSeparator *arcSep = static_cast<SoSeparator *>(getPart("arcSep", true));
-  if (!arcSep)
-    return;
-  arcSep->addChild(material);
-  arcSep->addChild(lineSet);
+  if (arcSep) {
+    arcSep->addChild(material);
+    arcSep->addChild(lineSet);
+  }
 
   //text
   SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", true));
-  if (!textSep)
-      return;
-
-  textSep->addChild(material);
+  if (textSep)
+    textSep->addChild(material);
 
   SoCalculator *textVecCalc = new SoCalculator();
   textVecCalc->a.connectFrom(&angle);
@@ -1158,6 +1158,9 @@ void PartGui::DimensionAngular::setupDimension()
   SoResetTransform *rTrans = new SoResetTransform;
   rTrans->whatToReset = SoResetTransform::BBOX;
   textSep->addChild(rTrans);
+
+  lineSet->unref();
+  material->unref();
 }
 
 SO_ENGINE_SOURCE(PartGui::ArcEngine);

@@ -865,7 +865,7 @@ void BSplineParameterCorrection::DoParameterCorrection(int iIter)
         fMaxScalar = 1.0;
         fMaxDiff   = 0.0;
 
-        Geom_BSplineSurface* pclBSplineSurf = new Geom_BSplineSurface(_vCtrlPntsOfSurf,
+        Handle(Geom_BSplineSurface) pclBSplineSurf = new Geom_BSplineSurface(_vCtrlPntsOfSurf,
                                                     _vUKnots, _vVKnots, _vUMults, _vVMults, _usUOrder-1, _usVOrder-1);
 
         for (int ii=_pvcPoints->Lower();ii <=_pvcPoints->Upper();ii++) {
