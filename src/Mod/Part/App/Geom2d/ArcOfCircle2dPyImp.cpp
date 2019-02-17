@@ -88,9 +88,9 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     if (PyArg_ParseTuple(args, "O!O!O!", Base::Vector2dPy::type_object(), &pV1,
                                          Base::Vector2dPy::type_object(), &pV2,
                                          Base::Vector2dPy::type_object(), &pV3)) {
-        Base::Vector2d v1 = Py::Vector2d(pV1).getCxxObject()->value();
-        Base::Vector2d v2 = Py::Vector2d(pV2).getCxxObject()->value();
-        Base::Vector2d v3 = Py::Vector2d(pV3).getCxxObject()->value();
+        Base::Vector2d v1 = Py::toVector2d(pV1);
+        Base::Vector2d v2 = Py::toVector2d(pV2);
+        Base::Vector2d v3 = Py::toVector2d(pV3);
 
         GCE2d_MakeArcOfCircle arc(gp_Pnt2d(v1.x,v1.y),
                                   gp_Pnt2d(v2.x,v2.y),
