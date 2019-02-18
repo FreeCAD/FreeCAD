@@ -192,6 +192,9 @@ Py::List DocumentObjectPy::getState(void) const
         uptodate = false;
         list.append(Py::String("Recompute"));
     }
+    if (object->testStatus(App::Recompute2)) {
+        list.append(Py::String("Recompute2"));
+    }
     if (object->isRestoring()) {
         uptodate = false;
         list.append(Py::String("Restore"));
