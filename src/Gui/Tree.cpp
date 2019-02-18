@@ -1985,8 +1985,10 @@ void TreeWidget::setupText() {
 }
 
 void TreeWidget::syncView(ViewProviderDocumentObject *vp) {
-    if(currentDocItem && FC_TREEPARAM(SyncView))
+    if(currentDocItem && FC_TREEPARAM(SyncView)) {
         currentDocItem->document()->setActiveView(vp);
+        setFocus();
+    }
 }
 
 void TreeWidget::onShowHidden() {
