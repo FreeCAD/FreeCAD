@@ -66,6 +66,7 @@ class GuiExport InputField : public ExpressionLineEdit, public ExpressionBinding
     Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
     Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
     Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
+    Q_PROPERTY(double rawValue READ rawValue WRITE setValue NOTIFY valueChanged)
     Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
     Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
     Q_PROPERTY(int precision READ getPrecision WRITE setPrecision )
@@ -86,6 +87,8 @@ public:
 
     /// get the current value
     Base::Quantity getQuantity(void)const{return this->actQuantity;}
+    /// Get the current quantity without unit
+    double rawValue() const;
 
     /// get stored, valid quantity as a string (user string - avoid storing)
     QString getQuantityString(void) const;
