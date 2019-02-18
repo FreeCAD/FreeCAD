@@ -431,6 +431,11 @@ void InputField::setValue(const double& value)
     setValue(Base::Quantity(value, actUnit));
 }
 
+double InputField::rawValue() const
+{
+    return this->actQuantity.getValue();
+}
+
 void InputField::setUnit(const Base::Unit& unit)
 {
     actUnit = unit;
