@@ -207,6 +207,37 @@ void FeaturePythonImp::onChanged(const Property* prop)
     }
 }
 
+bool FeaturePythonImp::onParentChanged(App::DocumentObject *parent, const Property* prop)
+{
+    if(py_onParentChanged.isNone())
+        return true;
+    // Run the execute method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        const char *prop_name = object->getPropertyName(prop);
+        if(prop_name == 0)
+            return true;
+        if (has__object__) {
+            Py::Tuple args(2);
+            args.setItem(0, Py::asObject(parent->getPyObject()));
+            args.setItem(1, Py::String(prop_name));
+            return Base::pyCall(py_onParentChanged.ptr(),args.ptr()).isTrue();
+        }
+        else {
+            Py::Tuple args(3);
+            args.setItem(0, Py::asObject(parent->getPyObject()));
+            args.setItem(1, Py::asObject(object->getPyObject()));
+            args.setItem(2, Py::String(prop_name));
+            return Base::pyCall(py_onParentChanged.ptr(),args.ptr()).isTrue();
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return true;
+}
+
 void FeaturePythonImp::onDocumentRestored()
 {
     if(py_onDocumentRestored.isNone())

@@ -73,6 +73,14 @@ DocumentObject::DocumentObject(void)
     Visibility.setStatus(Property::Output,true);
     Visibility.setStatus(Property::Hidden,true);
     Visibility.setStatus(Property::NoModify,true);
+
+
+    ADD_PROPERTY_TYPE(_NotifyList,(),"Base",Prop_Hidden,
+            "For registering notification through onParentChanged()");
+    _NotifyList.setScope(LinkScope::Hidden);
+    _NotifyList.setAllowExternal(true);
+    _NotifyList.setStatus(Property::Transient,true);
+    _NotifyList.setStatus(Property::Output,true);
 }
 
 DocumentObject::~DocumentObject(void)
@@ -644,6 +652,23 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->onChangedProperty(this,prop);
 
     signalChanged(*this,*prop);
+
+    auto deps = _NotifyList.getValue();
+    for(auto it=deps.begin();it!=deps.end();) {
+        if((*it)->onParentChanged(this,prop))
+            ++it;
+        else
+            deps.erase(it);
+    }
+    if(_NotifyList.getSize()!=(int)deps.size()) 
+        _NotifyList.setValues(deps);
+}
+
+bool DocumentObject::onParentChanged(DocumentObject *parent, const Property* prop)
+{
+    (void)parent;
+    (void)prop;
+    return true;
 }
 
 void DocumentObject::clearOutListCache() const {
