@@ -720,10 +720,11 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
     return ret;
 }
 
-std::map<App::DocumentObject *,std::string> DocumentObject::getParents(int depth) const {
-    std::map<App::DocumentObject *,std::string> ret;
+std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getParents(int depth) const {
+    std::vector<std::pair<App::DocumentObject *,std::string> > ret;
     if(!getNameInDocument())
         return ret;
+    std::map<std::string, std::pair<App::DocumentObject*, std::string> > map;
     GetApplication().checkLinkDepth(depth);
     std::string name(getNameInDocument());
     name += ".";
@@ -740,14 +741,22 @@ std::map<App::DocumentObject *,std::string> DocumentObject::getParents(int depth
         links.insert(parent);
         for(auto parent : links) {
             auto parents = parent->getParents(depth+1);
-            if(parents.empty()) {
-                ret.emplace(parent,name);
-                continue;
+            if(parents.empty()) 
+                parents.emplace_back(parent,std::string());
+            for(auto &v : parents) {
+                std::ostringstream ss;
+                if(v.first->getDocument()==getDocument())
+                    ss << '#' << v.first->getNameInDocument();
+                else
+                    ss << v.first->getFullName();
+                ss << '.' << name;
+                map.emplace(ss.str(),std::make_pair(v.first,v.second+name));
             }
-            for(auto &v : parents)
-                ret.emplace(v.first,v.second+name);
         }
     }
+    ret.reserve(map.size());
+    for(auto &v : map)
+        ret.push_back(std::move(v.second));
     return ret;
 }
 
