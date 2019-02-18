@@ -614,7 +614,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         for (auto plane: datumPlanes) {
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
-            if ( pcActiveBody && pcActiveBody->hasObject(plane) ) {
+            if ( pcActiveBody->hasObject(plane) ) {
                 if ( !pcActiveBody->isAfterInsertPoint ( plane ) ) {
                     validPlaneCount++;
                     status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
@@ -648,7 +648,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         auto shapeBinders( getDocument()->getObjectsOfType(PartDesign::ShapeBinder::getClassTypeId()) );
         for (auto binder : shapeBinders) {
             // Check whether this plane belongs to the active body
-            if (pcActiveBody && pcActiveBody->hasObject(binder)) {
+            if (pcActiveBody->hasObject(binder)) {
                 TopoDS_Shape shape = static_cast<Part::Feature*>(binder)->Shape.getValue();
                 if (!shape.IsNull() && shape.ShapeType() == TopAbs_FACE) {
                     const TopoDS_Face& face = TopoDS::Face(shape);
@@ -758,7 +758,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     }
 
-    if (hidePrevSolid && prevSolidFeature && (prevSolidFeature != NULL))
+    if (hidePrevSolid && prevSolidFeature)
         cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
 
     if (updateDocument)

@@ -1253,7 +1253,7 @@ class Snapper:
         self.toolbarButtons = []
         # grid button
         self.gridbutton = QtGui.QAction(mw)
-        self.gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
+        self.gridbutton.setIcon(QtGui.QIcon.fromTheme("Draft_Grid", QtGui.QIcon(":/icons/Draft_Grid.svg")))
         self.gridbutton.setText(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Grid"))
         self.gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid On/Off"))
         self.gridbutton.setObjectName("GridButton")
@@ -1262,7 +1262,7 @@ class Snapper:
         self.toolbar.addAction(self.gridbutton)
         # master button
         self.masterbutton = QtGui.QAction(mw)
-        self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
+        self.masterbutton.setIcon(QtGui.QIcon.fromTheme("Snap_Lock", QtGui.QIcon(":/icons/Snap_Lock.svg")))
         self.masterbutton.setText(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Lock"))
         self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
         self.masterbutton.setObjectName("SnapButtonMain")
@@ -1274,7 +1274,7 @@ class Snapper:
         for c,i in self.cursors.items():
             if i:
                 b = QtGui.QAction(mw)
-                b.setIcon(QtGui.QIcon(i))
+                b.setIcon(QtGui.QIcon.fromTheme(i.replace(':/icons/', '').replace('.svg', ''), QtGui.QIcon(i)))
                 if c == "passive":
                     b.setText(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
                     b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
@@ -1291,7 +1291,7 @@ class Snapper:
         # adding non-snap button
         for n in ["Dimensions","WorkingPlane"]:
             b = QtGui.QAction(mw)
-            b.setIcon(QtGui.QIcon(":/icons/Snap_"+n+".svg"))
+            b.setIcon(QtGui.QIcon.fromTheme("Snap_" + n, QtGui.QIcon(":/icons/Snap_"+n+".svg")))
             b.setText(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setObjectName("SnapButton"+n)

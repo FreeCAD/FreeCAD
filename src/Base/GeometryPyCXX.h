@@ -78,6 +78,16 @@ namespace Py {
 
 typedef PythonClassObject<Base::Vector2dPy> Vector2d;
 
+inline Base::Vector2d toVector2d(PyObject *py) {
+    Base::Vector2dPy* py2d = Py::Vector2d(py).getCxxObject();
+    return py2d ? py2d->value() : Base::Vector2d();
+}
+
+inline Base::Vector2d toVector2d(const Object& py) {
+    Base::Vector2dPy* py2d = Py::Vector2d(py).getCxxObject();
+    return py2d ? py2d->value() : Base::Vector2d();
+}
+
 // Implementing the vector class in the fashion of the PyCXX library.
 class BaseExport Vector : public Object
 {

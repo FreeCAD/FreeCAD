@@ -819,9 +819,6 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return 0;
     }
-
-    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
-    return 0;
 }
 
 // General intersection function

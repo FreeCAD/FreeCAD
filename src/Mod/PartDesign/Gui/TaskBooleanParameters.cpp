@@ -161,7 +161,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
                 // Make bodies visible again
                 Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                            Gui::Application::Instance->getViewProvider(*b));
+                            Gui::Application::Instance->getViewProvider(pcBody));
                 if (vp != NULL)
                     vp->show();
                 if (bodies.size() == 0) {
