@@ -2227,10 +2227,15 @@ class ShapeString(Creator):
     def Activated(self):
         name = translate("draft","ShapeString")
         Creator.Activated(self,name)
+        self.creator = Creator
         if self.ui:
             self.ui.sourceCmd = self
             self.taskmode = Draft.getParam("UiMode",1)
             if self.taskmode:
+                try:
+                    del self.task
+                except AttributeError:
+                    pass
                 self.task = DraftGui.ShapeStringTaskPanel()
                 self.task.sourceCmd = self
                 DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
