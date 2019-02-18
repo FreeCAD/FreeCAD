@@ -90,9 +90,10 @@ public:
     App::PropertyBool MakeFace;
     App::PropertyEnumeration BindMode;
     App::PropertyBool PartialLoad;
+    App::PropertyXLink Context;
+    App::PropertyInteger _Version;
 
     void update();
-    void updatePlacement(const Base::Matrix4D &mat);
 
     virtual int canLoadPartial() const override {
         return PartialLoad.getValue()?1:0;
@@ -103,11 +104,13 @@ public:
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;
     virtual void onChanged(const App::Property *prop) override;
+    virtual bool onParentChanged(App::DocumentObject *parent, const App::Property *prop) override;
 
     virtual void handleChangedPropertyType(
             Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     virtual void onDocumentRestored() override;
+    virtual void setupObject() override;
 
     void checkPropertyStatus();
 };

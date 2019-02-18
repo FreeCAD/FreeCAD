@@ -302,34 +302,25 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     if(!self || !self->Support.getValue())
         return;
 
-    Base::Matrix4D mat;
-    bool relative = self->Relative.getValue() && self->Support.getSize()==1;
-    if(relative) {
+    std::vector<Base::Matrix4D> mats;
+    bool relative = self->Relative.getValue();
+    App::DocumentObject *parent = 0;
+    std::string parentSub;
+    if(relative && self->getParents().size()>1) {
         const auto &sel = Gui::Selection().getSelection("",0);
-        if(sel.empty() || !sel[0].pObject) {
-            FC_LOG("invalid selection");
-            return;
-        }
-        auto link = self->Support.getValue();
-        std::string subname(sel[0].SubName?sel[0].SubName:"");
-        std::string linkSub;
-        auto obj = sel[0].pObject->resolveRelativeLink(subname,link,linkSub);
-        if(!obj) {
-            if(!link) {
-                FC_ERR("cannot resolve relative link");
-                return;
-            }
-        }else{
-            auto sobj = obj->getSubObject(subname.c_str(),0,&mat);
-            if(sobj!=self) {
-                FC_ERR("invalid selection " << subname);
-                return;
-            }
+        if(sel.size()!=1 || !sel[0].pObject ||
+            sel[0].pObject->getSubObject(sel[0].SubName)!=self) 
+        {
+            FC_WARN("invalid selection");
+        } else {
+            parent = sel[0].pObject;
+            parentSub = sel[0].SubName;
         }
     }
+
     if(!transaction) {
         if(relative)
-            self->updatePlacement(mat);
+            self->Context.setValue(parent,parentSub.c_str());
         self->update();
         return;
     }
@@ -337,7 +328,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
     App::GetApplication().setActiveTransaction("Sync binder");
     try{
         if(relative)
-            self->updatePlacement(mat);
+            self->Context.setValue(parent,parentSub.c_str());
         self->update();
         App::GetApplication().closeActiveTransaction();
     }catch(Base::Exception &e) {

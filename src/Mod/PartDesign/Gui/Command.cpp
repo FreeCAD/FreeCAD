@@ -432,7 +432,6 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             if(!binder) return;
         }
         binder->setLinks(std::move(values));
-        binder->updatePlacement(mat);
         updateActive();
         commitCommand();
     }catch(Base::Exception &e) {

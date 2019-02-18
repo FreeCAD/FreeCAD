@@ -250,24 +250,94 @@ SubShapeBinder::SubShapeBinder()
     PartialLoad.setStatus(App::Property::PartialTrigger,true);
     static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", 0};
     BindMode.setEnums(BindModeEnum);
-    Placement.setStatus(App::Property::Immutable, true);
-    Placement.setStatus(App::Property::ReadOnly, true);
+
+    ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden, "Enable partial loading");
+    Context.setScope(App::LinkScope::Hidden);
+
+    ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
+                App::Prop_Hidden|App::Prop_ReadOnly), "");
 }
 
-void SubShapeBinder::updatePlacement(const Base::Matrix4D &mat) {
-    auto placement = Placement.getValue()*Base::Placement(mat).inverse();
-    Placement.setValue(placement);
+void SubShapeBinder::setupObject() {
+    _Version.setValue(1);
+    checkPropertyStatus();
 }
 
 void SubShapeBinder::update() {
     Part::TopoShape result;
-    std::vector<Part::TopoShape> shapes;
+    std::vector<Part ::TopoShape> shapes;
 
     std::string errMsg;
+    auto parent = Context.getValue();
+    std::string parentSub  = Context.getSubName(false);
+    if(!Relative.getValue())
+        parent = 0;
+    else {
+        if(parent && parent->getSubObject(parentSub.c_str())==this) {
+            auto parents = parent->getParents();
+            if(parents.size()) {
+                parent = parents.begin()->first;
+                parentSub = parents.begin()->second;
+            }
+        } else
+            parent = 0;
+        if(!parent && parentSub.empty()) {
+            auto parents = getParents();
+            if(parents.size()) {
+                parent = parents.begin()->first;
+                parentSub = parents.begin()->second;
+            }
+        }
+        if(parent && (parent!=Context.getValue() || parentSub!=Context.getSubName(false))) {
+            Context.setValue(parent,parentSub.c_str());
+            parent->_NotifyList.set1Value(-1,this,true);
+        }
+    }
+    bool first = false;
+    std::map<const App::DocumentObject*, Base::Matrix4D> mats;
     for(auto &l : Support.getSubListValues()) {
         auto obj = l.getValue();
         if(!obj || !obj->getNameInDocument())
             continue;
+        auto res = mats.emplace(obj,Base::Matrix4D());
+        if(parent && res.second) {
+            std::string resolvedSub = parentSub;
+            std::string linkSub;
+            auto link = obj;
+            auto resolved = parent->resolveRelativeLink(resolvedSub,link,linkSub);
+            if(!resolved) {
+                if(!link) {
+                    FC_WARN(getFullName() << " cannot resolve relative link of "
+                            << parent->getFullName() << '.' << parentSub
+                            << " -> " << obj->getFullName());
+                }
+            }else{
+                Base::Matrix4D mat;
+                auto sobj = resolved->getSubObject(resolvedSub.c_str(),0,&mat);
+                if(sobj!=this) {
+                    FC_LOG(getFullName() << " skip invalid parent " << resolved->getFullName() 
+                            << '.' << resolvedSub);
+                }else if(_Version.getValue()==0) {
+                    // For existing legacy SubShapeBinder, we use its Placement
+                    // to store the position adjustment of the first Support
+                    if(first) {
+                        auto pla = Placement.getValue()*Base::Placement(mat).inverse();
+                        Placement.setValue(pla);
+                        first = false;
+                    } else {
+                        // The remaining support will cancel the Placement
+                        mat.inverse();
+                        res.first->second = mat;
+                    }
+                }else{
+                    // For newer SubShapeBinder, the Placement property is free
+                    // to use by the user to add additional offset to the
+                    // binding object
+                    mat.inverse();
+                    res.first->second = Placement.getValue().toMatrix()*mat;
+                }
+            }
+        }
         const auto &subvals = l.getSubValues();
         std::set<std::string> subs(subvals.begin(),subvals.end());
         static std::string none("");
@@ -279,6 +349,7 @@ void SubShapeBinder::update() {
             try {
                 auto shape = Part::Feature::getTopoShape(obj,sub.c_str(),true);
                 if(!shape.isNull()) {
+                    shape = shape.makETransform(res.first->second);
                     if(shape.Hasher 
                             && shape.getElementMapSize() 
                             && shape.Hasher != getDocument()->getStringHasher()) 
@@ -350,6 +421,18 @@ void SubShapeBinder::update() {
     Shape.setValue(result);
 }
 
+bool SubShapeBinder::onParentChanged(App::DocumentObject *parent, const App::Property *) {
+    if(Context.getValue()!=parent)
+        return false;
+    if(!isRestoring() 
+            && !parent->isRestoring() 
+            && !this->testStatus(App::ObjectStatus::Recompute2))
+    {
+        touch();
+    }
+    return true;
+}
+
 App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
     if(BindMode.getValue()==0)
         update();
@@ -361,6 +444,8 @@ App::DocumentObjectExecReturn* SubShapeBinder::execute(void) {
 void SubShapeBinder::onDocumentRestored() {
     if(Shape.testStatus(App::Property::Transient))
         update();
+    else if(Context.getValue()) 
+        Context.getValue()->_NotifyList.set1Value(-1,this,false);
     inherited::onDocumentRestored();
 }
 
@@ -387,7 +472,12 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
 
 void SubShapeBinder::checkPropertyStatus() {
     Support.setAllowPartial(PartialLoad.getValue());
-    Shape.setStatus(App::Property::Transient, !PartialLoad.getValue() && BindMode.getValue()==0);
+
+    // Make Shape transient can reduce some file size, and maybe reduce file
+    // loading time as well. But there maybe complication arise when doing
+    // TopoShape version upgrade. So we DO NOT set trasient at the moment.
+    //
+    // Shape.setStatus(App::Property::Transient, !PartialLoad.getValue() && BindMode.getValue()==0);
 }
 
 void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::string> >&&values, bool reset)
