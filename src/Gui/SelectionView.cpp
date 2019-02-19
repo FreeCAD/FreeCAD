@@ -273,7 +273,7 @@ void SelectionView::search(const QString& text)
                     list << QString::fromLatin1(doc->getName());
                     list << QString::fromLatin1((*it)->getNameInDocument());
                     // build name
-                    str << doc->getName();
+                    str << QString::fromUtf8(doc->Label.getValue());
                     str << "#";
                     str << (*it)->getNameInDocument();
                     str << " (";
