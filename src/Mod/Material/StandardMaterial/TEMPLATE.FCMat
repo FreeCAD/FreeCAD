@@ -44,6 +44,9 @@ PoissonRatio =
 AmbientColor =
 
 ; Description to be updated
+AngleOfFriction
+
+; Description to be updated
 Color =
 
 ; Compressive strength https://en.wikipedia.org/wiki/Compressive_strength
@@ -92,6 +95,9 @@ Model =
 Norm =
 
 ; Description to be updated
+ReferenceSource
+
+; Description to be updated
 SectionFillPattern =
 
 ; Description to be updated
@@ -105,6 +111,9 @@ Shininess =
 
 ; Description to be updated
 SoundTransmissionClass =
+
+; Description to be updated
+SourceURL
 
 ; Description to be updated
 SpecificHeat =
