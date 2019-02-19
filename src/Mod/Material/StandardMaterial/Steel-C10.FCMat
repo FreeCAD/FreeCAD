@@ -4,7 +4,7 @@
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
-Name = [DE]C10
+Name = C10
 NameDE = C10
 Father = Metal
 YoungsModulus = 210000 MPa

@@ -4,7 +4,7 @@
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
-Name = [DE]C15
+Name = C15
 NameDE = C15
 Father = Metal
 YoungsModulus = 210000 MPa

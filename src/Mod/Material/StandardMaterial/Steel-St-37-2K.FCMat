@@ -4,7 +4,7 @@
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
-Name = [DE]St 37-2K
+Name = St 37-2K
 NameDE = St 37-2K
 DescriptionDE = mäßige Beanspruchung
 Father = Metal
