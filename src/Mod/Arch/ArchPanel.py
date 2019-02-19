@@ -198,7 +198,7 @@ class CommandPanel:
         self.tracker.finalize()
         if point == None:
             return
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel")))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Panel"))
         FreeCADGui.addModule("Arch")
         if self.Profile:
             pr = Presets[self.Profile]
