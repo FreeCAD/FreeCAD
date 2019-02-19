@@ -4,7 +4,7 @@
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
-Name = [DE]St E 315
+Name = St E 315
 NameDE = St E 315
 Father = Metal
 YoungsModulus = 210000 MPa

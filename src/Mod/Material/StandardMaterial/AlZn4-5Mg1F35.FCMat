@@ -4,7 +4,7 @@
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
-Name = [DE]AlZn4,5Mg1F35
+Name = AlZn4,5Mg1F35
 NameDE = AlZn4,5Mg1F35
 Father = Metal
 YoungsModulus = 70000 MPa
