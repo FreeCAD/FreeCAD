@@ -40,7 +40,6 @@ Report to Draft.py for info
 '''
 
 import FreeCAD, FreeCADGui, os, Draft, sys, DraftVecUtils, math
-import DraftTools
 
 try:
     from PySide import QtCore, QtGui, QtSvg
@@ -2469,7 +2468,7 @@ class ShapeStringTaskPanel:
         self.point = None
         self.view = Draft.get3DView()
         self.call = self.view.addEventCallback("SoEvent",self.action)
-        DraftTools.msg(translate("draft", "Pick ShapeString location point:")+"\n")
+        FreeCAD.Console.PrintMessage(translate("draft", "Pick ShapeString location point:")+"\n")
 
 
     def fileSelect(self, fn):
@@ -2482,6 +2481,7 @@ class ShapeStringTaskPanel:
 
     def action(self,arg):
         "scene event handler"
+        import DraftTools
         if arg["Type"] == "SoKeyboardEvent":
             if arg["Key"] == "ESCAPE":
                 self.reject()
@@ -2527,7 +2527,7 @@ class ShapeStringTaskPanel:
                          'ss.Support='+sup,
                          'Draft.autogroup(ss)'])
         except Exception as e:
-            DraftTools.msg("Draft_ShapeString: error delaying commit", "error")
+            FreeCAD.Console.PrintError("Draft_ShapeString: error delaying commit\n")
 
     def accept(self):
         self.createObject();
