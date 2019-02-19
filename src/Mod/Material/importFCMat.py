@@ -177,7 +177,7 @@ def write(filename, dictionary):
     else:
         f.write("; " + header["CardName"].encode("utf8") + "\n")
         f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
-    f.write("; information about the content of this card can be found here:\n")
+    f.write("; information about the content of such cards you can find here:\n")
     f.write("; http://www.freecadweb.org/wiki/index.php?title=Material\n")
     f.write("; file produced by FreeCAD" + rev + "\n")
     f.write("\n")
