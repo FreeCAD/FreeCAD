@@ -7,7 +7,6 @@
 Name = None
 Description = This is a not defined material
 Father = None
-SpecificPrice = 0
 YoungsModulus = 0 MPa
 UltimateTensileStrength = 0 MPa
 PoissonRatio = 0
