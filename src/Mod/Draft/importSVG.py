@@ -316,6 +316,8 @@ def makewire(path,checkclosed=False,donttry=False):
                         sh = Part.Wire(Part.__sortEdges__(path))
                         #sh = Part.Wire(path)
                         isok = (not checkclosed) or sh.isClosed()
+                        if len(sh.Edges) != len(path):
+                            isok = False
                 except Part.OCCError:# BRep_API:command not done
                         isok = False
         if donttry or not isok:
@@ -323,6 +325,9 @@ def makewire(path,checkclosed=False,donttry=False):
                         #original tolerance = 0.00001
                         comp=Part.Compound(path)
                         sh = comp.connectEdgesToWires(False,10**(-1*(Draft.precision()-2))).Wires[0]
+                        if len(sh.Edges) != len(path):
+                            FreeCAD.Console.PrintWarning("Unable to form a wire\n")
+                            sh = comp
         return sh
 
 def arccenter2end(center,rx,ry,angle1,angledelta,xrotation=0.0):
@@ -796,7 +801,8 @@ class svgHandler(xml.sax.ContentHandler):
                                         if path: #the path should be closed by now
                                                 #sh=makewire(path,True)
                                                 sh=makewire(path,donttry=False)
-                                                if self.fill: sh = Part.Face(sh)
+                                                if self.fill and (len(sh.Wires) == 1) and sh.Wires[0].isClosed():
+                                                    sh = Part.Face(sh)
                                                 sh = self.applyTrans(sh)
                                                 obj = self.doc.addObject("Part::Feature",pathname)
                                                 obj.Shape = sh
