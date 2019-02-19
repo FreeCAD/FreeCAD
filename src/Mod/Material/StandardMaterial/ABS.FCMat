@@ -8,7 +8,6 @@ Name = ABS
 Description = This is a blend AcrylnitrilButadienStyrol (ABS) material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised ABS-blend cards.
 Father = Thermoplast
 ProductURL = http://en.wikipedia.org/wiki/Acrylonitrile_butadiene_styrene
-SpecificPrice = 3
 YoungsModulus = 2320 MPa
 UltimateTensileStrength = 38 MPa
 PoissonRatio = 0.35
