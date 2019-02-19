@@ -150,11 +150,16 @@ namespace Part {
 PartExport void getPyShapes(PyObject *obj, std::vector<TopoShape> &shapes) {
     if(PyObject_TypeCheck(obj,&Part::TopoShapePy::Type))
         shapes.push_back(*static_cast<TopoShapePy*>(obj)->getTopoShapePtr());
+    else if (PyObject_TypeCheck(obj, &GeometryPy::Type)) 
+        shapes.push_back(TopoShape(static_cast<GeometryPy*>(obj)->getGeometryPtr()->toShape()));
     else if(PySequence_Check(obj)) {
         Py::Sequence list(obj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type)))
                 shapes.push_back(*static_cast<TopoShapePy*>((*it).ptr())->getTopoShapePtr());
+            else if (PyObject_TypeCheck((*it).ptr(), &GeometryPy::Type)) 
+                shapes.push_back(TopoShape(static_cast<GeometryPy*>(
+                                (*it).ptr())->getGeometryPtr()->toShape()));
             else
                 throw Py::TypeError("expect shape in sequence");
         }
