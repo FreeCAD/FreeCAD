@@ -73,9 +73,10 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
 
     PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
     std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
-    for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)
-    {
-        ui->listWidgetBodies->insertItem(0, QString::fromLatin1((*b)->getNameInDocument()));
+    for (std::vector<App::DocumentObject*>::const_iterator it = bodies.begin(); it != bodies.end(); ++it) {
+        QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
+        item->setText(QString::fromUtf8((*it)->Label.getValue()));
+        item->setData(Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
     }
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
@@ -96,6 +97,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (strcmp(msg.pDocName, BooleanView->getObject()->getDocument()->getName()) != 0)
             return;
 
+        // get the selected object
         PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
         std::string body(msg.pObjectName);
         if (body.empty())
@@ -103,10 +105,13 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         App::DocumentObject* pcBody = pcBoolean->getDocument()->getObject(body.c_str());
         if (pcBody == NULL)
             return;
+
+        // if the selected object is not a body then get the body it is part of
         if (!pcBody->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
             pcBody = PartDesign::Body::findBodyOf(pcBody);
             if (pcBody == NULL)
                 return;
+            body = pcBody->getNameInDocument();
         }
 
         std::vector<App::DocumentObject*> bodies = pcBoolean->Group.getValues();
@@ -116,8 +121,10 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 bodies.push_back(pcBody);
                 pcBoolean->Group.setValues(std::vector<App::DocumentObject*>());
                 pcBoolean->addObjects(bodies);
-                ui->listWidgetBodies->insertItem(ui->listWidgetBodies->count(),
-                                                 QString::fromStdString(pcBody->getNameInDocument()));
+
+                QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
+                item->setText(QString::fromUtf8(pcBody->Label.getValue()));
+                item->setData(Qt::UserRole, QString::fromLatin1(pcBody->getNameInDocument()));
 
                 pcBoolean->getDocument()->recomputeFeature(pcBoolean);
                 ui->buttonBodyAdd->setChecked(false);
@@ -143,18 +150,24 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                         vp->hide();
                 }
             }
-        } else if (selectionMode == bodyRemove) {
+        }
+        else if (selectionMode == bodyRemove) {
             std::vector<App::DocumentObject*>::iterator b = std::find(bodies.begin(), bodies.end(), pcBody);
             if (b != bodies.end()) {
                 bodies.erase(b);
                 pcBoolean->setObjects(bodies);
-                QList<QListWidgetItem*> items = ui->listWidgetBodies->findItems(QString::fromStdString(body), Qt::MatchExactly);
-                if (!items.empty()) {
-                    for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
-                        QListWidgetItem* it = ui->listWidgetBodies->takeItem(ui->listWidgetBodies->row(*i));
-                        delete it;
+
+                QString internalName = QString::fromStdString(body);
+                for (int row = 0; row < ui->listWidgetBodies->count(); row++) {
+                    QListWidgetItem* item = ui->listWidgetBodies->item(row);
+                    QString name = item->data(Qt::UserRole).toString();
+                    if (name == internalName) {
+                        ui->listWidgetBodies->takeItem(row);
+                        delete item;
+                        break;
                     }
                 }
+
                 pcBoolean->getDocument()->recomputeFeature(pcBoolean);
                 ui->buttonBodyRemove->setChecked(false);
                 exitSelectionMode();
@@ -222,7 +235,7 @@ const std::vector<std::string> TaskBooleanParameters::getBodies(void) const
 {
     std::vector<std::string> result;
     for (int i = 0; i < ui->listWidgetBodies->count(); i++)
-        result.push_back(ui->listWidgetBodies->item(i)->text().toStdString());
+        result.push_back(ui->listWidgetBodies->item(i)->data(Qt::UserRole).toString().toStdString());
     return result;
 }
 
@@ -238,10 +251,19 @@ void TaskBooleanParameters::onBodyDeleted(void)
     int index = ui->listWidgetBodies->currentRow();
     if (index < 0 && (size_t) index > bodies.size())
         return;
+
     App::DocumentObject* body = bodies[index];
-    bodies.erase(bodies.begin() + ui->listWidgetBodies->currentRow());
+    QString internalName = ui->listWidgetBodies->item(index)->data(Qt::UserRole).toString();
+    for (auto it = bodies.begin(); it != bodies.end(); ++it) {
+        if (internalName == QLatin1String((*it)->getNameInDocument())) {
+            body = *it;
+            bodies.erase(it);
+            break;
+        }
+    }
+
+    ui->listWidgetBodies->model()->removeRow(index);
     pcBoolean->setObjects(bodies);
-    ui->listWidgetBodies->model()->removeRow(ui->listWidgetBodies->currentRow());
     pcBoolean->getDocument()->recomputeFeature(pcBoolean);
 
     // Make bodies visible again
