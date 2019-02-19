@@ -36,8 +36,8 @@ using namespace Base;
 std::string QuantityPy::representation(void) const
 {
     std::stringstream ret;
-    ret.precision(getQuantityPtr()->getFormat().precision);
-    ret.setf(std::ios::fixed, std::ios::floatfield);
+    //ret.precision(getQuantityPtr()->getFormat().precision);
+    //ret.setf(std::ios::fixed, std::ios::floatfield);
     ret << getQuantityPtr()->getValue() << " "; 
     ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
 
