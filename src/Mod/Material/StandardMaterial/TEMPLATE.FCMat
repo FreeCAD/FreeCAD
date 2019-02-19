@@ -28,14 +28,14 @@ Vendor =
 ; Product URL, recommended are wikipedia links
 ProductURL = http://en.wikipedia.org/wiki/
 
-; Specific price in euro / kg
+; Specific price in currency / mass, a currency is not supported by FreeCAD unit system
 SpecificPrice =
 
-; Young's Modulus (or E-Module) in [MPa], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
-YoungsModulus = value MPa
+; Young's Modulus (or E-Module) in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
+YoungsModulus =
 
-; Ultimate tensile strength in [MPa], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
-UltimateTensileStrength = value MPa
+; Ultimate tensile strength in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
+UltimateTensileStrength =
 
 ; Poisson's ratio [unitless], see https://en.wikipedia.org/wiki/Poisson%27s_ratio for the details
 PoissonRatio =
@@ -49,8 +49,8 @@ Color =
 ; Compressive strength https://en.wikipedia.org/wiki/Compressive_strength
 CompressiveStrength =
 
-; Density in [kg/m^3] https://en.wikipedia.org/wiki/Density
-Density = value kg/m^3
+; Density in [FreeCAD Density unit] https://en.wikipedia.org/wiki/Density
+Density =
 
 ; Description to be updated
 DiffuseColor =
@@ -151,5 +151,5 @@ ViewFillPattern =
 ; Description to be updated
 ViewLinewidth =
 
-; Yield strength in [MPa] https://en.wikipedia.org/wiki/Yield_%28engineering%29
-YieldStrength = value MPa
+; Yield strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Yield_%28engineering%29
+YieldStrength =
