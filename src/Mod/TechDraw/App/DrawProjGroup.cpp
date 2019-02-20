@@ -380,6 +380,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             view->Direction.setValue(vecs.first);
             view->RotationVector.setValue(vecs.second);
         } else {  //Front
+            //where do direction & Rotation Vector get set for front???
             view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
             view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
             App::GetApplication().signalChangePropertyEditor(view->LockPosition);
@@ -1055,7 +1056,7 @@ void DrawProjGroup::spinCW()
     Base::Vector3d org(0.0,0.0,0.0);
     Base::Vector3d curRot = anchor->RotationVector.getValue(); 
     Base::Vector3d curDir = anchor->Direction.getValue();
-    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,-angle,curDir,org);
+    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,angle,curDir,org);
     anchor->RotationVector.setValue(newRot);
     updateSecondaryDirs();
 }
@@ -1068,7 +1069,7 @@ void DrawProjGroup::spinCCW()
     Base::Vector3d org(0.0,0.0,0.0);
     Base::Vector3d curRot = anchor->RotationVector.getValue(); 
     Base::Vector3d curDir = anchor->Direction.getValue();
-    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,angle,curDir,org);
+    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,-angle,curDir,org);
     anchor->RotationVector.setValue(newRot);
 
     updateSecondaryDirs();

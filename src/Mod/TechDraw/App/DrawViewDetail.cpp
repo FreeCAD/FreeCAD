@@ -182,6 +182,8 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     TopoDS_Shape shape;
     if (dvs != nullptr) {
         shape = dvs->getCutShape();
+    } else if (dpgi != nullptr) {
+        shape = dpgi->getSourceShapeFused();
     } else {
         shape = dvp->getSourceShapeFused();
     }
@@ -207,25 +209,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     gp_Ax2 vaBase;
     if (dpgi != nullptr) {
         viewAxis = dpgi->getViewAxis(shapeCenter, dirDetail);
-        vaBase = TechDrawGeometry::getViewAxis(shapeCenter,dirDetail,false);
-
-        Base::Vector3d vaDir(vaBase.Direction().X(),vaBase.Direction().Y(),vaBase.Direction().Z());
-        Base::Vector3d vabDir(vaBase.Direction().X(),vaBase.Direction().Y(),vaBase.Direction().Z());
-        double vaDot = vaDir.Dot(vabDir);
-
-        if (DrawUtil::fpCompare(vaDot,-1.0)) {                //anti-parallel, flip
-            myShape = TechDrawGeometry::rotateShape(myShape,
-                                                    viewAxis,
-                                                    180.0);
-        }
-        Base::Vector3d vaxDir(vaBase.XDirection().X(),vaBase.XDirection().Y(),vaBase.XDirection().Z());
-        Base::Vector3d vabxDir(vaBase.XDirection().X(),vaBase.XDirection().Y(),vaBase.XDirection().Z());
-        double vaxDot = vaxDir.Dot(vabxDir);
-        if (DrawUtil::fpCompare(vaxDot,-1.0)) {
-            myShape = TechDrawGeometry::rotateShape(myShape,
-                                                    viewAxis,
-                                                    180.0);
-        }
     } else {
         viewAxis = dvp->getViewAxis(shapeCenter, dirDetail,false);
     }
@@ -311,9 +294,6 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),dirDetail);
 
         double shapeRotate = dvp->Rotation.getValue();                      //degrees CW?
-        if (dpgi != nullptr) {
-            shapeRotate += dpgi->getRotateAngle() * 180.0/M_PI;            // to degrees from radians
-        }
  
         if (!DrawUtil::fpCompare(shapeRotate,0.0)) {
             mirroredShape = TechDrawGeometry::rotateShape(mirroredShape,
