@@ -569,7 +569,23 @@ class ghostTracker(Tracker):
         if not isinstance(sel,list):
             sel = [sel]
         for obj in sel:
-            rootsep.addChild(self.getNode(obj))
+            import Part
+            if not isinstance(obj, Part.Vertex):
+                rootsep.addChild(self.getNode(obj))
+            else:
+                self.coords = coin.SoCoordinate3()
+                self.coords.point.setValue((obj.X,obj.Y,obj.Z))
+                color = coin.SoBaseColor()
+                color.rgb = FreeCADGui.draftToolBar.getDefaultColor("snap")
+                self.marker = coin.SoMarkerSet() # this is the marker symbol
+                self.marker.markerIndex = FreeCADGui.getMarkerIndex("quad", 9)
+                node = coin.SoAnnotation()
+                selnode = coin.SoSeparator()
+                selnode.addChild(self.coords)
+                selnode.addChild(color)
+                selnode.addChild(self.marker)
+                node.addChild(selnode)
+                rootsep.addChild(node)
         self.children.append(rootsep)        
         Tracker.__init__(self,dotted,scolor,swidth,children=self.children,name="ghostTracker")
 
@@ -651,7 +667,6 @@ class ghostTracker(Tracker):
                           matrix.A31,matrix.A32,matrix.A33,matrix.A34,
                           matrix.A41,matrix.A42,matrix.A43,matrix.A44)
         self.trans.setMatrix(m)
-
 
 class editTracker(Tracker):
     "A node edit tracker"
