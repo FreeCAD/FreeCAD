@@ -110,6 +110,7 @@ inCommandShortcuts = {
     "Continue":   ["T",translate("draft","Continue"),             "continueCmd"],
     "Close":      ["O",translate("draft","Close"),                "closeButton"],
     "Copy":       ["P",translate("draft","Copy"),                 "isCopy"],
+    "SubelementMode": ["D",translate("draft","Subelement mode"), "isSubelementMode"],
     "Fill":       ["L",translate("draft","Fill"),                 "hasFill"],
     "Exit":       ["A",translate("draft","Exit"),                 "finishButton"],
     "Snap":       ["S",translate("draft","Snap On/Off"),          None],
@@ -594,6 +595,7 @@ class DraftToolBar:
         self.currentViewButton = self._pushbutton("view", self.layout,icon="view-isometric")
         self.resetPlaneButton = self._pushbutton("none", self.layout,icon="view-axonometric")
         self.isCopy = self._checkbox("isCopy",self.layout,checked=False)
+        self.isSubelementMode = self._checkbox("isSubelementMode",self.layout,checked=False)
         gl = QtGui.QHBoxLayout()
         self.layout.addLayout(gl)
         self.gridLabel = self._label("gridLabel", gl)
@@ -816,6 +818,8 @@ class DraftToolBar:
         self.resetPlaneButton.setToolTip(translate("draft", "Do not project points to a drawing plane"))
         self.isCopy.setText(translate("draft", "Copy")+" ("+inCommandShortcuts["Copy"][0]+")")
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved. Preferences -> Draft -> Global copy mode to keep this mode in next commands"))
+        self.isSubelementMode.setText(translate("draft", "Modify subelements")+" ("+inCommandShortcuts["SubelementMode"][0]+")")
+        self.isSubelementMode.setToolTip(translate("draft", "If checked, subelements will be modified instead of entire objects"))
         self.SStringValue.setToolTip(translate("draft", "Text string to draw"))
         self.labelSString.setText(translate("draft", "String"))
         self.SSizeValue.setToolTip(translate("draft", "Height of text"))
@@ -1213,6 +1217,7 @@ class DraftToolBar:
 
     def modUi(self):
         self.isCopy.show()
+        self.isSubelementMode.show()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         if p.GetBool("copymode",True):
             self.isCopy.setChecked(p.GetBool("copymodeValue",False))
@@ -1696,6 +1701,10 @@ class DraftToolBar:
         elif txt.upper().endswith(inCommandShortcuts["Copy"][0]):
             if self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
+            spec = True
+        elif txt.upper().endswith(inCommandShortcuts["SubelementMode"][0]):
+            if self.isSubelementMode.isVisible():
+                self.isSubelementMode.setChecked(not self.isSubelementMode.isChecked())
             spec = True
         if spec:
             for i,k in enumerate([self.xValue,self.yValue,self.zValue,self.lengthValue,self.angleValue]):
