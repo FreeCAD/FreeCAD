@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Postavite zadano usmjerenje za naknadne naredbe za stvaranje putne točke</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>postavi zadanu orijentaciju za naknadne naredbe za stvaranje točke putanje</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Postavljanje zadanih vrijednosti za brzinu, ubrzanja i kontinuitet za naknadne naredbe stvaranja putne točke</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Postavi zadane vrijednosti za brzinu, ubrzanje i kontinuitet za naknadne naredbe stvaranja točki puta</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Potrebno je najmanje dvije putne točke u putanji za simulaciju.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Trebate najmanje dvije točke u putanji za simuliranje.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Morate lebjeti iznad geometrije (predselekcije) s mišem kako bi koristili ovu naredbu. Pogledajte dokumentaciju za detalje.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Postavi zadanu brzinu</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Postavljanje zadanog kontinuiteta</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Postavljanje zadanog ubrzanja</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Odaberite jedan Robot za postavljanje početnog položaja</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Odaberite jedan Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Odaberite jednu putanju objekta.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>postavi zadanu brzinu</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>brzina: (npr. 1 m/s ili 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>postavi zadani kontinuitet</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>kontinuirano?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>postavi zadano ubrzanje</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>ubrzanje: (npr. 1 m/s^2 ili 3 cm/s^2)</translation>
     </message>

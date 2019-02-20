@@ -304,7 +304,7 @@ protected:
                        Base::Vector3f> > &rclLines) const;
   /** Searches the nearest facet in \a raulFacets to the ray (\a rclPt, \a rclDir). */
   bool RayNearestField (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const std::vector<unsigned long> &raulFacets,
-                        Base::Vector3f &rclRes, unsigned long &rulFacet, float fMaxAngle = F_PI) const;
+                        Base::Vector3f &rclRes, unsigned long &rulFacet, float fMaxAngle = Mathf::PI) const;
   /** 
    * Splits the boundary \a rBound in several loops and append this loops to the list of borders.
    */

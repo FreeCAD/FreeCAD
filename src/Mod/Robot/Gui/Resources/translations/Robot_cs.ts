@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Nastavit výchozí orientaci pro následující příkazy vytvářející body trajektorie</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>nastavit výchozí orientaci pro následující příkazy vytvářející body trajektorie</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Nastavit výchozí hodnoty pro rychlost, zrychlení a spojení mezi následujícícmi příkazy tvorby bodů trajektorie</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Nastavit výchozí hodnoty pro rychlost, zrychlení a spojení mezi následujícícmi příkazy tvorby bodů trajektorie</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>K simulaci potřebujete alespoň dva body na trajektorii.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>K simulaci potřebujete alespoň dva body na trajektorii.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Pro použití tohoto příkazu musíte najet myší na geometrii (předvýběr). Detaily viz dokumentace.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Nastavit výchozí rychlost</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Nastavit výchozí spojitost</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Nastavit výchozí zrychlení</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Vyberte jednoho robota pro nastavení výchozí pozice</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Vyberte robota</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Vyberte jeden objekt trajektorie.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>nastavit výchozí rychlost</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>rychlost: (např. 1 m/s nebo 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>nastavit výchozí spojitost</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>kontinuální?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>nastavit výchozí zrychlení</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>zrychlení: (např. 1 m/s^2 nebo 3 cm/s^2)</translation>
     </message>

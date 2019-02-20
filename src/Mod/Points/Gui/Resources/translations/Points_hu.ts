@@ -11,13 +11,13 @@
     <message>
       <location line="+1"/>
       <source>Convert to points...</source>
-      <translation>Pontokká konvertálja...</translation>
+      <translation>Pontokká alakít...</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Convert to points</source>
-      <translation>Pontokká konvertálja</translation>
+      <translation>Pontokká alakít</translation>
     </message>
   </context>
   <context>

@@ -483,13 +483,13 @@ PyObject* GeometryCurvePy::parameter(PyObject *args)
         if (!PyArg_ParseTuple(args, "O!", &(Base::VectorPy::Type), &p))
             return 0;
         Base::Vector3d v = Py::Vector(p, false).toVector();
-        
+
         double u;
-        
-        if(static_cast<Part::GeomCurve *>(getGeometryPtr())->closestParameter(v,u))
+
+        if (static_cast<Part::GeomCurve *>(getGeometryPtr())->closestParameter(v,u))
             return Py::new_reference_to(Py::Float(u));
     }
-    catch (Base::RuntimeError& e) {
+    catch (Base::CADKernelError& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
         return 0;
     }
@@ -819,9 +819,6 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
         PyErr_SetString(PyExc_RuntimeError, e.what());
         return 0;
     }
-
-    PyErr_SetString(PyExc_TypeError, "Geometry is not a curve");
-    return 0;
 }
 
 // General intersection function

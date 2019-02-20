@@ -88,6 +88,7 @@
 #include <Base/Console.h>
 #include <Base/Stream.h>
 #include <Base/FileInfo.h>
+#include <Base/Rotation.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
@@ -1261,8 +1262,13 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
     short x, y;
     ev->getPosition().getValue(x, y);
     // FIXME find out why do we need to hack the cursor position to get
-    y += 4;
-    x -= 2;
+    // 2019-02-17
+    // The above comment is truncated; don't know what it's about
+    // The two hacked lines changing the cursor positon are responsible for parts of the
+    // navigational cluster not being active.
+    // Commented them out and everything seems to be working
+//    y += 4;
+//    x -= 2;
 	if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
 		const SoMouseButtonEvent* mbev = static_cast<const SoMouseButtonEvent*>(ev);
 		if (mbev->isButtonPressEvent(mbev, SoMouseButtonEvent::BUTTON1))
@@ -1294,7 +1300,7 @@ void NaviCube::setNaviCubeLabels(const std::vector<std::string>& labels)
 
 DEF_3DV_CMD(ViewIsometricCmd)
 ViewIsometricCmd::ViewIsometricCmd()
-  : Command("ViewIsometric")
+  : Command("ViewIsometricCmd")
 {
     sGroup        = QT_TR_NOOP("");
     sMenuText     = QT_TR_NOOP("Isometric");
@@ -1309,11 +1315,12 @@ ViewIsometricCmd::ViewIsometricCmd()
 void ViewIsometricCmd::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    Command::doCommand(Command::Gui,"Gui.activeDocument().activeView().viewIsometric()");
 }
 
 DEF_3DV_CMD(ViewOrthographicCmd)
 ViewOrthographicCmd::ViewOrthographicCmd()
-  : Command("ViewDimetric")
+  : Command("ViewOrthographicCmd")
 {
     sGroup        = QT_TR_NOOP("");
     sMenuText     = QT_TR_NOOP("Orthographic");
@@ -1334,7 +1341,7 @@ void ViewOrthographicCmd::activated(int iMsg)
 DEF_3DV_CMD(ViewPerspectiveCmd)
 
 ViewPerspectiveCmd::ViewPerspectiveCmd()
-  : Command("ViewTrimetric")
+  : Command("ViewPerspectiveCmd")
 {
     sGroup        = QT_TR_NOOP("");
     sMenuText     = QT_TR_NOOP("Perspective");
@@ -1384,13 +1391,15 @@ QMenu* NaviCubeImplementation::createNaviCubeMenu() {
         init = false;
         rcCmdMgr.addCommand(new ViewOrthographicCmd);
         rcCmdMgr.addCommand(new ViewPerspectiveCmd);
+        rcCmdMgr.addCommand(new ViewIsometricCmd);
         rcCmdMgr.addCommand(new ViewZoomToFitCmd);
     }
 
     vector<string> commands = NaviCubeImplementation::m_commands;
     if (commands.empty()) {
-        commands.push_back("ViewDimetric");
-        commands.push_back("ViewTrimetric");
+        commands.push_back("ViewOrthographicCmd");
+        commands.push_back("ViewPerspectiveCmd");
+        commands.push_back("ViewIsometricCmd");
         commands.push_back("Separator");
         commands.push_back("ViewZoomToFit");
     }

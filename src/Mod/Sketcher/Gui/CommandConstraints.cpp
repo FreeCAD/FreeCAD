@@ -1252,23 +1252,23 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
                 return;
             }
 
-            // check if the edge has already a Horizontal/Vertical/Block constraint
+            // check if the edge already has a Horizontal/Vertical/Block constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                        QObject::tr("The selected edge has already a horizontal constraint!"));
+                        QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
                 if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge has already a vertical constraint!"));
+                                         QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
-                // check if the edge has already a Block constraint
+                // check if the edge already has a Block constraint
                 if ((*it)->Type == Sketcher::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge has already a Block constraint!"));
+                                         QObject::tr("The selected edge already has a Block constraint!"));
                     return;
                 }
             }
@@ -1345,23 +1345,23 @@ void CmdSketcherConstrainHorizontal::applyConstraint(std::vector<SelIdPair> &sel
                 return;
             }
 
-            // check if the edge has already a Horizontal/Vertical/Block constraint
+            // check if the edge already has a Horizontal/Vertical/Block constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                        QObject::tr("The selected edge has already a horizontal constraint!"));
+                        QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
                 if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge has already a vertical constraint!"));
+                                         QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
-                // check if the edge has already a Block constraint
+                // check if the edge already has a Block constraint
                 if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge has already a Block constraint!"));
+                                         QObject::tr("The selected edge already has a Block constraint!"));
                     return;
                 }
             }
@@ -1499,23 +1499,23 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
                 return;
             }
 
-            // check if the edge has already a Horizontal/Vertical/Block constraint
+            // check if the edge already has a Horizontal/Vertical/Block constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                                         QObject::tr("The selected edge has already a vertical constraint!"));
+                                         QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge has already a horizontral constraint!"));
+                                         QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
-                // check if the edge has already a Block constraint
+                // check if the edge already has a Block constraint
                 if ((*it)->Type == Sketcher::Block && (*it)->First == GeoId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge has already a Block constraint!"));
+                                         QObject::tr("The selected edge already has a Block constraint!"));
                     return;
                 }
             }
@@ -1560,7 +1560,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     }
     else { // vertex mode, fixedpoints > 1
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                             QObject::tr("There are more than one fixed point selected. Select a maximum of one fixed point!"));
+                             QObject::tr("There are more than one fixed points selected. Select a maximum of one fixed point!"));
         return;
     }
 
@@ -1592,23 +1592,23 @@ void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSe
                 return;
             }
 
-            // check if the edge has already a Horizontal or Vertical constraint
+            // check if the edge already has a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge has already a horizontal constraint!"));
+                                         QObject::tr("The selected edge already has a horizontal constraint!"));
                     return;
                 }
                 if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                                         QObject::tr("The selected edge has already a vertical constraint!"));
+                                         QObject::tr("The selected edge already has a vertical constraint!"));
                     return;
                 }
-                // check if the edge has already a Block constraint
+                // check if the edge already has a Block constraint
                 if ((*it)->Type == Sketcher::Block && (*it)->First == CrvId && (*it)->FirstPos == Sketcher::none) {
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                         QObject::tr("The selected edge has already a Block constraint!"));
+                                         QObject::tr("The selected edge already has a Block constraint!"));
                     return;
                 }
             }
@@ -1753,7 +1753,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     int lastconstraintindex = Obj->Constraints.getSize()-1;
 
     if( GeoId.size() == 1 ) { // absolute mode
-        // check if the edge has already a Block constraint
+        // check if the edge already has a Block constraint
         bool edgeisblocked = false;
 
         if ( isPointOrSegmentFixed(Obj, GeoId[0])) {
@@ -1789,7 +1789,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
         Base::Vector3d pntr = Obj->getPoint(GeoId.back(),PosId.back());
 
-        // check if the edge has already a Block constraint
+        // check if the edge already has a Block constraint
         bool refpointfixed = false;
 
         if ( isPointOrSegmentFixed(Obj, GeoId.back()))
@@ -1842,7 +1842,7 @@ void CmdSketcherConstrainLock::applyConstraint(std::vector<SelIdPair> &selSeq, i
         SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
-        // check if the edge has already a Block constraint
+        // check if the edge already has a Block constraint
         bool pointfixed = false;
 
         if ( isPointOrSegmentFixed(Obj, selSeq.front().GeoId))
@@ -1887,11 +1887,11 @@ void CmdSketcherConstrainLock::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock"));
         break;
     }
 }
@@ -2021,10 +2021,10 @@ void CmdSketcherConstrainBlock::activated(int iMsg)
             return;
         }
 
-        // check if the edge has already a Block constraint
+        // check if the edge already has a Block constraint
         if ( checkConstraint(vals, Sketcher::Block, GeoIdt, Sketcher::none)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                                 QObject::tr("The selected edge has already a Block constraint!"));
+                                 QObject::tr("The selected edge already has a Block constraint!"));
             return;
         }
 
@@ -2069,12 +2069,12 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair> &selSeq, 
             // Create the constraints
             SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
 
-            // check if the edge has already a Block constraint
+            // check if the edge already has a Block constraint
             const std::vector< Sketcher::Constraint * > &vals = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues();
 
             if ( checkConstraint(vals, Sketcher::Block, selSeq.front().GeoId, Sketcher::none)) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                                     QObject::tr("The selected edge has already a Block constraint!"));
+                                     QObject::tr("The selected edge already has a Block constraint!"));
                 return;
             }
 
@@ -2330,7 +2330,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     for (std::size_t i=1; i<SubNames.size(); i++) {
         getIdsFromName(SubNames[i], Obj, GeoId2, PosId2);
 
-        // check if the edge has already a Block constraint
+        // check if the edge already has a Block constraint
         if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
             showNoConstraintBetweenFixedGeometry();
             return;
@@ -2410,7 +2410,7 @@ void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &sel
         int GeoId1 = selSeq.at(0).GeoId, GeoId2 = selSeq.at(1).GeoId;
         Sketcher::PointPos PosId1 = selSeq.at(0).PosId, PosId2 = selSeq.at(1).PosId;
 
-        // check if the edge has already a Block constraint
+        // check if the edge already has a Block constraint
         if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
             showNoConstraintBetweenFixedGeometry();
             return;
@@ -2769,11 +2769,11 @@ void CmdSketcherConstrainDistance::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
         break;
     }
 }
@@ -3144,7 +3144,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    QObject::tr("Cannot add a fixed x-coordinate constraint on the root point!"));
+                    QObject::tr("Cannot add a fixed x-coordinate constraint on the origin point!"));
             return;
         }
 
@@ -3245,11 +3245,11 @@ void CmdSketcherConstrainDistanceX::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
         break;
     }
 }
@@ -3392,7 +3392,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Cannot add a fixed y-coordinate constraint on the root point!"));
+                QObject::tr("Cannot add a fixed y-coordinate constraint on the origin point!"));
             return;
         }
 
@@ -3492,11 +3492,11 @@ void CmdSketcherConstrainDistanceY::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
         break;
     }
 }
@@ -4121,7 +4121,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
-    // check if the edge has already a Block constraint
+    // check if the edge already has a Block constraint
     if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
         showNoConstraintBetweenFixedGeometry();
         return;
@@ -4752,7 +4752,7 @@ void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq
     int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
 
-    // check if the edge has already a Block constraint
+    // check if the edge already has a Block constraint
     if ( areBothPointsOrSegmentsFixed(Obj,GeoId1,GeoId2) ) {
       showNoConstraintBetweenFixedGeometry();
       return;
@@ -5451,11 +5451,11 @@ void CmdSketcherConstrainRadius::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
         break;
     }
 }
@@ -5922,11 +5922,11 @@ void CmdSketcherConstrainDiameter::updateAction(int mode)
     switch (mode) {
         case Reference:
             if (getAction())
-                getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter_Driven"));
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
             break;
         case Driving:
             if (getAction())
-                getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter"));
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
             break;
     }
 }
@@ -5976,9 +5976,9 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
+    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
     QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter"));
+    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
 
     _pcAction = pcAction;
     languageChange();
@@ -6002,13 +6002,13 @@ void CmdSketcherCompConstrainRadDia::updateAction(int mode)
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
         case Reference:
-            a[0]->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
-            a[1]->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter_Driven"));
+            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
+            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
             getAction()->setIcon(a[index]->icon());
             break;
         case Driving:
-            a[0]->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
-            a[1]->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter"));
+            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
+            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
             getAction()->setIcon(a[index]->icon());
             break;
     }
@@ -6543,11 +6543,11 @@ void CmdSketcherConstrainAngle::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
         break;
     }
 }
@@ -6721,7 +6721,7 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
     {
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
 
-        // check if the edge has already a Block constraint
+        // check if the edge already has a Block constraint
         if ( areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) ) {
             showNoConstraintBetweenFixedGeometry();
             return;
@@ -7281,7 +7281,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         if(ellipseids.size()>1){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You cannot internally constraint an ellipse on other ellipse. Select only one ellipse."));
+                QObject::tr("You cannot internally constrain an ellipse on other ellipse. Select only one ellipse."));
             return;
         }
 
@@ -7330,7 +7330,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         }
 
         if(major && minor && focus1 && focus2) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing to constraint"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing to constrain"),
             QObject::tr("Currently all internal geometry of the ellipse is already exposed."));
             return;
         }
@@ -7434,13 +7434,13 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         if(arcsofellipseids.size()>1){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You cannot internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse."));
+                QObject::tr("You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse."));
             return;
         }
 
         if(ellipseids.size()>0){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You cannot internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse."));
+                QObject::tr("You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse."));
             return;
         }
 
@@ -7489,7 +7489,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         }
 
         if(major && minor && focus1 && focus2) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing to constraint"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Nothing to constrain"),
             QObject::tr("Currently all internal geometry of the arc of ellipse is already exposed."));
             return;
         }

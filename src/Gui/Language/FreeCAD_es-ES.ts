@@ -294,11 +294,11 @@
       <translation>Cliquee el botón central del mouse</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Pulse el botón central y derecho o izquierdo del ratón</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Pulse botón medio + izquierdo o medio + derecho</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>Desliza la rueda del ratón o mantenla pulsada mientras haces click derecho o izquierdo, moviendo el ratón hacia arriba o abajo</translation>
     </message>
@@ -422,6 +422,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Fuera de rango</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Ajustes de la cámara</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Orientación</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Vista actual</translation>
     </message>
   </context>
   <context>
@@ -828,10 +859,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>El atajo de teclado '%1' ya está asignado a '%2'.
+Do you want to override it?</source>
+      <translation type="unfinished">The shortcut '%1' is already assigned to '%2'.
 
-Por favor defina otro atajo de teclado.</translation>
+Do you want to override it?</translation>
     </message>
   </context>
   <context>
@@ -2044,6 +2075,10 @@ Especifique otro directorio, por favor.</translation>
       <translation>Utilice objeto OpenGL Vertex Buffer</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Nueva orientación de la cámara del documento</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
       <translation>Evita ver inclinando cuando hace gesto de zoom. Afecta sólo gesto estilo Nav. Inclinación del ratón no se deshabilita por esta opción.</translation>
     </message>
@@ -2093,6 +2128,46 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isométrico</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimétrica</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimétrica</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Planta</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Alzado</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Izquierda</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Derecha</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Posterior</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Inferior</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Personalizado</translation>
     </message>
   </context>
   <context>
@@ -3003,10 +3078,6 @@ Especifique otro directorio, por favor.</translation>
       <translation>¿Está seguro que desea eliminar todos los directorios transitorios?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Al eliminar todo directorio transitorio no podrá recuperar los archivos luego.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Completado</translation>
     </message>
@@ -3021,6 +3092,10 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Pulse 'Empezar Recuperación' para iniciar el proceso de recuperación del documento indicado a continuación. 
 
 La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation type="unfinished">When deleting all transient directories you won't be able to recover any files afterwards.</translation>
     </message>
   </context>
   <context>
@@ -3798,20 +3873,20 @@ Desea guardar los cambios?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dé un toque. O haga clic en el botón izquierdo del ratón.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Arrastre la pantalla con dos dedos. O pulse el botón derecho del ratón.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press right mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastre la pantalla con un dedo. O pulse el botón izquierdo del ratón. En el croquizador y otros modos de edición, mantenga pulsado también Alt.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pellizque (ponga dos dedos en la pantalla y separelos/juntelos). O arrastre el botón central del ratón. O use AcPág/RePág en teclado.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
@@ -4093,29 +4168,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Dé un toque. O haga clic en el botón izquierdo del ratón.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation type="unfinished">Tap OR click left mouse button.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
-      <translation>Arrastre la pantalla con dos dedos. O presione ALT + botón medio del ratón.</translation>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
+      <translation type="unfinished">Drag screen with two fingers OR press ALT + middle mouse button.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Arrastre la pantalla con un dedo. O presione ALT + botón izquierdo del mouse. En Sketcher y otros modos de edición, también mantenga presionado Alt.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation type="unfinished">Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
-      <translation>Pellizcar (poner dos dedos en la pantalla y separarlos). O usar el scroll medio del mouse. O presionar ALT + botón derecho del mouse. O usar PgUp/PgDown del teclado.</translation>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
+      <translation type="unfinished">Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Descarga comenzada...
-</translation>
+      <source>Download started...</source>
+      <translation>La descarga comenzó...</translation>
     </message>
   </context>
   <context>
@@ -5217,18 +5290,6 @@ Be aware the point where you click matters.</source>
       <translation>Origen de coordenadas</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Traducción: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotación: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>¿Borrar el contenido de grupo?</translation>
     </message>
@@ -5243,6 +5304,18 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Split</source>
       <translation>Dividir</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Traslación:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotación:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5977,12 +6050,12 @@ Be aware the point where you click matters.</source>
       <translation>Fusionar proyecto</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>Documento %1(*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>No se puede fusionar el proyecto consigo mismo.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 documento (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6658,21 +6731,6 @@ Be aware the point where you click matters.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonométrica</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Establecer vista axonométrica</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6700,6 +6758,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Crea una nueva ventana de vista para el documento activo</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimétrica</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Establecer vista dimétrica</translation>
     </message>
   </context>
   <context>
@@ -6790,6 +6863,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to front view</source>
       <translation>Establecer vista alzado</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isométrico</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Establecer vista isométrica</translation>
     </message>
   </context>
   <context>
@@ -6970,6 +7058,21 @@ Be aware the point where you click matters.</source>
     <message>
       <source>Set to top view</source>
       <translation>Establecer vista en planta</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimétrica</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Establecer vista trimétrica</translation>
     </message>
   </context>
   <context>
@@ -7259,28 +7362,16 @@ Be aware the point where you click matters.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Estos artículos están vinculados a elementos seleccionados para su eliminación y podrían romperse.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation type="unfinished">These items are linked to items selected for deletion and might break.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Estos artículos son seleccionados para su eliminación, pero no están en el documento activo. 
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
-      <translation>
-
-¿Está seguro de que desea continuar?</translation>
+      <source>Are you sure you want to continue?</source>
+      <translation>¿Está seguro de que desea continuar?</translation>
     </message>
     <message>
       <source>Delete Selection Issues</source>

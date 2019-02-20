@@ -74,6 +74,13 @@ SET(FemSolver_SRCS
     femsolver/writerbase.py
 )
 
+SET(FemSolverCalculix_SRCS
+    femsolver/calculix/__init__.py
+    femsolver/calculix/solver.py
+    femsolver/calculix/tasks.py
+    femsolver/calculix/writer.py
+)
+
 SET(FemSolverElmer_SRCS
     femsolver/elmer/__init__.py
     femsolver/elmer/sifio.py
@@ -94,11 +101,9 @@ SET(FemSolverElmerEquations_SRCS
     femsolver/elmer/equations/nonlinear.py
 )
 
-SET(FemSolverCalculix_SRCS
-    femsolver/calculix/__init__.py
-    femsolver/calculix/solver.py
-    femsolver/calculix/tasks.py
-    femsolver/calculix/writer.py
+SET(FemSolverFenics_SRCS
+    femsolver/fenics/__init__.py
+    femsolver/fenics/fenics_tools.py
 )
 
 SET(FemSolverZ88_SRCS
@@ -106,11 +111,6 @@ SET(FemSolverZ88_SRCS
     femsolver/z88/solver.py
     femsolver/z88/tasks.py
     femsolver/z88/writer.py
-)
-
-SET(FemSolverFenics_SRCS
-    femsolver/fenics/__init__.py
-    femsolver/fenics/fenics_tools.py
 )
 
 SET(FemTests_SRCS
@@ -135,11 +135,13 @@ SET(FemTestsCcx_SRCS
     femtest/testfiles/ccx/cube_frequency.dat
     femtest/testfiles/ccx/cube_frequency.frd
     femtest/testfiles/ccx/cube_frequency_expected_values
+    femtest/testfiles/ccx/cube_frequency.FCStd
     femtest/testfiles/ccx/cube_static.inp
     femtest/testfiles/ccx/cube_static.dat
     femtest/testfiles/ccx/cube_static.frd
     femtest/testfiles/ccx/cube_static_expected_values
-    femtest/testfiles/ccx/cube.fcstd
+    femtest/testfiles/ccx/cube_static.FCStd
+    femtest/testfiles/ccx/cube.FCStd
     femtest/testfiles/ccx/multimat.inp
     femtest/testfiles/ccx/multimat_mesh.py
     femtest/testfiles/ccx/spine_mesh.py
@@ -147,14 +149,14 @@ SET(FemTestsCcx_SRCS
     femtest/testfiles/ccx/spine_thermomech.dat
     femtest/testfiles/ccx/spine_thermomech.frd
     femtest/testfiles/ccx/spine_thermomech_expected_values
-    femtest/testfiles/ccx/spine_thermomech.fcstd
+    femtest/testfiles/ccx/spine_thermomech.FCStd
     femtest/testfiles/ccx/Flow1D_mesh.py
     femtest/testfiles/ccx/Flow1D_thermomech.inp
     femtest/testfiles/ccx/Flow1D_thermomech.dat
     femtest/testfiles/ccx/Flow1D_thermomech.frd
     femtest/testfiles/ccx/Flow1D_thermomech_expected_values
     femtest/testfiles/ccx/Flow1D_thermomech_inout_nodes.txt
-    femtest/testfiles/ccx/Flow1D_thermomech.fcstd
+    femtest/testfiles/ccx/Flow1D_thermomech.FCStd
 )
 
 SET(FemTestsElmer_SRCS
@@ -211,8 +213,8 @@ SET(FemAllScripts
     ${FemSolverCalculix_SRCS}
     ${FemSolverElmer_SRCS}
     ${FemSolverElmerEquations_SRCS}
-    ${FemSolverZ88_SRCS}
     ${FemSolverFenics_SRCS}
+    ${FemSolverZ88_SRCS}
     ${FemTests_SRCS}
     ${FemTestsFiles_SRCS}
     ${FemTestsCcx_SRCS}
@@ -240,8 +242,8 @@ INSTALL(FILES ${FemSolver_SRCS} DESTINATION Mod/Fem/femsolver)
 INSTALL(FILES ${FemSolverCalculix_SRCS} DESTINATION Mod/Fem/femsolver/calculix)
 INSTALL(FILES ${FemSolverElmer_SRCS} DESTINATION Mod/Fem/femsolver/elmer)
 INSTALL(FILES ${FemSolverElmerEquations_SRCS} DESTINATION Mod/Fem/femsolver/elmer/equations)
-INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
 INSTALL(FILES ${FemSolverFenics_SRCS} DESTINATION Mod/Fem/femsolver/fenics)
+INSTALL(FILES ${FemSolverZ88_SRCS} DESTINATION Mod/Fem/femsolver/z88)
 INSTALL(FILES ${FemTests_SRCS} DESTINATION Mod/Fem/femtest)
 INSTALL(FILES ${FemTestsFiles_SRCS} DESTINATION Mod/Fem/femtest/testfiles)
 INSTALL(FILES ${FemTestsCcx_SRCS} DESTINATION Mod/Fem/femtest/testfiles/ccx)

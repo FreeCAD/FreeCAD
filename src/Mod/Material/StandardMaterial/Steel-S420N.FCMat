@@ -1,4 +1,4 @@
-; S420N - 1.8902 - EN 10113-2
+; Steel-S420N
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,14 +8,14 @@ Name = S420N
 NameDE = St E 420
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 520
+UltimateTensileStrength = 520 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Fine grain steel
 KindOfMaterialDE = Feinkornstahl
 MaterialNumber = 1.8902
-ModulusOfShare = 81000
 Norm = EN 10113-2
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 19
-YieldStrength = 420
+YieldStrength = 420 MPa

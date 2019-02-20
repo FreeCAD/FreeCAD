@@ -5,7 +5,7 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2010 Werner Mayer <wmayer@users.sourceforge.net>        *  
+#*   Copyright (c) 2010 Werner Mayer <wmayer@users.sourceforge.net>        *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Library General Public License (LGPL)   *
@@ -30,8 +30,8 @@ from __future__ import print_function
 Usage = """updatets - update all .ts files found in the source directories
 
 Usage:
-   updatets 
-   
+   updatets
+
 Author:
   (c) 2010 Werner Mayer
   Licence: GPL
@@ -88,13 +88,13 @@ PyCommands = [["src/Mod/Draft",
               ["src/Mod/Part",
                'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Partpy.ts'],
               ["src/Mod/Part",
-               'lconvert -i Gui/Resources/translations/Partpy.ts Gui/Resources/translations/Part_de.ts -o Gui/Resources/translations/Part_de.ts'],
+               'lconvert -i Gui/Resources/translations/Partpy.ts Gui/Resources/translations/Part.ts -o Gui/Resources/translations/Part.ts'],
               ["src/Mod/Part",
                'rm Gui/Resources/translations/Partpy.ts'],
               ["src/Mod/Image",
                'pylupdate `find ./ -name "*.py"` -ts Gui/Resources/translations/Imagepy.ts'],
               ["src/Mod/Image",
-               'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image_de.ts -o Gui/Resources/translations/Image_de.ts'],
+               'lconvert -i Gui/Resources/translations/Imagepy.ts Gui/Resources/translations/Image.ts -o Gui/Resources/translations/Image.ts'],
               ["src/Mod/Image",
                'rm Gui/Resources/translations/Imagepy.ts'],
                ]
@@ -102,13 +102,15 @@ PyCommands = [["src/Mod/Draft",
 # add python folders to exclude list
 for c in PyCommands:
     DirFilter.append(c[0])
-             
+
 QMAKE = ""
 LUPDATE = ""
 PYLUPDATE = ""
+LCONVERT = ""
 
-def find_tools():
-    global QMAKE, LUPDATE, PYLUPDATE
+def find_tools(noobsolete=True):
+
+    global QMAKE, LUPDATE, PYLUPDATE, LCONVERT
     if (os.system("qmake -version") == 0):
         QMAKE = "qmake"
     elif (os.system("qmake-qt4 -version") == 0):
@@ -119,23 +121,41 @@ def find_tools():
         raise Exception("Cannot find qmake")
     if (os.system("lupdate -version") == 0):
         LUPDATE = "lupdate"
-    if (os.system("lupdate-qt4 -version") == 0):
+        # TODO: we suppose lupdate is a symlink to lupdate-qt4 for now
+        if noobsolete:
+            LUPDATE += " -no-obsolete"
+    elif (os.system("lupdate-qt4 -version") == 0):
         LUPDATE = "lupdate-qt4"
+        if noobsolete:
+            LUPDATE += " -no-obsolete"
     elif (os.system("lupdate-qt5 -version") == 0):
         LUPDATE = "lupdate-qt5"
+        if noobsolete:
+            LUPDATE += " -noobsolete"
     else:
         raise Exception("Cannot find lupdate")
     if (os.system("pylupdate -version") == 0):
         PYLUPDATE = "pylupdate"
     elif (os.system("pylupdate4 -version") == 0):
         PYLUPDATE = "pylupdate4"
+        if noobsolete:
+            PYLUPDATE += " -noobsolete"
     elif (os.system("pylupdate5 -version") == 0):
         PYLUPDATE = "pylupdate5"
+        if noobsolete:
+            PYLUPDATE += " -noobsolete"
     else:
         raise Exception("Cannot find pylupdate")
-    print("Qt tools:", QMAKE, LUPDATE, PYLUPDATE)
+    if (os.system("lconvert -h") == 0):
+        LCONVERT = "lconvert"
+        if noobsolete:
+            LCONVERT += " -no-obsolete"
+    else:
+        raise Exception("Cannot find lconvert")
+    print("Qt tools:", QMAKE, LUPDATE, PYLUPDATE, LCONVERT)
 
 def filter_dirs(item):
+
     global DirFilter
     if not os.path.isdir(item):
         return False
@@ -146,25 +166,36 @@ def filter_dirs(item):
     return True
 
 def update_translation(path):
+
     global QMAKE, LUPDATE
     cur = os.getcwd()
     os.chdir(path)
     filename = os.path.basename(path) + ".pro"
     os.system(QMAKE + " -project")
-    os.system(LUPDATE + " " + filename)
+    #os.system(LUPDATE + " " + filename)
+    #only update the master ts file
+    tsname = ""
+    if "Mod" in path:
+        tsname = " -ts "+os.path.join("Gui","Resources","translations",os.path.basename(path) + ".ts")
+    elif "src/Gui" in path:
+        tsname = " -ts "+os.path.join("Languages", "FreeCAD.ts")
+    os.system(LUPDATE + " " + filename + tsname)
     os.remove(filename)
     os.chdir(cur)
 
 def update_python_translation(item):
-    global PYLUPDATE
+
+    global PYLUPDATE, LCONVERT
     cur = os.getcwd()
     os.chdir(item[0])
     execline = item[1].replace("pylupdate",PYLUPDATE)
+    execline = execline.replace("lconvert",LCONVERT)
     print("Executing special command in ",item[0],": ",execline)
     os.system(execline)
     os.chdir(cur)
 
 def main():
+
     find_tools()
     path = os.path.realpath(__file__)
     path = os.path.dirname(path)

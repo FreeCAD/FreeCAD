@@ -1,4 +1,4 @@
-; X6CrNiTi18-10 - 1.4541 - EN 10088
+; Steel-X6CrNiTi18-10
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = X10CrNiTi 18 9
 DescriptionDE = schlecht spanbar, gut schweißbar, gut kaltumformbar, Schienenfahrzeugbau
 Father = Metal
 YoungsModulus = 200000 MPa
-UltimateTensileStrength = 500
+UltimateTensileStrength = 500 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Stainless steel
 KindOfMaterialDE = Niro
 MaterialNumber = 1.4541
-ModulusOfShare = 81000
 Norm = EN 10088
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 40
-YieldStrength = 200
+YieldStrength = 200 MPa

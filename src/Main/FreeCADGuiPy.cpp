@@ -260,6 +260,7 @@ QWidget* setupMainWindow()
         Base::PyGILStateLocker lock;
         PyObject* input = PySys_GetObject("stdin");
         Gui::MainWindow *mw = new Gui::MainWindow();
+        mw->setAttribute(Qt::WA_DeleteOnClose);
         hasMainWindow = true;
 
         QIcon icon = qApp->windowIcon();

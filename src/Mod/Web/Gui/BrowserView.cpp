@@ -281,7 +281,6 @@ void BrowserView::onLinkClicked (const QUrl & url)
     // path handling
     QString path     = url.path();
     QFileInfo fi(path);
-    QString ext = fi.completeSuffix();
     QUrl exturl(url);
 
     // query
@@ -329,7 +328,8 @@ void BrowserView::onLinkClicked (const QUrl & url)
                     QMessageBox::critical(this, tr("Error"), QString::fromUtf8(e.what()));
                 }
 
-                if(this->getAppDocument()->testStatus(App::Document::PartialRestore))
+                App::Document *doc = BaseView::getAppDocument();
+                if(doc && doc->testStatus(App::Document::PartialRestore))
                     QMessageBox::critical(this, tr("Error"), tr("There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved."));
             }
         }

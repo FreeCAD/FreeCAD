@@ -1,4 +1,4 @@
-; S355J2G3 - 1.0570 - EN 10025
+; Steel-S355J2G3
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,14 +8,14 @@ Name = S355J2G3
 NameDE = St52-3
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 510
+UltimateTensileStrength = 510 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Mild steel
 KindOfMaterialDE = Baustahl
 MaterialNumber = 1.057
-ModulusOfShare = 81000
 Norm = EN 10025
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 22
-YieldStrength = 355
+YieldStrength = 355 MPa

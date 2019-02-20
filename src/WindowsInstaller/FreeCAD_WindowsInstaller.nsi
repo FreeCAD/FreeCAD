@@ -142,7 +142,7 @@ sectionEnd
 
 section "Install redistributable" VCRedistSection
 	# Install the Visual Studio redistributable
-	ExecWait '"$INSTDIR\vcredist_x86.exe" /q:a /c:"VCREDI~1.EXE /q:a /c:""msiexec /i vcredist.msi /qb!"" "'
+	ExecWait '"$INSTDIR\vcredist_x86.exe" /q /norestart'
 sectionEnd
 
 # http://forums.winamp.com/showthread.php?t=255747

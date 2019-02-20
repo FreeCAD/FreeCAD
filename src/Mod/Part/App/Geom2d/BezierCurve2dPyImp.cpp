@@ -104,7 +104,7 @@ PyObject* BezierCurve2dPy::insertPoleAfter(PyObject * args)
     PyObject* p;
     if (!PyArg_ParseTuple(args, "iO!|d", &index, Base::Vector2dPy::type_object(), &p, &weight))
         return 0;
-    Base::Vector2d vec = Py::Vector2d(p).getCxxObject()->value();
+    Base::Vector2d vec = Py::toVector2d(p);
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
@@ -126,7 +126,7 @@ PyObject* BezierCurve2dPy::insertPoleBefore(PyObject * args)
     PyObject* p;
     if (!PyArg_ParseTuple(args, "iO!|d", &index, Base::Vector2dPy::type_object(), &p, &weight))
         return 0;
-    Base::Vector2d vec = Py::Vector2d(p).getCxxObject()->value();
+    Base::Vector2d vec = Py::toVector2d(p);
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
@@ -184,7 +184,7 @@ PyObject* BezierCurve2dPy::setPole(PyObject * args)
     PyObject* p;
     if (!PyArg_ParseTuple(args, "iO!|d", &index, Base::Vector2dPy::type_object(), &p, &weight))
         return 0;
-    Base::Vector2d vec = Py::Vector2d(p).getCxxObject()->value();
+    Base::Vector2d vec = Py::toVector2d(p);
     gp_Pnt2d pnt(vec.x, vec.y);
     try {
         Handle(Geom2d_BezierCurve) curve = Handle(Geom2d_BezierCurve)::DownCast
@@ -268,7 +268,7 @@ PyObject* BezierCurve2dPy::setPoles(PyObject * args)
         TColgp_Array1OfPnt2d poles(1,list.size());
         int index = poles.Lower();
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            Base::Vector2d pole = Py::Vector2d(*it).getCxxObject()->value();
+            Base::Vector2d pole = Py::toVector2d(*it);
             poles.SetValue(index++, gp_Pnt2d(pole.x,pole.y));
         }
 

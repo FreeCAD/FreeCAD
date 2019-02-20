@@ -40,7 +40,7 @@
 /// If you want to mark text for translation, use the QT_TRANSLATE_NOOP macro
 /// with the context "Exceptions" and the right throwing macro from below (the one ending in T)
 /// example:
-/// THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the b-spline."));
+/// THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the B-Spline."));
 ///
 /// N.B.: The QT_TRANSLATE_NOOP macro won't translate your string. It will just allow lupdate to identify that string for translation so that
 /// if you ask for a translation (and the translator have provided one) at that time it gets translated (e.g. in the UI before showing the message

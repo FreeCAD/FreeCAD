@@ -1,4 +1,4 @@
-; EN-GJS-500-7 - 0.7050 - EN 1563
+; Steel-EN-GJS-500-7
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = GGG-50
 DescriptionDE = Seiltrommeln, Bremsteile, Zylinderköpfe
 Father = Metal
 YoungsModulus = 170000 MPa
-UltimateTensileStrength = 500
+UltimateTensileStrength = 500 MPa
 PoissonRatio = 0.3
 Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.705
-ModulusOfShare = 66000
 Norm = EN 1563
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 66000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 2
-YieldStrength = 320
+YieldStrength = 320 MPa

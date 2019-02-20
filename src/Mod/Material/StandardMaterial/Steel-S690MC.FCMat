@@ -1,4 +1,4 @@
-; S690MC - 1.0966 - SEW 092
+; Steel-S690MC
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = QStE690 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 790
+UltimateTensileStrength = 790 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Cold forming steel
 KindOfMaterialDE = Kaltumformstahl
 MaterialNumber = 1.0966
-ModulusOfShare = 81000
 Norm = SEW 092
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 15
-YieldStrength = 690
+YieldStrength = 690 MPa

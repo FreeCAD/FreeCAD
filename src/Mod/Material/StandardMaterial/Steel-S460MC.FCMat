@@ -1,4 +1,4 @@
-; S460MC - 1.0982 - SEW 092
+; Steel-S460MC
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = QStE460 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 590
+UltimateTensileStrength = 590 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Cold forming steel
 KindOfMaterialDE = Kaltumformstahl
 MaterialNumber = 1.0982
-ModulusOfShare = 81000
 Norm = SEW 092
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 19
-YieldStrength = 460
+YieldStrength = 460 MPa

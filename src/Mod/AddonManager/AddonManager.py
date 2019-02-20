@@ -58,6 +58,7 @@ from addonmanager_utilities import urlopen
 NOGIT = False # for debugging purposes, set this to True to always use http downloads
 
 MACROS_BLACKLIST = ["BOLTS","WorkFeatures","how to install","PartsLibrary","FCGear"]
+OBSOLETE = ["assembly2"]
 
 if sys.version_info.major < 3:
     import StringIO as io
@@ -295,6 +296,8 @@ class AddonsInstaller(QtGui.QDialog):
                     if not thread.isFinished():
                         oktoclose = False
         if oktoclose:
+            if hasattr(self,"install_worker"):
+                QtGui.QMessageBox.information(self, translate("AddonsInstaller","Addon manager"), translate("AddonsInstaller","Please restart FreeCAD for changes to take effect."))
             shutil.rmtree(self.macro_repo_dir,onerror=self.remove_readonly)
             QtGui.QDialog.reject(self)
 
@@ -702,13 +705,13 @@ class FillMacroListWorker(QtCore.QThread):
         """Retrieve macros from FreeCAD-macros.git
 
         Emits a signal for each macro in
-        https://github.com/FreeCAD/FreeCAD-macros.git.
+        https://github.com/FreeCAD/FreeCAD-macros.git
         """
         try:
             import git
         except ImportError:
             self.info_label_signal.emit("GitPython not installed! Cannot retrieve macros from git")
-            FreeCAD.Console.PrintWarning('GitPython not installed! Cannot retrieve macros from git')
+            FreeCAD.Console.PrintWarning(translate('AddonInstaller', 'GitPython not installed! Cannot retrieve macros from git')+"\n")
             return
 
         self.info_label_signal.emit('Downloading list of macros for git...')
@@ -765,7 +768,7 @@ class ShowWorker(QtCore.QThread):
             desc = self.repos[self.idx][3]
         else:
             url = self.repos[self.idx][1]
-            self.info_label.emit(translate("AddonsInstaller", "Retrieving info from ") + str(url))
+            self.info_label.emit(translate("AddonsInstaller", "Retrieving info from") + ' ' + str(url))
             u = urlopen(url)
             p = u.read()
             if sys.version_info.major >= 3 and isinstance(p, bytes):
@@ -774,6 +777,8 @@ class ShowWorker(QtCore.QThread):
             desc = re.findall("<meta property=\"og:description\" content=\"(.*?)\"",p)
             if desc:
                 desc = desc[0]
+                if self.repos[self.idx][0] in OBSOLETE:
+                    desc += " <b>This add-on is marked as obsolete</b> - This usually means it is no longer maintained, and some more advanced add-on in this list provides the same functionality."
             else:
                 desc = "Unable to retrieve addon description"
             self.repos[self.idx].append(desc)

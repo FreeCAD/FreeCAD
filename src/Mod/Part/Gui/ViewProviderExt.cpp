@@ -487,6 +487,7 @@ void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)
 
     // wireframe node
     SoSeparator* wireframe = new SoSeparator();
+    wireframe->setName("Edge");
     wireframe->addChild(pcLineBind);
     wireframe->addChild(pcLineMaterial);
     wireframe->addChild(pcLineStyle);

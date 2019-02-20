@@ -55,6 +55,9 @@ public:
     void openFile(const QFile &file);
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter *p, const QRectF &rect);
+    void setZoomInverted(bool on) {
+        m_invertZoom = on;
+    }
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -73,6 +76,7 @@ private:
     QGraphicsRectItem *m_outlineItem;
 
     QImage m_image;
+    bool m_invertZoom;
 };
 
 class DrawingGuiExport DrawingView : public Gui::MDIView

@@ -48,18 +48,18 @@ IFCTYPES = ["IfcActuator", "IfcAirTerminal", "IfcAirTerminalBox", "IfcAirToAirHe
 "IfcGrid", "IfcHeatExchanger", "IfcHumidifier", "IfcInterceptor", "IfcJunctionBox", "IfcLamp",
 "IfcLightFixture", "IfcMechanicalFastener", "IfcMedicalDevice", "IfcMember", "IfcMemberStandardCase",
 "IfcMotorConnection", "IfcOpeningElement", "IfcOpeningStandardCase", "IfcOutlet", "IfcPile",
-"IfcPipeFitting", "IfcPipeSegment", "IfcPlate", "IfcPlateStandardCase", "IfcPort",
+"IfcPipeFitting", "IfcPipeSegment", "IfcPlate", "IfcPlateStandardCase",
 "IfcProjectionElement", "IfcProtectiveDevice", "IfcProtectiveDeviceTrippingUnit",
 "IfcProxy", "IfcPump", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcReinforcingBar",
-"IfcReinforcingElement", "IfcReinforcingMesh", "IfcRoof", "IfcSanitaryTerminal",
+"IfcReinforcingMesh", "IfcRoof", "IfcSanitaryTerminal",
 "IfcSensor", "IfcShadingDevice", "IfcSite", "IfcSlab", "IfcSlabElementedCase", "IfcSlabStandardCase",
-"IfcSolarDevice", "IfcSpace", "IfcSpaceHeater", "IfcSpatialElement", "IfcSpatialStructureElement",
-"IfcSpatialZone", "IfcStackTerminal", "IfcStair", "IfcStairFlight", "IfcStructuralAction",
-"IfcStructuralActivity", "IfcStructuralConnection", "IfcStructuralCurveAction",
+"IfcSolarDevice", "IfcSpace", "IfcSpaceHeater",
+"IfcSpatialZone", "IfcStackTerminal", "IfcStair", "IfcStairFlight",
+"IfcStructuralCurveAction",
 "IfcStructuralCurveConnection", "IfcStructuralCurveMember", "IfcStructuralCurveMemberVarying",
-"IfcStructuralCurveReaction", "IfcStructuralItem", "IfcStructuralLinearAction",
-"IfcStructuralMember", "IfcStructuralPlanarAction", "IfcStructuralPointAction",
-"IfcStructuralPointConnection", "IfcStructuralPointReaction", "IfcStructuralReaction",
+"IfcStructuralCurveReaction", "IfcStructuralLinearAction",
+"IfcStructuralPlanarAction", "IfcStructuralPointAction",
+"IfcStructuralPointConnection", "IfcStructuralPointReaction",
 "IfcStructuralSurfaceAction", "IfcStructuralSurfaceConnection", "IfcStructuralSurfaceMember",
 "IfcStructuralSurfaceMemberVarying", "IfcStructuralSurfaceReaction", "IfcSurfaceFeature",
 "IfcSwitchingDevice", "IfcSystemFurnitureElement", "IfcTank", "IfcTendon", "IfcTendonAnchor",
@@ -255,6 +255,12 @@ class Component:
             if r in IfcRoles:
                 obj.IfcRole = r
                 FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" Role property to IfcRole\n")
+        if "IfcType" in pl: # for future backwards compatibility
+            r = obj.IfcType
+            obj.removeProperty("IfcType")
+            if r in IfcRoles:
+                obj.IfcRole = r
+                FreeCAD.Console.PrintMessage("Downgrading "+obj.Label+" IfcType property to IfcRole\n")
         if not "MoveWithHost" in pl:
             obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
             obj.MoveWithHost = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("MoveWithHost",False)
@@ -815,6 +821,11 @@ class ViewProviderComponent:
                 if len(vobj.DiffuseColor) > 1:
                     d = vobj.DiffuseColor
                     vobj.DiffuseColor = d
+        elif prop == "Visibility":
+            for host in self.getHosts():
+                if hasattr(host, 'ViewObject'):
+                    host.ViewObject.Visibility = vobj.Visibility
+
         return
 
     def attach(self,vobj):
@@ -911,15 +922,9 @@ class ViewProviderComponent:
                     objlink = getattr(self.Object,link)
                     if objlink:
                         c.append(objlink)
-            for link in self.Object.InList:
-                if hasattr(link,"Host"):
-                    if link.Host:
-                        if link.Host == self.Object:
-                            c.append(link)
-                elif hasattr(link,"Hosts"):
-                    for host in link.Hosts:
-                        if host == self.Object:
-                            c.append(link)
+            for link in self.getHosts():
+                c.append(link)
+
             return c
         return []
 
@@ -963,6 +968,22 @@ class ViewProviderComponent:
         if obj.CloneOf:
             if self.areDifferentColors(obj.ViewObject.DiffuseColor,obj.CloneOf.ViewObject.DiffuseColor) or force:
                 obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+    
+    def getHosts(self):
+        hosts = []
+
+        if hasattr(self,"Object"):
+            for link in self.Object.InList:
+                if hasattr(link,"Host"):
+                    if link.Host:
+                        if link.Host == self.Object:
+                            hosts.append(link)
+                elif hasattr(link,"Hosts"):
+                    for host in link.Hosts:
+                        if host == self.Object:
+                            hosts.append(link)
+        
+        return hosts
 
 
 class ArchSelectionObserver:

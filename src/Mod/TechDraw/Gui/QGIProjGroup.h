@@ -25,7 +25,6 @@
 
 #include <QGraphicsItemGroup>
 #include <QObject>
-#include <App/PropertyLinks.h>
 
 #include "QGIViewCollection.h"
 
@@ -52,6 +51,8 @@ public:
     void alignTo(QGIProjGroup *, const QString &alignment);
 
     virtual void updateView(bool update = false);
+    virtual void rotateView(void) override;
+
     virtual void drawBorder(void);
 
 protected:
@@ -67,7 +68,7 @@ private:
     /// Convenience function
     TechDraw::DrawProjGroup * getDrawView(void) const;
 
-    QGraphicsRectItem *m_backgroundItem;
+    QGraphicsRectItem *m_groupBackground;
     QGraphicsItem* m_origin;
     QPoint mousePos;
 };

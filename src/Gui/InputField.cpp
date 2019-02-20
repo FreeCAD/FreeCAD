@@ -431,6 +431,11 @@ void InputField::setValue(const double& value)
     setValue(Base::Quantity(value, actUnit));
 }
 
+double InputField::rawValue() const
+{
+    return this->actQuantity.getValue();
+}
+
 void InputField::setUnit(const Base::Unit& unit)
 {
     actUnit = unit;
@@ -454,6 +459,25 @@ void InputField::setQuantityString(const QString& text)
 {
     // Input and then format the quantity
     newInput(text);
+    updateText(actQuantity);
+}
+
+/// return the quantity in C locale, i.e. decimal separator is a dot.
+QString InputField::rawText(void) const
+{
+    double  factor;
+    QString unit;
+    double value = actQuantity.getValue();
+    actQuantity.getUserString(factor, unit);
+    return QString::fromLatin1("%1 %2").arg(value / factor).arg(unit);
+}
+
+/// expects the string in C locale and internally converts it into the OS-specific locale
+void InputField::setRawText(const QString& text)
+{
+    Base::Quantity quant = Base::Quantity::parse(text);
+    // Input and then format the quantity
+    newInput(quant.getUserString());
     updateText(actQuantity);
 }
 

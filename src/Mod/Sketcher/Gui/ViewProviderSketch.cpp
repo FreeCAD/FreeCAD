@@ -5193,7 +5193,9 @@ Restart:
                         SbVec3f p2(pnt2.x,pnt2.y,zConstr);
 
                         SoDatumLabel *asciiText = static_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                        asciiText->string = SbString(Constr->getPresentationValue().getUserString().toUtf8().constData());
+
+                        // Get display string with units hidden if so requested
+                        asciiText->string = SbString( getPresentationString(Constr).toUtf8().constData() );
 
                         asciiText->datumtype    = SoDatumLabel::RADIUS;
                         asciiText->param1       = Constr->LabelDistance;

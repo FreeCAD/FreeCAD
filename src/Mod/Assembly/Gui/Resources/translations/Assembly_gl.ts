@@ -134,7 +134,7 @@
     </message>
     <message>
       <source>Set the angle between two selected entitys</source>
-      <translation>Definir o ángulo entre dúas entidades seleccionadas</translation>
+      <translation>Definir o ángulo entre dúas entidades escolmadas</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     </message>
     <message>
       <source>Set the distance between two selected entitys</source>
-      <translation>Definir a distancia entre dúas entidades seleccionadas</translation>
+      <translation>Definir a distancia entre dúas entidades escolmadas</translation>
     </message>
   </context>
   <context>
@@ -233,7 +233,7 @@
     </message>
     <message>
       <source>Set the orientation of two selected entitys in regard to each other</source>
-      <translation>Definir a orientación entre dúas entidades seleccionadas en relación dunha á outra</translation>
+      <translation>Definir a orientación entre dúas entidades escolmadas en relación dunha á outra</translation>
     </message>
   </context>
   <context>
@@ -261,18 +261,18 @@
       <location line="+56"/>
       <location line="+46"/>
       <source>No active or selected assembly</source>
-      <translation>Ningunha ensamblaxe activa ou seleccionada</translation>
+      <translation>Ningunha ensamblaxe activa ou escolmada</translation>
     </message>
     <message>
       <location line="-101"/>
       <source>You need a active or selected assembly to insert a part in.</source>
-      <translation>Precisa dunha ensamblaxe activa ou seleccionada para inserirlle unha peza.</translation>
+      <translation>Precisa dunha ensamblaxe activa ou escolmada para inserirlle unha peza.</translation>
     </message>
     <message>
       <location line="+56"/>
       <location line="+46"/>
       <source>You need a active or selected assembly to insert a component in.</source>
-      <translation>Precisa dunha ensamblaxe activa ou seleccionada para inserirlle un compoñente.</translation>
+      <translation>Precisa dunha ensamblaxe activa ou escolmada para inserirlle un compoñente.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="-335"/>
@@ -333,7 +333,7 @@
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Special constraint which is in general used to let the geometries be on each other. Therefore it's often the same as align, with the difference that it is also defined for points, as a point can lie on a plane. Note that this constraint has a special behaviour for cylinders. For example, a cylindrical surface can't be on a plane, only touch it. Therefore this is not valid. Furthermore point and line coincident with cylinders don't  work on the cylinder surface, but on its center line. The reason for that it is, that this centerline would not be accessible with other constraints, but the surface coincident can be also achieved with the align constraint and value 0.  At last specialty the cylinder cylinder constraint shall be mentioned: It works also on the cylinder centerlines and therefore makes them concentric. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Constrición especial a cal é usada en xeral para permitir que as xeometrías estean unha riba doutra. Por iso, moitas veces é o mesmo que aliñar, coa diferenza de que tamén é definida por puntos, unha vez que o punto pode estar nun plano. Note que esta restrición ten un comportamento especial para os cilindros. Por exemplo, unha superficie cilíndrica non pode estar nun plano, só pode tocalo. Así pois, isto non é válido. Ademais punto e liña coincidentes con cilindros non funcionan na superficie do cilindro, pero si no seu eixe. A razón disto é que este eixe non sería accesible con outras constricións, pero a superficie coincidente pode ser acadada coa constrición aliñar mais o valor 0. Ó final debe ser mencionada especialmente a constrición cilindro cilindro: Tamén funciona en eixes dos cilindros e, polo tanto, fainos concéntricos.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Constrición especial a cal é usada en xeral para permitir que as xeometrías estean unha riba doutra. Por iso, moitas veces é o mesmo que aliñar, coa diferenza de que tamén é definida por puntos, unha vez que o punto pode estar nun plano. Note que esta restrición ten un comportamento especial para os cilindros. Por exemplo, unha superficie cilíndrica non pode estar nun plano, só pode tocalo. Así pois, isto non é válido. Ademais punto e liña coincidentes con cilindros non funcionan na superficie do cilindro, pero si no seu eixo. A razón disto é que este eixo non sería accesible con outras constricións, pero a superficie coincidente pode ser acadada coa constrición aliñar mais o valor 0. Ó final debe ser mencionada especialmente a constrición cilindro cilindro: Tamén funciona en eixos dos cilindros e, polo tanto, fainos concéntricos.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location line="+41"/>

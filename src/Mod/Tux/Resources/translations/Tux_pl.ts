@@ -44,11 +44,6 @@
       <translation>Ostrość obrotu</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
-      <source>Middle mouse button or key H.</source>
-      <translation>Środkowy przycisk myszy lub klawisz H.</translation>
-    </message>
-    <message>
       <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button.</source>
       <translation>Środkowy przycisk myszy.</translation>
@@ -92,6 +87,11 @@
       <location filename="../../NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
       <translation>Niezdefiniowany</translation>
+    </message>
+    <message>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <source>Middle mouse button or H key.</source>
+      <translation type="unfinished">Middle mouse button or H key.</translation>
     </message>
   </context>
 </TS>

@@ -23,7 +23,6 @@
 #ifndef _TECHDRAW_DrawSVGTemplate_h_
 #define _TECHDRAW_DrawSVGTemplate_h_
 
-#include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 #include <App/FeaturePython.h>

@@ -184,7 +184,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
-
+#include <App/Material.h>
 
 #include "TopoShape.h"
 #include "CrossSection.h"
@@ -196,6 +196,7 @@
 #include "Tools.h"
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
+#include "BRepOffsetAPI_MakeOffsetFix.h"
 
 using namespace Part;
 
@@ -826,13 +827,22 @@ void TopoShape::exportStl(const char *filename, double deflection) const
     writer.Write(this->_Shape,encodeFilename(filename).c_str());
 }
 
-void TopoShape::exportFaceSet(double dev, double ca, std::ostream& str) const
+void TopoShape::exportFaceSet(double dev, double ca,
+                              const std::vector<App::Color>& colors,
+                              std::ostream& str) const
 {
     Base::InventorBuilder builder(str);
     TopExp_Explorer ex;
-
-    BRepMesh_IncrementalMesh MESH(this->_Shape,dev);
+    std::size_t numFaces = 0;
     for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next()) {
+        numFaces++;
+    }
+
+    bool supportFaceColors = (numFaces == colors.size());
+
+    std::size_t index=0;
+    BRepMesh_IncrementalMesh MESH(this->_Shape,dev);
+    for (ex.Init(this->_Shape, TopAbs_FACE); ex.More(); ex.Next(), index++) {
         // get the shape and mesh it
         const TopoDS_Face& aFace = TopoDS::Face(ex.Current());
         Standard_Integer nbNodesInFace,nbTriInFace;
@@ -898,6 +908,11 @@ void TopoShape::exportFaceSet(double dev, double ca, std::ostream& str) const
 
         builder.beginSeparator();
         builder.addShapeHints((float)ca);
+        if (supportFaceColors) {
+            App::Color c = colors[index];
+            builder.addMaterial(c.r, c.g, c.b, c.a);
+        }
+
         builder.beginPoints();
         builder.addPoints(vertices);
         builder.endPoints();
@@ -2492,8 +2507,10 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
-    if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
+#if OCC_VERSION_HEX < 0x060900
+    if (allowOpenResult)
         throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
+#endif
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
@@ -2514,32 +2531,35 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
     std::vector<TopoDS_Shape> shapesToReturn;
     bool forceOutputCompound = false;
 
-    if (this->_Shape.ShapeType() == TopAbs_COMPOUND){
-        if (!intersection){
+    if (this->_Shape.ShapeType() == TopAbs_COMPOUND) {
+        if (!intersection) {
             //simply recursively process the children, independently
             TopoDS_Iterator it(_Shape);
-            for( ; it.More() ; it.Next()){
+            for( ; it.More() ; it.Next()) {
                 shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
                 forceOutputCompound = true;
             }
-        } else {
+        }
+        else {
             //collect non-compounds from this compound for collective offset. Process other shapes independently.
             TopoDS_Iterator it(_Shape);
-            for( ; it.More() ; it.Next()){
-                if(it.Value().ShapeType() == TopAbs_COMPOUND){
+            for( ; it.More() ; it.Next()) {
+                if(it.Value().ShapeType() == TopAbs_COMPOUND) {
                     //recursively process subcompounds
                     shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
                     forceOutputCompound = true;
-                } else {
+                }
+                else {
                     shapesToProcess.push_back(it.Value());
                 }
             }
         }
-    } else {
+    }
+    else {
         shapesToProcess.push_back(this->_Shape);
     }
 
-    if(shapesToProcess.size() > 0){
+    if(shapesToProcess.size() > 0) {
 
         //although 2d offset supports offsetting a face directly, it seems there is
         //no way to do a collective offset of multiple faces. So, we are doing it
@@ -2601,16 +2621,12 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         //do the offset..
         TopoDS_Shape offsetShape;
-        BRepOffsetAPI_MakeOffset mkOffset(sourceWires[0], GeomAbs_JoinType(joinType)
-#if OCC_VERSION_HEX >= 0x060900
-                                                , allowOpenResult
-#endif
-                                               );
-        for(TopoDS_Wire &w : sourceWires)
-            if (&w != &(sourceWires[0])) //filter out first wire - it's already added
-                mkOffset.AddWire(w);
+        BRepOffsetAPI_MakeOffsetFix mkOffset(GeomAbs_JoinType(joinType), allowOpenResult);
+        for (TopoDS_Wire &w : sourceWires) {
+            mkOffset.AddWire(w);
+        }
 
-        if (fabs(offset) > Precision::Confusion()){
+        if (fabs(offset) > Precision::Confusion()) {
             try {
     #if defined(__GNUC__) && defined (FC_OS_LINUX)
                 Base::SignalException se;
@@ -2625,13 +2641,14 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             }
             offsetShape = mkOffset.Shape();
 
-            if(offsetShape.IsNull())
+            if (offsetShape.IsNull())
                 throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
 
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
             // http://www.freecadweb.org/tracker/view.php?id=2699
             offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
-        } else {
+        }
+        else {
             offsetShape = sourceWires.size()>1 ? TopoDS_Shape(compoundSourceWires) : sourceWires[0];
         }
 
@@ -2651,11 +2668,13 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         if (!fill){
             if (haveFaces){
                 wiresForMakingFaces = offsetWires;
-            } else {
+            }
+            else {
                 for(TopoDS_Wire &w : offsetWires)
                     shapesToReturn.push_back(w);
             }
-        } else {
+        }
+        else {
             //fill offset
             if (fabs(offset) < Precision::Confusion())
                 throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
@@ -2689,7 +2708,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             wiresForMakingFaces = closedWires;
             if (!allowOpenResult || openWires.size() == 0){
                 //just ignore all open wires
-            } else {
+            }
+            else {
                 //We need to connect open wires to form closed wires.
 
                 //for now, only support offsetting one open wire -> there should be exactly two open wires for connecting
@@ -2729,9 +2749,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                     std::swap(v3, v4);
                     v3.Reverse();
                     v4.Reverse();
-                } else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
+                }
+                else if ((fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v4)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v4))){
                     //orientation is as expected, nothing to do
-                } else {
+                }
+                else {
                     throw Base::CADKernelError("makeOffset2D: fill offset: failed to establish open vertex relationship.");
                 }
 
@@ -2789,7 +2811,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         for(TopoDS_Shape &sh : shapesToReturn)
             builder.Add(result, sh);
         return result;
-    } else {
+    }
+    else {
         return shapesToReturn[0];
     }
 }

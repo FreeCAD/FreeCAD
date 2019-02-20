@@ -27,6 +27,7 @@
 #endif
 #ifndef _PreComp_
 # include <Python.h>
+# include <iostream>
 # include <climits>
 # include <QString>
 # include <Standard_Version.hxx>
@@ -94,6 +95,7 @@
 #include <TDataStd_Integer.hxx>
 #include <TDataStd_TreeNode.hxx>
 #include <TDF_ChildIDIterator.hxx>
+#include <TDF_AttributeIterator.hxx>
 #include <TDF_Data.hxx>
 #include <TDF_IDList.hxx>
 #include <TDF_ListIteratorOfIDList.hxx>
@@ -175,13 +177,25 @@ void OCAFBrowser::load(QTreeWidget* theTree)
 
 void OCAFBrowser::load(const TDF_Label& label, QTreeWidgetItem* item, const QString& s)
 {
+    label.Dump(std::cout);
+
     Handle(TDataStd_Name) name;
     if (label.FindAttribute(TDataStd_Name::GetID(),name)) {
         QString text = QString::fromLatin1("%1 %2").arg(s).arg(QString::fromUtf8(toString(name->Get()).c_str()));
         item->setText(0, text);
     }
 
-    for (TDF_ListIteratorOfIDList it(myList); it.More(); it.Next()) {
+#if 0
+    TDF_IDList localList = myList;
+#else
+    TDF_IDList localList;
+    TDF_AttributeIterator itr (label);
+    for ( ; itr.More(); itr.Next()) {
+        localList.Append(itr.Value()->ID());
+    }
+#endif
+
+    for (TDF_ListIteratorOfIDList it(localList); it.More(); it.Next()) {
         Handle(TDF_Attribute) attr;
         if (label.FindAttribute(it.Value(), attr)) {
             QTreeWidgetItem* child = new QTreeWidgetItem();

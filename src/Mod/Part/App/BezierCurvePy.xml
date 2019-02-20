@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
 	<PythonExport
-		Father="GeometryCurvePy"
+                Father="BoundedCurvePy"
 		Name="BezierCurvePy"
-        PythonName="Part.BezierCurve"
+                PythonName="Part.BezierCurve"
 		Twin="GeomBezierCurve"
 		TwinPointer="GeomBezierCurve"
 		Include="Mod/Part/App/Geometry.h"
 		Namespace="Part"
-		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+                FatherInclude="Mod/Part/App/BoundedCurvePy.h"
 		FatherNamespace="Part"
 		Constructor="true">
 		<Documentation>
@@ -64,17 +64,17 @@ Bezier curve curve. This value is 25.</UserDocu>
 			</Documentation>
 			<Parameter Name="EndPoint" Type="Object"/>
 		</Attribute>
-		<Methode Name="isRational">
+        <Methode Name="isRational" Const="true">
 			<Documentation>
 				<UserDocu>Returns false if the weights of all the poles of this Bezier curve are equal.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isPeriodic">
+        <Methode Name="isPeriodic" Const="true">
 			<Documentation>
 				<UserDocu>Returns false.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isClosed">
+        <Methode Name="isClosed" Const="true">
 			<Documentation>
 				<UserDocu>Returns true if the distance between the start point and end point of
 					this Bezier curve is less than or equal to gp::Resolution().
@@ -114,12 +114,12 @@ If this Bezier curve is rational, it can become non-rational.</UserDocu>
 				<UserDocu>Set a pole of the Bezier curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPole">
+        <Methode Name="getPole" Const="true">
 			<Documentation>
 				<UserDocu>Get a pole of the Bezier curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getPoles">
+        <Methode Name="getPoles" Const="true">
 			<Documentation>
 				<UserDocu>Get all poles of the Bezier curve.</UserDocu>
 			</Documentation>
@@ -137,12 +137,12 @@ If this Bezier curve is rational, it can become non-rational.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getWeight">
+        <Methode Name="getWeight" Const="true">
 			<Documentation>
 				<UserDocu>Get a weight of the Bezier curve.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="getWeights">
+        <Methode Name="getWeights" Const="true">
 			<Documentation>
 				<UserDocu>Get all weights of the Bezier curve.</UserDocu>
 			</Documentation>

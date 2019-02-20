@@ -57,6 +57,10 @@ m_layerName("none")
 CDxfWrite::~CDxfWrite()
 {
     delete m_ofs;
+    delete m_ssBlock;
+    delete m_ssBlkRecord;
+    delete m_ssEntity;
+    delete m_ssLayer;
 }
 
 void CDxfWrite::init(void)

@@ -1,4 +1,4 @@
-; 3C22 - 1.1149 - EN 10083-1
+; Steel-3C22
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,14 +8,14 @@ Name = 3C22
 NameDE = Cm22
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 550
+UltimateTensileStrength = 550 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Heat-treatable steel
 KindOfMaterialDE = Vergütungsstahl
 MaterialNumber = 1.1149
-ModulusOfShare = 81000
 Norm = EN 10083-1
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 24
-YieldStrength = 350
+YieldStrength = 350 MPa

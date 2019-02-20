@@ -11,6 +11,7 @@ YoungsModulus
 UltimateTensileStrength
 PoissonRatio
 AmbientColor
+AngleOfFriction
 Color
 CompressiveStrength
 Density
@@ -27,12 +28,14 @@ KindOfMaterial
 KindOfMaterialDE
 MaterialNumber
 Model
-ModulusOfShare
 Norm
+ReferenceSource
 SectionFillPattern
 SectionLinewidth
+ShearModulus
 Shininess
 SoundTransmissionClass
+SourceURL
 SpecificHeat
 SpecularColor
 StandardCode

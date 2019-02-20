@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>883</height>
+    <height>935</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TechDraw 1</string>
+   <string>TechDraw General</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
@@ -671,7 +671,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="lbl_TemplateDot">
           <property name="text">
-           <string>Template Dot Size</string>
+           <string>Editable Text Marker Size</string>
           </property>
          </widget>
         </item>
@@ -707,7 +707,7 @@
            <string>View Label size in units</string>
           </property>
           <property name="value">
-           <double>3.500000000000000</double>
+           <double>6.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>LabelSize</cstring>
@@ -720,7 +720,7 @@
         <item row="2" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="plsb_TemplateDot">
           <property name="toolTip">
-           <string>Green edit dot size in units</string>
+           <string>Size of editable text marker in Templates (green dot).</string>
           </property>
           <property name="value">
            <double>3.000000000000000</double>

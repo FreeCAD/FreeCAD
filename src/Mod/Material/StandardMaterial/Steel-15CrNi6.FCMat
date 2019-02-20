@@ -1,4 +1,4 @@
-; 15CrNi6 - 1.5919 - EN 10084
+; Steel-15CrNi6
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -10,14 +10,14 @@ DescriptionDE = höchste Beanspruchung, Achsen, Wellen, Ritzel, Nocken, Kegelrä
 DescriptionPL = Wysokowytrzymała stal węglowa
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 1000
+UltimateTensileStrength = 1000 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Case-hardened steel
 KindOfMaterialDE = Einsatzstahl
 MaterialNumber = 1.5919
-ModulusOfShare = 81000
 Norm = EN 10084
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 9
-YieldStrength = 680
+YieldStrength = 680 MPa

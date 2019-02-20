@@ -2810,15 +2810,13 @@ bool SketchObject::isExternalAllowed(App::Document *pDoc, App::DocumentObject *p
                 *rsn = rlOtherBody;
             return false;
         }
-    } else {
+    }
+    else {
         // cross-part link. Disallow, should be done via shapebinders only
         if (rsn)
             *rsn = rlOtherPart;
         return false;
     }
-
-    assert(0);
-    return true;
 }
 
 bool SketchObject::isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn) const
@@ -4865,8 +4863,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
     const Handle(Geom_BSplineCurve) curve = Handle(Geom_BSplineCurve)::DownCast(bsp->handle());
 
-    Part::GeomBSplineCurve *bspline = new Part::GeomBSplineCurve(curve);
-
+    std::unique_ptr<Part::GeomBSplineCurve> bspline(new Part::GeomBSplineCurve(curve));
 
     try {
         int cdegree = bspline->getDegree();
@@ -4882,7 +4879,7 @@ bool SketchObject::increaseBSplineDegree(int GeoId, int degreeincrement /*= 1*/)
 
     std::vector< Part::Geometry * > newVals(vals);
 
-    newVals[GeoId] = bspline;
+    newVals[GeoId] = bspline.release();
 
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
@@ -4898,7 +4895,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     #endif
 
     if (GeoId < 0 || GeoId > getHighestCurveIndex())
-        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline GeoId is out of bounds."))
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "BSpline Geometry Index (GeoID) is out of bounds."))
 
     if (multiplicityincr == 0) // no change in multiplicity
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "You are requesting no change in knot multiplicity."))
@@ -4906,7 +4903,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     const Part::Geometry *geo = getGeometry(GeoId);
 
     if(geo->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
-        THROWMT(Base::TypeError,QT_TRANSLATE_NOOP("Exceptions", "The GeoId provided is not a B-spline curve."))
+        THROWMT(Base::TypeError,QT_TRANSLATE_NOOP("Exceptions", "The Geometry Index (GeoId) provided is not a B-spline curve."))
 
     const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
 
@@ -4920,7 +4917,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
     int curmult = bsp->getMultiplicity(knotIndex);
 
     if ( (curmult + multiplicityincr) > degree ) // zero is removing the knot, degree is just positional continuity
-        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the b-spline."))
+        THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions","The multiplicity cannot be increased beyond the degree of the B-spline."))
 
     if ( (curmult + multiplicityincr) < 0) // zero is removing the knot, degree is just positional continuity
         THROWMT(Base::ValueError,QT_TRANSLATE_NOOP("Exceptions", "The multiplicity cannot be decreased beyond zero."))
@@ -5425,7 +5422,7 @@ const Part::Geometry* SketchObject::getGeometry(int GeoId) const
         if (GeoId < int(geomlist.size()))
             return geomlist[GeoId];
     }
-    else if (GeoId <= -1 && -GeoId <= int(ExternalGeo.size()))
+    else if (-GeoId <= int(ExternalGeo.size()))
         return ExternalGeo[-GeoId-1];
 
     return 0;

@@ -131,8 +131,8 @@ int Line2dSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyObject *pV1, *pV2;
     if (PyArg_ParseTuple(args, "O!O!", Base::Vector2dPy::type_object(), &pV1,
                                        Base::Vector2dPy::type_object(), &pV2)) {
-        Base::Vector2d v1 = Py::Vector2d(pV1).getCxxObject()->value();
-        Base::Vector2d v2 = Py::Vector2d(pV2).getCxxObject()->value();
+        Base::Vector2d v1 = Py::toVector2d(pV1);
+        Base::Vector2d v2 = Py::toVector2d(pV2);
         try {
             // Create line out of two points
             double distance = (v1-v2).Length();
@@ -219,7 +219,7 @@ void Line2dSegmentPy::setStartPoint(Py::Object arg)
 
     PyObject *p = arg.ptr();
     if (PyObject_TypeCheck(p, Base::Vector2dPy::type_object())) {
-        Base::Vector2d v = Py::Vector2d(p).getCxxObject()->value();
+        Base::Vector2d v = Py::toVector2d(p);
         p1.SetX(v.x);
         p1.SetY(v.y);
     }
@@ -279,7 +279,7 @@ void Line2dSegmentPy::setEndPoint(Py::Object arg)
 
     PyObject *p = arg.ptr();
     if (PyObject_TypeCheck(p, Base::Vector2dPy::type_object())) {
-        Base::Vector2d v = Py::Vector2d(p).getCxxObject()->value();
+        Base::Vector2d v = Py::toVector2d(p);
         p2.SetX(v.x);
         p2.SetY(v.y);
     }

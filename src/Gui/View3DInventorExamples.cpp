@@ -407,6 +407,8 @@ timersensorcallback(void * data, SoSensor *)
 
 void AnimationTexture(SoSeparator * root)
 {
+  // Scene graph
+  if ( root == NULL ) return; // Shouldn't happen.
 
   // Generate a julia set to use as a texturemap
   julia(cr, ci, 2.5, texturewidth, textureheight, 4, bitmap, 64);
@@ -425,8 +427,6 @@ void AnimationTexture(SoSeparator * root)
   texturetimer->setInterval(0.05);
   texturetimer->schedule();
 
-  // Scene graph
-  if ( root == NULL ) return; // Shouldn't happen.
   root->ref(); // prevent from being deleted because of the still running timer sensor
 //  SoSeparator * root = new SoSeparator;
 //  root->ref();

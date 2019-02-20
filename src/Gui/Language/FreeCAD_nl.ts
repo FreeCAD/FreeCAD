@@ -294,13 +294,13 @@
       <translation>Druk op de middelste muisknop</translation>
     </message>
     <message>
-      <source>Press middle and left or right mouse button</source>
-      <translation>Druk op de middelste en linker of rechter muisknop</translation>
+      <source>Press middle+left or middle+right button</source>
+      <translation>Druk op de middelste + links of midden + rechterknop</translation>
     </message>
     <message>
-      <source>Scroll middle mouse button or keep middle button pressed
+      <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Middelste muisknop scrollen of middelste knop drukken terwijl linker of rechterknop drukken en de muis omhoog of omlaag bewegen</translation>
+      <translation>Scroll of druk de middelste muisknop terwijl linker of rechterknop klikken en beweeg de muis omhoog of omlaag</translation>
     </message>
   </context>
   <context>
@@ -422,6 +422,37 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Out Of Range</source>
       <translation>Buiten het bereik</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::CameraDialog</name>
+    <message>
+      <source>Camera settings</source>
+      <translation>Camera-instellingen</translation>
+    </message>
+    <message>
+      <source>Orientation</source>
+      <translation>Oriëntatie</translation>
+    </message>
+    <message>
+      <source>Q0</source>
+      <translation>Q0</translation>
+    </message>
+    <message>
+      <source>Q1</source>
+      <translation>Q1</translation>
+    </message>
+    <message>
+      <source>Q2</source>
+      <translation>Q2</translation>
+    </message>
+    <message>
+      <source>Q3</source>
+      <translation>Q3</translation>
+    </message>
+    <message>
+      <source>Current view</source>
+      <translation>Huidig aanzicht</translation>
     </message>
   </context>
   <context>
@@ -828,9 +859,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>The shortcut '%1' is already assigned to '%2'.
 
-Please define another shortcut.</source>
-      <translation>De sneltoets '%1' is reeds toegewezen aan '%2'.
-Gelieve een andere snelkoppeling te kiezen.</translation>
+Do you want to override it?</source>
+      <translation>De snelkoppeling '%1' is al toegewezen aan '%2'.
+
+Wil je deze overschrijven?</translation>
     </message>
   </context>
   <context>
@@ -2042,6 +2074,10 @@ Kies een andere map, alstublieft.</translation>
       <translation>OpenGL Vertex Buffer-Object gebruiken</translation>
     </message>
     <message>
+      <source>New Document Camera Orientation</source>
+      <translation>Nieuwe Document Camera oriëntatie</translation>
+    </message>
+    <message>
       <source>Prevents view tilting when pinch-zooming. Affects only Gesture nav. style. Mouse tilting is not disabled by this setting.</source>
       <translation>Voorkomt dat de weergave kantelen als pinch-zoomen. Beïnvloedt alleen gebaar nav. stijl. Kantelen van de muis is niet uitgeschakeld door deze instelling.</translation>
     </message>
@@ -2091,6 +2127,46 @@ Kies een andere map, alstublieft.</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisch</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrisch</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrisch</translation>
+    </message>
+    <message>
+      <source>Top</source>
+      <translation>Boven</translation>
+    </message>
+    <message>
+      <source>Front</source>
+      <translation>Voorkant</translation>
+    </message>
+    <message>
+      <source>Left</source>
+      <translation>Links</translation>
+    </message>
+    <message>
+      <source>Right</source>
+      <translation>Rechts</translation>
+    </message>
+    <message>
+      <source>Rear</source>
+      <translation>Achter</translation>
+    </message>
+    <message>
+      <source>Bottom</source>
+      <translation>Onder</translation>
+    </message>
+    <message>
+      <source>Custom</source>
+      <translation>Eigen</translation>
     </message>
   </context>
   <context>
@@ -3000,10 +3076,6 @@ Kies een andere map, alstublieft.</translation>
       <translation>Weet u zeker dat u alle voorbijgaande mappen wilt verwijderen?</translation>
     </message>
     <message>
-      <source>When deleting all transient directory you won't be able to recover any files afterwards.</source>
-      <translation>Herstel van bestanden is niet mogelijk na het verwijderen van alle tijdelijke mappen.</translation>
-    </message>
-    <message>
       <source>Finished</source>
       <translation>Afgerond</translation>
     </message>
@@ -3016,6 +3088,10 @@ Kies een andere map, alstublieft.</translation>
 
 The 'Status' column shows whether the document could be recovered.</source>
       <translation>Druk op 'Start Herstellen' om te beginnen met het proces van herstel van het document hieronder opgesomd. De kolom 'Status' wordt weergegeven of het document kan worden hersteld.</translation>
+    </message>
+    <message>
+      <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
+      <translation>Herstel van bestanden is niet mogelijk na het verwijderen van alle tijdelijke mappen.</translation>
     </message>
   </context>
   <context>
@@ -3791,19 +3867,19 @@ Wilt u uw wijzigingen opslaan?</translation>
   <context>
     <name>Gui::GestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Tik op. Of klik op de linker muisknop.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Tik OF klik op de linker muisknop.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press right mouse button.</source>
-      <translation>Sleep het scherm met twee vingers. Of klik op de rechter muisknop.</translation>
+      <source>Drag screen with two fingers OR press right mouse button.</source>
+      <translation>Sleep het scherm met twee vingers OF hou de rechter muisknop ingedrukt.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Sleep het scherm met één vinger. Of druk op de linker muisknop. Gebruik Alt bij de Sketcher of andere bewerkingsmodellen.</translation>
+      <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Sleep het scherm met één vinger of druk op de linker mouse button. Houd Alt bovendien in Sketcher en andere Bewerkmodi.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or PgUp/PgDown on keyboard.</source>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR PgUp/PgDown on keyboard.</source>
       <translation>Knijp (zet twee vingers op het scherm en sleep ze uit/in elkaar). Of scroll middelste muisknop. Of PgUp/PgDown op het toetsenbord.</translation>
     </message>
   </context>
@@ -4087,29 +4163,27 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::MayaGestureNavigationStyle</name>
     <message>
-      <source>Tap. Or click left mouse button.</source>
-      <translation>Tik op. Of klik op de linker muisknop.</translation>
+      <source>Tap OR click left mouse button.</source>
+      <translation>Tik OF klik op de linker muisknop.</translation>
     </message>
     <message>
-      <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
+      <source>Drag screen with two fingers OR press ALT + middle mouse button.</source>
       <translation>Sleep het scherm met twee vingers. Of klik op ALT + middelste muisknop.</translation>
     </message>
     <message>
-      <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Sleep het scherm met één vinger. Of druk op ALT + linker muisknop. Gebruik bij Sketcher of andere bewerkingsmethodes de ALT.</translation>
+      <source>Drag screen with one finger OR press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+      <translation>Sleep het scherm met één vinger. Of druk op ALT + linker muisknop. Gebruik bij Sketcher of andere bewerkingsmodi de ALT knop.</translation>
     </message>
     <message>
-      <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
+      <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll middle mouse button OR press ALT + right mouse button OR PgUp/PgDown on keyboard.</source>
       <translation>Knijp (zet twee vingers op het scherm en sleep ze uit/in elkaar). Of scroll middelste muisknop. Of klik ALT + rechter muisknop. Of PgUp/PgDown op het toetsenbord.</translation>
     </message>
   </context>
   <context>
     <name>Gui::NetworkRetriever</name>
     <message>
-      <source>Download started...
-</source>
-      <translation>Download gestart...
-</translation>
+      <source>Download started...</source>
+      <translation>Download is gestart...</translation>
     </message>
   </context>
   <context>
@@ -5208,18 +5282,6 @@ Let op, het maakt uit waar je klikt.</translation>
       <translation type="unfinished">Origin</translation>
     </message>
     <message>
-      <source> %1.%2.%3 </source>
-      <translation> %1.%2.%3 </translation>
-    </message>
-    <message>
-      <source>Translation: </source>
-      <translation>Vertalingen: </translation>
-    </message>
-    <message>
-      <source>Rotation: </source>
-      <translation>Rotatie: </translation>
-    </message>
-    <message>
       <source>Delete group content?</source>
       <translation>Groepsinhoud verwijderen?</translation>
     </message>
@@ -5234,6 +5296,18 @@ Let op, het maakt uit waar je klikt.</translation>
     <message>
       <source>Split</source>
       <translation>Delen</translation>
+    </message>
+    <message>
+      <source>%1.%2.%3</source>
+      <translation>%1.%2.%3</translation>
+    </message>
+    <message>
+      <source>Translation:</source>
+      <translation>Verplaatsing:</translation>
+    </message>
+    <message>
+      <source>Rotation:</source>
+      <translation>Rotatie:</translation>
     </message>
     <message>
       <source>Toggle active part</source>
@@ -5968,12 +6042,12 @@ Let op, het maakt uit waar je klikt.</translation>
       <translation>Voeg project samen</translation>
     </message>
     <message>
-      <source>%1 document (*.fcstd)</source>
-      <translation>%1 document(*.fcstd)</translation>
-    </message>
-    <message>
       <source>Cannot merge project with itself.</source>
       <translation>Kan project niet met zichzelf samenvoegen.</translation>
+    </message>
+    <message>
+      <source>%1 document (*.FCStd)</source>
+      <translation>%1 document (*.FCStd)</translation>
     </message>
   </context>
   <context>
@@ -6649,21 +6723,6 @@ Let op, het maakt uit waar je klikt.</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdViewAxo</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
-      <source>Axonometric</source>
-      <translation>Axonometrisch</translation>
-    </message>
-    <message>
-      <source>Set to axonometric view</source>
-      <translation>Ingesteld op de axonometrisch aanzicht</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdViewBottom</name>
     <message>
       <source>Standard-View</source>
@@ -6691,6 +6750,21 @@ Let op, het maakt uit waar je klikt.</translation>
     <message>
       <source>Creates a new view window for the active document</source>
       <translation>Maakt een nieuw weergavevenster voor het actieve document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewDimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>Dimetric</source>
+      <translation>Dimetrisch</translation>
+    </message>
+    <message>
+      <source>Set to dimetric view</source>
+      <translation>Ingesteld op dimetrisch aanzicht</translation>
     </message>
   </context>
   <context>
@@ -6781,6 +6855,21 @@ Let op, het maakt uit waar je klikt.</translation>
     <message>
       <source>Set to front view</source>
       <translation>Ingestellen als vooraanzicht</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewIsometric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>Isometric</source>
+      <translation>Isometrisch</translation>
+    </message>
+    <message>
+      <source>Set to isometric view</source>
+      <translation>Ingesteld op isometrisch aanzicht</translation>
     </message>
   </context>
   <context>
@@ -6961,6 +7050,21 @@ Let op, het maakt uit waar je klikt.</translation>
     <message>
       <source>Set to top view</source>
       <translation>Instellen als bovenaanzicht</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdViewTrimetric</name>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>Trimetric</source>
+      <translation>Trimetrisch</translation>
+    </message>
+    <message>
+      <source>Set to trimetric view</source>
+      <translation>Ingesteld op trimetrisch aanzicht</translation>
     </message>
   </context>
   <context>
@@ -7250,25 +7354,15 @@ Let op, het maakt uit waar je klikt.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <source>These items are linked to items selected for deletion and might break.
-
-</source>
-      <translation>Deze onderdelen zijn gekoppeld aan items geselecteerd om te worden verwijderd en kunnen breken.
-
-</translation>
+      <source>These items are linked to items selected for deletion and might break.</source>
+      <translation>Deze onderdelen zijn gekoppeld aan onderdelen welke geselecteerd zijn om te worden verwijderd, de link kan daardoor verbroken worden.</translation>
     </message>
     <message>
-      <source>These items are selected for deletion, but are not in the active document. 
-
-</source>
-      <translation>Deze items worden geselecteerd voor verwijdering, maar staan niet in het actieve document.
-
-</translation>
+      <source>These items are selected for deletion, but are not in the active document.</source>
+      <translation>Deze items worden geselecteerd voor verwijdering, maar staan niet in het actieve document.</translation>
     </message>
     <message>
-      <source>
-
-Are you sure you want to continue?</source>
+      <source>Are you sure you want to continue?</source>
       <translation>Weet u zeker dat u wilt doorgaan?</translation>
     </message>
     <message>

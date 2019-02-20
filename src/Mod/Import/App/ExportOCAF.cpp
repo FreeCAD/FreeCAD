@@ -256,17 +256,28 @@ int ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& co
             if (face_index.find(index) != face_index.end()) {
                 face_index.erase(index);
 
+                // If the baseShape is a face then since OCCT 7.3 AddSubShape() returns
+                // a null label.
+                // If faceLabel is null we check if for the current face a label already
+                // exists. If yes then faceLabel is equal to shapeLabel.
                 TDF_Label faceLabel = aShapeTool->AddSubShape(shapeLabel, xp.Current());
                 // TDF_Label faceLabel= TDF_TagSource::NewChild(shapeLabel);
-                aShapeTool->SetShape(faceLabel, xp.Current());
+                if (!faceLabel.IsNull()) {
+                    aShapeTool->SetShape(faceLabel, xp.Current());
+                }
+                else {
+                    aShapeTool->FindShape(xp.Current(), faceLabel);
+                }
 
-                const App::Color& color = colors[index-1];
-                Standard_Real mat[3];
-                mat[0] = color.r;
-                mat[1] = color.g;
-                mat[2] = color.b;
-                col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
-                aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
+                if (!faceLabel.IsNull()) {
+                    const App::Color& color = colors[index-1];
+                    Standard_Real mat[3];
+                    mat[0] = color.r;
+                    mat[1] = color.g;
+                    mat[2] = color.b;
+                    col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                    aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
+                }
             }
             xp.Next();
         }
@@ -360,16 +371,29 @@ void ExportOCAF::reallocateFreeShape(std::vector <App::DocumentObject*> hierarch
                     int index = faces.FindIndex(xp.Current());
                     if (face_index.find(index) != face_index.end()) {
                         face_index.erase(index);
+
+                        // If the baseShape is a face then since OCCT 7.3 AddSubShape() returns
+                        // a null label.
+                        // If faceLabel is null we check if for the current face a label already
+                        // exists. If yes then faceLabel is equal to label.
                         TDF_Label faceLabel = aShapeTool->AddSubShape(label, xp.Current());
                         // TDF_Label faceLabel= TDF_TagSource::NewChild(label);
-                        aShapeTool->SetShape(faceLabel, xp.Current());
-                        const App::Color& color = colors[index-1];
-                        Standard_Real mat[3];
-                        mat[0] = color.r;
-                        mat[1] = color.g;
-                        mat[2] = color.b;
-                        col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
-                        aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
+                        if (!faceLabel.IsNull()) {
+                            aShapeTool->SetShape(faceLabel, xp.Current());
+                        }
+                        else {
+                            aShapeTool->FindShape(xp.Current(), faceLabel);
+                        }
+
+                        if (!faceLabel.IsNull()) {
+                            const App::Color& color = colors[index-1];
+                            Standard_Real mat[3];
+                            mat[0] = color.r;
+                            mat[1] = color.g;
+                            mat[2] = color.b;
+                            col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
+                            aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
+                        }
                     }
 
                     xp.Next();

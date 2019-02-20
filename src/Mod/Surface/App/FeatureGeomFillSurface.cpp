@@ -335,7 +335,7 @@ void GeomFillSurface::createBSplineSurface(TopoDS_Wire& aWire)
             curves.push_back(bspline);
         }
         else {
-            // try to convert it into a b-spline
+            // try to convert it into a B-spline
             BRepBuilderAPI_NurbsConvert mkNurbs(edge);
             TopoDS_Edge nurbs = TopoDS::Edge(mkNurbs.Shape());
             // avoid copying

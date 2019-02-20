@@ -49,6 +49,10 @@ Version:
 """
 
 
+# see comments in module importFCMat, there is a independent parser implementaion for reading and writing FCMat files
+# inside FreeCAD the importFCMat.py parser defs are used
+
+
 def importFCMat(fileName):
     "Read a FCMat file into a dictionary"
     try:
@@ -100,7 +104,7 @@ def getMaterialAttributeStructure(withSpaces=None):
     ''''''
 
     # material properties
-    # see the following resources in the FreeCAD wiki for more informations about the material specific properties:
+    # see the following resources in the FreeCAD wiki for more information about the material specific properties:
     # https://www.freecadweb.org/wiki/Material_data_model
     # https://www.freecadweb.org/wiki/Material
 
@@ -120,6 +124,28 @@ def getMaterialAttributeStructure(withSpaces=None):
                            proper.attrib['Name']))
 
     return tree
+
+
+def read_cards_from_path(cards_path):
+    from os import listdir
+    from os.path import isfile, join, basename, splitext
+    from importFCMat import read
+    only_files = [f for f in listdir(cards_path) if isfile(join(cards_path, f))]
+    mat_files = [f for f in only_files if basename(splitext(f)[1]) == '.FCMat' or basename(splitext(f)[1]) == '.fcmat']
+    # print(mat_files)
+    mat_cards = []
+    for f in sorted(mat_files):
+        mat_cards.append(read(join(cards_path, f)))
+    return mat_cards
+
+
+def write_cards_to_path(cards_path, cards_data):
+    from importFCMat import write
+    from os.path import join
+    for card_data in cards_data:
+        card_path = join(cards_path, (card_data['CardName'] + '.FCMat'))
+        print(card_path)
+        write(card_path, card_data)
 
 
 if __name__ == '__main__':

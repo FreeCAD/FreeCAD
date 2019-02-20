@@ -2059,6 +2059,8 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
             shift = 0.0; //Line pattern does not support shift
         Point center(box.Centre());
         double r = box.Radius()+stepover;
+        if ( extra_offset > 0 )
+            r += extra_offset;
         int steps = (int)ceil(r*2.0/stepover);
         for(int i=0;i<count;++i) {
             double a = angle + angles[i];
@@ -2080,7 +2082,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKE
         PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
         PARAM_ENUM_CONVERT(AREA_MY,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
         auto area = *myArea;
-        area.OffsetWithClipper(-tool_radius,JoinType,EndType,
+        area.OffsetWithClipper(-tool_radius-extra_offset,JoinType,EndType,
                 myParams.MiterLimit,myParams.RoundPrecision);
         out.Clip(toClipperOp(OperationIntersection),&area,SubjectFill,ClipFill);
         done = true;

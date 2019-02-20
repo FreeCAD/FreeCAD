@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Задать ориентацию по умолчанию для последующих команд для создания маршрутной точки</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>задать ориентацию по умолчанию для последующих команд для создания точки</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Задать значения по умолчанию для скорости, ускорения и непрерывности для последующих команд создания маршрутной точки</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Установка значения по умолчанию для скорости, ускорения и целостности для последующих команд создания точки</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Вам нужно, по крайней мере, две маршрутные точки в траектории для симуляции.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Вам нужно хотя бы две точки, чтобы смоделировать траекторию.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Чтобы использовать данную команду, наведите курсор на выбранную фигуру. См. документацию.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Установить скорость по умолчанию</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Установить непрерывность по умолчанию</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Установить ускорение по умолчанию</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Выберите домашнюю позицию одного из роботов</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Выберите одного робота</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Выделите один объект траектории.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>установить скорость по умолчанию</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>скорость: (3 см/с или 1 м/с)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>установить целостность по умолчанию</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>продолжительность ?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>Установка ускорение по умолчанию</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>ускорение: (например, 1 м/с ^ 2 или 3 см/с ^ 2)</translation>
     </message>

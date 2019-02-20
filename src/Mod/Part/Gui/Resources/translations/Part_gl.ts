@@ -21,7 +21,7 @@
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="213"/>
       <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
-      <translation>{obj} non é adxuntable. Aínda podes utilizar o editor de diálogo adxunto para aliñar o obxecto, pero o adxunto non será paramétrico.</translation>
+      <translation>{obj} non é adxuntable. Aínda podes usar o editor de diálogo adxunto para aliñar o obxecto, pero o adxunto non será paramétrico.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="230"/>
@@ -60,14 +60,8 @@
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="530"/>
-      <source>
-
-Reference combinations:
-</source>
-      <translation>
-
-Combinacións de referencia:
-</translation>
+      <source>Reference combinations:</source>
+      <translation>Combinacións de referencias:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="546"/>
@@ -155,6 +149,76 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
 
 Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abortar' para cancelar.</translation>
     </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="103"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>O cálculo do resultado errou co erro: 
+
+{err}
+
+Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abortar' para cancelar.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="57"/>
+      <source>Explode compound</source>
+      <translation>Explotar composto</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="59"/>
+      <source>Explode compound: split up a list of shapes into separate objects</source>
+      <translation>Estoupa composto: divide unha lista de formas en obxectos separados</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="67"/>
+      <source>Select a shape that is a compound, first!</source>
+      <translation>Escolma unha forma que é un composto, primeiro!</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="68"/>
+      <source>Bad selection</source>
+      <translation>Mala selección</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
+      <source>Connect objects</source>
+      <translation>Ligar obxectos</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Fusiona obxectos, coidando de manter espazos baleiros.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
+      <source>Cutout for object</source>
+      <translation>Recorte do obxecto</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Fai un corte nun obxecto para adaptarse a outro obxecto.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
+      <source>Embed object</source>
+      <translation>Incrustar obxecto</translation>
+    </message>
   </context>
   <context>
     <name>Part_JoinFeatures</name>
@@ -182,14 +246,19 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <translation>Continúa</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="186"/>
-      <source>Connect objects</source>
-      <translation>Ligar obxectos</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
+      <source>Select at least two objects, or one or more compounds, first!</source>
+      <translation>Escolma ao menos dous obxectos, ou un ou máis compostos primeiro!</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
-      <source>Part_JoinConnect: Fuses objects, taking care to preserve voids.</source>
-      <translation>Part_JoinConnect: Fusiona obxectos, tendo tino dos espazos baleiros.</translation>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
+      <source>Select base object, then the object to embed, and invoke this tool.</source>
+      <translation>Escolma obxecto base, logo o obxecto a incrustar, e invoca esta ferramenta.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and invoke this tool.</source>
+      <translation>Escolma o obxecto para facer un corte, logo o obxecto que debe encaixar no recorte, e invoque esta ferramenta.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="196"/>
@@ -200,26 +269,6 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../../BOPTools/JoinFeatures.py" line="273"/>
       <source>Embed object</source>
       <translation>Incrustar obxecto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="275"/>
-      <source>Fuses one object into another, taking care to preserve voids.</source>
-      <translation>Fusionar un obxecto noutro, coidando de preservar os baleiros.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="283"/>
-      <source>Select base object, then the object to embed, and invoke this tool.</source>
-      <translation>Escolma obxecto base, logo o obxecto a incrustar, e invoca esta ferramenta.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="362"/>
-      <source>Cutout for object</source>
-      <translation>Recorte do obxecto</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/JoinFeatures.py" line="364"/>
-      <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Fai un corte nun obxecto para adaptarse a outro obxecto.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
@@ -258,14 +307,72 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <translation>Fragmentos booleanos</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
-      <source>Part_BooleanFragments: split objects where they intersect</source>
-      <translation>Part_BooleanFragments: divide obxectos onde intersectan</translation>
-    </message>
-    <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="439"/>
       <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
       <translation>Primeiro escolma canda pouco dous obxectos, ou un ou máis compostos! Se só é un composto escolmado, a forma composta será intersectada entre si (do contrario, o composto con interseccións con un mesmo son inválidos).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="446"/>
+      <source>Computing the result failed with an error: 
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>O cálculo do resultado errou co erro: 
+
+{err}
+
+Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abortar' para cancelar.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Primeiro escolma como pouco dous obxectos! O primeiro obxecto a ser cortado; os demáis son obxectos cos que cortar.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="107"/>
+      <source>Continue</source>
+      <translation>Continúa</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="174"/>
+      <source>Boolean Fragments</source>
+      <translation>Fragmentos booleanos</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
+      <source>Boolean XOR</source>
+      <translation>XOR booleano</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="478"/>
+      <source>Select at least two objects, or one or more compounds, first! If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation>Primeiro escolma canda pouco dous obxectos, ou un ou máis compostos! Se só é un composto escolmado, a forma composta será intersectada entre si (do contrario, o composto con interseccións con un mesmo son inválidos).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="310"/>
+      <source>Slice to compound</source>
+      <translation>Tallar un composto</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="312"/>
+      <source>Split object by intersections with other objects, and pack the pieces into a compound.</source>
+      <translation>Divide obxectos nas interseccións con outros obxectos, e xunta as pezas nun composto.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
+      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation>Primeiro escolma como pouco dous obxectos! O primeiro obxecto a ser cortado; os demáis son obxectos cos que cortar.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="334"/>
+      <source>Slice apart</source>
+      <translation>Tallar e separar</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="176"/>
+      <source>Part_BooleanFragments: split objects where they intersect</source>
+      <translation>Part_BooleanFragments: divide obxectos onde intersectan</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
@@ -275,22 +382,35 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="297"/>
       <source>Part_Slice: split object by intersections with other objects</source>
-      <translation>Part_Slice: divide o obxecto polas interseccións con outros obxectos</translation>
+      <translation>Part_Slice: dividir un obxecto polas interseccións con outros obxectos</translation>
     </message>
     <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="305"/>
-      <source>Select at least two objects, first! First one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation>Primeiro escolma como pouco dous obxectos! O primeiro obxecto a ser cortado; os demáis son obxectos cos que cortar.</translation>
-    </message>
-    <message>
-      <location filename="../../../BOPTools/SplitFeatures.py" line="429"/>
-      <source>Boolean XOR</source>
-      <translation>XOR booleano</translation>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="336"/>
+      <source>Split object by intersections with other objects.</source>
+      <translation>Divide obxectos por interseccións con outros obxectos.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="431"/>
       <source>Part_XOR: remove intersection fragments</source>
       <translation>Part_XOR: eliminará anacos de intersección</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="468"/>
+      <source>Boolean XOR</source>
+      <translation>XOR booleano</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="470"/>
+      <source>Remove intersection fragments</source>
+      <translation>Borra anacos de interseccións</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_MakeTube</name>
+    <message>
+      <location filename="../../../BasicShapes/Shapes.py" line="62"/>
+      <source>Creates a tube</source>
+      <translation>Crear unha tubaría</translation>
     </message>
   </context>
   <context>
@@ -586,7 +706,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="210"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>A liña é aliñada ó longo do eixe X local do obxecto. Funciona en obxectos con posicións, mais os bordos da elipse/parábola/hipérbole.</translation>
+      <translation>A liña é aliñada ó longo do eixo X local do obxecto. Funciona en obxectos con posicións, mais os bordos da elipse/parábola/hipérbole.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="206"/>
@@ -598,7 +718,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="207"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>A liña é aliñada ó longo do eixe Y local do obxecto. Funciona en obxectos con posicións, mais os bordos da elipse/parábola/hipérbole.</translation>
+      <translation>A liña é aliñada ó longo do eixo Y local do obxecto. Funciona en obxectos con posicións, mais os bordos da elipse/parábola/hipérbole.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
@@ -616,7 +736,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="213"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Liña que é un eixe do círculo osculador dun bordo curvado. Un vértice opcional define onde.</translation>
+      <translation>Liña que é un eixo do círculo osculador dun bordo curvado. Un vértice opcional define onde.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="215"/>
@@ -761,37 +881,37 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Primeiro eixe principal</translation>
+      <translation>Primeiro eixo principal</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="252"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Liña que segue o primeiro eixe principal de inercia.</translation>
+      <translation>Liña que segue o primeiro eixo principal de inercia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Segundo eixe principal</translation>
+      <translation>Segundo eixo principal</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="255"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Liña que segue o segundo eixe principal de inercia.</translation>
+      <translation>Liña que segue o segundo eixo principal de inercia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Terceiro eixe principal</translation>
+      <translation>Terceiro eixo principal</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="258"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Liña que segue o terceiro eixe principal de inercia.</translation>
+      <translation>Liña que segue o terceiro eixo principal de inercia.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="260"/>
@@ -993,7 +1113,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="171"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Xeito especial para dobrar poliedros. Seleccione 4 arestas en orde: bordo dobrábel, liña de dobra, outra liña de dobra, outro bordo dobrábel. O plano será aliñado co primeiro bordo dobrado.</translation>
+      <translation>Xeito especial para dobrar poliedros. Escolme 4 arestas en orde: bordo dobrábel, liña de dobra, outra liña de dobra, outro bordo dobrábel. O plano será aliñado co primeiro bordo dobrado.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="173"/>
@@ -1005,7 +1125,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="174"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Plano construído no segundo e terceiro eixes principais de inercia (pasa polo centro de masa).</translation>
+      <translation>Plano construído no segundo e terceiro eixos principais de inercia (pasa polo centro de masa).</translation>
     </message>
     <message>
       <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
@@ -1015,7 +1135,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
     <message>
       <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>O plano é perpendicular a un bordo, e o eixe Y correspóndese co eixo do círculo osculador. Un vencello opcional a un vértice define onde.</translation>
+      <translation>O plano é perpendicular a un bordo, e o eixo Y correspóndese co eixo do círculo osculador. Un vencello opcional a un vértice define onde.</translation>
     </message>
   </context>
   <context>
@@ -1066,7 +1186,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="60"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Os eixes X', Y', Z', correspóndense respectivamente cos X, Z, -Y, locais do obxecto.</translation>
+      <translation>Os eixos X', Y', Z', correspóndense respectivamente cos X, Z, -Y, locais do obxecto.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="62"/>
@@ -1078,7 +1198,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="63"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Os eixes X', Y', Z', correspóndense respectivamente cos Y, Z, X, locais do obxecto.</translation>
+      <translation>Os eixos X', Y', Z', correspóndense respectivamente cos Y, Z, X, locais do obxecto.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
@@ -1200,7 +1320,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../AttacherTexts.cpp" line="96"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Xeito especial para dobrar poliedros. Seleccione 4 arestas en orde: bordo dobrábel, liña de dobra, outra liña de dobra, outro bordo dobrábel. O plano XY será aliñado co primeiro bordo dobrado.</translation>
+      <translation>Xeito especial para dobrar poliedros. Escolme 4 arestas en orde: bordo dobrábel, liña de dobra, outra liña de dobra, outro bordo dobrábel. O plano XY será aliñado co primeiro bordo dobrado.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="98"/>
@@ -1918,7 +2038,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
     <message>
       <location filename="../../Command.cpp" line="1186"/>
       <source>Extrude a selected sketch</source>
-      <translation>Extrude un esbozo seleccionado</translation>
+      <translation>Extrude un esbozo escolmado</translation>
     </message>
   </context>
   <context>
@@ -1936,7 +2056,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
     <message>
       <location filename="../../Command.cpp" line="1292"/>
       <source>Fillet the selected edges of a shape</source>
-      <translation>Fai un chafrán arredondado dos bordos seleccionados dunha forma</translation>
+      <translation>Fai un chafrán arredondado dos bordos escolmados dunha forma</translation>
     </message>
   </context>
   <context>
@@ -2378,7 +2498,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
     <message>
       <location filename="../../Command.cpp" line="1727"/>
       <source>Selected shape is not a solid</source>
-      <translation>A forma seleccionada non é un sólido</translation>
+      <translation>A forma escolmada non é un sólido</translation>
     </message>
   </context>
   <context>
@@ -2745,7 +2865,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <location filename="../../DlgExtrusion.cpp" line="198"/>
       <source>Select</source>
-      <translation>Seleccionar</translation>
+      <translation>Escolmar</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
@@ -2886,7 +3006,7 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>A vencella do eixe de revolución non é válida. %1</translation>
+      <translation>A vencella do eixo de revolución non é válida. %1</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.cpp" line="618"/>
@@ -3057,13 +3177,13 @@ Fai Click en 'Continar' para crear a característica de tódolos xeitos ou 'Abor
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="883"/>
       <source>No shape selected</source>
-      <translation>Ningunha forma seleccionada</translation>
+      <translation>Ningunha forma escolmada</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="884"/>
       <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-      <translation>Ningunha forma válida está seleccionada. Por favor, seleccione unha forma válida no cadro despregable en primeiro lugar.</translation>
+      <translation>Ningunha forma válida está escolmada. Por favor, escolme unha forma válida no cadro despregable en primeiro lugar.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="935"/>
@@ -3932,7 +4052,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgRevolution.ui" line="201"/>
       <location filename="../../DlgRevolution.ui" line="242"/>
       <source>Click to set this as axis</source>
-      <translation>Finque para estabelecer isto coma eixe</translation>
+      <translation>Finque para estabelecer isto coma eixo</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="204"/>
@@ -3953,7 +4073,7 @@ Please check one or more edge entities first.</source>
       <location filename="../../DlgRevolution.ui" line="305"/>
       <location filename="../../DlgRevolution.cpp" line="440"/>
       <source>Select reference</source>
-      <translation>Seleccionar referencia</translation>
+      <translation>Escolmar referencia</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="325"/>
@@ -3983,7 +4103,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
       <source>Axis:</source>
-      <translation>Eixe:</translation>
+      <translation>Eixo:</translation>
     </message>
     <message>
       <source>Select line in 3D view</source>
@@ -4006,7 +4126,7 @@ Please check one or more edge entities first.</source>
       <source>Revolution axis link is invalid.
 
 %1</source>
-      <translation>A vencella do eixe de revolución non é válida. %1</translation>
+      <translation>A vencella do eixo de revolución non é válida. %1</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.cpp" line="288"/>
@@ -4305,7 +4425,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="76"/>
       <source>Selected profiles</source>
-      <translation>Perfiles seleccionados</translation>
+      <translation>Perfiles escolmados</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="158"/>
@@ -4512,7 +4632,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Selected profiles</source>
-      <translation>Perfiles seleccionados</translation>
+      <translation>Perfiles escolmados</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="265"/>
@@ -4970,7 +5090,7 @@ Combinacións de referencia:
     <message>
       <location filename="../../TaskFaceColors.ui" line="20"/>
       <source>Click on the faces in the 3d view to select them.</source>
-      <translation>Finque nas faces na vista 3D para seleccionalas.</translation>
+      <translation>Finque nas faces na vista 3D para escolmalas.</translation>
     </message>
     <message>
       <location filename="../../TaskFaceColors.ui" line="39"/>
@@ -5020,7 +5140,7 @@ Combinacións de referencia:
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Move o elemento seleccionado un nivel cara baixo.&lt;/b&gt;&lt;p&gt; Isto tamén vai trocar o nivel do elemento pai.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Move o elemento escolmado un nivel cara baixo.&lt;/b&gt;&lt;p&gt; Isto tamén vai trocar o nivel do elemento pai.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move left</source>
@@ -5028,7 +5148,7 @@ Combinacións de referencia:
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Move o elemento seleccionado un nivel cara riba.&lt;/b&gt;&lt;p&gt; Isto tamén vai trocar o nivel do elemento pai.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Move o elemento escolmado un nivel cara riba.&lt;/b&gt;&lt;p&gt; Isto tamén vai trocar o nivel do elemento pai.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move up</source>
@@ -5036,7 +5156,7 @@ Combinacións de referencia:
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Move o elemento seleccionado cara riba.&lt;/b&gt;&lt;p&gt; O elemento vaise mover no seu nivel de xerarquía.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Move o elemento escolmado cara riba.&lt;/b&gt;&lt;p&gt; O elemento vaise mover no seu nivel de xerarquía.&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Move down</source>
@@ -5044,7 +5164,7 @@ Combinacións de referencia:
     </message>
     <message>
       <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;Move o elemento seleccionado cara baixo.&lt;/b&gt;&lt;p&gt; O elemento vaise mover no seu nivel de xerarquía.&lt;/p&gt;</translation>
+      <translation>&lt;b&gt;Move o elemento escolmado cara baixo.&lt;/b&gt;&lt;p&gt; O elemento vaise mover no seu nivel de xerarquía.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -5197,7 +5317,7 @@ Combinacións de referencia:
       <location filename="../../TaskSweep.cpp" line="446"/>
       <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation>Escolme un ou máis perfís e seleccione un bordo ou arame na vista 3D para o camiño de varrido.</translation>
+      <translation>Escolme un ou máis perfís e escolme un bordo ou arame na vista 3D para o camiño de varrido.</translation>
     </message>
   </context>
   <context>

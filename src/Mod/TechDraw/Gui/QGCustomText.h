@@ -58,6 +58,7 @@ public:
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
     virtual QColor getSelectColor(void);
+    virtual void setColor(QColor c) { m_colNormal = c; }
     void makeMark(double x, double y);
     void makeMark(Base::Vector3d v);
 
@@ -70,6 +71,7 @@ protected:
 
     bool isHighlighted;
     QColor m_colCurrent;
+    QColor m_colNormal;
 
 private:
 

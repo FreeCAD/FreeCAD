@@ -334,7 +334,7 @@
     <message>
       <location line="+6"/>
       <source>Trim by plane</source>
-      <translation type="unfinished">Trim by plane</translation>
+      <translation>Ebaki planoaren bidez</translation>
     </message>
     <message>
       <location line="+1"/>

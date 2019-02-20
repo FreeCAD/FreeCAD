@@ -1,4 +1,4 @@
-; X2CrNiMoN17-13-3 - 1.4429 - EN 10088
+; Steel-X2CrNiMoN17-13-3
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = X2CrNiMoN 17 13 3
 DescriptionDE = schlecht spanbar, gut schweißbar, gut kaltumformbar, Achsen, Wellen, Wärmetauscher
 Father = Metal
 YoungsModulus = 200000 MPa
-UltimateTensileStrength = 580
+UltimateTensileStrength = 580 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Stainless steel
 KindOfMaterialDE = Niro
 MaterialNumber = 1.4429
-ModulusOfShare = 81000
 Norm = EN 10088
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 35
-YieldStrength = 295
+YieldStrength = 295 MPa

@@ -1,4 +1,4 @@
-; G20Mn5 - 1.1120 - DIN 1681
+; Steel-G20Mn5
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = GS-20Mn5v
 DescriptionDE = Gehäuse, Zahnräder, Bremsscheiben
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 500
+UltimateTensileStrength = 500 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Cast steel
 KindOfMaterialDE = Stahlguss
 MaterialNumber = 1.112
-ModulusOfShare = 81000
 Norm = DIN 1681
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 0
-YieldStrength = 360
+YieldStrength = 360 MPa

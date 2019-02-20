@@ -42,7 +42,7 @@ import shlex
 # Default values for command line arguments:
 OUTPUT_COMMENTS =        True     # default output of comments in output gCode file
 OUTPUT_HEADER =          True     # default output header in output gCode file
-OUTPUT_LINE_NUMBERS =    False    # default does'nt utput lines numbers in output gCode file
+OUTPUT_LINE_NUMBERS =    False    # default doesn't output line numbers in output gCode file
 SHOW_EDITOR =            True     # default show the resulting file dialog output in GUI
 PRECISION =              3        # Default precision for metric (see http://linuxcnc.org/docs/2.7/html/gcode/overview.html#_g_code_best_practices)
 TRANSLATE_DRILL_CYCLES = True     # If true, G81, G82 & G83 are translated in G0/G1 moves
@@ -234,7 +234,7 @@ def export(objectslist, filename, argstring):
   print("done postprocessing.")
 
   #write the file
-  gfile = pythonopen(filename,"wb")
+  gfile = pythonopen(filename,"w")
   gfile.write(gcode)
   gfile.close()
 

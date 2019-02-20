@@ -1,4 +1,4 @@
-; EN-GJMB-650-2 - 0.8165 - EN 1562
+; Steel-EN-GJMB-650-2
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = GTS 65-02
 DescriptionDE = Gabelköpfe
 Father = Metal
 YoungsModulus = 175000 MPa
-UltimateTensileStrength = 650
+UltimateTensileStrength = 650 MPa
 PoissonRatio = 0.3
 Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.8165
-ModulusOfShare = 67000
 Norm = EN 1562
-ThermalExpansionCoefficient = 1.00E-005
+ShearModulus = 67000 MPa
+ThermalExpansionCoefficient = 0.00001 m/m/K
 UltimateStrain = 2
-YieldStrength = 430
+YieldStrength = 430 MPa

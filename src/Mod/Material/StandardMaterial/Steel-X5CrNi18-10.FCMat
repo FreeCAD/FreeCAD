@@ -1,4 +1,4 @@
-; X5CrNi18-10 - 1.4301 - EN 10088
+; Steel-X5CrNi18-10
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = X5CrNi 18 9
 DescriptionDE = schlecht spanbar, gut schweißbar, gut kaltumformbar, Fahrzeugbau, Lebensmitteltechnik
 Father = Metal
 YoungsModulus = 200000 MPa
-UltimateTensileStrength = 520
+UltimateTensileStrength = 520 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Stainless steel
 KindOfMaterialDE = Niro
 MaterialNumber = 1.4301
-ModulusOfShare = 81000
 Norm = EN 10088
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 40
-YieldStrength = 210
+YieldStrength = 210 MPa

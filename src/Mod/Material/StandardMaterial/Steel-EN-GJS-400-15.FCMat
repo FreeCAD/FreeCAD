@@ -1,4 +1,4 @@
-; EN-GJS-400-15 - 0.7040 - EN 1563
+; Steel-EN-GJS-400-15
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = GGG-40
 DescriptionDE = Pumpen-, Getriebegehäuse
 Father = Metal
 YoungsModulus = 167000 MPa
-UltimateTensileStrength = 400
+UltimateTensileStrength = 400 MPa
 PoissonRatio = 0.3
 Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.704
-ModulusOfShare = 65000
 Norm = EN 1563
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 65000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 15
-YieldStrength = 250
+YieldStrength = 250 MPa

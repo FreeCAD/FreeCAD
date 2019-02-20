@@ -77,6 +77,7 @@ public:
     void setPrettySel(void);
     void setPrettyPre(void);
     void setPrettyNormal(void);
+    void setColor(QColor c);
     
     QGCustomText* getDimText(void) { return m_dimText; }
     void setDimText(QGCustomText* newText) { m_dimText = newText; }
@@ -101,6 +102,7 @@ protected:
     QGCustomText* m_tolText;
     int getPrecision(void);
     double getTolAdjust(void);
+    QColor m_colNormal;
 
     double posX;
     double posY;

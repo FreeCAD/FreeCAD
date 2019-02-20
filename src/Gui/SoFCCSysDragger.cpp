@@ -61,20 +61,20 @@
    *     file to include in the project. I would have gone this way but after installing
    *     inventor-demo(ubuntu), the mock compiler tool was there only in source and make
    *     didn't do anything. Didn't want to put any time into something I didn't like anyway.
-   * 
+   *
    * static SbList <SoNode*> * defaultdraggerparts = NULL; is a global definition
    * in SoInteractionKit that contains the geometry. There doesn't appear to be anyway
    * to add to this other than readDefaultParts, that takes a file. So maybe a temp file?
-   * 
+   *
    * naming appears to be central to the core. It looks like as long as an object
    * is alive SoNode::getByName() will find it. So maybe just create my own little
    * container of objects to keep the default geometry alive....This appears to be
    * working and I like this solution.
-   * 
+   *
    * SoInteractionKit warns about these
    * names all being the same scope and do NOT have to be unique. Need to make names
    * descriptive to avoid collisions.
-   
+
    * this is point of the SoGroup accessed from SoFCDB::getStorage().
 */
 
@@ -270,10 +270,10 @@ void TDragger::drag()
     SbVec3f hitPoint = projector.project(getNormalizedLocaterPosition());
     SbVec3f startingPoint = getLocalStartingPoint();
     SbVec3f localMovement = hitPoint - startingPoint;
-    
+
     //scale the increment to match local space.
     float scaledIncrement = static_cast<float>(translationIncrement.getValue()) / autoScaleResult.getValue();
-    
+
     localMovement = roundTranslation(localMovement, scaledIncrement);
     //when the movement vector is null either the appendTranslation or
     //the setMotionMatrix doesn't work. either way it stops translating
@@ -287,12 +287,12 @@ void TDragger::drag()
     }
     else
         setMotionMatrix(appendTranslation(getStartMotionMatrix(), localMovement));
-    
+
     Base::Quantity quantity(
       static_cast<double>(translationIncrementCount.getValue()) * translationIncrement.getValue(), Base::Unit::Length);
-    
-    QString message(QObject::tr("Translation: "));
-    message += quantity.getUserString();
+
+    QString message = QString::fromLatin1("%1 %2")
+            .arg(QObject::tr("Translation:"), quantity.getUserString());
     getMainWindow()->showMessage(message, 3000);
 }
 
@@ -571,13 +571,13 @@ void RDragger::drag()
     }
     else
         setMotionMatrix(appendRotation(getStartMotionMatrix(), localRotation, SbVec3f(0.0, 0.0, 0.0)));
-    
+
     Base::Quantity quantity(
       static_cast<double>(rotationIncrementCount.getValue())  * (180.0 / M_PI) *
       rotationIncrement.getValue(), Base::Unit::Angle);
-    
-    QString message(QObject::tr("Rotation: "));
-    message += quantity.getUserString();
+
+    QString message = QString::fromLatin1("%1 %2")
+            .arg(QObject::tr("Rotation:"), quantity.getUserString());
     getMainWindow()->showMessage(message, 3000);
 }
 
@@ -651,7 +651,7 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_ADD_CATALOG_ENTRY(xTranslatorSeparator, SoSeparator, TRUE, xTranslatorSwitch, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(yTranslatorSeparator, SoSeparator, TRUE, yTranslatorSwitch, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(zTranslatorSeparator, SoSeparator, TRUE, zTranslatorSwitch, "", TRUE);
-    
+
     SO_KIT_ADD_CATALOG_ENTRY(xTranslatorColor, SoBaseColor, TRUE, xTranslatorSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(yTranslatorColor, SoBaseColor, TRUE, yTranslatorSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(zTranslatorColor, SoBaseColor, TRUE, zTranslatorSeparator, "", TRUE);
@@ -675,7 +675,7 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_ADD_CATALOG_ENTRY(xRotatorColor, SoBaseColor, TRUE, xRotatorSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(yRotatorColor, SoBaseColor, TRUE, yRotatorSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(zRotatorColor, SoBaseColor, TRUE, zRotatorSeparator, "", TRUE);
-    
+
     SO_KIT_ADD_CATALOG_ENTRY(xRotatorRotation, SoRotation, TRUE, xRotatorSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(yRotatorRotation, SoRotation, TRUE, yRotatorSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(zRotatorRotation, SoRotation, TRUE, zRotatorSeparator, "", TRUE);
@@ -700,7 +700,7 @@ SoFCCSysDragger::SoFCCSysDragger()
     SO_KIT_ADD_FIELD(autoScaleResult, (1.0));
 
     SO_KIT_INIT_INSTANCE();
-    
+
     SoBaseColor *color;
     color = SO_GET_ANY_PART(this, "xTranslatorColor", SoBaseColor);
     color->rgb.setValue(1.0, 0.0, 0.0);
@@ -720,12 +720,12 @@ SoFCCSysDragger::SoFCCSysDragger()
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
     translationIncrementCountX.connectFrom(&tDragger->translationIncrementCount);
-    
+
     tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);
     translationIncrementCountY.connectFrom(&tDragger->translationIncrementCount);
-    
+
     tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", TDragger);
     tDragger->translationIncrement.connectFrom(&this->translationIncrement);
     tDragger->autoScaleResult.connectFrom(&this->autoScaleResult);

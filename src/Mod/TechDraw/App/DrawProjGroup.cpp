@@ -70,18 +70,20 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(Source    ,(0), group, App::Prop_None,"Shape to view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
+    Anchor.setScope(App::LinkScope::Global);
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
 
     ADD_PROPERTY_TYPE(AutoDistribute ,(autoDist),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
+    Rotation.setStatus(App::Property::Hidden,true);   //DPG does not rotate
+
 }
 
 DrawProjGroup::~DrawProjGroup()
 {
 }
-
 
 void DrawProjGroup::onChanged(const App::Property* prop)
 {
@@ -94,7 +96,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             if (!sourceObjs.empty()) {
                 if (!hasAnchor()) {
                     // if we have a Source, but no Anchor, make an anchor
-//                    Base::Console().Message("TRACE - DPG::onChanged - adding Front\n");
                     Anchor.setValue(addProjection("Front"));
                     Anchor.purgeTouched();                      //don't need to mark this
                 }
@@ -107,6 +108,10 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
         if (prop == &Source) {
             updateChildrenSource();
+        }
+
+        if (prop == &LockPosition) {
+            updateChildrenLock();
         }
         
         if (prop == &ScaleType) {
@@ -124,14 +129,21 @@ void DrawProjGroup::onChanged(const App::Property* prop)
                 }
             }
         }
-
+        if (prop == &Rotation) {
+            if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
+                Rotation.setValue(0.0);
+                purgeTouched();
+                Base::Console().Log("DPG: Projection Groups do not rotate. Change ignored.\n");
+            }
+        }
     }
-        
+
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
+//    Base::Console().Message("DPG::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -174,6 +186,7 @@ short DrawProjGroup::mustExecute() const
                  ProjectionType.isTouched() ||
                  Anchor.isTouched() ||
                  AutoDistribute.isTouched() ||
+                 LockPosition.isTouched()||
                  spacingX.isTouched() ||
                  spacingY.isTouched();
     }
@@ -203,13 +216,6 @@ Base::BoundBox3d DrawProjGroup::getBoundingBox() const
 
             bbox.Add(bb);
         }
-    }
-    // This /should/ leave the centre of the bounding box at (0,0) except when
-    // we're in the process of updating the anchor view's position (eg called
-    // by moveToCentre())
-    if (anchorView) { //TODO: It looks like we might be getting called before an anchor view is set - weird...
-        bbox.MoveX(anchorView->X.getValue());
-        bbox.MoveY(anchorView->Y.getValue());
     }
     return bbox;
 }
@@ -302,18 +308,6 @@ void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
     height = row0h + row1h + row2h;
 }
 
-
-void DrawProjGroup::moveToCentre(void)
-{
-    // Update the anchor view's X and Y to keep the bounding box centred on the origin
-    Base::BoundBox3d tempbbox = getBoundingBox();
-    DrawProjGroupItem *anchorView = dynamic_cast<DrawProjGroupItem *>(Anchor.getValue());
-    if (anchorView) {
-        anchorView->X.setValue((tempbbox.MinX + tempbbox.MaxX) / -2.0);
-        anchorView->Y.setValue((tempbbox.MinY + tempbbox.MaxY) / -2.0);
-    }
-}
-
 App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 {
     for( auto it : Views.getValues() ) {
@@ -333,7 +327,6 @@ DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
     DrawProjGroupItem* result = static_cast<DrawProjGroupItem*>(docObj);
     return result;
 }
-
 
 bool DrawProjGroup::checkViewProjType(const char *in)
 {
@@ -382,14 +375,18 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
         view->Source.setValues( Source.getValues() );
-        if (strcmp(viewProjType, "Front") != 0 ) {
+        if (strcmp(viewProjType, "Front") != 0 ) {  //not Front!
             vecs = getDirsFromFront(view);
             view->Direction.setValue(vecs.first);
             view->RotationVector.setValue(vecs.second);
+        } else {  //Front
+            view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
+            view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
+            App::GetApplication().signalChangePropertyEditor(view->LockPosition);
+            view->LockPosition.purgeTouched();
+            requestPaint();
         }
-
-        addView(view);         //from DrawViewCollection
-        moveToCentre();
+        addView(view);                            //from DrawViewCollection
         if (view != getAnchor()) {                //anchor is done elsewhere
             view->recomputeFeature();
         }
@@ -414,7 +411,6 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
                 if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
                     removeView(projPtr);                                        // Remove from collection
                     getDocument()->removeObject( it->getNameInDocument() );        // Remove from the document
-                    moveToCentre();
                     return Views.getValues().size();
                 }
             }
@@ -517,7 +513,11 @@ std::pair<Base::Vector3d,Base::Vector3d> DrawProjGroup::getDirsFromFront(std::st
 
 Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
 {
-    Base::Vector3d result;
+    Base::Vector3d result(0.0,0.0,0.0);
+    //Front view position is always (0,0)
+    if (strcmp(viewTypeCStr, "Front") == 0 ) {  // Front!
+        return result;
+    }
     const int idxCount = 10;
     DrawProjGroupItem *viewPtrs[idxCount];
     arrangeViewPointers(viewPtrs);
@@ -526,7 +526,8 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         //TODO: bounding boxes do not take view orientation into account
         //      ie X&Y widths might be swapped on page
 
-    if (AutoDistribute.getValue()) {
+//    if (AutoDistribute.getValue()) {
+    if (true) {
         std::vector<Base::Vector3d> position(idxCount);
         int idx = 0;
         for (;idx < idxCount; idx++) {
@@ -631,7 +632,6 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
     }
     return result;
 }
-
 
 int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
 {
@@ -779,11 +779,6 @@ void DrawProjGroup::updateChildren(void)
     }
 }
 
-//void DrawProjGroup::updateChildren(const App::Property* prop)
-//{
-//    view->....setValue(s)(prop->getValue(s));
-//}
-
 /*! 
  * tell children DPGIs that parent DPG has changed Source
  */
@@ -793,6 +788,20 @@ void DrawProjGroup::updateChildrenSource(void)
         auto view( dynamic_cast<DrawProjGroupItem *>(it) );
         if( view ) {
             view->Source.setValues(Source.getValues());
+        }
+    }
+}
+
+/*! 
+ * tell children DPGIs that parent DPG has changed LockPosition
+ * (really for benefit of QGIV on Gui side)
+ */
+void DrawProjGroup::updateChildrenLock(void)
+{
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if( view ) {
+            view->requestPaint();
         }
     }
 }
@@ -858,7 +867,6 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
     return result;
 }
 
-
 void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
 {
     App::DocumentObject* docObj = Anchor.getValue();
@@ -878,7 +886,6 @@ Base::Vector3d DrawProjGroup::getAnchorDirection(void)
     }
     return result;
 }
-
 
 //*************************************
 //* view direction manipulation routines

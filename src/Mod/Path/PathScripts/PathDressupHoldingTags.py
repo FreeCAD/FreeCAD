@@ -31,6 +31,7 @@ import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import copy
 import math
+import sys
 import traceback
 
 from PathScripts.PathDressupTagPreferences import HoldingTagPreferences
@@ -176,12 +177,12 @@ class Tag:
     def filterIntersections(self, pts, face):
         if type(face.Surface) == Part.Cone or type(face.Surface) == Part.Cylinder or type(face.Surface) == Part.Toroid:
             PathLog.track("it's a cone/cylinder, checking z")
-            return filter(lambda pt: pt.z >= self.bottom() and pt.z <= self.top(), pts)
+            return list(filter(lambda pt: pt.z >= self.bottom() and pt.z <= self.top(), pts))
         if type(face.Surface) == Part.Plane:
             PathLog.track("it's a plane, checking R")
             c = face.Edges[0].Curve
             if (type(c) == Part.Circle):
-                return filter(lambda pt: (pt - c.Center).Length <= c.Radius or PathGeom.isRoughly((pt - c.Center).Length, c.Radius), pts)
+                return list(filter(lambda pt: (pt - c.Center).Length <= c.Radius or PathGeom.isRoughly((pt - c.Center).Length, c.Radius), pts))
         print("==== we got a %s" % face.Surface)
 
     def isPointOnEdge(self, pt, edge):
@@ -236,23 +237,25 @@ class Tag:
 
 
 class MapWireToTag:
-    def __init__(self, edge, tag, i, segm, maxZ):
+    def __init__(self, edge, tag, i, segm, maxZ, hSpeed, vSpeed):
         debugEdge(edge, 'MapWireToTag(%.2f, %.2f, %.2f)' % (i.x, i.y, i.z))
         self.tag = tag
         self.segm = segm
         self.maxZ = maxZ
+        self.hSpeed = hSpeed
+        self.vSpeed = vSpeed
         if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
             debugEdge(tail, '.........=')
         elif PathGeom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, '++++++++ .')
-            self.commands = PathGeom.cmdsForEdge(edge, segm=segm)
+            self.commands = PathGeom.cmdsForEdge(edge, segm=segm, hSpeed = self.hSpeed, vSpeed = self.vSpeed)
             tail = None
         else:
             e, tail = PathGeom.splitEdgeAt(edge, i)
             debugEdge(e, '++++++++ .')
-            self.commands = PathGeom.cmdsForEdge(e, segm=segm)
+            self.commands = PathGeom.cmdsForEdge(e, segm=segm, hSpeed = self.hSpeed, vSpeed = self.vSpeed)
             debugEdge(tail, '.........-')
             self.initialEdge = edge
         self.tail = tail
@@ -323,14 +326,14 @@ class MapWireToTag:
         if not self.entryEdges:
             print("fill entryEdges ...")
             self.realEntry = sorted(self.edgePoints, key=lambda p: (p - self.entry).Length)[0]
-            self.entryEdges = filter(lambda e: PathGeom.edgeConnectsTo(e, self.realEntry), edges)
+            self.entryEdges = list(filter(lambda e: PathGeom.edgeConnectsTo(e, self.realEntry), edges))
             edges.append(Part.Edge(Part.LineSegment(self.entry, self.realEntry)))
         else:
             self.realEntry = None
         if not self.exitEdges:
             print("fill exitEdges ...")
             self.realExit = sorted(self.edgePoints, key=lambda p: (p - self.exit).Length)[0]
-            self.exitEdges = filter(lambda e: PathGeom.edgeConnectsTo(e, self.realExit), edges)
+            self.exitEdges = list(filter(lambda e: PathGeom.edgeConnectsTo(e, self.realExit), edges))
             edges.append(Part.Edge(Part.LineSegment(self.realExit, self.exit)))
         else:
             self.realExit = None
@@ -446,7 +449,10 @@ class MapWireToTag:
                 wire.add(edge)
 
         shell = wire.extrude(FreeCAD.Vector(0, 0, self.tag.height + 1))
-        return shell.removeShape(filter(lambda f: PathGeom.isRoughly(f.Area, 0), shell.Faces))
+        nullFaces = list(filter(lambda f: PathGeom.isRoughly(f.Area, 0), shell.Faces))
+        if nullFaces:
+            return shell.removeShape(nullFaces)
+        return shell
 
     def commandsForEdges(self):
         global failures
@@ -465,18 +471,21 @@ class MapWireToTag:
                         if rapid:
                             commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
                             rapid = None
-                        commands.extend(PathGeom.cmdsForEdge(e, False, False, self.segm))
+                        commands.extend(PathGeom.cmdsForEdge(e, False, False, self.segm, hSpeed = self.hSpeed, vSpeed = self.vSpeed))
                 if rapid:
                     commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
                     rapid = None
                 return commands
             except Exception as e:
                 PathLog.error("Exception during processing tag @(%.2f, %.2f) (%s) - disabling the tag" % (self.tag.x, self.tag.y, e.args[0]))
-                #traceback.print_exc(e)
+                #if sys.version_info.major < 3:
+                #    traceback.print_exc(e)
+                #else:
+                #    traceback.print_exc()
                 self.tag.enabled = False
                 commands = []
                 for e in self.edges:
-                    commands.extend(PathGeom.cmdsForEdge(e))
+                    commands.extend(PathGeom.cmdsForEdge(e, hSpeed = self.hSpeed, vSpeed = self.vSpeed))
                 failures.append(self)
                 return commands
         return []
@@ -543,7 +552,11 @@ class PathData:
             wire = Part.Wire(bottom)
             if wire.isClosed():
                 return wire
-        except:
+        except Exception as e:
+            #if sys.version_info.major < 3:
+            #    traceback.print_exc(e)
+            #else:
+            #    traceback.print_exc()
             return None
 
     def supportsTagGeneration(self):
@@ -772,6 +785,12 @@ class ObjectTagDressup:
         self.mappers = []
         mapper = None
 
+        tc = PathDressup.toolController(obj.Base)
+        horizFeed = tc.HorizFeed.Value
+        vertFeed = tc.VertFeed.Value
+        horizRapid = tc.HorizRapid.Value
+        vertRapid = tc.VertRapid.Value
+
         while edge or lastEdge < len(pathData.edges):
             PathLog.debug("------- lastEdge = %d/%d.%d/%d" % (lastEdge, lastTag, t, len(tags)))
             if not edge:
@@ -794,7 +813,7 @@ class ObjectTagDressup:
                 t += 1
                 i = tags[tIndex].intersects(edge, edge.FirstParameter)
                 if i and self.isValidTagStartIntersection(edge, i):
-                    mapper = MapWireToTag(edge, tags[tIndex], i, segm, pathData.maxZ)
+                    mapper = MapWireToTag(edge, tags[tIndex], i, segm, pathData.maxZ, hSpeed = horizFeed, vSpeed = vertFeed)
                     self.mappers.append(mapper)
                     edge = mapper.tail
 
@@ -806,51 +825,18 @@ class ObjectTagDressup:
                         v = edge.Vertexes[1]
                         if not commands and PathGeom.isRoughly(0, v.X) and PathGeom.isRoughly(0, v.Y) and not PathGeom.isRoughly(0, v.Z):
                             # The very first move is just to move to ClearanceHeight
-                            commands.append(Path.Command('G0', {'Z': v.Z}))
+                            commands.append(Path.Command('G0', {'Z': v.Z, 'F': horizRapid}))
                         else:
-                            commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
+                            commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z, 'F': vertRapid}))
                     else:
-                        commands.extend(PathGeom.cmdsForEdge(edge, segm=segm))
+                        commands.extend(PathGeom.cmdsForEdge(edge, segm=segm, hSpeed = horizFeed, vSpeed = vertFeed))
                 edge = None
                 t = 0
 
-        lastCmd = Path.Command('G0', {'X': 0.0, 'Y': 0.0, 'Z': 0.0})
-        outCommands = []
-
-        tc = PathDressup.toolController(obj.Base)
-        horizFeed = tc.HorizFeed.Value
-        vertFeed = tc.VertFeed.Value
-        horizRapid = tc.HorizRapid.Value
-        vertRapid = tc.VertRapid.Value
-
-        for cmd in commands:
-            params = cmd.Parameters
-            zVal = params.get('Z', None)
-            zVal2 = lastCmd.Parameters.get('Z', None)
-
-            zVal = zVal and round(zVal, 8)
-            zVal2 = zVal2 and round(zVal2, 8)
-
-            if cmd.Name in ['G1', 'G2', 'G3', 'G01', 'G02', 'G03']:
-                if False and zVal is not None and zVal2 != zVal:
-                    params['F'] = vertFeed
-                else:
-                    params['F'] = horizFeed
-                lastCmd = cmd
-
-            elif cmd.Name in ['G0', 'G00']:
-                if zVal is not None and zVal2 != zVal:
-                    params['F'] = vertRapid
-                else:
-                    params['F'] = horizRapid
-                lastCmd = cmd
-
-            outCommands.append(Path.Command(cmd.Name, params))
-
-        return Path.Path(outCommands)
+        return Path.Path(commands)
 
     def problems(self):
-        return filter(lambda m: m.haveProblem, self.mappers)
+        return list(filter(lambda m: m.haveProblem, self.mappers))
 
     def createTagsPositionDisabled(self, obj, positionsIn, disabledIn):
         rawTags = []
@@ -928,6 +914,10 @@ class ObjectTagDressup:
             self.processTags(obj)
         except Exception as e:
             PathLog.error("processing tags failed clearing all tags ... '%s'" % (e.args[0]))
+            #if sys.version_info.major < 3:
+            #    traceback.print_exc(e)
+            #else:
+            #    traceback.print_exc()
             obj.Path = obj.Base.Path
 
         # update disabled in case there are some additional ones
@@ -966,6 +956,10 @@ class ObjectTagDressup:
             pathData = PathData(obj)
         except ValueError:
             PathLog.error(translate("Path_DressupTag", "Cannot insert holding tags for this path - please select a Profile path")+"\n")
+            #if sys.version_info.major < 3:
+            #    traceback.print_exc(e)
+            #else:
+            #    traceback.print_exc()
             return None
 
         self.toolRadius = PathDressup.toolController(obj.Base).Tool.Diameter / 2

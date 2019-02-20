@@ -74,6 +74,7 @@
 #include <Base/MatrixPy.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
+#include <App/PropertyStandard.h>
 #include <CXX/Extensions.hxx>
 
 #include "TopoShape.h"
@@ -286,21 +287,32 @@ PyObject*  TopoShapePy::read(PyObject *args)
     Py_Return;
 }
 
-PyObject* TopoShapePy::writeInventor(PyObject * args)
+PyObject* TopoShapePy::writeInventor(PyObject * args, PyObject * keywds)
 {
+    static char *kwlist[] = {"Mode", "Deviation", "Angle", "FaceColors", NULL};
+
     double dev=0.3, angle=0.4;
     int mode=2;
-    if (!PyArg_ParseTuple(args, "|idd", &mode,&dev,&angle))
+    PyObject* pylist=nullptr;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|iddO", kwlist,
+                                     &mode,&dev,&angle,&pylist))
         return NULL;
+
+    std::vector<App::Color> faceColors;
+    if (pylist) {
+        App::PropertyColorList prop;
+        prop.setPyObject(pylist);
+        faceColors = prop.getValues();
+    }
 
     std::stringstream result;
     BRepMesh_IncrementalMesh(getTopoShapePtr()->getShape(),dev);
     if (mode == 0)
-        getTopoShapePtr()->exportFaceSet(dev, angle, result);
+        getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
     else if (mode == 1)
         getTopoShapePtr()->exportLineSet(result);
     else {
-        getTopoShapePtr()->exportFaceSet(dev, angle, result);
+        getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
         getTopoShapePtr()->exportLineSet(result);
     }
     // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
@@ -2850,7 +2862,9 @@ Py::List TopoShapePy::getFaces(void) const
     for (Standard_Integer k = 1; k <= M.Extent(); k++)
     {
         const TopoDS_Shape& shape = M(k);
-        ret.append(Py::Object(new TopoShapeFacePy(new TopoShape(shape)),true));
+        Base::PyObjectBase* face = new TopoShapeFacePy(new TopoShape(shape));
+        face->setNotTracking();
+        ret.append(Py::asObject(face));
     }
 
     return ret;
@@ -2871,7 +2885,9 @@ Py::List TopoShapePy::getVertexes(void) const
     for (Standard_Integer k = 1; k <= M.Extent(); k++)
     {
         const TopoDS_Shape& shape = M(k);
-        ret.append(Py::Object(new TopoShapeVertexPy(new TopoShape(shape)),true));
+        Base::PyObjectBase* vertex = new TopoShapeVertexPy(new TopoShape(shape));
+        vertex->setNotTracking();
+        ret.append(Py::asObject(vertex));
     }
 
     return ret;
@@ -2892,7 +2908,9 @@ Py::List TopoShapePy::getShells(void) const
     for (Standard_Integer k = 1; k <= M.Extent(); k++)
     {
         const TopoDS_Shape& shape = M(k);
-        ret.append(Py::Object(new TopoShapeShellPy(new TopoShape(shape)),true));
+        Base::PyObjectBase* shell = new TopoShapeShellPy(new TopoShape(shape));
+        shell->setNotTracking();
+        ret.append(Py::asObject(shell));
     }
 
     return ret;
@@ -2913,7 +2931,9 @@ Py::List TopoShapePy::getSolids(void) const
     for (Standard_Integer k = 1; k <= M.Extent(); k++)
     {
         const TopoDS_Shape& shape = M(k);
-        ret.append(Py::Object(new TopoShapeSolidPy(new TopoShape(shape)),true));
+        Base::PyObjectBase* solid = new TopoShapeSolidPy(new TopoShape(shape));
+        solid->setNotTracking();
+        ret.append(Py::asObject(solid));
     }
 
     return ret;
@@ -2934,7 +2954,9 @@ Py::List TopoShapePy::getCompSolids(void) const
     for (Standard_Integer k = 1; k <= M.Extent(); k++)
     {
         const TopoDS_Shape& shape = M(k);
-        ret.append(Py::Object(new TopoShapeCompSolidPy(new TopoShape(shape)),true));
+        Base::PyObjectBase* comps = new TopoShapeCompSolidPy(new TopoShape(shape));
+        comps->setNotTracking();
+        ret.append(Py::asObject(comps));
     }
 
     return ret;
@@ -2955,7 +2977,9 @@ Py::List TopoShapePy::getEdges(void) const
     for (Standard_Integer k = 1; k <= M.Extent(); k++)
     {
         const TopoDS_Shape& shape = M(k);
-        ret.append(Py::Object(new TopoShapeEdgePy(new TopoShape(shape)),true));
+        Base::PyObjectBase* edge = new TopoShapeEdgePy(new TopoShape(shape));
+        edge->setNotTracking();
+        ret.append(Py::asObject(edge));
     }
 
     return ret;
@@ -2976,7 +3000,9 @@ Py::List TopoShapePy::getWires(void) const
     for (Standard_Integer k = 1; k <= M.Extent(); k++)
     {
         const TopoDS_Shape& shape = M(k);
-        ret.append(Py::Object(new TopoShapeWirePy(new TopoShape(shape)),true));
+        Base::PyObjectBase* wire = new TopoShapeWirePy(new TopoShape(shape));
+        wire->setNotTracking();
+        ret.append(Py::asObject(wire));
     }
 
     return ret;
@@ -2997,7 +3023,9 @@ Py::List TopoShapePy::getCompounds(void) const
     for (Standard_Integer k = 1; k <= M.Extent(); k++)
     {
         const TopoDS_Shape& shape = M(k);
-        ret.append(Py::Object(new TopoShapeCompoundPy(new TopoShape(shape)),true));
+        Base::PyObjectBase* comp = new TopoShapeCompoundPy(new TopoShape(shape));
+        comp->setNotTracking();
+        ret.append(Py::asObject(comp));
     }
 
     return ret;
@@ -3042,19 +3070,25 @@ PyObject *TopoShapePy::getCustomAttributes(const char* attr) const
             std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(attr)));
             TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeFacePy(new TopoShape(Shape));
+            TopoShapeFacePy* face = new TopoShapeFacePy(new TopoShape(Shape));
+            face->setNotTracking();
+            return face;
         }
         else if (name.size() > 4 && name.substr(0,4) == "Edge" && name[4]>=48 && name[4]<=57) {
             std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(attr)));
             TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeEdgePy(new TopoShape(Shape));
+            TopoShapeEdgePy* edge = new TopoShapeEdgePy(new TopoShape(Shape));
+            edge->setNotTracking();
+            return edge;
         }
         else if (name.size() > 6 && name.substr(0,6) == "Vertex" && name[6]>=48 && name[6]<=57) {
             std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(attr)));
             TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeVertexPy(new TopoShape(Shape));
+            TopoShapeVertexPy* vertex = new TopoShapeVertexPy(new TopoShape(Shape));
+            vertex->setNotTracking();
+            return vertex;
         }
     }
     catch (Standard_Failure& e) {

@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Estableix l'orientació per defecte per a ordres posteriors per a la creació de fites</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>estableix l'orientació per defecte per a ordres posteriors per a la creació de fites</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Estableix els valors per defecte de velocitat, acceleració i continuïtat per a ordres posteriors de creació de fites</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>estableix els valors per defecte de velocitat, acceleració i continuïtat per a ordres posteriors de creació de fites</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Necessiteu almenys dos punts de camí en una trajectòria per a la simulació.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Necessiteu almenys dos punts de camí en una trajectòria per a la simulació.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Heu de passar per damunt d'una geometria (preselecció) amb el ratolí per a utilitzar aquesta ordre. Consulteu la documentació per a més detalls.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Estableix la velocitat per defecte</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Estableix la continuïtat per defecte</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Estableix l'acceleració per defecte</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Seleccioneu un robot per a establir-ne la posició inicial</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Seleccioneu un robot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Seleccioneu un objecte trajectòria</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>estableix la velocitat per defecte</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>velocitat: (p. ex. 1 m/s o 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>estableix la continuïtat per defecte</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>continu?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>estableix l'acceleració per defecte</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>acceleració: (p. ex. 1 m/s^2 o 3 cm/s^2)</translation>
     </message>
