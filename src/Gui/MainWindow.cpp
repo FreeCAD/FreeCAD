@@ -1319,7 +1319,7 @@ QPixmap MainWindow::splashImage() const
             painter.setFont(fontExe);
             painter.drawText(x, y, title);
             painter.setFont(fontVer);
-            painter.drawText(x - (l + 5), y, version);
+            painter.drawText(x + (l + 5), y, version);
             painter.end();
         }
     }
