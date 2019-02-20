@@ -154,6 +154,7 @@ class MaterialEditor:
 
         if isinstance(data, dict):
 
+            # a standard material property dict is provided
             model = self.widget.treeView.model()
             root = model.invisibleRootItem()
             for gg in range(root.rowCount() - 1):
@@ -183,6 +184,8 @@ class MaterialEditor:
 
         elif isinstance(data, unicode):
 
+
+            # a card name is provided, search card, read material data and call this def once more with std material property dict
             k = str(data)
             if k:
                 if k in self.cards:
@@ -642,10 +645,32 @@ def openEditor(obj=None, prop=None):
 
 def editMaterial(material):
     """editMaterial(material): opens the editor to edit the contents
-    of the given material dictionary. Returns the modified material."""
+    of the given material dictionary. Returns the modified material dictionary."""
+    # if the material editor is opened with this def the combo box with the card name is empty
+    # this makes sense, because the editor was not opened with a card but with material dictionary instead
+    # TODO: add some text in combo box, may be "custom material data" or "user material data"
+    # TODO: all card could be checked if one fits exact ALL provided data and than this card name could be displayed 
     editor = MaterialEditor(material=material)
     result = editor.exec_()
     if result:
         return editor.getDict()
     else:
         return material
+
+
+'''
+# some examples how to open the material editor in Python:
+import MaterialEditor
+MaterialEditor.openEditor()
+
+doc = FreeCAD.open(FreeCAD.ConfigGet("AppHomePath") + 'data/examples/FemCalculixCantilever3D.FCStd')
+import MaterialEditor
+MaterialEditor.openEditor('SolidMaterial', 'Material')
+
+import MaterialEditor
+MaterialEditor.editMaterial({'Density': '1234.0 kg/m^3', 'Name': 'My-Material-Data', 'PoissonRatio': '0.66', 'YoungsModulus': '123456 MPa'})
+
+import MaterialEditor
+MaterialEditor.editMaterial('ABS')
+
+'''
