@@ -217,8 +217,8 @@ class DraftTool:
         else:
             return False
 
-    def Activated(self,name="None",noplanesetup=False):
-        if FreeCAD.activeDraftCommand:
+    def Activated(self, name="None", noplanesetup=False, is_subtool=False):
+        if FreeCAD.activeDraftCommand and not is_subtool:
             FreeCAD.activeDraftCommand.finish()
 
         global Part, DraftGeomUtils
@@ -2553,115 +2553,134 @@ class Move(Modifier):
 
     def __init__(self):
         Modifier.__init__(self)
-        self.copymode = False
 
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Move',
                 'Accel' : "M, V",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Move"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Move", "Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
         self.name = translate("draft","Move", utf8_decode=True)
-        if not isinstance(FreeCAD.activeDraftCommand, EditImproved):
-            Modifier.Activated(self,self.name)
-        else:
-            self.ui = FreeCADGui.draftToolBar
-            self.view = Draft.get3DView()
-            self.call = None
-            self.node = []
-            self.extendedCopy = False
-            self.featureName = "Edit_Improved"
-            self.planetrack = None
-        self.ghost = None
-        if self.ui:
-            if not FreeCADGui.Selection.getSelection():
-                self.ui.selectUi()
-                msg(translate("draft", "Select an object to move")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-            else:
-                self.proceed()
+        Modifier.Activated(self, self.name, is_subtool=isinstance(FreeCAD.activeDraftCommand, EditImproved))
+        if not self.ui:
+            return
+        self.ghosts = []
+        self.get_object_selection()
+
+    def get_object_selection(self):
+        if FreeCADGui.Selection.getSelectionEx():
+            return self.proceed()
+        self.ui.selectUi()
+        msg(translate("draft", "Select an object to move")+"\n")
+        self.call = self.view.addEventCallback("SoEvent", selectObject)
 
     def proceed(self):
-        if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = FreeCADGui.Selection.getSelection()
-        self.sel = Draft.getGroupContents(self.sel,addgroups=True,spaces=True,noarchchild=True)
+        if self.call:
+            self.view.removeEventCallback("SoEvent",self.call)
+        self.selected_objects = FreeCADGui.Selection.getSelection()
+        self.selected_objects = Draft.getGroupContents(self.selected_objects, addgroups=True, spaces=True, noarchchild=True)
+        self.selected_subelements = FreeCADGui.Selection.getSelectionEx()
         self.ui.pointUi(self.name)
         self.ui.modUi()
-        if self.copymode:
-            self.ui.isCopy.setChecked(True)
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
-        self.ghost = ghostTracker(self.sel)
-        self.call = self.view.addEventCallback("SoEvent",self.action)
+        self.call = self.view.addEventCallback("SoEvent", self.action)
         msg(translate("draft", "Pick start point:")+"\n")
 
     def finish(self,closed=False,cont=False):
-        if self.ghost:
-            self.ghost.finalize()
+        for ghost in self.ghosts:
+            ghost.finalize()
         if cont and self.ui:
             if self.ui.continueMode:
                 todo.delayAfter(self.Activated,[])
         Modifier.finish(self)
 
-    def move(self,delta,copy=False):
-        "moving the real shapes"
-        sel = '['
-        for o in self.sel:
-            if len(sel) > 1:
-                sel += ','
-            sel += 'FreeCAD.ActiveDocument.'+o.Name
-        sel += ']'
-        FreeCADGui.addModule("Draft")
-        if copy:
-            self.commit(translate("draft","Copy"),
-                        ['Draft.move('+sel+','+DraftVecUtils.toString(delta)+',copy='+str(copy)+')',
-                         'FreeCAD.ActiveDocument.recompute()'])
-        else:
-            self.commit(translate("draft","Move"),
-                        ['Draft.move('+sel+','+DraftVecUtils.toString(delta)+',copy='+str(copy)+')',
-                         'FreeCAD.ActiveDocument.recompute()'])
-
     def action(self,arg):
         "scene event handler"
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            if self.ghost:
-                self.ghost.off()
-            self.point,ctrlPoint,info = getPoint(self,arg)
-            if (len(self.node) > 0):
-                last = self.node[len(self.node)-1]
-                delta = self.point.sub(last)
-                if self.ghost:
-                    self.ghost.move(delta)
-                    self.ghost.on()
-            if self.extendedCopy:
-                if not hasMod(arg,MODALT): self.finish()
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent":
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if self.point:
-                    self.ui.redraw()
-                    if (self.node == []):
-                        self.node.append(self.point)
-                        self.ui.isRelative.show()
-                        if self.ghost:
-                            self.ghost.on()
-                        msg(translate("draft", "Pick end point:")+"\n")
-                        if self.planetrack:
-                            self.planetrack.set(self.point)
-                    else:
-                        last = self.node[0]
-                        if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
-                            self.move(self.point.sub(last),True)
-                        else:
-                            self.move(self.point.sub(last))
-                        if hasMod(arg,MODALT):
-                            self.extendedCopy = True
-                        else:
-                            self.finish(cont=True)
+        if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+            self.finish()
+        elif arg["Type"] == "SoLocation2Event":
+            self.handle_mouse_move_event(arg)
+        elif arg["Type"] == "SoMouseButtonEvent" \
+            and arg["State"] == "DOWN" \
+            and arg["Button"] == "BUTTON1":
+            self.handle_mouse_click_event(arg)
+
+    def handle_mouse_move_event(self, arg):
+        for ghost in self.ghosts:
+            ghost.off()
+        self.point, ctrlPoint, info = getPoint(self,arg)
+        if (len(self.node) > 0):
+            last = self.node[len(self.node)-1]
+            delta = self.point.sub(last)
+            for ghost in self.ghosts:
+                ghost.move(delta)
+                ghost.on()
+        if self.extendedCopy:
+            if not hasMod(arg,MODALT): self.finish()
+        redraw3DView()
+
+    def handle_mouse_click_event(self, arg):
+        if not self.ghosts:
+            self.set_ghost()
+        if not self.point:
+            return
+        self.ui.redraw()
+        if self.node == []:
+            self.node.append(self.point)
+            self.ui.isRelative.show()
+            for ghost in self.ghosts:
+                ghost.on()
+            msg(translate("draft", "Pick end point:")+"\n")
+            if self.planetrack:
+                self.planetrack.set(self.point)
+        else:
+            last = self.node[0]
+            self.move(self.point.sub(last))
+            if hasMod(arg,MODALT):
+                self.extendedCopy = True
+            else:
+                self.finish(cont=True)
+
+    def set_ghost(self):
+        if self.ui.isSubelementMode.isChecked():
+            return self.set_subelement_ghosts()
+        self.ghosts = [ghostTracker(self.selected_objects)]
+
+    def set_subelement_ghosts(self):
+        import Part
+        for object in self.selected_subelements:
+            for subelement in object.SubObjects:
+                if isinstance(subelement, Part.Vertex) \
+                    or isinstance(subelement, Part.Edge):
+                    ghost = ghostTracker(subelement)
+                    ghost.on()
+                    self.ghosts.append(ghost)
+
+    def move(self, delta):
+        if self.ui.isSubelementMode.isChecked():
+            self.move_subelements(delta)
+        else:
+            self.move_object(delta)
+
+    def move_subelements(self, delta):
+        for object in self.selected_subelements:
+            for index, subelement in enumerate(object.SubObjects):
+                if isinstance(subelement, Part.Vertex):
+                    Draft.moveVertex(getattr(FreeCAD.ActiveDocument, object.ObjectName),
+                            int(object.SubElementNames[index][len("Vertex"):])-1,
+                            subelement.Point, delta)
+                elif isinstance(subelement, Part.Edge):
+                    Draft.moveEdge(getattr(FreeCAD.ActiveDocument, object.ObjectName),
+                            int(object.SubElementNames[index][len("Edge"):])-1,
+                            subelement, delta)
+
+    def move_object(self, delta):
+        objects = '[' + ','.join(['FreeCAD.ActiveDocument.' + object.Name for object in self.selected_objects]) + ']'
+        FreeCADGui.addModule("Draft")
+        self.commit(translate("draft","Copy" if self.ui.isCopy.isChecked() else "Move"),
+            ['Draft.move('+objects+','+DraftVecUtils.toString(delta)+',copy='+str(self.ui.isCopy.isChecked())+')', 'FreeCAD.ActiveDocument.recompute()'])
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
@@ -2679,7 +2698,6 @@ class Move(Modifier):
             else:
                 self.move(self.point.sub(last))
             self.finish()
-
 
 class ApplyStyle(Modifier):
     "The Draft_ApplyStyle FreeCA command definition"
