@@ -44,7 +44,7 @@ PoissonRatio =
 AmbientColor =
 
 ; Description to be updated
-AngleOfFriction
+AngleOfFriction =
 
 ; Description to be updated
 Color =
@@ -95,7 +95,7 @@ Model =
 Norm =
 
 ; Description to be updated
-ReferenceSource
+ReferenceSource =
 
 ; Description to be updated
 SectionFillPattern =
@@ -113,7 +113,7 @@ Shininess =
 SoundTransmissionClass =
 
 ; Description to be updated
-SourceURL
+SourceURL =
 
 ; Description to be updated
 SpecificHeat =
