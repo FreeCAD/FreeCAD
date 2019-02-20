@@ -737,18 +737,15 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         return;
     }
 
-    TechDraw::DrawProjGroupItem* dpgi = nullptr;
-    if (viewPart->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        dpgi = static_cast<TechDraw::DrawProjGroupItem*>(viewPart);
-    }
-
     if (b) {
         double fontSize = getPrefFontSize();
         QGIHighlight* highlight = new QGIHighlight();
         addToGroup(highlight);
         highlight->setPos(0.0,0.0);   //sb setPos(center.x,center.y)?
         highlight->setReference(const_cast<char*>(viewDetail->Reference.getValue()));
+
         Base::Vector3d center = viewDetail->AnchorPoint.getValue() * viewPart->getScale();
+
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius,center.x + radius, center.y - radius);
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
@@ -757,11 +754,9 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
 
         QPointF rotCenter = highlight->mapFromParent(transformOriginPoint());
         highlight->setTransformOriginPoint(rotCenter);
-        double rotation = viewPart->Rotation.getValue();
-        if (dpgi != nullptr) {
-            double rotDpgi = dpgi->getRotateAngle() * 180.0/M_PI;
-            rotation += rotDpgi;
-        }
+
+        double rotation = viewPart->Rotation.getValue() + 
+                          vp->HighlightAdjust.getValue();
         highlight->setRotation(rotation);
         highlight->draw();
     }
