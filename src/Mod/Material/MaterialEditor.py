@@ -233,7 +233,7 @@ class MaterialEditor:
         self.cards = {}
         for p in self.resources:
             if os.path.exists(p):
-                for f in os.listdir(p):
+                for f in sorted(os.listdir(p)):
                     b, e = os.path.splitext(f)
                     if e.upper() == ".FCMAT":
                         self.cards[b] = p + os.sep + f
