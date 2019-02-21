@@ -1492,9 +1492,8 @@ def moveVertex(object, vertex_index, vertex, vector):
     points = object.Points
     points[vertex_index] = object.Placement.inverse().multVec(vertex).add(vector)
     object.Points = points
-    FreeCAD.ActiveDocument.recompute()
 
-def moveEdge(object, edge_index, edge, vector):
+def moveEdge(object, edge_index, vector):
     moveVertex(object, edge_index, object.Placement.multVec(object.Points[edge_index]), vector)
     moveVertex(object, edge_index+1, object.Placement.multVec(object.Points[edge_index+1]), vector)
 
