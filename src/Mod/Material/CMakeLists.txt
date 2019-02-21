@@ -18,14 +18,14 @@ SOURCE_GROUP("Module" FILES ${Material_SRCS})
 
 SET (MaterialLib_Files
     StandardMaterial/None.FCMat
-    StandardMaterial/ABS.FCMat
+    StandardMaterial/ABS-Generic.FCMat
+    StandardMaterial/Acrylic-Glass-Generic.FCMat
     StandardMaterial/CalculiX-Steel.FCMat
     StandardMaterial/Concrete-Generic.FCMat
     StandardMaterial/Glass-Generic.FCMat
     StandardMaterial/PA6-Generic.FCMat
     StandardMaterial/PET-Generic.FCMat
     StandardMaterial/PLA-Generic.FCMat
-    StandardMaterial/PLA.FCMat
     StandardMaterial/PP-Generic.FCMat
     StandardMaterial/PTFE-Generic.FCMat
     StandardMaterial/PVC-Generic.FCMat
