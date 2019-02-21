@@ -76,6 +76,7 @@ InputField::InputField(QWidget * parent)
     SaveSize(5)
 {
     setValidator(new InputValidator(this));
+    setFocusPolicy(Qt::WheelFocus);
     iconLabel = new QLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
@@ -655,18 +656,24 @@ void InputField::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Up:
         {
             double val = actUnitValue + StepSize;
-            Base::Quantity quant = actQuantity;
-            quant.setValue(val);
-            this->setText(quant.getUserString());
+            if (val > Maximum)
+                val = Maximum;
+            double dFactor;
+            QString unitStr;
+            actQuantity.getUserString(dFactor, unitStr);
+            this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
             event->accept();
         }
         break;
     case Qt::Key_Down:
         {
             double val = actUnitValue - StepSize;
-            Base::Quantity quant = actQuantity;
-            quant.setValue(val);
-            this->setText(quant.getUserString());
+            if (val < Minimum)
+                val = Minimum;
+            double dFactor;
+            QString unitStr;
+            actQuantity.getUserString(dFactor, unitStr);
+            this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
             event->accept();
         }
         break;
@@ -683,16 +690,19 @@ void InputField::wheelEvent (QWheelEvent * event)
         return;
     }
 
+    double factor = event->modifiers() & Qt::ControlModifier ? 10 : 1;
     double step = event->delta() > 0 ? StepSize : -StepSize;
-    double val = actUnitValue + step;
+    double val = actUnitValue + factor * step;
     if (val > Maximum)
         val = Maximum;
     else if (val < Minimum)
         val = Minimum;
 
-    Base::Quantity quant = actQuantity;
-    quant.setValue(val);
-    this->setText(quant.getUserString());
+    double dFactor;
+    QString unitStr;
+    actQuantity.getUserString(dFactor, unitStr);
+
+    this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(unitStr));
     selectNumber();
     event->accept();
 }
