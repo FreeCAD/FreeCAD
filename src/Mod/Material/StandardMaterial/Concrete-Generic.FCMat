@@ -7,7 +7,7 @@
 Name = Concrete
 Description = A standard C-25 construction concrete
 Father = Aggregate
-ProductURL = http://en.wikipedia.org/wiki/Concrete
+ProductURL = https://en.wikipedia.org/wiki/Concrete
 YoungsModulus = 32000 MPa
 PoissonRatio = 0.17
 CompressiveStrength = 25 MPa
