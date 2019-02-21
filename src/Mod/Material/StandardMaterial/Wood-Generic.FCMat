@@ -7,7 +7,7 @@
 Name = Wood
 Description = A standard construction wood
 Father = Aggregate
-ProductURL = http://en.wikipedia.org/wiki/Wood
+ProductURL = https://en.wikipedia.org/wiki/Wood
 YoungsModulus = 12000 MPa
 PoissonRatio = 0.05
 Density = 700 kg/m^3
