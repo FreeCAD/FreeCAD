@@ -2408,9 +2408,9 @@ class Move(Modifier):
         self.point, ctrlPoint, info = getPoint(self,arg)
         if (len(self.node) > 0):
             last = self.node[len(self.node)-1]
-            delta = self.point.sub(last)
+            self.vector = self.point.sub(last)
             for ghost in self.ghosts:
-                ghost.move(delta)
+                ghost.move(self.vector)
                 ghost.on()
         if self.extendedCopy:
             if not hasMod(arg,MODALT): self.finish()
@@ -2432,7 +2432,8 @@ class Move(Modifier):
                 self.planetrack.set(self.point)
         else:
             last = self.node[0]
-            self.move(self.point.sub(last))
+            self.vector = self.point.sub(last)
+            self.move()
             if hasMod(arg,MODALT):
                 self.extendedCopy = True
             else:
@@ -2453,29 +2454,44 @@ class Move(Modifier):
                     ghost.on()
                     self.ghosts.append(ghost)
 
-    def move(self, delta):
+    def move(self):
         if self.ui.isSubelementMode.isChecked():
-            self.move_subelements(delta)
+            self.move_subelements()
         else:
-            self.move_object(delta)
+            self.move_object()
 
-    def move_subelements(self, delta):
+    def move_subelements(self):
+        try:
+            self.commit(translate("draft", "Move"), self.build_move_subelements_command())
+        except:
+            FreeCAD.Console.PrintError(translate("draft", "Some subelements could not be moved."))
+
+    def build_move_subelements_command(self):
+        import Part
+        command = []
         for object in self.selected_subelements:
             for index, subelement in enumerate(object.SubObjects):
                 if isinstance(subelement, Part.Vertex):
-                    Draft.moveVertex(getattr(FreeCAD.ActiveDocument, object.ObjectName),
-                            int(object.SubElementNames[index][len("Vertex"):])-1,
-                            subelement.Point, delta)
+                    command.append('Draft.moveVertex(FreeCAD.ActiveDocument.{}, {}, {}, {})'.format(
+                        object.ObjectName,
+                        int(object.SubElementNames[index][len("Vertex"):])-1,
+                        DraftVecUtils.toString(subelement.Point),
+                        DraftVecUtils.toString(self.vector)
+                        ))
                 elif isinstance(subelement, Part.Edge):
-                    Draft.moveEdge(getattr(FreeCAD.ActiveDocument, object.ObjectName),
-                            int(object.SubElementNames[index][len("Edge"):])-1,
-                            subelement, delta)
+                    command.append('Draft.moveEdge(FreeCAD.ActiveDocument.{}, {}, {})'.format(
+                        object.ObjectName,
+                        int(object.SubElementNames[index][len("Edge"):])-1,
+                        DraftVecUtils.toString(self.vector)
+                        ))
+        command.append('FreeCAD.ActiveDocument.recompute()')
+        return command
 
-    def move_object(self, delta):
+    def move_object(self):
         objects = '[' + ','.join(['FreeCAD.ActiveDocument.' + object.Name for object in self.selected_objects]) + ']'
         FreeCADGui.addModule("Draft")
         self.commit(translate("draft","Copy" if self.ui.isCopy.isChecked() else "Move"),
-            ['Draft.move('+objects+','+DraftVecUtils.toString(delta)+',copy='+str(self.ui.isCopy.isChecked())+')', 'FreeCAD.ActiveDocument.recompute()'])
+            ['Draft.move('+objects+','+DraftVecUtils.toString(self.vector)+',copy='+str(self.ui.isCopy.isChecked())+')', 'FreeCAD.ActiveDocument.recompute()'])
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when valid x, y, and z have been entered there"
