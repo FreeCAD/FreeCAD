@@ -38,6 +38,9 @@ public:
     int type() const { return Type;}
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
+    virtual QRectF boundingRect() const override;
+    virtual QPainterPath shape() const override;
+
     int getProjIndex() const { return projIndex; }
 
     void draw(void);
@@ -46,6 +49,8 @@ public:
     float getThick() { return m_width; }
     void setThick(float t);
     virtual void setPrettyNormal();
+
+    double getMarkFuzz(void) const;
 
 protected:
     int projIndex;
