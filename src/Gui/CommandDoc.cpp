@@ -273,17 +273,17 @@ void StdCmdExport::activated(int iMsg)
     }
 
     // fill the list of registered endings
-    QString formatList;
+    QStringList filterList;
     std::map<std::string, std::string> FilterList = App::GetApplication().getExportFilters();
     std::map<std::string, std::string>::const_iterator jt;
     for (jt=FilterList.begin();jt != FilterList.end();++jt) {
         // ignore the project file format
         if (jt->first.find("(*.FCStd)") == std::string::npos) {
-            formatList += QLatin1String(jt->first.c_str());
-            formatList += QLatin1String(";;");
+            filterList << QString::fromLatin1(jt->first.c_str());
         }
     }
 
+    QString formatList = filterList.join(QLatin1String(";;"));
     Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
                                ->GetGroup("Preferences")->GetGroup("General");
     QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
