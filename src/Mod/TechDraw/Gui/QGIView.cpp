@@ -78,7 +78,7 @@ const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
-     locked(false),
+     m_locked(false),
      borderVisible(true),
      m_innerView(false)
 {
@@ -120,12 +120,13 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     QPointF newPos(0.0,0.0);
-//    if(change == ItemPositionChange && scene()) {
-    if(change == ItemPositionHasChanged && scene()) {
+    if(change == ItemPositionChange && scene()) {
+//    if(change == ItemPositionHasChanged && scene()) {
         newPos = value.toPointF();            //position within parent!
-        if(locked){
+        if(m_locked){
             newPos.setX(pos().x());
             newPos.setY(pos().y());
+            return newPos;
         }
         
         // TODO  find a better data structure for this
@@ -133,14 +134,30 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
             TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
-            if ((dpg != nullptr) && dpg->AutoDistribute.getValue()) {
+            if (dpg != nullptr) {
                 if(alignHash.size() == 1) {   //if aligned.
-                    QGraphicsItem*item = alignHash.begin().value();
+                    QGraphicsItem* item = alignHash.begin().value();
                     QString alignMode   = alignHash.begin().key();
                     if(alignMode == QString::fromLatin1("Vertical")) {
                         newPos.setX(item->pos().x());
                     } else if(alignMode == QString::fromLatin1("Horizontal")) {
                         newPos.setY(item->pos().y());
+                    } else if(alignMode == QString::fromLatin1("45slash")) {
+                         //this logic is wrong since the constained movement direction is not necessarily 45*
+//                         Base::Console().Message("QGIV::itemChange - oblique BL-TR\n");
+//                        double dist = ( (newPos.x() - item->pos().x()) +
+//                                        (item->pos().y() - newPos.y()) ) / 2.0;
+
+//                        newPos.setX( item->pos().x() + dist);
+//                        newPos.setY( item->pos().y() - dist );
+                    } else if(alignMode == QString::fromLatin1("45backslash")) {
+                         //this logic is wrong since the constained movement direction is not necessarily 45*
+//                         Base::Console().Message("QGIV::itemChange - oblique TL-BR\n");
+//                        double dist = ( (newPos.x() - item->pos().x()) +
+//                                        (newPos.y() - item->pos().y()) ) / 2.0;
+
+//                        newPos.setX( item->pos().x() + dist);
+//                        newPos.setY( item->pos().y() + dist );
                     }
                 }
             }
@@ -162,7 +179,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    if(locked) {
+    if(m_locked) {
         event->ignore();
     } else {
       QGraphicsItem::mousePressEvent(event);
@@ -176,7 +193,7 @@ void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-    if(!locked && isSelected()) {
+    if(!m_locked) {
         if (!isInnerView()) {
             double tempX = x(),
                    tempY = getY();
@@ -255,10 +272,10 @@ QGIViewClip* QGIView::getClipGroup(void)
     return result;
 }
 
-
 void QGIView::updateView(bool update)
 {
-    if (getViewObject()->LockPosition.getValue()) {
+//    Base::Console().Message("QGIV::updateView() - %s\n",getViewObject()->getNameInDocument());
+    if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
     } else {
         setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -271,7 +288,9 @@ void QGIView::updateView(bool update)
         setPosition(featX,featY);
     }
 
-    if (getViewObject()->Rotation.isTouched() ) {
+    double appRotation = getViewObject()->Rotation.getValue();
+    double guiRotation = rotation();
+    if (!TechDraw::DrawUtil::fpCompare(appRotation,guiRotation)) {
         rotateView();
     }
 

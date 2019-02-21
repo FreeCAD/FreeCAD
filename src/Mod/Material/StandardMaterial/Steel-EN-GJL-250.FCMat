@@ -1,4 +1,4 @@
-; EN-GJL-250 - 0.6025 - EN 1561
+; Steel-EN-GJL-250
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,14 +8,14 @@ Name = EN-GJL-250
 NameDE = GG-25
 Father = Metal
 YoungsModulus = 115000 MPa
-UltimateTensileStrength = 250
+UltimateTensileStrength = 250 MPa
 PoissonRatio = 0.3
 Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.6025
-ModulusOfShare = 44000
 Norm = EN 1561
-ThermalExpansionCoefficient = 1.00E-005
+ShearModulus = 44000 MPa
+ThermalExpansionCoefficient = 0.00001 m/m/K
 UltimateStrain = 0
-YieldStrength = 165
+YieldStrength = 165 MPa

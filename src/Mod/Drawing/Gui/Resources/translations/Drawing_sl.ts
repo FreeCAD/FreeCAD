@@ -74,7 +74,7 @@
       <location line="+1"/>
       <location line="+2"/>
       <source>Export a page to an SVG file</source>
-      <translation>Izvozi v datoteko SVG</translation>
+      <translation>Izvozi stran v datoteko SVG</translation>
     </message>
   </context>
   <context>
@@ -138,7 +138,7 @@
     <message>
       <location line="+1"/>
       <source>Open a scalable vector graphic</source>
-      <translation>Odpri stopnjevano vektorsko sliko</translation>
+      <translation>Odpri vektorsko sliko z možnost spreminjanja velikosti</translation>
     </message>
   </context>
   <context>
@@ -170,12 +170,12 @@
     <message>
       <location line="+1"/>
       <source>Insert orthographic views</source>
-      <translation>Vstavi ortografske poglede</translation>
+      <translation>Vstavi pravokotne poglede</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Insert an orthographic projection of a part in the active drawing</source>
-      <translation>Vstavi ortografsko projekcijo dela v dejavno risbo</translation>
+      <translation>Vstavi pravokotno preslikavo dela v dejavno risbo</translation>
     </message>
   </context>
   <context>
@@ -188,13 +188,13 @@
     <message>
       <location line="+1"/>
       <source>Project shape...</source>
-      <translation>Projeciraj obliko …</translation>
+      <translation>Preslikaj obliko …</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+1"/>
       <source>Project shape onto a user-defined plane</source>
-      <translation>Projeciraj obliko na uporabniško določeno ravnino</translation>
+      <translation>Preslikaj obliko na ravnino, ki jo izbere uporabnik</translation>
     </message>
   </context>
   <context>
@@ -226,19 +226,19 @@
     <message>
       <location line="+1"/>
       <source>&amp;Symbol</source>
-      <translation>&amp;Simbol</translation>
+      <translation>&amp;Znak</translation>
     </message>
     <message>
       <location line="+1"/>
       <location line="+2"/>
       <source>Inserts a symbol from a svg file in the active drawing</source>
-      <translation>Vstavi simbol iz datoteke SVG v dejavno risbo</translation>
+      <translation>Vstavi znak iz datoteke Svg v dejavno risbo</translation>
     </message>
   </context>
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>&amp;Ozadje</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>&amp;Visokokakovostno glajenje robov</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>Odpri datoteko SVG</translation>
     </message>
@@ -379,7 +379,7 @@ Ali želite nadaljevati?</translation>
     <message>
       <location filename="../../TaskOrthoViews.ui" line="+26"/>
       <source>Orthographic Projection</source>
-      <translation>Ortografska projekcija</translation>
+      <translation>Pravokotna preslikava</translation>
     </message>
     <message>
       <location line="+20"/>
@@ -408,7 +408,7 @@ Ali želite nadaljevati?</translation>
     </message>
     <message>
       <source> Axis out and right</source>
-      <translation> Zunanje in desne osi</translation>
+      <translation> Osi navzven in desno</translation>
     </message>
     <message>
       <source> Vertical tilt</source>
@@ -422,12 +422,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location line="+71"/>
       <source>Axis out and right</source>
-      <translation>Zunanje in desne osi</translation>
+      <translation>Osi navzven in desno</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>Vertical tilt</source>
-      <translation>Vertikalni nagib</translation>
+      <translation>Navpični nagib</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -472,17 +472,17 @@ Ali želite nadaljevati?</translation>
     <message>
       <location line="-188"/>
       <source>Isometric</source>
-      <translation>Izometrično</translation>
+      <translation>Izometrična</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Dimetric</source>
-      <translation>Dimetrično</translation>
+      <translation>Dimetrična</translation>
     </message>
     <message>
       <location line="+5"/>
       <source>Trimetric</source>
-      <translation>Trimetrično</translation>
+      <translation>Trimetrična</translation>
     </message>
     <message>
       <location line="+8"/>
@@ -491,8 +491,12 @@ Ali želite nadaljevati?</translation>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation>Preslikava pogleda</translation>
+    </message>
+    <message>
       <source> View projection   </source>
-      <translation> Projekcija pogleda   </translation>
+      <translation> Preslikava pogleda   </translation>
     </message>
     <message>
       <location line="+7"/>
@@ -508,12 +512,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location line="-10"/>
       <source> Trimetric</source>
-      <translation> Trimetrično</translation>
+      <translation> Trimetrična</translation>
     </message>
     <message>
       <location line="+28"/>
       <source>Projection</source>
-      <translation>Projekcija</translation>
+      <translation>Preslikava</translation>
     </message>
     <message>
       <location line="+11"/>
@@ -582,12 +586,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location line="-514"/>
       <source>Primary view</source>
-      <translation>Primarni pogled</translation>
+      <translation>Glavni pogled</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Secondary Views</source>
-      <translation>Sekundarni pogledi</translation>
+      <translation>Pomožni pogledi</translation>
     </message>
     <message>
       <location line="+72"/>
@@ -648,12 +652,12 @@ Ali želite nadaljevati?</translation>
     <message>
       <location line="+1"/>
       <source>Visible outline edges</source>
-      <translation>Vidni zunanji robovi</translation>
+      <translation>Vidni obrisni robovi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Visible isoparameters</source>
-      <translation>Vidni iso parametri</translation>
+      <translation>Vidne izoparametre</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -673,17 +677,17 @@ Ali želite nadaljevati?</translation>
     <message>
       <location line="+1"/>
       <source>Hidden outline edges</source>
-      <translation>Skriti zunanji robovi</translation>
+      <translation>Skriti obrisni robovi</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Hidden isoparameters</source>
-      <translation>Skriti iso parametri</translation>
+      <translation>Skrite izoparametre</translation>
     </message>
     <message>
       <location line="+17"/>
       <source>Project shapes</source>
-      <translation>Projeciraj oblike</translation>
+      <translation>Preslikaj oblike</translation>
     </message>
     <message>
       <location line="+14"/>
@@ -793,7 +797,7 @@ Ali želite nadaljevati?</translation>
       <location line="-173"/>
       <location line="+521"/>
       <source>Choose an SVG file to open</source>
-      <translation>Za odpiranje izberi SVG datoteko</translation>
+      <translation>Izberite datoteko SVG, ki jo želite odpreti</translation>
     </message>
     <message>
       <source>Drawing viewer</source>
@@ -834,7 +838,7 @@ Ali želite nadaljevati?</translation>
       <location line="+521"/>
       <location line="+57"/>
       <source>Scalable Vector Graphic</source>
-      <translation>Stopnjevana vektorska slika</translation>
+      <translation>Vektorska slika spremenljive velikosti</translation>
     </message>
     <message>
       <location line="-317"/>
@@ -865,7 +869,7 @@ Ali želite nadaljevati?</translation>
       <location line="+50"/>
       <location line="+191"/>
       <source>Select one Page object.</source>
-      <translation>Izberite objekt tipa stran.</translation>
+      <translation>Izberite predmet - stran.</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -927,7 +931,7 @@ Ali želite nadaljevati?</translation>
       <location filename="../../TaskOrthoViews.cpp" line="+51"/>
       <location line="+930"/>
       <source>Make axonometric...</source>
-      <translation>Izdelaj aksonometrijo...</translation>
+      <translation>Izdelaj aksonometrijo ...</translation>
     </message>
     <message>
       <location line="-929"/>
@@ -939,7 +943,7 @@ Ali želite nadaljevati?</translation>
       <location line="-929"/>
       <location line="+930"/>
       <source>Make orthographic</source>
-      <translation>Izdelaj ortografijo</translation>
+      <translation>Izdelaj pravokotno preslikavo</translation>
     </message>
   </context>
   <context>

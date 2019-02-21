@@ -1,4 +1,4 @@
-; Material TEMPLATE file
+; TEMPLATE
 ; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)
 ; information about the content of such cards you can find here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -28,14 +28,14 @@ Vendor =
 ; Product URL, recommended are wikipedia links
 ProductURL = http://en.wikipedia.org/wiki/
 
-; Specific price in euro / kg
+; Specific price in currency / mass, a currency is not supported by FreeCAD unit system
 SpecificPrice =
 
-; Young's Modulus (or E-Module) in [MPa], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
-YoungsModulus = value MPa
+; Young's Modulus (or E-Module) in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
+YoungsModulus =
 
-; Ultimate tensile strength in [MPa], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
-UltimateTensileStrength = value MPa
+; Ultimate tensile strength in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
+UltimateTensileStrength =
 
 ; Poisson's ratio [unitless], see https://en.wikipedia.org/wiki/Poisson%27s_ratio for the details
 PoissonRatio =
@@ -44,22 +44,22 @@ PoissonRatio =
 AmbientColor =
 
 ; Description to be updated
+AngleOfFriction
+
+; Description to be updated
 Color =
 
 ; Compressive strength https://en.wikipedia.org/wiki/Compressive_strength
 CompressiveStrength =
 
-; Density in [kg/m^3] https://en.wikipedia.org/wiki/Density
-Density = value kg/m^3
+; Density in [FreeCAD Density unit] https://en.wikipedia.org/wiki/Density
+Density =
 
 ; Description to be updated
 DiffuseColor =
 
 ; Description to be updated
 EmissiveColor =
-
-; Description to be updated
-Enlargen =
 
 ; Description to be updated
 EnvironmentalEfficiencyClass =
@@ -92,10 +92,10 @@ MaterialNumber =
 Model =
 
 ; Description to be updated
-ModulusOfShare =
+Norm =
 
 ; Description to be updated
-Norm =
+ReferenceSource
 
 ; Description to be updated
 SectionFillPattern =
@@ -104,10 +104,16 @@ SectionFillPattern =
 SectionLinewidth =
 
 ; Description to be updated
+ShearModulus =
+
+; Description to be updated
 Shininess =
 
 ; Description to be updated
 SoundTransmissionClass =
+
+; Description to be updated
+SourceURL
 
 ; Description to be updated
 SpecificHeat =
@@ -151,5 +157,5 @@ ViewFillPattern =
 ; Description to be updated
 ViewLinewidth =
 
-; Yield strength in [MPa] https://en.wikipedia.org/wiki/Yield_%28engineering%29
-YieldStrength = value MPa
+; Yield strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Yield_%28engineering%29
+YieldStrength =

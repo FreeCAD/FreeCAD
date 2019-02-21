@@ -102,7 +102,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Center-align contents vertically of selected cells</source>
+        <source>Vertically center-align contents of selected cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -222,14 +222,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set underline text in selected cells</source>
+        <source>Underline text in selected cells</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ColorPickerPopup</name>
     <message>
-        <source>Custom</source>
+        <source>Custom Color</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -336,6 +336,22 @@
     </message>
     <message>
         <source>Show spreadsheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set cell(s) foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the Spreadsheet cell(s) foreground color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set cell(s) background color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the Spreadsheet cell(s) background color</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

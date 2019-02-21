@@ -102,8 +102,8 @@
       <translation>Lerrokatu erdian bertikalean</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
-      <translation>Lerrokatu erdian bertikalean hautatutako gelaxken edukiak</translation>
+      <source>Vertically center-align contents of selected cells</source>
+      <translation>Lerrokatu erdian eta bertikalean hautatutako gelaxken edukiak</translation>
     </message>
   </context>
   <context>
@@ -222,15 +222,15 @@
       <translation>Testu azpimarratua</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Ezarri testu azpimarratua hautatutako gelaxketan</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Azpimarratu testua hautatutako gelaxketan</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Pertsonalizatua</translation>
+      <source>Custom Color</source>
+      <translation>Kolore pertsonalizatua</translation>
     </message>
   </context>
   <context>

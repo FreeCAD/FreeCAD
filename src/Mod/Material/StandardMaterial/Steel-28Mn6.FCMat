@@ -1,4 +1,4 @@
-; 28Mn6 - 1.1170 - EN 10083-1
+; Steel-28Mn6
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,14 +8,14 @@ Name = 28Mn6
 NameDE = 28Mn6
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 800
+UltimateTensileStrength = 800 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Heat-treatable steel
 KindOfMaterialDE = Vergütungsstahl
 MaterialNumber = 1.117
-ModulusOfShare = 81000
 Norm = EN 10083-1
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 13
-YieldStrength = 590
+YieldStrength = 590 MPa

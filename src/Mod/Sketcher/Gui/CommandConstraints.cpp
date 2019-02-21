@@ -1887,11 +1887,11 @@ void CmdSketcherConstrainLock::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ConstrainLock"));
         break;
     }
 }
@@ -2769,11 +2769,11 @@ void CmdSketcherConstrainDistance::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Length"));
         break;
     }
 }
@@ -3245,11 +3245,11 @@ void CmdSketcherConstrainDistanceX::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_HorizontalDistance"));
         break;
     }
 }
@@ -3492,11 +3492,11 @@ void CmdSketcherConstrainDistanceY::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_VerticalDistance"));
         break;
     }
 }
@@ -5451,11 +5451,11 @@ void CmdSketcherConstrainRadius::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
         break;
     }
 }
@@ -5922,11 +5922,11 @@ void CmdSketcherConstrainDiameter::updateAction(int mode)
     switch (mode) {
         case Reference:
             if (getAction())
-                getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter_Driven"));
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
             break;
         case Driving:
             if (getAction())
-                getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter"));
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
             break;
     }
 }
@@ -5976,9 +5976,9 @@ Gui::Action * CmdSketcherCompConstrainRadDia::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
+    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
     QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter"));
+    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
 
     _pcAction = pcAction;
     languageChange();
@@ -6002,13 +6002,13 @@ void CmdSketcherCompConstrainRadDia::updateAction(int mode)
     int index = pcAction->property("defaultAction").toInt();
     switch (mode) {
         case Reference:
-            a[0]->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
-            a[1]->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter_Driven"));
+            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius_Driven"));
+            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter_Driven"));
             getAction()->setIcon(a[index]->icon());
             break;
         case Driving:
-            a[0]->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
-            a[1]->setIcon(Gui::BitmapFactory().pixmap("Constraint_Diameter"));
+            a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Radius"));
+            a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_Diameter"));
             getAction()->setIcon(a[index]->icon());
             break;
     }
@@ -6543,11 +6543,11 @@ void CmdSketcherConstrainAngle::updateAction(int mode)
     switch (mode) {
     case Reference:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle_Driven"));
         break;
     case Driving:
         if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
+            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Constraint_InternalAngle"));
         break;
     }
 }
@@ -7434,7 +7434,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
         if(arcsofellipseids.size()>1){
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("You cannot internally constrain an arc of ellipse on other arc of ellipse. Select only one arc of ellipse."));
+                QObject::tr("You cannot internally constrain an arc of ellipse on another arc of ellipse. Select only one arc of ellipse."));
             return;
         }
 

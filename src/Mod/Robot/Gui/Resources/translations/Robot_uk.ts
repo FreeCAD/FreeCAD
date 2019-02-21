@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation type="unfinished">Set the default orientation for subsequent commands for waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>Встановіть стандартну орієнтацію для наступних команд для створення точок маршруту</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation type="unfinished">Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Встановити стандартні значення швидкості, прискорення та послідовності для наступних команд для побудови точок маршруту</translation>
     </message>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Для моделювання, потрібно, принаймні, дві точки на траєкторії.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>Вам потрібно щонайменше дві точки на траєкторії для моделювання.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>Щоб використовувати цю команду, курсор миші повинен знаходитися над попередньо обраною геометричною побудовою. Подробиці дивіться у документації.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Встановити швидкість за замовчуванням</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Встановити послідовність за замовчуванням</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Встановити прискорення за замовчуванням</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Оберіть одного з роботів щоб встановити домашню позицію</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Оберіть одного Робота</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Оберіть одну Траєкторію об’єкта.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>Встановити стандартну швидкість</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>швидкість: (напр. 1 м/с або 3 см/с)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>Встановити стандартну послідовність</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>послідовність ?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>Встановити стандартне прискорення</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>прискорення: (напр. 1 м/с^2 або 3 см/с^2)</translation>
     </message>

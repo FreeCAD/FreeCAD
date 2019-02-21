@@ -204,5 +204,5 @@ PyObject *ArcPy::getCustomAttributes(const char* /*attr*/) const
 
 int ArcPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

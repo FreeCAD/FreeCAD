@@ -146,6 +146,9 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                     self.buildpathocc(obj, shapeWires, zValues)
                     wires.extend(shapeWires)
                 self.wires = wires
+            # the last command is a move to clearance, which is automatically added by PathOp
+            if self.commandlist:
+                self.commandlist.pop()
 
         except Exception as e:
             PathLog.error(e)

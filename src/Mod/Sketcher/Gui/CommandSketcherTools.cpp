@@ -1595,11 +1595,11 @@ Gui::Action * CmdSketcherCompCopy::createAction(void)
     applyCommandData(this->className(), pcAction);
     
     QAction* clone = pcAction->addAction(QString());
-    clone->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Clone"));
+    clone->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Clone"));
     QAction* copy = pcAction->addAction(QString());
-    copy->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Copy"));
+    copy->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Copy"));
     QAction* move = pcAction->addAction(QString());
-    move->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Move"));
+    move->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Move"));
     
     _pcAction = pcAction;
     languageChange();

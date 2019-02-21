@@ -102,7 +102,7 @@
       <translation>Vertikal zentrieren</translation>
     </message>
     <message>
-      <source>Center-align contents vertically of selected cells</source>
+      <source>Vertically center-align contents of selected cells</source>
       <translation>Inhalt der gewählten Zellen vertikal zentrieren</translation>
     </message>
   </context>
@@ -222,15 +222,15 @@
       <translation>Text unterstreichen</translation>
     </message>
     <message>
-      <source>Set underline text in selected cells</source>
-      <translation>Unterstreicht Text in den gewählten Zellen</translation>
+      <source>Underline text in selected cells</source>
+      <translation>Unterstreiche den Text in den markierten Zellen</translation>
     </message>
   </context>
   <context>
     <name>ColorPickerPopup</name>
     <message>
-      <source>Custom</source>
-      <translation>Benutzerdefiniert</translation>
+      <source>Custom Color</source>
+      <translation>Benutzerdefinierte Farbe</translation>
     </message>
   </context>
   <context>

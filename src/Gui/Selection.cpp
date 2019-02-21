@@ -371,7 +371,7 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDoc
         if (It->pDoc == pcDoc) {
             // right type?
             if (It->pObject->getTypeId().isDerivedFrom(typeId)){
-                // if the object has already an entry
+                // if the object already has an entry
                 if (SortMap.find(It->pObject) != SortMap.end()){
                     // only add sub-element
                     if (!It->SubName.empty()) {
@@ -506,14 +506,10 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
             } else {
                 msg = QCoreApplication::translate("SelectionFilter","Not allowed:");
             }
-            msg += QString::fromUtf8(" "); 
-            msg.append(
-                        QObject::tr("%1.%2.%3")
-                       .arg(QString::fromLatin1(pDocName))
-                       .arg(QString::fromLatin1(pObjectName))
-                       .arg(QString::fromLatin1(pSubName))
-                        );
-            msg += QString::fromUtf8(" "); 
+            msg.append(QString::fromLatin1(" %1.%2.%3 ")
+                  .arg(QString::fromLatin1(pDocName),
+                       QString::fromLatin1(pObjectName),
+                       QString::fromLatin1(pSubName)));
 
             if (getMainWindow()) {
                 getMainWindow()->showMessage(msg);

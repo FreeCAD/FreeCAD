@@ -737,7 +737,7 @@ void TaskAttacher::updateAttachmentOffsetUI()
     ui->attachmentOffsetPitch->setEnabled(!bRotationBound);
     ui->attachmentOffsetRoll->setEnabled(!bRotationBound);
 
-    QString tooltip = bRotationBound ? tr("Not editable because rotation part of AttachmentOffset is bound by expressions.") : QString();
+    QString tooltip = bRotationBound ? tr("Not editable because rotation of AttachmentOffset is bound by expressions.") : QString();
     ui->attachmentOffsetYaw->setToolTip(tooltip);
     ui->attachmentOffsetPitch->setToolTip(tooltip);
     ui->attachmentOffsetRoll->setToolTip(tooltip);
@@ -801,8 +801,9 @@ void TaskAttacher::updateListOfModes()
             QString tooltip = mstr[1];
 
             if (mmode != mmDeactivated) {
-                tooltip += QString::fromLatin1("\n\n") + tr("Reference combinations:") + QString::fromLatin1("\n") +
-                   AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n"));
+                tooltip += QString::fromLatin1("\n\n%1\n%2")
+                        .arg(tr("Reference combinations:"),
+                             AttacherGui::getRefListForMode(pcAttach->attacher(),mmode).join(QString::fromLatin1("\n")));
             }
             item->setToolTip(tooltip);
 
@@ -827,7 +828,6 @@ void TaskAttacher::updateListOfModes()
                 }
             } else if (mmode == this->lastSuggestResult.bestFitMode){
                 //suggested mode - make bold
-                assert (item);
                 QFont fnt = item->font();
                 fnt.setBold(true);
                 item->setFont(fnt);

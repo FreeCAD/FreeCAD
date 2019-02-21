@@ -29,12 +29,12 @@
     <message>
       <location line="+1"/>
       <source>Show/Hide B-spline degree</source>
-      <translation type="unfinished">Show/Hide B-spline degree</translation>
+      <translation>Visa/Dölj B-splines gradtal</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the degree for all B-splines</translation>
+      <translation>Växlar mellan att visa och dölja gradtalet för alla B-splines</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location line="+1"/>
       <source>CarbonCopy</source>
-      <translation type="unfinished">CarbonCopy</translation>
+      <translation>Karbonkopia</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Copies the geometry of another sketch</source>
-      <translation type="unfinished">Copies the geometry of another sketch</translation>
+      <translation>Kopierar geometrin från en annan skiss</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
+      <translation>Skapar en klon av geometrin med den senaste valda punkten som referens</translation>
     </message>
   </context>
   <context>
@@ -143,7 +143,7 @@
     <message>
       <location line="+69"/>
       <source>Show/Hide B-spline degree</source>
-      <translation type="unfinished">Show/Hide B-spline degree</translation>
+      <translation>Visa/Dölj B-splines gradtal</translation>
     </message>
     <message>
       <location line="+4"/>
@@ -164,19 +164,19 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5915"/>
+      <location filename="../../CommandConstraints.cpp" line="+5942"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrain arc or circle</source>
-      <translation type="unfinished">Constrain arc or circle</translation>
+      <translation>Begränsa båge eller cirkel</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrain an arc or a circle</source>
-      <translation type="unfinished">Constrain an arc or a circle</translation>
+      <translation>Begränsa båge eller cirkel</translation>
     </message>
     <message>
       <location line="+83"/>
@@ -186,7 +186,7 @@
     <message>
       <location line="+4"/>
       <source>Constrain diameter</source>
-      <translation type="unfinished">Constrain diameter</translation>
+      <translation>Begränsa diameter</translation>
     </message>
   </context>
   <context>
@@ -204,7 +204,7 @@
     <message>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
+      <translation>Skapar en klon av geometrin med den senaste valda punkten som referens</translation>
     </message>
   </context>
   <context>
@@ -222,7 +222,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc in the sketcher</source>
-      <translation type="unfinished">Create an arc in the sketcher</translation>
+      <translation>Skapa en båge i skissen</translation>
     </message>
     <message>
       <location line="+77"/>
@@ -232,7 +232,7 @@
     <message>
       <location line="+4"/>
       <source>End points and rim point</source>
-      <translation type="unfinished">End points and rim point</translation>
+      <translation>Ändpunkter och kantpunkt</translation>
     </message>
   </context>
   <context>
@@ -268,17 +268,17 @@
     <message>
       <location line="+1"/>
       <source>Create a circle in the sketcher</source>
-      <translation type="unfinished">Create a circle in the sketcher</translation>
+      <translation>Skapa en cirkel i skissen</translation>
     </message>
     <message>
       <location line="+77"/>
       <source>Center and rim point</source>
-      <translation type="unfinished">Center and rim point</translation>
+      <translation>Center och kantpunkt</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>3 rim points</source>
-      <translation type="unfinished">3 rim points</translation>
+      <translation>3 kantpunkter</translation>
     </message>
   </context>
   <context>
@@ -291,37 +291,37 @@
     <message>
       <location line="+1"/>
       <source>Create a conic</source>
-      <translation type="unfinished">Create a conic</translation>
+      <translation>Skapa kägelsnitt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a conic in the sketch</source>
-      <translation type="unfinished">Create a conic in the sketch</translation>
+      <translation>Skapa ett kägelsnitt i skissen</translation>
     </message>
     <message>
       <location line="+105"/>
       <source>Ellipse by center, major radius, point</source>
-      <translation type="unfinished">Ellipse by center, major radius, point</translation>
+      <translation>Ellips av center, största radie och punkt</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Ellipse by Periapsis, apoapsis, minor radius</source>
-      <translation type="unfinished">Ellipse by Periapsis, apoapsis, minor radius</translation>
+      <translation>Ellips av Periapsis, Apsis samt minsta radie</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Arc of ellipse by center, major radius, endpoints</source>
-      <translation type="unfinished">Arc of ellipse by center, major radius, endpoints</translation>
+      <translation>Elliptisk båge från center, största radie och slutpunkter</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Arc of hyperbola by center, major radius, endpoints</source>
-      <translation type="unfinished">Arc of hyperbola by center, major radius, endpoints</translation>
+      <translation>Hyperbolisk båge från center, största radie och slutpunkter</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Arc of parabola by focus, vertex, endpoints</source>
-      <translation type="unfinished">Arc of parabola by focus, vertex, endpoints</translation>
+      <translation>Parabolisk båge från fokus, vertex och slutpunkter</translation>
     </message>
   </context>
   <context>
@@ -334,16 +334,16 @@
     <message>
       <location line="+1"/>
       <source>Create regular polygon</source>
-      <translation type="unfinished">Create regular polygon</translation>
+      <translation>Skapa regelbunden polygon</translation>
     </message>
     <message>
       <source>Create an regular polygon in the sketcher</source>
-      <translation type="unfinished">Create an regular polygon in the sketcher</translation>
+      <translation>Skapa en regelbunden polygon i skissen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation type="unfinished">Create a regular polygon in the sketcher</translation>
+      <translation>Skapa en regelbunden polygon i skissen</translation>
     </message>
     <message>
       <location line="+118"/>
@@ -373,12 +373,12 @@
     <message>
       <location line="+4"/>
       <source>Octagon</source>
-      <translation>Octagon</translation>
+      <translation>Oktogon</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Regular Polygon</source>
-      <translation type="unfinished">Regular Polygon</translation>
+      <translation>Regelbunden polygon</translation>
     </message>
   </context>
   <context>
@@ -424,7 +424,7 @@
     <message>
       <location line="+1"/>
       <source>Link end point of element with next elements' starting point</source>
-      <translation type="unfinished">Link end point of element with next elements' starting point</translation>
+      <translation>Länka elementets slutpunkt med nästa elements startpunkt</translation>
     </message>
   </context>
   <context>
@@ -448,19 +448,19 @@
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location line="-4079"/>
+      <location line="-4106"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrain Block</source>
-      <translation type="unfinished">Constrain Block</translation>
+      <translation>Begränsa Block</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a Block constraint on the selected item</source>
-      <translation type="unfinished">Create a Block constraint on the selected item</translation>
+      <translation>Skapa en block begränsning för det markerade objektet</translation>
     </message>
   </context>
   <context>
@@ -484,25 +484,25 @@
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location line="+3188"/>
+      <location line="+3215"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Constrain diameter</source>
-      <translation type="unfinished">Constrain diameter</translation>
+      <translation>Begränsa diameter</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the diameter of a circle or an arc</translation>
+      <translation>Fixera diametern av en cirkel eller en båge</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location line="-3000"/>
+      <location line="-3027"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
@@ -564,7 +564,7 @@
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location line="+3267"/>
+      <location line="+3294"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
@@ -582,7 +582,7 @@
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location line="-5354"/>
+      <location line="-5381"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
@@ -600,7 +600,7 @@
   <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-      <location line="+5966"/>
+      <location line="+5993"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
@@ -618,7 +618,7 @@
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location line="-5476"/>
+      <location line="-5503"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
@@ -666,7 +666,7 @@
     <message>
       <location line="+1"/>
       <source>Create a perpendicular constraint between two lines</source>
-      <translation type="unfinished">Create a perpendicular constraint between two lines</translation>
+      <translation>Skapa en vinkelrät begränsning mellan två linjer</translation>
     </message>
     <message>
       <source>Create a Perpendicular constraint between two lines</source>
@@ -694,7 +694,7 @@
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location line="+2142"/>
+      <location line="+2169"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
@@ -719,12 +719,12 @@
     <message>
       <location line="+1"/>
       <source>Constrain refraction (Snell's law')</source>
-      <translation type="unfinished">Constrain refraction (Snell's law')</translation>
+      <translation>Begränsning refraktion (Snells lag ')</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a refraction law (Snell's law) constraint between two endpoints of rays and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law) constraint between two endpoints of rays and an edge as an interface.</translation>
+      <translation>Skapa en refraktions (Snells lag) begränsning mellan två ändpunkter av strålar och en kant som ett gränssnitt.</translation>
     </message>
   </context>
   <context>
@@ -742,7 +742,7 @@
     <message>
       <location line="+1"/>
       <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
-      <translation type="unfinished">Create a symmetry constraint between two points with respect to a line or a third point</translation>
+      <translation>Skapa en symetribegränsning mellan två punkter med avseende på en linje eller en tredje punkt</translation>
     </message>
     <message>
       <source>Create an symmetry constraint between two points with respect to a line</source>
@@ -752,7 +752,7 @@
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location line="-2364"/>
+      <location line="-2391"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
@@ -795,12 +795,12 @@
     <message>
       <location line="+1"/>
       <source>Convert Geometry to B-spline</source>
-      <translation type="unfinished">Convert Geometry to B-spline</translation>
+      <translation>Omvandla geometri till B-spline</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Converts the given Geometry to a B-spline</source>
-      <translation type="unfinished">Converts the given Geometry to a B-spline</translation>
+      <translation>Omvandlar den givna geometrin till en B-spline</translation>
     </message>
   </context>
   <context>
@@ -818,7 +818,7 @@
     <message>
       <location line="+1"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a simple copy of the geometry taking as reference the last selected point</translation>
+      <translation>Skapar en enkel kopia av geometrin med den senaste valda punkten som referens</translation>
     </message>
   </context>
   <context>
@@ -836,7 +836,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+      <translation>Skapa en båge av dess ändpunkter och en punkt längs bågen</translation>
     </message>
   </context>
   <context>
@@ -872,7 +872,7 @@
     <message>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation type="unfinished">Create an arc by its center and by its end points</translation>
+      <translation>Skapa en båge genom dess centrum och dess slutpunkter</translation>
     </message>
     <message>
       <source>Create arc</source>
@@ -893,12 +893,12 @@
     <message>
       <location line="+1"/>
       <source>Create an arc of ellipse</source>
-      <translation type="unfinished">Create an arc of ellipse</translation>
+      <translation>Skapa en elliptisk båge</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of ellipse in the sketch</source>
-      <translation type="unfinished">Create an arc of ellipse in the sketch</translation>
+      <translation>Skapa en elliptisk båge i skissen</translation>
     </message>
   </context>
   <context>
@@ -911,12 +911,12 @@
     <message>
       <location line="+1"/>
       <source>Create an arc of hyperbola</source>
-      <translation type="unfinished">Create an arc of hyperbola</translation>
+      <translation>Skapa en hyperblisk båge</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of hyperbola in the sketch</source>
-      <translation type="unfinished">Create an arc of hyperbola in the sketch</translation>
+      <translation>Skapar en hyperblisk båge i skissen</translation>
     </message>
   </context>
   <context>
@@ -929,12 +929,12 @@
     <message>
       <location line="+1"/>
       <source>Create an arc of parabola</source>
-      <translation type="unfinished">Create an arc of parabola</translation>
+      <translation>Skapa en parabolisk båge</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an arc of parabola in the sketch</source>
-      <translation type="unfinished">Create an arc of parabola in the sketch</translation>
+      <translation>Skapa en parabolisk båge i skissen</translation>
     </message>
   </context>
   <context>
@@ -947,12 +947,16 @@
     <message>
       <location line="+1"/>
       <source>Create B-spline</source>
-      <translation type="unfinished">Create B-spline</translation>
+      <translation>Skapa B-spline</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Create a B-spline via control points in the sketch.</source>
+      <translation type="unfinished">Create a B-spline via control points in the sketch.</translation>
+    </message>
+    <message>
       <source>Create a B-spline via control point in the sketch.</source>
-      <translation type="unfinished">Create a B-spline via control point in the sketch.</translation>
+      <translation>Skapa en B-spline via kontrollpunkten i skissen.</translation>
     </message>
   </context>
   <context>
@@ -1001,12 +1005,12 @@
     <message>
       <location line="+1"/>
       <source>Create ellipse by 3 points</source>
-      <translation type="unfinished">Create ellipse by 3 points</translation>
+      <translation>Skapa ellips från 3 pukter</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation type="unfinished">Create an ellipse by 3 points in the sketch</translation>
+      <translation>Skapar en ellips i skissen från 3 punkter i skissen</translation>
     </message>
   </context>
   <context>
@@ -1019,12 +1023,12 @@
     <message>
       <location line="+1"/>
       <source>Create ellipse by center</source>
-      <translation type="unfinished">Create ellipse by center</translation>
+      <translation>Skapa ellips från centrumpunkt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation type="unfinished">Create an ellipse by center in the sketch</translation>
+      <translation>Skapar en ellips i skissen från en centrumpunkt</translation>
     </message>
   </context>
   <context>
@@ -1149,12 +1153,16 @@
     <message>
       <location line="+1"/>
       <source>Create periodic B-spline</source>
-      <translation type="unfinished">Create periodic B-spline</translation>
+      <translation>Skapa periodisk B-spline</translation>
     </message>
     <message>
       <location line="+1"/>
+      <source>Create a periodic B-spline via control points in the sketch.</source>
+      <translation type="unfinished">Create a periodic B-spline via control points in the sketch.</translation>
+    </message>
+    <message>
       <source>Create a periodic B-spline via control point in the sketch.</source>
-      <translation type="unfinished">Create a periodic B-spline via control point in the sketch.</translation>
+      <translation>Skapa en periodisk B-spline via kontrollpunkten i skissen.</translation>
     </message>
   </context>
   <context>
@@ -1225,12 +1233,12 @@
     <message>
       <location line="+1"/>
       <source>Create regular polygon</source>
-      <translation type="unfinished">Create regular polygon</translation>
+      <translation>Skapa regelbunden polygon</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation type="unfinished">Create a regular polygon in the sketch</translation>
+      <translation>Skapa en regelbunden polygon i skissen</translation>
     </message>
   </context>
   <context>
@@ -1243,12 +1251,12 @@
     <message>
       <location line="+1"/>
       <source>Create slot</source>
-      <translation type="unfinished">Create slot</translation>
+      <translation>Skapa skåra</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create a slot in the sketch</source>
-      <translation type="unfinished">Create a slot in the sketch</translation>
+      <translation>Skapa en skåra i skissen</translation>
     </message>
   </context>
   <context>
@@ -1266,7 +1274,7 @@
     <message>
       <location line="+1"/>
       <source>Create a square in the sketch</source>
-      <translation type="unfinished">Create a square in the sketch</translation>
+      <translation>Skapa en kvadrat i sketchen</translation>
     </message>
   </context>
   <context>
@@ -1297,12 +1305,12 @@
     <message>
       <location line="+1"/>
       <source>Create equilateral triangle</source>
-      <translation type="unfinished">Create equilateral triangle</translation>
+      <translation>Skapa liksidig triangel</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Create an equilateral triangle in the sketch</source>
-      <translation type="unfinished">Create an equilateral triangle in the sketch</translation>
+      <translation>Skapa en liksidig triangel i skissen</translation>
     </message>
   </context>
   <context>
@@ -1333,12 +1341,12 @@
     <message>
       <location line="+1"/>
       <source>Delete All Constraints</source>
-      <translation type="unfinished">Delete All Constraints</translation>
+      <translation>Ta bort alla begränsningar</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Deletes all the constraints</source>
-      <translation type="unfinished">Deletes all the constraints</translation>
+      <translation>Tar bort alla begränsningar</translation>
     </message>
   </context>
   <context>
@@ -1351,12 +1359,12 @@
     <message>
       <location line="+1"/>
       <source>Delete All Geometry</source>
-      <translation type="unfinished">Delete All Geometry</translation>
+      <translation>Ta bort all geometri</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Deletes all the geometry and constraints but external geometry</source>
-      <translation type="unfinished">Deletes all the geometry and constraints but external geometry</translation>
+      <translation>Tar bort all geometri och begränsningar förutom extern geometri</translation>
     </message>
   </context>
   <context>
@@ -1374,7 +1382,7 @@
     <message>
       <location line="+1"/>
       <source>Edit the selected sketch</source>
-      <translation type="unfinished">Edit the selected sketch</translation>
+      <translation>Redigera den valda skissen</translation>
     </message>
   </context>
   <context>
@@ -1387,12 +1395,12 @@
     <message>
       <location line="+1"/>
       <source>Extend edge</source>
-      <translation type="unfinished">Extend edge</translation>
+      <translation>Förläng kant</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Extend an edge with respect to the picked position</source>
-      <translation type="unfinished">Extend an edge with respect to the picked position</translation>
+      <translation>Förläng en kant till valt objekt</translation>
     </message>
   </context>
   <context>
@@ -1423,12 +1431,12 @@
     <message>
       <location line="+1"/>
       <source>Increase degree</source>
-      <translation type="unfinished">Increase degree</translation>
+      <translation>Öka graden</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Increases the degree of the B-spline</source>
-      <translation type="unfinished">Increases the degree of the B-spline</translation>
+      <translation>Ökar graden på B-splinen</translation>
     </message>
   </context>
   <context>
@@ -1445,7 +1453,7 @@
     </message>
     <message>
       <source>Increase degree</source>
-      <translation type="unfinished">Increase degree</translation>
+      <translation>Öka graden</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1491,7 +1499,7 @@
     <message>
       <location line="+50"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!</translation>
+      <translation>Vissa av de markerade objekten beror på skissen som ska mappas. Cirkulära beroenden är inte tillåtna!</translation>
     </message>
   </context>
   <context>
@@ -1515,7 +1523,7 @@
     <message>
       <location line="+1"/>
       <source>Select at least two sketches, please.</source>
-      <translation type="unfinished">Select at least two sketches, please.</translation>
+      <translation>Vänligen välj minst två skisser.</translation>
     </message>
   </context>
   <context>
@@ -1529,7 +1537,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Mirror sketch</source>
-      <translation type="unfinished">Mirror sketch</translation>
+      <translation>Spegla skiss</translation>
     </message>
     <message>
       <location line="+13"/>
@@ -1539,7 +1547,7 @@
     <message>
       <location line="+1"/>
       <source>Select one or more sketches, please.</source>
-      <translation type="unfinished">Select one or more sketches, please.</translation>
+      <translation>Var god välj en eller flera skisser.</translation>
     </message>
   </context>
   <context>
@@ -1557,7 +1565,7 @@
     <message>
       <location line="+1"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Moves the geometry taking as reference the last selected point</translation>
+      <translation>Flyttar geometrin med den senaste valda punkten som referens</translation>
     </message>
   </context>
   <context>
@@ -1607,12 +1615,12 @@
     <message>
       <location line="+1"/>
       <source>Rectangular Array</source>
-      <translation type="unfinished">Rectangular Array</translation>
+      <translation>Rektangulärt mönster</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Creates an rectangular array pattern of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates an rectangular array pattern of the geometry taking as reference the last selected point</translation>
+      <translation>Skapar ett rektangulärt mönster med den senaste valda punkten som referens</translation>
     </message>
   </context>
   <context>
@@ -1625,12 +1633,12 @@
     <message>
       <location line="+1"/>
       <source>Reorient sketch...</source>
-      <translation type="unfinished">Reorient sketch...</translation>
+      <translation>Omorientera skiss...</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Reorient the selected sketch</source>
-      <translation type="unfinished">Reorient the selected sketch</translation>
+      <translation>Omorientera den valda skissen</translation>
     </message>
   </context>
   <context>
@@ -1643,12 +1651,12 @@
     <message>
       <location line="+1"/>
       <source>Show/hide internal geometry</source>
-      <translation type="unfinished">Show/hide internal geometry</translation>
+      <translation>Visa/Dölj inre geometri</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Show all internal geometry / hide unused internal geometry</source>
-      <translation type="unfinished">Show all internal geometry / hide unused internal geometry</translation>
+      <translation>Visa all inre geometri / dölj oanvänd inre geometri</translation>
     </message>
   </context>
   <context>
@@ -1662,7 +1670,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Select Conflicting Constraints</source>
-      <translation type="unfinished">Select Conflicting Constraints</translation>
+      <translation>Välj motstridiga begränsningar</translation>
     </message>
   </context>
   <context>
@@ -1675,12 +1683,12 @@
     <message>
       <location line="+1"/>
       <source>Select Constraints</source>
-      <translation type="unfinished">Select Constraints</translation>
+      <translation>Välj begränsningar</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select the constraints associated to the selected elements</source>
-      <translation type="unfinished">Select the constraints associated to the selected elements</translation>
+      <translation>Välj de begränsningar som är kopplade till de markerade elementen</translation>
     </message>
   </context>
   <context>
@@ -1694,7 +1702,7 @@
       <location line="+1"/>
       <location line="+1"/>
       <source>Select Elements associated with constraints</source>
-      <translation type="unfinished">Select Elements associated with constraints</translation>
+      <translation>Välj element kopplade till begränsningar</translation>
     </message>
   </context>
   <context>
@@ -1707,12 +1715,12 @@
     <message>
       <location line="+1"/>
       <source>Select solver DoFs</source>
-      <translation type="unfinished">Select solver DoFs</translation>
+      <translation>Välj Problemlösaren DoFs</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Select elements where the solver still detects unconstrained degrees of freedom.</source>
-      <translation type="unfinished">Select elements where the solver still detects unconstrained degrees of freedom.</translation>
+      <translation>Välj element där Problemlösaren fortfarande upptäcker obegränsade frihetsgrader.</translation>
     </message>
   </context>
   <context>
@@ -1725,7 +1733,7 @@
     <message>
       <location line="+1"/>
       <source>Select Horizontal Axis</source>
-      <translation type="unfinished">Select Horizontal Axis</translation>
+      <translation>Markera den vågräta axeln</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -1793,12 +1801,12 @@
     <message>
       <location line="+1"/>
       <source>Switch virtual space</source>
-      <translation type="unfinished">Switch virtual space</translation>
+      <translation>Växla virtuell rymd</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
-      <translation type="unfinished">Switches the selected constraints or the view to the other virtual space</translation>
+      <translation>Växlar valda begränsningar eller vyn till den andra virtuella rymden</translation>
     </message>
   </context>
   <context>
@@ -1816,7 +1824,7 @@
     <message>
       <location line="+1"/>
       <source>Creates symmetric geometry with respect to the last selected line or point</source>
-      <translation type="unfinished">Creates symmetric geometry with respect to the last selected line or point</translation>
+      <translation>Skapar symmetrisk geometri med avseende på den senaste valda linjen eller en punkt</translation>
     </message>
   </context>
   <context>
@@ -1829,12 +1837,12 @@
     <message>
       <location line="+1"/>
       <source>Toggle construction geometry</source>
-      <translation type="unfinished">Toggle construction geometry</translation>
+      <translation>Växla konstruktionsgeometri</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-      <translation type="unfinished">Toggles the toolbar or selected geometry to/from construction mode</translation>
+      <translation>Växlar verktygsfältet eller valda geometrin till och från bygg-läge</translation>
     </message>
     <message>
       <source>Toggle construction line</source>
@@ -1848,19 +1856,19 @@
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+6135"/>
+      <location filename="../../CommandConstraints.cpp" line="+6162"/>
       <source>Sketcher</source>
       <translation>Skissare</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Toggle reference/driving constraint</source>
-      <translation type="unfinished">Toggle reference/driving constraint</translation>
+      <translation>Växlar referens/lösnings-begränsning</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Toggles the toolbar or selected constraints to/from reference mode</source>
-      <translation type="unfinished">Toggles the toolbar or selected constraints to/from reference mode</translation>
+      <translation>Växlar verktygsfältet eller valda begränsningar till och från referensläget</translation>
     </message>
   </context>
   <context>
@@ -1923,12 +1931,12 @@
     <message>
       <location line="+1"/>
       <source>View section</source>
-      <translation type="unfinished">View section</translation>
+      <translation>Visa snitt</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>Switches between section and full view</source>
-      <translation type="unfinished">Switches between section and full view</translation>
+      <translation>Växlar mellan snitt- och helvy</translation>
     </message>
   </context>
   <context>
@@ -1960,7 +1968,7 @@
     <message>
       <location filename="../../../App/SketchObject.cpp" line="+1500"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+      <translation>Kan inte finna mötespunkter för kurvorna. Försök att lägga till sammanfallandebegränsningar mellan kurvorna du vill använda.</translation>
     </message>
     <message>
       <location line="+3397"/>
@@ -1969,31 +1977,43 @@
     </message>
     <message>
       <location line="+4"/>
+      <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
+      <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
+    </message>
+    <message>
+      <location line="+8"/>
+      <source>The Geometry Index (GeoId) provided is not a B-spline curve.</source>
+      <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline curve.</translation>
+    </message>
+    <message>
+      <location line="+14"/>
+      <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
+      <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the B-spline.</translation>
+    </message>
+    <message>
       <source>BSpline GeoId is out of bounds.</source>
       <translation type="unfinished">BSpline GeoId is out of bounds.</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location line="-19"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation type="unfinished">You are requesting no change in knot multiplicity.</translation>
     </message>
     <message>
-      <location line="+5"/>
       <source>The GeoId provided is not a B-spline curve.</source>
       <translation type="unfinished">The GeoId provided is not a B-spline curve.</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+12"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
     </message>
     <message>
-      <location line="+7"/>
       <source>The multiplicity cannot be increased beyond the degree of the b-spline.</source>
       <translation type="unfinished">The multiplicity cannot be increased beyond the degree of the b-spline.</translation>
     </message>
     <message>
-      <location line="+3"/>
+      <location line="+10"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation type="unfinished">The multiplicity cannot be decreased beyond zero.</translation>
     </message>
@@ -2003,53 +2023,80 @@
       <translation type="unfinished">OCC is unable to decrease the multiplicity within the maximum tolerance.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchAnalysis.cpp" line="+376"/>
       <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.
 </source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying coincident constraints.
+      <translation>Autobegränsningsfel: Olösbar skiss då sammanfallande-begränsningar appliceras.
 </translation>
+    </message>
+    <message>
+      <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
+</source>
+      <translation>Autobegränsningsfel: Olösbar skiss då vertikala/horisontella-begränsningar appliceras.
+</translation>
+    </message>
+    <message>
+      <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.
+</source>
+      <translation>Autobegränsningsfel: Olösbar skiss då likhetsbegränsningar appliceras.
+</translation>
+    </message>
+    <message>
+      <source>Autoconstrain error: Unsolvable sketch without constraints.
+</source>
+      <translation>Autobegränsningsfel: Olösbar skiss utan gränsningar.
+</translation>
+    </message>
+    <message>
+      <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
+</source>
+      <translation>Autobegränsningsfel: Olösbar skiss efter vertikala/horisontella-begränsningar applicerats.
+</translation>
+    </message>
+    <message>
+      <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
+</source>
+      <translation>Autobegränsningsfel: Olösbar skiss efter sammanfallande-begränsningar applicerats.
+</translation>
+    </message>
+    <message>
+      <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.
+</source>
+      <translation>Autobegränsningsfel: Olösbar skiss då likhetsbegränsningar appliceras.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/SketchAnalysis.cpp" line="+376"/>
+      <source>Autoconstrain error: Unsolvable sketch while applying coincident constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying coincident constraints.</translation>
     </message>
     <message>
       <location line="+79"/>
-      <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
-</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.
-</translation>
+      <source>Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying vertical/horizontal constraints.</translation>
     </message>
     <message>
       <location line="+195"/>
-      <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.
-</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying equality constraints.
-</translation>
+      <source>Autoconstrain error: Unsolvable sketch while applying equality constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch while applying equality constraints.</translation>
     </message>
     <message>
       <location line="+54"/>
-      <source>Autoconstrain error: Unsolvable sketch without constraints.
-</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch without constraints.
-</translation>
+      <source>Autoconstrain error: Unsolvable sketch without constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch without constraints.</translation>
     </message>
     <message>
       <location line="+37"/>
-      <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
-</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.
-</translation>
+      <source>Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying horizontal and vertical constraints.</translation>
     </message>
     <message>
       <location line="+22"/>
-      <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
-</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.
-</translation>
+      <source>Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying point-on-point constraints.</translation>
     </message>
     <message>
       <location line="+28"/>
-      <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.
-</source>
-      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.
-</translation>
+      <source>Autoconstrain error: Unsolvable sketch after applying equality constraints.</source>
+      <translation type="unfinished">Autoconstrain error: Unsolvable sketch after applying equality constraints.</translation>
     </message>
   </context>
   <context>
@@ -2065,7 +2112,7 @@
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="+48"/>
       <location line="+8"/>
-      <location filename="../../CommandConstraints.cpp" line="-7352"/>
+      <location filename="../../CommandConstraints.cpp" line="-7379"/>
       <location line="+6"/>
       <location line="+990"/>
       <location line="+247"/>
@@ -2118,11 +2165,11 @@
       <location line="+9"/>
       <location line="+267"/>
       <location line="+13"/>
-      <location line="+82"/>
+      <location line="+80"/>
       <location line="+21"/>
       <location line="+9"/>
       <location line="+25"/>
-      <location line="+142"/>
+      <location line="+171"/>
       <location line="+36"/>
       <location line="+134"/>
       <location line="+130"/>
@@ -2205,7 +2252,7 @@
       <translation>Välj kant(er) från skissen.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-6430"/>
+      <location filename="../../CommandConstraints.cpp" line="-6457"/>
       <location line="+247"/>
       <source>Select an edge from the sketch.</source>
       <translation>Välj en kant från skissen.</translation>
@@ -2221,14 +2268,11 @@
       <translation>Dubbelbegränsning</translation>
     </message>
     <message>
-      <location line="-816"/>
-      <location line="+93"/>
-      <location line="+247"/>
       <source>The selected edge has already a horizontal constraint!</source>
       <translation>Den valda kanten har redan en horisontell begränsning!</translation>
     </message>
     <message>
-      <location line="-350"/>
+      <location line="-826"/>
       <location line="+14"/>
       <location line="+6"/>
       <location line="+19"/>
@@ -2280,41 +2324,29 @@
       <translation>Den valda kanten är inte ett linjesegment</translation>
     </message>
     <message>
-      <location line="-326"/>
-      <location line="+93"/>
-      <location line="+149"/>
-      <location line="+98"/>
       <source>The selected edge has already a vertical constraint!</source>
       <translation>Den valda kanten har redan en vertikal begränsning!</translation>
     </message>
     <message>
-      <location line="-334"/>
-      <location line="+93"/>
-      <location line="+154"/>
-      <location line="+93"/>
-      <location line="+416"/>
-      <location line="+50"/>
       <source>The selected edge has already a Block constraint!</source>
-      <translation type="unfinished">The selected edge has already a Block constraint!</translation>
+      <translation>Den valda kanten har redan en blockbegränsning!</translation>
     </message>
     <message>
-      <location line="-787"/>
+      <location line="-301"/>
       <source>The selected item(s) can't accept a horizontal constraint!</source>
       <translation>Markerade objekt kan inte acceptera en horisontell begränsning!</translation>
     </message>
     <message>
       <location line="+27"/>
-      <location line="+246"/>
       <source>There are more than one fixed point selected. Select a maximum of one fixed point!</source>
-      <translation type="unfinished">There are more than one fixed point selected. Select a maximum of one fixed point!</translation>
+      <translation>Mer än en fast punkt är vald. Välj högst en fast punkt!</translation>
     </message>
     <message>
-      <location line="-51"/>
       <source>The selected edge has already a horizontral constraint!</source>
-      <translation type="unfinished">The selected edge has already a horizontral constraint!</translation>
+      <translation>Den valda kanten har redan en vågrät begränsning!</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location line="+219"/>
       <source>The selected item(s) can't accept a vertical constraint!</source>
       <translation>Markerade objekt kan inte acceptera en vertikal begränsning!</translation>
     </message>
@@ -2340,16 +2372,15 @@
       <translation>Kan inte lägga till en fixerad x-koordinatsbegränsning på en yttre geometri!</translation>
     </message>
     <message>
-      <location line="+655"/>
       <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
-      <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the root point!</translation>
+      <translation>Kan inte lägga till en x-koordinatsbegränsning på origo!</translation>
     </message>
     <message>
       <source>Cannot add a fixed y-coordinate constraint on an external geometry!</source>
       <translation type="unfinished">Cannot add a fixed y-coordinate constraint on an external geometry!</translation>
     </message>
     <message>
-      <location line="-1406"/>
+      <location line="-751"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation type="unfinished">Select one vertex from the sketch other than the origin.</translation>
     </message>
@@ -2364,28 +2395,27 @@
       <translation type="unfinished">Wrong solver status</translation>
     </message>
     <message>
-      <location line="+1"/>
       <source>A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
       <translation type="unfinished">A Block constraint can not be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</translation>
     </message>
     <message>
-      <location line="+15"/>
+      <location line="+16"/>
       <source>Select one edge from the sketch.</source>
-      <translation type="unfinished">Select one edge from the sketch.</translation>
+      <translation>Välj en kant i skissen.</translation>
     </message>
     <message>
       <location line="+4"/>
       <source>Select only edges from the sketch.</source>
-      <translation type="unfinished">Select only edges from the sketch.</translation>
+      <translation>Välj endast kanter i skissen.</translation>
     </message>
     <message>
       <location line="+355"/>
-      <location line="+2231"/>
+      <location line="+2229"/>
       <source>Constraint Substitution</source>
       <translation type="unfinished">Constraint Substitution</translation>
     </message>
     <message>
-      <location line="-2230"/>
+      <location line="-2228"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation type="unfinished">Endpoint to endpoint tangency was applied instead.</translation>
     </message>
@@ -2407,31 +2437,30 @@
       <translation type="unfinished">Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</translation>
     </message>
     <message>
-      <location line="+457"/>
       <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
       <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the root point!</translation>
     </message>
     <message>
-      <location line="+550"/>
+      <location line="+1007"/>
       <location line="+34"/>
       <location line="+177"/>
       <source>Perpendicular to B-spline edge currently unsupported.</source>
       <translation type="unfinished">Perpendicular to B-spline edge currently unsupported.</translation>
     </message>
     <message>
-      <location line="+392"/>
+      <location line="+390"/>
       <location line="+25"/>
-      <location line="+178"/>
+      <location line="+207"/>
       <source>Tangency to B-spline edge currently unsupported.</source>
       <translation type="unfinished">Tangency to B-spline edge currently unsupported.</translation>
     </message>
     <message>
-      <location line="-147"/>
+      <location line="-176"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation type="unfinished">Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</translation>
     </message>
     <message>
-      <location line="+422"/>
+      <location line="+451"/>
       <location line="+51"/>
       <location line="+420"/>
       <location line="+51"/>
@@ -2447,14 +2476,14 @@
     <message>
       <location line="-470"/>
       <source>Do you want to share the same radius for all selected elements?</source>
-      <translation type="unfinished">Do you want to share the same radius for all selected elements?</translation>
+      <translation>Vill du dela samma radie för alla valda element?</translation>
     </message>
     <message>
       <source>Select only entities from the sketch.</source>
       <translation type="unfinished">Select only entities from the sketch.</translation>
     </message>
     <message>
-      <location line="-3412"/>
+      <location line="-3439"/>
       <location line="+268"/>
       <source>Select vertices from the sketch.</source>
       <translation type="unfinished">Select vertices from the sketch.</translation>
@@ -2473,7 +2502,7 @@
       <location line="+154"/>
       <location line="+185"/>
       <location line="+249"/>
-      <location line="+1706"/>
+      <location line="+1733"/>
       <location line="+471"/>
       <location line="+591"/>
       <source>Select the right things from the sketch.</source>
@@ -2484,7 +2513,7 @@
       <translation type="unfinished">Point on BSpline edge currently unsupported.</translation>
     </message>
     <message>
-      <location line="-2872"/>
+      <location line="-2899"/>
       <location line="+247"/>
       <source>This constraint only makes sense on a line segment or a pair of points</source>
       <translation type="unfinished">This constraint only makes sense on a line segment or a pair of points</translation>
@@ -2508,7 +2537,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Tangency to BSpline edge currently unsupported.</translation>
     </message>
     <message>
-      <location line="+913"/>
+      <location line="+940"/>
       <location line="+471"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation type="unfinished">Constraint only applies to arcs or circles.</translation>
@@ -2516,7 +2545,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-184"/>
       <source>Do you want to share the same diameter for all selected elements?</source>
-      <translation type="unfinished">Do you want to share the same diameter for all selected elements?</translation>
+      <translation>Vill du dela samma diameter för alla valda element?</translation>
     </message>
     <message>
       <location line="+488"/>
@@ -2557,12 +2586,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Number of selected objects is not 3 (is %1).</translation>
     </message>
     <message>
-      <location line="+22"/>
       <source>Can not create constraint with external geometry only!!</source>
       <translation type="unfinished">Can not create constraint with external geometry only!!</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location line="+29"/>
       <source>Incompatible geometry is selected!</source>
       <translation>Inkompatibel geometri markerad!</translation>
     </message>
@@ -2587,30 +2615,27 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Sketch axes cannot be used in internal alignment constraint</translation>
     </message>
     <message>
-      <location line="+45"/>
       <source>You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</source>
       <translation type="unfinished">You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location line="+51"/>
       <location line="+159"/>
       <source>Maximum 2 points are supported.</source>
-      <translation type="unfinished">Maximum 2 points are supported.</translation>
+      <translation>Maximalt två punkter stöds.</translation>
     </message>
     <message>
       <location line="-153"/>
       <location line="+159"/>
       <source>Maximum 2 lines are supported.</source>
-      <translation type="unfinished">Maximum 2 lines are supported.</translation>
+      <translation>Maximalt två linjer stöds.</translation>
     </message>
     <message>
-      <location line="-122"/>
-      <location line="+159"/>
       <source>Nothing to constraint</source>
       <translation>Inget att begränsa</translation>
     </message>
     <message>
-      <location line="-158"/>
+      <location line="-121"/>
       <source>Currently all internal geometry of the ellipse is already exposed.</source>
       <translation>För närvarande är all inre geometri hos ellipsen redan utsatt.</translation>
     </message>
@@ -2630,17 +2655,15 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">More elements than possible for the given ellipse were provided. These were ignored.</translation>
     </message>
     <message>
-      <location line="-138"/>
       <source>You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
       <translation type="unfinished">You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
       <translation type="unfinished">You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</translation>
     </message>
     <message>
-      <location line="+50"/>
+      <location line="-82"/>
       <source>Currently all internal geometry of the arc of ellipse is already exposed.</source>
       <translation type="unfinished">Currently all internal geometry of the arc of ellipse is already exposed.</translation>
     </message>
@@ -2669,10 +2692,10 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Välj exakt två hörn från skissen.</translation>
     </message>
     <message>
-      <location line="-5348"/>
+      <location line="-5375"/>
       <location line="+10"/>
       <source>Select two or more vertexes from the sketch.</source>
-      <translation type="unfinished">Select two or more vertexes from the sketch.</translation>
+      <translation>Välj två eller flera punkter från skissen.</translation>
     </message>
     <message>
       <location line="+185"/>
@@ -2742,12 +2765,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+13"/>
-      <location line="+2983"/>
+      <location line="+3010"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Välj åtminstone två linjer från skissen.</translation>
     </message>
     <message>
-      <location line="-2969"/>
+      <location line="-2996"/>
       <source>Select a valid line</source>
       <translation>Välj en giltig linje</translation>
     </message>
@@ -2784,25 +2807,97 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+46"/>
       <location line="+1780"/>
       <location line="+465"/>
-      <location line="+156"/>
-      <location line="+454"/>
+      <location line="+154"/>
+      <location line="+483"/>
       <location line="+2197"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="-13"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
     <message>
-      <location line="-3256"/>
-      <location line="+620"/>
+      <location line="-5912"/>
+      <location line="+93"/>
+      <location line="+159"/>
+      <location line="+88"/>
+      <source>The selected edge already has a horizontal constraint!</source>
+      <translation type="unfinished">The selected edge already has a horizontal constraint!</translation>
+    </message>
+    <message>
+      <location line="-335"/>
+      <location line="+93"/>
+      <location line="+149"/>
+      <location line="+98"/>
+      <source>The selected edge already has a vertical constraint!</source>
+      <translation type="unfinished">The selected edge already has a vertical constraint!</translation>
+    </message>
+    <message>
+      <location line="-334"/>
+      <location line="+93"/>
+      <location line="+154"/>
+      <location line="+93"/>
+      <location line="+416"/>
+      <location line="+50"/>
+      <source>The selected edge already has a Block constraint!</source>
+      <translation type="unfinished">The selected edge already has a Block constraint!</translation>
+    </message>
+    <message>
+      <location line="-514"/>
+      <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
+      <translation type="unfinished">There are more than one fixed points selected. Select a maximum of one fixed point!</translation>
+    </message>
+    <message>
+      <location line="+435"/>
+      <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</source>
+      <translation type="unfinished">A Block constraint cannot be added if the sketch is unsolved or there are redundant and/or conflicting constraints.</translation>
+    </message>
+    <message>
+      <location line="+1149"/>
+      <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
+      <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the origin point!</translation>
+    </message>
+    <message>
+      <location line="+248"/>
+      <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
+      <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the origin point!</translation>
+    </message>
+    <message>
+      <location line="+494"/>
+      <location line="+618"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <comment>tangent constraint</comment>
       <translation type="unfinished">With 3 objects, there must be 2 curves and 1 point.</translation>
     </message>
     <message>
-      <location line="-611"/>
+      <location line="-609"/>
       <location line="+38"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Kan inte lägga till en vinkelräthetsbegränsning vid en oansluten punkt!</translation>
+    </message>
+    <message>
+      <location line="+3159"/>
+      <source>Cannot create constraint with external geometry only!!</source>
+      <translation type="unfinished">Cannot create constraint with external geometry only!!</translation>
+    </message>
+    <message>
+      <location line="+189"/>
+      <source>You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</source>
+      <translation type="unfinished">You cannot internally constrain an ellipse on other ellipse. Select only one ellipse.</translation>
+    </message>
+    <message>
+      <location line="+49"/>
+      <location line="+159"/>
+      <source>Nothing to constrain</source>
+      <translation type="unfinished">Nothing to constrain</translation>
+    </message>
+    <message>
+      <location line="-55"/>
+      <source>You cannot internally constrain an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
+      <translation type="unfinished">You cannot internally constrain an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</translation>
+    </message>
+    <message>
+      <location line="+6"/>
+      <source>You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
+      <translation type="unfinished">You cannot internally constrain an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</translation>
     </message>
     <message>
       <source>The selected points should be end points of arcs and lines.</source>
@@ -2817,7 +2912,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Den markerade kanten ska vara en cirkelbåge, en linje eller en cirkel.</translation>
     </message>
     <message>
-      <location line="+34"/>
+      <location line="-3473"/>
       <location line="+177"/>
       <source>One of the selected edges should be a line.</source>
       <translation>En av de markerade kanterna ska vara en linje.</translation>
@@ -2844,9 +2939,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Felaktigt antal markerade objekt!</translation>
     </message>
     <message>
-      <location line="+85"/>
+      <location line="+83"/>
       <location line="+21"/>
-      <location line="+346"/>
+      <location line="+375"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Kan inte lägga till ett tangensbegränsning vid en oansluten punkt!</translation>
     </message>
@@ -3006,8 +3101,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Inte tillåtet att ändra datum på grund av att skissen innehåller motstridiga begränsningar</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-6770"/>
-      <location line="+5082"/>
+      <location filename="../../CommandConstraints.cpp" line="-6797"/>
+      <location line="+5109"/>
       <location line="+133"/>
       <location line="+338"/>
       <location line="+133"/>
@@ -3063,7 +3158,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+1270"/>
       <source>Delete All Geometry</source>
-      <translation type="unfinished">Delete All Geometry</translation>
+      <translation>Ta bort all geometri</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3073,7 +3168,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+65"/>
       <source>Delete All Constraints</source>
-      <translation type="unfinished">Delete All Constraints</translation>
+      <translation>Ta bort alla begränsningar</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -3119,12 +3214,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-5"/>
       <source>Face is non-planar</source>
-      <translation type="unfinished">Face is non-planar</translation>
+      <translation>Sidan är krökt</translation>
     </message>
     <message>
       <location line="+2"/>
       <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
-      <translation type="unfinished">Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</translation>
+      <translation>Valda former är av fel form (tex. en böjd kant när en rak behövs)</translation>
     </message>
     <message>
       <location line="+41"/>
@@ -3262,6 +3357,10 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+3"/>
+      <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
+      <translation type="unfinished">The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</translation>
+    </message>
+    <message>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketchs.</source>
       <translation type="unfinished">The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketchs.</translation>
     </message>
@@ -3332,7 +3431,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="-5756"/>
+      <location filename="../../CommandConstraints.cpp" line="-5783"/>
       <location filename="../../EditDatumDialog.cpp" line="-83"/>
       <source>Insert angle</source>
       <translation>Infoga vinkel</translation>
@@ -3357,14 +3456,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+2"/>
-      <location line="+5558"/>
+      <location line="+5585"/>
       <location line="+145"/>
       <location filename="../../EditDatumDialog.cpp" line="+2"/>
       <source>Diameter:</source>
       <translation>Diameter:</translation>
     </message>
     <message>
-      <location line="-5699"/>
+      <location line="-5726"/>
       <location filename="../../EditDatumDialog.cpp" line="+4"/>
       <source>Refractive index ratio</source>
       <comment>Constraint_SnellsLaw</comment>
@@ -3378,14 +3477,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Ratio n2/n1:</translation>
     </message>
     <message>
-      <location line="+5081"/>
+      <location line="+5108"/>
       <location line="+145"/>
       <source>Change radius</source>
       <translation>Ändra radie</translation>
     </message>
     <message>
-      <location line="-5237"/>
-      <location line="+5093"/>
+      <location line="-5264"/>
+      <location line="+5120"/>
       <location line="+145"/>
       <location filename="../../EditDatumDialog.cpp" line="-11"/>
       <source>Radius:</source>
@@ -3395,7 +3494,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+325"/>
       <location line="+145"/>
       <source>Change diameter</source>
-      <translation type="unfinished">Change diameter</translation>
+      <translation>Ändra diameter</translation>
     </message>
     <message>
       <location line="+1273"/>
@@ -3408,7 +3507,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation type="unfinished">Ratio n2/n1:</translation>
     </message>
     <message>
-      <location line="-6967"/>
+      <location line="-6994"/>
       <location filename="../../EditDatumDialog.cpp" line="+15"/>
       <source>Insert length</source>
       <translation>Infoga längd</translation>
@@ -3423,7 +3522,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="+171"/>
+      <location filename="../../TaskSketcherElements.cpp" line="+172"/>
       <source>Delete</source>
       <translation>Radera</translation>
     </message>
@@ -3470,7 +3569,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+17"/>
       <source>Name (optional)</source>
-      <translation type="unfinished">Name (optional)</translation>
+      <translation>Namn (frivilligt)</translation>
     </message>
   </context>
   <context>
@@ -3503,7 +3602,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+7"/>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Ursprung</translation>
     </message>
   </context>
   <context>
@@ -3583,6 +3682,10 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <location line="+13"/>
+      <source>If selected, each element in the array is constrained with respect to the others using construction lines</source>
+      <translation type="unfinished">If selected, each element in the array is constrained with respect to the others using construction lines</translation>
+    </message>
+    <message>
       <source>If selected, each element in the array is constraint with respect to the others using construction lines</source>
       <translation type="unfinished">If selected, each element in the array is constraint with respect to the others using construction lines</translation>
     </message>
@@ -3613,21 +3716,21 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="+5"/>
       <location line="+5"/>
       <source>Normal Geometry</source>
-      <translation type="unfinished">Normal Geometry</translation>
+      <translation>Vanlig geometri</translation>
     </message>
     <message>
       <location line="-10"/>
       <location line="+5"/>
       <location line="+5"/>
       <source>Construction Geometry</source>
-      <translation type="unfinished">Construction Geometry</translation>
+      <translation>Konstruktionsgeometri</translation>
     </message>
     <message>
       <location line="-10"/>
       <location line="+5"/>
       <location line="+5"/>
       <source>External Geometry</source>
-      <translation type="unfinished">External Geometry</translation>
+      <translation>Extern geometri</translation>
     </message>
   </context>
   <context>
@@ -3640,7 +3743,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+8"/>
       <source>Number of Sides:</source>
-      <translation type="unfinished">Number of Sides:</translation>
+      <translation>Antal sidor:</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3657,11 +3760,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>Sketcher colors</source>
-      <translation type="unfinished">Sketcher colors</translation>
+      <translation>Skissfärger</translation>
     </message>
     <message>
       <source>Default edge color</source>
-      <translation type="unfinished">Default edge color</translation>
+      <translation>Standard kantfärg</translation>
     </message>
     <message>
       <source>The color of edges being edited</source>
@@ -3697,11 +3800,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>The color of external geometry in edit mode</source>
-      <translation type="unfinished">The color of external geometry in edit mode</translation>
+      <translation>Färgen på extern geometri i redigeringsläge</translation>
     </message>
     <message>
       <source>Fully constrained geometry</source>
-      <translation type="unfinished">Fully constrained geometry</translation>
+      <translation>Helt begränsad geometri</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="+14"/>
@@ -3734,7 +3837,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Hide all objects that depend on the sketch</source>
-      <translation type="unfinished">Hide all objects that depend on the sketch</translation>
+      <translation>Dölj alla objekt som är beroende av skissen</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3744,7 +3847,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Show objects used for external geometry</source>
-      <translation type="unfinished">Show objects used for external geometry</translation>
+      <translation>Visa objekt som används för extern geometri</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3754,7 +3857,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Show object(s) sketch is attached to</source>
-      <translation type="unfinished">Show object(s) sketch is attached to</translation>
+      <translation>Visa objekt skissen är fäst vid</translation>
     </message>
     <message>
       <location line="+16"/>
@@ -3764,7 +3867,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+3"/>
       <source>Restore camera position after editing</source>
-      <translation type="unfinished">Restore camera position after editing</translation>
+      <translation>Återställ kameraposition efter redigering</translation>
     </message>
     <message>
       <location line="+22"/>
@@ -3774,30 +3877,35 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+19"/>
       <source>Apply current smart visibility to all sketches in open documents (update properties to match).</source>
-      <translation type="unfinished">Apply current smart visibility to all sketches in open documents (update properties to match).</translation>
+      <translation>Verkställ nu markerade inställningar för smart visning för alla skisser i öppna dokument.</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Apply to existing sketches</source>
-      <translation type="unfinished">Apply to existing sketches</translation>
+      <translation>Verkställ för existerande skisser</translation>
     </message>
     <message>
       <location line="-262"/>
       <source>Notifications</source>
-      <translation type="unfinished">Notifications</translation>
+      <translation>Notiser</translation>
+    </message>
+    <message>
+      <source>Notify automatic constraint substitutions.</source>
+      <translation>Meddela vid automatisk ersättning av begränsningar.</translation>
     </message>
     <message>
       <location line="+6"/>
-      <source>Notify automatic constraint substitutions.</source>
-      <translation type="unfinished">Notify automatic constraint substitutions.</translation>
-    </message>
-    <message>
       <location line="+3"/>
       <source>Notify automatic constraint substitutions</source>
-      <translation type="unfinished">Notify automatic constraint substitutions</translation>
+      <translation>Meddela vid automatisk ersättning av begränsningar</translation>
     </message>
     <message>
-      <location line="+100"/>
+      <location line="+61"/>
+      <source>Ask for value after creating a dimensional constraint</source>
+      <translation>Fråga efter värde efter skapande av dimensionsbegränsning</translation>
+    </message>
+    <message>
+      <location line="+39"/>
       <source>Constraint Creation "Continue Mode"</source>
       <translation type="unfinished">Constraint Creation "Continue Mode"</translation>
     </message>
@@ -3842,7 +3950,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     </message>
     <message>
       <source>The color of fully constrained geometry in edit mode</source>
-      <translation type="unfinished">The color of fully constrained geometry in edit mode</translation>
+      <translation>Färgen på helt begränsad geometri i redigeringsläge</translation>
     </message>
     <message>
       <source>Constraint color</source>
@@ -3905,7 +4013,6 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Rutlinjemönster</translation>
     </message>
     <message>
-      <location line="-16"/>
       <source>Ask for value after creating a distance constraint</source>
       <translation type="unfinished">Ask for value after creating a distance constraint</translation>
     </message>
@@ -3929,12 +4036,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+6"/>
       <source>Sketcher colors</source>
-      <translation type="unfinished">Sketcher colors</translation>
+      <translation>Skissfärger</translation>
     </message>
     <message>
       <location line="+14"/>
       <source>Default edge color</source>
-      <translation type="unfinished">Default edge color</translation>
+      <translation>Standard kantfärg</translation>
     </message>
     <message>
       <location line="+7"/>
@@ -3976,12 +4083,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+73"/>
       <source>The color of fully constrained geometry in edit mode</source>
-      <translation type="unfinished">The color of fully constrained geometry in edit mode</translation>
+      <translation>Färgen på helt begränsad geometri i redigeringsläge</translation>
     </message>
     <message>
       <location line="+281"/>
       <source>Cursor crosshair color</source>
-      <translation type="unfinished">Cursor crosshair color</translation>
+      <translation>Färg på muspekar-hårkors</translation>
     </message>
     <message>
       <location line="-347"/>
@@ -4001,12 +4108,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="+7"/>
       <source>The color of external geometry in edit mode</source>
-      <translation type="unfinished">The color of external geometry in edit mode</translation>
+      <translation>Färgen på extern geometri i redigeringsläge</translation>
     </message>
     <message>
       <location line="+26"/>
       <source>Fully constrained geometry</source>
-      <translation type="unfinished">Fully constrained geometry</translation>
+      <translation>Helt begränsad geometri</translation>
     </message>
     <message>
       <location line="+33"/>
@@ -4065,12 +4172,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location line="-198"/>
       <source>Reference Constraint color</source>
-      <translation type="unfinished">Reference Constraint color</translation>
+      <translation>Färg på referensbegränsningar</translation>
     </message>
     <message>
       <location line="+7"/>
       <source>The color of reference constrains and datum in edit mode</source>
-      <translation type="unfinished">The color of reference constrains and datum in edit mode</translation>
+      <translation>Färg på referensbegränsningar och -datum i redigeringsläge</translation>
     </message>
     <message>
       <source>Non-driving Datum color</source>
@@ -4140,6 +4247,28 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location line="-28"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+
+Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
+      <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
+
+Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+    </message>
+    <message>
+      <location line="+43"/>
+      <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</source>
+      <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).</translation>
+    </message>
+    <message>
+      <location line="+14"/>
+      <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+      <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+    </message>
+    <message>
+      <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
@@ -4150,7 +4279,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</translation>
     </message>
     <message>
-      <location line="+11"/>
+      <location line="-46"/>
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
@@ -4175,17 +4304,15 @@ However, no constraints linking to the endpoints were found.</translation>
       <translation type="unfinished">Constraint orientation locking</translation>
     </message>
     <message>
-      <location line="-13"/>
       <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
       <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</translation>
     </message>
     <message>
-      <location line="+14"/>
       <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
       <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
     </message>
     <message>
-      <location line="+12"/>
+      <location line="+13"/>
       <location line="+12"/>
       <source>Delete constraints to external geom.</source>
       <translation type="unfinished">Delete constraints to external geom.</translation>
@@ -4323,21 +4450,21 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+463"/>
       <location line="+1"/>
-      <location line="+81"/>
+      <location line="+101"/>
       <location line="+1"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location line="-80"/>
+      <location line="-100"/>
       <location line="+2"/>
-      <location line="+80"/>
+      <location line="+100"/>
       <location line="+1"/>
       <source>Line</source>
       <translation>Linje</translation>
     </message>
     <message>
-      <location line="-82"/>
+      <location line="-102"/>
       <location line="+4"/>
       <location line="+4"/>
       <location line="+4"/>
@@ -4352,63 +4479,63 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="-29"/>
       <location line="+2"/>
-      <location line="+79"/>
+      <location line="+99"/>
       <location line="+1"/>
       <source>Arc</source>
       <translation>Cirkelbåge</translation>
     </message>
     <message>
-      <location line="-78"/>
+      <location line="-98"/>
       <location line="+2"/>
-      <location line="+78"/>
+      <location line="+98"/>
       <location line="+1"/>
       <source>Circle</source>
       <translation>Cirkel</translation>
     </message>
     <message>
-      <location line="-77"/>
+      <location line="-97"/>
       <location line="+2"/>
-      <location line="+77"/>
+      <location line="+97"/>
       <location line="+1"/>
       <source>Ellipse</source>
       <translation>Ellips</translation>
     </message>
     <message>
-      <location line="-76"/>
+      <location line="-96"/>
       <location line="+2"/>
-      <location line="+76"/>
+      <location line="+96"/>
       <location line="+1"/>
       <source>Elliptical Arc</source>
       <translation>Elliptisk båge</translation>
     </message>
     <message>
-      <location line="-75"/>
+      <location line="-95"/>
       <location line="+2"/>
-      <location line="+75"/>
+      <location line="+95"/>
       <location line="+1"/>
       <source>Hyperbolic Arc</source>
-      <translation type="unfinished">Hyperbolic Arc</translation>
+      <translation>Hyperbolisk båge</translation>
     </message>
     <message>
-      <location line="-74"/>
+      <location line="-94"/>
       <location line="+2"/>
-      <location line="+74"/>
+      <location line="+94"/>
       <location line="+1"/>
       <source>Parabolic Arc</source>
-      <translation type="unfinished">Parabolic Arc</translation>
+      <translation>Parabolisk båge</translation>
     </message>
     <message>
-      <location line="-73"/>
+      <location line="-93"/>
       <location line="+2"/>
-      <location line="+73"/>
+      <location line="+93"/>
       <location line="+1"/>
       <source>BSpline</source>
       <translation>BSpline</translation>
     </message>
     <message>
-      <location line="-72"/>
+      <location line="-92"/>
       <location line="+2"/>
-      <location line="+72"/>
+      <location line="+92"/>
       <location line="+1"/>
       <source>Other</source>
       <translation>övrigt</translation>
@@ -4444,7 +4571,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location line="+16"/>
       <source>Rendering order:</source>
-      <translation type="unfinished">Rendering order:</translation>
+      <translation>Renderingsordning:</translation>
     </message>
     <message>
       <source>Unsolved</source>
@@ -4558,7 +4685,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="+14"/>
       <source>Sketcher validation</source>
-      <translation>Sketchvalidering</translation>
+      <translation>Skissvalidering</translation>
     </message>
     <message>
       <location line="+26"/>
@@ -4784,7 +4911,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="-573"/>
       <location line="+1"/>
       <source>Switches between showing and hiding the degree for all B-splines</source>
-      <translation type="unfinished">Switches between showing and hiding the degree for all B-splines</translation>
+      <translation>Växlar mellan att visa och dölja gradtalet för alla B-splines</translation>
     </message>
   </context>
   <context>
@@ -4820,7 +4947,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="-280"/>
       <location line="+1"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a clone of the geometry taking as reference the last selected point</translation>
+      <translation>Skapar en klon av geometrin med den senaste valda punkten som referens</translation>
     </message>
   </context>
   <context>
@@ -4844,10 +4971,10 @@ Använd Skissvalideringsverktyget.</translation>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="+5874"/>
+      <location filename="../../CommandConstraints.cpp" line="+5901"/>
       <location line="+1"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation type="unfinished">Fix the diameter of a circle or an arc</translation>
+      <translation>Fixera diametern av en cirkel eller en båge</translation>
     </message>
   </context>
   <context>
@@ -4865,7 +4992,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="-3"/>
       <location line="+1"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Creates a simple copy of the geometry taking as reference the last selected point</translation>
+      <translation>Skapar en enkel kopia av geometrin med den senaste valda punkten som referens</translation>
     </message>
   </context>
   <context>
@@ -4874,7 +5001,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location filename="../../CommandCreateGeo.cpp" line="-4372"/>
       <location line="+1"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+      <translation>Skapa en båge av dess ändpunkter och en punkt längs bågen</translation>
     </message>
   </context>
   <context>
@@ -4892,7 +5019,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="-3296"/>
       <location line="+1"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation type="unfinished">Create an arc by its center and by its end points</translation>
+      <translation>Skapa en båge genom dess centrum och dess slutpunkter</translation>
     </message>
   </context>
   <context>
@@ -4950,7 +5077,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="+352"/>
       <location line="+1"/>
       <source>Create a circle by its center and by a rim point</source>
-      <translation type="unfinished">Create a circle by its center and by a rim point</translation>
+      <translation>Skapa en cirkel utifrån dess mittpunkt och en randpunkt</translation>
     </message>
   </context>
   <context>
@@ -4968,7 +5095,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="-5"/>
       <location line="+1"/>
       <source>Create an ellipse by center, major radius and point</source>
-      <translation type="unfinished">Create an ellipse by center, major radius and point</translation>
+      <translation>Skapa en ellips utifrån mittpunkt, storaxel och punkt</translation>
     </message>
   </context>
   <context>
@@ -4977,7 +5104,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="+3294"/>
       <location line="+1"/>
       <source>Create a heptagon by its center and by one corner</source>
-      <translation type="unfinished">Create a heptagon by its center and by one corner</translation>
+      <translation>Skapa en heptagon utifrån dess mittpunkt och ett hörn</translation>
     </message>
   </context>
   <context>
@@ -4986,7 +5113,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="-5"/>
       <location line="+1"/>
       <source>Create a hexagon by its center and by one corner</source>
-      <translation type="unfinished">Create a hexagon by its center and by one corner</translation>
+      <translation>Skapa en hexagon utifrån dess mittpunkt och ett hörn</translation>
     </message>
   </context>
   <context>
@@ -4995,13 +5122,13 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="+7"/>
       <location line="+1"/>
       <source>Create an octagon by its center and by one corner</source>
-      <translation type="unfinished">Create an octagon by its center and by one corner</translation>
+      <translation>Skapa en oktogon utifrån dess mittpunkt och ett hörn</translation>
     </message>
     <message>
       <location line="+3"/>
       <location line="+1"/>
       <source>Create a regular polygon by its center and by one corner</source>
-      <translation type="unfinished">Create a regular polygon by its center and by one corner</translation>
+      <translation>Skapa en regelbunden polygon utifrån dess mittpunkt och ett hörn</translation>
     </message>
   </context>
   <context>
@@ -5010,7 +5137,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="-17"/>
       <location line="+1"/>
       <source>Create a pentagon by its center and by one corner</source>
-      <translation type="unfinished">Create a pentagon by its center and by one corner</translation>
+      <translation>Skapa en pentagon utifrån dess mittpunkt och ett hörn</translation>
     </message>
   </context>
   <context>
@@ -5019,7 +5146,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="-5"/>
       <location line="+1"/>
       <source>Create a square by its center and by one corner</source>
-      <translation type="unfinished">Create a square by its center and by one corner</translation>
+      <translation>Skapa en kvadrat utifrån dess mittpunkt och ett hörn</translation>
     </message>
   </context>
   <context>
@@ -5028,7 +5155,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location line="-5"/>
       <location line="+1"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
-      <translation type="unfinished">Create an equilateral triangle by its center and by one corner</translation>
+      <translation>Skapa en liksidig triangel utifrån dess mittpunkt och ett hörn</translation>
     </message>
   </context>
   <context>
@@ -5058,12 +5185,12 @@ Använd Skissvalideringsverktyget.</translation>
     <message>
       <location filename="../../Command.cpp" line="-56"/>
       <source>No sketch found</source>
-      <translation type="unfinished">No sketch found</translation>
+      <translation>Ingen skiss funnen</translation>
     </message>
     <message>
       <location line="+1"/>
       <source>The document doesn't have a sketch</source>
-      <translation type="unfinished">The document doesn't have a sketch</translation>
+      <translation>Dokumentet innehåller inte någon skiss</translation>
     </message>
     <message>
       <location line="+9"/>
@@ -5073,22 +5200,22 @@ Använd Skissvalideringsverktyget.</translation>
     <message>
       <location line="+1"/>
       <source>Select a sketch from the list</source>
-      <translation type="unfinished">Select a sketch from the list</translation>
+      <translation>Välj en skiss från listan</translation>
     </message>
     <message>
       <location line="+53"/>
       <source> (incompatible with selection)</source>
-      <translation type="unfinished"> (incompatible with selection)</translation>
+      <translation> (inkompatibel med markering)</translation>
     </message>
     <message>
       <location line="+2"/>
       <source> (current)</source>
-      <translation type="unfinished"> (current)</translation>
+      <translation> (nuvarande)</translation>
     </message>
     <message>
       <location line="+7"/>
       <source> (suggested)</source>
-      <translation type="unfinished"> (suggested)</translation>
+      <translation> (föreslagen)</translation>
     </message>
     <message>
       <location line="+6"/>
@@ -5124,7 +5251,7 @@ Använd Skissvalideringsverktyget.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="+3"/>
       <location line="+1"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation type="unfinished">Moves the geometry taking as reference the last selected point</translation>
+      <translation>Flyttar geometrin med den senaste valda punkten som referens</translation>
     </message>
   </context>
   <context>
@@ -5206,17 +5333,17 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+31"/>
       <source>Executes a recompute of the active document after every command</source>
-      <translation type="unfinished">Executes a recompute of the active document after every command</translation>
+      <translation>Räknar om det aktiva dokumentet efter varje kommando</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Auto Update</source>
-      <translation type="unfinished">Auto Update</translation>
+      <translation>Uppdatera automatiskt</translation>
     </message>
     <message>
       <location line="+16"/>
       <source>Forces a recompute of the active document</source>
-      <translation type="unfinished">Forces a recompute of the active document</translation>
+      <translation>Framtvingar en omräkning av det aktiva dokumentet</translation>
     </message>
     <message>
       <location line="+3"/>
@@ -5456,12 +5583,12 @@ Do you want to detach it from the support?</translation>
     <message>
       <location line="+7"/>
       <source>Resets all solver values to their default values</source>
-      <translation type="unfinished">Resets all solver values to their default values</translation>
+      <translation>Återställer alla inställningar för lösaren till deras standardvärden</translation>
     </message>
     <message>
       <location line="+3"/>
       <source>Restore Defaults</source>
-      <translation type="unfinished">Restore Defaults</translation>
+      <translation>Återställ standardinställningar</translation>
     </message>
   </context>
   <context>

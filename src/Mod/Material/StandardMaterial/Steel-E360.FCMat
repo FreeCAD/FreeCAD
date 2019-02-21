@@ -1,4 +1,4 @@
-; E360 - 1.0070 - EN 10025
+; Steel-E360
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,14 +8,14 @@ Name = E360
 NameDE = St70-2
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 690
+UltimateTensileStrength = 690 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Mild steel
 KindOfMaterialDE = Baustahl
 MaterialNumber = 1.007
-ModulusOfShare = 81000
 Norm = EN 10025
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 11
-YieldStrength = 360
+YieldStrength = 360 MPa

@@ -281,7 +281,6 @@ void BrowserView::onLinkClicked (const QUrl & url)
     // path handling
     QString path     = url.path();
     QFileInfo fi(path);
-    QString ext = fi.completeSuffix();
     QUrl exturl(url);
 
     // query

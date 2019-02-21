@@ -238,7 +238,7 @@
   <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-      <location filename="../../DrawingView.cpp" line="+211"/>
+      <location filename="../../DrawingView.cpp" line="+215"/>
       <source>&amp;Background</source>
       <translation>&amp;Arkaplan</translation>
     </message>
@@ -268,7 +268,7 @@
       <translation>&amp;Yüksek kaliteli keskinlik yumuşatma</translation>
     </message>
     <message>
-      <location line="+33"/>
+      <location line="+38"/>
       <source>Open SVG File</source>
       <translation>SVG Dosyası Aç</translation>
     </message>
@@ -490,6 +490,10 @@ Devam etmek istiyor musun?</translation>
     </message>
     <message>
       <location line="+7"/>
+      <source>View projection</source>
+      <translation type="unfinished">View projection</translation>
+    </message>
+    <message>
       <source> View projection   </source>
       <translation> Projeksiyonu görüntüle   </translation>
     </message>

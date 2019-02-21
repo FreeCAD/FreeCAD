@@ -453,7 +453,7 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstruct
         double coords[3] = {double(node->X()*scale), double(node->Y()*scale), double(node->Z()*scale)};
         points->InsertPoint(node->GetID()-1, coords);
         // memory is allocated by VTK points size for max node id, not for point count
-        // if the SMESH mesh has gaps in node numbering, points without any element assignement will be inserted in these point gaps too
+        // if the SMESH mesh has gaps in node numbering, points without any element assignment will be inserted in these point gaps too
         // this needs to be taken into account on node mapping when FreeCAD FEM results are exported to vtk
     }
     grid->SetPoints(points);
@@ -780,7 +780,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
     const Fem::FemResultObject* res = static_cast<const Fem::FemResultObject*>(result);
     const vtkIdType nPoints = grid->GetNumberOfPoints();
 
-    // we need the coresponding mesh to get the correct id for the result data (when the freecad smesh mesh has gaps in the points
+    // we need the corresponding mesh to get the correct id for the result data (when the freecad smesh mesh has gaps in the points
     // vtk has more points. Vtk does not support point gaps, thus the gaps are filled with points. Then the mapping must be correct)
     App::DocumentObject* meshObj = res->Mesh.getValue();
     if (!meshObj || !meshObj->isDerivedFrom(FemMeshObject::getClassTypeId())) {
@@ -807,7 +807,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             data->SetNumberOfTuples(nPoints);
             data->SetName(it->c_str());
 
-            //we need to set values for the unused points. 
+            //we need to set values for the unused points.
             //TODO: ensure that the result bar does not include the used 0 if it is not part of the result (e.g. does the result bar show 0 as smallest value?)
             if (nPoints != field->getSize()) {
                 double tuple[] = {0,0,0};
@@ -844,7 +844,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             data->SetNumberOfValues(nPoints);
             data->SetName(it->c_str());
 
-            //we need to set values for the unused points. 
+            //we need to set values for the unused points.
             //TODO: ensure that the result bar does not include the used 0 if it is not part of the result (e.g. does the result bar show 0 as smallest value?)
             if (nPoints != field->getSize()) {
                 for (vtkIdType i=0; i<nPoints; ++i) {

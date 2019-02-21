@@ -1,4 +1,4 @@
-; X39CrMo17-1 - 1.4122 - EN 10088
+; Steel-X39CrMo17-1
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -8,14 +8,14 @@ Name = X39CrMo17-1
 NameDE = -
 Father = Metal
 YoungsModulus = 213000 MPa
-UltimateTensileStrength = 750
+UltimateTensileStrength = 750 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Stainless steel
 KindOfMaterialDE = Niro
 MaterialNumber = 1.4122
-ModulusOfShare = 81000
 Norm = EN 10088
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 12
-YieldStrength = 500
+YieldStrength = 500 MPa

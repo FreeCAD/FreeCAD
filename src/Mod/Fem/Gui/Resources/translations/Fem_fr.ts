@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation>Créer un matériau FEM pour solide</translation>
+      <translation>Crée un matériau FEM pour le solide</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -2606,7 +2606,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="64"/>
       <source>VeryCoarse</source>
-      <translation>Très Grossier</translation>
+      <translation>Très grossier</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="69"/>

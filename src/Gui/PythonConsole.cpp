@@ -468,7 +468,7 @@ PythonConsole::PythonConsole(QWidget *parent)
 #endif
     d->info = QString::fromLatin1("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
-    .arg(QString::fromLatin1(version)).arg(QString::fromLatin1(platform));
+    .arg(QString::fromLatin1(version), QString::fromLatin1(platform));
     d->output = d->info;
     printPrompt(PythonConsole::Complete);
 }
@@ -514,8 +514,10 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
-            unsigned long col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
-            col = hPrefGrp->GetUnsigned( sReason, col);
+            unsigned int col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+            unsigned long value = static_cast<unsigned long>(col);
+            value = hPrefGrp->GetUnsigned(sReason, value);
+            col = static_cast<unsigned int>(value);
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
             pythonSyntax->setColor(QString::fromLatin1(sReason), color);
         }
@@ -929,10 +931,11 @@ void PythonConsole::changeEvent(QEvent *e)
     else if (e->type() == QEvent::StyleChange) {
         QPalette pal = palette();
         QColor color = pal.windowText().color();
-        unsigned long text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned int text = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
+        unsigned long value = static_cast<unsigned long>(text);
         // if this parameter is not already set use the style's window text color
-        text = getWindowParameter()->GetUnsigned("Text", text);
-        getWindowParameter()->SetUnsigned("Text", text);
+        value = getWindowParameter()->GetUnsigned("Text", value);
+        getWindowParameter()->SetUnsigned("Text", value);
     }
     TextEdit::changeEvent(e);
 }

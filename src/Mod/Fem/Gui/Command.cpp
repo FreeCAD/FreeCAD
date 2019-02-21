@@ -1495,10 +1495,10 @@ Gui::Action * CmdFemPostFunctions::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().pixmap("fem-post-geo-plane"));
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-plane"));
 
     QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().pixmap("fem-post-geo-sphere"));
+    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("fem-post-geo-sphere"));
 
     _pcAction = pcAction;
     languageChange();

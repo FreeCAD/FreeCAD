@@ -85,7 +85,6 @@ DrawProjGroup::~DrawProjGroup()
 {
 }
 
-
 void DrawProjGroup::onChanged(const App::Property* prop)
 {
     //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones don't... Or vice-versa.  WF: why would you change from 1st to 3rd in mid drawing?
@@ -97,7 +96,6 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             if (!sourceObjs.empty()) {
                 if (!hasAnchor()) {
                     // if we have a Source, but no Anchor, make an anchor
-//                    Base::Console().Message("TRACE - DPG::onChanged - adding Front\n");
                     Anchor.setValue(addProjection("Front"));
                     Anchor.purgeTouched();                      //don't need to mark this
                 }
@@ -110,6 +108,10 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
         if (prop == &Source) {
             updateChildrenSource();
+        }
+
+        if (prop == &LockPosition) {
+            updateChildrenLock();
         }
         
         if (prop == &ScaleType) {
@@ -131,17 +133,17 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
                 Rotation.setValue(0.0);
                 purgeTouched();
-                Base::Console().Warning("DPG: Projection Groups do not rotate. Change ignored.\n");
+                Base::Console().Log("DPG: Projection Groups do not rotate. Change ignored.\n");
             }
         }
-
     }
-        
+
     TechDraw::DrawViewCollection::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
 {
+//    Base::Console().Message("DPG::execute()\n");
     if (!keepUpdated()) {
         return App::DocumentObject::StdReturn;
     }
@@ -184,6 +186,7 @@ short DrawProjGroup::mustExecute() const
                  ProjectionType.isTouched() ||
                  Anchor.isTouched() ||
                  AutoDistribute.isTouched() ||
+                 LockPosition.isTouched()||
                  spacingX.isTouched() ||
                  spacingY.isTouched();
     }
@@ -325,7 +328,6 @@ DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
     return result;
 }
 
-
 bool DrawProjGroup::checkViewProjType(const char *in)
 {
     if ( strcmp(in, "Front") == 0 ||
@@ -380,9 +382,11 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         } else {  //Front
             view->LockPosition.setValue(true);  //lock "Front" position within DPG (note not Page!).
             view->LockPosition.setStatus(App::Property::ReadOnly,true); //Front should stay locked.
+            App::GetApplication().signalChangePropertyEditor(view->LockPosition);
+            view->LockPosition.purgeTouched();
+            requestPaint();
         }
-
-        addView(view);         //from DrawViewCollection
+        addView(view);                            //from DrawViewCollection
         if (view != getAnchor()) {                //anchor is done elsewhere
             view->recomputeFeature();
         }
@@ -522,7 +526,8 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
         //TODO: bounding boxes do not take view orientation into account
         //      ie X&Y widths might be swapped on page
 
-    if (AutoDistribute.getValue()) {
+//    if (AutoDistribute.getValue()) {
+    if (true) {
         std::vector<Base::Vector3d> position(idxCount);
         int idx = 0;
         for (;idx < idxCount; idx++) {
@@ -627,7 +632,6 @@ Base::Vector3d DrawProjGroup::getXYPosition(const char *viewTypeCStr)
     }
     return result;
 }
-
 
 int DrawProjGroup::getViewIndex(const char *viewTypeCStr) const
 {
@@ -788,6 +792,20 @@ void DrawProjGroup::updateChildrenSource(void)
     }
 }
 
+/*! 
+ * tell children DPGIs that parent DPG has changed LockPosition
+ * (really for benefit of QGIV on Gui side)
+ */
+void DrawProjGroup::updateChildrenLock(void)
+{
+    for( const auto it : Views.getValues() ) {
+        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+        if( view ) {
+            view->requestPaint();
+        }
+    }
+}
+
 /*!
  * check if ProjectionGroup fits on Page
  */
@@ -849,7 +867,6 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
     return result;
 }
 
-
 void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
 {
     App::DocumentObject* docObj = Anchor.getValue();
@@ -869,7 +886,6 @@ Base::Vector3d DrawProjGroup::getAnchorDirection(void)
     }
     return result;
 }
-
 
 //*************************************
 //* view direction manipulation routines

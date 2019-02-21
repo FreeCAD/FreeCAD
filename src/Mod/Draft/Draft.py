@@ -960,22 +960,21 @@ def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    from DraftTools import msg
     if not isinstance(pointslist,list):
         nlist = []
         for v in pointslist.Vertexes:
             nlist.append(v.Point)
         pointslist = nlist
     if len(pointslist) < 2:
-        msg(translate("draft","Draft.makeBSpline: not enough points")+"\n", 'error')
+        FreeCAD.Console.PrintError(translate("draft","Draft.makeBSpline: not enough points")+"\n")
         return
     if (pointslist[0] == pointslist[-1]):
         if len(pointslist) > 2:
             closed = True
             pointslist.pop()
-            msg(translate("draft","Draft.makeBSpline: Equal endpoints forced Closed")+"\n", 'warning')
+            FreeCAD.Console.PrintWarning(translate("draft","Draft.makeBSpline: Equal endpoints forced Closed")+"\n")
         else:                                                                            # len == 2 and first == last   GIGO
-            msg(translate("draft","Draft.makeBSpline: Invalid pointslist")+"\n", 'error')
+            FreeCAD.Console.PrintError(translate("draft","Draft.makeBSpline: Invalid pointslist")+"\n")
             return
     # should have sensible parms from here on
     if placement: typecheck([(placement,FreeCAD.Placement)], "makeBSpline")
@@ -2704,7 +2703,6 @@ def upgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -2978,7 +2976,7 @@ def upgrade(objects,delete=False,force=None):
                      "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires","turnToLine"]:
             result = eval(force)(objects)
         else:
-            msg(translate("Upgrade: Unknown force method:")+" "+force)
+            FreeCAD.Console.PrintMessage(translate("Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -2990,12 +2988,14 @@ def upgrade(objects,delete=False,force=None):
         # if we have a group: turn each closed wire inside into a face
         if groups:
             result = closeGroupWires(groups)
-            if result: msg(translate("draft", "Found groups: closing each open object inside")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found groups: closing each open object inside")+"\n")
 
         # if we have meshes, we try to turn them into shapes
         elif meshes:
             result = turnToParts(meshes)
-            if result: msg(translate("draft", "Found mesh(es): turning into Part shapes")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found mesh(es): turning into Part shapes")+"\n")
 
         # we have only faces here, no lone edges
         elif faces and (len(wires) + len(openwires) == len(facewires)):
@@ -3003,40 +3003,47 @@ def upgrade(objects,delete=False,force=None):
             # we have one shell: we try to make a solid
             if (len(objects) == 1) and (len(faces) > 3):
                 result = makeSolid(objects[0])
-                if result: msg(translate("draft", "Found 1 solidifiable object: solidifying it")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 1 solidifiable object: solidifying it")+"\n")
 
             # we have exactly 2 objects: we fuse them
             elif (len(objects) == 2) and (not curves):
                 result = makeFusion(objects[0],objects[1])
-                if result: msg(translate("draft", "Found 2 objects: fusing them")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 2 objects: fusing them")+"\n")
 
             # we have many separate faces: we try to make a shell
             elif (len(objects) > 2) and (len(faces) > 1) and (not loneedges):
                 result = makeShell(objects)
-                if result: msg(translate("draft", "Found several objects: creating a shell")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found several objects: creating a shell")+"\n")
 
             # we have faces: we try to join them if they are coplanar
             elif len(faces) > 1:
                 result = joinFaces(objects)
-                if result: msg(translate("draft", "Found several coplanar objects or faces: creating one face")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found several coplanar objects or faces: creating one face")+"\n")
 
             # only one object: if not parametric, we "draftify" it
             elif len(objects) == 1 and (not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 result = draftify(objects[0])
-                if result: msg(translate("draft", "Found 1 non-parametric objects: draftifying it")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 1 non-parametric objects: draftifying it")+"\n")
 
         # we have only one object that contains one edge
         elif (not faces) and (len(objects) == 1) and (len(edges) == 1):
             # we have a closed sketch: Extract a face
             if objects[0].isDerivedFrom("Sketcher::SketchObject") and (len(edges[0].Vertexes) == 1):
                 result = makeSketchFace(objects[0])
-                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
             else:
                 # turn to Draft line
                 e = objects[0].Shape.Edges[0]
                 if isinstance(e.Curve,(Part.LineSegment,Part.Line)):
                     result = turnToLine(objects[0])
-                    if result: msg(translate("draft", "Found 1 linear object: converting to line")+"\n")
+                    if result: 
+                        FreeCAD.Console.PrintMessage(translate("draft", "Found 1 linear object: converting to line")+"\n")
 
         # we have only closed wires, no faces
         elif wires and (not faces) and (not openwires):
@@ -3044,36 +3051,42 @@ def upgrade(objects,delete=False,force=None):
             # we have a sketch: Extract a face
             if (len(objects) == 1) and objects[0].isDerivedFrom("Sketcher::SketchObject"):
                 result = makeSketchFace(objects[0])
-                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found 1 closed sketch object: creating a face from it")+"\n")
 
             # only closed wires
             else:
                 result = makeFaces(objects)
-                if result: msg(translate("draft", "Found closed wires: creating faces")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found closed wires: creating faces")+"\n")
 
         # special case, we have only one open wire. We close it, unless it has only 1 edge!"
         elif (len(openwires) == 1) and (not faces) and (not loneedges):
             result = closeWire(objects[0])
-            if result: msg(translate("draft", "Found 1 open wire: closing it")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 open wire: closing it")+"\n")
 
         # only open wires and edges: we try to join their edges
         elif openwires and (not wires) and (not faces):
             result = makeWires(objects)
-            if result: msg(translate("draft", "Found several open wires: joining them")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found several open wires: joining them")+"\n")
 
         # only loneedges: we try to join them
         elif loneedges and (not facewires):
             result = makeWires(objects)
-            if result: msg(translate("draft", "Found several edges: wiring them")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found several edges: wiring them")+"\n")
 
         # all other cases, if more than 1 object, make a compound
         elif (len(objects) > 1):
             result = makeCompound(objects)
-            if result: msg(translate("draft", "Found several non-treatable objects: creating compound")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found several non-treatable objects: creating compound")+"\n")
 
         # no result has been obtained
         if not result:
-            msg(translate("draft", "Unable to upgrade these objects.")+"\n")
+            FreeCAD.Console.PrintMessage(translate("draft", "Unable to upgrade these objects.")+"\n")
 
     if delete:
         names = []
@@ -3095,7 +3108,6 @@ def downgrade(objects,delete=False,force=None):
     of objects to be deleted"""
 
     import Part, DraftGeomUtils
-    from DraftTools import msg
 
     if not isinstance(objects,list):
         objects = [objects]
@@ -3232,7 +3244,7 @@ def downgrade(objects,delete=False,force=None):
         if force in ["explode","shapify","subtr","splitFaces","cut2","getWire","splitWires"]:
             result = eval(force)(objects)
         else:
-            msg(translate("Upgrade: Unknown force method:")+" "+force)
+            FreeCAD.Console.PrintMessage(translate("Upgrade: Unknown force method:")+" "+force)
             result = None
 
     else:
@@ -3242,52 +3254,59 @@ def downgrade(objects,delete=False,force=None):
         # we have a block, we explode it
         if (len(objects) == 1) and (getType(objects[0]) == "Block"):
             result = explode(objects[0])
-            if result: msg(translate("draft", "Found 1 block: exploding it")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 block: exploding it")+"\n")
 
         # we have one multi-solids compound object: extract its solids
         elif (len(objects) == 1) and (getType(objects[0]) == "Part") and (len(solids) > 1):
             result = splitCompounds(objects)
             #print(result)
-            if result: msg(translate("draft", "Found 1 multi-solids compound: exploding it")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 multi-solids compound: exploding it")+"\n")
 
         # special case, we have one parametric object: we "de-parametrize" it
         elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
             result = shapify(objects[0])
             if result:
-                msg(translate("draft", "Found 1 parametric object: breaking its dependencies")+"\n")
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 parametric object: breaking its dependencies")+"\n")
                 addList.append(result)
                 #deleteList.append(objects[0])
 
         # we have only 2 objects: cut 2nd from 1st
         elif len(objects) == 2:
             result = cut2(objects)
-            if result: msg(translate("draft", "Found 2 objects: subtracting them")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 2 objects: subtracting them")+"\n")
 
         elif (len(faces) > 1):
 
             # one object with several faces: split it
             if len(objects) == 1:
                 result = splitFaces(objects)
-                if result: msg(translate("draft", "Found several faces: splitting them")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found several faces: splitting them")+"\n")
 
             # several objects: remove all the faces from the first one
             else:
                 result = subtr(objects)
-                if result: msg(translate("draft", "Found several objects: subtracting them from the first one")+"\n")
+                if result: 
+                    FreeCAD.Console.PrintMessage(translate("draft", "Found several objects: subtracting them from the first one")+"\n")
 
         # only one face: we extract its wires
         elif (len(faces) > 0):
             result = getWire(objects[0])
-            if result: msg(translate("draft", "Found 1 face: extracting its wires")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found 1 face: extracting its wires")+"\n")
 
         # no faces: split wire into single edges
         elif not onlyedges:
             result = splitWires(objects)
-            if result: msg(translate("draft", "Found only wires: extracting their edges")+"\n")
+            if result: 
+                FreeCAD.Console.PrintMessage(translate("draft", "Found only wires: extracting their edges")+"\n")
 
         # no result has been obtained
         if not result:
-            msg(translate("draft", "No more downgrade possible")+"\n")
+            FreeCAD.Console.PrintMessage(translate("draft", "No more downgrade possible")+"\n")
 
     if delete:
         names = []
@@ -4481,7 +4500,7 @@ class _Ellipse(_DraftObject):
         import Part
         plm = obj.Placement
         if obj.MajorRadius.Value < obj.MinorRadius.Value:
-            msg(translate("Error: Major radius is smaller than the minor radius"))
+            FreeCAD.Console.PrintMessage(translate("Error: Major radius is smaller than the minor radius"))
             return
         if obj.MajorRadius.Value and obj.MinorRadius.Value:
             ell = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value)
@@ -4670,7 +4689,7 @@ class _ViewProviderWire(_ViewProviderDraft):
     "A View Provider for the Wire object"
     def __init__(self, obj):
         _ViewProviderDraft.__init__(self,obj)
-        obj.addProperty("App::PropertyBool","EndArrow","Draft",QT_TRANSLATE_NOOP("App::Property","Displays a dim symbol at the end of the wire"))
+        obj.addProperty("App::PropertyBool","EndArrow","Draft",QT_TRANSLATE_NOOP("App::Property","Displays a Dimension symbol at the end of the wire"))
         obj.addProperty("App::PropertyLength","ArrowSize","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
         obj.addProperty("App::PropertyEnumeration","ArrowType","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
         obj.ArrowSize = getParam("arrowsize",0.1)
@@ -4917,14 +4936,13 @@ class _BSpline(_DraftObject):
 
     def execute(self, obj):
         import Part
-        from DraftTools import msg
         self.assureProperties(obj)
         if obj.Points:
             self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
             plm = obj.Placement
             if obj.Closed and (len(obj.Points) > 2):
                 if obj.Points[0] == obj.Points[-1]:  # should not occur, but OCC will crash
-                    msg(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.")+"\n", "error")
+                    FreeCAD.Console.PrintError(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.")+"\n")
                     return
                 spline = Part.BSplineCurve()
                 spline.interpolate(obj.Points, PeriodicFlag = True, Parameters = self.knotSeq)
@@ -5778,7 +5796,6 @@ class _ShapeString(_DraftObject):
         import Part
         # import OpenSCAD2Dgeom
         import os
-        from DraftTools import msg
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
@@ -5790,7 +5807,7 @@ class _ShapeString(_DraftObject):
             else:
                 CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
             if len(CharList) == 0:
-                msg(translate("draft","ShapeString: string has no wires")+"\n", 'warning')
+                FreeCAD.Console.PrintWarning(translate("draft","ShapeString: string has no wires")+"\n")
                 return
             SSChars = []
 

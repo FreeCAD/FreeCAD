@@ -245,6 +245,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default orientation for subsequent commands for waypoint creation</source>
+      <translation>Szakaszpont létrehozása a későbbi parancsok alapértelmezett tájolásának beállításához</translation>
+    </message>
+    <message>
       <source>set the default orientation for subsequent commands for waypoint creation</source>
       <translation>Alapértelmezett hely beállítása a későbbi szakaszpont parancsokhoz a várópontok létrehozásoknál</translation>
     </message>
@@ -263,6 +267,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>Set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
+      <translation>Alapértelmezett sebesség, gyorsulás és folytonossági szakaszpont értékeinek beállítása a későbbi parancsok alapértelmezett tájolásának beállításához</translation>
+    </message>
+    <message>
       <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
       <translation>Alapértelmezett sebesség, gyorsulás és folytonossági szakaszpont értékeinek beállítása</translation>
     </message>
@@ -336,7 +344,7 @@
     </message>
     <message>
       <source>Dress up trajectory...</source>
-      <translation>Útvonal felruházása...</translation>
+      <translation>Pálya felruházása...</translation>
     </message>
     <message>
       <source>Create a dress up object which overide som aspects of a trajectory</source>
@@ -399,6 +407,10 @@
     </message>
     <message>
       <location line="+1"/>
+      <source>You need at least two waypoints in a trajectory to simulate.</source>
+      <translation>Legalább két útvonalpontra van szükség a pályán a szimulációhoz.</translation>
+    </message>
+    <message>
       <source>You need at least two way points in a trajectory to simulate.</source>
       <translation>A szimulációhoz legalább két útvonalpontra van szükség a pályán.</translation>
     </message>
@@ -444,6 +456,21 @@
       <translation>A geometria (előválasztás) fölé kell vinni az egérrel a kurzort, hogy használni tudja ezt a parancsot. Részleteket a dokumentációban talál.</translation>
     </message>
     <message>
+      <location line="+77"/>
+      <source>Set default speed</source>
+      <translation>Állítsa be az alapértelmezett sebességet</translation>
+    </message>
+    <message>
+      <location line="+10"/>
+      <source>Set default continuity</source>
+      <translation>Állítsa be az alapértelmezett folytonosságot</translation>
+    </message>
+    <message>
+      <location line="+7"/>
+      <source>Set default acceleration</source>
+      <translation>Állítsa be az alapértelmezett gyorsulást</translation>
+    </message>
+    <message>
       <source>Select one Robot to set home postion</source>
       <translation>Robot kiválasztása és alaphelyzetbe állítása</translation>
     </message>
@@ -453,38 +480,35 @@
       <translation>Válasszon ki egy robotot</translation>
     </message>
     <message>
-      <location filename="../../CommandTrajectory.cpp" line="-24"/>
+      <location filename="../../CommandTrajectory.cpp" line="-118"/>
       <location line="+17"/>
       <source>Select one Trajectory object.</source>
       <translation>Válasszon ki egy pálya objektumot.</translation>
     </message>
     <message>
-      <location line="+84"/>
       <source>set default speed</source>
       <translation>alapértelmezett sebesség beállítása</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+85"/>
       <source>speed: (e.g. 1 m/s or 3 cm/s)</source>
       <translation>sebesség: (pl. 1 m/s vagy 3 cm/s)</translation>
     </message>
     <message>
-      <location line="+9"/>
       <source>set default continuity</source>
       <translation>alapértelmezett folytonosság</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+10"/>
       <source>continuous ?</source>
       <translation>folyamatos?</translation>
     </message>
     <message>
-      <location line="+6"/>
       <source>set default acceleration</source>
       <translation>alapértelmezett gyorsulás beállítás</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location line="+7"/>
       <source>acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)</source>
       <translation>gyorsulás: (pl. 1 m/s^2 vagy 3 cm/s^2)</translation>
     </message>
@@ -648,7 +672,7 @@
     <message>
       <location filename="../../TaskRobotControl.cpp" line="+46"/>
       <source>TaskRobotControl</source>
-      <translation>TaskRobotControl</translation>
+      <translation>TaskRobotIrányítás</translation>
     </message>
   </context>
   <context>
@@ -656,7 +680,7 @@
     <message>
       <location filename="../../TaskRobotMessages.cpp" line="+46"/>
       <source>TaskRobotMessages</source>
-      <translation>TaskRobotMessages</translation>
+      <translation>TaskRobotÜzenetek</translation>
     </message>
   </context>
   <context>
@@ -933,7 +957,7 @@
     </message>
     <message>
       <source>TaskRobotControl</source>
-      <translation>TaskRobotControl</translation>
+      <translation>TaskRobotIrányítás</translation>
     </message>
   </context>
   <context>
@@ -950,7 +974,7 @@
     </message>
     <message>
       <source>TaskRobotMessages</source>
-      <translation>TaskRobotMessages</translation>
+      <translation>TaskRobotÜzenetek</translation>
     </message>
   </context>
   <context>

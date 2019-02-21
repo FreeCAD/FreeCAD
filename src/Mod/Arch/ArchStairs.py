@@ -726,10 +726,16 @@ class _Stairs(ArchComponent.Component):
                 vOffsetH1 = DraftVecUtils.scaleTo(dvec1,offsetHLeft.Value)
                 vOffsetH2 = DraftVecUtils.scaleTo(dvec2,offsetHLeft.Value)
 
-            vBase[i] = _Stairs.align(vBase[i], "Right", -vOffsetH)
-            if isArc:
+            if align == "Left":
+              vBase[i] = _Stairs.align(vBase[i], "Right", -vOffsetH)
+              if isArc:
                 vBase1 = _Stairs.align(vBase1, "Right", -vOffsetH1)
                 vBase2 = _Stairs.align(vBase2, "Right", -vOffsetH2)
+            elif align == "Right":
+              vBase[i] = _Stairs.align(vBase[i], "Right", vOffsetH)
+              if isArc:
+                vBase1 = _Stairs.align(vBase1, "Right", vOffsetH1)
+                vBase2 = _Stairs.align(vBase2, "Right", vOffsetH2)
 
 
             ''' (3b, 2b/1c) get + alter [p1, p2, p3, p4] - Need vBase '''

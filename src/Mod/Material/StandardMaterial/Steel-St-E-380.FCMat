@@ -1,21 +1,21 @@
-; St E 380 - 1.8900 - DIN 17102
+; Steel-St-E-380
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [FCMat]
-Name = [DE]St E 380
+Name = St E 380
 NameDE = St E 380
 Father = Metal
 YoungsModulus = 210000 MPa
-UltimateTensileStrength = 500
+UltimateTensileStrength = 500 MPa
 PoissonRatio = 0.3
 Density = 7800 kg/m^3
 KindOfMaterial = Fine grain steel
 KindOfMaterialDE = Feinkornstahl
 MaterialNumber = 1.89
-ModulusOfShare = 81000
 Norm = DIN 17102
-ThermalExpansionCoefficient = 1.10E-005
+ShearModulus = 81000 MPa
+ThermalExpansionCoefficient = 0.000011 m/m/K
 UltimateStrain = 0
-YieldStrength = 380
+YieldStrength = 380 MPa

@@ -1,4 +1,4 @@
-; EN-GJMW-450-7 - 0.8045 - EN 1562
+; Steel-EN-GJMW-450-7
 ; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
@@ -9,14 +9,14 @@ NameDE = GTW 45-07
 DescriptionDE = schlagfest, Fahrwerksteile
 Father = Metal
 YoungsModulus = 175000 MPa
-UltimateTensileStrength = 450
+UltimateTensileStrength = 450 MPa
 PoissonRatio = 0.3
 Density = 7200 kg/m^3
 KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.8045
-ModulusOfShare = 67000
 Norm = EN 1562
-ThermalExpansionCoefficient = 1.00E-005
+ShearModulus = 67000 MPa
+ThermalExpansionCoefficient = 0.00001 m/m/K
 UltimateStrain = 10
-YieldStrength = 260
+YieldStrength = 260 MPa

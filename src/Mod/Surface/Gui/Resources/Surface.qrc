@@ -2,8 +2,8 @@
     <qresource> 
         <file>icons/BezSurf.svg</file>
         <file>icons/BSplineSurf.svg</file>
-        <file>icons/Cut.svg</file>
-        <file>icons/Filling.svg</file>
+        <file>icons/Surface_Cut.svg</file>
+        <file>icons/Surface_Filling.svg</file>
         <file>icons/Sewing.svg</file>
     </qresource>
 </RCC> 

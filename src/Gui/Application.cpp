@@ -503,11 +503,13 @@ void Application::open(const char* FileName, const char* Module)
     }
 
     if (Module != 0) {
-        // issue module loading
-        Command::doCommand(Command::App, "import %s", Module);
         try {
+            // issue module loading
+            Command::doCommand(Command::App, "import %s", Module);
+
             // load the file with the module
             Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
+
             // ViewFit
             if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
@@ -515,6 +517,7 @@ void Application::open(const char* FileName, const char* Module)
                 if (hGrp->GetBool("AutoFitToView", true))
                     Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
             }
+
             // the original file name is required
             QString filename = QString::fromUtf8(File.filePath().c_str());
             getMainWindow()->appendRecentFile(filename);
@@ -543,10 +546,10 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
 
     if (Module != 0) {
-        // issue module loading
-        Command::doCommand(Command::App, "import %s", Module);
-
         try {
+            // issue module loading
+            Command::doCommand(Command::App, "import %s", Module);
+
             // load the file with the module
             if (File.hasExtension("FCStd")) {
                 Command::doCommand(Command::App, "%s.open(u\"%s\")"
@@ -1188,7 +1191,11 @@ bool Application::activateWorkbench(const char* name)
         }
 
         Base::Console().Error("%s\n", (const char*)msg.toLatin1());
-        Base::Console().Error("%s\n", e.getStackTrace().c_str());
+        if (!d->startingUp)
+            Base::Console().Error("%s\n", e.getStackTrace().c_str());
+        else
+            Base::Console().Log("%s\n", e.getStackTrace().c_str());
+
         if (!d->startingUp) {
             wc.restoreCursor();
             QMessageBox::critical(getMainWindow(), QObject::tr("Workbench failure"),
@@ -1797,7 +1804,7 @@ void Application::runApplication(void)
         std::map<std::string, std::string>& config = App::Application::Config();
         QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
         QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
-        QString title = QString::fromLatin1("%1 %2.%3").arg(mainApp.applicationName()).arg(major).arg(minor);
+        QString title = QString::fromLatin1("%1 %2.%3").arg(mainApp.applicationName(), major, minor);
         mw.setWindowTitle(title);
     } else {
         mw.setWindowTitle(mainApp.applicationName());

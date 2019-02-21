@@ -226,17 +226,16 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
 void CmdRobotSetDefaultOrientation::activated(int)
 {
     // create placement dialog 
-    Gui::Dialog::Placement *Dlg = new Gui::Dialog::Placement();
+    Gui::Dialog::Placement Dlg;
     Base::Placement place;
-    Dlg->setPlacement(place);
-    if(Dlg->exec() == QDialog::Accepted ){
-        place = Dlg->getPlacement();
+    Dlg.setPlacement(place);
+    if (Dlg.exec() == QDialog::Accepted ){
+        place = Dlg.getPlacement();
         Base::Rotation rot = place.getRotation();
         Base::Vector3d disp = place.getPosition();
         doCommand(Doc,"_DefOrientation = FreeCAD.Rotation(%f,%f,%f,%f)",rot[0],rot[1],rot[2],rot[3]);
         doCommand(Doc,"_DefDisplacement = FreeCAD.Vector(%f,%f,%f)",disp[0],disp[1],disp[2]);
     }
-      
 }
 
 bool CmdRobotSetDefaultOrientation::isActive(void)

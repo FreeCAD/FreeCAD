@@ -274,6 +274,13 @@ void QGIDatumLabel::setPrettyNormal(void)
     m_tolText->setPrettyNormal();
 }
 
+void QGIDatumLabel::setColor(QColor c)
+{
+    m_colNormal = c;
+    m_dimText->setColor(m_colNormal);
+    m_tolText->setColor(m_colNormal);
+}
+
 //**************************************************************
 QGIViewDimension::QGIViewDimension() :
     hasHover(false),
@@ -286,6 +293,7 @@ QGIViewDimension::QGIViewDimension() :
 
     datumLabel = new QGIDatumLabel();
     addToGroup(datumLabel);
+    datumLabel->setColor(getNormalColor());
     datumLabel->setPrettyNormal();
     dimLines = new QGIDimLines();
     addToGroup(dimLines);
@@ -482,6 +490,9 @@ void QGIViewDimension::draw()
         return;
     }
 
+    m_colNormal = getNormalColor();
+    datumLabel->setColor(m_colNormal);
+
     m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
     float margin = Rez::guiX(5.f);
 
@@ -493,16 +504,16 @@ void QGIViewDimension::draw()
    if (strcmp(dimType, "Distance") == 0 ||
         strcmp(dimType, "DistanceX") == 0 ||
         strcmp(dimType, "DistanceY") == 0) {
+        Base::Vector3d stdUp(0.0,1.0,0.0);
+        Base::Vector3d stdLeft(-1.0,0.0,0.0);
         pointPair pts = dim->getLinearPoints();
         Base::Vector3d startDist, endDist, midDist;                     //start/end/mid points of distance line
         startDist = Rez::guiX(pts.first);
         endDist   = Rez::guiX(pts.second);
-        if (strcmp(dimType, "DistanceY") == 0 ) {
-            if (startDist.y < endDist.y) {                              //measure bottom to top
-                Base::Vector3d temp = startDist;
-                startDist = endDist;
-                endDist = temp;
-            }
+        if (startDist.y < endDist.y) {                                 //measure bottom to top
+            Base::Vector3d temp = startDist;
+            startDist = endDist;
+            endDist = temp;
         }
 
         Base::Vector3d vecDist = (endDist - startDist);
@@ -563,10 +574,14 @@ void QGIViewDimension::draw()
         }
 
         Base::Vector3d textNorm = normDim;
-        if (std::abs(dirDist.x) < FLT_EPSILON) {                       //this is DistanceY
-            textNorm = Base::Vector3d(-1.0,0.0,0.0);                   //text up is left (iso)
-        } else if (std::abs(dirDist.y) < FLT_EPSILON) {                //this is DistanceX
-            textNorm = Base::Vector3d(0.0,1.0,0.0);                    //text up is up
+        if (strcmp(dimType, "DistanceX") == 0 ) {
+            textNorm = stdUp;                                          //always above
+        } else if (strcmp(dimType, "DistanceY") == 0 ) {
+            textNorm = stdLeft;                                        //left of dimLine
+        } else if (std::abs(dirDist.x) < FLT_EPSILON) {                //this is horizontal dim line
+            textNorm = stdLeft;                                        //left of dimLine
+        } else if (std::abs(dirDist.y) < FLT_EPSILON) {                //this is vertical dim line
+            textNorm = stdLeft;                                        //left of dimLine
         }
         // +/- pos of startDist vs endDist for vert/horiz Dims
         // distStartDelta sb zero for normal dims
@@ -601,7 +616,7 @@ void QGIViewDimension::draw()
                 fauxCenter = lblCenter + textOffset * dirExtActual;
                 double slope;
                 if (DrawUtil::fpCompare(dirDist.x, 0.0)) {
-                    slope = std::numeric_limits<float>::max();
+                    slope = std::numeric_limits<float>::max();                  //vertical line
                 } else {
                     slope = fabs(dirDist.y / dirDist.x);
                 }
@@ -616,18 +631,10 @@ void QGIViewDimension::draw()
                 }
 
         } else if (strcmp(dimType, "DistanceX") == 0 ) {
-            if (lblCenter.y > figureCenter.y) {                           //text always above dimLine
-                fauxCenter = lblCenter + textOffset * textNorm;
-            } else {
-                fauxCenter = lblCenter + textOffset * textNorm;
-            }
-        } else if (strcmp(dimType, "DistanceY") == 0 ) {                  //text always to left of dimLine
+            fauxCenter = lblCenter + textOffset * textNorm;
+        } else if (strcmp(dimType, "DistanceY") == 0 ) {
             angle = - angle;
-            if (lblCenter.x > figureCenter.x) {
-                fauxCenter = lblCenter - textOffset * textNorm;
-            } else {
-                fauxCenter = lblCenter - textOffset * textNorm;
-            }
+            fauxCenter = lblCenter - textOffset * textNorm;
         }
 
         //intersection of extension lines and dimension line

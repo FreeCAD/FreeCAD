@@ -239,7 +239,7 @@ Do you want to continue?</source>
       <location line="-433"/>
       <location line="+434"/>
       <source>Cannot create a project because there is no template installed.</source>
-      <translation type="unfinished">Cannot create a project because there is no template installed.</translation>
+      <translation>Δε μπορεί να δημιουργηθεί έργο διότι δεν υπάρχει εγκατεστημένο πρότυπο.</translation>
     </message>
     <message>
       <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.

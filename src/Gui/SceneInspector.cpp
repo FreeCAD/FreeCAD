@@ -101,7 +101,7 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
             SoNode* child = group->getChild(i);
             setNode(this->index(i, 0, index), child);
 
-            QMap<SoNode*, QString>::iterator it = nodeNames.find(child);
+            QHash<SoNode*, QString>::iterator it = nodeNames.find(child);
             if (it != nodeNames.end()) {
                 this->setData(this->index(i, 1, index), QVariant(it.value()));
             }
@@ -113,7 +113,7 @@ void SceneModel::setNode(QModelIndex index, SoNode* node)
     // insert icon
 }
 
-void SceneModel::setNodeNames(const QMap<SoNode*, QString>& names)
+void SceneModel::setNodeNames(const QHash<SoNode*, QString>& names)
 {
     nodeNames = names;
 }
@@ -173,7 +173,7 @@ void DlgInspector::setNodeNames(Gui::Document* doc)
 {
     std::vector<Gui::ViewProvider*> vps = doc->getViewProvidersOfType
             (Gui::ViewProviderDocumentObject::getClassTypeId());
-    QMap<SoNode*, QString> nodeNames;
+    QHash<SoNode*, QString> nodeNames;
     for (std::vector<Gui::ViewProvider*>::iterator it = vps.begin(); it != vps.end(); ++it) {
         Gui::ViewProviderDocumentObject* vp = static_cast<Gui::ViewProviderDocumentObject*>(*it);
         App::DocumentObject* obj = vp->getObject();

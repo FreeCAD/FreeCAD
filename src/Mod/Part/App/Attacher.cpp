@@ -235,7 +235,7 @@ Base::Placement AttachEngine::placementFactory(const gp_Dir &ZAxis,
     gp_Ax3 ax3;//OCC representation of the final placement
     if (!makeYVertical) {
         ax3 = gp_Ax3(Origin, ZAxis, XAxis);
-    } else if (makeYVertical && !makeLegacyFlatFaceOrientation) {
+    } else if (!makeLegacyFlatFaceOrientation) {
         //align Y along Z, if possible
         gp_Vec YAxis(0.0,0.0,1.0);
         XAxis = YAxis.Crossed(gp_Vec(ZAxis));
@@ -1163,7 +1163,7 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(Base::Placement origP
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: not enough subshapes (need one false and one vertex).");
 
         bool bThruVertex = false;
-        if (shapes[0]->ShapeType() == TopAbs_VERTEX && shapes.size()>=2) {
+        if (shapes[0]->ShapeType() == TopAbs_VERTEX) {
             std::swap(shapes[0],shapes[1]);
             bThruVertex = true;
         }

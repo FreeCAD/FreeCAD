@@ -475,7 +475,7 @@ void AboutDialog::setupLabels()
     ui->labelAuthor->setUrl(mturl);
 
     QString version = ui->labelBuildVersion->text();
-    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2").arg(major).arg(minor));
+    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2").arg(major, minor));
     ui->labelBuildVersion->setText(version);
 
     QString revision = ui->labelBuildRevision->text();
@@ -703,7 +703,7 @@ void AboutDialog::linkActivated(const QUrl& link)
     QString fragment = link.fragment();
     if (fragment.startsWith(QLatin1String("_Toc"))) {
         QString prefix = fragment.mid(4);
-        title = QString::fromLatin1("%1 %2").arg(prefix).arg(title);
+        title = QString::fromLatin1("%1 %2").arg(prefix, title);
     }
     licenseView->setWindowTitle(title);
     getMainWindow()->addWindow(licenseView);

@@ -38,12 +38,12 @@
     <message>
       <location line="+1"/>
       <source>Insert new Luxrender project into the document</source>
-      <translation>Insérer un nouveau projet Luxrender dans le document</translation>
+      <translation>Insérer un nouveau projet de Luxrender dans le document</translation>
     </message>
     <message>
       <location line="+52"/>
       <source>No template</source>
-      <translation>Aucun modèle.</translation>
+      <translation>Aucun modèle</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -101,7 +101,7 @@
     <message>
       <location line="+52"/>
       <source>No template</source>
-      <translation>Aucun modèle.</translation>
+      <translation>Aucun modèle</translation>
     </message>
     <message>
       <location line="+1"/>
@@ -233,7 +233,7 @@ Do you want to continue?</source>
       <location line="+126"/>
       <location line="+434"/>
       <source>No template</source>
-      <translation>Aucun modèle.</translation>
+      <translation>Aucun modèle</translation>
     </message>
     <message>
       <location line="-433"/>

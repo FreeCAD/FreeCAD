@@ -122,7 +122,7 @@ Gui::View3DInventor* DemoMode::activeView() const
     Document* doc = Application::Instance->activeDocument();
     if (doc) {
         MDIView* view = doc->getActiveView();
-        if (doc && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
             return static_cast<Gui::View3DInventor*>(view);
         }
     }

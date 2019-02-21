@@ -685,7 +685,7 @@ bool Document::saveAs(void)
 
     QString exe = qApp->applicationName();
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
-        QString(), QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe).arg(QObject::tr("Document")));
+        QString(), QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe, QObject::tr("Document")));
     if (!fn.isEmpty()) {
         QFileInfo fi;
         fi.setFile(fn);
