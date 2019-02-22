@@ -977,6 +977,8 @@ App::DocumentObjectExecReturn *Hole::execute(void)
 
         // Get vector normal to profile
         Base::Vector3d  SketchVector = getProfileNormal();
+        if (Reversed.getValue())
+            SketchVector *= -1.0;
 
         // Define this as zDir
         gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
