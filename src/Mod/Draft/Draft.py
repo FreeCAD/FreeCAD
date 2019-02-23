@@ -1495,7 +1495,13 @@ def moveVertex(object, vertex_index, vertex, vector):
 
 def moveEdge(object, edge_index, vector):
     moveVertex(object, edge_index, object.Placement.multVec(object.Points[edge_index]), vector)
-    moveVertex(object, edge_index+1, object.Placement.multVec(object.Points[edge_index+1]), vector)
+    if isClosedEdge(edge_index, object):
+        moveVertex(object, 0, object.Placement.multVec(object.Points[0]), vector)
+    else:
+        moveVertex(object, edge_index+1, object.Placement.multVec(object.Points[edge_index+1]), vector)
+
+def isClosedEdge(edge_index, object):
+    return edge_index + 1 >= len(object.Points)
 
 def move(objectslist,vector,copy=False):
     '''move(objects,vector,[copy]): Moves the objects contained
