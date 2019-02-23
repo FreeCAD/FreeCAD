@@ -2121,7 +2121,7 @@ PyObject*  TopoShapePy::isCoplanar(PyObject *args)
 PyObject*  TopoShapePy::findPlane(PyObject *args)
 {
     double tol = -1;
-    if (!PyArg_ParseTuple(args, "d", &tol))
+    if (!PyArg_ParseTuple(args, "|d", &tol))
         return NULL;
     PY_TRY {
         gp_Pln pln;
