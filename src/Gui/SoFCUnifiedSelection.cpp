@@ -375,6 +375,12 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
                 currenthighlight = 0;
             }
         } else if (hilaction->SelChange.Type == SelectionChanges::SetPreselect) {
+            if (currenthighlight) {
+                SoHighlightElementAction action;
+                action.apply(currenthighlight);
+                currenthighlight->unref();
+                currenthighlight = 0;
+            }
             App::Document* doc = App::GetApplication().getDocument(hilaction->SelChange.pDocName);
             App::DocumentObject* obj = doc->getObject(hilaction->SelChange.pObjectName);
             ViewProvider*vp = Application::Instance->getViewProvider(obj);
