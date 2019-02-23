@@ -643,7 +643,8 @@ void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCalle
         SoFCSelectionAction cAct(Reason);
         cAct.apply(pcViewProviderRoot);
     }
-    else if (Reason.Type == SelectionChanges::RmvPreselect) {
+    else if (Reason.Type == SelectionChanges::RmvPreselect ||
+        Reason.Type == SelectionChanges::SetPreselect) {
         SoFCHighlightAction cAct(Reason);
         cAct.apply(pcViewProviderRoot);
     }
