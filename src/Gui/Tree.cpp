@@ -1963,7 +1963,11 @@ void DocumentObjectItem::setData (int column, int role, const QVariant & value)
     QTreeWidgetItem::setData(column, role, value);
     if (role == Qt::EditRole) {
         QString label = value.toString();
-        viewObject->getObject()->Label.setValue((const char*)label.toUtf8());
+        App::DocumentObject* obj = viewObject->getObject();
+        App::Document* doc = obj->getDocument();
+        doc->openTransaction(TreeWidget::tr("Rename object").toUtf8());
+        obj->Label.setValue((const char*)label.toUtf8());
+        doc->commitTransaction();
     }
 }
 
