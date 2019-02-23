@@ -103,6 +103,7 @@ using namespace Import;
 ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     : pDoc(h)
     , keepExplicitPlacement(explicitPlacement)
+    , filterBaseFeature(true)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
@@ -121,6 +122,48 @@ ExportOCAF::~ExportOCAF()
 {
 }
 
+std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
+{
+    // Ignore shape of a Part that is referenced by a FeatureBase (#0003807)
+    //
+    std::vector<App::DocumentObject*> entries = part->Group.getValues();
+
+    // get FeatureBases of the out-lists of the features of the Part
+    Base::Type featureBase = Base::Type::fromName("PartDesign::FeatureBase");
+    std::vector<App::DocumentObject*> filterType;
+    for (auto it : entries) {
+        std::vector<App::DocumentObject*> outList = it->getOutList();
+        for (auto jt : outList) {
+            if (jt->getTypeId() == featureBase) {
+                filterType.push_back(jt);
+            }
+        }
+    }
+
+    // now check if for a feature of the Part it must be filtered
+    if (!filterType.empty()) {
+        std::vector<App::DocumentObject*> keepObjects;
+        for (auto it : entries) {
+            std::vector<App::DocumentObject*> inList = it->getInList();
+            bool accept = true;
+            for (auto jt : inList) {
+                auto kt = std::find(filterType.begin(), filterType.end(), jt);
+                if (kt != filterType.end()) {
+                    accept = false;
+                    break;
+                }
+            }
+
+            if (accept)
+                keepObjects.push_back(it);
+        }
+
+        entries.swap(keepObjects);
+    }
+
+    return entries;
+}
+
 int ExportOCAF::exportObject(App::DocumentObject* obj,
                              std::vector <TDF_Label>& hierarchical_label,
                              std::vector <TopLoc_Location>& hierarchical_loc,
@@ -132,11 +175,15 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
 
     if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
         App::Part* part = static_cast<App::Part*>(obj);
-        // I shall recusrively select the elements and call back
+        // I shall recursively select the elements and call back
         std::vector<App::DocumentObject*> entries = part->Group.getValues();
         std::vector<App::DocumentObject*>::iterator it;
 
-        for ( it = entries.begin(); it != entries.end(); it++ ) {
+        if (filterBaseFeature) {
+            entries = filterPart(part);
+        }
+
+        for (it = entries.begin(); it != entries.end(); ++it) {
             int new_label=0;
             new_label = exportObject((*it), hierarchical_label, hierarchical_loc, hierarchical_part);
             local_label.push_back(new_label);
