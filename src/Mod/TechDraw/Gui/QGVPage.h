@@ -113,6 +113,7 @@ protected:
     void enterEvent(QEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
 
     static QColor SelectColor;
     static QColor PreselectColor;
@@ -132,6 +133,7 @@ private:
     
     bool m_atCursor;
     bool m_invertZoom;
+    double m_zoomIncrement;
 };
 
 } // namespace MDIViewPageGui
