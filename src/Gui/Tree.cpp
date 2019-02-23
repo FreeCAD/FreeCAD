@@ -1622,7 +1622,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
     // the parent-children relationship of the view providers is rather inefficient.
     FOREACH_ITEM(item,obj)
         switch (mode) {
-        case Gui::Expand: {
+        case Gui::ExpandPath: {
             QTreeWidgetItem* parent = item->parent();
             while (parent) {
                 parent->setExpanded(true);
@@ -1630,10 +1630,13 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
             }
             item->setExpanded(true);
         }   break;
-        case Gui::Collapse:
+        case Gui::ExpandItem:
+            item->setExpanded(true);
+            break;
+        case Gui::CollapseItem:
             item->setExpanded(false);
             break;
-        case Gui::Toggle:
+        case Gui::ToggleItem:
             if (item->isExpanded())
                 item->setExpanded(false);
             else
@@ -1641,8 +1644,7 @@ void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,
             break;
 
         default:
-            // not defined enum
-            assert(0);
+            break;
         }
         populateItem(item);
     END_FOREACH_ITEM
