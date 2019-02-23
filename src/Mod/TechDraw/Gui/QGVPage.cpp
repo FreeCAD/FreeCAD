@@ -112,6 +112,7 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("View");
     m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
     m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
+    m_zoomIncrement = hGrp->GetFloat("ZoomStep",0.02);
 
     if (m_atCursor) {
         setResizeAnchor(AnchorUnderMouse);
@@ -709,6 +710,26 @@ void QGVPage::wheelEvent(QWheelEvent *event)
     QPointF change = newCenter - center;
     translate(change.x(), change.y());
 
+    event->accept();
+}
+
+void QGVPage::keyPressEvent(QKeyEvent *event)
+{
+    if(event->modifiers().testFlag(Qt::ControlModifier)) {
+        switch(event->key()) {
+            case Qt::Key_Plus: { 
+                scale(1.0 + m_zoomIncrement, 1.0 + m_zoomIncrement);
+                break; 
+            }
+            case Qt::Key_Minus: {
+                scale(1.0 - m_zoomIncrement, 1.0 - m_zoomIncrement);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
     event->accept();
 }
 
