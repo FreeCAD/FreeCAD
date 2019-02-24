@@ -114,6 +114,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event) override;
+    void kbPanScroll(int xMove = 1, int yMove = 1); 
 
     static QColor SelectColor;
     static QColor PreselectColor;
@@ -134,6 +135,8 @@ private:
     bool m_atCursor;
     bool m_invertZoom;
     double m_zoomIncrement;
+    int m_reversePan;
+    int m_reverseScroll;
 };
 
 } // namespace MDIViewPageGui

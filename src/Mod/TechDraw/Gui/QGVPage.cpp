@@ -33,6 +33,7 @@
 # include <QPainter>
 # include <QPaintEvent>
 # include <QSvgGenerator>
+#include <QScrollBar>
 # include <QWheelEvent>
 #include <QTemporaryFile>
 #include <QDomDocument>
@@ -104,7 +105,6 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
 
     setScene(s);
 
-
     setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
 
@@ -113,6 +113,11 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     m_atCursor = hGrp->GetBool("ZoomAtCursor", 1l);
     m_invertZoom = hGrp->GetBool("InvertZoom", 0l);
     m_zoomIncrement = hGrp->GetFloat("ZoomStep",0.02);
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    m_reversePan = hGrp->GetInt("KbPan",1);
+    m_reverseScroll = hGrp->GetInt("KbScroll",1);
+
 
     if (m_atCursor) {
         setResizeAnchor(AnchorUnderMouse);
@@ -730,7 +735,49 @@ void QGVPage::keyPressEvent(QKeyEvent *event)
             }
         }
     }
+
+    if(event->modifiers().testFlag( Qt::NoModifier)) {
+        switch(event->key()) {
+            case Qt::Key_Left: {
+                kbPanScroll(1, 0);
+                break;
+            }
+            case Qt::Key_Up: {
+                kbPanScroll(0, 1);
+                break;
+            }
+            case Qt::Key_Right: {
+                kbPanScroll(-1, 0);
+                break;
+            }
+            case Qt::Key_Down: {
+                kbPanScroll(0, -1);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
     event->accept();
+}
+
+void QGVPage::kbPanScroll(int xMove, int yMove) 
+{
+    if (xMove != 0) {
+        QScrollBar* hsb = horizontalScrollBar();
+//        int hRange = hsb->maximum() - hsb->minimum();     //default here is 100?
+//        int hDelta = xMove/hRange
+        int hStep = hsb->singleStep() * xMove * m_reversePan;
+        int hNow = hsb->value();
+        hsb->setValue(hNow + hStep);
+    }
+    if (yMove != 0) {
+        QScrollBar* vsb = verticalScrollBar();
+        int vStep = vsb->singleStep() * yMove * m_reverseScroll;
+        int vNow = vsb->value();
+        vsb->setValue(vNow + vStep);
+    }
 }
 
 void QGVPage::enterEvent(QEvent *event)
