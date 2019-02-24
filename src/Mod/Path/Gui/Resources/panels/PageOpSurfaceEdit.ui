@@ -185,14 +185,40 @@
            </property>
           </widget>
       </item>
+
       <item row="7" column = "0">
+       <widget class="QLabel" name="label_7">
+        <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select whether the surfacing operation is completed in a single pass or in multiple passes.&lt;/p&gt;&lt;p&gt;Single pass is cut to final depth - also referred to as a facing operation.&lt;/p&gt;&lt;p&gt;Mult-pass is completed in layers determined by the stepdown parameter in the Depths section.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Completion Mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column = "1" colspan="2">
+       <widget class="QComboBox" name="completionModeSelect">
+        <item>
+         <property name="text">
+          <string>Single-pass</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Multi-pass</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+
+      <item row="8" column = "0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Optimize output</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1" colspan="2">
+      <item row="8" column="1" colspan="2">
           <widget class="QCheckBox" name="optimizeEnabled">
            <property name="text">
             <string>Enabled</string>
