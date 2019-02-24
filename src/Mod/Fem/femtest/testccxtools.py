@@ -324,7 +324,7 @@ class TestCcxTools(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        frequency_analysis_dir = self.temp_dir + 'FEM_ccx_frequency/'
+        frequency_analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, 'FEM_ccx_frequency/')
         fea = ccxtools.FemToolsCcx(analysis, solver_object, test_mode=True)
 
         fcc_print('Setting up working directory {}'.format(frequency_analysis_dir))
@@ -453,7 +453,7 @@ class TestCcxTools(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        thermomech_analysis_dir = self.temp_dir + 'FEM_ccx_thermomech/'
+        thermomech_analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, 'FEM_ccx_thermomech/')
         fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
 
         fcc_print('Setting up working directory {}'.format(thermomech_analysis_dir))
@@ -702,7 +702,7 @@ class TestCcxTools(unittest.TestCase):
 
         self.active_doc.recompute()
 
-        Flow1D_thermomech_analysis_dir = self.temp_dir + 'FEM_ccx_Flow1D_thermomech/'
+        Flow1D_thermomech_analysis_dir = testtools.get_unit_test_tmp_dir(self.temp_dir, 'FEM_ccx_Flow1D_thermomech/')
         fea = ccxtools.FemToolsCcx(analysis, test_mode=True)
 
         fcc_print('Setting up working directory {}'.format(Flow1D_thermomech_analysis_dir))
