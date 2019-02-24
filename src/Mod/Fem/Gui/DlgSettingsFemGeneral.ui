@@ -34,7 +34,7 @@
         <enum>Qt::LeftToRight</enum>
        </property>
        <property name="title">
-        <string>Working directory ccx tools</string>
+        <string>Working directory for ccx tools solver only</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -107,7 +107,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working directory gerneral FEM solver frame work</string>
+        <string>Working directory for all frame work solver</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
