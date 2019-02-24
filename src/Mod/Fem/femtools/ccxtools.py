@@ -64,18 +64,19 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             #  solver of the analysis. Used to store the active solver and analysis parameters
             self.solver = solver
         else:
-            self.solver = None
-        if self.analysis:
-            self.update_objects()
+            self.find_solver()
+            if not self.solver:
+                raise Exception('FEM: No solver found!')
+        if self.analysis and self.solver:
+            self.working_dir = ''
+            self.ccx_binary = ''
             ## @var base_name
             #  base name of .inp/.frd file (without extension). It is used to construct .inp file path that is passed to CalculiX ccx
             self.base_name = ""
             ## @var results_present
             #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
-            if self.solver:
-                self.setup_working_dir()
-            else:
+            if not self.solver:
                 raise Exception('FEM: No solver found!')
             if test_mode:
                 self.test_mode = True
@@ -83,7 +84,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             else:
                 self.test_mode = False
                 self.ccx_binary_present = False
-                self.setup_ccx()
             self.result_object = None
         else:
             raise Exception('FEM: No active analysis found!')
@@ -113,6 +113,26 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def _get_several_member(self, obj_type):
         return femutils.get_several_member(self.analysis, obj_type)
+
+    def find_solver(self):
+        found_solver_for_use = False
+        for m in self.analysis.Group:
+            if femutils.is_of_type(m, "Fem::FemSolverCalculixCcxTools"):
+                # we are going to explicitly check for the ccx tools solver type only,
+                # thus it is possible to have lots of framework solvers inside the analysis anyway
+                # for some methods no solver is needed (purge_results) --> solver could be none
+                # analysis has one solver and no solver was set --> use the one solver
+                # analysis has more than one solver and no solver was set --> use solver none
+                # analysis has no solver --> use solver none
+                if not found_solver_for_use:
+                    # no solver was found before
+                    self.solver = m
+                    found_solver_for_use = True
+                else:
+                    self.solver = None
+                    # another solver was found --> We have more than one solver
+                    # we do not know which one to use, so we use none !
+                    # FreeCAD.Console.PrintMessage('FEM: More than one solver in the analysis and no solver given to analyze. No solver is set!\n')
 
     def update_objects(self):
         # [{'Object':materials_linear}, {}, ...]
@@ -184,25 +204,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         #  list of transform constraints from the analysis. Updated with update_objects
         self.transform_constraints = self._get_several_member('Fem::ConstraintTransform')
 
-        found_solver_for_use = False
         for m in self.analysis.Group:
-            if femutils.is_of_type(m, "Fem::FemSolverCalculixCcxTools"):
-                # we are going to explicitly check for the ccx tools solver type only,
-                # thus it is possible to have lots of framework solvers inside the analysis anyway
-                # for some methods no solver is needed (purge_results) --> solver could be none
-                # analysis has one solver and no solver was set --> use the one solver
-                # analysis has more than one solver and no solver was set --> use solver none
-                # analysis has no solver --> use solver none
-                if not found_solver_for_use and not self.solver:
-                    # no solver was found before and no solver was set by constructor
-                    self.solver = m
-                    found_solver_for_use = True
-                elif found_solver_for_use:
-                    self.solver = None
-                    # another solver was found --> We have more than one solver
-                    # we do not know which one to use, so we use none !
-                    # FreeCAD.Console.PrintMessage('FEM: More than one solver in the analysis and no solver given to analyze. No solver is set!\n')
-            elif m.isDerivedFrom("Fem::FemMeshObject"):
+            if m.isDerivedFrom("Fem::FemMeshObject"):
                 if not self.mesh:
                     self.mesh = m
                 else:
@@ -673,6 +676,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         return ret_code
 
     def run(self):
+        self.update_objects()
+        self.setup_working_dir()
+        self.setup_ccx()
         message = self.check_prerequisites()
         if message:
             error_message = "CalculiX was not started due to missing prerequisites:\n{}\n".format(message)
