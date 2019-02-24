@@ -74,7 +74,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
-        writing_time_string = "Writing time input file: " + str(time.clock() - timestart)
+        writing_time_string = "Writing time input file: " + str(round((time.clock() - timestart), 2)) + " seconds"
         if self.femelement_count_test is True:
             FreeCAD.Console.PrintMessage(writing_time_string + ' \n\n')
             return self.file_name
