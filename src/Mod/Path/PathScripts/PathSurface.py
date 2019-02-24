@@ -110,10 +110,12 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.addProperty("App::PropertyDistance", "DepthOffset", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Z-axis offset from the surface of the object"))
         obj.addProperty("App::PropertyFloatConstraint", "SampleInterval", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "The Sample Interval. Small values cause long wait times"))
         obj.addProperty("App::PropertyBool", "Optimize", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "Enable optimization which removes unnecessary points from G-Code output"))
+        obj.addProperty("App::PropertyEnumeration", "CompletionMode", "Surface", QtCore.QT_TRANSLATE_NOOP("App::Property", "The completion mode for the operation: single or multi-pass"))
         obj.BoundBox = ['Stock', 'BaseBoundBox']
         obj.DropCutterDir = ['X', 'Y']
         obj.Algorithm = ['OCL Dropcutter', 'OCL Waterline']
-        obj.SampleInterval = (0.05, 0.01, 1.0, 0.01)
+        obj.SampleInterval = (0.04, 0.01, 1.0, 0.01)
+        obj.CompletionMode = ['Single-pass', 'Multi-pass']
         #obj.SampleInterval = (1.27, 0.01, 1.0, 0.01)
         #obj.SampleInterval = (6.35, 0.01, 1.0, 0.01)  # multiply original by 127 to yield 1/4"(6.35mm) for default sample interval in surface op window
 
@@ -168,11 +170,21 @@ class ObjectSurface(PathOp.ObjectOp):
 
         output += "(" + obj.Label + ")"
         output += "(Compensated Tool Path. Diameter: " + str(obj.ToolController.Tool.Diameter) + ")"
-
+        
         parentJob = PathUtils.findParentJob(obj)
         if parentJob is None:
             return
         
+        # Set completion mode
+        singlePass = False
+        if hasattr(obj, 'CompletionMode'):
+            if obj.CompletionMode == 'Single-pass':
+                singlePass = True
+        else:
+            print("CompletionMode non-existant; single-pass based if Optimize box true")
+            if obj.Optimize == True:
+                singlePass = True
+
         # Set cutter details
         if obj.ToolController.Tool.ToolType == 'BallEndMill':
             self.cutter = ocl.BallCutter(obj.ToolController.Tool.Diameter, 5)  # TODO: 5 represents cutting edge height. Should be replaced with the data from toolcontroller?
@@ -247,11 +259,16 @@ class ObjectSurface(PathOp.ObjectOp):
 
                 pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
 
+                if singlePass:
+                    totalLayers = 1
+                    layerDepth = targetDepth
+                    prevDepth =  targetDepth + obj.StepDown.Value
+
                 while lc < totalLayers:
                     print("LAYER: " + str(lc))
                     print("--Layer Depth: " + str(layerDepth))
                     
-                    self.dcScanToGcode_2(obj, lc, prevDepth, layerDepth, CLP)
+                    self.dcScanToGcode_2(obj, lc, prevDepth, layerDepth, CLP, singlePass)
 
                     # add commands to operation list
                     self.commandlist.extend(gcode)
@@ -270,6 +287,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 hldcnt = 0
                 hpCmds = []
                 lenHP = len(self.holdStartPnts)
+                '''
                 lenHP2 = len(self.holdStopPnts)
                 if lenHP != lenHP2:
                     print("ERROR: HoldPoint lists different lengths.")
@@ -277,6 +295,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 if lenHP != self.holdPntCnt:
                     print("ERROR: lenHP != holdPntCnt.")
                     exit()
+                '''
                 # cycle throug hold points
                 print("--Processing ", str(lenHP), " HOLD optimizations---")
                 cutter = self.cutter.getDiameter()
@@ -480,7 +499,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # return the list the points
         return pdc.getCLPoints()
 
-    def dcScanToGcode_2(self, obj, lc, prvDep, layDep, CLP):
+    def dcScanToGcode_2(self, obj, lc, prvDep, layDep, CLP, spm):
         output = []
         optimize = obj.Optimize
         lenCLP = len(CLP)
@@ -514,12 +533,13 @@ class ObjectSurface(PathOp.ObjectOp):
         # Set values for first gcode point in layer
         pnt.x = CLP[0].x
         pnt.y = CLP[0].y
+        pnt.z = CLP[0].z
         if CLP[0].z < layDep:
             pnt.z = layDep
         elif CLP[0].z > prvDep:
             firstDrop = False
-        else:
-            pnt.z = CLP[0].z
+            if spm:
+                firstDrop = True
 
         # generate the path commands
         # Send cutter to starting position(first point)
@@ -594,54 +614,55 @@ class ObjectSurface(PathOp.ObjectOp):
             if pnt.z > zMax:
                 zMax = pnt.z
             
-            # if z travels above previous layer, start/continue hold high cycle
-            if pnt.z > prvDep:  
-                if self.onHold == False:
-                    holdStart = True
-                self.onHold = True
-            
-            if self.onHold == True:
-                if holdStart == True:
-                    holdCount += 1  # track number of holds
-                    holdLine = self.lineCNT
-                    # Save holdStart coordinate and prvDep values
-                    self.holdPoint.x = pnt.x
-                    self.holdPoint.y = pnt.y
-                    self.holdPoint.z = pnt.z
-                    self.holdStartPnts.append(makePnt(pnt))
-                    self.holdPrevLayerVals.append(prvDep)
-                    # go to current coordinate
-                    output.append(Path.Command('G1', {'X': pnt.x, "Y": pnt.y, "Z": pnt.z, 'F': self.horizFeed}))
-                    holdStart = False  # cancel holdStart
+            if not spm:
+                # if z travels above previous layer, start/continue hold high cycle
+                if pnt.z > prvDep:  
+                    if self.onHold == False:
+                        holdStart = True
+                    self.onHold = True
+                
+                if self.onHold == True:
+                    if holdStart == True:
+                        holdCount += 1  # track number of holds
+                        holdLine = self.lineCNT
+                        # Save holdStart coordinate and prvDep values
+                        self.holdPoint.x = pnt.x
+                        self.holdPoint.y = pnt.y
+                        self.holdPoint.z = pnt.z
+                        self.holdStartPnts.append(makePnt(pnt))
+                        self.holdPrevLayerVals.append(prvDep)
+                        # go to current coordinate
+                        output.append(Path.Command('G1', {'X': pnt.x, "Y": pnt.y, "Z": pnt.z, 'F': self.horizFeed}))
+                        holdStart = False  # cancel holdStart
 
-                # hold cutter high until Z value drops below prvDep
-                if pnt.z <= prvDep:
-                    holdStop = True
-                
-            if holdStop == True:
-                # Send hold and current points to 
-                if holdLine == self.lineCNT:
-                    # if  start and stop points on same line, process has simple hold
-                    self.holdStartPnts.pop()
-                    self.holdPrevLayerVals.pop()
-                    for cmd in self.holdStopCmds(obj, zMax, prvDep, pnt):
-                        output.append(cmd)
-                else:
-                    # if  start and stop points on different lines, process has complex hold
-                    self.holdStopPnts.append(makePnt(pnt))
-                    self.holdZMaxVals.append(zMax)
-                    output.append("HD")  # add placeholder for processing of hold
-                    self.holdPntCnt += 1
-                
-                # reset necessary hold related settings
-                zMax = prvDep
-                holdStop = False
-                self.onHold = False
-                self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
+                    # hold cutter high until Z value drops below prvDep
+                    if pnt.z <= prvDep:
+                        holdStop = True
+                    
+                if holdStop == True:
+                    # Send hold and current points to 
+                    if holdLine == self.lineCNT:
+                        # if  start and stop points on same line, process has simple hold
+                        self.holdStartPnts.pop()
+                        self.holdPrevLayerVals.pop()
+                        for cmd in self.holdStopCmds(obj, zMax, prvDep, pnt):
+                            output.append(cmd)
+                    else:
+                        # if  start and stop points on different lines, process has complex hold
+                        self.holdStopPnts.append(makePnt(pnt))
+                        self.holdZMaxVals.append(zMax)
+                        output.append("HD")  # add placeholder for processing of hold
+                        self.holdPntCnt += 1
+                    
+                    # reset necessary hold related settings
+                    zMax = prvDep
+                    holdStop = False
+                    self.onHold = False
+                    self.holdPoint = ocl.Point(float("inf"), float("inf"), float("inf"))
+            # End multi-pass optimization block
 
             if self.onHold == False:
-                #if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
-                if not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
+                if not optimize or not self.isPointOnLine(FreeCAD.Vector(prev.x, prev.y, prev.z), FreeCAD.Vector(nxt.x, nxt.y, nxt.z), FreeCAD.Vector(pnt.x, pnt.y, pnt.z)):
                     output.append(Path.Command('G1', {'X': pnt.x, "Y": pnt.y, "Z": pnt.z, 'F': self.horizFeed}))
                 elif i == lastCLP:
                     output.append(Path.Command('G1', {'X': pnt.x, "Y": pnt.y, "Z": pnt.z, 'F': self.horizFeed}))
