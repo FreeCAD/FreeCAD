@@ -107,23 +107,11 @@ class _TaskPanelFemSolverCalculix:
 
     def __init__(self, solver_object):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/SolverCalculix.ui")
-        self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
-        ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
-        if ccx_binary:
-            self.CalculixBinary = ccx_binary
-            print("Using CalculiX binary path from FEM preferences: {}".format(ccx_binary))
-        else:
-            from platform import system
-            if system() == 'Linux':
-                self.CalculixBinary = 'ccx'
-            elif system() == 'Windows':
-                self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
-            else:
-                self.CalculixBinary = 'ccx'
 
         # since open the task panel is only possible with an active analysis, we do not need to pass the analysis. it will be found
         self.fea = ccxtools.FemToolsCcx(None, solver_object)
         self.fea.setup_working_dir()
+        self.fea.setup_ccx()
 
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
@@ -323,17 +311,17 @@ class _TaskPanelFemSolverCalculix:
         print('runCalculix')
         self.Start = time.time()
 
-        self.femConsoleMessage("CalculiX binary: {}".format(self.CalculixBinary))
+        self.femConsoleMessage("CalculiX binary: {}".format(self.fea.ccx_binary))
         self.femConsoleMessage("Run CalculiX...")
 
         # run Calculix
-        print('run CalculiX at: {} with: {}'.format(self.CalculixBinary, os.path.splitext(self.fea.inp_file_name)[0]))
+        print('run CalculiX at: {} with: {}'.format(self.fea.ccx_binary, os.path.splitext(self.fea.inp_file_name)[0]))
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
         fi = QtCore.QFileInfo(self.fea.inp_file_name)
         QtCore.QDir.setCurrent(fi.path())
-        self.Calculix.start(self.CalculixBinary, ['-i', fi.baseName()])
+        self.Calculix.start(self.fea.ccx_binary, ['-i', fi.baseName()])
 
         QApplication.restoreOverrideCursor()
 
