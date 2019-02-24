@@ -4102,22 +4102,34 @@ class EditImproved(Modifier):
         for object in FreeCADGui.Selection.getSelection():
             if object.isDerivedFrom("Part::Part2DObject"):
                 self.editable_objects.append(object)
+            elif hasattr(object, "Base") and object.Base.isDerivedFrom("Part::Part2DObject"):
+                self.editable_objects.append(object.Base)
 
     def highlight_editable_objects(self):
         for object in self.editable_objects:
             self.original_view_settings[object.Name] = {
+                'Visibility': object.ViewObject.Visibility,
                 'PointSize': object.ViewObject.PointSize,
                 'PointColor': object.ViewObject.PointColor,
                 'LineColor': object.ViewObject.LineColor
             }
+            object.ViewObject.Visibility = True
             object.ViewObject.PointSize = 10
             object.ViewObject.PointColor = (1., 0., 0.)
             object.ViewObject.LineColor = (1., 0., 0.)
+            xray = coin.SoAnnotation()
+            xray.addChild(object.ViewObject.RootNode.getChild(2).getChild(0))
+            xray.setName("xray")
+            object.ViewObject.RootNode.addChild(xray)
 
     def restore_editable_objects_graphics(self):
         for object in self.editable_objects:
+            if not object.Name:
+                continue
             for attribute, value in self.original_view_settings[object.Name].items():
-                setattr(object.ViewObject, attribute, value)
+                view_object = object.ViewObject
+                setattr(view_object, attribute, value)
+                view_object.RootNode.removeChild(view_object.RootNode.getByName("xray"))
 
 class Edit(Modifier):
     "The Draft_Edit FreeCAD command definition"
