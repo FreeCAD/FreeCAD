@@ -34,6 +34,8 @@ TEMPORARY = "temporary"
 BESIDE = "beside"
 CUSTOM = "custom"
 
+
+_GENERAL_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/General"
 _ELMER_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Elmer"
 _GRID_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Grid"
 _CCX_PARAM = "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
@@ -87,12 +89,12 @@ def getBinary(name):
 
 
 def getCustomDir():
-    param = App.ParamGet(_ELMER_PARAM)
+    param = App.ParamGet(_GENERAL_PARAM)
     return param.GetString("CustomDirectoryPath")
 
 
 def getDirSetting():
-    param = App.ParamGet(_ELMER_PARAM)
+    param = App.ParamGet(_GENERAL_PARAM)
     if param.GetBool("UseTempDirectory"):
         return TEMPORARY
     elif param.GetBool("UseBesideDirectory"):
