@@ -456,31 +456,39 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         else:
             self.working_dir = ''
             self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
-            if self.fem_prefs.GetString("WorkingDir"):
+            if self.fem_prefs.GetString("WorkingDir"):  # if working dir in prefs is not empty
+                if self.solver.WorkingDir != '':
+                    # we use error message to get it red, but it is not an error
+                    FreeCAD.Console.PrintError('The solver working directory will be overwritten by the FEM preferences working dir.\n')
                 try:
                     self.working_dir = self.fem_prefs.GetString("WorkingDir")
                 except:
                     FreeCAD.Console.PrintError('Could not set working directory to FEM Preferences working directory.\n')
             else:
-                FreeCAD.Console.PrintMessage('FEM preferences working dir is not set, the solver working directory is used.\n')
+                FreeCAD.Console.PrintMessage('FEM preferences working dir setting is empty, the solver working directory is used.\n')
                 if self.solver.WorkingDir:
                     try:
                         self.working_dir = self.solver.WorkingDir
                     except:
                         FreeCAD.Console.PrintError('Could not set working directory to solver working directory.\n')
 
+        # check working_dir exist, if not use a tmp dir and inform the user
+        use_tmp_dir = False
+        if self.working_dir == '':
+            FreeCAD.Console.PrintError("All working Dir settings are empty: \'{}\'.\n".format(self.working_dir))
+            use_tmp_dir = True
+        if not (os.path.isdir(self.working_dir)):
+            FreeCAD.Console.PrintError("Working directory: \'{}\' doesn't exist.\n".format(self.working_dir))
+            use_tmp_dir = True
+        if use_tmp_dir is True:
+            from tempfile import gettempdir
+            self.working_dir = gettempdir()
+            FreeCAD.Console.PrintMessage("Dir \'{}\' will be used instead.\n".format(self.working_dir))
+        FreeCAD.Console.PrintMessage('FemToolsCCx.setup_working_dir()  -->  self.working_dir = ' + self.working_dir + '\n')
+
         # check working_dir has a slash at the end, if not add one
         self.working_dir = os.path.join(self.working_dir, '')
 
-        if not (os.path.isdir(self.working_dir)):
-            try:
-                os.makedirs(self.working_dir)
-            except:
-                FreeCAD.Console.PrintError("Dir \'{}\' doesn't exist and cannot be created.\n".format(self.working_dir))
-                import tempfile
-                self.working_dir = tempfile.gettempdir()
-                FreeCAD.Console.PrintMessage("Dir \'{}\' will be used instead.\n".format(self.working_dir))
-        FreeCAD.Console.PrintMessage('FemToolsCCx.setup_working_dir()  -->  self.working_dir = ' + self.working_dir + '\n')
         # Update inp file name
         self.set_inp_file_name()
 
