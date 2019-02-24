@@ -4328,12 +4328,14 @@ class EditImproved(Modifier):
 
     def restore_editable_objects_graphics(self):
         for object in self.editable_objects:
-            if not object.Name:
-                continue
-            for attribute, value in self.original_view_settings[object.Name].items():
-                view_object = object.ViewObject
-                setattr(view_object, attribute, value)
-                view_object.RootNode.removeChild(view_object.RootNode.getByName("xray"))
+            try:
+                for attribute, value in self.original_view_settings[object.Name].items():
+                    view_object = object.ViewObject
+                    setattr(view_object, attribute, value)
+                    view_object.RootNode.removeChild(view_object.RootNode.getByName("xray"))
+            except:
+                # This can occur if objects have had graph changing operations
+                pass
 
 class Edit(Modifier):
     "The Draft_Edit FreeCAD command definition"
