@@ -57,8 +57,9 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             #  It's set to analysis passed in "__init__" or set to current active analysis by default if nothing has been passed to "__init__".
             self.analysis = analysis
         else:
-            import FemGui
-            self.analysis = FemGui.getActiveAnalysis()
+            self.find_analysis()
+            if not self.analysis:
+                raise Exception('FEM: No active analysis found!')
         if solver:
             ## @var solver
             #  solver of the analysis. Used to store the active solver and analysis parameters
@@ -76,8 +77,6 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             ## @var results_present
             #  boolean variable indicating if there are calculation results ready for use
             self.results_present = False
-            if not self.solver:
-                raise Exception('FEM: No solver found!')
             if test_mode:
                 self.test_mode = True
                 self.ccx_binary_present = True
@@ -86,7 +85,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
                 self.ccx_binary_present = False
             self.result_object = None
         else:
-            raise Exception('FEM: No active analysis found!')
+            raise Exception('FEM: Somthing went wront, the exception should have been raised earlier!')
 
     ## Removes all result objects
     #  @param self The python object self
@@ -113,6 +112,22 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
 
     def _get_several_member(self, obj_type):
         return femutils.get_several_member(self.analysis, obj_type)
+
+    def find_analysis(self):
+        import FemGui
+        self.analysis = FemGui.getActiveAnalysis()
+        if self.analysis:
+            return
+        found_analysis = False
+        for m in FreeCAD.ActiveDocument.Objects:
+            if femutils.is_of_type(m, "Fem::FemAnalysis"):
+                if not found_analysis:
+                    self.analysis = m
+                    found_analysis = True
+                else:
+                    self.analysis = None
+        if self.analysis:
+            FemGui.setActiveAnalysis(self.analysis)
 
     def find_solver(self):
         found_solver_for_use = False
