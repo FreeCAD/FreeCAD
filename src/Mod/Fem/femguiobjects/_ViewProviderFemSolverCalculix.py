@@ -122,6 +122,10 @@ class _TaskPanelFemSolverCalculix:
                 self.CalculixBinary = 'ccx'
 
         self.solver_object = solver_object
+        fea = ccxtools.FemToolsCcx(None, self.solver_object)
+        fea.setup_working_dir()
+        self.working_dir = fea.working_dir
+        # TODO: switch to one self.fea in all task panel defs
 
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
@@ -157,7 +161,7 @@ class _TaskPanelFemSolverCalculix:
 
     def update(self):
         'fills the widgets'
-        self.form.le_working_dir.setText(self.solver_object.WorkingDir)
+        self.form.le_working_dir.setText(self.working_dir)
         if self.solver_object.AnalysisType == 'static':
             self.form.rb_static_analysis.setChecked(True)
         elif self.solver_object.AnalysisType == 'frequency':
@@ -269,11 +273,10 @@ class _TaskPanelFemSolverCalculix:
         current_wd = self.setup_working_dir()
         wd = QtGui.QFileDialog.getExistingDirectory(None, 'Choose CalculiX working directory',
                                                     current_wd)
-        if wd:
-            self.solver_object.WorkingDir = wd
-        else:
-            self.solver_object.WorkingDir = current_wd
-        self.form.le_working_dir.setText(self.solver_object.WorkingDir)
+        if not (os.path.isdir(wd)):
+            wd = current_wd
+        self.working_dir = wd
+        self.form.le_working_dir.setText(wd)
 
     def write_input_file_handler(self):
         self.Start = time.time()
@@ -284,6 +287,7 @@ class _TaskPanelFemSolverCalculix:
             self.inp_file_name = ""
             fea = ccxtools.FemToolsCcx(None, self.solver_object)
             fea.update_objects()
+            fea.setup_working_dir(self.working_dir)  # we made a new fea which sets the working dir, but we the one from task panel
             fea.write_inp_file()
             if fea.inp_file_name != "":
                 self.inp_file_name = fea.inp_file_name
@@ -361,7 +365,7 @@ class _TaskPanelFemSolverCalculix:
 
     # That function overlaps with ccxtools setup_working_dir and could be removed when the one from ccxtools would be used
     def setup_working_dir(self):
-        wd = self.solver_object.WorkingDir
+        wd = self.working_dir
         if not (os.path.isdir(wd)):
             try:
                 os.makedirs(wd)
