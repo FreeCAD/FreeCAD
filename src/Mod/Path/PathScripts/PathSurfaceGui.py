@@ -33,6 +33,7 @@ from PySide import QtCore
 
 __title__ = "Path Surface Operation UI"
 __author__ = "sliptonic (Brad Collette)"
+__contributor__ = "russ4262 (Russell Johnson)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Surface operation page controller and command implementation."
 
@@ -69,6 +70,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.Optimize != self.form.optimizeEnabled.isChecked():
             obj.Optimize = self.form.optimizeEnabled.isChecked()
 
+        if obj.CompletionMode != str(self.form.completionModeSelect.currentText()):
+            obj.CompletionMode = str(self.form.completionModeSelect.currentText())
+
         self.updateToolController(obj, self.form.toolController)
 
     def setFields(self, obj):
@@ -77,6 +81,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.selectInComboBox(obj.Algorithm, self.form.algorithmSelect)
         self.selectInComboBox(obj.BoundBox, self.form.boundBoxSelect)
         self.selectInComboBox(obj.DropCutterDir, self.form.dropCutterDirSelect)
+        self.selectInComboBox(obj.CompletionMode, self.form.completionModeSelect)
 
         self.form.boundBoxExtraOffsetX.setText(str(obj.DropCutterExtraOffset.x))
         self.form.boundBoxExtraOffsetY.setText(str(obj.DropCutterExtraOffset.y))
@@ -105,6 +110,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.depthOffset.editingFinished)
         signals.append(self.form.optimizeEnabled.stateChanged)
+        signals.append(self.form.completionModeSelect.currentIndexChanged)
 
         return signals
 
@@ -115,12 +121,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.boundBoxSelect.setEnabled(True)
             self.form.dropCutterDirSelect.setEnabled(True)
             self.form.stepOver.setEnabled(True)
+            self.form.completionModeSelect.setEnabled(True)
         else:
             self.form.boundBoxExtraOffsetX.setEnabled(False)
             self.form.boundBoxExtraOffsetY.setEnabled(False)
             self.form.boundBoxSelect.setEnabled(False)
             self.form.dropCutterDirSelect.setEnabled(False)
             self.form.stepOver.setEnabled(False)
+            self.form.completionModeSelect.setEnabled(False)
 
     def registerSignalHandlers(self, obj):
         self.form.algorithmSelect.currentIndexChanged.connect(self.updateVisibility)
