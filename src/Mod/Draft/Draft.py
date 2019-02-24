@@ -1500,6 +1500,20 @@ def moveEdge(object, edge_index, vector):
     else:
         moveVertex(object, edge_index+1, object.Placement.multVec(object.Points[edge_index+1]), vector)
 
+def copyEdges(copy_edge_arguments):
+    copied_edges = []
+    for argument in copy_edge_arguments:
+        copied_edges.append(copyEdge(argument[0], argument[1], argument[2]))
+    joinWires(copied_edges)
+
+def copyEdge(object, edge_index, vector):
+    vertex1 = object.Placement.multVec(object.Points[edge_index]).add(vector)
+    if isClosedEdge(edge_index, object):
+        vertex2 = object.Placement.multVec(object.Points[0]).add(vector)
+    else:
+        vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
+    return makeLine(vertex1, vertex2)
+
 def isClosedEdge(edge_index, object):
     return edge_index + 1 >= len(object.Points)
 

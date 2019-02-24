@@ -2667,9 +2667,29 @@ class Move(Modifier):
 
     def move_subelements(self):
         try:
-            self.commit(translate("draft", "Move"), self.build_move_subelements_command())
+            if self.ui.isCopy.isChecked():
+                self.commit(translate("draft", "Copy"), self.build_copy_subelements_command())
+            else:
+                self.commit(translate("draft", "Move"), self.build_move_subelements_command())
         except:
             FreeCAD.Console.PrintError(translate("draft", "Some subelements could not be moved."))
+
+    def build_copy_subelements_command(self):
+        import Part
+        command = []
+        copy_edge_arguments = []
+        for object in self.selected_subelements:
+            for index, subelement in enumerate(object.SubObjects):
+                if not isinstance(subelement, Part.Edge):
+                    continue
+                copy_edge_arguments.append('[FreeCAD.ActiveDocument.{}, {}, {}]'.format(
+                    object.ObjectName,
+                    int(object.SubElementNames[index][len("Edge"):])-1,
+                    DraftVecUtils.toString(self.vector)
+                    ))
+        command.append('Draft.copyEdges([{}])'.format(','.join(copy_edge_arguments)))
+        command.append('FreeCAD.ActiveDocument.recompute()')
+        return command
 
     def build_move_subelements_command(self):
         import Part
