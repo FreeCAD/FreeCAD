@@ -2418,7 +2418,7 @@ class Move(Modifier):
 
     def handle_mouse_click_event(self, arg):
         if not self.ghosts:
-            self.set_ghost()
+            self.set_ghosts()
         if not self.point:
             return
         self.ui.redraw()
@@ -2439,7 +2439,7 @@ class Move(Modifier):
             else:
                 self.finish(cont=True)
 
-    def set_ghost(self):
+    def set_ghosts(self):
         if self.ui.isSubelementMode.isChecked():
             return self.set_subelement_ghosts()
         self.ghosts = [ghostTracker(self.selected_objects)]
@@ -2450,9 +2450,7 @@ class Move(Modifier):
             for subelement in object.SubObjects:
                 if isinstance(subelement, Part.Vertex) \
                     or isinstance(subelement, Part.Edge):
-                    ghost = ghostTracker(subelement)
-                    ghost.on()
-                    self.ghosts.append(ghost)
+                    self.ghosts.append(ghostTracker(subelement))
 
     def move(self):
         if self.ui.isSubelementMode.isChecked():
@@ -2492,10 +2490,9 @@ class Move(Modifier):
         for object in self.selected_subelements:
             for index, subelement in enumerate(object.SubObjects):
                 if isinstance(subelement, Part.Vertex):
-                    command.append('Draft.moveVertex(FreeCAD.ActiveDocument.{}, {}, {}, {})'.format(
+                    command.append('Draft.moveVertex(FreeCAD.ActiveDocument.{}, {}, {})'.format(
                         object.ObjectName,
                         int(object.SubElementNames[index][len("Vertex"):])-1,
-                        DraftVecUtils.toString(subelement.Point),
                         DraftVecUtils.toString(self.vector)
                         ))
                 elif isinstance(subelement, Part.Edge):
