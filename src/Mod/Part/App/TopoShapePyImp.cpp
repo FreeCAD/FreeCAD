@@ -60,6 +60,7 @@
 # include <Precision.hxx>
 #endif
 
+#include <HLRAppli_ReflectLines.hxx>
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
@@ -1971,6 +1972,51 @@ PyObject* TopoShapePy::makePerspectiveProjection(PyObject *args)
     }
 
     return 0;
+}
+
+/*!
+from pivy import coin
+
+rot=Gui.ActiveDocument.ActiveView.getCameraOrientation()
+vdir=App.Vector(0,0,-1)
+vdir=rot.multVec(vdir)
+udir=App.Vector(0,1,0)
+udir=rot.multVec(udir)
+
+pos=Gui.ActiveDocument.ActiveView.getCameraNode().position.getValue().getValue()
+pos=App.Vector(*pos)
+
+shape=App.ActiveDocument.ActiveObject.Shape
+reflect=shape.reflectLines(ViewDir=vdir, ViewPos=pos, UpDir=udir)
+Part.show(reflect)
+ */
+PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
+{
+    static char *kwlist[] = {"ViewDir", "ViewPos", "UpDir", NULL};
+
+    PyObject *pView, *pPos, *pUp;
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", kwlist,
+                                     &Base::VectorPy::Type, &pView,
+                                     &Base::VectorPy::Type, &pPos,
+                                     &Base::VectorPy::Type, &pUp))
+        return 0;
+
+    try {
+        Base::Vector3d v = Py::Vector(pView,false).toVector();
+        Base::Vector3d p = Py::Vector(pPos,false).toVector();
+        Base::Vector3d u = Py::Vector(pUp,false).toVector();
+
+        const TopoDS_Shape& shape = this->getTopoShapePtr()->getShape();
+        HLRAppli_ReflectLines reflect(shape);
+        reflect.SetAxes(v.x, v.y, v.z, p.x, p.y, p.z, u.x, u.y, u.z);
+        reflect.Perform();
+        TopoDS_Shape lines = reflect.GetResult();
+        return new TopoShapePy(new TopoShape(lines));
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
