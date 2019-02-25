@@ -1488,17 +1488,17 @@ def cut(object1,object2):
 
     return obj
 
-def moveVertex(object, vertex_index, vertex, vector):
+def moveVertex(object, vertex_index, vector):
     points = object.Points
-    points[vertex_index] = object.Placement.inverse().multVec(vertex).add(vector)
+    points[vertex_index] = points[vertex_index].add(vector)
     object.Points = points
 
 def moveEdge(object, edge_index, vector):
-    moveVertex(object, edge_index, object.Placement.multVec(object.Points[edge_index]), vector)
+    moveVertex(object, edge_index, vector)
     if isClosedEdge(edge_index, object):
-        moveVertex(object, 0, object.Placement.multVec(object.Points[0]), vector)
+        moveVertex(object, 0, vector)
     else:
-        moveVertex(object, edge_index+1, object.Placement.multVec(object.Points[edge_index+1]), vector)
+        moveVertex(object, edge_index+1, vector)
 
 def copyEdges(copy_edge_arguments):
     copied_edges = []
