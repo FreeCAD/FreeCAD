@@ -1680,6 +1680,15 @@ def filterObjectsForModifiers(objects, isCopied=False):
            filteredObjects.append(object)
     return filteredObjects
 
+def rotateVertex(object, vertex_index, angle, center, axis):
+    points = object.Points
+    v = object.Placement.multVec(points[vertex_index])
+    rv = v.sub(center)
+    rv = DraftVecUtils.rotate(rv, math.radians(angle), axis)
+    v = center.add(rv)
+    points[vertex_index] = object.Placement.inverse().multVec(v)
+    object.Points = points
+
 def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False):
     '''rotate(objects,angle,[center,axis,copy]): Rotates the objects contained
     in objects (that can be a list of objects or an object) of the given angle
