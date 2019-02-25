@@ -232,12 +232,8 @@ class ObjectSurface(PathOp.ObjectOp):
             final = []
             if obj.Algorithm == 'OCL Dropcutter':
                 # Objective is to remove material from surface in StepDown layers rather than one pass to FinalDepth
-                finalDepth = obj.FinalDepth.Value
-                targetDepth = finalDepth + obj.DepthOffset.Value
-                toBeRemoved = obj.OpStockZMax.Value - targetDepth
-                if toBeRemoved < 0:
-                    toBeRemoved = 0
-                totalLayers = int(math.ceil(toBeRemoved / obj.StepDown.Value)) + 1
+                self.scanTime = time.time()
+                self.onHold = False
 
                 # the max and min XY area of the operation
                 xmin = bb.XMin - obj.DropCutterExtraOffset.x
@@ -245,57 +241,42 @@ class ObjectSurface(PathOp.ObjectOp):
                 ymin = bb.YMin - obj.DropCutterExtraOffset.y
                 ymax = bb.YMax + obj.DropCutterExtraOffset.y
 
+                # Compute number and size of stepdowns, and final depth
+                if singlePass:
+                    depthparams =  [obj.FinalDepth.Value]
+                    print("Single-pass Mode")
+                else:
+                    dep_par = PathUtils.depth_params(obj.ClearanceHeight.Value, obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown, 0.0, obj.FinalDepth.Value)
+                    depthparams = [i for i in dep_par]
+                    print("Multi-pass Mode")
+                print("depthparams:", str(depthparams))
+                lenDP = len(depthparams)
+                targetDepth = depthparams[lenDP-1]
+                prevDepth = depthparams[0]
+
                 # Scan the piece to depth
                 CLP = self._dropCutterScan(obj, s, bbLength, xmin, ymin, xmax, ymax, targetDepth)
                 print("--Received: ", str(len(CLP)), " CLP points at target depth of ", str(targetDepth))
-
-                layerDepth = obj.OpStockZMax.Value + obj.DepthOffset.Value  # obj.OpStartDepth.Value
-                nextDepth = layerDepth - obj.StepDown.Value
-                prevDepth = obj.OpStockZMax.Value # obj.OpStartDepth.Value
-                self.onHold = False
-                gcode = []
-                lc = 0
-                self.scanTime = 0
-
                 pnt = ocl.Point(float("inf"), float("inf"), float("inf"))
 
-                if singlePass:
-                    totalLayers = 1
-                    layerDepth = targetDepth
-                    prevDepth =  targetDepth + obj.StepDown.Value
+                # Extract layers per depthparams
+                for lyr in  range(0, len(depthparams)):
+                    print("LAYER: " + str(lyr))
+                    print("--Layer Depth: " + str(depthparams[lyr]))
+                    # Determine next depth
+                    if lyr < lenDP - 1:
+                        nextDepth = depthparams[lyr + 1]                    
+                    # Convert current layer data to gcode
+                    self.dcScanToGcode_2(obj, lyr, prevDepth, depthparams[lyr], CLP, singlePass)
+                    # Save previous depth
+                    prevDepth = depthparams[lyr]
+                print("--All layer extractions combined took ", time.time() - self.scanTime, " s")
 
-                while lc < totalLayers:
-                    print("LAYER: " + str(lc))
-                    print("--Layer Depth: " + str(layerDepth))
-                    
-                    self.dcScanToGcode_2(obj, lc, prevDepth, layerDepth, CLP, singlePass)
-
-                    # add commands to operation list
-                    self.commandlist.extend(gcode)
-
-                    nextDepth = layerDepth - obj.StepDown.Value
-                    if nextDepth < targetDepth:  # Do not allow cutter below targetDepth
-                        nextDepth = targetDepth                    
-                    prevDepth = layerDepth
-                    layerDepth = nextDepth
-                    lc += 1
-                    # print("--Next Depth: " + str(nextDepth))
-
-                print("--All layer extractions combined took ", self.scanTime, " s")
                 # Process all HOLDs in gcode command list
                 self.scanTime = time.time()
                 hldcnt = 0
                 hpCmds = []
                 lenHP = len(self.holdStartPnts)
-                '''
-                lenHP2 = len(self.holdStopPnts)
-                if lenHP != lenHP2:
-                    print("ERROR: HoldPoint lists different lengths.")
-                    exit()
-                if lenHP != self.holdPntCnt:
-                    print("ERROR: lenHP != holdPntCnt.")
-                    exit()
-                '''
                 # cycle throug hold points
                 print("--Processing ", str(lenHP), " HOLD optimizations---")
                 cutter = self.cutter.getDiameter()
@@ -326,7 +307,7 @@ class ObjectSurface(PathOp.ObjectOp):
                             # get focused list of points based on bound box with p1 and p2 as corners, with cutter diam. as additional buffer
                             subCLP = self.subsectionCLP(CLP, xmin, ymin, xmax, ymax)
                             # Determine max z height for clearance between p1 and p2
-                            zMax = self.getMaxHeight(layerDepth, p1, p2, cutter, subCLP)
+                            zMax = self.getMaxHeight(targetDepth, p1, p2, cutter, subCLP)
                             # Create gcode commands to connect p1 and p2
                             hpCmds = self.holdStopCmds(obj, zMax, pd, p2)
                             for cmd in hpCmds:
