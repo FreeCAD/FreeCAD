@@ -127,9 +127,14 @@ void ImpExpDxfRead::OnReadArc(const double* s, const double* e, const double* c,
         up = -up;
     gp_Pnt pc = makePoint(c);
     gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-    BRepBuilderAPI_MakeEdge makeEdge(circle, p0, p1);
-    TopoDS_Edge edge = makeEdge.Edge();
-    AddObject(new Part::TopoShape(edge));
+    if (circle.Radius() > 0) {
+        BRepBuilderAPI_MakeEdge makeEdge(circle, p0, p1);
+        TopoDS_Edge edge = makeEdge.Edge();
+        AddObject(new Part::TopoShape(edge));
+    }
+    else {
+        Base::Console().Warning("ImpExpDxf - ignore degenerate arc of circle\n");
+    }
 }
 
 
@@ -141,9 +146,14 @@ void ImpExpDxfRead::OnReadCircle(const double* s, const double* c, bool dir, boo
         up = -up;
     gp_Pnt pc = makePoint(c);
     gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-    BRepBuilderAPI_MakeEdge makeEdge(circle);
-    TopoDS_Edge edge = makeEdge.Edge();
-    AddObject(new Part::TopoShape(edge));
+    if (circle.Radius() > 0) {
+        BRepBuilderAPI_MakeEdge makeEdge(circle);
+        TopoDS_Edge edge = makeEdge.Edge();
+        AddObject(new Part::TopoShape(edge));
+    }
+    else {
+        Base::Console().Warning("ImpExpDxf - ignore degenerate circle\n");
+    }
 }
 
 
@@ -161,9 +171,14 @@ void ImpExpDxfRead::OnReadEllipse(const double* c, double major_radius, double m
     gp_Pnt pc = makePoint(c);
     gp_Elips ellipse(gp_Ax2(pc, up), major_radius * optionScaling, minor_radius * optionScaling);
     ellipse.Rotate(gp_Ax1(pc,up),rotation);
-    BRepBuilderAPI_MakeEdge makeEdge(ellipse);
-    TopoDS_Edge edge = makeEdge.Edge();
-    AddObject(new Part::TopoShape(edge));
+    if (ellipse.MinorRadius() > 0) {
+        BRepBuilderAPI_MakeEdge makeEdge(ellipse);
+        TopoDS_Edge edge = makeEdge.Edge();
+        AddObject(new Part::TopoShape(edge));
+    }
+    else {
+        Base::Console().Warning("ImpExpDxf - ignore degenerate ellipse\n");
+    }
 }
 
 
