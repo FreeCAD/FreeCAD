@@ -63,9 +63,9 @@ void * _class_::create(void){\
 
 /// define to implement a  subclass of Base::BaseClass
 #define TYPESYSTEM_SOURCE_TEMPLATE_P(_class_) \
+template<> Base::Type _class_::classTypeId = Base::Type::badType();  \
 template<> Base::Type _class_::getClassTypeId(void) { return _class_::classTypeId; } \
 template<> Base::Type _class_::getTypeId(void) const { return _class_::classTypeId; } \
-template<> Base::Type _class_::classTypeId = Base::Type::badType();  \
 template<> void * _class_::create(void){\
     return new _class_ ();\
 }
