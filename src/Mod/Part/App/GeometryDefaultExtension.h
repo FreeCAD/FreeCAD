@@ -97,13 +97,6 @@ namespace Part {
     template <>
     inline GeometryDefaultExtension<double>::GeometryDefaultExtension():value(0.0f){}
 
-    // instantiate the types so that other translation units (python wrappers) can access template
-    //constructors other than the default.
-    template class GeometryDefaultExtension<long>;
-    template class GeometryDefaultExtension<std::string>;
-    template class GeometryDefaultExtension<bool>;
-    template class GeometryDefaultExtension<double>;
-
     // Prefer alias to typedef item 9
     using GeometryIntExtension = GeometryDefaultExtension<long>;
     using GeometryStringExtension = GeometryDefaultExtension<std::string>;

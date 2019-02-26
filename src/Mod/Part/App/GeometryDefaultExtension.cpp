@@ -92,6 +92,7 @@ PyObject * GeometryDefaultExtension<T>::getPyObject(void)
     THROWM(Base::NotImplementedError,"Python object not implemented for default geometry extension template type. Template Specialisation missing."); // use template specialisation to provide the actual object
 }
 
+namespace Part {
 // ----------------------------- Template specialisations----------------------------------------------------
 
 //typedef Part::GeometryDefaultExtension<long> GeometryIntExtension;
@@ -156,3 +157,14 @@ void GeometryDefaultExtension<double>::Restore(Base::XMLReader &reader)
 
     value = reader.getAttributeAsFloat("value");
 }
+
+
+// instantiate the types so that other translation units (python wrappers) can access template
+//constructors other than the default.
+template class GeometryDefaultExtension<long>;
+template class GeometryDefaultExtension<std::string>;
+template class GeometryDefaultExtension<bool>;
+template class GeometryDefaultExtension<double>;
+
+
+} //namespace Part
