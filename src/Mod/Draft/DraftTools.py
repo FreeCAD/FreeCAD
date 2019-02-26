@@ -2470,17 +2470,16 @@ class Move(Modifier):
     def build_copy_subelements_command(self):
         import Part
         command = []
-        copy_edge_arguments = []
+        arguments = []
         for object in self.selected_subelements:
             for index, subelement in enumerate(object.SubObjects):
                 if not isinstance(subelement, Part.Edge):
                     continue
-                copy_edge_arguments.append('[FreeCAD.ActiveDocument.{}, {}, {}]'.format(
+                arguments.append('[FreeCAD.ActiveDocument.{}, {}, {}]'.format(
                     object.ObjectName,
                     int(object.SubElementNames[index][len("Edge"):])-1,
-                    DraftVecUtils.toString(self.vector)
-                    ))
-        command.append('Draft.copyEdges([{}])'.format(','.join(copy_edge_arguments)))
+                    DraftVecUtils.toString(self.vector)))
+        command.append('Draft.copyMovedEdges([{}])'.format(','.join(arguments)))
         command.append('FreeCAD.ActiveDocument.recompute()')
         return command
 
@@ -2741,10 +2740,8 @@ class Rotate(Modifier):
             self.rotate_object(is_copy)
 
     def rotate_subelements(self, is_copy):
-        self.commit(translate("draft", "Rotate"), self.build_rotate_subelements_command())
-        return
         try:
-            if self.ui.isCopy.isChecked():
+            if is_copy:
                 self.commit(translate("draft", "Copy"), self.build_copy_subelements_command())
             else:
                 self.commit(translate("draft", "Rotate"), self.build_rotate_subelements_command())
@@ -2752,7 +2749,22 @@ class Rotate(Modifier):
             FreeCAD.Console.PrintError(translate("draft", "Some subelements could not be moved."))
 
     def build_copy_subelements_command(self):
-        pass
+        import Part
+        command = []
+        arguments = []
+        for object in self.selected_subelements:
+            for index, subelement in enumerate(object.SubObjects):
+                if not isinstance(subelement, Part.Edge):
+                    continue
+                arguments.append('[FreeCAD.ActiveDocument.{}, {}, {}, {}, {}]'.format(
+                    object.ObjectName,
+                    int(object.SubElementNames[index][len("Edge"):])-1,
+                    math.degrees(self.angle),
+                    DraftVecUtils.toString(self.center),
+                    DraftVecUtils.toString(plane.axis)))
+        command.append('Draft.copyRotatedEdges([{}])'.format(','.join(arguments)))
+        command.append('FreeCAD.ActiveDocument.recompute()')
+        return command
 
     def build_rotate_subelements_command(self):
         import Part
@@ -2763,6 +2775,13 @@ class Rotate(Modifier):
                     command.append('Draft.rotateVertex(FreeCAD.ActiveDocument.{}, {}, {}, {}, {})'.format(
                         object.ObjectName,
                         int(object.SubElementNames[index][len("Vertex"):])-1,
+                        math.degrees(self.angle),
+                        DraftVecUtils.toString(self.center),
+                        DraftVecUtils.toString(plane.axis)))
+                elif isinstance(subelement, Part.Edge):
+                    command.append('Draft.rotateEdge(FreeCAD.ActiveDocument.{}, {}, {}, {}, {})'.format(
+                        object.ObjectName,
+                        int(object.SubElementNames[index][len("Edge"):])-1,
                         math.degrees(self.angle),
                         DraftVecUtils.toString(self.center),
                         DraftVecUtils.toString(plane.axis)))

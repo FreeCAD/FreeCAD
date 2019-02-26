@@ -1479,18 +1479,39 @@ def moveEdge(object, edge_index, vector):
     else:
         moveVertex(object, edge_index+1, vector)
 
-def copyEdges(copy_edge_arguments):
+def copyMovedEdges(arguments):
     copied_edges = []
-    for argument in copy_edge_arguments:
-        copied_edges.append(copyEdge(argument[0], argument[1], argument[2]))
+    for argument in arguments:
+        copied_edges.append(copyMovedEdge(argument[0], argument[1], argument[2]))
     joinWires(copied_edges)
 
-def copyEdge(object, edge_index, vector):
+def copyMovedEdge(object, edge_index, vector):
     vertex1 = object.Placement.multVec(object.Points[edge_index]).add(vector)
     if isClosedEdge(edge_index, object):
         vertex2 = object.Placement.multVec(object.Points[0]).add(vector)
     else:
         vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
+    return makeLine(vertex1, vertex2)
+
+def copyRotatedEdges(arguments):
+    copied_edges = []
+    for argument in arguments:
+        copied_edges.append(copyRotatedEdge(argument[0], argument[1],
+            argument[2], argument[3], argument[4]))
+    joinWires(copied_edges)
+
+def copyRotatedEdge(object, edge_index, angle, center, axis):
+    vertex1 = rotateVectorFromCenter(
+        object.Placement.multVec(object.Points[edge_index]),
+        angle, axis, center)
+    if isClosedEdge(edge_index, object):
+        vertex2 = rotateVectorFromCenter(
+            object.Placement.multVec(object.Points[0]),
+            angle, axis, center)
+    else:
+        vertex2 = rotateVectorFromCenter(
+            object.Placement.multVec(object.Points[edge_index+1]),
+            angle, axis, center)
     return makeLine(vertex1, vertex2)
 
 def isClosedEdge(edge_index, object):
@@ -1644,12 +1665,23 @@ def array(objectslist,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None):
 
 def rotateVertex(object, vertex_index, angle, center, axis):
     points = object.Points
-    v = object.Placement.multVec(points[vertex_index])
-    rv = v.sub(center)
-    rv = DraftVecUtils.rotate(rv, math.radians(angle), axis)
-    v = center.add(rv)
-    points[vertex_index] = object.Placement.inverse().multVec(v)
+    points[vertex_index] = object.Placement.inverse().multVec(
+        rotateVectorFromCenter(
+            object.Placement.multVec(points[vertex_index]),
+            angle, axis, center))
     object.Points = points
+
+def rotateVectorFromCenter(vector, angle, axis, center):
+    rv = vector.sub(center)
+    rv = DraftVecUtils.rotate(rv, math.radians(angle), axis)
+    return center.add(rv)
+
+def rotateEdge(object, edge_index, angle, center, axis):
+    rotateVertex(object, edge_index, angle, center, axis)
+    if isClosedEdge(edge_index, object):
+        rotateVertex(object, 0, angle, center, axis)
+    else:
+        rotateVertex(object, edge_index+1, angle, center, axis)
 
 def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False):
     '''rotate(objects,angle,[center,axis,copy]): Rotates the objects contained
