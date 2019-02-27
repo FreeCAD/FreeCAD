@@ -43,7 +43,7 @@ public:
     };
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder) <realthunder.dev@gmail.com>
 
-    constexpr static std::array<const char *,NumFlags> flag2str { "Defining", "Frozen", "Detached","Missing", "Sync" };
+    constexpr static std::array<const char *,NumFlags> flag2str {{ "Defining", "Frozen", "Detached","Missing", "Sync" }};
 
     ExternalGeometryExtension() = default;
     virtual ~ExternalGeometryExtension() = default;
