@@ -29,6 +29,7 @@
 
 #include <memory>
 
+#ifndef _MSC_VER
 namespace std {
     template<typename T, typename... Args>
     std::unique_ptr<T> make_unique(Args&&... args)
@@ -36,6 +37,8 @@ namespace std {
         return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
     }
 }
-#endif
+#endif //_MSC_VER
+
+#endif // __cplusplus && __cplusplus <= 201103L
 
 #endif // BASE_STDSTLTOOLS_H
