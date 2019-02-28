@@ -46,7 +46,7 @@ public:
     int type() const override { return Type;}
 
     virtual void updateView(bool update = false) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
 
 protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
