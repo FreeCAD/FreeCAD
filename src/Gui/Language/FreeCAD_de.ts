@@ -2307,7 +2307,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
       <source>Save thumbnail into project file when saving document</source>
-      <translation>Beim Speichern des Dokumentes Miniaturansicht in Projektdatei speichrn</translation>
+      <translation>Beim Speichern des Dokumentes Miniaturansicht in Projektdatei speichern</translation>
     </message>
     <message>
       <source>Maximum number of backup files to keep when resaving document</source>
