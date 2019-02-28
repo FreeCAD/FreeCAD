@@ -43,13 +43,13 @@ public:
     ~QGIViewCollection() = default;
 
     enum {Type = QGraphicsItem::UserType + 110};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void updateView(bool update = false);
+    virtual void updateView(bool update = false) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
 
 protected:
-  virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 };
 
