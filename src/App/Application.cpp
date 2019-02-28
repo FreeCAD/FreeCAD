@@ -1211,6 +1211,7 @@ void printBacktrace(size_t skip=0)
 void segmentation_fault_handler(int sig)
 {
 #if defined(FC_OS_LINUX)
+    (void)sig;
     std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
     printBacktrace(2);
     exit(1);

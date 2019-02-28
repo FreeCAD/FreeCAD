@@ -61,7 +61,7 @@ public:
     virtual ~QGVPage();
 
     void setRenderer(RendererType type = Native);
-    void drawBackground(QPainter *p, const QRectF &rect);
+    void drawBackground(QPainter *p, const QRectF &rect) override;
 
     QGIView * addViewDimension(TechDraw::DrawViewDimension *dim);
     QGIView * addProjectionGroup(TechDraw::DrawProjGroup *view);
@@ -108,11 +108,11 @@ public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
 
 protected:
-    void wheelEvent(QWheelEvent *event);
-    void paintEvent(QPaintEvent *event);
-    void enterEvent(QEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void enterEvent(QEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
     void kbPanScroll(int xMove = 1, int yMove = 1); 
 
