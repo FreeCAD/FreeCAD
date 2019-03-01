@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = X39CrMo17-1
 NameDE = -
 Father = Metal
@@ -12,6 +12,8 @@ KindOfMaterial = Stainless steel
 KindOfMaterialDE = Niro
 MaterialNumber = 1.4122
 Norm = EN 10088
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -19,4 +21,6 @@ UltimateStrain = 12
 UltimateTensileStrength = 750 MPa
 YieldStrength = 500 MPa
 YoungsModulus = 213000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

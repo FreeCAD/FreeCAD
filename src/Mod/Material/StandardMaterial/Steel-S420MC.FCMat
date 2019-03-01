@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S420MC
 NameDE = QStE420 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen
@@ -13,6 +13,8 @@ KindOfMaterial = Cold forming steel
 KindOfMaterialDE = Kaltumformstahl
 MaterialNumber = 1.098
 Norm = EN 10149
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 21
 UltimateTensileStrength = 550 MPa
 YieldStrength = 420 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

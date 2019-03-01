@@ -4,13 +4,17 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Concrete
 Description = A standard C-25 construction concrete
 Father = Aggregate
 StandardCode = Masterformat 03 33 13
+
+[Mechanical]
 CompressiveStrength = 25 MPa
 Density = 2400 kg/m^3
 PoissonRatio = 0.17
 YoungsModulus = 32000 MPa
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Concrete

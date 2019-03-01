@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S690MC
 NameDE = QStE690 TM
 DescriptionDE = gut biegbar, Fahrgestellrahmen, Hilfsrahmen
@@ -13,6 +13,8 @@ KindOfMaterial = Cold forming steel
 KindOfMaterialDE = Kaltumformstahl
 MaterialNumber = 1.0966
 Norm = SEW 092
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 15
 UltimateTensileStrength = 790 MPa
 YieldStrength = 690 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

@@ -4,11 +4,15 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Glass-S2
 Description = Glass Fibre
 Father = Glass
+
+[Mechanical]
 CompressiveStrength = 1600 MPa
 Density = 2460 kg/m^3
 UltimateTensileStrength = 4890 MPa
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Glass_fiber

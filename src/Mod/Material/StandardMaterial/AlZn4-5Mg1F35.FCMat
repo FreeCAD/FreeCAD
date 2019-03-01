@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = AlZn4,5Mg1F35
 NameDE = AlZn4,5Mg1F35
 Father = Metal
@@ -12,6 +12,8 @@ KindOfMaterial = Aluminium
 KindOfMaterialDE = Aluminium
 MaterialNumber = 3.4335.71
 Norm = DIN 1725
+
+[Mechanical]
 Density = 2700 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 27000 MPa
@@ -19,4 +21,6 @@ UltimateStrain = 10
 UltimateTensileStrength = 350 MPa
 YieldStrength = 290 MPa
 YoungsModulus = 70000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000023 m/m/K

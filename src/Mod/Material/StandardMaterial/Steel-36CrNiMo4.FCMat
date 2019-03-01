@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = 36CrNiMo4
 NameDE = 36CrNiMo4
 DescriptionDE = höchste Beanspruchung, Wellen, Zahnräder
@@ -13,6 +13,8 @@ KindOfMaterial = Heat-treatable steel
 KindOfMaterialDE = Vergütungsstahl
 MaterialNumber = 1.6511
 Norm = EN 10083-1
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 10
 UltimateTensileStrength = 1100 MPa
 YieldStrength = 900 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

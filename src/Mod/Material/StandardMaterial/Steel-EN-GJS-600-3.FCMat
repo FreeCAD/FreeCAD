@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJS-600-3
 NameDE = GGG-60
 DescriptionDE = Kurbelwellen, Stangen
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.706
 Norm = EN 1563
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 67000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 2
 UltimateTensileStrength = 600 MPa
 YieldStrength = 370 MPa
 YoungsModulus = 177000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

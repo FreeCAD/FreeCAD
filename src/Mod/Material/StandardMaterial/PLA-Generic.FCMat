@@ -4,17 +4,23 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = PLA
 Description = Polylactic acid or polylactide (PLA, Poly) is a biodegradable thermoplastic aliphatic polyester derived from renewable resources, such as corn starch, tapioca roots, chips, starch or sugarcane.
 Father = Thermoplast
 SourceURL = https://www.sd3d.com/wp-content/uploads/2017/06/MaterialTDS-PLA_01.pdf
+
+[Mechanical]
 Density = 1240 kg/m^3
 PoissonRatio = 0.36
 UltimateTensileStrength = 26.4 MPa
 YieldStrength = 35.9 MPa
 YoungsModulus = 3640 MPa
+
+[Thermal]
 SpecificHeat = 1800 J/kg/K
 ThermalConductivity = 0.130 W/m/K
 ThermalExpansionCoefficient = 0.000041 m/m/K
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Polylactic_acid

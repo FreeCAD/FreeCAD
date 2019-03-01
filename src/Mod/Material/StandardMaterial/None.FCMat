@@ -4,10 +4,12 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = None
 Description = This is a not defined material
 Father = None
+
+[Mechanical]
 Density = 0 kg/m^3
 PoissonRatio = 0
 UltimateTensileStrength = 0 MPa
