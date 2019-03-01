@@ -5,9 +5,6 @@ Description
 DescriptionDE
 DescriptionPL
 Father
-Vendor
-ProductURL
-SpecificPrice
 YoungsModulus
 UltimateTensileStrength
 PoissonRatio
@@ -51,3 +48,6 @@ ViewColor
 ViewFillPattern
 ViewLinewidth
 YieldStrength
+ProductURL
+SpecificPrice
+Vendor

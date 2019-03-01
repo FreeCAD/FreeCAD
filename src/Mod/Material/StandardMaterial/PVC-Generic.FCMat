@@ -5,7 +5,6 @@
 
 [FCMat]
 Name = PVC
-ProductURL = https://en.wikipedia.org/wiki/Polyvinyl_chloride
 YoungsModulus = 2800 MPa
 UltimateTensileStrength = 50 MPa
 PoissonRatio = 0.38
@@ -14,3 +13,4 @@ SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=1f650966ec834bb8
 SpecificHeat = 1000 J/kg/K
 ThermalConductivity = 0.150 W/m/K
 ThermalExpansionCoefficient = 0.000075 m/m/K
+ProductURL = https://en.wikipedia.org/wiki/Polyvinyl_chloride

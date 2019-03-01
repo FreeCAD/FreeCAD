@@ -22,15 +22,6 @@ DescriptionPL =
 ; Father of the material, i.e. for PLA is Thermoplast, for Steel is Metal
 Father =
 
-; Vendor of the material. Leave blank if not required
-Vendor =
-
-; Product URL, recommended are wikipedia links
-ProductURL = http://en.wikipedia.org/wiki/
-
-; Specific price in currency / mass, a currency is not supported by FreeCAD unit system
-SpecificPrice =
-
 ; Young's Modulus (or E-Module) in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
 YoungsModulus =
 
@@ -159,3 +150,12 @@ ViewLinewidth =
 
 ; Yield strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Yield_%28engineering%29
 YieldStrength =
+
+; Product URL, recommended are wikipedia links
+ProductURL = http://en.wikipedia.org/wiki/
+
+; Specific price in currency / mass, a currency is not supported by FreeCAD unit system
+SpecificPrice =
+
+; Vendor of the material. Leave blank if not required
+Vendor =

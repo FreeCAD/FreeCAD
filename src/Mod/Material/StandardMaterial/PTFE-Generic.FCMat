@@ -5,7 +5,6 @@
 
 [FCMat]
 Name = PTFE
-ProductURL = https://en.wikipedia.org/wiki/Polytetrafluoroethylene
 YoungsModulus = 564 MPa
 UltimateTensileStrength = 34.6 MPa
 PoissonRatio = 0.46
@@ -16,3 +15,4 @@ SpecificHeat = 1010 J/kg/K
 ThermalConductivity = 0.263 W/m/K
 ThermalExpansionCoefficient = 0.000108 m/m/K
 YieldStrength = 20.5 MPa
+ProductURL = https://en.wikipedia.org/wiki/Polytetrafluoroethylene
