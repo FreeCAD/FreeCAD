@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJS-400-15
 NameDE = GGG-40
 DescriptionDE = Pumpen-, Getriebegehäuse
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.704
 Norm = EN 1563
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 65000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 15
 UltimateTensileStrength = 400 MPa
 YieldStrength = 250 MPa
 YoungsModulus = 167000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

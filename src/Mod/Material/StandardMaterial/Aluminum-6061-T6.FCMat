@@ -4,15 +4,21 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Aluminum 6061-T6
 Description = Precipitation-hardened, Nonferrous Aluminum alloy
 Father = Metal
 KindOfMaterial = Aluminium
 KindOfMaterialDE = Aluminium
+
+[Mechanical]
 Density = 2700 kg/m^3
 PoissonRatio = 0.33
 UltimateTensileStrength = 310 MPa
 YoungsModulus = 69000 MPa
+
+[Thermal]
 ThermalConductivity = 167 W/m/K
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/6061_aluminium_alloy

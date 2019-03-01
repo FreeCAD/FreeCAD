@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJL-250
 NameDE = GG-25
 Father = Metal
@@ -12,6 +12,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.6025
 Norm = EN 1561
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 44000 MPa
@@ -19,4 +21,6 @@ UltimateStrain = 0
 UltimateTensileStrength = 250 MPa
 YieldStrength = 165 MPa
 YoungsModulus = 115000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K

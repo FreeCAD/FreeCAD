@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJMB-650-2
 NameDE = GTS 65-02
 DescriptionDE = Gabelköpfe
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.8165
 Norm = EN 1562
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 67000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 2
 UltimateTensileStrength = 650 MPa
 YieldStrength = 430 MPa
 YoungsModulus = 175000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K

@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJS-800-1
 NameDE = GGG-80
 DescriptionDE = Zahnräder
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.708
 Norm = EN 1563
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 67000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 2
 UltimateTensileStrength = 800 MPa
 YieldStrength = 480 MPa
 YoungsModulus = 180000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJMW-400-5
 NameDE = GTW 40-05
 DescriptionDE = gut schweißbar, Auspuffkrümmer, Schraubzwingen
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.804
 Norm = EN 1562
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 67000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 7
 UltimateTensileStrength = 400 MPa
 YieldStrength = 220 MPa
 YoungsModulus = 175000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K

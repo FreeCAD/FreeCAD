@@ -4,11 +4,15 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Glass-E
 Description = Glass Fibre
 Father = Glass
+
+[Mechanical]
 CompressiveStrength = 1080 MPa
 Density = 2580 kg/m^3
 UltimateTensileStrength = 3445 MPa
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Glass_fiber

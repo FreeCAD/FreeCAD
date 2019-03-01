@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJL-100
 NameDE = GG-10
 DescriptionDE = für gering beanspruchte Teile
@@ -13,10 +13,14 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.601
 Norm = EN 1561
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 34000 MPa
 UltimateStrain = 0
 UltimateTensileStrength = 100 MPa
 YoungsModulus = 88000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K

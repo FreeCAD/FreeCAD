@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJMW-450-7
 NameDE = GTW 45-07
 DescriptionDE = schlagfest, Fahrwerksteile
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.8045
 Norm = EN 1562
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 67000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 10
 UltimateTensileStrength = 450 MPa
 YieldStrength = 260 MPa
 YoungsModulus = 175000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K

@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = S355J2G3
 NameDE = St52-3
 Father = Metal
@@ -12,6 +12,8 @@ KindOfMaterial = Mild steel
 KindOfMaterialDE = Baustahl
 MaterialNumber = 1.057
 Norm = EN 10025
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -19,4 +21,6 @@ UltimateStrain = 22
 UltimateTensileStrength = 510 MPa
 YieldStrength = 355 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K
