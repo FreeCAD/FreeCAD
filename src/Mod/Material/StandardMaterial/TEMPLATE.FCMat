@@ -7,7 +7,7 @@
 ; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 ; find unit informations in src/App/FreeCADInit.py
 
-[FCMat]
+[General]
 ; General name
 Name =
 
@@ -50,6 +50,8 @@ SourceURL =
 ; Description to be updated
 StandardCode =
 
+
+[Mechanical]
 ; Further information can be found at https://en.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
 ; https://en.wikipedia.org/wiki/Friction#Angle_of_friction
 AngleOfFriction =
@@ -90,6 +92,8 @@ YieldStrength =
 ; https://en.wikipedia.org/wiki/Young%27s_modulus
 YoungsModulus =
 
+
+[Thermal]
 ; Description to be updated
 ; https://en.wikipedia.org/wiki/Heat_capacity
 SpecificHeat =
@@ -102,6 +106,8 @@ ThermalConductivity =
 ; https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient
 ThermalExpansionCoefficient =
 
+
+[Architectural]
 ; Description to be updated
 Color =
 
@@ -126,6 +132,8 @@ SoundTransmissionClass =
 ; Description to be updated
 UnitsPerQuantity =
 
+
+[Rendering]
 ; Description to be updated
 AmbientColor =
 
@@ -156,6 +164,8 @@ Transparency =
 ; Description to be updated
 VertexShader =
 
+
+[Vector rendering]
 ; Description to be updated
 SectionFillPattern =
 
@@ -171,6 +181,8 @@ ViewFillPattern =
 ; Description to be updated
 ViewLinewidth =
 
+
+[Cost]
 ; Product URL, recommended are wikipedia links
 ; https://de.wikipedia.org/wiki/Hyperlink
 ProductURL =
