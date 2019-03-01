@@ -1,7 +1,8 @@
 ; Glass-E-GlassFibre
 ; (c) 2015 DaviKaur (CC-BY 3.0)
-; Information about the content of such cards you can find here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
 [FCMat]
 Name = Glass-E

@@ -1,7 +1,8 @@
 ; Wood-Generic
 ; (c) 2015 Bernd Hahnebach (CC-BY 3.0)
-; information about the content of this card can be found here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
+; file created by FreeCAD0.18.16022 (Git)
 
 [FCMat]
 Name = Wood
