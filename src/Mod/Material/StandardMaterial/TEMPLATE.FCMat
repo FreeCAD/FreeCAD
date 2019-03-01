@@ -122,12 +122,6 @@ EmissiveColor =
 FragmentShader =
 
 ; Description to be updated
-SectionFillPattern =
-
-; Description to be updated
-SectionLinewidth =
-
-; Description to be updated
 Shininess =
 
 ; Description to be updated
@@ -144,6 +138,12 @@ Transparency =
 
 ; Description to be updated
 VertexShader =
+
+; Description to be updated
+SectionFillPattern =
+
+; Description to be updated
+SectionLinewidth =
 
 ; Description to be updated
 ViewColor =

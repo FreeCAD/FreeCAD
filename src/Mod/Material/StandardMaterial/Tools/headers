@@ -37,14 +37,14 @@ AmbientColor
 DiffuseColor
 EmissiveColor
 FragmentShader
-SectionFillPattern
-SectionLinewidth
 Shininess
 SpecularColor
 TexturePath
 TextureScaling
 Transparency
 VertexShader
+SectionFillPattern
+SectionLinewidth
 ViewColor
 ViewFillPattern
 ViewLinewidth
