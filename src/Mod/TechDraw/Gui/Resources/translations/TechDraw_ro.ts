@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="649"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="650"/>
@@ -20,7 +20,7 @@
     <message>
       <location filename="../../Command.cpp" line="994"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
@@ -38,7 +38,7 @@
     <message>
       <location filename="../../Command.cpp" line="690"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="691"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="812"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="813"/>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="729"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="730"/>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="941"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="942"/>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="212"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="213"/>
@@ -181,7 +181,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="962"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="963"/>
@@ -195,7 +195,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="870"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="871"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="782"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="783"/>
@@ -223,7 +223,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="344"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="345"/>
@@ -241,7 +241,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="117"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="118"/>
@@ -259,7 +259,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="557"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="558"/>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="670"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="671"/>
@@ -295,7 +295,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="142"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="143"/>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="80"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="81"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="444"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="445"/>
@@ -337,7 +337,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
@@ -375,7 +375,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="244"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="245"/>
@@ -389,7 +389,7 @@
     <message>
       <location filename="../../Command.cpp" line="253"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="254"/>
@@ -403,7 +403,7 @@
     <message>
       <location filename="../../Command.cpp" line="418"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="419"/>
@@ -417,7 +417,7 @@
     <message>
       <location filename="../../Command.cpp" line="348"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="349"/>
@@ -431,7 +431,7 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
@@ -449,7 +449,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="311"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="312"/>
@@ -463,7 +463,7 @@
     <message>
       <location filename="../../Command.cpp" line="1061"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1062"/>
@@ -481,7 +481,7 @@
     <message>
       <location filename="../../Command.cpp" line="887"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="888"/>
@@ -499,7 +499,7 @@
     <message>
       <location filename="../../CommandDecorate.cpp" line="264"/>
       <source>TechDraw</source>
-      <translation>TechDraw</translation>
+      <translation>Desen tehnic</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="265"/>

@@ -136,7 +136,7 @@
     <message>
       <location filename="../../BrowserView.cpp" line="334"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
+      <translation>Det uppstod ett fel under inläsning av filen. Viss data kan ha ändrats eller inte hämtats alls. Titta i rapportvyn för mer specifik information om de inblandade objekten.</translation>
     </message>
     <message>
       <location filename="../../BrowserView.cpp" line="412"/>

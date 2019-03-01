@@ -1231,21 +1231,6 @@
     </message>
   </context>
   <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>Végeselemes analízis FEM</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>Véges-elemes módszer analízis (VEM) háló létrehozása</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>Véges-elemes módszer analízis háló létrehozása az alakzaton</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1405,29 +1390,6 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Felhasználó könyvtár</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>Hipotézis</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>Négyszög</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>Maximális hossz</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>Helyi hossz</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>Maximális elem terület</translation>
     </message>
   </context>
   <context>
@@ -1705,18 +1667,6 @@
       <source>Only faces and edges can be picked</source>
       <translation>Csak a felületek és élek választhatók ki</translation>
     </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation type="unfinished">Point load [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation type="unfinished">Line load [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation type="unfinished">Area load [N/mm²]</translation>
-    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1923,14 +1873,6 @@
       <translation>Idő:</translation>
     </message>
     <message>
-      <source>Write Calculix Input File</source>
-      <translation type="unfinished">Write Calculix Input File</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation type="unfinished">Edit Calculix Input File</translation>
-    </message>
-    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Mechanikus anyag</translation>
@@ -2000,14 +1942,6 @@
       <source>MatWeb database...</source>
       <translation>MatWeb adatbázis...</translation>
     </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation type="unfinished">Pa</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2071,26 +2005,6 @@
       <translation>Kényszerítés szerkesztése</translation>
     </message>
     <message>
-      <source>Combo View</source>
-      <translation>Összetett nézet</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation type="unfinished">combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation type="unfinished">qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation type="unfinished">ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation type="unfinished">ShaftWizardLayout</translation>
-    </message>
-    <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="74"/>
       <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
@@ -2106,7 +2020,7 @@
       <location filename="../../ViewProviderFemConstraintGear.cpp" line="75"/>
       <location filename="../../ViewProviderFemConstraintPulley.cpp" line="74"/>
       <source>Do you want to close this dialog?</source>
-      <translation>Biztos be szeretné zárni a párbeszédpanelt?</translation>
+      <translation>Szeretné bezárni a párbeszédpanelt?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="62"/>
@@ -2207,14 +2121,6 @@
       <source>Slider max:</source>
       <translation>Max. elcsúszás:</translation>
     </message>
-    <message>
-      <source>Colors</source>
-      <translation>Színek</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
-    </message>
   </context>
   <context>
     <name>TaskAnalysisInfo</name>
@@ -2231,7 +2137,7 @@
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Constraints</source>
-      <translation>Megkötések</translation>
+      <translation>Kényszerítések</translation>
     </message>
   </context>
   <context>

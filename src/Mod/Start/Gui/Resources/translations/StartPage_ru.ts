@@ -223,7 +223,7 @@
       <translation>Стартовая страница</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Стартовая страница</translation>
     </message>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="596"/>
       <source>Switch workbench after loading</source>
-      <translation>Переключатель рабочее окружение после загрузки</translation>
+      <translation>Переключить верстак после загрузки</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="603"/>

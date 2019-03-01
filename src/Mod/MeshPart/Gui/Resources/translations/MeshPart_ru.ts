@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="+290"/>
+      <location filename="../../Command.cpp" line="290"/>
       <source>Mesh</source>
       <translation>Сетка</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Curve on mesh...</source>
       <translation>Скруглить полигональную сетку...</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="292"/>
       <source>Curve on mesh</source>
       <translation>Скруглить полигональную сетку</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartMesher</name>
     <message>
-      <location line="-235"/>
+      <location filename="../../Command.cpp" line="57"/>
       <source>Mesh</source>
       <translation>Сеть</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="58"/>
       <source>Create mesh from shape...</source>
       <translation>Создать полигональную сетку из фигуры...</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="59"/>
       <source>Tessellate shape</source>
       <translation>Мозаика из фигуры</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location line="+150"/>
+      <location filename="../../Command.cpp" line="209"/>
       <source>Mesh</source>
       <translation>Сеть</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="210"/>
       <source>Create section from mesh and plane</source>
       <translation>Создать секцию из полигональной сетки и плоскости</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="211"/>
       <source>Section</source>
       <translation>Раздел</translation>
     </message>
@@ -58,18 +58,18 @@
   <context>
     <name>CmdMeshPartTrimByPlane</name>
     <message>
-      <location line="-129"/>
+      <location filename="../../Command.cpp" line="82"/>
       <source>Mesh</source>
       <translation>Сеть</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="83"/>
       <source>Trim mesh with a plane</source>
       <translation>Подрезать полигональную сетку плоскостью</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="85"/>
       <source>Trims a mesh with a plane</source>
       <translation>Подрезает полигональную сетку выбранной плоскостью</translation>
     </message>
@@ -77,32 +77,32 @@
   <context>
     <name>MeshPartGui::CurveOnMeshHandler</name>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="+353"/>
+      <location filename="../../CurveOnMesh.cpp" line="353"/>
       <source>Create</source>
       <translation>Собрать</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location filename="../../CurveOnMesh.cpp" line="355"/>
       <source>Close wire</source>
       <translation>Замкнуть ломаную</translation>
     </message>
     <message>
-      <location line="+2"/>
+      <location filename="../../CurveOnMesh.cpp" line="357"/>
       <source>Clear</source>
       <translation>Очистить</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../CurveOnMesh.cpp" line="358"/>
       <source>Cancel</source>
       <translation>Отмена</translation>
     </message>
     <message>
-      <location line="+208"/>
+      <location filename="../../CurveOnMesh.cpp" line="566"/>
       <source>Wrong mesh picked</source>
       <translation>Выбрана неправильная полигональная сетка</translation>
     </message>
     <message>
-      <location line="+40"/>
+      <location filename="../../CurveOnMesh.cpp" line="606"/>
       <source>No point was picked</source>
       <translation>Не выбрано ни одной точки</translation>
     </message>
@@ -110,52 +110,52 @@
   <context>
     <name>MeshPartGui::TaskCurveOnMesh</name>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="+14"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="14"/>
       <source>Curve on mesh</source>
       <translation>Скруглить полигональную сетку</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="20"/>
       <source>Wire</source>
       <translation>Ломаная</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="26"/>
       <source>Snap tolerance to vertexes</source>
       <translation>Привязать допуск к вершинам</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="33"/>
       <source> px</source>
       <translation> пикс.</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="43"/>
       <source>Split threshold</source>
       <translation>Порог разделения</translation>
     </message>
     <message>
-      <location line="+26"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="69"/>
       <source>Spline Approximation</source>
       <translation>Апроксимация сплайна</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="75"/>
       <source>Tolerance to mesh</source>
       <translation>Допуск для полигональной сетки</translation>
     </message>
     <message>
-      <location line="+26"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="101"/>
       <source>Continuity</source>
       <translation>Непрерывность</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="108"/>
       <source>Maximum curve degree</source>
       <translation>Максимальный градус скругления</translation>
     </message>
     <message>
-      <location line="+24"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="132"/>
       <source>Start</source>
       <translation>Запустить</translation>
     </message>
@@ -163,145 +163,137 @@
   <context>
     <name>MeshPartGui::Tessellation</name>
     <message>
-      <location filename="../../Tessellation.ui" line="+14"/>
+      <location filename="../../Tessellation.ui" line="14"/>
       <source>Tessellation</source>
       <translation>Мозаика</translation>
     </message>
     <message>
-      <location line="+10"/>
+      <location filename="../../Tessellation.ui" line="24"/>
       <source>Shapes</source>
       <translation>Фигуры</translation>
     </message>
     <message>
-      <location line="+8"/>
+      <location filename="../../Tessellation.ui" line="32"/>
       <source>Meshing options</source>
       <translation>Параметры построения полигональной сетки</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../Tessellation.ui" line="38"/>
       <source>Standard</source>
       <translation>Стандартно</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../Tessellation.ui" line="45"/>
       <source>Mefisto</source>
       <translation>Мефисто</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../Tessellation.ui" line="52"/>
       <source>Netgen</source>
       <translation>Netgen</translation>
     </message>
     <message>
-      <location line="+81"/>
-      <source>Define segments by face colors</source>
-      <translation>Задать сегменты по цветам граней</translation>
-    </message>
-    <message>
-      <location line="-7"/>
-      <source>Apply face colors to mesh</source>
-      <translation>Применить цвета грани к полигональной сетке</translation>
-    </message>
-    <message>
-      <location line="-35"/>
-      <source>Angular deviation:</source>
-      <translation>Угловое отклонение:</translation>
-    </message>
-    <message>
-      <location line="+28"/>
-      <source>Relative surface deviation</source>
-      <translation>Относительное отклонение поверхности</translation>
-    </message>
-    <message>
-      <location line="+40"/>
-      <source>Maximum edge length:</source>
-      <translation>Максимальная длина  кромки:</translation>
-    </message>
-    <message>
-      <location line="+44"/>
-      <source>Fineness:</source>
-      <translation>Точность:</translation>
-    </message>
-    <message>
-      <location line="+17"/>
-      <source>Very coarse</source>
-      <translation>Очень грубая</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Coarse</source>
-      <translation>Грубо</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Moderate</source>
-      <translation>Приемлемо</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Fine</source>
-      <translation>Точно</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>Very fine</source>
-      <translation>Высокоточная</translation>
-    </message>
-    <message>
-      <location line="+5"/>
-      <source>User defined</source>
-      <translation>Пользовательская</translation>
-    </message>
-    <message>
-      <location line="+10"/>
-      <source>Mesh size grading:</source>
-      <translation>Точность размера полигональной сетки:</translation>
-    </message>
-    <message>
-      <location line="+29"/>
-      <source>Elements per edge:</source>
-      <translation>Количество элементов на ребро:</translation>
-    </message>
-    <message>
-      <location line="+29"/>
-      <source>Elements per curvature radius:</source>
-      <translation>Количество элементов на радиус скругления:</translation>
-    </message>
-    <message>
-      <location line="+31"/>
-      <source>Optimize surface</source>
-      <translation>Оптимизировать поверхность</translation>
-    </message>
-    <message>
-      <location line="+10"/>
-      <source>Second order elements</source>
-      <translation>Элементы второго порядка</translation>
-    </message>
-    <message>
-      <location line="+7"/>
-      <source>Quad dominated</source>
-      <translation>Более квадратоориентированная</translation>
-    </message>
-    <message>
-      <source>Settings</source>
-      <translation>Настройки</translation>
-    </message>
-    <message>
-      <location line="-293"/>
+      <location filename="../../Tessellation.ui" line="68"/>
       <source>Surface deviation:</source>
       <translation>Отклонение поверхности:</translation>
     </message>
     <message>
-      <source>Max. edge length:</source>
-      <translation>Макс. длина ребра:</translation>
+      <location filename="../../Tessellation.ui" line="91"/>
+      <source>Angular deviation:</source>
+      <translation>Угловое отклонение:</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="+226"/>
+      <location filename="../../Tessellation.ui" line="119"/>
+      <source>Relative surface deviation</source>
+      <translation>Относительное отклонение поверхности</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="126"/>
+      <source>Apply face colors to mesh</source>
+      <translation>Применить цвета грани к полигональной сетке</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="133"/>
+      <source>Define segments by face colors</source>
+      <translation>Задать сегменты по цветам граней</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="159"/>
+      <source>Maximum edge length:</source>
+      <translation>Максимальная длина  кромки:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="203"/>
+      <source>Fineness:</source>
+      <translation>Точность:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="220"/>
+      <source>Very coarse</source>
+      <translation>Очень грубая</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="225"/>
+      <source>Coarse</source>
+      <translation>Грубо</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="230"/>
+      <source>Moderate</source>
+      <translation>Приемлемо</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="235"/>
+      <source>Fine</source>
+      <translation>Точно</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="240"/>
+      <source>Very fine</source>
+      <translation>Высокоточная</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="245"/>
+      <source>User defined</source>
+      <translation>Пользовательская</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="255"/>
+      <source>Mesh size grading:</source>
+      <translation>Точность размера полигональной сетки:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="284"/>
+      <source>Elements per edge:</source>
+      <translation>Количество элементов на ребро:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="313"/>
+      <source>Elements per curvature radius:</source>
+      <translation>Количество элементов на радиус скругления:</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="344"/>
+      <source>Optimize surface</source>
+      <translation>Оптимизировать поверхность</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="354"/>
+      <source>Second order elements</source>
+      <translation>Элементы второго порядка</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="361"/>
+      <source>Quad dominated</source>
+      <translation>Более квадратоориентированная</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="226"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Сначала выберите фигуру для создания полигональной сетки.</translation>
     </message>
     <message>
-      <location line="+7"/>
+      <location filename="../../Tessellation.cpp" line="233"/>
       <source>No such document '%1'.</source>
       <translation>Нет такого документа '%1'.</translation>
     </message>
@@ -309,12 +301,12 @@
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="+137"/>
+      <location filename="../../Command.cpp" line="222"/>
       <source>Select plane</source>
       <translation>Выбрать плоскость</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="223"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Выберите плоскость которой вы разделе сетку.</translation>
     </message>
@@ -322,37 +314,37 @@
   <context>
     <name>MeshPart_TrimByPlane</name>
     <message>
-      <location line="-129"/>
+      <location filename="../../Command.cpp" line="94"/>
       <source>Select plane</source>
       <translation>Выбрать плоскость</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="95"/>
       <source>Please select a plane at which you trim the mesh.</source>
       <translation>Выберите плоскость, которая подрежет полигональную сетку.</translation>
     </message>
     <message>
-      <location line="+6"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Trim by plane</source>
       <translation>Обрезать плоскостью</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Select the side you want to keep.</source>
       <translation>Выберите сторону, которую вы хотите сохранить.</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="103"/>
       <source>Inner</source>
       <translation>Внутренний</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Outer</source>
       <translation>Внешний</translation>
     </message>
     <message>
-      <location line="+1"/>
+      <location filename="../../Command.cpp" line="105"/>
       <source>Split</source>
       <translation>Разделить</translation>
     </message>
@@ -360,7 +352,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+36"/>
+      <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
       <translation>Полигональная сетка для детали</translation>
     </message>
