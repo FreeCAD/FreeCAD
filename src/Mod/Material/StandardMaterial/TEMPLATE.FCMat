@@ -86,16 +86,7 @@ ThermalConductivity =
 ThermalExpansionCoefficient =
 
 ; Description to be updated
-AmbientColor =
-
-; Description to be updated
 Color =
-
-; Description to be updated
-DiffuseColor =
-
-; Description to be updated
-EmissiveColor =
 
 ; Description to be updated
 EnvironmentalEfficiencyClass =
@@ -110,10 +101,25 @@ Finish =
 FireResistanceClass =
 
 ; Description to be updated
-FragmentShader =
+Model =
 
 ; Description to be updated
-Model =
+SoundTransmissionClass =
+
+; Description to be updated
+UnitsPerQuantity =
+
+; Description to be updated
+AmbientColor =
+
+; Description to be updated
+DiffuseColor =
+
+; Description to be updated
+EmissiveColor =
+
+; Description to be updated
+FragmentShader =
 
 ; Description to be updated
 SectionFillPattern =
@@ -123,9 +129,6 @@ SectionLinewidth =
 
 ; Description to be updated
 Shininess =
-
-; Description to be updated
-SoundTransmissionClass =
 
 ; Description to be updated
 SpecularColor =
@@ -138,9 +141,6 @@ TextureScaling =
 
 ; Description to be updated
 Transparency =
-
-; Description to be updated
-UnitsPerQuantity =
 
 ; Description to be updated
 VertexShader =
