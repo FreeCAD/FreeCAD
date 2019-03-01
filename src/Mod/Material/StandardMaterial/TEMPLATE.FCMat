@@ -1,7 +1,7 @@
 ; TEMPLATE
 ; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)
-; information about the content of such cards you can find here:
-; http://www.freecadweb.org/wiki/index.php?title=Material
+; information about the content of such cards can be found on the wiki:
+; https://www.freecadweb.org/wiki/Material
 
 ; localized Name, Description and KindOfMaterial uses 2 letter codes
 ; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
