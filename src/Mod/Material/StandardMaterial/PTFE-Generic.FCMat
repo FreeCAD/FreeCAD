@@ -5,12 +5,12 @@
 
 [FCMat]
 Name = PTFE
+SourceURL = http://www.matweb.com/search/datasheet.aspx?MatGUID=4d14eac958e5401a8fd152e1261b6843
 YoungsModulus = 564 MPa
 UltimateTensileStrength = 34.6 MPa
 PoissonRatio = 0.46
 CompressiveStrength = 10.2 MPa
 Density = 2070 kg/m^3
-SourceURL = http://www.matweb.com/search/datasheet.aspx?MatGUID=4d14eac958e5401a8fd152e1261b6843
 SpecificHeat = 1010 J/kg/K
 ThermalConductivity = 0.263 W/m/K
 ThermalExpansionCoefficient = 0.000108 m/m/K
