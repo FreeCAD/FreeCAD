@@ -210,7 +210,6 @@ private:
     void updateText(const Base::Quantity&);
 
 private:
-    QLabel* iconLabel;
     QByteArray m_sPrefGrp;
     bool validInput;
 
