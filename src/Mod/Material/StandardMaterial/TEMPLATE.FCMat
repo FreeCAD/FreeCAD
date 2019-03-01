@@ -46,29 +46,41 @@ SourceURL =
 ; Description to be updated
 StandardCode =
 
-; Young's Modulus (or E-Module) in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
-YoungsModulus =
-
-; Ultimate tensile strength in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
-UltimateTensileStrength =
-
-; Poisson's ratio [unitless], see https://en.wikipedia.org/wiki/Poisson%27s_ratio for the details
-PoissonRatio =
-
-; Description to be updated
-AmbientColor =
-
 ; Description to be updated
 AngleOfFriction =
-
-; Description to be updated
-Color =
 
 ; Compressive strength https://en.wikipedia.org/wiki/Compressive_strength
 CompressiveStrength =
 
 ; Density in [FreeCAD Density unit] https://en.wikipedia.org/wiki/Density
 Density =
+
+; Description to be updated
+FractureToughness =
+
+; Poisson's ratio [unitless], see https://en.wikipedia.org/wiki/Poisson%27s_ratio for the details
+PoissonRatio =
+
+; Description to be updated
+ShearModulus =
+
+; Description to be updated
+UltimateStrain =
+
+; Ultimate tensile strength in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
+UltimateTensileStrength =
+
+; Yield strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Yield_%28engineering%29
+YieldStrength =
+
+; Young's Modulus (or E-Module) in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
+YoungsModulus =
+
+; Description to be updated
+AmbientColor =
+
+; Description to be updated
+Color =
 
 ; Description to be updated
 DiffuseColor =
@@ -89,9 +101,6 @@ Finish =
 FireResistanceClass =
 
 ; Description to be updated
-FractureToughness =
-
-; Description to be updated
 FragmentShader =
 
 ; Description to be updated
@@ -102,9 +111,6 @@ SectionFillPattern =
 
 ; Description to be updated
 SectionLinewidth =
-
-; Description to be updated
-ShearModulus =
 
 ; Description to be updated
 Shininess =
@@ -134,9 +140,6 @@ ThermalExpansionCoefficient =
 Transparency =
 
 ; Description to be updated
-UltimateStrain =
-
-; Description to be updated
 UnitsPerQuantity =
 
 ; Description to be updated
@@ -150,9 +153,6 @@ ViewFillPattern =
 
 ; Description to be updated
 ViewLinewidth =
-
-; Yield strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Yield_%28engineering%29
-YieldStrength =
 
 ; Product URL, recommended are wikipedia links
 ProductURL = http://en.wikipedia.org/wiki/
