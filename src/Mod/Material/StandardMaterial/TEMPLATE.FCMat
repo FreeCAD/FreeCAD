@@ -53,16 +53,19 @@ StandardCode =
 ; Description to be updated
 AngleOfFriction =
 
-; Compressive strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Compressive_strength
+; Compressive strength in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Compressive_strength
 CompressiveStrength =
 
-; Density in [FreeCAD Density unit] https://en.wikipedia.org/wiki/Density
+; Density in [FreeCAD Density unit]
+; https://en.wikipedia.org/wiki/Density
 Density =
 
 ; Description to be updated
 FractureToughness =
 
-; Poisson's ratio [unitless], see https://en.wikipedia.org/wiki/Poisson%27s_ratio for the details
+; Poisson's ratio [unitless]
+; https://en.wikipedia.org/wiki/Poisson%27s_ratio
 PoissonRatio =
 
 ; Description to be updated
@@ -71,22 +74,27 @@ ShearModulus =
 ; Description to be updated
 UltimateStrain =
 
-; Ultimate tensile strength in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
+; Ultimate tensile strength in [FreeCAD Pressure unit]
+; http://en.wikipedia.org/wiki/Ultimate_tensile_strength
 UltimateTensileStrength =
 
-; Yield strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Yield_%28engineering%29
+; Yield strength in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Yield_%28engineering%29
 YieldStrength =
 
-; Young's Modulus (or E-Module) in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
+; Young's Modulus (or E-Module) in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Young%27s_modulus
 YoungsModulus =
 
 ; Description to be updated
 SpecificHeat =
 
-; Thermal conductivity in [FreCAD ThermalConductivity unit] https://en.wikipedia.org/wiki/Thermal_conductivity
+; Thermal conductivity in [FreCAD ThermalConductivity unit]
+; https://en.wikipedia.org/wiki/Thermal_conductivity
 ThermalConductivity =
 
-; Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit] https://en.wikipedia.org/wiki/Thermal_expansion
+; Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]
+; https://en.wikipedia.org/wiki/Thermal_expansion
 ThermalExpansionCoefficient =
 
 ; Description to be updated
@@ -159,7 +167,8 @@ ViewFillPattern =
 ViewLinewidth =
 
 ; Product URL, recommended are wikipedia links
-ProductURL = http://en.wikipedia.org/wiki/
+; https://en.wikipedia.org/wiki/
+ProductURL = 
 
 ; Specific price in currency / mass, a currency is not supported by FreeCAD unit system
 SpecificPrice =
