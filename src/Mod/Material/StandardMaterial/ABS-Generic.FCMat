@@ -7,11 +7,11 @@
 Name = ABS
 Description = This is a blend AcrylnitrilButadienStyrol (ABS) material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised ABS-blend cards.
 Father = Thermoplast
+SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=eb7a78f5948d481c9493a67f0d089646
 YoungsModulus = 2300 MPa
 UltimateTensileStrength = 38.8 MPa
 PoissonRatio = 0.37
 Density = 1060 kg/m^3
-SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=eb7a78f5948d481c9493a67f0d089646
 SpecificHeat = 2050 J/kg/K
 ThermalConductivity = 0.158 W/m/K
 ThermalExpansionCoefficient = 0.000093 m/m/K

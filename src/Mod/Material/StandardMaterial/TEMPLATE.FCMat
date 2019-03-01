@@ -10,6 +10,9 @@ Name =
 ; Example of localized name. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 NameDE =
 
+; Example of localized name. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+NamePL =
+
 ; More elaborate description of this material card:
 Description =
 
@@ -21,6 +24,27 @@ DescriptionPL =
 
 ; Father of the material, i.e. for PLA is Thermoplast, for Steel is Metal
 Father =
+
+; Description to be updated
+KindOfMaterial =
+
+; Description to be updated
+KindOfMaterialDE =
+
+; Description to be updated
+MaterialNumber =
+
+; Description to be updated
+Norm =
+
+; Description to be updated
+ReferenceSource =
+
+; Description to be updated
+SourceURL =
+
+; Description to be updated
+StandardCode =
 
 ; Young's Modulus (or E-Module) in [FreeCAD Pressure unit], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
 YoungsModulus =
@@ -71,22 +95,7 @@ FractureToughness =
 FragmentShader =
 
 ; Description to be updated
-KindOfMaterial =
-
-; Description to be updated
-KindOfMaterialDE =
-
-; Description to be updated
-MaterialNumber =
-
-; Description to be updated
 Model =
-
-; Description to be updated
-Norm =
-
-; Description to be updated
-ReferenceSource =
 
 ; Description to be updated
 SectionFillPattern =
@@ -104,16 +113,10 @@ Shininess =
 SoundTransmissionClass =
 
 ; Description to be updated
-SourceURL =
-
-; Description to be updated
 SpecificHeat =
 
 ; Description to be updated
 SpecularColor =
-
-; Description to be updated
-StandardCode =
 
 ; Description to be updated
 TexturePath =

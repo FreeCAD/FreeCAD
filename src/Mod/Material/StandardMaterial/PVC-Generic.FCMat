@@ -5,11 +5,11 @@
 
 [FCMat]
 Name = PVC
+SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=1f650966ec834bb8833dd4c6e3116079
 YoungsModulus = 2800 MPa
 UltimateTensileStrength = 50 MPa
 PoissonRatio = 0.38
 Density = 1380 kg/m^3
-SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=1f650966ec834bb8833dd4c6e3116079
 SpecificHeat = 1000 J/kg/K
 ThermalConductivity = 0.150 W/m/K
 ThermalExpansionCoefficient = 0.000075 m/m/K
