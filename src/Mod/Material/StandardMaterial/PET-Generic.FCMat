@@ -5,7 +5,6 @@
 
 [FCMat]
 Name = PET
-ProductURL = https://en.wikipedia.org/wiki/Polyethylene_terephthalate
 YoungsModulus = 3150 MPa
 UltimateTensileStrength = 38.8 MPa
 PoissonRatio = 0.36
@@ -17,3 +16,4 @@ SpecificHeat = 1140 J/kg/K
 ThermalConductivity = 0.181 W/m/K
 ThermalExpansionCoefficient = 0.000072 m/m/K
 YieldStrength = 62.8 MPa
+ProductURL = https://en.wikipedia.org/wiki/Polyethylene_terephthalate
