@@ -8,7 +8,7 @@
 ; find unit informations in src/App/FreeCADInit.py
 
 [FCMat]
-; General name, need to be the same as the file name
+; General name
 Name =
 
 ; German localized name
@@ -17,7 +17,7 @@ NameDE =
 ; Polish localized name
 NamePL =
 
-; More elaborate description of this material card:
+; A more elaborate description of the material
 Description =
 
 ; German localized description
@@ -50,7 +50,8 @@ SourceURL =
 ; Description to be updated
 StandardCode =
 
-; Description to be updated
+; Further information can be found at https://en.wikipedia.org/wiki/Mohr%E2%80%93Coulomb_theory
+; https://en.wikipedia.org/wiki/Friction#Angle_of_friction
 AngleOfFriction =
 
 ; Compressive strength in [FreeCAD Pressure unit]
@@ -62,31 +63,35 @@ CompressiveStrength =
 Density =
 
 ; Description to be updated
+; https://en.wikipedia.org/wiki/Fracture_toughness
 FractureToughness =
 
 ; Poisson's ratio [unitless]
 ; https://en.wikipedia.org/wiki/Poisson%27s_ratio
 PoissonRatio =
 
-; Description to be updated
+; Shear modulus in [FreeCAD Pressure unit]
+; https://en.wikipedia.org/wiki/Shear_modulus
 ShearModulus =
 
 ; Description to be updated
+; https://en.wikipedia.org/wiki/Deformation_(mechanics)
 UltimateStrain =
 
 ; Ultimate tensile strength in [FreeCAD Pressure unit]
-; http://en.wikipedia.org/wiki/Ultimate_tensile_strength
+; https://en.wikipedia.org/wiki/Ultimate_tensile_strength
 UltimateTensileStrength =
 
 ; Yield strength in [FreeCAD Pressure unit]
-; https://en.wikipedia.org/wiki/Yield_%28engineering%29
+; https://en.wikipedia.org/wiki/Yield_Strength
 YieldStrength =
 
-; Young's Modulus (or E-Module) in [FreeCAD Pressure unit]
+; Young's modulus (or E-Module) in [FreeCAD Pressure unit]
 ; https://en.wikipedia.org/wiki/Young%27s_modulus
 YoungsModulus =
 
 ; Description to be updated
+; https://en.wikipedia.org/wiki/Heat_capacity
 SpecificHeat =
 
 ; Thermal conductivity in [FreCAD ThermalConductivity unit]
@@ -94,7 +99,7 @@ SpecificHeat =
 ThermalConductivity =
 
 ; Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit]
-; https://en.wikipedia.org/wiki/Thermal_expansion
+; https://en.wikipedia.org/wiki/Volumetric_thermal_expansion_coefficient
 ThermalExpansionCoefficient =
 
 ; Description to be updated
@@ -167,11 +172,11 @@ ViewFillPattern =
 ViewLinewidth =
 
 ; Product URL, recommended are wikipedia links
-; https://en.wikipedia.org/wiki/
+; https://de.wikipedia.org/wiki/Hyperlink
 ProductURL = 
 
-; Specific price in currency / mass, a currency is not supported by FreeCAD unit system
+; Specific price in currency / mass. A currency is not supported by FreeCAD unit system. Will be empty in all FreeCAD cards. Means the user needs to put in himself.
 SpecificPrice =
 
-; Vendor of the material. Leave blank if not required
+; Vendor of the material
 Vendor =
