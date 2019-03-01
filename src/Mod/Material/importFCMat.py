@@ -203,8 +203,8 @@ def write(filename, dictionary):
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name even if empty
                         if sys.version_info.major >= 3:
-                            f.write(k + "=" + i + "\n")
+                            f.write(k + " = " + i + "\n")
                         else:
-                            f.write(k + "=" + i.encode('utf-8') + "\n")
+                            f.write(k + " = " + i.encode('utf-8') + "\n")
                 f.write("\n")
     f.close()
