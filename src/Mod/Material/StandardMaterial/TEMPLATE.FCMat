@@ -3,23 +3,27 @@
 ; information about the content of such cards you can find here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
+; localized Name, Description and KindOfMaterial uses 2 letter codes
+; defined in ISO-639-1, see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; find unit informations in src/App/FreeCADInit.py
+
 [FCMat]
 ; General name, need to be the same as the file name
 Name =
 
-; Example of localized name. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; German localized name
 NameDE =
 
-; Example of localized name. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; Polish localized name
 NamePL =
 
 ; More elaborate description of this material card:
 Description =
 
-; Example of localized description. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; German localized description
 DescriptionDE =
 
-; Example of localized description. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+; Polish localized description
 DescriptionPL =
 
 ; Father of the material, i.e. for PLA is Thermoplast, for Steel is Metal
@@ -28,7 +32,7 @@ Father =
 ; Description to be updated
 KindOfMaterial =
 
-; Description to be updated
+; Germand localized kind of material
 KindOfMaterialDE =
 
 ; Description to be updated
