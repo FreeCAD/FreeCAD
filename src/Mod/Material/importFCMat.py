@@ -138,7 +138,7 @@ def read(filename):
     return d
 
 
-def write(filename, dictionary):
+def write(filename, dictionary, write_group_section=True):
     "writes the given dictionary to the given file"
 
     # sort the data into sections
@@ -194,11 +194,16 @@ def write(filename, dictionary):
     f.write("; file produced by FreeCAD" + rev + "\n")
     f.write("\n")
     # write sections
+    # write standard FCMat section if write group section parameter is set to False
+    if write_group_section is False:
+        f.write("[FCMat]\n")
     for s in contents:
         if s["keyname"] != "Meta":
             # if the section has no contents, we don't write it
             if len(s) > 1:
-                f.write("[" + s["keyname"] + "]\n")
+                # only write group section if write group section parameter is set to True
+                if write_group_section is True:
+                    f.write("[" + s["keyname"] + "]\n")
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
                         # use only keys which are not empty and the name even if empty
@@ -206,5 +211,6 @@ def write(filename, dictionary):
                             f.write(k + " = " + i + "\n")
                         else:
                             f.write(k + " = " + i.encode('utf-8') + "\n")
-                f.write("\n")
+                if write_group_section is True:
+                    f.write("\n")
     f.close()
