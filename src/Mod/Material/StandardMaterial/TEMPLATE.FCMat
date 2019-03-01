@@ -77,6 +77,15 @@ YieldStrength =
 YoungsModulus =
 
 ; Description to be updated
+SpecificHeat =
+
+; Thermal conductivity https://en.wikipedia.org/wiki/Thermal_conductivity
+ThermalConductivity =
+
+; Thermal expansion coefficient (linear) in [1/K] https://en.wikipedia.org/wiki/Thermal_expansion
+ThermalExpansionCoefficient =
+
+; Description to be updated
 AmbientColor =
 
 ; Description to be updated
@@ -119,9 +128,6 @@ Shininess =
 SoundTransmissionClass =
 
 ; Description to be updated
-SpecificHeat =
-
-; Description to be updated
 SpecularColor =
 
 ; Description to be updated
@@ -129,12 +135,6 @@ TexturePath =
 
 ; Description to be updated
 TextureScaling =
-
-; Thermal conductivity https://en.wikipedia.org/wiki/Thermal_conductivity
-ThermalConductivity =
-
-; Thermal expansion coefficient (linear) in [1/K] https://en.wikipedia.org/wiki/Thermal_expansion
-ThermalExpansionCoefficient =
 
 ; Description to be updated
 Transparency =

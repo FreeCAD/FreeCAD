@@ -22,6 +22,9 @@ UltimateStrain
 UltimateTensileStrength
 YieldStrength
 YoungsModulus
+SpecificHeat
+ThermalConductivity
+ThermalExpansionCoefficient
 AmbientColor
 Color
 DiffuseColor
@@ -36,12 +39,9 @@ SectionFillPattern
 SectionLinewidth
 Shininess
 SoundTransmissionClass
-SpecificHeat
 SpecularColor
 TexturePath
 TextureScaling
-ThermalConductivity
-ThermalExpansionCoefficient
 Transparency
 UnitsPerQuantity
 VertexShader
