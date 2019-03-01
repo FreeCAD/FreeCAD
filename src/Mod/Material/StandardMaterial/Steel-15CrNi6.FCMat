@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = 15CrNi6
 Description = High-strength carbon steel
 DescriptionDE = höchste Beanspruchung, Achsen, Wellen, Ritzel, Nocken, Kegelräder
@@ -14,6 +14,8 @@ KindOfMaterial = Case-hardened steel
 KindOfMaterialDE = Einsatzstahl
 MaterialNumber = 1.5919
 Norm = EN 10084
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -21,4 +23,6 @@ UltimateStrain = 9
 UltimateTensileStrength = 1000 MPa
 YieldStrength = 680 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

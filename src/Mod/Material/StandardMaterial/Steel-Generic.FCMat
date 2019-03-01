@@ -4,14 +4,20 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Steel-Generic
 Description = This is a blend Steel material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised steel cards.
 Father = Metal
+
+[Mechanical]
 Density = 7900 kg/m^3
 PoissonRatio = 0.3
 YoungsModulus = 200000 MPa
+
+[Thermal]
 SpecificHeat = 500 J/kg/K
 ThermalConductivity = 50 W/m/K
 ThermalExpansionCoefficient = 0.000012 m/m/K
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Steel

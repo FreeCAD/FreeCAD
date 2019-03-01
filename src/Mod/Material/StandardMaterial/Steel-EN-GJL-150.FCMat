@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJL-150
 NameDE = GG-15
 DescriptionDE = für dünnwandige Teile wie Gehäuse, Ständer
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.6015
 Norm = EN 1561
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 37000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 0
 UltimateTensileStrength = 150 MPa
 YieldStrength = 98 MPa
 YoungsModulus = 95000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K

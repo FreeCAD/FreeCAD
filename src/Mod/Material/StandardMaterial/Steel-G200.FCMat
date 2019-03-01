@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = G200
 NameDE = GS 38
 DescriptionDE = mittlere dynamische und stoßartige Belastung, gut schweißbar
@@ -13,6 +13,8 @@ KindOfMaterial = Cast steel
 KindOfMaterialDE = Stahlguss
 MaterialNumber = 1.042
 Norm = DIN 1681
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 25
 UltimateTensileStrength = 380 MPa
 YieldStrength = 200 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

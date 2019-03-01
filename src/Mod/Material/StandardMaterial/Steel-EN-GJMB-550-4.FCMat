@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJMB-550-4
 NameDE = GTS 55-04
 DescriptionDE = Randschichthärtung, Kurbelwellen, Bremsträger, Federböcke, Kipphebel
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.8155
 Norm = EN 1562
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 67000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 2
 UltimateTensileStrength = 550 MPa
 YieldStrength = 340 MPa
 YoungsModulus = 175000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K

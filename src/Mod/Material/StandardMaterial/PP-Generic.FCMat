@@ -4,16 +4,22 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Polypropylene
 SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=a882a1c603374e278d062f106dfda95b
+
+[Mechanical]
 CompressiveStrength = 10 MPa
 Density = 916 kg/m^3
 PoissonRatio = 0.44
 UltimateTensileStrength = 79.7 MPa
 YieldStrength = 32.8 MPa
 YoungsModulus = 1470 MPa
+
+[Thermal]
 SpecificHeat = 1920 J/kg/K
 ThermalConductivity = 0.249 W/m/K
 ThermalExpansionCoefficient = 0.000123 m/m/K
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Polypropylene

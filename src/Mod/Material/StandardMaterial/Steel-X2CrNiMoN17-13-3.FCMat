@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = X2CrNiMoN17-13-3
 NameDE = X2CrNiMoN 17 13 3
 DescriptionDE = schlecht spanbar, gut schweißbar, gut kaltumformbar, Achsen, Wellen, Wärmetauscher
@@ -13,6 +13,8 @@ KindOfMaterial = Stainless steel
 KindOfMaterialDE = Niro
 MaterialNumber = 1.4429
 Norm = EN 10088
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 35
 UltimateTensileStrength = 580 MPa
 YieldStrength = 295 MPa
 YoungsModulus = 200000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

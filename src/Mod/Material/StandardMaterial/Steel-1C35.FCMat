@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = 1C35
 NameDE = C35
 Description = Non-alloy quality steel
@@ -14,6 +14,8 @@ KindOfMaterial = Heat-treatable steel
 KindOfMaterialDE = Vergütungsstahl
 MaterialNumber = 1.0501
 Norm = EN 10083-1
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -21,4 +23,6 @@ UltimateStrain = 21
 UltimateTensileStrength = 480 MPa
 YieldStrength = 300 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

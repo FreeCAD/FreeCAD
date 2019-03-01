@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJMW-350-4
 NameDE = GTW 35-04
 DescriptionDE = dünnwandige Teile, Fittings, Beschläge, Förderketten
@@ -13,10 +13,14 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.8035
 Norm = EN 1562
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 67000 MPa
 UltimateStrain = 4
 UltimateTensileStrength = 350 MPa
 YoungsModulus = 175000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K

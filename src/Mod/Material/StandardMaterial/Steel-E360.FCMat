@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = E360
 NameDE = St70-2
 Father = Metal
@@ -12,6 +12,8 @@ KindOfMaterial = Mild steel
 KindOfMaterialDE = Baustahl
 MaterialNumber = 1.007
 Norm = EN 10025
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -19,4 +21,6 @@ UltimateStrain = 11
 UltimateTensileStrength = 690 MPa
 YieldStrength = 360 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

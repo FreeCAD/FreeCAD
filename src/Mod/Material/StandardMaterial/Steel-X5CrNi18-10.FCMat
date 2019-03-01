@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = X5CrNi18-10
 NameDE = X5CrNi 18 9
 DescriptionDE = schlecht spanbar, gut schweißbar, gut kaltumformbar, Fahrzeugbau, Lebensmitteltechnik
@@ -13,6 +13,8 @@ KindOfMaterial = Stainless steel
 KindOfMaterialDE = Niro
 MaterialNumber = 1.4301
 Norm = EN 10088
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 40
 UltimateTensileStrength = 520 MPa
 YieldStrength = 210 MPa
 YoungsModulus = 200000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

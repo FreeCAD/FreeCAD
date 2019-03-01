@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = G20Mn5
 NameDE = GS-20Mn5v
 DescriptionDE = Gehäuse, Zahnräder, Bremsscheiben
@@ -13,6 +13,8 @@ KindOfMaterial = Cast steel
 KindOfMaterialDE = Stahlguss
 MaterialNumber = 1.112
 Norm = DIN 1681
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 0
 UltimateTensileStrength = 500 MPa
 YieldStrength = 360 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

@@ -4,14 +4,20 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Glass
 Description = Generic soda-lime glass
 DescriptionDE = Normalglas
 DescriptionPL = Szkło sodowe
 Father = Glass
+
+[Mechanical]
 Density = 2520 kg/m^3
 PoissonRatio = 0.22
 YoungsModulus = 72000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000009 m/m/K
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Soda-lime_glass

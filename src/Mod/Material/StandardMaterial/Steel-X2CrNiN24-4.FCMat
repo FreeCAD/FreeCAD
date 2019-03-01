@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = X2CrNiN24-4
 NameDE = -
 Father = Metal
@@ -12,6 +12,8 @@ KindOfMaterial = Stainless steel
 KindOfMaterialDE = Niro
 MaterialNumber = 1.4362
 Norm = EN 10088
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -19,4 +21,6 @@ UltimateStrain = 25
 UltimateTensileStrength = 600 MPa
 YieldStrength = 400 MPa
 YoungsModulus = 200000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

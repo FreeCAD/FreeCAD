@@ -4,11 +4,15 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Wood
 Description = A standard construction wood
 Father = Aggregate
+
+[Mechanical]
 Density = 700 kg/m^3
 PoissonRatio = 0.05
 YoungsModulus = 12000 MPa
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Wood

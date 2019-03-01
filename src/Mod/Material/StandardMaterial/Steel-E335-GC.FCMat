@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = E335 GC
 NameDE = St60-2K
 Father = Metal
@@ -12,6 +12,8 @@ KindOfMaterial = Mild steel
 KindOfMaterialDE = Baustahl
 MaterialNumber = 1.0543
 Norm = EN 10025
+
+[Mechanical]
 Density = 7800 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 81000 MPa
@@ -19,4 +21,6 @@ UltimateStrain = 0
 UltimateTensileStrength = 690 MPa
 YieldStrength = 490 MPa
 YoungsModulus = 210000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.000011 m/m/K

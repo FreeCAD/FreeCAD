@@ -4,12 +4,14 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = Acrylic Glass
 Description = Poly(methyl methacrylate) (PMMA, acrylic, acrylic glass, trade names Plexiglas, Acrylite, Lucite, Perspex) a transparent thermoplastic often used in sheet form as a lightweight or shatter-resistant alternative to glass.
 DescriptionPL = Szkło akrylowe (szkło organiczne; inaczej pleksi, pleksiglas, metapleks) – przezroczyste tworzywo sztuczne, którego głównym składnikiem jest polimer – poli(metakrylan metylu) (PMMA).
 Father = of the material, i.e. for PLA is Thermoplast, for Steel is Metal Thermoplast
 SourceURL = http://www.matweb.com/search/DataSheet.aspx?MatGUID=632572aeef2a4224b5ac8fbd4f1b6f77
+
+[Mechanical]
 CompressiveStrength = 103 MPa
 Density = 1160 kg/m^3
 PoissonRatio = 0.38
@@ -17,7 +19,11 @@ ShearModulus = 1.08 GPa
 UltimateTensileStrength = 57.7 MPa
 YieldStrength = 73.7 MPa
 YoungsModulus = 2550 MPa
+
+[Thermal]
 SpecificHeat = 1480 J/kg/K
 ThermalConductivity = 0.193 W/m/K
 ThermalExpansionCoefficient = 0.000075 m/m/K
+
+[Cost]
 ProductURL = https://en.wikipedia.org/wiki/Poly(methyl_methacrylate)

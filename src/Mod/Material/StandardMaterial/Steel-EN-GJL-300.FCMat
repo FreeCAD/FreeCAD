@@ -4,7 +4,7 @@
 ; https://www.freecadweb.org/wiki/Material
 ; file created by FreeCAD0.18.16022 (Git)
 
-[FCMat]
+[General]
 Name = EN-GJL-300
 NameDE = GG-30
 DescriptionDE = hochbeanspruchbar, für Motorständer, Lagerschalen
@@ -13,6 +13,8 @@ KindOfMaterial = Cast iron
 KindOfMaterialDE = Guss
 MaterialNumber = 0.603
 Norm = EN 1561
+
+[Mechanical]
 Density = 7200 kg/m^3
 PoissonRatio = 0.3
 ShearModulus = 48000 MPa
@@ -20,4 +22,6 @@ UltimateStrain = 0
 UltimateTensileStrength = 300 MPa
 YieldStrength = 195 MPa
 YoungsModulus = 125000 MPa
+
+[Thermal]
 ThermalExpansionCoefficient = 0.00001 m/m/K
