@@ -139,13 +139,16 @@ def read_cards_from_path(cards_path):
     return mat_cards
 
 
-def write_cards_to_path(cards_path, cards_data):
+def write_cards_to_path(cards_path, cards_data, write_group_section=True):
     from importFCMat import write
     from os.path import join
     for card_data in cards_data:
         card_path = join(cards_path, (card_data['CardName'] + '.FCMat'))
         print(card_path)
-        write(card_path, card_data)
+        if write_group_section is True:
+            write(card_path, card_data, True)
+        else:
+            write(card_path, card_data, False)
 
 
 if __name__ == '__main__':
