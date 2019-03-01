@@ -196,8 +196,8 @@ def write(filename, dictionary):
     # write sections
     for s in contents:
         if s["keyname"] != "Meta":
+            # if the section has no contents, we don't write it
             if len(s) > 1:
-                # if the section has no contents, we don't write it
                 f.write("[" + s["keyname"] + "]\n")
                 for k, i in s.items():
                     if (k != "keyname" and i != '') or k == "Name":
