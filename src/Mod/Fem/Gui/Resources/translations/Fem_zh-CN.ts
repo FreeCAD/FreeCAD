@@ -321,7 +321,7 @@
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="44"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>为实体创建限元材料</translation>
     </message>
     <message>
       <location filename="_CommandFemMaterialSolid.py" line="42"/>
@@ -370,7 +370,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="538"/>
       <source>Display FEM mesh info</source>
-      <translation type="unfinished">Display FEM mesh info</translation>
+      <translation>显示有限元网格信息</translation>
     </message>
   </context>
   <context>
@@ -535,7 +535,7 @@
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="249"/>
       <source>Geometry reference selector for a </source>
-      <translation type="unfinished">Geometry reference selector for a </translation>
+      <translation>的几何体参考选择器</translation>
     </message>
     <message>
       <location filename="../../../femguiobjects/FemSelectionWidgets.py" line="251"/>
@@ -1231,21 +1231,6 @@
     </message>
   </context>
   <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>有限元</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>创建有限元网格</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>从形体创建有限元网格</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1405,29 +1390,6 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>用户目录</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>假设</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>四边形</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>最大长度</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>局部长度</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>最大元素面积</translation>
     </message>
   </context>
   <context>
@@ -1705,18 +1667,6 @@
       <source>Only faces and edges can be picked</source>
       <translation>仅可以选取面和边</translation>
     </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation type="unfinished">Point load [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation type="unfinished">Line load [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation type="unfinished">Area load [N/mm²]</translation>
-    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1923,14 +1873,6 @@
       <translation>时间：</translation>
     </message>
     <message>
-      <source>Write Calculix Input File</source>
-      <translation type="unfinished">Write Calculix Input File</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation type="unfinished">Edit Calculix Input File</translation>
-    </message>
-    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>机械材料</translation>
@@ -2000,14 +1942,6 @@
       <source>MatWeb database...</source>
       <translation>MatWeb数据库...</translation>
     </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation type="unfinished">Pa</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2069,26 +2003,6 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>编辑约束</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>组合浏览器</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation type="unfinished">combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation type="unfinished">qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation type="unfinished">ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation type="unfinished">ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2206,14 +2120,6 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>变化最大值：</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>颜色</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
     </message>
   </context>
   <context>

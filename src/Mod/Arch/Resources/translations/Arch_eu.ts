@@ -124,7 +124,7 @@
       <translation>Solairu honetan kalkulatutako zoru-azalera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="437"/>
+      <location filename="../../ArchSectionPlane.py" line="438"/>
       <source>The placement of this object</source>
       <translation>Objektu honen kokapena</translation>
     </message>
@@ -214,12 +214,12 @@
       <translation>Objektu honen estrusio-norabide normala (mantendu (0,0,0) normal automatikorako)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="721"/>
+      <location filename="../../ArchSectionPlane.py" line="722"/>
       <source>The linked object</source>
       <translation>Estekatutako objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="731"/>
+      <location filename="../../ArchSectionPlane.py" line="732"/>
       <source>The line width of the rendered objects</source>
       <translation>Errendatutako objektuen lerro-luzera</translation>
     </message>
@@ -624,52 +624,52 @@
       <translation>Emaitzak inprimatzeko erabiliko den kalkulu-orria</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="443"/>
+      <location filename="../../ArchSectionPlane.py" line="444"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Gezurra bada, solidoak ez direnak ere moztuko dira, eta emaitzak okerrak izan daitezke.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="507"/>
+      <location filename="../../ArchSectionPlane.py" line="508"/>
       <source>The display length of this section plane</source>
       <translation>Sekzio-plano honen bistaratze-luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="513"/>
+      <location filename="../../ArchSectionPlane.py" line="514"/>
       <source>The display height of this section plane</source>
       <translation>Sekzio-plano honen bistaratze-altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="519"/>
+      <location filename="../../ArchSectionPlane.py" line="520"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Sekzio-plano honen gezien tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="533"/>
+      <location filename="../../ArchSectionPlane.py" line="534"/>
       <source>Show the cut in the 3D view</source>
       <translation>Erakutsi ebaketa 3D bistan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="723"/>
+      <location filename="../../ArchSectionPlane.py" line="724"/>
       <source>The rendering mode to use</source>
       <translation>Erabiliko den errendatze-modua</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="727"/>
+      <location filename="../../ArchSectionPlane.py" line="728"/>
       <source>If cut geometry is shown or not</source>
       <translation>Ebaketa-geometria erakutsiko den ala ez</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="729"/>
+      <location filename="../../ArchSectionPlane.py" line="730"/>
       <source>If cut geometry is filled or not</source>
       <translation>Ebaketa-geometria beteta dagoen ala ez</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="734"/>
+      <location filename="../../ArchSectionPlane.py" line="735"/>
       <source>The size of the texts inside this object</source>
       <translation>Objektu honen barruko testuen tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="737"/>
+      <location filename="../../ArchSectionPlane.py" line="738"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Markatuta badago, iturburu-objektuak erakutsi egingo dira, 3D ereduan ikusgarriak izan zein ez</translation>
     </message>
@@ -824,52 +824,52 @@
       <translation>Espazio honetako aire egokituaren mota</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="481"/>
+      <location filename="../../ArchSpace.py" line="482"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>Erakutsiko den testua. Erabili $area, $label, $tag, $floor, $walls, $ceiling bakoitzari dagokion datua txertatzeko</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="484"/>
+      <location filename="../../ArchSpace.py" line="485"/>
       <source>The name of the font</source>
       <translation>Letra-tipoaren izena</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="487"/>
+      <location filename="../../ArchSpace.py" line="488"/>
       <source>The color of the area text</source>
       <translation>Area-testuaren kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="490"/>
+      <location filename="../../ArchSpace.py" line="491"/>
       <source>The size of the text font</source>
       <translation>Testuaren letra-tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="493"/>
+      <location filename="../../ArchSpace.py" line="494"/>
       <source>The size of the first line of text</source>
       <translation>Testuaren lehen lerroaren tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="496"/>
+      <location filename="../../ArchSpace.py" line="497"/>
       <source>The space between the lines of text</source>
       <translation>Testu-lerroen arteko tartea</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="499"/>
+      <location filename="../../ArchSpace.py" line="500"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Testuaren posizioa. Utzi (0,0,0) posizio automatikorako</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="501"/>
+      <location filename="../../ArchSpace.py" line="502"/>
       <source>The justification of the text</source>
       <translation>Testuaren justifikazioa</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="504"/>
+      <location filename="../../ArchSpace.py" line="505"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Testu kalkulatuetan erabiliko den dezimal kopurua</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="507"/>
+      <location filename="../../ArchSpace.py" line="508"/>
       <source>Show the unit suffix</source>
       <translation>Erakutsi unitate-atzizkia</translation>
     </message>
@@ -1099,17 +1099,17 @@
       <translation>Geruza-lodieren zerrenda</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="739"/>
+      <location filename="../../ArchSectionPlane.py" line="740"/>
       <source>The line color of the projected objects</source>
       <translation>Proiektatutako objektuen lerro-kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="741"/>
+      <location filename="../../ArchSectionPlane.py" line="742"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Mozketa-aurpegien kolorea (aktibatuta badago)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="1056"/>
+      <location filename="../../ArchStairs.py" line="1062"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>Zankabeen gainjartzea mailagainen behealdearen gainetik</translation>
     </message>
@@ -1279,7 +1279,7 @@
       <translation>Maila honetako (0,0,0) puntuaren maila</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="439"/>
+      <location filename="../../ArchSectionPlane.py" line="440"/>
       <source>The shape of this object</source>
       <translation>Objektu honen forma</translation>
     </message>
@@ -1289,7 +1289,7 @@
       <translation>IFC propietateen biltegiak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="525"/>
+      <location filename="../../ArchSectionPlane.py" line="526"/>
       <source>The line width of this object</source>
       <translation>Objektu honen lerro-zabalera</translation>
     </message>
@@ -1434,29 +1434,29 @@
       <translation>Egia bada, estekatutako fitxategiarekin koloreak eguneratuta mantenduko dira</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="441"/>
+      <location filename="../../ArchSectionPlane.py" line="442"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Sekzio-plano honek kontuan hartu behar diren objektuak. Hutsik badago, dokumentu osoa hartuko da.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="522"/>
+      <location filename="../../ArchSectionPlane.py" line="523"/>
       <source>The transparency of this object</source>
       <translation>Objektu honen gardentasuna</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="530"/>
+      <location filename="../../ArchSectionPlane.py" line="531"/>
       <source>The color of this object</source>
       <translation>Objektu honen kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="535"/>
+      <location filename="../../ArchSectionPlane.py" line="536"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Mozte-planoaren eta uneko bistaren moztearen arteko distantzia (balio horrek oso txikia izan behar du, baina ez zero)</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="332"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
-      <translation type="unfinished">The street and house number of this site, with postal box or apartment number if needed</translation>
+      <translation>Gune honen kalearen eta atariaren zenbakia, posta-kodea edo etxebizitza zenbakia barne, beharrezkoa bada</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="338"/>
@@ -1481,7 +1481,7 @@
     <message>
       <location filename="../../ArchStairs.py" line="360"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
-      <translation type="unfinished">The width of a Landing (Second edge and after - First edge follows Width property)</translation>
+      <translation>Eskailera-buruaren zabalera (bigarren ertza eta ondorengoak - lehen ertzak zabaleraren propietatea jarraitzen du)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="376"/>
@@ -1491,17 +1491,17 @@
     <message>
       <location filename="../../ArchStairs.py" line="380"/>
       <source>The depth of the landing of these stairs</source>
-      <translation type="unfinished">The depth of the landing of these stairs</translation>
+      <translation>Eskailera honen buruaren sakonera</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="383"/>
       <source>The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</source>
-      <translation type="unfinished">The depth of the treads of these stairs - Enforced regardless of Length or edge's Length</translation>
+      <translation>Eskailera hauen mailagainen sakonera - Behartua, altuera edo ertzaren altuera kontuan hartu gabe</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="385"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
-      <translation type="unfinished">The height of the risers of these stairs - Enforced regardless of Height or edge's Height</translation>
+      <translation>Eskailera hauen kontramailen altuera - Behartua, altuera edo ertzaren altuera kontuan hartu gabe</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="388"/>
@@ -1511,17 +1511,17 @@
     <message>
       <location filename="../../ArchStairs.py" line="395"/>
       <source>The 'absolute' top level of a flight of stairs leads to </source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to </translation>
+      <translation>Eskaileren hegaldi baten goi maila 'absolutuak' hona darama: </translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="401"/>
       <source>The 'left outline' of stairs </source>
-      <translation type="unfinished">The 'left outline' of stairs </translation>
+      <translation>Eskaileren 'ezkerreko eskema' </translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="415"/>
       <source>The 'left outline' of all segments of stairs </source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs </translation>
+      <translation>Eskaileraren segmentu guztien 'ezkerreko eskema' </translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="527"/>
@@ -1692,22 +1692,22 @@
       <translation>inongo solidoren zati ez diren aurpegiak dauzka</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1308"/>
+      <location filename="../../ArchCommands.py" line="1312"/>
       <source>Grouping</source>
       <translation>Elkartu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchCommands.py" line="1344"/>
       <source>Ungrouping</source>
       <translation>Banandu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1371"/>
+      <location filename="../../ArchCommands.py" line="1375"/>
       <source>Split Mesh</source>
       <translation>Zatitu sarea</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1411"/>
+      <location filename="../../ArchCommands.py" line="1415"/>
       <source>Mesh to Shape</source>
       <translation>Sarea formara</translation>
     </message>
@@ -1757,7 +1757,7 @@
       <translation>Honen ikuspegia</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="416"/>
+      <location filename="../../ArchSectionPlane.py" line="417"/>
       <source>Create Section Plane</source>
       <translation>Sortu ebakidura-planoa</translation>
     </message>
@@ -1847,17 +1847,17 @@
       <translation>Errore: Karaktere kodeketa ezin da zehaztu</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="282"/>
+      <location filename="../../importDAE.py" line="291"/>
       <source>file %s successfully created.</source>
       <translation>%s fitxategia zuzen sortua.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1304"/>
+      <location filename="../../ArchCommands.py" line="1308"/>
       <source>Add space boundary</source>
       <translation>Gehitu espazio-muga</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1340"/>
       <source>Remove space boundary</source>
       <translation>Kendu espazio-muga</translation>
     </message>
@@ -2112,7 +2112,7 @@ Distantzia = 0 bada, orduan distantzia kalkulatu egiten da eta, beraz, altuera p
       <translation>Altuera (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1583"/>
+      <location filename="../../ArchCommands.py" line="1587"/>
       <source>Create Component</source>
       <translation>Sortu osagaia</translation>
     </message>
@@ -2127,17 +2127,17 @@ Distantzia = 0 bada, orduan distantzia kalkulatu egiten da eta, beraz, altuera p
       <translation>Pareten oinarrizko objektuak piezak edo sareak soilik izan daitezke</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="694"/>
+      <location filename="../../ArchSpace.py" line="695"/>
       <source>Set text position</source>
       <translation>Ezarri testuaren posizioa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1603"/>
+      <location filename="../../ArchCommands.py" line="1607"/>
       <source>Category</source>
       <translation>Kategoria</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1604"/>
+      <location filename="../../ArchCommands.py" line="1608"/>
       <source>Key</source>
       <translation>Gakoa</translation>
     </message>
@@ -2147,12 +2147,12 @@ Distantzia = 0 bada, orduan distantzia kalkulatu egiten da eta, beraz, altuera p
       <translation>Balioa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1607"/>
+      <location filename="../../ArchCommands.py" line="1611"/>
       <source>Unit</source>
       <translation>Unitatea</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1632"/>
+      <location filename="../../ArchCommands.py" line="1636"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Sortu IFC propietateen kalkulu-orria</translation>
     </message>
@@ -2566,7 +2566,7 @@ Gunearen sorrera utzi egin da.</translation>
       <translation>Objektu honek ez dauka aurpegirik</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="698"/>
+      <location filename="../../ArchSpace.py" line="699"/>
       <source>Space boundaries</source>
       <translation>Espazio-mugak</translation>
     </message>
@@ -2694,12 +2694,12 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Baliogabeko mozte-planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1492"/>
+      <location filename="../../ArchCommands.py" line="1496"/>
       <source>All good! No problems found</source>
       <translation>Ederto! Ez dugu arazorik aurkitu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1614"/>
+      <location filename="../../ArchCommands.py" line="1618"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Objektuak ez du IfcProperties atributurik. Utzi kalkulu-orria sortzeari honako objekturako:</translation>
     </message>
@@ -2764,10 +2764,10 @@ Eraikinaren sorrera utzi egin da.</translation>
 Floor object is not allowed to accept Site or Building objects.
 Site, Building, and Floor objects will be removed from the selection.
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
-Floor object is not allowed to accept Site or Building objects.
-Site, Building, and Floor objects will be removed from the selection.
-You can change that in the preferences.</translation>
+      <translation>Edozer jar dezakezu solairu-objektu batean, honako objektuak salbu: guneak, eraikinak eta solairuak.
+Solairu-objektuak ez du onartzen gune- edo eraikin-objekturik.
+Gune-, eraikin- eta solairu-objektuak hautapenetik kendu egingo dira.
+Portaera hori aldatu egin daiteke hobespenetan.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="107"/>
@@ -2882,42 +2882,42 @@ Solairuaren sorrera utzi egin da.</translation>
       <translation>Programazio honek ez du kalkulu-orririk erantsita</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="965"/>
+      <location filename="../../ArchSectionPlane.py" line="966"/>
       <source>Section plane settings</source>
       <translation>Sekzio-planoaren ezarpenak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="969"/>
       <source>Objects seen by this section plane:</source>
       <translation>Sekzio-plano honek ikusten dituen objektuak:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="969"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <source>Section plane placement:</source>
       <translation>Sekzio-planoaren kokapena:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="970"/>
+      <location filename="../../ArchSectionPlane.py" line="971"/>
       <source>Rotate X</source>
       <translation>Biratu X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="971"/>
+      <location filename="../../ArchSectionPlane.py" line="972"/>
       <source>Rotate Y</source>
       <translation>Biratu Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="973"/>
       <source>Rotate Z</source>
       <translation>Biratu Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="973"/>
+      <location filename="../../ArchSectionPlane.py" line="974"/>
       <source>Resize</source>
       <translation>Aldatu tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="974"/>
+      <location filename="../../ArchSectionPlane.py" line="975"/>
       <source>Center</source>
       <translation>Erdia</translation>
     </message>
@@ -3000,15 +3000,15 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../../ArchWindow.py" line="1924"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
+      <translation>Hau markatuta badago, leiho honen markoaren balio lehenetsia hemen sartutako balioari gehituko zaio</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1926"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
+      <translation>Hau markatuta badago, leiho honen desplazamenduaren balio lehenetsia hemen sartutako balioari gehituko zaio</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="52"/>
+      <location filename="../../importDAE.py" line="58"/>
       <source>pycollada not found, collada support is disabled.</source>
       <translation>Ez da pycollada aurkitu, collada euskarria desgaitu da.</translation>
     </message>
@@ -3048,17 +3048,17 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
       <translation>Errorea: zure IfcOpenShell bertsioa zaharregia da</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="215"/>
+      <location filename="../../importOBJ.py" line="222"/>
       <source>Successfully written</source>
       <translation>Ongi idatzi da</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="71"/>
+      <location filename="../../importOBJ.py" line="78"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>Kurbak dituen forma bat aurkitu da, triangelukatzen</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="293"/>
+      <location filename="../../importOBJ.py" line="300"/>
       <source>Successfully imported</source>
       <translation>Ongi inportatu da</translation>
     </message>
@@ -3158,7 +3158,7 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="180"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
-      <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
+      <translation>Nabigatzailearen elkarrizketa-koadro bat irekitzen du BIM estandar bateko klase bat aukeratzeko</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="244"/>
@@ -3182,12 +3182,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1295"/>
+      <location filename="../../ArchCommands.py" line="1299"/>
       <source>Add component</source>
       <translation>Gehitu osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1296"/>
+      <location filename="../../ArchCommands.py" line="1300"/>
       <source>Adds the selected components to the active object</source>
       <translation>Hautatutako osagaiak objektu aktiboari gehitzen dizkio</translation>
     </message>
@@ -3259,23 +3259,23 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="287"/>
       <source>Creates a BuildingPart object including selected objects</source>
-      <translation type="unfinished">Creates a BuildingPart object including selected objects</translation>
+      <translation>Eraikin-zatia den objektu bat sortzen du hautatutako objektuak barne hartuz</translation>
     </message>
   </context>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1483"/>
+      <location filename="../../ArchCommands.py" line="1487"/>
       <source>Check</source>
       <translation>Egiaztatu</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1484"/>
+      <location filename="../../ArchCommands.py" line="1488"/>
       <source>Checks the selected objects for problems</source>
       <translation>Hautatutako objektuak aztertzen ditu arazoak dituzten aurkitzeko</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1505"/>
+      <location filename="../../ArchCommands.py" line="1509"/>
       <source>Explore the contents of an IFC file</source>
       <translation>Arakatu IFC fitxategi baten edukiak</translation>
     </message>
@@ -3283,12 +3283,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1573"/>
+      <location filename="../../ArchCommands.py" line="1577"/>
       <source>Clone component</source>
       <translation>Klonatu osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1575"/>
+      <location filename="../../ArchCommands.py" line="1579"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Objektu bat klonatzen du arkitektura-osagai definitu gabea sortzeko</translation>
     </message>
@@ -3296,12 +3296,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1466"/>
+      <location filename="../../ArchCommands.py" line="1470"/>
       <source>Close holes</source>
       <translation>Itxi zuloak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1467"/>
+      <location filename="../../ArchCommands.py" line="1471"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Forma irekietako zuloak ixten ditu eta haiek solido bihurtzen ditu</translation>
     </message>
@@ -3309,12 +3309,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1548"/>
+      <location filename="../../ArchCommands.py" line="1552"/>
       <source>Component</source>
       <translation>Osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1550"/>
+      <location filename="../../ArchCommands.py" line="1554"/>
       <source>Creates an undefined architectural component</source>
       <translation>Definitu gabeko arkitektura-osagai bat sortzen du</translation>
     </message>
@@ -3437,7 +3437,7 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1504"/>
+      <location filename="../../ArchCommands.py" line="1508"/>
       <source>Ifc Explorer</source>
       <translation>Ifc exploratzailea</translation>
     </message>
@@ -3445,12 +3445,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1623"/>
+      <location filename="../../ArchCommands.py" line="1627"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Sortu IFC kalkulu-orria...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1625"/>
+      <location filename="../../ArchCommands.py" line="1629"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Kalkulu-orri bat sortzen du objektu baten IFC propietateak gordetzeko.</translation>
     </message>
@@ -3492,12 +3492,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1387"/>
+      <location filename="../../ArchCommands.py" line="1391"/>
       <source>Mesh to Shape</source>
       <translation>Sarea formara</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1388"/>
+      <location filename="../../ArchCommands.py" line="1392"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Hautatutako sareak piezen forma-objektu bihurtzen ditu</translation>
     </message>
@@ -3638,12 +3638,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1327"/>
+      <location filename="../../ArchCommands.py" line="1331"/>
       <source>Remove component</source>
       <translation>Kendu osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1328"/>
+      <location filename="../../ArchCommands.py" line="1332"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Kendu hautatutako osagaiak haien gurasoetatik, edo sortu zulo bat osagai batean</translation>
     </message>
@@ -3651,12 +3651,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1451"/>
+      <location filename="../../ArchCommands.py" line="1455"/>
       <source>Remove Shape from Arch</source>
       <translation>Kendu forma arkitekturatik</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1452"/>
+      <location filename="../../ArchCommands.py" line="1456"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Forma kubikoak kentzen ditu arkitektura-osagaietatik</translation>
     </message>
@@ -3690,12 +3690,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="400"/>
+      <location filename="../../ArchSectionPlane.py" line="401"/>
       <source>Section Plane</source>
       <translation>Sekzio-planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="401"/>
+      <location filename="../../ArchSectionPlane.py" line="402"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Sekzio-plano bat sortzen du, hautatutako objektuak barne hartuz</translation>
     </message>
@@ -3703,12 +3703,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1422"/>
+      <location filename="../../ArchCommands.py" line="1426"/>
       <source>Select non-manifold meshes</source>
       <translation>Hautatu anizkoitzak ez diren sareak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1423"/>
+      <location filename="../../ArchCommands.py" line="1427"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Hautatu anizkoitzak ez diren sare guztiak, dokumentuan edo hautatutako taldeetan</translation>
     </message>
@@ -3747,12 +3747,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1362"/>
+      <location filename="../../ArchCommands.py" line="1366"/>
       <source>Split Mesh</source>
       <translation>Zatitu sarea</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1363"/>
+      <location filename="../../ArchCommands.py" line="1367"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Hautatutako sareak osagai independenteetan zatitzen ditu</translation>
     </message>
@@ -3781,12 +3781,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1518"/>
+      <location filename="../../ArchCommands.py" line="1522"/>
       <source>Survey</source>
       <translation>Inkesta</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1519"/>
+      <location filename="../../ArchCommands.py" line="1523"/>
       <source>Starts survey</source>
       <translation>Inkesta abiarazten du</translation>
     </message>
@@ -3794,12 +3794,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1533"/>
+      <location filename="../../ArchCommands.py" line="1537"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Txandakatu IFC Brep bandera</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1534"/>
+      <location filename="../../ArchCommands.py" line="1538"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Behartu objektu bat Brep gisa, edo ez, esportatua izan dadin</translation>
     </message>
@@ -3807,12 +3807,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1649"/>
+      <location filename="../../ArchCommands.py" line="1653"/>
       <source>Toggle subcomponents</source>
       <translation>Txandakatu azpiosagaiak</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1650"/>
+      <location filename="../../ArchCommands.py" line="1654"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Objektu honen azpiosagaiak erakusten edo ezkutatzen ditu</translation>
     </message>
@@ -4098,12 +4098,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="76"/>
       <source>Force exporting geometry as BREP</source>
-      <translation type="unfinished">Force exporting geometry as BREP</translation>
+      <translation>Behartu geometria BREP gisa esportatu dadin</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="83"/>
       <source>Force export full FreeCAD parametric data</source>
-      <translation type="unfinished">Force export full FreeCAD parametric data</translation>
+      <translation>Behartu FreeCADen datu erabat parametrikoen esportazioa</translation>
     </message>
   </context>
   <context>
@@ -4977,7 +4977,7 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="244"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation>Elkarren alboan dauden 2 aurpegi planarrak diren egiaztatzean erabiliko den tolerantzia-balioa</translation>
+      <translation>Elkarren alboko 2 aurpegi planarrak diren egiaztatzean erabiliko den tolerantzia-balioa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="332"/>
@@ -5012,7 +5012,7 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
       <source>Interval between file checks for references</source>
-      <translation type="unfinished">Interval between file checks for references</translation>
+      <translation>Erreferentzia bila fitxategiak aztertzeko denbora-tartea</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="164"/>
@@ -5022,12 +5022,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="188"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</translation>
+      <translation>Modu lehenetsian, objektu berrien "Mugitu ostalariarekin" propietatearen balioa 'Faltsua' izango da; horrek esan nahi du ez direla mugituko haien objektu ostalaria mugitzen denean.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="191"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation type="unfinished">Set "Move with host" property to True by default</translation>
+      <translation>Ezarri "Mugitu ostalariarekin" propietatean 'Egia' balioa modu lehenetsian</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="605"/>
@@ -5052,7 +5052,7 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="472"/>
       <source>If this is checked, when possible, similar entities will be used only once in the file. This can reduce the file size a lot, but will make it less easily readable by humans</source>
-      <translation type="unfinished">If this is checked, when possible, similar entities will be used only once in the file. This can reduce the file size a lot, but will make it less easily readable by humans</translation>
+      <translation>Hau markatuta dagoenean, antzeko entitateak behin bakarrik erabiliko dira fitxategian, posible bada. Horrek fitxategiaren tamaina txikiagotuko du, baina gizakiek zailtasun gehiago izango dute hura irakurtzeko</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="475"/>
@@ -5062,12 +5062,12 @@ Portaera hori aldatu egin daiteke hobespenetan.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="491"/>
       <source>When possible, IFC objects that are extruded rectangles are exported as IfcRectangleProfileDef. However, some other applications notoriously have problems importing that entity. If this is your case, you can disable this here (all profiles will be exported as IfcArbitraryClosedProfileDef).</source>
-      <translation type="unfinished">When possible, IFC objects that are extruded rectangles are exported as IfcRectangleProfileDef. However, some other applications notoriously have problems importing that entity. If this is your case, you can disable this here (all profiles will be exported as IfcArbitraryClosedProfileDef).</translation>
+      <translation>Posible bada, laukizuzen estruituak diren IFC objektuak IfcRectangleProfileDef gisa esportatuko dira. Hala ere, beste aplikazio batzuk arazoak dituzte entitate hori inportatzeko. Zure kasua bada, hemen desgaitu dezakezu portaera hori (profil guztiak IfcArbitraryClosedProfileDef gisa esportatuko dira).</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="494"/>
       <source>Disable IfcRectangleProfileDef</source>
-      <translation type="unfinished">Disable IfcRectangleProfileDef</translation>
+      <translation>Desgaitu IfcRectangleProfileDef</translation>
     </message>
   </context>
   <context>

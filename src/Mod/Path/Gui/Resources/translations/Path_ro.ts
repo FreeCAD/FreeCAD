@@ -815,7 +815,7 @@
       <translation>Creează o traiectorie de gravura în jurul unei schițe tip text</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathEngrave.py" line="153"/>
+      <location filename="../../../PathScripts/PathEngrave.py" line="156"/>
       <source>The Job Base Object has no engraveable element.  Engraving operation will produce no output.</source>
       <translation>Obiectul de baza Job are nici un element ca repoate fi gravat.  Operațiunea de Gravura nu va produce nici o ieşire.</translation>
     </message>
@@ -1945,32 +1945,32 @@ If it is necessary to set the FinalDepth manually please select a different oper
   <context>
     <name>Path_DressupDragKnife</name>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="470"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="477"/>
       <source>DragKnife Dress-up</source>
       <translation>Traiectorie adițională a cuțitului tangențial</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="471"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="478"/>
       <source>Modifies a path to add dragknife corner actions</source>
       <translation>Modifică o traiectorie pentru a adăuga mișcările de colț pentru cuțitul tangențial</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="485"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="492"/>
       <source>Please select one path object</source>
       <translation>Vă rugăm să selectaţi o traiectori tip obiect</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="489"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="496"/>
       <source>The selected object is not a path</source>
       <translation>Obiectul selectat nu este o traiectorie</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="493"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="500"/>
       <source>Please select a Path object</source>
       <translation>Vă rugăm să selectaţi un obiect traiecorie</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathDressupDragknife.py" line="498"/>
+      <location filename="../../../PathScripts/PathDressupDragknife.py" line="505"/>
       <source>Create Dress-up</source>
       <translation>Crează o traiectorie adițională (Dress-up)</translation>
     </message>

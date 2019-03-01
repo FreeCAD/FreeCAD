@@ -69,10 +69,6 @@
       <source>Create a planar image in the 3D space</source>
       <translation>Создать двухмерное изображение в трёхмерном пространстве</translation>
     </message>
-    <message>
-      <source>create a planar image in the 3D space</source>
-      <translation>Cоздание плоского изображения в 3D пространстве</translation>
-    </message>
   </context>
   <context>
     <name>CmdImageOpen</name>
@@ -166,90 +162,66 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="107"/>
+      <location filename="../../ImageView.cpp" line="111"/>
       <source>&amp;Fit image</source>
       <translation>&amp;Растянуть изображение</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="109"/>
+      <location filename="../../ImageView.cpp" line="113"/>
       <source>Stretch the image to fit the view</source>
       <translation>Растянуть изображение по размеру вида</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="113"/>
+      <location filename="../../ImageView.cpp" line="117"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp;Масштаб 1:1</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="115"/>
+      <location filename="../../ImageView.cpp" line="119"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>Отображает изображение в масштабе 1: 1 </translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="124"/>
+      <location filename="../../ImageView.cpp" line="128"/>
       <source>Standard</source>
       <translation>Стандарт</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="142"/>
+      <location filename="../../ImageView.cpp" line="146"/>
       <source>Ready...</source>
       <translation>Готово...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="532"/>
+      <location filename="../../ImageView.cpp" line="539"/>
       <source>grey</source>
       <translation>Серый</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="533"/>
-      <location filename="../../ImageView.cpp" line="536"/>
-      <location filename="../../ImageView.cpp" line="546"/>
-      <location filename="../../ImageView.cpp" line="551"/>
-      <location filename="../../ImageView.cpp" line="561"/>
-      <location filename="../../ImageView.cpp" line="566"/>
-      <location filename="../../ImageView.cpp" line="577"/>
-      <location filename="../../ImageView.cpp" line="582"/>
-      <location filename="../../ImageView.cpp" line="593"/>
-      <location filename="../../ImageView.cpp" line="598"/>
+      <location filename="../../ImageView.cpp" line="540"/>
+      <location filename="../../ImageView.cpp" line="543"/>
+      <location filename="../../ImageView.cpp" line="553"/>
+      <location filename="../../ImageView.cpp" line="558"/>
+      <location filename="../../ImageView.cpp" line="568"/>
+      <location filename="../../ImageView.cpp" line="573"/>
+      <location filename="../../ImageView.cpp" line="584"/>
+      <location filename="../../ImageView.cpp" line="589"/>
+      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="605"/>
       <source>zoom</source>
       <translation>Масштаб</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="536"/>
-      <location filename="../../ImageView.cpp" line="546"/>
-      <location filename="../../ImageView.cpp" line="561"/>
-      <location filename="../../ImageView.cpp" line="577"/>
-      <location filename="../../ImageView.cpp" line="593"/>
+      <location filename="../../ImageView.cpp" line="543"/>
+      <location filename="../../ImageView.cpp" line="553"/>
+      <location filename="../../ImageView.cpp" line="568"/>
+      <location filename="../../ImageView.cpp" line="584"/>
+      <location filename="../../ImageView.cpp" line="600"/>
       <source>outside image</source>
       <translation>за пределами изображения</translation>
-    </message>
-    <message>
-      <source>&amp;Original color</source>
-      <translation>&amp;Исходный цвета</translation>
-    </message>
-    <message>
-      <source>Display the image with its original color(s)</source>
-      <translation>Изображение в исходных цветах</translation>
-    </message>
-    <message>
-      <source>&amp;Brightened color</source>
-      <translation>&amp;Оживить цвет</translation>
-    </message>
-    <message>
-      <source>Display the image with brightened color(s)</source>
-      <translation>Показать изображение в ярком цвете(ах)</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
-    <message>
-      <source>Image viewer</source>
-      <translation>Просмотр изображения</translation>
-    </message>
-    <message>
-      <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-      <translation>Изображения (*.png *.xpm *.jpg *.bmp)</translation>
-    </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <location filename="../../Command.cpp" line="115"/>
@@ -276,14 +248,6 @@
     <message>
       <location filename="../../Command.cpp" line="129"/>
       <source>Could not load the chosen image</source>
-      <translation>Не удалось загрузить выбранное изображение</translation>
-    </message>
-    <message>
-      <source>Error open image</source>
-      <translation>Ошибка открытия изображения</translation>
-    </message>
-    <message>
-      <source>Could not load the choosen image</source>
       <translation>Не удалось загрузить выбранное изображение</translation>
     </message>
   </context>

@@ -1231,21 +1231,6 @@
     </message>
   </context>
   <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>Skapa FEM nät</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>Skapa FEM nät från form</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1405,29 +1390,6 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Användarkatalog</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>Hypotes</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>Kvadrantvinkel</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>Maximal längd</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>Lokal längd</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>Maximalt elementområde</translation>
     </message>
   </context>
   <context>
@@ -1705,18 +1667,6 @@
       <source>Only faces and edges can be picked</source>
       <translation>Endast ytor och kanter kan väljas</translation>
     </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation type="unfinished">Point load [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation type="unfinished">Line load [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation type="unfinished">Area load [N/mm²]</translation>
-    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1923,14 +1873,6 @@
       <translation>Tid:</translation>
     </message>
     <message>
-      <source>Write Calculix Input File</source>
-      <translation>Skriv Calculix Indata-fil</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation>Redigera Calculix Indata-fil</translation>
-    </message>
-    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Mekaniskt material</translation>
@@ -2000,14 +1942,6 @@
       <source>MatWeb database...</source>
       <translation>MatWeb databas...</translation>
     </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation type="unfinished">0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation>Pa</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2069,26 +2003,6 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Redigera begränsning</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>Kombinerad vy</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation>combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation>qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation>ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation>ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2206,14 +2120,6 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Reglagemaximum:</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Färger</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
     </message>
   </context>
   <context>

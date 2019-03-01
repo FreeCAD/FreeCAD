@@ -1231,21 +1231,6 @@
     </message>
   </context>
   <context>
-    <name>CmdFemCreateFromShape</name>
-    <message>
-      <source>Fem</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh</source>
-      <translation>Sortu FEM sarea</translation>
-    </message>
-    <message>
-      <source>Create FEM mesh from shape</source>
-      <translation>Sortu FEM sarea formatik</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
       <location filename="../../Command.cpp" line="719"/>
@@ -1405,29 +1390,6 @@
       <location filename="../../DlgSettingsFem.ui" line="449"/>
       <source>User directory</source>
       <translation>Erabiltzaile-direktorioa</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::HypothesisWidget</name>
-    <message>
-      <source>Hypothesis</source>
-      <translation>Hipotesia</translation>
-    </message>
-    <message>
-      <source>Quadrangle</source>
-      <translation>Lau angelukoa</translation>
-    </message>
-    <message>
-      <source>Maximum length</source>
-      <translation>Luzera maximoa</translation>
-    </message>
-    <message>
-      <source>Local length</source>
-      <translation>Luzera lokala</translation>
-    </message>
-    <message>
-      <source>Maximum element area</source>
-      <translation>Elementu-area maximoa</translation>
     </message>
   </context>
   <context>
@@ -1705,18 +1667,6 @@
       <source>Only faces and edges can be picked</source>
       <translation>Aurpegiak eta ertzak soilik aukera daitezke</translation>
     </message>
-    <message>
-      <source>Point load [N]</source>
-      <translation>Puntu-karga [N]</translation>
-    </message>
-    <message>
-      <source>Line load [N/mm]</source>
-      <translation>Lerro-karga [N/mm]</translation>
-    </message>
-    <message>
-      <source>Area load [N/mm²]</source>
-      <translation>Area-karga [N/mm²]</translation>
-    </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
@@ -1923,14 +1873,6 @@
       <translation>Denbora:</translation>
     </message>
     <message>
-      <source>Write Calculix Input File</source>
-      <translation>Idatzi Calculix sarrera-fitxategia</translation>
-    </message>
-    <message>
-      <source>Edit Calculix Input File</source>
-      <translation>Editatu Calculix sarrera-fitxategia</translation>
-    </message>
-    <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="14"/>
       <source>Mechanical material</source>
       <translation>Material mekanikoa</translation>
@@ -2000,14 +1942,6 @@
       <source>MatWeb database...</source>
       <translation>MatWeb datu-basea...</translation>
     </message>
-    <message>
-      <source>0 kg/m^3</source>
-      <translation>0 kg/m^3</translation>
-    </message>
-    <message>
-      <source>Pa</source>
-      <translation>Pa</translation>
-    </message>
   </context>
   <context>
     <name>QObject</name>
@@ -2069,26 +2003,6 @@
       <location filename="../../ViewProviderFemConstraint.cpp" line="145"/>
       <source>Edit constraint</source>
       <translation>Editatu murrizketa</translation>
-    </message>
-    <message>
-      <source>Combo View</source>
-      <translation>Bista konbinatua</translation>
-    </message>
-    <message>
-      <source>combiTab</source>
-      <translation>combiTab</translation>
-    </message>
-    <message>
-      <source>qt_tabwidget_stackedwidget</source>
-      <translation>qt_tabwidget_stackedwidget</translation>
-    </message>
-    <message>
-      <source>ShaftWizard</source>
-      <translation type="unfinished">ShaftWizard</translation>
-    </message>
-    <message>
-      <source>ShaftWizardLayout</source>
-      <translation type="unfinished">ShaftWizardLayout</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="74"/>
@@ -2206,14 +2120,6 @@
       <location filename="../../../TaskPanelShowDisplacement.ui" line="209"/>
       <source>Slider max:</source>
       <translation>Graduatzailaren maximoa:</translation>
-    </message>
-    <message>
-      <source>Colors</source>
-      <translation>Koloreak</translation>
-    </message>
-    <message>
-      <source>mm</source>
-      <translation>mm</translation>
     </message>
   </context>
   <context>

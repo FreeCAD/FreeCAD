@@ -124,7 +124,7 @@
       <translation>Izračunana površina tal tega nadstropja</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="437"/>
+      <location filename="../../ArchSectionPlane.py" line="438"/>
       <source>The placement of this object</source>
       <translation>Postavitev tega predmeta</translation>
     </message>
@@ -214,12 +214,12 @@
       <translation>Normala smeri izrivanja tega predmeta (pustite (0,0,0) za samodejno smer)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="721"/>
+      <location filename="../../ArchSectionPlane.py" line="722"/>
       <source>The linked object</source>
       <translation>Povezani predmet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="731"/>
+      <location filename="../../ArchSectionPlane.py" line="732"/>
       <source>The line width of the rendered objects</source>
       <translation>Debelina črte izrisanih predmetov</translation>
     </message>
@@ -624,52 +624,52 @@
       <translation>Preglednica za tiskanje rezultatov</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="443"/>
+      <location filename="../../ArchSectionPlane.py" line="444"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Če je narobe, bodo prerezani tudi nepolni predmeti z možnimi napačnimi rezultati.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="507"/>
+      <location filename="../../ArchSectionPlane.py" line="508"/>
       <source>The display length of this section plane</source>
       <translation>Prikazana dolžina te presečne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="513"/>
+      <location filename="../../ArchSectionPlane.py" line="514"/>
       <source>The display height of this section plane</source>
       <translation>Prikazana višina te prečne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="519"/>
+      <location filename="../../ArchSectionPlane.py" line="520"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Velikost puščic te presečne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="533"/>
+      <location filename="../../ArchSectionPlane.py" line="534"/>
       <source>Show the cut in the 3D view</source>
       <translation>Prikaži prerez v pogledu 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="723"/>
+      <location filename="../../ArchSectionPlane.py" line="724"/>
       <source>The rendering mode to use</source>
       <translation>Uporabljen način prikaza</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="727"/>
+      <location filename="../../ArchSectionPlane.py" line="728"/>
       <source>If cut geometry is shown or not</source>
       <translation>Če je rezna geometrija prikazana ali ne</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="729"/>
+      <location filename="../../ArchSectionPlane.py" line="730"/>
       <source>If cut geometry is filled or not</source>
       <translation>Če je rezna geometrija polnjena ali ne</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="734"/>
+      <location filename="../../ArchSectionPlane.py" line="735"/>
       <source>The size of the texts inside this object</source>
       <translation>Velikost pisave znotraj predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="737"/>
+      <location filename="../../ArchSectionPlane.py" line="738"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Kadar obkljukano, izvori predmetov so prikazani ne glede na to ali so vidni v 3D modelu</translation>
     </message>
@@ -824,52 +824,52 @@
       <translation>Vrsta klimatizacije tega prostora</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="481"/>
+      <location filename="../../ArchSpace.py" line="482"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>Besedilo za prikaz. Uporabi $area, $label, $tag, $floor, $walls, $ceiling za vstavitev ustreznih podatkov</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="484"/>
+      <location filename="../../ArchSpace.py" line="485"/>
       <source>The name of the font</source>
       <translation>Ime pisave besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="487"/>
+      <location filename="../../ArchSpace.py" line="488"/>
       <source>The color of the area text</source>
       <translation>Barva besedila površine</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="490"/>
+      <location filename="../../ArchSpace.py" line="491"/>
       <source>The size of the text font</source>
       <translation>Velikost pisave besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="493"/>
+      <location filename="../../ArchSpace.py" line="494"/>
       <source>The size of the first line of text</source>
       <translation>Velikost prve vrstice besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="496"/>
+      <location filename="../../ArchSpace.py" line="497"/>
       <source>The space between the lines of text</source>
       <translation>Razmik med vrsticami</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="499"/>
+      <location filename="../../ArchSpace.py" line="500"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Položaj besedila. Pustite (0,0,0) za samodejno poravnavo</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="501"/>
+      <location filename="../../ArchSpace.py" line="502"/>
       <source>The justification of the text</source>
       <translation>Utemeljitev besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="504"/>
+      <location filename="../../ArchSpace.py" line="505"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Število decimalk uporabljenih za izračun besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="507"/>
+      <location filename="../../ArchSpace.py" line="508"/>
       <source>Show the unit suffix</source>
       <translation>Prikaži pripono enote</translation>
     </message>
@@ -1099,17 +1099,17 @@
       <translation>Seznam debeline slojev</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="739"/>
+      <location filename="../../ArchSectionPlane.py" line="740"/>
       <source>The line color of the projected objects</source>
       <translation>Barva črt preslikanih predmetov</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="741"/>
+      <location filename="../../ArchSectionPlane.py" line="742"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>Barva rezanih ploskev (če je vklopljeno)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="1056"/>
+      <location filename="../../ArchStairs.py" line="1062"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>Seganje nosilca preko nastopne ploskve</translation>
     </message>
@@ -1279,7 +1279,7 @@
       <translation>Višina točke (0,0,0) te ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="439"/>
+      <location filename="../../ArchSectionPlane.py" line="440"/>
       <source>The shape of this object</source>
       <translation>Oblika tega objekta</translation>
     </message>
@@ -1289,7 +1289,7 @@
       <translation>Shrani lastnosti IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="525"/>
+      <location filename="../../ArchSectionPlane.py" line="526"/>
       <source>The line width of this object</source>
       <translation>Debelina črt tega predmeta</translation>
     </message>
@@ -1434,22 +1434,22 @@
       <translation>Če drži, se bodo barve povezane datoteke posodabljale</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="441"/>
+      <location filename="../../ArchSectionPlane.py" line="442"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Predmeti, ki morajo biti v prerezni ravnini zajeti. Prazno pomeni celoten dokument.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="522"/>
+      <location filename="../../ArchSectionPlane.py" line="523"/>
       <source>The transparency of this object</source>
       <translation>Prozornost tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="530"/>
+      <location filename="../../ArchSectionPlane.py" line="531"/>
       <source>The color of this object</source>
       <translation>Barva tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="535"/>
+      <location filename="../../ArchSectionPlane.py" line="536"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Razdalja med rezalno ravnino in ravnino vidnega polja (razdalja naj bo majhna, vendar ne nič)</translation>
     </message>
@@ -1692,22 +1692,22 @@
       <translation>vsebuje ploskve, ki niso del nobenega telesa</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1308"/>
+      <location filename="../../ArchCommands.py" line="1312"/>
       <source>Grouping</source>
       <translation>Združevanje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchCommands.py" line="1344"/>
       <source>Ungrouping</source>
       <translation>Razdruževanje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1371"/>
+      <location filename="../../ArchCommands.py" line="1375"/>
       <source>Split Mesh</source>
       <translation>Razcepi mrežo</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1411"/>
+      <location filename="../../ArchCommands.py" line="1415"/>
       <source>Mesh to Shape</source>
       <translation>Mreža v obliko</translation>
     </message>
@@ -1757,7 +1757,7 @@
       <translation>Pogled</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="416"/>
+      <location filename="../../ArchSectionPlane.py" line="417"/>
       <source>Create Section Plane</source>
       <translation>Ustvari presečno ravnino</translation>
     </message>
@@ -1847,17 +1847,17 @@
       <translation>Napaka: Ni bilo možno ugotoviti načina kodiranja znakov</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="282"/>
+      <location filename="../../importDAE.py" line="291"/>
       <source>file %s successfully created.</source>
       <translation>datoteka %s uspešno ustvarjena.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1304"/>
+      <location filename="../../ArchCommands.py" line="1308"/>
       <source>Add space boundary</source>
       <translation>Dodaj prostorsko omejitev</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1340"/>
       <source>Remove space boundary</source>
       <translation>Odstrani prostorsko omejitev</translation>
     </message>
@@ -2112,7 +2112,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Višina (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1583"/>
+      <location filename="../../ArchCommands.py" line="1587"/>
       <source>Create Component</source>
       <translation>Ustvari komponento</translation>
     </message>
@@ -2127,17 +2127,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Stene so lahko osnovane le na delih ali ploskovjih</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="694"/>
+      <location filename="../../ArchSpace.py" line="695"/>
       <source>Set text position</source>
       <translation>Nastavi položaj besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1603"/>
+      <location filename="../../ArchCommands.py" line="1607"/>
       <source>Category</source>
       <translation>Kategorija</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1604"/>
+      <location filename="../../ArchCommands.py" line="1608"/>
       <source>Key</source>
       <translation>Ključ</translation>
     </message>
@@ -2147,12 +2147,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Vrednost</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1607"/>
+      <location filename="../../ArchCommands.py" line="1611"/>
       <source>Unit</source>
       <translation>Enota</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1632"/>
+      <location filename="../../ArchCommands.py" line="1636"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Ustvari preglednico lastnosti IFC</translation>
     </message>
@@ -2566,7 +2566,7 @@ Ustvarjanje lokacije prekinjeno.</translation>
       <translation>Predmet nima ploskve</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="698"/>
+      <location filename="../../ArchSpace.py" line="699"/>
       <source>Space boundaries</source>
       <translation>Prostorske meje</translation>
     </message>
@@ -2693,12 +2693,12 @@ Ustvarjanj stavbe je prekinjeno.</translation>
       <translation>Neveljavna rezalna ravnina</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1492"/>
+      <location filename="../../ArchCommands.py" line="1496"/>
       <source>All good! No problems found</source>
       <translation>Vse v redu! Ni zaznanih težav</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1614"/>
+      <location filename="../../ArchCommands.py" line="1618"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>Predmet nima značilke IfcProperties. Prekliči ustvarjanje preglednice za predmet:</translation>
     </message>
@@ -2880,42 +2880,42 @@ Ustvarjanje etaže prekinjeno.</translation>
       <translation>Temu sporedu ni pripete nobene preglednice</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="965"/>
+      <location filename="../../ArchSectionPlane.py" line="966"/>
       <source>Section plane settings</source>
       <translation>Nastavitve prerezne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="969"/>
       <source>Objects seen by this section plane:</source>
       <translation>Predmeti, vidni v prerezni ravnini:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="969"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <source>Section plane placement:</source>
       <translation>Umestitev prerezne ravnine:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="970"/>
+      <location filename="../../ArchSectionPlane.py" line="971"/>
       <source>Rotate X</source>
       <translation>Zavrti X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="971"/>
+      <location filename="../../ArchSectionPlane.py" line="972"/>
       <source>Rotate Y</source>
       <translation>Zavrti Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="973"/>
       <source>Rotate Z</source>
       <translation>Zavrti Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="973"/>
+      <location filename="../../ArchSectionPlane.py" line="974"/>
       <source>Resize</source>
       <translation>Spremeni velikost</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="974"/>
+      <location filename="../../ArchSectionPlane.py" line="975"/>
       <source>Center</source>
       <translation>Središče</translation>
     </message>
@@ -3006,7 +3006,7 @@ Opomba: To lahko spremenite v možnostih.</translation>
       <translation>Če je to označeno, bo privzeta vrednost odmika tega okna dodana vrednosti, vnešeni tukaj</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="52"/>
+      <location filename="../../importDAE.py" line="58"/>
       <source>pycollada not found, collada support is disabled.</source>
       <translation>pycollada ni bil najdena, podpora za collado je onemogočena.</translation>
     </message>
@@ -3046,17 +3046,17 @@ Opomba: To lahko spremenite v možnostih.</translation>
       <translation>Napaka: različica knjižnice IfcOpenShell je prestara</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="215"/>
+      <location filename="../../importOBJ.py" line="222"/>
       <source>Successfully written</source>
       <translation>Uspešno zapisano</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="71"/>
+      <location filename="../../importOBJ.py" line="78"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>Najdena oblika, ki vsebuje krivulje, triangulacija</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="293"/>
+      <location filename="../../importOBJ.py" line="300"/>
       <source>Successfully imported</source>
       <translation>Uspešno uvožen</translation>
     </message>
@@ -3180,12 +3180,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1295"/>
+      <location filename="../../ArchCommands.py" line="1299"/>
       <source>Add component</source>
       <translation>Dodaj komponento</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1296"/>
+      <location filename="../../ArchCommands.py" line="1300"/>
       <source>Adds the selected components to the active object</source>
       <translation>Doda izbrane sestavine v dejavni predmet</translation>
     </message>
@@ -3263,17 +3263,17 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1483"/>
+      <location filename="../../ArchCommands.py" line="1487"/>
       <source>Check</source>
       <translation>Preveri</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1484"/>
+      <location filename="../../ArchCommands.py" line="1488"/>
       <source>Checks the selected objects for problems</source>
       <translation>Preveri izbrane predmete za morebitne napake</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1505"/>
+      <location filename="../../ArchCommands.py" line="1509"/>
       <source>Explore the contents of an IFC file</source>
       <translation>Razišči vsebino datoteke IFC</translation>
     </message>
@@ -3281,12 +3281,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1573"/>
+      <location filename="../../ArchCommands.py" line="1577"/>
       <source>Clone component</source>
       <translation>Podvoji sestavino</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1575"/>
+      <location filename="../../ArchCommands.py" line="1579"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Podvoji predmet kot neopredeljeno sestavino</translation>
     </message>
@@ -3294,12 +3294,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1466"/>
+      <location filename="../../ArchCommands.py" line="1470"/>
       <source>Close holes</source>
       <translation>Zapri luknje</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1467"/>
+      <location filename="../../ArchCommands.py" line="1471"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Zapre luknje v odprtih oblikah in jih pretvori v telesa</translation>
     </message>
@@ -3307,12 +3307,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1548"/>
+      <location filename="../../ArchCommands.py" line="1552"/>
       <source>Component</source>
       <translation>Sestavina</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1550"/>
+      <location filename="../../ArchCommands.py" line="1554"/>
       <source>Creates an undefined architectural component</source>
       <translation>Ustvari neopredeljeno arhitekturno sestavino</translation>
     </message>
@@ -3435,7 +3435,7 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1504"/>
+      <location filename="../../ArchCommands.py" line="1508"/>
       <source>Ifc Explorer</source>
       <translation>Raziskovalec IFC</translation>
     </message>
@@ -3443,12 +3443,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1623"/>
+      <location filename="../../ArchCommands.py" line="1627"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Ustvari preglednico IFC …</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1625"/>
+      <location filename="../../ArchCommands.py" line="1629"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Ustvari preglednico za shranjevanje lastnosti IFC predmeta.</translation>
     </message>
@@ -3490,12 +3490,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1387"/>
+      <location filename="../../ArchCommands.py" line="1391"/>
       <source>Mesh to Shape</source>
       <translation>Mreža v obliko</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1388"/>
+      <location filename="../../ArchCommands.py" line="1392"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Pretvori izbrana črtovja v oblike dela</translation>
     </message>
@@ -3636,12 +3636,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1327"/>
+      <location filename="../../ArchCommands.py" line="1331"/>
       <source>Remove component</source>
       <translation>Odstrani sestavino</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1328"/>
+      <location filename="../../ArchCommands.py" line="1332"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Odstrani izbrane sestavine iz nadrejenih ali ustvari luknjo v sestavini</translation>
     </message>
@@ -3649,12 +3649,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1451"/>
+      <location filename="../../ArchCommands.py" line="1455"/>
       <source>Remove Shape from Arch</source>
       <translation>Odstrani obliko iz arhitekture</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1452"/>
+      <location filename="../../ArchCommands.py" line="1456"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Odstrani kockaste oblike iz arhitekturnih sestavin</translation>
     </message>
@@ -3688,12 +3688,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="400"/>
+      <location filename="../../ArchSectionPlane.py" line="401"/>
       <source>Section Plane</source>
       <translation>Presečna ravnina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="401"/>
+      <location filename="../../ArchSectionPlane.py" line="402"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Ustvari predmet presečne ravnine, ki vključuje izbrane predmete</translation>
     </message>
@@ -3701,12 +3701,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1422"/>
+      <location filename="../../ArchCommands.py" line="1426"/>
       <source>Select non-manifold meshes</source>
       <translation>Izberi nemnogoterne mreže</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1423"/>
+      <location filename="../../ArchCommands.py" line="1427"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Izbere vse nemnogoterne mreže v dokumentu ali izbranih skupinah</translation>
     </message>
@@ -3745,12 +3745,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1362"/>
+      <location filename="../../ArchCommands.py" line="1366"/>
       <source>Split Mesh</source>
       <translation>Razcepi mrežo</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1363"/>
+      <location filename="../../ArchCommands.py" line="1367"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Razcepi izbrane mreže v neodvisne komponente</translation>
     </message>
@@ -3779,12 +3779,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1518"/>
+      <location filename="../../ArchCommands.py" line="1522"/>
       <source>Survey</source>
       <translation>Raziskava</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1519"/>
+      <location filename="../../ArchCommands.py" line="1523"/>
       <source>Starts survey</source>
       <translation>Zažene raziskavo</translation>
     </message>
@@ -3792,12 +3792,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1533"/>
+      <location filename="../../ArchCommands.py" line="1537"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Preklopi zastavico pred. z ovojnico IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1534"/>
+      <location filename="../../ArchCommands.py" line="1538"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Vsili izvoz predmeta kot predstavitve z ovojnico ali ne</translation>
     </message>
@@ -3805,12 +3805,12 @@ Opomba: To lahko spremenite v možnostih.</translation>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1649"/>
+      <location filename="../../ArchCommands.py" line="1653"/>
       <source>Toggle subcomponents</source>
       <translation>Predklapljanje podsestavin</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1650"/>
+      <location filename="../../ArchCommands.py" line="1654"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Razkrije ali skrije podsestavine tega predmeta</translation>
     </message>

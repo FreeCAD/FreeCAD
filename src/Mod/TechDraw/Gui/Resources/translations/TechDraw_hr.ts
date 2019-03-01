@@ -25,12 +25,12 @@
     <message>
       <location filename="../../Command.cpp" line="995"/>
       <source>Insert a Section Plane</source>
-      <translation type="unfinished">Insert a Section Plane</translation>
+      <translation>Izradi ravninu presjeka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="996"/>
       <source>Inserts a view of a Section Plane from Arch Workbench</source>
-      <translation type="unfinished">Inserts a view of a Section Plane from Arch Workbench</translation>
+      <translation>Umetni pogled na dio ravni Radne površine Luk</translation>
     </message>
   </context>
   <context>
@@ -75,7 +75,7 @@
     <message>
       <location filename="../../Command.cpp" line="730"/>
       <source>Add View to Clip group</source>
-      <translation type="unfinished">Add View to Clip group</translation>
+      <translation>Dodaj pogled u grupi Isječak</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="731"/>
@@ -93,12 +93,12 @@
     <message>
       <location filename="../../Command.cpp" line="942"/>
       <source>Insert a DraftWB object</source>
-      <translation type="unfinished">Insert a DraftWB object</translation>
+      <translation>Umetni Nacrt-Wb objekt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="943"/>
       <source>Insert a View of a Draft Workbench object</source>
-      <translation type="unfinished">Insert a View of a Draft Workbench object</translation>
+      <translation>Umetni pogled na objekt Radne površine Nacrt</translation>
     </message>
   </context>
   <context>
@@ -505,7 +505,7 @@
       <location filename="../../CommandDecorate.cpp" line="265"/>
       <location filename="../../CommandDecorate.cpp" line="266"/>
       <source>Turn View Frames On/Off</source>
-      <translation type="unfinished">Turn View Frames On/Off</translation>
+      <translation>Prebacuj Okvire Pogled Uključeno/Isključeno</translation>
     </message>
   </context>
   <context>
@@ -543,17 +543,17 @@
     <message>
       <location filename="../../Command.cpp" line="743"/>
       <source>Select 1 Clip group and 1 View.</source>
-      <translation type="unfinished">Select 1 Clip group and 1 View.</translation>
+      <translation>Odaberite 1 grupu Isječak i 1 Pogled.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="759"/>
       <source>Select exactly one View to add to group.</source>
-      <translation type="unfinished">Select exactly one View to add to group.</translation>
+      <translation>Odaberite točno jedan Pogled za dodavanje u grupu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="764"/>
       <source>Select exactly one Clip group.</source>
-      <translation type="unfinished">Select exactly one Clip group.</translation>
+      <translation>Odaberite točno jednu isječak grupu.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="773"/>
@@ -563,7 +563,7 @@
     <message>
       <location filename="../../Command.cpp" line="827"/>
       <source>Select exactly one View to remove from Group.</source>
-      <translation type="unfinished">Select exactly one View to remove from Group.</translation>
+      <translation>Odaberite točno jedan Pogled za uklanjanje iz grupe.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="847"/>
@@ -589,7 +589,7 @@
     <message>
       <location filename="../../Command.cpp" line="1030"/>
       <source>There is no Section Plane in selection.</source>
-      <translation type="unfinished">There is no Section Plane in selection.</translation>
+      <translation>Nema Dijela Ravni u odabiru.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1075"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="203"/>
       <source>Can not make a Dimension from this selection</source>
-      <translation type="unfinished">Can not make a Dimension from this selection</translation>
+      <translation>Ne može se napraviti Dimenzija iz ovog odabira</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="288"/>
@@ -651,7 +651,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="917"/>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation type="unfinished">Need three points to make a 3 point Angle Dimension</translation>
+      <translation>Trebaju mi tri točke da napravim Dimenziju Kuta od 3 točke</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1003"/>
@@ -693,12 +693,12 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1082"/>
       <source>No View of a Part in selection.</source>
-      <translation type="unfinished">No View of a Part in selection.</translation>
+      <translation>Ne postoji Pogled na Dio u odabiru.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>No Feature with Shape in selection.</source>
-      <translation type="unfinished">No Feature with Shape in selection.</translation>
+      <translation>Nema Svojstva sa Oblikom u izboru.</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="288"/>
@@ -780,7 +780,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="790"/>
       <source>SVG (*.svg)</source>
-      <translation type="unfinished">SVG (*.svg)</translation>
+      <translation>SVG (*.svg)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="792"/>
@@ -790,7 +790,7 @@
     <message>
       <location filename="../../MDIViewPage.cpp" line="1223"/>
       <source>%1.%2.%3</source>
-      <translation type="unfinished">%1.%2.%3</translation>
+      <translation>%1.%2.%3</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="595"/>
@@ -858,7 +858,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="14"/>
       <source>TechDraw Dimensions</source>
-      <translation type="unfinished">TechDraw Dimensions</translation>
+      <translation>Tehničko Crtanje Dimenzije</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw2.ui" line="127"/>
@@ -1083,7 +1083,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="14"/>
       <source>TechDraw General</source>
-      <translation type="unfinished">TechDraw General</translation>
+      <translation>Tehničko Crtanje Osnovno</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="65"/>
@@ -1228,7 +1228,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="674"/>
       <source>Editable Text Marker Size</source>
-      <translation type="unfinished">Editable Text Marker Size</translation>
+      <translation>Izmjenjiva veličina oznake teksta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="707"/>
@@ -1238,7 +1238,7 @@
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="723"/>
       <source>Size of editable text marker in Templates (green dot).</source>
-      <translation type="unfinished">Size of editable text marker in Templates (green dot).</translation>
+      <translation>Veličina izmjenjive oznake teksta u predlošcima (zelena točka).</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDraw.ui" line="649"/>
@@ -1295,7 +1295,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="653"/>
       <source>Can not open file %1 for writing.</source>
-      <translation type="unfinished">Can not open file %1 for writing.</translation>
+      <translation>Ne mogu otvoriti dokument %1 za ispis.</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1221"/>
@@ -1308,12 +1308,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../QGVPage.cpp" line="580"/>
       <source>Drawing page:</source>
-      <translation type="unfinished">Drawing page:</translation>
+      <translation>Stranica crteža:</translation>
     </message>
     <message>
       <location filename="../../QGVPage.cpp" line="582"/>
       <source> exported from FreeCAD document:</source>
-      <translation type="unfinished"> exported from FreeCAD document:</translation>
+      <translation> izvezeno iz FreeCAD dokumenta:</translation>
     </message>
   </context>
   <context>
@@ -1508,7 +1508,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskProjGroup.ui" line="230"/>
       <source>Current primary view direction</source>
-      <translation type="unfinished">Current primary view direction</translation>
+      <translation>Trenutni smjer primarnog pogleda</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="243"/>

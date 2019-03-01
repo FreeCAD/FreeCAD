@@ -223,7 +223,7 @@
       <translation>Strona startowa</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="542"/>
+      <location filename="../../../StartPage/StartPage.py" line="545"/>
       <source>Start page</source>
       <translation>Strona startowa</translation>
     </message>

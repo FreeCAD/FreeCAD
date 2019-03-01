@@ -124,7 +124,7 @@
       <translation>A área calculada para este Piso (andar)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="437"/>
+      <location filename="../../ArchSectionPlane.py" line="438"/>
       <source>The placement of this object</source>
       <translation>A posição deste objeto</translation>
     </message>
@@ -214,12 +214,12 @@
       <translation>A direção normal de extrusão deste objeto (mantenha (0,0,0) para normal automática)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="721"/>
+      <location filename="../../ArchSectionPlane.py" line="722"/>
       <source>The linked object</source>
       <translation>O objeto ligado</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="731"/>
+      <location filename="../../ArchSectionPlane.py" line="732"/>
       <source>The line width of the rendered objects</source>
       <translation>A espessura da linha dos objetos renderizados</translation>
     </message>
@@ -624,52 +624,52 @@
       <translation>Tabela (folha de cálculo) onde o resultado será mostrado</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="443"/>
+      <location filename="../../ArchSectionPlane.py" line="444"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Se falso, não-sólidos serão também cortados, com possíveis resultados errados.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="507"/>
+      <location filename="../../ArchSectionPlane.py" line="508"/>
       <source>The display length of this section plane</source>
       <translation>Comprimento da representação 3D deste plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="513"/>
+      <location filename="../../ArchSectionPlane.py" line="514"/>
       <source>The display height of this section plane</source>
       <translation>Altura da representação 3D deste plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="519"/>
+      <location filename="../../ArchSectionPlane.py" line="520"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Tamanho das setas deste plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="533"/>
+      <location filename="../../ArchSectionPlane.py" line="534"/>
       <source>Show the cut in the 3D view</source>
       <translation>Mostrar o corte na vista 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="723"/>
+      <location filename="../../ArchSectionPlane.py" line="724"/>
       <source>The rendering mode to use</source>
       <translation>O modo de renderização a ser usado</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="727"/>
+      <location filename="../../ArchSectionPlane.py" line="728"/>
       <source>If cut geometry is shown or not</source>
       <translation>Se a geometria cortada é mostrada ou não</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="729"/>
+      <location filename="../../ArchSectionPlane.py" line="730"/>
       <source>If cut geometry is filled or not</source>
       <translation>Se a geometria cortada é preenchida ou não</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="734"/>
+      <location filename="../../ArchSectionPlane.py" line="735"/>
       <source>The size of the texts inside this object</source>
       <translation>O tamanho dos textos dentro deste objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="737"/>
+      <location filename="../../ArchSectionPlane.py" line="738"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
       <translation>Se marcado, objetos são mostrados independente de estarem visível no modelo 3D</translation>
     </message>
@@ -824,52 +824,52 @@
       <translation>O tipo de ar condicionado deste espaço</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="481"/>
+      <location filename="../../ArchSpace.py" line="482"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
       <translation>Texto a ser exibido. Usar $area, $label, $tag, $floor, $walls, $ceiling para inserir os respetivos dados</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="484"/>
+      <location filename="../../ArchSpace.py" line="485"/>
       <source>The name of the font</source>
       <translation>Nome da fonte</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="487"/>
+      <location filename="../../ArchSpace.py" line="488"/>
       <source>The color of the area text</source>
       <translation>A cor do texto da área</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="490"/>
+      <location filename="../../ArchSpace.py" line="491"/>
       <source>The size of the text font</source>
       <translation>O tamanho da fonte do texto</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="493"/>
+      <location filename="../../ArchSpace.py" line="494"/>
       <source>The size of the first line of text</source>
       <translation>Tamanho da primeira linha do texto</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="496"/>
+      <location filename="../../ArchSpace.py" line="497"/>
       <source>The space between the lines of text</source>
       <translation>Espaço entre as linhas de texto</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="499"/>
+      <location filename="../../ArchSpace.py" line="500"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
       <translation>Posição do texto. Deixe (0, 0,0) para posição automática</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="501"/>
+      <location filename="../../ArchSpace.py" line="502"/>
       <source>The justification of the text</source>
       <translation>Alinhamento do texto</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="504"/>
+      <location filename="../../ArchSpace.py" line="505"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>O número de casas decimais a usar nos textos calculados</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="507"/>
+      <location filename="../../ArchSpace.py" line="508"/>
       <source>Show the unit suffix</source>
       <translation>Mostrar o sufixo de unidade</translation>
     </message>
@@ -1099,17 +1099,17 @@
       <translation>A lista de espessuras das camadas</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="739"/>
+      <location filename="../../ArchSectionPlane.py" line="740"/>
       <source>The line color of the projected objects</source>
       <translation>A cor da linha dos objetos projetados</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="741"/>
+      <location filename="../../ArchSectionPlane.py" line="742"/>
       <source>The color of the cut faces (if turned on)</source>
       <translation>A cor das faces cortadas (se ativado)</translation>
     </message>
     <message>
-      <location filename="../../ArchStairs.py" line="1056"/>
+      <location filename="../../ArchStairs.py" line="1062"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>A sobreposição das longarinas (vigas de suporte) acima da base do degrau</translation>
     </message>
@@ -1279,7 +1279,7 @@
       <translation>A cota do ponto (0,0,0) deste nível</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="439"/>
+      <location filename="../../ArchSectionPlane.py" line="440"/>
       <source>The shape of this object</source>
       <translation>A forma deste objeto</translation>
     </message>
@@ -1289,7 +1289,7 @@
       <translation>Armazena as propriedades IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="525"/>
+      <location filename="../../ArchSectionPlane.py" line="526"/>
       <source>The line width of this object</source>
       <translation>A largura da linha deste objeto</translation>
     </message>
@@ -1386,7 +1386,7 @@
     <message>
       <location filename="../../ArchPanel.py" line="938"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
+      <translation>A posição do texto da etiqueta. Manter (0,0,0) para posição central</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1218"/>
@@ -1434,22 +1434,22 @@
       <translation>Se verdadeiro, as cores do arquivo vinculado serão mantidas atualizadas</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="441"/>
+      <location filename="../../ArchSectionPlane.py" line="442"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Os objetos que devem ser considerados por este plano de corte. Vazio significa o documento inteiro.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="522"/>
+      <location filename="../../ArchSectionPlane.py" line="523"/>
       <source>The transparency of this object</source>
       <translation>A transparência deste objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="530"/>
+      <location filename="../../ArchSectionPlane.py" line="531"/>
       <source>The color of this object</source>
       <translation>A cor deste objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="535"/>
+      <location filename="../../ArchSectionPlane.py" line="536"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>A distância entre o plano de corte e o corte real da vista (mantenha este valor muito pequeno, mas não zero)</translation>
     </message>
@@ -1692,22 +1692,22 @@
       <translation>contém as faces que não são parte de qualquer sólido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1308"/>
+      <location filename="../../ArchCommands.py" line="1312"/>
       <source>Grouping</source>
       <translation>Agrupar</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1340"/>
+      <location filename="../../ArchCommands.py" line="1344"/>
       <source>Ungrouping</source>
       <translation>Desagrupar</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1371"/>
+      <location filename="../../ArchCommands.py" line="1375"/>
       <source>Split Mesh</source>
       <translation>Dividir Malha</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1411"/>
+      <location filename="../../ArchCommands.py" line="1415"/>
       <source>Mesh to Shape</source>
       <translation>Malha para Forma</translation>
     </message>
@@ -1757,7 +1757,7 @@
       <translation>Vista de</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="416"/>
+      <location filename="../../ArchSectionPlane.py" line="417"/>
       <source>Create Section Plane</source>
       <translation>Criar Plano de Corte</translation>
     </message>
@@ -1847,17 +1847,17 @@
       <translation>Erro: Não foi possivel determinar a codificação de caracteres</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="282"/>
+      <location filename="../../importDAE.py" line="291"/>
       <source>file %s successfully created.</source>
       <translation>ficheiro %s criado com exito.</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1304"/>
+      <location filename="../../ArchCommands.py" line="1308"/>
       <source>Add space boundary</source>
       <translation>Adicionar limite de espaço</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1336"/>
+      <location filename="../../ArchCommands.py" line="1340"/>
       <source>Remove space boundary</source>
       <translation>Remover limite de espaço</translation>
     </message>
@@ -2102,7 +2102,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Altura (mm)</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1583"/>
+      <location filename="../../ArchCommands.py" line="1587"/>
       <source>Create Component</source>
       <translation>Criar componente</translation>
     </message>
@@ -2117,17 +2117,17 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Paredes só podem basear-se em objetos de malha ou parte (peça)</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="694"/>
+      <location filename="../../ArchSpace.py" line="695"/>
       <source>Set text position</source>
       <translation>Definir a posição do texto</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1603"/>
+      <location filename="../../ArchCommands.py" line="1607"/>
       <source>Category</source>
       <translation>Categoria</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1604"/>
+      <location filename="../../ArchCommands.py" line="1608"/>
       <source>Key</source>
       <translation>Chave</translation>
     </message>
@@ -2137,12 +2137,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation>Valor</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1607"/>
+      <location filename="../../ArchCommands.py" line="1611"/>
       <source>Unit</source>
       <translation>Unidade</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1632"/>
+      <location filename="../../ArchCommands.py" line="1636"/>
       <source>Create IFC properties spreadsheet</source>
       <translation>Criar tabela de propriedades IFC</translation>
     </message>
@@ -2555,7 +2555,7 @@ Site creation aborted.</source>
       <translation>Este objeto não possui face</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="698"/>
+      <location filename="../../ArchSpace.py" line="699"/>
       <source>Space boundaries</source>
       <translation>Limites do espaço</translation>
     </message>
@@ -2680,12 +2680,12 @@ Criação de edifício abortada.</translation>
       <translation>Plano de corte inválido</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1492"/>
+      <location filename="../../ArchCommands.py" line="1496"/>
       <source>All good! No problems found</source>
       <translation>Tudo bem! Não foram encontrados problemas</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1614"/>
+      <location filename="../../ArchCommands.py" line="1618"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
       <translation>O objeto não tem o atributo IfcProperties. Cancelar criação da Tabela (folha de cálculo) para o objeto:</translation>
     </message>
@@ -2750,10 +2750,10 @@ Criação de edifício abortada.</translation>
 Floor object is not allowed to accept Site or Building objects.
 Site, Building, and Floor objects will be removed from the selection.
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
-Floor object is not allowed to accept Site or Building objects.
-Site, Building, and Floor objects will be removed from the selection.
-You can change that in the preferences.</translation>
+      <translation>Você pode colocar qualquer coisa, menos os seguintes objetos: sítio, edifício e Piso (andar) - num objeto Piso (andar).
+Em objetos Piso (andar) não é permitido aceitar objetos de Site ou edifício.
+Objetos de sítio, edifício e Piso (andar) serão removidos da seleção.
+Você pode alterar isto nas preferências.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="107"/>
@@ -2867,42 +2867,42 @@ Floor creation aborted.</source>
       <translation>Nenhuma Tabela (folha de cálculo) ligada a esta Lista de quantidades</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="965"/>
+      <location filename="../../ArchSectionPlane.py" line="966"/>
       <source>Section plane settings</source>
       <translation>Configurações do plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="969"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objetos vistos por este plano de corte:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="969"/>
+      <location filename="../../ArchSectionPlane.py" line="970"/>
       <source>Section plane placement:</source>
       <translation>Posição do plano de corte:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="970"/>
+      <location filename="../../ArchSectionPlane.py" line="971"/>
       <source>Rotate X</source>
       <translation>Rodar X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="971"/>
+      <location filename="../../ArchSectionPlane.py" line="972"/>
       <source>Rotate Y</source>
       <translation>Rodar Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="972"/>
+      <location filename="../../ArchSectionPlane.py" line="973"/>
       <source>Rotate Z</source>
       <translation>Rodar Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="973"/>
+      <location filename="../../ArchSectionPlane.py" line="974"/>
       <source>Resize</source>
       <translation>Redimensionar</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="974"/>
+      <location filename="../../ArchSectionPlane.py" line="975"/>
       <source>Center</source>
       <translation>Centro</translation>
     </message>
@@ -2990,7 +2990,7 @@ Note: You can change that in the preferences.</source>
       <translation>Se marcado, o valor de deslocamento (recuo) predefinido desta janela será adicionado ao valor inserido aqui</translation>
     </message>
     <message>
-      <location filename="../../importDAE.py" line="52"/>
+      <location filename="../../importDAE.py" line="58"/>
       <source>pycollada not found, collada support is disabled.</source>
       <translation>pycollada não foi encontrado, o suporte ao formato collada está desativado.</translation>
     </message>
@@ -3030,17 +3030,17 @@ Note: You can change that in the preferences.</source>
       <translation>Erro: a sua versão de IfcOpenShell é muito antiga</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="215"/>
+      <location filename="../../importOBJ.py" line="222"/>
       <source>Successfully written</source>
       <translation>Gravado com sucesso</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="71"/>
+      <location filename="../../importOBJ.py" line="78"/>
       <source>Found a shape containing curves, triangulating</source>
       <translation>Uma forma contendo curvas foi encontrada e será triangulada</translation>
     </message>
     <message>
-      <location filename="../../importOBJ.py" line="293"/>
+      <location filename="../../importOBJ.py" line="300"/>
       <source>Successfully imported</source>
       <translation>Importado com sucesso</translation>
     </message>
@@ -3164,12 +3164,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_Add</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1295"/>
+      <location filename="../../ArchCommands.py" line="1299"/>
       <source>Add component</source>
       <translation>Adicionar componente</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1296"/>
+      <location filename="../../ArchCommands.py" line="1300"/>
       <source>Adds the selected components to the active object</source>
       <translation>Adiciona os componentes selecionados ao objeto ativo</translation>
     </message>
@@ -3247,17 +3247,17 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_Check</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1483"/>
+      <location filename="../../ArchCommands.py" line="1487"/>
       <source>Check</source>
       <translation>Verificar</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1484"/>
+      <location filename="../../ArchCommands.py" line="1488"/>
       <source>Checks the selected objects for problems</source>
       <translation>Verifica os objetos selecionados para ver se existem problemas</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1505"/>
+      <location filename="../../ArchCommands.py" line="1509"/>
       <source>Explore the contents of an IFC file</source>
       <translation>Explorar o conteúdo de um ficheiro IFC</translation>
     </message>
@@ -3265,12 +3265,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_CloneComponent</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1573"/>
+      <location filename="../../ArchCommands.py" line="1577"/>
       <source>Clone component</source>
       <translation>Clonar componente</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1575"/>
+      <location filename="../../ArchCommands.py" line="1579"/>
       <source>Clones an object as an undefined architectural component</source>
       <translation>Cria um componente arquitetónico indefinido</translation>
     </message>
@@ -3278,12 +3278,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_CloseHoles</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1466"/>
+      <location filename="../../ArchCommands.py" line="1470"/>
       <source>Close holes</source>
       <translation>Fechar buracos</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1467"/>
+      <location filename="../../ArchCommands.py" line="1471"/>
       <source>Closes holes in open shapes, turning them solids</source>
       <translation>Fecha buracos em formas abertas, transformando-os em sólidos</translation>
     </message>
@@ -3291,12 +3291,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_Component</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1548"/>
+      <location filename="../../ArchCommands.py" line="1552"/>
       <source>Component</source>
       <translation>Componente</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1550"/>
+      <location filename="../../ArchCommands.py" line="1554"/>
       <source>Creates an undefined architectural component</source>
       <translation>Cria um componente arquitectónico indefinido</translation>
     </message>
@@ -3419,7 +3419,7 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_IfcExplorer</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1504"/>
+      <location filename="../../ArchCommands.py" line="1508"/>
       <source>Ifc Explorer</source>
       <translation>Explorador Ifc</translation>
     </message>
@@ -3427,12 +3427,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_IfcSpreadsheet</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1623"/>
+      <location filename="../../ArchCommands.py" line="1627"/>
       <source>Create IFC spreadsheet...</source>
       <translation>Crie tabela IFC...</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1625"/>
+      <location filename="../../ArchCommands.py" line="1629"/>
       <source>Creates a spreadsheet to store IFC properties of an object.</source>
       <translation>Cria uma Tabela (folha de cálculo) para armazenar as propriedades IFC de um objeto.</translation>
     </message>
@@ -3474,12 +3474,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_MeshToShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1387"/>
+      <location filename="../../ArchCommands.py" line="1391"/>
       <source>Mesh to Shape</source>
       <translation>Malha para Forma</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1388"/>
+      <location filename="../../ArchCommands.py" line="1392"/>
       <source>Turns selected meshes into Part Shape objects</source>
       <translation>Transforma as malhas selecionadas em objetos de forma de Peças</translation>
     </message>
@@ -3620,12 +3620,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_Remove</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1327"/>
+      <location filename="../../ArchCommands.py" line="1331"/>
       <source>Remove component</source>
       <translation>Remover componente</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1328"/>
+      <location filename="../../ArchCommands.py" line="1332"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
       <translation>Remove os componentes selecionados dos seus "hospedeiros", ou cria um buraco num componente</translation>
     </message>
@@ -3633,12 +3633,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_RemoveShape</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1451"/>
+      <location filename="../../ArchCommands.py" line="1455"/>
       <source>Remove Shape from Arch</source>
       <translation>Remover Forma</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1452"/>
+      <location filename="../../ArchCommands.py" line="1456"/>
       <source>Removes cubic shapes from Arch components</source>
       <translation>Remove formas cúbicas de objetos arquitectónicos</translation>
     </message>
@@ -3672,12 +3672,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="400"/>
+      <location filename="../../ArchSectionPlane.py" line="401"/>
       <source>Section Plane</source>
       <translation>Plano de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="401"/>
+      <location filename="../../ArchSectionPlane.py" line="402"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Cria um plano de corte, incluindo os objetos selecionados</translation>
     </message>
@@ -3685,12 +3685,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1422"/>
+      <location filename="../../ArchCommands.py" line="1426"/>
       <source>Select non-manifold meshes</source>
       <translation>Selecionar malhas (meshes) não sólidas</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1423"/>
+      <location filename="../../ArchCommands.py" line="1427"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
       <translation>Seleciona todas as malhas (meshes) não sólidas do documento ou dos grupos selecionados</translation>
     </message>
@@ -3729,12 +3729,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_SplitMesh</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1362"/>
+      <location filename="../../ArchCommands.py" line="1366"/>
       <source>Split Mesh</source>
       <translation>Dividir Malha</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1363"/>
+      <location filename="../../ArchCommands.py" line="1367"/>
       <source>Splits selected meshes into independent components</source>
       <translation>Divide as malhas selecionadas em componentes independentes</translation>
     </message>
@@ -3763,12 +3763,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_Survey</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1518"/>
+      <location filename="../../ArchCommands.py" line="1522"/>
       <source>Survey</source>
       <translation>Recolha de dados</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1519"/>
+      <location filename="../../ArchCommands.py" line="1523"/>
       <source>Starts survey</source>
       <translation>Iniciar recolha de dados</translation>
     </message>
@@ -3776,12 +3776,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_ToggleIfcBrepFlag</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1533"/>
+      <location filename="../../ArchCommands.py" line="1537"/>
       <source>Toggle IFC Brep flag</source>
       <translation>Alternar modo Brep</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1534"/>
+      <location filename="../../ArchCommands.py" line="1538"/>
       <source>Force an object to be exported as Brep or not</source>
       <translation>Força um objeto a ser exportado ou não como Brep no formato Ifc</translation>
     </message>
@@ -3789,12 +3789,12 @@ Note: You can change that in the preferences.</source>
   <context>
     <name>Arch_ToggleSubs</name>
     <message>
-      <location filename="../../ArchCommands.py" line="1649"/>
+      <location filename="../../ArchCommands.py" line="1653"/>
       <source>Toggle subcomponents</source>
       <translation>Alternar sucomponentes</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1650"/>
+      <location filename="../../ArchCommands.py" line="1654"/>
       <source>Shows or hides the subcomponents of this object</source>
       <translation>Mostra ou oculta os subcomponentes do objeto</translation>
     </message>
@@ -4045,12 +4045,12 @@ Note: You can change that in the preferences.</source>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation type="unfinished">BimServer URL:</translation>
+      <translation>BimServer URL:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
       <source>Keep me logged in across FreeCAD sessions</source>
-      <translation type="unfinished">Keep me logged in across FreeCAD sessions</translation>
+      <translation>Manter-me ligado entre sessões do FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
