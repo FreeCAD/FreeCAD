@@ -173,7 +173,7 @@ ViewLinewidth =
 
 ; Product URL, recommended are wikipedia links
 ; https://de.wikipedia.org/wiki/Hyperlink
-ProductURL = 
+ProductURL =
 
 ; Specific price in currency / mass. A currency is not supported by FreeCAD unit system. Will be empty in all FreeCAD cards. Means the user needs to put in himself.
 SpecificPrice =
