@@ -49,7 +49,7 @@ StandardCode =
 ; Description to be updated
 AngleOfFriction =
 
-; Compressive strength https://en.wikipedia.org/wiki/Compressive_strength
+; Compressive strength in [FreeCAD Pressure unit] https://en.wikipedia.org/wiki/Compressive_strength
 CompressiveStrength =
 
 ; Density in [FreeCAD Density unit] https://en.wikipedia.org/wiki/Density
@@ -79,10 +79,10 @@ YoungsModulus =
 ; Description to be updated
 SpecificHeat =
 
-; Thermal conductivity https://en.wikipedia.org/wiki/Thermal_conductivity
+; Thermal conductivity in [FreCAD ThermalConductivity unit] https://en.wikipedia.org/wiki/Thermal_conductivity
 ThermalConductivity =
 
-; Thermal expansion coefficient (linear) in [1/K] https://en.wikipedia.org/wiki/Thermal_expansion
+; Thermal expansion coefficient (linear) in [FreeCAD ThermalExpansionCoefficient unit] https://en.wikipedia.org/wiki/Thermal_expansion
 ThermalExpansionCoefficient =
 
 ; Description to be updated
