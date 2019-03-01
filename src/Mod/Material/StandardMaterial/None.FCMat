@@ -7,7 +7,7 @@
 Name = None
 Description = This is a not defined material
 Father = None
-YoungsModulus = 0 MPa
-UltimateTensileStrength = 0 MPa
-PoissonRatio = 0
 Density = 0 kg/m^3
+PoissonRatio = 0
+UltimateTensileStrength = 0 MPa
+YoungsModulus = 0 MPa

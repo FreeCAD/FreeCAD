@@ -6,13 +6,13 @@
 [FCMat]
 Name = Polyamide 6
 SourceURL = http://www.matweb.com/search/datasheet.aspx?MatGUID=8d78f3cfcb6f49d595896ce6ce6a2ef1
-YoungsModulus = 2930 MPa
-UltimateTensileStrength = 75.5 MPa
-PoissonRatio = 0.39
 CompressiveStrength = 67.6 MPa
 Density = 1150 kg/m^3
+PoissonRatio = 0.39
+UltimateTensileStrength = 75.5 MPa
+YieldStrength = 70.5 MPa
+YoungsModulus = 2930 MPa
 SpecificHeat = 1670 J/kg/K
 ThermalConductivity = 0.262 W/m/K
 ThermalExpansionCoefficient = 0.000082 m/m/K
-YieldStrength = 70.5 MPa
 ProductURL = https://en.wikipedia.org/wiki/Nylon_6

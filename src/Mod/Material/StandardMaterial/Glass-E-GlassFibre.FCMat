@@ -7,7 +7,7 @@
 Name = Glass-E
 Description = Glass Fibre
 Father = Glass
-UltimateTensileStrength = 3445 MPa
 CompressiveStrength = 1080 MPa
 Density = 2580 kg/m^3
+UltimateTensileStrength = 3445 MPa
 ProductURL = https://en.wikipedia.org/wiki/Glass_fiber
