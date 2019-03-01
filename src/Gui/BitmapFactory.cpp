@@ -492,8 +492,7 @@ QPixmap BitmapFactoryInst::resize(int w, int h, const QPixmap& p, Qt::BGMode bgm
         QColor dl = pal.color(QPalette::Disabled, QPalette::Light);
         QColor dt = pal.color(QPalette::Disabled, QPalette::Text);
 
-        QPixmap pm = pix;
-        pm = QPixmap(w,h);
+        QPixmap pm(w,h);
         pm.fill(dl);
 
         QPainter pt;
@@ -575,15 +574,15 @@ QPixmap BitmapFactoryInst::merge(const QPixmap& p1, const QPixmap& p2, Position 
 
     switch (pos)
     {
-    case Qt::TopLeftCorner:
+    case TopLeft:
         break;
-    case Qt::TopRightCorner:
+    case TopRight:
         x = p1.width () - p2.width ();
         break;
-    case Qt::BottomLeftCorner:
+    case BottomLeft:
         y = p1.height() - p2.height();
         break;
-    case Qt::BottomRightCorner:
+    case BottomRight:
         x = p1.width () - p2.width ();
         y = p1.height() - p2.height();
         break;
