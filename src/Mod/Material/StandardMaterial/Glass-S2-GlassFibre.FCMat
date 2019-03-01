@@ -7,7 +7,7 @@
 Name = Glass-S2
 Description = Glass Fibre
 Father = Glass
-ProductURL = https://en.wikipedia.org/wiki/Glass_fiber
 UltimateTensileStrength = 4890 MPa
 CompressiveStrength = 1600 MPa
 Density = 2460 kg/m^3
+ProductURL = https://en.wikipedia.org/wiki/Glass_fiber
