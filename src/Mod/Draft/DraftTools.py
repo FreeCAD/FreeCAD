@@ -4113,29 +4113,46 @@ class Scale(Modifier):
     def Activated(self):
         self.name = translate("draft","Scale", utf8_decode=True)
         Modifier.Activated(self,self.name)
-        self.ghost = None
-        if self.ui:
-            if not FreeCADGui.Selection.getSelection():
-                self.ui.selectUi()
-                msg(translate("draft", "Select an object to scale")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-            else:
-                self.proceed()
+        if not self.ui:
+            return
+        self.ghosts = []
+        self.get_object_selection()
+
+    def get_object_selection(self):
+        if FreeCADGui.Selection.getSelection():
+            return self.proceed()
+        self.ui.selectUi()
+        msg(translate("draft", "Select an object to scale")+"\n")
+        self.call = self.view.addEventCallback("SoEvent",selectObject)
 
     def proceed(self):
-        if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.sel = FreeCADGui.Selection.getSelection()
-        self.sel = Draft.getGroupContents(self.sel)
+        if self.call:
+            self.view.removeEventCallback("SoEvent", self.call)
+        self.selected_objects = FreeCADGui.Selection.getSelection()
+        self.selected_objects = Draft.getGroupContents(self.selected_objects)
+        self.selected_subelements = FreeCADGui.Selection.getSelectionEx()
         self.refs = []
         self.ui.pointUi(self.name)
         self.ui.modUi()
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
-        self.ghost = ghostTracker(self.sel)
         self.pickmode = False
         self.task = None
-        self.call = self.view.addEventCallback("SoEvent",self.action)
+        self.call = self.view.addEventCallback("SoEvent", self.action)
         msg(translate("draft", "Pick base point:")+"\n")
+
+    def set_ghosts(self):
+        if self.ui.isSubelementMode.isChecked():
+            return self.set_subelement_ghosts()
+        self.ghosts = [ghostTracker(self.selected_objects)]
+
+    def set_subelement_ghosts(self):
+        import Part
+        for object in self.selected_subelements:
+            for subelement in object.SubObjects:
+                if isinstance(subelement, Part.Vertex) \
+                    or isinstance(subelement, Part.Edge):
+                    self.ghosts.append(ghostTracker(subelement))
 
     def pickRef(self):
         self.pickmode = True
@@ -4144,10 +4161,29 @@ class Scale(Modifier):
         msg(translate("draft", "Pick reference distance from base point:")+"\n")
         self.call = self.view.addEventCallback("SoEvent",self.action)
 
+    def action(self,arg):
+        "scene event handler"
+        if arg["Type"] == "SoKeyboardEvent" and arg["Key"] == "ESCAPE":
+            self.finish()
+        elif arg["Type"] == "SoLocation2Event":
+            self.handle_mouse_move_event(arg)
+        elif arg["Type"] == "SoMouseButtonEvent" \
+            and arg["State"] == "DOWN" \
+            and (arg["Button"] == "BUTTON1") \
+            and self.point:
+                if not self.ghosts:
+                    self.set_ghosts()
+                self.numericInput(self.point.x, self.point.y, self.point.z)
+
+    def handle_mouse_move_event(self, arg):
+        for ghost in self.ghosts:
+            ghost.off()
+        self.point, ctrlPoint, info = getPoint(self, arg, sym=True)
+
     def finish(self,closed=False,cont=False):
         Modifier.finish(self)
-        if self.ghost:
-            self.ghost.finalize()
+        for ghost in self.ghosts:
+            ghost.finalize()
 
     def scale(self,x,y,z,rel,mode):
         delta = Vector(x,y,z)
@@ -4162,16 +4198,10 @@ class Scale(Modifier):
         elif mode == 2:
             copy = True
             legacy = True
-        "moving the real shapes"
-        sel = '['
-        for o in self.sel:
-            if len(sel) > 1:
-                sel += ','
-            sel += 'FreeCAD.ActiveDocument.'+o.Name
-        sel += ']'
+        objects = '[' + ','.join(['FreeCAD.ActiveDocument.' + object.Name for object in self.selected_objects]) + ']'
         FreeCADGui.addModule("Draft")
         self.commit(translate("draft","Copy"),
-                    ['Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+',legacy='+str(legacy)+')',
+                    ['Draft.scale('+objects+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+',legacy='+str(legacy)+')',
                      'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
 
@@ -4179,28 +4209,15 @@ class Scale(Modifier):
         delta = Vector(x,y,z)
         if rel:
             delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(delta)
-        self.ghost.scale(delta)
+        for ghost in self.ghosts:
+            ghost.scale(delta)
         # calculate a correction factor depending on the scaling center
         corr = Vector(self.node[0].x,self.node[0].y,self.node[0].z)
         corr.scale(delta.x,delta.y,delta.z)
         corr = (corr.sub(self.node[0])).negative()
-        self.ghost.move(corr)
-        self.ghost.on()
-
-    def action(self,arg):
-        "scene event handler"
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event": #mouse movement detection
-            if self.ghost:
-                self.ghost.off()
-            self.point,ctrlPoint,info = getPoint(self,arg,sym=True)
-        elif arg["Type"] == "SoMouseButtonEvent":
-            if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
-                if self.point:
-                    #self.ui.redraw()
-                    self.numericInput(self.point.x,self.point.y,self.point.z)
+        for ghost in self.ghosts:
+            ghost.move(corr)
+            ghost.on()
 
     def numericInput(self,numx,numy,numz):
         "this function gets called by the toolbar when a valid base point has been entered"
@@ -4213,8 +4230,8 @@ class Scale(Modifier):
             self.task = DraftGui.ScaleTaskPanel()
             self.task.sourceCmd = self
             DraftGui.todo.delay(FreeCADGui.Control.showDialog,self.task)
-            if self.ghost:
-                self.ghost.on()
+            for ghost in self.ghosts:
+                ghost.on()
         elif len(self.node) == 2:
             msg(translate("draft", "Pick new distance from base point:")+"\n")
         elif len(self.node) == 3:
