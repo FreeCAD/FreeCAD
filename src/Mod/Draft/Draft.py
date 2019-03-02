@@ -1762,7 +1762,8 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
     given center. If legacy is True, direct (old) mode is used, otherwise
     a parametric copy is made. If copy is True, the actual objects are not moved,
     but copies are created instead. The objects (or their copies) are returned.'''
-    if not isinstance(objectslist,list): objectslist = [objectslist]
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
     if legacy:
         newobjlist = []
         for obj in objectslist:
@@ -1800,7 +1801,6 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
             elif getType(obj) == "Wire":
                 p = []
                 for v in sh.Vertexes: p.append(v.Point)
-                #print(p)
                 newobj.Points = p
             elif getType(obj) == "BSpline":
                 p = []
